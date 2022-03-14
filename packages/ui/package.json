@@ -5,10 +5,10 @@
   "types": "./index.tsx",
   "license": "MIT",
   "devDependencies": {
-    "@types/react": "^17.0.37",
-    "@types/react-dom": "^17.0.11",
-    "tsconfig": "workspace:*",
+    "@types/react": "^17.0.40",
+    "@types/react-dom": "^17.0.13",
     "config": "workspace:*",
-    "typescript": "^4.5.3"
+    "tsconfig": "workspace:*",
+    "typescript": "^4.6.2"
   }
 }
