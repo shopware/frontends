@@ -16,7 +16,7 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
     addPluginTemplate({
       filename: "runtime/shopware.plugin.mjs",
       // @ts-ignore
-      src: resolve(__dirname, "../src/templates/plugin.ts"),
+      src: resolve(__dirname, "../plugin.ts"),
       options: {
         shopwareEndpoint: "https://pwa-demo-api.shopware.com/trunk/",
         shopwareAccessToken: "SWSC40-LJTNO6COUEN7CJMXKLA",
@@ -28,6 +28,13 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
           //   },
         },
       },
+    });
+
+    nuxt.hook("autoImports:sources", (dirs) => {
+      dirs.push({
+        from: "@shopware-pwa/composables",
+        imports: ["useCms", "useProduct"],
+      });
     });
   },
 });

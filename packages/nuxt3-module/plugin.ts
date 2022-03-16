@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { defineNuxtPlugin } from "#app";
 import { createInstance } from "@shopware-pwa/shopware-6-client";
+import { createShopware } from "@shopware-pwa/composables";
 
 const ShopwarePlugin = {
   install(app, options) {
@@ -39,10 +40,12 @@ const ShopwarePlugin = {
         // Sometimes cookie is set on server after request is send, it can fail silently
       }
     });
-    // configure the app
-    app.provide("shopware", {
+
+    const shopwarePlugin = createShopware(app, {
       apiInstance: instance,
+      enableDevtools: true,
     });
+    app.provide("shopware", shopwarePlugin);
   },
 };
 

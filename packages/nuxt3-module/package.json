@@ -7,6 +7,7 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
+    "plugin.ts",
     "index.cjs"
   ],
   "scripts": {
@@ -16,6 +17,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
+    "@shopware-pwa/composables": "^1.4.0",
     "@shopware-pwa/shopware-6-client": "^1.4.0"
   },
   "devDependencies": {
