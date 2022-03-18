@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { getCmsPage } from "@shopware-pwa/shopware-6-client";
-
-const { apiInstance } = inject("shopware");
-const cms = ref();
-
-const { data: cmsResponse } = await useAsyncData("count", () =>
-  getCmsPage("/", {}, apiInstance)
-);
+definePageMeta({
+  key: (route) => route.fullPath,
+});
 </script>
 
 <template>
   <div>
-    <NuxtWelcome />
+    <SwHeader />
+    <NuxtPage />
   </div>
 </template>
+
+<style>
+h2 {
+  @apply text-4xl py-4;
+}
+</style>

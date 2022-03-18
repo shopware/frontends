@@ -7,9 +7,12 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
-    "@shopware-pwa/nuxt3-module": "workspace:*"
+    "@shopware-pwa/nuxt3-module": "workspace:*",
+    "@shopware-pwa/cms-base": "workspace:*",
+    "@unocss/nuxt": "^0.29.0",
+    "@vueuse/nuxt": "^8.1.1"
   },
   "devDependencies": {
-    "nuxt3": "^3.0.0-27454426.4cefce4"
+    "nuxt3": "^3.0.0-27458996.6342e82"
   }
 }
