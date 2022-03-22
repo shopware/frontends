@@ -33,7 +33,7 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
     nuxt.hook("autoImports:sources", (dirs) => {
       dirs.push({
         from: "@shopware-pwa/composables",
-        imports: ["useCms", "useProduct", "useNavigation"],
+        imports: ["useCms", "useProduct", "useNavigation", "useAddToCart"],
       });
     });
   },

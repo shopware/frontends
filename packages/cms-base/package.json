@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@nuxt/kit": "npm:@nuxt/kit-edge@latest",
-    "@shopware-pwa/composables": "^1.4.0",
-    "@shopware-pwa/shopware-6-client": "^1.4.0"
+    "@shopware-pwa/composables": "canary",
+    "@shopware-pwa/shopware-6-client": "canary"
   },
   "devDependencies": {
     "@nuxt/schema": "npm:@nuxt/schema-edge@latest",

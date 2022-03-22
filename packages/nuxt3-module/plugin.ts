@@ -42,6 +42,7 @@ const ShopwarePlugin = {
     });
 
     const shopwarePlugin = createShopware(app, {
+      shopwareDefaults: {},
       apiInstance: instance,
       enableDevtools: true,
     });
