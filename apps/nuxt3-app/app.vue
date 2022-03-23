@@ -1,6 +1,17 @@
 <script setup lang="ts">
+import { useSessionContext, useUser, useCart } from "@shopware-pwa/composables";
 definePageMeta({
   key: (route) => route.fullPath,
+});
+
+const { refreshSessionContext } = useSessionContext();
+const { refreshUser } = useUser();
+const { refreshCart } = useCart();
+
+onMounted(() => {
+  refreshSessionContext();
+  refreshUser();
+  refreshCart();
 });
 </script>
 
