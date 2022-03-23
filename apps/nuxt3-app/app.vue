@@ -13,12 +13,16 @@ onMounted(() => {
   refreshUser();
   refreshCart();
 });
+
+const isSidebarOpen = ref(false);
+provide("isSidebarOpen", isSidebarOpen);
 </script>
 
 <template>
   <div>
     <SwHeader />
     <NuxtPage />
+    <SwSideCart />
   </div>
 </template>
 
