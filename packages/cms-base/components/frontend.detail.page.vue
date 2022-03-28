@@ -2,7 +2,7 @@
 import { useAddToCart, useSessionContext } from "@shopware-pwa/composables";
 import { getTranslatedProperty, getProductMediaGallery } from "@shopware-pwa/helpers"
 import { getProductReviews } from "@shopware-pwa/shopware-6-client";
-
+const route = useRoute();
 const cms = inject("cms-page");
 const reviews = ref([]);
 const product = computed(() => cms.value.product)
@@ -44,7 +44,6 @@ const redirectToSelectedVariantUrl = async () => {
     const selectedOption = await findVariantForSelectedOptions(unref(selectedOptions))
     const selectedOptionsVariantPath = selectedOption?.seoUrls?.[0]?.seoPathInfo
     if (selectedOptionsVariantPath) {
-      const route = useRoute();
       const currentPath = route.path;
       const newPathForVariant = window.location.href.replace(currentPath, "/"+selectedOptionsVariantPath)
       try {
@@ -132,7 +131,7 @@ const redirectToSelectedVariantUrl = async () => {
 
               <div class="mt-4">
                 <ul role="list" class="pl-4 list-disc text-sm space-y-2">
-                  <li v-for="property in properties" :key="property.id" class="text-gray-400"><span class="text-gray-600">{{property.translated?.name}}</span></li>
+                  <li v-for="property in properties" :key="property.id" class="text-gray-400"><span class="text-gray-600">{{getTranslatedProperty(property, "name")}}</span></li>
                 </ul>
               </div>
             </div>
