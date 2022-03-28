@@ -1,17 +1,8 @@
 <template>
-  <article class="cms-block-center-text">
-    <CmsGenericElement
-      :content="getLeftContent"
-      class="cms-block-center-text__image"
-    />
-    <CmsGenericElement
-      :content="getCenterContent"
-      class="cms-block-center-text__text"
-    />
-    <CmsGenericElement
-      :content="getRightContent"
-      class="cms-block-center-text__image"
-    />
+  <article class="flex flex-col">
+    <CmsGenericElement :content="getLeftContent" class="" />
+    <CmsGenericElement :content="getCenterContent" class="" />
+    <CmsGenericElement :content="getRightContent" class="" />
   </article>
 </template>
 
