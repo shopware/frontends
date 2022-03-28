@@ -97,7 +97,7 @@ const redirectToSelectedVariantUrl = async () => {
                           
                           <input type="radio" :name="`${option.id}-choice`" :value="option.name" class="sr-only" :aria-labelledby="`${option.id}-choice-label`">
                           <p :id="`${option.id}-choice-label`">{{ option.name }}</p>
-                          <div class="absolute -inset-px rounded-md pointer-events-none" :class="{'border border-cyan-00': isOptionSelected(option.id)}"></div>
+                          <div class="absolute -inset-px rounded-md pointer-events-none" :class="{'border border-cyan-600': isOptionSelected(option.id)}"></div>
                         </label>
 
                     
