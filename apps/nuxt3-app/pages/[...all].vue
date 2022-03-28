@@ -8,7 +8,18 @@ const route = useRoute();
 const { apiInstance } = inject("shopware");
 
 const { data: cmsResponse } = await useAsyncData("cmsResponse", () => {
-  return getCmsPage(route.path, {}, apiInstance);
+  return getCmsPage(route.path, {
+    associations: {
+      media: {},
+      properties: {
+        associations: {
+          group: {}
+        }
+      },
+    }
+  }, apiInstance);
+}, {
+  lazy: true
 });
 provide("cms-page", cmsResponse);
 
