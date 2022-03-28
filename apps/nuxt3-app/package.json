@@ -9,8 +9,8 @@
   "dependencies": {
     "@shopware-pwa/nuxt3-module": "workspace:*",
     "@shopware-pwa/cms-base": "workspace:*",
-    "@unocss/nuxt": "^0.29.0",
-    "@vueuse/nuxt": "^8.1.1"
+    "@unocss/nuxt": "^0.30.6",
+    "@vueuse/nuxt": "^8.2.0"
   },
   "devDependencies": {
     "nuxt3": "^3.0.0-27458996.6342e82"
