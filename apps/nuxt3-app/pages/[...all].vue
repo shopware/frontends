@@ -7,26 +7,34 @@ const { error, loading, search } = useCms();
 const route = useRoute();
 const { apiInstance } = inject("shopware");
 
-const { data: cmsResponse } = await useAsyncData("cmsResponse", () => {
-  return getCmsPage(route.path, {
-    associations: {
-      media: {},
-      properties: {
+const { data: cmsResponse } = await useAsyncData(
+  "cmsResponse",
+  () => {
+    return getCmsPage(
+      route.path,
+      {
         associations: {
-          group: {}
-        }
+          media: {},
+          properties: {
+            associations: {
+              group: {},
+            },
+          },
+        },
       },
-    }
-  }, apiInstance);
-}, {
-  lazy: true
-});
+      apiInstance
+    );
+  },
+  {
+    lazy: true,
+  }
+);
 provide("cms-page", cmsResponse);
 
 const page = cmsResponse;
-const cmsPage = ref(page.value?.cmsPage);
-const staticPage = ref(page.value);
-const staticError = ref(error.value);
+const cmsPage = computed(() => page.value?.cmsPage);
+const staticPage = computed(() => page.value);
+const staticError = computed(() => error.value);
 
 function render() {
   const componentName = page.value?.resourceType;
