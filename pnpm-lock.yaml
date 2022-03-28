@@ -5,10 +5,10 @@ importers:
   .:
     specifiers:
       prettier: ^2.6.0
-      turbo: ^1.1.6
+      turbo: ^1.1.9
     devDependencies:
       prettier: 2.6.0
-      turbo: 1.1.6
+      turbo: 1.1.9
 
   apps/nuxt3-app:
     specifiers:
@@ -36,11 +36,11 @@ importers:
       typescript: ^4.6.2
       unbuild: ^0.7.0
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27460489.53fbca7
-      '@shopware-pwa/composables': link:../../../../shopware-pwa/packages/composables
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27467056.93c4dfe
+      '@shopware-pwa/composables': 1.4.1-canary.1616
       '@shopware-pwa/shopware-6-client': 1.4.1-canary.1616
     devDependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27460489.53fbca7
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27467056.93c4dfe
       config: link:../config
       tsconfig: link:../tsconfig
       typescript: 4.6.2
@@ -65,11 +65,11 @@ importers:
       typescript: ^4.6.2
       unbuild: ^0.7.0
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27460489.53fbca7
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27467056.93c4dfe
       '@shopware-pwa/composables': 1.4.1-canary.1616
       '@shopware-pwa/shopware-6-client': 1.4.1-canary.1616
     devDependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27460489.53fbca7
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27467056.93c4dfe
       config: link:../config
       tsconfig: link:../tsconfig
       typescript: 4.6.2
@@ -531,7 +531,7 @@ packages:
       scule: 0.2.1
       semver: 7.3.5
       unctx: 1.0.2
-      unimport: 0.1.0
+      unimport: 0.1.2
       untyped: 0.4.3
     transitivePeerDependencies:
       - esbuild
@@ -561,7 +561,7 @@ packages:
       scule: 0.2.1
       semver: 7.3.5
       unctx: 1.0.2
-      unimport: 0.1.0_8823764f94041ba502281f3569357a91
+      unimport: 0.1.2_8823764f94041ba502281f3569357a91
       untyped: 0.4.3
     transitivePeerDependencies:
       - esbuild
@@ -591,7 +591,7 @@ packages:
       scule: 0.2.1
       semver: 7.3.5
       unctx: 1.0.2
-      unimport: 0.1.0_esbuild@0.14.27+rollup@2.70.1
+      unimport: 0.1.2_esbuild@0.14.27+rollup@2.70.1
       untyped: 0.4.3
     transitivePeerDependencies:
       - esbuild
@@ -601,14 +601,14 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/kit-edge/3.0.0-27460489.53fbca7:
-    resolution: {integrity: sha512-6rYLtw80Zrw+rwQXrzxv0kNwe46hoByxnEcQS3GaXlAM/9aZfdOnCSg6qiI5NJoFcjSF+6chG6oTAk33HdUlBA==}
+  /@nuxt/kit-edge/3.0.0-27467056.93c4dfe:
+    resolution: {integrity: sha512-mtTXVnfOtMnu23q9t94SxsDX988slEIQj5WqXdUCmtY0phhJoRPBGhSzVMno1eakpOfX9WBo2Rgw8KXcrTEFJQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27460489.53fbca7
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27467056.93c4dfe
       c12: 0.2.4
       consola: 2.15.3
-      defu: 5.0.1
+      defu: 6.0.0
       globby: 13.1.1
       hash-sum: 2.0.0
       ignore: 5.2.0
@@ -620,8 +620,8 @@ packages:
       pkg-types: 0.3.2
       scule: 0.2.1
       semver: 7.3.5
-      unctx: 1.0.2
-      unimport: 0.1.0
+      unctx: 1.1.0
+      unimport: 0.1.2
       untyped: 0.4.3
     transitivePeerDependencies:
       - esbuild
@@ -766,20 +766,20 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-27460489.53fbca7:
-    resolution: {integrity: sha512-pSuw9uMCiuDUyzkhZuvHuRQLMIX0Hb7vGJm1u8JapFpU+juI9q8ygnS4O6NVtw89nqJ77SBO4q4n2C8umeT2IQ==}
+  /@nuxt/schema-edge/3.0.0-27467056.93c4dfe:
+    resolution: {integrity: sha512-IBWqpdLMoY1E9VHiFYLtZptNBqZ6xyGNcBSnE8HOI3MrZELVPIpGNimSjjlhQ/EgjsdTi/oRA2yc64Jf6tV0PQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
       c12: 0.2.4
       create-require: 1.1.1
-      defu: 5.0.1
+      defu: 6.0.0
       jiti: 1.13.0
       pathe: 0.2.0
       postcss-import-resolver: 2.0.0
       scule: 0.2.1
       std-env: 3.0.1
       ufo: 0.8.1
-      unimport: 0.1.0
+      unimport: 0.1.2
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -1113,7 +1113,7 @@ packages:
   /@unocss/nuxt/0.29.0:
     resolution: {integrity: sha512-mo2PV2fMKXYhPog0J7Q4+j2H2mDarwBUypSQNIbrIct7MN0yvLZCkNdSTbpn6Xl5VdMLFe7HDrJq6kWou+j3VQ==}
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27460489.53fbca7
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27467056.93c4dfe
       '@unocss/core': 0.29.0
       '@unocss/preset-attributify': 0.29.0
       '@unocss/preset-icons': 0.29.0
@@ -1439,7 +1439,7 @@ packages:
   /@vueuse/nuxt/8.1.1:
     resolution: {integrity: sha512-GxnMytqwhzOoqsC95gw1tRzqeUWxchDPy42Hg1ClY/4nd0RpoRXijnuEG5eva/KoULt3l9EDX4+nTjIaAd3haQ==}
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27460489.53fbca7
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27467056.93c4dfe
       '@vueuse/core': 8.1.1
       '@vueuse/metadata': 8.1.1
       local-pkg: 0.4.1
@@ -2248,6 +2248,9 @@ packages:
 
   /defu/5.0.1:
     resolution: {integrity: sha512-EPS1carKg+dkEVy3qNTqIdp2qV7mUP08nIsupfwQpz++slCVRw7qbQyWvSTig+kFPwz2XXp5/kIIkH+CwrJKkQ==}
+
+  /defu/6.0.0:
+    resolution: {integrity: sha512-t2MZGLf1V2rV4VBZbWIaXKdX/mUcYW0n2znQZoADBkGGxYL8EWqCuCZBmJPJ/Yy9fofJkyuuSuo5GSwo0XdEgw==}
 
   /delegates/1.0.0:
     resolution: {integrity: sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=}
@@ -4095,7 +4098,7 @@ packages:
       table: 6.8.0
       ufo: 0.7.11
       unenv: 0.4.3
-      unimport: 0.1.0_esbuild@0.14.27+rollup@2.70.1
+      unimport: 0.1.2_esbuild@0.14.27+rollup@2.70.1
       unstorage: 0.3.3
     transitivePeerDependencies:
       - bufferutil
@@ -5549,119 +5552,119 @@ packages:
     resolution: {integrity: sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=}
     dev: true
 
-  /turbo-darwin-64/1.1.6:
-    resolution: {integrity: sha512-xzl79T7mPKaIGhMBCAzpTvXkbFNZaMyeOMsNXxVT5dTY+d3FwLFfbqHIoG1dH745TbH6i67bxtt70lKdQa+qdQ==}
+  /turbo-darwin-64/1.1.9:
+    resolution: {integrity: sha512-DAeQkBXvIVMwdlT/OvJYKNbhijUJQr4ug/sLJpNMEMPVW2Fs1aVZpr+ea4W+Xo90nOk+Ac0oCbv4nx3v8UZ1iQ==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.1.6:
-    resolution: {integrity: sha512-r0D+Kfwcaqec5h9Xa4T/VD6mWZ2LQr+zOEBBL6UA15htgel06B2eXiGdjRiw4i7ieV80tEBEDdz9tSWJBhAL/Q==}
+  /turbo-darwin-arm64/1.1.9:
+    resolution: {integrity: sha512-15WTOOngcUALX1Pso6tG/vot8ksi1l5/Sljv4sXjfpFup9Xkc2m6AE6QlKllextL10SD4x52K2z01ClV7YIKEQ==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-freebsd-64/1.1.6:
-    resolution: {integrity: sha512-v5MJeRcyeCDF3La40TOub0+/OuGGFuLzlVHb4jYxthESbtLve1H23bDiL+4gCQgPYOsKMOvKQpuoMaKW2gxk7A==}
+  /turbo-freebsd-64/1.1.9:
+    resolution: {integrity: sha512-DqDt4o79guYef7MlYQChHMOMxJNbvE+SVuBP0+CxG4WreSUnsT+D4+/+KBs9e/o2p1xHRoDOtuKbDai8tWgKaQ==}
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-freebsd-arm64/1.1.6:
-    resolution: {integrity: sha512-5gm3r+M5f/Idt/pggyCQ+MZSlaUdxUeb/4LtPohhWOoj4PYo1o5kwInaRlckr7uV36E4/npDvz9cDV96Pohejg==}
+  /turbo-freebsd-arm64/1.1.9:
+    resolution: {integrity: sha512-tiudLNRsOmmWD9guqWEoW63x3F0YKtkQis0DRrFqJBVcnMDfKYtMWIr6kP7DhK9PxKwnJY4Y1WIawXPIWl66EQ==}
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-32/1.1.6:
-    resolution: {integrity: sha512-dLc1Vd/LQP5n3NGLMf+cdaK99sMWvHdDvTUSrSwoYDy5fWFpUm0E12lAxRH3tikX2m7Kfcy2uY5xSJIuq5xzYQ==}
+  /turbo-linux-32/1.1.9:
+    resolution: {integrity: sha512-u0VI41gqxRqGR41+nVmWvNZ6d2AS/KYfrfDeFbw8mRVsuAR2OP6emsbt7cUN++0ZzH9qsRgGcBR/k2Ge/EEx5g==}
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.1.6:
-    resolution: {integrity: sha512-V4rb41yQUA+vPDgXc06oHmKbgrBUbwm09oRtjvmlIQU8zX8qujMPZIun8tGP4NuzErJXGzD3WDgj7VSsO23IIw==}
+  /turbo-linux-64/1.1.9:
+    resolution: {integrity: sha512-BU3ulyNivyrDwGVA2NnMcqUH9o4njk59DgantoF7rRSWNeyt5abneOG7CVAdaAy03JIc1gzErjVV+QSQ25H9ug==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm/1.1.6:
-    resolution: {integrity: sha512-zAaIa0+EhRYYkM51ruB1LCUqyeigK66A+KfXZ3Y9+aiKg7EYbDvuv+ReD4srLPKoIuAxR5dYlk5RVhSKejt2Cw==}
+  /turbo-linux-arm/1.1.9:
+    resolution: {integrity: sha512-sAI2BqkipyvH6fQhhnOGhY9C9z9AMUdTizOm0Luj6gmEMZhUmjfk5K8BsX3uKzY6cWx5+twaTPXFd1EGV/o7Pg==}
     cpu: [arm]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.1.6:
-    resolution: {integrity: sha512-QsE7gow3WxWXKwNWJX4DIJys6xc6Up4/icjdTZCZbglPLwuG2UiUzjJ2+beXxVU4EmpQF6NwKubHCtrs8m8/kQ==}
+  /turbo-linux-arm64/1.1.9:
+    resolution: {integrity: sha512-bVD+8n8qDDlZxG6Z8rn58m50BjczIV4zCgjDQDIN2E6H9FjWuLOpKXk3mdTgM31w1Om8HYZgkbvla/jQSwWHrQ==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-mips64le/1.1.6:
-    resolution: {integrity: sha512-098DB9daXoI6LRCkuOv1Pqim+H4wXZrFza9Xd7zJIel1WmxEgNsHqWpSH5Jn2J92LbkWl+tfN1+myw4+a4ESfw==}
+  /turbo-linux-mips64le/1.1.9:
+    resolution: {integrity: sha512-/34pGwWKRes3FYAUpZn+s8rKIbi76ZHuGxvXWx7clIfmLwNw1dN04c7cXU/t2PwDv4CzsGkqPgVNMGitnLxeUQ==}
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-ppc64le/1.1.6:
-    resolution: {integrity: sha512-U5A1mnsGM994h/1VT4FbsV/bb+I0fgvkY5/TTX7MfA9Iwt0SxsNlh+Jgofe1svPz0CKEe6Hl2WQSGHTlBPJb5Q==}
+  /turbo-linux-ppc64le/1.1.9:
+    resolution: {integrity: sha512-5yR59wLf+HTV2Zb7ycPHXloTgYql22F4lhL6H7cWBVmbDFzrWR3N1d/sPaNLHtaDEE4l6UtTOFd/WQCfPDq/Hw==}
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-32/1.1.6:
-    resolution: {integrity: sha512-0C+/EI11j8ABtI6O2n+NYL2osDI6moo7YL8pqiWbNrdEGI2KbeCTVQpruUH+GONsMov06pR4BouL9UT2jSpG0g==}
+  /turbo-windows-32/1.1.9:
+    resolution: {integrity: sha512-dVwjFWg/SsW+pVk1iOnfovXSzsMsIgiEQvkAEnN3+XNEkjtYhLQ73bntZhP/mO4IKpDEkPoBcOlV/092uwadOg==}
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.1.6:
-    resolution: {integrity: sha512-O2kC+7+zuMjFIi6mpU1qz+Bv27TcHkkCczcDNVU29G52pm5lwj7BZ+/gu+EPJSnF5VrgdA6Oru6KVXPRS1q+Cg==}
+  /turbo-windows-64/1.1.9:
+    resolution: {integrity: sha512-fzjO2D9lzhrBNjnuqaFTBpRU9DjYMhhgFgvD3ynwNWiBgm4wcer58DpRMDEzjq51Q+0HwFIrsKzEMyVK4Ubu/Q==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.1.6:
-    resolution: {integrity: sha512-pZTc6Sb5MtK/X/qhiDSssc8AZWoUoYf14ZqYjvDWg/aEtqgwYorVJqfRcj4XOXOqtVZ3gO/91eXwdyh/q2aQHA==}
+  /turbo/1.1.9:
+    resolution: {integrity: sha512-xFtKZ9EFEkENhRxn89RQWmgMKCnUvKWPwiOXz60ztp4HEKXAdOBgEmgCOhyn5osfgQYOiaOI6gBIjSf/UMorQQ==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.1.6
-      turbo-darwin-arm64: 1.1.6
-      turbo-freebsd-64: 1.1.6
-      turbo-freebsd-arm64: 1.1.6
-      turbo-linux-32: 1.1.6
-      turbo-linux-64: 1.1.6
-      turbo-linux-arm: 1.1.6
-      turbo-linux-arm64: 1.1.6
-      turbo-linux-mips64le: 1.1.6
-      turbo-linux-ppc64le: 1.1.6
-      turbo-windows-32: 1.1.6
-      turbo-windows-64: 1.1.6
+      turbo-darwin-64: 1.1.9
+      turbo-darwin-arm64: 1.1.9
+      turbo-freebsd-64: 1.1.9
+      turbo-freebsd-arm64: 1.1.9
+      turbo-linux-32: 1.1.9
+      turbo-linux-64: 1.1.9
+      turbo-linux-arm: 1.1.9
+      turbo-linux-arm64: 1.1.9
+      turbo-linux-mips64le: 1.1.9
+      turbo-linux-ppc64le: 1.1.9
+      turbo-windows-32: 1.1.9
+      turbo-windows-64: 1.1.9
     dev: true
 
   /type-check/0.4.0:
@@ -5767,6 +5770,21 @@ packages:
 
   /unctx/1.0.2:
     resolution: {integrity: sha512-qxRfnQZWJqkg180JeOCJEvtjj5/7wnWVqkNHln8muY5/z8kMWBFqikFBPwIPCQrZJ+jtaSWkVHJkuHUAXls6zw==}
+    dev: true
+
+  /unctx/1.1.0:
+    resolution: {integrity: sha512-Ae6vlXs1HC5Sg4PS1aNm8o9vqLonziZzGQ9m8Yiwvlan2CCwkOsdJXiiTmkjWqKn98PhJrpp8CGKfzA0tLuoZA==}
+    dependencies:
+      acorn: 8.7.0
+      estree-walker: 2.0.2
+      magic-string: 0.26.1
+      unplugin: 0.5.2
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - vite
+      - webpack
+    dev: false
 
   /undici/4.15.1:
     resolution: {integrity: sha512-h8LJybhMKD09IyQZoQadNtIR/GmugVhTOVREunJrpV6RStriKBFdSVoFzEzTihwXi/27DIBO+Z0OGF+Mzfi0lA==}
@@ -5804,6 +5822,7 @@ packages:
       - rollup
       - vite
       - webpack
+    dev: true
 
   /unimport/0.1.0_8823764f94041ba502281f3569357a91:
     resolution: {integrity: sha512-GqMgP1Mj8YYD+9I3MK/Ca/oeoCS0HdmCc/O1IW0si85RgXgPKYIoK84XbMVwOl9Qv/XGfZa/F5JagTWGtMOXCw==}
@@ -5826,6 +5845,62 @@ packages:
 
   /unimport/0.1.0_esbuild@0.14.27+rollup@2.70.1:
     resolution: {integrity: sha512-GqMgP1Mj8YYD+9I3MK/Ca/oeoCS0HdmCc/O1IW0si85RgXgPKYIoK84XbMVwOl9Qv/XGfZa/F5JagTWGtMOXCw==}
+    dependencies:
+      '@rollup/pluginutils': 4.2.0
+      escape-string-regexp: 5.0.0
+      globby: 13.1.1
+      local-pkg: 0.4.1
+      magic-string: 0.26.1
+      mlly: 0.4.3
+      pathe: 0.2.0
+      scule: 0.2.1
+      unplugin: 0.3.3_esbuild@0.14.27+rollup@2.70.1
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - vite
+      - webpack
+    dev: true
+
+  /unimport/0.1.2:
+    resolution: {integrity: sha512-1MTVh/DP8NTyrzsOGp6GaHLKuDWdh4RQbc1gSncbzZ7ttWpIJD9e330MKCCoXe6LkUoLNELmyYUVlk0F0Hwvow==}
+    dependencies:
+      '@rollup/pluginutils': 4.2.0
+      escape-string-regexp: 5.0.0
+      globby: 13.1.1
+      local-pkg: 0.4.1
+      magic-string: 0.26.1
+      mlly: 0.4.3
+      pathe: 0.2.0
+      scule: 0.2.1
+      unplugin: 0.3.3
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - vite
+      - webpack
+
+  /unimport/0.1.2_8823764f94041ba502281f3569357a91:
+    resolution: {integrity: sha512-1MTVh/DP8NTyrzsOGp6GaHLKuDWdh4RQbc1gSncbzZ7ttWpIJD9e330MKCCoXe6LkUoLNELmyYUVlk0F0Hwvow==}
+    dependencies:
+      '@rollup/pluginutils': 4.2.0
+      escape-string-regexp: 5.0.0
+      globby: 13.1.1
+      local-pkg: 0.4.1
+      magic-string: 0.26.1
+      mlly: 0.4.3
+      pathe: 0.2.0
+      scule: 0.2.1
+      unplugin: 0.3.3_8823764f94041ba502281f3569357a91
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - vite
+      - webpack
+    dev: true
+
+  /unimport/0.1.2_esbuild@0.14.27+rollup@2.70.1:
+    resolution: {integrity: sha512-1MTVh/DP8NTyrzsOGp6GaHLKuDWdh4RQbc1gSncbzZ7ttWpIJD9e330MKCCoXe6LkUoLNELmyYUVlk0F0Hwvow==}
     dependencies:
       '@rollup/pluginutils': 4.2.0
       escape-string-regexp: 5.0.0
