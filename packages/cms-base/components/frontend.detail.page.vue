@@ -18,10 +18,9 @@ const isStaticLayout = computed( () => !cmsPageResponse.value?.cmsPage)
    
     <div class="product-description lg:basis-2/5">
       <!-- Product info -->
-      <div class="max-w-2xl mx-auto pt-10 pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:pb-24 lg:px-8 lg:grid lg:grid-cols-1 lg:grid-rows-[auto] lg:gap-x-8">
-        <div class="lg:col-span-2 lg:pr-8 flex flex-row">
-          <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl basis-4/6">{{ name }}</h1>
-          <p class="text-3xl text-gray-900 basis-2/6 text-right">{{regularPrice}} {{currency?.symbol}}</p>
+      <div class="max-w-2xl mx-auto pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pb-24 lg:px-8 lg:grid lg:grid-cols-1 lg:grid-rows-[auto] lg:gap-x-8">
+        <div class="lg:col-span-2 lg:pr-8 static-container">
+          <CmsBlockProductHeading :product="product"/>
         </div>
 
         <!-- Options -->

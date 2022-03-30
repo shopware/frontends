@@ -1,4 +1,5 @@
 <script setup>
+import {getTranslatedProperty} from "@shopware-pwa/helpers";
 const $props = defineProps(["content"])
 const cmsPage = inject("cms-page")
 
@@ -14,7 +15,7 @@ const manufacturerName = computed(() => productManufacturerSlotContent.value || 
 </script>
 
 <template>
-  <div class="lg:col-span-2 lg:pr-8 flex flex-row lg:px-8 mt-8">
+  <div class="pt-8 flex flex-row">
     <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl basis-4/6">{{ productName }}</h1>
     <div class="basis-2/6 text-right">{{ manufacturerName }}</div>
   </div>

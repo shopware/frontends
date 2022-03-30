@@ -9,7 +9,7 @@ const product = computed(() => cmsPageResponse.value?.product);
 </script>
 <template>
     <div class="flex flex-row">
-        <div class="mt-6 rounded-lg overflow-hidden lg:px-8 basis-4/6">
+        <div class="mt-6 rounded-lg overflow-hidden lg:pr-8 basis-4/6">
            <SwProductGallery :product="product" />
         </div>
         <div class="mt-6 mb-9 basis-2/6">
