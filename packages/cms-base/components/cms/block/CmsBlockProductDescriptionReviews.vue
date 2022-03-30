@@ -15,7 +15,7 @@ onMounted(async () => {
 </script>
 
 <template>
-<div  class="lg:px-8">
+<div>
   <!-- Description and details -->
   <div v-if="description">
     <h3 class="text-sm font-medium text-gray-900">Description</h3>
