@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     cmsSections() {
-      return this.content?.sections || [];
+      return this.content?.sections || this.content?.cmsPage?.sections || [];
     },
   },
 };
