@@ -5,7 +5,7 @@ import { getCmsPage } from "@shopware-pwa/shopware-6-client";
 
 const { error, loading, search } = useCms();
 const route = useRoute();
-const { apiInstance } = inject("shopware");
+const { apiInstance } = useShopwareContext();
 
 const { data: cmsResponse } = await useAsyncData(
   "cmsResponse",
@@ -29,7 +29,8 @@ const { data: cmsResponse } = await useAsyncData(
     lazy: true,
   }
 );
-provide("cms-page", cmsResponse);
+provide("cms-page", cmsResponse); // TODO: remove after clearing references
+provide("cmsResponse", cmsResponse);
 
 const page = cmsResponse;
 const cmsPage = computed(() => page.value?.cmsPage);
