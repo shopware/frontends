@@ -41,12 +41,12 @@ const ShopwarePlugin = {
       }
     });
 
-    const shopwarePlugin = createShopware(app, {
+    const shopwareContext = createShopware(app, {
       shopwareDefaults: {},
       apiInstance: instance,
       enableDevtools: true,
     });
-    app.provide("shopware", shopwarePlugin);
+    app.provide("shopware", shopwareContext);
   },
 };
 

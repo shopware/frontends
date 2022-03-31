@@ -9,6 +9,8 @@
   "dependencies": {
     "@shopware-pwa/nuxt3-module": "workspace:*",
     "@shopware-pwa/cms-base": "workspace:*",
+    "@shopware-pwa/composables": "canary",
+    "@shopware-pwa/composables-next": "workspace:*",
     "@unocss/nuxt": "^0.30.6",
     "@vueuse/nuxt": "^8.2.0"
   },

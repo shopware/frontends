@@ -1,0 +1,20 @@
+{
+  "name": "@shopware-pwa/composables-next",
+  "version": "2.0.0-alpha.0",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@shopware-pwa/shopware-6-client": "canary",
+    "config": "workspace:*",
+    "unbuild": "^0.7.2",
+    "tsconfig": "workspace:*",
+    "typescript": "^4.6.2",
+    "vue": "^3.2.31"
+  }
+}
