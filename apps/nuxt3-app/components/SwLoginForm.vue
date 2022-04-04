@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineEmits(["close"]);
 const { login, loading, errors } = useUser()
     const { refreshSessionContext } = useSessionContext()
     const loginErrors = computed(() => errors.login?.map(({detail})=> detail).toString())
@@ -76,7 +77,8 @@ const { login, loading, errors } = useUser()
     </div>
     </div>
     <div v-else>
-        <h2>logged in</h2>
+        <h2>you are logged in</h2>
+        <button @click="$emit('close')">close</button>
     </div>
 </div>
 </template>

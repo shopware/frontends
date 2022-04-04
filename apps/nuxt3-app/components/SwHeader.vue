@@ -4,6 +4,7 @@ import { useCart } from "@shopware-pwa/composables";
 const { isOpen, switchState } = useUIState({
   stateName: "isModalOpen"
 });
+const { isLoggedIn, user } = useUser();
 const { count } = useCart();
 const isSidebarOpen = inject("isSidebarOpen");
 //
@@ -25,15 +26,22 @@ const isSidebarOpen = inject("isSidebarOpen");
         <SwTopNavigation />
 
         <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-          <button
-            @click="switchState()"
-            class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-          >
-            Sign in
-          </button>
-          <Teleport v-if="isOpen" to="#modal-content">
-            <SwLogin />
-          </Teleport>
+          <div class="my-account-area">
+            <div v-if="!isLoggedIn">
+              <button
+                @click="switchState()"
+                class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+              >
+                Sign in
+              </button>
+              <Teleport v-if="isOpen" to="#modal-content">
+                <SwLoginForm @close="switchState()"/>
+              </Teleport>
+            </div>
+            <div v-else>
+              Hello, {{ user.firstName }}
+            </div>
+          </div>
           <!-- <a
             href="#"
             class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
