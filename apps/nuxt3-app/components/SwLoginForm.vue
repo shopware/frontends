@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineEmits(["close"]);
+const $emits = defineEmits(["close"]);
 const { login, loading, errors } = useUser()
     const { refreshSessionContext } = useSessionContext()
     const loginErrors = computed(() => errors.login?.map(({detail})=> detail).toString())
@@ -9,12 +9,12 @@ const { login, loading, errors } = useUser()
 
     const invokeLogin = async () =>  {
         try {
-            isLoggedIn.value = await login({
-                    username: email.value,
-                    password: password.value,
-                })
-     
+          isLoggedIn.value = await login({
+                  username: email.value,
+                  password: password.value,
+              })
 
+          $emits("close")
         } catch(error) {
             console.warn('error login', error);
         }
