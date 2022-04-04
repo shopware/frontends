@@ -20,6 +20,7 @@ provide("isSidebarOpen", isSidebarOpen);
 
 <template>
   <div>
+    <SwModal />
     <SwHeader />
     <NuxtPage />
     <SwSideCart />
