@@ -1,25 +1,29 @@
 <script setup lang="ts">
 const $emits = defineEmits(["close"]);
 const { login, loading, errors } = useUser()
-    const { refreshSessionContext } = useSessionContext()
-    const loginErrors = computed(() => errors.login?.map(({detail})=> detail).toString())
-    const email = ref("");
-    const password = ref("");
-    const isLoggedIn = ref(false);
+const { refreshSessionContext } = useSessionContext()
+const loginErrors = computed(() => errors.login?.map(({detail})=> detail).toString())
+const email = ref("");
+const password = ref("");
+const isLoggedIn = ref(false);
 
-    const invokeLogin = async () =>  {
-        try {
-          isLoggedIn.value = await login({
-                  username: email.value,
-                  password: password.value,
-              })
+const invokeLogin = async () =>  {
+    try {
+      const loginResult = await login({
+        username: email.value,
+        password: password.value,
+      })
 
-          $emits("close")
-        } catch(error) {
-            console.warn('error login', error);
-        }
-        
+      if (loginResult) {
+        console.warn(loginResult);
+        isLoggedIn.value = true;
+        $emits("close")
+      }
+    } catch(error) {
+        console.warn('error login', error);
     }
+    
+}
 </script>
 <template>
 <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
