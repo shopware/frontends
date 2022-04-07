@@ -2,6 +2,19 @@
 const props = defineProps({
   content: Object,
 });
+const {
+      getElements,
+      setInitialListing,
+      getCurrentPage,
+      changeCurrentPage,
+      getTotalPagesCount,
+      loading,
+      loadMore,
+      loadingMore,
+    } = useListing({ listingType: "categoryListing", })
+
+
+    setInitialListing(props?.content?.data?.listing);
 </script>
 
 <template>
