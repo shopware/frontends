@@ -195,7 +195,7 @@ const openFilterSidebar = () => {
 
                       Selected: "font-medium text-gray-900", Not Selected: "text-gray-500"
                     -->
-                    <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="currentSortingOrder = sorting.key; isSortMenuOpen = false" class="font-medium text-gray-900 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"> {{ sorting.label }} </button>
+                    <button v-for="sorting in getSortingOrders" :key="sorting.key" @click="currentSortingOrder = sorting.key; isSortMenuOpen = false" :class="[sorting.key === getCurrentSortingOrder ? 'font-medium text-gray-900': 'text-gray-500']" class="block px-4 py-2 text-sm" role="menuitem" tabindex="-1"> {{ sorting.label }} </button>
                   </div>
                 </div>
               </div>
