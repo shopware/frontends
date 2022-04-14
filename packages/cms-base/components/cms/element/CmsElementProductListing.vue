@@ -1,20 +1,21 @@
 <script setup lang="ts">
+import { useListing } from "@shopware-pwa/composables";
 const props = defineProps({
   content: Object,
 });
 const {
-      getElements,
-      setInitialListing,
-      getCurrentPage,
-      changeCurrentPage,
-      getTotalPagesCount,
-      loading,
-      loadMore,
-      loadingMore,
-    } = useListing({ listingType: "categoryListing", })
+  getElements,
+  setInitialListing,
+  getCurrentPage,
+  changeCurrentPage,
+  getTotalPagesCount,
+  loading,
+  loadMore,
+  loadingMore,
+} = useListing({ listingType: "categoryListing", })
 
 
-    setInitialListing(props?.content?.data?.listing);
+setInitialListing(props?.content?.data?.listing);
 </script>
 
 <template>
@@ -26,7 +27,7 @@ const {
         class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
       >
         <SwProductCard
-          v-for="product in content.data.listing.elements"
+          v-for="product in getElements"
           :key="product._uniqueIdentifier"
           :product="product"
         />
