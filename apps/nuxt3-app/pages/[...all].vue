@@ -14,6 +14,7 @@ const { data: cmsResponse } = await useAsyncData(
       route.path,
       {
         associations: {
+          manufacturer: {},
           media: {},
           properties: {
             associations: {
@@ -29,6 +30,7 @@ const { data: cmsResponse } = await useAsyncData(
     lazy: true,
   }
 );
+
 provide("cms-page", cmsResponse); // TODO: remove after clearing references
 provide("cmsResponse", cmsResponse);
 
