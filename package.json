@@ -13,11 +13,19 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "prettier": "^2.6.1",
-    "turbo": "^1.1.10"
+    "prettier": "^2.6.2",
+    "turbo": "^1.2.4"
   },
   "engines": {
     "node": ">=16.0.0"
   },
-  "packageManager": "pnpm@6.32.2"
+  "packageManager": "pnpm@6.32.2",
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "webpack",
+        "vite"
+      ]
+    }
+  }
 }

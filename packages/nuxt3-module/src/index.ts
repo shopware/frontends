@@ -35,6 +35,10 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
         from: "@shopware-pwa/composables",
         imports: ["useCms", "useProduct", "useNavigation", "useAddToCart", "useSessionContext", "useProductConfigurator", "useUIState", "useUser"],
       });
+      dirs.push({
+        from: "@shopware-pwa/composables-next",
+        imports: ["useShopwareContext"],
+      });
     });
   },
 });
