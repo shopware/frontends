@@ -25,6 +25,11 @@ const sidebarSelectedFilters = reactive({
 }
 )
 
+const isFilterVisible = ref({});
+const toggleFilterVisibility = (filterId: string) => {
+  isFilterVisible.value[filterId] = !isFilterVisible.value[filterId];
+}
+
 const searchCriteriaForRequest = computed(() => ({
   manufacturer: [...sidebarSelectedFilters.manufacturer],
   properties: [...sidebarSelectedFilters.properties],
@@ -83,6 +88,12 @@ const openFilterSidebar = () => {
   isFilterBarOpen.value = true;
 }
 
+watch(getAvailableFilters, (filters) => {
+  filters.forEach((filter) => {
+    isFilterVisible.value[filter.id] = false;
+  })
+})
+
 </script>
 <template>
   <div class="mx-auto px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -133,8 +144,8 @@ const openFilterSidebar = () => {
               <div v-for="filter in getAvailableFilters" :key="`${filter.id}`" class="border-t border-gray-200 px-4 py-6">
                 <h3 class="-mx-2 -my-3 flow-root">
                   <!-- Expand/collapse section button -->
-                  <button type="button" class="px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500" aria-controls="filter-section-mobile-0" aria-expanded="false">
-                    <span class="font-medium text-gray-900"> {{ filter.label }} </span>
+                  <button type="button" class="px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500" aria-controls="filter-section-mobile-0" aria-expanded="false" @click="toggleFilterVisibility(filter.id)">
+                    <span class="font-medium text-gray-900">{{ filter.label }}</span>
                     <span class="ml-6 flex items-center">
                       <!--
                         Expand icon, show/hide based on section open state.
@@ -156,7 +167,7 @@ const openFilterSidebar = () => {
                   </button>
                 </h3>
                 <!-- Filter section, show/hide based on section state. -->
-                <div class="pt-6" id="filter-section-mobile-0">
+                <div class="pt-6" id="filter-section-mobile-0" v-show="isFilterVisible[filter.id]">
                   <div class="space-y-6">
                     <div v-for="option in (filter.options || filter.entities)" :key="`${option.id}-${selectedOptionIds.includes(option.id)}`" class="flex items-center">
                       <input :id="`filter-mobile-${filter.id}-${option.id}`" :checked="selectedOptionIds.includes(option.id)" :name="filter.name" :value="option.name" @click="onOptionSelectToggle({code: filter.code, value: option.id})" type="checkbox" class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500">
@@ -166,7 +177,7 @@ const openFilterSidebar = () => {
                 </div>
               </div>
               <div>
-                <button @click=";(async ()=> {await search({}); clearFilters(); isFilterBarOpen = false;})(); " type="button">Filters</button>
+                <button class="w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" @click=";(async ()=> {await search({}); clearFilters(); isFilterBarOpen = false;})(); " type="button">Reset filters</button>
               </div>
             </div>
           </div>
