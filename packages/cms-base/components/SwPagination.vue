@@ -3,7 +3,7 @@ defineProps(["total", "current"]);
 defineEmits(["changePage"]);
 </script>
 <template>
-<div class="bg-white justify-center px-4 py-3 flex  border-t border-gray-200 sm:px-6">
+<div v-if="total > 1" class="bg-white justify-center px-4 py-3 flex  border-t border-gray-200 sm:px-6">
   <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
     <button  v-if="current-1 >= 1" @click="$emit('changePage', current -1)"  class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
       <span class="sr-only">Previous</span>
