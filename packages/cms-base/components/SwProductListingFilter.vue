@@ -14,6 +14,5 @@ const filterPathToResolve = `./listing-filters/SwFilter${pascalCase(filterAlias[
 const FilterComponent = defineAsyncComponent(() => import(/* @vite-ignore */ filterPathToResolve));
 </script>
 <template>
-  <i style="font-size:0.7rem;">{{filterPathToResolve}}</i>
   <component :is="FilterComponent" :filter="filter" :selectedFilters="selectedFilters" @select-value="$emit('selectFilterValue', $event)" />
 </template>
