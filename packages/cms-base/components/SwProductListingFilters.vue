@@ -34,8 +34,8 @@ const toggleFilterVisibility = (filterId: string) => {
 const searchCriteriaForRequest = computed(() => ({
   manufacturer: [...sidebarSelectedFilters.manufacturer],
   properties: [...sidebarSelectedFilters.properties],
-  minPrice: sidebarSelectedFilters["min-price"],
-  maxPrice: sidebarSelectedFilters["max-price"],
+  "min-price": sidebarSelectedFilters["min-price"],
+  "max-price": sidebarSelectedFilters["max-price"],
   order: getCurrentSortingOrder.value,
   "shipping-free": sidebarSelectedFilters["shipping-free"],
   rating: sidebarSelectedFilters["rating"],

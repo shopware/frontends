@@ -11,7 +11,8 @@ const hoverRating = (key) =>  {
   isHoverActive.value = true
 }
 const onChangeRating = () => {
-  $emits('select-value', {code: $props.filter?.code, value: hoveredIndex.value})
+  const newValue = $props.selectedFilters?.rating !== hoveredIndex.value ? hoveredIndex.value : undefined;
+  $emits('select-value', {code: $props.filter?.code, value: newValue})
 }
 </script>
 
@@ -20,7 +21,6 @@ const onChangeRating = () => {
     <SwStarIcon v-for="i in filter.max || 5"
       @mouseleave="isHoverActive = false"
       :key="i"
-      :size="size"
       :isEmpty="i > displayedScore"
       @click="onChangeRating()"
       @mouseover="hoverRating(i)" />
