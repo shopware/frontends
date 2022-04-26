@@ -7,29 +7,23 @@ const { error, loading, search } = useCms();
 const route = useRoute();
 const { apiInstance } = useShopwareContext();
 
-const { data: cmsResponse } = await useAsyncData(
-  "cmsResponse",
-  () => {
-    return getCmsPage(
-      route.path,
-      {
-        associations: {
-          manufacturer: {},
-          media: {},
-          properties: {
-            associations: {
-              group: {},
-            },
+const { data: cmsResponse } = await useAsyncData("cmsResponse" + route.path, () => {
+  return getCmsPage(
+    route.path,
+    {
+      associations: {
+        manufacturer: {},
+        media: {},
+        properties: {
+          associations: {
+            group: {},
           },
         },
       },
-      apiInstance
-    );
-  },
-  {
-    lazy: true,
-  }
-);
+    },
+    apiInstance
+  );
+});
 
 provide("cms-page", cmsResponse); // TODO: remove after clearing references
 provide("cmsResponse", cmsResponse);
