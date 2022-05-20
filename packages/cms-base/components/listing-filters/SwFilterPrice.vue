@@ -1,21 +1,21 @@
 
 <script setup lang="ts">
-import { debounce } from "@shopware-pwa/helpers"
-const $emits = defineEmits(["select-value"]);
-const $props = defineProps(["filter"])
-const isFilterVisible = ref(false);
-const prices = reactive<{min: number, max: number}>({
-  min: $props.filter?.min,
-  max: $props.filter?.max,
-})
+  import { debounce } from "@shopware-pwa/helpers"
+  const $emits = defineEmits(["select-value"]);
+  const $props = defineProps(["filter"])
+  const isFilterVisible = ref(false);
+  const prices = reactive<{min: number, max: number}>({
+    min: $props.filter?.min,
+    max: $props.filter?.max,
+  })
 
  watch(() => prices.min, debounce((newPrice: number, oldPrice: number) => {
   if (newPrice == oldPrice) return;
-  $emits("select-value", {
-    code: "min-price",
-    value: newPrice,
-  })
- }, 1000)
+    $emits("select-value", {
+      code: "min-price",
+      value: newPrice,
+    })
+  }, 1000)
  )
 
 watch(() => prices.max, debounce((newPrice: number, oldPrice: number) => {
