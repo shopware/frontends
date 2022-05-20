@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useCart } from "@shopware-pwa/composables";
-
 const { count } = useCart();
 const isSidebarOpen = inject("isSidebarOpen");
-//
 </script>
 
 <template>
@@ -21,20 +19,7 @@ const isSidebarOpen = inject("isSidebarOpen");
 
         <SwTopNavigation />
 
-        <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-          <!-- <a
-            href="#"
-            class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-          >
-            Sign in
-          </a>
-          <a
-            href="#"
-            class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-          >
-            Sign up
-          </a> -->
-        </div>
+        <SwMyAccountMenu />
         <!-- Cart -->
         <div class="hidden md:flex ml-4 flow-root lg:ml-6">
           <button
