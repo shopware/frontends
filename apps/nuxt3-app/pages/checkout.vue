@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useCountries, useSalutations, useUser, useCheckout, useSessionContext } from "@shopware-pwa/composables";
+import { useCountries, useSalutations, useUser, useCheckout, useSessionContext, useCart } from "@shopware-pwa/composables";
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
-const { paymentMethods, shippingMethods, getPaymentMethods, getShippingMethods } = useCheckout();
+const { paymentMethods, shippingMethods, getPaymentMethods, getShippingMethods, createOrder } = useCheckout();
 const { register, isLoggedIn, user, errors } = useUser();
 const { refreshSessionContext, shippingMethod, paymentMethod, setShippingMethod, setPaymentMethod } = useSessionContext();
+const { cartItems } = useCart();
 
 const password = ref<string|null>();
 const selectedShippingMethod = computed({
@@ -23,6 +24,11 @@ const selectedPaymentMethod = computed({
     setPaymentMethod({id: paymentMethodId});
   },
 });
+
+const isCheckoutAvailable = computed(() => {
+  return cartItems.value.length > 0;
+})
+
 const billingAddress = reactive({
   firstName: "",
   lastName: "",
@@ -68,7 +74,8 @@ const submitBillingAddress = async (e: Event) => {
 
 <template>
   <div class="m-10">
-    <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div v-if="isCheckoutAvailable" class="checkout-inner">
+      <div class="md:grid md:grid-cols-3 md:gap-6">
       <div class="md:col-span-1">
         <div class="px-4 sm:px-0">
           <h3 class="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
@@ -141,43 +148,58 @@ const submitBillingAddress = async (e: Event) => {
                 <button @click="submitBillingAddress" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save</button>
               </div>
             </form>
-            <div v-else>You are logged-in as {{ user.firstName }}! </div>
+            <div class="p-6" v-else>You are logged-in as {{ user.firstName }}! </div>
           </div>
+      </div>
+      </div>
+      <div class="md:grid md:grid-cols-3 md:gap-6 mt-10">
+        <div class="md:col-span-1">
+          <div class="px-4 sm:px-0">
+            <h3 class="text-lg font-medium leading-6 text-gray-900">Shipping and Payment methods</h3>
+            <p class="mt-1 text-sm text-gray-600">Select you favorite shipping and payment providers!</p>
+          </div>
+        </div>
+        <div class="mt-5 md:mt-0 md:col-span-2">
+          <div class="shadow overflow-hidden sm:rounded-md">
+            <div class="px-4 py-5 bg-white sm:p-6">
+              <fieldset>
+                <legend class="contents text-base font-medium text-gray-900">Shipping method</legend>
+                <p class="text-sm text-gray-500">Select a shipping method.</p>
+                <div class="mt-4 space-y-4">
+                  <div v-for="shippingMethod in shippingMethods" :key="shippingMethod.id" class="flex items-center">
+                    <input :id="shippingMethod.id" v-model="selectedShippingMethod" :value="shippingMethod.id"  name="shipping-method" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
+                    <label :for="shippingMethod.id" class="ml-3 block text-sm font-medium text-gray-700"> {{ shippingMethod.name }} </label>
+                  </div>
+                </div>
+              </fieldset>
+                <fieldset class="mt-10">
+                <legend class="contents text-base font-medium text-gray-900">Payment method</legend>
+                <p class="text-sm text-gray-500">Select a payment method.</p>
+                <div class="mt-4 space-y-4">
+                  <div v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" class="flex items-center">
+                    <input :id="paymentMethod.id" v-model="selectedPaymentMethod" :value="paymentMethod.id"  name="payment-method" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
+                    <label :for="paymentMethod.id" class="ml-3 block text-sm font-medium text-gray-700"> {{ paymentMethod.name }} </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="md:grid md:grid-cols-3 md:gap-6 mt-10">
+        <div class="md:col-span-1">
+          <div class="px-4 sm:px-0">
+      
+          </div>
+        </div>
+        <div class="mt-5 md:mt-0 md:col-span-2">
+          <button @click="createOrder" :disabled="!isLoggedIn" type="submit" :class="{grayscale: !isLoggedIn, 'hover:bg-indigo-700': isLoggedIn}" class="inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Place the order</button>
+        </div>
       </div>
     </div>
-    <div class="md:grid md:grid-cols-3 md:gap-6 mt-10">
-      <div class="md:col-span-1">
-        <div class="px-4 sm:px-0">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Shipping and Payment methods</h3>
-          <p class="mt-1 text-sm text-gray-600">Select you favorite shipping and payment providers!</p>
-        </div>
-      </div>
-      <div class="mt-5 md:mt-0 md:col-span-2">
-        <div class="shadow overflow-hidden sm:rounded-md">
-          <div class="px-4 py-5 bg-white sm:p-6">
-            <fieldset>
-              <legend class="contents text-base font-medium text-gray-900">Shipping method</legend>
-              <p class="text-sm text-gray-500">Select a shipping method.</p>
-              <div class="mt-4 space-y-4">
-                <div v-for="shippingMethod in shippingMethods" :key="shippingMethod.id" class="flex items-center">
-                  <input :id="shippingMethod.id" v-model="selectedShippingMethod" :value="shippingMethod.id"  name="shipping-method" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
-                  <label :for="shippingMethod.id" class="ml-3 block text-sm font-medium text-gray-700"> {{ shippingMethod.name }} </label>
-                </div>
-              </div>
-            </fieldset>
-              <fieldset class="mt-10">
-              <legend class="contents text-base font-medium text-gray-900">Payment method</legend>
-              <p class="text-sm text-gray-500">Select a payment method.</p>
-              <div class="mt-4 space-y-4">
-                <div v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" class="flex items-center">
-                  <input :id="paymentMethod.id" v-model="selectedPaymentMethod" :value="paymentMethod.id"  name="payment-method" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
-                  <label :for="paymentMethod.id" class="ml-3 block text-sm font-medium text-gray-700"> {{ paymentMethod.name }} </label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-      </div>
+    <div class="p-8 text-center" v-else>
+      <div class="mb-8">Your cart is empty! There is nothing to buy, so far :)</div>
+      <NuxtLink class="inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md hover:bg-indigo-700 text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" to="/">↩ go to home page</NuxtLink>
     </div>
   </div>
 </template>
