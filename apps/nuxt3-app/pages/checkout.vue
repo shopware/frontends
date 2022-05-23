@@ -3,9 +3,11 @@ import { useCountries, useSalutations, useUser, useCheckout, useSessionContext, 
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const { paymentMethods, shippingMethods, getPaymentMethods, getShippingMethods, createOrder } = useCheckout();
-const { register, isLoggedIn, user, errors } = useUser();
+const { register, logout, isLoggedIn, user, errors } = useUser();
 const { refreshSessionContext, shippingMethod, paymentMethod, setShippingMethod, setPaymentMethod } = useSessionContext();
 const { cartItems } = useCart();
+
+const isModalOpened = inject("isModalOpened");
 
 const password = ref<string|null>();
 const selectedShippingMethod = computed({
@@ -89,8 +91,18 @@ const submitBillingAddress = async (e: Event) => {
                 {{ errors.register }}
               </div>
               <div class="px-4 py-5 bg-white sm:p-6">
-                
-                <div class="grid grid-cols-6 gap-6">
+                <div class="contents text-base font-medium text-gray-900">Register or <a href="#"
+                    @click="isModalOpened = true"
+                    class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+                  >
+                    Sign in
+                  </a>
+                  <Teleport v-if="isModalOpened" to="#modal-content">
+                    <SwLoginForm @success="isModalOpened = false" />
+                  </Teleport>.
+                </div>
+                <p class="text-sm text-gray-500">In order to place an order.</p>
+                <div class="grid grid-cols-6 gap-6 mt-8">
                   <div class="col-span-6 sm:col-span-6">
                     <label for="country" class="block text-sm font-medium text-gray-700">Salutation</label>
                     <select required v-model="billingAddress.salutationId" id="salutation" name="salutation" autocomplete="salutation-name" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -148,7 +160,7 @@ const submitBillingAddress = async (e: Event) => {
                 <button @click="submitBillingAddress" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save</button>
               </div>
             </form>
-            <div class="p-6" v-else>You are logged-in as {{ user.firstName }}! </div>
+            <div class="p-6" v-else>You are logged-in as {{ user.firstName }}! You can log out <a href="#" class="text-indigo-700" @click="logout">here</a>.</div>
           </div>
       </div>
       </div>
@@ -189,11 +201,32 @@ const submitBillingAddress = async (e: Event) => {
       <div class="md:grid md:grid-cols-3 md:gap-6 mt-10">
         <div class="md:col-span-1">
           <div class="px-4 sm:px-0">
-      
           </div>
         </div>
         <div class="mt-5 md:mt-0 md:col-span-2">
-          <button @click="createOrder" :disabled="!isLoggedIn" type="submit" :class="{grayscale: !isLoggedIn, 'hover:bg-indigo-700': isLoggedIn}" class="inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Place the order</button>
+          <div class="shadow overflow-hidden sm:rounded-md">
+            <div class="px-4 py-5 bg-white sm:p-6">
+              <div class="contents text-base font-medium text-gray-900">Cart items</div>
+              <p class="text-sm text-gray-500">List of cart's items, including discounts.</p>
+              <div class="flow-root mt-8">
+                <ul role="list" class="-my-6 divide-y divide-gray-200">
+                  <li
+                    class="flex py-6"
+                    v-for="cartItem in cartItems"
+                    :key="cartItem.id"
+                  >
+                    <SwCartItem :cartItem="cartItem" />
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 mt-4">
+              <div class="text-right">
+                <span class="pr-4" v-if="!isLoggedIn">You must be logged-in before submitting an order.</span>
+                <button @click="createOrder" :disabled="!isLoggedIn" type="submit" :class="{grayscale: !isLoggedIn, 'hover:bg-indigo-700': isLoggedIn}" class="inline-flex justify-right py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Place the order</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
