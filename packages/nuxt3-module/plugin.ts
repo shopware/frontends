@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { defineNuxtPlugin } from "#app";
 import { createInstance } from "@shopware-pwa/shopware-6-client";
-import { createShopware } from "@shopware-pwa/composables";
+import { createShopware, getDefaultApiParams} from "@shopware-pwa/composables";
 
 const ShopwarePlugin = {
   install(app, options) {
@@ -40,16 +40,17 @@ const ShopwarePlugin = {
         // Sometimes cookie is set on server after request is send, it can fail silently
       }
     });
-
     const shopwareContext = createShopware(app, {
-      shopwareDefaults: {},
       apiInstance: instance,
       enableDevtools: true,
+      shopwareDefaults: options.apiDefaults,
     });
     app.provide("shopware", shopwareContext);
   },
 };
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  nuxtApp.vueApp.use(ShopwarePlugin);
+  nuxtApp.vueApp.use(ShopwarePlugin, {
+    apiDefaults: getDefaultApiParams()
+  })
 });

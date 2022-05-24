@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCartItem } from "@shopware-pwa/composables";
 import { getProductMainImageUrl, getProductUrl } from "@shopware-pwa/helpers";
+const isLoading = ref(false);
 
 const props = defineProps({
   cartItem: Object,
@@ -9,6 +10,11 @@ const props = defineProps({
 const { removeItem, itemRegularPrice, itemQuantity, isPromotion } = useCartItem(
   { cartItem: props.cartItem }
 );
+const removeCartItem = async () => {
+  isLoading.value = true;
+  await removeItem();
+  isLoading.value = false;
+};
 </script>
 
 <template>
@@ -44,9 +50,10 @@ const { removeItem, itemRegularPrice, itemQuantity, isPromotion } = useCartItem(
 
       <div class="flex">
         <button
-          v-if="cartItem.type === 'product'"
+          v-if="!isPromotion"
           type="button"
-          @click="removeItem"
+          @click="removeCartItem"
+          :class="{'animate-pulse': isLoading}"
           class="font-medium text-black hover:text-gray-700"
         >
           Remove

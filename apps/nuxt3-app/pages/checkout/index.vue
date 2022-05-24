@@ -1,29 +1,38 @@
 <script setup lang="ts">
+
 import { useCountries, useSalutations, useUser, useCheckout, useSessionContext, useCart } from "@shopware-pwa/composables";
+const { push } = useRouter();
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const { paymentMethods, shippingMethods, getPaymentMethods, getShippingMethods, createOrder } = useCheckout();
 const { register, logout, isLoggedIn, user, errors } = useUser();
 const { refreshSessionContext, shippingMethod, paymentMethod, setShippingMethod, setPaymentMethod } = useSessionContext();
 const { cartItems } = useCart();
-
 const isModalOpened = inject("isModalOpened");
+const isLoading = reactive({} as any)
+const isCustomerLoggedIn = ref(isLoggedIn.value);
+
 
 const password = ref<string|null>();
 const selectedShippingMethod = computed({
   get(): string {
     return shippingMethod.value?.id;
   },
-  set(shippingMethodId: string) {
-    setShippingMethod({id: shippingMethodId});
+  async set(shippingMethodId: string) {
+    isLoading[shippingMethodId] = true;
+    await setShippingMethod({id: shippingMethodId});
+    isLoading[shippingMethodId] = false;
+
   },
 });
 const selectedPaymentMethod = computed({
   get(): string {
     return paymentMethod.value?.id;
   },
-  set(paymentMethodId: string) {
-    setPaymentMethod({id: paymentMethodId});
+  async set(paymentMethodId: string) {
+    isLoading[paymentMethodId] = true;
+    await setPaymentMethod({id: paymentMethodId});
+    isLoading[paymentMethodId] = false;
   },
 });
 
@@ -55,10 +64,23 @@ const registerPayload = computed(() => ({
   storefrontUrl: window.location.origin
 }))
 
-onMounted(() => {
+const placeOrder = async () => {
+  isLoading["placeOrder"] = true;
+  const order = await createOrder();
+  isLoading["placeOrder"] = false;
+  return push("/checkout/success/" + order.id);
+}
+
+onMounted(async () => {
   refreshSessionContext();
-  getShippingMethods();
-  getPaymentMethods();
+  isLoading["shippingMethods"] = true;
+  await getShippingMethods();
+  isLoading["shippingMethods"] = false;
+
+  isLoading["paymentMethods"] = true;
+  await getPaymentMethods();
+  isLoading["paymentMethods"] = false;
+
 })
 
 const submitBillingAddress = async (e: Event) => {
@@ -178,9 +200,21 @@ const submitBillingAddress = async (e: Event) => {
                 <legend class="contents text-base font-medium text-gray-900">Shipping method</legend>
                 <p class="text-sm text-gray-500">Select a shipping method.</p>
                 <div class="mt-4 space-y-4">
-                  <div v-for="shippingMethod in shippingMethods" :key="shippingMethod.id" class="flex items-center">
+                  <div class="w-60 h-24 mx-auto mt-20" v-if="isLoading['shippingMethods']">
+                    <div class="flex animate-pulse flex-row items-top pt-4 h-full justify-center space-x-5">
+                      <div class="w-4 bg-gray-300 h-4 rounded-full ">
+                      </div>
+                          <div class="flex flex-col space-y-3">
+                          <div class="w-36 bg-gray-300 h-6 rounded-md ">
+                          </div>
+                          <div class="w-24 bg-gray-300 h-6 rounded-md ">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-else v-for="shippingMethod in shippingMethods" :key="shippingMethod.id" class="flex items-center">
                     <input :id="shippingMethod.id" v-model="selectedShippingMethod" :value="shippingMethod.id"  name="shipping-method" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
-                    <label :for="shippingMethod.id" class="ml-3 block text-sm font-medium text-gray-700"> {{ shippingMethod.name }} </label>
+                    <label :for="shippingMethod.id" :class="{'animate-pulse': isLoading[shippingMethod.id]}" class="ml-3 block text-sm font-medium text-gray-700"> {{ shippingMethod.name }} </label>
                   </div>
                 </div>
               </fieldset>
@@ -188,9 +222,21 @@ const submitBillingAddress = async (e: Event) => {
                 <legend class="contents text-base font-medium text-gray-900">Payment method</legend>
                 <p class="text-sm text-gray-500">Select a payment method.</p>
                 <div class="mt-4 space-y-4">
-                  <div v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" class="flex items-center">
+                  <div class="w-60 h-24 mx-auto mt-20" v-if="isLoading['paymentMethods']">
+                    <div class="flex animate-pulse flex-row items-top pt-4 h-full justify-center space-x-5">
+                      <div class="w-4 bg-gray-300 h-4 rounded-full ">
+                      </div>
+                          <div class="flex flex-col space-y-3">
+                          <div class="w-36 bg-gray-300 h-6 rounded-md ">
+                          </div>
+                          <div class="w-24 bg-gray-300 h-6 rounded-md ">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-else v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" class="flex items-center">
                     <input :id="paymentMethod.id" v-model="selectedPaymentMethod" :value="paymentMethod.id"  name="payment-method" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
-                    <label :for="paymentMethod.id" class="ml-3 block text-sm font-medium text-gray-700"> {{ paymentMethod.name }} </label>
+                    <label :for="paymentMethod.id" :class="{'animate-pulse': isLoading[paymentMethod.id]}" class="ml-3 block text-sm font-medium text-gray-700"> {{ paymentMethod.name }} </label>
                   </div>
                 </div>
               </fieldset>
@@ -225,7 +271,7 @@ const submitBillingAddress = async (e: Event) => {
             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 mt-4">
               <div class="text-right">
                 <span class="pr-4" v-if="!isLoggedIn">You must be logged-in before submitting an order.</span>
-                <button @click="createOrder" :disabled="!isLoggedIn" type="submit" :class="{grayscale: !isLoggedIn, 'hover:bg-indigo-700': isLoggedIn}" class="inline-flex justify-right py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Place the order</button>
+                <button @click="placeOrder" :disabled="!isLoggedIn" type="button" :class="{grayscale: !isLoggedIn, 'hover:bg-indigo-700': isLoggedIn, 'animate-pulse': isLoading['placeOrder']}" class="inline-flex justify-right py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Place the order</button>
               </div>
             </div>
           </div>
