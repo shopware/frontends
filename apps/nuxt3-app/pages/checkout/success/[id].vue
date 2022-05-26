@@ -3,8 +3,9 @@ import { useOrderDetails } from "@shopware-pwa/composables";
 
 const { params } = useRoute();
 const orderId = params.id;
-const { loadOrderDetails, personalDetails, billingAddress, shippingAddress } = useOrderDetails({ order: { id: orderId } });
+const { loadOrderDetails, personalDetails, billingAddress, shippingAddress, order  } = useOrderDetails({ order: { id: orderId } });
 await loadOrderDetails();
+const lineItems = computed(() => order.value?.lineItems || []);
 </script>
 
 <template>
@@ -60,6 +61,25 @@ await loadOrderDetails();
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ billingAddress.city }}</dd>
           </div>
         </dl>
+      </div>
+    </div>
+     <div class="border-t border-gray-200 md:flex">
+        <div class="w-auto md:w-1/2">
+          <div class="px-4 py-5 sm:px-6">
+            <div class="contents text-base font-medium text-gray-900">Cart items</div>
+            <p class="text-sm text-gray-500">List of cart's items, including discounts.</p>
+          </div>
+          <div class="flow-root p-6">
+            <ul role="list" class="-my-6 divide-y divide-gray-200">
+              <li
+                class="flex py-6"
+                v-for="orderItem in lineItems"
+                :key="orderItem.id"
+              >
+                <SwOrderItem :orderItem="orderItem" />
+              </li>
+            </ul>
+          </div>
       </div>
     </div>
   </div>

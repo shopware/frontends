@@ -23,8 +23,10 @@
   },
   "devDependencies": {
     "@nuxt/schema": "^3.0.0-rc.1",
-    "tsconfig": "workspace:*",
+    "@shopware-pwa/nuxt-module": "^1.4.0",
     "config": "workspace:*",
+    "nuxt3": "^3.0.0-rc.3-27550969.a4a3cff",
+    "tsconfig": "workspace:*",
     "typescript": "^4.6.3",
     "unbuild": "^0.7.4"
   },

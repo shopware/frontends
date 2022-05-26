@@ -1,7 +1,8 @@
 // @ts-nocheck
 import { defineNuxtPlugin } from "#app";
 import { createInstance } from "@shopware-pwa/shopware-6-client";
-import { createShopware, getDefaultApiParams} from "@shopware-pwa/composables";
+import { createShopware, getDefaultApiParams } from "@shopware-pwa/composables";
+import defaultsConfigBuilder from "@shopware-pwa/nuxt-module/api-defaults";
 
 const ShopwarePlugin = {
   install(app, options) {
@@ -50,7 +51,15 @@ const ShopwarePlugin = {
 };
 
 export default defineNuxtPlugin(async (nuxtApp) => {
+  const newConfig = defaultsConfigBuilder()
+  newConfig.add("useOrderDetails.associations",{
+    "lineItems": {
+      "associations": {
+          "cover": {}
+      }
+  }
+  });
   nuxtApp.vueApp.use(ShopwarePlugin, {
-    apiDefaults: getDefaultApiParams()
+    apiDefaults: newConfig.get()
   })
 });
