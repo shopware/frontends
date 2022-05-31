@@ -5,7 +5,7 @@ import SwProductGallery from "../../SwProductGallery.vue";
 import SwProductPrice from "../../SwProductPrice.vue";
 
 const cmsPageResponse = inject("cms-page");
-const product = computed(() => cmsPageResponse.value?.product);
+const product = computed(() => cmsPageResponse.value?.product || {});
 </script>
 <template>
     <div class="flex flex-row">
