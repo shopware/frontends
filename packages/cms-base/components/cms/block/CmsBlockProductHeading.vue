@@ -15,8 +15,8 @@ const manufacturerName = computed(() => productManufacturerSlotContent.value || 
 </script>
 
 <template>
-  <div class="pt-8 flex flex-row">
-    <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl basis-4/6">{{ productName }}</h1>
+  <div class="container mx-auto pt-8 flex flex-row">
+    <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl basis-4/6" v-html="productName"></h1>
     <div class="basis-2/6 text-right">{{ manufacturerName }}</div>
   </div>
 </template>

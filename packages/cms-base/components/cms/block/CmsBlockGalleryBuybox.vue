@@ -13,7 +13,7 @@ const cmsPageResponse = inject("cms-page");
 const product = computed(() => cmsPageResponse.value?.product || buyBoxContent.value?.data?.product || {});
 </script>
 <template>
-    <div class="flex flex-row">
+    <div class="container mx-auto flex flex-row">
         <div class="mt-6 mb-8 rounded-lg overflow-hidden lg:pr-8 basis-4/6">
             <SwProductGallery :product="product" />
         </div>
