@@ -2,7 +2,6 @@
 const $props = defineProps(["content"]);
 const getSlots = computed(() => $props.content?.slots || []);
 </script>
-
 <template>
   <div class="container mx-auto">
     <CmsGenericElement
