@@ -10,15 +10,15 @@ const getRightColumnContent = computed(() => getSlots.value.find(({ slot }) => s
   <div class="flex md:flex-row flex-col container mx-auto">
     <CmsElementProductCard
       :content="getLeftColumnContent"
-      class="pr-4"
+      class="md:pr-4 w-full"
     />
     <CmsElementProductCard
       :content="getCenterColumnContent"
-      class="pr-4"
+      class="md:pr-4 w-full"
     />
     <CmsElementProductCard
       :content="getRightColumnContent"
-      class=""
+      class="w-full"
     />
   </div>
 </template>
