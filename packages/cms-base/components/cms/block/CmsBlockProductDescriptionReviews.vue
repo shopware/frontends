@@ -2,8 +2,8 @@
 import { getTranslatedProperty } from "@shopware-pwa/helpers";
 import { getProductReviews } from "@shopware-pwa/shopware-6-client";
 const cmsPageResponse = inject("cms-page")
-const props = defineProps(["product"]);
-const product = computed(() => props.product || cmsPageResponse.value?.product)
+const $props = defineProps(["product", "content"]);
+const product = computed(() => $props.product || cmsPageResponse.value?.product || $props.content?.slots?.find(({type})=> type === "product-description-reviews")?.data?.product)
 const reviews = ref([]);
 const description = computed(() => getTranslatedProperty(product.value, "description"))
 const properties = computed(() => product.value?.properties || [])
