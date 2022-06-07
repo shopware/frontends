@@ -6,6 +6,10 @@ const currentMenuPosition = ref(null);
 onMounted(() => {
   loadNavigationElements({ depth: 2 });
 });
+
+const menuHtmlElement = ref(null);
+
+onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
 </script>
 
 <template>
@@ -15,6 +19,7 @@ onMounted(() => {
       v-for="navigationElement in navigationElements"
       :key="navigationElement._uniqueIdentifier"
       @mouseover="currentMenuPosition = navigationElement._uniqueIdentifier"
+      ref="menuHtmlElement"
     >
       <router-link
         :to="'/' + navigationElement.seoUrls[0].seoPathInfo"
