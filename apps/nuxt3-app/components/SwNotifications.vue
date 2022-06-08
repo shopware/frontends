@@ -4,7 +4,7 @@ import { useNotifications } from "@shopware-pwa/composables"
 const { notifications, removeOne } = useNotifications()
 </script>
 <template>
-<div class="container mx-auto mt-8">
+<div class="mx-auto fixed top-0 w-full z-50 drop-shadow-md">
   <div class="flex p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800" role="alert"
     :key="notification.id"
     v-for="notification in notifications"
