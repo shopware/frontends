@@ -24,6 +24,7 @@ provide("isModalOpened", isModalOpened);
   <div>
     <SwModal />
     <SwHeader />
+    <SwBreadcrumbs />
     <NuxtPage />
     <SwSideCart />
   </div>
