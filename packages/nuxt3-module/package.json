@@ -19,7 +19,8 @@
     "@nuxt/kit": "^3.0.0-rc.3",
     "@shopware-pwa/composables": "canary",
     "@shopware-pwa/composables-next": "workspace:*",
-    "@shopware-pwa/shopware-6-client": "canary"
+    "@shopware-pwa/shopware-6-client": "canary",
+    "@shopware-pwa/nuxt-module": "canary"
   },
   "devDependencies": {
     "@nuxt/schema": "^3.0.0-rc.3",
