@@ -16,15 +16,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.1",
+    "@nuxt/kit": "^3.0.0-rc.3",
     "@shopware-pwa/composables": "canary",
     "@shopware-pwa/shopware-6-client": "canary"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.0.0-rc.1",
+    "@nuxt/schema": "^3.0.0-rc.3",
     "tsconfig": "workspace:*",
     "config": "workspace:*",
-    "typescript": "^4.6.3",
+    "typescript": "^4.7.2",
     "unbuild": "^0.7.4"
   },
   "repository": {

@@ -14,7 +14,7 @@
     "config": "workspace:*",
     "unbuild": "^0.7.4",
     "tsconfig": "workspace:*",
-    "typescript": "^4.6.3",
-    "vue": "^3.2.33"
+    "typescript": "^4.7.2",
+    "vue": "^3.2.36"
   }
 }
