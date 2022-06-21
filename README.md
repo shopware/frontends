@@ -1,13 +1,12 @@
-<center>
+<div align="center">
 
-![Shopware Frontends Logo](.readme/shopware-frontends-logo.png)
-[Docs]() | [Demo]() | [Sandbox]()
+<img src=".readme/shopware-frontends-logo.png" />
 
----
+</div>
 
-</center>
-
-Shopware Frontends is a **framework** for building custom, cloud-native Shopware Storefronts.
+<p align="center">
+	Shopware Frontends is a <strong>framework</strong> for building custom, cloud-native Shopware Storefronts.
+</p>
 
 ## Getting started
 
