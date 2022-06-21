@@ -1,77 +1,83 @@
-# Turborepo starter with pnpm
+<center>
 
-This is an official starter turborepo.
+![Shopware Frontends Logo](.readme/shopware-frontends-logo.png)
+[Docs]() | [Demo]() | [Sandbox]()
 
-## What's inside?
+---
 
-This turborepo uses [pnpm](https://pnpm.io) as a packages manager. It includes the following packages/apps:
+</center>
 
-### Apps and Packages
+Shopware Frontends is a **framework** for building custom, cloud-native Shopware Storefronts.
 
-- `docs`: a [Next.js](https://nextjs.org) app
-- `web`: another [Next.js](https://nextjs.org) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+## Getting started
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+```sh
+# Install dependencies
+pnpm i
 
-### Utilities
-
-This turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-## Setup
-
-This repository is used in the `npx create-turbo@latest` command, and selected when choosing which package manager you wish to use with your monorepo (PNPM).
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
+# Build packages
 pnpm run build
+
+# Run project base
+pnpm run dev --filter=nuxt3-app
 ```
 
-### Develop
+## Structure
 
-To develop all apps and packages, run the following command:
+Shopware Frontends is divided into three main modules.
 
-```
-cd my-turborepo
-pnpm run dev
-```
+**API Client**
 
-### Remote Caching
+This package provides abstraction to Shopware's Store API and manages authentication state and request/response schemas.
 
-Turborepo can use a technique known as [Remote Caching (Beta)](https://turborepo.org/docs/features/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+**Composables**
 
-By default, Turborepo will cache locally. To enable Remote Caching (Beta) you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+An opinionated set of Vue.js composables like `useProduct` or `useCustomer` to use business logic and state in any Vue.js project.
 
-```
-cd my-turborepo
-pnpx turbo login
-```
+**Project Base**
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+A reference implementation of an eCommerce storefront, based on Tailwind.css, Vite, Nuxt 3 and Vue 3.
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
+![Shopware Frontends Techstack](.readme/shopware-frontends-techstack.png)
 
-```
-pnpx turbo link
-```
+## Key Features
 
-## Useful Links
+Shopware Frontends combines the best of the worlds of frontend development, Shopware 6 and your business requirements.
 
-Learn more about the power of Turborepo:
+**Shopware native**
 
-- [Pipelines](https://turborepo.org/docs/features/pipelines)
-- [Caching](https://turborepo.org/docs/features/caching)
-- [Remote Caching (Beta)](https://turborepo.org/docs/features/remote-caching)
-- [Scoped Tasks](https://turborepo.org/docs/features/scopes)
-- [Configuration Options](https://turborepo.org/docs/reference/configuration)
-- [CLI Usage](https://turborepo.org/docs/reference/command-line-reference)
+Shopware Frontends is built for Shopware 6.
+No compromises or generic implementations — it works just you would expect it to.
+Core concepts like content management, checkout, or payment are deeply integrated and fully functional
+
+**Cloud first**
+
+Shopware Frontends is designed to work only with HTTP APIs available in Shopware Cloud.
+No themes, plugins or server access required.
+Even your developer IDE can be started in the cloud.
+
+**Stable**
+
+Shopware Frontends doesn’t rely on Shopware’s volatile internal APIs (such as twig blocks, DAL or Events),
+hence not being subject to breaking changes in those APIs, as opposed to Twig Storefront themes.
+Especially for big frontend projects this drastically reduces the complexity of platform updates.
+
+**Efficient**
+
+There is no lock-in on technologies or frontend tooling. Shopware Frontends comes prepared with a smart default of tooling.
+ Vue3, Vite, Nuxt3 and unocss (Tailwind.css) — each by themselves coming with a rich ecosystem of tooling, extensions
+and integrations can be replaced and extended to meet any projects needs.
+
+This tech-stack is the definition of superior Developer Experience and rapid prototyping.
+
+**Flexible**
+
+No theming system means no inheritance magic, no compatibility issues, no update efforts, no restrictions
+to what your site can look like. Build your site in a lego-block-manner by using prepared templates
+or just get creative using all of Tailwind.css’ features.
+
+**Fast**
+
+Shopware Frontends is fast during development, deployment and production. It applies server-side-rendering
+wherever possible — code splitting, below-the-fold-rendering, and lazy-loading are built into the frontend.
+Common metrics like page speed and lighthouse scores are constantly monitored.
