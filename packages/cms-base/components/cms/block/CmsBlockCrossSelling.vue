@@ -2,17 +2,20 @@
 import { getTranslatedProperty } from "@shopware-pwa/helpers";
 import { useProductAssociations } from "@shopware-pwa/composables"
 const cmsPage = inject("cms-page")
-const product = computed(() => cmsPage.value?.product)
-
+const product = computed(() => cmsPage.value?.product)// || { id: "0099f284cda143558959e6d2803ad20d"})
+const $props = defineProps(["content"]);
+const crossSellCollection = ref($props.content.slots?.find(({type})=> type === "cross-selling")?.data?.crossSellings || []);
 const {
       loadAssociations: loadCrossSells,
-      productAssociations: crossSellCollection,
+      productAssociations: crossSellAssociations,
 } = useProductAssociations({
   product: product,
   associationContext: "cross-selling",
 })
-
 onMounted(async () => {
+  if (!product.value) {
+    return;
+  }
   loadCrossSells({
     params: {
       associations: {
@@ -21,10 +24,16 @@ onMounted(async () => {
     },
   })
 })
+
+watch(crossSellAssociations, (newCollection) => {
+  if (newCollection.length) {
+    crossSellCollection.value = newCollection;
+  }
+})
 </script>
 
 <template>
-  <div class="mt-10"  v-if="crossSellCollection?.length">
+  <div class="container mx-auto mt-8 mb-8" v-if="crossSellCollection?.length">
     <div class="mt-4"
             v-for="crossSellItem in crossSellCollection"
             :key="crossSellItem.crossSelling.id"

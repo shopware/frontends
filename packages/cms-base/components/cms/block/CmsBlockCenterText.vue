@@ -1,60 +1,20 @@
+<script setup>
+const $props = defineProps(["content"]);
+const getSlots = computed(() => $props.content?.slots || []);
+const getLeftContent = computed(() => getSlots.value.find((slot) => slot.slot === "left"));
+const getCenterContent = computed(() => getSlots.value.find((slot) => slot.slot === "center"));
+const getRightContent =  computed(() => getSlots.value.find((slot) => slot.slot === "right"));
+</script>
 <template>
-  <article class="flex flex-col">
-    <CmsGenericElement :content="getLeftContent" class="" />
-    <CmsGenericElement :content="getCenterContent" class="" />
-    <CmsGenericElement :content="getRightContent" class="" />
+  <article class="cms-block-center-text flex flex-col md:flex-row container mx-auto mb-8 mt-8">
+    <div class="">
+      <CmsGenericElement :content="getLeftContent" />
+    </div>
+    <div class="pl-4 pr-4">
+      <CmsGenericElement :content="getCenterContent" />
+    </div>
+    <div class="">
+       <CmsGenericElement :content="getRightContent" />
+    </div>
   </article>
 </template>
-
-<script>
-// import CmsGenericElement from "sw-cms/CmsGenericElement";
-
-export default {
-  name: "CmsBlockCenterText",
-  components: {
-    // CmsGenericElement,
-  },
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-  computed: {
-    getSlots() {
-      return this.content.slots || [];
-    },
-    getLeftContent() {
-      return this.getSlots.find(({ slot }) => slot === "left");
-    },
-    getCenterContent() {
-      return this.getSlots.find(({ slot }) => slot === "center");
-    },
-    getRightContent() {
-      return this.getSlots.find(({ slot }) => slot === "right");
-    },
-  },
-};
-// <style lang="scss" scoped>
-// @import "@/assets/scss/variables";
-
-// .cms-block-center-text {
-//   display: flex;
-//   flex-direction: column;
-
-//   &__image,
-//   &__text {
-//     margin: var(--spacer-sm);
-//     flex: 1;
-//     --image-height: 340px;
-//     --image-width: 100%;
-//   }
-
-//   @include for-desktop {
-//     flex-direction: row;
-//     justify-content: space-around;
-//     align-items: center;
-//   }
-// }
-// </style>
-</script>

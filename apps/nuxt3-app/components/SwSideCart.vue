@@ -109,11 +109,7 @@ const { cartItems, totalPrice } = useCart();
                 Shipping and taxes calculated at checkout.
               </p>
               <div class="mt-6">
-                <a
-                  href="#"
-                  class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                  >Checkout</a
-                >
+                <NuxtLink class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700" to="/checkout">Checkout</NuxtLink>
               </div>
               <div
                 class="mt-6 flex justify-center text-center text-sm text-gray-500"
