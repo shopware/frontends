@@ -18,7 +18,7 @@ importers:
       '@shopware-pwa/nuxt3-module': workspace:*
       '@unocss/nuxt': ^0.39.3
       '@vueuse/nuxt': ^8.7.4
-      nuxt: ^3.0.0-rc.3
+      nuxt: ^3.0.0-rc.4
       vue: ^3.2.37
     dependencies:
       '@shopware-pwa/cms-base': link:../../packages/cms-base
@@ -84,7 +84,6 @@ importers:
       '@shopware-pwa/composables-next': workspace:*
       '@shopware-pwa/shopware-6-client': canary
       config: workspace:*
-      nuxt: ^3.0.0-rc.4
       tsconfig: workspace:*
       typescript: ^4.7.4
       unbuild: ^0.7.4
@@ -96,7 +95,6 @@ importers:
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.4
       config: link:../config
-      nuxt: 3.0.0-rc.4
       tsconfig: link:../tsconfig
       typescript: 4.7.4
       unbuild: 0.7.4
