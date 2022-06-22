@@ -17,12 +17,12 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
     <div
       class="relative"
       v-for="navigationElement in navigationElements"
-      :key="navigationElement._uniqueIdentifier"
-      @mouseover="currentMenuPosition = navigationElement._uniqueIdentifier"
+      :key="navigationElement.id"
+      @mouseover="currentMenuPosition = navigationElement.id"
       ref="menuHtmlElement"
     >
       <router-link
-        :to="'/' + navigationElement.seoUrls[0].seoPathInfo"
+        :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo"
         class="text-base font-medium text-gray-500 hover:text-gray-900"
       >
         {{ navigationElement.translated.name }}
@@ -41,7 +41,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       <div
         class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2"
         v-if="
-          currentMenuPosition === navigationElement._uniqueIdentifier &&
+          currentMenuPosition === navigationElement.id &&
           navigationElement.children.length
         "
         @mouseleave="currentMenuPosition = null"
@@ -52,10 +52,10 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
           <div
             class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-6 sm:pb-0"
             v-for="childElement in navigationElement.children"
-            :key="childElement._uniqueIdentifier"
+            :key="childElement.id"
           >
             <router-link
-              :to="'/' + childElement.seoUrls[0].seoPathInfo"
+              :to="'/' + childElement.seoUrls[0]?.seoPathInfo"
               class="flex justify-between rounded-lg hover:bg-gray-50"
             >
               <div class="flex flex-col flex-grow pl-2">
