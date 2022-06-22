@@ -17,6 +17,6 @@
     "vue": "^3.2.37"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0-rc.3"
+    "nuxt": "^3.0.0-rc.4"
   }
 }
