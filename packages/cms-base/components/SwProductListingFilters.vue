@@ -106,7 +106,6 @@ async function invokeCleanFilters() {
 }
 </script>
 <template>
-  <div class="mx-auto px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="bg-white">
       <!--
           Mobile filter dialog
@@ -202,7 +201,7 @@ async function invokeCleanFilters() {
         </div>
       </div>
 
-      <main class="max-w-7xl mx-auto">
+      <main class="mx-auto">
         <div
           class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
         >
@@ -305,5 +304,4 @@ async function invokeCleanFilters() {
         </div>
       </main>
     </div>
-  </div>
 </template>

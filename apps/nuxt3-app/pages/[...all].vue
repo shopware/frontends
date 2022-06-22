@@ -2,6 +2,7 @@
 import { resolveComponent } from "vue";
 import { pascalCase } from "scule";
 import { getCmsPage } from "@shopware-pwa/shopware-6-client";
+import { useCms } from '@shopware-pwa/composables';
 
 const { error, loading, search } = useCms();
 const route = useRoute();

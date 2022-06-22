@@ -4,18 +4,19 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "start": "node .output/server/index.mjs"
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
   },
   "dependencies": {
     "@shopware-pwa/nuxt3-module": "workspace:*",
     "@shopware-pwa/cms-base": "workspace:*",
     "@shopware-pwa/composables": "canary",
     "@shopware-pwa/composables-next": "workspace:*",
-    "@unocss/nuxt": "^0.31.15",
-    "@vueuse/nuxt": "^8.3.1",
-    "vue": "^3.2.33"
+    "@unocss/nuxt": "^0.39.3",
+    "@vueuse/nuxt": "^8.7.4",
+    "vue": "^3.2.37"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0-rc.1"
+    "nuxt": "^3.0.0-rc.3"
   }
 }

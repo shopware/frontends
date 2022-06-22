@@ -1,68 +1,24 @@
-<template>
-  <article class="cms-block-product-three-column">
-    <!-- <CmsElementProductCard
-      :content="getLeftContent"
-      class="cms-block-product-three-column__product"
-    />
-    <CmsElementProductCard
-      :content="getCenterContent"
-      class="cms-block-product-three-column__product"
-    />
-    <CmsElementProductCard
-      :content="getRightContent"
-      class="cms-block-product-three-column__product"
-    /> -->
-    PRODUCT CARD
-  </article>
-</template>
+<script setup lang="ts">
+const $props = defineProps(["content"])
 
-<script>
-// import CmsElementProductCard from "@/cms/elements/CmsElementProductCard";
-
-export default {
-  name: "CmsBlockProductThreeColumn",
-
-  components: {
-    // CmsElementProductCard,
-  },
-
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-
-  computed: {
-    getSlots() {
-      return this.content.slots || [];
-    },
-    getLeftContent() {
-      return this.getSlots.find(({ slot }) => slot === "left");
-    },
-    getCenterContent() {
-      return this.getSlots.find(({ slot }) => slot === "center");
-    },
-    getRightContent() {
-      return this.getSlots.find(({ slot }) => slot === "right");
-    },
-  },
-};
-// <style lang="scss" scoped>
-// @import "@/assets/scss/variables";
-
-// .cms-block-product-three-column {
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: space-around;
-
-//   &__product {
-//     padding: var(--spacer-sm);
-//   }
-
-//   @include for-desktop {
-//     margin: var(--spacer-sm) 0;
-//   }
-// }
-// </style>
+const getSlots = computed(() => $props.content?.slots || []);
+const getLeftColumnContent = computed(() => getSlots.value.find(({ slot }) => slot === "left"));
+const getCenterColumnContent = computed(() => getSlots.value.find(({ slot }) => slot === "center"));
+const getRightColumnContent = computed(() => getSlots.value.find(({ slot }) => slot === "right"));
 </script>
+<template>
+  <div class="flex md:flex-row flex-col container mx-auto">
+    <CmsElementProductCard
+      :content="getLeftColumnContent"
+      class="md:pr-4 w-full"
+    />
+    <CmsElementProductCard
+      :content="getCenterColumnContent"
+      class="md:pr-4 w-full"
+    />
+    <CmsElementProductCard
+      :content="getRightColumnContent"
+      class="w-full"
+    />
+  </div>
+</template>

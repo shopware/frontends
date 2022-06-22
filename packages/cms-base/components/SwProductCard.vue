@@ -6,7 +6,8 @@ import {
   getProductThumbnailUrl,
   getProductUrl,
 } from "@shopware-pwa/helpers";
-import { useAddToCart } from "@shopware-pwa/composables";
+import { useAddToCart, useNotifications } from "@shopware-pwa/composables";
+const { pushSuccess } = useNotifications();
 
 const props = defineProps({
   product: Object,
@@ -15,6 +16,11 @@ const props = defineProps({
 const { addToCart } = useAddToCart({
   product: props.product,
 });
+
+const addToCartProxy = async () => {
+  await addToCart();
+  pushSuccess(`${props.product?.translated?.name} has been added to cart.`)
+}
 
 // const { formatPrice } = usePriceFilter();
 
@@ -50,7 +56,7 @@ function getPrice(product) {
           </router-link>
         </h3>
         <p class="mt-1 text-sm text-gray-500 min-h-30px">
-          <span v-for="option in product.options" class="mr-2">
+          <span v-for="option in product?.options" :key="option.id" class="mr-2">
             {{ option.translated.name }}
           </span>
         </p>
@@ -61,7 +67,7 @@ function getPrice(product) {
     </div>
     <button
       type="button"
-      @click="addToCart"
+      @click="addToCartProxy"
       class="w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
     >
       Add to basket
