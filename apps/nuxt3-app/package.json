@@ -12,9 +12,9 @@
     "@shopware-pwa/cms-base": "workspace:*",
     "@shopware-pwa/composables": "canary",
     "@shopware-pwa/composables-next": "workspace:*",
-    "@unocss/nuxt": "^0.37.1",
-    "@vueuse/nuxt": "^8.6.0",
-    "vue": "^3.2.36"
+    "@unocss/nuxt": "^0.39.3",
+    "@vueuse/nuxt": "^8.7.4",
+    "vue": "^3.2.37"
   },
   "devDependencies": {
     "nuxt": "^3.0.0-rc.3"
