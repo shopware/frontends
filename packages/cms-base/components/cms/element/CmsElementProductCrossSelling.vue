@@ -1,14 +1,11 @@
 <template>
-  <div class="products-recomendations">
-    cross sells
-  </div>
+  <div class="products-recomendations">cross sells</div>
 </template>
 
 <script>
-import { computed } from "@vue/composition-api"
+import { computed } from "@vue/composition-api";
 
 export default {
-  
   name: "CmsElementProductCrossSelling",
   props: {
     content: {
@@ -19,13 +16,13 @@ export default {
   setup(props) {
     const crossSellCollection = computed(
       () => props.content.data?.crossSellings || []
-    )
+    );
 
     return {
       crossSellCollection,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped></style>

@@ -50,7 +50,7 @@ const ShopwarePlugin = {
 };
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const newConfig = getDefaultApiParams()
+  const newConfig = getDefaultApiParams();
   // newConfig.add("useOrderDetails.associations",{
   //   "lineItems": {
   //     "associations": {
@@ -59,6 +59,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   // }
   // });
   nuxtApp.vueApp.use(ShopwarePlugin, {
-    apiDefaults: newConfig
-  })
+    apiDefaults: newConfig,
+  });
 });

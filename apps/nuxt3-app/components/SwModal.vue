@@ -18,7 +18,9 @@ const isModalOpened = inject("isModalOpened");
         aria-hidden="true"
         @click="isModalOpened = false"
       ></div>
-      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"
+      <span
+        class="hidden sm:inline-block sm:align-middle sm:h-screen"
+        aria-hidden="true"
         >&#8203;</span
       >
       <div

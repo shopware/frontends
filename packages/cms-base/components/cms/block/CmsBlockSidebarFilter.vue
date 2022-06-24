@@ -1,3 +1,3 @@
 <template>
-    <CmsElementSidebarFilter/>
+  <CmsElementSidebarFilter />
 </template>

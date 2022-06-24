@@ -5,7 +5,7 @@ const $props = defineProps({
   orderItem: Object,
 });
 
-const isPromotion = computed( () => $props.orderItem?.type==="promotion");
+const isPromotion = computed(() => $props.orderItem?.type === "promotion");
 const itemRegularPrice = computed(() => $props.orderItem?.unitPrice);
 const itemQuantity = computed(() => $props.orderItem?.quantity);
 </script>
@@ -33,7 +33,11 @@ const itemQuantity = computed(() => $props.orderItem?.quantity);
         <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
       <p class="mt-1 text-sm text-gray-500">
-        <span v-for="option in orderItem.payload.options" :key="option.id" class="mr-2">
+        <span
+          v-for="option in orderItem.payload.options"
+          :key="option.id"
+          class="mr-2"
+        >
           {{ option.group }}: {{ option.option }}
         </span>
       </p>

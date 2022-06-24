@@ -2,7 +2,9 @@
 const $emits = defineEmits(["success"]);
 const { login, loading, errors, isLoggedIn } = useUser();
 const { refreshSessionContext } = useSessionContext();
-const loginErrors = computed(() => errors.login?.map(({ detail }) => detail).toString());
+const loginErrors = computed(() =>
+  errors.login?.map(({ detail }) => detail).toString()
+);
 const email = ref("");
 const password = ref("");
 
@@ -23,7 +25,9 @@ const invokeLogin = async () => {
 };
 </script>
 <template>
-  <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div
+    class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+  >
     <div v-if="!isLoggedIn" class="max-w-md w-full space-y-8">
       <div>
         <img class="mx-auto h-12 w-auto" src="/logo.svg" alt="Logo" />
