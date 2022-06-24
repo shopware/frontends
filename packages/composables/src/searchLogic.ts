@@ -92,6 +92,7 @@ export async function searchCms(path: string, query?: any, apiInstance?: any) {
     const productResponse = await getProduct(entityFound.foreignKey, {
       "associations": {
         'media' : {},
+        "options": {},
         'cmsPage' : {
           'associations' : {
               'sections': {
@@ -122,6 +123,7 @@ export async function searchCms(path: string, query?: any, apiInstance?: any) {
     return {
       product: productResponse.product,
       cmsPage: (productResponse.product as any).cmsPage,
+      configurator: productResponse.configurator,
       resourceType: entityFound?.routeName,
     };
   }
