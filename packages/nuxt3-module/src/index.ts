@@ -18,8 +18,10 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
       // @ts-ignore
       src: resolve(__dirname, "../plugin.ts"),
       options: {
-        shopwareEndpoint: "https://pwa-demo-api.shopware.com/trunk/",
-        shopwareAccessToken: "SWSC40-LJTNO6COUEN7CJMXKLA",
+        // shopwareEndpoint: "https://pwa-demo-api.shopware.com/trunk/",
+        // shopwareAccessToken: "SWSC40-LJTNO6COUEN7CJMXKLA",
+        shopwareEndpoint: "https://frontends.shopware.store/",
+        shopwareAccessToken: "SWSCNKY0DKJEN3FLTFI4SGPXEG",
         shopwareApiClient: {
           timeout: "10000",
           //   auth: {

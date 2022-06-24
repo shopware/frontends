@@ -54,6 +54,7 @@ importers:
 
   packages/composables:
     specifiers:
+      '@shopware-pwa/commons': canary
       '@shopware-pwa/shopware-6-client': canary
       config: workspace:*
       tsconfig: workspace:*
@@ -61,6 +62,7 @@ importers:
       unbuild: ^0.7.4
       vue: ^3.2.37
     devDependencies:
+      '@shopware-pwa/commons': 1.4.1-canary.1657
       '@shopware-pwa/shopware-6-client': 1.4.1-canary.1657
       config: link:../config
       tsconfig: link:../tsconfig
@@ -898,6 +900,10 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
+
+  /@shopware-pwa/commons/1.4.1-canary.1657:
+    resolution: {integrity: sha512-u5A2ZEM3YlMwFPK5ch6u4k5z5VHe3FWh5lFB4KylIe9C7PzlED34hv/CnCSSkIQ+ZvFmYG0lrg7zHk9whNKz4w==}
+    dev: true
 
   /@shopware-pwa/composables/1.4.1-canary.1657:
     resolution: {integrity: sha512-GYXhwJp7gzGcu1UST8/15qGYtma+PdiJSFFzA2s39zrMW4ThcUjNf8MIWizyNDHYCfpHZoHwE3RKAp3+iPJ9hA==}

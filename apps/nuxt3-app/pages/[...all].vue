@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { resolveComponent } from "vue";
 import { pascalCase } from "scule";
-import { getCmsPage } from "@shopware-pwa/shopware-6-client";
-import { useCms } from '@shopware-pwa/composables';
+import { useCms } from "@shopware-pwa/composables-next";
 
 const { error, loading, search } = useCms();
 const route = useRoute();
 const { apiInstance } = useShopwareContext();
 
-const { data: cmsResponse } = await useAsyncData("cmsResponse" + route.path, () => {
-  return getCmsPage(
-    route.path,
-    {
+const { data: cmsResponse } = await useAsyncData(
+  "cmsResponse" + route.path,
+  () => {
+    return search(route.path, {
       associations: {
         manufacturer: {},
         media: {},
@@ -21,10 +20,10 @@ const { data: cmsResponse } = await useAsyncData("cmsResponse" + route.path, () 
           },
         },
       },
-    },
-    apiInstance
-  );
-});
+    });
+  }
+);
+console.error("our cms response", cmsResponse.value);
 
 provide("cms-page", cmsResponse); // TODO: remove after clearing references
 provide("cmsResponse", cmsResponse);
