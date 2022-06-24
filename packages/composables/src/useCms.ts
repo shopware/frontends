@@ -7,6 +7,7 @@ import {
 } from "@shopware-pwa/commons";
 import { _parseUrlQuery, getCmsEntityByType } from "@shopware-pwa/helpers";
 import { searchCms } from "./searchLogic";
+import { useShopwareContext } from ".";
 // import {
 //   getApplicationContext,
 //   useDefaults,
