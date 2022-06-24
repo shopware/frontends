@@ -89,11 +89,11 @@ export async function searchCms(path: string, query?: any, apiInstance?: any) {
     };
   }
   if (entityFound?.routeName == "frontend.detail.page") {
-    const product = await getProduct(entityFound.foreignKey, null, apiInstance);
-    console.error("product", product);
+    const productResponse = await getProduct(entityFound.foreignKey, null, apiInstance);
+    console.error("product", productResponse.product);
     return {
-      product: product,
-      cmsPage: (product as any).cmsPage,
+      product: productResponse.product,
+      cmsPage: (productResponse.product as any).cmsPage,
       resourceType: entityFound?.routeName,
     };
   }
