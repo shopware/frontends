@@ -89,7 +89,35 @@ export async function searchCms(path: string, query?: any, apiInstance?: any) {
     };
   }
   if (entityFound?.routeName == "frontend.detail.page") {
-    const productResponse = await getProduct(entityFound.foreignKey, null, apiInstance);
+    const productResponse = await getProduct(entityFound.foreignKey, {
+      "associations": {
+        'media' : {},
+        'cmsPage' : {
+          'associations' : {
+              'sections': {
+                  'associations': {
+                      'blocks' : {
+                          'associations' : {
+                              'slots' : {
+                                  'associations': {
+                                      'block' : {
+                                          'associations' : {
+                                              'slots': {
+                                                  'associations': {
+                                                  }
+                                              }
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+        }
+      },
+    }, apiInstance);
     console.error("product", productResponse.product);
     return {
       product: productResponse.product,
