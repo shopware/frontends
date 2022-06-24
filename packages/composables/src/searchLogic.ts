@@ -8,59 +8,65 @@ import {
 export async function searchCms(path: string, query?: any, apiInstance?: any) {
   console.log("searching for:", path, "second:", path.substring(1));
 
-  if (path=="/") {
-    console.warn('looking for home category');
-    const categoryResponse = await getCategories({
-      "associations": {
-        'media' : {},
-        'cmsPage' : {
-          'associations' : {
-            'sections': {
-              'associations': {
-                'blocks' : {
-                  'associations' : {
-                      'slots' : {
-                        'associations': {
-                          'block' : {
-                            'associations' : {
-                                'slots': {
-                                  'associations': {
-                                  }
-                                }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-            }
-          }
-        }
+  if (path === "/") {
+    console.warn("looking for home category");
+    const categoryResponse = await getCategories(
+      {
+        associations: {
+          media: {},
+          cmsPage: {
+            associations: {
+              sections: {
+                associations: {
+                  blocks: {
+                    associations: {
+                      slots: {
+                        associations: {
+                          block: {
+                            associations: {
+                              slots: {
+                                associations: {},
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        filter: [
+          {
+            type: "equals",
+            field: "level",
+            value: 1,
+          },
+          {
+            type: "equals",
+            field: "path",
+            value: null,
+          },
+          {
+            type: "equals",
+            field: "parentId",
+            value: null,
+          },
+        ],
       },
-      "filter": [
-          {
-              "type": "equals",
-              "field": "level",
-              "value": 1
-          },
-           {
-              "type": "equals",
-              "field": "path",
-              "value": null
-          },
-          {
-            "type": "equals",
-            "field": "parentId",
-            "value": null
-          }
-      ]
-    }, apiInstance)
+      apiInstance
+    );
     const category = categoryResponse?.elements?.[0];
-    console.warn('home category found:', category);
-    return {  category: category, cmsPage: category.cmsPage, resourceType: 'frontend.navigation.page' }
+    console.warn("home category found:", category);
+    return {
+      category: category,
+      cmsPage: category.cmsPage,
+      resourceType: "frontend.navigation.page",
+    };
   }
-  
+
   const seoResult = await invokePost(
     {
       address: "/store-api/seo-url",
@@ -89,36 +95,39 @@ export async function searchCms(path: string, query?: any, apiInstance?: any) {
     };
   }
   if (entityFound?.routeName == "frontend.detail.page") {
-    const productResponse = await getProduct(entityFound.foreignKey, {
-      "associations": {
-        'media' : {},
-        "options": {},
-        'cmsPage' : {
-          'associations' : {
-              'sections': {
-                  'associations': {
-                      'blocks' : {
-                          'associations' : {
-                              'slots' : {
-                                  'associations': {
-                                      'block' : {
-                                          'associations' : {
-                                              'slots': {
-                                                  'associations': {
-                                                  }
-                                              }
-                                          }
-                                      }
-                                  }
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-        }
+    const productResponse = await getProduct(
+      entityFound.foreignKey,
+      {
+        associations: {
+          media: {},
+          options: {},
+          cmsPage: {
+            associations: {
+              sections: {
+                associations: {
+                  blocks: {
+                    associations: {
+                      slots: {
+                        associations: {
+                          block: {
+                            associations: {
+                              slots: {
+                                associations: {},
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
-    }, apiInstance);
+      apiInstance
+    );
     console.error("product", productResponse.product);
     return {
       product: productResponse.product,
