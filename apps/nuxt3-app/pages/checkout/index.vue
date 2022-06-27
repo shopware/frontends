@@ -1,6 +1,11 @@
 <script setup lang="ts">
 
 import { useCountries, useSalutations, useUser, useCheckout, useSessionContext, useCart } from "@shopware-pwa/composables";
+
+definePageMeta({
+  layout: 'checkout'
+});
+
 const { push } = useRouter();
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
