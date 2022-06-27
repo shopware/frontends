@@ -36,18 +36,6 @@ export default {
       try {
         const cmsPageView = resolveComponent(componentNameToResolve);
 
-        console.error(
-          "coname",
-          apiAlias,
-          componentName,
-          "type",
-          type,
-          "tores",
-          componentNameToResolve,
-          "RESOLVED",
-          typeof cmsPageView !== "string"
-        );
-
         if (cmsPageView) {
           if (cmsPageView === componentNameToResolve)
             return h(

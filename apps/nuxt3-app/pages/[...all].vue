@@ -23,7 +23,6 @@ const { data: cmsResponse } = await useAsyncData(
     });
   }
 );
-console.error("our cms response", cmsResponse.value);
 
 provide("cms-page", cmsResponse); // TODO: remove after clearing references
 provide("cmsResponse", cmsResponse);

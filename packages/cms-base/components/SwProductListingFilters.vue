@@ -106,6 +106,7 @@ async function invokeCleanFilters() {
 }
 </script>
 <template>
+  <ClientOnly>
     <div class="bg-white">
       <!--
           Mobile filter dialog
@@ -304,4 +305,5 @@ async function invokeCleanFilters() {
         </div>
       </main>
     </div>
+  </ClientOnly>
 </template>
