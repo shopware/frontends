@@ -3,7 +3,7 @@ import { resolveComponent } from "vue";
 import { pascalCase } from "scule";
 import { useCms } from "@shopware-pwa/composables-next";
 
-const { error, loading, search } = useCms();
+const { search } = useCms();
 const route = useRoute();
 const { apiInstance } = useShopwareContext();
 
@@ -30,8 +30,6 @@ provide("cmsResponse", cmsResponse);
 
 const page = cmsResponse;
 const cmsPage = computed(() => page.value?.cmsPage);
-const staticPage = computed(() => page.value);
-const staticError = computed(() => error.value);
 
 function render() {
   const componentName = page.value?.resourceType;

@@ -24,60 +24,29 @@ export function useCms(): {
   resourceType: ComputedRef<CmsResourceType | null>;
   resourceIdentifier: ComputedRef<string | null>;
   currentSearchPathKey: ComputedRef<string | null>;
-  // loading: Ref<boolean>;
   search: (path: string, query?: any) => Promise<void>;
-  // error: Ref<any>;
-  metaTitle: ComputedRef<string>;
-  metaDescription: ComputedRef<string>;
-  metaKeywords: ComputedRef<string>;
-  pageTitle: ComputedRef<string>;
+  cmsContent: ComputedRef<CmsPageResponse>;
 } {
   // Handle CMS context
-  const cmsContext = inject("swCmsContext", ref(null));
+  const cmsContext: Ref<any> = inject("swCmsContext", ref(null));
   provide("swCmsContext", cmsContext);
 
   const { apiInstance } = useShopwareContext();
 
-  // const cacheKey = cmsContext
-  //   ? `${contextName}(cms-${cmsContext})`
-  //   : contextName;
-
-  // const { sharedRef } = useSharedState();
-  const _searchPath = inject("swCmsSearchPath", ref("")); // sharedRef<string>(`${cacheKey}-searchPath`);
+  const _searchPath = inject("swCmsSearchPath", ref(""));
   provide("swCmsSearchPath", _searchPath);
-  // const _cmsError = sharedRef<any>(`${cacheKey}-cmsError`, null);
-  // const _cmsLoading = sharedRef(`${cacheKey}-cmsLoading`, false);
-
-  const _storePage = ref(); // sharedRef<CmsPageResponse>(`${cacheKey}-page`);
-
-  // const { getDefaults } = useDefaults({ defaultsKey: COMPOSABLE_NAME });
-  // const { setBreadcrumbs } = useBreadcrumbs();
-  const page = computed(() => _storePage.value);
+  const page = computed(() => cmsContext.value.cmsPage);
 
   const resourceIdentifier = computed(() => {
     // each cms page is in relation one-to-one with categoryId (resourceIdentifier)
-    return page.value?.resourceIdentifier || null;
+    return (
+      cmsContext.value?.category?.afterCategoryId ||
+      page.value?.resourceIdentifier ||
+      null
+    );
   });
 
-  const getEntityObject = computed(
-    () => getCmsEntityByType(unref(_storePage)) || ({} as any)
-  );
-  const pageTitle = computed(() => getEntityObject.value.translated?.name);
-  const metaTitle = computed(() => getEntityObject.value.translated?.metaTitle);
-  const metaDescription = computed(
-    () => getEntityObject.value.translated?.metaDescription
-  );
-  const metaKeywords = computed(
-    () => getEntityObject.value.translated?.keywords
-  );
-
-  /**
-   * @beta
-   */
   const search = async (path: string, query?: any): Promise<any> => {
-    console.error("SEARCH INVOKED");
-    // _cmsLoading.value = true;
-    // _cmsError.value = null;
     _searchPath.value = path;
 
     const criteria: SearchCriteria = _parseUrlQuery(query);
@@ -85,32 +54,20 @@ export function useCms(): {
     const searchCriteria = {}; // getDefaults();
 
     try {
-      // const result = await getCmsPage(path, searchCriteria, apiInstance);
-
-      // _storePage.value = result;
-      // result?.breadcrumb && setBreadcrumbs(Object.values(result.breadcrumb));
-      return searchCms(path, searchCriteria, apiInstance);
+      cmsContext.value = await searchCms(path, searchCriteria, apiInstance);
+      return cmsContext.value;
     } catch (e) {
-      console.error("CMS ERROR", e);
       const err = e as ClientApiError;
-      // _cmsError.value = err;
-      _storePage.value = null;
-    } finally {
-      // _cmsLoading.value = false;
+      cmsContext.value = null;
     }
   };
 
   return {
     page,
-    // loading: computed(() => _cmsLoading.value || false),
     search,
     currentSearchPathKey: computed(() => _searchPath.value),
-    // error: computed(() => _cmsError.value),
     resourceType: computed(() => page.value?.resourceType || null),
     resourceIdentifier,
-    metaTitle,
-    metaDescription,
-    metaKeywords,
-    pageTitle,
+    cmsContent: computed(() => cmsContext.value),
   };
 }

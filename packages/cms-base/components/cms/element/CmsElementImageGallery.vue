@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import { computed, inject } from "@vue/composition-api"
-import { useCms } from "@shopware-pwa/composables"
+import { useCms } from "@shopware-pwa/composables-next";
+import SwProductGallery from "../../SwProductGallery.vue";
 
 export default {
   name: "CmsElementImageGallery",
@@ -21,15 +21,14 @@ export default {
   },
 
   setup(props) {
-    const { page } = useCms() // fallback for provide/inject, remove in future
-    const cmsPage = inject("cms-page", page)
-    const product = computed(() => cmsPage.value?.product)
+    const { cmsContent } = useCms();
+    const product = computed(() => cmsContent.value?.product);
 
     return {
       product,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped></style>

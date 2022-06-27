@@ -36,6 +36,7 @@ importers:
       '@nuxt/kit': ^3.0.0-rc.4
       '@nuxt/schema': ^3.0.0-rc.4
       '@shopware-pwa/composables': canary
+      '@shopware-pwa/composables-next': workspace:*
       '@shopware-pwa/shopware-6-client': canary
       config: workspace:*
       tsconfig: workspace:*
@@ -44,6 +45,7 @@ importers:
     dependencies:
       '@nuxt/kit': 3.0.0-rc.4
       '@shopware-pwa/composables': 1.4.1-canary.1657
+      '@shopware-pwa/composables-next': link:../composables
       '@shopware-pwa/shopware-6-client': 1.4.1-canary.1657
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.4
