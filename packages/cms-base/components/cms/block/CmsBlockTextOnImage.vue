@@ -1,5 +1,5 @@
 <template>
-  <article class="cms-block-text-on-image">
+  <article class="min-h-sm bg-center bg-cover p-10" :style="getBackgroundStyle">
     <CmsGenericElement
       v-if="getContent"
       :content="getContent"
@@ -28,6 +28,10 @@ export default {
   computed: {
     getSlots() {
       return this.content.slots || [];
+    },
+
+    getBackgroundStyle() {
+      return `background-image: url('${this.content.backgroundMedia.url}');`;
     },
 
     getContent() {

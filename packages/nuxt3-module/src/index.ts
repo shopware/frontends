@@ -12,14 +12,12 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
     name: "@shopware/nuxt3",
     configKey: "shopware",
   },
-  setup(_, nuxt) {
+  setup(moduleConfig, nuxt) {
     addPluginTemplate({
       filename: "runtime/shopware.plugin.mjs",
       // @ts-ignore
       src: resolve(__dirname, "../plugin.ts"),
       options: {
-        // shopwareEndpoint: "https://pwa-demo-api.shopware.com/trunk/",
-        // shopwareAccessToken: "SWSC40-LJTNO6COUEN7CJMXKLA",
         shopwareEndpoint: "https://frontends.shopware.store/",
         shopwareAccessToken: "SWSCNKY0DKJEN3FLTFI4SGPXEG",
         shopwareApiClient: {
@@ -29,6 +27,7 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
           //     password: "",
           //   },
         },
+        ...moduleConfig,
       },
     });
 
