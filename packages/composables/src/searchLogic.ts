@@ -4,6 +4,7 @@ import {
   getProduct,
   invokePost,
 } from "@shopware-pwa/shopware-6-client";
+import { SearchFilterType } from "@shopware-pwa/commons";
 
 export async function searchCms(path: string, query?: any, apiInstance?: any) {
   console.log("searching for:", path, "second:", path.substring(1));
@@ -40,17 +41,17 @@ export async function searchCms(path: string, query?: any, apiInstance?: any) {
         },
         filter: [
           {
-            type: "equals",
+            type: SearchFilterType.EQUALS,
             field: "level",
-            value: 1,
+            value: "1",
           },
           {
-            type: "equals",
+            type: SearchFilterType.EQUALS,
             field: "path",
             value: null,
           },
           {
-            type: "equals",
+            type: SearchFilterType.EQUALS,
             field: "parentId",
             value: null,
           },
@@ -73,7 +74,7 @@ export async function searchCms(path: string, query?: any, apiInstance?: any) {
       payload: {
         filter: [
           {
-            type: "equals",
+            type: SearchFilterType.EQUALS,
             field: "seoPathInfo",
             value: path.substring(1),
           },
