@@ -21,14 +21,9 @@ provide("isModalOpened", isModalOpened);
 </script>
 
 <template>
-  <div>
-    <SwModal />
-    <SwHeader />
-    <SwNotifications />
-    <SwBreadcrumbs />
+  <NuxtLayout>
     <NuxtPage />
-    <SwSideCart />
-  </div>
+  </NuxtLayout>
 </template>
 
 <style>

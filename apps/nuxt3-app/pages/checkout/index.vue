@@ -12,6 +12,11 @@ import {
   useSessionContext,
   useCart,
 } from "@shopware-pwa/composables";
+
+definePageMeta({
+  layout: "checkout",
+});
+
 const { push } = useRouter();
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
@@ -116,10 +121,7 @@ const submitBillingAddress = async (e: Event) => {
 
 <template>
   <div class="m-10">
-    <div
-      v-if="isCheckoutAvailable"
-      class="checkout-inner"
-    >
+    <div v-if="isCheckoutAvailable" class="checkout-inner">
       <div class="md:grid md:grid-cols-3 md:gap-6">
         <div class="md:col-span-1">
           <div class="px-4 sm:px-0">
@@ -138,10 +140,7 @@ const submitBillingAddress = async (e: Event) => {
               id="checkout-billing-address"
               method="post"
             >
-              <div
-                v-if="errors.register.length"
-                class="m-5"
-              >
+              <div v-if="errors.register.length" class="m-5">
                 {{ errors.register }}
               </div>
               <div class="px-4 py-5 bg-white sm:p-6">
@@ -154,22 +153,18 @@ const submitBillingAddress = async (e: Event) => {
                   >
                     Sign in
                   </a>
-                  <Teleport
-                    v-if="isModalOpened"
-                    to="#modal-content"
-                  >
-                    <SwLoginForm @success="isModalOpened = false" />
-                  </Teleport>.
+                  <Teleport v-if="isModalOpened" to="#modal-content">
+                    <SwLoginForm @success="isModalOpened = false" /> </Teleport
+                  >.
                 </div>
-                <p class="text-sm text-gray-500">
-                  In order to place an order.
-                </p>
+                <p class="text-sm text-gray-500">In order to place an order.</p>
                 <div class="grid grid-cols-6 gap-6 mt-8">
                   <div class="col-span-6 sm:col-span-6">
                     <label
                       for="country"
                       class="block text-sm font-medium text-gray-700"
-                    >Salutation</label>
+                      >Salutation</label
+                    >
                     <select
                       id="salutation"
                       v-model="billingAddress.salutationId"
@@ -191,7 +186,8 @@ const submitBillingAddress = async (e: Event) => {
                     <label
                       for="first-name"
                       class="block text-sm font-medium text-gray-700"
-                    >First name</label>
+                      >First name</label
+                    >
                     <input
                       id="first-name"
                       v-model="billingAddress.firstName"
@@ -199,14 +195,15 @@ const submitBillingAddress = async (e: Event) => {
                       required
                       name="first-name"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    >
+                    />
                   </div>
 
                   <div class="col-span-6 sm:col-span-3">
                     <label
                       for="last-name"
                       class="block text-sm font-medium text-gray-700"
-                    >Last name</label>
+                      >Last name</label
+                    >
                     <input
                       id="last-name"
                       v-model="billingAddress.lastName"
@@ -214,14 +211,15 @@ const submitBillingAddress = async (e: Event) => {
                       required
                       name="last-name"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    >
+                    />
                   </div>
 
                   <div class="col-span-6 sm:col-span-3">
                     <label
                       for="email-address"
                       class="block text-sm font-medium text-gray-700"
-                    >Email address</label>
+                      >Email address</label
+                    >
                     <input
                       id="email-address"
                       v-model="billingAddress.email"
@@ -230,7 +228,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="email-address"
                       autocomplete="off"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    >
+                    />
                   </div>
                   <!-- <div class="col-span-6 sm:col-span-3">
                     <label for="email-address" class="block text-sm font-medium text-gray-700">Password</label>
@@ -241,7 +239,8 @@ const submitBillingAddress = async (e: Event) => {
                     <label
                       for="country"
                       class="block text-sm font-medium text-gray-700"
-                    >Country</label>
+                      >Country</label
+                    >
                     <select
                       id="country"
                       v-model="billingAddress.countryId"
@@ -264,7 +263,8 @@ const submitBillingAddress = async (e: Event) => {
                     <label
                       for="street-address"
                       class="block text-sm font-medium text-gray-700"
-                    >Street address</label>
+                      >Street address</label
+                    >
                     <input
                       id="street-address"
                       v-model="billingAddress.street"
@@ -273,14 +273,15 @@ const submitBillingAddress = async (e: Event) => {
                       name="street-address"
                       autocomplete="street-address"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    >
+                    />
                   </div>
 
                   <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                     <label
                       for="city"
                       class="block text-sm font-medium text-gray-700"
-                    >City</label>
+                      >City</label
+                    >
                     <input
                       id="city"
                       v-model="billingAddress.city"
@@ -289,7 +290,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="city"
                       autocomplete="address-level2"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    >
+                    />
                   </div>
 
                   <!-- <div class="col-span-6 sm:col-span-3 lg:col-span-2">
@@ -301,7 +302,8 @@ const submitBillingAddress = async (e: Event) => {
                     <label
                       for="postal-code"
                       class="block text-sm font-medium text-gray-700"
-                    >ZIP / Postal code</label>
+                      >ZIP / Postal code</label
+                    >
                     <input
                       id="postal-code"
                       v-model="billingAddress.zipcode"
@@ -310,7 +312,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="postal-code"
                       autocomplete="postal-code"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    >
+                    />
                   </div>
                 </div>
               </div>
@@ -324,16 +326,9 @@ const submitBillingAddress = async (e: Event) => {
                 </button>
               </div>
             </form>
-            <div
-              v-else
-              class="p-6"
-            >
+            <div v-else class="p-6">
               You are logged-in as {{ user.firstName }}! You can log out
-              <a
-                href="#"
-                class="text-indigo-700"
-                @click="logout"
-              >here</a>.
+              <a href="#" class="text-indigo-700" @click="logout">here</a>.
             </div>
           </div>
         </div>
@@ -356,9 +351,7 @@ const submitBillingAddress = async (e: Event) => {
                 <legend class="contents text-base font-medium text-gray-900">
                   Shipping method
                 </legend>
-                <p class="text-sm text-gray-500">
-                  Select a shipping method.
-                </p>
+                <p class="text-sm text-gray-500">Select a shipping method.</p>
                 <div class="mt-4 space-y-4">
                   <div
                     v-if="isLoading['shippingMethods']"
@@ -387,7 +380,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="shipping-method"
                       type="radio"
                       class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                    >
+                    />
                     <label
                       :for="shippingMethod.id"
                       :class="{ 'animate-pulse': isLoading[shippingMethod.id] }"
@@ -402,9 +395,7 @@ const submitBillingAddress = async (e: Event) => {
                 <legend class="contents text-base font-medium text-gray-900">
                   Payment method
                 </legend>
-                <p class="text-sm text-gray-500">
-                  Select a payment method.
-                </p>
+                <p class="text-sm text-gray-500">Select a payment method.</p>
                 <div class="mt-4 space-y-4">
                   <div
                     v-if="isLoading['paymentMethods']"
@@ -433,7 +424,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="payment-method"
                       type="radio"
                       class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                    >
+                    />
                     <label
                       :for="paymentMethod.id"
                       :class="{ 'animate-pulse': isLoading[paymentMethod.id] }"
@@ -454,9 +445,7 @@ const submitBillingAddress = async (e: Event) => {
             <h3 class="text-lg font-medium leading-6 text-gray-900">
               Order summary
             </h3>
-            <p class="mt-1 text-sm text-gray-600">
-              Order details and totals.
-            </p>
+            <p class="mt-1 text-sm text-gray-600">Order details and totals.</p>
           </div>
         </div>
         <div class="mt-5 md:mt-0 md:col-span-2">
@@ -469,10 +458,7 @@ const submitBillingAddress = async (e: Event) => {
                 List of cart's items, including discounts.
               </p>
               <div class="flow-root mt-8">
-                <ul
-                  role="list"
-                  class="-my-6 divide-y divide-gray-200"
-                >
+                <ul role="list" class="-my-6 divide-y divide-gray-200">
                   <li
                     v-for="cartItem in cartItems"
                     :key="cartItem.id"
@@ -485,10 +471,9 @@ const submitBillingAddress = async (e: Event) => {
             </div>
             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 mt-4">
               <div class="text-right">
-                <span
-                  v-if="!isLoggedIn"
-                  class="pr-4"
-                >You must be logged-in before submitting an order.</span>
+                <span v-if="!isLoggedIn" class="pr-4"
+                  >You must be logged-in before submitting an order.</span
+                >
                 <button
                   :disabled="!isLoggedIn"
                   type="button"
@@ -508,10 +493,7 @@ const submitBillingAddress = async (e: Event) => {
         </div>
       </div>
     </div>
-    <div
-      v-else
-      class="p-8 text-center"
-    >
+    <div v-else class="p-8 text-center">
       <div class="mb-8">
         Your cart is empty! There is nothing to buy, so far :)
       </div>
