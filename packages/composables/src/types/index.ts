@@ -1,24 +1,26 @@
 import { ProductResponse as LegacyProductResponse } from "@shopware-pwa/commons/interfaces/response/ProductResult";
-
+import { EntityResult } from "@shopware-pwa/commons";
 import { Product as LegacyProduct } from "@shopware-pwa/commons/interfaces/models/content/product/Product";
 import { Category as LegacyCategory } from "@shopware-pwa/commons/interfaces/models/content/category/Category";
 import { CmsPage } from "@shopware-pwa/commons/interfaces/models/content/cms/CmsPage";
-import { SeoUrl } from "@shopware-pwa/commons/interfaces/models/content/navigation/Navigation";
-import { PropertyGroup } from "@shopware-pwa/commons/interfaces/models/content/property/PropertyGroup";
+import { SeoUrl as LegacySeoUrl } from "@shopware-pwa/commons/interfaces/models/content/navigation/Navigation";
+export { SearchFilterType } from "@shopware-pwa/commons";
 
+export type SeoUrl = LegacySeoUrl;
+type Category = LegacyCategory;
+type Product = LegacyProduct & { cmsPage: null | CmsPage };
+
+export type SeoResult = EntityResult<"seo_url", LegacySeoUrl[]>;
 /**
  * API responses' types
  * A combination of legacy response types and new response types
  * @TODO: to be unified in the final types package
  */
 export type ProductResponse = LegacyProductResponse & {
-  product: LegacyProduct & { cmsPage: CmsPage };
-  configurator: PropertyGroup[] | null;
+  product: Product;
 };
 
-export type CategoryResponse = LegacyCategory & {
-  cmsPage?: null | CmsPage;
-};
+export type CategoryResponse = Category;
 
 export type LandingPageResponse = {
   active: boolean;
@@ -52,24 +54,19 @@ export type LandingPageResponse = {
  * @TODO: rethink the format of the types
  */
 
-type ResourceType =
+export type ResourceType =
   | "frontend.navigation.page"
   | "frontend.detail.page"
   | "frontend.landing.page";
 
 type CategoryCmsResult = {
   category: CategoryResponse;
-  resourceType: "frontend.navigation.page";
 };
 
-type ProductCmsResult = {
-  product: ProductResponse;
-  resourceType: "frontend.detail.page";
-};
+type ProductCmsResult = ProductResponse;
 
 type LandingPageCmsResult = {
   landingPage: LandingPageResponse;
-  resourceType: "frontend.landing.page";
 };
 
 export type SearchCmsResult = (
@@ -77,6 +74,6 @@ export type SearchCmsResult = (
   | ProductCmsResult
   | LandingPageCmsResult
 ) & {
+  cmsPage: null | CmsPage;
   resourceType: ResourceType;
-  cmsPage: CmsPage;
 };
