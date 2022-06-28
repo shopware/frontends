@@ -1,3 +1,8 @@
+<script>
+export default {
+  name: "DefaultLayout",
+};
+</script>
 <template>
   <div>
     <SwModal />

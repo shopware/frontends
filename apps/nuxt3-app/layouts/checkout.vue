@@ -1,3 +1,8 @@
+<script>
+export default {
+  name: "CheckoutLayout",
+};
+</script>
 <template>
   <div>
     <SwModal />
