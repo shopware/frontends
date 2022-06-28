@@ -4,6 +4,7 @@
       v-for="cmsBlock in getBlocks"
       :key="cmsBlock.id"
       :content="cmsBlock"
+      class="mb-10"
     />
   </div>
 </template>
