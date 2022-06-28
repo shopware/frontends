@@ -6,7 +6,7 @@ import { NuxtModule } from "@nuxt/schema";
 import { resolve } from "path";
 
 export interface ShopwareNuxtOptions {
-  shopwareEndpoint: string;
+  example: string;
 }
 
 const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
