@@ -3,18 +3,16 @@ import {
   getCategories,
   getCategory,
   getProduct,
-  invokePost,
+  getSeoUrl,
+  getLandingPage,
 } from "@shopware-pwa/shopware-6-client";
 
 import {
-  CategoryResponse,
-  LandingPageResponse,
-  ProductResponse,
-  ResourceType,
   SearchCmsResult,
-  SeoResult,
-  SeoUrl,
   SearchFilterType,
+  CATEGORY_ROUTE_NAME,
+  PRODUCT_ROUTE_NAME,
+  LANDING_PAGE_ROUTE_NAME,
 } from "./types";
 
 const cmsAssociations = {
@@ -46,41 +44,27 @@ const cmsAssociations = {
   },
 };
 
-// TODO: replace with the method from the shopware-6-client
 async function getSeoUrlEntityByPath(
   path: string,
   apiInstance?: ShopwareApiInstance
-): Promise<SeoUrl> {
-  // const getClientMethodForRoute = (route: ResourceType) => {
-  //   switch (route) {
-  //     case "frontend.detail.page":
-  //       return (id: string, params: ShopwareSearchParams) => getProduct(id, apiInstance);
-  //       break;
-  //     case "frontend.navigation.page":
-  //       return (id: string) => getCategory(id, apiInstance);
-  //       break;
-  //     case "frontend.landing.page":
-  //       return (id: string) => getCategory(id, apiInstance);
-  //       break;
-  //     default:
-  //       throw new Error(
-  //         `Unknown entity found for path ${path} for ${entityFound.routeName}`
-  //       );
-  //   }
-  // };
+) {
+  const isTechnicalUrl =
+    path.startsWith("/navigation/") ||
+    path.startsWith("/detail/") ||
+    path.startsWith("/landing/");
 
-  const seoResult: SeoResult = await invokePost(
+  // remove leading slash in case of seo url
+  const normalizedPath = isTechnicalUrl ? path : path.substring(1);
+  console.error("looking for path", normalizedPath);
+  const seoResult = await getSeoUrl(
     {
-      address: "/store-api/seo-url",
-      payload: {
-        filter: [
-          {
-            type: SearchFilterType.EQUALS,
-            field: "seoPathInfo",
-            value: path.substring(1),
-          },
-        ],
-      },
+      filter: [
+        {
+          type: SearchFilterType.EQUALS,
+          field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
+          value: normalizedPath,
+        },
+      ],
     },
     apiInstance
   );
@@ -119,42 +103,19 @@ export async function searchCms(
       apiInstance
     );
 
-    const category = categoryResponse?.elements?.[0] as CategoryResponse;
+    const category = categoryResponse?.elements?.[0];
 
     return {
       category: category,
       cmsPage: category.cmsPage,
-      resourceType: "frontend.navigation.page",
+      resourceType: CATEGORY_ROUTE_NAME,
     };
   }
 
-  // TODO: replace with getSeoUrl method from api client once it's merged
-  const seoResult = await invokePost(
-    {
-      address: "/store-api/seo-url",
-      payload: {
-        filter: [
-          {
-            type: SearchFilterType.EQUALS,
-            field: "seoPathInfo",
-            value: path.substring(1),
-          },
-        ],
-      },
-    },
-    apiInstance
-  );
+  const seoUrlEntity = await getSeoUrlEntityByPath(path, apiInstance);
 
-  const seoUrlEntity = await getSeoUrlEntityByPath(
-    path.substring(1),
-    apiInstance
-  );
-
-  if (seoUrlEntity?.routeName == "frontend.navigation.page") {
-    const category: CategoryResponse = (await getCategory(
-      seoUrlEntity.foreignKey,
-      apiInstance
-    )) as CategoryResponse;
+  if (seoUrlEntity?.routeName === CATEGORY_ROUTE_NAME) {
+    const category = await getCategory(seoUrlEntity.foreignKey, apiInstance);
 
     return {
       category: category,
@@ -162,12 +123,12 @@ export async function searchCms(
       resourceType: seoUrlEntity?.routeName,
     };
   }
-  if (seoUrlEntity?.routeName == "frontend.detail.page") {
-    const productResponse: ProductResponse = (await getProduct(
+  if (seoUrlEntity?.routeName === PRODUCT_ROUTE_NAME) {
+    const productResponse = await getProduct(
       seoUrlEntity.foreignKey,
       cmsAssociations,
       apiInstance
-    )) as ProductResponse;
+    );
 
     return {
       product: productResponse.product,
@@ -177,12 +138,12 @@ export async function searchCms(
     };
   }
 
-  if (seoUrlEntity?.routeName == "frontend.landing.page") {
-    // TODO: replace with getLandingPage method from shopware-6-client package once it's merged
-    const LandingPageResponse: LandingPageResponse = (await invokePost({
-      address: `/store-api/landing-page/${seoUrlEntity.foreignKey}`,
-      payload: cmsAssociations,
-    })) as LandingPageResponse;
+  if (seoUrlEntity?.routeName === LANDING_PAGE_ROUTE_NAME) {
+    const LandingPageResponse = await getLandingPage(
+      seoUrlEntity.foreignKey,
+      cmsAssociations,
+      apiInstance
+    );
 
     return {
       landingPage: LandingPageResponse,
