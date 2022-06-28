@@ -19,14 +19,14 @@ const removeCartItem = async () => {
 
 <template>
   <div
-    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
     v-if="!isPromotion"
+    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
   >
     <img
       :src="getProductMainImageUrl(cartItem)"
       alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
       class="h-full w-full object-cover object-center"
-    />
+    >
   </div>
 
   <div class="ml-4 flex flex-1 flex-col">
@@ -37,24 +37,32 @@ const removeCartItem = async () => {
             {{ cartItem.label }}
           </router-link>
         </h3>
-        <p class="ml-4">{{ itemRegularPrice }} EUR</p>
+        <p class="ml-4">
+          {{ itemRegularPrice }} EUR
+        </p>
       </div>
       <p class="mt-1 text-sm text-gray-500">
-        <span v-for="option in cartItem.payload.options" :key="option.id" class="mr-2">
+        <span
+          v-for="option in cartItem.payload.options"
+          :key="option.id"
+          class="mr-2"
+        >
           {{ option.group }}: {{ option.option }}
         </span>
       </p>
     </div>
     <div class="flex flex-1 items-end justify-between text-sm">
-      <p class="text-gray-500">Qty {{ itemQuantity }}</p>
+      <p class="text-gray-500">
+        Qty {{ itemQuantity }}
+      </p>
 
       <div class="flex">
         <button
           v-if="!isPromotion"
           type="button"
-          @click="removeCartItem"
           :class="{'animate-pulse': isLoading}"
           class="font-medium text-black hover:text-gray-700"
+          @click="removeCartItem"
         >
           Remove
         </button>

@@ -1,11 +1,11 @@
-import { Ref, computed, ComputedRef, provide, inject, unref, ref } from "vue";
+import { Ref, computed, ComputedRef, provide, inject, ref } from "vue";
 import {
   SearchCriteria,
   ClientApiError,
   CmsPageResponse,
   CmsResourceType,
 } from "@shopware-pwa/commons";
-import { _parseUrlQuery, getCmsEntityByType } from "@shopware-pwa/helpers";
+import { _parseUrlQuery } from "@shopware-pwa/helpers";
 import { searchCms } from "./searchLogic";
 import { useShopwareContext } from ".";
 // import {

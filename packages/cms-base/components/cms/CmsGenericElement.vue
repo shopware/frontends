@@ -1,10 +1,6 @@
 <script>
-// import { getCmsBlockComponent } from "sw-cms/cmsNameMapper";
-import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
-// import { computed } from "@vue/composition-api";
-// import SwPluginSlot from "sw-plugins/SwPluginSlot.vue";
 
 export default {
   name: "CmsGenericElement",
@@ -14,7 +10,7 @@ export default {
       default: () => ({}),
     },
   },
-  setup(props, { attrs }) {
+  setup(props) {
     return () => {
       const componentName = props.content.type;
       const apiAlias = props.content.apiAlias;

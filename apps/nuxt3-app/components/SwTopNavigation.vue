@@ -15,11 +15,11 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
 <template>
   <nav class="hidden md:flex space-x-10">
     <div
-      class="relative"
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
-      @mouseover="currentMenuPosition = navigationElement.id"
       ref="menuHtmlElement"
+      class="relative"
+      @mouseover="currentMenuPosition = navigationElement.id"
     >
       <router-link
         :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo"
@@ -39,20 +39,20 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
               To: "opacity-0 translate-y-1"
           -->
       <div
-        class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2"
         v-if="
           currentMenuPosition === navigationElement.id &&
-          navigationElement.children.length
+            navigationElement.children.length
         "
+        class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2"
         @mouseleave="currentMenuPosition = null"
       >
         <div
           class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden"
         >
           <div
-            class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-6 sm:pb-0"
             v-for="childElement in navigationElement.children"
             :key="childElement.id"
+            class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-6 sm:pb-0"
           >
             <router-link
               :to="'/' + childElement.seoUrls[0]?.seoPathInfo"
@@ -63,13 +63,19 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                   {{ childElement.translated.name }}
                 </p>
                 <p
-                  class="mt-1 text-sm text-gray-500"
                   v-if="childElement.translated.description"
+                  class="mt-1 text-sm text-gray-500"
                   v-html="childElement.translated.description"
                 />
               </div>
-              <div class="flex" v-if="childElement.media">
-                <img :src="childElement.media?.url" class="w-150px h-auto" />
+              <div
+                v-if="childElement.media"
+                class="flex"
+              >
+                <img
+                  :src="childElement.media?.url"
+                  class="w-150px h-auto"
+                >
               </div>
             </router-link>
           </div>
@@ -79,7 +85,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
             <div
               class="flow-root"
               v-html="navigationElement.translated.description"
-            ></div>
+            />
           </div>
         </div>
       </div>

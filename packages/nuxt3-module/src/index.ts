@@ -5,7 +5,9 @@ import { defineNuxtModule, addPluginTemplate } from "@nuxt/kit";
 import { NuxtModule } from "@nuxt/schema";
 import { resolve } from "path";
 
-export interface ShopwareNuxtOptions {}
+export interface ShopwareNuxtOptions {
+  shopwareEndpoint: string;
+}
 
 const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
   meta: {
@@ -15,6 +17,7 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
   setup(_, nuxt) {
     addPluginTemplate({
       filename: "runtime/shopware.plugin.mjs",
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       src: resolve(__dirname, "../plugin.ts"),
       options: {

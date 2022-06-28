@@ -1,9 +1,5 @@
-import { ref, Ref, computed, unref, inject, ComputedRef } from "vue";
-import {
-  Product,
-  PropertyGroup,
-  CmsPageResponse,
-} from "@shopware-pwa/commons/interfaces";
+import { ref, Ref, computed, unref } from "vue";
+import { Product, PropertyGroup } from "@shopware-pwa/commons/interfaces";
 // import {
 //   useCms,
 //   getApplicationContext,
@@ -27,7 +23,7 @@ export interface IUseProductConfigurator {
   handleChange: (
     attribute: string,
     option: string,
-    onChangeHandled?: Function
+    onChangeHandled?: () => void
   ) => Promise<void>;
 
   findVariantForSelectedOptions: (options?: {
@@ -139,7 +135,7 @@ export function useProductConfigurator(params: {
   const handleChange = async (
     group: string,
     option: string,
-    onChangeHandled?: Function
+    onChangeHandled?: () => void
   ): Promise<void> => {
     selected.value = Object.assign({}, selected.value, {
       [group]: option,

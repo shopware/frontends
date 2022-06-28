@@ -1,3 +1,9 @@
+<script>
+export default {
+  name: "PageResolver",
+};
+</script>
+
 <script setup lang="ts">
 import { resolveComponent } from "vue";
 import { pascalCase } from "scule";

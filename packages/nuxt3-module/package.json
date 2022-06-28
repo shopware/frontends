@@ -13,6 +13,7 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
+    "lint": "eslint plugin.ts src/**/*.ts* --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -24,7 +25,7 @@
   "devDependencies": {
     "@nuxt/schema": "^3.0.0-rc.4",
     "tsconfig": "workspace:*",
-    "config": "workspace:*",
+    "eslint-config-shopware": "workspace:*",
     "typescript": "^4.7.4",
     "unbuild": "^0.7.4"
   },
