@@ -1,7 +1,8 @@
 import { inject } from "vue";
 import { ShopwareApiInstance } from "@shopware-pwa/shopware-6-client";
 
-export * from './useCms'
+export * from "./useCms";
+export * from "./useProductConfigurator";
 
 export type ShopwareContext = {
   apiInstance: ShopwareApiInstance;

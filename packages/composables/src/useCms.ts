@@ -35,7 +35,7 @@ export function useCms(): {
 
   const _searchPath = inject("swCmsSearchPath", ref(""));
   provide("swCmsSearchPath", _searchPath);
-  const page = computed(() => cmsContext.value.cmsPage);
+  const page = computed(() => cmsContext.value?.cmsPage);
 
   const resourceIdentifier = computed(() => {
     // each cms page is in relation one-to-one with categoryId (resourceIdentifier)

@@ -26,6 +26,7 @@ const { data: cmsResponse } = await useAsyncData(
 
 provide("cms-page", cmsResponse); // TODO: remove after clearing references
 provide("cmsResponse", cmsResponse);
+provide("swCmsContext", cmsResponse);
 
 const page = cmsResponse;
 const cmsPage = computed(() => page.value?.cmsPage);
