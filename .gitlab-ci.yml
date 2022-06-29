@@ -13,7 +13,7 @@
 #
 # For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
 
-image: node:latest
+image: node:18.3.0
 
 stages:          # List of stages for jobs, and their order of execution
   - init
