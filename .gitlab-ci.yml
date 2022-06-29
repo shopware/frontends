@@ -21,7 +21,6 @@ default:
     paths:
       - .pnpm-store
       - ./node_modules
-      - apps/web/node_modules
     policy: pull
 image: node:18.3.0
 
@@ -50,6 +49,7 @@ build-job: # This job runs in the build stage, which runs first.
       artifacts: false
   interruptible: true
   script:
+    - pnpm install
     - pnpm run build
 
 unit-test-job: # This job runs in the test stage.
@@ -65,7 +65,11 @@ unit-test-job: # This job runs in the test stage.
 
 lint-test-job: # This job also runs in the test stage.
   stage: build # It can run at the same time as unit-test-job (in parallel).
+  needs:
+    - job: init
+      artifacts: false
   script:
+    - pnpm install
     - pnpm run lint
 
 deploy-job: # This job runs in the deploy stage.
