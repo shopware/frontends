@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
+    "lint": "eslint ./**/*.vue* app.vue --fix",
     "generate": "nuxt generate",
     "preview": "nuxt preview"
   },
@@ -17,6 +18,10 @@
     "vue": "^3.2.37"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0-rc.4"
+    "@vue/eslint-config-typescript": "^9.1.0",
+    "eslint-plugin-vue": "^9.1.1",
+    "eslint-config-shopware": "workspace:*",
+    "nuxt": "^3.0.0-rc.4",
+    "vue-eslint-parser": "^9.0.3"
   }
 }

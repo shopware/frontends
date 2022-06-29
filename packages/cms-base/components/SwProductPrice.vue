@@ -17,11 +17,11 @@ const price = computed(() => {
     (tierPrices.length && tierPrices[0] && tierPrices[0].unitPrice) ||
     getProductCalculatedListingPrice(props.product)
   );
-
 });
-
 </script>
 
 <template>
-  <p class="text-3xl text-gray-900 basis-2/6 text-right">{{ price }} {{currency?.symbol}}</p>
+  <p class="text-3xl text-gray-900 basis-2/6 text-right">
+    {{ price }} {{ currency?.symbol }}
+  </p>
 </template>

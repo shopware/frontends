@@ -14,8 +14,10 @@ export default {
       default: () => ({}),
     },
   },
-  setup({ content }, {}) {
-    const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(content);
+  setup(props, {}) {
+    const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
+      props.content
+    );
     const cmsClass = computed(() => cssClasses);
     const cmsStyles = computed(() => layoutStyles);
     // const getComponent = computed(

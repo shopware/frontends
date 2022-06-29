@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { defineNuxtPlugin } from "#app";
 import { createInstance } from "@shopware-pwa/shopware-6-client";
@@ -50,7 +51,7 @@ const ShopwarePlugin = {
 };
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const newConfig = getDefaultApiParams()
+  const newConfig = getDefaultApiParams();
   // newConfig.add("useOrderDetails.associations",{
   //   "lineItems": {
   //     "associations": {
@@ -59,6 +60,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   // }
   // });
   nuxtApp.vueApp.use(ShopwarePlugin, {
-    apiDefaults: newConfig
-  })
+    apiDefaults: newConfig,
+  });
 });

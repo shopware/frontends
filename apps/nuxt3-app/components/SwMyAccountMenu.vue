@@ -14,12 +14,15 @@ async function invokeLogout() {
     <div class="my-account-area">
       <div v-show="!isLoggedIn">
         <button
-          @click="isModalOpened = true"
           class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+          @click="isModalOpened = true"
         >
           Sign in
         </button>
-        <Teleport v-if="isModalOpened" to="#modal-content">
+        <Teleport
+          v-if="isModalOpened"
+          to="#modal-content"
+        >
           <SwLoginForm @success="isModalOpened = false" />
         </Teleport>
       </div>
@@ -39,9 +42,9 @@ async function invokeLogout() {
           <div class="ml-3 relative">
             <div>
               <button
+                id="user-menu-button"
                 type="button"
                 class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                id="user-menu-button"
                 aria-expanded="false"
                 aria-haspopup="true"
                 @click="isAccountMenuOpen = !isAccountMenuOpen"
@@ -68,11 +71,11 @@ async function invokeLogout() {
                 <!-- Active: "bg-gray-100", Not Active: "" -->
                 <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a> -->
                 <button
-                  @click="invokeLogout"
+                  id="user-menu-item-2"
                   class="block px-4 py-2 text-sm text-gray-700 w-full text-left"
                   role="menuitem"
                   tabindex="-1"
-                  id="user-menu-item-2"
+                  @click="invokeLogout"
                 >
                   Sign out
                 </button>

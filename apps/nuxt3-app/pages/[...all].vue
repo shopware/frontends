@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: "PageResolver",
+};
+</script>
+
 <script setup lang="ts">
 import { resolveComponent } from "vue";
 import { pascalCase } from "scule";
@@ -26,6 +32,7 @@ const { data: cmsResponse } = await useAsyncData(
 
 provide("cms-page", cmsResponse); // TODO: remove after clearing references
 provide("cmsResponse", cmsResponse);
+provide("swCmsContext", cmsResponse);
 
 const page = cmsResponse;
 const cmsPage = computed(() => page.value?.cmsPage);

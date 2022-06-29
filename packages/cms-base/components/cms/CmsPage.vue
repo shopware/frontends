@@ -10,7 +10,11 @@ export default {
       default: () => ({}),
     },
   },
-  setup(props) {},
+  computed: {
+    cmsSections() {
+      return this.content?.sections || this.content?.cmsPage?.sections || [];
+    },
+  },
   render() {
     const sections = this.cmsSections;
     const componentsMap = sections.map((section) => {
@@ -26,11 +30,6 @@ export default {
         content: componentObject.section,
       });
     });
-  },
-  computed: {
-    cmsSections() {
-      return this.content?.sections || this.content?.cmsPage?.sections || [];
-    },
   },
 };
 </script>

@@ -2,7 +2,9 @@
 const $emits = defineEmits(["success"]);
 const { login, loading, errors, isLoggedIn } = useUser();
 const { refreshSessionContext } = useSessionContext();
-const loginErrors = computed(() => errors.login?.map(({ detail }) => detail).toString());
+const loginErrors = computed(() =>
+  errors.login?.map(({ detail }) => detail).toString()
+);
 const email = ref("");
 const password = ref("");
 
@@ -23,7 +25,9 @@ const invokeLogin = async () => {
 };
 </script>
 <template>
-  <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div
+    class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+  >
     <div v-if="!isLoggedIn" class="max-w-md w-full space-y-8">
       <div>
         <img class="mx-auto h-12 w-auto" src="/logo.svg" alt="Logo" />
@@ -42,10 +46,10 @@ const invokeLogin = async () => {
             <label for="email-address" class="sr-only">Email address</label>
             <input
               id="email-address"
+              v-model="email"
               name="email"
               type="email"
               autocomplete="email"
-              v-model="email"
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Email address"
@@ -55,10 +59,10 @@ const invokeLogin = async () => {
             <label for="password" class="sr-only">Password</label>
             <input
               id="password"
+              v-model="password"
               name="password"
               type="password"
               autocomplete="current-password"
-              v-model="password"
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Password"
@@ -86,8 +90,8 @@ const invokeLogin = async () => {
 
         <div>
           <button
-            @click="invokeLogin()"
             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            @click="invokeLogin()"
           >
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
               <!-- Heroicon name: solid/lock-closed -->

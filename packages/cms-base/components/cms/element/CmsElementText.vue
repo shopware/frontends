@@ -9,7 +9,10 @@ export default {
     },
   },
   setup(props) {
-    const rawHtml = computed(() => props.content?.data?.content ?? props.content?.config?.content?.value)
+    const rawHtml = computed(
+      () =>
+        props.content?.data?.content ?? props.content?.config?.content?.value
+    );
     return () => {
       return h("div", { innerHTML: rawHtml.value });
     };

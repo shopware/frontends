@@ -13,7 +13,11 @@ const isSidebarOpen = inject("isSidebarOpen");
         <div class="flex justify-start lg:w-0 lg:flex-1">
           <router-link to="/">
             <span class="sr-only">Shopware</span>
-            <img class="h-8 w-auto sm:h-10" src="/logo.svg" alt="" />
+            <img
+              class="h-8 w-auto sm:h-10"
+              src="/logo.svg"
+              alt=""
+            >
           </router-link>
         </div>
 

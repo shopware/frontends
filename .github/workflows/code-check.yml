@@ -1,0 +1,134 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  init:
+    name: Init dependencies
+    timeout-minutes: 15
+    # To use Remote Caching, uncomment the next lines and follow the steps below.
+    # env:
+    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.3.0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      # - name: Build
+      #   run: pnpm build
+
+  build:
+    name: Build
+    timeout-minutes: 15
+    needs: init
+    # To use Remote Caching, uncomment the next lines and follow the steps below.
+    # env:
+    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.3.0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+  # test:
+  #   name: Test
+  #   timeout-minutes: 15
+  #   needs: init
+  #   # To use Remote Caching, uncomment the next lines and follow the steps below.
+  #   # env:
+  #   #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  #   #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 2
+
+  #     - uses: pnpm/action-setup@v2.0.1
+  #       with:
+  #         version: 7.3.0
+
+  #     - name: Setup Node.js environment
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 18
+  #         cache: 'pnpm'
+
+  #     - name: Install dependencies
+  #       run: pnpm install
+
+  #     - name: Test
+  #       run: pnpm test
+
+  lint:
+    name: Lint
+    timeout-minutes: 15
+    needs: init
+    # To use Remote Caching, uncomment the next lines and follow the steps below.
+    # env:
+    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.3.0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm lint

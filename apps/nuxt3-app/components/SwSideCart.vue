@@ -7,11 +7,11 @@ const { cartItems, totalPrice } = useCart();
 
 <template>
   <div
+    v-if="isOpen"
     class="fixed inset-0 overflow-hidden"
     aria-labelledby="slide-over-title"
     role="dialog"
     aria-modal="true"
-    v-if="isOpen"
   >
     <div class="absolute inset-0 overflow-hidden">
       <!--
@@ -25,11 +25,11 @@ const { cartItems, totalPrice } = useCart();
         To: "opacity-0"
     -->
       <div
+        v-if="isOpen"
         class="absolute inset-0 bg-gray-500 bg-opacity-60 transition-opacity"
         aria-hidden="true"
         @click="isOpen = false"
-        v-if="isOpen"
-      ></div>
+      />
 
       <div
         class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10"
@@ -44,15 +44,18 @@ const { cartItems, totalPrice } = useCart();
           From: "translate-x-0"
           To: "translate-x-full"
       -->
-        <div class="pointer-events-auto w-screen max-w-md" v-if="isOpen">
+        <div
+          v-if="isOpen"
+          class="pointer-events-auto w-screen max-w-md"
+        >
           <div
             class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl"
           >
             <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
               <div class="flex items-start justify-between">
                 <h2
-                  class="text-lg font-medium text-gray-900"
                   id="slide-over-title"
+                  class="text-lg font-medium text-gray-900"
                 >
                   Shopping cart
                 </h2>
@@ -85,13 +88,16 @@ const { cartItems, totalPrice } = useCart();
 
               <div class="mt-8">
                 <div class="flow-root">
-                  <ul role="list" class="-my-6 divide-y divide-gray-200">
+                  <ul
+                    role="list"
+                    class="-my-6 divide-y divide-gray-200"
+                  >
                     <li
-                      class="flex py-6"
                       v-for="cartItem in cartItems"
                       :key="cartItem.id"
+                      class="flex py-6"
                     >
-                      <SwCartItem :cartItem="cartItem" />
+                      <SwCartItem :cart-item="cartItem" />
                     </li>
                   </ul>
                 </div>
@@ -109,7 +115,13 @@ const { cartItems, totalPrice } = useCart();
                 Shipping and taxes calculated at checkout.
               </p>
               <div class="mt-6">
-                <NuxtLink class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700" to="/checkout">Checkout</NuxtLink>
+                <NuxtLink
+                  class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  to="/checkout"
+                  @click="isOpen = false"
+                >
+                  Checkout
+                </NuxtLink>
               </div>
               <div
                 class="mt-6 flex justify-center text-center text-sm text-gray-500"
@@ -118,8 +130,8 @@ const { cartItems, totalPrice } = useCart();
                   or
                   <button
                     type="button"
-                    @click="isOpen = false"
                     class="font-medium text-indigo-600 hover:text-indigo-500"
+                    @click="isOpen = false"
                   >
                     Continue Shopping<span aria-hidden="true"> &rarr;</span>
                   </button>

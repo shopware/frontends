@@ -1,11 +1,11 @@
-import { Ref, computed, ComputedRef, provide, inject, unref, ref } from "vue";
+import { Ref, computed, ComputedRef, provide, inject, ref } from "vue";
 import {
   SearchCriteria,
   ClientApiError,
   CmsPageResponse,
   CmsResourceType,
 } from "@shopware-pwa/commons";
-import { _parseUrlQuery, getCmsEntityByType } from "@shopware-pwa/helpers";
+import { _parseUrlQuery } from "@shopware-pwa/helpers";
 import { searchCms } from "./searchLogic";
 import { useShopwareContext } from ".";
 // import {
@@ -35,7 +35,7 @@ export function useCms(): {
 
   const _searchPath = inject("swCmsSearchPath", ref(""));
   provide("swCmsSearchPath", _searchPath);
-  const page = computed(() => cmsContext.value.cmsPage);
+  const page = computed(() => cmsContext.value?.cmsPage);
 
   const resourceIdentifier = computed(() => {
     // each cms page is in relation one-to-one with categoryId (resourceIdentifier)

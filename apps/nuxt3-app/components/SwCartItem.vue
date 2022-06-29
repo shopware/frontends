@@ -19,8 +19,8 @@ const removeCartItem = async () => {
 
 <template>
   <div
-    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
     v-if="!isPromotion"
+    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
   >
     <img
       :src="getProductMainImageUrl(cartItem)"
@@ -40,7 +40,11 @@ const removeCartItem = async () => {
         <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
       <p class="mt-1 text-sm text-gray-500">
-        <span v-for="option in cartItem.payload.options" :key="option.id" class="mr-2">
+        <span
+          v-for="option in cartItem.payload.options"
+          :key="option.id"
+          class="mr-2"
+        >
           {{ option.group }}: {{ option.option }}
         </span>
       </p>
@@ -52,9 +56,9 @@ const removeCartItem = async () => {
         <button
           v-if="!isPromotion"
           type="button"
-          @click="removeCartItem"
-          :class="{'animate-pulse': isLoading}"
+          :class="{ 'animate-pulse': isLoading }"
           class="font-medium text-black hover:text-gray-700"
+          @click="removeCartItem"
         >
           Remove
         </button>

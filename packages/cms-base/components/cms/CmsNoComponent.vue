@@ -9,16 +9,16 @@
 
 <script>
 export default {
-  components: {},
   name: "CmsNoComponent",
-  data() {
-    return {};
-  },
+  components: {},
   props: {
     content: {
       type: Object,
       default: null,
     },
+  },
+  data() {
+    return {};
   },
   computed: {
     elementType() {

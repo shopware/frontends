@@ -10,16 +10,26 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md,vue}\""
   },
   "devDependencies": {
+    "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
+    "simple-git-hooks": "^2.8.0",
     "turbo": "^1.2.16"
   },
   "engines": {
     "node": ">=16.0.0"
   },
-  "packageManager": "pnpm@6.32.2",
+  "lint-staged": {
+    "*.{ts,tsx,md,mdx,js,jsx,vue}": [
+      "prettier --write"
+    ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
+  },
+  "packageManager": "pnpm@7.3.0",
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [

@@ -66,7 +66,7 @@ Especially for big frontend projects this drastically reduces the complexity of 
 ### Efficient
 
 There is no lock-in on technologies or frontend tooling. Shopware Frontends comes prepared with a smart default of tooling.
- Vue3, Vite, Nuxt3 and unocss (Tailwind.css) — each by themselves coming with a rich ecosystem of tooling, extensions
+Vue3, Vite, Nuxt3 and unocss (Tailwind.css) — each by themselves coming with a rich ecosystem of tooling, extensions
 and integrations can be replaced and extended to meet any projects needs. This tech-stack is the definition of superior Developer Experience and rapid prototyping.
 
 ### Flexible

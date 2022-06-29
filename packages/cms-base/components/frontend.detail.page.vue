@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import SwStaticProduct from "./SwStaticProduct.vue"
-const cmsPageResponse = inject("cms-page");
-const product = computed(() => cmsPageResponse.value.product)
-const isStaticLayout = computed( () => !cmsPageResponse.value?.cmsPage)
+import SwStaticProduct from "./SwStaticProduct.vue";
+import { useCms } from "@shopware-pwa/composables-next";
+
+const { cmsContent, page } = useCms();
+const product = computed(() => cmsContent.value?.product);
+const isStaticLayout = computed(() => !page?.value);
 </script>
 <template>
-  <div class="container mx-auto bg-white flex flex-row ">
+  <div class="container mx-auto bg-white flex flex-row">
     <template v-if="isStaticLayout">
-      <SwStaticProduct :product="product"/>
+      <SwStaticProduct :product="product" />
     </template>
     <template v-else>
-      <CmsPage :content="cmsPageResponse.cmsPage" />
+      <CmsPage :content="page" />
     </template>
   </div>
 </template>
