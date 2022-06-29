@@ -44,10 +44,7 @@ const { cartItems, totalPrice } = useCart();
           From: "translate-x-0"
           To: "translate-x-full"
       -->
-        <div
-          v-if="isOpen"
-          class="pointer-events-auto w-screen max-w-md"
-        >
+        <div v-if="isOpen" class="pointer-events-auto w-screen max-w-md">
           <div
             class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl"
           >
@@ -88,10 +85,7 @@ const { cartItems, totalPrice } = useCart();
 
               <div class="mt-8">
                 <div class="flow-root">
-                  <ul
-                    role="list"
-                    class="-my-6 divide-y divide-gray-200"
-                  >
+                  <ul role="list" class="-my-6 divide-y divide-gray-200">
                     <li
                       v-for="cartItem in cartItems"
                       :key="cartItem.id"

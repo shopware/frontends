@@ -41,7 +41,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       <div
         v-if="
           currentMenuPosition === navigationElement.id &&
-            navigationElement.children.length
+          navigationElement.children.length
         "
         class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2"
         @mouseleave="currentMenuPosition = null"
@@ -68,14 +68,8 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                   v-html="childElement.translated.description"
                 />
               </div>
-              <div
-                v-if="childElement.media"
-                class="flex"
-              >
-                <img
-                  :src="childElement.media?.url"
-                  class="w-150px h-auto"
-                >
+              <div v-if="childElement.media" class="flex">
+                <img :src="childElement.media?.url" class="w-150px h-auto" />
               </div>
             </router-link>
           </div>
