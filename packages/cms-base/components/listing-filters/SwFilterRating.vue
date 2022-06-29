@@ -1,20 +1,24 @@
-
 <script setup lang="ts">
-import SwStarIcon from "../SwStarIcon.vue"
+import SwStarIcon from "../SwStarIcon.vue";
 const $emits = defineEmits("select-value");
-const $props = defineProps(["filter", "selectedFilters"])
+const $props = defineProps(["filter", "selectedFilters"]);
 const isFilterVisible = ref(false);
 const isHoverActive = ref(false);
-const hoveredIndex = ref(0)
-const displayedScore = computed(() => isHoverActive.value ? hoveredIndex.value : $props.selectedFilters?.rating || 0)
-const hoverRating = (key) =>  {
-  hoveredIndex.value = key
-  isHoverActive.value = true
-}
+const hoveredIndex = ref(0);
+const displayedScore = computed(() =>
+  isHoverActive.value ? hoveredIndex.value : $props.selectedFilters?.rating || 0
+);
+const hoverRating = (key) => {
+  hoveredIndex.value = key;
+  isHoverActive.value = true;
+};
 const onChangeRating = () => {
-  const newValue = $props.selectedFilters?.rating !== hoveredIndex.value ? hoveredIndex.value : undefined;
-  $emits('select-value', {code: $props.filter?.code, value: newValue})
-}
+  const newValue =
+    $props.selectedFilters?.rating !== hoveredIndex.value
+      ? hoveredIndex.value
+      : undefined;
+  $emits("select-value", { code: $props.filter?.code, value: newValue });
+};
 </script>
 
 <template>
@@ -70,11 +74,7 @@ const onChangeRating = () => {
       </button>
     </h3>
     <!-- Filter section, show/hide based on section state. -->
-    <div
-      v-show="isFilterVisible"
-      id="filter-section-mobile-0"
-      class="pt-6"
-    >
+    <div v-show="isFilterVisible" id="filter-section-mobile-0" class="pt-6">
       <div class="space-y-6">
         <div class="flex">
           <SwStarIcon

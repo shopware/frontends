@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useNotifications } from "@shopware-pwa/composables"
-const { notifications, removeOne } = useNotifications()
+import { useNotifications } from "@shopware-pwa/composables";
+const { notifications, removeOne } = useNotifications();
 </script>
 <template>
   <div class="fixed right-5 top-5 z-50">

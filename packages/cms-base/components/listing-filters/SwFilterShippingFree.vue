@@ -1,11 +1,16 @@
 <script setup lang="ts">
-const $props = defineProps(["filter", "selectedFilters"])
-const $emits = defineEmits(["select-value"])
+const $props = defineProps(["filter", "selectedFilters"]);
+const $emits = defineEmits(["select-value"]);
 const isFilterVisible = ref(false);
-const currentFilterData = computed(() => !!$props.selectedFilters[$props.filter?.code])
+const currentFilterData = computed(
+  () => !!$props.selectedFilters[$props.filter?.code]
+);
 const onChangeOption = () => {
-  $emits('select-value', {code: $props.filter?.code, value: !currentFilterData.value})
-}
+  $emits("select-value", {
+    code: $props.filter?.code,
+    value: !currentFilterData.value,
+  });
+};
 </script>
 
 <template>
@@ -61,11 +66,7 @@ const onChangeOption = () => {
       </button>
     </h3>
     <!-- Filter section, show/hide based on section state. -->
-    <div
-      v-show="isFilterVisible"
-      id="filter-section-mobile-0"
-      class="pt-6"
-    >
+    <div v-show="isFilterVisible" id="filter-section-mobile-0" class="pt-6">
       <div class="space-y-6">
         <input
           :id="`filter-mobile-${filter.id}-${filter.code}`"
@@ -75,11 +76,13 @@ const onChangeOption = () => {
           type="checkbox"
           class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
           @change="onChangeOption()"
-        >
+        />
         <label
           :for="`filter-mobile-${filter.id}-${filter.code}`"
           class="ml-3 min-w-0 flex-1 text-gray-500"
-        > {{ filter.label }} </label>
+        >
+          {{ filter.label }}
+        </label>
       </div>
     </div>
   </div>

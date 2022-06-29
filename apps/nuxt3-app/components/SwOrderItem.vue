@@ -5,7 +5,7 @@ const $props = defineProps({
   orderItem: Object,
 });
 
-const isPromotion = computed( () => $props.orderItem?.type==="promotion");
+const isPromotion = computed(() => $props.orderItem?.type === "promotion");
 const itemRegularPrice = computed(() => $props.orderItem?.unitPrice);
 const itemQuantity = computed(() => $props.orderItem?.quantity);
 </script>
@@ -19,7 +19,7 @@ const itemQuantity = computed(() => $props.orderItem?.quantity);
       :src="getProductMainImageUrl(orderItem)"
       alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
       class="h-full w-full object-cover object-center"
-    >
+    />
   </div>
 
   <div class="ml-4 flex flex-1 flex-col">
@@ -30,9 +30,7 @@ const itemQuantity = computed(() => $props.orderItem?.quantity);
             {{ orderItem.label }}
           </router-link>
         </h3>
-        <p class="ml-4">
-          {{ itemRegularPrice }} EUR
-        </p>
+        <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
       <p class="mt-1 text-sm text-gray-500">
         <span
@@ -45,9 +43,7 @@ const itemQuantity = computed(() => $props.orderItem?.quantity);
       </p>
     </div>
     <div class="flex flex-1 items-end justify-between text-sm">
-      <p class="text-gray-500">
-        Qty {{ itemQuantity }}
-      </p>
+      <p class="text-gray-500">Qty {{ itemQuantity }}</p>
     </div>
   </div>
 </template>

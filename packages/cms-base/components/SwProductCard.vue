@@ -19,8 +19,8 @@ const { addToCart } = useAddToCart({
 
 const addToCartProxy = async () => {
   await addToCart();
-  pushSuccess(`${props.product?.translated?.name} has been added to cart.`)
-}
+  pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
+};
 
 // const { formatPrice } = usePriceFilter();
 
@@ -56,7 +56,11 @@ function getPrice(product) {
           </router-link>
         </h3>
         <p class="mt-1 text-sm text-gray-500 min-h-30px">
-          <span v-for="option in product?.options" :key="option.id" class="mr-2">
+          <span
+            v-for="option in product?.options"
+            :key="option.id"
+            class="mr-2"
+          >
             {{ option.translated.name }}
           </span>
         </p>

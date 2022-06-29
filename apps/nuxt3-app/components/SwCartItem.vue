@@ -26,7 +26,7 @@ const removeCartItem = async () => {
       :src="getProductMainImageUrl(cartItem)"
       alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
       class="h-full w-full object-cover object-center"
-    >
+    />
   </div>
 
   <div class="ml-4 flex flex-1 flex-col">
@@ -37,9 +37,7 @@ const removeCartItem = async () => {
             {{ cartItem.label }}
           </router-link>
         </h3>
-        <p class="ml-4">
-          {{ itemRegularPrice }} EUR
-        </p>
+        <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
       <p class="mt-1 text-sm text-gray-500">
         <span
@@ -52,15 +50,13 @@ const removeCartItem = async () => {
       </p>
     </div>
     <div class="flex flex-1 items-end justify-between text-sm">
-      <p class="text-gray-500">
-        Qty {{ itemQuantity }}
-      </p>
+      <p class="text-gray-500">Qty {{ itemQuantity }}</p>
 
       <div class="flex">
         <button
           v-if="!isPromotion"
           type="button"
-          :class="{'animate-pulse': isLoading}"
+          :class="{ 'animate-pulse': isLoading }"
           class="font-medium text-black hover:text-gray-700"
           @click="removeCartItem"
         >

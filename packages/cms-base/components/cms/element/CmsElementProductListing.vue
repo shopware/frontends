@@ -12,11 +12,11 @@ const {
   loading,
   loadMore,
   loadingMore,
-} = useListing({ listingType: "categoryListing", })
+} = useListing({ listingType: "categoryListing" });
 
-const changePage = (page: number) => {  
+const changePage = (page: number) => {
   changeCurrentPage(page);
-}
+};
 
 setInitialListing(props?.content?.data?.listing);
 </script>
@@ -37,7 +37,11 @@ setInitialListing(props?.content?.data?.listing);
           />
         </div>
         <div class="mt-10">
-          <SwPagination :total="getTotalPagesCount" :current="getCurrentPage" @changePage="changePage"/>
+          <SwPagination
+            :total="getTotalPagesCount"
+            :current="getCurrentPage"
+            @changePage="changePage"
+          />
         </div>
       </div>
       <div v-else>

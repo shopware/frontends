@@ -1,17 +1,8 @@
 <template>
   <article class="grid md:grid-cols-3 gap-4">
-    <CmsGenericElement
-      :content="getLeftContent"
-      class=""
-    />
-    <CmsGenericElement
-      :content="getCenterContent"
-      class=""
-    />
-    <CmsGenericElement
-      :content="getRightContent"
-      class=""
-    />
+    <CmsGenericElement :content="getLeftContent" class="" />
+    <CmsGenericElement :content="getCenterContent" class="" />
+    <CmsGenericElement :content="getRightContent" class="" />
   </article>
 </template>
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-defineProps(["filter"])
-defineEmits(["select-value"])
-const selectedOptionIds = inject("selectedOptionIds")
-const isFilterVisible = ref(false)
+defineProps(["filter"]);
+defineEmits(["select-value"]);
+const selectedOptionIds = inject("selectedOptionIds");
+const isFilterVisible = ref(false);
 </script>
 
 <template>
@@ -58,14 +58,10 @@ const isFilterVisible = ref(false)
       </button>
     </h3>
     <!-- Filter section, show/hide based on section state. -->
-    <div
-      v-show="isFilterVisible"
-      id="filter-section-mobile-0"
-      class="pt-6"
-    >
+    <div v-show="isFilterVisible" id="filter-section-mobile-0" class="pt-6">
       <div class="space-y-6">
         <div
-          v-for="option in (filter.options || filter.entities)"
+          v-for="option in filter.options || filter.entities"
           :key="`${option.id}-${selectedOptionIds.includes(option.id)}`"
           class="flex items-center"
         >
@@ -76,12 +72,16 @@ const isFilterVisible = ref(false)
             :value="option.name"
             type="checkbox"
             class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-            @click="$emit('select-value', {code: filter.code, value: option.id})"
-          >
+            @click="
+              $emit('select-value', { code: filter.code, value: option.id })
+            "
+          />
           <label
             :for="`filter-mobile-${filter.id}-${option.id}`"
             class="ml-3 min-w-0 flex-1 text-gray-500"
-          > {{ option.name }} </label>
+          >
+            {{ option.name }}
+          </label>
         </div>
       </div>
     </div>

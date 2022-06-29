@@ -1,9 +1,7 @@
 <script setup lang="ts">
-const $props = defineProps(["content"])
-const product = computed(
-  () => $props.content.data?.product || {}
-)
+const $props = defineProps(["content"]);
+const product = computed(() => $props.content.data?.product || {});
 </script>
 <template>
-  <SwProductCard :product="product"/>
+  <SwProductCard :product="product" />
 </template>
