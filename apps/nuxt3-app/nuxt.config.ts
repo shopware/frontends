@@ -20,5 +20,14 @@ export default defineNuxtConfig({
   unocss: {
     preflight: true,
     transformers: [transformerDirective()],
+    theme: {
+      colors: {
+        brand: {
+          primary: "#189eff",
+          light: "#5ebbff",
+          dark: "#0081df",
+        }
+      }
+    }
   },
 });
