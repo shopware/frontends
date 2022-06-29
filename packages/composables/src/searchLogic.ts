@@ -51,11 +51,13 @@ async function getSeoUrlEntityByPath(
   const isTechnicalUrl =
     path.startsWith("/navigation/") ||
     path.startsWith("/detail/") ||
-    path.startsWith("/landing/");
+    path.startsWith("/landingPage/");
 
   // remove leading slash in case of seo url
   const normalizedPath = isTechnicalUrl ? path : path.substring(1);
   console.error("looking for path", normalizedPath);
+
+  // consider not calling seo-url endpoint in case of technical url as the ID of the entity is known from URL.
   const seoResult = await getSeoUrl(
     {
       filter: [
