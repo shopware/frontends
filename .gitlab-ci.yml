@@ -24,11 +24,12 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - deploy
 
+before_script:
+  - curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@7
+  - pnpm config set store-dir .pnpm-store
+
 init:       # This job runs in the init stage, which runs first.
   stage: init
-  before_script:
-    - curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@7
-    - pnpm config set store-dir .pnpm-store
   script:
     - pnpm install
   cache:
