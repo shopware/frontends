@@ -53,15 +53,14 @@ build-job: # This job runs in the build stage, which runs first.
     - pnpm run build
 
 unit-test-job: # This job runs in the test stage.
-  stage: test # It only starts when the job in the build stage completes successfully.
+  stage: build # It only starts when the job in the build stage completes successfully.
   needs:
     - job: init
       artifacts: false
   interruptible: true
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    - pnpm install
+    - pnpm run test
 
 lint-test-job: # This job also runs in the test stage.
   stage: build # It can run at the same time as unit-test-job (in parallel).

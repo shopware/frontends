@@ -8,15 +8,19 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@shopware-pwa/shopware-6-client": "canary",
     "@shopware-pwa/commons": "canary",
+    "@shopware-pwa/shopware-6-client": "canary",
+    "c8": "^7.11.3",
     "eslint-config-shopware": "workspace:*",
-    "unbuild": "^0.7.4",
+    "happy-dom": "^5.3.4",
     "tsconfig": "workspace:*",
     "typescript": "^4.7.4",
+    "unbuild": "^0.7.4",
+    "vitest": "^0.16.0",
     "vue": "^3.2.37"
   }
 }
