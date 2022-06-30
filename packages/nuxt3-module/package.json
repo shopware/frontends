@@ -14,7 +14,7 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint plugin.ts src/**/*.ts* --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0-rc.4",
