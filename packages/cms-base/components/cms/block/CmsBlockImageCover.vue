@@ -1,33 +1,14 @@
-<template>
-  <article class="cms-block-image-cover">
-    <CmsGenericElement v-if="getContent" :content="getContent" />
-  </article>
-</template>
+<script setup lang="ts">
+import { CmsBlock } from "@shopware-pwa/commons";
 
-<script>
-// import CmsGenericElement from "sw-cms/CmsGenericElement";
+const props = defineProps<{
+  content: CmsBlock;
+}>();
 
-export default {
-  name: "CmsBlockImageCover",
+const { getSlotContent } = useCmsBlock(props.content);
 
-  components: {
-    // CmsGenericElement,
-  },
-
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-
-  computed: {
-    getSlots() {
-      return this.content.slots || [];
-    },
-    getContent() {
-      return this.getSlots.length && this.getSlots[0];
-    },
-  },
-};
+const cmsContent = getSlotContent("content");
 </script>
+<template>
+  <CmsGenericElement v-if="cmsContent" :content="cmsContent" />
+</template>

@@ -2,10 +2,7 @@
 // const { breadcrumbs } = useBreadcrumbs();
 </script>
 <template>
-  <nav
-    class="container mx-auto flex mt-8 mb-8"
-    aria-label="Breadcrumb"
-  >
+  <nav class="container mx-auto flex mt-8 mb-8" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
       <li class="inline-flex items-center">
         <nuxt-link

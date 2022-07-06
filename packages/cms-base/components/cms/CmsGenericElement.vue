@@ -1,39 +1,42 @@
-<script>
+<script setup lang="ts">
+import { CmsSlot } from "@shopware-pwa/commons";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 
-export default {
-  name: "CmsGenericElement",
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-  setup(props) {
-    return () => {
-      const componentName = props.content.type;
-      const apiAlias = props.content.apiAlias;
-      const type =
-        apiAlias === "cms_section"
-          ? "Section"
-          : apiAlias === "cms_block"
-          ? "Block"
-          : "Element";
-      const componentNameToResolve = pascalCase(`Cms-${type}-${componentName}`);
+const props = defineProps<{
+  content: CmsSlot;
+}>();
 
-      const cmsPageView = resolveComponent(componentNameToResolve);
+const DynamicRender = () => {
+  const componentName = props.content.type;
+  const apiAlias = props.content.apiAlias;
+  const type =
+    apiAlias === "cms_section"
+      ? "Section"
+      : apiAlias === "cms_block"
+      ? "Block"
+      : "Element";
+  const componentNameToResolve = pascalCase(`Cms-${type}-${componentName}`);
+  try {
+    const cmsPageView = resolveComponent(componentNameToResolve);
 
-      if (cmsPageView) {
-        if (cmsPageView === componentNameToResolve)
-          return h(
-            "div",
-            {},
-            "Problem resolving component: " + componentNameToResolve
-          );
-        return h(cmsPageView, { content: props.content });
-      }
-    };
-  },
+    if (cmsPageView) {
+      if (cmsPageView === componentNameToResolve)
+        return h(
+          "div",
+          {},
+          "Problem resolving component: " + componentNameToResolve
+        );
+      return h("div", h(cmsPageView, { content: props.content }));
+    }
+    return h("div", {}, "Loading...");
+  } catch (e) {
+    console.error("Problem Resolving", componentNameToResolve, ":", e.message);
+    return h("div", {}, `Problem(${componentNameToResolve}): ${e.message}`);
+  }
 };
 </script>
+
+<template>
+  <DynamicRender />
+</template>

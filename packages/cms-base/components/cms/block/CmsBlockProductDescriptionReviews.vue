@@ -1,30 +1,33 @@
-<script setup>
+<script setup lang="ts">
+import { CmsBlock, ProductReview } from "@shopware-pwa/commons";
 import { getTranslatedProperty } from "@shopware-pwa/helpers";
 import { getProductReviews } from "@shopware-pwa/shopware-6-client";
-import { getApplicationContext } from "@shopware-pwa/composables";
-const { apiInstance } = getApplicationContext({
-  contextName: "cms-block-product-description-reviews",
-});
-const cmsPageResponse = inject("cms-page");
-const $props = defineProps(["product", "content"]);
+import { Ref } from "vue";
+
+const props = defineProps<{
+  content: CmsBlock;
+}>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+
+const slotContent = getSlotContent("product-description-reviews");
+
+const { cmsContent } = useCms();
 const product = computed(
-  () =>
-    $props.product ||
-    cmsPageResponse.value?.product ||
-    $props.content?.slots?.find(
-      ({ type }) => type === "product-description-reviews"
-    )?.data?.product
+  () => slotContent?.data?.product || cmsContent.value?.product
 );
-const reviews = ref([]);
+
 const description = computed(() =>
   getTranslatedProperty(product.value, "description")
 );
 const properties = computed(() => product.value?.properties || []);
+const reviews: Ref<ProductReview[]> = ref([]);
 
+const { apiInstance } = useShopwareContext();
 onMounted(async () => {
   const reviewsResponse = await getProductReviews(
     product.value?.id,
-    null,
+    undefined,
     apiInstance
   );
   reviews.value = reviewsResponse?.elements || [];

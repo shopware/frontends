@@ -26,8 +26,8 @@ export default defineNuxtConfig({
           primary: "#189eff",
           light: "#5ebbff",
           dark: "#0081df",
-        }
-      }
-    }
+        },
+      },
+    },
   },
 });

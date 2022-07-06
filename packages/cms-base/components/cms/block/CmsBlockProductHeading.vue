@@ -1,30 +1,27 @@
-<script setup>
+<script setup lang="ts">
+import { CmsBlockImageText } from "@shopware-pwa/composables-next";
 import { getTranslatedProperty } from "@shopware-pwa/helpers";
-const $props = defineProps(["content"]);
-const cmsPage = inject("cms-page");
 
-// default data from cms
-const productNameSlot = $props.content?.slots.find(
-  ({ type }) => type === "product-name"
-);
-const productManufacturerSlot = $props.content?.slots?.find(
-  ({ type }) => type === "manufacturer-logo"
-);
-const productNameSlotContent = computed(() => productNameSlot?.data?.content);
-const productManufacturerSlotContent = computed(
-  () => productManufacturerSlot?.data?.manufacturer?.name
-);
+const props = defineProps<{
+  content: CmsBlockImageText;
+}>();
 
-// fallback values from injected product object
+const { getSlotContent } = useCmsBlock(props.content);
+
+const leftContent = getSlotContent("left");
+const rightContent = getSlotContent("right");
+
+const { cmsContent } = useCms();
+const product = computed(() => cmsContent.value?.product);
+
 const productName = computed(
   () =>
-    productNameSlotContent.value ||
-    getTranslatedProperty(cmsPage.value?.product, "name")
+    leftContent.data?.content || getTranslatedProperty(product.value, "name")
 );
 const manufacturerName = computed(
   () =>
-    productManufacturerSlotContent.value ||
-    getTranslatedProperty(cmsPage.value?.product?.manufacturer, "name")
+    rightContent.data?.content ||
+    getTranslatedProperty(product.value?.manufacturer, "name")
 );
 </script>
 

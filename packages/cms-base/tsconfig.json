@@ -1,5 +1,8 @@
 {
   "extends": "tsconfig/base.json",
-  "include": ["./auto-imports.d.ts", "."],
-  "exclude": ["dist"]
+  "include": ["./components.d.ts", "./auto-imports.d.ts", "."],
+  "exclude": ["dist"],
+  "compilerOptions": {
+    "jsx": "preserve"
+  }
 }

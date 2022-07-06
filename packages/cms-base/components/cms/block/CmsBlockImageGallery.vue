@@ -1,12 +1,17 @@
 <script setup lang="ts">
-const props = defineProps({
-  content: Object,
-});
+import { CmsBlock } from "@shopware-pwa/commons";
 
-const getContent = computed(() => props.content?.slots?.[0]);
+const props = defineProps<{
+  content: CmsBlock;
+}>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+
+const cmsContent = getSlotContent("slot");
 </script>
+
 <template>
   <div class="container mx-auto">
-    <CmsGenericElement v-if="getContent" :content="getContent" />
+    <CmsGenericElement :content="cmsContent" />
   </div>
 </template>

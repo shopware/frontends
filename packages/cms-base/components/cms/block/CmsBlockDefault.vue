@@ -1,42 +1,14 @@
-<template>
-  <div>
-    <CmsGenericElement
-      v-for="slot in getSlots"
-      :key="slot.id"
-      :content="slot"
-      class="cms-block-default"
-    />
-  </div>
-</template>
+<script setup lang="ts">
+import { CmsBlock } from "@shopware-pwa/commons";
 
-<script>
-// import CmsGenericElement from "sw-cms/CmsGenericElement";
-
-export default {
-  name: "CmsBlockDefault",
-
-  components: {
-    // CmsGenericElement,
-  },
-
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-
-  computed: {
-    getSlots() {
-      return this.content.slots || [];
-    },
-  },
-};
-// <style lang="scss" scoped>
-// @import "@/cms/settings.scss";
-
-// .cms-block-default {
-//   @include sizing-mode-boxed;
-// }
-// </style>
+const props = defineProps<{
+  content: CmsBlock;
+}>();
 </script>
+<template>
+  <CmsGenericElement
+    v-for="slot in content.slots"
+    :key="slot.id"
+    :content="slot"
+  />
+</template>

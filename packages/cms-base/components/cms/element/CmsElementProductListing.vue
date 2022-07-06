@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { CmsSlot } from "@shopware-pwa/commons";
 import { useListing } from "@shopware-pwa/composables";
-const props = defineProps({
-  content: Object,
-});
+const props = defineProps<{
+  content: CmsSlot;
+}>();
 const {
   getElements,
   setInitialListing,
@@ -32,7 +33,7 @@ setInitialListing(props?.content?.data?.listing);
         >
           <SwProductCard
             v-for="product in getElements"
-            :key="product._uniqueIdentifier"
+            :key="product.id"
             :product="product"
           />
         </div>

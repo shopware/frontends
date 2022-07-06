@@ -84,11 +84,7 @@ watch(
       </button>
     </h3>
     <!-- Filter section, show/hide based on section state. -->
-    <div
-      v-show="isFilterVisible"
-      id="filter-section-mobile-0"
-      class="pt-6"
-    >
+    <div v-show="isFilterVisible" id="filter-section-mobile-0" class="pt-6">
       <div class="space-y-6">
         <div class="mt-2 flex">
           <div class="w-1/2 flex rounded-md mr-4">
@@ -104,7 +100,7 @@ watch(
               name="min-price"
               class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-gray-300"
               :placeholder="prices.min"
-            >
+            />
           </div>
           <div class="w-1/2 flex rounded-md">
             <span
@@ -119,7 +115,7 @@ watch(
               name="max-price"
               class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-gray-300"
               :placeholder="prices.max"
-            >
+            />
           </div>
         </div>
       </div>

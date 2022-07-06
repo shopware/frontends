@@ -1,82 +1,34 @@
+<script setup lang="ts">
+import { CmsBlockImageFourColumn } from "@shopware-pwa/composables-next";
+
+const props = defineProps<{
+  content: CmsBlockImageFourColumn;
+}>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+
+const leftContent = getSlotContent("left");
+const rightContent = getSlotContent("right");
+const centerLeftContent = getSlotContent("center-left");
+const centerRightContent = getSlotContent("center-right");
+</script>
 <template>
   <article class="cms-block-image-four-column">
     <CmsGenericElement
-      :content="getLeftContent"
+      :content="leftContent"
       class="cms-block-image-four-column__image"
     />
     <CmsGenericElement
-      :content="getCenterLeftContent"
+      :content="centerLeftContent"
       class="cms-block-image-four-column__image"
     />
     <CmsGenericElement
-      :content="getCenterRightContent"
+      :content="centerRightContent"
       class="cms-block-image-four-column__image"
     />
     <CmsGenericElement
-      :content="getRightContent"
+      :content="rightContent"
       class="cms-block-image-four-column__image"
     />
   </article>
 </template>
-
-<script>
-// import CmsGenericElement from "sw-cms/CmsGenericElement";
-
-export default {
-  name: "CmsBlockImageFourColumn",
-
-  components: {
-    // CmsGenericElement,
-  },
-
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-
-  computed: {
-    getSlots() {
-      return this.content.slots || [];
-    },
-    getLeftContent() {
-      return this.getSlots.find(({ slot }) => slot === "left");
-    },
-    getCenterLeftContent() {
-      return this.getSlots.find(({ slot }) => slot === "center-left");
-    },
-    getCenterRightContent() {
-      return this.getSlots.find(({ slot }) => slot === "center-right");
-    },
-    getRightContent() {
-      return this.getSlots.find(({ slot }) => slot === "right");
-    },
-  },
-};
-// <style lang="scss" scoped>
-// @import "@/assets/scss/variables";
-
-// ::v-deep.cms-block-image-four-column {
-//   display: grid;
-//   grid-gap: var(--spacer-sm);
-//   grid-template-rows: repeat(4, 340px);
-//   margin: var(--spacer-sm);
-
-//   &__image {
-//     img {
-//       height: 100%;
-//       object-fit: cover;
-//       object-position: center;
-//       width: 100%;
-//     }
-//   }
-
-//   @include for-desktop {
-//     grid-template-columns: repeat(4, 1fr);
-//     grid-template-rows: repeat(1, 340px);
-//     margin: var(--spacer-sm) 0;
-//   }
-// }
-// </style>
-</script>

@@ -1,24 +1,16 @@
-<script>
-export default {
-  name: "CmsElementText",
-  functional: true,
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-  setup(props) {
-    const rawHtml = computed(
-      () =>
-        props.content?.data?.content ?? props.content?.config?.content?.value
-    );
-    return () => {
-      return h("div", { innerHTML: rawHtml.value });
-    };
-  },
+<script setup lang="ts">
+import { CmsSlot } from "@shopware-pwa/commons";
+
+const props = defineProps<{
+  content: CmsSlot;
+}>();
+
+const CmsTextRender = () => {
+  const rawHtml =
+    props.content?.data?.content ?? props.content?.config?.content?.value;
+  return h("div", { innerHTML: rawHtml });
 };
 </script>
-<!-- <template>
-  {{content}}
-</template> -->
+<template>
+  <CmsTextRender />
+</template>

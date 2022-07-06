@@ -1,28 +1,11 @@
+<script setup lang="ts">
+import { CmsSlot } from "@shopware-pwa/commons";
+
+const props = defineProps<{
+  content: CmsSlot;
+}>();
+</script>
+
 <template>
   <div class="products-recomendations">cross sells</div>
 </template>
-
-<script>
-import { computed } from "@vue/composition-api";
-
-export default {
-  name: "CmsElementProductCrossSelling",
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-  setup(props) {
-    const crossSellCollection = computed(
-      () => props.content.data?.crossSellings || []
-    );
-
-    return {
-      crossSellCollection,
-    };
-  },
-};
-</script>
-
-<style lang="scss" scoped></style>
