@@ -1,42 +1,14 @@
-<template>
-  <CmsGenericElement
-    v-if="getContent"
-    :content="getContent"
-    class="cms-block-default"
-  />
-</template>
+<script setup lang="ts">
+import { CmsBlockProductListing } from "@shopware-pwa/composables-next";
 
-<script>
-// import CmsGenericElement from "sw-cms/CmsGenericElement";
+const props = defineProps<{
+  content: CmsBlockProductListing;
+}>();
 
-export default {
-  name: "CmsBlockProductListing",
-
-  components: {
-    // CmsGenericElement,
-  },
-
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-
-  computed: {
-    getSlots() {
-      return this.content.slots || [];
-    },
-    getContent() {
-      return this.getSlots.length && this.getSlots[0];
-    },
-  },
-};
-// <style lang="scss" scoped>
-// @import "../settings.scss";
-
-// .cms-block-default {
-//   @include sizing-mode-boxed;
-// }
-// </style>
+const { getSlotContent } = useCmsBlock(props.content);
+const slotContent = getSlotContent("content");
 </script>
+
+<template>
+  <CmsGenericElement v-if="slotContent" :content="slotContent" />
+</template>

@@ -1,41 +1,20 @@
+<script setup lang="ts">
+import { CmsBlock } from "@shopware-pwa/commons";
+
+const props = defineProps<{
+  content: CmsBlock;
+}>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+
+const leftContent = getSlotContent("left");
+const rightContent = getSlotContent("right");
+const centerContent = getSlotContent("center");
+</script>
 <template>
   <article class="grid md:grid-cols-3 gap-10">
-    <CmsGenericElement :content="getLeftContent" class="aspect-square" />
-    <CmsGenericElement :content="getCenterContent" class="aspect-square" />
-    <CmsGenericElement :content="getRightContent" class="aspect-square" />
+    <CmsGenericElement :content="leftContent" class="aspect-square" />
+    <CmsGenericElement :content="rightContent" class="aspect-square" />
+    <CmsGenericElement :content="centerContent" class="aspect-square" />
   </article>
 </template>
-
-<script>
-// import CmsGenericElement from "sw-cms/CmsGenericElement";
-
-export default {
-  name: "CmsBlockImageThreeColumn",
-
-  components: {
-    // CmsGenericElement,
-  },
-
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-
-  computed: {
-    getSlots() {
-      return this.content.slots || [];
-    },
-    getLeftContent() {
-      return this.getSlots.find(({ slot }) => slot === "left");
-    },
-    getCenterContent() {
-      return this.getSlots.find(({ slot }) => slot === "center");
-    },
-    getRightContent() {
-      return this.getSlots.find(({ slot }) => slot === "right");
-    },
-  },
-};
-</script>

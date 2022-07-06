@@ -126,7 +126,8 @@ declare global {
   const useCached: typeof import("@vueuse/core")["useCached"];
   const useClamp: typeof import("@vueuse/core")["useClamp"];
   const useClipboard: typeof import("@vueuse/core")["useClipboard"];
-  const useCms: typeof import("@shopware-pwa/composables")["useCms"];
+  const useCms: typeof import("@shopware-pwa/composables-next")["useCms"];
+  const useCmsBlock: typeof import("@shopware-pwa/composables-next")["useCmsBlock"];
   const useColorMode: typeof import("@vueuse/core")["useColorMode"];
   const useConfirmDialog: typeof import("@vueuse/core")["useConfirmDialog"];
   const useCookie: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useCookie"];

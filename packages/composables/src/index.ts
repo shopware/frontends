@@ -3,6 +3,8 @@ import { ShopwareApiInstance } from "@shopware-pwa/shopware-6-client";
 
 export * from "./useCms";
 export * from "./useProductConfigurator";
+export * from "./useCmsBlock";
+export * from "./cmsBlockTypes";
 
 export type ShopwareContext = {
   apiInstance: ShopwareApiInstance;

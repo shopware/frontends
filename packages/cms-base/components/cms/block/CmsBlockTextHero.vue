@@ -1,14 +1,14 @@
 <script setup lang="ts">
-const $props = defineProps(["content"]);
-const getSlots = computed(() => $props.content?.slots || []);
+import { CmsBlock } from "@shopware-pwa/commons";
+
+const props = defineProps<{
+  content: CmsBlock;
+}>();
 </script>
 <template>
-  <div class="container mx-auto">
-    <CmsGenericElement
-      v-for="slot in getSlots"
-      :key="slot._uniqueIdentifier"
-      :content="slot"
-      class="cms-block-text-hero"
-    />
-  </div>
+  <CmsGenericElement
+    v-for="slot in content.slots"
+    :key="slot.id"
+    :content="slot"
+  />
 </template>

@@ -1,44 +1,14 @@
-<template>
-  <CmsGenericElement
-    v-if="getContent"
-    :content="getContent"
-    :style="{
-      'background-color': getBackgroundColor,
-      'background-size': 'cover',
-      'background-repeat': 'no-repeat',
-    }"
-    class="cms-block-forms"
-  />
-</template>
-<script>
-// import CmsGenericElement from "sw-cms/CmsGenericElement";
-export default {
-  name: "CmsBlockForms",
-  components: {
-    // CmsGenericElement,
-  },
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-  computed: {
-    getSlots() {
-      return this.content.slots || [];
-    },
-    getContent() {
-      return this.getSlots.length && this.getSlots[0];
-    },
-    getBackgroundColor() {
-      return this.content.backgroundColor;
-    },
-  },
-};
-// <style lang="scss" scoped>
-// @import "@/cms/settings.scss";
-// .cms-block-forms {
-//   @include sizing-mode-boxed;
-// }
-// </style>
+<script setup lang="ts">
+import { CmsBlock } from "@shopware-pwa/commons";
+
+const props = defineProps<{
+  content: CmsBlock;
+}>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+
+const cmsContent = getSlotContent("content");
 </script>
+<template>
+  <CmsGenericElement v-if="cmsContent" :content="cmsContent" />
+</template>

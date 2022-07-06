@@ -19,10 +19,7 @@ async function invokeLogout() {
         >
           Sign in
         </button>
-        <Teleport
-          v-if="isModalOpened"
-          to="#modal-content"
-        >
+        <Teleport v-if="isModalOpened" to="#modal-content">
           <SwLoginForm @success="isModalOpened = false" />
         </Teleport>
       </div>

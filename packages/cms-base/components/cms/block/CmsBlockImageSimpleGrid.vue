@@ -1,94 +1,30 @@
+<script setup lang="ts">
+import { CmsBlockImageSimpleGrid } from "@shopware-pwa/composables-next";
+
+const props = defineProps<{
+  content: CmsBlockImageSimpleGrid;
+}>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+
+const leftTopContent = getSlotContent("left-top");
+const leftBottomContent = getSlotContent("left-bottom");
+const rightContent = getSlotContent("right");
+</script>
+
 <template>
   <article class="sw-image-simple-grid">
     <CmsGenericElement
-      :content="getLeftTopContent"
+      :content="leftTopContent"
       class="sw-image-simple-grid__image sw-image-simple-grid__image--left-top"
     />
     <CmsGenericElement
-      :content="getLeftBottomContent"
+      :content="leftBottomContent"
       class="sw-image-simple-grid__image sw-image-simple-grid__image--left-bottom"
     />
     <CmsGenericElement
-      :content="getRightContent"
+      :content="rightContent"
       class="sw-image-simple-grid__image sw-image-simple-grid__image--right-full"
     />
   </article>
 </template>
-
-<script>
-// import CmsGenericElement from "sw-cms/CmsGenericElement";
-
-export default {
-  name: "CmsBlockImageSimpleGrid",
-
-  components: {
-    // CmsGenericElement,
-  },
-
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-
-  computed: {
-    getSlots() {
-      return this.content.slots || [];
-    },
-    getLeftTopContent() {
-      return this.getSlots.find(({ slot }) => slot === "left-top");
-    },
-    getLeftBottomContent() {
-      return this.getSlots.find(({ slot }) => slot === "left-bottom");
-    },
-    getRightContent() {
-      return this.getSlots.find(({ slot }) => slot === "right");
-    },
-  },
-};
-// <style lang="scss" scoped>
-// @import "@/assets/scss/variables";
-
-// ::v-deep.sw-image-simple-grid {
-//   display: grid;
-//   grid-gap: var(--spacer-sm);
-//   grid-template-areas:
-//     "left-top"
-//     "left-bottom"
-//     "right-full";
-//   grid-template-rows: repeat(3, 340px);
-//   margin: var(--spacer-sm);
-
-//   &__image {
-//     &--left-top {
-//       grid-area: left-top;
-//     }
-
-//     &--left-bottom {
-//       grid-area: left-bottom;
-//     }
-
-//     &--right-full {
-//       grid-area: right-full;
-//     }
-
-//     img {
-//       height: 100%;
-//       object-fit: cover;
-//       object-position: center;
-//       width: 100%;
-//     }
-//   }
-
-//   @include for-desktop {
-//     grid-template-columns: repeat(2, 1fr);
-//     grid-template-rows: repeat(2, 340px);
-//     grid-template-areas:
-//       "left-top right-full"
-//       "left-bottom right-full";
-//     margin: var(--spacer-sm) 0;
-//   }
-// }
-// </style>
-</script>

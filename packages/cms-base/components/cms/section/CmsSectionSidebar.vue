@@ -1,51 +1,15 @@
-<template>
-  <div>
-    <CmsGenericBlock
-      v-for="cmsBlock in getBlocks"
-      :key="cmsBlock.id"
-      :content="cmsBlock"
-      class="mb-10"
-    />
-  </div>
-</template>
+<script setup lang="ts">
+import { CmsSection } from "@shopware-pwa/commons";
 
-<script lang="ts">
-export default {
-  name: "CmsSectionSidebar",
-  props: {
-    content: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-  computed: {
-    getBlocks() {
-      return this.content.blocks || [];
-    },
-    cmsClass() {
-      return this.content?.cssClass;
-    },
-    isSizingModeBoxed() {
-      return this.content.sizingMode === "boxed";
-    },
-    sectionStyles() {
-      const {
-        backgroundColor,
-        backgroundMedia,
-        marginBottom,
-        marginLeft,
-        marginRight,
-        marginTop,
-      } = this.content;
-      return {
-        backgroundColor,
-        backgroundImage: backgroundMedia ? `url(${backgroundMedia.url})` : null,
-        marginBottom,
-        marginLeft,
-        marginRight,
-        marginTop,
-      };
-    },
-  },
-};
+const props = defineProps<{
+  content: CmsSection;
+}>();
 </script>
+
+<template>
+  <CmsGenericBlock
+    v-for="cmsBlock in props.content.blocks"
+    :key="cmsBlock.id"
+    :content="cmsBlock"
+  />
+</template>
