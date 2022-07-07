@@ -1,35 +1,35 @@
 import {
+  ShopwareApiInstance,
   getCategories,
   getCategory,
   getProduct,
-  invokePost,
+  getSeoUrl,
+  getLandingPage,
 } from "@shopware-pwa/shopware-6-client";
-import { SearchFilterType } from "@shopware-pwa/commons";
 
-export async function searchCms(path: string, query?: any, apiInstance?: any) {
-  console.log("searching for:", path, "second:", path.substring(1));
+import {
+  SearchCmsResult,
+  SearchFilterType,
+  CATEGORY_ROUTE_NAME,
+  PRODUCT_ROUTE_NAME,
+  LANDING_PAGE_ROUTE_NAME,
+} from "./types";
 
-  if (path === "/") {
-    console.warn("looking for home category");
-    const categoryResponse = await getCategories(
-      {
-        associations: {
-          media: {},
-          cmsPage: {
-            associations: {
-              sections: {
-                associations: {
-                  blocks: {
-                    associations: {
-                      slots: {
-                        associations: {
-                          block: {
-                            associations: {
-                              slots: {
-                                associations: {},
-                              },
-                            },
-                          },
+const cmsAssociations = {
+  associations: {
+    media: {},
+    cmsPage: {
+      associations: {
+        sections: {
+          associations: {
+            blocks: {
+              associations: {
+                slots: {
+                  associations: {
+                    block: {
+                      associations: {
+                        slots: {
+                          associations: {},
                         },
                       },
                     },
@@ -39,6 +39,51 @@ export async function searchCms(path: string, query?: any, apiInstance?: any) {
             },
           },
         },
+      },
+    },
+  },
+};
+
+async function getSeoUrlEntityByPath(
+  path: string,
+  apiInstance?: ShopwareApiInstance
+) {
+  const isTechnicalUrl =
+    path.startsWith("/navigation/") ||
+    path.startsWith("/detail/") ||
+    path.startsWith("/landingPage/");
+
+  // remove leading slash in case of seo url
+  const normalizedPath = isTechnicalUrl ? path : path.substring(1);
+  console.error("looking for path", normalizedPath);
+
+  // consider not calling seo-url endpoint in case of technical url as the ID of the entity is known from URL.
+  const seoResult = await getSeoUrl(
+    {
+      filter: [
+        {
+          type: SearchFilterType.EQUALS,
+          field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
+          value: normalizedPath,
+        },
+      ],
+    },
+    apiInstance
+  );
+
+  return seoResult?.elements?.[0];
+}
+
+export async function searchCms(
+  path: string,
+  query?: any,
+  apiInstance?: ShopwareApiInstance
+): Promise<SearchCmsResult | undefined> {
+  // fallback for homepage
+  // @TODO: create an issue in the API core to expose information of main entrypoint for specific sales channel in category entity
+  if (path === "/") {
+    const categoryResponse = await getCategories(
+      Object.assign({}, cmsAssociations, {
         filter: [
           {
             type: SearchFilterType.EQUALS,
@@ -56,85 +101,56 @@ export async function searchCms(path: string, query?: any, apiInstance?: any) {
             value: null,
           },
         ],
-      },
+      }),
       apiInstance
     );
+
     const category = categoryResponse?.elements?.[0];
-    console.warn("home category found:", category);
+
     return {
       category: category,
       cmsPage: category.cmsPage,
-      resourceType: "frontend.navigation.page",
+      resourceType: CATEGORY_ROUTE_NAME,
     };
   }
 
-  const seoResult = await invokePost(
-    {
-      address: "/store-api/seo-url",
-      payload: {
-        filter: [
-          {
-            type: SearchFilterType.EQUALS,
-            field: "seoPathInfo",
-            value: path.substring(1),
-          },
-        ],
-      },
-    },
-    apiInstance
-  );
-  console.log("seoresult", seoResult.data);
+  const seoUrlEntity = await getSeoUrlEntityByPath(path, apiInstance);
 
-  const entityFound = seoResult?.data?.elements?.[0];
-  if (entityFound?.routeName == "frontend.navigation.page") {
-    const category = await getCategory(entityFound.foreignKey, apiInstance);
-    console.error("category", category);
+  if (seoUrlEntity?.routeName === CATEGORY_ROUTE_NAME) {
+    const category = await getCategory(seoUrlEntity.foreignKey, apiInstance);
+
     return {
       category: category,
       cmsPage: category.cmsPage,
-      resourceType: entityFound?.routeName,
+      resourceType: seoUrlEntity?.routeName,
     };
   }
-  if (entityFound?.routeName == "frontend.detail.page") {
+  if (seoUrlEntity?.routeName === PRODUCT_ROUTE_NAME) {
     const productResponse = await getProduct(
-      entityFound.foreignKey,
-      {
-        associations: {
-          media: {},
-          options: {},
-          cmsPage: {
-            associations: {
-              sections: {
-                associations: {
-                  blocks: {
-                    associations: {
-                      slots: {
-                        associations: {
-                          block: {
-                            associations: {
-                              slots: {
-                                associations: {},
-                              },
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
+      seoUrlEntity.foreignKey,
+      cmsAssociations,
       apiInstance
     );
-    console.error("product", productResponse.product);
+
     return {
       product: productResponse.product,
-      cmsPage: (productResponse.product as any).cmsPage,
+      cmsPage: productResponse.product.cmsPage,
       configurator: productResponse.configurator,
-      resourceType: entityFound?.routeName,
+      resourceType: seoUrlEntity?.routeName,
+    };
+  }
+
+  if (seoUrlEntity?.routeName === LANDING_PAGE_ROUTE_NAME) {
+    const LandingPageResponse = await getLandingPage(
+      seoUrlEntity.foreignKey,
+      cmsAssociations,
+      apiInstance
+    );
+
+    return {
+      landingPage: LandingPageResponse,
+      cmsPage: LandingPageResponse.cmsPage,
+      resourceType: seoUrlEntity?.routeName,
     };
   }
 
