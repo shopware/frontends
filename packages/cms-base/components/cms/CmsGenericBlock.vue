@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CmsBlock } from "@shopware-pwa/commons";
+import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 const props = defineProps<{
@@ -26,7 +27,19 @@ const DynamicRender = () => {
           {},
           "Problem resolving component: " + componentNameToResolve
         );
-      return h("div", h(cmsPageView, { content: props.content }));
+
+      const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
+        props.content
+      );
+
+      return h(
+        "div",
+        h(cmsPageView, {
+          content: props.content,
+          style: layoutStyles,
+          class: cssClasses,
+        })
+      );
     }
     return h("div", {}, "Loading...");
   } catch (e) {

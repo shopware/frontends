@@ -13,7 +13,7 @@ const centerLeftContent = getSlotContent("center-left");
 const centerRightContent = getSlotContent("center-right");
 </script>
 <template>
-  <article class="cms-block-image-four-column">
+  <article class="grid md:grid-cols-4 gap-10">
     <CmsGenericElement
       :content="leftContent"
       class="cms-block-image-four-column__image"

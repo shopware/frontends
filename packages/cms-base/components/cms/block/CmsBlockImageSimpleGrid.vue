@@ -13,18 +13,11 @@ const rightContent = getSlotContent("right");
 </script>
 
 <template>
-  <article class="sw-image-simple-grid">
-    <CmsGenericElement
-      :content="leftTopContent"
-      class="sw-image-simple-grid__image sw-image-simple-grid__image--left-top"
-    />
-    <CmsGenericElement
-      :content="leftBottomContent"
-      class="sw-image-simple-grid__image sw-image-simple-grid__image--left-bottom"
-    />
-    <CmsGenericElement
-      :content="rightContent"
-      class="sw-image-simple-grid__image sw-image-simple-grid__image--right-full"
-    />
+  <article class="grid md:grid-cols-2 auto-rows-fr gap-10">
+    <div class="grid gap-10">
+      <CmsGenericElement :content="leftTopContent" />
+      <CmsGenericElement :content="leftBottomContent" />
+    </div>
+    <CmsGenericElement :content="rightContent" />
   </article>
 </template>

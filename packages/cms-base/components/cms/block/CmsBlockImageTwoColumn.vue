@@ -11,7 +11,7 @@ const leftContent = getSlotContent("left");
 const rightContent = getSlotContent("right");
 </script>
 <template>
-  <article class="cms-block-image-two-column">
+  <article class="grid md:grid-cols-2 gap-10">
     <CmsGenericElement
       :content="leftContent"
       class="cms-block-image-two-column__image"

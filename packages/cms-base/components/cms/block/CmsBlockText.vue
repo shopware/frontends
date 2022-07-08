@@ -4,11 +4,11 @@ import { CmsBlockText } from "@shopware-pwa/composables-next";
 const props = defineProps<{
   content: CmsBlockText;
 }>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+
+const content = getSlotContent("content");
 </script>
 <template>
-  <CmsGenericElement
-    v-for="slot in content.slots"
-    :key="slot.id"
-    :content="slot"
-  />
+  <CmsGenericElement :content="content" />
 </template>
