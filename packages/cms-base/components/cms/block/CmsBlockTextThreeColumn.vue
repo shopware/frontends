@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { CmsBlock } from "@shopware-pwa/commons";
+import { CmsBlockTextThreeColumn } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
-  content: CmsBlock;
+  content: CmsBlockTextThreeColumn;
 }>();
 
 const { getSlotContent } = useCmsBlock(props.content);

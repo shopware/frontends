@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { CmsBlock, ProductReview } from "@shopware-pwa/commons";
+import { ProductReview } from "@shopware-pwa/commons";
+import { CmsBlockProductDescriptionReviews } from "@shopware-pwa/composables-next";
 import { getTranslatedProperty } from "@shopware-pwa/helpers";
 import { getProductReviews } from "@shopware-pwa/shopware-6-client";
 import { Ref } from "vue";
 
 const props = defineProps<{
-  content: CmsBlock;
+  content: CmsBlockProductDescriptionReviews;
 }>();
 
 const { getSlotContent } = useCmsBlock(props.content);

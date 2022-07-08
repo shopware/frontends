@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { CmsBlock } from "@shopware-pwa/commons";
+import { CmsBlockImageCover } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
-  content: CmsBlock;
+  content: CmsBlockImageCover;
 }>();
 
 const { getSlotContent } = useCmsBlock(props.content);
 
-const cmsContent = getSlotContent("content");
+const cmsContent = getSlotContent("image");
 </script>
 <template>
   <CmsGenericElement v-if="cmsContent" :content="cmsContent" />

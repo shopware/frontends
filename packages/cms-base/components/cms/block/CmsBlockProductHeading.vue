@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { CmsBlockImageText } from "@shopware-pwa/composables-next";
+import { CmsBlockProductHeading } from "@shopware-pwa/composables-next";
 import { getTranslatedProperty } from "@shopware-pwa/helpers";
 
 const props = defineProps<{
-  content: CmsBlockImageText;
+  content: CmsBlockProductHeading;
 }>();
 
 const { getSlotContent } = useCmsBlock(props.content);
