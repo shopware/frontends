@@ -4,6 +4,8 @@ import { Category } from "@shopware-pwa/commons/interfaces/models/content/catego
 import { CmsPage } from "@shopware-pwa/commons/interfaces/models/content/cms/CmsPage";
 export { SearchFilterType } from "@shopware-pwa/commons";
 
+export * from "./cmsBlockTypes";
+
 /**
  * API responses' types
  * A combination of legacy response types and new response types
