@@ -11,12 +11,8 @@ const leftContent = getSlotContent("left");
 const rightContent = getSlotContent("right");
 </script>
 <template>
-  <div class="flex flex-col md:flex-row container mx-auto mb-8 mt-8">
-    <div class="md:basis-1/2 self-center">
-      <CmsGenericElement :content="leftContent" />
-    </div>
-    <div class="md:basis-1/2 md:pl-8">
-      <CmsGenericElement :content="rightContent" />
-    </div>
+  <div class="grid md:grid-cols-2 gap-10">
+    <CmsGenericElement :content="leftContent" />
+    <CmsGenericElement :content="rightContent" />
   </div>
 </template>

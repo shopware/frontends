@@ -28,8 +28,13 @@ export default {
         return h("div", {}, "There is no " + componentObject.component); // TODO: cmsNoComponent
       return h(componentObject.component, {
         content: componentObject.section,
+        style: {
+          backgroundColor: componentObject.section.backgroundColor,
+        },
       });
     });
   },
 };
 </script>
+
+<style></style>
