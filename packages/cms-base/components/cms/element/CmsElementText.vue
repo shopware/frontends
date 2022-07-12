@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { CmsSlot } from "@shopware-pwa/commons";
+import { CmsElementText } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
-  content: CmsSlot;
+  content: CmsElementText;
 }>();
 
 const CmsTextRender = () => {
