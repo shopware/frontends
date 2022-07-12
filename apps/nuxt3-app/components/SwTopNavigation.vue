@@ -1,11 +1,7 @@
 <script setup lang="ts">
-const { loadNavigationElements, navigationElements } = useNavigation();
+const { navigationElements } = useNavigation();
 
 const currentMenuPosition = ref(null);
-
-onMounted(() => {
-  loadNavigationElements({ depth: 2 });
-});
 
 const menuHtmlElement = ref(null);
 

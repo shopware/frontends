@@ -1,4 +1,4 @@
-import { computed, ComputedRef, ref } from "vue";
+import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
 import {
   StoreNavigationElement,
   StoreNavigationType,
@@ -19,7 +19,9 @@ export interface IUseNavigation {
   /**
    * Load navigation elements
    */
-  loadNavigationElements: (params: { depth: number }) => Promise<void>;
+  loadNavigationElements: (params: {
+    depth: number;
+  }) => Promise<StoreNavigationElement[]>;
 }
 
 /**
@@ -52,7 +54,12 @@ export function useNavigation(params?: {
   //   defaultsKey: contextName,
   // });
 
-  const sharedElements = ref<StoreNavigationElement[]>([]);
+  const sharedElements: Ref<StoreNavigationElement[]> = inject(
+    "swNavigation",
+    ref([])
+  );
+  provide("swNavigation", sharedElements);
+
   const navigationElements = computed(() => sharedElements.value);
 
   const loadNavigationElements = async ({ depth }: { depth: number }) => {
@@ -71,9 +78,11 @@ export function useNavigation(params?: {
       );
 
       sharedElements.value = navigationResponse || [];
+      return sharedElements.value;
     } catch (e) {
       sharedElements.value = [];
       console.error("[useNavigation][loadNavigationElements]", e);
+      return [];
     }
   };
 
