@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { CmsSlot } from "@shopware-pwa/commons";
+import { CmsElementProductBox } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
-  content: CmsSlot;
+  content: CmsElementProductBox;
 }>();
 
 const product = computed(() => props.content.data?.product || {});

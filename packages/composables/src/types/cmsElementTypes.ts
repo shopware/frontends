@@ -3,6 +3,7 @@ import {
   CrossSelling,
   Media,
   Product,
+  ProductListingResult,
   ProductReview,
   Salutation,
 } from "@shopware-pwa/commons";
@@ -36,11 +37,12 @@ type ElementFieldConfig = {
 
 // Text
 export type CmsElementText = CmsSlot & {
+  type: "text";
   config: TextElementConfig;
   fieldConfig: ElementFieldConfig[];
   data: {
     content: string;
-    apiAlias: string | "cms_text";
+    apiAlias: "cms_text";
   };
   translated: {
     config: TextElementConfig;
@@ -59,12 +61,13 @@ type ImageElementConfig = {
   verticalAlign: ElementConfig<VerticalAlign>;
 };
 export type CmsElementImage = CmsSlot & {
+  type: "image";
   config: ImageElementConfig;
   data: {
     mediaId: string;
     url: string;
     newTab: boolean;
-    apiAlias: string | "cms_image";
+    apiAlias: "cms_image";
     media: Media;
   };
 };
@@ -88,13 +91,13 @@ export type CmsElementImageSlider = CmsSlot & {
   type: "image-slider";
   config: ImageSliderElementConfig;
   data: {
-    apiAlias: string | "cms_image_slider";
+    apiAlias: "cms_image_slider";
     navigation: unknown;
     sliderItems: {
       url: null | string;
       newTab: boolean;
       media: Media;
-      apiAlias: string | "cms_image_slider_item";
+      apiAlias: "cms_image_slider_item";
     }[];
   };
 };
@@ -110,16 +113,17 @@ type ImageGalleryElementConfig = ImageSliderElementConfig & {
 };
 
 export type CmsElementImageGallery = CmsSlot & {
+  type: "image-gallery";
   config: ImageGalleryElementConfig;
   data: {
     // actually a CmsElementImageSlider data, consider unify this
-    apiAlias: string | "cms_image_slider";
+    apiAlias: "cms_image_slider";
     navigation: unknown;
     sliderItems: {
       url: null | string;
       newTab: boolean;
       media: Media;
-      apiAlias: string | "cms_image_slider_item";
+      apiAlias: "cms_image_slider_item";
     }[];
   };
 };
@@ -146,7 +150,7 @@ export type CmsElementYoutubeVideo = CmsSlot & {
     url: null | string;
     newTab: null | boolean;
     media: null | Media;
-    apiAlias: string | "cms_image";
+    apiAlias: "cms_image";
   };
 };
 
@@ -173,7 +177,7 @@ export type CmsElementVimeoVideo = CmsSlot & {
     url: null | string;
     newTab: null | boolean;
     media: null | Media;
-    apiAlias: string | "cms_image";
+    apiAlias: "cms_image";
   };
 };
 
@@ -190,7 +194,7 @@ export type CmsElementProductBox = CmsSlot & {
   data: {
     productId: string;
     product: Product;
-    apiAlias: string | "cms_product_box";
+    apiAlias: "cms_product_box";
   };
 };
 
@@ -214,18 +218,39 @@ export type CmsElementProductSlider = CmsSlot & {
   type: "product-slider";
   config: ProductSliderElementConfig;
   data: {
-    apiAlias: string | "cms_product_slider";
+    apiAlias: "cms_product_slider";
     products: Product[];
   };
 };
 
-// Product Filter (Sidebar filter)
+// Sidebar Filter (Sidebar filter)
 
-type ProductFilterElementConfig = unknown;
+type CmsSidebarFilterElementConfig = unknown;
 
-export type CmsElementProductFilter = CmsSlot & {
-  type: "product-filter";
-  config: ProductFilterElementConfig;
+export type CmsElementSidebarFilter = CmsSlot & {
+  type: "sidebar-filter";
+  config: CmsSidebarFilterElementConfig;
+};
+
+// Product Listing
+
+type CmsProductListingElementConfig = {
+  filters: ElementConfig<string>;
+  boxLayout: ElementConfig<BoxLayout>;
+  showSorting: ElementConfig<boolean>;
+  defaultSorting: ElementConfig<string>;
+  useCustomSorting: ElementConfig<boolean>;
+  availableSortings: ElementConfig<string[]>;
+  propertyWhitelist: ElementConfig<string[]>;
+};
+
+export type CmsElementProductListing = CmsSlot & {
+  type: "product-listing";
+  config: CmsProductListingElementConfig;
+  data: {
+    apiAlias: "cms_product_listing";
+    listing: ProductListingResult;
+  };
 };
 
 // Category Navigation
@@ -252,7 +277,7 @@ export type CmsElementProductDescriptionReviews = CmsSlot & {
     ratingSuccess: boolean;
     product?: Product;
     reviews: ProductReview[];
-    apiAlias: string | "cms_product_description_reviews";
+    apiAlias: "cms_product_description_reviews";
   };
 };
 
@@ -279,7 +304,7 @@ export type CmsElementCrossSelling = CmsSlot & {
   type: "cross-selling";
   config: CrossSellingElementConfig;
   data: {
-    apiAlias: string | "cms_cross_selling";
+    apiAlias: "cms_cross_selling";
     crossSellings: CrossSelling[];
   };
 };
