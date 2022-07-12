@@ -5,6 +5,8 @@ import { CmsPage } from "@shopware-pwa/commons/interfaces/models/content/cms/Cms
 export { SearchFilterType } from "@shopware-pwa/commons";
 
 export * from "./cmsBlockTypes";
+export * from "./cmsElementTypes";
+export * from "./cmsSectionTypes";
 
 /**
  * API responses' types
