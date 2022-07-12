@@ -34,53 +34,59 @@ before_script:
   - curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@7
   - pnpm config set store-dir .pnpm-store
 
-init: # This job runs in the init stage, which runs first.
-  stage: init
-  script:
-    - pnpm install
-  cache:
-    <<: *cache
-    policy: push
+# init: # This job runs in the init stage, which runs first.
+#   stage: init
+#   script:
+#     - pnpm install
+#   cache:
+#     <<: *cache
+#     policy: push
 
-build-job: # This job runs in the build stage, which runs first.
-  stage: build
-  needs:
-    - job: init
-      artifacts: false
-  interruptible: true
-  script:
-    - pnpm install
-    - pnpm run build
+# build-job: # This job runs in the build stage, which runs first.
+#   stage: build
+#   needs:
+#     - job: init
+#       artifacts: false
+#   interruptible: true
+#   script:
+#     - pnpm install
+#     - pnpm run build
 
-unit-test-job: # This job runs in the test stage.
-  stage: build # It only starts when the job in the build stage completes successfully.
-  needs:
-    - job: init
-      artifacts: false
-  interruptible: true
-  script:
-    - pnpm install
-    - pnpm run test
+# unit-test-job: # This job runs in the test stage.
+#   stage: build # It only starts when the job in the build stage completes successfully.
+#   needs:
+#     - job: init
+#       artifacts: false
+#   interruptible: true
+#   script:
+#     - pnpm install
+#     - pnpm run test
 
-lint-test-job: # This job also runs in the test stage.
-  stage: build # It can run at the same time as unit-test-job (in parallel).
-  needs:
-    - job: init
-      artifacts: false
-  script:
-    - pnpm install
-    - pnpm run lint
+# lint-test-job: # This job also runs in the test stage.
+#   stage: build # It can run at the same time as unit-test-job (in parallel).
+#   needs:
+#     - job: init
+#       artifacts: false
+#   script:
+#     - pnpm install
+#     - pnpm run lint
 
 deploy-job: # This job runs in the deploy stage.
   stage: deploy # It only runs when *both* jobs in the test stage complete successfully.
   variables:
     VERCEL_ORG_ID: $VERCEL_ORG_ID
     VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
+    IS_PROD_FLAG: ""
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+      variables: # Override IS_PROD_FLAG defined
+        IS_PROD_FLAG: "--prod" # at the job level.
   script:
+    - echo "Building! isProd - $IS_PROD_FLAG"
     - pnpm install
     - pnpm exec vercel pull -t $VERCEL_TOKEN --scope $VERCEL_SCOPE
-    - pnpm exec vercel build
-    - DYNAMIC_ENVIRONMENT_URL=$(pnpm exec vercel deploy --prebuilt --confirm -t $VERCEL_TOKEN --scope $VERCEL_SCOPE)
+    - pnpm exec vercel build $IS_PROD_FLAG
+    - DYNAMIC_ENVIRONMENT_URL=$(pnpm exec vercel deploy --prebuilt --confirm -t $VERCEL_TOKEN --scope $VERCEL_SCOPE $IS_PROD_FLAG)
     - echo "Deployed to $DYNAMIC_ENVIRONMENT_URL"
     - echo "DYNAMIC_ENVIRONMENT_URL=$DYNAMIC_ENVIRONMENT_URL" >> deploy.env
   environment:
