@@ -33,3 +33,7 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+#deployments
+.vercel
+.vercel_build_output

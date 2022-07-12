@@ -11,7 +11,6 @@ import { useCms } from "@shopware-pwa/composables-next";
 
 const { search } = useCms();
 const route = useRoute();
-const { apiInstance } = useShopwareContext();
 
 const { data: cmsResponse } = await useAsyncData(
   "cmsResponse" + route.path,

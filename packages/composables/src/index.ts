@@ -5,6 +5,13 @@ export * from "./types";
 export * from "./useCms";
 export * from "./useProductConfigurator";
 export * from "./useCmsBlock";
+export * from "./useNavigation";
+export * from "./useCart";
+export * from "./useCartItem";
+export * from "./useUser";
+export * from "./useSessionContext";
+export * from "./useAddToCart";
+export * from "./useNotifications";
 
 export type ShopwareContext = {
   apiInstance: ShopwareApiInstance;

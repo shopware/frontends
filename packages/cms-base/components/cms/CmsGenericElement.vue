@@ -33,14 +33,11 @@ const DynamicRender = () => {
         props.content
       );
 
-      return h(
-        "div",
-        h(cmsPageView, {
-          content: props.content,
-          style: layoutStyles,
-          class: cssClasses,
-        })
-      );
+      return h(cmsPageView, {
+        content: props.content,
+        style: layoutStyles,
+        class: cssClasses,
+      });
     }
     return h("div", {}, "Loading...");
   } catch (e) {

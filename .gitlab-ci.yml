@@ -73,6 +73,19 @@ lint-test-job: # This job also runs in the test stage.
 
 deploy-job: # This job runs in the deploy stage.
   stage: deploy # It only runs when *both* jobs in the test stage complete successfully.
+  variables:
+    VERCEL_ORG_ID: $VERCEL_ORG_ID
+    VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - pnpm install
+    - pnpm exec vercel pull -t $VERCEL_TOKEN --scope $VERCEL_SCOPE
+    - pnpm exec vercel build
+    - DYNAMIC_ENVIRONMENT_URL=$(pnpm exec vercel deploy --prebuilt --confirm -t $VERCEL_TOKEN --scope $VERCEL_SCOPE)
+    - echo "Deployed to $DYNAMIC_ENVIRONMENT_URL"
+    - echo "DYNAMIC_ENVIRONMENT_URL=$DYNAMIC_ENVIRONMENT_URL" >> deploy.env
+  environment:
+    name: review/$CI_COMMIT_REF_SLUG
+    url: $DYNAMIC_ENVIRONMENT_URL
+  artifacts:
+    reports:
+      dotenv: deploy.env

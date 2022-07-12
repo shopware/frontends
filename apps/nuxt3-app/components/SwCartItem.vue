@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useCartItem } from "@shopware-pwa/composables";
 import { getProductMainImageUrl, getProductUrl } from "@shopware-pwa/helpers";
 const isLoading = ref(false);
 

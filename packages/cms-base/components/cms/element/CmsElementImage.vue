@@ -7,5 +7,5 @@ const props = defineProps<{
 </script>
 
 <template>
-  <img class="h-full" :src="content.data?.media?.url" />
+  <img class="h-full w-full" :src="content.data?.media?.url" />
 </template>

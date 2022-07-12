@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useCart } from "@shopware-pwa/composables";
 const isOpen = inject("isSidebarOpen");
 
 const { cartItems, totalPrice } = useCart();

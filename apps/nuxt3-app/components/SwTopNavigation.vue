@@ -58,7 +58,10 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
               :to="'/' + childElement.seoUrls[0]?.seoPathInfo"
               class="flex justify-between rounded-lg hover:bg-gray-50"
             >
-              <div class="flex flex-col flex-grow pl-2">
+              <div
+                class="flex flex-col flex-grow pl-2"
+                :class="{ 'max-w-200px': !!childElement.media }"
+              >
                 <p class="text-base font-medium text-gray-900">
                   {{ childElement.translated.name }}
                 </p>

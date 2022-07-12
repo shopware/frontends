@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useNotifications } from "@shopware-pwa/composables";
 const { notifications, removeOne } = useNotifications();
 </script>
 <template>
