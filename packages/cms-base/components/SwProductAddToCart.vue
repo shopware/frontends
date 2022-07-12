@@ -3,7 +3,6 @@ import {
   getProductTierPrices,
   getProductCalculatedListingPrice,
 } from "@shopware-pwa/helpers";
-import { useAddToCart, useNotifications } from "@shopware-pwa/composables";
 const { pushSuccess } = useNotifications();
 const props = defineProps({
   product: Object,

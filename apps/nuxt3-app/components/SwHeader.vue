@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useCart } from "@shopware-pwa/composables";
 const { count } = useCart();
 const isSidebarOpen = inject("isSidebarOpen");
 </script>

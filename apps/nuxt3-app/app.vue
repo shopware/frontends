@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useUser, useCart } from "@shopware-pwa/composables";
 definePageMeta({
   key: (route) => route.fullPath,
 });
@@ -7,6 +6,7 @@ definePageMeta({
 const { refreshSessionContext } = useSessionContext();
 const { refreshUser } = useUser();
 const { refreshCart } = useCart();
+useNotifications();
 
 onMounted(() => {
   refreshSessionContext();
@@ -15,6 +15,7 @@ onMounted(() => {
 });
 
 const isSidebarOpen = ref(false);
+
 provide("isSidebarOpen", isSidebarOpen);
 const isModalOpened = ref(false);
 provide("isModalOpened", isModalOpened);

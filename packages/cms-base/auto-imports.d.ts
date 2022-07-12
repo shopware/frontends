@@ -194,7 +194,7 @@ declare global {
   const useMouseInElement: typeof import("@vueuse/core")["useMouseInElement"];
   const useMousePressed: typeof import("@vueuse/core")["useMousePressed"];
   const useMutationObserver: typeof import("@vueuse/core")["useMutationObserver"];
-  const useNavigation: typeof import("@shopware-pwa/composables")["useNavigation"];
+  const useNavigation: typeof import("@shopware-pwa/composables-next")["useNavigation"];
   const useNavigatorLanguage: typeof import("@vueuse/core")["useNavigatorLanguage"];
   const useNetwork: typeof import("@vueuse/core")["useNetwork"];
   const useNow: typeof import("@vueuse/core")["useNow"];
@@ -475,7 +475,7 @@ declare module "vue" {
     useMouseInElement: typeof import("@vueuse/core")["useMouseInElement"];
     useMousePressed: typeof import("@vueuse/core")["useMousePressed"];
     useMutationObserver: typeof import("@vueuse/core")["useMutationObserver"];
-    useNavigation: typeof import("@shopware-pwa/composables")["useNavigation"];
+    useNavigation: typeof import("@shopware-pwa/composables-next")["useNavigation"];
     useNavigatorLanguage: typeof import("@vueuse/core")["useNavigatorLanguage"];
     useNetwork: typeof import("@vueuse/core")["useNetwork"];
     useNow: typeof import("@vueuse/core")["useNow"];

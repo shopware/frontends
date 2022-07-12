@@ -7,10 +7,7 @@ export default {
 import {
   useCountries,
   useSalutations,
-  useUser,
   useCheckout,
-  useSessionContext,
-  useCart,
 } from "@shopware-pwa/composables";
 
 definePageMeta({

@@ -9,6 +9,7 @@ const navigationElements = ref([]);
 
 onMounted(async () => {
   try {
+    if (!resourceIdentifier.value) return;
     const response = await getStoreNavigation(
       {
         requestActiveId: resourceIdentifier.value,

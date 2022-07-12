@@ -4,7 +4,11 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".nuxt/**"]
+      "outputs": ["dist/**", ".nuxt/**", ".output/**"]
+    },
+    "generate": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".nuxt/**", ".output/**"]
     },
     "lint": {
       "outputs": []

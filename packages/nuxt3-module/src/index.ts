@@ -21,8 +21,8 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
       // @ts-ignore
       src: resolve(__dirname, "../plugin.ts"),
       options: {
-        shopwareEndpoint: "https://frontends.shopware.store/",
-        shopwareAccessToken: "SWSCNKY0DKJEN3FLTFI4SGPXEG",
+        shopwareEndpoint: "https://demo-frontends.swstage.store/",
+        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
         shopwareApiClient: {
           timeout: "10000",
           //   auth: {
@@ -37,19 +37,22 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
     nuxt.hook("autoImports:sources", (dirs) => {
       dirs.push({
         from: "@shopware-pwa/composables",
-        imports: [
-          "useProduct",
-          "useNavigation",
-          "useAddToCart",
-          "useSessionContext",
-          "useProductConfigurator",
-          "useUser",
-          "useListing",
-        ],
+        imports: ["useProduct", "useProductConfigurator", "useListing"],
       });
       dirs.push({
         from: "@shopware-pwa/composables-next",
-        imports: ["useShopwareContext", "useCms", "useCmsBlock"],
+        imports: [
+          "useAddToCart",
+          "useShopwareContext",
+          "useSessionContext",
+          "useCart",
+          "useCartItem",
+          "useNavigation",
+          "useNotifications",
+          "useCms",
+          "useCmsBlock",
+          "useUser",
+        ],
       });
     });
   },
