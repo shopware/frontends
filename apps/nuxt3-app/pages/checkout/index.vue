@@ -4,12 +4,6 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import {
-  useCountries,
-  useSalutations,
-  useCheckout,
-} from "@shopware-pwa/composables";
-
 definePageMeta({
   layout: "checkout",
 });

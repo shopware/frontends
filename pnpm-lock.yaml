@@ -49,7 +49,6 @@ importers:
     specifiers:
       '@nuxt/kit': ^3.0.0-rc.4
       '@nuxt/schema': ^3.0.0-rc.4
-      '@shopware-pwa/composables': canary
       '@shopware-pwa/composables-next': workspace:*
       '@shopware-pwa/shopware-6-client': canary
       '@vue/eslint-config-typescript': ^9.1.0
@@ -61,7 +60,6 @@ importers:
       vue-eslint-parser: ^9.0.3
     dependencies:
       '@nuxt/kit': 3.0.0-rc.4
-      '@shopware-pwa/composables': 1.5.3-canary.1673
       '@shopware-pwa/composables-next': link:../composables
       '@shopware-pwa/shopware-6-client': 1.5.3-canary.1673
     devDependencies:

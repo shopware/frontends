@@ -112,7 +112,7 @@ declare global {
   const until: typeof import("@vueuse/core")["until"];
   const useActiveElement: typeof import("@vueuse/core")["useActiveElement"];
   const useActiveRoute: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useActiveRoute"];
-  const useAddToCart: typeof import("@shopware-pwa/composables")["useAddToCart"];
+  const useAddToCart: typeof import("@shopware-pwa/composables-next")["useAddToCart"];
   const useAsyncData: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useAsyncData"];
   const useAsyncQueue: typeof import("@vueuse/core")["useAsyncQueue"];
   const useAsyncState: typeof import("@vueuse/core")["useAsyncState"];
@@ -209,8 +209,9 @@ declare global {
   const usePreferredColorScheme: typeof import("@vueuse/core")["usePreferredColorScheme"];
   const usePreferredDark: typeof import("@vueuse/core")["usePreferredDark"];
   const usePreferredLanguages: typeof import("@vueuse/core")["usePreferredLanguages"];
-  const useProduct: typeof import("@shopware-pwa/composables")["useProduct"];
-  const useProductConfigurator: typeof import("@shopware-pwa/composables")["useProductConfigurator"];
+  const useProduct: typeof import("@shopware-pwa/composables-next")["useProduct"];
+  const useProductConfigurator: typeof import("@shopware-pwa/composables-next")["useProductConfigurator"];
+  const useProductAssociations: typeof import("@shopware-pwa/composables-next")["useProductAssociations"];
   const useRafFn: typeof import("@vueuse/core")["useRafFn"];
   const useRefHistory: typeof import("@vueuse/core")["useRefHistory"];
   const useRequestEvent: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useRequestEvent"];
@@ -224,7 +225,6 @@ declare global {
   const useScriptTag: typeof import("@vueuse/core")["useScriptTag"];
   const useScroll: typeof import("@vueuse/core")["useScroll"];
   const useScrollLock: typeof import("@vueuse/core")["useScrollLock"];
-  const useSessionContext: typeof import("@shopware-pwa/composables")["useSessionContext"];
   const useSessionStorage: typeof import("@vueuse/core")["useSessionStorage"];
   const useShare: typeof import("@vueuse/core")["useShare"];
   const useShopwareContext: typeof import("@shopware-pwa/composables-next")["useShopwareContext"];
@@ -249,7 +249,7 @@ declare global {
   const useTransition: typeof import("@vueuse/core")["useTransition"];
   const useTransitionState: typeof import("vue")["useTransitionState"];
   const useUrlSearchParams: typeof import("@vueuse/core")["useUrlSearchParams"];
-  const useUser: typeof import("@shopware-pwa/composables")["useUser"];
+  const useUser: typeof import("@shopware-pwa/composables-next")["useUser"];
   const useUserMedia: typeof import("@vueuse/core")["useUserMedia"];
   const useVModel: typeof import("@vueuse/core")["useVModel"];
   const useVModels: typeof import("@vueuse/core")["useVModels"];
@@ -394,7 +394,7 @@ declare module "vue" {
     until: typeof import("@vueuse/core")["until"];
     useActiveElement: typeof import("@vueuse/core")["useActiveElement"];
     useActiveRoute: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useActiveRoute"];
-    useAddToCart: typeof import("@shopware-pwa/composables")["useAddToCart"];
+    useAddToCart: typeof import("@shopware-pwa/composables-next")["useAddToCart"];
     useAsyncData: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useAsyncData"];
     useAsyncQueue: typeof import("@vueuse/core")["useAsyncQueue"];
     useAsyncState: typeof import("@vueuse/core")["useAsyncState"];
@@ -408,7 +408,7 @@ declare module "vue" {
     useCached: typeof import("@vueuse/core")["useCached"];
     useClamp: typeof import("@vueuse/core")["useClamp"];
     useClipboard: typeof import("@vueuse/core")["useClipboard"];
-    useCms: typeof import("@shopware-pwa/composables")["useCms"];
+    useCms: typeof import("@shopware-pwa/composables-next")["useCms"];
     useColorMode: typeof import("@vueuse/core")["useColorMode"];
     useConfirmDialog: typeof import("@vueuse/core")["useConfirmDialog"];
     useCookie: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useCookie"];
@@ -461,7 +461,7 @@ declare module "vue" {
     useLastChanged: typeof import("@vueuse/core")["useLastChanged"];
     useLazyAsyncData: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useLazyAsyncData"];
     useLazyFetch: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useLazyFetch"];
-    useListing: typeof import("@shopware-pwa/composables")["useListing"];
+    useListing: typeof import("@shopware-pwa/composables-next")["useListing"];
     useLocalStorage: typeof import("@vueuse/core")["useLocalStorage"];
     useMagicKeys: typeof import("@vueuse/core")["useMagicKeys"];
     useManualRefHistory: typeof import("@vueuse/core")["useManualRefHistory"];
@@ -490,8 +490,8 @@ declare module "vue" {
     usePreferredColorScheme: typeof import("@vueuse/core")["usePreferredColorScheme"];
     usePreferredDark: typeof import("@vueuse/core")["usePreferredDark"];
     usePreferredLanguages: typeof import("@vueuse/core")["usePreferredLanguages"];
-    useProduct: typeof import("@shopware-pwa/composables")["useProduct"];
-    useProductConfigurator: typeof import("@shopware-pwa/composables")["useProductConfigurator"];
+    useProduct: typeof import("@shopware-pwa/composables-next")["useProduct"];
+    useProductConfigurator: typeof import("@shopware-pwa/composables-next")["useProductConfigurator"];
     useRafFn: typeof import("@vueuse/core")["useRafFn"];
     useRefHistory: typeof import("@vueuse/core")["useRefHistory"];
     useRequestEvent: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useRequestEvent"];
@@ -505,7 +505,7 @@ declare module "vue" {
     useScriptTag: typeof import("@vueuse/core")["useScriptTag"];
     useScroll: typeof import("@vueuse/core")["useScroll"];
     useScrollLock: typeof import("@vueuse/core")["useScrollLock"];
-    useSessionContext: typeof import("@shopware-pwa/composables")["useSessionContext"];
+    useSessionContext: typeof import("@shopware-pwa/composables-next")["useSessionContext"];
     useSessionStorage: typeof import("@vueuse/core")["useSessionStorage"];
     useShare: typeof import("@vueuse/core")["useShare"];
     useShopwareContext: typeof import("@shopware-pwa/composables-next")["useShopwareContext"];
@@ -530,7 +530,7 @@ declare module "vue" {
     useTransition: typeof import("@vueuse/core")["useTransition"];
     useTransitionState: typeof import("vue")["useTransitionState"];
     useUrlSearchParams: typeof import("@vueuse/core")["useUrlSearchParams"];
-    useUser: typeof import("@shopware-pwa/composables")["useUser"];
+    useUser: typeof import("@shopware-pwa/composables-next")["useUser"];
     useUserMedia: typeof import("@vueuse/core")["useUserMedia"];
     useVModel: typeof import("@vueuse/core")["useVModel"];
     useVModels: typeof import("@vueuse/core")["useVModels"];
