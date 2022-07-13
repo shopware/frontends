@@ -1,4 +1,4 @@
-import { computed, ComputedRef } from "vue-demi";
+import { computed, ComputedRef } from "vue";
 import {
   removeCartItem,
   changeCartItemQuantity,

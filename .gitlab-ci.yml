@@ -81,6 +81,7 @@ deploy-job: # This job runs in the deploy stage.
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
       variables: # Override IS_PROD_FLAG defined
         IS_PROD_FLAG: "--prod" # at the job level.
+    - when: on_success
   script:
     - echo "Building! $IS_PROD_FLAG"
     - pnpm install
