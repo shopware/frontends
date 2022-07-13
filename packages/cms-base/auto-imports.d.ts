@@ -180,7 +180,7 @@ declare global {
   const useLastChanged: typeof import("@vueuse/core")["useLastChanged"];
   const useLazyAsyncData: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useLazyAsyncData"];
   const useLazyFetch: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useLazyFetch"];
-  const useListing: typeof import("@shopware-pwa/composables")["useListing"];
+  const useListing: typeof import("@shopware-pwa/composables-next")["useListing"];
   const useLocalStorage: typeof import("@vueuse/core")["useLocalStorage"];
   const useMagicKeys: typeof import("@vueuse/core")["useMagicKeys"];
   const useManualRefHistory: typeof import("@vueuse/core")["useManualRefHistory"];

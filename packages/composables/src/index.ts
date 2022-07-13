@@ -12,6 +12,7 @@ export * from "./useUser";
 export * from "./useSessionContext";
 export * from "./useAddToCart";
 export * from "./useNotifications";
+export * from "./useListing";
 
 export type ShopwareContext = {
   apiInstance: ShopwareApiInstance;

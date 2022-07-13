@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import SwProductListingFilter from "./SwProductListingFilter.vue";
-import { useListing } from "@shopware-pwa/composables";
 defineEmits(["select-filter-value"]);
 const $props = defineProps(["content", "listingType"]);
 const cmsPage = inject("cms-page");

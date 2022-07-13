@@ -78,17 +78,22 @@ importers:
     specifiers:
       '@shopware-pwa/commons': canary
       '@shopware-pwa/shopware-6-client': canary
+      '@types/lodash': ^4.14.182
       c8: ^7.11.3
       eslint-config-shopware: workspace:*
       happy-dom: ^5.3.4
+      lodash: ^4.17.21
       tsconfig: workspace:*
       typescript: ^4.7.4
       unbuild: ^0.7.4
       vitest: ^0.16.0
       vue: ^3.2.37
+    dependencies:
+      lodash: 4.17.21
     devDependencies:
       '@shopware-pwa/commons': 1.5.3-canary.1673
       '@shopware-pwa/shopware-6-client': 1.5.3-canary.1673
+      '@types/lodash': 4.14.182
       c8: 7.11.3
       eslint-config-shopware: link:../eslint-config-shopware
       happy-dom: 5.3.4
@@ -1106,6 +1111,10 @@ packages:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
       '@types/node': 17.0.23
+    dev: true
+
+  /@types/lodash/4.14.182:
+    resolution: {integrity: sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q==}
     dev: true
 
   /@types/node/10.17.60:
