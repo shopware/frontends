@@ -19,7 +19,7 @@ import {
 import { inject, computed, ComputedRef, ref, provide } from "vue";
 import { ListingFilter, getListingFilters } from "@shopware-pwa/helpers";
 import { useShopwareContext, useCms } from ".";
-import merge from "lodash/merge";
+import merge from "lodash/merge.js";
 
 /**
  * @beta

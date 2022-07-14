@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
-    "build": "nuxi build",
+    "build": "NITRO_PRESET=vercel nuxi build",
     "lint": "eslint ./**/*.vue* app.vue --fix",
     "generate": "nuxt generate",
     "preview": "nuxt preview"
@@ -13,15 +13,15 @@
     "@shopware-pwa/cms-base": "workspace:*",
     "@shopware-pwa/composables": "canary",
     "@shopware-pwa/composables-next": "workspace:*",
-    "@unocss/nuxt": "^0.39.3",
-    "@vueuse/nuxt": "^8.7.4",
+    "@unocss/nuxt": "^0.44.2",
+    "@vueuse/nuxt": "^8.9.2",
     "vue": "^3.2.37"
   },
   "devDependencies": {
-    "@vue/eslint-config-typescript": "^9.1.0",
-    "eslint-plugin-vue": "^9.1.1",
+    "@vue/eslint-config-typescript": "^11.0.0",
+    "eslint-plugin-vue": "^9.2.0",
     "eslint-config-shopware": "workspace:*",
-    "nuxt": "^3.0.0-rc.4",
+    "nuxt": "^3.0.0-rc.5",
     "vue-eslint-parser": "^9.0.3"
   }
 }
