@@ -17,13 +17,13 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.4",
+    "@nuxt/kit": "^3.0.0-rc.5",
     "@shopware-pwa/composables": "canary",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/shopware-6-client": "canary"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.0.0-rc.4",
+    "@nuxt/schema": "^3.0.0-rc.5",
     "tsconfig": "workspace:*",
     "eslint-config-shopware": "workspace:*",
     "typescript": "^4.7.4",
