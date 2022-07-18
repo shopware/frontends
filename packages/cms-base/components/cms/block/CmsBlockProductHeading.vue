@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CmsBlockProductHeading } from "@shopware-pwa/composables-next";
-import { getTranslatedProperty } from "@shopware-pwa/helpers";
+import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{
   content: CmsBlockProductHeading;

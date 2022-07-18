@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { debounce } from "@shopware-pwa/helpers";
+import { debounce } from "@shopware-pwa/helpers-next";
 const $emits = defineEmits(["select-value"]);
 const $props = defineProps(["filter"]);
 const isFilterVisible = ref(false);

@@ -5,7 +5,7 @@ import {
   CmsPageResponse,
   CmsResourceType,
 } from "@shopware-pwa/commons";
-import { _parseUrlQuery } from "@shopware-pwa/helpers";
+import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { searchCms } from "./searchLogic";
 import { useShopwareContext } from ".";
 // import {

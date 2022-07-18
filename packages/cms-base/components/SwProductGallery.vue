@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getProductMediaGallery } from "@shopware-pwa/helpers";
+import { getProductMediaGallery } from "@shopware-pwa/helpers-next";
 
 const props = defineProps({
   product: Object,

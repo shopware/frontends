@@ -10,7 +10,7 @@ import {
   invokePost,
   getProductEndpoint,
 } from "@shopware-pwa/shopware-6-client";
-import { getTranslatedProperty } from "@shopware-pwa/helpers";
+import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
 /**
  * interface for {@link useProductConfigurator} composable

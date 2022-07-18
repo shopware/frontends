@@ -1,5 +1,8 @@
 <script setup>
-import { getCategoryUrl, getTranslatedProperty } from "@shopware-pwa/helpers";
+import {
+  getCategoryUrl,
+  getTranslatedProperty,
+} from "@shopware-pwa/helpers-next";
 import { getStoreNavigation } from "@shopware-pwa/shopware-6-client";
 import { useCms, useShopwareContext } from "@shopware-pwa/composables-next";
 

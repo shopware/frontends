@@ -1,5 +1,6 @@
 <script setup>
-import { getTranslatedProperty } from "@shopware-pwa/helpers";
+import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+
 const cmsPage = inject("cms-page");
 const product = computed(() => cmsPage.value?.product); // || { id: "0099f284cda143558959e6d2803ad20d"})
 const $props = defineProps(["content"]);

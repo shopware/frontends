@@ -1,0 +1,31 @@
+{
+  "name": "@shopware-pwa/helpers-next",
+  "version": "2.0.0-alpha.0",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.cjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint src/**/*.ts* --fix",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@shopware-pwa/commons": "canary",
+    "eslint-config-shopware": "workspace:*",
+    "query-string": "^7.1.1",
+    "tsconfig": "workspace:*",
+    "vitest": "^0.16.0",
+    "jsdom": "^20.0.0"
+  },
+  "dependencies": {
+  }
+}

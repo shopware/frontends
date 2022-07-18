@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { getProductMainImageUrl, getProductUrl } from "@shopware-pwa/helpers";
+import {
+  getProductMainImageUrl,
+  getProductUrl,
+} from "@shopware-pwa/helpers-next";
 
 const $props = defineProps({
   orderItem: Object,

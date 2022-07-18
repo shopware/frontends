@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CmsSlot } from "@shopware-pwa/commons";
-import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers";
+import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 
