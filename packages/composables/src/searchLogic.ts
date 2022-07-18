@@ -83,7 +83,10 @@ export async function searchCms(
   // @TODO: create an issue in the API core to expose information of main entrypoint for specific sales channel in category entity
   if (path === "/") {
     const categoryResponse = await getCategories(
-      Object.assign({}, cmsAssociations, {
+      {
+        includes: {
+          category: ["id"],
+        },
         filter: [
           {
             type: SearchFilterType.EQUALS,
@@ -101,11 +104,14 @@ export async function searchCms(
             value: null,
           },
         ],
-      }),
+      },
       apiInstance
     );
 
-    const category = categoryResponse?.elements?.[0];
+    const category = await getCategory(
+      categoryResponse?.elements?.[0].id,
+      apiInstance
+    );
 
     return {
       category: category,
