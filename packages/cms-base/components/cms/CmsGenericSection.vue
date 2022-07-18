@@ -1,6 +1,6 @@
 <script lang="ts">
 // import { getCmsSectionComponent } from "sw-cms/cmsNameMapper";
-import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers";
+import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 import { resolveComponent } from "vue";
 // import { computed } from "@vue/composition-api";
 // import SwPluginSlot from "sw-plugins/SwPluginSlot.vue";

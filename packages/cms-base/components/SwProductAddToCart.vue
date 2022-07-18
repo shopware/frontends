@@ -2,7 +2,7 @@
 import {
   getProductTierPrices,
   getProductCalculatedListingPrice,
-} from "@shopware-pwa/helpers";
+} from "@shopware-pwa/helpers-next";
 const { pushSuccess } = useNotifications();
 const props = defineProps({
   product: Object,

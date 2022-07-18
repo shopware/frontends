@@ -10,7 +10,7 @@ export default defineBuildConfig({
   externals: [
     "vue",
     "@shopware-pwa/shopware-6-client",
-    "@shopware-pwa/helpers",
+    "@shopware-pwa/helpers-next",
     "@shopware-pwa/commons",
   ],
 });

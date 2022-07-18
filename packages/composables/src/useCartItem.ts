@@ -16,7 +16,7 @@ import {
 //   useCart,
 // } from "@shopware-pwa/composables";
 
-import { getProductMainImageUrl } from "@shopware-pwa/helpers";
+import { getProductMainImageUrl } from "@shopware-pwa/helpers-next";
 import { PropertyGroupOption } from "@shopware-pwa/commons";
 import { useShopwareContext, useCart } from ".";
 
