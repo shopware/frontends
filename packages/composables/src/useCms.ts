@@ -24,7 +24,7 @@ export function useCms(): {
   resourceType: ComputedRef<CmsResourceType | null>;
   resourceIdentifier: ComputedRef<string | null>;
   currentSearchPathKey: ComputedRef<string | null>;
-  search: (path: string, query?: any) => Promise<void>;
+  search: (path: string, query?: any) => Promise<CmsPageResponse | null>;
   cmsContent: ComputedRef<CmsPageResponse>;
 } {
   // Handle CMS context
@@ -46,7 +46,10 @@ export function useCms(): {
     );
   });
 
-  const search = async (path: string, query?: any): Promise<any> => {
+  const search = async (
+    path: string,
+    query?: any
+  ): Promise<CmsPageResponse | null> => {
     _searchPath.value = path;
 
     const criteria: SearchCriteria = _parseUrlQuery(query);
@@ -59,6 +62,7 @@ export function useCms(): {
     } catch (e) {
       const err = e as ClientApiError;
       cmsContext.value = null;
+      return null;
     }
   };
 

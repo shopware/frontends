@@ -1,6 +1,7 @@
 {
-    "recommendations": [
-        "esbenp.prettier-vscode",
-        "Vue.volar"
-    ]
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "Vue.volar",
+    "Gruntfuggly.todo-tree"
+  ]
 }
