@@ -23,6 +23,12 @@ pnpm run build
 pnpm run dev --filter=nuxt3-app
 ```
 
+### Run and develop docs
+
+```sh
+pnpm run dev --filter='docs'
+```
+
 ## Structure
 
 Shopware Frontends is divided into three main modules.
