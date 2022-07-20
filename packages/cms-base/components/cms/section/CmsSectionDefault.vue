@@ -9,7 +9,7 @@ let boxedSizing = computed(() => props.content.sizingMode === "boxed");
 </script>
 
 <template>
-  <div>
+  <div class="cms-section-default">
     <CmsGenericBlock
       v-for="cmsBlock in props.content.blocks"
       :key="cmsBlock.id"
