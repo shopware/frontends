@@ -12,7 +12,7 @@ const rightContent = getSlotContent("right");
 const centerContent = getSlotContent("center");
 </script>
 <template>
-  <article class="grid md:grid-cols-3 gap-10">
+  <article class="cms-block-image-highlight-row grid md:grid-cols-3 gap-10">
     <CmsGenericElement
       :content="leftContent"
       class="cms-block-image-highlight-row__image"
@@ -27,3 +27,9 @@ const centerContent = getSlotContent("center");
     />
   </article>
 </template>
+
+<style>
+.cms-block-image-highlight-row img {
+  @apply border-12 border-white;
+}
+</style>

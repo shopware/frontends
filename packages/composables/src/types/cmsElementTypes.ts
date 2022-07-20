@@ -1,5 +1,5 @@
 import {
-  CmsSlot,
+  CmsSlot as OldSlot,
   CrossSelling,
   Media,
   Product,
@@ -7,12 +7,13 @@ import {
   ProductReview,
   Salutation,
 } from "@shopware-pwa/commons";
+import { CSSProperties } from "vue";
 
 type SourceType = "static" | "mapped";
 
 type Position = "left" | "center" | "right";
 
-type DisplayMode = "standard" | "cover" | "contain";
+type DisplayMode = CSSProperties["objectFit"];
 
 type BoxLayout = "standard" | "image" | "minimal";
 
@@ -34,6 +35,8 @@ type ElementFieldConfig = {
   value: string | null;
   apiAlias: string;
 };
+
+type CmsSlot = Omit<OldSlot, "data" | "config">;
 
 // Text
 export type CmsElementText = CmsSlot & {
@@ -58,6 +61,7 @@ type ImageElementConfig = {
   product: ElementConfig<string>;
   boxLayout: ElementConfig<BoxLayout>;
   displayMode: ElementConfig<DisplayMode>;
+  minHeight: ElementConfig<string | number>;
   verticalAlign: ElementConfig<VerticalAlign>;
 };
 export type CmsElementImage = CmsSlot & {

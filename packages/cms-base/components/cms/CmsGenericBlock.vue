@@ -32,11 +32,25 @@ const DynamicRender = () => {
         props.content
       );
 
-      return h(cmsPageView, {
-        content: props.content,
-        style: layoutStyles,
-        class: cssClasses,
-      });
+      const containerStyles = {
+        backgroundColor: layoutStyles.backgroundColor,
+        backgroundImage: layoutStyles.backgroundImage,
+      };
+
+      layoutStyles.backgroundColor = null;
+      layoutStyles.backgroundImage = null;
+
+      return h(
+        "div",
+        {
+          style: containerStyles,
+        },
+        h(cmsPageView, {
+          content: props.content,
+          style: layoutStyles,
+          class: cssClasses,
+        })
+      );
     }
     return h("div", {}, "Loading...");
   } catch (e) {

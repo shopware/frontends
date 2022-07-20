@@ -20,6 +20,7 @@ export default {
     );
     const cmsClass = computed(() => cssClasses);
     const cmsStyles = computed(() => layoutStyles);
+
     // const getComponent = computed(
     //   () => import("~/components/cms/CmsGenericBlock.vue")
     // );

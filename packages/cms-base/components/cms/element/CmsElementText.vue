@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { CmsElementText } from "@shopware-pwa/composables-next";
+import { ComputedRef, CSSProperties } from "vue";
 
 const props = defineProps<{
   content: CmsElementText;
 }>();
+
+const style: ComputedRef<CSSProperties> = computed(() => ({
+  alignItems: props.content.config?.verticalAlign?.value,
+}));
+
+const hasVerticalAlignment = computed(() => !!style.value.alignItems);
 
 const CmsTextRender = () => {
   const rawHtml =
@@ -12,7 +19,12 @@ const CmsTextRender = () => {
 };
 </script>
 <template>
-  <CmsTextRender />
+  <div
+    :class="{ flex: hasVerticalAlignment, 'flex-row': hasVerticalAlignment }"
+    :style="style"
+  >
+    <CmsTextRender />
+  </div>
 </template>
 <style>
 /** Global CSS styles for text elements */
@@ -38,5 +50,14 @@ h2 {
 h3 {
   line-height: 1.5rem;
   font-size: 1.25rem;
+}
+
+ol,
+ul,
+dl {
+  list-style-type: disc;
+  padding-left: 40px;
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 </style>
