@@ -1,6 +1,7 @@
 import {
   ShopwareApiInstance,
   getCategories,
+  getCategory,
   invokePost,
   getProduct,
   getSeoUrl,
