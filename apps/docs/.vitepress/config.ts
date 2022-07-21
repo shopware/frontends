@@ -20,32 +20,15 @@ const nav = [
   // },
 ];
 
-export const sidebar = {
-  // "/guide/": [
-  //   {
-  //     text: "Getting Started",
-  //     items: [
-  //       { text: "Introduction", link: "/guide/introduction" },
-  //       {
-  //         text: "Quick Start",
-  //         link: "/guide/quick-start",
-  //       },
-  //     ],
-  //   },
-  // ],
-  // "/api/": [
-  //   {
-  //     text: "Global API",
-  //     items: [
-  //       { text: "Application", link: "/api/application" },
-  //       {
-  //         text: "General",
-  //         link: "/api/general",
-  //       },
-  //     ],
-  //   },
-  // ],
-};
+export const sidebar = [
+  {
+    text: "SHOPWARE FRONTENDS",
+    items: [
+      { text: "Overview", link: "/" },
+      { text: "Getting Started", link: "/getting-started" },
+    ],
+  },
+];
 
 export default defineConfigWithTheme<ThemeConfig>({
   extends: baseConfig,
