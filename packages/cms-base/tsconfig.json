@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/base.json",
+  "extends": "tsconfig/vue-library.json",
   "include": ["./components.d.ts", "./auto-imports.d.ts", "."],
   "exclude": ["dist"],
   "compilerOptions": {

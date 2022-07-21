@@ -19,6 +19,7 @@ dist
 *.pem
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 
 # debug
 npm-debug.log*

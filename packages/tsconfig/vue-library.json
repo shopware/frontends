@@ -6,6 +6,7 @@
     "lib": ["ES2022"],
     "module": "ESNext",
     "target": "ES6",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "types": ["vite/client"]
   }
 }
