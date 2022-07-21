@@ -12,9 +12,9 @@ const rightContent = getSlotContent("right");
 const centerContent = getSlotContent("center");
 </script>
 <template>
-  <article class="grid md:grid-cols-3 gap-10">
-    <CmsGenericElement :content="leftContent" class="aspect-square" />
-    <CmsGenericElement :content="centerContent" class="aspect-square" />
-    <CmsGenericElement :content="rightContent" class="aspect-square" />
-  </article>
+  <div class="grid md:grid-cols-3 gap-10">
+    <CmsGenericElement :content="leftContent" />
+    <CmsGenericElement :content="centerContent" />
+    <CmsGenericElement :content="rightContent" />
+  </div>
 </template>
