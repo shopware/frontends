@@ -14,9 +14,8 @@ const imageStyle: ComputedRef<CSSProperties> = computed(() => ({
   objectFit: props.content.config?.displayMode?.value,
 }));
 </script>
-
 <template>
-  <div class="relative" :style="containerStyle">
+  <div class="cms-element-image relative" :style="containerStyle">
     <img
       class="h-full w-full absolute inset-0"
       :style="imageStyle"
