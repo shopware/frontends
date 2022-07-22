@@ -13,11 +13,11 @@ const rightContent = getSlotContent("right");
 </script>
 
 <template>
-  <article class="grid md:grid-cols-2 auto-rows-fr gap-10">
+  <div class="grid md:grid-cols-2 gap-10">
     <div class="grid gap-10">
       <CmsGenericElement :content="leftTopContent" />
       <CmsGenericElement :content="leftBottomContent" />
     </div>
     <CmsGenericElement :content="rightContent" />
-  </article>
+  </div>
 </template>
