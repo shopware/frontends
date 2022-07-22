@@ -12,9 +12,15 @@ const rightContent = getSlotContent("right");
 const centerContent = getSlotContent("center");
 </script>
 <template>
-  <article class="grid md:grid-cols-3">
-    <CmsGenericElement :content="leftContent" class="aspect-square" />
-    <CmsGenericElement :content="centerContent" class="aspect-square" />
-    <CmsGenericElement :content="rightContent" class="aspect-square" />
-  </article>
+  <div class="cms-block-image-three-cover grid md:grid-cols-3 gap-10">
+    <CmsGenericElement :content="leftContent" />
+    <CmsGenericElement :content="centerContent" />
+    <CmsGenericElement :content="rightContent" />
+  </div>
 </template>
+
+<style scoped>
+.cms-block-image-three-cover .cms-element-image {
+  @apply aspect-square object-cover;
+}
+</style>
