@@ -15,7 +15,7 @@ import {
   LineItem,
   ErrorLevel,
 } from "@shopware-pwa/commons/interfaces";
-import { useShopwareContext } from ".";
+import { useShopwareContext } from "./useShopwareContext";
 // import {
 //   getApplicationContext,
 //   INTERCEPTOR_KEYS,

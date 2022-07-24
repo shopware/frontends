@@ -7,7 +7,7 @@ import {
 } from "@shopware-pwa/commons";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { searchCms } from "./searchLogic";
-import { useShopwareContext } from ".";
+import { useShopwareContext } from "./useShopwareContext";
 // import {
 //   getApplicationContext,
 //   useDefaults,

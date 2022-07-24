@@ -6,7 +6,7 @@ import {
   invokePost,
   getProductDetailsEndpoint,
 } from "@shopware-pwa/shopware-6-client";
-import { useShopwareContext } from ".";
+import { useShopwareContext } from "./useShopwareContext";
 // import { getApplicationContext } from "@shopware-pwa/composables";
 
 /**

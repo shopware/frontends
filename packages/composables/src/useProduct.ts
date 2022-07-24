@@ -5,7 +5,7 @@ import {
   CmsProductPageResponse,
   ClientApiError,
 } from "@shopware-pwa/commons/interfaces";
-import { useShopwareContext } from ".";
+import { useShopwareContext } from "./useShopwareContext";
 // import { getApplicationContext, useDefaults } from "@shopware-pwa/composables";
 const NO_PRODUCT_REFERENCE_ERROR =
   "Associations cannot be loaded for undefined product";

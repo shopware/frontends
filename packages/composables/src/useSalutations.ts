@@ -9,7 +9,7 @@ import {
 } from "vue";
 import { getAvailableSalutations } from "@shopware-pwa/shopware-6-client";
 import { ClientApiError, Salutation } from "@shopware-pwa/commons/interfaces";
-import { useShopwareContext } from ".";
+import { useShopwareContext } from "./useShopwareContext";
 // import {
 //   useSharedState,
 //   getApplicationContext,

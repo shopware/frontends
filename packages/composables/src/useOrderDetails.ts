@@ -31,7 +31,7 @@ import {
   getOrderDetails,
   handlePayment as apiHandlePayment,
 } from "@shopware-pwa/shopware-6-client";
-import { useShopwareContext } from ".";
+import { useShopwareContext } from "./useShopwareContext";
 
 /**
  * Composable for managing an existing order.

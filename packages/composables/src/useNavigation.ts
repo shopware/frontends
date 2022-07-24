@@ -3,7 +3,7 @@ import {
   StoreNavigationElement,
   StoreNavigationType,
 } from "@shopware-pwa/commons";
-import { useShopwareContext } from ".";
+import { useShopwareContext } from "./useShopwareContext";
 import { getStoreNavigation } from "@shopware-pwa/shopware-6-client";
 
 /**
