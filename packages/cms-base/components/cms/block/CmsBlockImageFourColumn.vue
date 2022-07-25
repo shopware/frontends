@@ -13,22 +13,16 @@ const centerLeftContent = getSlotContent("center-left");
 const centerRightContent = getSlotContent("center-right");
 </script>
 <template>
-  <article class="grid md:grid-cols-4 gap-10">
-    <CmsGenericElement
-      :content="leftContent"
-      class="cms-block-image-four-column__image"
-    />
-    <CmsGenericElement
-      :content="centerLeftContent"
-      class="cms-block-image-four-column__image"
-    />
-    <CmsGenericElement
-      :content="centerRightContent"
-      class="cms-block-image-four-column__image"
-    />
-    <CmsGenericElement
-      :content="rightContent"
-      class="cms-block-image-four-column__image"
-    />
-  </article>
+  <div class="cms-block-image-four-column grid md:grid-cols-4 gap-10">
+    <CmsGenericElement :content="leftContent" />
+    <CmsGenericElement :content="centerLeftContent" />
+    <CmsGenericElement :content="centerRightContent" />
+    <CmsGenericElement :content="rightContent" />
+  </div>
 </template>
+
+<style scoped>
+.cms-block-image-four-column .cms-element-image {
+  @apply aspect-square object-cover;
+}
+</style>
