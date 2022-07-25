@@ -43,6 +43,8 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
         from: "@shopware-pwa/composables-next",
         imports: [
           "useAddToCart",
+          "useCheckout",
+          "useCountries",
           "useShopwareContext",
           "useSessionContext",
           "useCart",
@@ -53,6 +55,7 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
           "useCms",
           "useCmsBlock",
           "useProductConfigurator",
+          "useSalutations",
           "useUser",
         ],
       });
