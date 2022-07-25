@@ -23,9 +23,47 @@ const nav = [
 export const sidebar = [
   {
     text: "SHOPWARE FRONTENDS",
+    items: [{ text: "Overview", link: "/" }],
+  },
+  {
+    text: "GETTING STARTED",
     items: [
-      { text: "Overview", link: "/" },
-      { text: "Getting Started", link: "/getting-started" },
+      { text: "Templates", link: "/getting-started/templates" },
+      { text: "Navigation", link: "/getting-started/navigation" },
+      { text: "Content Pages", link: "/getting-started/content-pages" },
+      { text: "Cart", link: "/getting-started/cart" },
+      { text: "Checkout ", link: "/getting-started/checkout" },
+    ],
+  },
+  {
+    text: "FRAMEWORK",
+    items: [
+      { text: "Configuration", link: "/framework/configuration" },
+      { text: "Shopping Experiences", link: "/framework/shopping-experiences" },
+      { text: "Styling", link: "/framework/styling" },
+      {
+        text: "Asynchronous Components",
+        link: "/framework/asynchronous-components",
+      },
+      { text: "API Defaults", link: "/framework/api-defaults" },
+      { text: "Error Handling", link: "/framework/error-handling" },
+    ],
+  },
+  {
+    text: "BEST PRACTICES",
+    items: [
+      { text: "Testing", link: "/best-practices/testing" },
+      { text: "Performance", link: "/best-practices/performance" },
+      { text: "Deployment", link: "/best-practices/deployment" },
+    ],
+  },
+  {
+    text: "PACKAGE REFERENCE",
+    items: [
+      { text: "Composables", link: "/packages/composables" },
+      { text: "Types", link: "/packages/types" },
+      { text: "CMS Base", link: "/packages/cms-base" },
+      { text: "Helpers", link: "/packages/helpers" },
     ],
   },
 ];
