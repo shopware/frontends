@@ -4,11 +4,12 @@ import { CmsBlockImage } from "@shopware-pwa/composables-next";
 const props = defineProps<{
   content: CmsBlockImage;
 }>();
+
+const { getSlotContent } = useCmsBlock(props.content);
+const imageContent = getSlotContent("image");
 </script>
 <template>
-  <CmsGenericElement
-    v-for="slot in content.slots"
-    :key="slot.id"
-    :content="slot"
-  />
+  <div>
+    <CmsGenericElement :content="imageContent" />
+  </div>
 </template>
