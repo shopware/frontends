@@ -14,7 +14,7 @@ let boxedSizing = computed(() => props.content.sizingMode === "boxed");
       v-for="cmsBlock in props.content.blocks"
       :key="cmsBlock.id"
       :content="cmsBlock"
-      class="overflow-auto"
+      class="overflow-auto bg-center bg-cover"
       v-bind:class="{
         'max-w-screen-xl': boxedSizing,
         'mx-auto': boxedSizing,
