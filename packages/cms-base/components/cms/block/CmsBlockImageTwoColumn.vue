@@ -11,14 +11,14 @@ const leftContent = getSlotContent("left");
 const rightContent = getSlotContent("right");
 </script>
 <template>
-  <article class="grid md:grid-cols-2 gap-10">
-    <CmsGenericElement
-      :content="leftContent"
-      class="cms-block-image-two-column__image"
-    />
-    <CmsGenericElement
-      :content="rightContent"
-      class="cms-block-image-two-column__image"
-    />
-  </article>
+  <div class="cms-block-image-two-column grid md:grid-cols-2 gap-10">
+    <CmsGenericElement :content="leftContent" />
+    <CmsGenericElement :content="rightContent" />
+  </div>
 </template>
+
+<style scoped>
+.cms-block-image-two-column .cms-element-image {
+  @apply aspect-square object-cover;
+}
+</style>
