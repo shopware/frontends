@@ -9,7 +9,7 @@
     "serve": "vitepress serve"
   },
   "dependencies": {
-    "vitepress-shopware-docs": "^0.0.7",
+    "vitepress-shopware-docs": "^0.0.8",
     "vitepress": "^1.0.0-alpha.4",
     "vue": "^3.2.37"
   },
