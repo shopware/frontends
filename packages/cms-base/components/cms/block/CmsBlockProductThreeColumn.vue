@@ -13,9 +13,9 @@ const centerContent = getSlotContent("center");
 </script>
 
 <template>
-  <div class="flex md:flex-row flex-col container mx-auto">
-    <CmsElementProductCard :content="leftContent" class="md:pr-4 w-full" />
-    <CmsElementProductCard :content="centerContent" class="md:pr-4 w-full" />
-    <CmsElementProductCard :content="rightContent" class="w-full" />
+  <div class="grid md:grid-cols-3 gap-10 mx-auto">
+    <CmsGenericElement :content="leftContent" class="md:pr-4 w-full" />
+    <CmsGenericElement :content="centerContent" class="md:pr-4 w-full" />
+    <CmsGenericElement :content="rightContent" class="w-full" />
   </div>
 </template>

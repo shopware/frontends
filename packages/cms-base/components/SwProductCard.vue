@@ -40,10 +40,10 @@ function getPrice(product) {
       <img
         :src="getProductThumbnailUrl(product)"
         :alt="getProductName({ product })"
-        class="w-full h-full min-h-80 object-center object-cover lg:w-full lg:h-full"
+        class="w-full h-full min-h-80 object-fill object-cover lg:w-full lg:h-full"
       />
     </div>
-    <div class="mt-4 flex justify-between">
+    <div class="mt-4 justify-between h-40">
       <div>
         <h3 class="text-sm text-gray-700">
           <router-link :to="getProductUrl(product)">
@@ -54,6 +54,9 @@ function getPrice(product) {
             {{ getProductName({ product }) }}
           </router-link>
         </h3>
+        <p class="mt-2 text-sm text-gray-500 h-20 overflow-hidden">
+          <span> {{ product.description }} </span>
+        </p>
         <p class="mt-1 text-sm text-gray-500 min-h-30px">
           <span
             v-for="option in product?.options"
@@ -64,16 +67,20 @@ function getPrice(product) {
           </span>
         </p>
       </div>
-      <p class="text-sm font-medium text-gray-900">
-        {{ getPrice(product) }} EUR
-      </p>
+      <div class="mt-3">
+        <p class="text-sm font-medium text-gray-900">
+          {{ getPrice(product) }} EUR
+        </p>
+      </div>
     </div>
-    <button
-      type="button"
-      @click="addToCartProxy"
-      class="w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    >
-      Add to basket
-    </button>
+    <div class="mt-3">
+      <button
+        type="button"
+        @click="addToCartProxy"
+        class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+      >
+        Add to basket
+      </button>
+    </div>
   </div>
 </template>
