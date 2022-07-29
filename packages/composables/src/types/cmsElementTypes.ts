@@ -328,3 +328,30 @@ export type CmsElementForm = CmsSlot & {
   config: FormElementConfig;
   data: Salutation[];
 };
+
+// Product Name
+export type CmsElementProductName = CmsSlot & {
+  type: "product-name";
+  config: TextElementConfig;
+  fieldConfig: ElementFieldConfig[];
+  data: {
+    content: string;
+    apiAlias: "cms_text";
+  };
+  translated: {
+    config: TextElementConfig;
+  };
+};
+
+// Manufacturer Logo
+export type CmsElementManufacturerLogo = CmsSlot & {
+  type: "manufacturer-logo";
+  config: ImageElementConfig;
+  data: {
+    mediaId: string;
+    url: string;
+    newTab: boolean;
+    apiAlias: "cms_manufacturer_logo";
+    media: Media;
+  };
+};
