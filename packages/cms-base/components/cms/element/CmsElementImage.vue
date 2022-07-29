@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { CmsElementImage } from "@shopware-pwa/composables-next";
-import {
-  ComputedRef,
-  CSSProperties,
-  AnchorHTMLAttributes,
-  ImgHTMLAttributes,
-} from "vue";
+import { ComputedRef, CSSProperties, ImgHTMLAttributes } from "vue";
 
 const props = defineProps<{
   content: CmsElementImage;
@@ -15,16 +10,23 @@ const containerStyle: ComputedRef<CSSProperties> = computed(() => ({
   minHeight: props.content.config?.minHeight?.value,
 }));
 
-const anchorAttrs: ComputedRef<AnchorHTMLAttributes> = computed(() => ({
-  href: props.content.config?.url?.value,
-  target: props.content.config?.newTab?.value ? "_blank" : "_self",
+const imageLink = computed(() => ({
+  newTab: props.content.data?.newTab,
+  url: props.content.data?.url,
 }));
 
-const imageStyle: ComputedRef<CSSProperties> = computed(() => ({
-  objectFit: props.content.config?.displayMode?.value,
-}));
+const imgContainerAttrs = computed(() => {
+  const attr: { [k: string]: string } = {};
+  if (imageLink.value.url) {
+    attr.href = imageLink.value.url;
+  }
+  if (imageLink.value.newTab) {
+    attr.target = "blank";
+    attr.rel = "noopener noreferrer";
+  }
+  return attr;
+});
 
-const srcset = "";
 const imgAttrs: ComputedRef<ImgHTMLAttributes> = computed(() => ({
   src: props.content.data?.media?.url,
   alt: props.content.data?.media?.fileName,
@@ -33,28 +35,27 @@ const imgAttrs: ComputedRef<ImgHTMLAttributes> = computed(() => ({
       `${previousValue}${currentIndex != 0 ? "," : ""} ${currentValue.url} ${
         currentValue.width
       }w`,
-    srcset
+    ""
   ),
 }));
 
 const displayMode = computed(() => props.content.config?.displayMode?.value);
 </script>
 <template>
-  <div class="cms-element-image relative" :style="containerStyle">
-    <a v-bind="anchorAttrs">
-      <img
-        :class="['h-full w-full', `is-${displayMode}`]"
-        :style="imageStyle"
-        v-bind="imgAttrs"
-      />
-    </a>
-  </div>
+  <!-- TODO: using a tag only works with externalLink, need to improve this element to deal with both internalLink & externalLink -->
+  <component
+    class="cms-element-image relative"
+    :is="imageLink.url ? 'a' : 'div'"
+    :style="containerStyle"
+    v-bind="imgContainerAttrs"
+  >
+    <img
+      :class="{
+        'h-full w-full': true,
+        'absolute inset-0': displayMode !== 'standard',
+        'object-cover': displayMode === 'cover',
+      }"
+      v-bind="imgAttrs"
+    />
+  </component>
 </template>
-<style scoped>
-.is-cover {
-  @apply object-cover absolute inset-0;
-}
-.is-stretch {
-  @apply absolute inset-0;
-}
-</style>
