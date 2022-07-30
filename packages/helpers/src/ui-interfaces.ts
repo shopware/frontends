@@ -1,44 +1,44 @@
 /**
  * @public
  */
-export interface UiMediaGalleryItemUrl {
+export type UiMediaGalleryItemUrl = {
   url: string;
-}
+};
 
 /**
  * @public
  */
-export interface UiMediaGalleryItem {
+export type UiMediaGalleryItem = {
   icon: UiMediaGalleryItemUrl;
   mobile: UiMediaGalleryItemUrl;
   desktop: UiMediaGalleryItemUrl;
-}
+};
 
 /**
  * @public
  */
-export interface UiProductOption {
+export type UiProductOption = {
   label: string;
   value: string;
   code: string;
   color: string | null;
-}
+};
 
 /**
  * @public
  */
-export interface UiProductProperty {
+export type UiProductProperty = {
   name: string;
   value: string | null;
-}
+};
 
 /**
  * @public
  */
-export interface UiProductReview {
+export type UiProductReview = {
   id: string;
   author: string;
   date: Date;
   message: string | null;
   rating: number | null;
-}
+};

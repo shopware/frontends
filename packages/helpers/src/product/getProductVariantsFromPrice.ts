@@ -1,4 +1,4 @@
-import { Product } from "@shopware-pwa/commons";
+import { Product } from "@shopware-pwa/types";
 import { getProductRealPrice } from "./getProductRealPrice";
 
 /**

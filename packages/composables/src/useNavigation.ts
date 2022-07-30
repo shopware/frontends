@@ -2,7 +2,7 @@ import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
 import {
   StoreNavigationElement,
   StoreNavigationType,
-} from "@shopware-pwa/commons";
+} from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 import { getStoreNavigation } from "@shopware-pwa/shopware-6-client";
 

@@ -1,0 +1,1 @@
+export type OrderDeliveryPosition = unknown;

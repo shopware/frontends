@@ -9,7 +9,7 @@ import {
   LineItem,
   LineItemType,
   ClientApiError,
-} from "@shopware-pwa/commons/interfaces";
+} from "@shopware-pwa/types";
 // import {
 //   getApplicationContext,
 //   useDefaults,
@@ -17,7 +17,7 @@ import {
 // } from "@shopware-pwa/composables";
 
 import { getProductMainImageUrl } from "@shopware-pwa/helpers-next";
-import { PropertyGroupOption } from "@shopware-pwa/commons";
+import { PropertyGroupOption } from "@shopware-pwa/types";
 import { useShopwareContext, useCart } from ".";
 
 /**

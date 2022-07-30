@@ -8,7 +8,7 @@ import {
   provide,
 } from "vue";
 import { getAvailableCountries } from "@shopware-pwa/shopware-6-client";
-import { ClientApiError, Country } from "@shopware-pwa/commons/interfaces";
+import { ClientApiError, Country } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 // import {
 //   useSharedState,

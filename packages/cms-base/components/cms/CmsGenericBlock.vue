@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlock } from "@shopware-pwa/commons";
+import { CmsBlock } from "@shopware-pwa/types";
 import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";

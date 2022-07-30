@@ -24,7 +24,7 @@ import {
   PaymentMethod,
   ClientApiError,
   ShopwareError,
-} from "@shopware-pwa/commons/interfaces";
+} from "@shopware-pwa/types";
 import {
   cancelOrder,
   changeOrderPaymentMethod,

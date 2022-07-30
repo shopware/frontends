@@ -1,4 +1,4 @@
-import { Product } from "@shopware-pwa/commons";
+import { Product } from "@shopware-pwa/types";
 
 /**
  * Get the percentage value of discount

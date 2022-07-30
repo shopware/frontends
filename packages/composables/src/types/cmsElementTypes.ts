@@ -6,7 +6,7 @@ import {
   ProductListingResult,
   ProductReview,
   Salutation,
-} from "@shopware-pwa/commons";
+} from "@shopware-pwa/types";
 import { CSSProperties } from "vue";
 
 type SourceType = "static" | "mapped";

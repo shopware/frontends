@@ -1,8 +1,9 @@
-import { ProductResponse as LegacyProductResponse } from "@shopware-pwa/commons/interfaces/response/ProductResult";
-import { LandingPage } from "@shopware-pwa/commons/interfaces/models/content/landing-page/LandingPage";
-import { Category } from "@shopware-pwa/commons/interfaces/models/content/category/Category";
-import { CmsPage } from "@shopware-pwa/commons/interfaces/models/content/cms/CmsPage";
-export { SearchFilterType } from "@shopware-pwa/commons";
+import {
+  ProductResponse as LegacyProductResponse,
+  LandingPage,
+  Category,
+  CmsPage,
+} from "@shopware-pwa/types";
 
 export * from "./cmsBlockTypes";
 export * from "./cmsElementTypes";

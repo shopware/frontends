@@ -1,9 +1,9 @@
-import { CmsBlock, CmsSection } from "@shopware-pwa/commons";
+import { CmsBlock, CmsSection } from "@shopware-pwa/types";
 
 /**
  * @beta
  */
-export interface LayoutConfiguration {
+export type LayoutConfiguration = {
   layoutStyles: {
     backgroundColor: string | null;
     backgroundImage: string | null;
@@ -13,7 +13,7 @@ export interface LayoutConfiguration {
     marginTop?: string | null | undefined;
   };
   cssClasses: string | null;
-}
+};
 
 /**
  * @beta

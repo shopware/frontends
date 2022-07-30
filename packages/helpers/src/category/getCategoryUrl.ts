@@ -1,4 +1,4 @@
-import { Category } from "@shopware-pwa/commons";
+import { Category } from "@shopware-pwa/types";
 import { getTranslatedProperty } from "../getTranslatedProperty";
 
 /**

@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/helpers-next",
-  "version": "2.0.0-alpha.0",
+  "version": "0.1.10",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -19,13 +19,12 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@shopware-pwa/commons": "canary",
+    "@shopware-pwa/types": "workspace:*",
     "eslint-config-shopware": "workspace:*",
     "query-string": "^7.1.1",
     "tsconfig": "workspace:*",
     "vitest": "^0.16.0",
     "jsdom": "^20.0.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

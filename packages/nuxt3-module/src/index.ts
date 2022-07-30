@@ -5,9 +5,9 @@ import { defineNuxtModule, addPluginTemplate } from "@nuxt/kit";
 import { NuxtModule } from "@nuxt/schema";
 import { resolve } from "path";
 
-export interface ShopwareNuxtOptions {
+export type ShopwareNuxtOptions = {
   example: string;
-}
+};
 
 const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
   meta: {

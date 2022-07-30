@@ -1,5 +1,5 @@
 import { ref, computed, ComputedRef, Ref, unref } from "vue";
-import { Product, CrossSelling } from "@shopware-pwa/commons/interfaces";
+import { Product, CrossSelling } from "@shopware-pwa/types";
 
 import {
   invokeGet,

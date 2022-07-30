@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/cms-base",
-  "version": "0.1.0",
+  "version": "0.1.10",
   "description": "Vue CMS support for Shopware",
   "main": "./index.cjs",
   "module": "./dist/index.mjs",
@@ -24,9 +24,11 @@
   },
   "devDependencies": {
     "@nuxt/schema": "^3.0.0-rc.5",
+    "eslint": "8.20.0",
     "@vue/eslint-config-typescript": "^11.0.0",
+    "@shopware-pwa/types": "workspace:*",
     "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "^9.2.0",
+    "eslint-plugin-vue": "^9.3.0",
     "tsconfig": "workspace:*",
     "typescript": "^4.7.4",
     "unbuild": "^0.7.4",

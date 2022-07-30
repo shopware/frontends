@@ -1,4 +1,4 @@
-import { CmsBlock, CmsSlot } from "@shopware-pwa/commons";
+import { CmsBlock, CmsSlot } from "@shopware-pwa/types";
 
 type BlockType<SLOT_NAMES> = CmsBlock & {
   slots: Array<

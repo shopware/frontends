@@ -15,7 +15,7 @@ import {
   CreateOrderParams,
   Order,
   BillingAddress,
-} from "@shopware-pwa/commons/interfaces";
+} from "@shopware-pwa/types";
 import {
   getAvailableShippingMethods,
   getAvailablePaymentMethods,

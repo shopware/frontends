@@ -4,7 +4,7 @@ import {
   Product,
   CmsProductPageResponse,
   ClientApiError,
-} from "@shopware-pwa/commons/interfaces";
+} from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 // import { getApplicationContext, useDefaults } from "@shopware-pwa/composables";
 const NO_PRODUCT_REFERENCE_ERROR =

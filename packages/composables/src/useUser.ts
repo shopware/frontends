@@ -20,7 +20,7 @@ import {
   Country,
   Salutation,
   ShopwareSearchParams,
-} from "@shopware-pwa/commons/interfaces";
+} from "@shopware-pwa/types";
 import { useShopwareContext, useCart, useSessionContext } from ".";
 // import {
 //   IInterceptorCallbackFunction,
@@ -150,7 +150,7 @@ export function useUser(): IUseUser {
     loading.value = true;
     errors.register = [];
     try {
-      const customer = await apiRegister(params, apiInstance);
+      const customer = await apiRegister(params as any, apiInstance);
       // broadcast(INTERCEPTOR_KEYS.USER_REGISTER, { customer });
       storeUser.value = customer || {};
       refreshSessionContext();

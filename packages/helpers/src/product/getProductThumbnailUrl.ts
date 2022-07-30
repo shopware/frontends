@@ -1,4 +1,5 @@
-import { Product } from "@shopware-pwa/commons";
+import { Product } from "@shopware-pwa/types";
+
 /**
  * get the thumbnail image URL with the smallest width
  *

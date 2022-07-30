@@ -13,8 +13,7 @@ import {
   EntityError,
   Product,
   LineItem,
-  ErrorLevel,
-} from "@shopware-pwa/commons/interfaces";
+} from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 // import {
 //   getApplicationContext,
@@ -88,8 +87,8 @@ export function useCart(): IUseCart {
     loading.value = true;
     try {
       const result = await getCart(apiInstance);
-      broadcastUpcomingErrors(result);
-      _storeCart.value = result;
+      broadcastUpcomingErrors(result as Cart);
+      _storeCart.value = result as Cart;
     } catch (e) {
       const err = e as ClientApiError;
       error.value = err.messages;
@@ -106,28 +105,28 @@ export function useCart(): IUseCart {
     quantity?: number;
   }): Promise<Cart> {
     const addToCartResult = await addProductToCart(id, quantity, apiInstance);
-    broadcastUpcomingErrors(addToCartResult);
-    _storeCart.value = addToCartResult;
-    return addToCartResult;
+    broadcastUpcomingErrors(addToCartResult as Cart);
+    _storeCart.value = addToCartResult as Cart;
+    return addToCartResult as Cart;
   }
 
   async function removeItem({ id }: LineItem) {
     const result = await removeCartItem(id, apiInstance);
-    broadcastUpcomingErrors(result);
-    _storeCart.value = result;
+    broadcastUpcomingErrors(result as Cart);
+    _storeCart.value = result as Cart;
   }
 
   async function changeProductQuantity({ id, quantity }: any) {
     const result = await changeCartItemQuantity(id, quantity, apiInstance);
-    broadcastUpcomingErrors(result);
-    _storeCart.value = result;
+    broadcastUpcomingErrors(result as Cart);
+    _storeCart.value = result as Cart;
   }
 
   async function submitPromotionCode(promotionCode: string) {
     if (promotionCode) {
       const result = await addPromotionCode(promotionCode, apiInstance);
-      broadcastUpcomingErrors(result);
-      _storeCart.value = result;
+      broadcastUpcomingErrors(result as Cart);
+      _storeCart.value = result as Cart;
       // broadcast(INTERCEPTOR_KEYS.ADD_PROMOTION_CODE, {
       //   result,
       //   promotionCode,
@@ -151,7 +150,7 @@ export function useCart(): IUseCart {
       ).filter(
         // don't ignore ERROR level of incoming errors or if they are new
         (entityError) =>
-          entityError.level === ErrorLevel.ERROR ||
+          entityError.level === 20 ||
           upcomingErrorsKeys.includes(entityError.key)
       );
 

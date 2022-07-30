@@ -1,13 +1,13 @@
-import { Product } from "@shopware-pwa/commons";
+import { Product } from "@shopware-pwa/types";
 
 /**
  * @beta
  */
-export interface TierPrice {
+export type TierPrice = {
   label: string; // information about the quantity range
   quantity: number; // price limit value
   unitPrice: number; // price for only one product in given price range (quantity)
-}
+};
 
 /**
  * Get the prices depending on quantity added to cart.

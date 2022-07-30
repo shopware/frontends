@@ -11,13 +11,13 @@ import {
 import {
   ShopwareSearchParams,
   Product,
-  CmsPageResponse,
   ListingResult,
   Sort,
-} from "@shopware-pwa/commons/interfaces";
+  ListingFilter,
+} from "@shopware-pwa/types";
 // import { IUseListing } from "../factories/createListingComposable";
 import { inject, computed, ComputedRef, ref, provide } from "vue";
-import { ListingFilter, getListingFilters } from "@shopware-pwa/helpers-next";
+import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCms } from ".";
 import merge from "lodash/merge.js";
 
