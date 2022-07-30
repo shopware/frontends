@@ -1,4 +1,4 @@
-import { CmsBlock, CmsSection } from "@shopware-pwa/commons";
+import { CmsBlock, CmsSection } from "@shopware-pwa/types";
 
 // Section Default can have only one container for blocks: content (full page)
 export type CmsSectionDefault = CmsSection & {

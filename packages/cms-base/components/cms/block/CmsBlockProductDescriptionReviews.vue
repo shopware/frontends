@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ProductReview } from "@shopware-pwa/commons";
+import { CmsProductPageResponse, ProductReview } from "@shopware-pwa/types";
 import { CmsBlockProductDescriptionReviews } from "@shopware-pwa/composables-next";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import { getProductReviews } from "@shopware-pwa/shopware-6-client";
@@ -11,11 +11,13 @@ const props = defineProps<{
 
 const { getSlotContent } = useCmsBlock(props.content);
 
-const slotContent = getSlotContent("product-description-reviews");
+const slotContent = getSlotContent("content");
 
 const { cmsContent } = useCms();
 const product = computed(
-  () => slotContent?.data?.product || cmsContent.value?.product
+  () =>
+    (slotContent?.data as any)?.product ||
+    (cmsContent.value as CmsProductPageResponse)?.product
 );
 
 const description = computed(() =>

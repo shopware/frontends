@@ -4,7 +4,7 @@ import {
   ClientApiError,
   CmsPageResponse,
   CmsResourceType,
-} from "@shopware-pwa/commons";
+} from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { searchCms } from "./searchLogic";
 import { useShopwareContext } from "./useShopwareContext";

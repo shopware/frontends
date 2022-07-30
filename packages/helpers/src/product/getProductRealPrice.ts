@@ -1,4 +1,4 @@
-import { CalculatedPrice, Product } from "@shopware-pwa/commons";
+import { CalculatedPrice, Product } from "@shopware-pwa/types";
 
 /**
  * @beta

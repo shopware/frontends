@@ -11,7 +11,6 @@ import {
 
 import {
   SearchCmsResult,
-  SearchFilterType,
   CATEGORY_ROUTE_NAME,
   PRODUCT_ROUTE_NAME,
   LANDING_PAGE_ROUTE_NAME,
@@ -64,11 +63,11 @@ async function getSeoUrlEntityByPath(
     {
       filter: [
         {
-          type: SearchFilterType.EQUALS,
+          type: "equals",
           field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
           value: normalizedPath,
         },
-      ],
+      ] as any, // TODO fix types in shopware-6-client
     },
     apiInstance
   );
@@ -91,21 +90,21 @@ export async function searchCms(
         },
         filter: [
           {
-            type: SearchFilterType.EQUALS,
+            type: "equals",
             field: "level",
             value: "1",
           },
           {
-            type: SearchFilterType.EQUALS,
+            type: "equals",
             field: "path",
             value: null,
           },
           {
-            type: SearchFilterType.EQUALS,
+            type: "equals",
             field: "parentId",
             value: null,
           },
-        ],
+        ] as any, // TODO fix types in shopware-6-client
       },
       apiInstance
     );

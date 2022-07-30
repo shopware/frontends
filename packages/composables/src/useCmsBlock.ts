@@ -1,4 +1,4 @@
-import { CmsBlock } from "@shopware-pwa/commons";
+import { CmsBlock } from "@shopware-pwa/types";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;

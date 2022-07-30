@@ -1,5 +1,5 @@
 import { ref, Ref, computed, unref } from "vue";
-import { Product, PropertyGroup } from "@shopware-pwa/commons/interfaces";
+import { Product, PropertyGroup } from "@shopware-pwa/types";
 // import {
 //   useCms,
 //   getApplicationContext,

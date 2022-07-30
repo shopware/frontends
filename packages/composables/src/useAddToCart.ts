@@ -1,5 +1,5 @@
 import { ref, Ref, computed, unref } from "vue";
-import { Product, ClientApiError } from "@shopware-pwa/commons/interfaces";
+import { Product, ClientApiError } from "@shopware-pwa/types";
 import { useCart } from "./useCart";
 // import {
 //   useCart,

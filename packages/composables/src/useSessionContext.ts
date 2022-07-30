@@ -6,7 +6,7 @@ import {
   ShippingAddress,
   BillingAddress,
   SessionContext,
-} from "@shopware-pwa/commons/interfaces";
+} from "@shopware-pwa/types";
 
 import {
   getSessionContext,

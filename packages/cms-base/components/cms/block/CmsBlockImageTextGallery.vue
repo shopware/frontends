@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsSlot } from "@shopware-pwa/commons";
+import { CmsSlot } from "@shopware-pwa/types";
 import { CmsBlockImageTextGallery } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
@@ -17,7 +17,7 @@ const rightImageContent = getSlotContent("right-image");
 const centerImageContent = getSlotContent("center-image");
 
 // TODO: useRouter
-function onImageClick(slotContent: CmsSlot) {
+function onImageClick(slotContent: Omit<CmsSlot, "data"> & { data: any }) {
   if (slotContent.data?.url) {
     if (slotContent.data?.newTab) {
       window.open(slotContent.data.url);
@@ -36,19 +36,19 @@ function onImageClick(slotContent: CmsSlot) {
       <div class="cms-block-image-text-gallery__container__column">
         <CmsElementImage
           :content="leftImageContent"
-          :style="{ cursor: leftImageContent.data?.url && 'pointer' }"
-          @click.native="onImageClick(leftImageContent)"
+          :style="{ cursor: (leftImageContent.data as any)?.url && 'pointer' }"
+          @click.native="onImageClick(leftImageContent as any)"
         />
         <CmsElementText
           :content="leftTextContent"
-          class="cms-block-image-text-gallery__container__column--text"
+          class="cms-block-imag)e-text-gallery__container__column--text"
         />
       </div>
       <div class="cms-block-image-text-gallery__container__column">
         <CmsElementImage
           :content="centerImageContent"
-          :style="{ cursor: centerImageContent.data?.url && 'pointer' }"
-          @click.native="onImageClick(centerImageContent)"
+          :style="{ cursor: (centerImageContent.data as any)?.url && 'pointer' }"
+          @click.native="onImageClick(centerImageContent as any)"
         />
         <CmsElementText
           :content="centerTextContent"
@@ -58,8 +58,8 @@ function onImageClick(slotContent: CmsSlot) {
       <div class="cms-block-image-text-gallery__container__column">
         <CmsElementImage
           :content="rightImageContent"
-          :style="{ cursor: rightImageContent.data?.url && 'pointer' }"
-          @click.native="onImageClick(rightImageContent)"
+          :style="{ cursor: (rightImageContent.data as any)?.url && 'pointer' }"
+          @click.native="onImageClick(rightImageContent as any)"
         />
         <CmsElementText
           :content="rightTextContent"
