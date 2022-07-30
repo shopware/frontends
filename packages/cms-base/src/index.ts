@@ -17,6 +17,13 @@ const nuxtModule: NuxtModule = defineNuxtModule({
         global: true,
       });
     });
+
+    // FIX until https://github.com/unjs/nitro/issues/294 is resolved
+    nuxt.options.autoImports.transform =
+      nuxt.options.autoImports.transform || {};
+    nuxt.options.autoImports.transform.include =
+      nuxt.options.autoImports.transform?.include || [];
+    nuxt.options.autoImports.transform?.include.push(/.+cms-base.+/);
   },
 });
 
