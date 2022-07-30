@@ -8,6 +8,7 @@ export default defineBuildConfig({
   },
   declaration: true,
   externals: [
+    "axios",
     "vue",
     "@shopware-pwa/shopware-6-client",
     "@shopware-pwa/helpers-next",

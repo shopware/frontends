@@ -7,5 +7,5 @@ export default defineBuildConfig({
     cjsBridge: true,
   },
   declaration: true,
-  externals: [],
+  externals: ["axios"],
 });

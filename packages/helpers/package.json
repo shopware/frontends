@@ -21,10 +21,10 @@
   "devDependencies": {
     "@shopware-pwa/types": "workspace:*",
     "eslint-config-shopware": "workspace:*",
+    "jsdom": "^20.0.0",
     "query-string": "^7.1.1",
     "tsconfig": "workspace:*",
-    "vitest": "^0.16.0",
-    "jsdom": "^20.0.0"
+    "vitest": "^0.16.0"
   },
   "dependencies": {}
 }
