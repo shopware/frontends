@@ -1,4 +1,5 @@
 export * from "./types";
+export * from "./cms";
 export * from "./useShopwareContext";
 export * from "./useCms";
 export * from "./useProductConfigurator";

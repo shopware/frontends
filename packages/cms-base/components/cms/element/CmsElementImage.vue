@@ -1,45 +1,20 @@
 <script setup lang="ts">
-import { CmsElementImage } from "@shopware-pwa/composables-next";
-import { ComputedRef, CSSProperties, ImgHTMLAttributes } from "vue";
+import {
+  CmsElementImage,
+  useCmsElementImage,
+} from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsElementImage;
 }>();
 
-const containerStyle: ComputedRef<CSSProperties> = computed(() => ({
-  minHeight: props.content.config?.minHeight?.value,
-}));
-
-const imageLink = computed(() => ({
-  newTab: props.content.data?.newTab,
-  url: props.content.data?.url,
-}));
-
-const imgContainerAttrs = computed(() => {
-  const attr: { [k: string]: string } = {};
-  if (imageLink.value.url) {
-    attr.href = imageLink.value.url;
-  }
-  if (imageLink.value.newTab) {
-    attr.target = "blank";
-    attr.rel = "noopener noreferrer";
-  }
-  return attr;
-});
-
-const imgAttrs: ComputedRef<ImgHTMLAttributes> = computed(() => ({
-  src: props.content.data?.media?.url,
-  alt: props.content.data?.media?.fileName,
-  srcset: props.content.data?.media?.thumbnails?.reduce(
-    (previousValue, currentValue, currentIndex) =>
-      `${previousValue}${currentIndex != 0 ? "," : ""} ${currentValue.url} ${
-        currentValue.width
-      }w`,
-    ""
-  ),
-}));
-
-const displayMode = computed(() => props.content.config?.displayMode?.value);
+const {
+  containerStyle,
+  displayMode,
+  imgContainerAttrs,
+  imageAttrs,
+  imageLink,
+} = useCmsElementImage(props.content);
 </script>
 <template>
   <!-- TODO: using a tag only works with externalLink, need to improve this element to deal with both internalLink & externalLink -->
@@ -55,7 +30,7 @@ const displayMode = computed(() => props.content.config?.displayMode?.value);
         'absolute inset-0': displayMode !== 'standard',
         'object-cover': displayMode === 'cover',
       }"
-      v-bind="imgAttrs"
+      v-bind="imageAttrs"
     />
   </component>
 </template>

@@ -13,9 +13,9 @@ type SourceType = "static" | "mapped";
 
 type Position = "left" | "center" | "right";
 
-type DisplayMode = CSSProperties["objectFit"];
+export type DisplayMode = CSSProperties["objectFit"];
 
-type BoxLayout = "standard" | "image" | "minimal";
+export type BoxLayout = "standard" | "image" | "minimal";
 
 type VerticalAlign = "flex-start" | "center" | "flex-end" | "";
 
