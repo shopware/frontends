@@ -27,7 +27,7 @@ const {
     <img
       :class="{
         'h-full w-full': true,
-        'absolute inset-0': displayMode !== 'standard',
+        'absolute inset-0': ['cover', 'stretch'].includes(displayMode),
         'object-cover': displayMode === 'cover',
       }"
       v-bind="imageAttrs"
