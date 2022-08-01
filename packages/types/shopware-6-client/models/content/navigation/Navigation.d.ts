@@ -77,7 +77,10 @@ export type StoreNavigationElement = {
   keywords: string | null;
   _uniqueIdentifier: string;
   versionId: string;
-  translated: unknown;
+  translated: {
+    name: string;
+    description: string;
+  };
   createdAt: Date;
   updatedAt: Date;
   extensions: unknown;
