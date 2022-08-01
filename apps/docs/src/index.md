@@ -40,4 +40,4 @@ Shopware Frontends is a framework and not a ready-to-use product. Even it the st
 
 In contrast to Shopware's Twig Storefront, Shopware Frontends is not compatible with any apps, themes or plugins. If you want to use third party extensions, you need to ensure that they come with useful Store API endpoints and implement the frontend logic and UI yourself.
 
-We recommend having profound knowledge of Vue.js or another reactive Javascript framework and experience wiht headless frontend architecture when you plan to implement a project with Shopware Frontends.
+We recommend having profound knowledge of Vue.js or another reactive Javascript framework and experience with headless frontend architecture when you plan to implement a project with Shopware Frontends.
