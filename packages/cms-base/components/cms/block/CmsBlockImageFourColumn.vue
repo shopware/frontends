@@ -23,6 +23,6 @@ const centerRightContent = getSlotContent("center-right");
 
 <style scoped>
 .cms-block-image-four-column .cms-element-image {
-  @apply aspect-square object-cover;
+  @apply object-cover;
 }
 </style>
