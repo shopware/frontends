@@ -6,6 +6,10 @@ import ChevronRight from "../../icons/ChevronRight.vue";
 const props = defineProps<{
   content: CmsElementImageSlider;
 }>();
+const emit = defineEmits<{
+  (e: "changeSlide", index: number): void;
+}>();
+
 const imageSlider = ref<HTMLElement>(null);
 const imageSliderWidth = ref<number>(0);
 const imageSliderTrackStyle = ref({});
@@ -57,7 +61,7 @@ function initSlider() {
     setTimeout(() => {
       imageSliderWidth.value = imageSlider.value.clientWidth;
       buildImageSliderTrackStyle(activeSlideIndex.value);
-    });
+    }, 100);
   }
 }
 
@@ -111,6 +115,7 @@ function next() {
       activeSlideIndex.value = 0;
       buildImageSliderTrackStyle(activeSlideIndex.value);
     }
+    emit("changeSlide", activeSlideIndex.value);
   });
 }
 
@@ -121,6 +126,7 @@ function previous() {
       activeSlideIndex.value = images.value.length - 3;
       buildImageSliderTrackStyle(activeSlideIndex.value);
     }
+    emit("changeSlide", activeSlideIndex.value);
   });
 }
 
@@ -128,7 +134,14 @@ function goToSlide(index: number) {
   if (activeSlideIndex.value === index) return;
   activeSlideIndex.value = index;
   buildImageSliderTrackStyle(activeSlideIndex.value, true);
+  emit("changeSlide", activeSlideIndex.value);
 }
+
+defineExpose({
+  next,
+  previous,
+  goToSlide,
+});
 </script>
 <template>
   <div

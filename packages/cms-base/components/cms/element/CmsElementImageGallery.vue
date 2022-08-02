@@ -1,14 +1,221 @@
 <script setup lang="ts">
 import { CmsElementImageGallery } from "@shopware-pwa/composables-next";
+import { getProductMediaGallery } from "@shopware-pwa/helpers-next";
+import ChevronUp from "../../icons/ChevronUp.vue";
+import ChevronDown from "../../icons/ChevronDown.vue";
+import ChevronLeft from "../../icons/ChevronLeft.vue";
+import ChevronRight from "../../icons/ChevronRight.vue";
 
-const props = defineProps<{
-  content: CmsElementImageGallery;
-}>();
+const { content, slidesToShow, slidesToScroll } = defineProps({
+  content: {
+    type: Object as CmsElementImageGallery,
+  },
+  slidesToShow: {
+    type: Number,
+    default: 5,
+  },
+  slidesToScroll: {
+    type: Number,
+    default: 4,
+  },
+});
 
-const { cmsContent } = useCms();
-const product = computed(() => cmsContent.value?.product);
+const speed = ref<number>(300);
+const currentIndex = ref(0);
+const currentThumb = ref(0);
+const imageSlider = ref();
+const imageThumbsTrack = ref();
+const isLoading = ref(true);
+const imageThumbsTrackStyle = ref({});
+const imageThumbs = ref();
+const imageThumbsStyle = ref({});
+const mediaGallery = computed(() => content?.data?.sliderItems ?? []);
+const galleryPosition = computed(
+  () => content?.config?.galleryPosition.value ?? "left"
+);
+const scrollPx = ref(0);
+
+onMounted(() => {
+  initThumbs();
+});
+
+function initThumbs() {
+  if (imageThumbsTrack.value) {
+    setTimeout(() => {
+      if (galleryPosition.value === "left") {
+        scrollPx.value =
+          imageThumbsTrack.value.clientHeight / mediaGallery.value.length;
+        imageThumbsStyle.value = {
+          height: `${scrollPx.value * +slidesToShow}px`,
+        };
+      } else {
+        scrollPx.value = imageThumbs.value.clientWidth / slidesToShow;
+        imageThumbsTrackStyle.value = {
+          width: `${scrollPx.value * mediaGallery.value.length}px`,
+        };
+      }
+      isLoading.value = false;
+    }, 100);
+  }
+}
+
+function changeCover(i: number) {
+  if (i === currentIndex.value) return;
+  imageSlider.value.goToSlide(i);
+}
+
+function handleChangeSlide(e) {
+  currentIndex.value = e;
+  if (currentIndex.value > currentThumb.value + slidesToShow - 1) {
+    move("next", currentIndex.value);
+    return;
+  }
+  if (currentIndex.value < currentThumb.value) {
+    move("previous", currentIndex.value);
+    return;
+  }
+}
+
+function move(type: "next" | "previous", specificIndex?: number | string) {
+  let step;
+  const index =
+    typeof specificIndex !== "number"
+      ? parseInt(specificIndex as string)
+      : specificIndex;
+  if (index >= 0) {
+    if (type === "next") {
+      step =
+        index + slidesToScroll < mediaGallery.value.length
+          ? index
+          : mediaGallery.value.length - slidesToShow;
+    } else {
+      step = index - slidesToScroll > 0 ? index - slidesToScroll : 0;
+    }
+  } else {
+    if (type === "next") {
+      step =
+        currentThumb.value + slidesToShow - 1 + slidesToScroll <
+        mediaGallery.value.length
+          ? currentThumb.value + slidesToScroll
+          : mediaGallery.value.length - slidesToShow;
+    } else {
+      step =
+        currentThumb.value - slidesToScroll > 0
+          ? currentThumb.value - slidesToScroll
+          : 0;
+    }
+  }
+  currentThumb.value = step;
+  let xAxis = 0;
+  let yAxis = 0;
+  if (galleryPosition.value === "left") {
+    yAxis = scrollPx.value * currentThumb.value;
+  } else {
+    xAxis = scrollPx.value * currentThumb.value;
+  }
+  imageThumbsTrackStyle.value = {
+    ...imageThumbsTrackStyle.value,
+    transform: `translate3d(-${xAxis}px, -${yAxis}px, 0px)`,
+    transition: `transform ${speed.value}ms ease 0s`,
+  };
+}
+
+function previous() {
+  if (currentThumb.value <= 0) {
+    return;
+  }
+  move("previous");
+}
+
+function next() {
+  if (currentThumb.value + slidesToShow >= mediaGallery.value.length) {
+    return;
+  }
+  move("next");
+}
 </script>
 
 <template>
-  <SwProductGallery :product="product" />
+  <div
+    :class="{
+      'opacity-0': isLoading,
+      'flex gap-10': true,
+      'flex-col-reverse': galleryPosition === 'underneath',
+    }"
+  >
+    <div
+      :class="{
+        'basis-20 relative flex flex-col items-center':
+          galleryPosition === 'left',
+        'flex relative w-full': galleryPosition === 'underneath',
+      }"
+    >
+      <button
+        v-if="mediaGallery.length > slidesToShow"
+        :disabled="currentThumb <= 0"
+        class="disabled:opacity-10 p-1"
+        @click="previous"
+      >
+        <component
+          class="text-xl"
+          :is="galleryPosition === 'left' ? ChevronUp : ChevronLeft"
+        />
+      </button>
+      <div
+        class="overflow-hidden -my-2.5"
+        ref="imageThumbs"
+        :style="imageThumbsStyle"
+      >
+        <div
+          :class="{
+            flex: true,
+            'flex-col': galleryPosition === 'left',
+          }"
+          ref="imageThumbsTrack"
+          :style="imageThumbsTrackStyle"
+        >
+          <div
+            v-for="(image, i) in mediaGallery"
+            :class="{
+              'py-2.5': galleryPosition === 'left',
+              'flex-1 px-2.5': galleryPosition === 'underneath',
+            }"
+            :key="image.media.url"
+          >
+            <div
+              class="h-20 overflow-hidden cursor-pointer p-1 border-gray-200 rounded transition duration-150 ease-in-out"
+              :class="{
+                border: i !== currentIndex,
+                'border-indigo-500 border-3': i === currentIndex,
+              }"
+              @click="() => changeCover(i)"
+            >
+              <img
+                :src="image.media.url"
+                class="w-full h-full object-center object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        v-if="mediaGallery.length > slidesToShow"
+        :disabled="currentThumb + slidesToShow >= mediaGallery.length"
+        class="disabled:opacity-10 p-1"
+        @click="next"
+      >
+        <component
+          class="text-xl"
+          :is="galleryPosition === 'left' ? ChevronDown : ChevronRight"
+        />
+      </button>
+    </div>
+    <div class="flex-1 overflow-hidden">
+      <CmsElementImageSlider
+        ref="imageSlider"
+        :content="content"
+        @changeSlide="handleChangeSlide"
+      />
+    </div>
+  </div>
 </template>
