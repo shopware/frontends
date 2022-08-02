@@ -11,7 +11,7 @@ const cmsContent = getSlotContent("imageGallery");
 </script>
 
 <template>
-  <div class="container mx-auto">
+  <div class="cms-block-image-gallery">
     <CmsGenericElement :content="cmsContent" />
   </div>
 </template>
