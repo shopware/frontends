@@ -29,9 +29,11 @@ pnpm run dev --filter=nuxt3-app
 pnpm run dev --filter='docs'
 ```
 
-## Structure
+## Architecture
 
-Shopware Frontends is divided into three main modules.
+![Shopware Frontends Architecture](.readme/frontends-architecture.png)
+
+Shopware Frontends is divided into separate modules of which some can be used independently.
 
 **API Client**
 
@@ -41,7 +43,15 @@ This package provides abstraction to Shopware's Store API and manages authentica
 
 An opinionated set of Vue.js composables like `useProduct` or `useCustomer` to use business logic and state in any Vue.js project.
 
-**Project Base**
+**CMS Base**
+
+An opinionated implementation of all default Shopware Sections, Blocks and Elements in Tailwind.css.
+
+**Helpers**
+
+A set of helper functions related to price formatting, translation handling, UI state, or URL handling.
+
+**Project Template**
 
 A reference implementation of an eCommerce storefront, based on Tailwind.css, Vite, Nuxt 3 and Vue 3.
 
