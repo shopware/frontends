@@ -19,13 +19,13 @@ export type LayoutConfiguration = {
 function isCmsSlot(
   content: CmsBlock | CmsSection | CmsSlot
 ): content is CmsSlot {
-  return content.type === "cms_slot";
+  return content.apiAlias === "cms_slot";
 }
 
 function isCmsBlock(
   content: CmsBlock | CmsSection | CmsSlot
 ): content is CmsBlock {
-  return content.type === "cms_block";
+  return content.apiAlias === "cms_block";
 }
 /**
  * @beta

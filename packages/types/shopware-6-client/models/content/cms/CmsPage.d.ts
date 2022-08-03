@@ -171,7 +171,7 @@ export type CmsSlot = {
   blockId: string;
   fieldConfig: CmsFieldConfig[];
   data?: unknown;
-  apiAlias: string;
+  apiAlias: "cms_slot";
 };
 
 /**
@@ -220,4 +220,5 @@ export type CmsSection = {
   extensions: [any];
   id: string;
   blocks: CmsBlock[];
+  apiAlias: "cms_section";
 };
