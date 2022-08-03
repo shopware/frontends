@@ -39,3 +39,5 @@ yarn-error.log*
 #deployments
 .vercel
 .vercel_build_output
+
+.env 
