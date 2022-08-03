@@ -12,4 +12,5 @@ export type Entity = {
   translated: unknown;
   createdAt: Date | null;
   updatedAt: Date | null;
+  apiAlias: string;
 };

@@ -1,8 +1,7 @@
 export * from "./getProductFreeShipping";
-export * from "./getProductMainImageUrl";
+export * from "./getMainImageUrl";
 export * from "./getProductMediaGallery";
 export * from "./getProductName";
-export * from "./getProductOptions";
 export * from "./getProductProperties";
 export * from "./getProductReviews";
 export * from "./getProductTierPrices";
@@ -16,3 +15,4 @@ export * from "./getProductCalculatedListingPrice";
 export * from "./getProductVariantsFromPrice";
 export * from "./getProductRealPrice";
 export * from "./getProductFromPrice";
+export * from "./isProduct";

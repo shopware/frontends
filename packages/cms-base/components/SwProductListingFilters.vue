@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { CmsPage, ListingFilter } from "@shopware-pwa/types";
+import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import { ComputedRef, Ref, UnwrapNestedRefs } from "vue";
 import SwProductListingFilter from "./SwProductListingFilter.vue";
-defineEmits(["select-filter-value"]);
-const $props = defineProps(["content", "listingType"]);
-const cmsPage = inject("cms-page");
-const category = computed(() => cmsPage.value?.category || {});
+import { CmsElementProductListing } from "@shopware-pwa/composables-next";
+
+defineProps<{
+  content: CmsElementProductListing;
+  listingType: string;
+}>();
+
+const cmsPage = inject<ComputedRef<CmsPage>>("cms-page");
+const category = computed(() => cmsPage?.value?.category);
 const isSortMenuOpen = ref(false);
 const {
   getCurrentSortingOrder,
@@ -15,7 +23,16 @@ const {
   getTotal,
 } = useListing({ listingType: "categoryListing" });
 
-const sidebarSelectedFilters = reactive({
+const sidebarSelectedFilters: UnwrapNestedRefs<{
+  [key: string]: any;
+}> = reactive<{
+  manufacturer: Set<any>;
+  properties: Set<any>;
+  "min-price": string | number | undefined;
+  "max-price": string | number | undefined;
+  rating: string | number | undefined;
+  "shipping-free": boolean | undefined;
+}>({
   manufacturer: new Set(),
   properties: new Set(),
   "min-price": undefined,
@@ -24,12 +41,14 @@ const sidebarSelectedFilters = reactive({
   "shipping-free": undefined,
 });
 
-const isFilterVisible = ref({});
+const isFilterVisible = ref<{ [key: string]: boolean }>({});
 const toggleFilterVisibility = (filterId: string) => {
   isFilterVisible.value[filterId] = !isFilterVisible.value[filterId];
 };
 
-const searchCriteriaForRequest = computed(() => ({
+const searchCriteriaForRequest: ComputedRef<{
+  [code: string]: string | string[] | number | number[] | boolean | undefined;
+}> = computed(() => ({
   manufacturer: [...sidebarSelectedFilters.manufacturer],
   properties: [...sidebarSelectedFilters.properties],
   "min-price": sidebarSelectedFilters["min-price"],
@@ -39,7 +58,13 @@ const searchCriteriaForRequest = computed(() => ({
   rating: sidebarSelectedFilters["rating"],
 }));
 
-const onOptionSelectToggle = ({ code, value }) => {
+const onOptionSelectToggle = ({
+  code,
+  value,
+}: {
+  code: string;
+  value: any;
+}) => {
   if (!["properties", "manufacturer"].includes(code)) {
     sidebarSelectedFilters[code] = value;
   } else {
@@ -64,8 +89,8 @@ const clearFilters = () => {
 };
 
 const currentSortingOrder = computed({
-  get: () => getCurrentSortingOrder.value,
-  set: (order: string) => changeCurrentSortingOrder(order),
+  get: (): string => getCurrentSortingOrder.value || "",
+  set: (order: string): Promise<void> => changeCurrentSortingOrder(order),
 });
 
 const selectedOptionIds = computed(() => [
@@ -74,9 +99,9 @@ const selectedOptionIds = computed(() => [
 ]);
 provide("selectedOptionIds", selectedOptionIds);
 
-const isFilterBarOpen = ref(false);
+const isFilterBarOpen: Ref<boolean> = ref(false);
 
-const isFilterOptionSelected = (option) => {
+const isFilterOptionSelected = (option: ListingFilter) => {
   if (option.code === "properties") {
     return sidebarSelectedFilters.properties.has(option.value);
   } else if (option.code === "manufacturer") {
@@ -101,7 +126,7 @@ watch(getAvailableFilters, (filters, oldFilters) => {
 async function invokeCleanFilters() {
   await search({});
   clearFilters();
-  isFilterBarOpen = false;
+  isFilterBarOpen.value = false;
 }
 </script>
 <template>
@@ -191,7 +216,7 @@ async function invokeCleanFilters() {
             <div class="text-center pl-4 pr-4 mt-4">
               <button
                 class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                @click="invokeClearFilters"
+                @click="invokeCleanFilters"
                 type="button"
               >
                 Reset filters
@@ -206,7 +231,7 @@ async function invokeCleanFilters() {
           class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
         >
           <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
-            {{ category.name }}
+            {{ getTranslatedProperty(category, "name") }}
           </h1>
 
           <div class="flex items-center">

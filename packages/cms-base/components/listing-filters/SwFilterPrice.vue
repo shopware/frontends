@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { ListingFilter } from "@shopware-pwa/types";
 import { debounce } from "@shopware-pwa/helpers-next";
-const $emits = defineEmits(["select-value"]);
-const $props = defineProps(["filter"]);
+const emits = defineEmits<{
+  (e: "select-value", value: { code: string; value: unknown }): void;
+}>();
+
+const $props = defineProps<{
+  filter: ListingFilter;
+}>();
 const isFilterVisible = ref(false);
 const prices = reactive<{ min: number; max: number }>({
   min: $props.filter?.min,
@@ -12,7 +18,7 @@ watch(
   () => prices.min,
   debounce((newPrice: number, oldPrice: number) => {
     if (newPrice == oldPrice) return;
-    $emits("select-value", {
+    emits("select-value", {
       code: "min-price",
       value: newPrice,
     });
@@ -23,7 +29,7 @@ watch(
   () => prices.max,
   debounce((newPrice: number, oldPrice: number) => {
     if (newPrice == oldPrice) return;
-    $emits("select-value", {
+    emits("select-value", {
       code: "max-price",
       value: newPrice,
     });
@@ -99,7 +105,7 @@ watch(
               type="number"
               name="min-price"
               class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-gray-300"
-              :placeholder="prices.min"
+              :placeholder="prices.min?.toString()"
             />
           </div>
           <div class="w-1/2 flex rounded-md">
@@ -114,7 +120,7 @@ watch(
               type="number"
               name="max-price"
               class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-gray-300"
-              :placeholder="prices.max"
+              :placeholder="prices.max?.toString()"
             />
           </div>
         </div>

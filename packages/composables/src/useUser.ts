@@ -152,7 +152,7 @@ export function useUser(): IUseUser {
     try {
       const customer = await apiRegister(params as any, apiInstance);
       // broadcast(INTERCEPTOR_KEYS.USER_REGISTER, { customer });
-      storeUser.value = customer || {};
+      storeUser.value = (customer as Customer) || {};
       refreshSessionContext();
       return true;
     } catch (e) {
@@ -204,7 +204,7 @@ export function useUser(): IUseUser {
         ),
         apiInstance
       );
-      storeUser.value = user || {};
+      storeUser.value = (user as Customer) || {};
     } catch (e) {
       storeUser.value = {};
       console.error("[useUser][refreshUser]", e);

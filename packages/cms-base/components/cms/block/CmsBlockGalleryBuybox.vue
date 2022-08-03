@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { CmsBlockGalleryBuybox } from "@shopware-pwa/composables-next";
+import {
+  CmsBlockGalleryBuybox,
+  CmsElementProductBox,
+} from "@shopware-pwa/composables-next";
+import { CmsProductPageResponse } from "@shopware-pwa/types";
 
 const props = defineProps<{
   content: CmsBlockGalleryBuybox;
@@ -10,7 +14,10 @@ const slotContent = getSlotContent("right");
 
 const { cmsContent } = useCms();
 const product = computed(
-  () => slotContent?.data?.product || cmsContent.value?.product
+  () =>
+    // transform into generic
+    (slotContent as CmsElementProductBox)?.data?.product ||
+    (cmsContent.value as CmsProductPageResponse)?.product
 );
 </script>
 

@@ -29,12 +29,11 @@ const {
 const { cartItems } = useCart();
 const isModalOpened = inject("isModalOpened");
 const isLoading = reactive({} as any);
-const isCustomerLoggedIn = ref(isLoggedIn.value);
 
 const password = ref<string | null>();
 const selectedShippingMethod = computed({
   get(): string {
-    return shippingMethod.value?.id;
+    return shippingMethod.value?.id || "";
   },
   async set(shippingMethodId: string) {
     isLoading[shippingMethodId] = true;
@@ -44,7 +43,7 @@ const selectedShippingMethod = computed({
 });
 const selectedPaymentMethod = computed({
   get(): string {
-    return paymentMethod.value?.id;
+    return paymentMethod.value?.id || "";
   },
   async set(paymentMethodId: string) {
     isLoading[paymentMethodId] = true;
@@ -102,7 +101,7 @@ onMounted(async () => {
 const submitBillingAddress = async (e: Event) => {
   e.preventDefault();
   // prevent default but leave default browser's validation as long as there is no validation library
-  if (document.forms["checkout-billing-address"]?.reportValidity()) {
+  if (document.forms.namedItem("checkout-billing-address")?.reportValidity()) {
     try {
       await register(registerPayload.value);
     } catch (error) {}
@@ -128,6 +127,7 @@ const submitBillingAddress = async (e: Event) => {
           <div class="shadow overflow-hidden sm:rounded-md">
             <form
               v-if="!isLoggedIn"
+              name="checkout-billing-address"
               id="checkout-billing-address"
               method="post"
             >
@@ -318,7 +318,7 @@ const submitBillingAddress = async (e: Event) => {
               </div>
             </form>
             <div v-else class="p-6">
-              You are logged-in as {{ user.firstName }}! You can log out
+              You are logged-in as {{ user?.firstName }}! You can log out
               <a href="#" class="text-indigo-700" @click="logout">here</a>.
             </div>
           </div>

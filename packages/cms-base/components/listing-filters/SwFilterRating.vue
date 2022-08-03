@@ -1,23 +1,42 @@
 <script setup lang="ts">
+import {
+  EntitiesAggregation,
+  AggregationFilterEntity,
+  PriceAggregation,
+  MaxAggregation,
+  ListingFilter,
+} from "@shopware-pwa/types";
 import SwStarIcon from "../SwStarIcon.vue";
-const $emits = defineEmits("select-value");
-const $props = defineProps(["filter", "selectedFilters"]);
+const emits = defineEmits<{
+  (e: "select-value", value: { code: string; value: unknown }): void;
+}>();
+
+const props = defineProps<{
+  filter: ListingFilter;
+  selectedFilters: {
+    [key: string]:
+      | EntitiesAggregation<AggregationFilterEntity>
+      | PriceAggregation
+      | MaxAggregation
+      | number;
+  };
+}>();
 const isFilterVisible = ref(false);
 const isHoverActive = ref(false);
 const hoveredIndex = ref(0);
 const displayedScore = computed(() =>
-  isHoverActive.value ? hoveredIndex.value : $props.selectedFilters?.rating || 0
+  isHoverActive.value ? hoveredIndex.value : props.selectedFilters?.rating || 0
 );
-const hoverRating = (key) => {
+const hoverRating = (key: number) => {
   hoveredIndex.value = key;
   isHoverActive.value = true;
 };
 const onChangeRating = () => {
   const newValue =
-    $props.selectedFilters?.rating !== hoveredIndex.value
+    props.selectedFilters?.rating !== hoveredIndex.value
       ? hoveredIndex.value
       : undefined;
-  $emits("select-value", { code: $props.filter?.code, value: newValue });
+  emits("select-value", { code: props.filter?.code, value: newValue });
 };
 </script>
 

@@ -1,4 +1,4 @@
-import { CmsBlock, CmsSection } from "@shopware-pwa/types";
+import { CmsBlock, CmsSection, CmsSlot } from "@shopware-pwa/types";
 
 /**
  * @beta
@@ -15,18 +15,31 @@ export type LayoutConfiguration = {
   cssClasses: string | null;
 };
 
+// predicate types
+function isCmsSlot(
+  content: CmsBlock | CmsSection | CmsSlot
+): content is CmsSlot {
+  return content.type === "cms_slot";
+}
+
+function isCmsBlock(
+  content: CmsBlock | CmsSection | CmsSlot
+): content is CmsBlock {
+  return content.type === "cms_block";
+}
 /**
  * @beta
  */
 export function getCmsLayoutConfiguration(
-  content: CmsBlock | CmsSection
-): LayoutConfiguration {
-  if (!content) {
+  content: CmsBlock | CmsSection | CmsSlot
+): LayoutConfiguration | Partial<LayoutConfiguration> {
+  if (!content || isCmsSlot(content)) {
     return {
       cssClasses: null,
       layoutStyles: {},
-    } as any;
+    } as Partial<LayoutConfiguration>;
   }
+
   return {
     cssClasses: content.cssClass,
     layoutStyles: {
@@ -34,10 +47,10 @@ export function getCmsLayoutConfiguration(
       backgroundImage: content.backgroundMedia
         ? `url(${content.backgroundMedia.url})`
         : null,
-      marginBottom: (content as any).marginBottom,
-      marginLeft: (content as any).marginLeft,
-      marginRight: (content as any).marginRight,
-      marginTop: (content as any).marginTop,
+      marginBottom: isCmsBlock(content) ? content.marginBottom : null,
+      marginLeft: isCmsBlock(content) ? content.marginLeft : null,
+      marginRight: isCmsBlock(content) ? content.marginRight : null,
+      marginTop: isCmsBlock(content) ? content.marginTop : null,
     },
   };
 }

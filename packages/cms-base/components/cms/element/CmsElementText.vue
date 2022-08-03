@@ -3,7 +3,7 @@ import { CmsElementText } from "@shopware-pwa/composables-next";
 import { ComputedRef, CSSProperties } from "vue";
 
 const props = defineProps<{
-  content: CmsElementText;
+  content: Pick<CmsElementText, "config" | "data" | "type" | "slot">;
 }>();
 
 const style: ComputedRef<CSSProperties> = computed(() => ({

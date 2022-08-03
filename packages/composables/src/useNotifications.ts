@@ -7,11 +7,11 @@ import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
 /**
  * @beta
  */
-export interface Notification {
+export type Notification = {
   type: "info" | "warning" | "success" | "danger";
   message: string;
-  id?: number;
-}
+  id: number;
+};
 
 /**
  * @beta

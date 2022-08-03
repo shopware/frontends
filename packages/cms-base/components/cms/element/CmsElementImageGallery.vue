@@ -1,24 +1,21 @@
 <script setup lang="ts">
 import { CmsElementImageGallery } from "@shopware-pwa/composables-next";
-import { getProductMediaGallery } from "@shopware-pwa/helpers-next";
 import ChevronUp from "../../icons/ChevronUp.vue";
 import ChevronDown from "../../icons/ChevronDown.vue";
 import ChevronLeft from "../../icons/ChevronLeft.vue";
 import ChevronRight from "../../icons/ChevronRight.vue";
 
-const { content, slidesToShow, slidesToScroll } = defineProps({
-  content: {
-    type: Object as CmsElementImageGallery,
-  },
-  slidesToShow: {
-    type: Number,
-    default: 5,
-  },
-  slidesToScroll: {
-    type: Number,
-    default: 4,
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    content: CmsElementImageGallery;
+    slidesToShow: number;
+    slidesToScroll: number;
+  }>(),
+  {
+    slidesToShow: 5,
+    slidesToScroll: 4,
+  }
+);
 
 const speed = ref<number>(300);
 const currentIndex = ref(0);
@@ -29,9 +26,9 @@ const isLoading = ref(true);
 const imageThumbsTrackStyle = ref({});
 const imageThumbs = ref();
 const imageThumbsStyle = ref({});
-const mediaGallery = computed(() => content?.data?.sliderItems ?? []);
-const galleryPosition = computed(
-  () => content?.config?.galleryPosition.value ?? "left"
+const mediaGallery = computed(() => props.content.data?.sliderItems ?? []);
+const galleryPosition = computed<string>(
+  () => props.content.config?.galleryPosition.value ?? "left"
 );
 const scrollPx = ref(0);
 
@@ -46,10 +43,10 @@ function initThumbs() {
         scrollPx.value =
           imageThumbsTrack.value.clientHeight / mediaGallery.value.length;
         imageThumbsStyle.value = {
-          height: `${scrollPx.value * +slidesToShow}px`,
+          height: `${scrollPx.value * +props.slidesToShow}px`,
         };
       } else {
-        scrollPx.value = imageThumbs.value.clientWidth / slidesToShow;
+        scrollPx.value = imageThumbs.value.clientWidth / props.slidesToShow;
         imageThumbsTrackStyle.value = {
           width: `${scrollPx.value * mediaGallery.value.length}px`,
         };
@@ -64,9 +61,9 @@ function changeCover(i: number) {
   imageSlider.value.goToSlide(i);
 }
 
-function handleChangeSlide(e) {
+function handleChangeSlide(e: number) {
   currentIndex.value = e;
-  if (currentIndex.value > currentThumb.value + slidesToShow - 1) {
+  if (currentIndex.value > currentThumb.value + props.slidesToShow - 1) {
     move("next", currentIndex.value);
     return;
   }
@@ -85,23 +82,24 @@ function move(type: "next" | "previous", specificIndex?: number | string) {
   if (index >= 0) {
     if (type === "next") {
       step =
-        index + slidesToScroll < mediaGallery.value.length
+        index + props.slidesToScroll < mediaGallery.value.length
           ? index
-          : mediaGallery.value.length - slidesToShow;
+          : mediaGallery.value.length - props.slidesToShow;
     } else {
-      step = index - slidesToScroll > 0 ? index - slidesToScroll : 0;
+      step =
+        index - props.slidesToScroll > 0 ? index - props.slidesToScroll : 0;
     }
   } else {
     if (type === "next") {
       step =
-        currentThumb.value + slidesToShow - 1 + slidesToScroll <
+        currentThumb.value + props.slidesToShow - 1 + props.slidesToScroll <
         mediaGallery.value.length
-          ? currentThumb.value + slidesToScroll
-          : mediaGallery.value.length - slidesToShow;
+          ? currentThumb.value + props.slidesToScroll
+          : mediaGallery.value.length - props.slidesToShow;
     } else {
       step =
-        currentThumb.value - slidesToScroll > 0
-          ? currentThumb.value - slidesToScroll
+        currentThumb.value - props.slidesToScroll > 0
+          ? currentThumb.value - props.slidesToScroll
           : 0;
     }
   }
@@ -128,7 +126,7 @@ function previous() {
 }
 
 function next() {
-  if (currentThumb.value + slidesToShow >= mediaGallery.value.length) {
+  if (currentThumb.value + props.slidesToShow >= mediaGallery.value.length) {
     return;
   }
   move("next");

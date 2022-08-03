@@ -1,8 +1,15 @@
 <script setup lang="ts">
-//import { pascalCase } from "scule";
-//const filterPathToResolve = `./icons/${pascalCase($props.notification?.type)}Mark.vue`
-defineEmits(["click:close"]);
-const $props = defineProps(["notification"]);
+import { ComputedRef } from "vue";
+import { Notification } from "@shopware-pwa/composables-next";
+
+defineEmits<{
+  (e: "click:close", id: number): void;
+}>();
+
+const props = defineProps<{
+  notification: Notification;
+}>();
+
 const colorCssMap = {
   info: "blue",
   success: "green",
@@ -11,7 +18,7 @@ const colorCssMap = {
 };
 // @todo: replace with dynamic import
 const TypeIconComponent = computed(() => {
-  switch ($props.notification?.type) {
+  switch (props.notification.type) {
     case "success":
       return defineAsyncComponent(() => import("./icons/SuccessMark.vue"));
     case "warning":
@@ -23,8 +30,8 @@ const TypeIconComponent = computed(() => {
   }
 });
 
-const themeTypeColor = computed(
-  () => colorCssMap[$props.notification?.type] || "blue"
+const themeTypeColor: ComputedRef<string> = computed(
+  () => colorCssMap[props.notification.type] || "blue"
 );
 </script>
 <template>

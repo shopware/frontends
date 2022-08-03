@@ -9,6 +9,7 @@ import {
   LineItem,
   LineItemType,
   ClientApiError,
+  ProductOption,
 } from "@shopware-pwa/types";
 // import {
 //   getApplicationContext,
@@ -16,8 +17,7 @@ import {
 //   useCart,
 // } from "@shopware-pwa/composables";
 
-import { getProductMainImageUrl } from "@shopware-pwa/helpers-next";
-import { PropertyGroupOption } from "@shopware-pwa/types";
+import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCart } from ".";
 
 /**
@@ -30,7 +30,7 @@ export interface IUseCartItem {
   itemRegularPrice: ComputedRef<number | undefined>;
   itemSpecialPrice: ComputedRef<number | undefined>;
   itemImageThumbnailUrl: ComputedRef<string>;
-  itemOptions: ComputedRef<PropertyGroupOption[]>;
+  itemOptions: ComputedRef<ProductOption[]>;
   itemType: ComputedRef<LineItemType | undefined>;
   isProduct: ComputedRef<boolean>;
   isPromotion: ComputedRef<boolean>;
@@ -66,7 +66,7 @@ export function useCartItem({
 
   const itemQuantity = computed(() => cartItem.quantity);
   const itemImageThumbnailUrl = computed(() =>
-    getProductMainImageUrl(cartItem as any)
+    getMainImageUrl(cartItem as any)
   );
 
   // TODO: use helper instead

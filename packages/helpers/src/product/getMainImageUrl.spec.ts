@@ -29,20 +29,6 @@ describe("Helpers - getMainImageUrl", () => {
     expect(coverUrl).toEqual(mediaUrl);
   });
 
-  it("Should return an empty string is the entity is not in type Product", () => {
-    const product: any = {
-      cover: {
-        url: "https://shopware.test/media/8a/fd/cb/1572351035/msh06-gray_main_1.jpg",
-        media: {
-          url: mediaUrl,
-        },
-      },
-      apiAlias: "promotion",
-    };
-    const coverUrl = getMainImageUrl(product);
-    expect(coverUrl).toEqual("");
-  });
-
   it("Should take the url from the media object first", () => {
     const product: any = {
       cover: {

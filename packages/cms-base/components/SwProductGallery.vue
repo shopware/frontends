@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { getProductMediaGallery } from "@shopware-pwa/helpers-next";
+import { Product } from "@shopware-pwa/types";
 
-const props = defineProps({
-  product: Object,
-});
+const props = defineProps<{
+  product: Product;
+}>();
 
 const coverImageUrl = computed(() => props.product?.cover?.media?.url);
 const mediaGallery = computed(() =>

@@ -36,4 +36,5 @@ export type Promotion = {
   orderCount: number;
   ordersPerCustomerCount: [] | null;
   exclusionIds: string[];
+  apiAlias: "promotion";
 };

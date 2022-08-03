@@ -6,7 +6,14 @@ import { Aggregations } from "../search/Aggregations";
  */
 export type ListingFilter = {
   label: string;
-  code: string;
+  code:
+    | "manufacturer"
+    | "properties"
+    | "price"
+    | "rating"
+    | "search"
+    | "shipping-free"
+    | string;
   type?: "range" | "max";
   [key: string]: any;
 };

@@ -5,7 +5,7 @@ import {
 } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
-  content: CmsElementImage;
+  content: Pick<CmsElementImage, "data" | "config">;
 }>();
 
 const {

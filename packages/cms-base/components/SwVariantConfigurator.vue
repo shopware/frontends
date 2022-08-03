@@ -1,7 +1,11 @@
 <script setup lang="ts">
-const props = defineProps({
-  product: Object,
-});
+import { ComputedRef } from "vue";
+import { Product } from "@shopware-pwa/types";
+
+const props = defineProps<{
+  product: Product;
+}>();
+
 const router = useRouter();
 const {
   handleChange,
@@ -10,7 +14,7 @@ const {
   findVariantForSelectedOptions,
 } = useProductConfigurator({ product: props.product });
 
-const selectedOptions = computed(() =>
+const selectedOptions: ComputedRef<any> = computed(() =>
   Object.values(unref(getSelectedOptions))
 );
 const isOptionSelected = (optionId: string) =>

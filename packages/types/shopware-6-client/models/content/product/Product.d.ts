@@ -41,6 +41,11 @@ export type CrossSelling = {
   apiAlias: string;
 };
 
+export type ProductOption = {
+  group: string;
+  option: string;
+};
+
 /**
  * @public
  */
@@ -105,7 +110,7 @@ export type Product = {
   categories: Category[];
   tags: Tag[];
   properties: PropertyGroupOption[] | null;
-  options: PropertyGroupOption[] | null;
+  options: ProductOption[];
   categoriesRo: Category[] | null;
   coverId: string | null;
   customFields: CustomField[];
@@ -123,4 +128,5 @@ export type Product = {
   productMediaVersiond?: null;
   crossSellings: CrossSelling[];
   cmsPage: null | CmsPage;
+  apiAlias: "product";
 };

@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import { pascalCase } from "scule";
-defineEmits(["selectFilterValue"]);
-const $props = defineProps({
-  filter: Object,
-  selectedFilters: Object,
-});
-const filterAlias = {
+import { ListingFilter } from "@shopware-pwa/types";
+defineEmits<{
+  selectFilterValue: ({ code, value }: { code: any; value: any }) => void;
+}>();
+
+const props = defineProps<{
+  filter: ListingFilter;
+  selectedFilters: {
+    [key: string]: any;
+  };
+}>();
+
+const filterAlias: { [code: string]: string } = {
   // filter.code
   manufacturer: "properties",
 };
 
 const filterPathToResolve = `./listing-filters/SwFilter${pascalCase(
-  filterAlias[$props.filter.code] ?? $props?.filter?.code
+  filterAlias[props.filter.code] ?? props?.filter?.code
 )}.vue`;
 const FilterComponent = defineAsyncComponent(
   () => import(/* @vite-ignore */ filterPathToResolve)

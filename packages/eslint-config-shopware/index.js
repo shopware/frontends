@@ -6,6 +6,13 @@ module.exports = {
       rootDir: ["apps/*/", "packages/*/"],
     },
   },
+  ignorePatterns: [
+    "dist/",
+    "node_modules/",
+    "*.d.ts",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+  ],
   rules: {
     "@next/next/no-html-link-for-pages": "off",
     "react/jsx-key": "off",

@@ -34,4 +34,5 @@ export type LineItem = {
   stackable: boolean;
   quantityInformation: QuantityInformation | null;
   modified: boolean;
+  apiAlias: "line_item";
 };
