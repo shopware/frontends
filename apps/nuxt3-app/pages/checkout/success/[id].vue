@@ -1,5 +1,4 @@
 <script async setup lang="ts">
-import { useOrderDetails } from "@shopware-pwa/composables";
 const { params } = useRoute();
 const orderId = params.id as string;
 const {

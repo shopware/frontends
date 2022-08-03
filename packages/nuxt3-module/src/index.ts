@@ -54,6 +54,8 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
           "useListing",
           "useCms",
           "useCmsBlock",
+          "useOrderDetails",
+          "useProduct",
           "useProductConfigurator",
           "useSalutations",
           "useUser",
