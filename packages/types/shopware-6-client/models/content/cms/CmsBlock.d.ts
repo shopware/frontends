@@ -10,7 +10,7 @@ import {
  * @public
  */
 export type CmsBlock = {
-  apiAlias: string;
+  apiAlias: "cms_block";
   createdAt: string;
   customFields: null | unknown;
   extensions: unknown;
