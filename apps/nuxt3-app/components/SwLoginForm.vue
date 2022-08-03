@@ -8,15 +8,16 @@ const { login, errors, isLoggedIn } = useUser();
 const loginErrors = computed(() =>
   errors.login?.map(({ detail }) => detail).toString()
 );
-const email = ref("");
-const password = ref("");
+
+const formData = ref({
+  username: "",
+  password: "",
+  remember: true,
+});
 
 const invokeLogin = async (): Promise<void> => {
   try {
-    const loginResult = await login({
-      username: email.value,
-      password: password.value,
-    });
+    const loginResult = await login(formData.value);
 
     if (loginResult) {
       emits("success");
@@ -36,19 +37,15 @@ const invokeLogin = async (): Promise<void> => {
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Sign in to your account
         </h2>
-        <!-- <p class="mt-2 text-center text-sm text-gray-600">
-        Or
-        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> start your 14-day free trial </a>
-      </p> -->
       </div>
-      <div class="mt-8 space-y-6">
-        <input type="hidden" name="remember" value="true" />
+      <form @submit.prevent="invokeLogin" class="mt-8 space-y-6">
+        <input type="hidden" name="remember" v-model="formData.remember" />
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="email-address" class="sr-only">Email address</label>
             <input
               id="email-address"
-              v-model="email"
+              v-model="formData.username"
               name="email"
               type="email"
               autocomplete="email"
@@ -61,7 +58,7 @@ const invokeLogin = async (): Promise<void> => {
             <label for="password" class="sr-only">Password</label>
             <input
               id="password"
-              v-model="password"
+              v-model="formData.password"
               name="password"
               type="password"
               autocomplete="current-password"
@@ -72,28 +69,27 @@ const invokeLogin = async (): Promise<void> => {
           </div>
         </div>
 
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <div
-              class="login-errors text-red-600 focus:ring-indigo-500 border-gray-300 rounded"
-            >
-              {{ loginErrors }}
+        <slot :data="formData" />
+
+        <slot name="error">
+          <div
+            v-if="loginErrors.length"
+            class="flex items-center justify-between"
+          >
+            <div class="flex items-center">
+              <div
+                class="login-errors text-red-600 focus:ring-indigo-500 border-gray-300 rounded"
+              >
+                {{ loginErrors }}
+              </div>
             </div>
           </div>
-          <!-- <div class="flex items-center">
-          <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-          <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Remember me </label>
-        </div> -->
-
-          <!-- <div class="text-sm">
-          <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
-        </div> -->
-        </div>
+        </slot>
 
         <div>
           <button
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            @click="invokeLogin()"
+            class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            type="submit"
           >
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
               <!-- Heroicon name: solid/lock-closed -->
@@ -113,8 +109,10 @@ const invokeLogin = async (): Promise<void> => {
             </span>
             Sign in
           </button>
+
+          <slot name="action" />
         </div>
-      </div>
+      </form>
     </div>
     <div v-else>
       <h2>you are logged in</h2>
