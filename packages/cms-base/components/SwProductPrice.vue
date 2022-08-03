@@ -4,9 +4,11 @@ import {
   getProductCalculatedListingPrice,
 } from "@shopware-pwa/helpers-next";
 
-const props = defineProps({
-  product: Object,
-});
+import { Product } from "@shopware-pwa/types";
+
+const props = defineProps<{
+  product: Product;
+}>();
 
 const { currency, refreshSessionContext } = useSessionContext();
 refreshSessionContext();

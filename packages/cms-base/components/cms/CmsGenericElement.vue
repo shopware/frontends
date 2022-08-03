@@ -41,8 +41,17 @@ const DynamicRender = () => {
     }
     return h("div", {}, "Loading...");
   } catch (e) {
-    console.error("Problem Resolving", componentNameToResolve, ":", e.message);
-    return h("div", {}, `Problem(${componentNameToResolve}): ${e.message}`);
+    console.error(
+      "Problem Resolving",
+      componentNameToResolve,
+      ":",
+      (e as Error).message
+    );
+    return h(
+      "div",
+      {},
+      `Problem(${componentNameToResolve}): ${(e as Error).message}`
+    );
   }
 };
 </script>

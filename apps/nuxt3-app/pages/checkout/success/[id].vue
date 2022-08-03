@@ -1,14 +1,18 @@
 <script async setup lang="ts">
+import { useOrderDetails } from "@shopware-pwa/composables";
 const { params } = useRoute();
-const orderId = params.id;
+const orderId = params.id as string;
 const {
   loadOrderDetails,
   personalDetails,
   billingAddress,
   shippingAddress,
   order,
-} = useOrderDetails({ order: { id: orderId } });
-await loadOrderDetails();
+} = useOrderDetails({ order: { id: orderId } as any });
+
+onMounted(() => {
+  loadOrderDetails();
+});
 const lineItems = computed(() => order.value?.lineItems || []);
 </script>
 
@@ -40,7 +44,7 @@ const lineItems = computed(() => order.value?.lineItems || []);
             >
               <dt class="text-sm font-medium text-gray-500">Full name</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {{ shippingAddress.firstName }} {{ shippingAddress.lastName }}
+                {{ shippingAddress?.firstName }} {{ shippingAddress?.lastName }}
               </dd>
             </div>
             <div
@@ -48,7 +52,7 @@ const lineItems = computed(() => order.value?.lineItems || []);
             >
               <dt class="text-sm font-medium text-gray-500">Street</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {{ shippingAddress.street }}
+                {{ shippingAddress?.street }}
               </dd>
             </div>
             <div
@@ -56,7 +60,7 @@ const lineItems = computed(() => order.value?.lineItems || []);
             >
               <dt class="text-sm font-medium text-gray-500">Zip code</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {{ shippingAddress.zipcode }}
+                {{ shippingAddress?.zipcode }}
               </dd>
             </div>
             <div
@@ -64,7 +68,7 @@ const lineItems = computed(() => order.value?.lineItems || []);
             >
               <dt class="text-sm font-medium text-gray-500">City</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {{ shippingAddress.city }}
+                {{ shippingAddress?.city }}
               </dd>
             </div>
           </dl>
@@ -122,7 +126,7 @@ const lineItems = computed(() => order.value?.lineItems || []);
               <li
                 class="flex py-6"
                 v-for="orderItem in lineItems"
-                :key="orderItem.id"
+                :key="orderItem.identifier"
               >
                 <SwOrderItem :orderItem="orderItem" />
               </li>

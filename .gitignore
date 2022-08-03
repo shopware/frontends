@@ -8,8 +8,8 @@ node_modules
 # testing
 coverage
 
-# next.js
-.next/
+# nuxt.js
+.nuxt
 out/
 build
 dist

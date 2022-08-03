@@ -6,11 +6,13 @@ import {
   getProductThumbnailUrl,
   getProductUrl,
 } from "@shopware-pwa/helpers-next";
+
+import { Product } from "@shopware-pwa/types";
 const { pushSuccess } = useNotifications();
 
-const props = defineProps({
-  product: Object,
-});
+const props = defineProps<{
+  product: Product;
+}>();
 
 const { addToCart } = useAddToCart({
   product: props.product,
@@ -23,7 +25,7 @@ const addToCartProxy = async () => {
 
 // const { formatPrice } = usePriceFilter();
 
-function getPrice(product) {
+function getPrice(product: Product) {
   const tierPrices = getProductTierPrices(product);
   return (
     (tierPrices.length && tierPrices[0] && tierPrices[0].unitPrice) ||
@@ -39,7 +41,7 @@ function getPrice(product) {
     >
       <img
         :src="getProductThumbnailUrl(product)"
-        :alt="getProductName({ product })"
+        :alt="getProductName({ product }) || ''"
         class="w-full h-full min-h-80 object-fill object-cover lg:w-full lg:h-full"
       />
     </div>
@@ -58,13 +60,14 @@ function getPrice(product) {
           <span> {{ product.description }} </span>
         </p>
         <p class="mt-1 text-sm text-gray-500 min-h-30px">
-          <span
+          <!-- TODO: handle product options displaying and work out a Product type -->
+          <!-- <span
             v-for="option in product?.options"
-            :key="option.id"
+            :key="option.group"
             class="mr-2"
           >
-            {{ option.translated.name }}
-          </span>
+            {{ option.group }}: {{ option.option }}
+          </span> -->
         </p>
       </div>
       <div class="mt-3">

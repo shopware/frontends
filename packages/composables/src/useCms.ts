@@ -4,6 +4,7 @@ import {
   ClientApiError,
   CmsPageResponse,
   CmsResourceType,
+  CmsResponse,
 } from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { searchCms } from "./searchLogic";
@@ -35,7 +36,9 @@ export function useCms(): {
 
   const _searchPath = inject("swCmsSearchPath", ref(""));
   provide("swCmsSearchPath", _searchPath);
-  const page = computed(() => cmsContext.value?.cmsPage);
+  const page: ComputedRef<CmsPageResponse> = computed(
+    () => cmsContext.value?.cmsPage
+  );
 
   const resourceIdentifier = computed(() => {
     // each cms page is in relation one-to-one with categoryId (resourceIdentifier)

@@ -1,5 +1,6 @@
-import { ref, Ref, computed, unref } from "vue";
+import { ref, Ref, computed, unref, ComputedRef } from "vue";
 import { Product, PropertyGroup } from "@shopware-pwa/types";
+import { ProductResponse } from "./types";
 // import {
 //   useCms,
 //   getApplicationContext,
@@ -28,7 +29,7 @@ export interface IUseProductConfigurator {
 
   findVariantForSelectedOptions: (options?: {
     [key: string]: string;
-  }) => Promise<void>;
+  }) => Promise<Product | undefined>;
   /**
    * Indicates if the options are being (re)loaded
    */
@@ -36,13 +37,13 @@ export interface IUseProductConfigurator {
   /**
    * Object of currently selected options
    */
-  getSelectedOptions: Ref<{
+  getSelectedOptions: ComputedRef<{
     [key: string]: string;
   }>;
   /**
    * All assigned properties which the variant can be made of
    */
-  getOptionGroups: Ref<PropertyGroup[]>;
+  getOptionGroups: ComputedRef<PropertyGroup[]>;
 }
 
 /**
@@ -67,7 +68,7 @@ export function useProductConfigurator(params: {
   const isLoadingOptions = ref(!!product.options?.length);
   const parentProductId = computed(() => product.parentId);
   const getOptionGroups = computed(
-    () => (page.value as any)?.configurator || []
+    () => (page.value as unknown as ProductResponse)?.configurator || []
   );
 
   const findGroupCodeForOption = (optionId: string) => {
@@ -91,7 +92,7 @@ export function useProductConfigurator(params: {
 
   const findVariantForSelectedOptions = async (options?: {
     [code: string]: string;
-  }) => {
+  }): Promise<Product | undefined> => {
     const filter = [
       {
         type: "equals",

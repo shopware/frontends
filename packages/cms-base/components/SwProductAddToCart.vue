@@ -3,10 +3,12 @@ import {
   getProductTierPrices,
   getProductCalculatedListingPrice,
 } from "@shopware-pwa/helpers-next";
+import { Product } from "@shopware-pwa/types";
+
 const { pushSuccess } = useNotifications();
-const props = defineProps({
-  product: Object,
-});
+const props = defineProps<{
+  product: Product;
+}>();
 
 const { addToCart, quantity } = useAddToCart({
   product: props.product,
@@ -17,7 +19,7 @@ const addToCartProxy = async () => {
   pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
 };
 
-function getPrice(product) {
+function getPrice(product: Product) {
   const tierPrices = getProductTierPrices(product);
   return (
     (tierPrices.length && tierPrices[0] && tierPrices[0].unitPrice) ||

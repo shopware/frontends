@@ -1,6 +1,9 @@
-<script setup>
-const open = ref(false);
-defineProps(["cmsPage"]);
+<script setup lang="ts">
+import { Shopware } from "@shopware-pwa/composables-next";
+
+defineProps<{
+  cmsPage: Shopware.CmsPage;
+}>();
 </script>
 
 <template>

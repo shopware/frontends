@@ -4,6 +4,8 @@ import { Order } from "./Order";
 import { OrderDeliveryPosition } from "./OrderDeliveryPosition";
 import { Media } from "../../content/media/Media";
 import { CustomField } from "../../common/CustomField";
+import { Product } from "../../content/product/Product";
+import { Promotion } from "../promotion/Promotion";
 
 /**
  * @public
@@ -23,7 +25,7 @@ export type OrderLineItem = {
   stackable: boolean;
   price: CalculatedPrice | null;
   priceDefinition: PriceDefinitionInterface | null;
-  payload: string[] | null;
+  payload: Product | Promotion;
   parentId: string | null;
   type: string | null;
   order: Order | null;
@@ -31,4 +33,5 @@ export type OrderLineItem = {
   customFields: CustomField[];
   cover: Media | null;
   children: OrderLineItem[] | null;
+  apiAlias: "order_item";
 };

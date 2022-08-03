@@ -1,13 +1,33 @@
 <script setup lang="ts">
-const $props = defineProps(["filter", "selectedFilters"]);
-const $emits = defineEmits(["select-value"]);
+import {
+  AggregationFilterEntity,
+  EntitiesAggregation,
+  ListingFilter,
+  MaxAggregation,
+  PriceAggregation,
+} from "@shopware-pwa/types";
+
+const props = defineProps<{
+  filter: ListingFilter;
+  selectedFilters: {
+    [key: string]:
+      | EntitiesAggregation<AggregationFilterEntity>
+      | PriceAggregation
+      | MaxAggregation
+      | number;
+  };
+}>();
+
+const emits = defineEmits<{
+  (e: "select-value", value: { code: string; value: unknown }): void;
+}>();
 const isFilterVisible = ref(false);
 const currentFilterData = computed(
-  () => !!$props.selectedFilters[$props.filter?.code]
+  () => !!props.selectedFilters[props.filter?.code]
 );
-const onChangeOption = () => {
-  $emits("select-value", {
-    code: $props.filter?.code,
+const onChangeOption = (): void => {
+  emits("select-value", {
+    code: props.filter?.code,
     value: !currentFilterData.value,
   });
 };

@@ -138,7 +138,8 @@ export type CmsSlotType =
   | "product-listing"
   | "product-box"
   | "slot"
-  | "text";
+  | "text"
+  | typeof String;
 
 /**
  * @public

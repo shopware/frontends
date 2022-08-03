@@ -1,13 +1,21 @@
-<script setup>
+<script setup lang="ts">
+import { CmsBlockCrossSelling } from "@shopware-pwa/composables-next";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import { CmsProductPageResponse } from "@shopware-pwa/types";
 
-const cmsPage = inject("cms-page");
-const product = computed(() => cmsPage.value?.product); // || { id: "0099f284cda143558959e6d2803ad20d"})
-const $props = defineProps(["content"]);
-const crossSellCollection = ref(
-  $props.content.slots?.find(({ type }) => type === "cross-selling")?.data
-    ?.crossSellings || []
+const props = defineProps<{
+  content: CmsBlockCrossSelling;
+}>();
+
+const { cmsContent } = useCms();
+const product = computed(
+  () => (cmsContent.value as CmsProductPageResponse)?.product
 );
+
+const { getSlotContent } = useCmsBlock(props.content);
+const slotContent = getSlotContent("content");
+
+const crossSellCollection = ref((slotContent.data as any)?.crossSellings || []);
 const {
   loadAssociations: loadCrossSells,
   productAssociations: crossSellAssociations,
@@ -25,7 +33,7 @@ onMounted(async () => {
         seoUrls: {},
       },
     },
-  });
+  } as any);
 });
 
 watch(crossSellAssociations, (newCollection) => {

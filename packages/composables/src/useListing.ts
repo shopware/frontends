@@ -43,7 +43,7 @@ export interface IUseListing<ELEMENTS_TYPE> {
   loadMore: () => Promise<void>;
   getCurrentListing: ComputedRef<Partial<ListingResult<ELEMENTS_TYPE>> | null>;
   getElements: ComputedRef<ELEMENTS_TYPE[]>;
-  getSortingOrders: ComputedRef<Sort[] | { key: string; label: string }>;
+  getSortingOrders: ComputedRef<Sort[] | { key: string; label: string }[]>;
   getCurrentSortingOrder: ComputedRef<string | undefined>;
   changeCurrentSortingOrder: (order: string) => Promise<void>;
   getCurrentPage: ComputedRef<string | number>;

@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { resolveComponent } from "vue";
+import { Ref, resolveComponent } from "vue";
 import { pascalCase } from "scule";
-import { useCms } from "@shopware-pwa/composables-next";
+import { useCms, Shopware } from "@shopware-pwa/composables-next";
 
 const { search } = useCms();
 const route = useRoute();
@@ -33,7 +33,7 @@ provide("cms-page", cmsResponse); // TODO: remove after clearing references
 provide("cmsResponse", cmsResponse);
 provide("swCmsContext", cmsResponse);
 
-const page = cmsResponse;
+const page = cmsResponse as Ref<Shopware.CmsPageResponse>;
 const cmsPage = computed(() => page.value?.cmsPage);
 
 function render() {

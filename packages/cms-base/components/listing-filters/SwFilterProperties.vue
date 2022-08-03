@@ -1,8 +1,15 @@
 <script setup lang="ts">
-defineProps(["filter"]);
-defineEmits(["select-value"]);
-const selectedOptionIds = inject("selectedOptionIds");
-const isFilterVisible = ref(false);
+import { ListingFilter } from "@shopware-pwa/types";
+
+defineProps<{
+  filter: ListingFilter;
+}>();
+
+defineEmits<{
+  (e: "select-value", value: { code: string; value: unknown }): void;
+}>();
+const selectedOptionIds = inject<string[]>("selectedOptionIds");
+const isFilterVisible = ref<boolean>(false);
 </script>
 
 <template>
@@ -62,12 +69,12 @@ const isFilterVisible = ref(false);
       <div class="space-y-6">
         <div
           v-for="option in filter.options || filter.entities"
-          :key="`${option.id}-${selectedOptionIds.includes(option.id)}`"
+          :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
           class="flex items-center"
         >
           <input
             :id="`filter-mobile-${filter.id}-${option.id}`"
-            :checked="selectedOptionIds.includes(option.id)"
+            :checked="selectedOptionIds?.includes(option.id)"
             :name="filter.name"
             :value="option.name"
             type="checkbox"

@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 const { navigationElements } = useNavigation();
 
-const currentMenuPosition = ref(null);
+const currentMenuPosition = ref<string | null>(null);
 
 const menuHtmlElement = ref(null);
 
@@ -9,6 +10,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
 </script>
 
 <template>
+  <!-- eslint-disable vue/no-v-html -->
   <nav class="hidden md:flex space-x-10">
     <div
       v-for="navigationElement in navigationElements"
@@ -21,7 +23,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
         :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo"
         class="text-base font-medium text-gray-500 hover:text-gray-900"
       >
-        {{ navigationElement.translated.name }}
+        {{ getTranslatedProperty(navigationElement, "name") }}
       </router-link>
 
       <!--
@@ -37,7 +39,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       <div
         v-if="
           currentMenuPosition === navigationElement.id &&
-          navigationElement.children.length
+          navigationElement?.children?.length
         "
         class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2"
         @mouseleave="currentMenuPosition = null"
@@ -59,12 +61,12 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                 :class="{ 'max-w-200px': !!childElement.media }"
               >
                 <p class="text-base font-medium text-gray-900">
-                  {{ childElement.translated.name }}
+                  {{ getTranslatedProperty(childElement, "name") }}
                 </p>
                 <p
-                  v-if="childElement.translated.description"
+                  v-if="getTranslatedProperty(childElement, 'description')"
                   class="mt-1 text-sm text-gray-500"
-                  v-html="childElement.translated.description"
+                  v-html="getTranslatedProperty(childElement, 'description')"
                 />
               </div>
               <div v-if="childElement.media" class="flex">
@@ -77,7 +79,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
           >
             <div
               class="flow-root"
-              v-html="navigationElement.translated.description"
+              v-html="getTranslatedProperty(navigationElement, 'description')"
             />
           </div>
         </div>

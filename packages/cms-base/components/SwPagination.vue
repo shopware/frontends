@@ -1,6 +1,12 @@
 <script setup lang="ts">
-defineProps(["total", "current"]);
-defineEmits(["changePage"]);
+defineProps<{
+  total: number;
+  current: number;
+}>();
+
+defineEmits<{
+  (e: "changePage", page: number): void;
+}>();
 </script>
 <template>
   <div

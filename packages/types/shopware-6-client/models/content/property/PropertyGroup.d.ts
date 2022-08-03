@@ -6,6 +6,7 @@ import { PropertyGroupOptionTranslation } from "./PropertyGroupOptionTranslation
  * @public
  */
 export type PropertyGroup = {
+  id: string;
   name: string;
   displayType: string;
   sortingType: string;

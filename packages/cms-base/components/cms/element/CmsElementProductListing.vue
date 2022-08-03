@@ -39,7 +39,7 @@ setInitialListing(props?.content?.data?.listing);
         <div class="mt-10">
           <SwPagination
             :total="getTotalPagesCount"
-            :current="getCurrentPage"
+            :current="Number(getCurrentPage)"
             @changePage="changePage"
           />
         </div>

@@ -76,8 +76,8 @@ export type ShopwareSearchParams = {
   order?: string | undefined;
   term?: string | undefined;
   ids?: string[];
-  properties?: string | undefined | never[];
-  manufacturer?: string | undefined | never[];
+  properties?: string | undefined;
+  manufacturer?: string | undefined;
   includes?: Includes;
   query?: string;
 };

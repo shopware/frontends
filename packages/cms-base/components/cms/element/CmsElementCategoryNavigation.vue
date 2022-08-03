@@ -1,14 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import {
   getCategoryUrl,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import { getStoreNavigation } from "@shopware-pwa/shopware-6-client";
-import { useCms, useShopwareContext } from "@shopware-pwa/composables-next";
+import {
+  useCms,
+  useShopwareContext,
+  Shopware,
+} from "@shopware-pwa/composables-next";
 
 const { apiInstance } = useShopwareContext();
 const { resourceIdentifier } = useCms();
-const navigationElements = ref([]);
+const navigationElements = ref<Shopware.StoreNavigationElement[]>([]);
 
 onMounted(async () => {
   try {
@@ -22,9 +26,10 @@ onMounted(async () => {
     );
     navigationElements.value = response;
   } catch (error) {
+    const err = error as Shopware.ClientApiError;
     console.warn(
       "CmsElementCategoryNavigation:onMounted:getStoreNavigation",
-      error.messages
+      err.messages
     );
   }
 });
@@ -37,7 +42,7 @@ onMounted(async () => {
     <ul class="space-y-2">
       <li v-for="(navigationElement, index) in navigationElements" :key="index">
         <router-link
-          :to="getCategoryUrl(navigationElement)"
+          :to="getCategoryUrl(navigationElement as any)"
           class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <span class="ml-3">{{

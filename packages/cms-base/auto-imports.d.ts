@@ -113,7 +113,12 @@ declare global {
   const useActiveElement: typeof import("@vueuse/core")["useActiveElement"];
   const useActiveRoute: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useActiveRoute"];
   const useAddToCart: typeof import("@shopware-pwa/composables-next")["useAddToCart"];
+  const useNotifications: typeof import("@shopware-pwa/composables-next")["useNotifications"];
   const useCart: typeof import("@shopware-pwa/composables-next")["useCart"];
+  const useCountries: typeof import("@shopware-pwa/composables-next")["useCountries"];
+  const useSalutations: typeof import("@shopware-pwa/composables-next")["useSalutations"];
+  const useCheckout: typeof import("@shopware-pwa/composables-next")["useCheckout"];
+  const useSessionContext: typeof import("@shopware-pwa/composables-next")["useSessionContext"];
   const useAsyncData: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useAsyncData"];
   const useAsyncQueue: typeof import("@vueuse/core")["useAsyncQueue"];
   const useAsyncState: typeof import("@vueuse/core")["useAsyncState"];
@@ -396,6 +401,10 @@ declare module "vue" {
     useActiveElement: typeof import("@vueuse/core")["useActiveElement"];
     useActiveRoute: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useActiveRoute"];
     useAddToCart: typeof import("@shopware-pwa/composables-next")["useAddToCart"];
+    useNotifications: typeof import("@shopware-pwa/composables-next")["useNotifications"];
+    useCountries: typeof import("@shopware-pwa/composables-next")["useCountries"];
+    useSalutations: typeof import("@shopware-pwa/composables-next")["useSalutations"];
+    useCheckout: typeof import("@shopware-pwa/composables-next")["useCheckout"];
     useAsyncData: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useAsyncData"];
     useAsyncQueue: typeof import("@vueuse/core")["useAsyncQueue"];
     useAsyncState: typeof import("@vueuse/core")["useAsyncState"];

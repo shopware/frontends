@@ -9,17 +9,17 @@ import {
 } from "@shopware-pwa/types";
 import { CSSProperties } from "vue";
 
-type SourceType = "static" | "mapped";
+export type SourceType = "static" | "mapped";
 
-type Position = "left" | "center" | "right";
+export type Position = "left" | "center" | "right";
 
 export type DisplayMode = CSSProperties["objectFit"];
 
 export type BoxLayout = "standard" | "image" | "minimal";
 
-type VerticalAlign = "flex-start" | "center" | "flex-end" | "";
+export type VerticalAlign = "flex-start" | "center" | "flex-end" | "";
 
-type ElementConfig<VALUE_TYPE> = {
+export type ElementConfig<VALUE_TYPE> = {
   source: SourceType;
   value: VALUE_TYPE;
 };
@@ -40,7 +40,8 @@ type CmsSlot = Omit<OldSlot, "data" | "config">;
 
 // Text
 export type CmsElementText = CmsSlot & {
-  type: "text";
+  type: "text" | typeof String;
+  slot: typeof String;
   config: TextElementConfig;
   fieldConfig: ElementFieldConfig[];
   data: {

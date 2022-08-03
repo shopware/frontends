@@ -1,14 +1,17 @@
 <script setup lang="ts">
-const $emits = defineEmits(["success"]);
-const { login, loading, errors, isLoggedIn } = useUser();
-const { refreshSessionContext } = useSessionContext();
+const emits = defineEmits<{
+  (e: "success"): void;
+  (e: "close"): void;
+}>();
+
+const { login, errors, isLoggedIn } = useUser();
 const loginErrors = computed(() =>
   errors.login?.map(({ detail }) => detail).toString()
 );
 const email = ref("");
 const password = ref("");
 
-const invokeLogin = async () => {
+const invokeLogin = async (): Promise<void> => {
   try {
     const loginResult = await login({
       username: email.value,
@@ -16,11 +19,10 @@ const invokeLogin = async () => {
     });
 
     if (loginResult) {
-      console.warn(loginResult);
-      $emits("success");
+      emits("success");
     }
   } catch (error) {
-    console.warn("error login", error);
+    console.error("error login", error);
   }
 };
 </script>
