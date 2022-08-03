@@ -19,6 +19,6 @@ const rightContent = getSlotContent("right");
 
 <style scoped>
 .cms-block-image-two-column .cms-element-image {
-  @apply aspect-square object-cover;
+  @apply object-cover;
 }
 </style>
