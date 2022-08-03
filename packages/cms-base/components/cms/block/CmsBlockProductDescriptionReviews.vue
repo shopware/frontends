@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { CmsProductPageResponse, ProductReview } from "@shopware-pwa/types";
 import { CmsBlockProductDescriptionReviews } from "@shopware-pwa/composables-next";
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import {
+  getTranslatedProperty,
+  getProductName,
+} from "@shopware-pwa/helpers-next";
 import { getProductReviews } from "@shopware-pwa/shopware-6-client";
-import { Ref } from "vue";
+import { Ref, ref } from "vue";
+import SwStarIconVue from "./../../SwStarIcon.vue";
 
 const props = defineProps<{
   content: CmsBlockProductDescriptionReviews;
@@ -35,44 +39,108 @@ onMounted(async () => {
   );
   reviews.value = reviewsResponse?.elements || [];
 });
+
+const format: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  hour12: true,
+};
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString("en-us", format);
+
+const openTab: Ref<number> = ref(1);
+const toggleTabs = (tabNumber: number, event: MouseEvent) => {
+  if (event) {
+    event.preventDefault();
+  }
+  openTab.value = tabNumber;
+};
 </script>
 
 <template>
-  <div class="container mx-auto mb-8">
-    <!-- Description and details -->
-    <div v-if="description">
-      <h3 class="text-sm font-medium text-gray-900">Description</h3>
-      <div class="mt-4 space-y-6">
-        <p class="text-base text-gray-900" v-html="description"></p>
-      </div>
-    </div>
-
-    <div class="mt-10" v-if="properties?.length">
-      <h3 class="text-sm font-medium text-gray-900">Properties</h3>
-
-      <div class="mt-4">
-        <ul role="list" class="pl-4 list-disc text-sm space-y-2">
-          <li
-            v-for="property in properties"
-            :key="property.id"
-            class="text-gray-400"
+  <div class="cms-block-product-description-reviews flex flex-wrap">
+    <div class="w-full">
+      <ul
+        class="flex flex-wrap text-sm font-medium list-none text-center text-gray-500 border-b border-gray-200 dark:border-gray-500 dark:text-gray-400"
+      >
+        <li class="mr-2 text-center">
+          <a
+            class="font-bold uppercase px-5 py-3 block leading-normal"
+            :class="{
+              'text-gray-500 bg-white': openTab !== 1,
+              'text-white bg-gray-500': openTab === 1,
+            }"
+            @click="(event) => toggleTabs(1, event)"
           >
-            <span class="text-gray-600">{{
-              getTranslatedProperty(property, "name")
-            }}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
+            <i class="fas fa-space-shuttle text-base mr-1" /> Description
+          </a>
+        </li>
+        <li class="mr-2 text-center">
+          <a
+            class="font-bold uppercase px-5 py-3 block leading-normal"
+            :class="{
+              'text-gray-500 bg-white': openTab !== 2,
+              'text-white bg-gray-500': openTab === 2,
+            }"
+            @click="(event) => toggleTabs(2, event)"
+          >
+            <i class="fas fa-cog text-base mr-1" /> Reviews
+          </a>
+        </li>
+      </ul>
+      <div class="relative flex flex-col min-w-0 break-words w-full mb-6">
+        <div class="px-4 py-5 flex-auto">
+          <div class="tab-content tab-space">
+            <div
+              :class="[
+                'cms-block-product-description-reviews__description',
+                { hidden: openTab !== 1, block: openTab === 1 },
+              ]"
+            >
+              <p class="text-xl font-bold mt-3">
+                {{ getProductName({ product }) }}
+              </p>
+              <p class="mt-2" v-if="description" v-html="description" />
+            </div>
+            <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
+              <div
+                class="cms-block-product-description-reviews__reviews"
+                v-if="reviews.length"
+              >
+                <div v-for="review in reviews" :key="review.id">
+                  <div
+                    class="cms-block-product-description-reviews__reviews-time mt-3 text-gray-600 text-sm"
+                  >
+                    <span>{{ formatDate(review.createdAt) }}</span>
+                  </div>
+                  <div
+                    class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"
+                  >
+                    <div v-for="value in review.points"><SwStarIcon /></div>
+                    <div v-for="value in 5 - review.points">
+                      <SwStarIcon :is-empty="true" />
+                    </div>
+                    <div
+                      class="cms-block-product-description-reviews__reviews-title font-semibold ml-2"
+                    >
+                      <p>{{ review.title }}</p>
+                    </div>
+                  </div>
+                  <div
+                    class="cms-block-product-description-reviews__reviews-content mt-2"
+                  >
+                    <span>{{ review.content }}</span>
+                  </div>
+                </div>
+              </div>
 
-    <div class="mt-10" v-if="reviews?.length">
-      <h3 class="text-sm font-medium text-gray-900">Reviews</h3>
-      <div class="mt-4" v-if="reviews?.length">
-        <ul role="list" class="pl-4 list-disc text-sm space-y-2">
-          <li v-for="review in reviews" :key="review.id" class="text-gray-400">
-            <span class="text-gray-600">{{ review.content }}</span>
-          </li>
-        </ul>
+              <div v-else>No comments yet.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
