@@ -31,6 +31,17 @@ importers:
       '@types/markdown-it': 12.2.3
       '@types/node': 18.6.2
 
+  apps/e2e-tests:
+    specifiers:
+      '@playwright/test': ^1.24.2
+      dotenv: ^16.0.1
+      playwright: ^1.24.2
+    dependencies:
+      dotenv: 16.0.1
+    devDependencies:
+      '@playwright/test': 1.24.2
+      playwright: 1.24.2
+
   apps/nuxt3-app:
     specifiers:
       '@shopware-pwa/cms-base': workspace:*
@@ -48,7 +59,7 @@ importers:
       vue-eslint-parser: ^9.0.3
     dependencies:
       '@shopware-pwa/cms-base': link:../../packages/cms-base
-      '@shopware-pwa/composables': 1.5.4-canary.1681_vue@3.2.37
+      '@shopware-pwa/composables': 1.5.4-canary.1682_vue@3.2.37
       '@shopware-pwa/composables-next': link:../../packages/composables
       '@shopware-pwa/helpers-next': link:../../packages/helpers
       '@shopware-pwa/nuxt3-module': link:../../packages/nuxt3-module
@@ -82,7 +93,7 @@ importers:
       '@nuxt/kit': 3.0.0-rc.6
       '@shopware-pwa/composables-next': link:../composables
       '@shopware-pwa/helpers-next': link:../helpers
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1681
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1682
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.6
       '@shopware-pwa/types': link:../types
@@ -114,7 +125,7 @@ importers:
       '@shopware-pwa/helpers-next': link:../helpers
       lodash: 4.17.21
     devDependencies:
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1681
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1682
       '@shopware-pwa/types': link:../types
       '@types/lodash': 4.14.182
       c8: 7.12.0
@@ -169,9 +180,9 @@ importers:
       unbuild: ^0.7.6
     dependencies:
       '@nuxt/kit': 3.0.0-rc.6
-      '@shopware-pwa/composables': 1.5.4-canary.1681
+      '@shopware-pwa/composables': 1.5.4-canary.1682
       '@shopware-pwa/composables-next': link:../composables
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1681
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1682
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.6
       eslint-config-shopware: link:../eslint-config-shopware
@@ -1030,6 +1041,15 @@ packages:
       - webpack
     dev: true
 
+  /@playwright/test/1.24.2:
+    resolution: {integrity: sha512-Q4X224pRHw4Dtkk5PoNJplZCokLNvVbXD9wDQEMrHcEuvWpJWEQDeJ9gEwkZ3iCWSFSWBshIX177B231XW4wOQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 18.6.2
+      playwright-core: 1.24.2
+    dev: true
+
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: false
@@ -1323,8 +1343,8 @@ packages:
       tslib: 1.14.1
     dev: false
 
-  /@shopware-pwa/composables/1.5.4-canary.1681:
-    resolution: {integrity: sha512-Iw4xG8z5wsqD1nZBO+X7TVeXoAWZtT5EaTns48hL1Y4RSDwhJAKhzoGOJMF5V71UrYK3zNwBGVvk2KqSUFNfxg==}
+  /@shopware-pwa/composables/1.5.4-canary.1682:
+    resolution: {integrity: sha512-l4bRyjgD6djGNdvI32O5bBo+BcGjm2whf4T9GwaRTAiQsGGxKwSz/+P+++gdXyCCMMGu9hHBKbOSaLmCpo7d6Q==}
     peerDependencies:
       '@vue/composition-api': ^1.6.2
       vue: ^2.0.0 || >=3.0.0-rc.0
@@ -1332,8 +1352,8 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@shopware-pwa/helpers': 1.5.4-canary.1681
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1681
+      '@shopware-pwa/helpers': 1.5.4-canary.1682
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1682
       '@vue/devtools-api': 6.1.4
       axios: 0.27.2
       cookie-universal: 2.2.1
@@ -1344,8 +1364,8 @@ packages:
       - debug
     dev: false
 
-  /@shopware-pwa/composables/1.5.4-canary.1681_vue@3.2.37:
-    resolution: {integrity: sha512-Iw4xG8z5wsqD1nZBO+X7TVeXoAWZtT5EaTns48hL1Y4RSDwhJAKhzoGOJMF5V71UrYK3zNwBGVvk2KqSUFNfxg==}
+  /@shopware-pwa/composables/1.5.4-canary.1682_vue@3.2.37:
+    resolution: {integrity: sha512-l4bRyjgD6djGNdvI32O5bBo+BcGjm2whf4T9GwaRTAiQsGGxKwSz/+P+++gdXyCCMMGu9hHBKbOSaLmCpo7d6Q==}
     peerDependencies:
       '@vue/composition-api': ^1.6.2
       vue: ^2.0.0 || >=3.0.0-rc.0
@@ -1353,8 +1373,8 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@shopware-pwa/helpers': 1.5.4-canary.1681
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1681
+      '@shopware-pwa/helpers': 1.5.4-canary.1682
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1682
       '@vue/devtools-api': 6.1.4
       axios: 0.27.2
       cookie-universal: 2.2.1
@@ -1366,14 +1386,14 @@ packages:
       - debug
     dev: false
 
-  /@shopware-pwa/helpers/1.5.4-canary.1681:
-    resolution: {integrity: sha512-hs7Kphf5fWdXB9mUWB0GwndKe9Q5pKF6LfWvsd0S0W7g9X/XNPQanwhwhLjnrhRNK/Y6TP0E7MwLESzAssVTCQ==}
+  /@shopware-pwa/helpers/1.5.4-canary.1682:
+    resolution: {integrity: sha512-PX8Ag3zvW840Q8mw//Vkzrq62OgZmU1mmMi3fzCa8EOvES5udYhU9ODsI/Hlhbju7QZDmfX4OaMFkx8ARlELkQ==}
     dependencies:
       query-string: 7.1.1
     dev: false
 
-  /@shopware-pwa/shopware-6-client/1.5.4-canary.1681:
-    resolution: {integrity: sha512-rNxMBMF7n5ga/O8cXYUPMr+U7qVLBm6AWEVRMruYoFTmMmgTul/eRcORUhjPIiy4OsDWw7wVs6i7y7tKPK9JFA==}
+  /@shopware-pwa/shopware-6-client/1.5.4-canary.1682:
+    resolution: {integrity: sha512-wau9ht9gmMOjTwP4VbNIYvJbgKbxnZ1eeMQJnFz5W0lM4sMhdFnJdCwu+zwhWnNFNXxtgBEX5d/FePR4YWRugQ==}
     dependencies:
       axios: 0.27.2
       lodash: 4.17.21
@@ -7758,6 +7778,21 @@ packages:
       jsonc-parser: 3.0.0
       mlly: 0.5.4
       pathe: 0.3.2
+
+  /playwright-core/1.24.2:
+    resolution: {integrity: sha512-zfAoDoPY/0sDLsgSgLZwWmSCevIg1ym7CppBwllguVBNiHeixZkc1AdMuYUPZC6AdEYc4CxWEyLMBTw2YcmRrA==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
+  /playwright/1.24.2:
+    resolution: {integrity: sha512-iMWDLgaFRT+7dXsNeYwgl8nhLHsUrzFyaRVC+ftr++P1dVs70mPrFKBZrGp1fOKigHV9d1syC03IpPbqLKlPsg==}
+    engines: {node: '>=14'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      playwright-core: 1.24.2
+    dev: true
 
   /polished/4.2.2:
     resolution: {integrity: sha512-Sz2Lkdxz6F2Pgnpi9U5Ng/WdWAUZxmHrNPoVlm3aAemxoy2Qy7LGjQg4uf8qKelDAUW94F4np3iH2YPf2qefcQ==}

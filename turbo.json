@@ -19,6 +19,9 @@
     },
     "dev": {
       "cache": false
+    },
+    "test:e2e": {
+      "outputs": []
     }
   }
 }
