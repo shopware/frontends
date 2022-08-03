@@ -3,7 +3,7 @@ import { LineItem, Product, OrderLineItem } from "@shopware-pwa/types";
 function isProduct(
   object: Product | LineItem | OrderLineItem
 ): object is Product {
-  return object?.apiAlias === "product";
+  return object?.apiAlias === "product" || object?.type === "product";
 }
 
 /**
