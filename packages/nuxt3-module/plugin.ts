@@ -3,6 +3,7 @@
 import { defineNuxtPlugin } from "#app";
 import { createInstance } from "@shopware-pwa/shopware-6-client";
 import { createShopware, getDefaultApiParams } from "@shopware-pwa/composables";
+import { ref } from "vue";
 
 const ShopwarePlugin = {
   install(app, options) {
@@ -47,6 +48,7 @@ const ShopwarePlugin = {
       shopwareDefaults: options.apiDefaults,
     });
     app.provide("shopware", shopwareContext);
+    app.provide("swSessionContext", ref());
   },
 };
 

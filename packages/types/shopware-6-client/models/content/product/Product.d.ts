@@ -41,10 +41,7 @@ export type CrossSelling = {
   apiAlias: string;
 };
 
-export type ProductOption = {
-  group: string;
-  option: string;
-};
+export type ProductOption = PropertyGroupOption;
 
 /**
  * @public

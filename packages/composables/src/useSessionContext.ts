@@ -1,4 +1,4 @@
-import { computed, ComputedRef, ref } from "vue";
+import { computed, ComputedRef, inject, provide, Ref, ref } from "vue";
 import {
   ShippingMethod,
   PaymentMethod,
@@ -68,14 +68,15 @@ interface IInterceptorCallbackFunction {
  * @beta
  */
 export function useSessionContext(): IUseSessionContext {
-  const COMPOSABLE_NAME = "useSessionContext";
-  const contextName = COMPOSABLE_NAME;
-
   const { apiInstance } = useShopwareContext();
   // const { broadcast, intercept } = useIntercept();
 
   // const { sharedRef } = useSharedState();
-  const storeSessionContext = ref<SessionContext>();
+  const storeSessionContext: Ref<SessionContext | any> = inject(
+    "swSessionContext",
+    ref()
+  );
+  provide("swSessionContext", storeSessionContext);
 
   const onCurrencyChange = (fn: IInterceptorCallbackFunction) => {}; // intercept(INTERCEPTOR_KEYS.SESSION_SET_CURRENCY, fn);
   const onPaymentMethodChange = (fn: IInterceptorCallbackFunction) => {}; // intercept(INTERCEPTOR_KEYS.SESSION_SET_PAYMENT_METHOD, fn);
