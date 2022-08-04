@@ -47,6 +47,7 @@ export type Category = Entity & {
   parentVersionId: string;
   childrenCount: number;
   afterCategoryVersionId: string;
+  path?: string;
   route?: {
     path?: string;
   };
