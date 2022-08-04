@@ -5,6 +5,7 @@ export * from "./useCms";
 export * from "./useProductConfigurator";
 export * from "./useProductAssociations";
 export * from "./useCmsBlock";
+export * from "./useCmsSection";
 export * from "./useNavigation";
 export * from "./useCart";
 export * from "./useCartItem";
