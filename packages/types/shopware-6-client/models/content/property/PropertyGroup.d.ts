@@ -17,5 +17,5 @@ export type PropertyGroup = {
   translated: {
     [key: string]: unknown;
   };
-  apiAlias: "property_group"
+  apiAlias: "property_group";
 };
