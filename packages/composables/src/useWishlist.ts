@@ -1,0 +1,130 @@
+import { ref, Ref, computed, onMounted, unref, inject, provide } from "vue";
+import { Product } from "@shopware-pwa/types";
+import { IInterceptorCallbackFunction } from "./useUser";
+// import {
+//   INTERCEPTOR_KEYS,
+//   useIntercept,
+//   IInterceptorCallbackFunction,
+//   getApplicationContext,
+//   useSharedState,
+// } from "@shopware-pwa/composables";
+
+// import { broadcastErrors } from "../../internalHelpers/errorHandler";
+/**
+ * interface for {@link useWishlist} composable
+ *
+ * @beta
+ */
+export interface IUseWishlist {
+  removeFromWishlist: (id: string) => void;
+  clearWishlist: () => void;
+  addToWishlist: () => void;
+  onAddToWishlist: (fn: (params: { product: Product }) => void) => void;
+  isInWishlist: Ref<boolean>;
+  items: Ref<string[]>;
+  count: Ref<number>;
+}
+
+/**
+ * Composable for wishlist management. Options - {@link IUseWishlist}
+ *
+ * @beta
+ */
+export function useWishlist(params?: {
+  product?: Product | Ref<Product>;
+}): IUseWishlist {
+  const product = unref(params?.product);
+
+  // const { broadcast, intercept } = useIntercept();
+  // getApplicationContext({ contextName });
+  // const { sharedRef } = useSharedState();
+  const _wishlistItems: Ref<string[]> = inject("swWishlistItems", ref([]));
+  provide("swWishlistItems", _wishlistItems);
+
+  const productId: Ref<string | undefined> = ref(product?.id);
+  const onAddToWishlist = (fn: IInterceptorCallbackFunction) => {};
+  // intercept(INTERCEPTOR_KEYS.ADD_TO_WISHLIST, fn);
+
+  // update wishlist in localstorage
+  const updateStorage = (): void => {
+    localStorage.setItem(
+      "sw-wishlist-items",
+      JSON.stringify(_wishlistItems.value)
+    );
+  };
+  /* istanbul ignore next */
+  const getFromStorage = () => {
+    if (typeof window != "undefined" && localStorage) {
+      return JSON.parse(localStorage.getItem("sw-wishlist-items") ?? "[]");
+    }
+  };
+  /* istanbul ignore next */
+  onMounted(() => {
+    if (!_wishlistItems.value?.length) {
+      try {
+        const currentWishlist = getFromStorage();
+        if (Array.isArray(currentWishlist) && currentWishlist.length) {
+          _wishlistItems.value = currentWishlist || [];
+        }
+      } catch (error) {
+        console.error("useWishlist:getFromStorage", error);
+      }
+    }
+  });
+
+  // removes item from the list
+  const removeFromWishlist = (itemId: string): void => {
+    const id = productId.value || itemId;
+    if (!id) {
+      return;
+    }
+
+    _wishlistItems.value =
+      _wishlistItems.value?.filter((itemId: string) => itemId != id) || [];
+
+    updateStorage();
+  };
+
+  // add product id to wishlist array and trigger to update localstorage
+  const addToWishlist = (): void => {
+    if (!productId.value) {
+      return;
+    }
+    _wishlistItems.value = _wishlistItems.value || [];
+
+    if (!_wishlistItems.value.includes(productId.value)) {
+      _wishlistItems.value.push(productId.value);
+
+      updateStorage();
+      // broadcast(INTERCEPTOR_KEYS.ADD_TO_WISHLIST, {
+      //   product,
+      // });
+    }
+  };
+
+  // return true or false if product id is in wishlist array
+  const isInWishlist = computed(() => {
+    return !!(
+      productId.value && _wishlistItems.value?.includes(productId.value)
+    );
+  });
+
+  // remove all items from wishlist
+  const clearWishlist = () => {
+    _wishlistItems.value = [];
+    updateStorage();
+  };
+
+  const items = computed(() => _wishlistItems.value || []);
+  const count = computed(() => items.value.length);
+
+  return {
+    addToWishlist,
+    removeFromWishlist,
+    isInWishlist,
+    clearWishlist,
+    items,
+    count,
+    onAddToWishlist,
+  };
+}

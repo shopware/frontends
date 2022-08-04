@@ -18,5 +18,5 @@ export * from "./useCheckout";
 export * from "./useSalutations";
 export * from "./useCountries";
 export * from "./useOrderDetails";
-
 export * as Shopware from "@shopware-pwa/types";
+export * from "./useWishlist";

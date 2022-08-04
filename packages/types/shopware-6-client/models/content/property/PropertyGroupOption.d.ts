@@ -25,4 +25,5 @@ export type PropertyGroupOption = {
   translated: {
     [key: string]: unknown;
   };
+  apiAlias: "property_group_option";
 };
