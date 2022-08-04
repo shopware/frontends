@@ -74,6 +74,20 @@ const config: PlaywrightTestConfig = {
       },
     },
 
+    {
+      name: 'Mobile Safari',
+      use: {
+        ...devices['iPhone 12'],
+      },
+    },
+
+    {
+      name: 'Tablet Chrome',
+      use: {
+        ...devices['iPad Mini'],
+      },
+    },
+
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
