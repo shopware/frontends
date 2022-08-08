@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { CmsSectionDefault } from "@shopware-pwa/composables-next";
+import {
+  CmsSectionDefault,
+  useCmsSection,
+} from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsSectionDefault;
 }>();
+
+const { getPositionContent } = useCmsSection<CmsSectionDefault>(props.content);
+
+const blocks = getPositionContent("main");
 
 let boxedSizing = computed(() => props.content.sizingMode === "boxed");
 </script>
@@ -11,14 +18,11 @@ let boxedSizing = computed(() => props.content.sizingMode === "boxed");
 <template>
   <div class="cms-section-default">
     <CmsGenericBlock
-      v-for="cmsBlock in props.content.blocks"
+      v-for="cmsBlock in blocks"
       :key="cmsBlock.id"
       :content="cmsBlock"
       class="overflow-auto bg-center bg-cover"
-      v-bind:class="{
-        'max-w-screen-xl': boxedSizing,
-        'mx-auto': boxedSizing,
-      }"
+      :class="[boxedSizing ? ['max-w-screen-xl', 'mx-auto'] : '']"
     />
   </div>
 </template>
