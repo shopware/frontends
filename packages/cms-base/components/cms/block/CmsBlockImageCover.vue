@@ -14,9 +14,3 @@ const cmsContent = getSlotContent("image");
     <CmsGenericElement v-if="cmsContent" :content="cmsContent" />
   </div>
 </template>
-
-<style scoped>
-.cms-block-image-cover .cms-element-image {
-  @apply aspect-square object-cover;
-}
-</style>
