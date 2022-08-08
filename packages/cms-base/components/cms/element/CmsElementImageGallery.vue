@@ -209,11 +209,17 @@ function next() {
       </button>
     </div>
     <div class="flex-1 overflow-hidden">
-      <CmsElementImageSlider
+      <SwSlider
         ref="imageSlider"
-        :content="content"
+        :config="props.content.config"
         @changeSlide="handleChangeSlide"
-      />
+      >
+        <CmsElementImage
+          v-for="image of mediaGallery"
+          :key="image.media.url"
+          :content="{ data: image, config: props.content.config }"
+        />
+      </SwSlider>
     </div>
   </div>
 </template>

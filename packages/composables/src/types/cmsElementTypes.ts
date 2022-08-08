@@ -78,19 +78,25 @@ export type CmsElementImage = CmsSlot & {
 };
 
 // Image Slider
-
-type ImageSliderElementConfig = CmsElementImage & {
-  sliderItems: ElementConfig<
-    Array<{
-      url: null | string;
-      newTab: boolean;
-      mediaId: string;
-      mediaUrl: string;
-    }>
-  >;
+export type SliderElementConfig = {
+  minHeight: ElementConfig<string | number>;
+  verticalAlign?: ElementConfig<VerticalAlign>;
+  displayMode?: ElementConfig<"standard" | "cover" | "contain">;
   navigationDots?: ElementConfig<"outside" | "inside" | "">;
   navigationArrows?: ElementConfig<"outside" | "inside" | "">;
 };
+
+type ImageSliderElementConfig = CmsElementImage &
+  SliderElementConfig & {
+    sliderItems: ElementConfig<
+      Array<{
+        url: null | string;
+        newTab: boolean;
+        mediaId: string;
+        mediaUrl: string;
+      }>
+    >;
+  };
 
 export type CmsElementImageSlider = CmsSlot & {
   type: "image-slider";
