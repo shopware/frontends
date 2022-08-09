@@ -36,7 +36,7 @@ const config: PlaywrightTestConfig = {
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 4 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -74,17 +74,17 @@ const config: PlaywrightTestConfig = {
       },
     },
 
-    {
-      name: 'Mobile Safari',
-      use: {
-        ...devices['iPhone 12'],
-      },
-    },
+    // {
+    //   name: "Mobile Safari",
+    //   use: {
+    //     ...devices["iPhone 12"],
+    //   },
+    // },
 
     {
-      name: 'Tablet Chrome',
+      name: "Tablet Chrome",
       use: {
-        ...devices['iPad Mini'],
+        ...devices["iPad Mini"],
       },
     },
 

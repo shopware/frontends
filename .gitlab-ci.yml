@@ -27,8 +27,8 @@ image: node:18.3.0
 stages: # List of stages for jobs, and their order of execution
   - init
   - build
-  - test
   - deploy
+  - test
 
 before_script:
   - curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@7
@@ -40,7 +40,7 @@ init: # This job runs in the init stage, which runs first.
     - pnpm install
   cache:
     <<: *cache
-    policy: push
+    policy: pull-push
 
 build-job: # This job runs in the build stage, which runs first.
   stage: build
@@ -98,3 +98,18 @@ deploy-job: # This job runs in the deploy stage.
   artifacts:
     reports:
       dotenv: deploy.env
+
+e2e tests:
+  stage: test
+  image: mcr.microsoft.com/playwright:focal
+  needs:
+    - job: deploy-job
+      artifacts: true
+  script:
+    - echo "BASE_E2E_URL=$DYNAMIC_ENVIRONMENT_URL" >> .env
+    - pnpm install
+    - pnpm test:e2e
+  artifacts:
+    when: on_failure
+    paths:
+      - apps/e2e-tests/playwright-report/
