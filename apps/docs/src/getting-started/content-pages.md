@@ -1,4 +1,4 @@
-# Create a Content Page
+# Create content pages
 
 In this chapter you will learn how to
 

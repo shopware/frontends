@@ -30,9 +30,9 @@ A big part (and a risk factor) of every custom storefront project is the impleme
 
 It also comes with TypeScript support.
 
-### Template
+### Template / UI
 
-You can decide to start from scratch and use no template at all, but we recommend looking at our [Templates](./getting-started/templates.md) if you want to get some guidance up-front.
+You can decide to start from scratch and use no template at all, but we recommend looking at our [Templates](./getting-started/templates.md) which are based on **Nuxt.js** and **Tailwind CSS**.
 
 ## Limitations
 
@@ -41,3 +41,7 @@ Shopware Frontends is a framework and not a ready-to-use product. Even it the st
 In contrast to Shopware's Twig Storefront, Shopware Frontends is not compatible with any apps, themes or plugins. If you want to use third party extensions, you need to ensure that they come with useful Store API endpoints and implement the frontend logic and UI yourself.
 
 We recommend having profound knowledge of Vue.js or another reactive Javascript framework and experience with headless frontend architecture when you plan to implement a project with Shopware Frontends.
+
+---
+
+<PageRef page="../getting-started/templates" title="Getting Started" sub="Get started with Shopware Frontends" />

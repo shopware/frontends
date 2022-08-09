@@ -23,29 +23,22 @@ await loadNavigationElements({ depth: 2 });
 
 Now all values can be accessed in the template to build a navigation menu
 
-```js
+```vue
+<script setup lang="ts">
+const { loadNavigationElements, navigationElements } = useNavigation();
+await loadNavigationElements({ depth: 2 });
+</script>
+
 <template>
-  <nav>
-    <ul>
-      <li
-        v-for="navigationElement in navigationElements"
-        :key="navigationElement.id"
-      >
-        <router-link :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo">
-          {{ navigationElement.translated.name }}
-        </router-link>
-        <ul>
-          <li
-          v-for="childElement in navigationElement.children"
-          :key="childElement.id"
-          >
-          <router-link :to="'/' + childElement.seoUrls[0]?.seoPathInfo">
-              {{ childElement.translated.name }}
-          </router-link>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
+  <ul>
+    <li
+      v-for="navigationElement in navigationElements"
+      :key="navigationElement.id"
+    >
+      <router-link :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo">
+        {{ navigationElement.translated.name }}
+      </router-link>
+    </li>
+  </ul>
 </template>
 ```
