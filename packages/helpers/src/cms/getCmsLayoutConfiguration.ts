@@ -32,12 +32,12 @@ function isCmsBlock(
  */
 export function getCmsLayoutConfiguration(
   content: CmsBlock | CmsSection | CmsSlot
-): LayoutConfiguration | Partial<LayoutConfiguration> {
+): LayoutConfiguration {
   if (!content || isCmsSlot(content)) {
     return {
       cssClasses: null,
       layoutStyles: {},
-    } as Partial<LayoutConfiguration>;
+    } as LayoutConfiguration;
   }
 
   return {

@@ -1,3 +1,7 @@
+import { CmsBlock, CmsSection, CmsSlot } from "@shopware-pwa/types";
+import { pascalCase } from "scule";
+import { resolveComponent, ConcreteComponent } from "vue";
+
 export * from "./types";
 export * from "./cms";
 export * from "./useShopwareContext";
@@ -21,3 +25,32 @@ export * from "./useCountries";
 export * from "./useOrderDetails";
 export * as Shopware from "@shopware-pwa/types";
 export * from "./useWishlist";
+
+export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
+  const componentName = content.type;
+  const type =
+    content.apiAlias === "cms_block"
+      ? "Block"
+      : content.apiAlias === "cms_section"
+      ? "Section"
+      : "Element";
+
+  const componentNameToResolve = pascalCase(`Cms-${type}-${componentName}`);
+  try {
+    const resolvedComponent = resolveComponent(componentNameToResolve);
+
+    return {
+      componentName,
+      isResolved: resolvedComponent !== componentName,
+      resolvedComponent:
+        typeof resolvedComponent !== "string" ? resolvedComponent : undefined,
+    };
+  } catch (e) {
+    return {
+      componentName,
+      resolvedComponent: undefined,
+      resolved: false,
+      error: (e as Error).message,
+    };
+  }
+}

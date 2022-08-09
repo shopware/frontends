@@ -133,8 +133,8 @@ export function createListingComposable<ELEMENTS_TYPE>({
   const loadingMore = ref(false);
 
   // const { sharedRef } = useSharedState();
-  const _storeInitialListing = inject(`useListingInitia-${listingKey}`, ref());
-  provide(`useListingInitia-${listingKey}`, _storeInitialListing);
+  const _storeInitialListing = inject(`useListingInitial-${listingKey}`, ref());
+  provide(`useListingInitial-${listingKey}`, _storeInitialListing);
   // const _storeInitialListing = sharedRef<ListingResult<ELEMENTS_TYPE>>(
   //   `${cacheKey}-initialListing-${listingKey}`
   // );
@@ -142,7 +142,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
   //   `${cacheKey}-appliedListing-${listingKey}`
   // );
   const _storeAppliedListing = inject(`useListingApplied-${listingKey}`, ref());
-  provide(`useListingApplied-${listingKey}`, _storeInitialListing);
+  provide(`useListingApplied-${listingKey}`, _storeAppliedListing);
 
   const getInitialListing = computed(() => _storeInitialListing.value);
   const setInitialListing = async (

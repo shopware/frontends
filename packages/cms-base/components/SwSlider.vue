@@ -7,9 +7,9 @@ import ChevronRight from "./icons/ChevronRight.vue";
 const props = withDefaults(
   defineProps<{
     config: SliderElementConfig;
-    slidesToShow: number;
-    slidesToScroll: number;
-    gap: string;
+    slidesToShow?: number;
+    slidesToScroll?: number;
+    gap?: string;
   }>(),
   {
     slidesToShow: 1,
