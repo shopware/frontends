@@ -24,7 +24,7 @@ export type CmsBlock = {
   position: number;
   section: CmsSection | null;
   sectionId: string;
-  sectionPosition: string;
+  sectionPosition: unknown;
   slots: CmsSlot[];
   translated: unknown;
   type: string;

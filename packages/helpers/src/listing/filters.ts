@@ -8,7 +8,10 @@ import {
 } from "@shopware-pwa/types";
 import { getTranslatedProperty } from "..";
 
-const getFilter = (code: string, aggregation: any): ListingFilter => {
+const getFilter = <T extends { name: string; id: string }>(
+  code: string,
+  aggregation: T
+): ListingFilter => {
   return {
     label: getTranslatedProperty(aggregation, "name") || code,
     code,

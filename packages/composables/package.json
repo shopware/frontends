@@ -10,7 +10,7 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "lint": "eslint src/**/*.ts* --fix",
+    "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
     "test": "vitest run",
     "coverage": "vitest run --coverage"
   },

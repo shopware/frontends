@@ -16,7 +16,7 @@ export type TierPrice = {
  * @returns TierPrice[]
  * @beta
  */
-export function getProductTierPrices(product: Product): TierPrice[] {
+export function getProductTierPrices(product?: Product): TierPrice[] {
   if (!product || !product.calculatedPrices?.length) {
     return [];
   }

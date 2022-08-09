@@ -5,7 +5,9 @@ import { Aggregations } from "../search/Aggregations";
  * @public
  */
 export type ListingFilter = {
+  id: string;
   label: string;
+  name: string;
   code:
     | "manufacturer"
     | "properties"
@@ -15,7 +17,11 @@ export type ListingFilter = {
     | "shipping-free"
     | string;
   type?: "range" | "max";
-  [key: string]: any;
+  options?: Array<{ id: string; name: string }>;
+  entities?: Array<{ id: string; name: string }>;
+  min?: number; // TODO: prepare proper listing filters based on code
+  max?: number;
+  value?: string;
 };
 
 export type ListingResult<T> = {

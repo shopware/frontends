@@ -8,7 +8,7 @@ import { Product } from "@shopware-pwa/types";
  * @beta
  */
 export function getProductCalculatedListingPrice(
-  product: Product
+  product?: Product
 ): number | undefined {
   return (
     product?.calculatedPrice?.listPrice?.price ||

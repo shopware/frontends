@@ -31,7 +31,7 @@ const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist({
   product: props.product,
 });
 
-const addToWishlistFn = (event: PointerEvent) => {
+const addToWishlistFn = (event: MouseEvent) => {
   if (isInWishlist.value) {
     removeFromWishlist(props.product.id);
     fillHeartColor(event, "none");
@@ -60,8 +60,8 @@ function getPrice(product: Product) {
   );
 }
 
-const fillHeartColor = (event: PointerEvent, color: string) => {
-  const srcElement = event.srcElement;
+const fillHeartColor = (event: MouseEvent, color: string) => {
+  const srcElement = event.srcElement as any;
 
   if (isHeartIcon(srcElement)) {
     srcElement.attributes.fill.value = color;
@@ -124,10 +124,10 @@ const ratingAverage: Ref<number> = computed(() =>
         <p class="mt-2 text-sm text-gray-500 min-h-30px">
           <span
             v-for="option in product?.options"
-            :key="option.group.id"
+            :key="option.group"
             class="bg-gray-400 mr-2 text-white rounded p-1"
           >
-            {{ option.group.name }}: {{ option.name }}
+            {{ option.group }}: {{ option.option }}
           </span>
         </p>
       </div>

@@ -38,7 +38,7 @@ export type UiProductProperty = {
 export type UiProductReview = {
   id: string;
   author: string;
-  date: Date;
+  date: string;
   message: string | null;
   rating: number | null;
 };
