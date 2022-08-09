@@ -26,9 +26,9 @@ export const sidebar = [
     items: [{ text: "Overview", link: "/" }],
   },
   {
-    text: "GETTING STARTED",
+    text: "BUILDING",
     items: [
-      { text: "Templates", link: "/getting-started/templates" },
+      { text: "Setup Templates", link: "/getting-started/templates" },
       { text: "Navigation", link: "/getting-started/navigation" },
       { text: "Content Pages", link: "/getting-started/content-pages" },
       { text: "Cart", link: "/getting-started/cart" },
@@ -65,6 +65,10 @@ export const sidebar = [
       { text: "CMS Base", link: "/packages/cms-base" },
       { text: "Helpers", link: "/packages/helpers" },
     ],
+  },
+  {
+    text: "EXAMPLES",
+    items: [],
   },
 ];
 

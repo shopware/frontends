@@ -1,7 +1,7 @@
 ---
 ---
 
-# Templates
+# Setup Templates
 
 Shopware Frontends offers two shortcuts to getting started with your custom frontend. These so-called templates offer different levels of "completeness" of a project.
 
@@ -24,7 +24,7 @@ It is based on Nuxt3 and Tailwind.css.
 
 [TODO: Add command or instructions to set up demo store template]
 
-<PageRef page="https://gitlab.shopware.com/product/engineering/platform-group/pwa/frontends/-/tree/main/apps/nuxt3-app" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
+<PageRef page="./templates/demo-store-template" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
 
 ## Blank Template
 
@@ -36,4 +36,26 @@ The blank template has all "non-UI" packages pre-installed, but you have to brin
 
 [TODO: Add command or instructions to set up blank template]
 
-<PageRef page="https://gitlab.shopware.com/product/engineering/platform-group/pwa/frontends/-/tree/main/apps/blank" title="Get started with the Blank Template" sub="A blank Nuxt.js project pre-installed with all packages" />
+<PageRef page="./templates/blank-template" title="Get started with the Blank Template" sub="A blank Nuxt.js project pre-installed with all packages" />
+
+## Custom project
+
+If you want to integrate Shopware Frontends into an existing projects or start from scratch, follow the steps below:
+
+```bash
+npm install @shopware-pwa/frontends
+```
+
+In order to use Shopware Frontends packages in your application, you have to hook them into your project.
+
+If you choose to do it in your own project, we assume you know how to do it exactly - hence we will just show an example of how to do it in a fresh Vite.js application:
+
+TODO: Add command or instructions to set up custom project with frontends composables
+
+```js
+import { createApp } from "@shopware-pwa/frontends";
+```
+
+After your setup, you can follow our building guides to get started with Shopware Frontends
+
+<PageRef page="../getting-started/navigation" title="Getting Started - Navigation" sub="Let's implement a store navigation" />

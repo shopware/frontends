@@ -1,6 +1,7 @@
 # Configuration
 
-TODO: Document multiple cases -
+[[toc]]
 
-- Demo Store template
-- Blank template
+## Shopping Experiences
+
+## Business logic
