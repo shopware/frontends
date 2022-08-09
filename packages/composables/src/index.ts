@@ -1,6 +1,6 @@
 import { CmsBlock, CmsSection, CmsSlot } from "@shopware-pwa/types";
 import { pascalCase } from "scule";
-import { resolveComponent, ConcreteComponent } from "vue";
+import { resolveComponent } from "vue";
 
 export * from "./types";
 export * from "./cms";
@@ -25,6 +25,7 @@ export * from "./useCountries";
 export * from "./useOrderDetails";
 export * as Shopware from "@shopware-pwa/types";
 export * from "./useWishlist";
+export * from "./useProductSearchSuggest";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   const componentName = content.type;
