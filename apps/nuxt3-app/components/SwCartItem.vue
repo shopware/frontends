@@ -8,14 +8,8 @@ const props = defineProps<{
 
 const isLoading = ref(false);
 
-const {
-  itemOptions,
-  removeItem,
-  itemRegularPrice,
-  itemQuantity,
-  isPromotion,
-  isProduct,
-} = useCartItem({ cartItem: props.cartItem });
+const { itemOptions, removeItem, itemRegularPrice, itemQuantity, isPromotion } =
+  useCartItem({ cartItem: props.cartItem });
 
 const removeCartItem = async () => {
   isLoading.value = true;

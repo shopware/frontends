@@ -1,4 +1,8 @@
-import { CmsElementImage, DisplayMode } from "../index";
+import {
+  CmsElementImage,
+  DisplayMode,
+  CmsElementManufacturerLogo,
+} from "../index";
 import {
   computed,
   ComputedRef,
@@ -18,7 +22,7 @@ export type UseCmsElementImage = {
 };
 
 export function useCmsElementImage(
-  element: CmsElementImage
+  element: CmsElementImage | CmsElementManufacturerLogo
 ): UseCmsElementImage {
   const containerStyle: ComputedRef<CSSProperties> = computed(() => ({
     minHeight: element.config?.minHeight?.value,
@@ -64,7 +68,9 @@ export function useCmsElementImage(
       ) || "",
   }));
 
-  const displayMode = computed(() => element.config?.displayMode?.value);
+  const displayMode = computed(
+    () => element.config?.displayMode?.value || "initial"
+  );
 
   return {
     containerStyle,

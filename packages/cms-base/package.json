@@ -13,13 +13,15 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "lint": "eslint components/**/*.vue* --fix",
+    "check-types": "vue-tsc --noemit",
+    "eslint": "eslint components/**/*.vue* --fix --max-warnings=0",
+    "lint": "npm run eslint && npm run check-types",
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0-rc.6",
-    "@shopware-pwa/composables-next": "workspace:*",
-    "@shopware-pwa/helpers-next": "workspace:*",
+    "@shopware-pwa/composables-next": "^0.1.10",
+    "@shopware-pwa/helpers-next": "^0.1.10",
     "@shopware-pwa/shopware-6-client": "canary"
   },
   "devDependencies": {
@@ -32,7 +34,8 @@
     "tsconfig": "workspace:*",
     "typescript": "^4.7.4",
     "unbuild": "^0.7.6",
-    "vue-eslint-parser": "^9.0.3"
+    "vue-eslint-parser": "^9.0.3",
+    "vue-tsc": "^0.39.5"
   },
   "repository": {
     "type": "git",

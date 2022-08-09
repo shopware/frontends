@@ -4,7 +4,7 @@ type ErrorTrace = {
   function: string;
   class: string;
   type: string;
-  args: any[];
+  args: unknown[];
 };
 
 type Error = {

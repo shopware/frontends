@@ -8,7 +8,7 @@
     "**/*.d.ts"
   ],
   "scripts": {
-    "lint": "eslint shopware-6-client/**/*.ts* --fix"
+    "lint": "eslint shopware-6-client/**/*.ts* --fix --max-warnings=0"
   },
   "devDependencies": {
     "eslint-config-shopware": "workspace:*"

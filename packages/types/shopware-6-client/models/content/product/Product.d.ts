@@ -41,7 +41,10 @@ export type CrossSelling = {
   apiAlias: string;
 };
 
-export type ProductOption = PropertyGroupOption;
+export type ProductOption = {
+  group: string;
+  option: string;
+};
 
 /**
  * @public
@@ -121,6 +124,7 @@ export type Product = {
   seoUrls: SeoUrl[] | null;
   translated: {
     name: string | null;
+    description: string;
   };
   productMediaVersiond?: null;
   crossSellings: CrossSelling[];

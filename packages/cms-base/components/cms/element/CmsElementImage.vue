@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import {
   CmsElementImage,
+  CmsElementManufacturerLogo,
   useCmsElementImage,
 } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
-  content: Pick<CmsElementImage, "data" | "config">;
+  content: CmsElementImage | CmsElementManufacturerLogo;
 }>();
 
 const {
   containerStyle,
   displayMode,
-  imgContainerAttrs,
+  imageContainerAttrs,
   imageAttrs,
   imageLink,
 } = useCmsElementImage(props.content);
@@ -22,7 +23,7 @@ const {
     class="cms-element-image relative"
     :is="imageLink.url ? 'a' : 'div'"
     :style="containerStyle"
-    v-bind="imgContainerAttrs"
+    v-bind="imageContainerAttrs"
   >
     <img
       :class="{

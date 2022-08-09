@@ -6,13 +6,7 @@ module.exports = {
       rootDir: ["apps/*/", "packages/*/"],
     },
   },
-  ignorePatterns: [
-    "dist/",
-    "node_modules/",
-    "*.d.ts",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-  ],
+  ignorePatterns: ["dist/", "node_modules/"],
   rules: {
     "@next/next/no-html-link-for-pages": "off",
     "react/jsx-key": "off",
@@ -24,4 +18,12 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
+  overrides: [
+    {
+      files: ["**/*.spec.ts", "**/*.test.ts"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+      },
+    },
+  ],
 };

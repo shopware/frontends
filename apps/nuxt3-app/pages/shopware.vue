@@ -45,9 +45,9 @@ const { search, searchTerm, getTotal, getProducts } = useProductSearchSuggest();
 
     <div class="rounded-lg shadow-lg m-10 p-10 flex flex-col">
       <input
+        v-model="searchTerm"
         placeholder="Search a product ..."
         class="rounded-md p-5 shadow-md mb-5"
-        v-model="searchTerm"
       />
 
       <button

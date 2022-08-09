@@ -7,7 +7,7 @@ import {
 } from "@shopware-pwa/helpers-next";
 import { getProductReviews } from "@shopware-pwa/shopware-6-client";
 import { Ref, ref } from "vue";
-import SwStarIconVue from "./../../SwStarIcon.vue";
+import SwStarIcon from "./../../SwStarIcon.vue";
 
 const props = defineProps<{
   content: CmsBlockProductDescriptionReviews;

@@ -2,6 +2,7 @@
  * @beta
  */
 export type AggregationFilterEntity = {
+  id: string;
   name: string;
   displayType: string;
   sortingType: string;
@@ -20,12 +21,12 @@ export type AggregationFilterEntityOption = {
   colorHexCode: string | null;
   mediaId: string | null;
   group: string;
-  translations: any | null;
-  productConfiguratorSettings: any | null;
-  productProperties: any | null;
-  productOptions: any | null;
-  media: any | null;
-  customFields: any | null;
+  translations: unknown | null;
+  productConfiguratorSettings: unknown | null;
+  productProperties: unknown | null;
+  productOptions: unknown | null;
+  media: unknown | null;
+  customFields: unknown | null;
   _uniqueIdentifier: string;
   versionId: null;
   translated: {
@@ -45,15 +46,21 @@ export type AggregationFilterEntityOption = {
 };
 
 export type EntitiesAggregation<ENTITY_TYPE> = {
+  id: string;
+  name: string;
   entities: ENTITY_TYPE[];
 };
 
 export type MaxAggregation = {
+  id: string;
+  name: string;
   max: number;
   apiAlias: string;
 };
 
 export type PriceAggregation = {
+  id: string;
+  name: string;
   min: number;
   max: number;
   avg: number;

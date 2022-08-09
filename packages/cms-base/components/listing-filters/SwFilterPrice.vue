@@ -10,8 +10,8 @@ const $props = defineProps<{
 }>();
 const isFilterVisible = ref(false);
 const prices = reactive<{ min: number; max: number }>({
-  min: $props.filter?.min,
-  max: $props.filter?.max,
+  min: $props.filter?.min || 0,
+  max: $props.filter?.max || 0,
 });
 
 watch(

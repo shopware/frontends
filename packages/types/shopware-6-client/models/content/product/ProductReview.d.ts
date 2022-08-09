@@ -14,7 +14,7 @@ export type ProductReview = {
   languageId: string;
   externalUser: string | null;
   externalEmail: string | null;
-  points: number | null;
+  points: number;
   status: boolean;
   comment: string | null;
   salesChannel: SalesChannel | null;
@@ -23,5 +23,5 @@ export type ProductReview = {
   product: Product | null;
   content: string | null;
   title: string | null;
-  createdAt: Date;
+  createdAt: string;
 };

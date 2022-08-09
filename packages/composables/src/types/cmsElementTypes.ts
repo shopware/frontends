@@ -13,7 +13,7 @@ export type SourceType = "static" | "mapped";
 
 export type Position = "left" | "center" | "right";
 
-export type DisplayMode = CSSProperties["objectFit"];
+export type DisplayMode = Exclude<CSSProperties["objectFit"], undefined>;
 
 export type BoxLayout = "standard" | "image" | "minimal";
 
@@ -170,6 +170,7 @@ type VimeoVideoElementConfig = {
   loop: ElementConfig<boolean>;
   color: ElementConfig<string>;
   title: ElementConfig<boolean>;
+  mute: ElementConfig<boolean>;
   byLine: ElementConfig<boolean>;
   videoID: ElementConfig<string>;
   autoplay: ElementConfig<boolean>;
@@ -296,9 +297,16 @@ export type CmsElementProductDescriptionReviews = CmsSlot & {
 
 type BuyBoxElementConfig = ProductDescriptionReviewsElementConfig;
 // buy box has the same interface in data as product description reviews! unify later
-export type CmsElementBuyBox = CmsElementProductDescriptionReviews & {
+export type CmsElementBuyBox = CmsSlot & {
   type: "buy-box";
   config: BuyBoxElementConfig;
+  data: {
+    productId: null | string;
+    ratingSuccess: boolean;
+    product?: Product;
+    reviews: ProductReview[];
+    apiAlias: "cms_product_description_reviews";
+  };
 };
 
 // Cross Selling
