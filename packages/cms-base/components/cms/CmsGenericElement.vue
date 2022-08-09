@@ -1,58 +1,31 @@
 <script setup lang="ts">
 import { CmsSlot } from "@shopware-pwa/types";
 import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
-import { pascalCase } from "scule";
-import { resolveComponent } from "vue";
+import { resolveCmsComponent } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsSlot;
 }>();
 
 const DynamicRender = () => {
-  const componentName = props.content.type;
-  const apiAlias = props.content.apiAlias;
-  const type =
-    apiAlias === "cms_section"
-      ? "Section"
-      : apiAlias === "cms_block"
-      ? "Block"
-      : "Element";
-  const componentNameToResolve = pascalCase(`Cms-${type}-${componentName}`);
-  try {
-    const cmsPageView = resolveComponent(componentNameToResolve);
+  const { resolvedComponent, componentName, isResolved } = resolveCmsComponent(
+    props.content
+  );
+  if (resolvedComponent) {
+    if (!isResolved)
+      return h("div", {}, "Problem resolving component: " + componentName);
 
-    if (cmsPageView) {
-      if (cmsPageView === componentNameToResolve)
-        return h(
-          "div",
-          {},
-          "Problem resolving component: " + componentNameToResolve
-        );
-
-      const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
-        props.content
-      );
-
-      return h(cmsPageView, {
-        content: props.content,
-        style: layoutStyles,
-        class: cssClasses,
-      });
-    }
-    return h("div", {}, "Loading...");
-  } catch (e) {
-    console.error(
-      "Problem Resolving",
-      componentNameToResolve,
-      ":",
-      (e as Error).message
+    const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
+      props.content
     );
-    return h(
-      "div",
-      {},
-      `Problem(${componentNameToResolve}): ${(e as Error).message}`
-    );
+
+    return h(resolvedComponent, {
+      content: props.content,
+      style: layoutStyles,
+      class: cssClasses,
+    });
   }
+  return h("div", {}, "Loading...");
 };
 </script>
 
