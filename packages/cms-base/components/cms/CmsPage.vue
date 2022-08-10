@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { CmsPage } from "@shopware-pwa/types";
+import { CmsPage, CmsSection } from "@shopware-pwa/types";
 import { pascalCase } from "scule";
+import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{
   content: CmsPage;
@@ -8,7 +9,7 @@ const props = defineProps<{
 
 useListing();
 
-const cmsSections = computed(() => {
+const cmsSections = computed<CmsSection[]>(() => {
   return props.content?.sections || [];
 });
 
@@ -20,12 +21,21 @@ const DynamicRender = () => {
     };
   });
   return componentsMap.map((componentObject) => {
+    const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
+      componentObject.section
+    );
     if (typeof componentObject.component === "string")
       return h("div", {}, "There is no " + componentObject.component); // TODO: cmsNoComponent
     return h(componentObject.component, {
       content: componentObject.section,
+      class: {
+        [cssClasses ?? ""]: true,
+        "max-w-screen-xl mx-auto": layoutStyles?.sizingMode === "boxed",
+      },
       style: {
-        backgroundColor: componentObject.section.backgroundColor,
+        backgroundColor: layoutStyles?.backgroundColor,
+        backgroundImage: layoutStyles?.backgroundImage,
+        backgroundSize: layoutStyles?.backgroundSize,
       },
     });
   });

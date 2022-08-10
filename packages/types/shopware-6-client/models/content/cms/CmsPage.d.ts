@@ -187,7 +187,7 @@ export type SizingMode = "boxed";
 /**
  * @public
  */
-export type MobileBehavior = "boxed" | "wrap";
+export type MobileBehavior = "boxed" | "wrap" | "hidden";
 
 /**
  * @public
