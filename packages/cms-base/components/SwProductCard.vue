@@ -124,10 +124,10 @@ const ratingAverage: Ref<number> = computed(() =>
         <p class="mt-2 text-sm text-gray-500 min-h-30px">
           <span
             v-for="option in product?.options"
-            :key="option.group"
+            :key="option.id"
             class="bg-gray-400 mr-2 text-white rounded p-1"
           >
-            {{ option.group }}: {{ option.option }}
+            {{ option.group.name }}: {{ option.name }}
           </span>
         </p>
       </div>

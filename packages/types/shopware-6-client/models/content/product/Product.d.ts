@@ -41,11 +41,6 @@ export type CrossSelling = {
   apiAlias: string;
 };
 
-export type ProductOption = {
-  group: string;
-  option: string;
-};
-
 /**
  * @public
  */
@@ -110,7 +105,7 @@ export type Product = {
   categories: Category[];
   tags: Tag[];
   properties: PropertyGroupOption[] | null;
-  options: ProductOption[];
+  options: PropertyGroupOption[];
   categoriesRo: Category[] | null;
   coverId: string | null;
   customFields: CustomField[];

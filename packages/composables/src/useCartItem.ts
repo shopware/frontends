@@ -9,7 +9,7 @@ import {
   LineItem,
   LineItemType,
   ClientApiError,
-  ProductOption,
+  PropertyGroupOption,
 } from "@shopware-pwa/types";
 // import {
 //   getApplicationContext,
@@ -30,7 +30,7 @@ export interface IUseCartItem {
   itemRegularPrice: ComputedRef<number | undefined>;
   itemSpecialPrice: ComputedRef<number | undefined>;
   itemImageThumbnailUrl: ComputedRef<string>;
-  itemOptions: ComputedRef<ProductOption[]>;
+  itemOptions: ComputedRef<PropertyGroupOption[]>;
   itemType: ComputedRef<LineItemType | undefined>;
   isProduct: ComputedRef<boolean>;
   isPromotion: ComputedRef<boolean>;
