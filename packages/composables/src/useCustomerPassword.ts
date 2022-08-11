@@ -1,4 +1,4 @@
-import { UnwrapRef, reactive } from "vue-demi";
+import { UnwrapRef, reactive } from "vue";
 import {
   updatePassword as apiUpdatePassword,
   resetPassword as apiResetPassword,
