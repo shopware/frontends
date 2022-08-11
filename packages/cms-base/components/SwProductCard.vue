@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductTierPrices,
@@ -19,9 +20,17 @@ const { currency } = useSessionContext();
 
 const { pushSuccess, pushInfo } = useNotifications();
 
-const props = defineProps<{
-  product: Product;
-}>();
+const props = withDefaults(
+  defineProps<{
+    product: Product;
+    layoutType: BoxLayout;
+    displayMode: "standard" | DisplayMode;
+  }>(),
+  {
+    layoutType: "standard",
+    displayMode: "standard",
+  }
+);
 
 const { addToCart } = useAddToCart({
   product: props.product,
@@ -89,47 +98,55 @@ const ratingAverage: Ref<number> = computed(() =>
 </script>
 
 <template>
-  <div class="sw-product-card group relative">
+  <div class="sw-product-card group relative flex flex-col justify-between">
+    <button
+      type="button"
+      @click="addToWishlistFn"
+      class="absolute top-2 right-2 z-40"
+    >
+      <SwHeartIcon :is-empty="isInWishlist ? true : false" />
+    </button>
     <div
-      class="w-full h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 aspect-none"
+      :class="[
+        'w-full rounded-md overflow-hidden hover:opacity-75',
+        layoutType === 'image' ? 'h-80' : 'h-60',
+      ]"
     >
       <img
         :src="getProductThumbnailUrl(product)"
         :alt="getProductName({ product }) || ''"
-        class="w-full h-full object-fill lg:w-full lg:h-full"
+        :class="{
+          'w-full h-full': true,
+          'object-cover':
+            displayMode === 'cover' ||
+            (displayMode === 'standard' && layoutType === 'image'),
+          'object-contain': displayMode === 'contain',
+          'object-scale-down':
+            displayMode === 'standard' && layoutType !== 'image',
+        }"
       />
     </div>
-    <div class="mt-4 justify-between h-40">
+    <div class="mt-4 flex flex-col justify-between flex-1">
       <div>
-        <h3 class="text-sm text-gray-700">
-          <router-link :to="getProductUrl(product)">
-            <span
-              aria-hidden="true"
-              class="absolute inset-0 bottom-40px"
-            ></span>
+        <h3 class="text-base font-bold text-gray-700">
+          <router-link class="line-clamp-2 h-12" :to="getProductUrl(product)">
             {{ getProductName({ product }) }}
           </router-link>
         </h3>
-        <button
-          type="button"
-          @click="addToWishlistFn"
-          class="absolute top-2 right-2"
-        >
-          <SwHeartIcon :is-empty="isInWishlist ? true : false" />
-        </button>
         <p
-          class="mt-2 text-sm text-gray-500 max-h-20"
+          v-if="layoutType === 'standard'"
+          class="line-clamp-4 mt-2 text-sm text-gray-500 h-20 overflow-hidden"
           v-html="product.translated.description.substring(0, 100) + '...'"
-        ></p>
-        <p class="mt-2 text-sm text-gray-500 min-h-30px">
+        />
+        <div class="mt-2 flex gap-2 flex-wrap">
           <span
             v-for="option in product?.options"
             :key="option.id"
-            class="bg-gray-400 mr-2 text-white rounded p-1"
+            class="bg-gray-400 text-sm text-white rounded py-1 px-2"
           >
             {{ option.group.name }}: {{ option.name }}
           </span>
-        </p>
+        </div>
       </div>
       <div class="flex flex-row mt-3 justify-between">
         <div class="text-sm font-medium text-gray-900">
