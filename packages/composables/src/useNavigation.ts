@@ -55,10 +55,10 @@ export function useNavigation(params?: {
   // });
 
   const sharedElements: Ref<StoreNavigationElement[]> = inject(
-    "swNavigation",
+    `swNavigation-${type}`,
     ref([])
   );
-  provide("swNavigation", sharedElements);
+  provide(`swNavigation-${type}`, sharedElements);
 
   const navigationElements = computed(() => sharedElements.value);
 
