@@ -102,7 +102,7 @@ deploy-job: # This job runs in the deploy stage.
 
 e2e tests:
   stage: test
-  image: mcr.microsoft.com/playwright:focal
+  image: mcr.microsoft.com/playwright:v1.24.2-focal
   needs:
     - job: deploy-job
       artifacts: true
