@@ -24,6 +24,7 @@ const mobileBehavior = computed(() => props.content.mobileBehavior);
     >
       <CmsGenericBlock
         v-for="cmsBlock in sidebarBlocks"
+        class="overflow-auto"
         :key="cmsBlock.id"
         :content="cmsBlock"
       />
@@ -31,6 +32,7 @@ const mobileBehavior = computed(() => props.content.mobileBehavior);
     <div class="md:col-span-3">
       <CmsGenericBlock
         v-for="cmsBlock in mainBlocks"
+        class="overflow-auto"
         :key="cmsBlock.id"
         :content="cmsBlock"
       />
