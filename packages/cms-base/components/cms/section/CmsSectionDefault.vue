@@ -17,6 +17,7 @@ const blocks = getPositionContent("main");
   <div class="cms-section-default">
     <CmsGenericBlock
       v-for="cmsBlock in blocks"
+      class="overflow-auto"
       :key="cmsBlock.id"
       :content="cmsBlock"
     />
