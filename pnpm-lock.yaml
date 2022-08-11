@@ -51,6 +51,8 @@ importers:
       '@shopware-pwa/nuxt3-module': workspace:*
       '@unocss/nuxt': ^0.44.7
       '@vue/eslint-config-typescript': ^11.0.0
+      '@vuelidate/core': ^2.0.0-alpha.41
+      '@vuelidate/validators': ^2.0.0-alpha.29
       '@vueuse/nuxt': ^8.9.4
       eslint-config-shopware: workspace:*
       eslint-plugin-vue: ^9.3.0
@@ -64,6 +66,8 @@ importers:
       '@shopware-pwa/helpers-next': link:../../packages/helpers
       '@shopware-pwa/nuxt3-module': link:../../packages/nuxt3-module
       '@unocss/nuxt': 0.44.7
+      '@vuelidate/core': 2.0.0-alpha.44_vue@3.2.37
+      '@vuelidate/validators': 2.0.0-alpha.31_vue@3.2.37
       '@vueuse/nuxt': 8.9.4_vue@3.2.37
       vue: 3.2.37
     devDependencies:
@@ -92,8 +96,8 @@ importers:
       vue-tsc: ^0.39.5
     dependencies:
       '@nuxt/kit': 3.0.0-rc.6
-      '@shopware-pwa/composables-next': link:../composables
-      '@shopware-pwa/helpers-next': link:../helpers
+      '@shopware-pwa/composables-next': link:../../packages/composables
+      '@shopware-pwa/helpers-next': link:../../packages/helpers
       '@shopware-pwa/shopware-6-client': 1.5.4-canary.1685
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.6
@@ -2991,6 +2995,24 @@ packages:
 
   /@vue/shared/3.2.37:
     resolution: {integrity: sha512-4rSJemR2NQIo9Klm1vabqWjD8rs/ZaJSzMxkMNeJS6lHiUjjUeYFbooN19NgFjztubEKh3WlZUeOLVdbbUWHsw==}
+
+  /@vuelidate/core/2.0.0-alpha.44_vue@3.2.37:
+    resolution: {integrity: sha512-3DlCe3E0RRXbB+OfPacUetKhLmXzmnjeHkzjnbkc03p06mKm6h9pXR5pd6Mv4s4tus4sieuKDb2YWNmKK6rQeA==}
+    dependencies:
+      vue-demi: 0.13.7_vue@3.2.37
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
+  /@vuelidate/validators/2.0.0-alpha.31_vue@3.2.37:
+    resolution: {integrity: sha512-+MFA9nZ7Y9zCpq383/voPDk/hiAmu6KqiJJhLOYB/FmrUPVoyKnuKnI9Bwiq8ok9GZlVkI8BnIrKPKGj9QpwiQ==}
+    dependencies:
+      vue-demi: 0.13.7_vue@3.2.37
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
 
   /@vueuse/core/8.9.3_vue@3.2.37:
     resolution: {integrity: sha512-q2pr3N7FPG7IBBhEXTYOJU+38VwKMLP5IfD33byzBV4Th7f1JHT4qPKvJrvr17knAefPRzNqgt9et+xFqaRlPQ==}
@@ -10621,6 +10643,21 @@ packages:
 
   /vue-demi/0.13.1_vue@3.2.37:
     resolution: {integrity: sha512-xmkJ56koG3ptpLnpgmIzk9/4nFf4CqduSJbUM0OdPoU87NwRuZ6x49OLhjSa/fC15fV+5CbEnrxU4oyE022svg==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.2.37
+    dev: false
+
+  /vue-demi/0.13.7_vue@3.2.37:
+    resolution: {integrity: sha512-hbhlvpx1gFW3TB5HxJ0mNxyA9Jh5iQt409taOs6zkhpvfJ7YzLs1rsLufJmDsjH5PI1cOyfikY1fE/meyHfU5A==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true
