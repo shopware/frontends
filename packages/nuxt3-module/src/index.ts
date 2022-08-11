@@ -41,6 +41,7 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
           "useAddToCart",
           "useCheckout",
           "useCountries",
+          "useCustomerPassword",
           "useShopwareContext",
           "useSessionContext",
           "useCart",
