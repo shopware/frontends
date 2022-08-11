@@ -7,14 +7,18 @@ import ChevronRight from "./icons/ChevronRight.vue";
 const props = withDefaults(
   defineProps<{
     config: SliderElementConfig;
-    slidesToShow?: number;
-    slidesToScroll?: number;
-    gap?: string;
+    slidesToShow: number;
+    slidesToScroll: number;
+    gap: string;
+    autoplay: boolean;
+    autoplaySpeed: number;
   }>(),
   {
     slidesToShow: 1,
     slidesToScroll: 1,
     gap: "0px",
+    autoplay: false,
+    autoplaySpeed: 3000,
   }
 );
 
@@ -46,14 +50,39 @@ const emit = defineEmits<{
 
 const imageSlider = ref<HTMLElement>();
 const imageSliderWidth = ref<number>(0);
-const imageSliderTrackStyle = ref({});
+const imageSliderTrackStyle = ref<any>({});
 const activeSlideIndex = ref<number>(0);
 const speed = ref<number>(300);
 const imageSliderTrack = ref<HTMLElement>();
+const autoPlayInterval = ref();
+const isReady = ref<boolean>();
+const isSliding = ref<boolean>();
 
 onMounted(() => {
   initSlider();
 });
+
+onBeforeUnmount(() => {
+  clearInterval(autoPlayInterval.value);
+});
+
+watch(
+  () => props.autoplay,
+  (value) => {
+    if (value) {
+      autoPlayInterval.value = setInterval(() => {
+        next();
+      }, props.autoplaySpeed);
+    } else {
+      if (autoPlayInterval.value) {
+        clearInterval(autoPlayInterval.value);
+      }
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 
 const imageSliderStyle = computed(() => {
   if (props.config.displayMode?.value === "cover") {
@@ -86,12 +115,8 @@ function initSlider() {
   if (imageSlider.value) {
     setTimeout(() => {
       imageSliderWidth.value = imageSlider.value?.clientWidth || 0;
-      buildImageSliderTrackStyle(
-        activeSlideIndex.value,
-        false,
-        undefined,
-        true
-      );
+      buildImageSliderTrackStyle(activeSlideIndex.value, false, undefined);
+      isReady.value = true;
     }, 100);
   }
 }
@@ -99,8 +124,7 @@ function initSlider() {
 function buildImageSliderTrackStyle(
   transformIndex: number,
   moving: boolean = false,
-  callback = () => {},
-  initial: boolean = false
+  callback = () => {}
 ) {
   let styleObj: { [K: string]: string } = {
     transform: `translate3d(-${
@@ -110,20 +134,27 @@ function buildImageSliderTrackStyle(
     width: `${children.value.length * imageSliderWidth.value}px`,
   };
 
+  if (imageSliderTrackStyle.value?.height) {
+    styleObj.height = imageSliderTrackStyle.value?.height;
+  }
+
   if (moving) {
     styleObj = {
       ...styleObj,
       transition: `transform ${speed.value}ms ease 0s`,
     };
     imageSliderTrackStyle.value = { ...styleObj };
+    isSliding.value = true;
     setTimeout(() => {
       delete styleObj.transition;
       imageSliderTrackStyle.value = { ...styleObj };
+      isSliding.value = false;
       callback();
     }, speed.value);
   } else {
     imageSliderTrackStyle.value = { ...styleObj };
   }
+
   setTimeout(() => {
     let height = "unset";
     if (displayModeValue.value === "cover") {
@@ -132,6 +163,8 @@ function buildImageSliderTrackStyle(
       height = `${
         imageSliderTrack.value?.children[transformIndex + 1].clientHeight
       }px`;
+    } else if (displayModeValue.value === "contain") {
+      height = `${imageSliderTrack.value?.clientHeight}px`;
     }
     styleObj = {
       ...styleObj,
@@ -142,6 +175,7 @@ function buildImageSliderTrackStyle(
 }
 
 function next() {
+  if (isSliding.value) return;
   activeSlideIndex.value = activeSlideIndex.value + slidesToScroll.value;
   buildImageSliderTrackStyle(activeSlideIndex.value, true, () => {
     if (
@@ -156,6 +190,7 @@ function next() {
 }
 
 function previous() {
+  if (isSliding.value) return;
   activeSlideIndex.value = activeSlideIndex.value - slidesToScroll.value;
   buildImageSliderTrackStyle(activeSlideIndex.value, true, () => {
     if (activeSlideIndex.value <= 0 - slidesToShow.value) {
@@ -167,6 +202,7 @@ function previous() {
 }
 
 function goToSlide(index: number) {
+  if (isSliding.value) return;
   if (activeSlideIndex.value === index) return;
   activeSlideIndex.value = index;
   buildImageSliderTrackStyle(activeSlideIndex.value, true);
@@ -185,6 +221,7 @@ defineExpose({
       'relative overflow-hidden': true,
       'px-10': navigationArrowsValue === 'outside',
       'pb-15': navigationDotsValue === 'outside',
+      'opacity-0': !isReady,
     }"
   >
     <div class="overflow-hidden" ref="imageSlider" :style="imageSliderStyle">
@@ -206,12 +243,12 @@ defineExpose({
           v-for="(child, index) of children"
           :key="index"
           :index="index - slidesToShow"
-          class="h-min"
           :style="{
             width: imageSliderWidth
               ? `${imageSliderWidth / slidesToShow}px`
               : 'auto',
             padding: `0 ${gap}`,
+            height: displayModeValue === 'standard' ? 'min-content' : '100%',
           }"
         >
           <component :is="child" />
