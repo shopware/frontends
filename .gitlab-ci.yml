@@ -69,7 +69,7 @@ lint-test-job: # This job also runs in the test stage.
       artifacts: false
   script:
     - pnpm install
-    - pnpm run build
+    - pnpm run build --filter='./packages/*'
     - pnpm run lint
 
 deploy-job: # This job runs in the deploy stage.
