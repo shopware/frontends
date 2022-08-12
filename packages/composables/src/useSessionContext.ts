@@ -46,6 +46,7 @@ export interface IUseSessionContext {
     address: Partial<ShippingAddress>
   ) => Promise<void>;
   activeBillingAddress: ComputedRef<BillingAddress | null>;
+  taxState: ComputedRef<string | null>;
   setActiveBillingAddress: (address: Partial<BillingAddress>) => Promise<void>;
   countryId: ComputedRef<string | undefined>;
   // events for interceptors
@@ -176,6 +177,8 @@ export function useSessionContext(): IUseSessionContext {
     () => sessionContext.value?.salesChannel?.countryId
   );
 
+  const taxState = computed(() => sessionContext.value?.context?.taxState);
+
   return {
     sessionContext,
     refreshSessionContext,
@@ -190,6 +193,7 @@ export function useSessionContext(): IUseSessionContext {
     activeBillingAddress,
     setActiveBillingAddress,
     countryId,
+    taxState,
     // interceptors
     onCurrencyChange,
     onPaymentMethodChange,

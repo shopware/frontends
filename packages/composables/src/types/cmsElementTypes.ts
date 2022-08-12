@@ -3,6 +3,7 @@ import {
   CrossSelling,
   Media,
   Product,
+  ProductConfiguratorSetting,
   ProductListingResult,
   ProductReview,
   Salutation,
@@ -301,6 +302,7 @@ export type CmsElementBuyBox = CmsSlot & {
   type: "buy-box";
   config: BuyBoxElementConfig;
   data: {
+    configuratorSettings: ProductConfiguratorSetting[] | null;
     productId: null | string;
     ratingSuccess: boolean;
     product?: Product;
