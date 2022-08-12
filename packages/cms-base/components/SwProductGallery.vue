@@ -1,38 +1,46 @@
 <script setup lang="ts">
-import { getProductMediaGallery } from "@shopware-pwa/helpers-next";
-import { Product } from "@shopware-pwa/types";
+import { ElementConfig } from "@shopware-pwa/composables-next";
+import { Product, ProductMedia } from "@shopware-pwa/types";
 
 const props = defineProps<{
   product: Product;
 }>();
+const content = ref<{
+  config: {
+    minHeight: ElementConfig<string>;
+    navigationArrows: ElementConfig<"outside" | "inside" | "">;
+  };
+  data: {
+    sliderItems: ProductMedia[];
+  };
+}>();
 
-const coverImageUrl = computed(() => props.product?.cover?.media?.url);
-const mediaGallery = computed(() =>
-  getProductMediaGallery({ product: props.product }).filter(
-    ({ desktop }) => desktop?.url !== coverImageUrl.value
-  )
+watch(
+  () => props.product,
+  (value) => {
+    const media = value.media;
+    content.value = {
+      config: {
+        minHeight: {
+          value: "300px",
+          source: "static",
+        },
+        navigationArrows: {
+          value: "inside",
+          source: "static",
+        },
+      },
+      data: {
+        sliderItems: media,
+      },
+    };
+  },
+  {
+    immediate: true,
+  }
 );
-const gallery3columns = computed(() => mediaGallery.value?.length % 3 === 0);
 </script>
 
 <template>
-  <div
-    class="hidden lg:grid lg:grid-cols-1 lg:gap-x-8 lg:gap-y-8 mb-8 rounded-lg overflow-hidden"
-  >
-    <img
-      :src="coverImageUrl"
-      class="w-full h-full object-center object-cover"
-    />
-  </div>
-  <div
-    :class="[gallery3columns ? 'lg:grid-cols-3' : 'lg:grid-cols-2']"
-    class="hidden lg:grid lg:gap-x-8 lg:gap-y-8 rounded-lg overflow-hidden"
-  >
-    <img
-      v-for="image in mediaGallery"
-      :key="image.desktop.url"
-      :src="image.desktop.url"
-      class="w-full h-full object-center object-cover"
-    />
-  </div>
+  <CmsElementImageGallery v-if="content" :content="content" />
 </template>
