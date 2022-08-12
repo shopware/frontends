@@ -10,6 +10,7 @@ import { PropertyGroup } from "../property/PropertyGroup";
 import { DeliveryTime } from "../../checkout/delivery/DeliveryTime";
 import { ProductManufacturer } from "./ProductManufacturer";
 import { ProductTranslation } from "./ProductTranslation";
+import { ProductConfiguratorSetting } from "./ProductConfiguratorSetting";
 import { PropertyGroupOption } from "../property/PropertyGroupOption";
 import { Category } from "../category/Category";
 import { Tag } from "../../system/tag/Tag";
@@ -49,6 +50,7 @@ export type Product = {
   calculatedListingPrice: ListingPrice;
   calculatedPrices: CalculatedPrice[];
   calculatedPrice: CalculatedPrice;
+  configuratorSettings: ProductConfiguratorSetting[] | null;
   sortedProperties: PropertyGroup[] | null;
   isNew: boolean;
   parentId: string | null;

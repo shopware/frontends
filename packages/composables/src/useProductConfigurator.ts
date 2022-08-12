@@ -68,7 +68,10 @@ export function useProductConfigurator(params: {
   const isLoadingOptions = ref(!!product.options?.length);
   const parentProductId = computed(() => product.parentId);
   const getOptionGroups = computed(
-    () => (page.value as unknown as ProductResponse)?.configurator || []
+    () =>
+      (page.value as unknown as ProductResponse)?.configurator ||
+      product.configuratorSettings ||
+      []
   );
 
   const findGroupCodeForOption = (optionId: string) => {

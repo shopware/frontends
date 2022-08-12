@@ -139,6 +139,7 @@ export type CmsSlotType =
   | "product-box"
   | "slot"
   | "text"
+  | "buy-box"
   | typeof String;
 
 /**
