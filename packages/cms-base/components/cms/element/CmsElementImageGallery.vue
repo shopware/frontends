@@ -28,7 +28,7 @@ const imageThumbs = ref();
 const imageThumbsStyle = ref({});
 const mediaGallery = computed(() => props.content.data?.sliderItems ?? []);
 const galleryPosition = computed<string>(
-  () => props.content.config?.galleryPosition.value ?? "left"
+  () => props.content.config?.galleryPosition?.value ?? "left"
 );
 const scrollPx = ref(0);
 

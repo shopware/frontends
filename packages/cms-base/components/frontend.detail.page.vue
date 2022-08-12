@@ -10,7 +10,7 @@ const product = computed(
 const isStaticLayout = computed(() => !page?.value);
 </script>
 <template>
-  <div class="container mx-auto bg-white flex flex-row">
+  <div class="container mx-auto bg-white flex flex-col">
     <template v-if="isStaticLayout">
       <SwStaticProduct :product="product" />
     </template>

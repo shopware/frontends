@@ -85,30 +85,30 @@ watch(
 );
 
 const imageSliderStyle = computed(() => {
-  if (props.config.displayMode?.value === "cover") {
+  if (props.config?.displayMode?.value === "cover") {
     return {
-      height: props.config.minHeight.value,
+      height: props.config?.minHeight.value,
       margin: `0 -${props.gap}`,
     };
   } else {
     return {
-      minHeight: props.config.minHeight.value,
+      minHeight: props.config?.minHeight.value,
     };
   }
 });
 
 const verticalAlignValue = computed(
-  () => props.config.verticalAlign?.value || "flex-start"
+  () => props.config?.verticalAlign?.value || "flex-start"
 );
 const displayModeValue = computed(
-  () => props.config.displayMode?.value || "standard"
+  () => props.config?.displayMode?.value || "standard"
 );
 
 const navigationArrowsValue = computed(
-  () => props.config.navigationArrows?.value || "none"
+  () => props.config?.navigationArrows?.value || "none"
 );
 const navigationDotsValue = computed(
-  () => props.config.navigationDots?.value || "none"
+  () => props.config?.navigationDots?.value || "none"
 );
 
 function initSlider() {
