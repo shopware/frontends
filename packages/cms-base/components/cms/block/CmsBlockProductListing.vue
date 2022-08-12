@@ -10,5 +10,7 @@ const slotContent = getSlotContent("content");
 </script>
 
 <template>
-  <CmsGenericElement v-if="slotContent" :content="slotContent" />
+  <div>
+    <CmsGenericElement v-if="slotContent" :content="slotContent" />
+  </div>
 </template>

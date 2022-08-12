@@ -17,7 +17,9 @@ const {
 const changePage = (page: number) => {
   changeCurrentPage(page);
 };
-
+const isProductListing = computed(
+  () => props.content?.type === "product-listing"
+);
 setInitialListing(props?.content?.data?.listing);
 </script>
 
@@ -34,6 +36,7 @@ setInitialListing(props?.content?.data?.listing);
             v-for="product in getElements"
             :key="product.id"
             :product="product"
+            :isProductListing="isProductListing"
           />
         </div>
         <div class="mt-10">
