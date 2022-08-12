@@ -61,7 +61,7 @@ importers:
       vue-eslint-parser: ^9.0.3
     dependencies:
       '@shopware-pwa/cms-base': link:../../packages/cms-base
-      '@shopware-pwa/composables': 1.5.4-canary.1685_vue@3.2.37
+      '@shopware-pwa/composables': 1.5.4-canary.1687_vue@3.2.37
       '@shopware-pwa/composables-next': link:../../packages/composables
       '@shopware-pwa/helpers-next': link:../../packages/helpers
       '@shopware-pwa/nuxt3-module': link:../../packages/nuxt3-module
@@ -96,9 +96,9 @@ importers:
       vue-tsc: ^0.39.5
     dependencies:
       '@nuxt/kit': 3.0.0-rc.6
-      '@shopware-pwa/composables-next': link:../../packages/composables
-      '@shopware-pwa/helpers-next': link:../../packages/helpers
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1685
+      '@shopware-pwa/composables-next': link:../composables
+      '@shopware-pwa/helpers-next': link:../helpers
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1687
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.6
       '@shopware-pwa/types': link:../types
@@ -131,7 +131,7 @@ importers:
       '@shopware-pwa/helpers-next': link:../helpers
       lodash: 4.17.21
     devDependencies:
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1685
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1687
       '@shopware-pwa/types': link:../types
       '@types/lodash': 4.14.182
       c8: 7.12.0
@@ -186,9 +186,9 @@ importers:
       unbuild: ^0.7.6
     dependencies:
       '@nuxt/kit': 3.0.0-rc.6
-      '@shopware-pwa/composables': 1.5.4-canary.1685
+      '@shopware-pwa/composables': 1.5.4-canary.1687
       '@shopware-pwa/composables-next': link:../composables
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1685
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1687
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.6
       eslint-config-shopware: link:../eslint-config-shopware
@@ -1361,8 +1361,8 @@ packages:
       tslib: 1.14.1
     dev: false
 
-  /@shopware-pwa/composables/1.5.4-canary.1685:
-    resolution: {integrity: sha512-eyzBVSqzOgwlax5cWNwUDknbiJWpi7EVAb1aSel1DmDudpr2yNOnx53YrNZsAQ9+CmX8nnLjTupBvQQqDNzvSg==}
+  /@shopware-pwa/composables/1.5.4-canary.1687:
+    resolution: {integrity: sha512-PBbhKPHD46hvp7Divm+rTz976DsBfJH3fji1xgYkhxozjsg/fo6AYVs5jvPSVjtWk2DqgSkPsfyXQe/Nh2cCVQ==}
     peerDependencies:
       '@vue/composition-api': ^1.6.2
       vue: ^2.0.0 || >=3.0.0-rc.0
@@ -1370,20 +1370,20 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@shopware-pwa/helpers': 1.5.4-canary.1685
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1685
+      '@shopware-pwa/helpers': 1.5.4-canary.1687
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1687
       '@vue/devtools-api': 6.1.4
       axios: 0.27.2
       cookie-universal: 2.2.1
       lodash: 4.17.21
       query-string: 7.1.1
-      vue-demi: 0.13.1
+      vue-demi: 0.13.7
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shopware-pwa/composables/1.5.4-canary.1685_vue@3.2.37:
-    resolution: {integrity: sha512-eyzBVSqzOgwlax5cWNwUDknbiJWpi7EVAb1aSel1DmDudpr2yNOnx53YrNZsAQ9+CmX8nnLjTupBvQQqDNzvSg==}
+  /@shopware-pwa/composables/1.5.4-canary.1687_vue@3.2.37:
+    resolution: {integrity: sha512-PBbhKPHD46hvp7Divm+rTz976DsBfJH3fji1xgYkhxozjsg/fo6AYVs5jvPSVjtWk2DqgSkPsfyXQe/Nh2cCVQ==}
     peerDependencies:
       '@vue/composition-api': ^1.6.2
       vue: ^2.0.0 || >=3.0.0-rc.0
@@ -1391,27 +1391,27 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@shopware-pwa/helpers': 1.5.4-canary.1685
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1685
+      '@shopware-pwa/helpers': 1.5.4-canary.1687
+      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1687
       '@vue/devtools-api': 6.1.4
       axios: 0.27.2
       cookie-universal: 2.2.1
       lodash: 4.17.21
       query-string: 7.1.1
       vue: 3.2.37
-      vue-demi: 0.13.1_vue@3.2.37
+      vue-demi: 0.13.7_vue@3.2.37
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shopware-pwa/helpers/1.5.4-canary.1685:
-    resolution: {integrity: sha512-WPeBz9QrRR+x+QHkUGXi9dObHsiDEaxKBV6DFn+5sMD2lmevZCHvEqSDPCHaWRC+Ed/LqYO0YApQJ4CAXl9rcg==}
+  /@shopware-pwa/helpers/1.5.4-canary.1687:
+    resolution: {integrity: sha512-SO08Y8bawvHp5chptMIJUXWpv0l348VvpIgT0+W+UZDTFPpi+uXh+R1xhLojo6PTi7JIewDIRP0A9mmc46xQ9w==}
     dependencies:
       query-string: 7.1.1
     dev: false
 
-  /@shopware-pwa/shopware-6-client/1.5.4-canary.1685:
-    resolution: {integrity: sha512-qTqL55gjluujAl4QQ/4xprpcOL5Jf9/810f2MgI1NaWxu+DynXxpNewr90zf1b0jm8hX4LiRvBPIXEqlNZJ1ew==}
+  /@shopware-pwa/shopware-6-client/1.5.4-canary.1687:
+    resolution: {integrity: sha512-gNCe2Squ+zWbj9Dpe3XKZPBtm8aunS7ZBG4E9rlSnVsG8bSGjiBOhzke8w1871JTmgfyEQYWhI7cJdVZc62/Ng==}
     dependencies:
       axios: 0.27.2
       lodash: 4.17.21
@@ -10659,6 +10659,7 @@ packages:
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
+    dev: true
 
   /vue-demi/0.13.1_vue@3.2.37:
     resolution: {integrity: sha512-xmkJ56koG3ptpLnpgmIzk9/4nFf4CqduSJbUM0OdPoU87NwRuZ6x49OLhjSa/fC15fV+5CbEnrxU4oyE022svg==}
@@ -10673,6 +10674,19 @@ packages:
         optional: true
     dependencies:
       vue: 3.2.37
+    dev: false
+
+  /vue-demi/0.13.7:
+    resolution: {integrity: sha512-hbhlvpx1gFW3TB5HxJ0mNxyA9Jh5iQt409taOs6zkhpvfJ7YzLs1rsLufJmDsjH5PI1cOyfikY1fE/meyHfU5A==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
     dev: false
 
   /vue-demi/0.13.7_vue@3.2.37:
