@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/cms-base",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Vue CMS support for Shopware",
   "main": "./index.cjs",
   "module": "./dist/index.mjs",
@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0-rc.6",
-    "@shopware-pwa/composables-next": "^0.1.10",
-    "@shopware-pwa/helpers-next": "^0.1.10",
+    "@shopware-pwa/composables-next": "^0.1.11",
+    "@shopware-pwa/helpers-next": "^0.1.11",
     "@shopware-pwa/shopware-6-client": "canary"
   },
   "devDependencies": {
