@@ -2,14 +2,26 @@
  * @module @shopware/nuxt3
  */
 import { defineNuxtModule, addPluginTemplate } from "@nuxt/kit";
-import { NuxtModule } from "@nuxt/schema";
 import { resolve } from "path";
 
 export type ShopwareNuxtOptions = {
-  example: string;
+  /**
+   * Endpoint for your shopware backend.
+   *
+   * Default demo store: "https://demo-frontends.swstage.store/"
+   */
+  shopwareEndpoint?: string;
+  shopwareAccessToken?: string;
+  apiClientConfig?: {
+    timeout?: number | string;
+    // auth?: {
+    //   username: string;
+    //   password: string;
+    // };
+  };
 };
 
-const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
+export default defineNuxtModule<ShopwareNuxtOptions>({
   meta: {
     name: "@shopware/nuxt3",
     configKey: "shopware",
@@ -21,16 +33,14 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
       // @ts-ignore
       src: resolve(__dirname, "../plugin.ts"),
       options: {
-        shopwareEndpoint: "https://demo-frontends.swstage.store/",
-        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        shopwareEndpoint:
+          moduleConfig.shopwareEndpoint ??
+          "https://demo-frontends.swstage.store/",
+        shopwareAccessToken:
+          moduleConfig.shopwareAccessToken ?? "SWSCBHFSNTVMAWNZDNFKSHLAYW",
         shopwareApiClient: {
-          timeout: "10000",
-          //   auth: {
-          //     username: "",
-          //     password: "",
-          //   },
+          timeout: moduleConfig.apiClientConfig?.timeout ?? "10000",
         },
-        ...moduleConfig,
       },
     });
 
@@ -64,4 +74,11 @@ const nuxtModule: NuxtModule<ShopwareNuxtOptions> = defineNuxtModule({
   },
 });
 
-export default nuxtModule;
+declare module "@nuxt/schema" {
+  interface NuxtConfig {
+    shopware?: ShopwareNuxtOptions;
+  }
+  interface NuxtOptions {
+    shopware?: ShopwareNuxtOptions;
+  }
+}
