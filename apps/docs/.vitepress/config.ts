@@ -2,23 +2,7 @@ import { defineConfigWithTheme } from "vitepress";
 import type { Config as ThemeConfig } from "vitepress-shopware-docs";
 import baseConfig from "vitepress-shopware-docs/config";
 
-console.error("BASE CONF", baseConfig);
-
-const nav = [
-  // {
-  //   text: "Guide",
-  //   activeMatch: `^/(guide|cookbook|examples)/`,
-  //   items: [
-  //     { text: "Guide", link: "/guide/introduction" },
-  //     { text: "Examples", link: "/examples/" },
-  //   ],
-  // },
-  // {
-  //   text: "API",
-  //   activeMatch: `^/api/`,
-  //   link: "/api/",
-  // },
-];
+import nav from "./navigation";
 
 export const sidebar = [
   {
