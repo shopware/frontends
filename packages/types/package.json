@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/types",
-  "version": "0.0.0",
+  "version": "0.1.12",
   "types": "index.d.ts",
   "main": "index.js",
   "files": [
@@ -13,8 +13,5 @@
   "devDependencies": {
     "eslint-config-shopware": "workspace:*"
   },
-  "license": "MIT",
-  "publishConfig": {
-    "access": "restricted"
-  }
+  "license": "MIT"
 }

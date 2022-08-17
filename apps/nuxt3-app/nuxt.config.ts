@@ -13,11 +13,11 @@ export default defineNuxtConfig({
     "@shopware-pwa/nuxt3-module",
     "@shopware-pwa/cms-base",
   ],
-  components: true,
-  // components: {
-  //   global: true,
-  //   dirs: ["~/components"],
-  // },
+  // components: true,
+  components: {
+    global: true,
+    dirs: ["~/components"],
+  },
   vueuse: {
     ssrHandlers: true,
   },

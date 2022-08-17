@@ -8,8 +8,8 @@ import ChevronRight from "../../icons/ChevronRight.vue";
 const props = withDefaults(
   defineProps<{
     content: CmsElementImageGallery;
-    slidesToShow: number;
-    slidesToScroll: number;
+    slidesToShow?: number;
+    slidesToScroll?: number;
   }>(),
   {
     slidesToShow: 5,
@@ -217,7 +217,7 @@ function next() {
         <CmsElementImage
           v-for="image of mediaGallery"
           :key="image.media.url"
-          :content="{ data: image, config: props.content.config }"
+          :content="({ data: image, config: props.content.config } as any)"
         />
       </SwSlider>
     </div>

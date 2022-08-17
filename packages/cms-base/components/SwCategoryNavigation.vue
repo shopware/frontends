@@ -3,12 +3,12 @@ import {
   getCategoryUrl,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
-import { Category } from "@shopware-pwa/types";
+import { Category, StoreNavigationElement } from "@shopware-pwa/types";
 
 const props = withDefaults(
   defineProps<{
     activeCategory: Category;
-    elements: Category[];
+    elements: StoreNavigationElement[];
     level: number;
   }>(),
   {

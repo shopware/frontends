@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import { ElementConfig } from "@shopware-pwa/composables-next";
-import { Product, ProductMedia } from "@shopware-pwa/types";
+import type { CmsElementImageGallery } from "@shopware-pwa/composables-next";
+import { Product } from "@shopware-pwa/types";
 
 const props = defineProps<{
   product: Product;
 }>();
-const content = ref<{
-  config: {
-    minHeight: ElementConfig<string>;
-    navigationArrows: ElementConfig<"outside" | "inside" | "">;
-  };
-  data: {
-    sliderItems: ProductMedia[];
-  };
-}>();
+const content = ref<CmsElementImageGallery>();
 
 watch(
   () => props.product,
@@ -33,7 +25,7 @@ watch(
       data: {
         sliderItems: media,
       },
-    };
+    } as any;
   },
   {
     immediate: true,

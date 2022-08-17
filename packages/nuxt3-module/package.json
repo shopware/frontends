@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/nuxt3-module",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Nuxt3 package for ShopwarePWA",
   "main": "./index.cjs",
   "module": "./dist/index.mjs",
@@ -17,13 +17,13 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.6",
+    "@nuxt/kit": "^3.0.0-rc.8",
     "@shopware-pwa/composables": "canary",
-    "@shopware-pwa/composables-next": "^0.1.11",
+    "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/shopware-6-client": "canary"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.0.0-rc.6",
+    "@nuxt/schema": "^3.0.0-rc.8",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^4.7.4",

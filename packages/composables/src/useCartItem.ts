@@ -30,7 +30,7 @@ export interface IUseCartItem {
   itemRegularPrice: ComputedRef<number | undefined>;
   itemSpecialPrice: ComputedRef<number | undefined>;
   itemImageThumbnailUrl: ComputedRef<string>;
-  itemOptions: ComputedRef<PropertyGroupOption[]>;
+  itemOptions: ComputedRef<Array<{ group: string; option: string }>>;
   itemType: ComputedRef<LineItemType | undefined>;
   isProduct: ComputedRef<boolean>;
   isPromotion: ComputedRef<boolean>;
@@ -81,7 +81,11 @@ export function useCartItem({
 
   const itemOptions = computed(
     () =>
-      (cartItem.type === "product" && (cartItem.payload as Product)?.options) ||
+      (cartItem.type === "product" &&
+        ((cartItem.payload as Product)?.options as unknown as Array<{
+          group: string;
+          option: string;
+        }>)) ||
       []
   );
 

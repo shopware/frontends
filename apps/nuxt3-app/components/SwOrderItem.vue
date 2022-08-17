@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { getMainImageUrl, isProduct } from "@shopware-pwa/helpers-next";
-import { Shopware } from "@shopware-pwa/composables-next";
+import { OrderLineItem } from "@shopware-pwa/types";
 
 const props = defineProps<{
-  orderItem: Shopware.OrderLineItem;
+  orderItem: OrderLineItem;
 }>();
 
 const isPromotion = computed(() => isProduct(props.orderItem.payload));
 const itemRegularPrice = computed(() => props.orderItem?.unitPrice);
 const itemQuantity = computed(() => props.orderItem?.quantity);
 const productOptions = computed(() =>
-  isProduct(props.orderItem.payload) ? props.orderItem.payload.options : []
+  isProduct(props.orderItem.payload)
+    ? (props.orderItem.payload.options as unknown as Array<{
+        group: string;
+        option: string;
+      }>)
+    : []
 );
 </script>
 

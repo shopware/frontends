@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
-import { Shopware } from "@shopware-pwa/composables-next";
+import { LineItem } from "@shopware-pwa/types";
 
 const props = defineProps<{
-  cartItem: Shopware.LineItem;
+  cartItem: LineItem;
 }>();
 
 const isLoading = ref(false);
@@ -38,6 +38,7 @@ const removeCartItem = async () => {
         </h3>
         <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
+      CART ITEM
       <p v-if="itemOptions" class="mt-1 text-sm text-gray-500">
         <span v-for="option in itemOptions" :key="option.group" class="mr-2">
           {{ option.group }}: {{ option.option }}
