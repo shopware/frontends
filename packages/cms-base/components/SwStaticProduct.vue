@@ -57,11 +57,11 @@ const properties = computed(() => props.product?.properties || []);
         <!-- Options -->
         <div class="mt-4 lg:mt-0 lg:row-span-3">
           <h2 class="sr-only">Product information</h2>
-          <form class="product-variants mt-10">
+          <div class="product-variants mt-10">
             <SwProductPrice :product="product" />
             <SwVariantConfigurator :product="product" />
             <SwProductAddToCart :product="product" />
-          </form>
+          </div>
         </div>
 
         <div
