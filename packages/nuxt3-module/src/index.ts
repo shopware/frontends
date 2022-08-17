@@ -70,6 +70,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useUser",
           "useProductAssociations",
           "useWishlist",
+          "usePrice",
         ],
       });
     });

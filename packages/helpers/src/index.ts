@@ -6,3 +6,4 @@ export * from "./urlHelpers";
 export * from "./debounce";
 export * from "./getTranslatedProperty";
 export * from "./listing";
+export * from "./price";

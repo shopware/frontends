@@ -102,7 +102,7 @@ const { cartItems, totalPrice } = useCart();
                 class="flex justify-between text-base font-medium text-gray-900"
               >
                 <p>Subtotal</p>
-                <p>{{ totalPrice }} EUR</p>
+                <SwPrice :value="totalPrice" />
               </div>
               <p class="mt-0.5 text-sm text-gray-500">
                 Shipping and taxes calculated at checkout.

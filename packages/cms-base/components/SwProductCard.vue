@@ -16,8 +16,6 @@ import SwHeartIcon from "./SwHeartIcon.vue";
 const heartIconType = "svg";
 const heartIconClass = "wishlist-heart-icon";
 
-const { currency } = useSessionContext();
-
 const { pushSuccess, pushInfo } = useNotifications();
 
 const props = withDefaults(
@@ -100,6 +98,9 @@ const ratingAverage: Ref<number> = computed(() =>
 const isProductListing = computed(() => props.isProductListing);
 const purchaseUnit = computed(() => props.product.purchaseUnit);
 const unitName = computed(() => props.product.unit?.name);
+const productPrice = computed(() =>
+  !fromPrice ? getPrice(props.product) : fromPrice
+);
 </script>
 
 <template>
@@ -174,11 +175,14 @@ const unitName = computed(() => props.product.unit?.name);
       </div>
       <div class="flex flex-row mt-3 justify-between h-5">
         <div class="text-sm font-medium text-gray-900">
-          {{ !fromPrice ? getPrice(product) : `From ${fromPrice}` }}
-          {{ currency?.symbol }}
+          <SwPrice v-if="productPrice" :value="productPrice">
+            <template v-if="fromPrice" #beforePrice> From </template>
+          </SwPrice>
         </div>
         <div v-if="!isProductListing" class="sw-product-rating inline-flex">
-          <div v-for="value in ratingAverage"><SwStarIcon /></div>
+          <div v-for="value in ratingAverage">
+            <SwStarIcon />
+          </div>
           <div v-for="value in 5 - ratingAverage">
             <SwStarIcon :is-empty="true" />
           </div>

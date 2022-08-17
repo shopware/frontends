@@ -23,7 +23,9 @@ const price = computed(() => {
 </script>
 
 <template>
-  <p class="text-3xl text-gray-900 basis-2/6 text-right">
-    {{ price }} {{ currency?.symbol }}
-  </p>
+  <SwPrice
+    v-if="price"
+    class="text-3xl text-gray-900 basis-2/6 justify-end"
+    :value="price"
+  />
 </template>

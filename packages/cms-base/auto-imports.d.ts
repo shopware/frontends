@@ -121,6 +121,7 @@ declare global {
   const useSessionContext: typeof import("@shopware-pwa/composables-next")["useSessionContext"];
   const useNotifications: typeof import("@shopware-pwa/composables-next")["useNotifications"];
   const useWishlist: typeof import("@shopware-pwa/composables-next")["useWishlist"];
+  const usePrice: typeof import("@shopware-pwa/composables-next")["usePrice"];
   const useAsyncData: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useAsyncData"];
   const useAsyncQueue: typeof import("@vueuse/core")["useAsyncQueue"];
   const useAsyncState: typeof import("@vueuse/core")["useAsyncState"];
