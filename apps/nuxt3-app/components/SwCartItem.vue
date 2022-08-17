@@ -36,6 +36,7 @@ const removeCartItem = async () => {
         <h3>
           {{ cartItem.label }}
         </h3>
+        <!-- TODO: remove currency -->
         <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
       CART ITEM

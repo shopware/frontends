@@ -25,6 +25,10 @@ export default defineNuxtConfig({
     preflight: true,
     transformers: [transformerDirective()],
     theme: {
+      extend: {
+        width: "width",
+        height: "height",
+      },
       colors: {
         brand: {
           primary: "#189eff",

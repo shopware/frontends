@@ -18,6 +18,8 @@ const isSidebarOpen = inject("isSidebarOpen");
 
         <SwTopNavigation />
 
+        <SwStoreSearch />
+
         <SwMyAccountMenu />
         <!-- Cart -->
         <div class="hidden md:flex ml-4 flow-root lg:ml-6">
