@@ -17,6 +17,7 @@ import {
   setCurrentBillingAddress,
 } from "@shopware-pwa/shopware-6-client";
 import { useShopwareContext } from "./useShopwareContext";
+import { usePrice } from "./usePrice";
 // import {
 //   getApplicationContext,
 //   INTERCEPTOR_KEYS,
@@ -70,6 +71,7 @@ interface IInterceptorCallbackFunction {
  */
 export function useSessionContext(): IUseSessionContext {
   const { apiInstance } = useShopwareContext();
+  const { init } = usePrice();
   // const { broadcast, intercept } = useIntercept();
 
   // const { sharedRef } = useSharedState();
@@ -88,6 +90,10 @@ export function useSessionContext(): IUseSessionContext {
     try {
       const context = await getSessionContext(apiInstance);
       storeSessionContext.value = context;
+      init({
+        currencyPosition: context.currency.position,
+        currencySymbol: context.currency.symbol,
+      });
     } catch (e) {
       console.error("[UseSessionContext][refreshSessionContext]", e);
     }

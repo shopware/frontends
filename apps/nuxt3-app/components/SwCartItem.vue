@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { LineItem } from "@shopware-pwa/types";
+import SwPrice from "./SwPrice.vue";
 
 const props = defineProps<{
   cartItem: LineItem;
@@ -36,8 +37,7 @@ const removeCartItem = async () => {
         <h3>
           {{ cartItem.label }}
         </h3>
-        <!-- TODO: remove currency -->
-        <p class="ml-4">{{ itemRegularPrice }} EUR</p>
+        <SwPrice v-if="itemRegularPrice" :value="itemRegularPrice" />
       </div>
       CART ITEM
       <p v-if="itemOptions" class="mt-1 text-sm text-gray-500">

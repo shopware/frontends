@@ -28,6 +28,7 @@ export * as Shopware from "@shopware-pwa/types";
 export * from "./useWishlist";
 export * from "./useProductSearchSuggest";
 export * from "./useCustomerPassword";
+export * from "./usePrice";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   const componentName = content.type;
