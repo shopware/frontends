@@ -219,6 +219,7 @@ declare global {
   const usePreferredLanguages: typeof import("@vueuse/core")["usePreferredLanguages"];
   const useProduct: typeof import("@shopware-pwa/composables-next")["useProduct"];
   const useProductConfigurator: typeof import("@shopware-pwa/composables-next")["useProductConfigurator"];
+  const useProductReviews: typeof import("@shopware-pwa/composables-next")["useProductReviews"];
   const useProductAssociations: typeof import("@shopware-pwa/composables-next")["useProductAssociations"];
   const useRafFn: typeof import("@vueuse/core")["useRafFn"];
   const useRefHistory: typeof import("@vueuse/core")["useRefHistory"];
@@ -504,6 +505,7 @@ declare module "vue" {
     usePreferredLanguages: typeof import("@vueuse/core")["usePreferredLanguages"];
     useProduct: typeof import("@shopware-pwa/composables-next")["useProduct"];
     useProductConfigurator: typeof import("@shopware-pwa/composables-next")["useProductConfigurator"];
+    useProductReviews: typeof import("@shopware-pwa/composables-next")["useProductReviews"];
     useRafFn: typeof import("@vueuse/core")["useRafFn"];
     useRefHistory: typeof import("@vueuse/core")["useRefHistory"];
     useRequestEvent: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useRequestEvent"];

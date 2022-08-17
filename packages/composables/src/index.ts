@@ -7,6 +7,7 @@ export * from "./cms";
 export * from "./useShopwareContext";
 export * from "./useCms";
 export * from "./useProductConfigurator";
+export * from "./useProductReviews";
 export * from "./useProductAssociations";
 export * from "./useCmsBlock";
 export * from "./useCmsSection";
