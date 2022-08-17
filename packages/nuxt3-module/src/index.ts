@@ -64,6 +64,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useOrderDetails",
           "useProduct",
           "useProductConfigurator",
+          "useProductReviews",
           "useSalutations",
           "useUser",
           "useProductAssociations",
