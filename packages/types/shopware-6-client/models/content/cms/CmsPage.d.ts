@@ -154,7 +154,7 @@ export type CmsFieldConfig = {
 /**
  * @public
  */
-export type CmsSlot = {
+export type OldSlot = {
   type: CmsSlotType;
   customFields: CustomField[] | null;
   locked: boolean;
@@ -174,6 +174,7 @@ export type CmsSlot = {
   data?: unknown;
   apiAlias: "cms_slot";
 };
+export type CmsSlot = Omit<OldSlot, "data" | "config">;
 
 /**
  * @public

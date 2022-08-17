@@ -1,5 +1,5 @@
 import {
-  CmsSlot as OldSlot,
+  CmsSlot,
   CrossSelling,
   Media,
   Product,
@@ -37,8 +37,6 @@ type ElementFieldConfig = {
   apiAlias: string;
 };
 
-type CmsSlot = Omit<OldSlot, "data" | "config">;
-
 // Text
 export type CmsElementText = CmsSlot & {
   type: "text" | typeof String;
@@ -66,6 +64,7 @@ type ImageElementConfig = {
   minHeight: ElementConfig<string | number>;
   verticalAlign: ElementConfig<VerticalAlign>;
 };
+
 export type CmsElementImage = CmsSlot & {
   type: "image";
   config: ImageElementConfig;
@@ -106,9 +105,10 @@ export type CmsElementImageSlider = CmsSlot & {
     apiAlias: "cms_image_slider";
     navigation: unknown;
     sliderItems: {
-      url: null | string;
+      url: string;
       newTab: boolean;
       media: Media;
+      mediaId: string;
       apiAlias: "cms_image_slider_item";
     }[];
   };

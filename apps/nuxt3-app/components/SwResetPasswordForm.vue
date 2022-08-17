@@ -2,6 +2,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, sameAs } from "@vuelidate/validators";
 import { confirmPasswordReset } from "@shopware-pwa/shopware-6-client";
+import { ClientApiError } from "@shopware-pwa/types";
 
 const { apiInstance } = useShopwareContext();
 
@@ -46,8 +47,9 @@ const invokeReset = async (): Promise<void> => {
         apiInstance
       );
     }
-  } catch (err: unknown) {
-    state.error = err.messages[0].detail;
+  } catch (err) {
+    const error = err as ClientApiError;
+    state.error = error.messages[0].detail;
   }
 };
 </script>

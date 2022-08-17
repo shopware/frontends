@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockImageGallery } from "@shopware-pwa/composables-next";
+import type { CmsBlockImageGallery } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockImageGallery;

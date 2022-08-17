@@ -3,11 +3,14 @@ import { CmsPage, ListingFilter } from "@shopware-pwa/types";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import { ComputedRef, Ref, UnwrapNestedRefs } from "vue";
 import SwProductListingFilter from "./SwProductListingFilter.vue";
-import { CmsElementProductListing } from "@shopware-pwa/composables-next";
+import {
+  CmsElementProductListing,
+  CmsElementSidebarFilter,
+} from "@shopware-pwa/composables-next";
 
 defineProps<{
-  content: CmsElementProductListing;
-  listingType: string;
+  content: CmsElementProductListing | CmsElementSidebarFilter;
+  listingType?: string;
 }>();
 
 const cmsPage = inject<ComputedRef<CmsPage>>("cms-page");

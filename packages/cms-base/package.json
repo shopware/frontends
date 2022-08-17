@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/cms-base",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Vue CMS support for Shopware",
   "main": "./index.cjs",
   "module": "./dist/index.mjs",
@@ -19,13 +19,13 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.6",
-    "@shopware-pwa/composables-next": "^0.1.11",
-    "@shopware-pwa/helpers-next": "^0.1.11",
+    "@nuxt/kit": "^3.0.0-rc.8",
+    "@shopware-pwa/composables-next": "workspace:*",
+    "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware-pwa/shopware-6-client": "canary"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.0.0-rc.6",
+    "@nuxt/schema": "^3.0.0-rc.8",
     "@shopware-pwa/types": "workspace:*",
     "@vue/eslint-config-typescript": "^11.0.0",
     "eslint": "8.20.0",

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { CmsSlot } from "@shopware-pwa/types";
-import { CmsBlockImageTextGallery } from "@shopware-pwa/composables-next";
+import type {
+  CmsBlockImageTextGallery,
+  CmsElementImage,
+  CmsElementText,
+} from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockImageTextGallery;
@@ -8,13 +12,13 @@ const props = defineProps<{
 
 const { getSlotContent } = useCmsBlock(props.content);
 
-const leftTextContent = getSlotContent("left-text");
-const rightTextContent = getSlotContent("right-text");
-const centerTextContent = getSlotContent("center-text");
+const leftTextContent = getSlotContent("left-text") as CmsElementText;
+const rightTextContent = getSlotContent("right-text") as CmsElementText;
+const centerTextContent = getSlotContent("center-text") as CmsElementText;
 
-const leftImageContent = getSlotContent("left-image");
-const rightImageContent = getSlotContent("right-image");
-const centerImageContent = getSlotContent("center-image");
+const leftImageContent = getSlotContent("left-image") as CmsElementImage;
+const rightImageContent = getSlotContent("right-image") as CmsElementImage;
+const centerImageContent = getSlotContent("center-image") as CmsElementImage;
 
 // TODO: useRouter
 function onImageClick(slotContent: Omit<CmsSlot, "data"> & { data: any }) {

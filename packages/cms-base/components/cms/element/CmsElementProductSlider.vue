@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { CmsElementProductSlider } from "@shopware-pwa/composables-next";
+import {
+  CmsElementProductSlider,
+  SliderElementConfig,
+} from "@shopware-pwa/composables-next";
+import { ComputedRef } from "vue";
 import SwProductCard from "../../SwProductCard.vue";
 
 const props = defineProps<{
@@ -9,7 +13,7 @@ const props = defineProps<{
 const productSlider = ref<HTMLElement>();
 const slidesToShow = ref<number>();
 const products = computed(() => props.content?.data?.products ?? []);
-const config = computed(() => ({
+const config: ComputedRef<SliderElementConfig> = computed(() => ({
   minHeight: {
     value: "300px",
     source: "static",

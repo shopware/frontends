@@ -1,5 +1,6 @@
 import { Product } from "../product/Product";
 import { Media } from "../media/Media";
+import { Category } from "../category/Category";
 
 /**
  * Navigation type to display on page.
@@ -44,48 +45,49 @@ export type SeoUrl = {
 /**
  * @beta
  */
-export type StoreNavigationElement = {
-  seoUrls: SeoUrl[];
-  parentId: string | null;
-  autoIncrement: number;
-  mediaId: string | null;
-  name: string;
-  breadcrumb: string[];
-  path: string;
-  level: number;
-  active: boolean;
-  childCount: number;
-  displayNestedProducts: boolean;
-  parent: StoreNavigationElement;
-  children: null | StoreNavigationElement[];
-  translations: unknown;
-  media: Media | null;
-  products: null | Product[];
-  nestedProducts: null | Product[];
-  afterCategoryId: null | string;
-  customFields: null;
-  tags: null;
-  cmsPageId: string;
-  cmsPage: null;
-  slotConfig: null;
-  externalLink: null;
-  visible: true;
-  type: string;
-  description: string;
-  metaTitle: string | null;
-  metaDescription: string | null;
-  keywords: string | null;
-  _uniqueIdentifier: string;
-  versionId: string;
-  translated: {
-    name: string;
-    description: string;
-  };
-  createdAt: Date;
-  updatedAt: Date;
-  extensions: unknown;
-  id: string;
-  parentVersionId: string | null;
-  afterCategoryVersionId: string | null;
-  apiAlias: string;
-};
+export type StoreNavigationElement = Category;
+//   {
+//   seoUrls: SeoUrl[];
+//   parentId: string | null;
+//   autoIncrement: number;
+//   mediaId: string | null;
+//   name: string;
+//   breadcrumb: string[];
+//   path: string;
+//   level: number;
+//   active: boolean;
+//   childCount: number;
+//   displayNestedProducts: boolean;
+//   parent: StoreNavigationElement;
+//   children: null | StoreNavigationElement[];
+//   translations: unknown;
+//   media: Media | null;
+//   products: null | Product[];
+//   nestedProducts: null | Product[];
+//   afterCategoryId: null | string;
+//   customFields: null;
+//   tags: null;
+//   cmsPageId: string;
+//   cmsPage: null;
+//   slotConfig: null;
+//   externalLink: null;
+//   visible: true;
+//   type: string;
+//   description: string;
+//   metaTitle: string | null;
+//   metaDescription: string | null;
+//   keywords: string | null;
+//   _uniqueIdentifier: string;
+//   versionId: string;
+//   translated: {
+//     name: string;
+//     description: string;
+//   };
+//   createdAt: Date;
+//   updatedAt: Date;
+//   extensions: unknown;
+//   id: string;
+//   parentVersionId: string | null;
+//   afterCategoryVersionId: string | null;
+//   apiAlias: string;
+// };

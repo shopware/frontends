@@ -5,6 +5,7 @@ import {
   CmsPageResponse,
   CmsResourceType,
   CmsResponse,
+  CmsPage,
 } from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { searchCms } from "./searchLogic";
@@ -21,7 +22,7 @@ import { useShopwareContext } from "./useShopwareContext";
  * @beta
  */
 export function useCms(): {
-  page: ComputedRef<CmsPageResponse | null>;
+  page: ComputedRef<CmsPage>;
   resourceType: ComputedRef<CmsResourceType | null>;
   resourceIdentifier: ComputedRef<string | null>;
   currentSearchPathKey: ComputedRef<string | null>;
@@ -36,15 +37,13 @@ export function useCms(): {
 
   const _searchPath = inject("swCmsSearchPath", ref(""));
   provide("swCmsSearchPath", _searchPath);
-  const page: ComputedRef<CmsPageResponse> = computed(
-    () => cmsContext.value?.cmsPage
-  );
+  const page: ComputedRef<CmsPage> = computed(() => cmsContext.value?.cmsPage);
 
   const resourceIdentifier = computed(() => {
     // each cms page is in relation one-to-one with categoryId (resourceIdentifier)
     return (
       cmsContext.value?.category?.afterCategoryId ||
-      page.value?.resourceIdentifier ||
+      (page.value as any)?.resourceIdentifier ||
       null
     );
   });
@@ -73,7 +72,7 @@ export function useCms(): {
     page,
     search,
     currentSearchPathKey: computed(() => _searchPath.value),
-    resourceType: computed(() => page.value?.resourceType || null),
+    resourceType: computed(() => (page.value as any)?.resourceType || null),
     resourceIdentifier,
     cmsContent: computed(() => cmsContext.value),
   };
