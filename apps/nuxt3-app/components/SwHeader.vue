@@ -24,6 +24,7 @@ const isSidebarOpen = inject("isSidebarOpen");
           <button
             class="group -m-2 p-2 flex items-center"
             @click="isSidebarOpen = true"
+            data-testid="cart-button"
           >
             <!-- Heroicon name: outline/shopping-bag -->
             <svg
