@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { pascalCase } from "scule";
 import { ListingFilter } from "@shopware-pwa/types";
-defineEmits<{
-  selectFilterValue: ({ code, value }: { code: any; value: any }) => void;
+import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
+import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
+import SwFilterRatingVue from "./listing-filters/SwFilterRating.vue";
+import SwFilterShippingFreeVue from "./listing-filters/SwFilterShippingFree.vue";
+
+const emit = defineEmits<{
+  (e: "selectFilterValue", { code, value }: { code: any; value: any }): void;
 }>();
 
 const props = defineProps<{
@@ -12,25 +16,29 @@ const props = defineProps<{
   };
 }>();
 
-const filterAlias: { [code: string]: string } = {
-  // filter.code
-  manufacturer: "properties",
-};
+const cmsMap = () => {
+  const map: {
+    [key: string]: any;
+  } = {
+    manufacturer: SwFilterPropertiesVue,
+    properties: SwFilterPropertiesVue,
+    price: SwFilterPriceVue,
+    rating: SwFilterRatingVue,
+    "shipping-free": SwFilterShippingFreeVue,
+  };
 
-const filterPathToResolve = `./listing-filters/SwFilter${pascalCase(
-  filterAlias[props.filter.code] ?? props?.filter?.code
-)}.vue`;
-const FilterComponent = defineAsyncComponent(
-  () => import(/* @vite-ignore */ filterPathToResolve)
-);
+  return map[props.filter?.code];
+};
 </script>
 <template>
-  <ClientOnly>
-    <component
-      :is="FilterComponent"
-      :filter="filter"
-      :selectedFilters="selectedFilters"
-      @select-value="$emit('selectFilterValue', $event)"
-    />
-  </ClientOnly>
+  <div>
+    <ClientOnly>
+      <component
+        :is="cmsMap()"
+        :filter="filter"
+        :selectedFilters="selectedFilters"
+        @select-value="emit('selectFilterValue', $event)"
+      />
+    </ClientOnly>
+  </div>
 </template>

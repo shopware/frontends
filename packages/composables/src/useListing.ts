@@ -51,6 +51,7 @@ export interface IUseListing<ELEMENTS_TYPE> {
   getTotal: ComputedRef<number>;
   getTotalPagesCount: ComputedRef<number>;
   getLimit: ComputedRef<number>;
+  getInitialFilters: ComputedRef<ListingFilter[]>;
   getAvailableFilters: ComputedRef<ListingFilter[]>;
   getCurrentFilters: ComputedRef<any>;
   loading: ComputedRef<boolean>;
@@ -294,6 +295,10 @@ export function createListingComposable<ELEMENTS_TYPE>({
     await search(query);
   };
 
+  const getInitialFilters = computed(() => {
+    return getListingFilters(getInitialListing.value?.aggregations);
+  });
+
   const getAvailableFilters = computed(() => {
     return getListingFilters(getCurrentListing.value?.aggregations);
   });
@@ -335,6 +340,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
     getTotal,
     getTotalPagesCount,
     getLimit,
+    getInitialFilters,
     getAvailableFilters,
     getCurrentFilters,
     loading: computed(() => loading.value),

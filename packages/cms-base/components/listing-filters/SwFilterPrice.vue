@@ -1,18 +1,26 @@
 <script setup lang="ts">
 import { ListingFilter } from "@shopware-pwa/types";
 import { debounce } from "@shopware-pwa/helpers-next";
+import { reactive, ref, watch } from "vue";
 const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
 }>();
 
-const $props = defineProps<{
+const props = defineProps<{
   filter: ListingFilter;
 }>();
-const isFilterVisible = ref(false);
 const prices = reactive<{ min: number; max: number }>({
-  min: $props.filter?.min || 0,
-  max: $props.filter?.max || 0,
+  min: props.filter?.min || 0,
+  max: props.filter?.max || 0,
 });
+
+const isFilterVisible = ref<boolean>(false);
+const toggle = () => {
+  isFilterVisible.value = !isFilterVisible.value;
+};
+
+const dropdownElement = ref(null);
+onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
 
 watch(
   () => prices.min,
@@ -38,25 +46,17 @@ watch(
 </script>
 
 <template>
-  <div class="filter-content">
+  <div class="filter-content" ref="dropdownElement">
     <h3 class="-mx-2 -my-3 flow-root">
-      <!-- Expand/collapse section button -->
       <button
         type="button"
-        class="px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500"
-        aria-controls="filter-section-mobile-0"
-        aria-expanded="false"
-        @click="isFilterVisible = !isFilterVisible"
+        class="border-1 border-gray-500 px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500 rounded"
+        @click="toggle"
       >
         <span class="font-medium text-gray-900">{{ filter.label }}</span>
         <span class="ml-6 flex items-center">
-          <!--
-          Expand icon, show/hide based on section open state.
-
-          Heroicon name: solid/plus-sm
-        -->
           <svg
-            class="h-5 w-5"
+            :class="['h-5 w-5', { hidden: isFilterVisible }]"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -68,13 +68,8 @@ watch(
               clip-rule="evenodd"
             />
           </svg>
-          <!--
-          Collapse icon, show/hide based on section open state.
-
-          Heroicon name: solid/minus-sm
-        -->
           <svg
-            class="h-5 w-5"
+            :class="['h-5 w-5', { hidden: !isFilterVisible }]"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -89,8 +84,7 @@ watch(
         </span>
       </button>
     </h3>
-    <!-- Filter section, show/hide based on section state. -->
-    <div v-show="isFilterVisible" id="filter-section-mobile-0" class="pt-6">
+    <div :class="[`absolute pt-6 z-1000`, { hidden: !isFilterVisible }]">
       <div class="space-y-6">
         <div class="mt-2 flex">
           <div class="w-1/2 flex rounded-md mr-4">

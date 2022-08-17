@@ -33,7 +33,7 @@ onMounted(async () => {
 <template>
   <div
     v-if="navigations && navigations.length"
-    class="cms-element-category-navigation"
+    class="cms-element-category-navigation max-w-screen-xl mx-auto"
   >
     <SwCategoryNavigation
       :level="0"

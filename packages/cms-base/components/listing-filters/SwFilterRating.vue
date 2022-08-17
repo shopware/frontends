@@ -6,6 +6,7 @@ import {
   MaxAggregation,
   ListingFilter,
 } from "@shopware-pwa/types";
+import { computed, ref } from "vue";
 import SwStarIcon from "../SwStarIcon.vue";
 const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
@@ -21,12 +22,12 @@ const props = defineProps<{
       | number;
   };
 }>();
-const isFilterVisible = ref(false);
 const isHoverActive = ref(false);
 const hoveredIndex = ref(0);
 const displayedScore = computed(() =>
   isHoverActive.value ? hoveredIndex.value : props.selectedFilters?.rating || 0
 );
+
 const hoverRating = (key: number) => {
   hoveredIndex.value = key;
   isHoverActive.value = true;
@@ -38,28 +39,28 @@ const onChangeRating = () => {
       : undefined;
   emits("select-value", { code: props.filter?.code, value: newValue });
 };
+
+const isFilterVisible = ref<boolean>(false);
+const toggle = () => {
+  isFilterVisible.value = !isFilterVisible.value;
+};
+
+const dropdownElement = ref(null);
+onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
 </script>
 
 <template>
-  <div class="filter-content">
+  <div class="filter-content" ref="dropdownElement">
     <h3 class="-mx-2 -my-3 flow-root">
-      <!-- Expand/collapse section button -->
       <button
         type="button"
-        class="px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500"
-        aria-controls="filter-section-mobile-0"
-        aria-expanded="false"
-        @click="isFilterVisible = !isFilterVisible"
+        class="border-1 border-gray-500 px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500 rounded"
+        @click="toggle"
       >
         <span class="font-medium text-gray-900">{{ filter.label }}</span>
         <span class="ml-6 flex items-center">
-          <!--
-          Expand icon, show/hide based on section open state.
-
-          Heroicon name: solid/plus-sm
-        -->
           <svg
-            class="h-5 w-5"
+            :class="['h-5 w-5', { hidden: isFilterVisible }]"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -71,15 +72,10 @@ const onChangeRating = () => {
               clip-rule="evenodd"
             />
           </svg>
-          <!--
-          Collapse icon, show/hide based on section open state.
-
-          Heroicon name: solid/minus-sm
-        -->
           <svg
-            class="h-5 w-5"
+            :class="['h-5 w-5', { hidden: !isFilterVisible }]"
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
+            viewBox="0 0 30 30"
             fill="currentColor"
             aria-hidden="true"
           >
@@ -92,12 +88,11 @@ const onChangeRating = () => {
         </span>
       </button>
     </h3>
-    <!-- Filter section, show/hide based on section state. -->
-    <div v-show="isFilterVisible" id="filter-section-mobile-0" class="pt-6">
+    <div :class="[`absolute pt-6 z-1000`, { hidden: !isFilterVisible }]">
       <div class="space-y-6">
         <div class="flex">
           <SwStarIcon
-            v-for="i in filter.max || 5"
+            v-for="i in 5"
             :key="i"
             :is-empty="i > displayedScore"
             @mouseleave="isHoverActive = false"
