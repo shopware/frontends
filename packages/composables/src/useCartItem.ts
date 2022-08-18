@@ -9,7 +9,7 @@ import {
   LineItem,
   LineItemType,
   ClientApiError,
-  PropertyGroupOption,
+  PropertyGroupOptionCart,
 } from "@shopware-pwa/types";
 // import {
 //   getApplicationContext,
@@ -30,7 +30,7 @@ export interface IUseCartItem {
   itemRegularPrice: ComputedRef<number | undefined>;
   itemSpecialPrice: ComputedRef<number | undefined>;
   itemImageThumbnailUrl: ComputedRef<string>;
-  itemOptions: ComputedRef<Array<{ group: string; option: string }>>;
+  itemOptions: ComputedRef<PropertyGroupOptionCart[]>;
   itemType: ComputedRef<LineItemType | undefined>;
   isProduct: ComputedRef<boolean>;
   isPromotion: ComputedRef<boolean>;
@@ -81,11 +81,7 @@ export function useCartItem({
 
   const itemOptions = computed(
     () =>
-      (cartItem.type === "product" &&
-        ((cartItem.payload as Product)?.options as unknown as Array<{
-          group: string;
-          option: string;
-        }>)) ||
+      (cartItem.type === "product" && (cartItem.payload as Product)?.options) ||
       []
   );
 

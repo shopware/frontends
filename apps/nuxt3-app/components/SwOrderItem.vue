@@ -10,12 +10,7 @@ const isPromotion = computed(() => isProduct(props.orderItem.payload));
 const itemRegularPrice = computed(() => props.orderItem?.unitPrice);
 const itemQuantity = computed(() => props.orderItem?.quantity);
 const productOptions = computed(() =>
-  isProduct(props.orderItem.payload)
-    ? (props.orderItem.payload.options as unknown as Array<{
-        group: string;
-        option: string;
-      }>)
-    : []
+  isProduct(props.orderItem.payload) ? props.orderItem.payload.options : []
 );
 </script>
 
