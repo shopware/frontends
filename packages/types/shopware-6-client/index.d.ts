@@ -81,6 +81,7 @@ export * from "./models/content/product-stream/ProductStreamFilter";
 export * from "./models/content/product-stream/ProductStreamTranslation";
 export * from "./models/content/property/PropertyGroup";
 export * from "./models/content/property/PropertyGroupOption";
+export * from "./models/content/property/PropertyGroupOptionCart";
 export * from "./models/content/property/PropertyGroupOptionTranslation";
 export * from "./models/content/property/PropertyGroupTranslation";
 export * from "./models/content/rule/Rule";

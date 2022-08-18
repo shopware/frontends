@@ -107,7 +107,7 @@ export type Product = {
   categories: Category[];
   tags: Tag[];
   properties: PropertyGroupOption[] | null;
-  options: PropertyGroupOption[];
+  options: PropertyGroupOption[] | PropertyGroupOptionCart[];
   categoriesRo: Category[] | null;
   coverId: string | null;
   customFields: CustomField[];
