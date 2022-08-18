@@ -42,7 +42,7 @@ export function useCms(): {
   const resourceIdentifier = computed(() => {
     // each cms page is in relation one-to-one with categoryId (resourceIdentifier)
     return (
-      cmsContext.value?.category?.afterCategoryId ||
+      cmsContext.value?.category?.id ||
       (page.value as any)?.resourceIdentifier ||
       null
     );
