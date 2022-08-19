@@ -71,9 +71,7 @@ export function useCartItem({
 
   // TODO: use helper instead
 
-  const itemRegularPrice = computed(
-    () => cartItem.price?.listPrice?.price || cartItem.price?.unitPrice
-  );
+  const itemRegularPrice = computed(() => cartItem.price?.unitPrice);
 
   const itemSpecialPrice = computed(
     () => cartItem.price?.listPrice && cartItem.price.unitPrice
