@@ -17,8 +17,6 @@ import SwHeartIcon from "./SwHeartIcon.vue";
 const heartIconType = "svg";
 const heartIconClass = "wishlist-heart-icon";
 
-const { currency } = useSessionContext();
-
 const { pushSuccess, pushInfo } = useNotifications();
 
 const props = withDefaults(
@@ -63,14 +61,6 @@ const addToCartProxy = async () => {
   await addToCart();
   pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
 };
-
-function getPrice(product: Product) {
-  const tierPrices = getProductTierPrices(product);
-  return (
-    (tierPrices.length && tierPrices[0] && tierPrices[0].unitPrice) ||
-    getProductCalculatedListingPrice(product)
-  );
-}
 
 const fillHeartColor = (event: MouseEvent, color: string) => {
   const srcElement = event.srcElement as any;
@@ -151,11 +141,8 @@ const ratingAverage: Ref<number> = computed(() =>
           </span>
         </div>
       </div>
-      <div class="flex flex-row mt-3 justify-between">
-        <div class="text-sm font-medium text-gray-900">
-          {{ !fromPrice ? getPrice(product) : `From ${fromPrice}` }}
-          {{ currency?.symbol }}
-        </div>
+      <div class="flex flex-col mt-3 justify-between">
+        <SwListingProductPrice :product="product" class="ml-auto" />
         <div v-if="!isProductListing" class="sw-product-rating inline-flex">
           <div v-for="value in ratingAverage"><SwStarIcon /></div>
           <div v-for="value in 5 - ratingAverage">
