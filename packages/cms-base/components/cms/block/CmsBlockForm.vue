@@ -10,5 +10,7 @@ const { getSlotContent } = useCmsBlock(props.content);
 const cmsContent = getSlotContent("content");
 </script>
 <template>
-  <CmsGenericElement v-if="cmsContent" :content="cmsContent" />
+  <div class="cms-block-form">
+    <CmsGenericElement v-if="cmsContent" :content="cmsContent" />
+  </div>
 </template>
