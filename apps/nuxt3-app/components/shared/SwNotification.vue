@@ -20,13 +20,13 @@ const colorCssMap = {
 const TypeIconComponent = computed(() => {
   switch (props.notification.type) {
     case "success":
-      return defineAsyncComponent(() => import("./icons/SuccessMark.vue"));
+      return defineAsyncComponent(() => import("../icons/SuccessMark.vue"));
     case "warning":
-      return defineAsyncComponent(() => import("./icons/WarningMark.vue"));
+      return defineAsyncComponent(() => import("../icons/WarningMark.vue"));
     case "danger":
-      return defineAsyncComponent(() => import("./icons/ErrorMark.vue"));
+      return defineAsyncComponent(() => import("../icons/ErrorMark.vue"));
     default:
-      return defineAsyncComponent(() => import("./icons/InfoMark.vue"));
+      return defineAsyncComponent(() => import("../icons/InfoMark.vue"));
   }
 });
 

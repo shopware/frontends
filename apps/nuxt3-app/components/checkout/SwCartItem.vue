@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { LineItem } from "@shopware-pwa/types";
-import SwPrice from "./SwPrice.vue";
+import SwPrice from "../shared/SwPrice.vue";
 
 const props = defineProps<{
   cartItem: LineItem;
@@ -34,7 +34,7 @@ const removeCartItem = async () => {
   <div class="ml-4 flex flex-1 flex-col">
     <div>
       <div class="flex justify-between text-base font-medium text-gray-900">
-        <h3>
+        <h3 class="text-base">
           {{ cartItem.label }}
         </h3>
         <SwPrice v-if="itemRegularPrice" :value="itemRegularPrice" />
@@ -54,7 +54,7 @@ const removeCartItem = async () => {
           v-if="!isPromotion"
           type="button"
           :class="{ 'animate-pulse': isLoading }"
-          class="font-medium text-black hover:text-gray-700"
+          class="font-medium text-brand-dark"
           @click="removeCartItem"
         >
           Remove
