@@ -89,7 +89,7 @@ deploy-job: # This job runs in the deploy stage.
     - pnpm exec vercel pull -t $VERCEL_TOKEN --scope $VERCEL_SCOPE
     - pnpm exec vercel build $IS_PROD_FLAG
     - rm -r ./.vercel/output
-    - cp -r ./apps/vue-demo-store/.vercel/output ./.vercel/output
+    - cp -r ./templates/vue-demo-store/.vercel/output ./.vercel/output
     - DYNAMIC_ENVIRONMENT_URL=$(pnpm exec vercel deploy --prebuilt --confirm -t $VERCEL_TOKEN --scope $VERCEL_SCOPE $IS_PROD_FLAG)
     - echo "Deployed to $DYNAMIC_ENVIRONMENT_URL"
     - echo "DYNAMIC_ENVIRONMENT_URL=$DYNAMIC_ENVIRONMENT_URL" >> deploy.env
