@@ -16,10 +16,13 @@ onMounted(() => {
 });
 
 const isSidebarOpen = ref(false);
-
 provide("isSidebarOpen", isSidebarOpen);
+
 const isModalOpened = ref(false);
 provide("isModalOpened", isModalOpened);
+
+const isSideMenuOpened = ref(false);
+provide("isSideMenuOpened", isSideMenuOpened);
 </script>
 
 <template>
