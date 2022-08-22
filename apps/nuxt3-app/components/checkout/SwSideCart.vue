@@ -51,7 +51,7 @@ const { cartItems, totalPrice } = useCart();
               <div class="flex items-start justify-between">
                 <h2
                   id="slide-over-title"
-                  class="text-lg font-medium text-gray-900"
+                  class="text-lg font-medium text-gray-900 py-0"
                 >
                   Shopping cart
                 </h2>
@@ -84,7 +84,7 @@ const { cartItems, totalPrice } = useCart();
 
               <div class="mt-8">
                 <div class="flow-root">
-                  <ul role="list" class="-my-6 divide-y divide-gray-200">
+                  <ul role="list" class="-my-6 px-0 divide-y divide-gray-200">
                     <li
                       v-for="cartItem in cartItems"
                       :key="cartItem.id"
@@ -109,7 +109,7 @@ const { cartItems, totalPrice } = useCart();
               </p>
               <div class="mt-6">
                 <NuxtLink
-                  class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  class="flex items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
                   to="/checkout"
                   @click="isOpen = false"
                 >
@@ -117,13 +117,13 @@ const { cartItems, totalPrice } = useCart();
                 </NuxtLink>
               </div>
               <div
-                class="mt-6 flex justify-center text-center text-sm text-gray-500"
+                class="mt-6 flex justify-center text-center text-sm text-brand-dark"
               >
                 <p>
                   or
                   <button
                     type="button"
-                    class="font-medium text-indigo-600 hover:text-indigo-500"
+                    class="font-medium"
                     @click="isOpen = false"
                   >
                     Continue Shopping<span aria-hidden="true"> &rarr;</span>

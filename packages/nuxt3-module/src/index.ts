@@ -71,6 +71,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useProductAssociations",
           "useWishlist",
           "usePrice",
+          "useCustomerOrders",
         ],
       });
     });

@@ -29,6 +29,7 @@ export * from "./useWishlist";
 export * from "./useProductSearchSuggest";
 export * from "./useCustomerPassword";
 export * from "./usePrice";
+export * from "./userCustomerOrders";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   const componentName = content.type;
