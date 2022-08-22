@@ -17,7 +17,7 @@
 pnpm i
 
 # Build packages
-pnpm run build
+pnpm run build --filter='./packages/*'
 
 # Run project base
 pnpm run dev --filter=nuxt3-app

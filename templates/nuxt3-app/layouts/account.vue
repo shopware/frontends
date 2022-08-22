@@ -30,36 +30,55 @@ provide("swNavigation-footer-navigation", footerData);
     <div class="m-10">
       <div class="account-inner">
         <div class="md:grid md:grid-cols-3 md:gap-6">
-          <aside class="hidden md:block lg:w-64 md:col-span-" aria-label="Sidebar">
-            <div class="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
-              <h1 class="self-center text-xl p-2 mb-2 font-semibold whitespace-nowrap dark:text-white">My account</h1>
+          <aside
+            class="hidden md:block lg:w-64 md:col-span-"
+            aria-label="Sidebar"
+          >
+            <div
+              class="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800"
+            >
+              <h1
+                class="self-center text-xl p-2 mb-2 font-semibold whitespace-nowrap dark:text-white"
+              >
+                My account
+              </h1>
               <ul class="space-y-2">
                 <li>
-                  <nuxt-link to="/account/profile"
-                    class="flex items-center p-2 text-base font-normal text-gray-500 rounded-lg dark:text-white hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-700 is-active">
+                  <nuxt-link
+                    to="/account/profile"
+                    class="flex items-center p-2 text-base font-normal text-gray-500 rounded-lg dark:text-white hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-700 is-active"
+                  >
                     <div i-carbon-user text-xl inline-block />
                     <span class="ml-3">My profile</span>
                   </nuxt-link>
                 </li>
                 <li>
-                  <nuxt-link to="/account/address"
-                    class="flex items-center p-2 text-base font-normal text-gray-500 rounded-lg dark:text-white hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <nuxt-link
+                    to="/account/address"
+                    class="flex items-center p-2 text-base font-normal text-gray-500 rounded-lg dark:text-white hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
                     <div i-carbon-home text-xl inline-block />
                     <span class="ml-3">My address</span>
                   </nuxt-link>
                 </li>
               </ul>
-              <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
+              <ul
+                class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"
+              >
                 <li>
-                  <nuxt-link to="/account/order"
-                    class="flex items-center p-2 text-base font-normal text-gray-500 rounded-lg dark:text-white hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <nuxt-link
+                    to="/account/order"
+                    class="flex items-center p-2 text-base font-normal text-gray-500 rounded-lg dark:text-white hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
                     <div i-carbon-order-details text-xl inline-block />
                     <span class="ml-3">Order history</span>
                   </nuxt-link>
                 </li>
                 <li>
-                  <nuxt-link to="/account/order"
-                    class="flex items-center p-2 text-base font-normal text-gray-500 rounded-lg dark:text-white hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <nuxt-link
+                    to="/account/order"
+                    class="flex items-center p-2 text-base font-normal text-gray-500 rounded-lg dark:text-white hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
                     <div i-carbon-logout text-xl inline-block />
                     <span class="ml-3">Logout</span>
                   </nuxt-link>
