@@ -20,7 +20,7 @@ pnpm i
 pnpm run build --filter='./packages/*'
 
 # Run project base
-pnpm run dev --filter=nuxt3-app
+pnpm run dev --filter=vue-demo-store
 ```
 
 ### Run and develop docs
