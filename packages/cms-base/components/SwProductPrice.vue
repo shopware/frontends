@@ -27,12 +27,12 @@ const showOriginalPrice = computed(
 
 <template>
   <div>
-    <SwPrice
+    <CatalogPrice
       v-if="showOriginalPrice && originalPrice"
       class="text-1xl text-gray-900 basis-2/6 justify-end line-through"
       :value="originalPrice"
     />
-    <SwPrice
+    <CatalogPrice
       v-if="price"
       class="text-3xl text-gray-900 basis-2/6 justify-end"
       :class="{

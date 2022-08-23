@@ -16,14 +16,8 @@ export default defineNuxtConfig({
   ],
   // components: true,
   components: {
+    dirs: ["~/components"],
     global: true,
-    dirs: [
-      "~/components/account",
-      "~/components/checkout",
-      "~/components/icons",
-      "~/components/layout",
-      "~/components/shared",
-    ],
   },
   vueuse: {
     ssrHandlers: true,

@@ -2,7 +2,6 @@
 const { isLoggedIn, logout, user, refreshUser } = useUser();
 const isAccountMenuOpen = ref(false);
 const isModalOpened = inject("isModalOpened");
-
 async function invokeLogout() {
   await logout();
   refreshUser();
@@ -20,7 +19,7 @@ async function invokeLogout() {
           Sign in
         </button>
         <Teleport v-if="isModalOpened" to="#modal-content">
-          <SwLoginForm @success="isModalOpened = false" />
+          <AccountLoginForm @success="isModalOpened = false" />
         </Teleport>
       </div>
       <div v-if="isLoggedIn">

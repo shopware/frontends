@@ -7,10 +7,10 @@ export default {
   <div>
     <SwModal />
     <SwHeader />
-    <SwNotifications />
+    <LayoutNotifications />
     <div class="max-w-screen-xl mx-auto">
       <slot />
     </div>
-    <SwSideCart />
+    <CheckoutSideCart />
   </div>
 </template>

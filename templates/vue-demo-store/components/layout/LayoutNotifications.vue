@@ -3,7 +3,7 @@ const { notifications, removeOne } = useNotifications();
 </script>
 <template>
   <div class="fixed right-5 top-5 z-50">
-    <SwNotification
+    <LayoutNotification
       v-for="notification in notifications"
       :key="notification.id"
       :notification="notification"

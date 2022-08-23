@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { LineItem } from "@shopware-pwa/types";
-import SwPrice from "../shared/SwPrice.vue";
 
 const props = defineProps<{
   cartItem: LineItem;

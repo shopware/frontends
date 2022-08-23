@@ -145,7 +145,9 @@ const submitBillingAddress = async (e: Event) => {
                     Sign in
                   </a>
                   <Teleport v-if="isModalOpened" to="#modal-content">
-                    <SwLoginForm @success="isModalOpened = false" /> </Teleport
+                    <AccountLoginForm
+                      @success="isModalOpened = false"
+                    /> </Teleport
                   >.
                 </div>
                 <p class="text-sm text-gray-500">In order to place an order.</p>
@@ -455,7 +457,7 @@ const submitBillingAddress = async (e: Event) => {
                     :key="cartItem.id"
                     class="flex py-6"
                   >
-                    <SwCartItem :cart-item="cartItem" />
+                    <CheckoutSwCartItem :cart-item="cartItem" />
                   </li>
                 </ul>
               </div>
