@@ -19,7 +19,7 @@ export default {
 
 <template>
   <div class="login-wrapper">
-    <SwLoginForm @success="navigateTo('/')">
+    <AccountLoginForm @success="navigateTo('/')">
       <div class="flex items-center justify-end">
         <div class="text-sm">
           <nuxt-link
@@ -39,6 +39,6 @@ export default {
           Sign up
         </nuxt-link>
       </template>
-    </SwLoginForm>
+    </AccountLoginForm>
   </div>
 </template>

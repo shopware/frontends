@@ -21,14 +21,14 @@ provide("swNavigation-footer-navigation", footerData);
 </script>
 <template>
   <div>
-    <SwModal />
-    <SwHeader />
-    <SwNotifications />
+    <SharedModal />
+    <LayoutHeader />
+    <LayoutNotifications />
     <div class="mx-auto">
-      <SwBreadcrumbs />
+      <LayoutBreadcrumbs />
       <slot />
     </div>
-    <SwSideCart />
-    <SwFooter />
+    <CheckoutSideCart />
+    <LayoutFooter />
   </div>
 </template>

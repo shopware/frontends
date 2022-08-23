@@ -10,7 +10,7 @@ const isSidebarOpen = inject("isSidebarOpen");
         class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10"
       >
         <div class="flex justify-start lg:w-0 lg:flex-1 space-x-4 md:space-x-0">
-          <SwSideMenu />
+          <LayoutSideMenu />
 
           <router-link to="/">
             <span class="sr-only">Shopware</span>
@@ -18,11 +18,11 @@ const isSidebarOpen = inject("isSidebarOpen");
           </router-link>
         </div>
 
-        <SwTopNavigation />
+        <LayoutTopNavigation />
 
-        <SwStoreSearch />
+        <LayoutStoreSearch />
 
-        <SwMyAccountMenu />
+        <AccountMenu />
         <!-- Cart -->
         <div class="hidden md:flex ml-4 flow-root lg:ml-6">
           <button

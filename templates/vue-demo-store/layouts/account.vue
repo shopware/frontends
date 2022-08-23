@@ -22,9 +22,9 @@ provide("swNavigation-footer-navigation", footerData);
 </script>
 
 <template>
-  <SwModal />
-  <SwHeader />
-  <SwNotifications />
+  <SharedModal />
+  <LayoutHeader />
+  <LayoutNotifications />
 
   <div class="max-w-screen-xl mx-auto min-h-full">
     <div class="m-10">
@@ -94,6 +94,6 @@ provide("swNavigation-footer-navigation", footerData);
     </div>
   </div>
 
-  <SwSideCart />
-  <SwFooter />
+  <CheckoutSideCart />
+  <LayoutFooter />
 </template>

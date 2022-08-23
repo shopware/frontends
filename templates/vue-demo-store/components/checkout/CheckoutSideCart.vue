@@ -90,7 +90,7 @@ const { cartItems, totalPrice } = useCart();
                       :key="cartItem.id"
                       class="flex py-6"
                     >
-                      <SwCartItem :cart-item="cartItem" />
+                      <CheckoutCartItem :cart-item="cartItem" />
                     </li>
                   </ul>
                 </div>
@@ -102,7 +102,7 @@ const { cartItems, totalPrice } = useCart();
                 class="flex justify-between text-base font-medium text-gray-900"
               >
                 <p>Subtotal</p>
-                <SwPrice :value="totalPrice" />
+                <CatalogPrice :value="totalPrice" />
               </div>
               <p class="mt-0.5 text-sm text-gray-500">
                 Shipping and taxes calculated at checkout.

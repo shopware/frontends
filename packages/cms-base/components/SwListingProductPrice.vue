@@ -30,12 +30,12 @@ const fromPrice = getProductFromPrice(props.product);
 <template>
   <div>
     <template v-if="!fromPrice">
-      <SwPrice
+      <CatalogPrice
         v-if="showOriginalPrice && originalPrice"
         class="text-sm text-gray-900 basis-2/6 justify-end line-through"
         :value="originalPrice"
       />
-      <SwPrice
+      <CatalogPrice
         v-if="price"
         class="text-m text-gray-900 basis-2/6 justify-end"
         :class="{
@@ -45,13 +45,13 @@ const fromPrice = getProductFromPrice(props.product);
       />
     </template>
     <template v-else>
-      <SwPrice
+      <CatalogPrice
         v-if="showOriginalPrice && fromPrice"
         class="text-sm text-gray-900 basis-2/6 justify-end line-through"
         :value="fromPrice"
       >
         <template #beforePrice> From </template>
-      </SwPrice>
+      </CatalogPrice>
     </template>
   </div>
 </template>
