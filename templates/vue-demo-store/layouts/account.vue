@@ -61,6 +61,15 @@ provide("swNavigation-footer-navigation", footerData);
                     <span class="ml-3">My address</span>
                   </nuxt-link>
                 </li>
+                <li>
+                  <nuxt-link
+                    to="/account/payment"
+                    class="flex items-center p-2 text-base font-normal text-gray-500 rounded-lg dark:text-white hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <div i-carbon-wallet text-xl inline-block />
+                    <span class="ml-3">Payment</span>
+                  </nuxt-link>
+                </li>
               </ul>
               <ul
                 class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"
