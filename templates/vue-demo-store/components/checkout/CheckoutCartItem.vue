@@ -33,20 +33,30 @@ const removeCartItem = async () => {
   <div class="ml-4 flex flex-1 flex-col">
     <div>
       <div class="flex justify-between text-base font-medium text-gray-900">
-        <h3 class="text-base">
+        <h3 class="text-base" data-testid="cart-product-name">
           {{ cartItem.label }}
         </h3>
-        <SwPrice v-if="itemRegularPrice" :value="itemRegularPrice" />
+        <SharedPrice
+          v-if="itemRegularPrice"
+          :value="itemRegularPrice"
+          data-testid="cart-product-price"
+        />
       </div>
       CART ITEM
-      <p v-if="itemOptions" class="mt-1 text-sm text-gray-500">
+      <p
+        v-if="itemOptions"
+        class="mt-1 text-sm text-gray-500"
+        data-testis="cart-product-options"
+      >
         <span v-for="option in itemOptions" :key="option.group" class="mr-2">
           {{ option.group }}: {{ option.option }}
         </span>
       </p>
     </div>
     <div class="flex flex-1 items-end justify-between text-sm">
-      <p class="text-gray-500">Qty {{ itemQuantity }}</p>
+      <p class="text-gray-500" data-testid="cart-product-qty">
+        Qty {{ itemQuantity }}
+      </p>
 
       <div class="flex">
         <button
@@ -55,6 +65,7 @@ const removeCartItem = async () => {
           :class="{ 'animate-pulse': isLoading }"
           class="font-medium text-brand-dark"
           @click="removeCartItem"
+          data-testid="product-remove-button"
         >
           Remove
         </button>

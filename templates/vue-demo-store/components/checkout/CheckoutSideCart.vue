@@ -102,7 +102,7 @@ const { cartItems, totalPrice } = useCart();
                 class="flex justify-between text-base font-medium text-gray-900"
               >
                 <p>Subtotal</p>
-                <CatalogPrice :value="totalPrice" />
+                <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
               </div>
               <p class="mt-0.5 text-sm text-gray-500">
                 Shipping and taxes calculated at checkout.
@@ -112,6 +112,7 @@ const { cartItems, totalPrice } = useCart();
                   class="flex items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
                   to="/checkout"
                   @click="isOpen = false"
+                  data-testid="cart-checkout-link"
                 >
                   Checkout
                 </NuxtLink>
@@ -125,6 +126,7 @@ const { cartItems, totalPrice } = useCart();
                     type="button"
                     class="font-medium"
                     @click="isOpen = false"
+                    data-testid="cart-continue-button"
                   >
                     Continue Shopping<span aria-hidden="true"> &rarr;</span>
                   </button>

@@ -141,6 +141,7 @@ const submitBillingAddress = async (e: Event) => {
                     href="#"
                     class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
                     @click="isModalOpened = true"
+                    data-testid="checkout-sign-in-link"
                   >
                     Sign in
                   </a>
@@ -165,6 +166,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="salutation"
                       autocomplete="salutation-name"
                       class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      data-testid="checkout-pi-salutation-select"
                     >
                       <option
                         v-for="salutation in getSalutations"
@@ -188,6 +190,7 @@ const submitBillingAddress = async (e: Event) => {
                       required
                       name="first-name"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      data-testid="checkout-pi-first-name-input"
                     />
                   </div>
 
@@ -204,6 +207,7 @@ const submitBillingAddress = async (e: Event) => {
                       required
                       name="last-name"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      data-testid="checkout-pi-last-name-input"
                     />
                   </div>
 
@@ -221,6 +225,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="email-address"
                       autocomplete="off"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      data-testid="checkout-pi-email-input"
                     />
                   </div>
                   <!-- <div class="col-span-6 sm:col-span-3">
@@ -241,6 +246,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="country"
                       autocomplete="country-name"
                       class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      data-testid="checkout-pi-country-input"
                     >
                       <option
                         v-for="country in getCountries"
@@ -266,6 +272,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="street-address"
                       autocomplete="street-address"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      data-testid="checkout-pi-street-address-input"
                     />
                   </div>
 
@@ -283,6 +290,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="city"
                       autocomplete="address-level2"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      data-testid="checkout-pi-city-input"
                     />
                   </div>
 
@@ -305,6 +313,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="postal-code"
                       autocomplete="postal-code"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      data-testid="checkout-pi-zip-code-input"
                     />
                   </div>
                 </div>
@@ -314,6 +323,7 @@ const submitBillingAddress = async (e: Event) => {
                   type="submit"
                   class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   @click="submitBillingAddress"
+                  data-testid="checkout-pi-submit-button"
                 >
                   Save
                 </button>
@@ -321,7 +331,13 @@ const submitBillingAddress = async (e: Event) => {
             </form>
             <div v-else class="p-6">
               You are logged-in as {{ user?.firstName }}! You can log out
-              <a href="#" class="text-indigo-700" @click="logout">here</a>.
+              <a
+                href="#"
+                class="text-indigo-700"
+                @click="logout"
+                data-testid="checkout-logout"
+                >here</a
+              >.
             </div>
           </div>
         </div>
@@ -373,6 +389,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="shipping-method"
                       type="radio"
                       class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                      :data-testid="`checkout-shipping-method-${shippingMethod.id}`"
                     />
                     <label
                       :for="shippingMethod.id"
@@ -417,6 +434,7 @@ const submitBillingAddress = async (e: Event) => {
                       name="payment-method"
                       type="radio"
                       class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                      :data-testid="`checkout-payment-method-${paymentMethod.id}`"
                     />
                     <label
                       :for="paymentMethod.id"
@@ -477,6 +495,7 @@ const submitBillingAddress = async (e: Event) => {
                   }"
                   class="inline-flex justify-right py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   @click="placeOrder"
+                  data-testid="checkout-place-order-button"
                 >
                   Place the order
                 </button>
@@ -493,6 +512,7 @@ const submitBillingAddress = async (e: Event) => {
       <NuxtLink
         class="inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md hover:bg-indigo-700 text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         to="/"
+        data-testid="checkout-go-home-link"
       >
         ↩ go to home page
       </NuxtLink>
