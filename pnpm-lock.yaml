@@ -130,8 +130,9 @@ importers:
       query-string: ^7.1.1
       tsconfig: workspace:*
       vitest: ^0.16.0
-    devDependencies:
+    dependencies:
       '@shopware-pwa/types': link:../types
+    devDependencies:
       eslint-config-shopware: link:../eslint-config-shopware
       jsdom: 20.0.0
       query-string: 7.1.1
@@ -142,7 +143,6 @@ importers:
     specifiers:
       '@nuxt/kit': ^3.0.0-rc.8
       '@nuxt/schema': ^3.0.0-rc.8
-      '@shopware-pwa/composables': canary
       '@shopware-pwa/composables-next': workspace:*
       '@shopware-pwa/shopware-6-client': canary
       eslint-config-shopware: workspace:*
@@ -151,7 +151,6 @@ importers:
       unbuild: ^0.7.6
     dependencies:
       '@nuxt/kit': 3.0.0-rc.8
-      '@shopware-pwa/composables': 1.5.4-canary.1689
       '@shopware-pwa/composables-next': link:../composables
       '@shopware-pwa/shopware-6-client': 1.5.4-canary.1689
     devDependencies:
@@ -185,7 +184,6 @@ importers:
   templates/vue-demo-store:
     specifiers:
       '@shopware-pwa/cms-base': workspace:*
-      '@shopware-pwa/composables': canary
       '@shopware-pwa/composables-next': workspace:*
       '@shopware-pwa/helpers-next': workspace:*
       '@shopware-pwa/nuxt3-module': workspace:*
@@ -202,7 +200,6 @@ importers:
       vue-eslint-parser: ^9.0.3
     dependencies:
       '@shopware-pwa/cms-base': link:../../packages/cms-base
-      '@shopware-pwa/composables': 1.5.4-canary.1689_vue@3.2.37
       '@shopware-pwa/composables-next': link:../../packages/composables
       '@shopware-pwa/helpers-next': link:../../packages/helpers
       '@shopware-pwa/nuxt3-module': link:../../packages/nuxt3-module
@@ -1674,55 +1671,6 @@ packages:
       tslib: 1.14.1
     dev: false
 
-  /@shopware-pwa/composables/1.5.4-canary.1689:
-    resolution: {integrity: sha512-zeQGD/MTFi+mErCgsIP4Z9y7lVKGRuCcuZANMB9wJ0aWXSkbK/T1L2Jxed5TdyS08gesHxXfL6W7swmqYUqhPw==}
-    peerDependencies:
-      '@vue/composition-api': ^1.6.2
-      vue: ^2.0.0 || >=3.0.0-rc.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-    dependencies:
-      '@shopware-pwa/helpers': 1.5.4-canary.1689
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1689
-      '@vue/devtools-api': 6.1.4
-      axios: 0.27.2
-      cookie-universal: 2.2.1
-      lodash: 4.17.21
-      query-string: 7.1.1
-      vue-demi: 0.13.7
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
-  /@shopware-pwa/composables/1.5.4-canary.1689_vue@3.2.37:
-    resolution: {integrity: sha512-zeQGD/MTFi+mErCgsIP4Z9y7lVKGRuCcuZANMB9wJ0aWXSkbK/T1L2Jxed5TdyS08gesHxXfL6W7swmqYUqhPw==}
-    peerDependencies:
-      '@vue/composition-api': ^1.6.2
-      vue: ^2.0.0 || >=3.0.0-rc.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-    dependencies:
-      '@shopware-pwa/helpers': 1.5.4-canary.1689
-      '@shopware-pwa/shopware-6-client': 1.5.4-canary.1689
-      '@vue/devtools-api': 6.1.4
-      axios: 0.27.2
-      cookie-universal: 2.2.1
-      lodash: 4.17.21
-      query-string: 7.1.1
-      vue: 3.2.37
-      vue-demi: 0.13.7_vue@3.2.37
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
-  /@shopware-pwa/helpers/1.5.4-canary.1689:
-    resolution: {integrity: sha512-kn9jOnFNTA5k88X/o1BLdOUtGRCycH7fNu+CoSDalQj2ZyhYjW8frAsQHD+ZgLKqKkNyYBmZwhW/UHpV8BLFTA==}
-    dependencies:
-      query-string: 7.1.1
-    dev: false
-
   /@shopware-pwa/shopware-6-client/1.5.4-canary.1689:
     resolution: {integrity: sha512-rj8Dj5z7JKkrddckmCH2sbwyN02zjGrPl6ywtspEpOPgMmlyeDOi9YVzAkAZcc6lPygrEo90xqDZx/ASUOIn/w==}
     dependencies:
@@ -2174,10 +2122,6 @@ packages:
     dependencies:
       '@types/node': 18.6.2
     dev: true
-
-  /@types/cookie/0.3.3:
-    resolution: {integrity: sha512-LKVP3cgXBT9RYj+t+9FDKwS5tdI+rPBXaNSkma7hvqy35lc7mAokC2zsqWJH0LaqIt3B962nuYI77hsJoT1gow==}
-    dev: false
 
   /@types/estree/0.0.39:
     resolution: {integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==}
@@ -4252,18 +4196,6 @@ packages:
   /cookie-es/0.5.0:
     resolution: {integrity: sha512-RyZrFi6PNpBFbIaQjXDlFIhFVqV42QeKSZX1yQIl6ihImq6vcHNGMtqQ/QzY3RMPuYSkvsRwtnt5M9NeYxKt0g==}
     dev: true
-
-  /cookie-universal/2.2.1:
-    resolution: {integrity: sha512-HMm8mNbMJ81IER5BZ3QF0wz5OA/od4jDB6agNwJjJ7oDnBnQBQwUJNeCXrYCBiCKh+ZzHDQ74D96HjUTHQHjsg==}
-    dependencies:
-      '@types/cookie': 0.3.3
-      cookie: 0.4.2
-    dev: false
-
-  /cookie/0.4.2:
-    resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
-    engines: {node: '>= 0.6'}
-    dev: false
 
   /copy-to-clipboard/3.3.1:
     resolution: {integrity: sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw==}
@@ -11430,19 +11362,6 @@ packages:
         optional: true
     dependencies:
       vue: 3.2.37
-    dev: false
-
-  /vue-demi/0.13.7:
-    resolution: {integrity: sha512-hbhlvpx1gFW3TB5HxJ0mNxyA9Jh5iQt409taOs6zkhpvfJ7YzLs1rsLufJmDsjH5PI1cOyfikY1fE/meyHfU5A==}
-    engines: {node: '>=12'}
-    hasBin: true
-    requiresBuild: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
     dev: false
 
   /vue-demi/0.13.7_vue@3.2.37:

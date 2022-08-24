@@ -30,6 +30,7 @@ export * from "./useProductSearchSuggest";
 export * from "./useCustomerPassword";
 export * from "./usePrice";
 export * from "./userCustomerOrders";
+export * from "./createSpark";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   const componentName = content.type;
@@ -58,4 +59,11 @@ export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
       error: (e as Error).message,
     };
   }
+}
+
+// TODO: handle defaults in app
+export function getDefaultApiParams(): {
+  [composableName: string]: any;
+} {
+  return {};
 }

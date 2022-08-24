@@ -12,5 +12,6 @@ export default defineBuildConfig({
     "vue",
     "@shopware-pwa/shopware-6-client",
     "@shopware-pwa/helpers-next",
+    "@shopware-pwa/types",
   ],
 });

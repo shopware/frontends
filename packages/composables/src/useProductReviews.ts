@@ -1,4 +1,4 @@
-import { ref, Ref, UnwrapRef, reactive, unref } from "vue-demi";
+import { ref, Ref, UnwrapRef, reactive, unref } from "vue";
 import {
   getProductReviews,
   addProductReview,

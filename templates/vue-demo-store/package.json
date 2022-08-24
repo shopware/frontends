@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@shopware-pwa/cms-base": "workspace:*",
-    "@shopware-pwa/composables": "canary",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware-pwa/nuxt3-module": "workspace:*",

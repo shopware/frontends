@@ -46,7 +46,7 @@ watch(
 </script>
 
 <template>
-  <div class="filter-content" ref="dropdownElement">
+  <div ref="dropdownElement" class="filter-content">
     <h3 class="-mx-2 -my-3 flow-root">
       <button
         type="button"
