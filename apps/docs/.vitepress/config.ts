@@ -7,7 +7,10 @@ import nav from "./navigation";
 export const sidebar = [
   {
     text: "SHOPWARE FRONTENDS",
-    items: [{ text: "Overview", link: "/" }],
+    items: [
+      { text: "Overview", link: "/" },
+      { text: "Why Shopware Frontends", link: "/why-shopware-frontends" },
+    ],
   },
   {
     text: "BUILDING",
@@ -52,7 +55,7 @@ export const sidebar = [
   },
   {
     text: "EXAMPLES",
-    items: [],
+    items: [{ text: "Overview", link: "/examples/" }],
   },
 ];
 

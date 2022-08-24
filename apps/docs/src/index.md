@@ -8,6 +8,8 @@
 
 Shopware Frontends is a framework for building custom, cloud-native Shopware Storefronts.
 
+<PageRef title="Why Shopware Frontends?" sub="Which problems does it solve" page="/why-shopware-frontends" />
+
 ## How it works
 
 Frontends is a collection of multiple packages that you can use to implement your custom storefront project.
@@ -33,14 +35,6 @@ It also comes with TypeScript support.
 ### Template / UI
 
 You can decide to start from scratch and use no template at all, but we recommend looking at our [Templates](./getting-started/templates.md) which are based on **Nuxt.js** and **Tailwind CSS**.
-
-## Limitations
-
-Shopware Frontends is a framework and not a ready-to-use product. Even it the store template looks like a proper store, it's not an off-the-shelf solution.
-
-In contrast to Shopware's Twig Storefront, Shopware Frontends is not compatible with any apps, themes or plugins. If you want to use third party extensions, you need to ensure that they come with useful Store API endpoints and implement the frontend logic and UI yourself.
-
-We recommend having profound knowledge of Vue.js or another reactive Javascript framework and experience with headless frontend architecture when you plan to implement a project with Shopware Frontends.
 
 ---
 

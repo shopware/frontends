@@ -1,11 +1,10 @@
----
----
-
 # Setup Templates
 
 Shopware Frontends offers two shortcuts to getting started with your custom frontend. These so-called templates offer different levels of "completeness" of a project.
 
-[[toc]]
+:::tip HINT 💡
+You can also integrate Shopware Frontends as an **npm package** into your existing [custom Javascript project](#custom-project).
+:::
 
 ## Demo Store Template
 
@@ -24,8 +23,6 @@ The demo store template is a reference implementation of an online store UI. It 
 
 It is based on Nuxt3 and Tailwind.css.
 
-[TODO: Add command or instructions to set up demo store template]
-
 <PageRef page="./templates/demo-store-template" title="Get started with the Demo Store Template" sub="A reference implementation of a store based on Vue.js" />
 
 ## Blank Template
@@ -35,8 +32,6 @@ It is based on Nuxt3 and Tailwind.css.
 If you like to start from scratch, you can use the blank template. It can be handy if you want to use a different CSS framework or create a completely new frontend, but leverage the built-in functionality of all Shopware Frontends packages.
 
 The blank template has all "non-UI" packages pre-installed, but you have to bring your own styles and components.
-
-[TODO: Add command or instructions to set up blank template]
 
 <PageRef page="./templates/blank-template" title="Get started with the Blank Template" sub="A blank Nuxt.js project pre-installed with all packages" />
 
