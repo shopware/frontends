@@ -4,9 +4,11 @@
 
 The demo store template is a reference implementation of an online store UI.
 
-## Setup
+## Setup & run
 
-In order to set up the demo store template, run the following command:
+<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/edit/shopware-vue-template?file=app.vue&terminal=install,dev" sub="Open the Demo Store Template with our browser IDE in a new window" icon="https://blog.stackblitz.com/img/favicon.png?hash=3817f5a9d1"/>
+
+Alternatively, set up the blank template manually by running the following commands in a new directory:
 
 TODO: Add correct command
 
@@ -47,7 +49,7 @@ The `components` directory contains components that have been extracted from the
 There is no concept of overriding components in the demo store template. Instead, all components are modified directly. When creating a new project, we recommend adding your custom git repository as a remote and keeping the original demo store template as a fork, so you can always pull changes manually.
 
 :::warning Updates & Breaking Changes
-The demo store template is a boilerplate, so it will constantly be updated, as we will contionusly add new features and make improvements. These updates include breaking changes. If you want to stay up to date with the latest changes, you need to keep your project in sync manually.
+The demo store template is a boilerplate, so it will constantly be updated, as we will continously add new features and make improvements. These updates include breaking changes. If you want to stay up to date with the latest changes, you need to keep your project in sync manually.
 :::
 
 ### CMS Components
@@ -55,3 +57,20 @@ The demo store template is a boilerplate, so it will constantly be updated, as w
 One exception to the rule are CMS components. CMS components are handled as a separate package `cms-base` in Shopware Frontends and can be updated automatically. However, you can still override the components from the package in your custom project.
 
 <PageRef page="./../../framework/shopping-experiences" title="Customize CMS Components" sub="Override CMS components using the cms-base package" />
+
+## Configure
+
+The blank template is pre-configured to connect to a public Shopware backend, so you start building right away.
+
+In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and add a configuration object with `shopware` as a key:
+
+```ts{4-7}
+/* ... */
+export default defineNuxtConfig({
+  /* ... */
+  shopware: {
+    endpoint: "https://your-business.shopware.store",
+    accessToken: "access-token-from-settings",
+  }
+});
+```

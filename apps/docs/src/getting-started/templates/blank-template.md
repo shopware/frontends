@@ -4,15 +4,38 @@
 
 The blank template contains no UI or markup - it's just a blank Nuxt3 application with pre-installed dependencies, so you can start working on your project right away.
 
-## Setup
+## Setup & run
 
-In order to set up the blank template, run the following command:
+TODO: Add correct Stackblitz link
+
+<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/edit/shopware-blank-template-dakr2x?file=app.vue&terminal=install,dev" sub="Open the Blank Template with our browser IDE in a new window" icon="https://blog.stackblitz.com/img/favicon.png?hash=3817f5a9d1"/>
+
+Alternatively, set up the blank template manually by running the following commands in a new directory:
 
 TODO: Add correct command
 
 ```bash
-mkdir frontends-project && cd frontends-project
-git clone https://github.com/shopware/frontends/templates/blank.git .
+git clone https://github.com/shopware/frontends/templates/vue-blank.git .
+npm i && npm run dev
 ```
 
-## Directory Structure
+## Configure
+
+The blank template is pre-configured to connect to a public Shopware backend, so you can follow our [building guides](./../navigation.md) right away.
+
+In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and add a configuration object with `shopware` as a key:
+
+```ts{4-7}
+/* ... */
+export default defineNuxtConfig({
+  /* ... */
+  shopware: {
+    endpoint: "https://your-business.shopware.store",
+    accessToken: "access-token-from-settings",
+  }
+});
+```
+
+## What next?
+
+<PageRef page="../navigation" title="Build your first component" sub="Now that your blank template is set up, let's build a store" />
