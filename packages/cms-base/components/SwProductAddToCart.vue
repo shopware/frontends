@@ -36,6 +36,7 @@ function getPrice(product: Product) {
         v-model="quantity"
         min="1"
         class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
+        data-testid="product-quantity"
       />
     </div>
     <div class="basis-3/4 ml-4">
