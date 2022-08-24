@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { debounce } from "@shopware-pwa/helpers";
 import {
   getMainImageUrl,
   getProductUrl,
   getProductCalculatedListingPrice,
   getTranslatedProperty,
+  debounce,
 } from "@shopware-pwa/helpers-next";
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";

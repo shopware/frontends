@@ -7,10 +7,8 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.cjs",
   "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
+    "import": "./dist/index.mjs"
   },
   "scripts": {
     "build": "unbuild",
@@ -19,12 +17,13 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@shopware-pwa/types": "workspace:*",
     "eslint-config-shopware": "workspace:*",
     "jsdom": "^20.0.0",
     "query-string": "^7.1.1",
     "tsconfig": "workspace:*",
     "vitest": "^0.16.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@shopware-pwa/types": "workspace:*"
+  }
 }

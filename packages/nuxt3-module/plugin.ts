@@ -1,8 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { defineNuxtPlugin } from "#app";
+import {
+  createSpark,
+  getDefaultApiParams,
+} from "@shopware-pwa/composables-next";
 import { createInstance } from "@shopware-pwa/shopware-6-client";
-import { createShopware, getDefaultApiParams } from "@shopware-pwa/composables";
 import { ref } from "vue";
 
 const ShopwarePlugin = {
@@ -42,7 +45,7 @@ const ShopwarePlugin = {
         // Sometimes cookie is set on server after request is send, it can fail silently
       }
     });
-    const shopwareContext = createShopware(app, {
+    const shopwareContext = createSpark(app, {
       apiInstance: instance,
       enableDevtools: true,
       shopwareDefaults: options.apiDefaults,

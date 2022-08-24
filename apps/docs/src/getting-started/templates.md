@@ -45,7 +45,7 @@ If you want to integrate Shopware Frontends into an existing projects or start f
 
 ### Install dependencies
 
-[TODO: Remove old composables dependency once createShopware method is moved to the composables-next]
+[TODO: Remove old composables dependency once createSpark method is moved to the composables-next]
 
 ```bash
 pnpm add @shopware-pwa/composables @shopware-pwa/composables-next @shopware-pwa/shopware-6-client
@@ -82,7 +82,7 @@ Import necessary methods from `@shopware-pwa` packages:
 import { ref } from "vue";
 import type { App } from "vue";
 import { createInstance } from "@shopware-pwa/shopware-6-client";
-import { createShopware } from "@shopware-pwa/composables";
+import { createSpark } from "@shopware-pwa/composables-next";
 import Cookies from "js-cookie";
 
 ```
@@ -149,7 +149,7 @@ instance.onConfigChange(({ config }) => {
 Another step is to create Shopware instance that combines API Client and the business logic in composables to be used in entire Vue application:
 
 ```ts
-const shopwareContext = createShopware(app, {
+const shopwareContext = createSpark(app, {
   // `app` from install() method's argument
   apiInstance: instance, // pass API Client instance
   enableDevtools: true, // decide if devtools should be enabled
