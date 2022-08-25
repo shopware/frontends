@@ -30,7 +30,9 @@ const subscriptionOptions: {
 ];
 const { getSalutations } = useSalutations();
 const { apiInstance } = useShopwareContext();
-const getFormTitle = computed(() => props?.content?.config?.title?.value);
+const { getConfigValue } = useCmsElementConfig(props.content);
+
+const getFormTitle = computed(() => getConfigValue("title"));
 const state = reactive({
   option: subscriptionOptions[0].value,
   salutationId: "",

@@ -15,12 +15,14 @@ const errorMessages = ref<any[]>([]);
 const { getSalutations } = useSalutations();
 const { resourceIdentifier } = useCms();
 const { apiInstance } = useShopwareContext();
+const { getConfigValue } = useCmsElementConfig(props.content);
+
 const getConfirmationText = computed(
   () =>
-    props?.content?.config?.confirmationText?.value ??
+    getConfigValue("confirmationText") ??
     "We have received your contact request and will process it as soon as possible."
 );
-const getFormTitle = computed(() => props?.content?.config?.title?.value);
+const getFormTitle = computed(() => getConfigValue("title") || "Contact");
 const state = reactive({
   salutationId: "",
   firstName: "",
@@ -98,7 +100,7 @@ const invokeSubmit = async () => {
       <LoadingCircle class="text-3xl text-indigo-600" />
     </div>
     <h3 class="pb-3 mb-10 border-b border-gray-300">
-      {{ getFormTitle ? getFormTitle : "Contact" }}
+      {{ getFormTitle }}
     </h3>
     <template v-if="!formSent">
       <div class="grid grid-cols-12 gap-5">

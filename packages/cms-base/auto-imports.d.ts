@@ -113,6 +113,7 @@ declare global {
   const useActiveElement: typeof import("@vueuse/core")["useActiveElement"];
   const useActiveRoute: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useActiveRoute"];
   const useAddToCart: typeof import("@shopware-pwa/composables-next")["useAddToCart"];
+  const useCmsElementConfig: typeof import("@shopware-pwa/composables-next")["useCmsElementConfig"];
   const useNotifications: typeof import("@shopware-pwa/composables-next")["useNotifications"];
   const useCart: typeof import("@shopware-pwa/composables-next")["useCart"];
   const useCountries: typeof import("@shopware-pwa/composables-next")["useCountries"];

@@ -1,5 +1,5 @@
 import { inject } from "vue";
-import { CmsElementProductBox, BoxLayout } from "../index";
+import { CmsElementProductBox, BoxLayout, useCmsElementConfig } from "../index";
 import { computed, ComputedRef } from "vue";
 import { Product } from "@shopware-pwa/types";
 
@@ -12,7 +12,9 @@ export function useCmsElementProductBox(
   element: CmsElementProductBox
 ): UseCmsElementProductBox {
   const product = inject("product", element.data.product);
-  const boxLayout = computed(() => element.config.boxLayout.value);
+
+  const { getConfigValue } = useCmsElementConfig(element);
+  const boxLayout = computed(() => getConfigValue("boxLayout"));
 
   return {
     product,

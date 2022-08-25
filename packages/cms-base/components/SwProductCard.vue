@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
-  getProductTierPrices,
-  getProductCalculatedListingPrice,
   getProductThumbnailUrl,
   getProductUrl,
   getProductVariantsFromPrice,
@@ -24,7 +22,7 @@ const props = withDefaults(
     product: Product;
     layoutType?: BoxLayout;
     isProductListing?: boolean;
-    displayMode?: "standard" | DisplayMode;
+    displayMode?: DisplayMode;
   }>(),
   {
     layoutType: "standard",

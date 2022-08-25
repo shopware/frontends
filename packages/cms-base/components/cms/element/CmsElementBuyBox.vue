@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { CmsElementBuyBox } from "@shopware-pwa/composables-next";
+import type { CmsElementBuyBox } from "@shopware-pwa/composables-next";
+import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import {
   getProductTierPrices,
   getProductCalculatedListingPrice,
@@ -9,9 +10,12 @@ import { Product } from "@shopware-pwa/types";
 const props = defineProps<{
   content: CmsElementBuyBox;
 }>();
-const { taxState, currency } = useSessionContext();
-const product = ref<Product | undefined>();
 
+const { getConfigValue } = useCmsElementConfig(props.content);
+const alignment = computed(() => getConfigValue("alignment"));
+
+const { taxState, currency } = useSessionContext();
+const product = ref<Product>();
 watch(
   () => props.content?.data?.product,
   (value) => {
@@ -35,7 +39,6 @@ const price = computed(() => {
     return null;
   }
 });
-const alignment = computed(() => props.content?.config.alignment.value);
 const referencePrice = computed(
   () => product.value?.calculatedPrice?.referencePrice
 );
