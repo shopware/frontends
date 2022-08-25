@@ -72,7 +72,7 @@ const properties = computed(() => props.product?.properties || []);
             <div v-if="description">
               <h3 class="text-sm font-medium text-gray-900">Description</h3>
               <div class="mt-4 space-y-6">
-                <p class="text-base text-gray-900" v-html="description"></p>
+                <div class="text-base text-gray-900" v-html="description" />
               </div>
             </div>
 
