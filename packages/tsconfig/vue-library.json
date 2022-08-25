@@ -3,7 +3,7 @@
   "display": "Vue Library",
   "extends": "./base.json",
   "compilerOptions": {
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "dom"],
     "module": "ESNext",
     "target": "ES6",
     "noImplicitAny": true,
