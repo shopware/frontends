@@ -126,7 +126,7 @@ const ratingAverage: Ref<number> = computed(() =>
             {{ getProductName({ product }) }}
           </router-link>
         </h3>
-        <p
+        <div
           v-if="layoutType === 'standard'"
           class="line-clamp-4 mt-2 text-sm text-gray-500 h-20 overflow-hidden"
           v-html="getTranslatedProperty(product, 'description')"

@@ -6,9 +6,11 @@ const props = defineProps<{
 }>();
 </script>
 <template>
-  <CmsGenericElement
-    v-for="slot in content.slots"
-    :key="slot.id"
-    :content="slot"
-  />
+  <div>
+    <CmsGenericElement
+      v-for="slot in content.slots"
+      :key="slot.id"
+      :content="slot"
+    />
+  </div>
 </template>
