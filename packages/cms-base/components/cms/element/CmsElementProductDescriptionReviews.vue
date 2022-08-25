@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CmsProductPageResponse } from "@shopware-pwa/types";
-import { CmsElementProductDescriptionReviews } from "@shopware-pwa/composables-next";
+import type { CmsElementProductDescriptionReviews } from "@shopware-pwa/composables-next";
 import {
   getTranslatedProperty,
   getProductName,

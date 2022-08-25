@@ -14,7 +14,9 @@ export type SourceType = "static" | "mapped";
 
 export type Position = "left" | "center" | "right";
 
-export type DisplayMode = Exclude<CSSProperties["objectFit"], undefined>;
+export type DisplayMode =
+  | Exclude<CSSProperties["objectFit"], undefined>
+  | "standard";
 
 export type BoxLayout = "standard" | "image" | "minimal";
 
@@ -86,7 +88,7 @@ export type SliderElementConfig = {
   navigationArrows?: ElementConfig<"outside" | "inside" | "">;
 };
 
-type ImageSliderElementConfig = CmsElementImage &
+type ImageSliderElementConfig = ImageElementConfig &
   SliderElementConfig & {
     sliderItems: ElementConfig<
       Array<{
@@ -275,10 +277,8 @@ export type CmsElementCategoryNavigation = CmsSlot & {
   config: CategoryNavigationElementConfig;
 };
 
-// Product Description & Reviews
-
 type ProductDescriptionReviewsElementConfig = {
-  product?: Product;
+  product: ElementConfig<string>;
   alignment: ElementConfig<VerticalAlign>;
 };
 

@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import { CmsElementText } from "@shopware-pwa/composables-next";
+import type { CmsElementText } from "@shopware-pwa/composables-next";
+import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import { ComputedRef, CSSProperties } from "vue";
 
 const props = defineProps<{
   content: CmsElementText;
 }>();
 
+const { getConfigValue } = useCmsElementConfig(props.content);
+
 const style: ComputedRef<CSSProperties> = computed(() => ({
-  alignItems: props.content.config?.verticalAlign?.value,
+  alignItems: getConfigValue("verticalAlign"),
 }));
 
 const hasVerticalAlignment = computed(() => !!style.value.alignItems);
 
 const CmsTextRender = () => {
-  const rawHtml =
-    props.content?.data?.content ?? props.content?.config?.content?.value;
-  return h("div", { innerHTML: rawHtml });
+  return h("div", { innerHTML: getConfigValue("content") });
 };
 </script>
 <template>

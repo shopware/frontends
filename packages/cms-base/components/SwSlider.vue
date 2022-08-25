@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { SliderElementConfig } from "@shopware-pwa/composables-next";
+import type { SliderElementConfig } from "@shopware-pwa/composables-next";
+import { useCmsElementConfig } from "@shopware-pwa/composables-next";
+import { CmsSlot } from "@shopware-pwa/types";
 import { VNodeArrayChildren } from "vue";
 import ChevronLeft from "./icons/ChevronLeft.vue";
 import ChevronRight from "./icons/ChevronRight.vue";
@@ -21,6 +23,12 @@ const props = withDefaults(
     autoplaySpeed: 3000,
   }
 );
+
+const { getConfigValue } = useCmsElementConfig({
+  config: props.config,
+} as CmsSlot & {
+  config: SliderElementConfig;
+});
 
 const slots = useSlots();
 const childrenRaw = computed(
@@ -85,23 +93,23 @@ watch(
 );
 
 const imageSliderStyle = computed(() => {
-  if (props.config?.displayMode?.value === "cover") {
+  if (getConfigValue("displayMode") === "cover") {
     return {
-      height: props.config?.minHeight.value,
+      height: getConfigValue("minHeight"),
       margin: `0 -${props.gap}`,
     };
   } else {
     return {
-      minHeight: props.config?.minHeight.value,
+      minHeight: getConfigValue("minHeight"),
     };
   }
 });
 
 const verticalAlignValue = computed(
-  () => props.config?.verticalAlign?.value || "flex-start"
+  () => getConfigValue("verticalAlign") || "flex-start"
 );
 const displayModeValue = computed(
-  () => props.config?.displayMode?.value || "standard"
+  () => getConfigValue("displayMode") || "standard"
 );
 
 const navigationArrowsValue = computed(

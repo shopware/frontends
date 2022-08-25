@@ -139,8 +139,16 @@ export type CmsSlotType =
   | "product-box"
   | "slot"
   | "text"
+  | "image-slider"
+  | "image-gallery"
+  | "youtube-video"
+  | "vimeo-video"
+  | "sidebar-filter"
+  | "category-navigation"
+  | "product-description-reviews"
   | "buy-box"
-  | typeof String;
+  | "cross-selling"
+  | "form";
 
 /**
  * @public

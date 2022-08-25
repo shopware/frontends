@@ -17,6 +17,8 @@ const props = withDefaults(
   }
 );
 
+const { getConfigValue } = useCmsElementConfig(props.content);
+
 const speed = ref<number>(300);
 const currentIndex = ref(0);
 const currentThumb = ref(0);
@@ -28,7 +30,7 @@ const imageThumbs = ref();
 const imageThumbsStyle = ref({});
 const mediaGallery = computed(() => props.content.data?.sliderItems ?? []);
 const galleryPosition = computed<string>(
-  () => props.content.config?.galleryPosition?.value ?? "left"
+  () => getConfigValue("galleryPosition") ?? "left"
 );
 const scrollPx = ref(0);
 
@@ -217,7 +219,7 @@ function next() {
         <CmsElementImage
           v-for="image of mediaGallery"
           :key="image.media.url"
-          :content="({ data: image, config: props.content.config } as any)"
+          :content="{ data: image, config: props.content.config } as any"
         />
       </SwSlider>
     </div>

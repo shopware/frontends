@@ -5,20 +5,22 @@ const props = defineProps<{
   content: CmsElementYoutubeVideo;
 }>();
 
+const { getConfigValue } = useCmsElementConfig(props.content);
+
 const config = computed(() => ({
-  videoID: props.content.config?.videoID?.value,
+  videoID: getConfigValue("videoID"),
   relatedVideos: "rel=0&",
-  loop: props.content.config?.loop?.value
-    ? `loop=1&playlist=${props.content.config?.videoID?.value}&`
+  loop: getConfigValue("loop")
+    ? `loop=1&playlist=${getConfigValue("videoID")}&`
     : "",
-  showControls: props.content.config?.showControls?.value ? "controls=0&" : "",
+  showControls: getConfigValue("showControls") ? "controls=0&" : "",
   start:
-    parseInt(props.content.config?.start?.value) !== 0
-      ? `start=${props.content.config?.start?.value}&`
+    parseInt(getConfigValue("start")) !== 0
+      ? `start=${getConfigValue("start")}&`
       : "",
   end:
-    parseInt(props.content.config?.end?.value) !== 0
-      ? `end=${props.content.config?.end?.value}&`
+    parseInt(getConfigValue("end")) !== 0
+      ? `end=${getConfigValue("end")}&`
       : "",
   disableKeyboard: "disablekb=1",
 }));

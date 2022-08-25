@@ -5,6 +5,7 @@ import { Ref, ref } from "vue";
 const props = defineProps<{
   content: CmsElementVimeoVideo;
 }>();
+const { getConfigValue } = useCmsElementConfig(props.content);
 // TODO CMS add proper mapping or config type. This Component needs rework.
 
 // const vimeoConfigMapping: {
@@ -21,7 +22,7 @@ const props = defineProps<{
 // };
 
 const videoUrl: Ref = ref(
-  `https://player.vimeo.com/video/${props.content.config?.videoID?.value}?`
+  `https://player.vimeo.com/video/${getConfigValue("videoID")}?`
 );
 
 // const convertAttr = function (value: any, configKey: string) {

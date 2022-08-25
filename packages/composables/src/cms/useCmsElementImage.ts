@@ -2,6 +2,7 @@ import {
   CmsElementImage,
   DisplayMode,
   CmsElementManufacturerLogo,
+  useCmsElementConfig,
 } from "../index";
 import {
   computed,
@@ -24,13 +25,15 @@ export type UseCmsElementImage = {
 export function useCmsElementImage(
   element: CmsElementImage | CmsElementManufacturerLogo
 ): UseCmsElementImage {
+  const { getConfigValue } = useCmsElementConfig(element);
+
   const containerStyle: ComputedRef<CSSProperties> = computed(() => ({
-    minHeight: element.config?.minHeight?.value,
+    minHeight: getConfigValue("minHeight"),
   }));
 
   const anchorAttrs = computed(() => ({
-    href: element.config?.url?.value,
-    target: element.config?.newTab?.value ? "_blank" : "_self",
+    href: getConfigValue("url"),
+    target: getConfigValue("newTab") ? "_blank" : "_self",
   }));
 
   const imageLink = computed(() => ({
@@ -69,7 +72,7 @@ export function useCmsElementImage(
   }));
 
   const displayMode = computed(
-    () => element.config?.displayMode?.value || "initial"
+    () => getConfigValue("displayMode") || "initial"
   );
 
   return {

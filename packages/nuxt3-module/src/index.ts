@@ -52,6 +52,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useCheckout",
           "useCountries",
           "useCustomerPassword",
+          "useCmsElementConfig",
           "useShopwareContext",
           "useSessionContext",
           "useCart",

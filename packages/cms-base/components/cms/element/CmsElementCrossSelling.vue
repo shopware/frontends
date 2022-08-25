@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import {
+import type {
   CmsElementCrossSelling,
   SliderElementConfig,
 } from "@shopware-pwa/composables-next";
+import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import { CmsProductPageResponse } from "@shopware-pwa/types";
 
 const props = defineProps<{
   content: CmsElementCrossSelling;
 }>();
+
+const { getConfigValue } = useCmsElementConfig(props.content);
 const { cmsContent } = useCms();
 const currentTabIndex = ref<number>(0);
 const crossSellContainer = ref<HTMLElement>();
@@ -31,8 +34,7 @@ const config = computed<SliderElementConfig>(() => ({
     source: "static",
   },
 }));
-const layoutType = computed(() => props.content.config.boxLayout.value);
-const displayMode = computed(() => props.content.config.displayMode.value);
+
 const product = computed(
   () => (cmsContent.value as CmsProductPageResponse)?.product
 );
@@ -54,7 +56,7 @@ const {
 onMounted(async () => {
   setTimeout(() => {
     let temp = 1;
-    const minWidth = +props.content.config.elMinWidth.value.replace(/\D+/g, "");
+    const minWidth = +getConfigValue("elMinWidth").replace(/\D+/g, "");
     if (crossSellContainer.value?.clientWidth) {
       temp = Math.floor(
         crossSellContainer.value?.clientWidth / (minWidth * 1.2)
@@ -114,8 +116,8 @@ const toggleTab = (index: number) => {
           class="h-[600px]"
           :key="product.id"
           :product="product"
-          :layoutType="layoutType"
-          :displayMode="displayMode"
+          :layoutType="getConfigValue('boxLayout')"
+          :displayMode="getConfigValue('displayMode')"
         />
       </SwSlider>
     </transition>
