@@ -20,7 +20,7 @@
     "prettier": "^2.7.1",
     "simple-git-hooks": "^2.8.0",
     "turbo": "^1.4.3",
-    "vercel": "^27.4.0"
+    "vercel": "^28.1.4"
   },
   "engines": {
     "node": ">=16.0.0"
