@@ -19,13 +19,13 @@ const orderDate = computed(() =>
 
 <script lang="ts">
 export default {
-  name: "SwOrder",
+  name: "AccountOrder",
 };
 </script>
 
 <template>
   <div class="border border-gray-200 mb-8 rounded">
-    <SwOrderSummary>
+    <AccountOrderSummary>
       <div class="col-span-2">{{ order.orderNumber }}</div>
       <div>{{ order.amountTotal }} {{ currency?.symbol }}</div>
       <div>{{ orderDate }}</div>
@@ -36,8 +36,8 @@ export default {
       >
         View
       </div>
-    </SwOrderSummary>
+    </AccountOrderSummary>
 
-    <SwOrderDetails v-if="isExpand" :orderId="order.id" />
+    <AccountOrderDetails v-if="isExpand" :orderId="order.id" />
   </div>
 </template>

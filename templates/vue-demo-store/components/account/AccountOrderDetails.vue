@@ -20,7 +20,7 @@ const lineItems = computed(() => order.value?.lineItems || []);
 
 <script lang="ts">
 export default {
-  name: "SwOrderDetails",
+  name: "AccountOrderDetails",
 };
 </script>
 
@@ -33,7 +33,7 @@ export default {
       <div class="justify-self-end text-primary-dark">Subtotal</div>
     </div>
 
-    <SwOrderLineItem
+    <AccountOrderLineItem
       v-for="lineItem in lineItems"
       :key="lineItem.identifier"
       :line-item="lineItem"
