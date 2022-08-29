@@ -6,6 +6,7 @@ import {
   ShippingAddress,
   BillingAddress,
   SessionContext,
+  Customer,
 } from "@shopware-pwa/types";
 
 import {
@@ -18,6 +19,7 @@ import {
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 import { usePrice } from "./usePrice";
+import { useUser } from "./useUser";
 // import {
 //   getApplicationContext,
 //   INTERCEPTOR_KEYS,
@@ -58,6 +60,7 @@ export interface IUseSessionContext {
   onShippingMethodChange: (
     fn: (params: { shippingMethod: ShippingMethod }) => void
   ) => void;
+  userFromContext: ComputedRef<Customer | null>;
 }
 
 interface IInterceptorCallbackFunction {
@@ -71,6 +74,7 @@ interface IInterceptorCallbackFunction {
  */
 export function useSessionContext(): IUseSessionContext {
   const { apiInstance } = useShopwareContext();
+  const { setUser } = useUser();
   const { init } = usePrice();
   // const { broadcast, intercept } = useIntercept();
 
@@ -94,6 +98,9 @@ export function useSessionContext(): IUseSessionContext {
         currencyPosition: context.currency.position,
         currencySymbol: context.currency.symbol,
       });
+      if (context.customer) {
+        setUser(context.customer);
+      }
     } catch (e) {
       console.error("[UseSessionContext][refreshSessionContext]", e);
     }
@@ -184,6 +191,7 @@ export function useSessionContext(): IUseSessionContext {
   );
 
   const taxState = computed(() => sessionContext.value?.context?.taxState);
+  const userFromContext = computed(() => sessionContext.value?.customer);
 
   return {
     sessionContext,
@@ -204,5 +212,6 @@ export function useSessionContext(): IUseSessionContext {
     onCurrencyChange,
     onPaymentMethodChange,
     onShippingMethodChange,
+    userFromContext,
   };
 }

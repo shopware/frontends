@@ -21,7 +21,7 @@ import {
   Salutation,
   ShopwareSearchParams,
 } from "@shopware-pwa/types";
-import { useShopwareContext, useCart, useSessionContext } from ".";
+import { useShopwareContext, useCart } from ".";
 // import {
 //   IInterceptorCallbackFunction,
 //   INTERCEPTOR_KEYS,
@@ -73,11 +73,14 @@ export interface IUseUser {
   onLogout: (fn: () => void) => void;
   onUserLogin: (fn: (params: { customer: Customer }) => void) => void;
   onUserRegister: (fn: () => void) => void;
+  setUser: (user: Partial<Customer>) => void;
 }
 
 export interface IInterceptorCallbackFunction {
   (payload: any): void;
 }
+
+const storeUser = ref<Partial<Customer>>();
 
 /**
  * Composable for user management. Options - {@link IUseUser}
@@ -90,13 +93,15 @@ export function useUser(): IUseUser {
 
   const { apiInstance } = useShopwareContext();
   // const { broadcast, intercept } = useIntercept();
-  const { refreshSessionContext } = useSessionContext();
+  // const { refreshSessionContext } = useSessionContext();
   const { refreshCart } = useCart();
   // const { getDefaults } = useDefaults({ defaultsKey: contextName });
 
   // const { sharedRef } = useSharedState();
-  const storeUser = ref<Partial<Customer>>();
 
+  const setUser = (user: Partial<Customer>) => {
+    storeUser.value = user;
+  };
   const loading: Ref<boolean> = ref(false);
   const error: Ref<any> = ref(null);
   const errors: UnwrapRef<{
@@ -153,7 +158,7 @@ export function useUser(): IUseUser {
       const customer = await apiRegister(params as any, apiInstance);
       // broadcast(INTERCEPTOR_KEYS.USER_REGISTER, { customer });
       storeUser.value = (customer as Customer) || {};
-      refreshSessionContext();
+      // refreshSessionContext();
       return true;
     } catch (e) {
       const err = e as ClientApiError;
@@ -294,5 +299,6 @@ export function useUser(): IUseUser {
     onLogout,
     onUserLogin,
     onUserRegister,
+    setUser,
   };
 }

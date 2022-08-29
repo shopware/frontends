@@ -4,14 +4,12 @@ definePageMeta({
 });
 
 const { refreshSessionContext } = useSessionContext();
-const { refreshUser } = useUser();
 const { refreshCart } = useCart();
 useNotifications();
 useWishlist();
 
 onMounted(() => {
   refreshSessionContext();
-  refreshUser();
   refreshCart();
 });
 
