@@ -111,6 +111,7 @@ const ratingAverage: Ref<number> = computed(() =>
       />
     </div>
     <button
+      aria-label="Add to wishlist"
       type="button"
       @click="addToWishlistFn"
       class="absolute top-2 right-2"
