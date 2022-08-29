@@ -14,7 +14,7 @@ const isSidebarOpen = inject("isSidebarOpen");
 
           <router-link to="/">
             <span class="sr-only">Shopware</span>
-            <img class="h-8 w-auto sm:h-10" src="/logo.svg" alt="" />
+            <img class="h-8 w-auto sm:h-10" src="/logo.svg" alt="Logo" />
           </router-link>
         </div>
 

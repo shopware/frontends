@@ -34,7 +34,7 @@ const triggerCollapse = (id: string) => {
 </script>
 
 <template>
-  <button class="md:hidden" @click="isSideMenuOpened = true">
+  <button class="md:hidden" @click="isSideMenuOpened = true" aria-label="menu">
     <div i-carbon-menu text-xl />
   </button>
   <div
@@ -102,6 +102,7 @@ const triggerCollapse = (id: string) => {
                       <img
                         :src="getCategoryImageUrl(navigationElement)"
                         class="object-cover object-center"
+                        alt="Category image"
                       />
                     </div>
                   </div>

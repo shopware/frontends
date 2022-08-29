@@ -106,6 +106,7 @@ watch(enter, (value) => {
               <img
                 :src="getMainImageUrl(product)"
                 class="h-8 w-8 object-cover"
+                alt="Product image"
               />
             </div>
             <div

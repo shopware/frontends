@@ -32,6 +32,7 @@ const {
         'object-cover': displayMode === 'cover',
       }"
       v-bind="imageAttrs"
+      alt="Image link"
     />
   </component>
 </template>

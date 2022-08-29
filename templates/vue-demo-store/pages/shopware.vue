@@ -29,6 +29,7 @@ const { search, searchTerm, getTotal, getProducts } = useProductSearchSuggest();
     <img
       class="md:w-11/12"
       src="https://gitlab.shopware.com/product/engineering/platform-group/pwa/frontends/-/raw/main/.readme/shopware-frontends-logo.png"
+      alt="logo"
     />
   </div>
 
@@ -38,7 +39,7 @@ const { search, searchTerm, getTotal, getProducts } = useProductSearchSuggest();
       :key="image"
       class="max-w-30 rounded-full overflow-hidden m-3"
     >
-      <img :src="image" />
+      <img :src="image" alt="Cms image" />
     </div>
 
     <!-- Remove when composable useProductSearchSuggest is merged -->
