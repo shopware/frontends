@@ -82,6 +82,7 @@ const invokeLogin = async (): Promise<void> => {
           <div
             v-if="loginErrors.length"
             class="flex items-center justify-between"
+            data-testid="login-errors-container"
           >
             <div class="flex items-center">
               <div
