@@ -44,7 +44,7 @@ const invokeSave = async (): Promise<void> => {
 
 <template>
   <div class="container mx-auto my-8">
-    <fieldset class="mt-8">
+    <fieldset class="mt-6">
       <legend class="contents text-2xl font-medium text-gray-900">
         <h1 class="border-b pb-3">Payment method</h1>
       </legend>

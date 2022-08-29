@@ -9,7 +9,7 @@ defineProps<{
 
 <script lang="ts">
 export default {
-  name: "SwOrderLineItem",
+  name: "AccountOrderLineItem",
 };
 </script>
 
