@@ -10,6 +10,7 @@
   "devDependencies": {
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/nuxt3-module": "workspace:*",
+    "@shopware-pwa/api-client": "workspace:*",
     "@vueuse/nuxt": "^9.1.1",
     "nuxt": "^3.0.0-rc.8"
   }

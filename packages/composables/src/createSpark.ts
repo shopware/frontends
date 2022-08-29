@@ -4,7 +4,7 @@
  * - we don't need them for now as we do not show any significant info for now
  */
 
-import { ShopwareApiInstance } from "@shopware-pwa/shopware-6-client";
+import { ShopwareApiInstance } from "@shopware-pwa/api-client";
 import { App, effectScope, EffectScope, markRaw, reactive } from "vue";
 // import { registerShopwareDevtools } from "./devtools/plugin";
 

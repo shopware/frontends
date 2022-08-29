@@ -3,13 +3,15 @@ import {
   removeCartItem,
   changeCartItemQuantity,
   getProduct,
-} from "@shopware-pwa/shopware-6-client";
+} from "@shopware-pwa/api-client";
 import {
   Product,
   LineItem,
   LineItemType,
   ClientApiError,
   PropertyGroupOptionCart,
+  PropertyGroupOption,
+  ProductResponse,
 } from "@shopware-pwa/types";
 // import {
 //   getApplicationContext,
@@ -30,7 +32,7 @@ export interface IUseCartItem {
   itemRegularPrice: ComputedRef<number | undefined>;
   itemSpecialPrice: ComputedRef<number | undefined>;
   itemImageThumbnailUrl: ComputedRef<string>;
-  itemOptions: ComputedRef<PropertyGroupOptionCart[]>;
+  itemOptions: ComputedRef<PropertyGroupOption[] | PropertyGroupOptionCart[]>;
   itemType: ComputedRef<LineItemType | undefined>;
   isProduct: ComputedRef<boolean>;
   isPromotion: ComputedRef<boolean>;
@@ -39,7 +41,7 @@ export interface IUseCartItem {
   itemQuantity: ComputedRef<number | undefined>;
   changeItemQuantity: (quantity: number) => Promise<void>;
   removeItem: () => Promise<void>;
-  getProductItemSeoUrlData(): Promise<Partial<Product>>;
+  getProductItemSeoUrlData(): Promise<ProductResponse | undefined>;
 }
 
 /**
@@ -107,9 +109,11 @@ export function useCartItem({
     refreshCart();
   }
 
-  async function getProductItemSeoUrlData(): Promise<Partial<Product>> {
+  async function getProductItemSeoUrlData(): Promise<
+    ProductResponse | undefined
+  > {
     if (!cartItem.referencedId) {
-      return {};
+      return;
     }
 
     try {
@@ -122,7 +126,7 @@ export function useCartItem({
         },
         apiInstance
       );
-      return result.product;
+      return result.product as unknown as ProductResponse;
     } catch (error) {
       console.error(
         "[useCart][getProductItemsSeoUrlsData]",
@@ -130,7 +134,7 @@ export function useCartItem({
       );
     }
 
-    return {};
+    return;
   }
 
   return {

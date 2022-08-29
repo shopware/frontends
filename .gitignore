@@ -41,3 +41,5 @@ yarn-error.log*
 .vercel_build_output
 
 .env 
+temp
+.temp

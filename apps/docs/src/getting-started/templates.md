@@ -81,7 +81,7 @@ Import necessary methods from `@shopware-pwa` packages:
 // ./plugins/vue-shopware-frontends.ts file
 import { ref } from "vue";
 import type { App } from "vue";
-import { createInstance } from "@shopware-pwa/shopware-6-client";
+import { createInstance } from "@shopware-pwa/api-client";
 import { createSpark } from "@shopware-pwa/composables-next";
 import Cookies from "js-cookie";
 

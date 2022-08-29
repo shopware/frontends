@@ -1,4 +1,4 @@
-import { ShopwareApiInstance } from "@shopware-pwa/shopware-6-client";
+import { ShopwareApiInstance } from "@shopware-pwa/api-client";
 import { inject } from "vue";
 
 export type ShopwareContext = {

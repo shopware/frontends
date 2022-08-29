@@ -1,8 +1,5 @@
 import { ref, Ref, UnwrapRef, reactive, unref } from "vue";
-import {
-  getProductReviews,
-  addProductReview,
-} from "@shopware-pwa/shopware-6-client";
+import { getProductReviews, addProductReview } from "@shopware-pwa/api-client";
 // import { useDefaults, getApplicationContext } from "@shopware-pwa/composables";
 import {
   ClientApiError,

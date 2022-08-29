@@ -24,7 +24,7 @@ import { ProductSearchKeyword } from "../../content/product/ProductSearchKeyword
 import { ProductKeywordDictionary } from "../../content/product/ProductKeywordDictionary";
 import { MailTemplateTypeTranslation } from "../../content/mail-template/MailTemplateTypeTranslation";
 import { PromotionTranslation } from "../../checkout/promotion/PromotionTranslation";
-import { NumberRangeTranslation } from "../../system/number-range/NumberRangeTranslation.d.ts";
+import { NumberRangeTranslation } from "../../system/number-range/NumberRangeTranslation";
 import { ProductReview } from "../../content/product/ProductReview";
 import { SalesChannel } from "../../system/sales-channel/SalesChannel";
 import { UnitTranslation } from "../../system/unit/UnitTranslation";

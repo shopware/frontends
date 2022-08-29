@@ -2,7 +2,7 @@ import { ComputedRef, Ref, ref } from "vue";
 
 import { useShopwareContext, useListing } from ".";
 
-import { searchSuggestedProducts } from "@shopware-pwa/shopware-6-client";
+import { searchSuggestedProducts } from "@shopware-pwa/api-client";
 
 import { ShopwareSearchParams, Product } from "@shopware-pwa/types";
 

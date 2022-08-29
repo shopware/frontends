@@ -1,5 +1,5 @@
 import { ref, Ref, unref } from "vue";
-import { getProduct, getCmsPage } from "@shopware-pwa/shopware-6-client";
+import { getProduct, getCmsPage } from "@shopware-pwa/api-client";
 import {
   Product,
   CmsProductPageResponse,
@@ -13,13 +13,13 @@ const NO_PRODUCT_REFERENCE_ERROR =
 /**
  * @beta
  */
-export interface IUseProduct<PRODUCT, SEARCH> {
-  product: Ref<PRODUCT | null>;
-  search: SEARCH;
+export type IUseProduct = {
+  product: Ref<Product | null>;
+  search: Search;
   loading: Ref<boolean>;
   error: Ref<any>;
   [x: string]: any;
-}
+};
 
 /**
  * @beta
@@ -31,7 +31,7 @@ export type Search = (path: string, associations?: any) => any;
  */
 export function useProduct(params?: {
   product?: Ref<Product> | Product;
-}): IUseProduct<Product, Search> {
+}): IUseProduct {
   const COMPOSABLE_NAME = "useProduct";
   const contextName = COMPOSABLE_NAME;
 
@@ -41,6 +41,7 @@ export function useProduct(params?: {
   // });
 
   const loading: Ref<boolean> = ref(false);
+  // @ts-ignore
   const product: Ref<Product | null> = ref(unref(params?.product) || null);
   const error: Ref<any> = ref(null);
 
@@ -60,14 +61,14 @@ export function useProduct(params?: {
     // load only children; other properties are loaded synchronously
     product.value = Object.assign({}, product.value, {
       crossSellings: (result as CmsProductPageResponse).product?.crossSellings,
-    });
+    }) as Product;
   };
 
   const search = async (productId: string) => {
     loading.value = true;
     try {
       const result = await getProduct(productId, null, apiInstance);
-      product.value = result?.product;
+      product.value = result?.product as Product;
       return result;
     } catch (e) {
       const err = e as ClientApiError;

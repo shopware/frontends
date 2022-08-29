@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Product, ProductReview } from "@shopware-pwa/types";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
-import { getProductReviews } from "@shopware-pwa/shopware-6-client";
+import { getProductReviews } from "@shopware-pwa/api-client";
 import { Ref } from "vue";
 
 const props = defineProps<{

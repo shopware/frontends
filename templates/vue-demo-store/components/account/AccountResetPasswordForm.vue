@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, sameAs } from "@vuelidate/validators";
-import { confirmPasswordReset } from "@shopware-pwa/shopware-6-client";
+import { confirmPasswordReset } from "@shopware-pwa/api-client";
 import { ClientApiError } from "@shopware-pwa/types";
 
 const { apiInstance } = useShopwareContext();

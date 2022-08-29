@@ -7,7 +7,7 @@ import {
   inject,
   provide,
 } from "vue";
-import { getAvailableCountries } from "@shopware-pwa/shopware-6-client";
+import { getAvailableCountries } from "@shopware-pwa/api-client";
 import { ClientApiError, Country } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 // import {

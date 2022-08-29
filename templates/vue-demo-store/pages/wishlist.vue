@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { getProducts } from "@shopware-pwa/shopware-6-client";
+import { getProducts } from "@shopware-pwa/api-client";
 import { Shopware } from "@shopware-pwa/composables-next";
 
 const { items } = useWishlist();

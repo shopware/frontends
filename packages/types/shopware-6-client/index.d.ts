@@ -86,6 +86,7 @@ export * from "./models/content/property/PropertyGroupOptionTranslation";
 export * from "./models/content/property/PropertyGroupTranslation";
 export * from "./models/content/rule/Rule";
 export * from "./models/content/rule/RuleCondition";
+export * from "./models/content/wishlist/CustomerWishlist";
 export * from "./models/framework/data-abstraction-layer/Translation";
 export * from "./models/framework/language/Language";
 export * from "./models/framework/plugin/Plugin";

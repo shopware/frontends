@@ -5,7 +5,7 @@ import {
   createSpark,
   getDefaultApiParams,
 } from "@shopware-pwa/composables-next";
-import { createInstance } from "@shopware-pwa/shopware-6-client";
+import { createInstance } from "@shopware-pwa/api-client";
 import { ref } from "vue";
 
 const ShopwarePlugin = {

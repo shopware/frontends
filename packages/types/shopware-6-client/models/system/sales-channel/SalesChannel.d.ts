@@ -58,7 +58,7 @@ export type SalesChannel = {
   domains: SalesChannelDomain[] | null;
   systemConfigs: SystemConfig[] | null;
   customFields: CustomField[];
-  naigationCategory: Category | null;
+  navigationCategory: Category | null;
   footerCategory: Category | null;
   serviceCategory: Category | null;
   productVisibilities: ProductVisibility[] | null;

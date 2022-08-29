@@ -20,7 +20,7 @@ import {
   getAvailableShippingMethods,
   getAvailablePaymentMethods,
   createOrder as createApiOrder,
-} from "@shopware-pwa/shopware-6-client";
+} from "@shopware-pwa/api-client";
 import { useShopwareContext, useCart, useSessionContext } from ".";
 // import {
 //   useCart,

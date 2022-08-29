@@ -7,7 +7,7 @@ import {
   getSeoUrl,
   getLandingPage,
   getCategoryDetailsEndpoint,
-} from "@shopware-pwa/shopware-6-client";
+} from "@shopware-pwa/api-client";
 
 import {
   SearchCmsResult,

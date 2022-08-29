@@ -7,10 +7,7 @@ import { ProductResponse } from "./types";
 //   useVueContext,
 // } from "@shopware-pwa/composables";
 import { useCms, useShopwareContext } from ".";
-import {
-  invokePost,
-  getProductEndpoint,
-} from "@shopware-pwa/shopware-6-client";
+import { invokePost, getProductEndpoint } from "@shopware-pwa/api-client";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
 /**
@@ -47,7 +44,7 @@ export interface IUseProductConfigurator {
 }
 
 /**
- * Product options - {@link IUseAddToCart}
+ * Product options - {@link IUseProductConfigurator}
  * @beta
  */
 export function useProductConfigurator(params: {
@@ -67,16 +64,16 @@ export function useProductConfigurator(params: {
   const selected = ref({} as any);
   const isLoadingOptions = ref(!!product.options?.length);
   const parentProductId = computed(() => product.parentId);
-  const getOptionGroups = computed(
+  const getOptionGroups = computed<PropertyGroup[]>(
     () =>
       (page.value as unknown as ProductResponse)?.configurator ||
-      product.configuratorSettings ||
+      // product.configuratorSettings || // TODO - check if it's needed
       []
   );
 
   const findGroupCodeForOption = (optionId: string) => {
-    const group = getOptionGroups.value.find((optionGroup: any) => {
-      const optionFound = optionGroup.options.find(
+    const group = getOptionGroups.value.find((optionGroup) => {
+      const optionFound = optionGroup.options?.find(
         (option: any) => option.id === optionId
       );
       return !!optionFound;
@@ -130,7 +127,8 @@ export function useProductConfigurator(params: {
         },
         apiInstance
       );
-      return response?.data?.elements?.[0]; // return first matching product
+      return (response as { data?: { elements?: Array<Product> } })?.data
+        ?.elements?.[0]; // return first matching product
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);
     }

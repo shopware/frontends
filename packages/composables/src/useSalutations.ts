@@ -7,7 +7,7 @@ import {
   inject,
   provide,
 } from "vue";
-import { getAvailableSalutations } from "@shopware-pwa/shopware-6-client";
+import { getAvailableSalutations } from "@shopware-pwa/api-client";
 import { ClientApiError, Salutation } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 // import {
