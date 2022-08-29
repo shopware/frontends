@@ -265,6 +265,7 @@ defineExpose({
     </div>
     <div :class="{ hidden: navigationArrowsValue === 'none' }">
       <button
+        aria-label="Chevron left"
         :class="{
           'absolute top-1/2 left-0 transform -translate-y-1/2 py-4': true,
           'transition bg-white/20 hover:bg-white/50':
@@ -275,6 +276,7 @@ defineExpose({
         <ChevronLeft class="text-3xl" />
       </button>
       <button
+        aria-label="Chevron right"
         :class="{
           'absolute top-1/2 right-0 transform -translate-y-1/2 py-4': true,
           'transition bg-white/20 hover:bg-white/50':
