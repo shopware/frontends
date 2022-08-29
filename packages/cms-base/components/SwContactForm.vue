@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
-import { sendContactForm } from "@shopware-pwa/shopware-6-client";
+import { sendContactForm } from "@shopware-pwa/api-client";
 import { CmsElementForm } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
 import LoadingCircle from "./icons/LoadingCircle.vue";

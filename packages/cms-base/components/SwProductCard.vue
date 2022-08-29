@@ -8,7 +8,7 @@ import {
   getTranslatedProperty,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
-import { Product } from "@shopware-pwa/types";
+import { Product, PropertyGroupOption } from "@shopware-pwa/types";
 import { Ref } from "vue";
 import SwStarIcon from "./SwStarIcon.vue";
 import SwHeartIcon from "./SwHeartIcon.vue";
@@ -132,10 +132,11 @@ const ratingAverage: Ref<number> = computed(() =>
         <div class="mt-2 flex gap-2 flex-wrap">
           <span
             v-for="option in product?.options"
-            :key="option.id"
+            :key="(option as PropertyGroupOption).id"
             class="bg-gray-400 text-sm text-white rounded py-1 px-2"
           >
-            {{ option.group.name }}: {{ option.name }}
+            {{ (option as PropertyGroupOption).group.name }}:
+            {{ (option as PropertyGroupOption).name }}
           </span>
         </div>
       </div>

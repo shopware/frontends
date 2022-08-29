@@ -15,19 +15,17 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "lodash": "^4.17.21",
     "scule": "^0.3.2"
   },
   "devDependencies": {
-    "@shopware-pwa/shopware-6-client": "canary",
     "@shopware-pwa/types": "workspace:*",
-    "@types/lodash": "^4.14.184",
     "@vitest/coverage-c8": "^0.22.1",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "^6.0.4",
     "tsconfig": "workspace:*",
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.2",
     "unbuild": "^0.8.9",
     "vitest": "^0.22.1",
     "vue": "^3.2.37"

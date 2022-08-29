@@ -4,7 +4,7 @@ import { required, email } from "@vuelidate/validators";
 import {
   newsletterSubscribe,
   newsletterUnsubscribe,
-} from "@shopware-pwa/shopware-6-client";
+} from "@shopware-pwa/api-client";
 import { CmsElementForm } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
 import LoadingCircle from "./icons/LoadingCircle.vue";

@@ -90,7 +90,7 @@ export type MultiFilter = SearchFilter & {
  * @beta
  */
 export type NotFilter = {
-  type: SearchFilterType.NOT;
+  type: "not";
   queries: Array<
     EqualsAnyFilter | RangeFilter | ContainsFilter | EqualsFilter | MultiFilter
   >;

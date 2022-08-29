@@ -1,7 +1,4 @@
-import {
-  getCategoryProducts,
-  searchProducts,
-} from "@shopware-pwa/shopware-6-client";
+import { getCategoryProducts, searchProducts } from "@shopware-pwa/api-client";
 
 // import {
 //   useCms,
@@ -19,7 +16,35 @@ import {
 import { inject, computed, ComputedRef, ref, provide } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCms } from ".";
-import merge from "lodash/merge.js";
+
+function isObject<T>(item: T): boolean {
+  return item && typeof item === "object" && !Array.isArray(item);
+}
+
+function merge<T extends { [key in keyof T]: unknown }>(
+  target: T,
+  ...sources: T[]
+): T {
+  if (!sources.length) return target;
+  const source = sources.shift();
+
+  if (source === undefined) {
+    return target;
+  }
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        merge(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+
+  return merge(target, ...sources);
+}
 
 /**
  * @beta

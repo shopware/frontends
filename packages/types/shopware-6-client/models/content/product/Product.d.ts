@@ -17,6 +17,7 @@ import { Tag } from "../../system/tag/Tag";
 import { CustomField } from "../../common/CustomField";
 import { SeoUrl } from "../navigation/Navigation";
 import { CmsPage } from "../cms/CmsPage";
+import { PropertyGroupOptionCart } from "../property/PropertyGroupOptionCart";
 
 export type CrossSelling = {
   apiAlias: "cross_selling_element";
@@ -129,7 +130,6 @@ export type Product = {
     name: string | null;
     description: string;
   };
-  productMediaVersiond?: null;
   crossSellings: CrossSelling[];
   cmsPage: null | CmsPage;
   apiAlias: "product";

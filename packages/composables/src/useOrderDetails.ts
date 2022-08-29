@@ -30,7 +30,7 @@ import {
   changeOrderPaymentMethod,
   getOrderDetails,
   handlePayment as apiHandlePayment,
-} from "@shopware-pwa/shopware-6-client";
+} from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 
 /**

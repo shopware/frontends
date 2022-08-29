@@ -7,7 +7,7 @@ export default defineBuildConfig({
     "axios",
     "vue",
     "scule",
-    "@shopware-pwa/shopware-6-client",
+    "@shopware-pwa/api-client",
     "@shopware-pwa/helpers-next",
     "@shopware-pwa/types",
   ],

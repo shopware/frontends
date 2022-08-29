@@ -2,7 +2,7 @@ import { CustomField } from "../../common/CustomField";
 import { NumberRangeType } from "./NumberRangeType";
 import { NumberRangeSalesChannel } from "./NumberRangeSalesChannel";
 import { NumberRangeState } from "./NumberRangeState";
-import { NumberRangeTranslation } from "./NumberRangeTranslation.d.ts";
+import { NumberRangeTranslation } from "./NumberRangeTranslation";
 
 /**
  * @public

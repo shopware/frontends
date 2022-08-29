@@ -13,7 +13,7 @@ export function useCmsElementConfig<
   const getConfigValue = <ELEMENT_CONFIG extends keyof T["config"]>(
     key: ELEMENT_CONFIG
   ): typeof element.config[ELEMENT_CONFIG]["value"] => {
-    return element.config[key].value;
+    return element.config[key]?.value;
   };
 
   return {

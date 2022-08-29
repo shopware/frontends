@@ -4,7 +4,7 @@ import {
   StoreNavigationType,
 } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
-import { getStoreNavigation } from "@shopware-pwa/shopware-6-client";
+import { getStoreNavigation } from "@shopware-pwa/api-client";
 
 /**
  * interface for {@link useNavigation} composable

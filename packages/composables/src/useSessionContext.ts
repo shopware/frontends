@@ -15,7 +15,7 @@ import {
   setCurrentPaymentMethod,
   setCurrentShippingAddress,
   setCurrentBillingAddress,
-} from "@shopware-pwa/shopware-6-client";
+} from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 import { usePrice } from "./usePrice";
 // import {

@@ -1,5 +1,5 @@
 import { ref, Ref, UnwrapRef, reactive } from "vue";
-import { getCustomerOrders } from "@shopware-pwa/shopware-6-client";
+import { getCustomerOrders } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 import {
   Order,

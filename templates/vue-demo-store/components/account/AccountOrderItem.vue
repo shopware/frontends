@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getMainImageUrl, isProduct } from "@shopware-pwa/helpers-next";
-import { OrderLineItem } from "@shopware-pwa/types";
+import { OrderLineItem, PropertyGroupOptionCart } from "@shopware-pwa/types";
 
 const props = defineProps<{
   orderItem: OrderLineItem;
@@ -35,8 +35,12 @@ const productOptions = computed(() =>
         <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
       <p class="mt-1 text-sm text-gray-500">
-        <span v-for="option in productOptions" :key="option.group" class="mr-2">
-          {{ option.group }}: {{ option.option }}
+        <span
+          v-for="option in productOptions"
+          :key="(option as PropertyGroupOptionCart).group"
+          class="mr-2"
+        >
+          {{ option.group }}: {{ (option as PropertyGroupOptionCart).option }}
         </span>
       </p>
     </div>

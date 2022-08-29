@@ -11,7 +11,7 @@ import {
   CustomerUpdateProfileParam,
   CustomerUpdateEmailParam,
   setDefaultCustomerPaymentMethod,
-} from "@shopware-pwa/shopware-6-client";
+} from "@shopware-pwa/api-client";
 import {
   Customer,
   CustomerRegistrationParams,

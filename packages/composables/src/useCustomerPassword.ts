@@ -4,7 +4,7 @@ import {
   resetPassword as apiResetPassword,
   CustomerUpdatePasswordParam,
   CustomerResetPasswordParam,
-} from "@shopware-pwa/shopware-6-client";
+} from "@shopware-pwa/api-client";
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 

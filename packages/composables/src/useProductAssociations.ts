@@ -5,7 +5,7 @@ import {
   invokeGet,
   invokePost,
   getProductDetailsEndpoint,
-} from "@shopware-pwa/shopware-6-client";
+} from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 // import { getApplicationContext } from "@shopware-pwa/composables";
 
@@ -76,7 +76,7 @@ export function useProductAssociations(params: {
           apiInstance
         );
 
-        associations.value = response?.data;
+        associations.value = response?.data as [];
         return;
       }
 
@@ -88,7 +88,7 @@ export function useProductAssociations(params: {
         apiInstance
       );
 
-      associations.value = response?.data;
+      associations.value = response?.data as [];
     } catch (error) {
       console.error(
         "[useProductAssociations][loadAssociations][error]:",
