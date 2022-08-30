@@ -193,6 +193,7 @@ function next() {
               <img
                 :src="image.media.url"
                 class="w-full h-full object-center object-cover"
+                alt="Product image"
               />
             </div>
           </div>

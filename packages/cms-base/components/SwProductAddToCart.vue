@@ -30,8 +30,10 @@ function getPrice(product: Product) {
 
 <template>
   <div class="flex flex-row mt-10">
-    <div class="basis-1/4">
+    <div class="basis-1/4 relative -top-6">
+      <label for="qty" class="text-sm">Qty:</label>
       <input
+        id="qty"
         type="number"
         v-model="quantity"
         min="1"

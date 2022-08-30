@@ -34,7 +34,7 @@ const gridColumns = computed<number>(() =>
               <li
                 v-for="navigationChild in navigationElement.children"
                 :key="navigationChild.id"
-                class="pb-1"
+                class="pb-3 md:pb-1"
               >
                 <router-link
                   :to="'/' + navigationChild.seoUrls[0]?.seoPathInfo"

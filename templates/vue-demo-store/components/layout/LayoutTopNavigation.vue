@@ -70,7 +70,11 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                 />
               </div>
               <div v-if="childElement.media" class="flex">
-                <img :src="childElement.media?.url" class="w-150px h-auto" />
+                <img
+                  :src="childElement.media?.url"
+                  class="w-150px h-auto"
+                  alt="Category image"
+                />
               </div>
             </router-link>
           </div>
