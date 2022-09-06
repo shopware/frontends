@@ -24,8 +24,20 @@ onMounted(() => {
 const isSidebarOpen = ref(false);
 provide("isSidebarOpen", isSidebarOpen);
 
-const isModalOpened = ref(false);
-provide("isModalOpened", isModalOpened);
+const modalContent = ref<string>("");
+const modalProps = ref<object | null | undefined>({});
+const modalHandler = {
+  open: (component: string, props?: object | null) => {
+    modalContent.value = component;
+    modalProps.value = props;
+  },
+  close: () => {
+    modalContent.value = "";
+    modalProps.value = {};
+  },
+};
+
+provide("modal", { modalContent, modalProps, ...modalHandler });
 
 const isSideMenuOpened = ref(false);
 provide("isSideMenuOpened", isSideMenuOpened);

@@ -31,5 +31,5 @@ export type CustomerAddress = {
   salutation: string | null;
   customer?: string;
   customFields?: CustomField;
-  id?: string;
+  id: string;
 };

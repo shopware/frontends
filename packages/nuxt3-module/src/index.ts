@@ -73,6 +73,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useWishlist",
           "usePrice",
           "useCustomerOrders",
+          "useAddress",
         ],
       });
     });
