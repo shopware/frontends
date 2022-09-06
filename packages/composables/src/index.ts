@@ -31,6 +31,7 @@ export * from "./useCustomerPassword";
 export * from "./usePrice";
 export * from "./userCustomerOrders";
 export * from "./createSpark";
+export * from "./useAddress";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   const componentName = content.type;

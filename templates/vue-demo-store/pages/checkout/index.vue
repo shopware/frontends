@@ -4,6 +4,8 @@ export default {
 };
 </script>
 <script setup lang="ts">
+import { SharedModal } from "~~/components/shared/SharedModal.vue";
+
 definePageMeta({
   layout: "checkout",
 });
@@ -27,7 +29,7 @@ const {
   setPaymentMethod,
 } = useSessionContext();
 const { cartItems } = useCart();
-const isModalOpened = inject("isModalOpened");
+const modal = inject<SharedModal>("modal") as SharedModal;
 const isLoading = reactive({} as any);
 
 const password = ref<string | null>();
@@ -140,16 +142,11 @@ const submitBillingAddress = async (e: Event) => {
                   <a
                     href="#"
                     class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-                    @click="isModalOpened = true"
+                    @click="modal.open('AccountLoginForm')"
                     data-testid="checkout-sign-in-link"
                   >
                     Sign in
                   </a>
-                  <Teleport v-if="isModalOpened" to="#modal-content">
-                    <AccountLoginForm
-                      @success="isModalOpened = false"
-                    /> </Teleport
-                  >.
                 </div>
                 <p class="text-sm text-gray-500">In order to place an order.</p>
                 <div class="grid grid-cols-6 gap-6 mt-8">
@@ -157,8 +154,9 @@ const submitBillingAddress = async (e: Event) => {
                     <label
                       for="country"
                       class="block text-sm font-medium text-gray-700"
-                      >Salutation</label
                     >
+                      Salutation
+                    </label>
                     <select
                       id="salutation"
                       v-model="billingAddress.salutationId"
