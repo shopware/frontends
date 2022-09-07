@@ -17,37 +17,39 @@ const toggleTabs = (tabNumber: number) => {
 </script>
 
 <template>
-  <div class="container mx-auto my-6">
-    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+  <div class="container mx-auto my-8">
+    <div class="mb-4 border-b border-gray-200">
       <ul
-        class="flex flex-wrap -mb-px font-medium text-xl text-center"
+        class="flex flex-wrap -mb-px font-medium md:text-2xl md:space-x-8"
         id="myTab"
         data-tabs-toggle="#profileTabContent"
         role="tablist"
       >
-        <li class="mr-2" role="presentation">
+        <li class="w-1/2 md:w-auto" role="presentation">
           <a
-            class="inline-block pb-3 pr-4 rounded-t-lg hover:text-brand-primary dark:text-brand-primary"
+            class="inline-block pb-3 rounded-t-lg hover:text-brand-primary"
             :class="[
               currentTab !== 1
                 ? 'text-gray-900'
                 : 'text-brand-primary border-b-2 border-brand-primary',
             ]"
             @click="() => toggleTabs(1)"
-            >Personal data</a
-          >
+            >
+              Personal data
+            </a>
         </li>
-        <li role="presentation">
+        <li class="w-1/2 md:w-auto" role="presentation">
           <a
-            class="inline-block pb-3 sm:pr-4 rounded-t-lg hover:text-brand-primary dark:text-brand-primary"
+            class="inline-block pb-3 rounded-t-lg hover:text-brand-primary"
             :class="[
               currentTab !== 2
                 ? 'text-gray-900'
                 : 'text-brand-primary border-b-2 border-brand-primary',
             ]"
             @click="() => toggleTabs(2)"
-            >Change password</a
-          >
+            >
+              Change password
+            </a>
         </li>
       </ul>
     </div>
