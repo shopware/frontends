@@ -62,6 +62,16 @@ unit-test-job: # This job runs in the test stage.
     - pnpm install
     - pnpm run test
 
+commitlint-test-job: # This job runs in the test stage.
+  stage: build # It only starts when the job in the build stage completes successfully.
+  needs:
+    - job: init
+      artifacts: false
+  interruptible: true
+  script:
+    - pnpm install
+    - echo "${CI_COMMIT_MESSAGE}" | pnpm exec commitlint
+
 lint-test-job: # This job also runs in the test stage.
   stage: build # It can run at the same time as unit-test-job (in parallel).
   needs:
