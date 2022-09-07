@@ -17,7 +17,7 @@ export default {
 </script>
 
 <template>
-  <div class="container mx-auto my-6">
+  <div class="container mx-auto my-8">
     <h1 class="border-b pb-3 text-2xl font-medium text-gray-900">
       Order history
     </h1>

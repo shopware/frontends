@@ -117,7 +117,7 @@ const invokeUpdate = async (): Promise<void> => {
     <form class="mt-8 space-y-6" @submit.prevent="invokeUpdate">
       <div
         v-if="isSuccess"
-        class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+        class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg"
         role="alert"
       >
         <span class="font-medium">Your information has been updated.</span>
@@ -132,9 +132,10 @@ const invokeUpdate = async (): Promise<void> => {
         <div>
           <label
             for="firstname"
-            class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >First name</label
+            class="block mb-2 text-sm font-medium text-gray-500"
           >
+            First name
+          </label>
           <input
             id="firstname"
             v-model="state.firstName"
@@ -142,7 +143,7 @@ const invokeUpdate = async (): Promise<void> => {
             type="text"
             autocomplete="firstname"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="Enter first name..."
             @blur="$v.firstName.$touch()"
           />
@@ -156,9 +157,10 @@ const invokeUpdate = async (): Promise<void> => {
         <div>
           <label
             for="lastname"
-            class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >Last name</label
+            class="block mb-2 text-sm font-medium text-gray-500"
           >
+            Last name
+          </label>
           <input
             id="lastname"
             v-model="state.lastName"
@@ -166,7 +168,7 @@ const invokeUpdate = async (): Promise<void> => {
             type="text"
             autocomplete="lastname"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="Enter last name..."
             @blur="$v.lastName.$touch()"
           />
@@ -180,9 +182,10 @@ const invokeUpdate = async (): Promise<void> => {
         <div>
           <label
             for="email"
-            class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >Your email</label
+            class="block mb-2 text-sm font-medium text-gray-500"
           >
+            Your email
+          </label>
           <input
             id="email"
             v-model="state.email"
@@ -190,7 +193,7 @@ const invokeUpdate = async (): Promise<void> => {
             type="email"
             autocomplete="email"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="Enter the email..."
             @blur="$v.email.$touch()"
           />
@@ -204,9 +207,10 @@ const invokeUpdate = async (): Promise<void> => {
         <div v-if="isEmailChanging">
           <label
             for="email-confirm"
-            class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >Confirm e-mail</label
+            class="block mb-2 text-sm font-medium text-gray-500"
           >
+            Confirm e-mail
+          </label>
           <input
             id="email-confirm"
             v-model="state.emailConfirmation"
@@ -214,7 +218,7 @@ const invokeUpdate = async (): Promise<void> => {
             type="email"
             autocomplete="email-confirm"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="Enter the email..."
             @blur="$v.emailConfirmation.$touch()"
           />
@@ -228,9 +232,10 @@ const invokeUpdate = async (): Promise<void> => {
         <div v-if="isEmailChanging">
           <label
             for="password"
-            class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >Your password</label
+            class="block mb-2 text-sm font-medium text-gray-500"
           >
+            Your password
+          </label>
           <input
             id="password"
             v-model="state.password"
@@ -238,7 +243,7 @@ const invokeUpdate = async (): Promise<void> => {
             type="password"
             autocomplete="password"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
             @blur="$v.password.$touch()"
           />
@@ -256,7 +261,7 @@ const invokeUpdate = async (): Promise<void> => {
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
         >
-          Update password
+          Save changes
         </button>
       </div>
     </form>
