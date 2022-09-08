@@ -84,18 +84,15 @@ const invokeChange = async (): Promise<void> => {
     </div>
     <div class="text-sm text-gray-500">
       <div>
-        If you want to change the password to access your account, enter the
-        following information:
+        If you want to change the password to access your account, enter the following
+        information:
       </div>
       <div v-if="state.email">
         Your current email address is
         <span class="text-gray-900">{{ state.email }}</span>
       </div>
     </div>
-    <form
-      class="mt-8 space-y-6"
-      @submit.prevent="invokeChange"
-    >
+    <form class="mt-8 space-y-6" @submit.prevent="invokeChange">
       <div
         class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
         v-if="userErrorMessages.length"
@@ -117,7 +114,7 @@ const invokeChange = async (): Promise<void> => {
             type="password"
             autocomplete="current-password"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
           />
           <span
@@ -140,7 +137,7 @@ const invokeChange = async (): Promise<void> => {
             type="password"
             autocomplete="new-password"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
           />
           <span
@@ -163,7 +160,7 @@ const invokeChange = async (): Promise<void> => {
             type="password"
             autocomplete="repeat-password"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
           />
           <span
@@ -180,7 +177,7 @@ const invokeChange = async (): Promise<void> => {
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
         >
-          Update password
+          Change password
         </button>
       </div>
     </form>
