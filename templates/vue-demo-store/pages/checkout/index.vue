@@ -79,7 +79,6 @@ const registerPayload = computed(() => ({
   countryId: billingAddress.countryId,
   salutationId: billingAddress.salutationId,
   billingAddress,
-  storefrontUrl: window.location.origin,
 }));
 
 const placeOrder = async () => {

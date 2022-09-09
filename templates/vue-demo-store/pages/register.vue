@@ -74,10 +74,7 @@ const invokeSubmit = async () => {
   if (valid) {
     try {
       loading.value = true;
-      const response = await register({
-        ...state,
-        storefrontUrl: window.location.origin,
-      });
+      const response = await register(state);
       if (response) router.push("/");
     } catch (error) {
       console.error(error);

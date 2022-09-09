@@ -21,7 +21,7 @@ import {
   Salutation,
   ShopwareSearchParams,
 } from "@shopware-pwa/types";
-import { useShopwareContext, useCart } from ".";
+import { useShopwareContext, useCart, useInternationalization } from ".";
 // import {
 //   IInterceptorCallbackFunction,
 //   INTERCEPTOR_KEYS,
@@ -92,6 +92,7 @@ export function useUser(): IUseUser {
   const contextName = COMPOSABLE_NAME;
 
   const { apiInstance } = useShopwareContext();
+  const { getStorefrontUrl } = useInternationalization();
   // const { broadcast, intercept } = useIntercept();
   // const { refreshSessionContext } = useSessionContext();
   const { refreshCart } = useCart();
@@ -155,7 +156,10 @@ export function useUser(): IUseUser {
     loading.value = true;
     errors.register = [];
     try {
-      const customer = await apiRegister(params as any, apiInstance);
+      const customer = await apiRegister(
+        { ...params, storefrontUrl: getStorefrontUrl() } as any,
+        apiInstance
+      );
       // broadcast(INTERCEPTOR_KEYS.USER_REGISTER, { customer });
       storeUser.value = (customer as Customer) || {};
       // refreshSessionContext();
