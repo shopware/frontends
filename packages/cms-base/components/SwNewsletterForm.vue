@@ -5,7 +5,10 @@ import {
   newsletterSubscribe,
   newsletterUnsubscribe,
 } from "@shopware-pwa/api-client";
-import { CmsElementForm } from "@shopware-pwa/composables-next";
+import {
+  CmsElementForm,
+  useInternationalization,
+} from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
 import LoadingCircle from "./icons/LoadingCircle.vue";
 
@@ -31,6 +34,7 @@ const subscriptionOptions: {
 const { getSalutations } = useSalutations();
 const { apiInstance } = useShopwareContext();
 const { getConfigValue } = useCmsElementConfig(props.content);
+const { getStorefrontUrl } = useInternationalization();
 
 const getFormTitle = computed(() => getConfigValue("title"));
 const state = reactive({
@@ -83,10 +87,7 @@ const invokeSubmit = async () => {
         await newsletterSubscribe(
           {
             ...state,
-            storefrontUrl:
-              window &&
-              window.location &&
-              `${window.location.protocol}//${window.location.hostname}`,
+            storefrontUrl: getStorefrontUrl(),
           },
           apiInstance
         );
