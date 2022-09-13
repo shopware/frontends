@@ -44,9 +44,7 @@ const { cartItems, totalPrice } = useCart();
           To: "translate-x-full"
       -->
         <div v-if="isOpen" class="pointer-events-auto w-screen max-w-md">
-          <div
-            class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl"
-          >
+          <div class="flex h-full flex-col bg-white shadow-xl">
             <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
               <div class="flex items-start justify-between">
                 <h2
@@ -111,11 +109,19 @@ const { cartItems, totalPrice } = useCart();
                 <NuxtLink
                   class="flex items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
                   to="/checkout"
-                  @click="isOpen = false"
                   data-testid="cart-checkout-link"
+                  @click="isOpen = false"
                 >
                   Checkout
                 </NuxtLink>
+
+                <RouterLink
+                  class="flex items-center justify-center py-3 text-sm font-medium text-brand-dark"
+                  to="/checkout/cart"
+                  @click="isOpen = false"
+                >
+                  Go to shopping cart
+                </RouterLink>
               </div>
               <div
                 class="mt-6 flex justify-center text-center text-sm text-brand-dark"
@@ -125,8 +131,8 @@ const { cartItems, totalPrice } = useCart();
                   <button
                     type="button"
                     class="font-medium"
-                    @click="isOpen = false"
                     data-testid="cart-continue-button"
+                    @click="isOpen = false"
                   >
                     Continue Shopping<span aria-hidden="true"> &rarr;</span>
                   </button>

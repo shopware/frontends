@@ -473,7 +473,7 @@ const submitBillingAddress = async (e: Event) => {
                     :key="cartItem.id"
                     class="flex py-6"
                   >
-                    <CheckoutSwCartItem :cart-item="cartItem" />
+                    <CheckoutCartItem :cart-item="cartItem" />
                   </li>
                 </ul>
               </div>
