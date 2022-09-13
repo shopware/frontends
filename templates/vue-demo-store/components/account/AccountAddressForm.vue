@@ -149,7 +149,10 @@ const invokeSave = async (): Promise<void> => {
             </div>
 
             <div class="col-span-6 sm:col-span-6 lg:col-span-4">
-              <label for="city" class="block mb-2 text-sm font-medium text-gray-500">
+              <label
+                for="city"
+                class="block mb-2 text-sm font-medium text-gray-500"
+              >
                 City
               </label>
               <input

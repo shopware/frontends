@@ -5,8 +5,8 @@ export default {
 </script>
 <template>
   <div>
-    <SwModal />
-    <SwHeader />
+    <SharedModal />
+    <LayoutHeader />
     <LayoutNotifications />
     <div class="max-w-screen-xl mx-auto">
       <slot />
