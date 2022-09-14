@@ -2,9 +2,15 @@
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { LineItem, PropertyGroupOptionCart } from "@shopware-pwa/types";
 
-const props = defineProps<{
-  cartItem: LineItem;
-}>();
+const props = withDefaults(
+  defineProps<{
+    cartItem: LineItem;
+    maxQty?: number;
+  }>(),
+  {
+    maxQty: 100,
+  }
+);
 
 const isLoading = ref(false);
 
@@ -88,7 +94,11 @@ const removeCartItem = async () => {
         name="quantity"
         class="mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       >
-        <option v-for="entry in itemStock" :key="entry" :value="entry">
+        <option
+          v-for="entry in itemStock > maxQty ? maxQty : itemStock"
+          :key="entry"
+          :value="entry"
+        >
           {{ entry }}
         </option>
       </select>
