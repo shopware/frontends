@@ -3,39 +3,34 @@ import {
   getCategoryUrl,
   getCategoryImageUrl,
 } from "@shopware-pwa/helpers-next";
+import { Category } from "@shopware-pwa/types";
 
 const { navigationElements } = useNavigation();
 
-const isSideMenuOpened = inject("isSideMenuOpened");
-const collapseItems = ref<Array<{ id: string; isCollapsed: boolean }>>([]);
+const isSideMenuOpened = ref<boolean>(false);
+const expandedIds = ref<Array<string>>([]);
 
-onMounted(() => {
-  if (navigationElements.value) {
-    for (let navigationElement of navigationElements.value) {
-      collapseItems.value.push({
-        id: navigationElement.id,
-        isCollapsed: true,
-      });
-    }
+function isCollapsed(navigationelement: Category): boolean {
+  return !expandedIds.value.includes(navigationelement.id);
+}
+
+const sideMenuElement = ref(null);
+onClickOutside(sideMenuElement, () => (isSideMenuOpened.value = false));
+
+const toggleCollapse = (navigationElement: Category) => {
+  if (!isCollapsed(navigationElement)) {
+    expandedIds.value = expandedIds.value.filter(
+      (el) => el !== navigationElement.id
+    );
+  } else {
+    expandedIds.value.push(navigationElement.id);
   }
-});
-
-const triggerCollapse = (id: string) => {
-  const newCollapseItems = collapseItems.value.map((item) => {
-    if (item.id === id) {
-      item.isCollapsed = !item.isCollapsed;
-    }
-
-    return item;
-  });
-
-  collapseItems.value = newCollapseItems;
 };
 </script>
 
 <template>
   <button class="md:hidden" @click="isSideMenuOpened = true" aria-label="menu">
-    <div i-carbon-menu text-xl />
+    <div class="i-carbon-menu text-xl" />
   </button>
   <client-only>
     <div
@@ -45,9 +40,10 @@ const triggerCollapse = (id: string) => {
       aria-modal="true"
     >
       <div class="fixed inset-0 bg-black opacity-25"></div>
-      <div class="fixed inset-0 z-40 flex" @click="isSideMenuOpened = false">
+      <div class="fixed inset-0 z-40 flex">
         <div
           class="relative flex flex-col w-full max-w-xs overflow-y-auto bg-white shadow-xl"
+          ref="sideMenuElement"
         >
           <div class="flex px-4 py-5">
             <button
@@ -56,16 +52,15 @@ const triggerCollapse = (id: string) => {
               @click="isSideMenuOpened = false"
             >
               <span class="sr-only">Close menu</span>
-              <div i-carbon-close text-3xl />
+              <div class="i-carbon-close text-3xl" />
             </button>
           </div>
-          <!-- <client-only></client-only> -->
           <div class="max-w-2xl">
             <aside aria-label="Sidebar">
               <div class="overflow-y-auto">
                 <ul class="flex flex-col p-0 space-y-2">
                   <li
-                    v-for="(navigationElement, index) in navigationElements"
+                    v-for="navigationElement in navigationElements"
                     :key="navigationElement.id"
                   >
                     <router-link
@@ -79,23 +74,23 @@ const triggerCollapse = (id: string) => {
                       <button
                         class="flex items-center w-12 p-4 -m-4 h-11"
                         v-if="navigationElement?.children?.length"
-                        @click.stop.prevent="
-                          triggerCollapse(navigationElement.id)
-                        "
+                        @click.stop.prevent="toggleCollapse(navigationElement)"
                       >
-                        <div
-                          v-if="!collapseItems[index]?.isCollapsed"
-                          i-carbon-chevron-up
-                          text-xl
-                        />
-                        <div v-else i-carbon-chevron-down text-xl />
+                        <span
+                          :class="[
+                            'text-xl',
+                            !isCollapsed(navigationElement)
+                              ? 'i-carbon-chevron-up '
+                              : 'i-carbon-chevron-down',
+                          ]"
+                        ></span>
                       </button>
                     </router-link>
 
                     <div
                       v-if="
                         navigationElement.media &&
-                        !collapseItems[index]?.isCollapsed
+                        !isCollapsed(navigationElement)
                       "
                       class="relative"
                     >
@@ -110,7 +105,7 @@ const triggerCollapse = (id: string) => {
                     <ul
                       v-if="
                         navigationElement?.children?.length &&
-                        !collapseItems[index]?.isCollapsed
+                        !isCollapsed(navigationElement)
                       "
                       class="px-0 py-2 m-0"
                     >
