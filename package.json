@@ -21,8 +21,8 @@
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "simple-git-hooks": "^2.8.0",
-    "turbo": "^1.4.3",
-    "vercel": "^28.2.0"
+    "turbo": "^1.4.7",
+    "vercel": "^28.2.5"
   },
   "engines": {
     "node": ">=16.0.0"
