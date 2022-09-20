@@ -17,16 +17,16 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "3.0.0-rc.9",
-    "@shopware-pwa/api-client": "workspace:*",
-    "@shopware-pwa/composables-next": "workspace:*"
+    "@nuxt/kit": "^3.0.0-rc.8",
+    "@shopware-pwa/composables-next": "workspace:*",
+    "@shopware-pwa/api-client": "workspace:*"
   },
   "devDependencies": {
-    "@nuxt/schema": "3.0.0-rc.9",
+    "@nuxt/schema": "^3.0.0-rc.8",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
-    "typescript": "^4.8.3",
-    "unbuild": "^0.8.11"
+    "typescript": "^4.8.2",
+    "unbuild": "^0.8.9"
   },
   "repository": {
     "type": "git",

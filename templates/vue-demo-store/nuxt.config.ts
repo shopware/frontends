@@ -1,5 +1,6 @@
 import { defineNuxtConfig } from "nuxt";
 import transformerDirective from "@unocss/transformer-directives";
+import presetIcons from "@unocss/preset-icons";
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
@@ -43,7 +44,7 @@ export default defineNuxtConfig({
   },
   router: {
     options: {
-      linkExactActiveClass: "text-brand-primary",
-    },
+      linkExactActiveClass: 'text-brand-primary',
+    }
   },
 });
