@@ -29,7 +29,6 @@ stages: # List of stages for jobs, and their order of execution
   - build
   - deploy
   - test
-  - mr
 
 before_script:
   - curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@7
@@ -62,15 +61,6 @@ unit-test-job: # This job runs in the test stage.
   script:
     - pnpm install
     - pnpm run test
-
-commitlint-test-job: # This job runs in the test stage.
-  stage: mr
-  interruptible: true
-  script:
-    - pnpm install
-    - echo "${CI_MERGE_REQUEST_TITLE}" | pnpm exec commitlint
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 lint-test-job: # This job also runs in the test stage.
   stage: build # It can run at the same time as unit-test-job (in parallel).
