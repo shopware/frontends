@@ -38,6 +38,9 @@ const modalHandler = {
 };
 
 provide("modal", { modalContent, modalProps, ...modalHandler });
+
+const isSideMenuOpened = ref(false);
+provide("isSideMenuOpened", isSideMenuOpened);
 </script>
 
 <template>

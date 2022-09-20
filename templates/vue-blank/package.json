@@ -7,14 +7,11 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview"
   },
-  "dependencies": {
-    "vue": "^3.2.39"
-  },
   "devDependencies": {
-    "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/nuxt3-module": "workspace:*",
-    "@vueuse/nuxt": "^9.2.0",
-    "nuxt": "3.0.0-rc.9"
+    "@shopware-pwa/api-client": "workspace:*",
+    "@vueuse/nuxt": "^9.1.1",
+    "nuxt": "^3.0.0-rc.8"
   }
 }

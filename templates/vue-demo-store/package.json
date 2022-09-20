@@ -9,23 +9,23 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/cms-base": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware-pwa/nuxt3-module": "workspace:*",
+    "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/types": "workspace:*",
-    "@unocss/nuxt": "^0.45.21",
+    "@unocss/nuxt": "^0.45.13",
     "@vuelidate/core": "^2.0.0-alpha.44",
     "@vuelidate/validators": "^2.0.0-alpha.31",
-    "@vueuse/nuxt": "^9.2.0",
-    "vue": "^3.2.39"
+    "@vueuse/nuxt": "^9.1.1",
+    "vue": "^3.2.37"
   },
   "devDependencies": {
-    "@vue/eslint-config-typescript": "^11.0.1",
-    "eslint-plugin-vue": "^9.5.1",
-    "nuxt": "3.0.0-rc.9",
-    "typescript": "^4.8.3",
-    "vue-eslint-parser": "^9.1.0"
+    "@vue/eslint-config-typescript": "^11.0.0",
+    "eslint-plugin-vue": "^9.4.0",
+    "nuxt": "^3.0.0-rc.8",
+    "typescript": "^4.8.2",
+    "vue-eslint-parser": "^9.0.3"
   }
 }
