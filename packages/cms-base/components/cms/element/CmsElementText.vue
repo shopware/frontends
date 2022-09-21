@@ -2,21 +2,75 @@
 import type { CmsElementText } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import { ComputedRef, CSSProperties } from "vue";
-
+// @ts-ignore
+import htmlToVue from "html-to-vue";
+// @ts-ignore
+import he from "he";
+const { decode } = he;
+// @ts-ignore
+const { renderHtml, getOptionsFromNode } = htmlToVue;
 const props = defineProps<{
   content: CmsElementText;
 }>();
-
+const context = getCurrentInstance();
 const { getConfigValue } = useCmsElementConfig(props.content);
-
 const style: ComputedRef<CSSProperties> = computed(() => ({
   alignItems: getConfigValue("verticalAlign"),
 }));
-
 const hasVerticalAlignment = computed(() => !!style.value.alignItems);
-
 const CmsTextRender = () => {
-  return h("div", { innerHTML: getConfigValue("content") });
+  const config = {
+    textTransformer: (text: string) => decode(text),
+    extraComponentsMap: {
+      link: {
+        conditions(node: any) {
+          return (
+            node.type === "tag" &&
+            node.name === "a" &&
+            !node.attrs?.class?.match(/btn\s?/)
+          );
+        },
+        renderer(node: any, children: any, createElement: any) {
+          return createElement(
+            "a",
+            {
+              class:
+                "underline text-base font-normal text-brand-primary hover:text-gray-900",
+              ...getOptionsFromNode(node).attrs,
+            },
+            [...children]
+          );
+        },
+      },
+      button: {
+        conditions(node: any) {
+          return (
+            node.type === "tag" &&
+            node.name === "a" &&
+            node.attrs?.class?.match(/btn\s?/)
+          );
+        },
+        renderer(node: any, children: any, createElement: any) {
+          const btnClass =
+            "rounded-md py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
+          const _class = node?.attrs?.class
+            .replace("btn-secondary", `${btnClass} bg-brand-dark text-white`)
+            .replace("btn-primary", `${btnClass} bg-brand-primary text-white`);
+
+          return createElement(
+            "a",
+            {
+              class: _class,
+              ...getOptionsFromNode(node).attrs,
+            },
+            [...children]
+          );
+        },
+      },
+    },
+  };
+  const rawHtml = getConfigValue("content") || "<div></div>";
+  return renderHtml(rawHtml, config, h, context);
 };
 </script>
 <template>
@@ -37,22 +91,18 @@ h5 {
   margin-bottom: 10px;
   font-weight: 600;
 }
-
 h1 {
   line-height: 2.5rem;
   font-size: 2.25rem;
 }
-
 h2 {
   line-height: 2rem;
   font-size: 1.75rem;
 }
-
 h3 {
   line-height: 1.5rem;
   font-size: 1.25rem;
 }
-
 ol,
 ul,
 dl {
