@@ -73,6 +73,8 @@ importers:
       eslint: 8.22.0
       eslint-config-shopware: workspace:*
       eslint-plugin-vue: ^9.4.0
+      he: ^1.2.0
+      html-to-vue: ^1.4.0
       tsconfig: workspace:*
       typescript: ^4.8.2
       unbuild: ^0.8.9
@@ -83,6 +85,8 @@ importers:
       '@shopware-pwa/api-client': link:../api-client
       '@shopware-pwa/composables-next': link:../composables
       '@shopware-pwa/helpers-next': link:../helpers
+      he: 1.2.0
+      html-to-vue: 1.4.0
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.8
       '@shopware-pwa/types': link:../types
@@ -5958,7 +5962,6 @@ packages:
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
-    dev: true
 
   /history/4.10.1:
     resolution: {integrity: sha512-36nwAD620w12kuzPAsyINPWJqlNbij+hpK1k9XRloDtym8mxzGYl2c17LnV6IAGB2Dmg4tEa7G7DlawS0+qjew==}
@@ -5992,10 +5995,22 @@ packages:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
     dev: true
 
+  /html-parse-stringify2/2.0.1:
+    resolution: {integrity: sha512-wMKQ3aJ/dwXzDHPpA7XgsRXXCkEhHkAF6Ioh7D51lgZO7Qy0LmcFddC9TI/qNQJvSM1KL8KbcR3FtuybsrzFlQ==}
+    dependencies:
+      void-elements: 2.0.1
+    dev: false
+
   /html-tags/3.2.0:
     resolution: {integrity: sha512-vy7ClnArOZwCnqZgvv+ddgHgJiAFXe3Ge9ML5/mBctVJoUoYPCdxVucOywjDARn6CVoh3dRSFdPHy2sX80L0Wg==}
     engines: {node: '>=8'}
     dev: true
+
+  /html-to-vue/1.4.0:
+    resolution: {integrity: sha512-iv4MEFDSRl/+folRXd7ke8hqqHOIunR/ymm+EnUk3t0laQhsd9RiDdPpBBeOgd0RdMUJXc+3NQfkQajh0Spb1Q==}
+    dependencies:
+      html-parse-stringify2: 2.0.1
+    dev: false
 
   /html-void-elements/2.0.1:
     resolution: {integrity: sha512-0quDb7s97CfemeJAnW9wC0hw78MtW7NU3hqtCD75g2vFlDLt36llsYD7uB7SUzojLMP24N5IatXf7ylGXiGG9A==}
@@ -10838,6 +10853,11 @@ packages:
       - supports-color
       - terser
     dev: true
+
+  /void-elements/2.0.1:
+    resolution: {integrity: sha512-qZKX4RnBzH2ugr8Lxa7x+0V6XD9Sb/ouARtiasEQCHB1EVU4NXtmHsDDrx1dO4ne5fc3J6EW05BP1Dl0z0iung==}
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   /vscode-jsonrpc/6.0.0:
     resolution: {integrity: sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==}
