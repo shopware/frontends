@@ -6,11 +6,11 @@ export default {
 
 <script setup lang="ts">
 import { getProducts } from "@shopware-pwa/api-client";
-import { Shopware } from "@shopware-pwa/composables-next";
+import { ClientApiError, Product } from "@shopware-pwa/types";
 
 const { items } = useWishlist();
 const { apiInstance } = useShopwareContext();
-const products = ref<Shopware.Product[]>([]);
+const products = ref<Product[]>([]);
 const isLoading = ref(false);
 
 const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
@@ -30,7 +30,7 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   } catch (error) {
     console.error(
       "[wishlist][loadProductsByItemIds]",
-      (error as Shopware.ClientApiError).messages
+      (error as ClientApiError).messages
     );
   }
 

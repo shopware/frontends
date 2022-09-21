@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Shopware } from "@shopware-pwa/composables-next";
+import type { CmsPage } from "@shopware-pwa/types";
 
 defineProps<{
-  cmsPage: Shopware.CmsPage;
+  cmsPage: CmsPage;
 }>();
 </script>
 
