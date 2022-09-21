@@ -10,28 +10,17 @@ import { useShopwareContext } from "./useShopwareContext";
 const NO_PRODUCT_REFERENCE_ERROR =
   "Associations cannot be loaded for undefined product";
 
-/**
- * @beta
- */
-export type IUseProduct = {
+export type UseProductReturn = {
   product: Ref<Product | null>;
-  search: Search;
+  search: (path: string, associations?: any) => any;
   loading: Ref<boolean>;
   error: Ref<any>;
   [x: string]: any;
 };
 
-/**
- * @beta
- */
-export type Search = (path: string, associations?: any) => any;
-
-/**
- * @beta
- */
 export function useProduct(params?: {
   product?: Ref<Product> | Product;
-}): IUseProduct {
+}): UseProductReturn {
   const COMPOSABLE_NAME = "useProduct";
   const contextName = COMPOSABLE_NAME;
 

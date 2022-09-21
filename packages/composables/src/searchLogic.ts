@@ -8,6 +8,7 @@ import {
   getLandingPage,
   getCategoryDetailsEndpoint,
 } from "@shopware-pwa/api-client";
+import { Category } from "@shopware-pwa/types";
 
 import {
   SearchCmsResult,
@@ -124,7 +125,7 @@ export async function searchCms(
   const seoUrlEntity = await getSeoUrlEntityByPath(path, apiInstance);
 
   if (seoUrlEntity?.routeName === CATEGORY_ROUTE_NAME) {
-    const { data: category } = await invokePost(
+    const { data: category } = await invokePost<Category>(
       {
         address: getCategoryDetailsEndpoint(seoUrlEntity.foreignKey),
         payload: cmsAssociations,

@@ -4,7 +4,6 @@ import {
   ClientApiError,
   CmsPageResponse,
   CmsResourceType,
-  CmsResponse,
   CmsPage,
 } from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
@@ -18,17 +17,16 @@ import { useShopwareContext } from "./useShopwareContext";
 // } from "@shopware-pwa/composables";
 // import merge from "lodash/merge";
 
-/**
- * @beta
- */
-export function useCms(): {
+export type UseCmsReturn = {
   page: ComputedRef<CmsPage>;
   resourceType: ComputedRef<CmsResourceType | null>;
   resourceIdentifier: ComputedRef<string | null>;
   currentSearchPathKey: ComputedRef<string | null>;
   search: (path: string, query?: any) => Promise<CmsPageResponse | null>;
   cmsContent: ComputedRef<CmsPageResponse>;
-} {
+};
+
+export function useCms(): UseCmsReturn {
   // Handle CMS context
   const cmsContext: Ref<any> = inject("swCmsContext", ref(null));
   provide("swCmsContext", cmsContext);
