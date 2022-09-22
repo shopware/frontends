@@ -124,3 +124,12 @@ e2e tests:
     when: on_failure
     paths:
       - apps/e2e-tests/playwright-report/
+
+lighthouse tests:
+  stage: test
+  only:
+    - schedules
+  image: cypress/browsers:node18.6.0-chrome105-ff104
+  script:
+    - yarn global add @lhci/cli@0.9.x
+    - LHCI_BUILD_CONTEXT__CURRENT_HASH=$CI_JOB_ID lhci autorun || echo "LHCI failed!"
