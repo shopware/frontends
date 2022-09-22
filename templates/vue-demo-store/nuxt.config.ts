@@ -44,7 +44,7 @@ export default defineNuxtConfig({
   },
   router: {
     options: {
-      linkExactActiveClass: 'text-brand-primary',
-    }
+      linkExactActiveClass: "text-brand-primary",
+    },
   },
 });
