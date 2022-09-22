@@ -1,30 +1,14 @@
 <script setup lang="ts">
-import {
-  getProductTierPrices,
-  getProductCalculatedListingPrice,
-  getProductFromPrice,
-} from "@shopware-pwa/helpers-next";
-
+import { useProductPrice } from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
 
 const props = defineProps<{
   product: Product;
 }>();
 
-const originalPrice = computed(() => {
-  const tierPrices = getProductTierPrices(props.product);
-  return (
-    (tierPrices.length && tierPrices[0] && tierPrices[0].unitPrice) ||
-    getProductCalculatedListingPrice(props.product)
-  );
-});
-
-const price = computed(() => props.product.calculatedPrice.totalPrice);
-
-const showOriginalPrice = computed(
-  () => price && originalPrice && (originalPrice.value || 0) > price.value
+const { originalPrice, price, showOriginalPrice, fromPrice } = useProductPrice(
+  props.product
 );
-const fromPrice = getProductFromPrice(props.product);
 </script>
 
 <template>

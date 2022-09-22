@@ -31,6 +31,7 @@ export * from "./usePrice";
 export * from "./userCustomerOrders";
 export * from "./createSpark";
 export * from "./useAddress";
+export * from "./useProductPrice";
 export * from "./useInternationalization";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
