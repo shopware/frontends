@@ -23,6 +23,7 @@
   "devDependencies": {
     "@shopware-pwa/types": "workspace:*",
     "@vitest/coverage-c8": "^0.22.1",
+    "@vue/test-utils": "^2.0.2",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "^6.0.4",
     "tsconfig": "workspace:*",
