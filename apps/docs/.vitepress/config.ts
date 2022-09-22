@@ -1,6 +1,7 @@
 import { defineConfigWithTheme } from "vitepress";
 import type { Config as ThemeConfig } from "vitepress-shopware-docs";
 import baseConfig from "vitepress-shopware-docs/config";
+import { MarkdownTransform } from "./plugins/markdownTransform";
 
 import nav from "./navigation";
 
@@ -109,6 +110,7 @@ export default defineConfigWithTheme<ThemeConfig>({
     json: {
       stringify: true,
     },
+    plugins: [MarkdownTransform()],
   },
 
   vue: {

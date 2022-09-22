@@ -2,14 +2,41 @@
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { LineItem, PropertyGroupOptionCart } from "@shopware-pwa/types";
 
-const props = defineProps<{
-  cartItem: LineItem;
-}>();
+const props = withDefaults(
+  defineProps<{
+    cartItem: LineItem;
+    maxQty?: number;
+  }>(),
+  {
+    maxQty: 100,
+  }
+);
 
 const isLoading = ref(false);
 
-const { itemOptions, removeItem, itemRegularPrice, itemQuantity, isPromotion } =
-  useCartItem({ cartItem: props.cartItem });
+const {
+  itemOptions,
+  removeItem,
+  itemRegularPrice,
+  itemQuantity,
+  isPromotion,
+  itemStock,
+  changeItemQuantity,
+} = useCartItem({ cartItem: props.cartItem });
+
+const quantity = ref(itemQuantity.value);
+
+const updateQuantity = async (quantity: number | undefined) => {
+  if (quantity === itemQuantity.value) return;
+
+  isLoading.value = true;
+
+  await changeItemQuantity(Number(quantity));
+
+  isLoading.value = false;
+};
+
+watch(quantity, () => updateQuantity(quantity.value));
 
 const removeCartItem = async () => {
   isLoading.value = true;
@@ -42,7 +69,7 @@ const removeCartItem = async () => {
           data-testid="cart-product-price"
         />
       </div>
-      CART ITEM
+
       <p
         v-if="itemOptions"
         class="mt-1 text-sm text-gray-500"
@@ -57,19 +84,40 @@ const removeCartItem = async () => {
         </span>
       </p>
     </div>
-    <div class="flex flex-1 items-end justify-between text-sm">
-      <p class="text-gray-500" data-testid="cart-product-qty">
-        Qty {{ itemQuantity }}
-      </p>
-
+    <div
+      v-if="!isPromotion"
+      class="flex flex-1 items-end justify-between text-sm"
+    >
+      <select
+        v-if="itemStock && itemStock > 0"
+        v-model="quantity"
+        name="quantity"
+        class="mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      >
+        <option
+          v-for="entry in itemStock > maxQty ? maxQty : itemStock"
+          :key="entry"
+          :value="entry"
+        >
+          {{ entry }}
+        </option>
+      </select>
+      <!-- Stock is lower than 1 -->
+      <div v-else>
+        <div
+          class="mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+          {{ quantity }}
+        </div>
+      </div>
       <div class="flex">
         <button
           v-if="!isPromotion"
           type="button"
           :class="{ 'animate-pulse': isLoading }"
           class="font-medium text-brand-dark"
-          @click="removeCartItem"
           data-testid="product-remove-button"
+          @click="removeCartItem"
         >
           Remove
         </button>

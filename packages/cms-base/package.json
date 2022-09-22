@@ -22,7 +22,9 @@
     "@nuxt/kit": "^3.0.0-rc.8",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "@shopware-pwa/api-client": "workspace:*"
+    "@shopware-pwa/api-client": "workspace:*",
+    "html-to-vue": "^1.4.0",
+    "he": "^1.2.0"
   },
   "devDependencies": {
     "@nuxt/schema": "^3.0.0-rc.8",

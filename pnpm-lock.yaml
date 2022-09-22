@@ -22,14 +22,20 @@ importers:
 
   apps/docs:
     specifiers:
+      '@shopware-pwa/api-client': workspace:*
+      '@shopware-pwa/composables-next': workspace:*
+      '@shopware-pwa/helpers-next': workspace:*
       '@types/markdown-it': ^12.2.3
       '@types/node': ^18.7.13
-      vitepress: ^1.0.0-alpha.10
-      vitepress-shopware-docs: ^0.0.8
+      vitepress: ^1.0.0-alpha.12
+      vitepress-shopware-docs: ^0.0.9
       vue: ^3.2.37
     dependencies:
-      vitepress: 1.0.0-alpha.10
-      vitepress-shopware-docs: 0.0.8_vue@3.2.37
+      '@shopware-pwa/api-client': link:../../packages/api-client
+      '@shopware-pwa/composables-next': link:../../packages/composables
+      '@shopware-pwa/helpers-next': link:../../packages/helpers
+      vitepress: 1.0.0-alpha.12
+      vitepress-shopware-docs: 0.0.9_vue@3.2.37
       vue: 3.2.37
     devDependencies:
       '@types/markdown-it': 12.2.3
@@ -77,6 +83,8 @@ importers:
       eslint: 8.22.0
       eslint-config-shopware: workspace:*
       eslint-plugin-vue: ^9.4.0
+      he: ^1.2.0
+      html-to-vue: ^1.4.0
       tsconfig: workspace:*
       typescript: ^4.8.2
       unbuild: ^0.8.9
@@ -87,6 +95,8 @@ importers:
       '@shopware-pwa/api-client': link:../api-client
       '@shopware-pwa/composables-next': link:../composables
       '@shopware-pwa/helpers-next': link:../helpers
+      he: 1.2.0
+      html-to-vue: 1.4.0
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.8
       '@shopware-pwa/types': link:../types
@@ -1390,7 +1400,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
-      '@react-types/shared': 3.9.0
+      '@react-types/shared': 3.14.0
     dev: false
 
   /@react-types/checkbox/3.3.2:
@@ -1406,7 +1416,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
-      '@react-types/shared': 3.9.0
+      '@react-types/shared': 3.14.0
     dev: false
 
   /@react-types/shared/3.14.0:
@@ -1427,7 +1437,7 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
       '@react-types/checkbox': 3.3.2
-      '@react-types/shared': 3.9.0
+      '@react-types/shared': 3.14.0
     dev: false
 
   /@react-types/textfield/3.3.0:
@@ -1435,7 +1445,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1
     dependencies:
-      '@react-types/shared': 3.9.0
+      '@react-types/shared': 3.14.0
     dev: false
 
   /@rehooks/component-size/1.0.3:
@@ -6334,7 +6344,6 @@ packages:
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
-    dev: true
 
   /history/4.10.1:
     resolution: {integrity: sha512-36nwAD620w12kuzPAsyINPWJqlNbij+hpK1k9XRloDtym8mxzGYl2c17LnV6IAGB2Dmg4tEa7G7DlawS0+qjew==}
@@ -6379,10 +6388,22 @@ packages:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
     dev: true
 
+  /html-parse-stringify2/2.0.1:
+    resolution: {integrity: sha512-wMKQ3aJ/dwXzDHPpA7XgsRXXCkEhHkAF6Ioh7D51lgZO7Qy0LmcFddC9TI/qNQJvSM1KL8KbcR3FtuybsrzFlQ==}
+    dependencies:
+      void-elements: 2.0.1
+    dev: false
+
   /html-tags/3.2.0:
     resolution: {integrity: sha512-vy7ClnArOZwCnqZgvv+ddgHgJiAFXe3Ge9ML5/mBctVJoUoYPCdxVucOywjDARn6CVoh3dRSFdPHy2sX80L0Wg==}
     engines: {node: '>=8'}
     dev: true
+
+  /html-to-vue/1.4.0:
+    resolution: {integrity: sha512-iv4MEFDSRl/+folRXd7ke8hqqHOIunR/ymm+EnUk3t0laQhsd9RiDdPpBBeOgd0RdMUJXc+3NQfkQajh0Spb1Q==}
+    dependencies:
+      html-parse-stringify2: 2.0.1
+    dev: false
 
   /html-void-elements/2.0.1:
     resolution: {integrity: sha512-0quDb7s97CfemeJAnW9wC0hw78MtW7NU3hqtCD75g2vFlDLt36llsYD7uB7SUzojLMP24N5IatXf7ylGXiGG9A==}
@@ -9632,14 +9653,6 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  /shiki/0.10.1:
-    resolution: {integrity: sha512-VsY7QJVzU51j5o1+DguUd+6vmCmZ5v/6gYu4vyYAhzjuNQU6P/vmSy4uQaOhvje031qQMiW0d2BwgMH52vqMng==}
-    dependencies:
-      jsonc-parser: 3.1.0
-      vscode-oniguruma: 1.6.2
-      vscode-textmate: 5.2.0
-    dev: false
-
   /shiki/0.11.1:
     resolution: {integrity: sha512-EugY9VASFuDqOexOgXR18ZV+TbFrQHeCpEYaXamO+SZlsnT/2LxuLBX25GGtIrwaEVFXUAbUQ601SWE2rMwWHA==}
     dependencies:
@@ -11330,8 +11343,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitepress-shopware-docs/0.0.8_vue@3.2.37:
-    resolution: {integrity: sha512-dbgzA0TKL9EOXfxUu2RUZeGOSZa0kqVIVkYV7oEAOlLqBAN9yuiZvl02PurHH5dVZKXGIzT9sX6Vpc/scnZNQg==}
+  /vitepress-shopware-docs/0.0.9_vue@3.2.37:
+    resolution: {integrity: sha512-qDKMuvDTU73zy+37TKskGsNjPACbycUR9z8aMq4eXgcEB+79I/8mYoFPOYpnq6eLIaqQKd2fjE7de9Z3ENqeQg==}
     dependencies:
       '@docsearch/css': 3.2.1
       '@docsearch/js': 3.2.1
@@ -11341,7 +11354,7 @@ packages:
       axios: 0.27.2
       body-scroll-lock: 3.1.5
       normalize.css: 8.0.1
-      shiki: 0.10.1
+      shiki: 0.11.1
       unocss: 0.44.7
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -11369,8 +11382,8 @@ packages:
       - xstate
     dev: false
 
-  /vitepress/1.0.0-alpha.10:
-    resolution: {integrity: sha512-RGPU+YApj2jaYplAIJUe+2qlDks9FzPX1QGK+7NdGByeCCVZg6z9eYWjjvfvA/sgCtG3yeJE/4/jCwlv4Y8bVw==}
+  /vitepress/1.0.0-alpha.12:
+    resolution: {integrity: sha512-++e7p9oxqk7RKz2fMNtrOAWmZSWVPozDuOG1owwntPRincC8/pIhPkJ9ojNHcHCHBylszJBsjkRqbseurZ7vCg==}
     hasBin: true
     dependencies:
       '@docsearch/css': 3.2.1
@@ -11513,6 +11526,11 @@ packages:
       - terser
     dev: true
 
+  /void-elements/2.0.1:
+    resolution: {integrity: sha512-qZKX4RnBzH2ugr8Lxa7x+0V6XD9Sb/ouARtiasEQCHB1EVU4NXtmHsDDrx1dO4ne5fc3J6EW05BP1Dl0z0iung==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   /vscode-jsonrpc/6.0.0:
     resolution: {integrity: sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==}
     engines: {node: '>=8.0.0 || >=10.0.0'}
@@ -11551,10 +11569,6 @@ packages:
 
   /vscode-oniguruma/1.6.2:
     resolution: {integrity: sha512-KH8+KKov5eS/9WhofZR8M8dMHWN2gTxjMsG4jd04YhpbPR91fUj7rYQ2/XjeHCJWbg7X++ApRIU9NUwM2vTvLA==}
-    dev: false
-
-  /vscode-textmate/5.2.0:
-    resolution: {integrity: sha512-Uw5ooOQxRASHgu6C7GVvUxisKXfSgW4oFlO+aa+PAkgmH89O3CXxEEzNRNtHSqtXFTl0nAC1uYj0GMSH27uwtQ==}
     dev: false
 
   /vscode-textmate/6.0.0:

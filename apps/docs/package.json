@@ -9,8 +9,11 @@
     "serve": "vitepress serve"
   },
   "dependencies": {
-    "vitepress": "^1.0.0-alpha.10",
-    "vitepress-shopware-docs": "^0.0.8",
+    "@shopware-pwa/composables-next": "workspace:*",
+    "@shopware-pwa/helpers-next": "workspace:*",
+    "@shopware-pwa/api-client": "workspace:*",
+    "vitepress": "^1.0.0-alpha.12",
+    "vitepress-shopware-docs": "^0.0.9",
     "vue": "^3.2.37"
   },
   "devDependencies": {
