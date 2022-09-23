@@ -89,8 +89,8 @@ const invokeSubmit = async () => {
   <div class="max-w-screen-xl mx-auto px-6 sm:px-4">
     <form
       class="w-full relative"
-      @submit.prevent="invokeSubmit"
       data-testid="registration-form"
+      @submit.prevent="invokeSubmit"
     >
       <h3 class="block border-b-1 mb-5 pb-2 font-bold">I am new here.</h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
@@ -98,6 +98,7 @@ const invokeSubmit = async () => {
           <label for="salutation">Salutation *</label>
           <select
             id="salutation"
+            v-model="state.salutationId"
             name="salutation"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :disabled="loading"
@@ -106,9 +107,8 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            v-model="state.salutationId"
-            @blur="$v.salutationId.$touch()"
             data-testid="registration-salutation-select"
+            @blur="$v.salutationId.$touch()"
           >
             <option disabled selected value="">Choose salutation...</option>
             <option
@@ -131,6 +131,7 @@ const invokeSubmit = async () => {
           <label for="first-name">First name *</label>
           <input
             id="first-name"
+            v-model="state.firstName"
             name="first-name"
             type="text"
             autocomplete="first-name"
@@ -140,11 +141,10 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.firstName.$touch()"
-            v-model="state.firstName"
             placeholder="Enter first name..."
             :disabled="loading"
             data-testid="registration-first-name-input"
+            @blur="$v.firstName.$touch()"
           />
           <span
             v-if="$v.firstName.$error"
@@ -158,20 +158,20 @@ const invokeSubmit = async () => {
           <label for="last-name">Last name *</label>
           <input
             id="last-name"
+            v-model="state.lastName"
             name="last-name"
             type="text"
             autocomplete="last-name"
-            v-model="state.lastName"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.lastName.$error
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.lastName.$touch()"
             placeholder="Enter last name..."
             :disabled="loading"
             data-testid="registration-last-name-input"
+            @blur="$v.lastName.$touch()"
           />
           <span
             v-if="$v.lastName.$error"
@@ -185,6 +185,7 @@ const invokeSubmit = async () => {
           <label for="email-address">Email address *</label>
           <input
             id="email-address"
+            v-model="state.email"
             name="email"
             type="email"
             autocomplete="email"
@@ -193,12 +194,11 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            v-model="state.email"
-            @blur="$v.email.$touch()"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             placeholder="Enter email address..."
             :disabled="loading"
             data-testid="registration-email-input"
+            @blur="$v.email.$touch()"
           />
           <span
             v-if="$v.email.$error"
@@ -212,6 +212,7 @@ const invokeSubmit = async () => {
           <label for="password">Password *</label>
           <input
             id="password"
+            v-model="state.password"
             name="password"
             type="password"
             autocomplete="password"
@@ -221,11 +222,10 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.password.$touch()"
-            v-model="state.password"
             placeholder="Enter password..."
             :disabled="loading"
             data-testid="registration-password-input"
+            @blur="$v.password.$touch()"
           />
           <span
             v-if="$v.password.$error"
@@ -242,6 +242,7 @@ const invokeSubmit = async () => {
           <label for="street">Street *</label>
           <input
             id="Street"
+            v-model="state.billingAddress.street"
             name="Street"
             type="text"
             autocomplete="Street"
@@ -251,11 +252,10 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.billingAddress.street.$touch()"
-            v-model="state.billingAddress.street"
             placeholder="Enter street..."
             :disabled="loading"
             data-testid="registration-street-input"
+            @blur="$v.billingAddress.street.$touch()"
           />
           <span
             v-if="$v.billingAddress.street.$error"
@@ -269,6 +269,7 @@ const invokeSubmit = async () => {
           <label for="zipcode">Zipcode *</label>
           <input
             id="zipcode"
+            v-model="state.billingAddress.zipcode"
             name="zipcode"
             type="text"
             autocomplete="zipcode"
@@ -278,11 +279,10 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.billingAddress.zipcode.$touch()"
-            v-model="state.billingAddress.zipcode"
             placeholder="Enter zipcode..."
             :disabled="loading"
             data-testid="registration-zipcode-input"
+            @blur="$v.billingAddress.zipcode.$touch()"
           />
           <span
             v-if="$v.billingAddress.zipcode.$error"
@@ -296,6 +296,7 @@ const invokeSubmit = async () => {
           <label for="city">City *</label>
           <input
             id="city"
+            v-model="state.billingAddress.city"
             name="city"
             type="text"
             autocomplete="city"
@@ -305,11 +306,10 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.billingAddress.city.$touch()"
-            v-model="state.billingAddress.city"
             placeholder="Enter city..."
             :disabled="loading"
             data-testid="registration-city-input"
+            @blur="$v.billingAddress.city.$touch()"
           />
           <span
             v-if="$v.billingAddress.city.$error"
@@ -323,6 +323,7 @@ const invokeSubmit = async () => {
           <label for="country">Country *</label>
           <select
             id="country"
+            v-model="state.billingAddress.countryId"
             name="country"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
@@ -330,10 +331,9 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            v-model="state.billingAddress.countryId"
-            @blur="$v.billingAddress.countryId.$touch()"
             :disabled="loading"
             data-testid="registration-country-select"
+            @blur="$v.billingAddress.countryId.$touch()"
           >
             <option disabled selected value="">Choose country...</option>
             <option

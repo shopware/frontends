@@ -30,7 +30,10 @@ provide("swNavigation-footer-navigation", footerData);
     <div class="m-10">
       <div class="account-inner">
         <div class="md:grid md:grid-cols-3 md:gap-6">
-          <aside class="hidden md:block lg:w-64 md:col-span-" aria-label="Sidebar">
+          <aside
+            class="hidden md:block lg:w-64 md:col-span-"
+            aria-label="Sidebar"
+          >
             <div
               class="overflow-y-auto py-4 px-3 bg-gray-50 text-base font-normal text-gray-500 rounded"
             >
@@ -68,9 +71,7 @@ provide("swNavigation-footer-navigation", footerData);
                   </router-link>
                 </li>
               </ul>
-              <ul
-                class="pt-4 mt-4 space-y-2 border-t border-gray-200"
-              >
+              <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200">
                 <li>
                   <router-link
                     to="/account/order"
