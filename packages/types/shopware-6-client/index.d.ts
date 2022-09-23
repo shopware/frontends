@@ -65,6 +65,7 @@ export * from "./models/content/media/MediaTranslation";
 export * from "./models/content/media/MediaType";
 export * from "./models/content/navigation/Navigation";
 export * from "./models/content/newsletter/NewsletterRecipient";
+export * from "./models/content/newsletter/NewsletterInput";
 export * from "./models/content/product/Product";
 export * from "./models/content/product/ProductConfiguratorSetting";
 export * from "./models/content/product/ProductKeywordDictionary";

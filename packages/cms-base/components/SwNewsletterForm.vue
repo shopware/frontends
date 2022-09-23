@@ -1,14 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import {
-  newsletterSubscribe,
-  newsletterUnsubscribe,
-} from "@shopware-pwa/api-client";
-import {
-  CmsElementForm,
-  useInternationalization,
-} from "@shopware-pwa/composables-next";
+import { CmsElementForm } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
 import LoadingCircle from "./icons/LoadingCircle.vue";
 
@@ -32,9 +25,8 @@ const subscriptionOptions: {
   },
 ];
 const { getSalutations } = useSalutations();
-const { apiInstance } = useShopwareContext();
 const { getConfigValue } = useCmsElementConfig(props.content);
-const { getStorefrontUrl } = useInternationalization();
+const { newsletterSubscribe, newsletterUnsubscribe } = useNewsletter();
 
 const getFormTitle = computed(() => getConfigValue("title"));
 const state = reactive({
@@ -84,20 +76,11 @@ const invokeSubmit = async () => {
     loading.value = true;
     try {
       if (state.option === "subscribe") {
-        await newsletterSubscribe(
-          {
-            ...state,
-            storefrontUrl: getStorefrontUrl(),
-          },
-          apiInstance
-        );
+        await newsletterSubscribe({
+          ...state,
+        });
       } else {
-        await newsletterUnsubscribe(
-          {
-            email: state.email,
-          },
-          apiInstance
-        );
+        await newsletterUnsubscribe(state.email);
       }
       formSent.value = true;
     } catch (e) {
