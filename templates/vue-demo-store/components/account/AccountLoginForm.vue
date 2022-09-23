@@ -119,7 +119,16 @@ const invokeLogin = async (): Promise<void> => {
             Sign in
           </button>
 
-          <slot name="action" />
+          <slot name="action">
+            <div @click="$emit('close')">
+              <nuxt-link
+                to="/register"
+                class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Sign up
+              </nuxt-link>
+            </div>
+          </slot>
         </div>
       </form>
     </div>

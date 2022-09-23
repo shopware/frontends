@@ -261,6 +261,7 @@ declare global {
   const useTransitionState: typeof import("vue")["useTransitionState"];
   const useUrlSearchParams: typeof import("@vueuse/core")["useUrlSearchParams"];
   const useUser: typeof import("@shopware-pwa/composables-next")["useUser"];
+  const useNewsletter: typeof import("@shopware-pwa/composables-next")["useNewsletter"];
   const useUserMedia: typeof import("@vueuse/core")["useUserMedia"];
   const useVModel: typeof import("@vueuse/core")["useVModel"];
   const useVModels: typeof import("@vueuse/core")["useVModels"];
@@ -547,6 +548,7 @@ declare module "vue" {
     useTransitionState: typeof import("vue")["useTransitionState"];
     useUrlSearchParams: typeof import("@vueuse/core")["useUrlSearchParams"];
     useUser: typeof import("@shopware-pwa/composables-next")["useUser"];
+    useNewsletter: typeof import("@shopware-pwa/composables-next")["useNewsletter"];
     useUserMedia: typeof import("@vueuse/core")["useUserMedia"];
     useVModel: typeof import("@vueuse/core")["useVModel"];
     useVModels: typeof import("@vueuse/core")["useVModels"];

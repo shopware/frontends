@@ -33,6 +33,7 @@ export * from "./createSpark";
 export * from "./useAddress";
 export * from "./useProductPrice";
 export * from "./useInternationalization";
+export * from "./useNewsletter";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   const componentName = content.type;
