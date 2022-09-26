@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-  <div class="container mb-8 mx-4">
+  <div class="container mb-8 mx-4 md:mx-auto">
     <IconsLoadingCircle v-if="loading" />
 
     <template v-else-if="products.length">
