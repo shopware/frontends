@@ -12,6 +12,8 @@
 # Stages run in sequential order, but jobs within stages run in parallel.
 #
 # For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
+variables:
+  DYNAMIC_ENVIRONMENT_URL: ""
 
 default:
   tags:
@@ -102,11 +104,12 @@ deploy-job: # This job runs in the deploy stage.
 
 e2e tests:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.25.1-focal
+  image: mcr.microsoft.com/playwright:v1.26.0-focal
   needs:
     - job: deploy-job
       artifacts: true
   script:
+    - echo "$DYNAMIC_ENVIRONMENT_URL"
     - echo "BASE_E2E_URL=$DYNAMIC_ENVIRONMENT_URL" >> .env
     - pnpm install
     - pnpm test:e2e

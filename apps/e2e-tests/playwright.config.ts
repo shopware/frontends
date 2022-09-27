@@ -19,7 +19,7 @@ const baseURL = process.env.BASE_E2E_URL || newLocal;
 console.log("Running tests for: ", baseURL);
 
 const config: PlaywrightTestConfig = {
-  testDir: "./src",
+  testDir: "./tests",
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
@@ -32,7 +32,7 @@ const config: PlaywrightTestConfig = {
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: false, //!!process.env.CI
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
