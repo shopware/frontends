@@ -53,7 +53,7 @@ A set of helper functions related to price formatting, translation handling, UI 
 
 **Project Template**
 
-A reference implementation of an eCommerce storefront, based on Tailwind.css, Vite, Nuxt 3 and Vue 3.
+A non-production-ready reference implementation of an eCommerce storefront, based on Tailwind.css, Vite, Nuxt 3 and Vue 3.
 
 ![Shopware Frontends Techstack](.readme/shopware-frontends-techstack.png)
 
