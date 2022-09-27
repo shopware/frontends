@@ -6,7 +6,7 @@
     <img src=".assets/shopware-frontends-logo-dark.png" class="hidden dark:block">
 </div>
 
-Shopware Frontends is a framework for building custom, cloud-native Shopware Storefronts.
+Shopware Frontends is a **framework** for building custom, headless storefronts with Shopware 6.
 
 <PageRef title="Why Shopware Frontends?" sub="Which problems does it solve" page="/why-shopware-frontends" />
 
