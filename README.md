@@ -5,7 +5,7 @@
 </div>
 
 <p align="center">
-	Shopware Frontends is a <strong>framework</strong> for building custom, cloud-native Shopware Storefronts.
+	Shopware Frontends is a <strong>framework</strong> for building custom, headless storefronts with Shopware 6.
 </p>
 
 ---
