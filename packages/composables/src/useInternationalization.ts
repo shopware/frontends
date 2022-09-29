@@ -1,31 +1,22 @@
 import { useShopwareContext } from "./useShopwareContext";
 
-/**
- * interface for {@link useInternationalization} composable
- *
- * @beta
- */
-export type UseInternationalization = {
+export type UseInternationalizationReturn = {
+  /**
+   * StorefrontUrl is needed to specify language of emails
+   */
   getStorefrontUrl: () => string;
 };
 
 /**
- * Composable for internationalization management. Options - {@link UseInternationalization}
- *
- * @beta
+ * Composable for internationalization management. Options - {@link UseInternationalizationReturn
  */
-export function useInternationalization(): UseInternationalization {
+export function useInternationalization(): UseInternationalizationReturn {
   /**
    * Should be removed after resolving backend multi domains problems
    */
   const { apiInstance } = useShopwareContext();
 
-  /**
-   * StorefrontUrl is needed to specify language of emails
-   *
-   * @returns string
-   */
-  const getStorefrontUrl = (): string => {
+  function getStorefrontUrl() {
     /**
      * apiIntanceUrl - should be removed after resolving backend multi domains problems
      */
@@ -33,7 +24,7 @@ export function useInternationalization(): UseInternationalization {
       ? apiInstance.config.endpoint.slice(0, -1)
       : undefined;
     return apiIntanceUrl ?? window.location.origin ?? "";
-  };
+  }
 
   return {
     getStorefrontUrl,

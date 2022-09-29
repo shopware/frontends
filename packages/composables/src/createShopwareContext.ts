@@ -8,7 +8,7 @@ import { ShopwareApiInstance } from "@shopware-pwa/api-client";
 import { App, effectScope, EffectScope, markRaw, reactive } from "vue";
 // import { registerShopwareDevtools } from "./devtools/plugin";
 
-export function createSpark(
+export function createShopwareContext(
   app: App,
   options: {
     // initialStore?: any;

@@ -68,6 +68,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useProductReviews",
           "useSalutations",
           "useProductSearchSuggest",
+          "useProductWishlist",
           "useUser",
           "useProductAssociations",
           "useWishlist",

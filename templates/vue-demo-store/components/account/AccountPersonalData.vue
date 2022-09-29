@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, email, sameAs, requiredIf } from "@vuelidate/validators";
+import {
+  required,
+  minLength,
+  email,
+  sameAs,
+  requiredIf,
+} from "@vuelidate/validators";
+import { ClientApiError } from "@shopware-pwa/types";
 
-const {
-  user,
-  errors: userError,
-  refreshUser,
-  updatePersonalInfo,
-  updateEmail,
-} = useUser();
+const { user, refreshUser, updatePersonalInfo, updateEmail } = useUser();
 
-const userErrorMessages = computed(() =>
-  userError.updateEmail?.map(({ detail }) => detail).toString()
-);
+const errorMessages = ref<string[]>([]);
 
 const isSuccess = ref(false);
 const updated = ref(false);
@@ -32,7 +31,8 @@ const isEmailChanging = computed(() => state.email !== user.value?.email);
 
 const isNameChanging = computed(
   () =>
-    state.firstName !== user.value?.firstName || state.lastName !== user.value?.lastName
+    state.firstName !== user.value?.firstName ||
+    state.lastName !== user.value?.lastName
 );
 
 const refs = toRefs(state);
@@ -70,32 +70,35 @@ const rules = computed(() => ({
 const $v = useVuelidate(rules, state);
 
 const invokeUpdate = async (): Promise<void> => {
+  errorMessages.value = [];
+  isSuccess.value = false;
   try {
     updated.value = false;
     $v.value.$touch();
-    if ($v.value.$invalid || (!isNameChanging.value && !isEmailChanging.value)) {
+    if (
+      $v.value.$invalid ||
+      (!isNameChanging.value && !isEmailChanging.value)
+    ) {
       return;
     }
     isUpdating.value = true;
 
     if (isNameChanging.value) {
-      const profileChanged = await updatePersonalInfo({
+      await updatePersonalInfo({
         firstName: state.firstName,
         lastName: state.lastName,
         salutationId: state.salutationId,
         title: state.title,
       });
-      updated.value = profileChanged;
       isSuccess.value = true;
     }
 
     if (isEmailChanging.value) {
-      const emailChanged = await updateEmail({
+      await updateEmail({
         email: state.email,
         emailConfirmation: state.emailConfirmation,
         password: state.password,
       });
-      updated.value = emailChanged;
       isSuccess.value = true;
     }
 
@@ -103,7 +106,8 @@ const invokeUpdate = async (): Promise<void> => {
 
     refreshUser();
   } catch (err) {
-    console.error("error update personal data", err);
+    const e = err as ClientApiError;
+    errorMessages.value = e.messages.map((m) => m.detail);
   }
 };
 </script>
@@ -111,7 +115,8 @@ const invokeUpdate = async (): Promise<void> => {
   <div class="space-y-8">
     <div class="text-sm text-gray-500">
       <div>
-        Feel free to edit any of your details below so your account is always up to date
+        Feel free to edit any of your details below so your account is always up
+        to date
       </div>
     </div>
     <form class="mt-8 space-y-6" @submit.prevent="invokeUpdate">
@@ -124,9 +129,9 @@ const invokeUpdate = async (): Promise<void> => {
       </div>
       <div
         class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
-        v-if="userErrorMessages.length"
+        v-if="errorMessages.length"
       >
-        {{ userErrorMessages }}
+        {{ errorMessages }}
       </div>
       <div class="mt-4 space-y-4 lg:mt-5 md:space-y-5">
         <div>

@@ -31,17 +31,15 @@ const props = withDefaults(
   }
 );
 
-const { addToCart } = useAddToCart({
-  product: props.product,
-});
+const { addToCart } = useAddToCart(props.product);
 
-const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist({
-  product: props.product,
-});
+const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
+  props.product
+);
 
 const addToWishlistFn = (event: MouseEvent) => {
   if (isInWishlist.value) {
-    removeFromWishlist(props.product.id);
+    removeFromWishlist();
     fillHeartColor(event, "none");
     pushInfo(
       `${props.product?.translated?.name} has been removed from wishlist.`

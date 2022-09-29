@@ -1,135 +1,150 @@
 <script lang="ts">
-  export default {
-    name: "CheckoutPage",
-  };
+export default {
+  name: "CheckoutPage",
+};
 </script>
 <script setup lang="ts">
-  import { SharedModal } from "~~/components/shared/SharedModal.vue";
-  import { useVuelidate } from "@vuelidate/core";
-  import { required, email, minLength } from "@vuelidate/validators";
+import { SharedModal } from "~~/components/shared/SharedModal.vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, minLength } from "@vuelidate/validators";
+import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 
-  definePageMeta({
-    layout: "checkout",
-  });
+definePageMeta({
+  layout: "checkout",
+});
 
-  const { push } = useRouter();
-  const { getCountries } = useCountries();
-  const { getSalutations } = useSalutations();
-  const { paymentMethods, shippingMethods, getPaymentMethods, getShippingMethods, createOrder } = useCheckout();
-  const { register, logout, isLoggedIn, user, errors } = useUser();
-  const { refreshSessionContext, shippingMethod, paymentMethod, setShippingMethod, setPaymentMethod } =
-    useSessionContext();
-  const { cartItems, subtotal, totalPrice, shippingTotal } = useCart();
-  const modal = inject<SharedModal>("modal") as SharedModal;
-  const isLoading = reactive<{ [key: string]: boolean }>({});
+const { push } = useRouter();
+const { getCountries } = useCountries();
+const { getSalutations } = useSalutations();
+const {
+  paymentMethods,
+  shippingMethods,
+  getPaymentMethods,
+  getShippingMethods,
+  createOrder,
+} = useCheckout();
+const { register, logout, isLoggedIn, user } = useUser();
+const {
+  refreshSessionContext,
+  shippingMethod,
+  paymentMethod,
+  setShippingMethod,
+  setPaymentMethod,
+} = useSessionContext();
+const { cartItems, subtotal, totalPrice, shippingTotal } = useCart();
+const modal = inject<SharedModal>("modal") as SharedModal;
+const isLoading = reactive<{ [key: string]: boolean }>({});
 
-  const selectedShippingMethod = computed({
-    get(): string {
-      return shippingMethod.value?.id || "";
-    },
-    async set(shippingMethodId: string) {
-      isLoading[shippingMethodId] = true;
-      await setShippingMethod({ id: shippingMethodId });
-      isLoading[shippingMethodId] = false;
-    },
-  });
-  const selectedPaymentMethod = computed({
-    get(): string {
-      return paymentMethod.value?.id || "";
-    },
-    async set(paymentMethodId: string) {
-      isLoading[paymentMethodId] = true;
-      await setPaymentMethod({ id: paymentMethodId });
-      isLoading[paymentMethodId] = false;
-    },
-  });
+const selectedShippingMethod = computed({
+  get(): string {
+    return shippingMethod.value?.id || "";
+  },
+  async set(shippingMethodId: string) {
+    isLoading[shippingMethodId] = true;
+    await setShippingMethod({ id: shippingMethodId });
+    isLoading[shippingMethodId] = false;
+  },
+});
+const selectedPaymentMethod = computed({
+  get(): string {
+    return paymentMethod.value?.id || "";
+  },
+  async set(paymentMethodId: string) {
+    isLoading[paymentMethodId] = true;
+    await setPaymentMethod({ id: paymentMethodId });
+    isLoading[paymentMethodId] = false;
+  },
+});
 
-  const isCheckoutAvailable = computed(() => {
-    return cartItems.value.length > 0;
-  });
+const isCheckoutAvailable = computed(() => {
+  return cartItems.value.length > 0;
+});
 
-  const state = reactive({
-    salutationId: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    billingAddress: {
-      street: "",
-      zipcode: "",
-      city: "",
-      countryId: "",
-    },
-  });
+const state = reactive({
+  salutationId: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  billingAddress: {
+    street: "",
+    zipcode: "",
+    city: "",
+    countryId: "",
+  },
+});
 
-  const rules = computed(() => ({
-    salutationId: {
-      required,
-    },
-    firstName: {
+const rules = computed(() => ({
+  salutationId: {
+    required,
+  },
+  firstName: {
+    required,
+    minLength: minLength(3),
+  },
+  lastName: {
+    required,
+    minLength: minLength(3),
+  },
+  email: {
+    required,
+    email,
+  },
+  password: {
+    required,
+    minLength: minLength(8),
+  },
+  billingAddress: {
+    street: {
       required,
       minLength: minLength(3),
     },
-    lastName: {
+    zipcode: {
       required,
-      minLength: minLength(3),
     },
-    email: {
+    city: {
       required,
-      email,
     },
-    password: {
+    countryId: {
       required,
-      minLength: minLength(8),
     },
-    billingAddress: {
-      street: {
-        required,
-        minLength: minLength(3),
-      },
-      zipcode: {
-        required,
-      },
-      city: {
-        required,
-      },
-      countryId: {
-        required,
-      },
-    },
-  }));
+  },
+}));
 
-  const $v = useVuelidate(rules, state);
+const $v = useVuelidate(rules, state);
 
-  const placeOrder = async () => {
-    isLoading["placeOrder"] = true;
-    const order = await createOrder();
-    isLoading["placeOrder"] = false;
-    return push("/checkout/success/" + order.id);
-  };
+const placeOrder = async () => {
+  isLoading["placeOrder"] = true;
+  const order = await createOrder();
+  isLoading["placeOrder"] = false;
+  return push("/checkout/success/" + order.id);
+};
 
-  onMounted(async () => {
-    refreshSessionContext();
-    isLoading["shippingMethods"] = true;
-    await getShippingMethods();
-    isLoading["shippingMethods"] = false;
+onMounted(async () => {
+  refreshSessionContext();
+  isLoading["shippingMethods"] = true;
+  await getShippingMethods();
+  isLoading["shippingMethods"] = false;
 
-    isLoading["paymentMethods"] = true;
-    await getPaymentMethods();
-    isLoading["paymentMethods"] = false;
-  });
+  isLoading["paymentMethods"] = true;
+  await getPaymentMethods();
+  isLoading["paymentMethods"] = false;
+});
 
-  const invokeSubmit = async () => {
-    $v.value.$touch();
-    const valid = await $v.value.$validate();
-    if (valid) {
-      try {
-        await register(state);
-      } catch (error) {
-        console.error(error);
-      }
+const registerErrors = ref<ShopwareError[]>([]);
+const invokeSubmit = async () => {
+  $v.value.$touch();
+  registerErrors.value = [];
+  const valid = await $v.value.$validate();
+  if (valid) {
+    try {
+      await register(state);
+    } catch (error) {
+      const e = error as ClientApiError;
+      registerErrors.value = e.messages;
     }
-  };
+  }
+};
 </script>
 
 <template>
@@ -139,8 +154,12 @@
         <div class="md:col-span-1">
           <div class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8">
             <div>
-              <h3 class="text-lg font-medium text-gray-900 m-0">Personal Information</h3>
-              <div class="text-sm text-gray-600">Use a permanent address where you can receive mail.</div>
+              <h3 class="text-lg font-medium text-gray-900 m-0">
+                Personal Information
+              </h3>
+              <div class="text-sm text-gray-600">
+                Use a permanent address where you can receive mail.
+              </div>
             </div>
             <form
               v-if="!isLoggedIn"
@@ -151,14 +170,18 @@
               @submit.prevent="invokeSubmit"
             >
               <div
-                v-if="errors.register.length"
+                v-if="registerErrors.length"
                 class="bg-red-200 border-l-4 border-red-500 text-red-700 p-4"
                 role="alert"
               >
                 <p class="font-bold">Error!!!</p>
-                {{ errors.register }}
                 <ul>
-                  <li v-for="(error, index) in errors.register" :key="error.detail">{{ error.detail }}</li>
+                  <li
+                    v-for="(error, index) in registerErrors"
+                    :key="error.detail"
+                  >
+                    {{ error.detail }}
+                  </li>
                 </ul>
               </div>
               <div class="text-sm">
@@ -175,7 +198,11 @@
               </div>
               <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6">
-                  <label for="salutation" class="block text-sm font-medium text-gray-700">Salutation</label>
+                  <label
+                    for="salutation"
+                    class="block text-sm font-medium text-gray-700"
+                    >Salutation</label
+                  >
                   <select
                     id="salutation"
                     v-model="state.salutationId"
@@ -186,7 +213,11 @@
                     data-testid="checkout-pi-salutation-select"
                     @blur="$v.salutationId.$touch()"
                   >
-                    <option v-for="salutation in getSalutations" :key="salutation.id" :value="salutation.id">
+                    <option
+                      v-for="salutation in getSalutations"
+                      :key="salutation.id"
+                      :value="salutation.id"
+                    >
                       {{ salutation.displayName }}
                     </option>
                   </select>
@@ -198,7 +229,11 @@
                   </span>
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                  <label for="first-name" class="block text-sm font-medium text-gray-700">First name</label>
+                  <label
+                    for="first-name"
+                    class="block text-sm font-medium text-gray-700"
+                    >First name</label
+                  >
                   <input
                     id="first-name"
                     v-model="state.firstName"
@@ -219,7 +254,11 @@
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
-                  <label for="last-name" class="block text-sm font-medium text-gray-700">Last name</label>
+                  <label
+                    for="last-name"
+                    class="block text-sm font-medium text-gray-700"
+                    >Last name</label
+                  >
                   <input
                     id="last-name"
                     v-model="state.lastName"
@@ -240,7 +279,11 @@
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
-                  <label for="email-address" class="block text-sm font-medium text-gray-700">Email address</label>
+                  <label
+                    for="email-address"
+                    class="block text-sm font-medium text-gray-700"
+                    >Email address</label
+                  >
                   <input
                     id="email-address"
                     v-model="state.email"
@@ -261,7 +304,11 @@
                   </span>
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                  <label for="email-address" class="block text-sm font-medium text-gray-700">Password</label>
+                  <label
+                    for="email-address"
+                    class="block text-sm font-medium text-gray-700"
+                    >Password</label
+                  >
                   <input
                     v-model="state.password"
                     autocomplete="off"
@@ -280,7 +327,11 @@
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
-                  <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+                  <label
+                    for="country"
+                    class="block text-sm font-medium text-gray-700"
+                    >Country</label
+                  >
                   <select
                     id="country"
                     v-model="state.billingAddress.countryId"
@@ -291,7 +342,11 @@
                     data-testid="checkout-pi-country-input"
                     @blur="$v.billingAddress.countryId.$touch()"
                   >
-                    <option v-for="country in getCountries" :key="country.id" :value="country.id">
+                    <option
+                      v-for="country in getCountries"
+                      :key="country.id"
+                      :value="country.id"
+                    >
                       {{ country.name }}
                     </option>
                   </select>
@@ -304,7 +359,11 @@
                 </div>
 
                 <div class="col-span-6">
-                  <label for="street-address" class="block text-sm font-medium text-gray-700">Street address</label>
+                  <label
+                    for="street-address"
+                    class="block text-sm font-medium text-gray-700"
+                    >Street address</label
+                  >
                   <input
                     id="street-address"
                     v-model="state.billingAddress.street"
@@ -326,7 +385,11 @@
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
-                  <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                  <label
+                    for="city"
+                    class="block text-sm font-medium text-gray-700"
+                    >City</label
+                  >
                   <input
                     id="city"
                     v-model="state.billingAddress.city"
@@ -348,7 +411,11 @@
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
-                  <label for="postal-code" class="block text-sm font-medium text-gray-700">ZIP / Postal code</label>
+                  <label
+                    for="postal-code"
+                    class="block text-sm font-medium text-gray-700"
+                    >ZIP / Postal code</label
+                  >
                   <input
                     id="postal-code"
                     v-model="state.billingAddress.zipcode"
@@ -379,18 +446,26 @@
             </form>
             <div v-else>
               You are logged-in as {{ user?.firstName }}! You can log out
-              <a href="#" class="text-brand-primary hover:text-brand-dark" @click="logout" data-testid="checkout-logout"
+              <a
+                href="#"
+                class="text-brand-primary hover:text-brand-dark"
+                @click="logout"
+                data-testid="checkout-logout"
                 >here</a
               >.
             </div>
           </div>
           <fieldset class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8">
             <legend class="pt-5">
-              <h3 class="text-lg font-medium text-gray-900 m-0">Shipping method</h3>
+              <h3 class="text-lg font-medium text-gray-900 m-0">
+                Shipping method
+              </h3>
               <div class="text-sm text-gray-600">Select a payment method.</div>
             </legend>
             <div v-if="isLoading['shippingMethods']" class="w-60 h-24">
-              <div class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5">
+              <div
+                class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
+              >
                 <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
                 <div class="flex flex-col space-y-3">
                   <div class="w-36 bg-gray-300 h-6 rounded-md" />
@@ -398,7 +473,12 @@
                 </div>
               </div>
             </div>
-            <div v-for="shippingMethod in shippingMethods" v-else :key="shippingMethod.id" class="flex items-center">
+            <div
+              v-for="shippingMethod in shippingMethods"
+              v-else
+              :key="shippingMethod.id"
+              class="flex items-center"
+            >
               <input
                 :id="shippingMethod.id"
                 v-model="selectedShippingMethod"
@@ -419,11 +499,15 @@
           </fieldset>
           <fieldset class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
             <legend class="pt-5">
-              <h3 class="text-lg font-medium text-gray-900 m-0">Payment method</h3>
+              <h3 class="text-lg font-medium text-gray-900 m-0">
+                Payment method
+              </h3>
               <div class="text-sm text-gray-600">Select a payment method</div>
             </legend>
             <div v-if="isLoading['paymentMethods']" class="w-60 h-24">
-              <div class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5">
+              <div
+                class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
+              >
                 <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
                 <div class="flex flex-col space-y-3">
                   <div class="w-36 bg-gray-300 h-6 rounded-md" />
@@ -431,7 +515,12 @@
                 </div>
               </div>
             </div>
-            <div v-else v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" class="flex items-center">
+            <div
+              v-else
+              v-for="paymentMethod in paymentMethods"
+              :key="paymentMethod.id"
+              class="flex items-center"
+            >
               <input
                 :id="paymentMethod.id"
                 v-model="selectedPaymentMethod"
@@ -454,23 +543,39 @@
         <div class="mt-5 md:mt-0 md:col-span-1">
           <div class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
             <div>
-              <h3 class="text-lg font-medium text-gray-900 m-0">Order summary</h3>
+              <h3 class="text-lg font-medium text-gray-900 m-0">
+                Order summary
+              </h3>
               <p class="text-sm text-gray-600">Order details and totals.</p>
             </div>
             <ul role="list" class="-my-4 divide-y divide-gray-200 pl-0">
-              <li v-for="cartItem in cartItems" :key="cartItem.id" class="flex py-6">
+              <li
+                v-for="cartItem in cartItems"
+                :key="cartItem.id"
+                class="flex py-6"
+              >
                 <CheckoutCartItem :cart-item="cartItem" />
               </li>
             </ul>
 
             <div class="flex justify-between text-sm text-gray-500">
               <p>Subtotal</p>
-              <SharedPrice :value="subtotal" class="text-gray-900 font-medium" data-testid="cart-subtotal" />
+              <SharedPrice
+                :value="subtotal"
+                class="text-gray-900 font-medium"
+                data-testid="cart-subtotal"
+              />
             </div>
 
-            <div class="flex pb-4 border-b justify-between text-sm text-gray-500">
+            <div
+              class="flex pb-4 border-b justify-between text-sm text-gray-500"
+            >
               <p>Shipping estimate</p>
-              <SharedPrice :value="shippingTotal" class="text-gray-900 font-medium" data-testid="cart-subtotal" />
+              <SharedPrice
+                :value="shippingTotal"
+                class="text-gray-900 font-medium"
+                data-testid="cart-subtotal"
+              />
             </div>
 
             <div class="flex justify-between text-gray-900 font-medium">
@@ -488,7 +593,8 @@
                   type="button"
                   :class="{
                     grayscale: !isLoggedIn,
-                    'opacity-50 cursor-not-allowed hover:bg-brand-primary': !isLoggedIn,
+                    'opacity-50 cursor-not-allowed hover:bg-brand-primary':
+                      !isLoggedIn,
                     'animate-pulse': isLoading['placeOrder'],
                   }"
                   class="w-full flex justify-center py-2 px-4 border border-transparent font-medium rounded-md text-white bg-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary"
@@ -504,7 +610,9 @@
       </div>
     </div>
     <div v-else class="text-center">
-      <h1 class="m-10 text-2xl font-medium text-gray-900">Your cart is empty!</h1>
+      <h1 class="m-10 text-2xl font-medium text-gray-900">
+        Your cart is empty!
+      </h1>
       <NuxtLink
         class="inline-flex justify-center py-2 px-4 my-8 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
         to="/"

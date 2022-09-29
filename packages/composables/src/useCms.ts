@@ -9,13 +9,6 @@ import {
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { searchCms } from "./searchLogic";
 import { useShopwareContext } from "./useShopwareContext";
-// import {
-//   getApplicationContext,
-//   useDefaults,
-//   useBreadcrumbs,
-//   useSharedState,
-// } from "@shopware-pwa/composables";
-// import merge from "lodash/merge";
 
 export type UseCmsReturn = {
   page: ComputedRef<CmsPage>;

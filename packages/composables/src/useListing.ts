@@ -1,10 +1,5 @@
 import { getCategoryProducts, searchProducts } from "@shopware-pwa/api-client";
 
-// import {
-//   useCms,
-//   createListingComposable,
-//   useVueContext,
-// } from "@shopware-pwa/composables";
 import {
   ShopwareSearchParams,
   Product,
@@ -12,7 +7,6 @@ import {
   Sort,
   ListingFilter,
 } from "@shopware-pwa/types";
-// import { IUseListing } from "../factories/createListingComposable";
 import { inject, computed, ComputedRef, ref, provide } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCms } from ".";
@@ -46,12 +40,9 @@ function merge<T extends { [key in keyof T]: unknown }>(
   return merge(target, ...sources);
 }
 
-/**
- * @beta
- */
 export type ListingType = "productSearchListing" | "categoryListing";
 
-export interface IUseListing<ELEMENTS_TYPE> {
+export type UseListingReturn<ELEMENTS_TYPE> = {
   getInitialListing: ComputedRef<ListingResult<ELEMENTS_TYPE> | null>;
   setInitialListing: (
     initialListing: Partial<ListingResult<ELEMENTS_TYPE>>
@@ -81,14 +72,11 @@ export interface IUseListing<ELEMENTS_TYPE> {
   getCurrentFilters: ComputedRef<any>;
   loading: ComputedRef<boolean>;
   loadingMore: ComputedRef<boolean>;
-}
+};
 
-/**
- * @beta
- */
 export function useListing(params?: {
   listingType: ListingType;
-}): IUseListing<Product> {
+}): UseListingReturn<Product> {
   const COMPOSABLE_NAME = "useListing";
   const contextName = COMPOSABLE_NAME;
 
@@ -142,7 +130,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
   ) => Promise<ListingResult<ELEMENTS_TYPE>>;
   searchDefaults: ShopwareSearchParams;
   listingKey: string;
-}): IUseListing<ELEMENTS_TYPE> {
+}): UseListingReturn<ELEMENTS_TYPE> {
   const COMPOSABLE_NAME = "createListingComposable";
   const contextName = COMPOSABLE_NAME;
 
@@ -209,12 +197,12 @@ export function createListingComposable<ELEMENTS_TYPE>({
     }
   };
 
-  const search = async (
+  async function search(
     criteria: Partial<ShopwareSearchParams>,
     options?: {
       preventRouteChange?: boolean;
     }
-  ): Promise<void> => {
+  ) {
     loading.value = true;
     // const changeRoute = options?.preventRouteChange !== true && !cmsContext;
     try {
@@ -250,7 +238,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
     } finally {
       loading.value = false;
     }
-  };
+  }
 
   const loadMore = async (): Promise<void> => {
     loadingMore.value = true;
@@ -303,13 +291,13 @@ export function createListingComposable<ELEMENTS_TYPE>({
   const getCurrentSortingOrder = computed(
     () => getCurrentListing.value?.sorting
   );
-  const changeCurrentSortingOrder = async (order: string) => {
+  async function changeCurrentSortingOrder(order: string) {
     const query: Partial<ShopwareSearchParams> = {
       //...router.currentRoute.query,
       order,
     };
     await search(query);
-  };
+  }
 
   const getCurrentPage = computed(() => getCurrentListing.value?.page || 1);
   const changeCurrentPage = async (pageNumber?: number) => {
