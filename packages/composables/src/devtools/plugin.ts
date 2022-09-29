@@ -18,10 +18,10 @@ export function registerShopwareDevtools(
 
   setupDevtoolsPlugin(
     {
-      id: "shopware-spark",
-      label: "Shopware Spark",
+      id: "shopware-frontends",
+      label: "Shopware Frontends",
       logo: "https://shopware.com/media/unknown/2d/80/8c/shopware_signet_blue.svg",
-      packageName: "shopware-spark",
+      packageName: "shopware-frontends",
       homepage: "shopware.com",
       app: app as any,
       enableEarlyProxy: true,
@@ -31,13 +31,13 @@ export function registerShopwareDevtools(
 
       api.addTimelineLayer({
         id: TIMELINE_EVENT_LAYER_ID,
-        label: `Shopware Spark`,
+        label: `Shopware Frontends`,
         color: 1613567,
       });
 
       api.addInspector({
         id: INSPECTOR_ID,
-        label: "Shopware Spark",
+        label: "Shopware Frontends",
         icon: "shopping_cart",
       });
 

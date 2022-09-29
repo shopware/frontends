@@ -9,13 +9,6 @@ import {
   inject,
   provide,
 } from "vue";
-// import {
-//   useSharedState,
-//   useDefaults,
-//   INTERCEPTOR_KEYS,
-//   getApplicationContext,
-//   useIntercept,
-// } from "@shopware-pwa/composables";
 import {
   Order,
   BillingAddress,
@@ -33,12 +26,7 @@ import {
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 
-/**
- * Composable for managing an existing order.
- *
- * @beta
- */
-export function useOrderDetails(params: { order: Ref<Order> | Order }): {
+export type UseOrderDetailsReturn = {
   order: ComputedRef<Order | undefined | null>;
   status: ComputedRef<string | undefined>;
   total: ComputedRef<number | undefined>;
@@ -54,56 +42,37 @@ export function useOrderDetails(params: { order: Ref<Order> | Order }): {
   paymentUrl: Ref<null | string>;
   shippingMethod: ComputedRef<ShippingMethod | undefined | null>;
   paymentMethod: ComputedRef<PaymentMethod | undefined | null>;
-  errors: UnwrapRef<{
-    [key: string]: ShopwareError[];
-  }>;
-  loaders: UnwrapRef<{
-    [key: string]: boolean;
-  }>;
+  /**
+   * Get order object including additional associations.
+   * useDefaults describes what order object should look like.
+   */
   loadOrderDetails: () => void;
+  /**
+   * Handle payment for existing error.
+   *
+   * Pass custom success and error URLs (optionally).
+   */
   handlePayment: (
     successUrl?: string,
     errorUrl?: string,
     paymentDetails?: unknown
   ) => void;
+  /**
+   * Cancel an order.
+   * Action cannot be reverted.
+   */
   cancel: () => Promise<void>;
   changePaymentMethod: (paymentMethodId: string) => Promise<void>;
-} {
-  const COMPOSABLE_NAME = "useOrderDetails";
-  const contextName = COMPOSABLE_NAME;
+};
 
-  const order = unref(params.order);
-
+/**
+ * Composable for managing an existing order.
+ */
+export function useOrderDetails(orderId: string): UseOrderDetailsReturn {
   const { apiInstance } = useShopwareContext();
-  // const { getDefaults } = useDefaults({ defaultsKey: contextName });
-  // const { broadcast } = useIntercept();
-  // const { sharedRef } = useSharedState();
-  // const _sharedOrder = sharedRef(`sw-${contextName}-order`, order);
+
   const _sharedOrder = inject("swOrderDetails", ref());
   provide("swOrderDetails", _sharedOrder);
-  const errors: UnwrapRef<{
-    loadOrderDetails: ShopwareError[];
-    handlePayment: ShopwareError[];
-    cancel: ShopwareError[];
-    changePaymentMethod: ShopwareError[];
-  }> = reactive({
-    loadOrderDetails: [],
-    handlePayment: [],
-    cancel: [],
-    changePaymentMethod: [],
-  });
-  const loaders: UnwrapRef<{
-    loadOrderDetails: boolean;
-    handlePayment: boolean;
-    cancel: boolean;
-    changePaymentMethod: boolean;
-  }> = reactive({
-    loadOrderDetails: false,
-    handlePayment: false,
-    cancel: false,
-    changePaymentMethod: false,
-  });
-  const orderId = order?.id;
 
   const paymentMethod = computed(
     () => _sharedOrder.value?.transactions?.[0]?.paymentMethod
@@ -133,94 +102,42 @@ export function useOrderDetails(params: { order: Ref<Order> | Order }): {
   const total = computed(() => _sharedOrder.value?.price?.totalPrice);
   const status = computed(() => _sharedOrder.value?.stateMachineState?.name);
 
-  /**
-   * Get order object including additional associations.
-   * useDefaults describes what order object should look like.
-   */
-  const loadOrderDetails = async () => {
-    loaders.loadOrderDetails = true;
-    try {
-      const orderDetailsResponse = await getOrderDetails(
-        orderId,
-        {}, //getDefaults(),
-        apiInstance
-      );
-      _sharedOrder.value = orderDetailsResponse ?? null;
-      // broadcast(INTERCEPTOR_KEYS.ORDER_DETAILS_LOADED, _sharedOrder.value);
-    } catch (e) {
-      const error = e as ClientApiError;
-      errors.loadOrderDetails = error.messages;
-      // broadcast(INTERCEPTOR_KEYS.ERROR, error);
-    }
-    loaders.loadOrderDetails = false;
-  };
+  async function loadOrderDetails() {
+    const orderDetailsResponse = await getOrderDetails(
+      orderId,
+      {}, //getDefaults(),
+      apiInstance
+    );
+    _sharedOrder.value = orderDetailsResponse ?? null;
+  }
 
-  /**
-   * Handle payment for existing error.
-   *
-   * Pass custom success and error URLs (optionally).
-   */
-  const handlePayment = async (
+  async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
     paymentDetails?: unknown
-  ) => {
-    loaders.handlePayment = true;
-    try {
-      const resp = await apiHandlePayment(
-        {
-          orderId,
-          finishUrl,
-          errorUrl,
-          paymentDetails,
-        },
-        apiInstance
-      );
+  ) {
+    const resp = await apiHandlePayment(
+      {
+        orderId,
+        finishUrl,
+        errorUrl,
+        paymentDetails,
+      },
+      apiInstance
+    );
 
-      paymentUrl.value = resp?.redirectUrl;
-      // broadcast(INTERCEPTOR_KEYS.ORDER_HANDLE_PAYMENT, resp);
-    } catch (e) {
-      const error = e as ClientApiError;
-      errors.handlePayment = error.messages;
-      // broadcast(INTERCEPTOR_KEYS.ERROR, error);
-    }
-    loaders.handlePayment = false;
-  };
+    paymentUrl.value = resp?.redirectUrl;
+  }
 
-  /**
-   * Cancel an order.
-   * Action cannot be reverted.
-   */
-  const cancel = async (): Promise<void> => {
-    loaders.cancel = true;
-    try {
-      const response = await cancelOrder(orderId, apiInstance);
-      // broadcast(INTERCEPTOR_KEYS.ORDER_CANCELLED, response);
-    } catch (error) {
-      const err = error as ClientApiError;
-      errors.cancel = err.messages;
-      // broadcast(INTERCEPTOR_KEYS.ERROR, error);
-    }
-    loaders.cancel = false;
+  async function cancel() {
+    const response = await cancelOrder(orderId, apiInstance);
     await loadOrderDetails();
-  };
-  const changePaymentMethod = async (
-    paymentMethodId: string
-  ): Promise<void> => {
-    loaders.changePaymentMethod = true;
-    try {
-      await changeOrderPaymentMethod(orderId, paymentMethodId, apiInstance);
-      // broadcast(INTERCEPTOR_KEYS.ORDER_PAYMENT_METHOD_CHANGED, order);
-    } catch (error) {
-      const err = error as ClientApiError;
-      errors.changePaymentMethod = err.messages;
-      // broadcast(INTERCEPTOR_KEYS.ERROR, error);
-    }
-
-    loaders.changePaymentMethod = false;
+  }
+  async function changePaymentMethod(paymentMethodId: string) {
+    await changeOrderPaymentMethod(orderId, paymentMethodId, apiInstance);
 
     await loadOrderDetails();
-  };
+  }
 
   return {
     order: computed(() => _sharedOrder.value),
@@ -234,8 +151,6 @@ export function useOrderDetails(params: { order: Ref<Order> | Order }): {
     paymentUrl,
     shippingMethod,
     paymentMethod,
-    errors,
-    loaders,
     loadOrderDetails,
     handlePayment,
     cancel,

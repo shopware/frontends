@@ -49,8 +49,7 @@ const crossSellCollection = computed(() => {
 const {
   loadAssociations: loadCrossSells,
   productAssociations: crossSellAssociations,
-} = useProductAssociations({
-  product: product,
+} = useProductAssociations(product, {
   associationContext: "cross-selling",
 });
 onMounted(async () => {
@@ -68,12 +67,12 @@ onMounted(async () => {
     return;
   }
   loadCrossSells({
-    params: {
+    searchParams: {
       associations: {
         seoUrls: {},
       },
     },
-  } as any);
+  });
 });
 
 const toggleTab = (index: number) => {

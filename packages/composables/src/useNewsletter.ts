@@ -14,24 +14,24 @@ export function useNewsletter(): UseNewsletterReturn {
   const { apiInstance } = useShopwareContext();
   const { getStorefrontUrl } = useInternationalization();
 
-  const newsletterSubscribe = (params: NewsletterInput) => {
-    return newsletterSubscribeAPI(
+  async function newsletterSubscribe(params: NewsletterInput) {
+    return await newsletterSubscribeAPI(
       {
         ...params,
         storefrontUrl: getStorefrontUrl(),
       },
       apiInstance
     );
-  };
+  }
 
-  const newsletterUnsubscribe = (email: string) => {
-    return newsletterUnsubscribeAPI(
+  async function newsletterUnsubscribe(email: string) {
+    return await newsletterUnsubscribeAPI(
       {
         email,
       },
       apiInstance
     );
-  };
+  }
 
   return {
     newsletterSubscribe,

@@ -1,4 +1,4 @@
-import { computed, ComputedRef } from "vue";
+import { computed, ComputedRef, Ref, unref } from "vue";
 import {
   removeCartItem,
   changeCartItemQuantity,
@@ -13,22 +13,11 @@ import {
   PropertyGroupOption,
   ProductResponse,
 } from "@shopware-pwa/types";
-// import {
-//   getApplicationContext,
-//   useDefaults,
-//   useCart,
-// } from "@shopware-pwa/composables";
 
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCart } from ".";
 
-/**
- * interface for {@link useCartItem} composable
- *
- * @beta
- */
-export interface IUseCartItem {
-  lineItem: ComputedRef<LineItem | undefined | null>;
+export type UseCartItemReturn = {
   itemRegularPrice: ComputedRef<number | undefined>;
   itemSpecialPrice: ComputedRef<number | undefined>;
   itemImageThumbnailUrl: ComputedRef<string>;
@@ -42,34 +31,18 @@ export interface IUseCartItem {
   changeItemQuantity: (quantity: number) => Promise<void>;
   removeItem: () => Promise<void>;
   getProductItemSeoUrlData(): Promise<ProductResponse | undefined>;
-}
+};
 
-/**
- * Composable for cart item management. Options - {@link IUseCartItem}
- *
- * @beta
- */
-export function useCartItem({
-  cartItem,
-}: {
-  cartItem: LineItem;
-}): IUseCartItem {
+export function useCartItem(cartItem: LineItem): UseCartItemReturn {
   if (!cartItem) {
     throw new Error("[useCartItem] mandatory cartItem argument is missing.");
   }
-  const COMPOSABLE_NAME = "useCartitem";
-  const contextName = COMPOSABLE_NAME;
 
   const { apiInstance } = useShopwareContext();
-  const { refreshCart, broadcastUpcomingErrors } = useCart();
-  // const { getDefaults } = useDefaults({
-  //   defaultsKey: COMPOSABLE_NAME,
-  // });
+  const { refreshCart } = useCart();
 
   const itemQuantity = computed(() => cartItem.quantity);
-  const itemImageThumbnailUrl = computed(() =>
-    getMainImageUrl(cartItem as any)
-  );
+  const itemImageThumbnailUrl = computed(() => getMainImageUrl(cartItem));
 
   // TODO: use helper instead
 
@@ -95,7 +68,7 @@ export function useCartItem({
 
   async function removeItem() {
     const result = await removeCartItem(cartItem.id, apiInstance);
-    broadcastUpcomingErrors(result);
+    // broadcastUpcomingErrors(result);
     refreshCart();
   }
 
@@ -105,7 +78,7 @@ export function useCartItem({
       quantity,
       apiInstance
     );
-    broadcastUpcomingErrors(result);
+    // broadcastUpcomingErrors(result);
     refreshCart();
   }
 
@@ -141,7 +114,6 @@ export function useCartItem({
     changeItemQuantity,
     removeItem,
     getProductItemSeoUrlData,
-    lineItem: computed(() => cartItem),
     itemRegularPrice,
     itemSpecialPrice,
     itemOptions,

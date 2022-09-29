@@ -20,22 +20,8 @@ import {
 import { useShopwareContext } from "./useShopwareContext";
 import { usePrice } from "./usePrice";
 import { useUser } from "./useUser";
-// import {
-//   getApplicationContext,
-//   INTERCEPTOR_KEYS,
-//   useIntercept,
-//   IInterceptorCallbackFunction,
-//   useSharedState,
-// } from "@shopware-pwa/composables";
-/**
- * interface for {@link useSessionContext} composable
- *
- * @remarks
- * SessionContext contain all related data like user, currency, country, shippingMethod, paymentMethod etc.
- *
- * @beta
- */
-export interface IUseSessionContext {
+
+export type UseSessionContextReturn = {
   sessionContext: ComputedRef<SessionContext | undefined>;
   refreshSessionContext: () => Promise<void>;
   shippingMethod: ComputedRef<ShippingMethod | null>;
@@ -61,18 +47,17 @@ export interface IUseSessionContext {
     fn: (params: { shippingMethod: ShippingMethod }) => void
   ) => void;
   userFromContext: ComputedRef<Customer | null>;
-}
+};
 
 interface IInterceptorCallbackFunction {
   (payload: any): void;
 }
 
 /**
- * Composable for session management. Options - {@link IUseSessionContext}
- *
- * @beta
+ * Composable for session management. Options - {@link UseSessionContextReturn}
+ * SessionContext contain all related data like user, currency, country, shippingMethod, paymentMethod etc.
  */
-export function useSessionContext(): IUseSessionContext {
+export function useSessionContext(): UseSessionContextReturn {
   const { apiInstance } = useShopwareContext();
   const { setUser } = useUser();
   const { init } = usePrice();

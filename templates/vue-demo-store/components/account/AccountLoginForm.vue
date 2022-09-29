@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import { ClientApiError } from "@shopware-pwa/types";
+
 const emits = defineEmits<{
   (e: "success"): void;
   (e: "close"): void;
 }>();
 
-const { login, errors, isLoggedIn } = useUser();
-const loginErrors = computed(() =>
-  errors.login?.map(({ detail }) => detail).toString()
-);
+const { isLoggedIn, login } = useUser();
+const loginErrors = ref<string[]>([]);
 
 const formData = ref({
   username: "",
@@ -16,14 +16,13 @@ const formData = ref({
 });
 
 const invokeLogin = async (): Promise<void> => {
+  loginErrors.value = [];
   try {
-    const loginResult = await login(formData.value);
-
-    if (loginResult) {
-      emits("success");
-    }
+    await login(formData.value);
+    emits("success");
   } catch (error) {
-    console.error("error login", error);
+    const e = error as ClientApiError;
+    loginErrors.value = e.messages.map(({ detail }) => detail);
   }
 };
 </script>

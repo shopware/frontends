@@ -23,7 +23,7 @@ const {
   getOptionGroups,
   getSelectedOptions,
   findVariantForSelectedOptions,
-} = useProductConfigurator({ product: props.product });
+} = useProductConfigurator(props.product);
 
 const selectedOptions: ComputedRef<any> = computed(() =>
   Object.values(unref(getSelectedOptions))

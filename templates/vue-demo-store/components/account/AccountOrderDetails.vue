@@ -9,7 +9,7 @@ const {
   billingAddress,
   shippingAddress,
   order,
-} = useOrderDetails({ order: { id: props.orderId } as any });
+} = useOrderDetails(props.orderId);
 
 onMounted(() => {
   loadOrderDetails();

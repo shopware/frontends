@@ -1,40 +1,19 @@
 import { ComputedRef, Ref, ref } from "vue";
 
-import { useShopwareContext, useListing } from ".";
-
-import { searchSuggestedProducts } from "@shopware-pwa/api-client";
-
 import { ShopwareSearchParams, Product } from "@shopware-pwa/types";
+import { useListing } from "./useListing";
 
-/**
- * @beta
- */
-export interface IUseProductSearchSuggest {
+export type UseProductSearchSuggestReturn = {
   searchTerm: Ref<string>;
   loading: ComputedRef<boolean>;
   search: (additionalCriteria?: Partial<ShopwareSearchParams>) => Promise<void>;
   loadMore: () => Promise<void>;
   getProducts: ComputedRef<Product[]>;
   getTotal: ComputedRef<number>;
-}
+};
 
-/**
- * @beta
- */
-export function useProductSearchSuggest(): IUseProductSearchSuggest {
-  const COMPOSABLE_NAME = "useProductSearchSuggest";
-  const contextName = COMPOSABLE_NAME;
-
-  const { apiInstance } = useShopwareContext();
-
+export function useProductSearchSuggest(): UseProductSearchSuggestReturn {
   const searchTerm = ref("");
-
-  const listingKey = "productSearchSuggest";
-  const searchMethod = async (
-    searchCriteria: Partial<ShopwareSearchParams>
-  ) => {
-    return searchSuggestedProducts(searchCriteria, apiInstance);
-  };
 
   const listingComposable = useListing({
     listingType: "productSearchListing",

@@ -11,9 +11,7 @@ const {
   subtotal,
   total,
   shippingCosts,
-} = useOrderDetails({
-  order: { id: orderId } as any,
-});
+} = useOrderDetails(orderId);
 
 onMounted(() => {
   loadOrderDetails();
@@ -32,7 +30,8 @@ const format: Intl.DateTimeFormatOptions = {
   hour12: true,
 };
 
-const formatDate = (date: Date) => new Date(date).toLocaleDateString("en-us", format);
+const formatDate = (date: Date) =>
+  new Date(date).toLocaleDateString("en-us", format);
 </script>
 
 <template>
@@ -41,7 +40,8 @@ const formatDate = (date: Date) => new Date(date).toLocaleDateString("en-us", fo
       <div class="text-brand-dark">Thank you!</div>
       <div class="text-3xl font-bold">It's on the way</div>
       <div class="text-gray-400">
-        Your order #{{ order?.orderNumber }} has shipped and will be with you soon
+        Your order #{{ order?.orderNumber }} has shipped and will be with you
+        soon
       </div>
     </div>
     <div v-if="billingAddress">
@@ -79,22 +79,29 @@ const formatDate = (date: Date) => new Date(date).toLocaleDateString("en-us", fo
               <div class="font-medium">Shipping address</div>
               <div class="pt-2 text-gray-600">
                 <div>
-                  {{ shippingAddress?.firstName }} {{ shippingAddress?.lastName }}
+                  {{ shippingAddress?.firstName }}
+                  {{ shippingAddress?.lastName }}
                 </div>
                 <div>
                   {{ shippingAddress?.street }}
                 </div>
-                <div>{{ shippingAddress?.city }}, {{ shippingAddress?.zipcode }}</div>
+                <div>
+                  {{ shippingAddress?.city }}, {{ shippingAddress?.zipcode }}
+                </div>
               </div>
             </div>
             <div class="w-auto md:w-1/2">
               <div class="font-medium">Billing address</div>
               <div class="pt-2 text-gray-600">
-                <div>{{ billingAddress.firstName }} {{ billingAddress.lastName }}</div>
+                <div>
+                  {{ billingAddress.firstName }} {{ billingAddress.lastName }}
+                </div>
                 <div>
                   {{ billingAddress.street }}
                 </div>
-                <div>{{ billingAddress.city }}, {{ billingAddress.zipcode }}</div>
+                <div>
+                  {{ billingAddress.city }}, {{ billingAddress.zipcode }}
+                </div>
               </div>
             </div>
           </div>
@@ -118,7 +125,10 @@ const formatDate = (date: Date) => new Date(date).toLocaleDateString("en-us", fo
             </div>
           </div>
           <div class="border-t border-gray-100 py-6 md:py-10 space-y-4">
-            <div v-if="subtotal" class="flex justify-between text-base font-medium">
+            <div
+              v-if="subtotal"
+              class="flex justify-between text-base font-medium"
+            >
               <p>Subtotal</p>
               <SharedPrice
                 :value="subtotal"
@@ -126,7 +136,10 @@ const formatDate = (date: Date) => new Date(date).toLocaleDateString("en-us", fo
                 data-testid="order-subtotal"
               />
             </div>
-            <div v-if="shippingCosts" class="flex justify-between text-base font-medium">
+            <div
+              v-if="shippingCosts"
+              class="flex justify-between text-base font-medium"
+            >
               <p>Shipping</p>
               <SharedPrice
                 :value="shippingCosts"
@@ -134,7 +147,10 @@ const formatDate = (date: Date) => new Date(date).toLocaleDateString("en-us", fo
                 data-testid="order-shipping"
               />
             </div>
-            <div v-if="total" class="flex justify-between text-base font-medium">
+            <div
+              v-if="total"
+              class="flex justify-between text-base font-medium"
+            >
               <p>Total</p>
               <SharedPrice
                 :value="total"

@@ -223,6 +223,7 @@ declare global {
   const useProductConfigurator: typeof import("@shopware-pwa/composables-next")["useProductConfigurator"];
   const useProductReviews: typeof import("@shopware-pwa/composables-next")["useProductReviews"];
   const useProductAssociations: typeof import("@shopware-pwa/composables-next")["useProductAssociations"];
+  const useProductWishlist: typeof import("@shopware-pwa/composables-next")["useProductWishlist"];
   const useRafFn: typeof import("@vueuse/core")["useRafFn"];
   const useRefHistory: typeof import("@vueuse/core")["useRefHistory"];
   const useRequestEvent: typeof import("../../../../node_modules/.pnpm/nuxt@3.0.0-rc.4/node_modules/nuxt/dist/app")["useRequestEvent"];

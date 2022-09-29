@@ -1,34 +1,18 @@
-import { ref, Ref, UnwrapRef, reactive } from "vue";
+import { ref, Ref } from "vue";
 import { getCustomerOrders } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
-import {
-  Order,
-  ShopwareError,
-  ShopwareSearchParams,
-} from "@shopware-pwa/types";
+import { Order, ShopwareSearchParams } from "@shopware-pwa/types";
 
-/**
- * Composable for managing customer orders.
- *
- * @beta
- */
-export function useCustomerOrders(): {
-  orders: Ref<Order[] | null>;
+export type UseCustomerOrdersReturn = {
+  orders: Ref<Order[]>;
   changeCurrentPage: (pageNumber: number | string) => Promise<void>;
-  errors: UnwrapRef<{
-    loadOrders: ShopwareError[];
-  }>;
   loadOrders: () => Promise<void>;
-} {
+};
+
+export function useCustomerOrders(): UseCustomerOrdersReturn {
   const { apiInstance } = useShopwareContext();
 
-  const errors: UnwrapRef<{
-    loadOrders: ShopwareError[];
-  }> = reactive({
-    loadOrders: [],
-  });
-
-  const orders: Ref<Order[] | null> = ref(null);
+  const orders: Ref<Order[]> = ref([]);
 
   const loadOrders = async (
     parameters: ShopwareSearchParams = {}
@@ -44,6 +28,5 @@ export function useCustomerOrders(): {
     orders,
     changeCurrentPage,
     loadOrders,
-    errors,
   };
 }

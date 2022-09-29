@@ -10,9 +10,7 @@ const props = defineProps<{
   product: Product;
 }>();
 
-const { addToCart, quantity } = useAddToCart({
-  product: props.product,
-});
+const { addToCart, quantity } = useAddToCart(props.product);
 
 const addToCartProxy = async () => {
   await addToCart();

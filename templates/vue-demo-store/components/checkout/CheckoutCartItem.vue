@@ -22,7 +22,7 @@ const {
   isPromotion,
   itemStock,
   changeItemQuantity,
-} = useCartItem({ cartItem: props.cartItem });
+} = useCartItem(props.cartItem);
 
 const quantity = ref(itemQuantity.value);
 
@@ -59,7 +59,9 @@ const removeCartItem = async () => {
 
   <div class="flex flex-1 flex-col">
     <div>
-      <div class="flex flex-col lg:flex-row justify-between text-base font-medium text-gray-900">
+      <div
+        class="flex flex-col lg:flex-row justify-between text-base font-medium text-gray-900"
+      >
         <h3 class="text-base" data-testid="cart-product-name">
           {{ cartItem.label }}
         </h3>

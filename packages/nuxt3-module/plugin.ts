@@ -2,7 +2,7 @@
 // @ts-nocheck
 import { defineNuxtPlugin } from "#app";
 import {
-  createSpark,
+  createShopwareContext,
   getDefaultApiParams,
 } from "@shopware-pwa/composables-next";
 import { createInstance } from "@shopware-pwa/api-client";
@@ -45,7 +45,7 @@ const ShopwarePlugin = {
         // Sometimes cookie is set on server after request is send, it can fail silently
       }
     });
-    const shopwareContext = createSpark(app, {
+    const shopwareContext = createShopwareContext(app, {
       apiInstance: instance,
       enableDevtools: true,
       shopwareDefaults: options.apiDefaults,

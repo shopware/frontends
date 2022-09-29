@@ -7,13 +7,13 @@ const props = defineProps<{
   product: Product;
 }>();
 
-const { loadProductReviews, productReviews, loadingReviews } =
-  useProductReviews({
-    product: props.product,
-  });
+const loadingReviews = ref<boolean>(true);
+
+const { loadProductReviews, productReviews } = useProductReviews(props.product);
 
 onMounted(async () => {
   await loadProductReviews();
+  loadingReviews.value = false;
 });
 const reviews = computed<ProductReview[]>(() => productReviews.value ?? []);
 
