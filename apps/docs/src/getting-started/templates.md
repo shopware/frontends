@@ -1,3 +1,16 @@
+---
+head:
+  - - meta
+    - name: og:title
+      content: Setup templates
+  - - meta
+    - name: og:description
+      content: "Shopware Frontends offers two shortcuts to getting started with your custom frontend. These so-called templates offer different levels of 'completeness' of a project."
+  - - meta
+    - name: og:image
+      content: "https://frontends-og-image.vercel.app/Setup%20**Templates**.png?fontSize=150px"
+---
+
 # Setup Templates
 
 Shopware Frontends offers two shortcuts to getting started with your custom frontend. These so-called templates offer different levels of "completeness" of a project.
