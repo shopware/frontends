@@ -1,3 +1,16 @@
+---
+head:
+  - - meta
+    - name: og:title
+      content: Building a Cart
+  - - meta
+    - name: og:description
+      content: "In this chapter you will learn how to create and manage a cart."
+  - - meta
+    - name: og:image
+      content: "https://frontends-og-image.vercel.app/Building%20a%20**Cart**.png?fontSize=150px"
+---
+
 # Create a Cart
 
 In this chapter you will learn how to

@@ -1,3 +1,16 @@
+---
+head:
+  - - meta
+    - name: og:title
+      content: Styling
+  - - meta
+    - name: og:description
+      content: "Shopware Frontends Demo Store Template applies a utility-first styling approach based on unocss. You can either follow this approach or use custom styling."
+  - - meta
+    - name: og:image
+      content: "https://frontends-og-image.vercel.app/Styling?fontSize=150px"
+---
+
 # Styling
 
 Shopware Frontends [Demo Store Template](./../getting-started/templates.md) applies a utility-first styling approach based on [unocss](https://github.com/unocss/unocss). You can either follow this approach or use [custom styling](#use-a-custom-css-framework).

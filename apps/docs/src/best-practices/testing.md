@@ -1,3 +1,16 @@
+---
+head:
+  - - meta
+    - name: og:title
+      content: "Best practices: Testing"
+  - - meta
+    - name: og:description
+      content: "Collection of good practices to help you provide a reliable application."
+  - - meta
+    - name: og:image
+      content: "https://frontends-og-image.vercel.app/Best%20practices:%20**Testing**.png?fontSize=130px"
+---
+
 # Testing
 
 ## data-testid attribute

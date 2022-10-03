@@ -1,3 +1,17 @@
+---
+head:
+  - - meta
+    - name: og:title
+      content: "Building a navigation"
+  - - meta
+    - name: og:description
+      content: "In this chapter you will learn how to create a navigation."
+  - - meta
+    - name: og:image
+      content: "https://frontends-og-image.vercel.app/Building%20a%20**Navigation**.png?fontSize=150px"
+
+---
+
 # Create a Navigation
 
 In this chapter you will learn how to
