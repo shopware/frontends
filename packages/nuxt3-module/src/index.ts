@@ -75,6 +75,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "usePrice",
           "useCustomerOrders",
           "useAddress",
+          "useCmsMeta",
           "useNewsletter",
         ],
       });

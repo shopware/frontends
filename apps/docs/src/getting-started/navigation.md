@@ -9,7 +9,6 @@ head:
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Building%20a%20**Navigation**.png?fontSize=150px"
-
 ---
 
 # Create a Navigation

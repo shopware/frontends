@@ -129,7 +129,13 @@ export type Product = {
   translated: {
     name: string | null;
     description: string;
+    metaDescription: string | null;
+    keywords: string | null;
+    metaTitle: string | null;
   };
+  metaDescription: string | null;
+  keywords: string | null;
+  metaTitle: string | null;
   crossSellings: CrossSelling[];
   cmsPage: null | CmsPage;
   apiAlias: "product";

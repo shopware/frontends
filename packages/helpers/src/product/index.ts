@@ -15,4 +15,3 @@ export * from "./getProductCalculatedListingPrice";
 export * from "./getProductVariantsFromPrice";
 export * from "./getProductRealPrice";
 export * from "./getProductFromPrice";
-export * from "./isProduct";

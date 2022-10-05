@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementText } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "@shopware-pwa/composables-next";
-import { ComputedRef, CSSProperties } from "vue";
+import { CSSProperties } from "vue";
 // @ts-ignore
 import htmlToVue from "html-to-vue";
 // @ts-ignore
@@ -14,10 +14,17 @@ const props = defineProps<{
 }>();
 const context = getCurrentInstance();
 const { getConfigValue } = useCmsElementConfig(props.content);
-const style: ComputedRef<CSSProperties> = computed(() => ({
+
+const mappedContent = computed<string>(() => {
+  return props.content?.data?.content || getConfigValue("content");
+});
+
+const style = computed<CSSProperties>(() => ({
   alignItems: getConfigValue("verticalAlign"),
 }));
+
 const hasVerticalAlignment = computed(() => !!style.value.alignItems);
+
 const CmsTextRender = () => {
   const config = {
     textTransformer: (text: string) => decode(text),
@@ -69,7 +76,7 @@ const CmsTextRender = () => {
       },
     },
   };
-  const rawHtml = getConfigValue("content") || "<div></div>";
+  const rawHtml = mappedContent.value || "<div></div>";
   return renderHtml(rawHtml, config, h, context);
 };
 </script>
