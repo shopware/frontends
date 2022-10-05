@@ -76,10 +76,9 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
 
 export function useListing(params?: {
   listingType: ListingType;
+  categoryId?: string;
+  defaultSearchCriteria?: Partial<ShopwareSearchParams>;
 }): UseListingReturn<Product> {
-  const COMPOSABLE_NAME = "useListing";
-  const contextName = COMPOSABLE_NAME;
-
   const listingType = params?.listingType || "categoryListing";
 
   // const { getDefaults } = useDefaults({ defaultsKey: contextName });
@@ -92,25 +91,22 @@ export function useListing(params?: {
     };
   } else {
     const { resourceIdentifier } = useCms();
+    const resourceId = resourceIdentifier.value || params?.categoryId;
 
     searchMethod = async (searchCriteria: Partial<ShopwareSearchParams>) => {
-      if (!resourceIdentifier.value) {
+      if (!resourceId) {
         throw new Error(
           "[useListing][search] Search category id does not exist."
         );
       }
-      return getCategoryProducts(
-        resourceIdentifier.value,
-        searchCriteria,
-        apiInstance
-      );
+      return getCategoryProducts(resourceId, searchCriteria, apiInstance);
     };
   }
 
   return createListingComposable<Product>({
     listingKey: listingType,
     searchMethod,
-    searchDefaults: {}, //getDefaults(),
+    searchDefaults: params?.defaultSearchCriteria || {}, //getDefaults(),
   });
 }
 
