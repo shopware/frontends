@@ -17,6 +17,7 @@ import {
   PaymentMethod,
   ClientApiError,
   ShopwareError,
+  ShopwareSearchParams,
 } from "@shopware-pwa/types";
 import {
   cancelOrder,
@@ -25,6 +26,31 @@ import {
   handlePayment as apiHandlePayment,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
+
+/**
+ * Data for api requests to fetch all necessary data
+ */
+const orderAssociations: ShopwareSearchParams = {
+  associations: {
+    lineItems: {
+      associations: {
+        cover: {},
+      },
+    },
+    addresses: {},
+    deliveries: {
+      associations: {
+        shippingMethod: {},
+      },
+    },
+    transactions: {
+      associations: {
+        paymentMethod: {},
+      },
+      sort: "-createdAt",
+    },
+  },
+};
 
 export type UseOrderDetailsReturn = {
   order: ComputedRef<Order | undefined | null>;
@@ -105,7 +131,7 @@ export function useOrderDetails(orderId: string): UseOrderDetailsReturn {
   async function loadOrderDetails() {
     const orderDetailsResponse = await getOrderDetails(
       orderId,
-      {}, //getDefaults(),
+      orderAssociations,
       apiInstance
     );
     _sharedOrder.value = orderDetailsResponse ?? null;
