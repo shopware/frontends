@@ -68,6 +68,7 @@ const handleVariantChange = (val: Product) => {
           <h2 class="sr-only">Product information</h2>
           <div class="product-variants mt-10">
             <SwProductPrice :product="product" />
+            <SwProductUnits :product="product" class="text-sm" />
             <SwVariantConfigurator
               :product="product"
               @change="handleVariantChange"

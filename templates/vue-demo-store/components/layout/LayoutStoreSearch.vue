@@ -113,16 +113,24 @@ watch(enter, (value) => {
               alt="Product image"
             />
           </div>
-          <div class="flex items-center justify-between overflow-hidden gap-5">
+          <div
+            class="flex items-center justify-between overflow-hidden gap-5 grow"
+          >
             <div
-              class="w-56 text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis"
+              class="text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis"
             >
               {{ getTranslatedProperty(product, "name") }}
             </div>
-            <div class="w-10 flex-none text-right">
+            <div class="flex-none text-right">
               <SharedPrice
                 v-if="getProductCalculatedListingPrice(product)"
+                class="justify-end"
                 :value="(getProductCalculatedListingPrice(product) as number)"
+              />
+              <SwProductUnits
+                :product="product"
+                :show-content="false"
+                class="text-3"
               />
             </div>
           </div>
