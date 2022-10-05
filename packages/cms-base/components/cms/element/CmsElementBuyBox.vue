@@ -75,9 +75,11 @@ const handleVariantChange = (val: Product) => {
     }"
   >
     <div>
-      <p class="font-bold text-2xl text-gray-900 text-left">
-        {{ currency?.symbol }} {{ price }}
-      </p>
+      <SharedPrice
+        v-if="price"
+        :value="price"
+        class="font-bold text-2xl text-gray-900 text-left"
+      />
       <div v-if="purchaseUnit && unitName" class="mt-1">
         <span class="font-light"> Content: </span>
         <span class="font-light"> {{ purchaseUnit }} {{ unitName }} </span>
