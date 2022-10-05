@@ -8,7 +8,7 @@ import {
   getLandingPage,
   getCategoryDetailsEndpoint,
 } from "@shopware-pwa/api-client";
-import { Category } from "@shopware-pwa/types";
+import type { Category } from "@shopware-pwa/types";
 
 import {
   SearchCmsResult,
@@ -68,7 +68,7 @@ async function getSeoUrlEntityByPath(
           field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
           value: normalizedPath,
         },
-      ] as any, // TODO fix types in shopware-6-client
+      ],
     },
     apiInstance
   );
@@ -105,7 +105,7 @@ export async function searchCms(
             field: "parentId",
             value: null,
           },
-        ] as any, // TODO fix types in shopware-6-client
+        ],
       },
       apiInstance
     );

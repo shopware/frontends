@@ -18,7 +18,9 @@ export default {
 
 <template>
   <div class="container mx-auto my-8">
-    <h1 class="border-b pb-3 text-2xl font-medium text-gray-900 mb-8">Order history</h1>
+    <h1 class="border-b pb-3 text-2xl font-medium text-gray-900 mb-8">
+      Order history
+    </h1>
     <AccountOrder v-for="order in orders" :key="order.id" :order="order" />
   </div>
 </template>

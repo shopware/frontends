@@ -34,6 +34,7 @@ export * from "./createShopwareContext";
 export * from "./useAddress";
 export * from "./useProductPrice";
 export * from "./useInternationalization";
+export * from "./useCmsMeta";
 export * from "./useNewsletter";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {

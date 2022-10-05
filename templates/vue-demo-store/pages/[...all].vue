@@ -8,6 +8,7 @@ export default {
 import { Ref, resolveComponent } from "vue";
 import { pascalCase } from "scule";
 import { useCms } from "@shopware-pwa/composables-next";
+import { useCmsHead } from "@/composables/useCmsHead";
 import { CmsPageResponse } from "@shopware-pwa/types";
 
 const { search } = useCms();
@@ -36,6 +37,8 @@ provide("swCmsContext", cmsResponse);
 
 const page = cmsResponse as Ref<CmsPageResponse>;
 const cmsPage = computed(() => page.value?.cmsPage);
+
+useCmsHead(unref(page), { mainShopTitle: "Shopware Frontends Demo Store" });
 
 function render() {
   const componentName = page.value?.resourceType;

@@ -10,6 +10,7 @@ head:
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Building%20the%20**Content%20Pages**.png?fontSize=120px"
 ---
+
 # Create content pages
 
 In this chapter you will learn how to
