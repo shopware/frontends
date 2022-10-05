@@ -9,7 +9,9 @@ const isSidebarOpen = inject("isSidebarOpen");
       <div
         class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start space-x-4"
       >
-        <div class="flex justify-start lg:flex-1 space-x-4 md:space-x-0 w-20 md:w-1/4">
+        <div
+          class="flex justify-start lg:flex-1 space-x-4 md:space-x-0 w-20 md:w-1/4"
+        >
           <LayoutSideMenu />
 
           <router-link to="/">
