@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  getCategoryUrl,
-  getCategoryImageUrl,
-} from "@shopware-pwa/helpers-next";
+import { getCategoryUrl, getCategoryImageUrl } from "@shopware-pwa/helpers-next";
 
 const { navigationElements } = useNavigation();
 
@@ -44,11 +41,12 @@ const triggerCollapse = (id: string) => {
       role="dialog"
       aria-modal="true"
     >
-      <div class="fixed inset-0 bg-black opacity-25"></div>
-      <div class="fixed inset-0 z-40 flex" @click="isSideMenuOpened = false">
-        <div
-          class="relative flex flex-col w-full max-w-xs overflow-y-auto bg-white shadow-xl"
-        >
+      <div
+        class="fixed inset-0 bg-black opacity-25"
+        @click="isSideMenuOpened = false"
+      ></div>
+      <div class="fixed inset-0 z-40 flex max-w-xs">
+        <div class="relative flex flex-col w-full overflow-y-auto bg-white shadow-xl">
           <div class="flex px-4 py-5">
             <button
               type="button"
@@ -62,6 +60,7 @@ const triggerCollapse = (id: string) => {
           <!-- <client-only></client-only> -->
           <div class="max-w-2xl">
             <aside aria-label="Sidebar">
+              <div class="px-5 pb-3"><LayoutStoreSearch /></div>
               <div class="overflow-y-auto">
                 <ul class="flex flex-col p-0 space-y-2">
                   <li
@@ -79,9 +78,7 @@ const triggerCollapse = (id: string) => {
                       <button
                         class="flex items-center w-12 p-4 -m-4 h-11"
                         v-if="navigationElement?.children?.length"
-                        @click.stop.prevent="
-                          triggerCollapse(navigationElement.id)
-                        "
+                        @click.stop.prevent="triggerCollapse(navigationElement.id)"
                       >
                         <div
                           v-if="!collapseItems[index]?.isCollapsed"
@@ -93,10 +90,7 @@ const triggerCollapse = (id: string) => {
                     </router-link>
 
                     <div
-                      v-if="
-                        navigationElement.media &&
-                        !collapseItems[index]?.isCollapsed
-                      "
+                      v-if="navigationElement.media && !collapseItems[index]?.isCollapsed"
                       class="relative"
                     >
                       <div class="overflow-hidden">

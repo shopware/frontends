@@ -7,9 +7,9 @@ const isSidebarOpen = inject("isSidebarOpen");
   <div class="relative bg-white">
     <div class="mx-auto px-4 sm:px-6">
       <div
-        class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10"
+        class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start space-x-4"
       >
-        <div class="flex justify-start lg:w-0 lg:flex-1 space-x-4 md:space-x-0">
+        <div class="flex justify-start lg:flex-1 space-x-4 md:space-x-0 w-20 md:w-1/4">
           <LayoutSideMenu />
 
           <router-link to="/">
@@ -20,7 +20,9 @@ const isSidebarOpen = inject("isSidebarOpen");
 
         <LayoutTopNavigation />
 
-        <LayoutStoreSearch />
+        <div class="hidden md:block w-full md:w-1/4">
+          <LayoutStoreSearch />
+        </div>
 
         <AccountMenu />
         <!-- Cart -->
