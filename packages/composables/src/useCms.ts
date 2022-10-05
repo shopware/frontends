@@ -28,6 +28,7 @@ export function useCms(): UseCmsReturn {
 
   const _searchPath = inject("swCmsSearchPath", ref(""));
   provide("swCmsSearchPath", _searchPath);
+
   const page: ComputedRef<CmsPage> = computed(() => cmsContext.value?.cmsPage);
 
   const resourceIdentifier = computed(() => {

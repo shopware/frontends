@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { getCategoryUrl, getCategoryImageUrl } from "@shopware-pwa/helpers-next";
+import {
+  getCategoryUrl,
+  getCategoryImageUrl,
+} from "@shopware-pwa/helpers-next";
 
 const { navigationElements } = useNavigation();
 
@@ -46,7 +49,9 @@ const triggerCollapse = (id: string) => {
         @click="isSideMenuOpened = false"
       ></div>
       <div class="fixed inset-0 z-40 flex max-w-xs">
-        <div class="relative flex flex-col w-full overflow-y-auto bg-white shadow-xl">
+        <div
+          class="relative flex flex-col w-full overflow-y-auto bg-white shadow-xl"
+        >
           <div class="flex px-4 py-5">
             <button
               type="button"
@@ -78,7 +83,9 @@ const triggerCollapse = (id: string) => {
                       <button
                         class="flex items-center w-12 p-4 -m-4 h-11"
                         v-if="navigationElement?.children?.length"
-                        @click.stop.prevent="triggerCollapse(navigationElement.id)"
+                        @click.stop.prevent="
+                          triggerCollapse(navigationElement.id)
+                        "
                       >
                         <div
                           v-if="!collapseItems[index]?.isCollapsed"
@@ -90,7 +97,10 @@ const triggerCollapse = (id: string) => {
                     </router-link>
 
                     <div
-                      v-if="navigationElement.media && !collapseItems[index]?.isCollapsed"
+                      v-if="
+                        navigationElement.media &&
+                        !collapseItems[index]?.isCollapsed
+                      "
                       class="relative"
                     >
                       <div class="overflow-hidden">

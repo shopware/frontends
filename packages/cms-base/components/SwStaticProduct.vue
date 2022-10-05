@@ -8,6 +8,8 @@ const props = defineProps<{
   product: Product;
 }>();
 const reviews: Ref<ProductReview[]> = ref([]);
+const route = useRoute();
+const router = useRouter();
 
 const { apiInstance } = useShopwareContext();
 onMounted(async () => {
@@ -30,6 +32,13 @@ const description = computed(() =>
   getTranslatedProperty(props.product, "description")
 );
 const properties = computed(() => props.product?.properties || []);
+
+const handleVariantChange = (val: Product) => {
+  const path = val.seoUrls?.[0].seoPathInfo;
+  if (path && route.path !== `/${path}`) {
+    router.push(`/${path}`);
+  }
+};
 </script>
 
 <template>
@@ -59,7 +68,10 @@ const properties = computed(() => props.product?.properties || []);
           <h2 class="sr-only">Product information</h2>
           <div class="product-variants mt-10">
             <SwProductPrice :product="product" />
-            <SwVariantConfigurator :product="product" />
+            <SwVariantConfigurator
+              :product="product"
+              @change="handleVariantChange"
+            />
             <SwProductAddToCart :product="product" />
           </div>
         </div>

@@ -9,7 +9,8 @@ import {
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
 
-const { searchTerm, search, getProducts, getTotal, loading } = useProductSearchSuggest();
+const { searchTerm, search, getProducts, getTotal, loading } =
+  useProductSearchSuggest();
 
 // True when the search bar is active and user can type in the search field
 const active = ref(false);
@@ -103,7 +104,9 @@ watch(enter, (value) => {
         <div
           class="p-3 h-14 text-sm flex items-center gap-3 hover:bg-gray-100 cursor-pointer transition duration-300 bg-white"
         >
-          <div class="rounded-md border-1 border-gray-200 overflow-hidden flex-none">
+          <div
+            class="rounded-md border-1 border-gray-200 overflow-hidden flex-none"
+          >
             <img
               :src="getMainImageUrl(product)"
               class="h-8 w-8 object-cover"
