@@ -1,4 +1,4 @@
-import { ref, Ref, computed, unref, ComputedRef } from "vue";
+import { ref, Ref, computed, unref, ComputedRef, inject } from "vue";
 import { Product, PropertyGroup } from "@shopware-pwa/types";
 import { ProductResponse } from "./types";
 import { useCms, useShopwareContext } from ".";
@@ -43,15 +43,20 @@ export function useProductConfigurator(
   const { apiInstance } = useShopwareContext();
   const { page } = useCms();
 
+  const cmsContext: Ref<{ configurator: PropertyGroup[] } | undefined> = inject(
+    "swCmsContext",
+    ref()
+  );
+  const configurator: ComputedRef<PropertyGroup[]> = computed(() => {
+    return cmsContext.value?.configurator || [];
+  });
+
   const selected = ref({} as any);
   const isLoadingOptions = ref(!!product.options?.length);
   const parentProductId = computed(() => product.parentId);
-  const getOptionGroups = computed<PropertyGroup[]>(
-    () =>
-      (page.value as unknown as ProductResponse)?.configurator ||
-      // product.configuratorSettings || // TODO - check if it's needed
-      []
-  );
+  const getOptionGroups = computed<PropertyGroup[]>(() => {
+    return configurator.value || [];
+  });
 
   const findGroupCodeForOption = (optionId: string) => {
     const group = getOptionGroups.value.find((optionGroup) => {
