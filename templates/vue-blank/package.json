@@ -11,7 +11,7 @@
     "@shopware-pwa/composables-next": "0.1.13",
     "@shopware-pwa/nuxt3-module": "0.1.13",
     "@shopware-pwa/api-client": "0.1.13",
-    "@vueuse/nuxt": "^9.1.1",
-    "nuxt": "^3.0.0-rc.8"
+    "@vueuse/nuxt": "^9.3.0",
+    "nuxt": "^3.0.0-rc.11"
   }
 }

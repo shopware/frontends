@@ -19,25 +19,25 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.0.0-rc.8",
+    "@nuxt/kit": "^3.0.0-rc.11",
+    "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "@shopware-pwa/api-client": "workspace:*",
-    "html-to-vue": "^1.4.0",
-    "he": "^1.2.0"
+    "he": "^1.2.0",
+    "html-to-vue": "^1.4.0"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.0.0-rc.8",
+    "@nuxt/schema": "^3.0.0-rc.11",
     "@shopware-pwa/types": "workspace:*",
-    "@vue/eslint-config-typescript": "^11.0.0",
-    "eslint": "8.22.0",
+    "@vue/eslint-config-typescript": "^11.0.2",
+    "eslint": "8.24.0",
     "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "^9.4.0",
+    "eslint-plugin-vue": "^9.6.0",
     "tsconfig": "workspace:*",
-    "typescript": "^4.8.2",
-    "unbuild": "^0.8.9",
-    "vue-eslint-parser": "^9.0.3",
-    "vue-tsc": "^0.39.5"
+    "typescript": "^4.8.4",
+    "unbuild": "^0.8.11",
+    "vue-eslint-parser": "^9.1.0",
+    "vue-tsc": "^0.40.13"
   },
   "repository": {
     "type": "git",

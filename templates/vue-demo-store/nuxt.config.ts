@@ -1,6 +1,4 @@
-import { defineNuxtConfig } from "nuxt";
 import transformerDirective from "@unocss/transformer-directives";
-import presetIcons from "@unocss/preset-icons";
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
@@ -8,7 +6,7 @@ export default defineNuxtConfig({
     typeCheck: true,
     strict: true,
   },
-  buildModules: [
+  modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",

@@ -44,7 +44,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       },
     });
 
-    nuxt.hook("autoImports:sources", (dirs) => {
+    nuxt.hook("imports:sources", (dirs) => {
       dirs.push({
         from: "@shopware-pwa/composables-next",
         imports: [
