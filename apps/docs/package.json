@@ -9,16 +9,16 @@
     "serve": "vitepress serve"
   },
   "dependencies": {
+    "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "@shopware-pwa/api-client": "workspace:*",
-    "vitepress": "^1.0.0-alpha.12",
+    "vitepress": "^1.0.0-alpha.19",
     "vitepress-shopware-docs": "^0.0.9",
-    "vue": "^3.2.37"
+    "vue": "^3.2.40"
   },
   "devDependencies": {
     "@types/markdown-it": "^12.2.3",
-    "@types/node": "^18.7.13"
+    "@types/node": "^18.8.2"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -31,6 +31,6 @@
     }
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   }
 }

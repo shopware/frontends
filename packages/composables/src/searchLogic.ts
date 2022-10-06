@@ -134,8 +134,8 @@ export async function searchCms(
     );
 
     return {
-      category: category,
-      cmsPage: category.cmsPage,
+      category: category as Category,
+      cmsPage: (category as Category).cmsPage,
       resourceType: seoUrlEntity?.routeName,
     };
   }
