@@ -9,12 +9,12 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@shopware-pwa/cms-base": "0.1.12",
-    "@shopware-pwa/composables-next": "0.1.12",
-    "@shopware-pwa/helpers-next": "0.1.12",
-    "@shopware-pwa/nuxt3-module": "0.1.12",
-    "@shopware-pwa/api-client": "0.1.12",
-    "@shopware-pwa/types": "0.1.12",
+    "@shopware-pwa/cms-base": "0.1.13",
+    "@shopware-pwa/composables-next": "0.1.13",
+    "@shopware-pwa/helpers-next": "0.1.13",
+    "@shopware-pwa/nuxt3-module": "0.1.13",
+    "@shopware-pwa/api-client": "0.1.13",
+    "@shopware-pwa/types": "0.1.13",
     "@unocss/nuxt": "^0.45.13",
     "@vuelidate/core": "^2.0.0-alpha.44",
     "@vuelidate/validators": "^2.0.0-alpha.31",
