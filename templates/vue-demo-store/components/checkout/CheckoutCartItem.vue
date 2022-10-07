@@ -54,6 +54,7 @@ const removeCartItem = async () => {
       :src="getMainImageUrl(cartItem)"
       alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
       class="h-full w-full object-cover object-center"
+      data-testid="cart-product-image"
     />
   </div>
 
@@ -75,7 +76,7 @@ const removeCartItem = async () => {
       <p
         v-if="itemOptions"
         class="mt-1 text-sm text-gray-500"
-        data-testis="cart-product-options"
+        data-testid="cart-product-options"
       >
         <span
           v-for="option in itemOptions"
@@ -92,6 +93,7 @@ const removeCartItem = async () => {
     >
       <select
         v-if="itemStock && itemStock > 0"
+        data-testid="cart-product-qty-select"
         v-model="quantity"
         name="quantity"
         class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -100,6 +102,7 @@ const removeCartItem = async () => {
           v-for="entry in itemStock > maxQty ? maxQty : itemStock"
           :key="entry"
           :value="entry"
+          data-testid="cart-product-qty-select-option"
         >
           {{ entry }}
         </option>
@@ -107,6 +110,7 @@ const removeCartItem = async () => {
       <!-- Stock is lower than 1 -->
       <div v-else>
         <div
+          data-testid="cart-product-qty"
           class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white opacity-50 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         >
           {{ quantity }}

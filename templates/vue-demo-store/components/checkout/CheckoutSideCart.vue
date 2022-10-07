@@ -118,6 +118,7 @@ const { cartItems, totalPrice } = useCart();
                 <RouterLink
                   class="flex items-center justify-center py-3 text-sm font-medium text-brand-dark"
                   to="/checkout/cart"
+                  data-testid="cart-checkout-shopping-cart"
                   @click="isOpen = false"
                 >
                   Go to shopping cart
