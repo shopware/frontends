@@ -7,6 +7,7 @@ const emits = defineEmits<{
 }>();
 
 const { isLoggedIn, login } = useUser();
+const { pushSuccess } = useNotifications();
 const loginErrors = ref<string[]>([]);
 
 const formData = ref({
@@ -20,6 +21,8 @@ const invokeLogin = async (): Promise<void> => {
   try {
     await login(formData.value);
     emits("success");
+    pushSuccess("You are logged in");
+    emits("close");
   } catch (error) {
     const e = error as ClientApiError;
     loginErrors.value = e.messages.map(({ detail }) => detail);
