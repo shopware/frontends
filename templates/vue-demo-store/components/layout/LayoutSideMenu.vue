@@ -7,7 +7,7 @@ import { Category } from "@shopware-pwa/types";
 
 const { navigationElements } = useNavigation();
 
-const isSideMenuOpened = ref<boolean>(false);
+const isSideMenuOpened = inject("isSideMenuOpened", ref(false));
 const expandedIds = ref<Array<string>>([]);
 
 function isCollapsed(navigationelement: Category): boolean {
