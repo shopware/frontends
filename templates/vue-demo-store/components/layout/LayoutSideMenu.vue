@@ -29,13 +29,13 @@ const toggleCollapse = (navigationElement: Category) => {
 </script>
 
 <template>
-  <button class="md:hidden" @click="isSideMenuOpened = true" aria-label="menu">
+  <button class="lg:hidden" @click="isSideMenuOpened = true" aria-label="menu">
     <div class="i-carbon-menu text-xl" />
   </button>
   <client-only>
     <div
       v-if="isSideMenuOpened"
-      class="relative z-40 md:hidden"
+      class="relative z-40 lg:hidden"
       role="dialog"
       aria-modal="true"
     >
