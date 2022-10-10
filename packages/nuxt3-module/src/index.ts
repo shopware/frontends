@@ -43,6 +43,8 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
         },
       },
     });
+    // TODO: remove it once nitro server build contains all external packages of nuxt3-module (composables-next)
+    nuxt.options.build.transpile.push("@shopware-pwa/composables-next");
 
     nuxt.hook("imports:sources", (dirs) => {
       dirs.push({
