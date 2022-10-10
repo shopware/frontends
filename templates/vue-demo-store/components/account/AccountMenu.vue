@@ -67,6 +67,7 @@ async function invokeLogout() {
                 <!-- Active: "bg-gray-100", Not Active: "" -->
                 <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a> -->
                 <button
+                  data-testid="header-sing-out-link"
                   id="user-menu-item-2"
                   class="block px-4 py-2 text-sm text-gray-700 w-full text-left"
                   role="menuitem"
