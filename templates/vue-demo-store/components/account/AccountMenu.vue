@@ -11,7 +11,7 @@ async function invokeLogout() {
 }
 </script>
 <template>
-  <div class="hidden md:flex items-center justify-end md:w-auto">
+  <div class="flex items-center justify-end md:w-auto">
     <div class="my-account-area">
       <div v-show="!isLoggedIn">
         <button
