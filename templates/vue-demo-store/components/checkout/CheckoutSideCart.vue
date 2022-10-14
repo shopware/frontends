@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const isOpen = inject("isSidebarOpen");
 
-const { cartItems, totalPrice } = useCart();
+const { cartItems, totalPrice, isEmpty } = useCart();
 </script>
 
 <template>
@@ -82,7 +82,11 @@ const { cartItems, totalPrice } = useCart();
 
               <div class="mt-8">
                 <div class="flow-root">
-                  <ul role="list" class="-my-6 px-0 divide-y divide-gray-200">
+                  <ul
+                    v-if="!isEmpty"
+                    role="list"
+                    class="-my-6 px-0 divide-y divide-gray-200"
+                  >
                     <li
                       v-for="cartItem in cartItems"
                       :key="cartItem.id"
@@ -91,6 +95,9 @@ const { cartItems, totalPrice } = useCart();
                       <CheckoutCartItem :cart-item="cartItem" />
                     </li>
                   </ul>
+                  <div class="text-2xl text-center" v-else>
+                    Your shopping cart is empty
+                  </div>
                 </div>
               </div>
             </div>
@@ -108,9 +115,10 @@ const { cartItems, totalPrice } = useCart();
               <div class="mt-6">
                 <NuxtLink
                   class="flex items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
-                  to="/checkout"
+                  :class="{ 'bg-gray': isEmpty, 'hover:bg-gray': isEmpty }"
+                  :to="isEmpty ? '' : '/checkout'"
                   data-testid="cart-checkout-link"
-                  @click="isOpen = false"
+                  @click="isOpen = !isEmpty ? false : true"
                 >
                   Checkout
                 </NuxtLink>
