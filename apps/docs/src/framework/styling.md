@@ -8,7 +8,7 @@ head:
       content: "Shopware Frontends Demo Store Template applies a utility-first styling approach based on unocss. You can either follow this approach or use custom styling."
   - - meta
     - name: og:image
-      content: "https://frontends-og-image.vercel.app/Styling?fontSize=150px"
+      content: "https://frontends-og-image.vercel.app/Styling.png"
 ---
 
 # Styling

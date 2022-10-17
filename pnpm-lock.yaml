@@ -27,6 +27,7 @@ importers:
       '@shopware-pwa/helpers-next': workspace:*
       '@types/markdown-it': ^12.2.3
       '@types/node': ^18.8.2
+      '@vitejs/plugin-vue': ^3.1.2
       vitepress: ^1.0.0-alpha.19
       vitepress-shopware-docs: ^0.0.9
       vue: ^3.2.40
@@ -40,6 +41,7 @@ importers:
     devDependencies:
       '@types/markdown-it': 12.2.3
       '@types/node': 18.8.2
+      '@vitejs/plugin-vue': 3.1.2_vue@3.2.40
 
   apps/e2e-tests:
     specifiers:
@@ -2195,7 +2197,7 @@ packages:
   /@types/concat-stream/1.6.1:
     resolution: {integrity: sha512-eHE4cQPoj6ngxBZMvVf6Hw7Mh4jMW4U9lpGmS5GBPB9RYxlFg+CHaVN7ErNY4W9XfLIEn20b4VDYaIrbq0q4uA==}
     dependencies:
-      '@types/node': 18.8.2
+      '@types/node': 18.11.0
     dev: true
 
   /@types/estree/0.0.39:
@@ -2207,7 +2209,7 @@ packages:
   /@types/form-data/0.0.33:
     resolution: {integrity: sha512-8BSvG1kGm83cyJITQMZSulnl6QV8jqAGreJsc5tPu1Jq0vTSOiY/k24Wx82JRpWwZSqrala6sd5rWi6aNXvqcw==}
     dependencies:
-      '@types/node': 18.8.2
+      '@types/node': 18.11.0
     dev: true
 
   /@types/hast/2.3.4:
@@ -2230,7 +2232,7 @@ packages:
   /@types/keyv/3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 18.8.2
+      '@types/node': 18.11.0
     dev: true
 
   /@types/linkify-it/3.0.2:
@@ -2265,12 +2267,16 @@ packages:
     resolution: {integrity: sha512-0b+utRBSYj8L7XAp0d+DX7lI4cSmowNaaTkk6/1SKzbKkG+doLuPusB9EOvzLJ8ahJSk03bTLIL6cWaEd4dBKA==}
     dev: true
 
+  /@types/node/18.11.0:
+    resolution: {integrity: sha512-IOXCvVRToe7e0ny7HpT/X9Rb2RYtElG1a+VshjwT00HxrM2dWBApHQoqsI6WiY7Q03vdf2bCrIGzVrkF/5t10w==}
+
   /@types/node/18.7.13:
     resolution: {integrity: sha512-46yIhxSe5xEaJZXWdIBP7GU4HDTG8/eo0qd9atdiL+lFpA03y8KS+lkTN834TWJj5767GbWv4n/P6efyTFt1Dw==}
     dev: true
 
   /@types/node/18.8.2:
     resolution: {integrity: sha512-cRMwIgdDN43GO4xMWAfJAecYn8wV4JbsOGHNfNUIDiuYkUYAR5ec4Rj7IO2SAhFPEfpPtLtUTbbny/TCT7aDwA==}
+    dev: true
 
   /@types/node/8.10.66:
     resolution: {integrity: sha512-tktOkFUA4kXx2hhhrB8bIFb5TbwzS4uOhKEmwiD+NoiL0qtP2OQ9mFldbgD4dV1djrlBYP6eBuQZiWjuHUpqFw==}
@@ -2313,12 +2319,12 @@ packages:
   /@types/resolve/1.17.1:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
     dependencies:
-      '@types/node': 18.8.2
+      '@types/node': 18.11.0
 
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 18.8.2
+      '@types/node': 18.11.0
     dev: true
 
   /@types/scheduler/0.16.2:
@@ -2835,7 +2841,7 @@ packages:
     resolution: {integrity: sha512-phlgW4qHGEt/yQ/nbGCd3vrFM0n48/MBbvmAKgTeVE/mjzdWxPnuSHNQlaipJkzfT3tv8kiiJu9ZoicuDoACTw==}
     dependencies:
       '@edge-runtime/vm': 1.1.0-beta.36
-      '@types/node': 18.8.2
+      '@types/node': 18.11.0
       '@vercel/build-utils': 5.5.4
       '@vercel/node-bridge': 3.0.0
       '@vercel/static-config': 2.0.3
@@ -2928,6 +2934,19 @@ packages:
     dependencies:
       vite: 3.1.6
       vue: 3.2.40
+
+  /@vitejs/plugin-vue/3.1.2_vue@3.2.40:
+    resolution: {integrity: sha512-3zxKNlvA3oNaKDYX0NBclgxTQ1xaFdL7PzwF6zj9tGFziKwmBa3Q/6XcJQxudlT81WxDjEhHmevvIC4Orc1LhQ==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^3.0.0
+      vue: ^3.2.25
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      vue: 3.2.40
+    dev: true
 
   /@vitest/coverage-c8/0.23.4:
     resolution: {integrity: sha512-jmD00a5DQH9gu9K+YdvVhcMuv2CzHvU4gCnySS40Ec5hKlXtlCzRfNHl00VnhfuBeaQUmaQYe60BLT413HyDdg==}
@@ -6818,7 +6837,7 @@ packages:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.8.2
+      '@types/node': 18.11.0
       merge-stream: 2.0.0
       supports-color: 7.2.0
 
