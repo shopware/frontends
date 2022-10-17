@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsPage } from "@shopware-pwa/types";
+import { Category, CmsPage } from "@shopware-pwa/types";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import {
   computed,
@@ -22,8 +22,8 @@ defineProps<{
   listingType?: string;
 }>();
 
-const cmsPage = inject<ComputedRef<CmsPage>>("cms-page");
-const category = computed(() => cmsPage?.value?.category);
+const { category } = useCategory();
+
 const isSortMenuOpen = ref(false);
 const {
   getCurrentSortingOrder,

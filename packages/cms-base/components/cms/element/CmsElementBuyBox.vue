@@ -15,19 +15,12 @@ const { getConfigValue } = useCmsElementConfig(props.content);
 const alignment = computed(() => getConfigValue("alignment"));
 
 const { taxState, currency } = useSessionContext();
-const product = ref<Product>();
-watch(
-  () => props.content?.data?.product,
-  (value) => {
-    if (value) {
-      value.configuratorSettings = props.content?.data?.configuratorSettings;
-    }
-    product.value = value;
-  },
-  {
-    immediate: true,
-  }
+
+const { product, changeVariant } = useProduct(
+  props.content.data.product,
+  props.content.data.configuratorSettings || []
 );
+
 const price = computed(() => {
   if (product.value) {
     const tierPrices = getProductTierPrices(product.value);
@@ -49,20 +42,6 @@ const availableStock = computed(() => product.value?.availableStock ?? 0);
 const minPurchase = computed(() => product.value?.minPurchase ?? 0);
 const deliveryTime = computed(() => product.value?.deliveryTime);
 const restockTime = computed(() => product.value?.restockTime);
-const handleVariantChange = (val: Product) => {
-  const temp = product.value;
-  if (temp) {
-    temp.id = val.id;
-    temp.productNumber = val.productNumber;
-    const seoUrl = temp.seoUrls?.find(
-      (seoUrl) => seoUrl.apiAlias === "seo_url"
-    );
-    if (seoUrl) {
-      seoUrl.seoPathInfo = val.seoUrls?.[0]?.seoPathInfo ?? "";
-    }
-    product.value = temp;
-  }
-};
 </script>
 <template>
   <div
@@ -106,7 +85,7 @@ const handleVariantChange = (val: Product) => {
       >
       <span v-else>No longer available</span>
     </div>
-    <SwVariantConfigurator :product="product" @change="handleVariantChange" />
+    <SwVariantConfigurator :product="product" @change="changeVariant" />
     <SwProductAddToCart :product="product" />
     <div class="mt-3 product-detail-ordernumber-container">
       <span class="font-bold text-gray-900"> Product number: </span>

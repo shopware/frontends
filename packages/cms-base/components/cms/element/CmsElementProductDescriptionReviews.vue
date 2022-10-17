@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { CmsProductPageResponse } from "@shopware-pwa/types";
 import type { CmsElementProductDescriptionReviews } from "@shopware-pwa/composables-next";
 import {
   getTranslatedProperty,
@@ -10,13 +9,10 @@ const props = defineProps<{
   content: CmsElementProductDescriptionReviews;
 }>();
 const currentTab = ref<number>(1);
-const { cmsContent } = useCms();
+const { product: contextProduct } = useProduct();
 const product = computed(
-  () =>
-    (props.content?.data as any)?.product ||
-    (cmsContent.value as CmsProductPageResponse)?.product
+  () => props.content.data.product || contextProduct.value
 );
-const properties = computed(() => product.value?.properties || []);
 
 const description = computed(() =>
   getTranslatedProperty(product.value, "description")
@@ -25,10 +21,15 @@ const description = computed(() =>
 const toggleTabs = (tabNumber: number) => {
   currentTab.value = tabNumber;
 };
+
+const reviews = computed(() => props.content.data.reviews?.elements);
 </script>
 
 <template>
-  <div class="cms-block-product-description-reviews flex flex-wrap">
+  <div
+    class="cms-block-product-description-reviews flex flex-wrap"
+    v-if="product"
+  >
     <div class="w-full">
       <ul
         class="flex flex-wrap text-sm font-medium list-none text-center text-gray-500 border-b border-gray-200 dark:border-gray-500 dark:text-gray-400"
@@ -80,7 +81,7 @@ const toggleTabs = (tabNumber: number) => {
                 currentTab !== 2 ? 'hidden' : 'block',
               ]"
             >
-              <SwProductReviews :product="product" />
+              <SwProductReviews :product="product" :reviews="reviews" />
             </div>
           </div>
         </div>

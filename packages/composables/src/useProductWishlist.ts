@@ -11,7 +11,9 @@ export type UseProductWishlistReturn = {
 /**
  * Manage wishlist for a single product. Options - {@link UseProductWishlistReturn}
  */
-export function useProductWishlist(product: Product): UseProductWishlistReturn {
+export function useProductWishlist(
+  product: Ref<Product>
+): UseProductWishlistReturn {
   const {
     addToWishlist: addItem,
     removeFromWishlist: removeItem,
@@ -20,18 +22,18 @@ export function useProductWishlist(product: Product): UseProductWishlistReturn {
 
   // removes item from the list
   async function removeFromWishlist() {
-    await removeItem(product.id);
+    await removeItem(product.value.id);
   }
 
   // add product id to wishlist array and trigger to update localstorage
 
   async function addToWishlist() {
-    await addItem(product.id);
+    await addItem(product.value.id);
   }
 
   // return true or false if product id is in wishlist array
   const isInWishlist = computed(() => {
-    return items.value?.includes(product.id);
+    return items.value?.includes(product.value.id);
   });
 
   return {

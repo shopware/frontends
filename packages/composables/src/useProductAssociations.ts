@@ -33,7 +33,7 @@ export type UseProductAssociationsReturn = {
  *
  */
 export function useProductAssociations(
-  product: Ref<Product>,
+  product: ComputedRef<Product>,
   options: {
     associationContext: "cross-selling" | "reviews";
   }

@@ -1,7 +1,7 @@
 import { ref, Ref, computed, unref, ComputedRef, inject } from "vue";
 import { Product, PropertyGroup } from "@shopware-pwa/types";
 import { ProductResponse } from "./types";
-import { useCms, useShopwareContext } from ".";
+import { useProduct, useShopwareContext } from ".";
 import { invokePost, getProductEndpoint } from "@shopware-pwa/api-client";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
@@ -37,23 +37,20 @@ export type UseProductConfiguratorReturn = {
 /**
  * Product options - {@link UseProductConfiguratorReturn}
  */
-export function useProductConfigurator(
-  product: Product
-): UseProductConfiguratorReturn {
+export function useProductConfigurator(): UseProductConfiguratorReturn {
   const { apiInstance } = useShopwareContext();
-  const { page } = useCms();
 
-  const cmsContext: Ref<{ configurator: PropertyGroup[] } | undefined> = inject(
-    "swCmsContext",
-    ref()
-  );
-  const configurator: ComputedRef<PropertyGroup[]> = computed(() => {
-    return cmsContext.value?.configurator || [];
-  });
+  const { configurator, product } = useProduct();
+  if (!product.value) {
+    // TODO link docs with composables context usage
+    throw new Error(
+      "Product configurator cannot be used without the product context."
+    );
+  }
 
   const selected = ref({} as any);
-  const isLoadingOptions = ref(!!product.options?.length);
-  const parentProductId = computed(() => product.parentId);
+  const isLoadingOptions = ref(!!product.value.options?.length);
+  const parentProductId = computed(() => product.value?.parentId);
   const getOptionGroups = computed<PropertyGroup[]>(() => {
     return configurator.value || [];
   });
@@ -70,7 +67,7 @@ export function useProductConfigurator(
   };
 
   // create a group -> optionId map
-  product.optionIds?.forEach((optionId) => {
+  product.value.optionIds?.forEach((optionId) => {
     const optionGroupCode = findGroupCodeForOption(optionId);
     if (optionGroupCode) {
       selected.value[optionGroupCode] = optionId;

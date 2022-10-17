@@ -1,4 +1,4 @@
-import { ref, Ref, computed, unref, ComputedRef } from "vue";
+import { ref, Ref, computed, unref, ComputedRef, watch } from "vue";
 import { Product, Cart, LineItem } from "@shopware-pwa/types";
 import { useCart } from "./useCart";
 
@@ -25,13 +25,8 @@ export type UseAddToCartReturn = {
   isInCart: ComputedRef<boolean>;
 };
 
-export function useAddToCart(
-  product: Ref<Product> | Product
-): UseAddToCartReturn {
-  const unrefProduct = unref(product);
-  if (!unrefProduct?.id) {
-    throw "Product has to be passed as a composable argument and needs to have an id property.";
-  }
+export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
+  const _product = computed(() => unref(product));
 
   const { addProduct, cartItems } = useCart();
   const quantity: Ref<number> = ref(1);
@@ -39,20 +34,20 @@ export function useAddToCart(
   async function addToCart(): Promise<Cart> {
     if (!quantity.value) quantity.value = 1;
     const addToCartResponse = await addProduct({
-      id: unrefProduct.id,
+      id: _product.value.id,
       quantity: quantity.value,
     });
     quantity.value = 1;
     return addToCartResponse;
   }
 
-  const getStock = computed(() => unrefProduct?.stock);
+  const getStock = computed(() => _product.value?.stock);
 
-  const getAvailableStock = computed(() => unrefProduct.availableStock);
+  const getAvailableStock = computed(() => _product.value?.availableStock);
 
   const isInCart = computed(() =>
     cartItems.value.some(
-      (item: LineItem) => item.referencedId === unrefProduct.id
+      (item: LineItem) => item.referencedId === _product.value?.id
     )
   );
 

@@ -22,7 +22,9 @@ export type UseProductReviewsReturn = {
  * Composable for listing customer orders. Options - {@link UseProductReviewsReturn}
  *
  */
-export function useProductReviews(product: Product): UseProductReviewsReturn {
+export function useProductReviews(
+  product: Ref<Product>
+): UseProductReviewsReturn {
   const { apiInstance } = useShopwareContext();
 
   const productReviews: Ref<ProductReview[]> = ref([]);
@@ -31,7 +33,7 @@ export function useProductReviews(product: Product): UseProductReviewsReturn {
     parameters: ShopwareSearchParams = {}
   ): Promise<void> => {
     const fetchedReviews = await getProductReviews(
-      product.id,
+      product.value.id,
       undefined,
       // Object.assign({}, getDefaults(), parameters),
       apiInstance
@@ -44,7 +46,7 @@ export function useProductReviews(product: Product): UseProductReviewsReturn {
     content: string;
     points: number;
   }) => {
-    await addProductReview(product.id, data, apiInstance);
+    await addProductReview(product.value.id, data, apiInstance);
   };
 
   return {
