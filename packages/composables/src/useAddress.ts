@@ -1,4 +1,11 @@
-import { computed, ComputedRef, ref, Ref } from "vue";
+import {
+  ref,
+  Ref,
+  computed,
+  inject,
+  provide,
+  ComputedRef,
+} from "vue";
 
 import {
   getCustomerAddresses,
@@ -29,7 +36,11 @@ export type UseAddressReturn = {
 export function useAddress(): UseAddressReturn {
   const { apiInstance } = useShopwareContext();
 
-  const customerAddresses: Ref<CustomerAddress[] | null> = ref(null);
+  const _storeCustomerAddresses: Ref<CustomerAddress[]> = inject(
+    "swCustomerAddresses",
+    ref([])
+  );
+  provide("swCustomerAddresses", _storeCustomerAddresses);
 
   /**
    * Get customer address list
@@ -38,7 +49,7 @@ export function useAddress(): UseAddressReturn {
     parameters: ShopwareSearchParams = {}
   ): Promise<void> {
     const { elements } = await getCustomerAddresses(parameters, apiInstance);
-    customerAddresses.value = elements;
+    _storeCustomerAddresses.value = elements;
   }
 
   /**
@@ -47,7 +58,11 @@ export function useAddress(): UseAddressReturn {
   async function createCustomerAddress(
     customerAddress: CustomerAddress
   ): Promise<CustomerAddress> {
-    return await apiCreateCustomerAddress(customerAddress, apiInstance);
+    const result =  await apiCreateCustomerAddress(customerAddress, apiInstance);
+    await loadCustomerAddresses();
+    await setDefaultCustomerBillingAddress(result.id);
+    await setDefaultCustomerShippingAddress(result.id);
+    return result
   }
 
   /**
@@ -56,14 +71,18 @@ export function useAddress(): UseAddressReturn {
   async function updateCustomerAddress(
     customerAddress: CustomerAddress
   ): Promise<CustomerAddress> {
-    return await apiUpdateCustomerAddress(customerAddress, apiInstance);
+    const result =  await apiUpdateCustomerAddress(customerAddress, apiInstance);
+    await loadCustomerAddresses();
+    return result;
   }
 
   /**
    * Delete customer address
    */
   async function deleteCustomerAddress(addressId: string): Promise<void> {
-    await apiDeleteCustomerAddress(addressId, apiInstance);
+    const result =  apiDeleteCustomerAddress(addressId, apiInstance);
+    await loadCustomerAddresses();
+    return result;
   }
 
   /**
@@ -85,7 +104,7 @@ export function useAddress(): UseAddressReturn {
   }
 
   return {
-    customerAddresses: computed(() => customerAddresses.value || []),
+    customerAddresses: computed(() => _storeCustomerAddresses.value || []),
     loadCustomerAddresses,
     createCustomerAddress,
     updateCustomerAddress,

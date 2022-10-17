@@ -15,6 +15,7 @@ const { refreshSessionContext } = useSessionContext();
 const { refreshCart } = useCart();
 useNotifications();
 useWishlist();
+useAddress();
 
 onMounted(() => {
   refreshSessionContext();
