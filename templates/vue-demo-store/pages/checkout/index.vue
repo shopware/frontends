@@ -30,8 +30,13 @@ const {
   paymentMethod,
   setShippingMethod,
   setPaymentMethod,
+  activeShippingAddress,
+  setActiveShippingAddress,
+  activeBillingAddress,
+  setActiveBillingAddress
 } = useSessionContext();
 const { cartItems, subtotal, totalPrice, shippingTotal } = useCart();
+const { customerAddresses, loadCustomerAddresses } = useAddress();
 const modal = inject<SharedModal>("modal") as SharedModal;
 const isLoading = reactive<{ [key: string]: boolean }>({});
 
@@ -56,6 +61,28 @@ const selectedPaymentMethod = computed({
   },
 });
 
+const selectedShippingAddress = computed({
+  get(): string {
+    return activeShippingAddress.value?.id || "";
+  },
+  async set(shippingAddressId: string) {
+    isLoading[`shipping-${shippingAddressId}`] = true;
+    await setActiveShippingAddress({ id: shippingAddressId });
+    isLoading[`shipping-${shippingAddressId}`] = false;
+  },
+})
+
+const selectedBillingAddress = computed({
+  get(): string {
+    return activeBillingAddress.value?.id || "";
+  },
+  async set(billingAddressId: string) {
+    isLoading[`billing-${billingAddressId}`] = true;
+    await setActiveBillingAddress({ id: billingAddressId });
+    isLoading[`billing-${billingAddressId}`] = false;
+  },
+})
+
 const isCheckoutAvailable = computed(() => {
   return cartItems.value.length > 0;
 });
@@ -72,6 +99,7 @@ const state = reactive({
     city: "",
     countryId: "",
   },
+  customShipping: false
 });
 
 const rules = computed(() => ({
@@ -129,6 +157,10 @@ onMounted(async () => {
   isLoading["paymentMethods"] = true;
   await getPaymentMethods();
   isLoading["paymentMethods"] = false;
+
+  isLoading["shippingAddress"] = true;
+  await loadCustomerAddresses();
+  isLoading["shippingAddress"] = false;
 });
 
 const registerErrors = ref<ShopwareError[]>([]);
@@ -192,7 +224,7 @@ const invokeSubmit = async () => {
                   @click="modal.open('AccountLoginForm')"
                   data-testid="checkout-sign-in-link"
                 >
-                  Log in
+                  Sign in
                 </a>
                 <p class="text-gray-500">In order to place an order.</p>
               </div>
@@ -537,6 +569,105 @@ const invokeSubmit = async () => {
               >
                 {{ paymentMethod.name }}
               </label>
+            </div>
+          </fieldset>
+          <fieldset v-if="isLoggedIn" class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
+            <legend class="pt-5">
+              <h3 class="text-lg font-medium text-gray-900 m-0">Billing Address</h3>
+              <div class="text-sm text-gray-600">Select a billing address</div>
+            </legend>
+            <div v-if="isLoading['paymentMethods']" class="w-60 h-24">
+              <div class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5">
+                <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
+                <div class="flex flex-col space-y-3">
+                  <div class="w-36 bg-gray-300 h-6 rounded-md" />
+                  <div class="w-24 bg-gray-300 h-6 rounded-md" />
+                </div>
+              </div>
+            </div>
+            <div v-else v-for="address in customerAddresses" :key="address.id" class="flex mb-3">
+              <input
+                  :id="`billing-${address.id}`"
+                  v-model="selectedBillingAddress"
+                  :value="address.id"
+                  name="billing-address"
+                  type="radio"
+                  class="focus:ring-brand-primary h-4 w-4 border-gray-300"
+                  :data-testid="`checkout-billing-address-${address.id}`"
+                />
+                <label
+                  :for="`billing-${address.id}`"
+                  :class="{ 'animate-pulse': isLoading[`billing-${address.id}`] }"
+                  class="ml-2 field-label"
+                >
+                  <AccountAddressCard
+                  :key="address.id"
+                  :address="address"
+                  :countries="getCountries"
+                  :salutations="getSalutations"
+                  :canSetDefault=false
+                  />
+                </label>
+            </div>
+            <button type="button" class="flex font-medium text-brand-dark"
+              @click="
+                modal.open('AccountAddressForm', {
+                  countries: getCountries,
+                  salutations: getSalutations,
+                  title: 'Add new billing address',
+                })
+              " >
+              Add new billing address
+            </button>
+            <label
+              for="customShipping"
+              class="field-label"
+            >
+              <input
+                id="customShipping"
+                name="privacy"
+                type="checkbox"
+                v-model="state.customShipping"
+                class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
+              />
+              Different shipping address
+            </label>
+            <div v-if="state.customShipping">
+              <div v-for="address in customerAddresses" :key="address.id" class="flex mb-3">
+                <input
+                  :id="`shipping-${address.id}`"
+                  v-model="selectedShippingAddress"
+                  :value="address.id"
+                  name="shipping-address"
+                  type="radio"
+                  class="focus:ring-brand-primary h-4 w-4 border-gray-300"
+                  :data-testid="`checkout-shipping-address-${address.id}`"
+                />
+                <label
+                  :for="`shipping-${address.id}`"
+                  :class="{ 'animate-pulse': isLoading[`shipping-${address.id}`] }"
+                  class="ml-2 field-label"
+                >
+                  <AccountAddressCard
+                  :key="address.id"
+                  :address="address"
+                  :countries="getCountries"
+                  :salutations="getSalutations"
+                  :canSetDefault=false
+                  />
+                </label>
+
+              </div>
+              <button type="button" class="flex font-medium text-brand-dark"
+                @click="
+                  modal.open('AccountAddressForm', {
+                    countries: getCountries,
+                    salutations: getSalutations,
+                    title: 'Add new shipping address',
+                  })
+                " >
+                Add new shipping address
+              </button>
             </div>
           </fieldset>
         </div>
