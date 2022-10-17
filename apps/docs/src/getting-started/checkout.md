@@ -105,7 +105,7 @@ const selectedPaymentMethod = computed({
 
 ## Create an order summary (totals, taxes)
 
-Refer to [formatting prices](price.md) for more insights.
+Refer to [formatting prices](prices.md) for more insights.
 
 :::warning
 Totals should **not** be calculated by the frontend. All calculations should be done on the backend side.
