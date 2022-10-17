@@ -9,6 +9,13 @@ import {
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
 
+withDefaults(
+  defineProps<{
+    displayTotal?: number;
+  }>(),
+  { displayTotal: 10 }
+);
+
 const { searchTerm, search, getProducts, getTotal, loading } =
   useProductSearchSuggest();
 
@@ -96,7 +103,7 @@ watch(enter, (value) => {
       class="absolute border-gray-100 border-t-1 duration-300 left-0 mt-2 overflow-hidden right-0 rounded-b-md shadow-md transition-height w-auto z-1"
     >
       <router-link
-        v-for="product in getProducts.slice(0, 10)"
+        v-for="product in getProducts.slice(0, displayTotal)"
         :key="product.id"
         :to="getProductUrl(product)"
         @click="[(active = false), (isSideMenuOpened = false)]"

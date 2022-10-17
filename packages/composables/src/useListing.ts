@@ -70,8 +70,10 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
   getInitialFilters: ComputedRef<ListingFilter[]>;
   getAvailableFilters: ComputedRef<ListingFilter[]>;
   getCurrentFilters: ComputedRef<any>;
+  setCurrentFilters: (filters: any) => Promise<void>;
   loading: ComputedRef<boolean>;
   loadingMore: ComputedRef<boolean>;
+  resetFilters: () => Promise<void>;
 };
 
 export function useListing(params?: {
@@ -214,12 +216,16 @@ export function createListingComposable<ELEMENTS_TYPE>({
 
       // prepare full criteria using defaults and currently selected criteria
       const searchCriteria = merge({}, searchDefaults, criteria);
-      const result = await searchMethod(searchCriteria);
+
       // TODO: investigate why filters are not complete
-      const allFiltersResult = await searchMethod({
-        query: searchCriteria.query,
-        includes: { product_listing: ["aggregations"] },
-      });
+      const [result, allFiltersResult] = await Promise.all([
+        searchMethod(searchCriteria),
+        searchMethod({
+          query: searchCriteria.query,
+          includes: { product_listing: ["aggregations"] },
+        }),
+      ]);
+
       _storeAppliedListing.value = Object.assign({}, result, {
         aggregations: Object.assign(
           {},
@@ -309,7 +315,10 @@ export function createListingComposable<ELEMENTS_TYPE>({
   });
 
   const getAvailableFilters = computed(() => {
-    return getListingFilters(getCurrentListing.value?.aggregations);
+    return getListingFilters(
+      _storeAppliedListing.value?.aggregations ||
+        getCurrentListing.value?.aggregations
+    );
   });
 
   const getCurrentFilters = computed(() => {
@@ -334,6 +343,29 @@ export function createListingComposable<ELEMENTS_TYPE>({
     return currentFiltersResult;
   });
 
+  const setCurrentFilters = (filter: { code: string; value: any }) => {
+    const appliedFilters = Object.assign({}, getCurrentFilters.value, filter, {
+      query: getCurrentFilters.value.search,
+    });
+    _storeAppliedListing.value.currentFilters = appliedFilters;
+    return search(appliedFilters);
+  };
+
+  const resetFilters = () => {
+    const defaultFilters = Object.assign(
+      {
+        manufacturer: [],
+        properties: [],
+        price: { min: 0, max: 0 },
+        search: getCurrentFilters.value.search,
+      },
+      searchDefaults
+    );
+
+    _storeAppliedListing.value.currentFilters = defaultFilters;
+    return search({ query: getCurrentFilters.value.search });
+  };
+
   return {
     getInitialListing,
     setInitialListing,
@@ -352,8 +384,10 @@ export function createListingComposable<ELEMENTS_TYPE>({
     getInitialFilters,
     getAvailableFilters,
     getCurrentFilters,
+    setCurrentFilters,
     loading: computed(() => loading.value),
     loadMore,
     loadingMore: computed(() => loadingMore.value),
+    resetFilters,
   };
 }

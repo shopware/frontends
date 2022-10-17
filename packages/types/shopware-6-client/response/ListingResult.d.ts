@@ -4,18 +4,23 @@ import { Aggregations } from "../search/Aggregations";
 /**
  * @public
  */
+export type ListingFilterCode =
+  | "manufacturer"
+  | "properties"
+  | "price"
+  | "rating"
+  | "search"
+  | "shipping-free"
+  | string;
+
+/**
+ * @public
+ */
 export type ListingFilter = {
   id: string;
   label: string;
   name: string;
-  code:
-    | "manufacturer"
-    | "properties"
-    | "price"
-    | "rating"
-    | "search"
-    | "shipping-free"
-    | string;
+  code: ListingFilterCode;
   type?: "range" | "max";
   options?: Array<{ id: string; name: string }>;
   entities?: Array<{ id: string; name: string }>;
