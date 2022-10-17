@@ -40,6 +40,7 @@ import { Collection } from "../../common/Collection";
  * @public
  */
 export type Language = {
+  id: string;
   parentId: string | null;
   localeId: string;
   translationCodeId: string | null;
