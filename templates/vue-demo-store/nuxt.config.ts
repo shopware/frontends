@@ -20,6 +20,10 @@ export default defineNuxtConfig({
   vueuse: {
     ssrHandlers: true,
   },
+  // Unocss bug fix https://github.com/nuxt/framework/issues/7623
+  experimental: {
+    inlineSSRStyles: false,
+  },
   unocss: {
     uno: true, // enabled `@unocss/preset-uno`
     icons: true, // enabled `@unocss/preset-icons`
