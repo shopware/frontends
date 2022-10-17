@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import {
-  CmsCategoryPageResponse,
-  Category,
-  ClientApiError,
-} from "@shopware-pwa/types";
+import { ClientApiError } from "@shopware-pwa/types";
 
-const { cmsContent } = useCms();
+const { category: activeCategory } = useCategory();
 const { loadNavigationElements, navigationElements } = useNavigation();
-const activeCategory = computed<Category>(
-  () => (cmsContent.value as CmsCategoryPageResponse).category
-);
 const navigations = computed(() => {
   return navigationElements.value?.map((navigationElement) => {
     navigationElement.children = (activeCategory.value?.path ?? "").includes(

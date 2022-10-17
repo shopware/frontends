@@ -12,19 +12,18 @@ import { LandingPage } from "../landing-page/LandingPage";
  */
 export type CmsPageType = "product_list" | "landingpage" | "product_detail";
 
-export type CmsResourceTypeNavigation = "frontend.navigation.page";
-export type CmsResourceTypeLanding = "frontend.landing.page";
-export type CmsResourceTypeDetail = "frontend.detail.page";
+export type NavigationRouteName = "frontend.navigation.page";
+export type LandingRouteName = "frontend.landing.page";
+export type DetailRouteName = "frontend.detail.page";
 
 /**
- * Cms page resource type
+ * Cms page route name responsible for the type of the page
  *
- * @public
  */
-export type CmsResourceType =
-  | CmsResourceTypeNavigation
-  | CmsResourceTypeLanding
-  | CmsResourceTypeDetail;
+export type RouteName =
+  | NavigationRouteName
+  | LandingRouteName
+  | DetailRouteName;
 
 /**
  * @public

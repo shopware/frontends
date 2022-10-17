@@ -1,6 +1,7 @@
 import { Product } from "../product/Product";
 import { Media } from "../media/Media";
 import { Category } from "../category/Category";
+import { RouteName } from "../cms/CmsPage";
 
 /**
  * Navigation type to display on page.
@@ -20,7 +21,7 @@ export type StoreNavigationType =
 export type SeoUrl = {
   salesChannelId: string;
   languageId: string;
-  routeName: string;
+  routeName: RouteName;
   foreignKey: string;
   pathInfo: string;
   seoPathInfo: string;

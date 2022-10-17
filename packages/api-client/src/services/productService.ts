@@ -98,7 +98,7 @@ export async function getProductReviews(
   productId: string,
   criteria?: ShopwareSearchParams,
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"ProductReview", ProductReview[]>> {
+): Promise<EntityResult<"product_review", ProductReview[]>> {
   const resp = await contextInstance.invoke.post(
     `${getProductReviewsEndpoint(productId)}`,
     {

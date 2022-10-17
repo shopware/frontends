@@ -57,7 +57,6 @@ const emit = defineEmits<{
 }>();
 
 const imageSlider = ref<HTMLElement>();
-const imageSliderWidth = ref<number>(0);
 const imageSliderTrackStyle = ref<any>({});
 const activeSlideIndex = ref<number>(0);
 const speed = ref<number>(300);
@@ -65,6 +64,8 @@ const imageSliderTrack = ref<HTMLElement>();
 const autoPlayInterval = ref();
 const isReady = ref<boolean>();
 const isSliding = ref<boolean>();
+
+const { width: imageSliderWidth } = useElementSize(imageSlider);
 
 onMounted(() => {
   initSlider();
@@ -122,7 +123,6 @@ const navigationDotsValue = computed(
 function initSlider() {
   if (imageSlider.value) {
     setTimeout(() => {
-      imageSliderWidth.value = imageSlider.value?.clientWidth || 0;
       buildImageSliderTrackStyle(activeSlideIndex.value, false, undefined);
       isReady.value = true;
     }, 100);

@@ -5,7 +5,6 @@ import LoadingCircle from "./icons/LoadingCircle.vue";
 
 const props = withDefaults(
   defineProps<{
-    product: Product;
     allowRedirect?: boolean;
   }>(),
   {
@@ -23,7 +22,7 @@ const {
   getOptionGroups,
   getSelectedOptions,
   findVariantForSelectedOptions,
-} = useProductConfigurator(props.product);
+} = useProductConfigurator();
 
 const selectedOptions: ComputedRef<any> = computed(() =>
   Object.values(unref(getSelectedOptions))
@@ -51,7 +50,7 @@ const onHandleChange = async () => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="flex">
     <div
       v-if="isLoading"
       class="absolute inset-0 flex items-center justify-center z-10 bg-white/75"
@@ -64,9 +63,9 @@ const onHandleChange = async () => {
       class="mt-6"
     >
       <h3 class="text-sm text-gray-900 font-medium">{{ optionGroup.name }}</h3>
-      <fieldset class="mt-4">
+      <fieldset class="mt-4 flex-1">
         <legend class="sr-only">Choose a {{ optionGroup.name }}</legend>
-        <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+        <div class="flex">
           <label
             class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer"
             :class="{

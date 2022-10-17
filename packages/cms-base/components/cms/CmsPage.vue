@@ -2,12 +2,16 @@
 import { CmsPage, CmsSection } from "@shopware-pwa/types";
 import { pascalCase } from "scule";
 import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
+import { useNavigationContext } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsPage;
 }>();
 
-useListing();
+const { routeName } = useNavigationContext();
+if (routeName.value === "frontend.navigation.page") {
+  useListing();
+}
 
 const cmsSections = computed<CmsSection[]>(() => {
   return props.content?.sections || [];

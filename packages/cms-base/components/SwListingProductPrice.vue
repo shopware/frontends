@@ -5,10 +5,10 @@ import { Product } from "@shopware-pwa/types";
 const props = defineProps<{
   product: Product;
 }>();
+const { product } = toRefs(props);
 
-const { originalPrice, price, showOriginalPrice, fromPrice } = useProductPrice(
-  props.product
-);
+const { originalPrice, price, showOriginalPrice, fromPrice } =
+  useProductPrice(product);
 </script>
 
 <template>

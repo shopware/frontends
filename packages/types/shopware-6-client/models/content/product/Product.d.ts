@@ -57,7 +57,7 @@ export type Product = {
   calculatedListingPrice: ListingPrice;
   calculatedPrices: CalculatedPrice[];
   calculatedPrice: CalculatedPrice;
-  configuratorSettings: ProductConfiguratorSetting[] | null;
+  configuratorSettings: PropertyGroup[] | null;
   sortedProperties: PropertyGroup[] | null;
   isNew: boolean;
   parentId: string | null;

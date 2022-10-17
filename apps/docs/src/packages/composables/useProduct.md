@@ -11,7 +11,5 @@ Add associations to the product or search for the product by its id.
 ```ts
 import { useProduct } from "@shopware-pwa/composables-next";
 
-const { product, search } = useProduct();
-
-await search({ id: "product-id" });
+const { product } = useProduct();
 ```

@@ -2,7 +2,10 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import { sendContactForm } from "@shopware-pwa/api-client";
-import { CmsElementForm } from "@shopware-pwa/composables-next";
+import {
+  CmsElementForm,
+  useNavigationContext,
+} from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
 import LoadingCircle from "./icons/LoadingCircle.vue";
 
@@ -13,7 +16,7 @@ const loading = ref<boolean>();
 const formSent = ref<boolean>(false);
 const errorMessages = ref<any[]>([]);
 const { getSalutations } = useSalutations();
-const { resourceIdentifier } = useCms();
+const { foreignKey } = useNavigationContext();
 const { apiInstance } = useShopwareContext();
 const { getConfigValue } = useCmsElementConfig(props.content);
 
@@ -78,7 +81,7 @@ const invokeSubmit = async () => {
       await sendContactForm(
         {
           ...state,
-          navigationId: resourceIdentifier.value as string,
+          navigationId: foreignKey.value,
         },
         apiInstance
       );
@@ -300,25 +303,6 @@ const invokeSubmit = async () => {
                 I have read the
                 <a class="text-indigo-700">data protection information.</a>
               </label>
-              <p>
-                This site is protected by hCaptcha and its
-                <a
-                  target="blank"
-                  rel="noopener noreferrer"
-                  class="text-indigo-700"
-                  href="https://hcaptcha.com/privacy"
-                  >Privacy Policy</a
-                >
-                and
-                <a
-                  target="blank"
-                  rel="noopener noreferrer"
-                  class="text-indigo-700"
-                  href="https://hcaptcha.com/terms"
-                  >Terms of Service</a
-                >
-                apply.
-              </p>
             </div>
           </div>
         </div>

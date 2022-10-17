@@ -4,7 +4,7 @@ import { Product } from "@shopware-pwa/types";
 const props = withDefaults(
   defineProps<{
     product: Product;
-    showContent: boolean;
+    showContent?: boolean;
   }>(),
   {
     showContent: true,

@@ -9,21 +9,14 @@ const { pushSuccess } = useNotifications();
 const props = defineProps<{
   product: Product;
 }>();
+const { product } = toRefs(props);
 
-const { addToCart, quantity } = useAddToCart(props.product);
+const { addToCart, quantity } = useAddToCart(product);
 
 const addToCartProxy = async () => {
   await addToCart();
   pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
 };
-
-function getPrice(product: Product) {
-  const tierPrices = getProductTierPrices(product);
-  return (
-    (tierPrices.length && tierPrices[0] && tierPrices[0].unitPrice) ||
-    getProductCalculatedListingPrice(product)
-  );
-}
 </script>
 
 <template>
