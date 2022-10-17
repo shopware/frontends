@@ -21,7 +21,7 @@ export const sidebar = [
       { text: "Content Pages", link: "/getting-started/content-pages" },
       { text: "Cart", link: "/getting-started/cart" },
       { text: "Checkout ", link: "/getting-started/checkout" },
-      { text: "Prices", link: "/getting-started/price" },
+      { text: "Prices", link: "/getting-started/prices" },
       { text: "Product Listing", link: "/getting-started/product-listing" },
     ],
   },
