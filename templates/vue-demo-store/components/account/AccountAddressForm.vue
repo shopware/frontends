@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
+import { SharedModal } from "~~/components/shared/SharedModal.vue";
 const { createCustomerAddress, updateCustomerAddress } = useAddress();
+
+const { close } = inject<SharedModal>("modal") as SharedModal;
 
 const emits = defineEmits<{
   (e: "success"): void;
   (e: "close"): void;
 }>();
 
-const props = defineProps<{
-  address?: CustomerAddress;
-  countries: Array<Country>;
-  salutations: Array<Salutation>;
-}>();
+const props = withDefaults(
+  defineProps<{
+    address?: CustomerAddress;
+    countries: Array<Country>;
+    salutations: Array<Salutation>;
+    title?: string
+  }>(),
+  {
+    title: "Account address",
+  }
+);
 
 const formData = reactive<CustomerAddress>({
   countryId: props.address?.countryId ?? "",
@@ -32,9 +41,8 @@ const invokeSave = async (): Promise<void> => {
       ? updateCustomerAddress
       : createCustomerAddress;
     await saveAddress(formData);
-    if (addressResult) {
-      emits("success");
-    }
+    emits("success");
+    close();
   } catch (error) {
     console.error("error save address", error);
   }
@@ -46,7 +54,7 @@ const invokeSave = async (): Promise<void> => {
     <div class="shadow overflow-hidden sm:rounded-md">
       <form name="account-address" id="account-address" method="post">
         <div class="px-4 py-5 bg-white sm:p-6">
-          <h3 class="text-2xl border-b pb-3">Account address</h3>
+          <h3 class="text-2xl border-b pb-3">{{props.title}}</h3>
           <div class="grid grid-cols-6 gap-6 mt-8">
             <div class="col-span-6 sm:col-span-6">
               <label
@@ -188,7 +196,7 @@ const invokeSave = async (): Promise<void> => {
           <button
             type="submit"
             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-light"
-            @click="invokeSave"
+            @click.stop.prevent="invokeSave"
           >
             Save
           </button>
