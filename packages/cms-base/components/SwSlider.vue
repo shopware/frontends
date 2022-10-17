@@ -168,9 +168,12 @@ function buildImageSliderTrackStyle(
     if (displayModeValue.value === "cover") {
       height = "100%";
     } else if (displayModeValue.value === "standard") {
-      height = `${
-        imageSliderTrack.value?.children[transformIndex + 1].clientHeight
-      }px`;
+      const childComponent =
+        imageSliderTrack.value?.children[transformIndex + 1];
+      // If image exist
+      height = childComponent?.children[0].children[0].clientHeight
+        ? `${childComponent.clientHeight}px`
+        : (height = `auto`);
     } else if (displayModeValue.value === "contain") {
       height = `${imageSliderTrack.value?.clientHeight}px`;
     }
