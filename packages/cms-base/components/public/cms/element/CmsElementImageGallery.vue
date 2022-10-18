@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { CmsElementImageGallery } from "@shopware-pwa/composables-next";
-import ChevronUp from "../../icons/ChevronUp.vue";
-import ChevronDown from "../../icons/ChevronDown.vue";
-import ChevronLeft from "../../icons/ChevronLeft.vue";
-import ChevronRight from "../../icons/ChevronRight.vue";
+import SwSlider from "../../../SwSlider.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -156,9 +153,12 @@ function next() {
         class="disabled:opacity-10 p-1"
         @click="previous"
       >
-        <component
-          class="text-xl"
-          :is="galleryPosition === 'left' ? ChevronUp : ChevronLeft"
+        <div
+          class="h-7 w-7"
+          :class="{
+            'i-carbon-chevron-up': galleryPosition === 'left',
+            'i-carbon-chevron-left': galleryPosition !== 'left',
+          }"
         />
       </button>
       <div
@@ -205,9 +205,12 @@ function next() {
         class="disabled:opacity-10 p-1"
         @click="next"
       >
-        <component
-          class="text-xl"
-          :is="galleryPosition === 'left' ? ChevronDown : ChevronRight"
+        <div
+          class="h-7 w-7"
+          :class="{
+            'i-carbon-chevron-down': galleryPosition === 'left',
+            'i-carbon-chevron-right': galleryPosition !== 'left',
+          }"
         />
       </button>
     </div>

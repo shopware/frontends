@@ -10,10 +10,12 @@ const { getConfigValue } = useCmsElementConfig(props.content);
 const FormComponent = computed(() => {
   switch (getConfigValue("type")) {
     case "newsletter":
-      return defineAsyncComponent(() => import("../../SwNewsletterForm.vue"));
+      return defineAsyncComponent(
+        () => import("../../../SwNewsletterForm.vue")
+      );
     case "contact":
     default:
-      return defineAsyncComponent(() => import("../../SwContactForm.vue"));
+      return defineAsyncComponent(() => import("../../../SwContactForm.vue"));
   }
 });
 </script>

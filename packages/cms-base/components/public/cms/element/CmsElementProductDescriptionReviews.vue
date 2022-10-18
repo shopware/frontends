@@ -4,6 +4,7 @@ import {
   getTranslatedProperty,
   getProductName,
 } from "@shopware-pwa/helpers-next";
+import SwProductReviews from "../../../SwProductReviews.vue";
 
 const props = defineProps<{
   content: CmsElementProductDescriptionReviews;

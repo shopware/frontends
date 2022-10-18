@@ -3,7 +3,6 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { CmsElementForm } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
-import LoadingCircle from "./icons/LoadingCircle.vue";
 
 const props = defineProps<{
   content: CmsElementForm;
@@ -97,7 +96,9 @@ const invokeSubmit = async () => {
       v-if="loading"
       class="absolute inset-0 flex items-center justify-center z-10 bg-white/50"
     >
-      <LoadingCircle class="text-3xl text-indigo-600" />
+      <div
+        class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+      />
     </div>
     <h3 class="pb-3 mb-10 border-b border-gray-300">
       {{

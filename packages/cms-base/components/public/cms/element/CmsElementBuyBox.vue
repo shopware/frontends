@@ -6,6 +6,8 @@ import {
   getProductCalculatedListingPrice,
 } from "@shopware-pwa/helpers-next";
 import { Product } from "@shopware-pwa/types";
+import SwProductAddToCart from "../../../SwProductAddToCart.vue";
+import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
 
 const props = defineProps<{
   content: CmsElementBuyBox;

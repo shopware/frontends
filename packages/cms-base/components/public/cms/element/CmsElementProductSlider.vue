@@ -5,7 +5,8 @@ import {
   useCmsElementConfig,
 } from "@shopware-pwa/composables-next";
 import { ComputedRef } from "vue";
-import SwProductCard from "../../SwProductCard.vue";
+import SwProductCard from "../../../SwProductCard.vue";
+import SwSlider from "../../../SwSlider.vue";
 
 const props = defineProps<{
   content: CmsElementProductSlider;

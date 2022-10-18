@@ -7,19 +7,23 @@ const {
   getCurrentPage,
   changeCurrentPage,
   loading,
+  setInitialListing,
+  getCurrentListing,
 } = useListing({
   listingType: "productSearchListing",
 });
 
-await useAsyncData(
+const { data: productSearch } = await useAsyncData(
   "productSearch",
-  () => {
-    return search(route.query);
+  async () => {
+    await search(route.query);
+    return getCurrentListing.value;
   },
   {
     watch: [route],
   }
 );
+setInitialListing(productSearch.value as any);
 </script>
 
 <script lang="ts">
@@ -30,7 +34,10 @@ export default {
 
 <template>
   <div class="container mb-8 mx-4 md:mx-auto">
-    <IconsLoadingCircle v-if="loading" />
+    <div
+      v-if="loading"
+      class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+    />
 
     <h1 class="mb-8 text-3xl font-extrabold text-center">
       <span v-if="products.length">Search Result</span>
@@ -44,14 +51,14 @@ export default {
     <div
       class="grid grid-cols-1 mt-4 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
     >
-      <SwProductCard
+      <ProductCard
         v-for="product in products"
         :key="product.id"
         :product="product"
       />
     </div>
 
-    <SwPagination
+    <SharedPagination
       :total="getTotalPagesCount"
       :current="Number(getCurrentPage)"
       class="mt-10"

@@ -7,7 +7,7 @@ import {
   ListingFilter,
 } from "@shopware-pwa/types";
 import { computed, ref } from "vue";
-import SwStarIcon from "../SwStarIcon.vue";
+
 const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
 }>();
@@ -91,10 +91,14 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
     <div :class="[`absolute pt-6 z-1000`, { hidden: !isFilterVisible }]">
       <div class="space-y-6">
         <div class="flex">
-          <SwStarIcon
+          <div
             v-for="i in 5"
             :key="i"
-            :is-empty="i > displayedScore"
+            class="h-6 w-6 c-yellow-500"
+            :class="{
+              'i-carbon-star-filled': displayedScore >= i,
+              'i-carbon-star': displayedScore < i,
+            }"
             @mouseleave="isHoverActive = false"
             @click="onChangeRating()"
             @mouseover="hoverRating(i)"

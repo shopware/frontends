@@ -139,7 +139,7 @@ watch(enter, (value) => {
                 class="justify-end"
                 :value="(getProductCalculatedListingPrice(product) as number)"
               />
-              <SwProductUnits
+              <ProductUnits
                 data-testid="layout-search-suggest-units"
                 :product="product"
                 :show-content="false"
