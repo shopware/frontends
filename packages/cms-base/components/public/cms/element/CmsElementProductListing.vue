@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { CmsElementProductListing } from "@shopware-pwa/composables-next";
+import SwProductCard from "../../../SwProductCard.vue";
+import SwPagination from "../../../SwPagination.vue";
 const props = defineProps<{
   content: CmsElementProductListing;
 }>();

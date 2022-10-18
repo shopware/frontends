@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ClientApiError } from "@shopware-pwa/types";
+import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
 
 const { category: activeCategory } = useCategory();
 const { loadNavigationElements, navigationElements } = useNavigation();

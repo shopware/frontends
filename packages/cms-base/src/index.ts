@@ -13,7 +13,7 @@ const nuxtModule: NuxtModule = defineNuxtModule({
   setup(_, nuxt) {
     nuxt.hook("components:dirs", (c) => {
       c.push({
-        path: resolve(__dirname, "../components"),
+        path: resolve(__dirname, "../components/public"),
         global: true,
       });
     });

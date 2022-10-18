@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Product, ProductReview } from "@shopware-pwa/types";
 import SwStarIcon from "./SwStarIcon.vue";
-import LoadingCircle from "./icons/LoadingCircle.vue";
 
 const props = defineProps<{
   product: Product;
@@ -40,7 +39,9 @@ const formatDate = (date: string) =>
     v-if="loadingReviews"
     class="absolute inset-0 flex items-center justify-center z-10 bg-white/75"
   >
-    <LoadingCircle class="text-3xl text-indigo-600" />
+    <div
+      class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+    />
   </div>
   <div v-else-if="reviewsList.length">
     <div v-for="review in reviews" :key="review.id">

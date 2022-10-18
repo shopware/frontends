@@ -45,7 +45,7 @@ const handleVariantChange = (val: Product) => {
   <div class="flex flex-col lg:flex-row gap-10">
     <!-- Image gallery -->
     <div class="product-gallery w-full lg:w-3/5 overflow-hidden">
-      <SwProductGallery :product="product" />
+      <ProductGallery :product="product" />
     </div>
 
     <div class="product-description flex-1">
@@ -67,10 +67,10 @@ const handleVariantChange = (val: Product) => {
         <div class="mt-4 lg:mt-0 lg:row-span-3">
           <h2 class="sr-only">Product information</h2>
           <div class="product-variants mt-10">
-            <SwProductPrice :product="product" />
-            <SwProductUnits :product="product" class="text-sm" />
-            <SwVariantConfigurator @change="handleVariantChange" />
-            <SwProductAddToCart :product="product" />
+            <ProductPrice :product="product" />
+            <ProductUnits :product="product" class="text-sm" />
+            <ProductVariantConfigurator @change="handleVariantChange" />
+            <ProductAddToCart :product="product" />
           </div>
         </div>
 

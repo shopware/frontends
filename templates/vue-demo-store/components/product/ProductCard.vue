@@ -4,17 +4,11 @@ import {
   getProductName,
   getProductThumbnailUrl,
   getProductUrl,
-  getProductVariantsFromPrice,
   getTranslatedProperty,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
 import { Product, PropertyGroupOption } from "@shopware-pwa/types";
 import { Ref } from "vue";
-import SwStarIcon from "./SwStarIcon.vue";
-import SwHeartIcon from "./SwHeartIcon.vue";
-import SwListingProductPrice from "./SwListingProductPrice.vue";
-const heartIconType = "svg";
-const heartIconClass = "wishlist-heart-icon";
 
 const { pushSuccess, pushInfo } = useNotifications();
 
@@ -22,13 +16,11 @@ const props = withDefaults(
   defineProps<{
     product: Product;
     layoutType?: BoxLayout;
-    isProductListing?: boolean;
     displayMode?: DisplayMode;
   }>(),
   {
     layoutType: "standard",
     displayMode: "standard",
-    isProductListing: false,
   }
 );
 const { product } = toRefs(props);
@@ -38,16 +30,14 @@ const { addToCart } = useAddToCart(product);
 const { addToWishlist, removeFromWishlist, isInWishlist } =
   useProductWishlist(product);
 
-const addToWishlistFn = (event: MouseEvent) => {
+const addToWishlistFn = () => {
   if (isInWishlist.value) {
     removeFromWishlist();
-    fillHeartColor(event, "none");
     pushInfo(
       `${props.product?.translated?.name} has been removed from wishlist.`
     );
   } else {
     addToWishlist();
-    fillHeartColor(event, "red");
     pushSuccess(
       `${props.product?.translated?.name} has been added to wishlist.`
     );
@@ -59,28 +49,6 @@ const addToCartProxy = async () => {
   pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
 };
 
-const fillHeartColor = (event: MouseEvent, color: string) => {
-  const srcElement = event.srcElement as any;
-
-  if (isHeartIcon(srcElement)) {
-    srcElement.attributes.fill.value = color;
-  } else {
-    const parentElement = srcElement.parentElement;
-    if (isHeartIcon(parentElement)) {
-      parentElement.attributes.fill.value = color;
-    }
-  }
-};
-
-const isHeartIcon = (element: SVGElement | SVGPathElement) => {
-  return (
-    element &&
-    element.nodeName == heartIconType &&
-    element.classList.contains(heartIconClass)
-  );
-};
-
-const variantsFromPrice = getProductVariantsFromPrice(props.product);
 const fromPrice = getProductFromPrice(props.product);
 const ratingAverage: Ref<number> = computed(() =>
   props.product.ratingAverage ? Math.round(props.product.ratingAverage) : 0
@@ -115,7 +83,14 @@ const ratingAverage: Ref<number> = computed(() =>
       @click="addToWishlistFn"
       class="absolute top-2 right-2"
     >
-      <SwHeartIcon :is-empty="!!isInWishlist" />
+      <div
+        class="h-7 w-7"
+        :class="{
+          'i-carbon-favorite': !isInWishlist,
+          'i-carbon-favorite-filled': isInWishlist,
+          'c-red-500': isInWishlist,
+        }"
+      />
     </button>
     <div class="mt-4 flex flex-col justify-between flex-1">
       <div>
@@ -141,11 +116,13 @@ const ratingAverage: Ref<number> = computed(() =>
         </div>
       </div>
       <div class="flex flex-col mt-3 justify-between">
-        <SwListingProductPrice :product="product" class="ml-auto" />
-        <div v-if="!isProductListing" class="sw-product-rating inline-flex">
-          <div v-for="value in ratingAverage"><SwStarIcon /></div>
+        <SharedListingProductPrice :product="product" class="ml-auto" />
+        <div class="sw-product-rating inline-flex">
+          <div v-for="value in ratingAverage">
+            <div class="i-carbon-star-filled h-4 w-4 c-yellow-500" />
+          </div>
           <div v-for="value in 5 - ratingAverage">
-            <SwStarIcon :is-empty="true" />
+            <div class="i-carbon-star h-4 w-4 c-yellow-500" />
           </div>
         </div>
       </div>

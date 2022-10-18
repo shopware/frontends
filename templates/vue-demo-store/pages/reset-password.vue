@@ -6,7 +6,7 @@ export default {
 
 <template>
   <div class="reset-password-wrapper">
-    <SwResetPasswordForm>
+    <AccountResetPasswordForm>
       <template #action>
         <nuxt-link
           to="/"
@@ -15,6 +15,6 @@ export default {
           Return to Homepage
         </nuxt-link>
       </template>
-    </SwResetPasswordForm>
+    </AccountResetPasswordForm>
   </div>
 </template>

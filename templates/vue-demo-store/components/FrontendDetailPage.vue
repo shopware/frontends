@@ -24,7 +24,7 @@ const { product } = useProduct(
 <template>
   <div class="container mx-auto bg-white flex flex-col">
     <template v-if="!product?.cmsPage">
-      <SharedProduct :product="product" />
+      <ProductStatic :product="product" />
     </template>
     <template v-else-if="product.cmsPage">
       <CmsPage :content="product.cmsPage" />

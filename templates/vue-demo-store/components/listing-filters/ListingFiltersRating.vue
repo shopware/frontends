@@ -86,10 +86,14 @@ onClickOutside(dropdownElement, () => (isOpen.value = false));
       ]"
     >
       <div class="flex">
-        <IconsStart
+        <div
           v-for="i in 5"
           :key="i"
-          :is-empty="i > displayedScore"
+          class="h-6 w-6 c-yellow-500"
+          :class="{
+            'i-carbon-star-filled': displayedScore >= i,
+            'i-carbon-star': displayedScore < i,
+          }"
           @mouseleave="isHoverActive = false"
           @click="onChangeRating()"
           @mouseover="hoverRating(i)"
