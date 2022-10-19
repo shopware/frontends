@@ -2,6 +2,10 @@ import transformerDirective from "@unocss/transformer-directives";
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
+  // shopware: {
+  //   shopwareEndpoint: "https://you.endpoint.com",
+  //   shopwareAccessToken: "your-access-token",
+  // },
   typescript: {
     typeCheck: true,
     strict: true,
