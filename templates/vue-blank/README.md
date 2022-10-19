@@ -1,42 +1,24 @@
-# Nuxt 3 Minimal Starter
+# Blank Vue 3 template (Nuxt)
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+![Shopware Frontends](./assets/shopware-frontends-logo.png)
 
-## Setup
+This repository shows an example of application built using Shopware Frontends Framework on Nuxt 3.
 
-Make sure to install the dependencies:
+## What's inside
 
-```bash
-# yarn
-yarn install
+- Nuxt 3 application
+- Required libraries installed (api-client, composables, nuxt3-module)
+- Minimum configuration of Nuxt 3 module
 
-# npm
-npm install
+## Set up your Shopware 6 instance
 
-# pnpm
-pnpm install --shamefully-hoist
-```
+In order to have a different API connected to the app, rename `.env.dist` file to `.env` and change the API access information. Then rerun the application.
 
-## Development Server
+## Customize
 
-Start the development server on http://localhost:3000
+Now, you are free to use the `@shopware-pwa/composables-next` package in the application. You can start from [app.vue](./app.vue).
 
-```bash
-npm run dev
-```
+## Install & Run
 
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
+1. `pnpm i` to install deps
+2. `pnpm dev` to run the project in dev mode
