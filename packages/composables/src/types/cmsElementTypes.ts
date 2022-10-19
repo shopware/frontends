@@ -1,11 +1,12 @@
 import {
   CmsSlot,
   CrossSelling,
+  EntityResult,
   Media,
   Product,
-  ProductConfiguratorSetting,
   ProductListingResult,
   ProductReview,
+  PropertyGroup,
   Salutation,
 } from "@shopware-pwa/types";
 import { CSSProperties } from "vue";
@@ -289,7 +290,7 @@ export type CmsElementProductDescriptionReviews = CmsSlot & {
     productId: null | string;
     ratingSuccess: boolean;
     product?: Product;
-    reviews: ProductReview[];
+    reviews: EntityResult<"product_review", ProductReview[]>;
     apiAlias: "cms_product_description_reviews";
   };
 };
@@ -302,11 +303,11 @@ export type CmsElementBuyBox = CmsSlot & {
   type: "buy-box";
   config: BuyBoxElementConfig;
   data: {
-    configuratorSettings: ProductConfiguratorSetting[] | null;
+    configuratorSettings: PropertyGroup[] | null;
     productId: null | string;
     ratingSuccess: boolean;
     product?: Product;
-    reviews: ProductReview[];
+    reviews: EntityResult<"product_review", ProductReview[]>;
     apiAlias: "cms_product_description_reviews";
   };
 };

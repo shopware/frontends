@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductThumbnailUrl,
@@ -12,6 +12,7 @@ import { Product, PropertyGroupOption } from "@shopware-pwa/types";
 import { Ref } from "vue";
 import SwStarIcon from "./SwStarIcon.vue";
 import SwHeartIcon from "./SwHeartIcon.vue";
+import SwListingProductPrice from "./SwListingProductPrice.vue";
 const heartIconType = "svg";
 const heartIconClass = "wishlist-heart-icon";
 
@@ -30,12 +31,12 @@ const props = withDefaults(
     isProductListing: false,
   }
 );
+const { product } = toRefs(props);
 
-const { addToCart } = useAddToCart(props.product);
+const { addToCart } = useAddToCart(product);
 
-const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
-  props.product
-);
+const { addToWishlist, removeFromWishlist, isInWishlist } =
+  useProductWishlist(product);
 
 const addToWishlistFn = (event: MouseEvent) => {
   if (isInWishlist.value) {
@@ -157,7 +158,7 @@ const ratingAverage: Ref<number> = computed(() =>
         class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         data-testid="add-to-cart-button"
       >
-        Add to basket
+        Add to cart
       </button>
       <router-link v-else :to="getProductUrl(product)">
         <button

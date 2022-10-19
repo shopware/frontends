@@ -1,30 +1,26 @@
-import { describe, expect, it } from "vitest";
+import { Product } from "@shopware-pwa/types";
+import { beforeEach, describe, expect, it } from "vitest";
+import { Ref, ref } from "vue";
 import { useProductPrice } from "./useProductPrice";
 
 describe("useProductPrice", () => {
   describe("computed", () => {
     describe("originalPrice", () => {
       describe("negative", () => {
-        it("should return undefined if no product is provided", () => {
-          const { originalPrice } = useProductPrice({} as any);
-          expect(originalPrice.value).toBe(undefined);
-        });
         it("should return undefined if product has no calculatedPrice", () => {
-          const { originalPrice } = useProductPrice({} as any);
+          const testProduct = ref({});
+          const { originalPrice } = useProductPrice(
+            testProduct as Ref<Product>
+          );
           expect(originalPrice.value).toBe(undefined);
         });
         it("should return undefined if product has no calculatedPrice.tierPrices", () => {
-          const { originalPrice } = useProductPrice({
+          const testProduct = ref({
             calculatedPrice: {},
-          } as any);
-          expect(originalPrice.value).toBe(undefined);
-        });
-        it("should return undefined if product has no calculatedPrice.tierPrices[0].unitPrice", () => {
-          const { originalPrice } = useProductPrice({
-            calculatedPrice: {
-              tierPrices: [{}],
-            },
-          } as any);
+          });
+          const { originalPrice } = useProductPrice(
+            testProduct as Ref<Product>
+          );
           expect(originalPrice.value).toBe(undefined);
         });
       });
@@ -32,27 +28,26 @@ describe("useProductPrice", () => {
     describe("price", () => {
       describe("positive", () => {
         it("should return product.calculatedPrice.totalPrice", () => {
-          const { price } = useProductPrice({
+          const testProduct = ref({
             calculatedPrice: {
               totalPrice: 10,
             },
-          } as any);
+          });
+          const { price } = useProductPrice(testProduct as Ref<Product>);
           expect(price.value).toBe(10);
         });
       });
       describe("negative", () => {
-        it("should return undefined if no product is provided", () => {
-          const { price } = useProductPrice({} as any);
-          expect(price.value).toBe(undefined);
-        });
         it("should return undefined if product has no calculatedPrice", () => {
-          const { price } = useProductPrice({} as any);
+          const testProduct = ref({});
+          const { price } = useProductPrice(testProduct as Ref<Product>);
           expect(price.value).toBe(undefined);
         });
         it("should return undefined if product has no calculatedPrice.totalPrice", () => {
-          const { price } = useProductPrice({
+          const testProduct = ref({
             calculatedPrice: {},
-          } as any);
+          });
+          const { price } = useProductPrice(testProduct as Ref<Product>);
           expect(price.value).toBe(undefined);
         });
       });
@@ -60,7 +55,7 @@ describe("useProductPrice", () => {
     describe("showOriginalPrice", () => {
       describe("positive", () => {
         it("should return true if originalPrice is greater than price", () => {
-          const { showOriginalPrice } = useProductPrice({
+          const testProduct = ref({
             calculatedPrice: {
               totalPrice: 10,
             },
@@ -69,37 +64,45 @@ describe("useProductPrice", () => {
                 unitPrice: 50,
               },
             ],
-          } as any);
+          });
+          const { showOriginalPrice } = useProductPrice(
+            testProduct as Ref<Product>
+          );
           expect(showOriginalPrice.value).toBe(true);
         });
       });
       describe("negative", () => {
         it("should return false if no product is provided", () => {
-          const { showOriginalPrice } = useProductPrice({} as any);
+          const testProduct = ref({});
+          const { showOriginalPrice } = useProductPrice(
+            testProduct as Ref<Product>
+          );
           expect(showOriginalPrice.value).toBe(false);
         });
         it("should return false if product has no calculatedPrice", () => {
-          const { showOriginalPrice } = useProductPrice({} as any);
+          const testProduct = ref({});
+          const { showOriginalPrice } = useProductPrice(
+            testProduct as Ref<Product>
+          );
           expect(showOriginalPrice.value).toBe(false);
         });
         it("should return false if product has no calculatedPrice.tierPrices", () => {
-          const { showOriginalPrice } = useProductPrice({
+          const testProduct = ref({
             calculatedPrice: {},
-          } as any);
+          });
+          const { showOriginalPrice } = useProductPrice(
+            testProduct as Ref<Product>
+          );
           expect(showOriginalPrice.value).toBe(false);
         });
-        it("should return false if product has no calculatedPrice.tierPrices[0].unitPrice", () => {
-          const { showOriginalPrice } = useProductPrice({
-            calculatedPrice: {
-              tierPrices: [{}],
-            },
-          } as any);
-          expect(showOriginalPrice.value).toBe(false);
-        });
+
         it("should return false if product has no calculatedPrice.totalPrice", () => {
-          const { showOriginalPrice } = useProductPrice({
+          const testProduct = ref({
             calculatedPrice: {},
-          } as any);
+          });
+          const { showOriginalPrice } = useProductPrice(
+            testProduct as Ref<Product>
+          );
           expect(showOriginalPrice.value).toBe(false);
         });
       });
@@ -108,7 +111,7 @@ describe("useProductPrice", () => {
     describe("fromPrice", () => {
       describe("positive", () => {
         it("should return product.calculatedPrice.from", () => {
-          const { fromPrice } = useProductPrice({
+          const testProduct = ref({
             calculatedPrices: [
               {
                 unitPrice: 20,
@@ -119,23 +122,22 @@ describe("useProductPrice", () => {
                 totalPrice: 10,
               },
             ],
-          } as any);
+          });
+          const { fromPrice } = useProductPrice(testProduct as Ref<Product>);
           expect(fromPrice.value).toBe(10);
         });
       });
       describe("negative", () => {
-        it("should return undefined if no product is provided", () => {
-          const { fromPrice } = useProductPrice({} as any);
-          expect(fromPrice.value).toBe(undefined);
-        });
         it("should return undefined if product has no calculatedPrice", () => {
-          const { fromPrice } = useProductPrice({} as any);
+          const testProduct = ref({});
+          const { fromPrice } = useProductPrice(testProduct as Ref<Product>);
           expect(fromPrice.value).toBe(undefined);
         });
         it("should return undefined if product has no calculatedPrice.from", () => {
-          const { fromPrice } = useProductPrice({
+          const testProduct = ref({
             calculatedPrice: {},
-          } as any);
+          });
+          const { fromPrice } = useProductPrice(testProduct as Ref<Product>);
           expect(fromPrice.value).toBe(undefined);
         });
       });

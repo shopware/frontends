@@ -31,6 +31,7 @@ export type UseCartReturn = {
   subtotal: ComputedRef<number>;
   cartErrors: ComputedRef<EntityError[]>;
   getProductItemsSeoUrlsData(): Promise<Partial<Product>[]>;
+  isEmpty: ComputedRef<boolean>;
 };
 
 export function useCart(): UseCartReturn {
@@ -150,6 +151,8 @@ export function useCart(): UseCartReturn {
     );
   });
 
+  const isEmpty = computed(() => count.value <= 0);
+
   const totalPrice = computed(() => {
     const cartPrice =
       cart.value && cart.value.price && cart.value.price.totalPrice;
@@ -186,5 +189,6 @@ export function useCart(): UseCartReturn {
     subtotal,
     cartErrors,
     getProductItemsSeoUrlsData,
+    isEmpty,
   };
 }

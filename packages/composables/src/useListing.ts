@@ -9,7 +9,7 @@ import {
 } from "@shopware-pwa/types";
 import { inject, computed, ComputedRef, ref, provide } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
-import { useShopwareContext, useCms } from ".";
+import { useShopwareContext, useCategory } from ".";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -92,8 +92,8 @@ export function useListing(params?: {
       return searchProducts(searchCriteria, apiInstance);
     };
   } else {
-    const { resourceIdentifier } = useCms();
-    const resourceId = resourceIdentifier.value || params?.categoryId;
+    const { category } = useCategory();
+    const resourceId = category.value?.id || params?.categoryId;
 
     searchMethod = async (searchCriteria: Partial<ShopwareSearchParams>) => {
       if (!resourceId) {
