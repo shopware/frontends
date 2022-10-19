@@ -10,6 +10,9 @@ export class ProductPage {
   }
 
   async addToCart() {
-    await await this.addToCartButton.click();
+    await Promise.all([
+      this.page.waitForLoadState("load"),
+      this.addToCartButton.click(),
+    ]);
   }
 }

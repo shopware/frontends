@@ -19,23 +19,8 @@ test.describe.parallel.only("Add product to cart / Remove from cart", () => {
 
   test("Add product to cart", async ({ page }) => {
     await homePage.openCartPage();
-    await homePage.wait(3000);
-    await expect(page).toHaveURL(/.*Smoking/);
     await productPage.addToCart();
     await cartPage.openMiniCart();
-    await expect(page.locator("ul[role='list']")).toBeVisible();
-  });
-
-  test("Remove product from cart", async ({ page }) => {
-    await homePage.openCartPage();
-    await homePage.wait(3000);
-    await productPage.addToCart();
-    await cartPage.openMiniCart();
-    await homePage.wait(2000);
-    await cartPage.removeFromMiniCart();
-    await homePage.wait(3000);
-    expect(
-      await page.locator("[data-testid='cart-product-name']").count()
-    ).toEqual(0);
+    await expect(page.locator("[data-testid='cart-product-image']")).toBeVisible();
   });
 });

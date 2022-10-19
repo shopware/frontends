@@ -5,11 +5,13 @@ export class HomePage extends AbstractPage {
   //readonly page: Page
   readonly signInButton: Locator;
   readonly linkToCartPage: Locator;
+  readonly linkToRegistrationPage: Locator;
 
   constructor(page: Page) {
     super(page);
     this.signInButton = page.locator("[data-testid='header-sign-in-link']");
     this.linkToCartPage = page.locator("text='Smoking Board Cedar Wood'");
+    this.linkToRegistrationPage = page.locator("text=' Sign up '");
   }
 
   async visitMainPage() {
@@ -17,10 +19,20 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await this.signInButton.click();
+    await Promise.all([
+      this.page.waitForLoadState("load"),
+      this.signInButton.click(),
+    ]);
   }
 
   async openCartPage() {
-    await this.linkToCartPage.click();
+    await Promise.all([
+      this.linkToCartPage.click(),
+      this.page.waitForSelector("[data-testid='product-quantity']"),
+    ]);
+  }
+
+  async openRegistrationPage() {
+    await this.linkToRegistrationPage.click();
   }
 }
