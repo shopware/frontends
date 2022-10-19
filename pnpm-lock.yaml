@@ -206,6 +206,25 @@ importers:
     devDependencies:
       eslint-config-shopware: link:../eslint-config-shopware
 
+  packages/vue3-plugin:
+    specifiers:
+      '@shopware-pwa/api-client': workspace:^0.1.12
+      '@shopware-pwa/composables-next': workspace:^0.1.12
+      js-cookie: ^3.0.1
+      typescript: ^4.6.4
+      vite: ^3.1.0
+      vite-dts: ^1.0.4
+      vue: ^3.2.26
+    dependencies:
+      '@shopware-pwa/api-client': link:../api-client
+      '@shopware-pwa/composables-next': link:../composables
+      js-cookie: 3.0.1
+      vue: 3.2.40
+    devDependencies:
+      typescript: 4.8.4
+      vite: 3.1.6
+      vite-dts: 1.0.4_vite@3.1.6
+
   templates/vue-blank:
     specifiers:
       '@shopware-pwa/api-client': 0.1.14
@@ -257,6 +276,25 @@ importers:
       nuxt: 3.0.0-rc.11_2rinwjdjsb2v4b4fgzg7ynqxty
       typescript: 4.8.4
       vue-eslint-parser: 9.1.0_eslint@8.24.0
+      vue-tsc: 0.40.13_typescript@4.8.4
+
+  templates/vue-vite-blank:
+    specifiers:
+      '@shopware-pwa/composables-next': workspace:*
+      '@shopware-pwa/vue3-plugin': workspace:*
+      '@vitejs/plugin-vue': ^3.1.0
+      typescript: ^4.6.4
+      vite: ^3.1.0
+      vue: ^3.2.37
+      vue-tsc: ^0.40.4
+    dependencies:
+      '@shopware-pwa/composables-next': link:../../packages/composables
+      '@shopware-pwa/vue3-plugin': link:../../packages/vue3-plugin
+      vue: 3.2.40
+    devDependencies:
+      '@vitejs/plugin-vue': 3.1.2_vite@3.1.6+vue@3.2.40
+      typescript: 4.8.4
+      vite: 3.1.6
       vue-tsc: 0.40.13_typescript@4.8.4
 
 packages:
@@ -3062,7 +3100,7 @@ packages:
   /@vue/compiler-core/3.2.40:
     resolution: {integrity: sha512-2Dc3Stk0J/VyQ4OUr2yEC53kU28614lZS+bnrCbFSAIftBJ40g/2yQzf4mPBiFuqguMB7hyHaujdgZAQ67kZYA==}
     dependencies:
-      '@babel/parser': 7.18.13
+      '@babel/parser': 7.19.3
       '@vue/shared': 3.2.40
       estree-walker: 2.0.2
       source-map: 0.6.1
@@ -3120,7 +3158,7 @@ packages:
   /@vue/reactivity-transform/3.2.40:
     resolution: {integrity: sha512-HQUCVwEaacq6fGEsg2NUuGKIhUveMCjOk8jGHqLXPI2w6zFoPrlQhwWEaINTv5kkZDXKEnCijAp+4gNEHG03yw==}
     dependencies:
-      '@babel/parser': 7.18.13
+      '@babel/parser': 7.19.3
       '@vue/compiler-core': 3.2.40
       '@vue/shared': 3.2.40
       estree-walker: 2.0.2
@@ -6929,6 +6967,11 @@ packages:
     resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
     dev: false
 
+  /js-cookie/3.0.1:
+    resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
+    engines: {node: '>=12'}
+    dev: false
+
   /js-sdsl/4.1.5:
     resolution: {integrity: sha512-08bOAKweV2NUC1wqTtf3qZlnpOX/R2DU9ikpjOHs0H+ibQv3zpncVQg6um4uYtRtrwIX8M4Nh3ytK4HGlYAq7Q==}
 
@@ -7186,6 +7229,16 @@ packages:
       rxjs: 7.5.6
       through: 2.3.8
       wrap-ansi: 7.0.0
+    dev: true
+
+  /load-json-file/6.2.0:
+    resolution: {integrity: sha512-gUD/epcRms75Cw8RT1pUdHugZYM5ce64ucs2GEISABwkRsOQr0q2wm/MV2TKThycIe5e0ytRweW2RZxclogCdQ==}
+    engines: {node: '>=8'}
+    dependencies:
+      graceful-fs: 4.2.10
+      parse-json: 5.2.0
+      strip-bom: 4.0.0
+      type-fest: 0.6.0
     dev: true
 
   /local-pkg/0.4.2:
@@ -9831,6 +9884,11 @@ packages:
     dependencies:
       ansi-regex: 6.0.1
 
+  /strip-bom/4.0.0:
+    resolution: {integrity: sha512-3xurFv5tEgii33Zi8Jtp55wEIILR9eh34FAW00PZf+JnSsTmV/ioewSgQl97JHvgjoRGwPShsWm+IdrxB35d0w==}
+    engines: {node: '>=8'}
+    dev: true
+
   /strip-final-newline/2.0.0:
     resolution: {integrity: sha512-BrpvfNAE3dcvq7ll3xVumzjKjZQ5tI1sEUIKr3Uoks0XUl45St3FlatVqef9prk4jRDzhW6WZg+3bk93y6pLjA==}
     engines: {node: '>=6'}
@@ -11032,6 +11090,18 @@ packages:
       unist-util-stringify-position: 3.0.2
       vfile-message: 3.1.2
     dev: false
+
+  /vite-dts/1.0.4_vite@3.1.6:
+    resolution: {integrity: sha512-jfRsrBU8vibUS4a/AboDzHdph2/9/dpoMdYgkiD5tb4OXL75wnlzeEZ6D2XoEZNExwnkXqARKAvz7pv5VtUm5g==}
+    peerDependencies:
+      vite: '>2.0.0-0'
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      load-json-file: 6.2.0
+      vite: 3.1.6
+    dev: true
 
   /vite-node/0.23.4:
     resolution: {integrity: sha512-8VuDGwTWIvwPYcbw8ZycMlwAwqCmqZfLdFrDK75+o+6bWYpede58k6AAXN9ioU+icW82V4u1MzkxLVhhIoQ9xA==}
