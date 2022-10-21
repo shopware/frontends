@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/types",
-  "version": "0.1.16",
+  "version": "0.1.18",
   "types": "index.d.ts",
   "main": "index.js",
   "module": "index.mjs",

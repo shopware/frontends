@@ -1,9 +1,12 @@
 {
   "name": "@shopware-pwa/vue3-plugin",
-  "version": "0.1.16",
+  "version": "0.1.18",
   "type": "module",
   "module": "./dist/vue3-plugin.es.js",
   "types": "./dist/main.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc && vite build"
   },
