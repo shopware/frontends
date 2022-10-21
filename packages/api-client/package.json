@@ -15,9 +15,10 @@
     "build:types": "npx -p typescript tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
-    "test": "vitest run"
+    "test": "vitest run --segfault-retry=3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@vitest/coverage-c8": "^0.23.4",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
