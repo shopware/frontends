@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import Frontends from "./components/Frontends.vue";
-const { refreshSessionContext, currency } = useSessionContext();
-// const { refreshUser } = useUser();
-// const { refreshCart } = useCart();
-// useNotifications();
-// useWishlist();
+const { refreshSessionContext } = useSessionContext();
 
 onMounted(() => {
   refreshSessionContext();
-  // refreshUser();
-  // refreshCart();
 });
 </script>
 
