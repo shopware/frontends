@@ -56,6 +56,7 @@ importers:
 
   packages/api-client:
     specifiers:
+      '@faker-js/faker': ^7.6.0
       '@shopware-pwa/types': workspace:*
       '@vitest/coverage-c8': ^0.23.4
       axios: ^0.27.2
@@ -68,6 +69,7 @@ importers:
       axios: 0.27.2
       query-string: 7.1.1
     devDependencies:
+      '@faker-js/faker': 7.6.0
       '@vitest/coverage-c8': 0.23.4
       eslint-config-shopware: link:../eslint-config-shopware
       tsconfig: link:../tsconfig
@@ -981,6 +983,11 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
+    dev: true
 
   /@fortawesome/fontawesome-common-types/6.1.2:
     resolution: {integrity: sha512-wBaAPGz1Awxg05e0PBRkDRuTsy4B3dpBm+zreTTyd9TH4uUM27cAL4xWyWR0rLJCrRwzVsQ4hF3FvM6rqydKPA==}
