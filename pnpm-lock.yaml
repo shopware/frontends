@@ -93,14 +93,14 @@ importers:
       vue-eslint-parser: ^9.1.0
       vue-tsc: ^0.40.13
     dependencies:
-      '@nuxt/kit': 3.0.0-rc.11
+      '@nuxt/kit': 3.0.0-rc.11_fwemgdvumxap6dfcd4fpjmg6cy
       '@shopware-pwa/api-client': link:../api-client
       '@shopware-pwa/composables-next': link:../composables
       '@shopware-pwa/helpers-next': link:../helpers
       he: 1.2.0
       html-to-vue: 1.4.0
     devDependencies:
-      '@nuxt/schema': 3.0.0-rc.11
+      '@nuxt/schema': 3.0.0-rc.11_fwemgdvumxap6dfcd4fpjmg6cy
       '@shopware-pwa/types': link:../types
       '@vue/eslint-config-typescript': 11.0.2_vnnms2vwgxhb7jv3u2ncwd7xzm
       eslint: 8.24.0
@@ -187,11 +187,11 @@ importers:
       typescript: ^4.8.4
       unbuild: ^0.8.11
     dependencies:
-      '@nuxt/kit': 3.0.0-rc.11
+      '@nuxt/kit': 3.0.0-rc.11_fwemgdvumxap6dfcd4fpjmg6cy
       '@shopware-pwa/api-client': link:../api-client
       '@shopware-pwa/composables-next': link:../composables
     devDependencies:
-      '@nuxt/schema': 3.0.0-rc.11
+      '@nuxt/schema': 3.0.0-rc.11_fwemgdvumxap6dfcd4fpjmg6cy
       eslint-config-shopware: link:../eslint-config-shopware
       tsconfig: link:../tsconfig
       typescript: 4.8.4
@@ -208,8 +208,8 @@ importers:
 
   packages/vue3-plugin:
     specifiers:
-      '@shopware-pwa/api-client': workspace:^0.1.12
-      '@shopware-pwa/composables-next': workspace:^0.1.12
+      '@shopware-pwa/api-client': workspace:*
+      '@shopware-pwa/composables-next': workspace:*
       js-cookie: ^3.0.1
       typescript: ^4.6.4
       vite: ^3.1.0
@@ -227,9 +227,9 @@ importers:
 
   templates/vue-blank:
     specifiers:
-      '@shopware-pwa/api-client': 0.1.14
-      '@shopware-pwa/composables-next': 0.1.14
-      '@shopware-pwa/nuxt3-module': 0.1.14
+      '@shopware-pwa/api-client': 0.1.16
+      '@shopware-pwa/composables-next': 0.1.16
+      '@shopware-pwa/nuxt3-module': 0.1.16
       '@vueuse/nuxt': ^9.3.0
       nuxt: ^3.0.0-rc.11
     devDependencies:
@@ -241,12 +241,12 @@ importers:
 
   templates/vue-demo-store:
     specifiers:
-      '@shopware-pwa/api-client': 0.1.14
-      '@shopware-pwa/cms-base': 0.1.14
-      '@shopware-pwa/composables-next': 0.1.14
-      '@shopware-pwa/helpers-next': 0.1.14
-      '@shopware-pwa/nuxt3-module': 0.1.14
-      '@shopware-pwa/types': 0.1.14
+      '@shopware-pwa/api-client': 0.1.16
+      '@shopware-pwa/cms-base': 0.1.16
+      '@shopware-pwa/composables-next': 0.1.16
+      '@shopware-pwa/helpers-next': 0.1.16
+      '@shopware-pwa/nuxt3-module': 0.1.16
+      '@shopware-pwa/types': 0.1.16
       '@unocss/nuxt': ^0.45.26
       '@vue/eslint-config-typescript': ^11.0.2
       '@vuelidate/core': ^2.0.0
@@ -1172,36 +1172,6 @@ packages:
   /@nuxt/devalue/2.0.0:
     resolution: {integrity: sha512-YBI/6o2EBz02tdEJRBK8xkt3zvOFOWlLBf7WKYGBsSYSRtjjgrqPe2skp6VLLmKx5WbHHDNcW+6oACaurxGzeA==}
 
-  /@nuxt/kit/3.0.0-rc.11:
-    resolution: {integrity: sha512-o0E/k635Lzcxp4K5t0ToHC6WwQ1wyN0EIqMAQEzgiUexoAhzdURr21QI0D6e6U461u4KP7x92wYM87VxhMFXmQ==}
-    engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
-    dependencies:
-      '@nuxt/schema': 3.0.0-rc.11
-      c12: 0.2.13
-      consola: 2.15.3
-      defu: 6.1.0
-      globby: 13.1.2
-      hash-sum: 2.0.0
-      ignore: 5.2.0
-      jiti: 1.16.0
-      knitwork: 0.1.2
-      lodash.template: 4.5.0
-      mlly: 0.5.16
-      pathe: 0.3.8
-      pkg-types: 0.3.5
-      scule: 0.3.2
-      semver: 7.3.7
-      unctx: 2.0.2
-      unimport: 0.6.7
-      untyped: 0.5.0
-    transitivePeerDependencies:
-      - esbuild
-      - rollup
-      - supports-color
-      - vite
-      - webpack
-    dev: false
-
   /@nuxt/kit/3.0.0-rc.11_cqdmw335g2mfukdgd4jnaxdu4u:
     resolution: {integrity: sha512-o0E/k635Lzcxp4K5t0ToHC6WwQ1wyN0EIqMAQEzgiUexoAhzdURr21QI0D6e6U461u4KP7x92wYM87VxhMFXmQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
@@ -1230,6 +1200,36 @@ packages:
       - supports-color
       - vite
       - webpack
+
+  /@nuxt/kit/3.0.0-rc.11_fwemgdvumxap6dfcd4fpjmg6cy:
+    resolution: {integrity: sha512-o0E/k635Lzcxp4K5t0ToHC6WwQ1wyN0EIqMAQEzgiUexoAhzdURr21QI0D6e6U461u4KP7x92wYM87VxhMFXmQ==}
+    engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
+    dependencies:
+      '@nuxt/schema': 3.0.0-rc.11_fwemgdvumxap6dfcd4fpjmg6cy
+      c12: 0.2.13
+      consola: 2.15.3
+      defu: 6.1.0
+      globby: 13.1.2
+      hash-sum: 2.0.0
+      ignore: 5.2.0
+      jiti: 1.16.0
+      knitwork: 0.1.2
+      lodash.template: 4.5.0
+      mlly: 0.5.16
+      pathe: 0.3.8
+      pkg-types: 0.3.5
+      scule: 0.3.2
+      semver: 7.3.7
+      unctx: 2.0.2_fwemgdvumxap6dfcd4fpjmg6cy
+      unimport: 0.6.7_fwemgdvumxap6dfcd4fpjmg6cy
+      untyped: 0.5.0
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - supports-color
+      - vite
+      - webpack
+    dev: false
 
   /@nuxt/kit/3.0.0-rc.11_rollup@2.79.1:
     resolution: {integrity: sha512-o0E/k635Lzcxp4K5t0ToHC6WwQ1wyN0EIqMAQEzgiUexoAhzdURr21QI0D6e6U461u4KP7x92wYM87VxhMFXmQ==}
@@ -1260,27 +1260,6 @@ packages:
       - vite
       - webpack
 
-  /@nuxt/schema/3.0.0-rc.11:
-    resolution: {integrity: sha512-EIBYQeBxJ+JZ8RjPRGaXM9+vtWMHQ4HsqZIw5a+p6hqRLGf53fHANT4vjMQZA4fAYBnJZJI7dB/OXkfyb/kikA==}
-    engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
-    dependencies:
-      c12: 0.2.13
-      create-require: 1.1.1
-      defu: 6.1.0
-      jiti: 1.16.0
-      pathe: 0.3.8
-      pkg-types: 0.3.5
-      postcss-import-resolver: 2.0.0
-      scule: 0.3.2
-      std-env: 3.2.1
-      ufo: 0.8.5
-      unimport: 0.6.7
-    transitivePeerDependencies:
-      - esbuild
-      - rollup
-      - vite
-      - webpack
-
   /@nuxt/schema/3.0.0-rc.11_cqdmw335g2mfukdgd4jnaxdu4u:
     resolution: {integrity: sha512-EIBYQeBxJ+JZ8RjPRGaXM9+vtWMHQ4HsqZIw5a+p6hqRLGf53fHANT4vjMQZA4fAYBnJZJI7dB/OXkfyb/kikA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
@@ -1296,6 +1275,27 @@ packages:
       std-env: 3.2.1
       ufo: 0.8.5
       unimport: 0.6.7_cqdmw335g2mfukdgd4jnaxdu4u
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - vite
+      - webpack
+
+  /@nuxt/schema/3.0.0-rc.11_fwemgdvumxap6dfcd4fpjmg6cy:
+    resolution: {integrity: sha512-EIBYQeBxJ+JZ8RjPRGaXM9+vtWMHQ4HsqZIw5a+p6hqRLGf53fHANT4vjMQZA4fAYBnJZJI7dB/OXkfyb/kikA==}
+    engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
+    dependencies:
+      c12: 0.2.13
+      create-require: 1.1.1
+      defu: 6.1.0
+      jiti: 1.16.0
+      pathe: 0.3.8
+      pkg-types: 0.3.5
+      postcss-import-resolver: 2.0.0
+      scule: 0.3.2
+      std-env: 3.2.1
+      ufo: 0.8.5
+      unimport: 0.6.7_fwemgdvumxap6dfcd4fpjmg6cy
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -10460,20 +10460,6 @@ packages:
       jiti: 1.16.0
     dev: false
 
-  /unctx/2.0.2:
-    resolution: {integrity: sha512-3lcXTlDoOaguRVC1GqG3mrawy17yoycSAQDDnUayQYZ17v9to+Gn6Zyssroc/GD2ppJ0wF5V8adOcKkrNKVWow==}
-    dependencies:
-      acorn: 8.8.0
-      estree-walker: 3.0.1
-      magic-string: 0.26.6
-      unplugin: 0.9.5
-    transitivePeerDependencies:
-      - esbuild
-      - rollup
-      - vite
-      - webpack
-    dev: false
-
   /unctx/2.0.2_cqdmw335g2mfukdgd4jnaxdu4u:
     resolution: {integrity: sha512-3lcXTlDoOaguRVC1GqG3mrawy17yoycSAQDDnUayQYZ17v9to+Gn6Zyssroc/GD2ppJ0wF5V8adOcKkrNKVWow==}
     dependencies:
@@ -10486,6 +10472,20 @@ packages:
       - rollup
       - vite
       - webpack
+
+  /unctx/2.0.2_fwemgdvumxap6dfcd4fpjmg6cy:
+    resolution: {integrity: sha512-3lcXTlDoOaguRVC1GqG3mrawy17yoycSAQDDnUayQYZ17v9to+Gn6Zyssroc/GD2ppJ0wF5V8adOcKkrNKVWow==}
+    dependencies:
+      acorn: 8.8.0
+      estree-walker: 3.0.1
+      magic-string: 0.26.6
+      unplugin: 0.9.5_fwemgdvumxap6dfcd4fpjmg6cy
+    transitivePeerDependencies:
+      - esbuild
+      - rollup
+      - vite
+      - webpack
+    dev: false
 
   /unctx/2.0.2_rollup@2.79.1:
     resolution: {integrity: sha512-3lcXTlDoOaguRVC1GqG3mrawy17yoycSAQDDnUayQYZ17v9to+Gn6Zyssroc/GD2ppJ0wF5V8adOcKkrNKVWow==}
@@ -10523,25 +10523,6 @@ packages:
       trough: 1.0.5
       vfile: 4.2.1
     dev: false
-
-  /unimport/0.6.7:
-    resolution: {integrity: sha512-EMoVqDjswHkU+nD098QYHXH7Mkw7KwGDQAyeRF2lgairJnuO+wpkhIcmCqrD1OPJmsjkTbJ2tW6Ap8St0PuWZA==}
-    dependencies:
-      '@rollup/pluginutils': 4.2.1
-      escape-string-regexp: 5.0.0
-      fast-glob: 3.2.11
-      local-pkg: 0.4.2
-      magic-string: 0.26.6
-      mlly: 0.5.16
-      pathe: 0.3.8
-      scule: 0.3.2
-      strip-literal: 0.4.2
-      unplugin: 0.9.5
-    transitivePeerDependencies:
-      - esbuild
-      - rollup
-      - vite
-      - webpack
 
   /unimport/0.6.7_cqdmw335g2mfukdgd4jnaxdu4u:
     resolution: {integrity: sha512-EMoVqDjswHkU+nD098QYHXH7Mkw7KwGDQAyeRF2lgairJnuO+wpkhIcmCqrD1OPJmsjkTbJ2tW6Ap8St0PuWZA==}
@@ -10766,28 +10747,6 @@ packages:
       - supports-color
       - vite
     dev: false
-
-  /unplugin/0.9.5:
-    resolution: {integrity: sha512-luraheyfxwtvkvHpsOvMNv7IjLdORTWKZp0gWYNHGLi2ImON3iIZOj464qEyyEwLA/EMt12fC415HW9zRpOfTg==}
-    peerDependencies:
-      esbuild: '>=0.13'
-      rollup: ^2.50.0
-      vite: ^2.3.0 || ^3.0.0-0
-      webpack: 4 || 5
-    peerDependenciesMeta:
-      esbuild:
-        optional: true
-      rollup:
-        optional: true
-      vite:
-        optional: true
-      webpack:
-        optional: true
-    dependencies:
-      acorn: 8.8.0
-      chokidar: 3.5.3
-      webpack-sources: 3.2.3
-      webpack-virtual-modules: 0.4.4
 
   /unplugin/0.9.5_cqdmw335g2mfukdgd4jnaxdu4u:
     resolution: {integrity: sha512-luraheyfxwtvkvHpsOvMNv7IjLdORTWKZp0gWYNHGLi2ImON3iIZOj464qEyyEwLA/EMt12fC415HW9zRpOfTg==}

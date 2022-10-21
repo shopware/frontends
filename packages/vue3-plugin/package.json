@@ -14,8 +14,8 @@
     "vite-dts": "^1.0.4"
   },
   "dependencies": {
-    "@shopware-pwa/api-client": "workspace:^0.1.12",
-    "@shopware-pwa/composables-next": "workspace:^0.1.12",
+    "@shopware-pwa/api-client": "workspace:*",
+    "@shopware-pwa/composables-next": "workspace:*",
     "js-cookie": "^3.0.1"
   },
   "peerDependencies": {
