@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@shopware-pwa/composables-next": "workspace:*",
-    "@shopware-pwa/vue3-plugin": "workspace:*",
+    "@shopware-pwa/composables-next": "0.1.16",
+    "@shopware-pwa/vue3-plugin": "0.1.16",
     "vue": "^3.2.37"
   },
   "devDependencies": {

@@ -1,16 +1,15 @@
 {
   "name": "@shopware-pwa/vue3-plugin",
-  "private": true,
-  "version": "0.0.1",
+  "version": "0.1.16",
   "type": "module",
-  "module": "dist/vue3-plugin.es.js",
-  "types": "dist/main.d.ts",
+  "module": "./dist/vue3-plugin.es.js",
+  "types": "./dist/main.d.ts",
   "scripts": {
     "build": "tsc && vite build"
   },
   "devDependencies": {
-    "typescript": "^4.6.4",
-    "vite": "^3.1.0",
+    "typescript": "^4.8.4",
+    "vite": "^3.1.8",
     "vite-dts": "^1.0.4"
   },
   "dependencies": {
