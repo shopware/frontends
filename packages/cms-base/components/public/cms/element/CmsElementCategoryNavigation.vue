@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { ClientApiError } from "@shopware-pwa/types";
 import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
-
+import { Category } from "@shopware-pwa/types";
 const { category: activeCategory } = useCategory();
 const { loadNavigationElements, navigationElements } = useNavigation();
 const navigations = computed(() => {
-  return navigationElements.value?.map((navigationElement) => {
-    navigationElement.children = (activeCategory.value?.path ?? "").includes(
-      navigationElement.id
-    )
-      ? navigationElement.children
-      : [];
+  const navigation: Category[] = JSON.parse(
+    JSON.stringify(navigationElements.value)
+  );
+  return navigation?.map((navigationElement) => {
+    navigationElement.children =
+      activeCategory.value?.id === navigationElement.id
+        ? navigationElement.children
+        : [];
     return navigationElement;
   });
 });
