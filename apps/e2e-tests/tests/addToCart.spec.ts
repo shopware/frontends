@@ -21,6 +21,8 @@ test.describe.parallel.only("Add product to cart / Remove from cart", () => {
     await homePage.openCartPage();
     await productPage.addToCart();
     await cartPage.openMiniCart();
-    await expect(page.locator("[data-testid='cart-product-image']")).toBeVisible();
+    await expect(
+      page.locator("[data-testid='cart-product-image']")
+    ).toBeVisible();
   });
 });

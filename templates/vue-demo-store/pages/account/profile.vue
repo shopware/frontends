@@ -34,9 +34,9 @@ const toggleTabs = (tabNumber: number) => {
                 : 'text-brand-primary border-b-2 border-brand-primary',
             ]"
             @click="() => toggleTabs(1)"
-            >
-              Personal data
-            </a>
+          >
+            Personal data
+          </a>
         </li>
         <li class="w-1/2 md:w-auto" role="presentation">
           <a
@@ -47,9 +47,9 @@ const toggleTabs = (tabNumber: number) => {
                 : 'text-brand-primary border-b-2 border-brand-primary',
             ]"
             @click="() => toggleTabs(2)"
-            >
-              Change password
-            </a>
+          >
+            Change password
+          </a>
         </li>
       </ul>
     </div>

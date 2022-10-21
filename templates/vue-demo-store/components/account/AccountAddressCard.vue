@@ -12,7 +12,7 @@ const props = withDefaults(
     address: CustomerAddress;
     countries: Array<Country>;
     salutations: Array<Salutation>;
-    canSetDefault?: boolean
+    canSetDefault?: boolean;
   }>(),
   {
     canSetDefault: true,
@@ -43,7 +43,12 @@ const setDefaultBillingAddress = async () => {
         text-xl
         inline-block
         @click.prevent="
-          modal.open('AccountAddressForm', { address, salutations, countries, title:'Edit address' })
+          modal.open('AccountAddressForm', {
+            address,
+            salutations,
+            countries,
+            title: 'Edit address',
+          })
         "
       />
     </div>

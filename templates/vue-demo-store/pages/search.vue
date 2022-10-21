@@ -33,11 +33,11 @@ export default {
 </script>
 
 <template>
-  <div class="container mb-8 mx-4 md:mx-auto">
-    <div
-      v-if="loading"
-      class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
-    />
+  <div
+    class="container mb-8 mx-4 md:mx-auto"
+    data-testid="search-results-container"
+  >
+    <IconsLoadingCircle v-if="loading" />
 
     <h1 class="mb-8 text-3xl font-extrabold text-center">
       <span v-if="products.length">Search Result</span>

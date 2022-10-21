@@ -6,11 +6,13 @@ export class HomePage extends AbstractPage {
   readonly signInButton: Locator;
   readonly linkToCartPage: Locator;
   readonly linkToRegistrationPage: Locator;
+  readonly searchBar: Locator;
 
   constructor(page: Page) {
     super(page);
     this.signInButton = page.locator("[data-testid='header-sign-in-link']");
     this.linkToCartPage = page.locator("text='Smoking Board Cedar Wood'");
+    this.searchBar = page.locator("[data-testid='layout-search-input']");
     this.linkToRegistrationPage = page.locator("text=' Sign up '");
   }
 
@@ -34,5 +36,11 @@ export class HomePage extends AbstractPage {
 
   async openRegistrationPage() {
     await this.linkToRegistrationPage.click();
+  }
+
+  async typeSearchPhrase(phrase: string) {
+    await this.searchBar.click();
+    await this.searchBar.type(phrase);
+    await this.page.keyboard.press("Enter");
   }
 }

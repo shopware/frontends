@@ -1,11 +1,4 @@
-import {
-  ref,
-  Ref,
-  computed,
-  inject,
-  provide,
-  ComputedRef,
-} from "vue";
+import { ref, Ref, computed, inject, provide, ComputedRef } from "vue";
 
 import {
   getCustomerAddresses,
@@ -58,11 +51,11 @@ export function useAddress(): UseAddressReturn {
   async function createCustomerAddress(
     customerAddress: CustomerAddress
   ): Promise<CustomerAddress> {
-    const result =  await apiCreateCustomerAddress(customerAddress, apiInstance);
+    const result = await apiCreateCustomerAddress(customerAddress, apiInstance);
     await loadCustomerAddresses();
     await setDefaultCustomerBillingAddress(result.id);
     await setDefaultCustomerShippingAddress(result.id);
-    return result
+    return result;
   }
 
   /**
@@ -71,7 +64,7 @@ export function useAddress(): UseAddressReturn {
   async function updateCustomerAddress(
     customerAddress: CustomerAddress
   ): Promise<CustomerAddress> {
-    const result =  await apiUpdateCustomerAddress(customerAddress, apiInstance);
+    const result = await apiUpdateCustomerAddress(customerAddress, apiInstance);
     await loadCustomerAddresses();
     return result;
   }
@@ -80,7 +73,7 @@ export function useAddress(): UseAddressReturn {
    * Delete customer address
    */
   async function deleteCustomerAddress(addressId: string): Promise<void> {
-    const result =  apiDeleteCustomerAddress(addressId, apiInstance);
+    const result = apiDeleteCustomerAddress(addressId, apiInstance);
     await loadCustomerAddresses();
     return result;
   }
