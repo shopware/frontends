@@ -48,10 +48,14 @@ const invokeSave = async (): Promise<void> => {
       <legend class="contents text-2xl font-medium text-gray-900">
         <h1 class="border-b pb-3">Payment method</h1>
       </legend>
-      <p class="text-sm text-gray-500 mt-3">Select your default payment method:</p>
+      <p class="text-sm text-gray-500 mt-3">
+        Select your default payment method:
+      </p>
       <form class="mt-4 space-y-6" @submit.prevent="invokeSave">
         <div v-if="isLoading" class="w-60 h-24">
-          <div class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5">
+          <div
+            class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
+          >
             <div class="w-4 bg-gray-300 h-4 rounded-full" />
             <div class="flex flex-col space-y-3">
               <div class="w-36 bg-gray-300 h-6 rounded-md" />

@@ -1,6 +1,7 @@
 <script setup>
 import StackBlitzLiveExample from '../components/StackBlitzLiveExample.vue'
 </script>
+
 # Create a Login form
 
 In this chapter, you will learn how to:
@@ -40,15 +41,15 @@ In the next step, use the `useUser` composable. It provides user data, login met
 
 ```vue
 <script setup lang="ts">
-const { 
-    login, // login method, accepts username and password
-    logout, // performing a logout
-    errors, // errors from API prefixed with a method name, which is the source of the problem
-    isLoggedIn, // flag that says if customer is logged in
-    user // the whole customer object
+const {
+  login, // login method, accepts username and password
+  logout, // performing a logout
+  errors, // errors from API prefixed with a method name, which is the source of the problem
+  isLoggedIn, // flag that says if customer is logged in
+  user, // the whole customer object
 } = useUser();
 
-const invokeLogin = () => login(loginCredentials)
+const invokeLogin = () => login(loginCredentials);
 </script>
 ...
 ```
@@ -101,12 +102,12 @@ For better readability, the example does not contain any styling. You can study 
 
 ```vue
 <script setup lang="ts">
-    const { logout, login, errors, isLoggedIn, user } = useUser();
-    const loginCredentials = reactive({
-    username: "",
-    password: "",
-    });
-    const invokeLogin = () => login(loginCredentials);
+const { logout, login, errors, isLoggedIn, user } = useUser();
+const loginCredentials = reactive({
+  username: "",
+  password: "",
+});
+const invokeLogin = () => login(loginCredentials);
 </script>
 <template>
   <div v-if="!isLoggedIn">
@@ -126,12 +127,11 @@ For better readability, the example does not contain any styling. You can study 
   </div>
 </template>
 <style scoped>
-    .errors {
-    color: red;
-    margin-top: 10px;
-    }
+.errors {
+  color: red;
+  margin-top: 10px;
+}
 </style>
-
 ```
 
 <StackBlitzLiveExample projectId="mkucmus/frontends-examples" example="LoginForm" />

@@ -15,7 +15,7 @@ const props = withDefaults(
     address?: CustomerAddress;
     countries: Array<Country>;
     salutations: Array<Salutation>;
-    title?: string
+    title?: string;
   }>(),
   {
     title: "Account address",
@@ -54,7 +54,7 @@ const invokeSave = async (): Promise<void> => {
     <div class="shadow overflow-hidden sm:rounded-md">
       <form name="account-address" id="account-address" method="post">
         <div class="px-4 py-5 bg-white sm:p-6">
-          <h3 class="text-2xl border-b pb-3">{{props.title}}</h3>
+          <h3 class="text-2xl border-b pb-3">{{ props.title }}</h3>
           <div class="grid grid-cols-6 gap-6 mt-8">
             <div class="col-span-6 sm:col-span-6">
               <label
