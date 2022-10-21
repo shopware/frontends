@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div>
-    <img class="logo" src="/assets/shopware-frontends-logo.png" />
+    <img class="logo" src="~/assets/shopware-frontends-logo.png" />
   </div>
   <h1>{{ template }}</h1>
 </template>
