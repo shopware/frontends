@@ -73,11 +73,7 @@ watch(items, (items, oldItems) => {
       </div>
       <!-- Empty of wishlist -->
       <div v-else class="flex flex-col items-center col mx-auto">
-        <img
-          class="w-24 h-24"
-          src="~/assets/empty-wishlist.svg"
-          alt="Empty wishlist"
-        />
+        <div class="w-48 h-48 i-carbon-favorite"></div>
         <h1 class="my-3 text-3xl font-extrabold">Wishlist is empty</h1>
         <p class="my-4">No products were added to the Wishlist.</p>
         <nuxt-link
