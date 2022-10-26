@@ -3,8 +3,6 @@ import type { SliderElementConfig } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import { CmsSlot } from "@shopware-pwa/types";
 import { VNodeArrayChildren } from "vue";
-import ChevronLeft from "./icons/ChevronLeft.vue";
-import ChevronRight from "./icons/ChevronRight.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -276,7 +274,7 @@ defineExpose({
         }"
         @click="previous"
       >
-        <ChevronLeft class="text-3xl" />
+        <div class="w-15 h-15 i-carbon-chevron-left"></div>
       </button>
       <button
         aria-label="Chevron right"
@@ -287,7 +285,7 @@ defineExpose({
         }"
         @click="next"
       >
-        <ChevronRight class="text-3xl" />
+        <div class="w-15 h-15 i-carbon-chevron-right"></div>
       </button>
     </div>
     <div

@@ -11,9 +11,6 @@ const {
   getCurrentPage,
   changeCurrentPage,
   getTotalPagesCount,
-  loading,
-  loadMore,
-  loadingMore,
 } = useListing({ listingType: "categoryListing" });
 
 const changePage = (page: number) => {
