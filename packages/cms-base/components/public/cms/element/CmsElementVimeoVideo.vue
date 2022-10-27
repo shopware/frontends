@@ -7,38 +7,50 @@ const props = defineProps<{
 }>();
 const { getConfigValue } = useCmsElementConfig(props.content);
 // TODO CMS add proper mapping or config type. This Component needs rework.
+type CmsElementVimeoVideoConfigKey = keyof CmsElementVimeoVideo["config"];
 
-// const vimeoConfigMapping: {
-//   [key in keyof CmsElementVimeoVideo["config"]]: string;
-// } = {
-//   byLine: "byline",
-//   color: "color",
-//   doNotTrack: "dnt",
-//   loop: "loop",
-//   mute: "mute",
-//   title: "title",
-//   portrait: "portrait",
-//   controls: "controls",
-// };
+const vimeoConfigMapping: {
+  [key in CmsElementVimeoVideoConfigKey]: string;
+} = {
+  byLine: "byline",
+  color: "color",
+  doNotTrack: "dnt",
+  loop: "loop",
+  mute: "mute",
+  title: "title",
+  portrait: "portrait",
+  controls: "controls",
+  videoID: "videoID",
+  autoplay: "autoplay",
+  previewMedia: "previewMedia",
+  needsConfirmation: "needsConfirmation",
+};
 
 const videoUrl: Ref = ref(
   `https://player.vimeo.com/video/${getConfigValue("videoID")}?`
 );
 
-// const convertAttr = function (value: any, configKey: string) {
-//   if (configKey == "color")
-//     return value
-//       ? `${vimeoConfigMapping[configKey]}=${value}&`.replace("#", "")
-//       : "";
+const convertAttr = function (
+  value: string,
+  configKey: CmsElementVimeoVideoConfigKey
+) {
+  if (configKey == "color")
+    return value
+      ? `${vimeoConfigMapping[configKey]}=${value}&`.replace("#", "")
+      : "";
 
-//   return value ? `${vimeoConfigMapping[configKey]}=${value}&` : "";
-// };
+  return value ? `${vimeoConfigMapping[configKey]}=${value}&` : "";
+};
 
-// for (const key in props.content.config) {
-//   if (vimeoConfigMapping.hasOwnProperty(key)) {
-//     videoUrl.value += convertAttr(props.content.config?.[key]?.value, key);
-//   }
-// }
+for (const key in props.content.config) {
+  if (vimeoConfigMapping.hasOwnProperty(key)) {
+    videoUrl.value += convertAttr(
+      props.content.config[key as CmsElementVimeoVideoConfigKey]
+        .value as string,
+      key as CmsElementVimeoVideoConfigKey
+    );
+  }
+}
 </script>
 <template>
   <div class="cms-element-vimeo-video">
