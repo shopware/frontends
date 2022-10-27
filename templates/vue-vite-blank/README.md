@@ -10,9 +10,13 @@ This repository shows an example of application built with Shopware Frontends Fr
 - Required libraries installed (api-client, composables, Vue 3 plugin)
 - Minimum configuration of Vue 3 plugin (see `ShopwareFrontendsOptions` in [main.ts](./src/main.ts))
 
+## Requirements
+
+Go to [Documentation > Requirements](https://shopware-frontends-docs.vercel.app/framework/requirements.html) to see the details.
+
 ## Set up your Shopware 6 instance
 
-In order to have a different API connected to the app, change the API access information in `.env.local` file. Then rerun the application.
+In order to have a different API connect to the app, change the API access information in `.env.local` file. Then rerun the application.
 
 ## Customize
 

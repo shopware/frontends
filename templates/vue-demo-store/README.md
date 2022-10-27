@@ -10,9 +10,13 @@ This repository shows an example of demo application built with Shopware Fronten
 - Required libraries installed (api-client, CMS components, composables, Nuxt 3 module)
 - Demo Shopware 6 instnace configured as the API
 
+## Requirements
+
+Go to [Documentation > Requirements](https://shopware-frontends-docs.vercel.app/framework/requirements.html) to see the details.
+
 ## Set up your Shopware 6 instance
 
-In order to have a different API connected to the app, **uncomment** and adjust the API credentials in `nuxt.config.ts` file:
+In order to have a different API connect to the app, **uncomment** and adjust the API credentials in the `nuxt.config.ts` file:
 
 ```ts
 export default defineNuxtConfig({

@@ -29,6 +29,7 @@ export const sidebar = [
   {
     text: "FRAMEWORK",
     items: [
+      { text: "Requirements", link: "/framework/requirements" },
       { text: "Configuration", link: "/framework/configuration" },
       { text: "Shopping Experiences", link: "/framework/shopping-experiences" },
       { text: "Styling", link: "/framework/styling" },

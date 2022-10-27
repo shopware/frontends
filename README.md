@@ -10,6 +10,22 @@
 
 ---
 
+## Prerequisites
+
+### Node.js version
+
+Supported versions:
+
+* **v16.x** LTS
+* **v18.x** LTS
+
+TIP: Use [Node Version Manager](https://github.com/nvm-sh/nvm) to manage a Node.js version locally.
+### Package manager
+
+In order to maintain the project, [pnpm](https://pnpm.io/) package manager is required.
+
+Follow the [installation](https://pnpm.io/installation) instructions to get `pnpm` locally.
+
 ## Getting started
 
 ```sh
