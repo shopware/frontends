@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 import { getRandomNumber } from "../utils/data-helpers";
+import { faker } from "@faker-js/faker";
 
 test.describe.only("Registration new user", () => {
   let homePage: HomePage;
@@ -16,16 +17,20 @@ test.describe.only("Registration new user", () => {
   });
 
   test("Registration new user", async ({ page }) => {
-    let randomNumber = await getRandomNumber();
+    // let randomNumber = await getRandomNumber();
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCustomerData(
-      "firstName",
-      "lastName",
-      "k.stala+" + randomNumber + "@shopware.com",
-      "zaq1@WSX"
+      faker.name.firstName(),
+      faker.name.lastName(),
+      faker.internet.exampleEmail(),
+      faker.internet.password()
     );
-    await registrationPage.fillAddressData("street", "1245", "city");
+    await registrationPage.fillAddressData(
+      faker.address.street(),
+      faker.address.zipCode(),
+      faker.address.city()
+    );
     await registrationPage.submitRegistraionForm();
     await page.locator("text =  Sign out ").isVisible();
   });

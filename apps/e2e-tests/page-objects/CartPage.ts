@@ -12,7 +12,10 @@ export class CartPage {
   }
 
   async openMiniCart() {
-    await this.miniCartLink.click();
+    await Promise.all([
+      this.page.waitForLoadState(),
+      this.miniCartLink.click(),
+    ]);
   }
 
   async removeFromMiniCart() {
