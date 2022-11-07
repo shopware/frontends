@@ -36,3 +36,7 @@ Now, you can have a look on the pages and components and add your stuff there.
 
 1. `pnpm i` to install deps
 2. `pnpm dev` to run the project in dev mode
+
+## Try it online
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store)
