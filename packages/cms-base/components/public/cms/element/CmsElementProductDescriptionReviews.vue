@@ -10,10 +10,7 @@ const props = defineProps<{
   content: CmsElementProductDescriptionReviews;
 }>();
 const currentTab = ref<number>(1);
-const { product: contextProduct } = useProduct();
-const product = computed(
-  () => props.content.data.product || contextProduct.value
-);
+const { product } = useProduct(props.content.data?.product);
 
 const description = computed(() =>
   getTranslatedProperty(product.value, "description")
