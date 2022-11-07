@@ -12,14 +12,16 @@ useHead({
 });
 
 const { refreshSessionContext } = useSessionContext();
+const { getWishlistProducts } = useWishlist();
 const { refreshCart } = useCart();
+
 useNotifications();
-useWishlist();
 useAddress();
 
-onMounted(() => {
-  refreshSessionContext();
+onMounted(async () => {
+  await refreshSessionContext();
   refreshCart();
+  getWishlistProducts();
 });
 
 const isSidebarOpen = ref(false);

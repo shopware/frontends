@@ -24,6 +24,7 @@ export const sidebar = [
       { text: "Login form", link: "/getting-started/login-form" },
       { text: "Prices", link: "/getting-started/prices" },
       { text: "Product Listing", link: "/getting-started/product-listing" },
+      { text: "Wishlist", link: "/getting-started/wishlist" },
     ],
   },
   {

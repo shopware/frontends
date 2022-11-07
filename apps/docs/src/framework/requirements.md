@@ -6,22 +6,22 @@
 
 Supported versions:
 
-* **v16.x** LTS
-* **v18.x** LTS
+- **v16.x** LTS
+- **v18.x** LTS
 
 :::tip
 Use [Node Version Manager](https://github.com/nvm-sh/nvm) to manage a Node.js version locally.
 
-*Supported* signifies the framework is developed, run, and tested on mentioned versions.
+_Supported_ signifies the framework is developed, run, and tested on mentioned versions.
 :::
 
 ## Package manager
 
 Supported managers:
 
-* pnpm
-* npm
-* yarn
+- pnpm
+- npm
+- yarn
 
 :::info
 `npm` package manager is available out of the box with Node.js installed. Other managers need manual installation.

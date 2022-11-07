@@ -24,7 +24,6 @@ const props = withDefaults(
   }
 );
 const { product } = toRefs(props);
-
 const { addToCart } = useAddToCart(product);
 
 const { addToWishlist, removeFromWishlist, isInWishlist } =

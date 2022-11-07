@@ -36,4 +36,6 @@
 - [useSessionContext](./composables/useSessionContext.md)
 - [useShopwareContext](./composables/useShopwareContext.md)
 - [useUser](./composables/useUser.md)
+- [useLocalWishlist](./composables/useLocalWishlist.md)
+- [useSyncWishlist](./composables/useSyncWishlist.md)
 - [useWishlist](./composables/useWishlist.md)
