@@ -1,6 +1,6 @@
 # Blank Vue 3 template (Nuxt)
 
-![Shopware Frontends](./assets/shopware-frontends-logo.png)
+![Shopware Frontends](./public/shopware-frontends-logo.png)
 
 This repository shows an example of application built using Shopware Frontends Framework on Nuxt 3.
 
@@ -26,3 +26,7 @@ Now, you are free to use the `@shopware-pwa/composables-next` package in the app
 
 1. `pnpm i` to install deps
 2. `pnpm dev` to run the project in dev mode
+
+## Try it online
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-blank)
