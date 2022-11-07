@@ -27,11 +27,11 @@ export * from "./useCheckout";
 export * from "./useSalutations";
 export * from "./useCountries";
 export * from "./useOrderDetails";
-export * from "./useWishlist";
+export * from "./useLocalWishlist";
+export * from "./useSyncWishlist";
 export * from "./useProductSearchSuggest";
 export * from "./useCustomerPassword";
 export * from "./usePrice";
-export * from "./useProductWishlist";
 export * from "./userCustomerOrders";
 export * from "./createShopwareContext";
 export * from "./useAddress";
@@ -41,6 +41,8 @@ export * from "./useCmsMeta";
 export * from "./useNewsletter";
 export * from "./useNavigationContext";
 export * from "./useNavigationSearch";
+export * from "./useWishlist";
+export * from "./useProductWishlist";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   const componentName = content.type;

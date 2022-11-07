@@ -17,5 +17,12 @@ export type CustomerWishlist = {
 export type CustomerWishlistResponse = {
   apiAlias: string;
   wishlist: CustomerWishlist;
-  products: EntityResult<Product, "product">;
+  products: CustomerWishlistResponseProducts;
+};
+
+export type CustomerWishlistResponseProducts = {
+  elements: [Product];
+  page: number;
+  total: number;
+  limit: number;
 };

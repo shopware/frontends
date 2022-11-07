@@ -37,17 +37,14 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   isLoading.value = false;
 };
 
-onMounted(async () => {
-  if (!items.value.length) {
-    return;
-  }
-  loadProductsByItemIds(items.value);
-});
-
 watch(items, (items, oldItems) => {
   if (items.length !== oldItems.length) {
     products.value = products.value.filter(({ id }) => items.includes(id));
   }
+  if (!items.length) {
+    return;
+  }
+  loadProductsByItemIds(items);
 });
 </script>
 
@@ -56,10 +53,8 @@ watch(items, (items, oldItems) => {
     <div
       class="max-w-2xl mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8"
     >
-      <!-- Wishlist is loading -->
-      <div v-if="isLoading">Loading...</div>
       <!-- Wishlist is completed -->
-      <div v-else-if="products.length">
+      <div v-if="products.length">
         <h1 class="my-3 text-3xl font-extrabold">Wishlist</h1>
         <div
           class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"

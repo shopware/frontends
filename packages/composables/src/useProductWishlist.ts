@@ -1,6 +1,8 @@
 import { Ref, computed } from "vue";
 import { Product } from "@shopware-pwa/types";
-import { useWishlist } from "./useWishlist";
+import { useUser } from "./useUser";
+import { useLocalWishlist } from "./useLocalWishlist";
+import { useSyncWishlist } from "./useSyncWishlist";
 
 export type UseProductWishlistReturn = {
   removeFromWishlist: () => Promise<void>;
@@ -14,27 +16,42 @@ export type UseProductWishlistReturn = {
 export function useProductWishlist(
   product: Ref<Product>
 ): UseProductWishlistReturn {
+  const { isLoggedIn } = useUser();
   const {
     addToWishlist: addItem,
     removeFromWishlist: removeItem,
     items,
-  } = useWishlist();
+  } = useLocalWishlist();
+
+  const {
+    addToWishlistSync: addItemSync,
+    removeFromWishlistSync: removeItemSync,
+    items: itemsSync,
+  } = useSyncWishlist();
 
   // removes item from the list
   async function removeFromWishlist() {
-    await removeItem(product.value.id);
+    if (isLoggedIn.value) {
+      await removeItemSync(product.value.id);
+    } else {
+      await removeItem(product.value.id);
+    }
   }
 
-  // add product id to wishlist array and trigger to update localstorage
-
   async function addToWishlist() {
-    await addItem(product.value.id);
+    if (isLoggedIn.value) {
+      await addItemSync(product.value.id);
+    } else {
+      await addItem(product.value.id);
+    }
   }
 
   // return true or false if product id is in wishlist array
-  const isInWishlist = computed(() => {
-    return items.value?.includes(product.value.id);
-  });
+  const isInWishlist = computed(() =>
+    isLoggedIn.value
+      ? itemsSync.value?.includes(product.value.id)
+      : items.value?.includes(product.value.id)
+  );
 
   return {
     addToWishlist,
