@@ -19,7 +19,10 @@ export type LandingPage = {
   _uniqueIdentifier: string;
   versionId: string;
   translated: {
-    [key: string]: string;
+    name: string;
+    metaTitle: string | null;
+    metaDescription: string | null;
+    keywords: string | null;
   };
   createdAt: string;
   updatedAt: null | string;

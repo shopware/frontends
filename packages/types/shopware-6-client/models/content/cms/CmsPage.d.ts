@@ -3,6 +3,7 @@ import { Category } from "../category/Category";
 import { Product } from "../product/Product";
 import { Aggregation } from "../../../search/Aggregation";
 import { CmsBlock } from "./CmsBlock";
+import { LandingPage } from "../landing-page/LandingPage";
 
 /**
  * Cms page type
@@ -11,15 +12,18 @@ import { CmsBlock } from "./CmsBlock";
  */
 export type CmsPageType = "product_list" | "landingpage" | "product_detail";
 
+export type NavigationRouteName = "frontend.navigation.page";
+export type LandingRouteName = "frontend.landing.page";
+export type DetailRouteName = "frontend.detail.page";
+
 /**
- * Cms page resource type
+ * Cms page route name responsible for the type of the page
  *
- * @public
  */
-export type CmsResourceType =
-  | "frontend.navigation.page"
-  | "frontend.landing.page"
-  | "frontend.detail.page";
+export type RouteName =
+  | NavigationRouteName
+  | LandingRouteName
+  | DetailRouteName;
 
 /**
  * @public
@@ -54,6 +58,7 @@ export type CmsCategoryPageResponse = CmsResponse & {
  */
 export type CmsStaticPageResponse = CmsResponse & {
   resourceType: "frontend.landing.page";
+  landingPage: LandingPage;
 };
 
 /**
@@ -224,7 +229,7 @@ export type CmsSection = {
   locked: false;
   _uniqueIdentifier: string;
   versionId: string | null;
-  translated: [any];
+  translated: any;
   createdAt: Date;
   updatedAt: Date;
   extensions: [any];

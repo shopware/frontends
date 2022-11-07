@@ -2,7 +2,8 @@
 
 ## Run tests
 
-Prepare a `.env` file with the `BASE_E2E_URL` of your local environment (please see the `.env.template` file)
+Prepare a `.env` file with the `BASE_E2E_URL` of your local environment (please see the `.env.template` file).
+Before running tests, create an account on storefront and put the login `USER_EMAIL` and password `PASSWORD` in the `.env` file. Login and password will be used in the login tests.
 
 And run the following command
 

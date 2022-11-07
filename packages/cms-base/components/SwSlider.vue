@@ -3,8 +3,6 @@ import type { SliderElementConfig } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import { CmsSlot } from "@shopware-pwa/types";
 import { VNodeArrayChildren } from "vue";
-import ChevronLeft from "./icons/ChevronLeft.vue";
-import ChevronRight from "./icons/ChevronRight.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -57,7 +55,6 @@ const emit = defineEmits<{
 }>();
 
 const imageSlider = ref<HTMLElement>();
-const imageSliderWidth = ref<number>(0);
 const imageSliderTrackStyle = ref<any>({});
 const activeSlideIndex = ref<number>(0);
 const speed = ref<number>(300);
@@ -65,6 +62,8 @@ const imageSliderTrack = ref<HTMLElement>();
 const autoPlayInterval = ref();
 const isReady = ref<boolean>();
 const isSliding = ref<boolean>();
+
+const { width: imageSliderWidth } = useElementSize(imageSlider);
 
 onMounted(() => {
   initSlider();
@@ -122,7 +121,6 @@ const navigationDotsValue = computed(
 function initSlider() {
   if (imageSlider.value) {
     setTimeout(() => {
-      imageSliderWidth.value = imageSlider.value?.clientWidth || 0;
       buildImageSliderTrackStyle(activeSlideIndex.value, false, undefined);
       isReady.value = true;
     }, 100);
@@ -168,9 +166,12 @@ function buildImageSliderTrackStyle(
     if (displayModeValue.value === "cover") {
       height = "100%";
     } else if (displayModeValue.value === "standard") {
-      height = `${
-        imageSliderTrack.value?.children[transformIndex + 1].clientHeight
-      }px`;
+      const childComponent =
+        imageSliderTrack.value?.children[transformIndex + 1];
+      // If image exist
+      height = childComponent?.children[0].children[0].clientHeight
+        ? `${childComponent.clientHeight}px`
+        : (height = `auto`);
     } else if (displayModeValue.value === "contain") {
       height = `${imageSliderTrack.value?.clientHeight}px`;
     }
@@ -273,7 +274,7 @@ defineExpose({
         }"
         @click="previous"
       >
-        <ChevronLeft class="text-3xl" />
+        <div class="w-15 h-15 i-carbon-chevron-left"></div>
       </button>
       <button
         aria-label="Chevron right"
@@ -284,7 +285,7 @@ defineExpose({
         }"
         @click="next"
       >
-        <ChevronRight class="text-3xl" />
+        <div class="w-15 h-15 i-carbon-chevron-right"></div>
       </button>
     </div>
     <div

@@ -1,3 +1,16 @@
+---
+head:
+  - - meta
+    - name: og:title
+      content: Building the content pages
+  - - meta
+    - name: og:description
+      content: "In this chapter you will learn how to create a content page and use CMS elements."
+  - - meta
+    - name: og:image
+      content: "https://frontends-og-image.vercel.app/Building%20the%20**Content%20Pages**.png?fontSize=120px"
+---
+
 # Create content pages
 
 In this chapter you will learn how to

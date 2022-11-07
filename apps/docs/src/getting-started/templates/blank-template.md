@@ -6,9 +6,7 @@ The blank template contains no UI or markup - it's just a blank Nuxt3 applicatio
 
 ## Setup & run
 
-TODO: Add correct Stackblitz link
-
-<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/edit/shopware-blank-template-dakr2x?file=app.vue&terminal=install,dev" sub="Open the Blank Template with our browser IDE in a new window" icon="https://blog.stackblitz.com/img/favicon.png?hash=3817f5a9d1"/>
+<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-blank" sub="Open the Blank Template with our browser IDE in a new window" icon="https://blog.stackblitz.com/img/favicon.png?hash=3817f5a9d1"/>
 
 Alternatively, set up the blank template manually by running the following commands in a new directory:
 

@@ -7,13 +7,10 @@ import { useShopwareContext } from "./useShopwareContext";
 import { getStoreNavigation } from "@shopware-pwa/api-client";
 
 /**
- * interface for {@link useNavigation} composable
  *
  * Provides state for navigation trees depending on navigation type.
- *
- * @beta
  */
-export interface IUseNavigation {
+export type UseNavigationReturn = {
   navigationElements: ComputedRef<StoreNavigationElement[] | null>;
 
   /**
@@ -22,10 +19,11 @@ export interface IUseNavigation {
   loadNavigationElements: (params: {
     depth: number;
   }) => Promise<StoreNavigationElement[]>;
-}
+};
 
 /**
- * Composable for navigation. Options - {@link IUseNavigation}
+ * Composable for navigation. Options - {@link UseNavigationReturn}
+ * Provides state for navigation trees depending on navigation type.
  *
  * @example
  * ```
@@ -34,25 +32,13 @@ export interface IUseNavigation {
  * // get footer navigation
  * useNavigation({ type: "footer-navigation" } )
  * ```
- *
- * @beta
  */
 export function useNavigation(params?: {
   type?: StoreNavigationType;
-}): IUseNavigation {
-  const COMPOSABLE_NAME = "useNavigation";
-  const contextName = COMPOSABLE_NAME;
-
+}): UseNavigationReturn {
   const type = params?.type || "main-navigation";
 
   const { apiInstance } = useShopwareContext();
-
-  // const { apiInstance } = getApplicationContext({ contextName });
-  // const { sharedRef } = useSharedState();
-
-  // const { getIncludesConfig, getAssociationsConfig } = useDefaults({
-  //   defaultsKey: contextName,
-  // });
 
   const sharedElements: Ref<StoreNavigationElement[]> = inject(
     `swNavigation-${type}`,
@@ -62,7 +48,7 @@ export function useNavigation(params?: {
 
   const navigationElements = computed(() => sharedElements.value);
 
-  const loadNavigationElements = async ({ depth }: { depth: number }) => {
+  async function loadNavigationElements({ depth }: { depth: number }) {
     try {
       const navigationResponse = await getStoreNavigation(
         {
@@ -84,7 +70,7 @@ export function useNavigation(params?: {
       console.error("[useNavigation][loadNavigationElements]", e);
       return [];
     }
-  };
+  }
 
   return {
     navigationElements,

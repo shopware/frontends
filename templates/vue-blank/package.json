@@ -8,10 +8,13 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@shopware-pwa/composables-next": "workspace:*",
-    "@shopware-pwa/nuxt3-module": "workspace:*",
-    "@shopware-pwa/api-client": "workspace:*",
-    "@vueuse/nuxt": "^9.1.1",
-    "nuxt": "^3.0.0-rc.8"
+    "@shopware-pwa/composables-next": "0.1.18",
+    "@shopware-pwa/nuxt3-module": "0.1.18",
+    "@shopware-pwa/api-client": "0.1.18",
+    "@vueuse/nuxt": "^9.3.0",
+    "nuxt": "^3.0.0-rc.11"
+  },
+  "engines": {
+    "node": "^16.x || ^18.x"
   }
 }

@@ -7,6 +7,6 @@ import { CustomField } from "../../common/CustomField";
 export type Unit = {
   shortCode: string | null;
   name: string | null;
-  translations: UnitTranslation[] | null;
+  translated: UnitTranslation | null;
   customFields: CustomField[];
 };

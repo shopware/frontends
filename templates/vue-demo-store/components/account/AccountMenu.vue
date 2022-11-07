@@ -11,7 +11,7 @@ async function invokeLogout() {
 }
 </script>
 <template>
-  <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+  <div class="flex items-center justify-end md:w-auto">
     <div class="my-account-area">
       <div v-show="!isLoggedIn">
         <button
@@ -64,13 +64,22 @@ async function invokeLogout() {
                 aria-labelledby="user-menu-button"
                 tabindex="-1"
               >
-                <!-- Active: "bg-gray-100", Not Active: "" -->
-                <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a> -->
                 <button
-                  id="user-menu-item-2"
-                  class="block px-4 py-2 text-sm text-gray-700 w-full text-left"
+                  data-testid="header-my-account-link"
+                  id="user-menu-item-1"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   role="menuitem"
                   tabindex="-1"
+                  @click="$router.push('/account')"
+                >
+                  My Account
+                </button>
+                <button
+                  data-testid="header-sing-out-link"
+                  id="user-menu-item-2"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                  role="menuitem"
+                  tabindex="-2"
                   @click="invokeLogout"
                 >
                   Sign out

@@ -1,49 +1,27 @@
-import { ref, Ref, computed, onMounted, unref, inject, provide } from "vue";
-import { Product } from "@shopware-pwa/types";
-import { IInterceptorCallbackFunction } from "./useUser";
-// import {
-//   INTERCEPTOR_KEYS,
-//   useIntercept,
-//   IInterceptorCallbackFunction,
-//   getApplicationContext,
-//   useSharedState,
-// } from "@shopware-pwa/composables";
+import {
+  ref,
+  Ref,
+  computed,
+  onMounted,
+  inject,
+  provide,
+  ComputedRef,
+} from "vue";
 
-// import { broadcastErrors } from "../../internalHelpers/errorHandler";
-/**
- * interface for {@link useWishlist} composable
- *
- * @beta
- */
-export interface IUseWishlist {
-  removeFromWishlist: (id: string) => void;
-  clearWishlist: () => void;
-  addToWishlist: () => void;
-  onAddToWishlist: (fn: (params: { product: Product }) => void) => void;
-  isInWishlist: Ref<boolean>;
-  items: Ref<string[]>;
-  count: Ref<number>;
-}
+export type UseWishlistReturn = {
+  addToWishlist: (id: string) => Promise<void>;
+  removeFromWishlist: (id: string) => Promise<void>;
+  clearWishlist: () => Promise<void>;
+  items: ComputedRef<string[]>;
+  count: ComputedRef<number>;
+};
 
 /**
- * Composable for wishlist management. Options - {@link IUseWishlist}
- *
- * @beta
+ * Composable for wishlist management. Options - {@link UseWishlistReturn}
  */
-export function useWishlist(params?: {
-  product?: Product | Ref<Product>;
-}): IUseWishlist {
-  const product = unref(params?.product);
-
-  // const { broadcast, intercept } = useIntercept();
-  // getApplicationContext({ contextName });
-  // const { sharedRef } = useSharedState();
+export function useWishlist(): UseWishlistReturn {
   const _wishlistItems: Ref<string[]> = inject("swWishlistItems", ref([]));
   provide("swWishlistItems", _wishlistItems);
-
-  const productId: Ref<string | undefined> = ref(product?.id);
-  const onAddToWishlist = (fn: IInterceptorCallbackFunction) => {};
-  // intercept(INTERCEPTOR_KEYS.ADD_TO_WISHLIST, fn);
 
   // update wishlist in localstorage
   const updateStorage = (): void => {
@@ -73,8 +51,7 @@ export function useWishlist(params?: {
   });
 
   // removes item from the list
-  const removeFromWishlist = (itemId: string): void => {
-    const id = productId.value || itemId;
+  async function removeFromWishlist(id: string) {
     if (!id) {
       return;
     }
@@ -83,37 +60,30 @@ export function useWishlist(params?: {
       _wishlistItems.value?.filter((itemId: string) => itemId != id) || [];
 
     updateStorage();
-  };
+  }
 
   // add product id to wishlist array and trigger to update localstorage
-  const addToWishlist = (): void => {
-    if (!productId.value) {
+  async function addToWishlist(id: string) {
+    if (!id) {
       return;
     }
     _wishlistItems.value = _wishlistItems.value || [];
 
-    if (!_wishlistItems.value.includes(productId.value)) {
-      _wishlistItems.value.push(productId.value);
+    if (!_wishlistItems.value.includes(id)) {
+      _wishlistItems.value.push(id);
 
       updateStorage();
       // broadcast(INTERCEPTOR_KEYS.ADD_TO_WISHLIST, {
       //   product,
       // });
     }
-  };
-
-  // return true or false if product id is in wishlist array
-  const isInWishlist = computed(() => {
-    return !!(
-      productId.value && _wishlistItems.value?.includes(productId.value)
-    );
-  });
+  }
 
   // remove all items from wishlist
-  const clearWishlist = () => {
+  async function clearWishlist() {
     _wishlistItems.value = [];
     updateStorage();
-  };
+  }
 
   const items = computed(() => _wishlistItems.value || []);
   const count = computed(() => items.value.length);
@@ -121,10 +91,8 @@ export function useWishlist(params?: {
   return {
     addToWishlist,
     removeFromWishlist,
-    isInWishlist,
     clearWishlist,
     items,
     count,
-    onAddToWishlist,
   };
 }

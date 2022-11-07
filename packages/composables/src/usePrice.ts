@@ -6,47 +6,37 @@ const currencyPosition = ref<number>(1);
 // @ToDo make sure why there is no decimal precision in api response
 const decimalPrecision = 2;
 
-export type InitOptions = {
-  currencySymbol: string;
-  currencyPosition: number;
+export type UsePriceReturn = {
+  init: (options: { currencySymbol: string; currencyPosition: number }) => void;
+  getFormattedPrice: (value: number | string) => string;
 };
 
-/**
- * interface for {@link usePrice} composable
- * @beta
- */
-export interface UsePrice {
-  init: (options: InitOptions) => void;
-  getFormattedPrice: (value: number | string) => string;
-}
-
-/**
- * Price - {@link UsePrice}
- * @beta
- */
-export function usePrice(): UsePrice {
+export function usePrice(): UsePriceReturn {
   /**
    * Set init data from backend response
    *
-   * @param options
+   * @param params
    */
-  const init = (options: InitOptions): void => {
-    setCurrencySymbol(options.currencySymbol);
-    setCurrencyPosition(options.currencyPosition);
-  };
+  function init(params: {
+    currencySymbol: string;
+    currencyPosition: number;
+  }): void {
+    _setCurrencySymbol(params.currencySymbol);
+    _setCurrencyPosition(params.currencyPosition);
+  }
 
-  const setCurrencySymbol = (symbol: string) => {
+  function _setCurrencySymbol(symbol: string) {
     currencySymbol.value = symbol;
-  };
+  }
 
-  const setCurrencyPosition = (position: number) => {
+  function _setCurrencyPosition(position: number) {
     currencyPosition.value = position;
-  };
+  }
 
   /**
    * Format price (2) -> 2.00 $
    */
-  const getFormattedPrice = (value: number | string): string => {
+  function getFormattedPrice(value: number | string): string {
     let formattedPrice = [
       (+value).toFixed(decimalPrecision),
       currencySymbol.value,
@@ -57,7 +47,7 @@ export function usePrice(): UsePrice {
     }
 
     return formattedPrice.join(" ");
-  };
+  }
 
   return {
     init,

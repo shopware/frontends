@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const isOpen = inject("isSidebarOpen");
 
-const { cartItems, totalPrice } = useCart();
+const { cartItems, totalPrice, isEmpty } = useCart();
 </script>
 
 <template>
@@ -60,29 +60,18 @@ const { cartItems, totalPrice } = useCart();
                     @click="isOpen = false"
                   >
                     <span class="sr-only">Close panel</span>
-                    <!-- Heroicon name: outline/x -->
-                    <svg
-                      class="h-6 w-6"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    <div class="w-6 h-6 i-carbon-close"></div>
                   </button>
                 </div>
               </div>
 
               <div class="mt-8">
                 <div class="flow-root">
-                  <ul role="list" class="-my-6 px-0 divide-y divide-gray-200">
+                  <ul
+                    v-if="!isEmpty"
+                    role="list"
+                    class="-my-6 px-0 divide-y divide-gray-200"
+                  >
                     <li
                       v-for="cartItem in cartItems"
                       :key="cartItem.id"
@@ -91,6 +80,9 @@ const { cartItems, totalPrice } = useCart();
                       <CheckoutCartItem :cart-item="cartItem" />
                     </li>
                   </ul>
+                  <div class="text-2xl text-center" v-else>
+                    Your shopping cart is empty
+                  </div>
                 </div>
               </div>
             </div>
@@ -108,9 +100,10 @@ const { cartItems, totalPrice } = useCart();
               <div class="mt-6">
                 <NuxtLink
                   class="flex items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
-                  to="/checkout"
+                  :class="{ 'bg-gray': isEmpty, 'hover:bg-gray': isEmpty }"
+                  :to="isEmpty ? '' : '/checkout'"
                   data-testid="cart-checkout-link"
-                  @click="isOpen = false"
+                  @click="isOpen = !isEmpty ? false : true"
                 >
                   Checkout
                 </NuxtLink>
@@ -118,6 +111,7 @@ const { cartItems, totalPrice } = useCart();
                 <RouterLink
                   class="flex items-center justify-center py-3 text-sm font-medium text-brand-dark"
                   to="/checkout/cart"
+                  data-testid="cart-checkout-shopping-cart"
                   @click="isOpen = false"
                 >
                   Go to shopping cart

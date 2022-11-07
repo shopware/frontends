@@ -7,7 +7,7 @@ import {
   ListingFilter,
 } from "@shopware-pwa/types";
 import { computed, ref } from "vue";
-import SwStarIcon from "../SwStarIcon.vue";
+
 const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
 }>();
@@ -59,42 +59,28 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
       >
         <span class="font-medium text-gray-900">{{ filter.label }}</span>
         <span class="ml-6 flex items-center">
-          <svg
-            :class="['h-5 w-5', { hidden: isFilterVisible }]"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          <svg
-            :class="['h-5 w-5', { hidden: !isFilterVisible }]"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 30 30"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
-              clip-rule="evenodd"
-            />
-          </svg>
+          <div
+            class="h-5 w-5"
+            :class="[
+              !isFilterVisible
+                ? 'i-carbon-chevron-down'
+                : 'i-carbon-chevron-up',
+            ]"
+          ></div>
         </span>
       </button>
     </h3>
     <div :class="[`absolute pt-6 z-1000`, { hidden: !isFilterVisible }]">
       <div class="space-y-6">
         <div class="flex">
-          <SwStarIcon
+          <div
             v-for="i in 5"
             :key="i"
-            :is-empty="i > displayedScore"
+            class="h-6 w-6 c-yellow-500"
+            :class="{
+              'i-carbon-star-filled': displayedScore >= i,
+              'i-carbon-star': displayedScore < i,
+            }"
             @mouseleave="isHoverActive = false"
             @click="onChangeRating()"
             @mouseover="hoverRating(i)"

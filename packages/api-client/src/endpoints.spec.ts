@@ -28,6 +28,8 @@ import {
   getContactFormEndpoint,
   getConfirmPasswordResetEndpoint,
   getProductReviewsEndpoint,
+  getLandingPageDetailsEndpoint,
+  getProductListingEndpoint,
 } from "../src/endpoints";
 
 const sampleProductId = "eea0f69ec02d44f7a4224272b3d99478";
@@ -228,10 +230,27 @@ describe("endpoints", () => {
       expect(result).toEqual("/store-api/newsletter/unsubscribe");
     });
   });
+
   describe("getConfirmPasswordResetEndpoint", () => {
     it("should return correct endpoint for reset password confirmation action", () => {
       const result = getConfirmPasswordResetEndpoint();
       expect(result).toBe("/store-api/account/recovery-password-confirm");
+    });
+  });
+
+  describe("getLandingPageDetailsEndpoint", () => {
+    it("should return correct endpoint for getting landing page", () => {
+      const landingPageId = "test";
+      const result = getLandingPageDetailsEndpoint(landingPageId);
+      expect(result).toBe(`/store-api/landing-page/${landingPageId}`);
+    });
+  });
+
+  describe("getProductListingEndpoint", () => {
+    it("should return product listing endpoint", () => {
+      const categoryId = "test";
+      const result = getProductListingEndpoint(categoryId);
+      expect(result).toBe(`/store-api/product-listing/${categoryId}`);
     });
   });
 });

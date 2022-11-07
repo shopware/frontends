@@ -4,9 +4,13 @@
 
 The demo store template is a reference implementation of an online store UI.
 
+:::info
+The **Demo Store Template** is not suitable for production stores. It is under constant development and does not adhere to any versioning. Please go to [Limitations](#limitations) for more information.
+:::
+
 ## Setup & run
 
-<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/edit/shopware-vue-template?file=app.vue&terminal=install,dev" sub="Open the Demo Store Template with our browser IDE in a new window" icon="https://blog.stackblitz.com/img/favicon.png?hash=3817f5a9d1"/>
+<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" sub="Open the Demo Store Template with our browser IDE in a new window" icon="https://blog.stackblitz.com/img/favicon.png?hash=3817f5a9d1"/>
 
 Alternatively, set up the blank template manually by running the following commands in a new directory:
 
@@ -74,3 +78,17 @@ export default defineNuxtConfig({
   }
 });
 ```
+
+## Limitations
+
+The **Demo Store Template** suggests how to build a store UI with Shopware Frontends. It does not make any assumptions about custom implementations and hence does not contain every feature of Shopware.
+
+Some important limitations are
+
+- Frontend settings are not synchronized from the backend - such as
+  - Available fields for checkout and registration
+  - Multiple domains
+  - Translations and snippets
+- No support for multiple currencies
+
+If you think a specific feature should be part of the demo store template, feel free to create an [issue](https://github.com/shopware/frontends/issues/new) or make a [contribution](https://github.com/shopware/frontends/pulls).

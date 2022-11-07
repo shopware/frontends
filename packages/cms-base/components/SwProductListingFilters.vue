@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { CmsPage } from "@shopware-pwa/types";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import {
   computed,
   ComputedRef,
-  inject,
   provide,
   reactive,
   ref,
@@ -22,8 +20,8 @@ defineProps<{
   listingType?: string;
 }>();
 
-const cmsPage = inject<ComputedRef<CmsPage>>("cms-page");
-const category = computed(() => cmsPage?.value?.category);
+const { category } = useCategory();
+
 const isSortMenuOpen = ref(false);
 const {
   getCurrentSortingOrder,
@@ -138,37 +136,14 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
                   aria-haspopup="true"
                 >
                   Sort
-                  <svg
-                    :class="[
-                      'flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500',
-                      { hidden: isSortMenuOpen },
-                    ]"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    :class="[
-                      'flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500',
-                      { hidden: !isSortMenuOpen },
-                    ]"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
+                  <div
+                    class="i-carbon-chevron-down h-5 w-5 ml-1"
+                    :class="{ hidden: isSortMenuOpen }"
+                  ></div>
+                  <div
+                    class="i-carbon-chevron-up h-5 w-5 ml-1"
+                    :class="{ hidden: !isSortMenuOpen }"
+                  ></div>
                 </button>
               </div>
               <div
@@ -204,8 +179,8 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
           </div>
         </div>
 
-        <div class="flex flex-wrap">
-          <p
+        <div class="flex flex-wrap" v-if="getInitialFilters.length">
+          <div
             v-for="filter in getInitialFilters"
             :key="`${filter?.id || filter?.code}`"
             class="px-4 py-6 mb-2"
@@ -216,18 +191,136 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
               :filter="filter"
               class="relative"
             />
-          </p>
+          </div>
           <div class="text-center pl-4 pr-4 mt-4">
             <button
               class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               @click="invokeCleanFilters"
               type="button"
             >
-              Reset filters
+              Reset filters<span
+                class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"
+              ></span>
             </button>
           </div>
         </div>
       </main>
     </div>
+    <template #placeholder>
+      <div class="bg-white">
+        <main class="mx-auto">
+          <div
+            class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
+          >
+            <div>
+              <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
+                {{ getTranslatedProperty(category, "name") }}
+              </h1>
+            </div>
+
+            <div class="text-sm font-medium text-gray-700 hover:text-gray-900">
+              Sort
+            </div>
+            <div class="i-carbon-chevron-down h-5 w-5 ml-1"></div>
+          </div>
+          <div class="flex flex-wrap" v-if="!getInitialFilters.length">
+            <div class="flex pl-2 flex-wrap">
+              <div class="py-3 mb-2 mr-4 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-25 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 ml-4 mb-2 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-25 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 mb-2 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 mb-2 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 mb-2 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+      <!-- SSR static placeholder -->
+      <!-- <div class="bg-white" role="status">
+        <main class="mx-auto">
+          <div
+            class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
+          >
+            <div>
+              <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
+                {{ getTranslatedProperty(category, "name") }}
+                ...
+              </h1>
+            </div>
+
+            <div class="flex items-center" ref="dropdownElement">
+              <div class="relative inline-block text-left">
+                <div>
+                  <button
+                    type="button"
+                    disabled
+                    class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+                  >
+                    Sort
+                    <div class="i-carbon-chevron-down h-5 w-5 ml-1"></div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex pl-2 flex-wrap">
+            <div class="py-3 mb-2 max-w-sm animate-pulse">
+              <div
+                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+              ></div>
+            </div>
+            <div class="py-3 max-w-sm animate-pulse">
+              <div
+                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-25 h-12 text-gray-400 hover:text-gray-500 rounded"
+              ></div>
+            </div>
+            <div class="py-3 ml-4 mb-2 max-w-sm animate-pulse">
+              <div
+                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-25 h-12 text-gray-400 hover:text-gray-500 rounded"
+              ></div>
+            </div>
+            <div class="py-3 mb-2 max-w-sm animate-pulse">
+              <div
+                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+              ></div>
+            </div>
+            <div class="py-3 mb-2 max-w-sm animate-pulse">
+              <div
+                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+              ></div>
+            </div>
+            <div class="py-3 mb-2 max-w-sm animate-pulse">
+              <div
+                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+              ></div>
+            </div>
+          </div>
+        </main>
+      </div> -->
+    </template>
   </ClientOnly>
 </template>

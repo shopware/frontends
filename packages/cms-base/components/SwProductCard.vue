@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductThumbnailUrl,
   getProductUrl,
-  getProductVariantsFromPrice,
   getTranslatedProperty,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
 import { Product, PropertyGroupOption } from "@shopware-pwa/types";
 import { Ref } from "vue";
-import SwStarIcon from "./SwStarIcon.vue";
-import SwHeartIcon from "./SwHeartIcon.vue";
-const heartIconType = "svg";
-const heartIconClass = "wishlist-heart-icon";
+import SwListingProductPrice from "./SwListingProductPrice.vue";
 
-const { pushSuccess, pushInfo } = useNotifications();
+const { pushSuccess } = useNotifications();
 
 const props = withDefaults(
   defineProps<{
@@ -30,29 +26,21 @@ const props = withDefaults(
     isProductListing: false,
   }
 );
+const { product } = toRefs(props);
 
-const { addToCart } = useAddToCart({
-  product: props.product,
-});
+const { addToCart } = useAddToCart(product);
 
-const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist({
-  product: props.product,
-});
+const { addToWishlist, removeFromWishlist, isInWishlist } =
+  useProductWishlist(product);
 
-const addToWishlistFn = (event: MouseEvent) => {
-  if (isInWishlist.value) {
-    removeFromWishlist(props.product.id);
-    fillHeartColor(event, "none");
-    pushInfo(
-      `${props.product?.translated?.name} has been removed from wishlist.`
-    );
-  } else {
+const toggleWishlistProduct = () => {
+  if (!isInWishlist.value) {
     addToWishlist();
-    fillHeartColor(event, "red");
-    pushSuccess(
+    return pushSuccess(
       `${props.product?.translated?.name} has been added to wishlist.`
     );
   }
+  removeFromWishlist();
 };
 
 const addToCartProxy = async () => {
@@ -60,28 +48,6 @@ const addToCartProxy = async () => {
   pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
 };
 
-const fillHeartColor = (event: MouseEvent, color: string) => {
-  const srcElement = event.srcElement as any;
-
-  if (isHeartIcon(srcElement)) {
-    srcElement.attributes.fill.value = color;
-  } else {
-    const parentElement = srcElement.parentElement;
-    if (isHeartIcon(parentElement)) {
-      parentElement.attributes.fill.value = color;
-    }
-  }
-};
-
-const isHeartIcon = (element: SVGElement | SVGPathElement) => {
-  return (
-    element &&
-    element.nodeName == heartIconType &&
-    element.classList.contains(heartIconClass)
-  );
-};
-
-const variantsFromPrice = getProductVariantsFromPrice(props.product);
 const fromPrice = getProductFromPrice(props.product);
 const ratingAverage: Ref<number> = computed(() =>
   props.product.ratingAverage ? Math.round(props.product.ratingAverage) : 0
@@ -113,10 +79,19 @@ const ratingAverage: Ref<number> = computed(() =>
     <button
       aria-label="Add to wishlist"
       type="button"
-      @click="addToWishlistFn"
+      @click="toggleWishlistProduct"
       class="absolute top-2 right-2"
     >
-      <SwHeartIcon :is-empty="!!isInWishlist" />
+      <client-only>
+        <div
+          v-if="isInWishlist"
+          class="h-7 w-7 i-carbon-favorite-filled c-red-500"
+        ></div>
+        <div v-else class="h-7 w-7 i-carbon-favorite"></div>
+        <template #placeholder>
+          <div class="h-7 w-7 i-carbon-favorite"></div>
+        </template>
+      </client-only>
     </button>
     <div class="mt-4 flex flex-col justify-between flex-1">
       <div>
@@ -144,10 +119,14 @@ const ratingAverage: Ref<number> = computed(() =>
       <div class="flex flex-col mt-3 justify-between">
         <SwListingProductPrice :product="product" class="ml-auto" />
         <div v-if="!isProductListing" class="sw-product-rating inline-flex">
-          <div v-for="value in ratingAverage"><SwStarIcon /></div>
-          <div v-for="value in 5 - ratingAverage">
-            <SwStarIcon :is-empty="true" />
-          </div>
+          <div
+            v-for="value in ratingAverage"
+            class="w-5 h-5 i-carbon-star-filled"
+          ></div>
+          <div
+            v-for="value in 5 - ratingAverage"
+            class="w-5 h-5 i-carbon-star"
+          ></div>
         </div>
       </div>
     </div>
@@ -159,7 +138,7 @@ const ratingAverage: Ref<number> = computed(() =>
         class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         data-testid="add-to-cart-button"
       >
-        Add to basket
+        Add to cart
       </button>
       <router-link v-else :to="getProductUrl(product)">
         <button

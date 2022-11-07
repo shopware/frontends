@@ -15,177 +15,118 @@ import {
   LineItem,
 } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
-// import {
-//   getApplicationContext,
-//   INTERCEPTOR_KEYS,
-//   useDefaults,
-//   useIntercept,
-//   useSharedState,
-// } from "@shopware-pwa/composables";
-// import { broadcastErrors } from "../../internalHelpers/errorHandler";
-/**
- * interface for {@link useCart} composable
- *
- * @beta
- */
-export interface IUseCart {
-  addProduct: ({
-    id,
-    quantity,
-  }: {
-    id: string;
-    quantity?: number;
-  }) => Promise<Cart>;
+
+export type UseCartReturn = {
+  addProduct: (params: { id: string; quantity?: number }) => Promise<Cart>;
   addPromotionCode: (promotionCode: string) => Promise<void>;
   appliedPromotionCodes: ComputedRef<LineItem[]>;
   cart: ComputedRef<Cart | undefined>;
   cartItems: ComputedRef<LineItem[]>;
-  changeProductQuantity: ({
-    id,
-    quantity,
-  }: {
-    id: string;
-    quantity: number;
-  }) => void;
+  changeProductQuantity: (params: { id: string; quantity: number }) => void;
   count: ComputedRef<number>;
-  error: ComputedRef<string>;
-  loading: ComputedRef<boolean>;
-  refreshCart: () => void;
-  removeItem: ({ id }: LineItem) => Promise<void>;
+  refreshCart: () => Promise<Cart>;
+  removeItem: (lineItem: LineItem) => Promise<void>;
   totalPrice: ComputedRef<number>;
   shippingTotal: ComputedRef<number>;
   subtotal: ComputedRef<number>;
   cartErrors: ComputedRef<EntityError[]>;
   getProductItemsSeoUrlsData(): Promise<Partial<Product>[]>;
-  broadcastUpcomingErrors(cart: Cart): void;
-}
+  isEmpty: ComputedRef<boolean>;
+};
 
-/**
- * Composable for cart management. Options - {@link IUseCart}
- *
- * @beta
- */
-export function useCart(): IUseCart {
-  const COMPOSABLE_NAME = "useCart";
-  const contextName = COMPOSABLE_NAME;
-
+export function useCart(): UseCartReturn {
   const { apiInstance } = useShopwareContext();
-  // const { broadcast } = useIntercept();
-  // const { getDefaults } = useDefaults({
-  //   defaultsKey: COMPOSABLE_NAME,
-  // });
 
-  const loading: Ref<boolean> = ref(false);
-  const error: Ref<any> = ref(null);
-
-  // const { sharedRef } = useSharedState();
-  // const _storeCart = ref<Cart>();
   const _storeCart: Ref<Cart | undefined> = inject("swCart", ref());
   provide("swCart", _storeCart);
 
-  async function refreshCart(): Promise<void> {
-    loading.value = true;
-    try {
-      const result = await getCart(apiInstance);
-      broadcastUpcomingErrors(result as Cart);
-      _storeCart.value = result as Cart;
-    } catch (e) {
-      const err = e as ClientApiError;
-      error.value = err.messages;
-    } finally {
-      loading.value = false;
-    }
+  async function refreshCart(): Promise<Cart> {
+    const result = await getCart(apiInstance);
+    _storeCart.value = result;
+    return result;
   }
 
-  async function addProduct({
-    id,
-    quantity,
-  }: {
+  async function addProduct(params: {
     id: string;
     quantity?: number;
   }): Promise<Cart> {
-    const addToCartResult = await addProductToCart(id, quantity, apiInstance);
-    broadcastUpcomingErrors(addToCartResult as Cart);
-    _storeCart.value = addToCartResult as Cart;
-    return addToCartResult as Cart;
+    const addToCartResult = await addProductToCart(
+      params.id,
+      params.quantity,
+      apiInstance
+    );
+    _storeCart.value = addToCartResult;
+    return addToCartResult;
   }
 
-  async function removeItem({ id }: LineItem) {
-    const result = await removeCartItem(id, apiInstance);
-    broadcastUpcomingErrors(result as Cart);
-    _storeCart.value = result as Cart;
+  async function removeItem(lineItem: LineItem) {
+    const result = await removeCartItem(lineItem.id, apiInstance);
+    _storeCart.value = result;
   }
 
-  async function changeProductQuantity({ id, quantity }: any) {
-    const result = await changeCartItemQuantity(id, quantity, apiInstance);
-    broadcastUpcomingErrors(result as Cart);
-    _storeCart.value = result as Cart;
+  async function changeProductQuantity(params: {
+    id: string;
+    quantity: number;
+  }) {
+    const result = await changeCartItemQuantity(
+      params.id,
+      params.quantity,
+      apiInstance
+    );
+    _storeCart.value = result;
   }
 
   async function submitPromotionCode(promotionCode: string) {
     if (promotionCode) {
       const result = await addPromotionCode(promotionCode, apiInstance);
-      broadcastUpcomingErrors(result as Cart);
-      _storeCart.value = result as Cart;
-      // broadcast(INTERCEPTOR_KEYS.ADD_PROMOTION_CODE, {
-      //   result,
-      //   promotionCode,
-      // });
+      _storeCart.value = result;
     }
   }
 
-  function broadcastUpcomingErrors(cartResult: Cart): void {
-    if (!cartResult) {
-      return;
-    }
+  // TODO: move to separate composable recognizing cart error changes
+  // function broadcastUpcomingErrors(cartResult: Cart): void {
+  //   if (!cartResult) {
+  //     return;
+  //   }
 
-    try {
-      const cartErrorsKeys = Object.keys(_storeCart.value?.errors || {});
-      const cartResultErrorKeys = Object.keys(cartResult.errors || {});
-      const upcomingErrorsKeys = cartResultErrorKeys.filter(
-        (resultErrorKey) => !cartErrorsKeys.includes(resultErrorKey)
-      );
-      const entityErrors: EntityError[] = Object.values(
-        cartResult.errors || {}
-      ).filter(
-        // don't ignore ERROR level of incoming errors or if they are new
-        (entityError) =>
-          entityError.level === 20 ||
-          upcomingErrorsKeys.includes(entityError.key)
-      );
+  //   try {
+  //     const cartErrorsKeys = Object.keys(_storeCart.value?.errors || {});
+  //     const cartResultErrorKeys = Object.keys(cartResult.errors || {});
+  //     const upcomingErrorsKeys = cartResultErrorKeys.filter(
+  //       (resultErrorKey) => !cartErrorsKeys.includes(resultErrorKey)
+  //     );
+  //     const entityErrors: EntityError[] = Object.values(
+  //       cartResult.errors || {}
+  //     ).filter(
+  //       // don't ignore ERROR level of incoming errors or if they are new
+  //       (entityError) =>
+  //         entityError.level === 20 ||
+  //         upcomingErrorsKeys.includes(entityError.key)
+  //     );
 
-      // broadcastErrors(entityErrors, `[${contextName}][cartError]`, broadcast);
-    } catch (error) {
-      console.error("[useCart][broadcastUpcomingErrors]", error);
-    }
-  }
+  //     // broadcastErrors(entityErrors, `[${contextName}][cartError]`, broadcast);
+  //   } catch (error) {
+  //     console.error("[useCart][broadcastUpcomingErrors]", error);
+  //   }
+  // }
 
   async function getProductItemsSeoUrlsData(): Promise<Partial<Product>[]> {
     if (!cartItems.value.length) {
       return [];
     }
 
-    try {
-      const result = await getProducts(
-        {
-          ids: cartItems.value
-            .map(({ referencedId }) => referencedId)
-            .filter(String) as string[],
-          // includes: (getDefaults() as any).getProductItemsSeoUrlsData.includes,
-          // associations: (getDefaults() as any).getProductItemsSeoUrlsData
-          //   .associations,
-        },
-        apiInstance
-      );
-      return result?.elements || [];
-    } catch (error) {
-      console.error(
-        "[useCart][getProductItemsSeoUrlsData]",
-        (error as ClientApiError).messages
-      );
-    }
-
-    return [];
+    const result = await getProducts(
+      {
+        ids: cartItems.value
+          .map(({ referencedId }) => referencedId)
+          .filter(String) as string[],
+        // includes: (getDefaults() as any).getProductItemsSeoUrlsData.includes,
+        // associations: (getDefaults() as any).getProductItemsSeoUrlsData
+        //   .associations,
+      },
+      apiInstance
+    );
+    return result?.elements || [];
   }
 
   const appliedPromotionCodes = computed(() => {
@@ -209,6 +150,8 @@ export function useCart(): IUseCart {
       0
     );
   });
+
+  const isEmpty = computed(() => count.value <= 0);
 
   const totalPrice = computed(() => {
     const cartPrice =
@@ -239,8 +182,6 @@ export function useCart(): IUseCart {
     cartItems,
     changeProductQuantity,
     count,
-    error: computed(() => error.value),
-    loading: computed(() => loading.value),
     refreshCart,
     removeItem,
     totalPrice,
@@ -248,6 +189,6 @@ export function useCart(): IUseCart {
     subtotal,
     cartErrors,
     getProductItemsSeoUrlsData,
-    broadcastUpcomingErrors,
+    isEmpty,
   };
 }

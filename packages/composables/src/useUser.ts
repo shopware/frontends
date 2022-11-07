@@ -22,37 +22,11 @@ import {
   ShopwareSearchParams,
 } from "@shopware-pwa/types";
 import { useShopwareContext, useCart, useInternationalization } from ".";
-// import {
-//   IInterceptorCallbackFunction,
-//   INTERCEPTOR_KEYS,
-//   useIntercept,
-//   useSharedState,
-//   useSessionContext,
-//   useCart,
-//   getApplicationContext,
-//   useDefaults,
-// } from "@shopware-pwa/composables";
 
-/**
- * interface for {@link useUser} composable
- *
- * @beta
- */
-export interface IUseUser {
-  login: ({
-    username,
-    password,
-  }: {
-    username?: string;
-    password?: string;
-  }) => Promise<boolean>;
-  register: ({}: CustomerRegistrationParams) => Promise<boolean>;
+export type UseUserReturn = {
+  login: (params: { username: string; password: string }) => Promise<void>;
+  register: (params: CustomerRegistrationParams) => Promise<Customer>;
   user: ComputedRef<Partial<Customer> | undefined>;
-  loading: ComputedRef<boolean>;
-  error: ComputedRef<any>;
-  errors: UnwrapRef<{
-    [errorAlias: string]: ShopwareError[];
-  }>;
   isLoggedIn: ComputedRef<boolean>;
   isCustomerSession: ComputedRef<boolean>;
   isGuestSession: ComputedRef<boolean>;
@@ -62,59 +36,25 @@ export interface IUseUser {
   logout: () => Promise<void>;
   loadCountry: (countryId: string) => Promise<void>;
   loadSalutation: (salutationId: string) => Promise<void>;
-  updatePersonalInfo: (
-    personals: CustomerUpdateProfileParam
-  ) => Promise<boolean>;
-  updateEmail: (updateEmailData: CustomerUpdateEmailParam) => Promise<boolean>;
+  updatePersonalInfo: (personals: CustomerUpdateProfileParam) => Promise<void>;
+  updateEmail: (updateEmailData: CustomerUpdateEmailParam) => Promise<void>;
   setDefaultPaymentMethod: (paymentMethodId: string) => Promise<void>;
-  /**
-   * React on user logout
-   */
-  onLogout: (fn: () => void) => void;
-  onUserLogin: (fn: (params: { customer: Customer }) => void) => void;
-  onUserRegister: (fn: () => void) => void;
   setUser: (user: Partial<Customer>) => void;
-}
-
-export interface IInterceptorCallbackFunction {
-  (payload: any): void;
-}
+};
 
 const storeUser = ref<Partial<Customer>>();
 
 /**
- * Composable for user management. Options - {@link IUseUser}
- *
- * @beta
+ * Composable for user management. Options - {@link UseUserReturn}
  */
-export function useUser(): IUseUser {
-  const COMPOSABLE_NAME = "useUser";
-  const contextName = COMPOSABLE_NAME;
-
+export function useUser(): UseUserReturn {
   const { apiInstance } = useShopwareContext();
   const { getStorefrontUrl } = useInternationalization();
-  // const { broadcast, intercept } = useIntercept();
-  // const { refreshSessionContext } = useSessionContext();
   const { refreshCart } = useCart();
-  // const { getDefaults } = useDefaults({ defaultsKey: contextName });
-
-  // const { sharedRef } = useSharedState();
 
   const setUser = (user: Partial<Customer>) => {
     storeUser.value = user;
   };
-  const loading: Ref<boolean> = ref(false);
-  const error: Ref<any> = ref(null);
-  const errors: UnwrapRef<{
-    [errorAlias: string]: ShopwareError[];
-  }> = reactive({
-    login: [],
-    register: [],
-    resetPassword: [],
-    updatePassword: [],
-    updateEmail: [],
-    setDefaultPaymentMethod: [],
-  });
 
   const country: Ref<Country | null> = ref(null);
   const salutation: Ref<Salutation | null> = ref(null);
@@ -123,85 +63,28 @@ export function useUser(): IUseUser {
   async function login({
     username,
     password,
-  }: { username?: string; password?: string } = {}): Promise<boolean> {
-    loading.value = true;
-    error.value = null;
-    errors.login = [] as any;
-    try {
-      await apiLogin({ username, password }, apiInstance);
-      await refreshUser();
-      // broadcast(INTERCEPTOR_KEYS.USER_LOGIN, {
-      //   user: user.value,
-      // });
-      return true;
-    } catch (e) {
-      const err = e as ClientApiError;
-      errors.login = err.messages;
-      // broadcast(INTERCEPTOR_KEYS.ERROR, {
-      //   methodName: `[${contextName}][login]`,
-      //   inputParams: {},
-      //   error: err,
-      // });
-      return false;
-    } finally {
-      loading.value = false;
-      await refreshUser();
-      refreshCart();
-    }
+  }: { username?: string; password?: string } = {}): Promise<void> {
+    await apiLogin({ username, password }, apiInstance);
+    await refreshUser();
+    refreshCart();
   }
 
   async function register(
     params: CustomerRegistrationParams
-  ): Promise<boolean> {
-    loading.value = true;
-    errors.register = [];
-    try {
-      const customer = await apiRegister(
-        { ...params, storefrontUrl: getStorefrontUrl() } as any,
-        apiInstance
-      );
-      // broadcast(INTERCEPTOR_KEYS.USER_REGISTER, { customer });
-      storeUser.value = (customer as Customer) || {};
-      // refreshSessionContext();
-      return true;
-    } catch (e) {
-      const err = e as ClientApiError;
-      // temporary workaround - get rid of such hacks in the future
-      // TODO: https://github.com/vuestorefront/shopware-pwa/issues/1498
-      errors.register = err.messages;
-      // broadcast(INTERCEPTOR_KEYS.ERROR, {
-      //   methodName: `[${contextName}][register]`,
-      //   inputParams: {},
-      //   error: err,
-      // });
-      return false;
-    } finally {
-      loading.value = false;
-    }
+  ): Promise<Customer> {
+    const customer = await apiRegister(
+      { ...params, storefrontUrl: getStorefrontUrl() } as any,
+      apiInstance
+    );
+    storeUser.value = customer;
+    return customer;
   }
 
   async function logout(): Promise<void> {
-    try {
-      await apiLogout(apiInstance);
-      // broadcast(INTERCEPTOR_KEYS.USER_LOGOUT);
-    } catch (e) {
-      const err = e as ClientApiError;
-      error.value = err.messages;
-      // broadcast(INTERCEPTOR_KEYS.ERROR, {
-      //   methodName: `[${contextName}][logout]`,
-      //   inputParams: {},
-      //   error: err,
-      // });
-    } finally {
-      await refreshUser();
-      refreshCart();
-    }
+    await apiLogout(apiInstance);
+    await refreshUser();
+    refreshCart();
   }
-  const onLogout = (fn: IInterceptorCallbackFunction) => {}; // intercept(INTERCEPTOR_KEYS.USER_LOGOUT, fn);
-
-  const onUserLogin = (fn: IInterceptorCallbackFunction) => {}; // intercept(INTERCEPTOR_KEYS.USER_LOGIN, fn);
-
-  const onUserRegister = (fn: IInterceptorCallbackFunction) => {}; // intercept(INTERCEPTOR_KEYS.USER_REGISTER, fn);
 
   async function refreshUser(params: ShopwareSearchParams = {}): Promise<void> {
     try {
@@ -221,58 +104,29 @@ export function useUser(): IUseUser {
   }
 
   async function loadCountry(userId: string): Promise<void> {
-    try {
-      country.value = await getUserCountry(userId, apiInstance);
-    } catch (e) {
-      const err = e as ClientApiError;
-      error.value = err.messages;
-    }
+    country.value = await getUserCountry(userId, apiInstance);
   }
 
   async function loadSalutation(salutationId: string): Promise<void> {
-    try {
-      salutation.value = await getUserSalutation(salutationId, apiInstance);
-    } catch (e) {
-      const err = e as ClientApiError;
-      error.value = err.messages;
-    }
+    salutation.value = await getUserSalutation(salutationId, apiInstance);
   }
 
   async function updatePersonalInfo(
     personals: CustomerUpdateProfileParam
-  ): Promise<boolean> {
-    try {
-      await updateProfile(personals, apiInstance);
-    } catch (e) {
-      error.value = e;
-      return false;
-    }
-    return true;
+  ): Promise<void> {
+    await updateProfile(personals, apiInstance);
   }
 
   async function updateEmail(
     updateEmailData: CustomerUpdateEmailParam
-  ): Promise<boolean> {
-    errors.updateEmail = [];
-    try {
-      await apiUpdateEmail(updateEmailData, apiInstance);
-    } catch (e) {
-      const err = e as ClientApiError;
-      errors.updateEmail = err.messages;
-      return false;
-    }
-    return true;
+  ): Promise<void> {
+    await apiUpdateEmail(updateEmailData, apiInstance);
   }
 
   async function setDefaultPaymentMethod(
     paymentMethodId: string
   ): Promise<void> {
-    try {
-      await setDefaultCustomerPaymentMethod(paymentMethodId);
-    } catch (e) {
-      const err = e as ClientApiError;
-      errors.setDefaultPaymentMethod = err.messages;
-    }
+    await setDefaultCustomerPaymentMethod(paymentMethodId);
   }
 
   const isLoggedIn = computed(() => !!user.value?.id && !!user.value.active);
@@ -285,8 +139,6 @@ export function useUser(): IUseUser {
     login,
     register,
     user,
-    error: computed(() => error.value),
-    loading: computed(() => loading.value),
     isLoggedIn,
     isCustomerSession,
     isGuestSession,
@@ -299,10 +151,6 @@ export function useUser(): IUseUser {
     salutation,
     loadCountry,
     country,
-    errors,
-    onLogout,
-    onUserLogin,
-    onUserRegister,
     setUser,
   };
 }

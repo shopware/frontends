@@ -1,33 +1,47 @@
+---
+head:
+  - - meta
+    - name: og:title
+      content: Why Shopware Frontends
+  - - meta
+    - name: og:description
+      content: "Shopware Frontends is a framework for building custom, cloud-native Shopware Storefronts."
+---
+
 # Why Shopware Frontends
 
 Shopware **Frontends** is a framework for building custom, cloud-native Shopware Storefronts.
 
-Instead of attempting to be a turn-key, hyper-configurable storefront, **Frontends** combines Shopware’s headless approach with a thoughtful set of tools and and best practices from modern frontend development to get the most out of Shopware and its APIs.
+We observe, that a theme-based approach to customize a Shopware storefront can be limiting. With more customizations, it becomes increasingly hard to maintain and keep in sync with the growing matrix of dependencies like the Shopware Core, the theme, plugins and custom extensions.
 
-A storefront is only one part of Shopware **Frontends**. There are underlying components equipped for framework-agnostic usage (e.g. React, Svelte or Vue.js) or even broader usage, such as mobile applications or IoT cases which are solely based on our API.
+In those cases, a headless approach can be less complex and more agile and scalable. It turns the dependency hierarchy inside out, by decoupling the frontend from the backend. Shopware Frontends implements that approach with an open architecture which favors flexibilty and scalability over feature-completeness and configurability.
 
 ➡ [Also see its limitations](#limitations)
 
-## Shopware native
+## Key Aspects
+
+Below are some key aspects explanining why Shopware Frontends could be a good fit for your project.
+
+### Shopware native
 
 Shopware **Frontends** is built for Shopware 6.
 
 No compromises or generic implementations — it works just like a developer would expect it to.
 Core concepts like [content management](./getting-started/content-pages.md), [cart](./getting-started/cart.md), or [payment](./getting-started/checkout.md) are deeply integrated and fully functional.
 
-## Cloud first
+### Cloud first
 
 Shopware **Frontends** is designed to work only with HTTP APIs available in [Shopware Cloud](./index.md#data-sources).
 No themes, plugins or server access required.
 Even the [developer IDE](./getting-started/templates/demo-store-template.md) can be started in the cloud.
 
-## Stable
+### Stable
 
 Shopware **Frontends** [doesn’t rely on Shopware’s internal APIs](./index.md#how-it-works) (such as twig blocks, DAL or events),
 hence not being subject to breaking changes in those APIs — as opposed to theme-based storefronts.
 Especially for big frontend projects this drastically reduces the complexity of platform updates.
 
-## Efficient
+### Efficient
 
 There is no lock-in on technologies or frontend tooling. Shopware **Frontends** comes prepared with a smart default of tooling.
 Vue3, Vite, Nuxt3 and unocss/Tailwind.css — each by themselves coming with a rich ecosystem of tooling, extensions
@@ -35,7 +49,7 @@ and integrations can be [replaced and extended](./getting-started/templates.md) 
 
 This tech-stack is the definition of superior developer experience, quick learning and rapid prototyping.
 
-## Flexible
+### Flexible
 
 No theming system means no inheritance magic, drastically reduced compatibility issues, update efforts, and restrictions
 to what your site can look like. Build your site in a lego-block-manner by using [prepared templates](./examples/index.md) or just get creative using all perks of [utility-driven CSS](./framework/styling.md).

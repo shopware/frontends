@@ -6,7 +6,7 @@ export default {
 
 <template>
   <div class="recover-wrapper">
-    <SwRecoverPassword>
+    <AccountRecoverPassword>
       <template #action>
         <div class="text-center space-y-2">
           <p class="py-2 px-4 text-lg text-brand-primary">
@@ -26,6 +26,6 @@ export default {
           </nuxt-link>
         </div>
       </template>
-    </SwRecoverPassword>
+    </AccountRecoverPassword>
   </div>
 </template>

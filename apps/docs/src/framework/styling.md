@@ -1,6 +1,19 @@
+---
+head:
+  - - meta
+    - name: og:title
+      content: Styling
+  - - meta
+    - name: og:description
+      content: "Shopware Frontends Demo Store Template applies a utility-first styling approach based on unocss. You can either follow this approach or use custom styling."
+  - - meta
+    - name: og:image
+      content: "https://frontends-og-image.vercel.app/Styling.png"
+---
+
 # Styling
 
-Shopware Frontends [Demo Store Template](./../getting-started/templates.md) applies a utility-first styling approach based on [unocss](https://github.com/unocss/unocss). You can either follow this approach or use custom styling.
+Shopware Frontends [Demo Store Template](./../getting-started/templates.md) applies a utility-first styling approach based on [unocss](https://github.com/unocss/unocss). You can either follow this approach or use [custom styling](#use-a-custom-css-framework).
 
 ## Utility CSS
 
@@ -99,3 +112,49 @@ Similar to viewport breakpoints, you can also use state variants with prefixes:
         type="text"
         placeholder="Hover me 🙂" />
 </div>
+
+## Use a custom CSS Framework
+
+If you want to use a different CSS framework or fully custom styling, it's recommended to use the [Blank Template](./../getting-started/templates/blank-template.md) as a starting point. It has no pre-installed CSS framework and you can install you own.
+
+### Remove unocss from the Demo Store Template
+
+However, it's also possible to remove unocss from the [Demo Store Template](./../getting-started/templates/demo-store-template.md). This might be applicable when you want to make use of the component structure and logic that's already provided by the template.
+
+Remove the `unocss` dependency from the `package.json` file
+
+```diff
+/* package.json */
+
+-    "@unocss/nuxt": "^0.45.13",
+```
+
+Remove the unocss imports, build modules and configuration from the `nuxt.config.js` file
+
+```diff
+/* nuxt.config.js */
+
+ import { defineNuxtConfig } from "nuxt";
+-import transformerDirective from "@unocss/transformer-directives";
+-import presetIcons from "@unocss/preset-icons";
+
+ export default defineNuxtConfig({
+   },
+   buildModules: [
+     "@vueuse/nuxt",
+-    "@unocss/nuxt",
+     "@shopware-pwa/nuxt3-module",
+     "@shopware-pwa/cms-base",
+   ],
+   vueuse: {
+     ssrHandlers: true,
+   },
+-  unocss: {
+-    uno: true, // enabled `@unocss/preset-uno`
+-    icons: true, // enabled `@unocss/preset-icons`
+-    attributify: true, // enabled `@unocss/preset-attributify`,
+-    ...
+-  },
+```
+
+Eventually, run `pnpm install` to remove the unocss dependency from your installation.

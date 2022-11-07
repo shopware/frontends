@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/api-client",
-  "version": "0.1.12",
+  "version": "0.1.18",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -15,13 +15,14 @@
     "build:types": "npx -p typescript tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
-    "test": "vitest run"
+    "test": "vitest run --segfault-retry=3"
   },
   "devDependencies": {
-    "@vitest/coverage-c8": "^0.22.1",
+    "@faker-js/faker": "^7.6.0",
+    "@vitest/coverage-c8": "^0.23.4",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
-    "vitest": "^0.22.1"
+    "vitest": "^0.23.4"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",

@@ -22,7 +22,7 @@ const {
   isPromotion,
   itemStock,
   changeItemQuantity,
-} = useCartItem({ cartItem: props.cartItem });
+} = useCartItem(props.cartItem);
 
 const quantity = ref(itemQuantity.value);
 
@@ -48,18 +48,21 @@ const removeCartItem = async () => {
 <template>
   <div
     v-if="!isPromotion"
-    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+    class="mr-4 h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
   >
     <img
       :src="getMainImageUrl(cartItem)"
       alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
       class="h-full w-full object-cover object-center"
+      data-testid="cart-product-image"
     />
   </div>
 
-  <div class="ml-4 flex flex-1 flex-col">
+  <div class="flex flex-1 flex-col">
     <div>
-      <div class="flex justify-between text-base font-medium text-gray-900">
+      <div
+        class="flex flex-col lg:flex-row justify-between text-base font-medium text-gray-900"
+      >
         <h3 class="text-base" data-testid="cart-product-name">
           {{ cartItem.label }}
         </h3>
@@ -73,7 +76,7 @@ const removeCartItem = async () => {
       <p
         v-if="itemOptions"
         class="mt-1 text-sm text-gray-500"
-        data-testis="cart-product-options"
+        data-testid="cart-product-options"
       >
         <span
           v-for="option in itemOptions"
@@ -90,14 +93,16 @@ const removeCartItem = async () => {
     >
       <select
         v-if="itemStock && itemStock > 0"
+        data-testid="cart-product-qty-select"
         v-model="quantity"
         name="quantity"
-        class="mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       >
         <option
           v-for="entry in itemStock > maxQty ? maxQty : itemStock"
           :key="entry"
           :value="entry"
+          data-testid="cart-product-qty-select-option"
         >
           {{ entry }}
         </option>
@@ -105,7 +110,8 @@ const removeCartItem = async () => {
       <!-- Stock is lower than 1 -->
       <div v-else>
         <div
-          class="mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          data-testid="cart-product-qty"
+          class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white opacity-50 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         >
           {{ quantity }}
         </div>

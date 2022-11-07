@@ -56,10 +56,16 @@ export type Category = Entity & {
     pathInfo: string;
     seoPathInfo: string;
   }[];
-
+  metaTitle: string | null;
+  metaDescription: string | null;
+  keywords: string | null;
   translated: {
+    name: string;
     breadcrumb: string[];
     description: string;
     externalLink: string;
+    metaTitle: string | null;
+    metaDescription: string | null;
+    keywords: string | null;
   };
 };

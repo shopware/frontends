@@ -8,30 +8,29 @@ import {
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 
-/**
- * interface for {@link useCustomerPassword} composable
- *
- * @beta
- */
-export type UseCustomerPassword = {
+export type UseCustomerPasswordReturn = {
   errors: UnwrapRef<{
     resetPassword: ShopwareError[];
     updatePassword: ShopwareError[];
   }>;
+  /**
+   * Change customer's current password
+   */
   updatePassword: (
     updatePasswordData: CustomerUpdatePasswordParam
   ) => Promise<boolean>;
+  /**
+   * Reset customer's password
+   */
   resetPassword: (
     resetPasswordData: CustomerResetPasswordParam
   ) => Promise<boolean>;
 };
 
 /**
- * Composable for customer password management. Options - {@link UseCustomerPassword}
- *
- * @beta
+ * Composable for customer password management. Options - {@link UseCustomerPasswordReturn}
  */
-export function useCustomerPassword(): UseCustomerPassword {
+export function useCustomerPassword(): UseCustomerPasswordReturn {
   const { apiInstance } = useShopwareContext();
 
   const errors: UnwrapRef<{
@@ -42,12 +41,9 @@ export function useCustomerPassword(): UseCustomerPassword {
     updatePassword: [],
   });
 
-  /**
-   * Change customer's current password
-   */
-  const updatePassword = async (
+  async function updatePassword(
     updatePasswordData: CustomerUpdatePasswordParam
-  ): Promise<boolean> => {
+  ) {
     try {
       errors.updatePassword = [];
       await apiUpdatePassword(updatePasswordData, apiInstance);
@@ -56,14 +52,9 @@ export function useCustomerPassword(): UseCustomerPassword {
       return false;
     }
     return true;
-  };
+  }
 
-  /**
-   * Reset customer's password
-   */
-  const resetPassword = async (
-    resetPasswordData: CustomerResetPasswordParam
-  ): Promise<boolean> => {
+  async function resetPassword(resetPasswordData: CustomerResetPasswordParam) {
     try {
       await apiResetPassword(resetPasswordData, apiInstance);
     } catch (e) {
@@ -71,7 +62,7 @@ export function useCustomerPassword(): UseCustomerPassword {
       return false;
     }
     return true;
-  };
+  }
 
   return {
     updatePassword,

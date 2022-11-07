@@ -10,33 +10,16 @@ import {
 import { getAvailableSalutations } from "@shopware-pwa/api-client";
 import { ClientApiError, Salutation } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
-// import {
-//   useSharedState,
-//   getApplicationContext,
-// } from "@shopware-pwa/composables";
 
-/**
- * @beta
- */
-export interface IUseSalutations {
+export type UseSalutationsReturn = {
   mountedCallback: () => Promise<void>;
   getSalutations: ComputedRef<Salutation[]>;
   fetchSalutations: () => Promise<void>;
-  error: Ref<any>;
-}
+};
 
-/**
- * @beta
- */
-export function useSalutations(): IUseSalutations {
-  const COMPOSABLE_NAME = "useSalutations";
-  const contextName = COMPOSABLE_NAME;
-
+export function useSalutations(): UseSalutationsReturn {
   const { apiInstance } = useShopwareContext();
-  // const { sharedRef } = useSharedState();
-  // const _salutations: Ref<Salutation[] | null> = sharedRef(
-  //   `sw-${contextName}-salutations`
-  // );
+
   const _salutations = inject("swSalutations", ref());
   provide("swSalutations", _salutations);
 
@@ -69,6 +52,5 @@ export function useSalutations(): IUseSalutations {
     mountedCallback,
     fetchSalutations,
     getSalutations,
-    error,
   };
 }

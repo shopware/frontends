@@ -1,20 +1,11 @@
-import { ref, Ref, computed, unref, ComputedRef } from "vue";
+import { ref, Ref, computed, unref, ComputedRef, inject } from "vue";
 import { Product, PropertyGroup } from "@shopware-pwa/types";
 import { ProductResponse } from "./types";
-// import {
-//   useCms,
-//   getApplicationContext,
-//   useVueContext,
-// } from "@shopware-pwa/composables";
-import { useCms, useShopwareContext } from ".";
+import { useProduct, useShopwareContext } from ".";
 import { invokePost, getProductEndpoint } from "@shopware-pwa/api-client";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
-/**
- * interface for {@link useProductConfigurator} composable
- * @beta
- */
-export interface IUseProductConfigurator {
+export type UseProductConfiguratorReturn = {
   /**
    * Handler for action when the selected option is changed
    */
@@ -41,35 +32,28 @@ export interface IUseProductConfigurator {
    * All assigned properties which the variant can be made of
    */
   getOptionGroups: ComputedRef<PropertyGroup[]>;
-}
+};
 
 /**
- * Product options - {@link IUseProductConfigurator}
- * @beta
+ * Product options - {@link UseProductConfiguratorReturn}
  */
-export function useProductConfigurator(params: {
-  product: Ref<Product> | Product;
-}): IUseProductConfigurator {
-  const COMPOSABLE_NAME = "useProductConfigurator";
-  const contextName = COMPOSABLE_NAME;
-
-  const product = unref(params.product);
-
+export function useProductConfigurator(): UseProductConfiguratorReturn {
   const { apiInstance } = useShopwareContext();
-  // const { apiInstance } = getApplicationContext({ contextName });
-  // const { isVueComponent } = useVueContext();
 
-  const { page } = useCms();
+  const { configurator, product } = useProduct();
+  if (!product.value) {
+    // TODO link docs with composables context usage
+    throw new Error(
+      "Product configurator cannot be used without the product context."
+    );
+  }
 
   const selected = ref({} as any);
-  const isLoadingOptions = ref(!!product.options?.length);
-  const parentProductId = computed(() => product.parentId);
-  const getOptionGroups = computed<PropertyGroup[]>(
-    () =>
-      (page.value as unknown as ProductResponse)?.configurator ||
-      // product.configuratorSettings || // TODO - check if it's needed
-      []
-  );
+  const isLoadingOptions = ref(!!product.value.options?.length);
+  const parentProductId = computed(() => product.value?.parentId);
+  const getOptionGroups = computed<PropertyGroup[]>(() => {
+    return configurator.value || [];
+  });
 
   const findGroupCodeForOption = (optionId: string) => {
     const group = getOptionGroups.value.find((optionGroup) => {
@@ -83,7 +67,7 @@ export function useProductConfigurator(params: {
   };
 
   // create a group -> optionId map
-  product.optionIds?.forEach((optionId) => {
+  product.value.optionIds?.forEach((optionId) => {
     const optionGroupCode = findGroupCodeForOption(optionId);
     if (optionGroupCode) {
       selected.value[optionGroupCode] = optionId;

@@ -21,11 +21,11 @@
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "simple-git-hooks": "^2.8.0",
-    "turbo": "^1.4.3",
-    "vercel": "^28.2.0"
+    "turbo": "^1.5.5",
+    "vercel": "^28.4.7"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": "^16.x || ^18.x"
   },
   "lint-staged": {
     "*.{ts,tsx,md,mdx,js,jsx,vue}": [

@@ -6,7 +6,7 @@ export default {
 <template>
   <div>
     <SharedModal />
-    <LayoutHeader />
+    <LayoutCheckoutHeader />
     <LayoutNotifications />
     <div class="max-w-screen-xl mx-auto">
       <slot />

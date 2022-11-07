@@ -1,29 +1,38 @@
-# Nuxt 3 Minimal Starter
+# Demo template (Nuxt)
 
-We recommend to look at the [documentation](https://v3.nuxtjs.org).
+![Shopware Frontends](.assets/shopware-frontends-logo.png)
 
-## Setup
+This repository shows an example of demo application built with Shopware Frontends Framework on Nuxt 3.
 
-Make sure to install the dependencies
+## What's inside
 
-```bash
-yarn install
+- Nuxt 3 application
+- Required libraries installed (api-client, CMS components, composables, Nuxt 3 module)
+- Demo Shopware 6 instnace configured as the API
+
+## Requirements
+
+Go to [Documentation > Requirements](https://shopware-frontends-docs.vercel.app/framework/requirements.html) to see the details.
+
+## Set up your Shopware 6 instance
+
+In order to have a different API connect to the app, **uncomment** and adjust the API credentials in the `nuxt.config.ts` file:
+
+```ts
+export default defineNuxtConfig({
+  // shopware: {
+  //   shopwareEndpoint: "https://you.endpoint.com",
+  //   shopwareAccessToken: "your-access-token",
+  // },
 ```
 
-## Development
+## Customize
 
-Start the development server on http://localhost:3000
+Now, you can have a look on the pages and components and add your stuff there.
 
-```bash
-yarn dev
-```
+[TODO: explain cms overriding or link to the docs].
 
-## Production
+## Install & Run
 
-Build the application for production:
-
-```bash
-yarn build
-```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/docs/deployment).
+1. `pnpm i` to install deps
+2. `pnpm dev` to run the project in dev mode

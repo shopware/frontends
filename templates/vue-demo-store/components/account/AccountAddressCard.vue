@@ -7,11 +7,17 @@ const { setDefaultCustomerShippingAddress, setDefaultCustomerBillingAddress } =
 
 const modal = inject<SharedModal>("modal") as SharedModal;
 
-const props = defineProps<{
-  address: CustomerAddress;
-  countries: Array<Country>;
-  salutations: Array<Salutation>;
-}>();
+const props = withDefaults(
+  defineProps<{
+    address: CustomerAddress;
+    countries: Array<Country>;
+    salutations: Array<Salutation>;
+    canSetDefault?: boolean;
+  }>(),
+  {
+    canSetDefault: true,
+  }
+);
 
 const setDefaultShippingAddress = async () => {
   (await setDefaultCustomerShippingAddress(props.address.id))
@@ -36,8 +42,13 @@ const setDefaultBillingAddress = async () => {
         i-carbon-edit
         text-xl
         inline-block
-        @click="
-          modal.open('AccountAddressForm', { address, salutations, countries })
+        @click.prevent="
+          modal.open('AccountAddressForm', {
+            address,
+            salutations,
+            countries,
+            title: 'Edit address',
+          })
         "
       />
     </div>
@@ -46,19 +57,21 @@ const setDefaultBillingAddress = async () => {
       <span class="block">{{ address.zipcode }}</span>
       <span class="block">{{ address.city }}</span>
     </div>
-    <a
-      href="#"
-      class="block text-sm mt-4 font-medium text-blue-600 hover:underline"
-      @click="setDefaultShippingAddress()"
-    >
-      Set as default shipping address
-    </a>
-    <a
-      href="#"
-      class="block text-sm mt-2 font-medium text-blue-600 hover:underline"
-      @click="setDefaultBillingAddress()"
-    >
-      Set as default billing address
-    </a>
+    <div v-if="canSetDefault">
+      <a
+        href="#"
+        class="block text-sm mt-4 font-medium text-blue-600 hover:underline"
+        @click="setDefaultShippingAddress()"
+      >
+        Set as default shipping address
+      </a>
+      <a
+        href="#"
+        class="block text-sm mt-2 font-medium text-blue-600 hover:underline"
+        @click="setDefaultBillingAddress()"
+      >
+        Set as default billing address
+      </a>
+    </div>
   </div>
 </template>

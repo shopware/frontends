@@ -1,16 +1,8 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import {
-  newsletterSubscribe,
-  newsletterUnsubscribe,
-} from "@shopware-pwa/api-client";
-import {
-  CmsElementForm,
-  useInternationalization,
-} from "@shopware-pwa/composables-next";
+import { CmsElementForm } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
-import LoadingCircle from "./icons/LoadingCircle.vue";
 
 const props = defineProps<{
   content: CmsElementForm;
@@ -32,9 +24,8 @@ const subscriptionOptions: {
   },
 ];
 const { getSalutations } = useSalutations();
-const { apiInstance } = useShopwareContext();
 const { getConfigValue } = useCmsElementConfig(props.content);
-const { getStorefrontUrl } = useInternationalization();
+const { newsletterSubscribe, newsletterUnsubscribe } = useNewsletter();
 
 const getFormTitle = computed(() => getConfigValue("title"));
 const state = reactive({
@@ -84,20 +75,11 @@ const invokeSubmit = async () => {
     loading.value = true;
     try {
       if (state.option === "subscribe") {
-        await newsletterSubscribe(
-          {
-            ...state,
-            storefrontUrl: getStorefrontUrl(),
-          },
-          apiInstance
-        );
+        await newsletterSubscribe({
+          ...state,
+        });
       } else {
-        await newsletterUnsubscribe(
-          {
-            email: state.email,
-          },
-          apiInstance
-        );
+        await newsletterUnsubscribe(state.email);
       }
       formSent.value = true;
     } catch (e) {
@@ -114,7 +96,9 @@ const invokeSubmit = async () => {
       v-if="loading"
       class="absolute inset-0 flex items-center justify-center z-10 bg-white/50"
     >
-      <LoadingCircle class="text-3xl text-indigo-600" />
+      <div
+        class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+      />
     </div>
     <h3 class="pb-3 mb-10 border-b border-gray-300">
       {{
@@ -267,25 +251,6 @@ const invokeSubmit = async () => {
                 I have read the
                 <a class="text-indigo-700">data protection information.</a>
               </label>
-              <p>
-                This site is protected by hCaptcha and its
-                <a
-                  target="blank"
-                  rel="noopener noreferrer"
-                  class="text-indigo-700"
-                  href="https://hcaptcha.com/privacy"
-                  >Privacy Policy</a
-                >
-                and
-                <a
-                  target="blank"
-                  rel="noopener noreferrer"
-                  class="text-indigo-700"
-                  href="https://hcaptcha.com/terms"
-                  >Terms of Service</a
-                >
-                apply.
-              </p>
             </div>
           </div>
         </div>

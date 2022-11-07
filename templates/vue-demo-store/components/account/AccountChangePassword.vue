@@ -84,8 +84,8 @@ const invokeChange = async (): Promise<void> => {
     </div>
     <div class="text-sm text-gray-500">
       <div>
-        If you want to change the password to access your account, enter the following
-        information:
+        If you want to change the password to access your account, enter the
+        following information:
       </div>
       <div v-if="state.email">
         Your current email address is

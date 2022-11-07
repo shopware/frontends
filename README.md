@@ -5,10 +5,26 @@
 </div>
 
 <p align="center">
-	Shopware Frontends is a <strong>framework</strong> for building custom, cloud-native Shopware Storefronts.
+	Shopware Frontends is a <strong>framework</strong> for building custom, headless storefronts with Shopware 6.
 </p>
 
 ---
+
+## Prerequisites
+
+### Node.js version
+
+Supported versions:
+
+* **v16.x** LTS
+* **v18.x** LTS
+
+TIP: Use [Node Version Manager](https://github.com/nvm-sh/nvm) to manage a Node.js version locally.
+### Package manager
+
+In order to maintain the project, [pnpm](https://pnpm.io/) package manager is required.
+
+Follow the [installation](https://pnpm.io/installation) instructions to get `pnpm` locally.
 
 ## Getting started
 
@@ -53,7 +69,7 @@ A set of helper functions related to price formatting, translation handling, UI 
 
 **Project Template**
 
-A reference implementation of an eCommerce storefront, based on Tailwind.css, Vite, Nuxt 3 and Vue 3.
+A non-production-ready reference implementation of an eCommerce storefront, based on Tailwind.css, Vite, Nuxt 3 and Vue 3.
 
 ![Shopware Frontends Techstack](.readme/shopware-frontends-techstack.png)
 

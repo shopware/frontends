@@ -1,6 +1,6 @@
 import { Category } from "@shopware-pwa/types";
 
-export const isCategory = (category: Partial<Category>): boolean => {
+const isCategory = (category: Partial<Category>): boolean => {
   return (
     category?.type === "page" ||
     category?.type === "link" ||

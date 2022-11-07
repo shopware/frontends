@@ -1,4 +1,4 @@
-import { reactive, ref, Ref, UnwrapRef } from "vue";
+import { ref, Ref, computed, inject, provide, ComputedRef } from "vue";
 
 import {
   getCustomerAddresses,
@@ -10,135 +10,94 @@ import {
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 
-import {
-  CustomerAddress,
-  ClientApiError,
-  ShopwareError,
-  ShopwareSearchParams,
-} from "@shopware-pwa/types";
+import { CustomerAddress, ShopwareSearchParams } from "@shopware-pwa/types";
 
-export function useAddress(): {
-  customerAddresses: Ref<CustomerAddress[] | null>;
-  errors: UnwrapRef<{
-    [errorAlias: string]: ShopwareError[];
-  }>;
+export type UseAddressReturn = {
+  customerAddresses: ComputedRef<CustomerAddress[]>;
   loadCustomerAddresses: () => Promise<void>;
-  createCustomerAddress: (customerAddress: CustomerAddress) => Promise<boolean>;
-  updateCustomerAddress: (customerAddress: CustomerAddress) => Promise<boolean>;
-  deleteCustomerAddress: (addressId: string) => Promise<boolean>;
-  setDefaultCustomerBillingAddress: (addressId: string) => Promise<boolean>;
-  setDefaultCustomerShippingAddress: (addressId: string) => Promise<boolean>;
-} {
-  const { apiInstance } = useShopwareContext();
-  const errors: UnwrapRef<{
-    [errorAlias: string]: ShopwareError[];
-  }> = reactive({
-    loadCustomerAddresses: [],
-    createCustomerAddress: [],
-    updateCustomerAddress: [],
-    deleteCustomerAddress: [],
-    setDefaultCustomerBillingAddress: [],
-    setDefaultCustomerShippingAddress: [],
-  });
+  createCustomerAddress: (
+    customerAddress: CustomerAddress
+  ) => Promise<CustomerAddress>;
+  updateCustomerAddress: (
+    customerAddress: CustomerAddress
+  ) => Promise<CustomerAddress>;
+  deleteCustomerAddress: (addressId: string) => Promise<void>;
+  setDefaultCustomerBillingAddress: (addressId: string) => Promise<string>;
+  setDefaultCustomerShippingAddress: (addressId: string) => Promise<string>;
+};
 
-  const customerAddresses: Ref<CustomerAddress[] | null> = ref(null);
+export function useAddress(): UseAddressReturn {
+  const { apiInstance } = useShopwareContext();
+
+  const _storeCustomerAddresses: Ref<CustomerAddress[]> = inject(
+    "swCustomerAddresses",
+    ref([])
+  );
+  provide("swCustomerAddresses", _storeCustomerAddresses);
 
   /**
    * Get customer address list
    */
-  const loadCustomerAddresses = async (
+  async function loadCustomerAddresses(
     parameters: ShopwareSearchParams = {}
-  ): Promise<void> => {
-    try {
-      errors.loadCustomerAddresses = [];
-      const { elements } = await getCustomerAddresses(parameters, apiInstance);
-      customerAddresses.value = elements;
-    } catch (e) {
-      errors.loadCustomerAddresses = (e as ClientApiError).messages;
-    }
-  };
+  ): Promise<void> {
+    const { elements } = await getCustomerAddresses(parameters, apiInstance);
+    _storeCustomerAddresses.value = elements;
+  }
 
   /**
    * Add new customer address
    */
-  const createCustomerAddress = async (
+  async function createCustomerAddress(
     customerAddress: CustomerAddress
-  ): Promise<boolean> => {
-    try {
-      errors.createCustomerAddress = [];
-      await apiCreateCustomerAddress(customerAddress, apiInstance);
-    } catch (e) {
-      errors.createCustomerAddress = (e as ClientApiError).messages;
-      return false;
-    }
-    return true;
-  };
+  ): Promise<CustomerAddress> {
+    const result = await apiCreateCustomerAddress(customerAddress, apiInstance);
+    await loadCustomerAddresses();
+    await setDefaultCustomerBillingAddress(result.id);
+    await setDefaultCustomerShippingAddress(result.id);
+    return result;
+  }
 
   /**
    * Update customer address
    */
-  const updateCustomerAddress = async (
+  async function updateCustomerAddress(
     customerAddress: CustomerAddress
-  ): Promise<boolean> => {
-    try {
-      errors.updateCustomerAddress = [];
-      await apiUpdateCustomerAddress(customerAddress, apiInstance);
-    } catch (e) {
-      errors.updateCustomerAddress = (e as ClientApiError).messages;
-      return false;
-    }
-    return true;
-  };
+  ): Promise<CustomerAddress> {
+    const result = await apiUpdateCustomerAddress(customerAddress, apiInstance);
+    await loadCustomerAddresses();
+    return result;
+  }
 
   /**
    * Delete customer address
    */
-  const deleteCustomerAddress = async (addressId: string): Promise<boolean> => {
-    try {
-      errors.deleteCustomerAddress = [];
-      await apiDeleteCustomerAddress(addressId, apiInstance);
-    } catch (e) {
-      errors.deleteCustomerAddress = (e as ClientApiError).messages;
-      return false;
-    }
-    return true;
-  };
+  async function deleteCustomerAddress(addressId: string): Promise<void> {
+    const result = apiDeleteCustomerAddress(addressId, apiInstance);
+    await loadCustomerAddresses();
+    return result;
+  }
 
   /**
    * Set default customer billing address
    */
-  const setDefaultCustomerBillingAddress = async (
+  async function setDefaultCustomerBillingAddress(
     addressId: string
-  ): Promise<boolean> => {
-    try {
-      errors.setDefaultCustomerBillingAddress = [];
-      await apiSetDefaultCustomerBillingAddress(addressId, apiInstance);
-    } catch (e) {
-      errors.setDefaultCustomerBillingAddress = (e as ClientApiError).messages;
-      return false;
-    }
-    return true;
-  };
+  ): Promise<string> {
+    return await apiSetDefaultCustomerBillingAddress(addressId, apiInstance);
+  }
 
   /**
    * Set default customer shipping address
    */
-  const setDefaultCustomerShippingAddress = async (
+  async function setDefaultCustomerShippingAddress(
     addressId: string
-  ): Promise<boolean> => {
-    try {
-      errors.setDefaultCustomerShippingAddress = [];
-      await apiSetDefaultCustomerShippingAddress(addressId, apiInstance);
-    } catch (e) {
-      errors.setDefaultCustomerShippingAddress = (e as ClientApiError).messages;
-      return false;
-    }
-    return true;
-  };
+  ): Promise<string> {
+    return await apiSetDefaultCustomerShippingAddress(addressId, apiInstance);
+  }
 
   return {
-    customerAddresses,
-    errors,
+    customerAddresses: computed(() => _storeCustomerAddresses.value || []),
     loadCustomerAddresses,
     createCustomerAddress,
     updateCustomerAddress,

@@ -1,64 +1,55 @@
 import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
-// import {
-//   useSharedState,
-//   getApplicationContext,
-// } from "@shopware-pwa/composables";
 
-/**
- * @beta
- */
 export type Notification = {
   type: "info" | "warning" | "success" | "danger";
   message: string;
   id: number;
 };
 
-/**
- * @beta
- */
-export function useNotifications(): {
+export type UseNotificationsReturn = {
   notifications: ComputedRef<Notification[]>;
+  /**
+   * Remove a specific notification by ID
+   */
   removeOne: (id: number) => void;
+  /**
+   * Reset the notification list
+   */
   removeAll: () => void;
   pushInfo: (message: string, options?: any) => void;
   pushWarning: (message: string, options?: any) => void;
   pushError: (message: string, options?: any) => void;
   pushSuccess: (message: string, options?: any) => void;
-} {
-  const COMPOSABLE_NAME = "useNotifications";
-  const contextName = COMPOSABLE_NAME;
+};
 
-  // getApplicationContext({ contextName });
-  // const { sharedRef } = useSharedState();
+export function useNotifications(): UseNotificationsReturn {
   const _notifications: Ref<Notification[]> = inject(
     "swNotifications",
     ref([])
   );
   provide("swNotifications", _notifications);
 
-  /**
-   * Remove a specific notification by ID
-   */
-  const removeOne = (notificationId: number) => {
+  function removeOne(notificationId: number) {
     _notifications.value =
       _notifications.value?.filter(({ id }) => id !== notificationId) || [];
-  };
+  }
 
-  /**
-   * Reset the notification list
-   */
-  const removeAll = () => (_notifications.value = []);
+  function removeAll() {
+    _notifications.value = [];
+  }
 
-  const geterateId = () => new Date().getTime();
+  function geterateId() {
+    return new Date().getTime();
+  }
 
-  const pushNotification = async (
+  async function pushNotification(
     message: string,
     options: {
       type: "info" | "warning" | "success" | "danger";
       timeout: number;
       persistent: boolean;
     }
-  ) => {
+  ) {
     const timeout = options.timeout || 2500;
     const persistent = !!options.persistent;
     _notifications.value = _notifications.value || [];
@@ -74,7 +65,7 @@ export function useNotifications(): {
         removeOne(messageId);
       }, timeout);
     }
-  };
+  }
 
   return {
     removeOne,

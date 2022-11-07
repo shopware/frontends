@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import { Product, ProductReview } from "@shopware-pwa/types";
-import SwStarIcon from "./SwStarIcon.vue";
-import LoadingCircle from "./icons/LoadingCircle.vue";
 
 const props = defineProps<{
   product: Product;
+  reviews?: ProductReview[];
 }>();
+const { product, reviews } = toRefs(props);
 
-const { loadProductReviews, productReviews, loadingReviews } =
-  useProductReviews({
-    product: props.product,
-  });
+const shouldLoadReviews = !reviews?.value;
+
+const loadingReviews = ref<boolean>(shouldLoadReviews);
+const { loadProductReviews, productReviews } = useProductReviews(product);
 
 onMounted(async () => {
-  await loadProductReviews();
+  shouldLoadReviews && (await loadProductReviews());
+  loadingReviews.value = false;
 });
-const reviews = computed<ProductReview[]>(() => productReviews.value ?? []);
+const reviewsList = computed<ProductReview[]>(
+  () => reviews?.value || productReviews.value || []
+);
 
 const format: Intl.DateTimeFormatOptions = {
   year: "numeric",
@@ -35,9 +38,11 @@ const formatDate = (date: string) =>
     v-if="loadingReviews"
     class="absolute inset-0 flex items-center justify-center z-10 bg-white/75"
   >
-    <LoadingCircle class="text-3xl text-indigo-600" />
+    <div
+      class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+    />
   </div>
-  <div v-else-if="reviews.length">
+  <div v-else-if="reviewsList.length">
     <div v-for="review in reviews" :key="review.id">
       <div
         class="cms-block-product-description-reviews__reviews-time mt-3 text-gray-600 text-sm"
@@ -47,10 +52,14 @@ const formatDate = (date: string) =>
       <div
         class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"
       >
-        <div v-for="value in review.points"><SwStarIcon /></div>
-        <div v-for="value in 5 - (review.points || 0)">
-          <SwStarIcon :is-empty="true" />
-        </div>
+        <div
+          v-for="value in review.points"
+          class="w-5 h-5 i-carbon-star-filled"
+        ></div>
+        <div
+          v-for="value in 5 - (review.points || 0)"
+          class="w-5 h-5 i-carbon-star"
+        ></div>
         <div
           class="cms-block-product-description-reviews__reviews-title font-semibold ml-2"
         >

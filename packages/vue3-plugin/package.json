@@ -1,0 +1,26 @@
+{
+  "name": "@shopware-pwa/vue3-plugin",
+  "version": "0.1.18",
+  "type": "module",
+  "module": "./dist/vue3-plugin.es.js",
+  "types": "./dist/main.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4",
+    "vite": "^3.1.8",
+    "vite-dts": "^1.0.4"
+  },
+  "dependencies": {
+    "@shopware-pwa/api-client": "workspace:*",
+    "@shopware-pwa/composables-next": "workspace:*",
+    "js-cookie": "^3.0.1"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.26"
+  }
+}

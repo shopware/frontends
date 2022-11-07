@@ -1,14 +1,16 @@
-import { defineNuxtConfig } from "nuxt";
 import transformerDirective from "@unocss/transformer-directives";
-import presetIcons from "@unocss/preset-icons";
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
+  // shopware: {
+  //   shopwareEndpoint: "https://you.endpoint.com",
+  //   shopwareAccessToken: "your-access-token",
+  // },
   typescript: {
     typeCheck: true,
     strict: true,
   },
-  buildModules: [
+  modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
@@ -21,6 +23,10 @@ export default defineNuxtConfig({
   },
   vueuse: {
     ssrHandlers: true,
+  },
+  // Unocss bug fix https://github.com/nuxt/framework/issues/7623
+  experimental: {
+    inlineSSRStyles: false,
   },
   unocss: {
     uno: true, // enabled `@unocss/preset-uno`
@@ -44,7 +50,7 @@ export default defineNuxtConfig({
   },
   router: {
     options: {
-      linkExactActiveClass: 'text-brand-primary',
-    }
+      linkExactActiveClass: "text-brand-primary",
+    },
   },
 });

@@ -57,7 +57,7 @@ export type Product = {
   calculatedListingPrice: ListingPrice;
   calculatedPrices: CalculatedPrice[];
   calculatedPrice: CalculatedPrice;
-  configuratorSettings: ProductConfiguratorSetting[] | null;
+  configuratorSettings: PropertyGroup[] | null;
   sortedProperties: PropertyGroup[] | null;
   isNew: boolean;
   parentId: string | null;
@@ -129,7 +129,13 @@ export type Product = {
   translated: {
     name: string | null;
     description: string;
+    metaDescription: string | null;
+    keywords: string | null;
+    metaTitle: string | null;
   };
+  metaDescription: string | null;
+  keywords: string | null;
+  metaTitle: string | null;
   crossSellings: CrossSelling[];
   cmsPage: null | CmsPage;
   apiAlias: "product";
