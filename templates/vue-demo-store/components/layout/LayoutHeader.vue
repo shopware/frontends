@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { count } = useCart();
+const { count: wishlistCount } = useWishlist();
 const isSidebarOpen = inject("isSidebarOpen");
 </script>
 
@@ -25,6 +26,23 @@ const isSidebarOpen = inject("isSidebarOpen");
         </div>
 
         <AccountMenu />
+        <div class="flex ml-4 flow-root lg:ml-6">
+          <button
+            class="group -m-2 p-2 flex items-center relative"
+            @click="$router.push('/wishlist')"
+            data-testid="wishlist-button"
+          >
+            <div
+              class="w-7 h-7 i-carbon-favorite bg-gray-600 hover:bg-brand-primary"
+            ></div>
+            <span
+              v-if="wishlistCount > 0"
+              class="text-sm font-medium text-gray-700 group-hover:text-gray-800 absolute bg-red rounded-full min-w-5 min-h-5 top-0 right-0"
+            >
+              {{ wishlistCount }}
+            </span>
+          </button>
+        </div>
         <!-- Cart -->
         <div class="flex ml-4 flow-root lg:ml-6">
           <button

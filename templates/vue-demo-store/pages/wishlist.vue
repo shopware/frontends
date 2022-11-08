@@ -37,15 +37,21 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   isLoading.value = false;
 };
 
-watch(items, (items, oldItems) => {
-  if (items.length !== oldItems.length) {
-    products.value = products.value.filter(({ id }) => items.includes(id));
+watch(
+  items,
+  (items, oldItems) => {
+    if (items.length !== oldItems?.length) {
+      products.value = products.value.filter(({ id }) => items.includes(id));
+    }
+    if (!items.length) {
+      return;
+    }
+    loadProductsByItemIds(items);
+  },
+  {
+    immediate: true,
   }
-  if (!items.length) {
-    return;
-  }
-  loadProductsByItemIds(items);
-});
+);
 </script>
 
 <template>
