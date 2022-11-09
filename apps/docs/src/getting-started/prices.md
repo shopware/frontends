@@ -15,9 +15,9 @@ head:
 
 In this chapter you will learn how
 
-- The price object is structured
-- To format and indicate pricing tiers
-- Display the correct prices depending on context
+* The price object is structured
+* To format and indicate pricing tiers
+* Display the correct prices depending on context
 
 ## Structure of a price
 
@@ -73,7 +73,7 @@ A product in Shopware can have multiple prices. All these prices are defined in 
 
 :::
 
-Each product has at least one `CalculatedPrice` object assigned to it, which can be acessed through `product.calculatedPrice`. It contains the default price of the product, which applies when no other prices are defined.
+Each product has at least one `CalculatedPrice` object assigned to it, which can be accessed through `product.calculatedPrice`. It contains the product's default price, which applies when no other prices are defined.
 
 ## Display a default price
 
@@ -122,9 +122,9 @@ await search("some-product-id");
 
 ## Pricing tiers and quantity prices
 
-Pricing tiers add one layer of complextity into the pricing model. In Shopware, you can define multiple pricing tiers for a product. Each tier has a quantity and a price.
+Pricing tiers add one layer of complexity to the pricing model. In Shopware, you can define multiple pricing tiers for a product. Each tier has a quantity and a price.
 
-These pricing tiers are passed through the `calculatedPrices` field of a product. The `calculatedPrices` field is an array of `CalculatedPrice` objects, which are sorted by the `quantity` field (which defines the bounds of a pricing range).
+These pricing tiers are passed through a product's `calculatedPrices` field. The `calculatedPrices` field is an array of `CalculatedPrice` objects sorted by the `quantity` field, which defines the bounds of a pricing range.
 
 ```json
 [
@@ -209,7 +209,7 @@ For more complex pricing models, Shopware also supports advanced prices. The API
 
 ## Display the correct price
 
-There's the intricacy that the `calculatedPrice` field of a product is not always the default price, since there may be tier prices OR a single advanced price defined for the product. For that reason, you should create a switch within your template that differs correctly. You can use the following sudo-code as a starting point:
+A product's `calculatedPrice` field is not always the default price since there may be tier prices or a single advanced price defined for the product. Therefore, you should create a switch within your template that differs correctly. You can use the following sudo-code as a starting point:
 
 **if `product.calculatedPrices.length` is more than 1**
 

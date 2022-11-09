@@ -1,29 +1,29 @@
 # Create a Product Listing
 
-In this chapter you will learn how to
+In this chapter you will learn how to :
 
-- Initialize the `useListing` composable
-- Search for products
-- Display listing elements
-- Add pagination
-- Sort the products
-- TODO: Handle filters
-- Use helpers
+* Initialize the `useListing` composable
+* Search for products
+* Display listing elements
+* Add pagination
+* Sort the products
+* TODO: Handle filters
+* Use helpers
 
 ## Listing context
 
 Product listing is a structure related to the predefined areas and it has always the same interface: `ProductListingResult`:
 
-- Response of product-listing endpoint `/store-api/product-listing/{id}`
-- Product search result
-- Cms Page (via `product-listing` element, nested among other CMS element)
+* Response of product-listing endpoint `/store-api/product-listing/{id}`
+* Product search result
+* Cms Page (via `product-listing` element, nested among other CMS element)
 
 ## Listing type & current context
 
-Before using the composable, define the type (related to the context):
+Before using the composable, define the type related to the context:
 
-- `categoryListing` for navigation/category/cms pages
-- `productSearchListing` for search page
+* `categoryListing` for navigation/category/cms pages
+* `productSearchListing` for search page
 
 ```ts{3}
 const { search, getElements } = useListing({
@@ -32,7 +32,7 @@ const { search, getElements } = useListing({
 });
 ```
 
-The `categoryId` is obligatory only if the current page IS NOT a result of use of `useCms` composable (generated from Shopping Experiences).
+The `categoryId` is obligatory only if the current page is not a result of using `useCms` composable (generated from Shopping Experiences).
 
 :::info
 If the `useListing` composable is used within a CMS Page, `categoryId` is resolved internally.
@@ -40,7 +40,7 @@ If the `useListing` composable is used within a CMS Page, `categoryId` is resolv
 
 ## Define search criteria
 
-In order to get the expected products, we need to define the search criteria. The criteria is an object of type Search Parameters explained in [documentation of API](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries).
+In order to get the expected products, we need to define the search criteria. This criteria is an object of type Search Parameters explained in [documentation of API](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries).
 
 ```ts
 const { search } = useListing();
@@ -58,15 +58,15 @@ search({
 ```
 
 :::tip
-Don't use `includes` parameter if you want to have the whole entity object available in the response. More about `includes` in the [documentation](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#includes-apialias).
+Don't use [`includes`](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#includes-apialias) parameter if you want to have the whole entity object available in the response.
 :::
 
 ## Display listing elements (Products)
 
 In order to display products of product listing we need to:
 
-- Invoke `search()` method with positive result
-- Iterate over `getElements` computed array of elements, where each element is in type of `Product`.
+* Invoke `search()` method with positive result
+* Iterate over `getElements` computed array of elements, where each element is in `Product` type.
 
 ```vue{11,22}
 <script setup lang="ts">
@@ -102,9 +102,9 @@ search({ // invoke search() method
 
 Available methods of `useListing` to manage sorting order:
 
-- `getSortingOrders()` - returns all available sorting options
-- `getCurrentSortingOrder()` - returns the current order, available in the response
-- `changeCurrentSortingOrder()` - sets the new order, invoking a `search` method internally
+* `getSortingOrders()` - returns all available sorting options
+* `getCurrentSortingOrder()` - returns the current order, available in the response
+* `changeCurrentSortingOrder()` - sets the new order, invoking a `search` method internally
 
 ```ts{3-5}
 // part of <script setup> section
@@ -173,19 +173,19 @@ Utilize the method in a template:
 <button @click="addProduct(product)">Add to cart</button>
 ```
 
-Now, when the customer click the `Add to cart` button, the proper request is being sent to the API. After that, the cart is refreshed and up to date in entire application.
+Now, when the customer clicks the `Add to cart` button, a proper request is sent to the API. The cart is then refreshed and is up to date in the entire application.
 
 :::tip
-Alternatively, instead of using `useCart`, you can use `useAddToCart` composable when you create a separate Vue component to keep a single `Product` for product listing. That option would enhance the code organization.
+Alternative tip - Instead of using `useCart`, you can use `useAddToCart` composable when you create a separate Vue component to keep a single `Product` for product listing. That option would enhance the code organization.
 :::
 
 ## Add pagination
 
 Pagination is available by using three methods from `useListing` composable:
 
-- `getCurrentPage`
-- `changeCurrentPage` - invokes `search()` method internally with the provided number of the page
-- `getTotalPagesCount` - calculates the number of available pages depending on products per page parameters (i.e. `limit` in search criteria)
+* `getCurrentPage`
+* `changeCurrentPage` - invokes `search()` method internally with the provided number of the page
+* `getTotalPagesCount` - calculates the number of available pages depending on products per page parameters (i.e. `limit` in search criteria)
 
 ```ts{5-7}
 // part of <script setup> section
@@ -257,7 +257,7 @@ In order to get the list of available filters, use the following command:
 const { getAvailableFilters } = useListing(/** parameters omitted */)
 ```
 
-You can then iterate the filter objects available in the array. The filter object has a [ListingFilter](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/response/ListingResult.d.ts#L19) interface and depending on the `code`, or `displayType`, the handling process can be different. Let us have a closer look at that:
+You can then iterate the filter objects available in the array. The filter object has a [ListingFilter](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/response/ListingResult.d.ts#L19) interface and depending on the `code`, or `displayType`, the handling process can be different. Let us have a closer look at it:
 
 `ListingFilter.code`: **manufacturer**
 
