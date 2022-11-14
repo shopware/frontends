@@ -21,7 +21,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="fixed right-0 bg-white top-0 w-96 h-screen bg-blue p-6 shadow-lg">
+  <div class="fixed right-0 bg-white top-0 w-96 h-screen bg-blue p-6 shadow-lg z-10">
     <h2 class="text-xl">Your Basket</h2>
     <span class="text-sm">{{ count }} items</span>
     <div v-for="item in cartItems" :key="item.id" class="flex gap-3 my-5">
