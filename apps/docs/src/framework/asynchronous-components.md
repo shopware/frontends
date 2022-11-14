@@ -13,6 +13,10 @@ head:
 
 # Asynchronous Components
 
+::: warning Work in progress
+This page is currently work in progress and will be updated soon.
+:::
+
 In order to fetch components or data asynchronously and display placeholders while the content is loading, we recommend using Vue 3's `Suspense` component
 
 ```vue-html
@@ -28,5 +32,3 @@ In order to fetch components or data asynchronously and display placeholders whi
   </template>
 </Suspense>
 ```
-
-TODO: Add example

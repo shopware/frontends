@@ -10,10 +10,8 @@ The blank template contains no UI or markup - it's just a blank Nuxt3 applicatio
 
 Alternatively, set up the blank template manually by running the following commands in a new directory:
 
-TODO: Add correct command
-
 ```bash
-git clone https://github.com/shopware/frontends/templates/vue-blank.git .
+npx tiged shopware/frontends/templates/vue-blank vue-blank && cd vue-blank
 npm i && npm run dev
 ```
 

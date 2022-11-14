@@ -29,7 +29,7 @@ const DynamicRender = () => {
       componentObject.section
     );
     if (typeof componentObject.component === "string")
-      return h("div", {}, "There is no " + componentObject.component); // TODO: cmsNoComponent
+      return h("div", {}, "There is no " + componentObject.component);
     return h(componentObject.component, {
       content: componentObject.section,
       class: {

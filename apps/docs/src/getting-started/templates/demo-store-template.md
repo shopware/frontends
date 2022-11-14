@@ -14,11 +14,9 @@ The **Demo Store Template** is not suitable for production stores. It is under c
 
 Alternatively, set up the blank template manually by running the following commands in a new directory:
 
-TODO: Add correct command
-
 ```bash
-mkdir demo-store && cd demo-store
-git clone https://github.com/shopware/frontends/templates/demo-store.git .
+npx tiged shopware/frontends/templates/vue-demo-store demo-store && cd demo-store
+npm i && npm run dev
 ```
 
 ## Directory structure

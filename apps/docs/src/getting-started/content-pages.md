@@ -13,6 +13,10 @@ head:
 
 # Create content pages
 
+::: warning Work in progress
+This page is currently work in progress and will be updated soon.
+:::
+
 In this chapter you will learn how to
 
 - Fetch a content page
@@ -83,12 +87,6 @@ function render() {
 ```
 
 The code above will only run, when components with the same name as `resourceType` are available in your project.
-
-TODO: Check correct command how to install the `cms-base` package - is the above event correct?
-
-```sh
-pnpm i @shopware-pwa/cms-base
-```
 
 ## Custom CMS components
 
