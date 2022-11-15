@@ -4,9 +4,12 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "templates/*"
   ],
   "scripts": {
+    "bump": "changeset version",
+    "changeset": "changeset",
     "build": "turbo run build",
     "generate": "turbo run generate",
     "dev": "turbo run dev --parallel",
@@ -18,6 +21,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
+    "@changesets/cli": "^2.25.2",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "simple-git-hooks": "^2.8.0",
