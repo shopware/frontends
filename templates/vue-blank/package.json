@@ -9,8 +9,8 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@shopware-pwa/composables-next": "0.1.20",
-    "@shopware-pwa/nuxt3-module": "0.1.20",
+    "@shopware-pwa/composables-next": "0.2.0",
+    "@shopware-pwa/nuxt3-module": "0.1.21",
     "@shopware-pwa/api-client": "0.1.20",
     "@vueuse/nuxt": "^9.3.0",
     "nuxt": "^3.0.0-rc.11"
