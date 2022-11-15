@@ -21,7 +21,7 @@ export const sidebar = [
       { text: "Content Pages", link: "/getting-started/content-pages" },
       { text: "Cart", link: "/getting-started/cart" },
       { text: "Checkout ", link: "/getting-started/checkout" },
-      { text: "Login form", link: "/getting-started/login-form" },
+      { text: "Login Form", link: "/getting-started/login-form" },
       { text: "Prices", link: "/getting-started/prices" },
       { text: "Product Listing", link: "/getting-started/product-listing" },
       { text: "Wishlist", link: "/getting-started/wishlist" },
@@ -31,7 +31,6 @@ export const sidebar = [
     text: "FRAMEWORK",
     items: [
       { text: "Requirements", link: "/framework/requirements" },
-      { text: "Configuration", link: "/framework/configuration" },
       { text: "Shopping Experiences", link: "/framework/shopping-experiences" },
       { text: "Styling", link: "/framework/styling" },
       {

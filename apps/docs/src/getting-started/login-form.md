@@ -2,12 +2,12 @@
 import StackBlitzLiveExample from '../components/StackBlitzLiveExample.vue'
 </script>
 
-# Create a Login form
+# Create a login form
 
-In this chapter, you will learn how to:
+In this chapter, you will learn how to
 
 - Sign in using username and password
-- Display data for authenticated user
+- Display data of an authenticated user
 - Display authentication errors
 - Logout
 
@@ -56,7 +56,7 @@ const invokeLogin = () => login(loginCredentials);
 
 The `invokeLogin` method is triggered using the `@click` event of the button. It executes the `login()` method from the `useUser` composable, accepting `loginCredentials` (the `v-model` of inputs) as an argument.
 
-## Display data for authenticated user
+## Display user data
 
 If the login process was successful, the `isLoggedIn` computed property becomes `true`. Now we can use `user` object to access customer data.
 
