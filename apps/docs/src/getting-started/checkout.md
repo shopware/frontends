@@ -7,8 +7,6 @@ In this chapter you will learn how to
 - Place an order
 - Handle a payment
 
-//@ToDo link composables to their pages
-
 We are going to use the following composables in the checkout process:
 
 - `useCheckout`
@@ -16,7 +14,7 @@ We are going to use the following composables in the checkout process:
 - `useOrder`
 - `useOrderDetails`
 
-## Fetch and display - shipping and payment information
+## Shipping and payment information
 
 :::warning
 Please remember that payment and shipping methods shouldn't be cached.
@@ -103,9 +101,11 @@ const selectedPaymentMethod = computed({
 </template>
 ```
 
-## Create an order summary (totals, taxes)
+## Order summary
 
-Refer to [formatting prices](prices.md) for more insights.
+We can use some helper methods from `useCart` composable to display an order summary and format prices.
+
+Refer to [formatting prices](prices.md) for more information on displaying prices.
 
 :::warning
 Totals should **not** be calculated by the frontend. All calculations should be done on the backend side.
@@ -138,15 +138,13 @@ await refreshCart();
 
 ## Place an order
 
-Placing order requires:
+Placing an order requires
 
-- Valid shipping address
-- Selected payment method
-- Selected shipping method
+- A valid shipping address
+- A selected payment method
+- A selected shipping method
 
 After placing an order with the `createOrder` method, the cart is refreshed automatically.
-
-// @ToDo link Order type
 
 ```ts
 const { createOrder } = useCheckout();

@@ -1,5 +1,9 @@
 # Custom project
 
+::: warning Work in progress
+This page is currently work in progress and will be updated soon.
+:::
+
 Follow these steps to integrate Shopware Frontends into an existing, custom Vue.js project
 
 - Install the required dependencies
@@ -8,8 +12,6 @@ Follow these steps to integrate Shopware Frontends into an existing, custom Vue.
 - Store and handle client state
 
 ## Install dependencies
-
-[TODO: Remove old composables dependency once `createShopwareContext` method is moved to the composables-next]
 
 First of all, install the required npm dependencies:
 
@@ -121,7 +123,7 @@ const shopwareContext = createShopwareContext(app, {
   // `app` from install() method's argument
   apiInstance: instance, // pass API Client instance
   enableDevtools: true, // decide if devtools should be enabled
-  shopwareDefaults: options?.apiDefaults || {}, // define some api default parameters - explained in Configuration section (TODO: Explain in Configuration Section)
+  shopwareDefaults: options?.apiDefaults || {}, // define API default parameters
 });
 ```
 

@@ -1,22 +1,30 @@
-# Creating wishlist
+# Create a wishlist
 
-The wishlist can be used locally (for the not logged in customers) and can be synchronized with the backend (for the logged in customers)
+::: warning Work in progress
+This page is currently work in progress and will be updated soon.
+:::
 
-`useLocalWishlist` - composable for local wishlist
-`useSyncWishlist` - composable for synchronization wishlist
-`useWishlist` - composable helper for wishlist page
-`useProductWishlist` - composable helper for products
+In Shopware's API, wishlists are only available for authenticated (logged-in) users.
+
+The composables related to wishlists are built in a way that allows you to maintain a local (in-memory) wishlist for unauthenticated users and synchronize it with the server when the user logs in.
 
 ::: info
-`useWishlist` and `useProductWishlist` check if user is logged in and decide what composable should be used
+The `useWishlist` and `useProductWishlist` view helpers decide whether to use the local or the server wishlist based on the user's authentication status.
 :::
+
+| Composable           | Description                            |
+| -------------------- | -------------------------------------- |
+| `useLocalWishlist`   | manages the local (in-memory) wishlist |
+| `useSyncWishlist`    | manages the remote (server) wishlist   |
+| `useWishlist`        | view helper for the wishlist page      |
+| `useProductWishlist` | view helper for a single product       |
 
 ## Wishlist page
 
 ### Get product list
 
 ::: warning
-`getWishlistProducts` should not be invoke on the SSR
+`getWishlistProducts` should not be invoked on server-side rendering calls
 :::
 
 ```ts

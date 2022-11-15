@@ -11,13 +11,13 @@ head:
       content: "https://frontends-og-image.vercel.app/Working%20with%20**Prices**.png"
 ---
 
-# Prices
+# Work with prices
 
 In this chapter you will learn how
 
-* The price object is structured
-* To format and indicate pricing tiers
-* Display the correct prices depending on context
+- The price object is structured
+- To format and indicate pricing tiers
+- Display the correct prices depending on context
 
 ## Structure of a price
 

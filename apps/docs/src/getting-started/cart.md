@@ -11,7 +11,7 @@ head:
       content: "https://frontends-og-image.vercel.app/Building%20a%20**Cart**.png?fontSize=150px"
 ---
 
-# Create a Cart
+# Work with the cart
 
 In this chapter you will learn how to
 
