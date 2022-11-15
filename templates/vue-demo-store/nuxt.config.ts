@@ -28,6 +28,9 @@ export default defineNuxtConfig({
   experimental: {
     inlineSSRStyles: false,
   },
+  nitro: {
+    compressPublicAssets: true,
+  },
   unocss: {
     uno: true, // enabled `@unocss/preset-uno`
     icons: true, // enabled `@unocss/preset-icons`
