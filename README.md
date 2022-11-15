@@ -5,29 +5,18 @@
 </div>
 
 <p align="center">
-	Shopware Frontends is a <strong>framework</strong> for building custom, headless storefronts with Shopware 6.
+	📚 <a href="https://shopware-frontends-docs.vercel.app/">Docs</a> | 💬 <a href="https://github.com/shopware/frontends/discussions">Discussions</a> | 🚀 <a href="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store">Try it out</a>
+</p>
+
+<p align="center">
+	Shopware Frontends is Shopware's Vue.js <strong>framework</strong> for building custom storefronts.
 </p>
 
 ---
 
-## Prerequisites
-
-### Node.js version
-
-Supported versions:
-
-- **v16.x** LTS
-- **v18.x** LTS
-
-TIP: Use [Node Version Manager](https://github.com/nvm-sh/nvm) to manage a Node.js version locally.
-
-### Package manager
-
-In order to maintain the project, [pnpm](https://pnpm.io/) package manager is required.
-
-Follow the [installation](https://pnpm.io/installation) instructions to get `pnpm` locally.
-
 ## Getting started
+
+Node.js v16 or v18 and pnpm are required to run the project.
 
 ```sh
 # Install dependencies

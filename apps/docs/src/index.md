@@ -6,7 +6,7 @@
     <img src=".assets/shopware-frontends-logo-dark.png" class="hidden dark:block">
 </div>
 
-Shopware Frontends is a **framework** for building custom, headless storefronts with Shopware 6.
+Shopware Frontends is Shopware's Vue.js <strong>framework</strong> for building custom storefronts.
 
 <PageRef title="Why Shopware Frontends?" sub="Which problems does it solve" page="/why-shopware-frontends" />
 
