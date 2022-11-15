@@ -4,7 +4,8 @@ import { SharedModal } from "~~/components/shared/SharedModal.vue";
 const { pushSuccess, pushError } = useNotifications();
 const { setDefaultCustomerShippingAddress, setDefaultCustomerBillingAddress } =
   useAddress();
-
+const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
+const { refreshSessionContext } = useSessionContext();
 const modal = inject<SharedModal>("modal") as SharedModal;
 
 const props = withDefaults(
@@ -20,15 +21,23 @@ const props = withDefaults(
 );
 
 const setDefaultShippingAddress = async () => {
-  (await setDefaultCustomerShippingAddress(props.address.id))
-    ? pushSuccess("Set default shipping address successfully")
-    : pushError("Set default shipping address error");
+  try {
+    await setDefaultCustomerShippingAddress(props.address.id);
+    refreshSessionContext();
+    pushSuccess("Set default shipping address successfully");
+  } catch (error) {
+    pushError("Set default shipping address error");
+  }
 };
 
 const setDefaultBillingAddress = async () => {
-  (await setDefaultCustomerBillingAddress(props.address.id))
-    ? pushSuccess("Set default billing address successfully")
-    : pushError("Set default billing address error");
+  try {
+    await setDefaultCustomerBillingAddress(props.address.id);
+    refreshSessionContext();
+    pushSuccess("Set default billing address successfully");
+  } catch (error) {
+    pushError("Set default billing address error");
+  }
 };
 </script>
 
@@ -59,14 +68,18 @@ const setDefaultBillingAddress = async () => {
     </div>
     <div v-if="canSetDefault">
       <a
-        href="#"
+        v-if="defaultShippingAddressId !== address.id"
+        role="button"
+        tabindex="0"
         class="block text-sm mt-4 font-medium text-blue-600 hover:underline"
         @click="setDefaultShippingAddress()"
       >
         Set as default shipping address
       </a>
       <a
-        href="#"
+        v-if="defaultBillingAddressId !== address.id"
+        role="button"
+        tabindex="0"
         class="block text-sm mt-2 font-medium text-blue-600 hover:underline"
         @click="setDefaultBillingAddress()"
       >
