@@ -1,16 +1,13 @@
-# docs
+# vue-demo-store
 
-## 1.0.2
+## 0.0.2
 
 ### Patch Changes
 
 - Updated dependencies [fa7e48f]
   - @shopware-pwa/api-client@0.1.20
   - @shopware-pwa/composables-next@0.1.20
+  - @shopware-pwa/cms-base@0.1.20
   - @shopware-pwa/helpers-next@0.1.20
-
-## 1.0.1
-
-### Patch Changes
-
-- Generate changeset for docs
+  - @shopware-pwa/nuxt3-module@0.1.20
+  - @shopware-pwa/types@0.1.20
