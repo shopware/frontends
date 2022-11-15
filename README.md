@@ -5,7 +5,7 @@
 </div>
 
 <p align="center">
-	📚 <a href="https://shopware-frontends-docs.vercel.app/">Docs</a> | 💬 <a href="https://github.com/shopware/frontends/discussions">Discussions</a> | 🚀 <a href="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store">Try it out</a>
+	📚 <a href="https://shopware-frontends-docs.vercel.app/" target="_blank">Docs</a> | 💬 <a href="https://github.com/shopware/frontends/discussions">Discussions</a> | 🚀 <a href="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" target="_blank">Try it out</a>
 </p>
 
 <p align="center">
@@ -37,9 +37,9 @@ pnpm run dev --filter='docs'
 
 ## Architecture
 
-![Shopware Frontends Architecture](.readme/frontends-architecture.png)
+Shopware Frontends is a framework which is divided into separate modules of which some can be used independently.
 
-Shopware Frontends is divided into separate modules of which some can be used independently.
+![Shopware Frontends Architecture](.readme/frontends-architecture.png)
 
 **API Client**
 
@@ -51,17 +51,21 @@ An opinionated set of Vue.js composables like `useProduct` or `useCustomer` to u
 
 **CMS Base**
 
-An opinionated implementation of all default Shopware Sections, Blocks and Elements in Tailwind.css.
+An implementation of all default Shopware Sections, Blocks and Elements in Tailwind.css.
 
 **Helpers**
 
 A set of helper functions related to price formatting, translation handling, UI state, or URL handling.
 
-**Project Template**
+**Project Templates**
 
-A non-production-ready reference implementation of an eCommerce storefront, based on Tailwind.css, Vite, Nuxt 3 and Vue 3.
+We offer different project templates to get started with Shopware Frontends.
+
+Our demo store template is a non-production-ready reference implementation of an eCommerce storefront, based on Tailwind.css and Nuxt 3.
 
 ![Shopware Frontends Techstack](.readme/shopware-frontends-techstack.png)
+
+See the [templates](templates/) section for other project templates and how to use them.
 
 ## Key Features
 
