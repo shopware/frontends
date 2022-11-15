@@ -32,6 +32,8 @@ export type UseUserReturn = {
   isGuestSession: ComputedRef<boolean>;
   country: Ref<Country | null>;
   salutation: Ref<Salutation | null>;
+  defaultBillingAddressId: ComputedRef<string | null>;
+  defaultShippingAddressId: ComputedRef<string | null>;
   refreshUser: () => Promise<void>;
   logout: () => Promise<void>;
   loadCountry: (countryId: string) => Promise<void>;
@@ -128,7 +130,12 @@ export function useUser(): UseUserReturn {
   ): Promise<void> {
     await setDefaultCustomerPaymentMethod(paymentMethodId);
   }
-
+  const defaultBillingAddressId = computed(
+    () => user.value?.defaultBillingAddressId || null
+  );
+  const defaultShippingAddressId = computed(
+    () => user.value?.defaultShippingAddressId || null
+  );
   const isLoggedIn = computed(() => !!user.value?.id && !!user.value.active);
   const isCustomerSession = computed(
     () => !!user.value?.id && !user.value.guest
@@ -152,5 +159,7 @@ export function useUser(): UseUserReturn {
     loadCountry,
     country,
     setUser,
+    defaultBillingAddressId,
+    defaultShippingAddressId,
   };
 }
