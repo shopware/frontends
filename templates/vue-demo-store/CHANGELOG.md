@@ -1,5 +1,16 @@
 # vue-demo-store
 
+## 0.1.1
+
+### Patch Changes
+
+- [`ef791ee`](https://github.com/shopware/frontends/commit/ef791eec6c6abbb9f591759676fea1f4cb66e096) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Use text compression for assets
+
+- Updated dependencies []:
+  - @shopware-pwa/composables-next@0.2.1
+  - @shopware-pwa/cms-base@0.1.22
+  - @shopware-pwa/nuxt3-module@0.1.22
+
 ## 0.1.0
 
 ### Minor Changes

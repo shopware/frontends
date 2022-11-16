@@ -1,5 +1,12 @@
 # @shopware-pwa/cms-base
 
+## 0.1.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @shopware-pwa/composables-next@0.2.1
+
 ## 0.1.21
 
 ### Patch Changes

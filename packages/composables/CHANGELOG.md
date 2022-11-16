@@ -1,5 +1,11 @@
 # @shopware-pwa/composables-next
 
+## 0.2.1
+
+### Patch Changes
+
+- update dependency
+
 ## 0.2.0
 
 ### Minor Changes

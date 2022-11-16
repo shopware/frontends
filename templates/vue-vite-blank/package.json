@@ -1,7 +1,7 @@
 {
   "name": "vue-vite-blank",
   "private": true,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@shopware-pwa/composables-next": "0.2.0",
-    "@shopware-pwa/vue3-plugin": "0.1.21",
+    "@shopware-pwa/composables-next": "0.2.1",
+    "@shopware-pwa/vue3-plugin": "0.1.22",
     "vue": "^3.2.37"
   },
   "devDependencies": {
