@@ -29,7 +29,7 @@ const { routeName, foreignKey } = useNavigationContext(
 
 function render() {
   const componentName = routeName.value;
-  const componentNameToResolve = pascalCase(componentName);
+  const componentNameToResolve = pascalCase(componentName as string);
   const cmsPageView = routeName && resolveComponent(componentNameToResolve);
   if (cmsPageView) {
     if (cmsPageView === componentNameToResolve)
