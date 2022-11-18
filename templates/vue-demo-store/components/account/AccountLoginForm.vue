@@ -115,6 +115,7 @@ const invokeLogin = async (): Promise<void> => {
               <nuxt-link
                 to="/register"
                 class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                data-testid="login-sign-up-link"
               >
                 Sign up
               </nuxt-link>

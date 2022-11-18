@@ -30,6 +30,7 @@ async function invokeLogout() {
             type="button"
             class="text-sm text-gray-700 focus:outline-none"
             @click="isAccountMenuOpen = !isAccountMenuOpen"
+            data-testid="account-menu-hello-button"
           >
             Hello, {{ user?.firstName }}!
           </button>
