@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/vue3-plugin",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "type": "module",
   "module": "./dist/vue3-plugin.es.js",
   "types": "./dist/main.d.ts",

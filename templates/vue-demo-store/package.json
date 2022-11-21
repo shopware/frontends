@@ -1,6 +1,6 @@
 {
   "name": "vue-demo-store",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
@@ -11,11 +11,11 @@
     "analyze": "nuxi analyze"
   },
   "dependencies": {
-    "@shopware-pwa/cms-base": "0.1.22",
-    "@shopware-pwa/composables-next": "0.2.1",
-    "@shopware-pwa/helpers-next": "0.1.20",
-    "@shopware-pwa/nuxt3-module": "0.1.22",
-    "@shopware-pwa/api-client": "0.1.20",
+    "@shopware-pwa/cms-base": "0.2.0",
+    "@shopware-pwa/composables-next": "0.3.0",
+    "@shopware-pwa/helpers-next": "0.1.21",
+    "@shopware-pwa/nuxt3-module": "0.1.23",
+    "@shopware-pwa/api-client": "0.2.0",
     "@shopware-pwa/types": "0.1.20",
     "@unocss/nuxt": "^0.46.5",
     "@vuelidate/core": "^2.0.0",
