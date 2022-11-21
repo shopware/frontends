@@ -54,7 +54,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
               class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-6 sm:pb-0"
             >
               <router-link
-                :to="'/' + childElement.seoUrls[0]?.seoPathInfo"
+                :to="'/' + childElement?.seoUrls?.[0]?.seoPathInfo"
                 class="flex justify-between rounded-lg hover:bg-gray-50"
               >
                 <div
