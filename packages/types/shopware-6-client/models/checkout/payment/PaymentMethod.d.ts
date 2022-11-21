@@ -20,6 +20,7 @@ export type PaymentMethod = {
   active: boolean;
   plugin: Plugin | null;
   translations: PaymentMethodTranslation[] | null;
+  translated: PaymentMethodTranslation | null;
   orderTransactions: OrderTransaction[] | null;
   customers: Customer[] | null;
   salesChannelDefaultAssignments: SalesChannel[] | null;

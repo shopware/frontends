@@ -15,6 +15,7 @@ import {
   getConfirmPasswordResetEndpoint,
   getCustomerAccountConfirmEndpoint,
   getCustomerUpdatePaymentMethodEndpoint,
+  getNewsletterRecipientEndpoint,
 } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
 import {
@@ -384,6 +385,24 @@ export async function setDefaultCustomerPaymentMethod(
 }> {
   const response = await contextInstance.invoke.post(
     getCustomerUpdatePaymentMethodEndpoint(paymentMethodId)
+  );
+  return response.data;
+}
+
+/**
+ * Checking if user is newsletter subscriber
+ *
+ * @throws ClientApiError
+ * @public
+ */
+export async function isNewsletterSubscriber(
+  contextInstance: ShopwareApiInstance = defaultInstance
+): Promise<{
+  status: string;
+  apiAlias: string;
+}> {
+  const response = await contextInstance.invoke.post(
+    getNewsletterRecipientEndpoint()
   );
   return response.data;
 }

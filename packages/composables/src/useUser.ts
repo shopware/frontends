@@ -20,6 +20,9 @@ import {
   Country,
   Salutation,
   ShopwareSearchParams,
+  PaymentMethodTranslation,
+  BillingAddress,
+  ShippingAddress,
 } from "@shopware-pwa/types";
 import { useShopwareContext, useCart, useInternationalization } from ".";
 
@@ -42,6 +45,9 @@ export type UseUserReturn = {
   updateEmail: (updateEmailData: CustomerUpdateEmailParam) => Promise<void>;
   setDefaultPaymentMethod: (paymentMethodId: string) => Promise<void>;
   setUser: (user: Partial<Customer>) => void;
+  userDefaultPaymentMethod: ComputedRef<PaymentMethodTranslation | null>;
+  userDefaultBillingAddress: ComputedRef<BillingAddress | null>;
+  userDefaultShippingAddress: ComputedRef<ShippingAddress | null>;
 };
 
 const storeUser = ref<Partial<Customer>>();
@@ -57,7 +63,15 @@ export function useUser(): UseUserReturn {
   const setUser = (user: Partial<Customer>) => {
     storeUser.value = user;
   };
-
+  const userDefaultPaymentMethod = computed(
+    () => user.value?.defaultPaymentMethod?.translated || null
+  );
+  const userDefaultBillingAddress = computed(
+    () => user.value?.defaultBillingAddress || null
+  );
+  const userDefaultShippingAddress = computed(
+    () => user.value?.defaultShippingAddress || null
+  );
   const country: Ref<Country | null> = ref(null);
   const salutation: Ref<Salutation | null> = ref(null);
   const user = computed(() => storeUser.value);
@@ -161,5 +175,8 @@ export function useUser(): UseUserReturn {
     setUser,
     defaultBillingAddressId,
     defaultShippingAddressId,
+    userDefaultPaymentMethod,
+    userDefaultBillingAddress,
+    userDefaultShippingAddress,
   };
 }

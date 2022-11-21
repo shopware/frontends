@@ -237,6 +237,12 @@ export const getNewsletterUnsubscribeEndpoint = () => `/newsletter/unsubscribe`;
 /**
  * @public
  */
+export const getNewsletterRecipientEndpoint = () =>
+  `/store-api/account/newsletter-recipient`;
+
+/**
+ * @public
+ */
 export const getPageResolverEndpoint = () => `/store-api/pwa/page`;
 
 /**
