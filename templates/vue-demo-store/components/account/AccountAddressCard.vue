@@ -14,9 +14,11 @@ const props = withDefaults(
     countries: Array<Country>;
     salutations: Array<Salutation>;
     canSetDefault?: boolean;
+    canEdit?: boolean;
   }>(),
   {
     canSetDefault: true,
+    canEdit: true,
   }
 );
 
@@ -48,6 +50,7 @@ const setDefaultBillingAddress = async () => {
         {{ `${address.firstName} ${address.lastName}` }}
       </h5>
       <div
+        v-if="canEdit"
         i-carbon-edit
         text-xl
         inline-block

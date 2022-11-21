@@ -1,6 +1,7 @@
 import {
   newsletterSubscribe as newsletterSubscribeAPI,
   newsletterUnsubscribe as newsletterUnsubscribeAPI,
+  isNewsletterSubscriber as isNewsletterSubscriberAPI,
 } from "@shopware-pwa/api-client";
 import { NewsletterInput } from "@shopware-pwa/types";
 import { useShopwareContext, useInternationalization } from ".";
@@ -8,6 +9,7 @@ import { useShopwareContext, useInternationalization } from ".";
 export type UseNewsletterReturn = {
   newsletterSubscribe: (params: NewsletterInput) => Promise<void>;
   newsletterUnsubscribe: (email: string) => Promise<void>;
+  isNewsletterSubscriber: () => Promise<any>;
 };
 
 export function useNewsletter(): UseNewsletterReturn {
@@ -33,8 +35,14 @@ export function useNewsletter(): UseNewsletterReturn {
     );
   }
 
+  async function isNewsletterSubscriber() {
+    const response = await isNewsletterSubscriberAPI(apiInstance);
+    return response.status !== "optOut";
+  }
+
   return {
     newsletterSubscribe,
     newsletterUnsubscribe,
+    isNewsletterSubscriber,
   };
 }
