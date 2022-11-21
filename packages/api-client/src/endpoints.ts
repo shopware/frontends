@@ -152,7 +152,7 @@ export const getCustomerAccountConfirmEndpoint = () =>
  */
 export const getCustomerUpdatePaymentMethodEndpoint = (
   paymentMethodId: string
-) => `/account/change-payment-method/${paymentMethodId}`;
+) => `/store-api/account/change-payment-method/${paymentMethodId}`;
 
 // checkout
 
