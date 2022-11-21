@@ -223,7 +223,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
             </div>
             <div class="i-carbon-chevron-down h-5 w-5 ml-1"></div>
           </div>
-          <div class="flex flex-wrap" v-if="!getInitialFilters.length">
+          <div class="flex flex-wrap" v-show="!getInitialFilters.length">
             <div class="flex pl-2 flex-wrap">
               <div class="py-3 mb-2 mr-4 max-w-sm animate-pulse">
                 <div
@@ -259,68 +259,6 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
           </div>
         </main>
       </div>
-      <!-- SSR static placeholder -->
-      <!-- <div class="bg-white" role="status">
-        <main class="mx-auto">
-          <div
-            class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
-          >
-            <div>
-              <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
-                {{ getTranslatedProperty(category, "name") }}
-                ...
-              </h1>
-            </div>
-
-            <div class="flex items-center" ref="dropdownElement">
-              <div class="relative inline-block text-left">
-                <div>
-                  <button
-                    type="button"
-                    disabled
-                    class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
-                  >
-                    Sort
-                    <div class="i-carbon-chevron-down h-5 w-5 ml-1"></div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="flex pl-2 flex-wrap">
-            <div class="py-3 mb-2 max-w-sm animate-pulse">
-              <div
-                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
-              ></div>
-            </div>
-            <div class="py-3 max-w-sm animate-pulse">
-              <div
-                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-25 h-12 text-gray-400 hover:text-gray-500 rounded"
-              ></div>
-            </div>
-            <div class="py-3 ml-4 mb-2 max-w-sm animate-pulse">
-              <div
-                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-25 h-12 text-gray-400 hover:text-gray-500 rounded"
-              ></div>
-            </div>
-            <div class="py-3 mb-2 max-w-sm animate-pulse">
-              <div
-                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
-              ></div>
-            </div>
-            <div class="py-3 mb-2 max-w-sm animate-pulse">
-              <div
-                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
-              ></div>
-            </div>
-            <div class="py-3 mb-2 max-w-sm animate-pulse">
-              <div
-                class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
-              ></div>
-            </div>
-          </div>
-        </main>
-      </div> -->
     </template>
   </ClientOnly>
 </template>
