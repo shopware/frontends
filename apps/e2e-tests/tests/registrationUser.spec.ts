@@ -21,8 +21,8 @@ test.describe.only("Registration new user", () => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCustomerData(
-      "e2e "+faker.name.firstName(),
-      "e2e "+faker.name.lastName(),
+      "e2e " + faker.name.firstName(),
+      "e2e " + faker.name.lastName(),
       faker.internet.exampleEmail(),
       faker.internet.password()
     );
