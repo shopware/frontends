@@ -8,7 +8,7 @@ const decimalPrecision = 2;
 
 export type UsePriceReturn = {
   init: (options: { currencySymbol: string; currencyPosition: number }) => void;
-  getFormattedPrice: (value: number | string) => string;
+  getFormattedPrice: (value: number | string | undefined) => string;
 };
 
 export function usePrice(): UsePriceReturn {
@@ -36,7 +36,10 @@ export function usePrice(): UsePriceReturn {
   /**
    * Format price (2) -> 2.00 $
    */
-  function getFormattedPrice(value: number | string): string {
+  function getFormattedPrice(value: number | string | undefined): string {
+    if (typeof value === "undefined") {
+      return "";
+    }
     let formattedPrice = [
       (+value).toFixed(decimalPrecision),
       currencySymbol.value,

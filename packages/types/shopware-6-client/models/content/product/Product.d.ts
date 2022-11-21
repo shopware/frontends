@@ -59,6 +59,17 @@ export type Product = {
   calculatedPrice: CalculatedPrice;
   configuratorSettings: PropertyGroup[] | null;
   sortedProperties: PropertyGroup[] | null;
+  cheapestPrice: {
+    apiAlias: "shopware_core_content_product_data_abstraction_layer_cheapest_price_cheapest_price";
+    hasRange: boolean;
+    parentId: null | string;
+    price: Price[];
+    purchase: number;
+    reference: number;
+    ruleId: null | string;
+    unitId: null | string;
+    variantId: null | string;
+  };
   isNew: boolean;
   parentId: string | null;
   childCount: number;
