@@ -128,7 +128,7 @@ export function useUser(): UseUserReturn {
   async function setDefaultPaymentMethod(
     paymentMethodId: string
   ): Promise<void> {
-    await setDefaultCustomerPaymentMethod(paymentMethodId);
+    await setDefaultCustomerPaymentMethod(paymentMethodId, apiInstance);
   }
   const defaultBillingAddressId = computed(
     () => user.value?.defaultBillingAddressId || null

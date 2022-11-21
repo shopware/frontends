@@ -22,7 +22,9 @@ describe("CustomerService - setDefaultCustomerPaymentMethod", () => {
       "400 - payment method does not exist"
     );
     expect(mockedPost).toBeCalledTimes(1);
-    expect(mockedPost).toBeCalledWith("/account/change-payment-method/1234");
+    expect(mockedPost).toBeCalledWith(
+      "/store-api/account/change-payment-method/1234"
+    );
   });
 
   it("returns some data if successfully set", async () => {
@@ -30,6 +32,8 @@ describe("CustomerService - setDefaultCustomerPaymentMethod", () => {
     const result = await setDefaultCustomerPaymentMethod("12345");
     expect(result).toStrictEqual({});
     expect(mockedPost).toBeCalledTimes(1);
-    expect(mockedPost).toBeCalledWith("/account/change-payment-method/12345");
+    expect(mockedPost).toBeCalledWith(
+      "/store-api/account/change-payment-method/12345"
+    );
   });
 });
