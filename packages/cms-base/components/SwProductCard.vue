@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import {
+  BoxLayout,
+  DisplayMode,
+  useProductPrice,
+} from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductThumbnailUrl,

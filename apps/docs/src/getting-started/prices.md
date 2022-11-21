@@ -19,6 +19,14 @@ In this chapter you will learn how
 - To format and indicate pricing tiers
 - Display the correct prices depending on context
 
+:::tip You can use the price helper in order to cover the most common cases
+
+The `useProductPrice` composable helps you to show: regular price, tier prices, from price, variants from price.
+
+<PageRef page="./use-product-price" title="useProductPrice helper explained" sub="Display prices in generalized way." />
+
+:::
+
 ## Structure of a price
 
 A product in Shopware can have multiple prices. All these prices are defined in a `CalculatedPrice` object, which contains the following fields:

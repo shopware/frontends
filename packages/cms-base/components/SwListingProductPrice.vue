@@ -7,35 +7,28 @@ const props = defineProps<{
 }>();
 const { product } = toRefs(props);
 
-const { originalPrice, price, showOriginalPrice, fromPrice } =
+const { unitPrice, displayFromVariants, displayFrom } =
   useProductPrice(product);
 </script>
 
 <template>
-  <div>
-    <template v-if="!fromPrice">
-      <SharedPrice
-        v-if="showOriginalPrice && originalPrice"
-        class="text-sm text-gray-900 basis-2/6 justify-end line-through"
-        :value="originalPrice"
-      />
-      <SharedPrice
-        v-if="price"
-        class="text-m text-gray-900 basis-2/6 justify-end"
-        :class="{
-          'text-red': showOriginalPrice,
-        }"
-        :value="price"
-      />
-    </template>
-    <template v-else>
-      <SharedPrice
-        v-if="showOriginalPrice && fromPrice"
-        class="text-sm text-gray-900 basis-2/6 justify-end line-through"
-        :value="fromPrice"
+  <div :id="product.id">
+    <SharedPrice
+      class="text-xs text-gray-900 basis-2/6 justify-end"
+      v-if="displayFromVariants"
+      :value="displayFromVariants"
+    >
+      <template #beforePrice
+        ><span v-if="displayFromVariants">variants from</span></template
       >
-        <template #beforePrice> From </template>
-      </SharedPrice>
-    </template>
+    </SharedPrice>
+    <SharedPrice
+      class="text-sm text-gray-900 basis-2/6 justify-end"
+      :value="unitPrice"
+    >
+      <template #beforePrice
+        ><span v-if="displayFrom || displayFromVariants">from</span></template
+      >
+    </SharedPrice>
   </div>
 </template>
