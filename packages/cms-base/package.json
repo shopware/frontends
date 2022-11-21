@@ -23,7 +23,7 @@
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "he": "^1.2.0",
+    "entities": "^4.4.0",
     "html-to-vue": "^1.4.0"
   },
   "devDependencies": {

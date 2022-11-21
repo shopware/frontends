@@ -88,10 +88,10 @@ importers:
       '@shopware-pwa/helpers-next': workspace:*
       '@shopware-pwa/types': workspace:*
       '@vue/eslint-config-typescript': ^11.0.2
+      entities: ^4.4.0
       eslint: 8.24.0
       eslint-config-shopware: workspace:*
       eslint-plugin-vue: ^9.6.0
-      he: ^1.2.0
       html-to-vue: ^1.4.0
       tsconfig: workspace:*
       typescript: ^4.8.4
@@ -103,7 +103,7 @@ importers:
       '@shopware-pwa/api-client': link:../api-client
       '@shopware-pwa/composables-next': link:../composables
       '@shopware-pwa/helpers-next': link:../helpers
-      he: 1.2.0
+      entities: 4.4.0
       html-to-vue: 1.4.0
     devDependencies:
       '@nuxt/schema': 3.0.0-rc.11_fwemgdvumxap6dfcd4fpjmg6cy
@@ -1640,7 +1640,6 @@ packages:
       - vls
       - vti
       - webpack
-    dev: true
 
   /@nuxt/vite-builder/3.0.0-rc.11_vue@3.2.40:
     resolution: {integrity: sha512-WkQ+/cfdIf5XVZea8xD+ciLXpmQkNu8d5p16WJSp10hEhj3Vt/cQ8OkXDVHGGRML+NsDL0bQXDeg3PcM/bw94w==}
@@ -1693,6 +1692,7 @@ packages:
       - vls
       - vti
       - webpack
+    dev: true
 
   /@playwright/test/1.26.1:
     resolution: {integrity: sha512-bNxyZASVt2adSZ9gbD7NCydzcb5JaI0OR9hc7s+nmPeH604gwp0zp17NNpwXY4c8nvuBGQQ9oGDx72LE+cUWvw==}
@@ -3552,7 +3552,7 @@ packages:
       '@vueuse/core': 9.3.0_vue@3.2.40
       '@vueuse/metadata': 9.3.0
       local-pkg: 0.4.2
-      nuxt: 3.0.0-rc.11_rollup@2.79.1
+      nuxt: 3.0.0-rc.11_2rinwjdjsb2v4b4fgzg7ynqxty
       vue-demi: 0.13.11_vue@3.2.40
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -5021,7 +5021,6 @@ packages:
   /entities/4.4.0:
     resolution: {integrity: sha512-oYp7156SP8LkeGD0GF85ad1X9Ai79WtRsZ2gxJqtBuzH+98YUV6jkHEKlZkMbcrjJjIVJNIDP/3WL9wQkoPbWA==}
     engines: {node: '>=0.12'}
-    dev: true
 
   /errno/0.1.8:
     resolution: {integrity: sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A==}
@@ -6631,6 +6630,7 @@ packages:
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
+    dev: true
 
   /history/4.10.1:
     resolution: {integrity: sha512-36nwAD620w12kuzPAsyINPWJqlNbij+hpK1k9XRloDtym8mxzGYl2c17LnV6IAGB2Dmg4tEa7G7DlawS0+qjew==}
@@ -8587,7 +8587,6 @@ packages:
       - vls
       - vti
       - webpack
-    dev: true
 
   /nuxt/3.0.0-rc.11_rollup@2.79.1:
     resolution: {integrity: sha512-I0wyxPHnUoJBWoROKUx91PLKaAFZ/TsxSpcm3/jn/Ysq2RGU5Q3o9AzqT0YcXW4rgH35QPFvGpqopU9X0vS7Qw==}
@@ -8653,6 +8652,7 @@ packages:
       - vls
       - vti
       - webpack
+    dev: true
 
   /nwsapi/2.2.2:
     resolution: {integrity: sha512-90yv+6538zuvUMnN+zCr8LuV6bPFdq50304114vJYJ8RDyK8D5O9Phpbd6SZWgI7PwzmmfN1upeOJlvybDSgCw==}
@@ -11702,7 +11702,6 @@ packages:
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.5
       vscode-uri: 3.0.3
-    dev: true
 
   /vite-plugin-checker/0.5.1_vite@3.1.8:
     resolution: {integrity: sha512-NFiO1PyK9yGuaeSnJ7Whw9fnxLc1AlELnZoyFURnauBYhbIkx9n+PmIXxSFUuC9iFyACtbJQUAEuQi6yHs2Adg==}
@@ -11741,6 +11740,7 @@ packages:
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.5
       vscode-uri: 3.0.3
+    dev: true
 
   /vite/3.0.9:
     resolution: {integrity: sha512-waYABTM+G6DBTCpYAxvevpG50UOlZuynR0ckTK5PawNVt7ebX6X7wNXHaGIO6wYYFXSM7/WcuFuO2QzhBB6aMw==}
