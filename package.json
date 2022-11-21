@@ -21,13 +21,13 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.7",
     "@changesets/cli": "^2.25.2",
-    "@commitlint/cli": "^17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
-    "simple-git-hooks": "^2.8.0",
-    "turbo": "^1.5.5",
-    "vercel": "^28.4.7"
+    "simple-git-hooks": "^2.8.1",
+    "turbo": "^1.6.3",
+    "vercel": "^28.5.5"
   },
   "engines": {
     "node": "^16.x || ^18.x"

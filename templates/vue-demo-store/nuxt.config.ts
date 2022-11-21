@@ -6,6 +6,14 @@ export default defineNuxtConfig({
   //   shopwareEndpoint: "https://you.endpoint.com",
   //   shopwareAccessToken: "your-access-token",
   // },
+  alias: {
+    /**
+     * TODO: Temp fix until new VueUse published:
+     * - https://github.com/vueuse/vueuse/pull/2449
+     * - https://github.com/vueuse/vueuse/actions/workflows/publish.yml
+     */
+    useMeta: "~/composables/useMeta",
+  },
   typescript: {
     typeCheck: true,
     strict: true,
