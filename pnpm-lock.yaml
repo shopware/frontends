@@ -233,9 +233,9 @@ importers:
 
   templates/vue-blank:
     specifiers:
-      '@shopware-pwa/api-client': 0.1.20
-      '@shopware-pwa/composables-next': 0.2.1
-      '@shopware-pwa/nuxt3-module': 0.1.22
+      '@shopware-pwa/api-client': 0.2.0
+      '@shopware-pwa/composables-next': 0.3.0
+      '@shopware-pwa/nuxt3-module': 0.1.23
       '@vueuse/nuxt': ^9.5.0
       nuxt: ^3.0.0
     devDependencies:
@@ -247,11 +247,11 @@ importers:
 
   templates/vue-demo-store:
     specifiers:
-      '@shopware-pwa/api-client': 0.1.20
-      '@shopware-pwa/cms-base': 0.1.22
-      '@shopware-pwa/composables-next': 0.2.1
-      '@shopware-pwa/helpers-next': 0.1.20
-      '@shopware-pwa/nuxt3-module': 0.1.22
+      '@shopware-pwa/api-client': 0.2.0
+      '@shopware-pwa/cms-base': 0.2.0
+      '@shopware-pwa/composables-next': 0.3.0
+      '@shopware-pwa/helpers-next': 0.1.21
+      '@shopware-pwa/nuxt3-module': 0.1.23
       '@shopware-pwa/types': 0.1.20
       '@unocss/nuxt': ^0.46.5
       '@vue/eslint-config-typescript': ^11.0.2
@@ -286,8 +286,8 @@ importers:
 
   templates/vue-vite-blank:
     specifiers:
-      '@shopware-pwa/composables-next': 0.2.1
-      '@shopware-pwa/vue3-plugin': 0.1.22
+      '@shopware-pwa/composables-next': 0.3.0
+      '@shopware-pwa/vue3-plugin': 0.1.23
       '@vitejs/plugin-vue': ^3.2.0
       typescript: ^4.9.3
       vite: ^3.2.4
