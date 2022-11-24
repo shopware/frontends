@@ -8,6 +8,7 @@ import { decodeHTML } from "entities";
 import htmlToVue from "html-to-vue";
 // @ts-ignore
 const { renderHtml, getOptionsFromNode } = htmlToVue;
+
 const props = defineProps<{
   content: CmsElementText;
 }>();
