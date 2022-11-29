@@ -21,8 +21,9 @@ const _wishlistItems: Ref<string[]> = ref([]);
 export function useSyncWishlist(): UseSyncWishlistReturn {
   const { apiInstance } = useShopwareContext();
 
-  function addToWishlistSync(id: string) {
-    addWishlistProduct(id, apiInstance);
+  async function addToWishlistSync(id: string) {
+    await addWishlistProduct(id, apiInstance);
+    getWishlistProducts();
   }
 
   async function removeFromWishlistSync(id: string) {
