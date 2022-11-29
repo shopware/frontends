@@ -13,85 +13,56 @@ head:
 
 # Create content pages
 
-::: warning Work in progress
-This page is currently work in progress and will be updated soon.
+In this chapter you will learn how to display content pages with data from Shopware's own CMS. It is based on the mechanism of routing and fetching page content described in the [previous chapter](./routing.md). The case of building fully custom components from scratch will be covered as well. Specifically, you will learn how to
+
+- Render a content page using the cms-base package
+- Render a content page using custom components
+- Resolve a root component
+
+## Use the cms-base package
+
+Using the cms-base package, you don't have to implement any CMS components by yourself. You can start with a working implementation but add and override single components as you need. It requires a couple dependencies for styling and validation purposes to work properly.
+
+### Install the package
+
+The `@shopware-pwa/cms-base` package provides an implementation of all default CMS components in Shopware's Shopping Experiences. It uses Tailwind.css syntax for styling. You will now use it to render a content page.
+
+First of all, add the package to your project:
+
+```bash
+npm install -D @shopware-pwa/cms-base
+```
+
+Next, you need to register all components in its `components/public` directory globally. How to do it, depends on your environment. However, the package also comes with a nuxt module which does that for you. So in any Nuxt application, you can just add if to the `modules` section of your Nuxt config file:
+
+```diff
+/* nuxt.config.ts */
+
+export default defineNuxtConfig({
+  /* ... */
+- modules: [/* ... */, "@shopware-pwa/nuxt3-module"],
++ modules: [/* ... */, "@shopware-pwa/cms-base"],
+});
+```
+
+### Render the page
+
+Now, you can import all components from the `@shopware-pwa/cms-base` package and use them in your templates. The most straightforward way to render a page is to use the `CmsPage` component. It takes a `content` prop and resolves all subordinate sections, blocks and elements automatically. Put the following code in your catch-all component that also handles the [routing logic](./routing.md#resolve-a-route-to-a-page).
+
+```vue-html
+<CmsPage v-if="data" :content="data.value.cmsPage"/>
+```
+
+:::warning This will only work
+if you followed the previous chapter on [routing](./routing.md). The `data` value in this example is a reactive reference to either a product, a category or a landing page response. If you are not sure how to get the data otherwise, check that chapter and see how the data is fetched.
 :::
 
-In this chapter you will learn how to
+### Customize components
 
-- Fetch a content page
-- Resolve the root component of your page
-- Use custom CMS components
+The `cms-base` package has an opinionated style of components and is based on Tailwind.css. If you want to override components or add custom ones, you can build them right into your project or import them as a separate package.
 
-## Fetch a page
+<PageRef page="../framework/shopping-experiences" title="Shopping Experiences" sub="Customize CMS components" />
 
-We can retrieve a content page using the `useCms` composable hook.
+## Use custom components
 
-```js
-const { search } = useCms();
-const route = useRoute();
-
-let page = await search(route.path); // Has type CmsPageResponse
-```
-
-This will return a CMS page result
-
-```ts
-export type CmsPageResponse =
-  | CmsCategoryPageResponse
-  | CmsProductPageResponse
-  | CmsStaticPageResponse;
-```
-
-which we can further use to build our CMS page.
-
-The nice thing about CMS pages in Shopware, is that they are all built in the same way - based a tree built as sections, blocks and components.
-
-## Resolve the root component
-
-A content page can be one of three types
-
-- Category
-- Product
-- Static
-
-So as a next step we have to resolve the root component of our tree, which we can deduct from the `resourceType` property of our page response.
-
-The possible values of `resourceType` are
-
-- `frontend.navigation.page`
-- `frontend.detail.page`
-- `frontend.landing.page`
-
-The example below shows how to resolve the root component of a CMS page based on the `resourceType` property.
-
-:::tip
-You can use the `resolveComponent( componentName )` method to [resolve a component](https://vuejs.org/api/render-function.html#resolvecomponent) from a given resource type within your custom render function.
-:::
-
-```js
-const cmsPage = computed(() => page.value?.cmsPage);
-
-function render() {
-  const componentName = page.value?.resourceType;
-  const componentNameToResolve = pascalCase(componentName);
-  const cmsPageView =
-    page.value?.resourceType && resolveComponent(componentNameToResolve);
-  if (cmsPageView) {
-    if (cmsPageView === componentNameToResolve)
-      return h("div", {}, "Problem resolving component: " + componentName);
-    return h("div", h(cmsPageView, { cmsPage: cmsPage.value }));
-  }
-  return h("div", {}, "Loading...");
-}
-```
-
-The code above will only run, when components with the same name as `resourceType` are available in your project.
-
-## Custom CMS components
-
-The `cms-base` package has an opinionated style of components and is based on Tailwind.css. If you want to use custom components, you can build them right into your project or import them as a separate package.
-
-In order to see how you can build custom CMS components, head to Shopping Experiences
-
-<PageRef page="../framework/shopping-experiences" title="Shopping Experiences" />
+If you use custom components and not the cms-base package, you have to ensure the correct rendering of the page. You also need to re-create all components that the Shopware CMS uses. For the creation of custom components - such as elements or blocks, you can follow the instructions given in [Shopping Experiences](./../framework/shopping-experiences.md) and benefit from typehinting and the `useCms*` composables.
