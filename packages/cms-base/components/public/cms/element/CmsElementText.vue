@@ -88,7 +88,7 @@ const CmsTextRender = () => {
     <CmsTextRender />
   </div>
 </template>
-<style>
+<style scoped>
 /** Global CSS styles for text elements */
 h1,
 h2,
