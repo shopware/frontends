@@ -32,6 +32,9 @@ test.describe.only("Registration new user", () => {
       faker.address.city()
     );
     await registrationPage.submitRegistraionForm();
-    await page.locator("text =  Sign out ").isVisible();
+    await page
+      .locator("[data-testid='header-sing-out-link']")
+      .nth(1)
+      .isVisible();
   });
 });
