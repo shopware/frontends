@@ -15,31 +15,31 @@ const emits = defineEmits<{
 
 const { paymentMethods, getPaymentMethods } = useCheckout();
 const { setDefaultPaymentMethod } = useUser();
-const { paymentMethod, setPaymentMethod } = useSessionContext();
+const { paymentMethod: selectedPaymentMethod, setPaymentMethod } =
+  useSessionContext();
 const { pushSuccess } = useNotifications();
 
-const isLoading = ref(false);
+const isLoading = ref(true);
 
-onMounted(async () => {
-  isLoading.value = true;
-  await getPaymentMethods();
-  isLoading.value = false;
-});
-
-const formData = ref({
-  paymentMethod: paymentMethod.value?.id || "",
+const formData = reactive({
+  paymentMethod: "",
 });
 
 const invokeSave = async (): Promise<void> => {
   try {
-    await setPaymentMethod({ id: formData.value.paymentMethod });
-    await setDefaultPaymentMethod(formData.value.paymentMethod);
+    await setPaymentMethod({ id: formData.paymentMethod });
+    await setDefaultPaymentMethod(formData.paymentMethod);
     emits("success");
     pushSuccess("Set default payment method successfully");
   } catch (error) {
     console.error("error set default payment method", error);
   }
 };
+
+onMounted(async () => {
+  await getPaymentMethods();
+  isLoading.value = false;
+});
 </script>
 
 <template>
@@ -73,6 +73,7 @@ const invokeSave = async (): Promise<void> => {
               :id="paymentMethod.id"
               v-model="formData.paymentMethod"
               :value="paymentMethod.id"
+              :checked="selectedPaymentMethod?.id === paymentMethod.id"
               name="payment-method"
               type="radio"
               class="focus:ring-brand-light h-4 w-4 text-brand-primary border-gray-300"

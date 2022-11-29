@@ -40,9 +40,10 @@ const updateNewsletterStatus = async () => {
     pushError("Something goes wrong please try again later");
   }
 };
+
 onBeforeMount(async () => {
   if (user?.value?.salutationId) {
-    loadSalutation(user.value.salutationId);
+    await loadSalutation(user.value.salutationId);
   }
 });
 </script>
