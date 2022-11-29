@@ -18,6 +18,7 @@ export const sidebar = [
     items: [
       { text: "Setup Templates", link: "/getting-started/templates" },
       { text: "Navigation", link: "/getting-started/navigation" },
+      { text: "Routing", link: "/getting-started/routing" },
       { text: "Content Pages", link: "/getting-started/content-pages" },
       { text: "Cart", link: "/getting-started/cart" },
       { text: "Checkout ", link: "/getting-started/checkout" },

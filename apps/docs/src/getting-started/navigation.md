@@ -55,3 +55,7 @@ await loadNavigationElements({ depth: 2 });
   </ul>
 </template>
 ```
+
+## Next steps
+
+<PageRef page="routing" title="Work with routing" sub="Resolve paths and fetch content dynamically" />
