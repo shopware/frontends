@@ -34,6 +34,7 @@ export const sidebar = [
       { text: "Requirements", link: "/framework/requirements" },
       { text: "Shopping Experiences", link: "/framework/shopping-experiences" },
       { text: "Styling", link: "/framework/styling" },
+      { text: "Context Composables", link: "/framework/context-composables" },
       {
         text: "Asynchronous Components",
         link: "/framework/asynchronous-components",
