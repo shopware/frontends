@@ -40,8 +40,10 @@ export function useWishlist(): UseWishlistReturn {
   };
 
   const mergeWishlistProducts = async () => {
-    await mergeWishlistProductsSync(itemsLocal.value);
-    clearWishlist();
+    if (itemsLocal.value?.length) {
+      await mergeWishlistProductsSync(itemsLocal.value);
+      clearWishlist();
+    }
     getWishlistProductsSync();
   };
 
