@@ -18,13 +18,13 @@ const updated = ref(false);
 const isUpdating = ref(false);
 
 const state = reactive({
-  firstName: user.value?.firstName !== undefined ? user.value.firstName : "",
-  lastName: user.value?.lastName !== undefined ? user.value.lastName : "",
-  email: user.value?.email !== undefined ? user.value.email : "",
+  firstName: "",
+  lastName: "",
+  email: "",
   emailConfirmation: "",
   password: "",
-  salutationId: user.value?.email !== undefined ? user.value.email : "",
-  title: user.value?.title !== undefined ? user.value.title : "",
+  salutationId: "",
+  title: "",
 });
 
 const isEmailChanging = computed(() => state.email !== user.value?.email);
@@ -110,6 +110,14 @@ const invokeUpdate = async (): Promise<void> => {
     errorMessages.value = e.messages.map((m) => m.detail);
   }
 };
+onMounted(async () => {
+  await refreshUser();
+  state.firstName = user.value?.firstName || "";
+  state.lastName = user.value?.lastName || "";
+  state.email = user.value?.email || "";
+  state.salutationId = user.value?.salutationId || "";
+  state.title = user.value?.title || "";
+});
 </script>
 <template>
   <div class="space-y-8">
