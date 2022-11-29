@@ -150,17 +150,20 @@ const placeOrder = async () => {
 
 onMounted(async () => {
   refreshSessionContext();
-  isLoading["shippingMethods"] = true;
-  await getShippingMethods();
-  isLoading["shippingMethods"] = false;
-
-  isLoading["paymentMethods"] = true;
-  await getPaymentMethods();
-  isLoading["paymentMethods"] = false;
 
   isLoading["shippingAddress"] = true;
-  await loadCustomerAddresses();
-  isLoading["shippingAddress"] = false;
+  isLoading["shippingMethods"] = true;
+  isLoading["paymentMethods"] = true;
+
+  Promise.any([
+    isLoggedIn.value ? loadCustomerAddresses() : null,
+    getShippingMethods(),
+    getPaymentMethods(),
+  ]).finally(() => {
+    isLoading["shippingAddress"] = false;
+    isLoading["shippingMethods"] = false;
+    isLoading["paymentMethods"] = false;
+  });
 });
 
 const registerErrors = ref<ShopwareError[]>([]);
