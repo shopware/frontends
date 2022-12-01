@@ -38,6 +38,7 @@ export class HomePage extends AbstractPage {
     await Promise.all([
       this.linkToCartPage.click(),
       this.page.waitForSelector("[data-testid='product-quantity']"),
+      this.page.waitForLoadState("load"),
     ]);
   }
 

@@ -13,9 +13,7 @@ export class WishlistPage {
   }
 
   async openWishlist() {
-    await Promise.all([
-      this.page.waitForLoadState("load"),
-      this.wishlistButton.click(),
-    ]);
+    await this.page.waitForLoadState(),
+    await this.wishlistButton.click()
   }
 }
