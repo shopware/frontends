@@ -83,10 +83,8 @@ In order to achieve it, the `errors` computed ref can be used:
 ```vue{5}
 <template>
     <div v-if="!isLoggedIn">
-        <div class="notification">
-            <div class="errors" v-if="errors.login.length">
-                {{ errors.login[0].detail }}
-            </div>
+        <div v-if="errors.login.length">
+            {{ errors.login[0].detail }}
         </div>
     </div>
 </template>
@@ -95,10 +93,6 @@ In order to achieve it, the `errors` computed ref can be used:
 The example explains how to display only the first error that may appear in the response while processing the `login` method (see, the `errors` computed has prefixed `login` nested object).
 
 ## Full example
-
-:::info
-For better readability, the example does not contain any styling. You can study the HTML used in the live example on the bottom instead.
-:::
 
 ```vue
 <script setup lang="ts">
@@ -115,10 +109,8 @@ const invokeLogin = () => login(loginCredentials);
     <input type="text" v-model="loginCredentials.username" />
     <input type="password" v-model="loginCredentials.password" />
     <button @click="invokeLogin">sign in</button>
-    <div class="notification">
-      <div class="errors" v-if="errors.login.length">
-        {{ errors.login[0].detail }}
-      </div>
+    <div v-if="errors.login.length">
+      {{ errors.login[0].detail }}
     </div>
   </div>
   <div v-else>
@@ -135,7 +127,3 @@ const invokeLogin = () => login(loginCredentials);
 ```
 
 <StackBlitzLiveExample projectId="mkucmus/frontends-examples" example="LoginForm" />
-
-## Next steps
-
-All properties exposed by the `useUser` composable are reactive, so they can be accessed in other components simultaneously.

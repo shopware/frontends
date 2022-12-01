@@ -1,17 +1,13 @@
 # Create a product listing
 
-::: warning Work in progress
-This page is currently work in progress and will be updated soon.
-:::
-
 In this chapter you will learn how to
 
 - Initialize the `useListing` composable
 - Search for products
-- Display listing elements
-- Add pagination
-- Sort the products
-- Use helpers
+- Display products in a listing
+- Implement a pagination
+- Apply sortings, pagination, and filters
+- Use the `helpers` package
 
 ## Listing context
 
@@ -91,7 +87,7 @@ search({ // invoke search() method
 });
 </script>
 <template>
- <div class="product-listing">
+ <div>
     <!-- iterate the getElements array -->
     <div v-for="product in getElements" :key="product.id">
         {{ product.name }}
@@ -212,8 +208,8 @@ The implementation can look similar to:
 
 ```html
 <!-- part of <template> -->
-<div class="pagination">
-  <div>pages: {{ getTotalPagesCount }}</div>
+<div>
+  <div>Pages: {{ getTotalPagesCount }}</div>
   <button
     v-if="getCurrentPage > 1"
     @click="changeCurrentPage(parseInt(getCurrentPage) - 1)"

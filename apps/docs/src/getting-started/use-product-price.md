@@ -33,15 +33,16 @@ In order to ensure if the variant prices are available, you can utilize the `dis
 
 ```vue
 <script setup lang="ts">
-const { unitPrice, displayVariantsFrom } = useProductPrice(/** argument omitted - Product object */);
+const { unitPrice, displayVariantsFrom } =
+  useProductPrice(/** argument omitted - Product object */);
 </script>
 <template>
-<div>
-  {{ unitPrice }} $
-  <span v-if="displayVariantsFrom">
-    Variants from {{ displayVariantsFrom }} $
-  </span>
-</div>
+  <div>
+    {{ unitPrice }} $
+    <span v-if="displayVariantsFrom">
+      Variants from {{ displayVariantsFrom }} $
+    </span>
+  </div>
 </template>
 ```
 
@@ -49,9 +50,9 @@ const { unitPrice, displayVariantsFrom } = useProductPrice(/** argument omitted 
 
 In this case, there are few options to display:
 
-* Regular price
-* Product with list price (kind of discount)
-* Tier prices
+- Regular price
+- Product with list price (kind of discount)
+- Tier prices
 
 ```ts
 const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(product);
@@ -62,38 +63,35 @@ Regular price, with list price included (in case of manufacturer's suggested ret
 
 ```vue
 <template>
-  <div v-if="isListPrice" class="old-price line-through">
-    {{ price?.listPrice?.price }} $ <!-- old price before discount -->
+  <div v-if="isListPrice">
+    {{ price?.listPrice?.price }} $
+    <!-- old price before discount -->
   </div>
   <div v-if="unitPrice">
-  {{ unitPrice }} $ <!-- actual price after discount -->
+    {{ unitPrice }} $
+    <!-- actual price after discount -->
   </div>
 </template>
 ```
-
 
 Tier prices presented as a table with range labeled by "to" and "from":
 
 ```vue
 <template>
   <div>
-    <table v-if="tierPrices.length"><!-- check if tierPrices array is not empty -->
+    <table v-if="tierPrices.length">
+      <!-- check if tierPrices array is not empty -->
       <tr v-for="(tierPrice, index) in tierPrices" :key="tierPrice.label">
         <td>
-          <span v-if="index < tierPrices.length - 1">
-            To
-          </span>
-          <span v-else>
-            From
-          </span>
+          <span v-if="index < tierPrices.length - 1"> To </span>
+          <span v-else> From </span>
           {{ tierPrice.quantity }}
         </td>
-        <td>
-         {{ tierPrice.unitPrice }} $
-        </td>
+        <td>{{ tierPrice.unitPrice }} $</td>
       </tr>
     </table>
-    <div v-else> <!-- show the regular unit price instead -->
+    <div v-else>
+      <!-- show the regular unit price instead -->
       {{ unitPrice }} $
     </div>
   </div>

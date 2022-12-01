@@ -5,14 +5,6 @@ In this chapter you will learn how to
 - Fetch and display payment and shipping information
 - Create an order summary (totals, taxes)
 - Place an order
-- Handle a payment
-
-We are going to use the following composables in the checkout process:
-
-- `useCheckout`
-- `useCart`
-- `useOrder`
-- `useOrderDetails`
 
 ## Shipping and payment information
 

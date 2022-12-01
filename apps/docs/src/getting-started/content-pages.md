@@ -17,7 +17,6 @@ In this chapter you will learn how to display content pages with data from Shopw
 
 - Render a content page using the cms-base package
 - Render a content page using custom components
-- Resolve a root component
 
 ## Use the cms-base package
 

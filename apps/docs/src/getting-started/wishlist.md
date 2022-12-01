@@ -4,7 +4,15 @@
 This page is currently work in progress and will be updated soon.
 :::
 
-In Shopware's API, wishlists are only available for authenticated (logged-in) users.
+In this chapter you will learn how to use the built-in wishlist API to create wishlist functionalities in your application. Specifically, you will learn how to
+
+- Create a wishlist page
+- Synchronize local and remote wishlist data
+- Add products to and remove products from the wishlist
+
+## Remote and local wishlists
+
+In Shopware's Store API, only authenticated (logged-in) users can manage a custom wishlist.
 
 The composables related to wishlists are built in a way that allows you to maintain a local (in-memory) wishlist for unauthenticated users and synchronize it with the server when the user logs in.
 
