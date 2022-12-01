@@ -19,7 +19,6 @@ In this chapter you will learn how to
 - Add products and promotions to a cart
 - Remove items from the cart
 - Display the cart
-- Share state using `inject` and `provide`
 
 ## Create a cart
 
