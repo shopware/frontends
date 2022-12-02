@@ -57,6 +57,15 @@ provide("swNavigation-footer-navigation", footerData);
                 <ul class="space-y-2">
                   <li>
                     <router-link
+                      to="/account"
+                      class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
+                    >
+                      <div i-carbon-dashboard text-xl inline-block />
+                      <span class="ml-3">Account Overview</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link
                       to="/account/profile"
                       class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
