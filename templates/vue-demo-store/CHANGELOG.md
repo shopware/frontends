@@ -1,5 +1,29 @@
 # vue-demo-store
 
+## 0.3.0
+
+### Minor Changes
+
+- [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb) Thanks [@patzick](https://github.com/patzick)! - improved session context to be better handled on SSR
+
+- [`fed1335`](https://github.com/shopware/frontends/commit/fed1335afe8fb8054cad72c34eb79ce66be3bf05) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Moving data rendering to CSR
+
+- [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb) Thanks [@patzick](https://github.com/patzick)! - added to template `useAuthGuard` which redirects to homepage if user is not logged in. You can adjust it to your desired behaviour.
+
+### Patch Changes
+
+- [`6693d2f`](https://github.com/shopware/frontends/commit/6693d2f4bf27eeaf80875f66d5700c1b113ae3fa) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix loading addresses on the checkout only when the user is logged in
+
+- [`d37cb27`](https://github.com/shopware/frontends/commit/d37cb27626e4b9d890516649b25dd9c93a94a366) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add a dashboard link to the menu
+
+- Updated dependencies [[`7310ca6`](https://github.com/shopware/frontends/commit/7310ca64506ca5418d3ec2ef80f5c7d0fe4b779c), [`412a3bd`](https://github.com/shopware/frontends/commit/412a3bde4a3d12b54ef3af2d9b8f030c7a605885), [`7ec2875`](https://github.com/shopware/frontends/commit/7ec2875f51e46e6b80756b848594011dd471e01e), [`412a3bd`](https://github.com/shopware/frontends/commit/412a3bde4a3d12b54ef3af2d9b8f030c7a605885), [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb), [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb), [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb)]:
+  - @shopware-pwa/composables-next@0.4.0
+  - @shopware-pwa/cms-base@0.2.1
+  - @shopware-pwa/types@0.2.0
+  - @shopware-pwa/nuxt3-module@0.1.24
+  - @shopware-pwa/api-client@0.2.1
+  - @shopware-pwa/helpers-next@0.1.22
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # vue-vite-blank
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`7310ca6`](https://github.com/shopware/frontends/commit/7310ca64506ca5418d3ec2ef80f5c7d0fe4b779c), [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb)]:
+  - @shopware-pwa/composables-next@0.4.0
+  - @shopware-pwa/vue3-plugin@0.1.24
+
 ## 0.0.5
 
 ### Patch Changes

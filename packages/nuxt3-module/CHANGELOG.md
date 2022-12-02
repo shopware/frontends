@@ -1,5 +1,15 @@
 # @shopware-pwa/nuxt3-module
 
+## 0.1.24
+
+### Patch Changes
+
+- [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb) Thanks [@patzick](https://github.com/patzick)! - `swSessionContext` available also in Nuxt `useState`
+
+- Updated dependencies [[`7310ca6`](https://github.com/shopware/frontends/commit/7310ca64506ca5418d3ec2ef80f5c7d0fe4b779c), [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb)]:
+  - @shopware-pwa/composables-next@0.4.0
+  - @shopware-pwa/api-client@0.2.1
+
 ## 0.1.23
 
 ### Patch Changes

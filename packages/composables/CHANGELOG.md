@@ -1,5 +1,19 @@
 # @shopware-pwa/composables-next
 
+## 0.4.0
+
+### Minor Changes
+
+- [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb) Thanks [@patzick](https://github.com/patzick)! - improved session context to be better handled on SSR
+
+### Patch Changes
+
+- [`7310ca6`](https://github.com/shopware/frontends/commit/7310ca64506ca5418d3ec2ef80f5c7d0fe4b779c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Prevent merging empty local wishlist (backend related)
+
+- Updated dependencies []:
+  - @shopware-pwa/api-client@0.2.1
+  - @shopware-pwa/helpers-next@0.1.22
+
 ## 0.3.0
 
 ### Minor Changes

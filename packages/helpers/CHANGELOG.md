@@ -1,5 +1,12 @@
 # @shopware-pwa/helpers-next
 
+## 0.1.22
+
+### Patch Changes
+
+- Updated dependencies [[`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb)]:
+  - @shopware-pwa/types@0.2.0
+
 ## 0.1.21
 
 ### Patch Changes

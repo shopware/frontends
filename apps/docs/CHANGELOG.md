@@ -1,5 +1,18 @@
 # docs
 
+## 1.1.1
+
+### Patch Changes
+
+- [`014130f`](https://github.com/shopware/frontends/commit/014130f893bfcf0e71a2ba261c0633a23d86d3c2) Thanks [@elkmod](https://github.com/elkmod)! - Added guide that explains how to setup routing for pages
+
+- [`12ebfe1`](https://github.com/shopware/frontends/commit/12ebfe16b5977c289104ff0a8395c755cd77c2e2) Thanks [@elkmod](https://github.com/elkmod)! - added documentation about context composables
+
+- Updated dependencies [[`7310ca6`](https://github.com/shopware/frontends/commit/7310ca64506ca5418d3ec2ef80f5c7d0fe4b779c), [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb)]:
+  - @shopware-pwa/composables-next@0.4.0
+  - @shopware-pwa/api-client@0.2.1
+  - @shopware-pwa/helpers-next@0.1.22
+
 ## 1.1.0
 
 ### Minor Changes

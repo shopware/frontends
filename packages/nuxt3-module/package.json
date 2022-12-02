@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/nuxt3-module",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "Nuxt3 package for ShopwarePWA",
   "main": "./index.cjs",
   "module": "./dist/index.mjs",
