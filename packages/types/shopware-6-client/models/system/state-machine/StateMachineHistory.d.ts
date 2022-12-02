@@ -1,6 +1,6 @@
 import { StateMachineState } from "./StateMachineState";
 import { StateMachine } from "./StateMachine";
-import { User } from "../user/User";
+import { Customer } from "../../checkout/customer/Customer";
 
 /**
  * @public
@@ -15,5 +15,5 @@ export type StateMachineHistory = {
   toStateId: string;
   toStateMachineState: StateMachineState | null;
   userId: string;
-  user: User | null;
+  user: Customer | null;
 };

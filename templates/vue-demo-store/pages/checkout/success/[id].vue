@@ -1,4 +1,6 @@
 <script setup lang="ts">
+useAuthGuardRedirection();
+
 const { params } = useRoute();
 const orderId = params.id as string;
 const {

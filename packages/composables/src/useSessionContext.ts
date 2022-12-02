@@ -19,7 +19,7 @@ import {
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 import { usePrice } from "./usePrice";
-import { useUser } from "./useUser";
+import { _useContext } from "./internal/_useContext";
 
 export type UseSessionContextReturn = {
   sessionContext: ComputedRef<SessionContext | undefined>;
@@ -46,7 +46,7 @@ export type UseSessionContextReturn = {
   onShippingMethodChange: (
     fn: (params: { shippingMethod: ShippingMethod }) => void
   ) => void;
-  userFromContext: ComputedRef<Customer | null>;
+  userFromContext: ComputedRef<Customer | undefined>;
 };
 
 interface IInterceptorCallbackFunction {
@@ -57,35 +57,30 @@ interface IInterceptorCallbackFunction {
  * Composable for session management. Options - {@link UseSessionContextReturn}
  * SessionContext contain all related data like user, currency, country, shippingMethod, paymentMethod etc.
  */
-export function useSessionContext(): UseSessionContextReturn {
+export function useSessionContext(
+  newContext?: SessionContext
+): UseSessionContextReturn {
   const { apiInstance } = useShopwareContext();
-  const { setUser } = useUser();
   const { init } = usePrice();
   // const { broadcast, intercept } = useIntercept();
 
-  // const { sharedRef } = useSharedState();
-  const storeSessionContext: Ref<SessionContext | any> = inject(
-    "swSessionContext",
-    ref()
-  );
-  provide("swSessionContext", storeSessionContext);
+  const _sessinContext = _useContext("swSessionContext", {
+    replace: newContext,
+  });
 
   const onCurrencyChange = (fn: IInterceptorCallbackFunction) => {}; // intercept(INTERCEPTOR_KEYS.SESSION_SET_CURRENCY, fn);
   const onPaymentMethodChange = (fn: IInterceptorCallbackFunction) => {}; // intercept(INTERCEPTOR_KEYS.SESSION_SET_PAYMENT_METHOD, fn);
   const onShippingMethodChange = (fn: IInterceptorCallbackFunction) => {}; // intercept(INTERCEPTOR_KEYS.SESSION_SET_SHIPPING_METHOD, fn);
 
-  const sessionContext = computed(() => storeSessionContext.value);
+  const sessionContext = computed(() => _sessinContext.value);
   const refreshSessionContext = async () => {
     try {
       const context = await getSessionContext(apiInstance);
-      storeSessionContext.value = context;
+      _sessinContext.value = context;
       init({
         currencyPosition: context.currency.position,
         currencySymbol: context.currency.symbol,
       });
-      if (context.customer) {
-        setUser(context.customer);
-      }
     } catch (e) {
       console.error("[UseSessionContext][refreshSessionContext]", e);
     }

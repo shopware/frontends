@@ -2,10 +2,10 @@ import { PaymentMethod } from "../models/checkout/payment/PaymentMethod";
 import { ShippingMethod } from "../models/checkout/shipping/ShippingMethod";
 import { ShippingAddress } from "../models/checkout/customer/ShippingAddress";
 import { Country } from "../models/system/country/Country";
-import { User } from "../models/system/user/User";
 import { Currency } from "../models/system/currency/Currency";
 import { Language } from "../models/framework/language/Language";
 import { Category } from "../models/content/category/Category";
+import { Customer } from "../models/checkout/customer/Customer";
 
 export type ContextTokenResponse = {
   contextToken: string;
@@ -112,7 +112,7 @@ export type SessionContext = {
     id: string;
     name: string;
   }[];
-  customer?: User;
+  customer?: Customer;
   paymentMethod: PaymentMethod;
   shippingMethod: ShippingMethod;
   shippingLocation: {

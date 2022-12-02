@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script setup lang="ts">
+useAuthGuardRedirection();
+
 // Navigation for Account page
 const { loadNavigationElements } = useNavigation();
 const { logout } = useUser();
