@@ -12,7 +12,7 @@ export type UseNavigationContextReturn = {
 export function useNavigationContext(
   context?: Ref<SeoUrl | null>
 ): UseNavigationContextReturn {
-  const _context = _useContext("navigation", context);
+  const _context = _useContext("navigation", { context: context });
 
   const routeName = computed(() => _context.value?.routeName);
   const foreignKey = computed(() => _context.value?.foreignKey || "");

@@ -7,7 +7,7 @@ export type UseCategoryReturn = {
 };
 
 export function useCategory(category?: Ref<Category>): UseCategoryReturn {
-  const _category = _useContext("category", category);
+  const _category = _useContext("category", { context: category });
   if (!_category.value) {
     // TODO link docs with composables context usage
     throw new Error("Category context is not provided.");

@@ -8,7 +8,6 @@ const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const {
   user,
-  salutation,
   loadSalutation,
   userDefaultPaymentMethod,
   userDefaultBillingAddress,
@@ -58,7 +57,7 @@ onBeforeMount(async () => {
         <h3 class="border-b pb-3 font-bold mb-3">Your profile</h3>
 
         <p>
-          {{ salutation?.displayName }} {{ user?.firstName }}
+          {{ user?.firstName }}
           {{ user?.lastName }}
         </p>
         <p>{{ user?.email }}</p>

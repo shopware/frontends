@@ -15,8 +15,6 @@ import {
 import {
   Customer,
   CustomerRegistrationParams,
-  ClientApiError,
-  ShopwareError,
   Country,
   Salutation,
   ShopwareSearchParams,
@@ -24,7 +22,14 @@ import {
   BillingAddress,
   ShippingAddress,
 } from "@shopware-pwa/types";
-import { useShopwareContext, useCart, useInternationalization } from ".";
+import {
+  useShopwareContext,
+  useCart,
+  useInternationalization,
+  useSessionContext,
+} from ".";
+import { _useContext } from "./internal/_useContext";
+import { syncRefs } from "@vueuse/core";
 
 export type UseUserReturn = {
   login: (params: { username: string; password: string }) => Promise<void>;
@@ -44,25 +49,26 @@ export type UseUserReturn = {
   updatePersonalInfo: (personals: CustomerUpdateProfileParam) => Promise<void>;
   updateEmail: (updateEmailData: CustomerUpdateEmailParam) => Promise<void>;
   setDefaultPaymentMethod: (paymentMethodId: string) => Promise<void>;
-  setUser: (user: Partial<Customer>) => void;
   userDefaultPaymentMethod: ComputedRef<PaymentMethodTranslation | null>;
   userDefaultBillingAddress: ComputedRef<BillingAddress | null>;
   userDefaultShippingAddress: ComputedRef<ShippingAddress | null>;
 };
-
-const storeUser = ref<Partial<Customer>>();
 
 /**
  * Composable for user management. Options - {@link UseUserReturn}
  */
 export function useUser(): UseUserReturn {
   const { apiInstance } = useShopwareContext();
+  const { userFromContext, refreshSessionContext } = useSessionContext();
+
+  const _user = _useContext<Customer | undefined>("customer");
+  syncRefs(userFromContext, _user, {
+    immediate: true,
+  });
+
   const { getStorefrontUrl } = useInternationalization();
   const { refreshCart } = useCart();
 
-  const setUser = (user: Partial<Customer>) => {
-    storeUser.value = user;
-  };
   const userDefaultPaymentMethod = computed(
     () => user.value?.defaultPaymentMethod?.translated || null
   );
@@ -74,14 +80,14 @@ export function useUser(): UseUserReturn {
   );
   const country: Ref<Country | null> = ref(null);
   const salutation: Ref<Salutation | null> = ref(null);
-  const user = computed(() => storeUser.value);
+  const user = computed(() => _user.value);
 
   async function login({
     username,
     password,
   }: { username?: string; password?: string } = {}): Promise<void> {
     await apiLogin({ username, password }, apiInstance);
-    await refreshUser();
+    await refreshSessionContext();
     refreshCart();
   }
 
@@ -92,13 +98,14 @@ export function useUser(): UseUserReturn {
       { ...params, storefrontUrl: getStorefrontUrl() } as any,
       apiInstance
     );
-    storeUser.value = customer;
+    _user.value = customer;
+    await refreshSessionContext();
     return customer;
   }
 
   async function logout(): Promise<void> {
     await apiLogout(apiInstance);
-    await refreshUser();
+    await refreshSessionContext();
     refreshCart();
   }
 
@@ -112,9 +119,9 @@ export function useUser(): UseUserReturn {
         ),
         apiInstance
       );
-      storeUser.value = (user as Customer) || {};
+      _user.value = user as Customer;
     } catch (e) {
-      storeUser.value = {};
+      _user.value = undefined;
       console.error("[useUser][refreshUser]", e);
     }
   }
@@ -172,7 +179,6 @@ export function useUser(): UseUserReturn {
     salutation,
     loadCountry,
     country,
-    setUser,
     defaultBillingAddressId,
     defaultShippingAddressId,
     userDefaultPaymentMethod,

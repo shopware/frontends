@@ -6,7 +6,6 @@ const modal = inject<SharedModal>("modal") as SharedModal;
 
 async function invokeLogout() {
   await logout();
-  refreshUser();
   isAccountMenuOpen.value = false;
 }
 </script>

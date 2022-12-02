@@ -51,7 +51,10 @@ const ShopwarePlugin = {
       shopwareDefaults: options.apiDefaults,
     });
     app.provide("shopware", shopwareContext);
-    app.provide("swSessionContext", ref());
+    const sessionContextData = ref();
+    app.provide("swSessionContext", sessionContextData);
+    // in case someone tries to use it in nuxt specific code like middleware
+    useState("swSessionContext", () => sessionContextData);
   },
 };
 

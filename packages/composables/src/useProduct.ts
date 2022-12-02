@@ -12,12 +12,14 @@ export function useProduct(
   product?: Ref<Product> | Product,
   configurator?: Ref<PropertyGroup[]> | PropertyGroup[]
 ): UseProductReturn {
-  const _product = _useContext("product", product);
+  const _product = _useContext("product", { context: product });
   if (!_product.value) {
     // TODO link docs with composables context usage
     throw new Error("Product context is not provided");
   }
-  const _configurator = _useContext("configurator", product && configurator);
+  const _configurator = _useContext("configurator", {
+    context: product && configurator,
+  });
 
   function changeVariant(variant: Partial<Product>) {
     _product.value = Object.assign({}, _product.value, variant);
