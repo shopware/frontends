@@ -30,14 +30,14 @@ import {
   useNavigationSearch,
 } from "@shopware-pwa/composables-next";
 
-const { resolveRoute } = useNavigationSearch();
+const { resolvePath } = useNavigationSearch();
 
-const seoResult = await resolveRoute("/en/My-Product");
+const seoResult = await resolvePath("/en/My-Product");
 
 const { routeName, foreignKey } = useNavigationContext(ref(seoResult));
 ```
 
-The result of the `resolveRoute` function is a reduced `SeoUrl` object, which you can access safely via the useNavigationContext composable.
+The result of the `resolvePath` function is a reduced `SeoUrl` object, which you can access safely via the useNavigationContext composable.
 
 ```json
 {
