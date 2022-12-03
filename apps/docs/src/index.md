@@ -6,9 +6,13 @@
     <img src=".assets/shopware-frontends-logo-dark.png" class="hidden dark:block">
 </div>
 
+<div class="text-center">
+
 Shopware Frontends is Shopware's Vue.js <strong>framework</strong> for building custom storefronts.
 
-<PageRef title="Why Shopware Frontends?" sub="Which problems does it solve" page="/why-shopware-frontends" />
+<PageRef title="Get Started 🚀" sub="Start building your first Shopware Frontends project" page="../getting-started/templates" />
+
+</div>
 
 ## How it works
 
@@ -26,7 +30,7 @@ A big part (and a risk factor) of every custom storefront project is the impleme
 
 - Routing
 - Shopping worlds (Shopware CMS) integration
-- Translation handling
+- Product searches and filters
 - Price formatting
 - Authentication & state handling
 
@@ -36,6 +40,4 @@ It also comes with TypeScript support.
 
 You can decide to start from scratch and use no template at all, but we recommend looking at our [Templates](./getting-started/templates.md) which are based on **Nuxt.js** and **Tailwind CSS**.
 
----
-
-<PageRef page="../getting-started/templates" title="Getting Started" sub="Get started with Shopware Frontends" />
+<PageRef title="Internal Structure" sub="Details about the internal structure of Shopware Frontends" page="/framework/internal-structure" />
