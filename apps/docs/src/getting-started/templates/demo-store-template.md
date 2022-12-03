@@ -10,7 +10,7 @@ The **Demo Store Template** is not suitable for production stores. It is under c
 
 ## Setup & run
 
-<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" sub="Open the Demo Store Template with our browser IDE in a new window" icon="https://blog.stackblitz.com/img/favicon.png?hash=3817f5a9d1"/>
+<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" sub="Open the Demo Store Template with our browser IDE in a new window" icon="../../.assets/framework-icons/stackblitz.png"/>
 
 Alternatively, set up the blank template manually by running the following commands in a new directory:
 
