@@ -15,7 +15,10 @@ export type UseWishlistReturn = {
 };
 
 export function useWishlist(): UseWishlistReturn {
-  const { isLoggedIn } = useUser();
+  const { isLoggedIn, isGuestSession } = useUser();
+  const canSyncWishlist = computed(
+    () => isLoggedIn.value && !isGuestSession.value
+  );
   const {
     getWishlistProducts: getWishlistProductsLocal,
     items: itemsLocal,
@@ -28,7 +31,7 @@ export function useWishlist(): UseWishlistReturn {
   } = useSyncWishlist();
 
   const getWishlistProducts = async () => {
-    if (isLoggedIn.value) {
+    if (canSyncWishlist.value) {
       await getWishlistProductsSync();
     } else {
       await getWishlistProductsLocal();
@@ -48,7 +51,7 @@ export function useWishlist(): UseWishlistReturn {
   };
 
   const items = computed(() =>
-    isLoggedIn.value ? itemsSync.value : itemsLocal.value
+    canSyncWishlist.value ? itemsSync.value : itemsLocal.value
   );
   const count = computed(() => items.value.length);
 
