@@ -11,6 +11,10 @@ head:
       content: "https://frontends-og-image.vercel.app/Internal%20Structure?fontSize=150px"
 ---
 
+<script setup>
+import githubIcon from '../.assets/framework-icons/github.png';
+</script>
+
 # Internal Structure
 
 The internal structure of Shopware Frontends is designed to provide flexibility, reusability and abstraction. Shopware Frontends is a framework that is build with JavaScript and TypeScript.
@@ -19,7 +23,7 @@ Some of its components are based on Vue.js and Nuxt.js. The framework is designe
 
 This section deals with the different packages and their abstractions. It is sorted by reusability / abstraction level from high to low and shows the main dependencies of each component respectively.
 
-<PageRef title="shopware/frontends packages" sub="Explore all Shopware Frontends packages on GitHub" icon="../.assets/framework-icons/github.png" page="https://github.com/shopware/frontends/tree/main/packages" target="_blank" />
+<PageRef title="shopware/frontends packages" sub="Explore all Shopware Frontends packages on GitHub" :icon="githubIcon" page="https://github.com/shopware/frontends/tree/main/packages" target="_blank" />
 
 ## api-client
 
