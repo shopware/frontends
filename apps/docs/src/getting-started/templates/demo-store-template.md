@@ -1,3 +1,7 @@
+<script setup>
+import stackblitzIcon from '../../.assets/framework-icons/stackblitz.png';
+</script>
+
 # Demo Store Template
 
 <img src="../../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
@@ -10,7 +14,7 @@ The **Demo Store Template** is not suitable for production stores. It is under c
 
 ## Setup & run
 
-<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" sub="Open the Demo Store Template with our browser IDE in a new window" icon="../../.assets/framework-icons/stackblitz.png"/>
+<PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" sub="Open the Demo Store Template with our browser IDE in a new window" :icon="stackblitzIcon" />
 
 Alternatively, set up the blank template manually by running the following commands in a new directory:
 
