@@ -57,7 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.CHANGESETS_TOKEN }}
 
       - name: Publish
-        run: pnpm changeset publish --tag canary
+        run: pnpm changeset publish --no-git-tag --no-git-checks --tag canary
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
