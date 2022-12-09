@@ -8,6 +8,8 @@ importers:
       '@changesets/cli': ^2.25.2
       '@commitlint/cli': ^17.2.0
       '@commitlint/config-conventional': ^17.2.0
+      '@types/changelog-parser': ^2.8.1
+      changelog-parser: ^2.8.1
       lint-staged: ^13.0.3
       prettier: ^2.7.1
       simple-git-hooks: ^2.8.1
@@ -18,6 +20,8 @@ importers:
       '@changesets/cli': 2.25.2
       '@commitlint/cli': 17.2.0
       '@commitlint/config-conventional': 17.2.0
+      '@types/changelog-parser': 2.8.1
+      changelog-parser: 2.8.1
       lint-staged: 13.0.3
       prettier: 2.7.1
       simple-git-hooks: 2.8.1
@@ -239,9 +243,9 @@ importers:
 
   templates/vue-blank:
     specifiers:
-      '@shopware-pwa/api-client': 0.2.1
-      '@shopware-pwa/composables-next': 0.4.0
-      '@shopware-pwa/nuxt3-module': 0.1.24
+      '@shopware-pwa/api-client': canary
+      '@shopware-pwa/composables-next': canary
+      '@shopware-pwa/nuxt3-module': canary
       '@vueuse/nuxt': ^9.5.0
       nuxt: ^3.0.0
     devDependencies:
@@ -253,12 +257,12 @@ importers:
 
   templates/vue-demo-store:
     specifiers:
-      '@shopware-pwa/api-client': 0.2.1
-      '@shopware-pwa/cms-base': 0.2.1
-      '@shopware-pwa/composables-next': 0.4.0
-      '@shopware-pwa/helpers-next': 0.1.22
-      '@shopware-pwa/nuxt3-module': 0.1.24
-      '@shopware-pwa/types': 0.2.0
+      '@shopware-pwa/api-client': canary
+      '@shopware-pwa/cms-base': canary
+      '@shopware-pwa/composables-next': canary
+      '@shopware-pwa/helpers-next': canary
+      '@shopware-pwa/nuxt3-module': canary
+      '@shopware-pwa/types': canary
       '@unocss/nuxt': ^0.46.5
       '@vue/eslint-config-typescript': ^11.0.2
       '@vuelidate/core': ^2.0.0
@@ -292,8 +296,8 @@ importers:
 
   templates/vue-vite-blank:
     specifiers:
-      '@shopware-pwa/composables-next': 0.4.0
-      '@shopware-pwa/vue3-plugin': 0.1.24
+      '@shopware-pwa/composables-next': canary
+      '@shopware-pwa/vue3-plugin': canary
       '@vitejs/plugin-vue': ^3.2.0
       typescript: ^4.9.3
       vite: ^3.2.4
@@ -2565,6 +2569,10 @@ packages:
     resolution: {integrity: sha512-hC7OMnszpxhZPduX+m+nrx+uFoLkWOMiR4oa/AZF3MuSETYTZmFfJAHqZEM8MVlvfG7BEUcgvtwoCTxBp6hm3g==}
     dev: true
 
+  /@types/changelog-parser/2.8.1:
+    resolution: {integrity: sha512-Wul8tHLumoC7mauxXzPbtBLC2KuY5NZ2w6BlRYnOM53oZz5mz7oUGsYL4l8bKzZzIX7y2vO7Y4/2K8qICJjckw==}
+    dev: true
+
   /@types/concat-stream/1.6.1:
     resolution: {integrity: sha512-eHE4cQPoj6ngxBZMvVf6Hw7Mh4jMW4U9lpGmS5GBPB9RYxlFg+CHaVN7ErNY4W9XfLIEn20b4VDYaIrbq0q4uA==}
     dependencies:
@@ -4493,6 +4501,14 @@ packages:
   /chalk/5.1.2:
     resolution: {integrity: sha512-E5CkT4jWURs1Vy5qGJye+XwCkNj7Od3Af7CP6SujMetSMkLs8Do2RWJK5yx1wamHV/op8Rz+9rltjaTQWDnEFQ==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
+  /changelog-parser/2.8.1:
+    resolution: {integrity: sha512-tNUYFRCEeWTXmwLqoNtOEzx9wcytg72MmGQqsEs14ClYwIDln7sbQw7FJj/dulXgSlsxkemc9gpPQhZYZx1TPw==}
+    hasBin: true
+    dependencies:
+      line-reader: 0.2.4
+      remove-markdown: 0.2.2
+    dev: true
 
   /character-entities-legacy/1.1.4:
     resolution: {integrity: sha512-3Xnr+7ZFS1uxeiUDvV02wQ+QDbc55o97tIV5zHScSPJpcLm/r0DFPcoY3tYRp+VZukxuMeKgXYmsXQHO05zQeA==}
@@ -7929,6 +7945,10 @@ packages:
     resolution: {integrity: sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==}
     engines: {node: '>=10'}
 
+  /line-reader/0.2.4:
+    resolution: {integrity: sha512-342xzyZZS9uTiKwHJcMacopVl/WjrMMCZS1Qg4Uhl/WBknWRrGFdKOIS1Kec6SaiTcZMtmuxWvvIbPXj/+FMjA==}
+    dev: true
+
   /lines-and-columns/1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: true
@@ -10184,6 +10204,10 @@ packages:
   /remove-accents/0.4.2:
     resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
     dev: false
+
+  /remove-markdown/0.2.2:
+    resolution: {integrity: sha512-jwgEf3Yh/xi4WodWi/vPlasa9C9pMv1kz5ITOIAGjBW7PeZ/CHZCdBfJzQnn2VX2cBvf1xCuJv0tUJqn/FCMNA==}
+    dev: true
 
   /repeat-string/1.6.1:
     resolution: {integrity: sha512-PV0dzCYDNfRi1jCDbJzpW7jNNDRuCOG/jI5ctQcGKt/clZD+YcPS3yIlWuTJMmESC8aevCFmWJy5wjAFgNqN6w==}
