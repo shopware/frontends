@@ -16,13 +16,18 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
-    "format": "prettier --write \"**/*.{ts,tsx,md,vue}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md,vue}\"",
+    "version": "changeset version",
+    "postversion": "pnpm run versionReadme",
+    "versionReadme": "pnpx ts-node scripts/addChangelogBodyToReadmeFile.ts"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.7",
     "@changesets/cli": "^2.25.2",
     "@commitlint/cli": "^17.2.0",
     "@commitlint/config-conventional": "^17.2.0",
+    "@types/changelog-parser": "^2.8.1",
+    "changelog-parser": "^2.8.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "simple-git-hooks": "^2.8.1",

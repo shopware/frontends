@@ -52,7 +52,7 @@ jobs:
         run: pnpm run build --filter='./packages/*'
 
       - name: Generate shapshot
-        run: pnpm changeset version --snapshot canary
+        run: pnpm run version --snapshot canary
         env:
           GITHUB_TOKEN: ${{ secrets.CHANGESETS_TOKEN }}
 
