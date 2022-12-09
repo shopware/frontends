@@ -10,7 +10,7 @@ Documentation specific for this package: [cms-base](https://shopware-frontends-d
 
 ## Changelog
 
-Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/master/packages/cms-base/CHANGELOG.md)
+Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base/CHANGELOG.md)
 
 ### Latest changes: 0.2.1
 

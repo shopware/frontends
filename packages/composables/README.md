@@ -10,7 +10,7 @@ Documentation specific for this package: [composables](https://shopware-frontend
 
 ## Changelog
 
-Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/master/packages/composables/CHANGELOG.md)
+Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
 ### Latest changes: 0.4.0
 

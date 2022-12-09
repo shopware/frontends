@@ -43,7 +43,7 @@ export async function addChangelogBodyToReadmeFile(packageName: string) {
       "",
       "## Changelog",
       "",
-      `Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/master/packages/${packageName}/${CHANGELOG_FILENAME})`,
+      `Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/${packageName}/${CHANGELOG_FILENAME})`,
       "",
       `### Latest changes: ${parsed.versions[0].title}`,
       "",

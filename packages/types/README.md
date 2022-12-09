@@ -10,7 +10,7 @@ Documentation specific for this package: [types](https://shopware-frontends-docs
 
 ## Changelog
 
-Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/master/packages/types/CHANGELOG.md)
+Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/types/CHANGELOG.md)
 
 ### Latest changes: 0.2.0
 

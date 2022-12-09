@@ -10,7 +10,7 @@ Documentation specific for this package: [api-client](https://shopware-frontends
 
 ## Changelog
 
-Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/master/packages/api-client/CHANGELOG.md)
+Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
 ### Latest changes: 0.2.1
 
