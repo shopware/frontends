@@ -257,6 +257,7 @@ importers:
 
   templates/vue-demo-store:
     specifiers:
+      '@iconify-json/carbon': ^1.1.11
       '@shopware-pwa/api-client': canary
       '@shopware-pwa/cms-base': canary
       '@shopware-pwa/composables-next': canary
@@ -287,6 +288,7 @@ importers:
       '@vueuse/nuxt': 9.5.0_xsv3vwo4hvye53m3n4ybcmydue
       vue: 3.2.45
     devDependencies:
+      '@iconify-json/carbon': 1.1.11
       '@vue/eslint-config-typescript': 11.0.2_vf5i6yh7tubwt4lqvaz2kfrjpa
       eslint-plugin-vue: 9.7.0_eslint@8.28.0
       nuxt: 3.0.0_fubavop2p4hgdt4pm327riwxc4
@@ -1301,6 +1303,12 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
 
+  /@iconify-json/carbon/1.1.11:
+    resolution: {integrity: sha512-IHkHSNmTM6q6b8DuKSzd+AEMYPZywSxcb+37kZU7ywtcwsGen3aVEvWFykopIWjjwj3xdZ/5UdwJRqhZDQMlNg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
   /@iconify-json/carbon/1.1.7:
     resolution: {integrity: sha512-QULSpNWKaX4auIbjITDynfALdJYvOOy/xZb+aLOqCgvpBcmbz5tbqvow4r25FWtVsi4FHVpNQ8vyJZXsD1Hlxg==}
     dependencies:
@@ -1313,7 +1321,6 @@ packages:
 
   /@iconify/types/2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
-    dev: false
 
   /@iconify/utils/1.0.33:
     resolution: {integrity: sha512-vGeAqo7aGPxOQmGdVoXFUOuyN+0V7Lcrx2EvaiRjxUD1x6Om0Tvq2bdm7E24l2Pz++4S0mWMCVFXe/17EtKImQ==}

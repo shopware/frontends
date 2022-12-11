@@ -32,7 +32,6 @@ const { isLoggedIn } = useUser();
   width: 500px;
   margin: 0 auto;
   text-align: left;
-  background: #f5f5f5;
   padding: 10px 20px;
   border-radius: 10px;
 }

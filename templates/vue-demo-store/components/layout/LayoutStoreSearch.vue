@@ -70,12 +70,12 @@ watch(enter, (value) => {
 <template>
   <div
     ref="searchContainer"
-    class="relative group bg-white p-3 rounded-lg transition duration-300 hover:shadow-md"
+    class="relative group p-3 rounded-lg transition duration-300 hover:shadow-md"
     :class="[active ? 'shadow-md' : 'shadow-sm']"
   >
     <div class="flex items-center">
       <div
-        class="sw-search-input i-carbon-search flex-none h-6 w-6 bg-gray-400 group-hover:bg-brand-primary cursor-pointer"
+        class="sw-search-input i-carbon-search flex-none h-6 w-6 text-gray-400 group-hover:text-brand-primary cursor-pointer"
       ></div>
 
       <input

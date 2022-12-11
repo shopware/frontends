@@ -22,7 +22,7 @@ defineEmits<{
         @click="$emit('changePage', current - 1)"
         class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
       >
-        <span class="w-10 h-10 i-carbon-chevron-left bg-blue-700"></span>
+        <span class="w-10 h-10 i-carbon-chevron-left text-blue-700"></span>
         <span class="sr-only">Previous</span>
       </button>
       <button
@@ -80,7 +80,7 @@ defineEmits<{
         class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
       >
         <span class="sr-only">Next</span>
-        <span class="w-10 h-10 i-carbon-chevron-right bg-blue-700"></span>
+        <span class="w-10 h-10 i-carbon-chevron-right text-blue-700"></span>
       </button>
     </nav>
   </div>
