@@ -33,7 +33,7 @@ const isSidebarOpen = inject("isSidebarOpen");
             data-testid="wishlist-button"
           >
             <div
-              class="w-7 h-7 i-carbon-favorite bg-gray-600 hover:bg-brand-primary"
+              class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary"
             ></div>
             <span
               v-if="wishlistCount > 0"
@@ -52,7 +52,7 @@ const isSidebarOpen = inject("isSidebarOpen");
           >
             <!-- Heroicon name: outline/shopping-bag -->
             <div
-              class="w-7 h-7 i-carbon-shopping-bag bg-gray-600 hover:bg-brand-primary"
+              class="w-7 h-7 i-carbon-shopping-bag text-gray-600 hover:text-brand-primary"
             ></div>
             <span
               v-if="count > 0"
