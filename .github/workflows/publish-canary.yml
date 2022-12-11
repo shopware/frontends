@@ -61,5 +61,5 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
-      - name: Publish
+      - name: Publish canary packages
         run: pnpm changeset publish --no-git-tag --no-git-checks --tag canary
