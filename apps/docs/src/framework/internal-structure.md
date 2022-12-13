@@ -33,6 +33,8 @@ This section deals with the different packages and their abstractions. It is sor
 
 The API client provides a common interface to access the Shopware API. It can be used standalone in any JavaScript project.
 
+<PageRef page="../packages/api-client" title="API Client Reference" sub="Package reference with all services" />
+
 ## types
 
 <div class="flex mt--4 mb-4 gap-2">
@@ -40,6 +42,8 @@ The API client provides a common interface to access the Shopware API. It can be
 </div>
 
 The types package contains TypeScript types for all Shopware objects and API endpoints.
+
+<PageRef page="../packages/types" title="Types Reference" sub="Package reference with all types" />
 
 ## helpers
 
@@ -49,6 +53,8 @@ The types package contains TypeScript types for all Shopware objects and API end
 
 Helpers are functions that can be used for formatting, data manipulation and other stateless tasks within any JavaScript project. They are not tied to any other components.
 
+<PageRef page="../packages/helpers" title="Helpers Reference" sub="Package reference with all helper methods" />
+
 ## composables
 
 <div class="flex mt--4 mb-4 gap-2">
@@ -57,6 +63,8 @@ Helpers are functions that can be used for formatting, data manipulation and oth
 </div>
 
 The composables are a set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](../getting-started/navigation.md).
+
+<PageRef page="../packages/composables" title="Composables Reference" sub="Package API reference with all composables" />
 
 ## nuxt3-module
 
@@ -78,7 +86,6 @@ If you want to use these packages with a different Vue.js framework, see the gui
     <img src="../.assets/framework-icons/nuxt.png" alt="This package depends on Nuxt 3" title="This package depends on Nuxt 3" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" />
     <img src="../.assets/framework-icons/tailwind.png" alt="This package depends on UnoCSS / Tailwind.css" title="This package depends on UnoCSS / Tailwind.css" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware-pwa/cms-base" target="_blank">@shopware-pwa/cms-base</a>
 </div>
-
 
 The CMS base is a Nuxt module that provides an implementation of all CMS components in Shopware [based on utility-classes](./styling.md) using unocss/Tailwind.css syntax. It is useful for projects that want to use the CMS components but design their own layout.
 

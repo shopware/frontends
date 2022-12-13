@@ -51,7 +51,6 @@ export const sidebar = [
     items: [
       { text: "Composables", link: "/packages/composables" },
       { text: "Types", link: "/packages/types" },
-      { text: "CMS Base", link: "/packages/cms-base" },
       { text: "Helpers", link: "/packages/helpers" },
     ],
   },
