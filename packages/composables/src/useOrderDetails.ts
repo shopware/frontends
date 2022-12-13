@@ -15,8 +15,6 @@ import {
   ShippingAddress,
   ShippingMethod,
   PaymentMethod,
-  ClientApiError,
-  ShopwareError,
   ShopwareSearchParams,
 } from "@shopware-pwa/types";
 import {
@@ -53,20 +51,53 @@ const orderAssociations: ShopwareSearchParams = {
 };
 
 export type UseOrderDetailsReturn = {
+  /**
+   * {@link Order} object
+   */
   order: ComputedRef<Order | undefined | null>;
+  /**
+   * Order status (e.g. 'open', 'cancelled')
+   */
   status: ComputedRef<string | undefined>;
+  /**
+   * Order total price
+   */
   total: ComputedRef<number | undefined>;
+  /**
+   * Order subtotal price for all items
+   */
   subtotal: ComputedRef<number | undefined>;
+  /**
+   * Order shipping costs
+   */
   shippingCosts: ComputedRef<number | undefined>;
+  /**
+   * Shipping address
+   */
   shippingAddress: ComputedRef<ShippingAddress | undefined>;
+  /**
+   * Billing address
+   */
   billingAddress: ComputedRef<BillingAddress | undefined>;
+  /**
+   * Basic personal details
+   */
   personalDetails: ComputedRef<{
     email: string | undefined;
     firstName: string | undefined;
     lastName: string | undefined;
   }>;
+  /**
+   * Payment URL for external payment methods (e.g. async payment in external payment gateway)
+   */
   paymentUrl: Ref<null | string>;
+  /**
+   * Selected shipping method
+   */
   shippingMethod: ComputedRef<ShippingMethod | undefined | null>;
+  /**
+   * Selected payment method
+   */
   paymentMethod: ComputedRef<PaymentMethod | undefined | null>;
   /**
    * Get order object including additional associations.
@@ -88,6 +119,11 @@ export type UseOrderDetailsReturn = {
    * Action cannot be reverted.
    */
   cancel: () => Promise<void>;
+  /**
+   * Changes the payment method for current cart.
+   * @param paymentMethodId - ID of the payment method to be set
+   * @returns
+   */
   changePaymentMethod: (paymentMethodId: string) => Promise<void>;
 };
 

@@ -12,6 +12,7 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
   const { apiInstance } = useShopwareContext();
 
   async function resolvePath(path: string) {
+    console.warn("resolvePath", path);
     // TODO: IMPORTANT - core issue to resolve home path
     if (path === "/") {
       const categoryResponse = await getCategories(

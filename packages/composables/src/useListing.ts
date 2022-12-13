@@ -43,36 +43,117 @@ function merge<T extends { [key in keyof T]: unknown }>(
 export type ListingType = "productSearchListing" | "categoryListing";
 
 export type UseListingReturn<ELEMENTS_TYPE> = {
+  /**
+   * Listing that is currently set
+   * {@link ListingResult} object
+   */
   getInitialListing: ComputedRef<ListingResult<ELEMENTS_TYPE> | null>;
+  /**
+   * Sets the initial listing - available synchronously
+   * @param {@link initialListing} - initial listing to set
+   * @returns
+   */
   setInitialListing: (
     initialListing: Partial<ListingResult<ELEMENTS_TYPE>>
   ) => Promise<void>;
+  /**
+   * @deprecated - use `search` instead
+   * Searches for the listing based on the criteria
+   * @param criteria {@link ShopwareSearchParams}
+   * @returns
+   */
   initSearch: (
     criteria: Partial<ShopwareSearchParams>
   ) => Promise<ListingResult<ELEMENTS_TYPE>>;
+  /**
+   * Searches for the listing based on the criteria
+   * @param criteria
+   * @param options - `options.preventRouteChange` - if true, the route will not be changed
+   * @returns
+   */
   search: (
     criteria: Partial<ShopwareSearchParams>,
     options?: {
       preventRouteChange?: boolean;
     }
   ) => Promise<void>;
+  /**
+   * Loads more (next page) elements to the listing
+   */
   loadMore: () => Promise<void>;
+  /**
+   * Listing that is currently set
+   */
   getCurrentListing: ComputedRef<Partial<ListingResult<ELEMENTS_TYPE>> | null>;
+  /**
+   * Listing elements ({@link Product}) that are currently set
+   */
   getElements: ComputedRef<ELEMENTS_TYPE[]>;
+  /**
+   * Available sorting orders
+   */
   getSortingOrders: ComputedRef<Sort[] | { key: string; label: string }[]>;
+  /**
+   * Current sorting order
+   */
   getCurrentSortingOrder: ComputedRef<string | undefined>;
+  /**
+   * Changes the current sorting order
+   * @param order - i.e. "name-asc"
+   * @returns
+   */
   changeCurrentSortingOrder: (order: string) => Promise<void>;
+  /**
+   * Current page number
+   */
   getCurrentPage: ComputedRef<string | number>;
+  /**
+   * Changes the current page number
+   * @param pageNumber - page number to change to
+   * @returns
+   */
   changeCurrentPage: (pageNumber?: number) => Promise<void>;
+  /**
+   * Total number of elements found for the current search criteria
+   */
   getTotal: ComputedRef<number>;
+  /**
+   * Total number of pages found for the current search criteria
+   */
   getTotalPagesCount: ComputedRef<number>;
+  /**
+   * Number of elements per page
+   */
   getLimit: ComputedRef<number>;
+  /**
+   * Initial filters
+   */
   getInitialFilters: ComputedRef<ListingFilter[]>;
+  /**
+   * All available filters
+   */
   getAvailableFilters: ComputedRef<ListingFilter[]>;
+  /**
+   * Filters that are currently set
+   */
   getCurrentFilters: ComputedRef<any>;
+  /**
+   * Sets the filters to be applied for the listing
+   * @param filters
+   * @returns
+   */
   setCurrentFilters: (filters: any) => Promise<void>;
+  /**
+   * Indicates if the listing is being fetched
+   */
   loading: ComputedRef<boolean>;
+  /**
+   * Indicates if the listing is being fetched via `loadMore` method
+   */
   loadingMore: ComputedRef<boolean>;
+  /**
+   * Resets the filters - clears the current filters
+   */
   resetFilters: () => Promise<void>;
 };
 

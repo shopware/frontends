@@ -7,6 +7,7 @@ import {
   BillingAddress,
   SessionContext,
   Customer,
+  Language,
 } from "@shopware-pwa/types";
 
 import {
@@ -16,12 +17,14 @@ import {
   setCurrentPaymentMethod,
   setCurrentShippingAddress,
   setCurrentBillingAddress,
+  setCurrentLanguage,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 import { usePrice } from "./usePrice";
 import { _useContext } from "./internal/_useContext";
 
 export type UseSessionContextReturn = {
+  setLanguage: (language: Partial<Language>) => Promise<void>;
   sessionContext: ComputedRef<SessionContext | undefined>;
   refreshSessionContext: () => Promise<void>;
   shippingMethod: ComputedRef<ShippingMethod | null>;
@@ -138,6 +141,14 @@ export function useSessionContext(
     // });
   };
 
+  const setLanguage = async (language: Partial<Language> = {}) => {
+    if (!language.id) {
+      return;
+    }
+    await setCurrentLanguage(language.id, apiInstance);
+    await refreshSessionContext();
+  };
+
   const activeShippingAddress = computed(
     () => sessionContext.value?.customer?.activeShippingAddress || null
   );
@@ -193,5 +204,6 @@ export function useSessionContext(
     onPaymentMethodChange,
     onShippingMethodChange,
     userFromContext,
+    setLanguage,
   };
 }

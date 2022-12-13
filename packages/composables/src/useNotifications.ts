@@ -1,25 +1,45 @@
 import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
 
+type NotificationType = "info" | "warning" | "success" | "danger" | undefined;
+
 export type Notification = {
-  type: "info" | "warning" | "success" | "danger";
+  type: NotificationType;
   message: string;
   id: number;
+};
+
+export type NotificationOptions = {
+  type?: NotificationType;
+  timeout?: number;
+  persistent?: boolean;
 };
 
 export type UseNotificationsReturn = {
   notifications: ComputedRef<Notification[]>;
   /**
-   * Remove a specific notification by ID
+   * Removes a specific notification by its ID
    */
   removeOne: (id: number) => void;
   /**
-   * Reset the notification list
+   * Resets the notification list - clear all notifications
    */
   removeAll: () => void;
-  pushInfo: (message: string, options?: any) => void;
-  pushWarning: (message: string, options?: any) => void;
-  pushError: (message: string, options?: any) => void;
-  pushSuccess: (message: string, options?: any) => void;
+  /**
+   * Push an info notification to the current list
+   */
+  pushInfo: (message: string, options?: NotificationOptions) => void;
+  /**
+   * Pushes a warning notification to the current list
+   */
+  pushWarning: (message: string, options?: NotificationOptions) => void;
+  /**
+   * Pushes an error notification to the current list
+   */
+  pushError: (message: string, options?: NotificationOptions) => void;
+  /**
+   * Pushes a success notification to the current list
+   */
+  pushSuccess: (message: string, options?: NotificationOptions) => void;
 };
 
 export function useNotifications(): UseNotificationsReturn {
@@ -44,11 +64,7 @@ export function useNotifications(): UseNotificationsReturn {
 
   async function pushNotification(
     message: string,
-    options: {
-      type: "info" | "warning" | "success" | "danger";
-      timeout: number;
-      persistent: boolean;
-    }
+    options: NotificationOptions
   ) {
     const timeout = options.timeout || 2500;
     const persistent = !!options.persistent;
@@ -57,7 +73,7 @@ export function useNotifications(): UseNotificationsReturn {
     const messageId = geterateId();
     _notifications.value.push({
       id: messageId,
-      type: options.type,
+      type: options.type || "info",
       message,
     });
     if (!persistent) {
