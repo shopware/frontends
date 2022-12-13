@@ -1,6 +1,6 @@
 import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
 
-type NotificationType = "info" | "warning" | "success" | "danger" | undefined;
+type NotificationType = "info" | "warning" | "success" | "danger";
 
 export type Notification = {
   type: NotificationType;
