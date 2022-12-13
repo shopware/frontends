@@ -13,10 +13,14 @@ const emits = defineEmits<{
   (e: "success"): void;
 }>();
 
-const { paymentMethods, getPaymentMethods } = useCheckout();
+const {
+  paymentMethods,
+  getPaymentMethods,
+  selectedPaymentMethod,
+  setPaymentMethod,
+} = useCheckout();
 const { setDefaultPaymentMethod } = useUser();
-const { paymentMethod: selectedPaymentMethod, setPaymentMethod } =
-  useSessionContext();
+
 const { pushSuccess } = useNotifications();
 
 const isLoading = ref(true);

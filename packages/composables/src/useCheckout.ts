@@ -1,12 +1,4 @@
-import {
-  computed,
-  UnwrapRef,
-  reactive,
-  ComputedRef,
-  ref,
-  inject,
-  provide,
-} from "vue";
+import { computed, ComputedRef, ref, inject, provide } from "vue";
 import {
   ShippingAddress,
   ShippingMethod,
@@ -24,23 +16,70 @@ import {
 import { useShopwareContext, useCart, useSessionContext } from ".";
 
 export type UseCheckoutReturn = {
+  /**
+   * Fetches all available shipping methods
+   */
   getShippingMethods: (options?: {
     forceReload: boolean;
   }) => Promise<ComputedRef<ShippingMethod[]>>;
+  /**
+   * List of available shipping methods
+   */
   shippingMethods: ComputedRef<ShippingMethod[]>;
+  /**
+   * Fetches all available payment methods
+   */
   getPaymentMethods: (options?: {
     forceReload: boolean;
   }) => Promise<ComputedRef<PaymentMethod[]>>;
+  /**
+   * List of available payment methods
+   */
   paymentMethods: ComputedRef<PaymentMethod[]>;
+  /**
+   * Creates order based on the current cart
+   */
   createOrder: (params?: CreateOrderParams) => Promise<Order>;
+  /**
+   * Shipping address for the current session
+   */
   shippingAddress: ComputedRef<ShippingAddress | undefined>;
+  /**
+   * Billing address for the current session
+   */
   billingAddress: ComputedRef<Partial<BillingAddress> | undefined>;
+  /**
+   * Selected shipping method for the current session
+   * Sugar for {@link useSessionContext.selectedShippingMethod}
+   */
+  selectedShippingMethod: ComputedRef<ShippingMethod | null>;
+  /**
+   * Sets shipping method for the current session
+   * Sugar for {@link useSessionContext.setShippingMethod}
+   */
+  setShippingMethod: (shippingMethod: Partial<ShippingMethod>) => Promise<void>;
+  /**
+   * Selected payment method for the current session
+   * Sugar for {@link useSessionContext.selectedPaymentMethod}
+   */
+  selectedPaymentMethod: ComputedRef<PaymentMethod | null>;
+  /**
+   * Sets payment method for the current session
+   * Sugar for {@link useSessionContext.setPaymentMethod}
+   */
+  setPaymentMethod: (paymentMethod: Partial<PaymentMethod>) => Promise<void>;
 };
 
 export function useCheckout(): UseCheckoutReturn {
   const { apiInstance } = useShopwareContext();
   const { refreshCart } = useCart();
-  const { sessionContext } = useSessionContext();
+  const {
+    sessionContext,
+    selectedPaymentMethod,
+    selectedShippingMethod,
+    setShippingMethod,
+    setPaymentMethod,
+  } = useSessionContext();
 
   const storeShippingMethods = inject("swShippingMethods", ref());
   provide("swShippingMethods", storeShippingMethods);
@@ -96,5 +135,9 @@ export function useCheckout(): UseCheckoutReturn {
     createOrder,
     shippingAddress,
     billingAddress,
+    selectedShippingMethod,
+    setShippingMethod,
+    selectedPaymentMethod,
+    setPaymentMethod,
   };
 }
