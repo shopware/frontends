@@ -17,6 +17,10 @@ const { push } = useRouter();
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const {
+  selectedShippingMethod: shippingMethod,
+  selectedPaymentMethod: paymentMethod,
+  setShippingMethod,
+  setPaymentMethod,
   paymentMethods,
   shippingMethods,
   getPaymentMethods,
@@ -26,10 +30,7 @@ const {
 const { register, logout, isLoggedIn, user } = useUser();
 const {
   refreshSessionContext,
-  shippingMethod,
-  paymentMethod,
-  setShippingMethod,
-  setPaymentMethod,
+
   activeShippingAddress,
   setActiveShippingAddress,
   activeBillingAddress,
