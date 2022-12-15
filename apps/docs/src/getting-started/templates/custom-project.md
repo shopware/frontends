@@ -1,9 +1,5 @@
 # Custom project
 
-::: warning Work in progress
-This page is currently work in progress and will be updated soon.
-:::
-
 Follow these steps to integrate Shopware Frontends into an existing, custom Vue.js project
 
 - Install the required dependencies
@@ -11,12 +7,24 @@ Follow these steps to integrate Shopware Frontends into an existing, custom Vue.
 - Configure the API client and create application instance
 - Store and handle client state
 
+## Creating Vue project
+
+:::info
+You can skip this part if you have an existing project.
+::::
+
+```bash
+pnpm create vue@latest
+```
+
+More information about creating a new Vue project can be found [here](https://vuejs.org/guide/quick-start.html)
+
 ## Install dependencies
 
 First of all, install the required npm dependencies:
 
 ```bash
-pnpm add @shopware-pwa/composables @shopware-pwa/composables-next @shopware-pwa/shopware-6-client
+pnpm add @shopware-pwa/composables-next @shopware-pwa/api-client
 ```
 
 If you are using TypeScript in you application, you may want to have another package that can be installed for dev dependencies:
@@ -31,7 +39,20 @@ Additionally, to keep the current session context even after page reloads, we ar
 pnpm add js-cookie
 ```
 
+For CMS components, you can add a package that contains ready-to-use components.
+You can read more about CMS pages here:
+
+<PageRef page="./content-pages" title="Create content pages" sub="Render a content page using components" />
+
+```bash
+pnpm add @shopware-pwa/cms-base
+```
+
 ## Configure API client
+
+:::tip Code example
+Find a full example of the Vue.js plugin [here](#plugin-code).
+:::
 
 Now, let's configure the API client and business logic together.
 
@@ -39,15 +60,15 @@ Now, let's configure the API client and business logic together.
 The business logic is written to be Vue 3 compatible. Under the hood, it utilizes the composition API, especially the `provide`/`inject` feature for sharing state.
 :::
 
-In order to configure the business logic and API client together with your Vue 3 application, it's required to create a Shopware instance provided by a factory method within the `@shopware-pwa/composables` package. Everything will be encapsulated in a plugin and installed later on.
+In order to configure the business logic and API client together with your Vue 3 application, it's required to create a Shopware instance provided by a factory method within the `@shopware-pwa/composables-next` package. Everything will be encapsulated in a plugin and installed later on.
 
 :::tip Vue plugins
 This section requires having knowledge about the [concept of Vue 3 plugins](https://vuejs.org/guide/reusability/plugins.html#writing-a-plugin).
 :::
 
-Import necessary methods from `@shopware-pwa` packages:
+Import necessary methods from `@shopware-pwa/api-client`, `@shopware-pwa/composables-next` and `js-cookie` packages:
 
-```ts{4-6}
+```ts
 // ./plugins/vue-shopware-frontends.ts file
 import { ref } from "vue";
 import type { App } from "vue";
@@ -55,46 +76,56 @@ import { createInstance } from "@shopware-pwa/api-client";
 import { createShopwareContext } from "@shopware-pwa/composables-next";
 import Cookies from "js-cookie";
 
+export default {
+  install: (app: App, options: ShopwareFrontendsOptions) => {
+    ...
+  },
+};
+
 ```
 
 We prepare some types to be used during the registration of the plugin to pass basic credentials for your Shopware 6 instance.
 
-```ts{1-8,11}
-type ShopwareFrontendsOptions = {
+```ts
+export type ShopwareFrontendsOptions = {
   shopwareEndpoint: string;
   shopwareAccessToken: string;
-  apiDefaults: any;
-  shopwareApiClient: {
+  shopwareApiClient?: {
     timeout: number;
   };
+  enableDevtools?: boolean;
 };
-
-export default {
-  install: (app: App, options: ShopwareFrontendsOptions) => {
 ```
 
-Now, once the plugin is created, we need to create an API client instance and the Shopware instance for Vue application. The `install` method is a good place to do that:
+Now, once the plugin is created, we need to create an API client instance and the Shopware instance for Vue application.
 
-```ts{7}
-// try to fetch the context token if it's previously set in a cookie
+The install method is a good place to do that:
+
+```ts
 const cookieContextToken = Cookies.get("sw-context-token");
-// set the current context token if exists to the ref
-const contextToken = ref(cookieContextToken);
+const cookieLanguageId = Cookies.get("sw-language-id");
 
-// create API client instance using `createInstance()` method imported from `@shopware-pwa/shopware-6-client` package
+const contextToken = ref(cookieContextToken);
+const languageId = ref(cookieLanguageId);
+
 const instance = createInstance({
-    endpoint: options.shopwareEndpoint,
-    accessToken: options.shopwareAccessToken,
-    timeout: options.shopwareApiClient?.timeout || 5000,
-    contextToken: contextToken.value,
+  endpoint: options.shopwareEndpoint,
+  accessToken: options.shopwareAccessToken,
+  timeout: options.shopwareApiClient?.timeout || 5000,
+  contextToken: contextToken.value,
+  languageId: languageId.value,
 });
 ```
 
 ## Handle client state
 
+:::tip Code example
+Complete code example can be found [HERE](./custom-project.html#plugin-code) you can find a full example of the plugin
+:::
+
 Now, we need to ensure that the context token, which identifies a user session, is properly stored and updated. The context token may change after operations like login or logout.
 
-Then, we can take advantage of the `onConfigChange` method. It executes when the API client detects a new value of the context token coming from the API (as a header parameter or in the response body). In that case, the new context token should be saved in the cookie to keep the correct session:
+Then, we can take advantage of the onConfigChange method. It executes when the API client detects a new value of the context token coming from the API (as a header parameter or in the response body). In that case, the new context token should be saved in the cookie to keep the correct session:
 
 ```ts
 /**
@@ -102,14 +133,19 @@ Then, we can take advantage of the `onConfigChange` method. It executes when the
  */
 instance.onConfigChange(({ config }) => {
   try {
-    // set the new cookie based on incoming `config`
     Cookies.set("sw-context-token", config.contextToken || "", {
       expires: 365,
       sameSite: "Lax",
       path: "/",
     });
-    // change reactive value of shared context token
+    Cookies.set("sw-language-id", config.languageId || "", {
+      expires: 365,
+      sameSite: "Lax",
+      path: "/",
+    });
+
     contextToken.value = config.contextToken;
+    languageId.value = config.languageId;
   } catch (e) {
     // Sometimes cookie is set on server after request is send, it can fail silently
   }
@@ -120,18 +156,17 @@ Another step is to create a Shopware instance that combines API Client and the b
 
 ```ts
 const shopwareContext = createShopwareContext(app, {
-  // `app` from install() method's argument
   apiInstance: instance, // pass API Client instance
-  enableDevtools: true, // decide if devtools should be enabled
-  shopwareDefaults: options?.apiDefaults || {}, // define API default parameters
+  enableDevtools: !!options.enableDevtools, // decide if devtools should be enabled
 });
 ```
 
-And the last step is to provide the `shopwareContext`:
+And the last step is to provide the shopwareContext:
 
 ```ts
 app.provide("shopware", shopwareContext);
 // thanks to this, `shopwareContext` can be injected in a component and other Vue-instance-aware places (like composables).
+app.provide("swSessionContext", ref());
 ```
 
 ## Register the plugin
@@ -153,6 +188,73 @@ app.use(ShopwareFrontends, {
 });
 
 app.mount("#app");
+```
+
+## Plugin code
+
+```ts
+// ./plugins/vue-shopware-frontends.ts file
+import { ref } from "vue";
+import type { App } from "vue";
+import { createInstance } from "@shopware-pwa/api-client";
+import { createShopwareContext } from "@shopware-pwa/composables-next";
+import Cookies from "js-cookie";
+
+// Types to be used during the registration of the plugin to pass basic credentials for your Shopware 6 instance.
+export type ShopwareFrontendsOptions = {
+  shopwareEndpoint: string;
+  shopwareAccessToken: string;
+  shopwareApiClient?: {
+    timeout: number;
+  };
+  enableDevtools?: boolean;
+};
+
+export default {
+  install: (app: App, options: ShopwareFrontendsOptions) => {
+    const cookieContextToken = Cookies.get("sw-context-token");
+    const cookieLanguageId = Cookies.get("sw-language-id");
+
+    const contextToken = ref(cookieContextToken);
+    const languageId = ref(cookieLanguageId);
+
+    const instance = createInstance({
+      endpoint: options.shopwareEndpoint,
+      accessToken: options.shopwareAccessToken,
+      timeout: options.shopwareApiClient?.timeout || 5000,
+      contextToken: contextToken.value,
+      languageId: languageId.value,
+    });
+
+    instance.onConfigChange(({ config }) => {
+      try {
+        Cookies.set("sw-context-token", config.contextToken || "", {
+          expires: 365,
+          sameSite: "Lax",
+          path: "/",
+        });
+        Cookies.set("sw-language-id", config.languageId || "", {
+          expires: 365,
+          sameSite: "Lax",
+          path: "/",
+        });
+
+        contextToken.value = config.contextToken;
+        languageId.value = config.languageId;
+      } catch (e) {
+        // Sometimes cookie is set on server after request is send, it can fail silently
+      }
+    });
+
+    const shopwareContext = createShopwareContext(app, {
+      apiInstance: instance,
+      enableDevtools: !!options.enableDevtools,
+    });
+
+    app.provide("shopware", shopwareContext);
+    app.provide("swSessionContext", ref());
+  },
+};
 ```
 
 ## Next steps
