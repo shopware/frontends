@@ -50,6 +50,7 @@ export const sidebar = [
     text: "PACKAGE REFERENCE",
     items: [
       { text: "Composables", link: "/packages/composables" },
+      { text: "API Client", link: "/packages/api-client" },
       { text: "Types", link: "/packages/types" },
       { text: "Helpers", link: "/packages/helpers" },
     ],
