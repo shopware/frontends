@@ -20,7 +20,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       @mouseover="currentMenuPosition = navigationElement.id"
     >
       <router-link
-        :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo"
+        :to="'/' + navigationElement.seoUrls?.[0]?.seoPathInfo"
         class="text-base font-medium text-gray-500 hover:text-gray-900"
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
