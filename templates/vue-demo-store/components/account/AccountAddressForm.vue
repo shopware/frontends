@@ -30,7 +30,6 @@ const formData = reactive<CustomerAddress>({
   zipcode: props.address?.zipcode ?? "",
   city: props.address?.city ?? "",
   street: props.address?.street ?? "",
-  salutation: props.address?.salutation ?? "",
   id: props.address?.id ?? "",
 });
 
