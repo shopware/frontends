@@ -21,6 +21,6 @@ test.describe.parallel
   test("Add product to wishlist", async ({ page }) => {
     await homePage.addProductToWishlist();
     await wishlistPage.openWishlist();
-    await expect(page.getByTestId('product-box')).toHaveCount(1);
+    await expect(page.getByTestId("product-box")).toHaveCount(1);
   });
 });

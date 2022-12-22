@@ -8,12 +8,10 @@ export class WishlistPage {
   constructor(page: Page) {
     this.page = page;
     this.addToCartButton = page.locator("[data-testid='add-to-cart-button']");
-    this.wishlistButton = page.locator("[data-testid='wishlist-button']")
-
+    this.wishlistButton = page.locator("[data-testid='wishlist-button']");
   }
 
   async openWishlist() {
-    await this.page.waitForLoadState(),
-    await this.wishlistButton.click()
+    await this.page.waitForLoadState(), await this.wishlistButton.click();
   }
 }

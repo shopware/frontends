@@ -8,7 +8,11 @@ export type UseProductPriceReturn = {
    */
   price: ComputedRef<CalculatedPrice | undefined>;
   /**
-   * Current price value
+   * Calculated price value for one selling unit
+   */
+  totalPrice: ComputedRef<number | undefined>;
+  /**
+   * Current unit price value
    */
   unitPrice: ComputedRef<number | undefined>;
   /**
@@ -80,6 +84,9 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
   const unitPrice: ComputedRef<number | undefined> = computed(
     () => _price.value?.unitPrice
   );
+  const totalPrice: ComputedRef<number | undefined> = computed(
+    () => _price.value?.totalPrice
+  );
   const price: ComputedRef<CalculatedPrice | undefined> = computed(
     () => _price.value
   );
@@ -92,6 +99,7 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
 
   return {
     price,
+    totalPrice,
     unitPrice,
     displayFromVariants,
     displayFrom,
