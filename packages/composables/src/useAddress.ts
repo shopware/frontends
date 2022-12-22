@@ -11,23 +11,46 @@ import {
 import { useShopwareContext } from "./useShopwareContext";
 
 import { CustomerAddress, ShopwareSearchParams } from "@shopware-pwa/types";
+import { useUser } from "./useUser";
 
 export type UseAddressReturn = {
+  /**
+   * List of customer addresses
+   */
   customerAddresses: ComputedRef<CustomerAddress[]>;
+  /**
+   * Loads the addresses that are available under `customerAddresses` property
+   */
   loadCustomerAddresses: () => Promise<void>;
+  /**
+   * Allows to create new address for a current customer
+   */
   createCustomerAddress: (
     customerAddress: CustomerAddress
   ) => Promise<CustomerAddress>;
+  /**
+   * Allows to update existing address for a current customer
+   */
   updateCustomerAddress: (
     customerAddress: CustomerAddress
   ) => Promise<CustomerAddress>;
+  /**
+   * Allows to delete existing address for a current customer
+   */
   deleteCustomerAddress: (addressId: string) => Promise<void>;
+  /**
+   * Sets the address for given ID as default billing address
+   */
   setDefaultCustomerBillingAddress: (addressId: string) => Promise<string>;
+  /**
+   * Sets the address for given ID as default shipping address
+   */
   setDefaultCustomerShippingAddress: (addressId: string) => Promise<string>;
 };
 
 export function useAddress(): UseAddressReturn {
   const { apiInstance } = useShopwareContext();
+  const { isGuestSession } = useUser();
 
   const _storeCustomerAddresses: Ref<CustomerAddress[]> = inject(
     "swCustomerAddresses",
@@ -49,10 +72,14 @@ export function useAddress(): UseAddressReturn {
    * Add new customer address
    */
   async function createCustomerAddress(
-    customerAddress: CustomerAddress
+    customerAddress: Omit<CustomerAddress, "id" | "salutation">
   ): Promise<CustomerAddress> {
     const result = await apiCreateCustomerAddress(customerAddress, apiInstance);
     await loadCustomerAddresses();
+    if (isGuestSession.value) {
+      return result;
+    }
+
     await setDefaultCustomerBillingAddress(result.id);
     await setDefaultCustomerShippingAddress(result.id);
     return result;

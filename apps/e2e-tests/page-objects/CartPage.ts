@@ -12,12 +12,10 @@ export class CartPage {
   }
 
   async openMiniCart() {
-    await this.page.waitForLoadState(),
-    await this.miniCartLink.click()
+    await this.page.waitForLoadState(), await this.miniCartLink.click();
   }
 
   async removeFromMiniCart() {
-    await this.page.waitForLoadState(),
-    await this.removeMiniCart.click();
+    await this.page.waitForLoadState(), await this.removeMiniCart.click();
   }
 }
