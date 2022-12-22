@@ -6,7 +6,7 @@ export default {
 <script setup lang="ts">
 import { SharedModal } from "~~/components/shared/SharedModal.vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
+import { required, email, minLength, requiredIf } from "@vuelidate/validators";
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 
 definePageMeta({
@@ -17,20 +17,19 @@ const { push } = useRouter();
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const {
-  selectedShippingMethod: shippingMethod,
-  selectedPaymentMethod: paymentMethod,
-  setShippingMethod,
-  setPaymentMethod,
   paymentMethods,
   shippingMethods,
   getPaymentMethods,
   getShippingMethods,
   createOrder,
 } = useCheckout();
-const { register, logout, isLoggedIn, user } = useUser();
+const { register, logout, isLoggedIn, isGuestSession, user } = useUser();
 const {
   refreshSessionContext,
-
+  selectedShippingMethod: shippingMethod,
+  selectedPaymentMethod: paymentMethod,
+  setShippingMethod,
+  setPaymentMethod,
   activeShippingAddress,
   setActiveShippingAddress,
   activeBillingAddress,
@@ -94,6 +93,7 @@ const state = reactive({
   lastName: "",
   email: "",
   password: "",
+  guest: false,
   billingAddress: {
     street: "",
     zipcode: "",
@@ -120,7 +120,9 @@ const rules = computed(() => ({
     email,
   },
   password: {
-    required,
+    required: requiredIf(() => {
+      return !state.guest;
+    }),
     minLength: minLength(8),
   },
   billingAddress: {
@@ -314,6 +316,22 @@ const invokeSubmit = async () => {
                   </span>
                 </div>
 
+                <div class="col-span-6">
+                  <div class="flex items-center">
+                    <input
+                      id="create-account"
+                      type="checkbox"
+                      v-model="state.guest"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      for="create-account"
+                      class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >Do not create a customer account.</label
+                    >
+                  </div>
+                </div>
+
                 <div class="col-span-6 sm:col-span-3">
                   <label
                     for="email-address"
@@ -340,26 +358,28 @@ const invokeSubmit = async () => {
                   </span>
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                  <label
-                    for="email-address"
-                    class="block text-sm font-medium text-gray-700"
-                    >Password</label
-                  >
-                  <input
-                    v-model="state.password"
-                    autocomplete="off"
-                    type="password"
-                    name="password"
-                    id="password"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
-                    @blur="$v.password.$touch()"
-                  />
-                  <span
-                    v-if="$v.password.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
-                  >
-                    {{ $v.password.$errors[0].$message }}
-                  </span>
+                  <div v-if="!state.guest">
+                    <label
+                      for="email-address"
+                      class="block text-sm font-medium text-gray-700"
+                      >Password</label
+                    >
+                    <input
+                      v-model="state.password"
+                      autocomplete="off"
+                      type="password"
+                      name="password"
+                      id="password"
+                      class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                      @blur="$v.password.$touch()"
+                    />
+                    <span
+                      v-if="$v.password.$error"
+                      class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                    >
+                      {{ $v.password.$errors[0].$message }}
+                    </span>
+                  </div>
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
@@ -481,7 +501,12 @@ const invokeSubmit = async () => {
               </button>
             </form>
             <div v-else>
-              You are logged-in as {{ user?.firstName }}! You can log out
+              You are logged-in as {{ user?.firstName }}
+              <span
+                v-if="isGuestSession"
+                class="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+                >guest</span
+              >! You can log out
               <a
                 href="#"
                 class="text-brand-primary hover:text-brand-dark"

@@ -11,6 +11,7 @@ import {
 import { useShopwareContext } from "./useShopwareContext";
 
 import { CustomerAddress, ShopwareSearchParams } from "@shopware-pwa/types";
+import { useUser } from "./useUser";
 
 export type UseAddressReturn = {
   /**
@@ -49,6 +50,7 @@ export type UseAddressReturn = {
 
 export function useAddress(): UseAddressReturn {
   const { apiInstance } = useShopwareContext();
+  const { isGuestSession } = useUser();
 
   const _storeCustomerAddresses: Ref<CustomerAddress[]> = inject(
     "swCustomerAddresses",
@@ -74,6 +76,10 @@ export function useAddress(): UseAddressReturn {
   ): Promise<CustomerAddress> {
     const result = await apiCreateCustomerAddress(customerAddress, apiInstance);
     await loadCustomerAddresses();
+    if (isGuestSession.value) {
+      return result;
+    }
+
     await setDefaultCustomerBillingAddress(result.id);
     await setDefaultCustomerShippingAddress(result.id);
     return result;
