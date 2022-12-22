@@ -28,7 +28,7 @@ export type UseAddToCartReturn = {
 export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
   const _product = computed(() => unref(product));
 
-  const { addProduct, cartItems } = useCart();
+  const { addProduct, cartItems, refreshCart } = useCart();
   const quantity: Ref<number> = ref(1);
 
   async function addToCart(): Promise<Cart> {
@@ -38,6 +38,7 @@ export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
       quantity: quantity.value,
     });
     quantity.value = 1;
+    refreshCart();
     return addToCartResponse;
   }
 
