@@ -2,16 +2,26 @@
 category: CMS
 ---
 
+<script setup>
+import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
+</script>
+
 # useAddToCart
 
 Add product to cart.
 
+[[toc]]
+
 ## Usage
 
-```ts
-const { isInCart, quantity, addToCart } = useAddToCart({ product });
-if (!isInCart.value) {
-  quantity.value = 5;
-  await addToCart();
-}
+Provided `product` object in the argument should be in a `Ref<Product>` type.
+
+```vue
+<script setup lang="ts">
+const { isInCart, quantity, addToCart, getStock } = useAddToCart({ product });
+</script>
 ```
+
+## Live example
+
+<StackBlitzLiveExample projectId="mkucmus/frontends-examples" example="UseAddToCart" />
