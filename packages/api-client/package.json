@@ -19,14 +19,14 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "@vitest/coverage-c8": "^0.25.2",
+    "@vitest/coverage-c8": "^0.26.2",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
-    "vitest": "^0.25.2"
+    "vitest": "^0.26.2"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",
     "axios": "^0.27.2",
-    "query-string": "^7.1.1"
+    "query-string": "^8.1.0"
   }
 }
