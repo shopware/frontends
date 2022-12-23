@@ -12,14 +12,14 @@
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "vitepress": "^1.0.0-alpha.29",
+    "vitepress": "^1.0.0-alpha.33",
     "vitepress-shopware-docs": "^0.0.9",
     "vue": "^3.2.45"
   },
   "devDependencies": {
     "@types/markdown-it": "^12.2.3",
-    "@types/node": "^18.11.9",
-    "@vitejs/plugin-vue": "^3.2.0"
+    "@types/node": "^18.11.17",
+    "@vitejs/plugin-vue": "^4.0.0"
   },
   "pnpm": {
     "peerDependencyRules": {

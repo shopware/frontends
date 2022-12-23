@@ -18,12 +18,12 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@vitest/coverage-c8": "^0.25.2",
+    "@vitest/coverage-c8": "^0.26.2",
     "eslint-config-shopware": "workspace:*",
     "jsdom": "^20.0.3",
-    "query-string": "^7.1.1",
+    "query-string": "^8.1.0",
     "tsconfig": "workspace:*",
-    "vitest": "^0.25.2"
+    "vitest": "^0.26.2"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*"
