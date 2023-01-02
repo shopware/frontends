@@ -55,7 +55,7 @@ test.describe.only("Create Order", () => {
     await cartPage.openMiniCart();
     await checkoutPage.goToCheckout();
     await checkoutPage.placeOrder();
-    await expect(page.locator("text=Thank you!")).toBeVisible();
+    await expect(page.locator("[data-testid='order-total']")).toBeVisible();
   });
 
   test("Create new order with login on checkout", async ({ page }) => {
@@ -67,6 +67,6 @@ test.describe.only("Create Order", () => {
     await loginform.login(userEmail, password);
     await checkoutPage.placeOrder();
     await page.waitForLoadState();
-    await expect(page.locator("text=Thank you!")).toBeVisible();
+    await expect(page.locator("[data-testid='order-total']")).toBeVisible();
   });
 });
