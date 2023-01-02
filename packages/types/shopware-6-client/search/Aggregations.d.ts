@@ -1,3 +1,5 @@
+import { Media } from "../models/content/media/Media";
+
 /**
  * @beta
  */
@@ -25,7 +27,7 @@ export type AggregationFilterEntityOption = {
   productConfiguratorSettings: unknown | null;
   productProperties: unknown | null;
   productOptions: unknown | null;
-  media: unknown | null;
+  media: Media | null;
   customFields: unknown | null;
   _uniqueIdentifier: string;
   versionId: null;

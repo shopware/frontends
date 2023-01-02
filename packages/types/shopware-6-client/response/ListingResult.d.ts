@@ -1,5 +1,8 @@
 import { Sort } from "../search/SearchCriteria";
-import { Aggregations } from "../search/Aggregations";
+import {
+  Aggregations,
+  AggregationFilterEntityOption,
+} from "../search/Aggregations";
 
 /**
  * @public
@@ -13,6 +16,8 @@ export type ListingFilterCode =
   | "shipping-free"
   | string;
 
+export type ListingFilterDisplayType = "text" | "media";
+
 /**
  * @public
  */
@@ -22,11 +27,12 @@ export type ListingFilter = {
   name: string;
   code: ListingFilterCode;
   type?: "range" | "max";
-  options?: Array<{ id: string; name: string }>;
-  entities?: Array<{ id: string; name: string }>;
+  options?: AggregationFilterEntityOption[];
+  entities?: AggregationFilterEntityOption[];
   min?: number; // TODO: prepare proper listing filters based on code
   max?: number;
   value?: string;
+  displayType?: ListingFilterDisplayType;
 };
 
 export type ListingResult<T> = {
