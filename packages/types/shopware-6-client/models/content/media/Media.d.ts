@@ -35,6 +35,7 @@ export type Media = {
   fileName: string;
   user: Customer;
   translations: MediaTranslation[] | null;
+  translated: MediaTranslation | null;
   categories: Category[] | null;
   productManufacturers: ProductManufacturer[] | null;
   productMedia: ProductMedia | null;
