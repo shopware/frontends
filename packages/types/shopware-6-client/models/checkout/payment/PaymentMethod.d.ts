@@ -30,4 +30,14 @@ export type PaymentMethod = {
   media: Media | null;
   customFields: CustomField[];
   formattedHandlerIDentifier: string;
+  createdAt: string;
+  updatedAt: string | null;
+  distinguishableName: string;
+  afterOrderEnabled: boolean;
+  shortName: string;
+  synchronous: boolean;
+  asynchronous: boolean;
+  prepared: boolean;
+  refundable: boolean;
+  apiAlias: "payment_method";
 };

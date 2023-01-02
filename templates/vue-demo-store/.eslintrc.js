@@ -9,4 +9,12 @@ module.exports = {
       jsx: true,
     },
   },
+  rules: {
+    "vue/multi-word-component-names": [
+      "error",
+      {
+        ignores: ["checkout"],
+      },
+    ],
+  },
 };
