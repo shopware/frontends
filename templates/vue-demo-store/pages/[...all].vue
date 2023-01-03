@@ -13,6 +13,7 @@ import {
 } from "@shopware-pwa/composables-next";
 import { SeoUrl } from "@shopware-pwa/types";
 
+const NOT_FOUND_COMPONENT = "errors/RoutingNotFound";
 const { resolvePath } = useNavigationSearch();
 const route = useRoute();
 
@@ -29,6 +30,9 @@ const { routeName, foreignKey } = useNavigationContext(
 
 function render() {
   const componentName = routeName.value;
+  if (!componentName)
+    return h("div", h(resolveComponent(pascalCase(NOT_FOUND_COMPONENT))));
+
   const componentNameToResolve = pascalCase(componentName as string);
   const cmsPageView = routeName && resolveComponent(componentNameToResolve);
   if (cmsPageView) {
