@@ -246,6 +246,9 @@ const invokeSubmit = async () => {
                     data-testid="checkout-pi-salutation-select"
                     @blur="$v.salutationId.$touch()"
                   >
+                    <option disabled selected value="">
+                      Choose salutation...
+                    </option>
                     <option
                       v-for="salutation in getSalutations"
                       :key="salutation.id"
@@ -339,7 +342,7 @@ const invokeSubmit = async () => {
                     type="email"
                     required
                     name="email-address"
-                    placeholder="Enter email..."
+                    placeholder="Enter email address..."
                     autocomplete="off"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-email-input"
@@ -355,7 +358,7 @@ const invokeSubmit = async () => {
                 <div class="col-span-6 sm:col-span-3">
                   <div v-if="!state.guest">
                     <label
-                      for="email-address"
+                      for="password"
                       class="block text-sm font-medium text-gray-700"
                       >Password</label
                     >
@@ -365,6 +368,7 @@ const invokeSubmit = async () => {
                       type="password"
                       name="password"
                       id="password"
+                      placeholder="Enter password..."
                       class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                       @blur="$v.password.$touch()"
                     />
@@ -375,38 +379,6 @@ const invokeSubmit = async () => {
                       {{ $v.password.$errors[0].$message }}
                     </span>
                   </div>
-                </div>
-
-                <div class="col-span-6 sm:col-span-3">
-                  <label
-                    for="country"
-                    class="block text-sm font-medium text-gray-700"
-                    >Country</label
-                  >
-                  <select
-                    id="country"
-                    v-model="state.billingAddress.countryId"
-                    required
-                    name="country"
-                    autocomplete="country-name"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
-                    data-testid="checkout-pi-country-input"
-                    @blur="$v.billingAddress.countryId.$touch()"
-                  >
-                    <option
-                      v-for="country in getCountries"
-                      :key="country.id"
-                      :value="country.id"
-                    >
-                      {{ country.name }}
-                    </option>
-                  </select>
-                  <span
-                    v-if="$v.billingAddress.countryId.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
-                  >
-                    {{ $v.billingAddress.countryId.$errors[0].$message }}
-                  </span>
                 </div>
 
                 <div class="col-span-6">
@@ -437,6 +409,32 @@ const invokeSubmit = async () => {
 
                 <div class="col-span-6 sm:col-span-3">
                   <label
+                    for="postal-code"
+                    class="block text-sm font-medium text-gray-700"
+                    >ZIP / Postal code</label
+                  >
+                  <input
+                    id="postal-code"
+                    v-model="state.billingAddress.zipcode"
+                    type="text"
+                    required
+                    name="postal-code"
+                    placeholder="Enter zip code..."
+                    autocomplete="postal-code"
+                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                    data-testid="checkout-pi-zip-code-input"
+                    @blur="$v.billingAddress.zipcode.$touch()"
+                  />
+                  <span
+                    v-if="$v.billingAddress.zipcode.$error"
+                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                  >
+                    {{ $v.billingAddress.zipcode.$errors[0].$message }}
+                  </span>
+                </div>
+
+                <div class="col-span-6 sm:col-span-3">
+                  <label
                     for="city"
                     class="block text-sm font-medium text-gray-700"
                     >City</label
@@ -461,29 +459,38 @@ const invokeSubmit = async () => {
                   </span>
                 </div>
 
-                <div class="col-span-6 sm:col-span-3">
+                <div class="col-span-6">
                   <label
-                    for="postal-code"
+                    for="country"
                     class="block text-sm font-medium text-gray-700"
-                    >ZIP / Postal code</label
+                    >Country</label
                   >
-                  <input
-                    id="postal-code"
-                    v-model="state.billingAddress.zipcode"
-                    type="text"
+                  <select
+                    id="country"
+                    v-model="state.billingAddress.countryId"
                     required
-                    name="postal-code"
-                    placeholder="Enter postal code..."
-                    autocomplete="postal-code"
+                    name="country"
+                    autocomplete="country-name"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
-                    data-testid="checkout-pi-zip-code-input"
-                    @blur="$v.billingAddress.zipcode.$touch()"
-                  />
+                    data-testid="checkout-pi-country-input"
+                    @blur="$v.billingAddress.countryId.$touch()"
+                  >
+                    <option disabled selected value="">
+                      Choose country...
+                    </option>
+                    <option
+                      v-for="country in getCountries"
+                      :key="country.id"
+                      :value="country.id"
+                    >
+                      {{ country.name }}
+                    </option>
+                  </select>
                   <span
-                    v-if="$v.billingAddress.zipcode.$error"
+                    v-if="$v.billingAddress.countryId.$error"
                     class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
                   >
-                    {{ $v.billingAddress.zipcode.$errors[0].$message }}
+                    {{ $v.billingAddress.countryId.$errors[0].$message }}
                   </span>
                 </div>
               </div>
