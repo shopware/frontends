@@ -5,7 +5,7 @@ import { h } from "vue";
 import { CSSProperties } from "vue";
 import { decodeHTML } from "entities";
 // @ts-ignore
-import htmlToVue from "html-to-vue";
+import { htmlToVue } from "html-to-vue";
 // @ts-ignore
 const { renderHtml, getOptionsFromNode } = htmlToVue;
 
