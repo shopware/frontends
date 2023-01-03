@@ -3,46 +3,29 @@ import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { useShopwareContext } from "./useShopwareContext";
 import { getCategories, getSeoUrl } from "@shopware-pwa/api-client";
 import { _useContext } from "./internal/_useContext";
+import { useSessionContext } from "./useSessionContext";
 
 export type UseNavigationSearchReturn = {
+  /**
+   * Get {@link SeoUrl} entity for given path
+   * @example resolvePath("/my-category/my-product") or resolvePath("/") for home page
+   */
   resolvePath: (path: string) => Promise<SeoUrl | null>;
 };
 
 export function useNavigationSearch(): UseNavigationSearchReturn {
   const { apiInstance } = useShopwareContext();
+  const { sessionContext } = useSessionContext();
 
   async function resolvePath(path: string) {
-    // TODO: IMPORTANT - core issue to resolve home path
     if (path === "/") {
-      const categoryResponse = await getCategories(
-        {
-          includes: {
-            category: ["id"],
-          },
-          filter: [
-            {
-              type: "equals",
-              field: "level",
-              value: "1",
-            },
-            {
-              type: "equals",
-              field: "path",
-              value: null,
-            },
-            {
-              type: "equals",
-              field: "parentId",
-              value: null,
-            },
-          ],
-        },
-        apiInstance
-      );
+      // please ignore optional chaining for salesChannel object as it's always present (type definition issue)
+      const categoryId =
+        sessionContext.value?.salesChannel?.navigationCategoryId;
 
       return {
         routeName: "frontend.navigation.page",
-        foreignKey: categoryResponse.elements[0].id,
+        foreignKey: categoryId,
       } as SeoUrl;
     }
 
