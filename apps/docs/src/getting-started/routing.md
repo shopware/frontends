@@ -22,7 +22,7 @@ In the [building a navigation](./navigation.md) chapter you have already learned
 
 In Shopware, the concept of routing is connected to `SeoUrl` routes. A `SeoUrl` contains information about the path and what page it resolves to.
 
-In the most common routing scenario, you will have a URL path like `/en/My-Product` and want to resolve it to a route configuration. The `useNavigationSearch` composable provides a function to do just that:
+In the most common routing scenario, you will have a URL path like `/Winter-Season/My-Product` and want to resolve it to a route configuration. The `useNavigationSearch` composable provides a function to do that:
 
 ```js
 import {
@@ -32,7 +32,7 @@ import {
 
 const { resolvePath } = useNavigationSearch();
 
-const seoResult = await resolvePath("/en/My-Product");
+const seoResult = await resolvePath("/Winter-Season/My-Product");
 
 const { routeName, foreignKey } = useNavigationContext(ref(seoResult));
 ```
@@ -50,7 +50,7 @@ This is all information you need to resolve the route to a page, or rather an en
 
 ### 💡 Typescript autocompletion
 
-In routing, a bit of IDE support can go a long way, so follow these simple steps to get autocompletion within your project.
+In routing, a bit of IDE support can go a long way, so follow these steps to get autocompletion within your project.
 
 ```bash
 npm install -D @shopware-pwa/types
