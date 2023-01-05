@@ -11,9 +11,9 @@
     "import": "./dist/index.mjs"
   },
   "scripts": {
-    "build": "unbuild && pnpm build:types",
+    "build": "export NODE_ENV=production && unbuild && pnpm build:types",
     "build:types": "npx -p typescript tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
-    "dev": "unbuild --stub",
+    "dev": "export NODE_ENV=development && unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
     "test": "vitest run --segfault-retry=3"
   },
