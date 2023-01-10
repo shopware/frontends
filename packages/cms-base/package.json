@@ -8,6 +8,7 @@
   "files": [
     "dist",
     "components",
+    "helpers",
     "index.cjs"
   ],
   "scripts": {
