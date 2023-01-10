@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ListingFilter } from "@shopware-pwa/types";
+import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
 const { getCurrentFilters } = useListing({
   listingType: "productSearchListing",
@@ -78,7 +79,7 @@ onClickOutside(dropdownElement, () => (isOpen.value = false));
             :for="`filter-mobile-${filter.code}-${option.id}`"
             class="ml-3 min-w-0 flex-1 text-gray-500"
           >
-            {{ option.name }}
+            {{ getTranslatedProperty(option, 'name') }}
           </label>
         </div>
       </div>
