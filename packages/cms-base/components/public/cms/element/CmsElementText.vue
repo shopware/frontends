@@ -4,10 +4,8 @@ import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import { h } from "vue";
 import { CSSProperties } from "vue";
 import { decodeHTML } from "entities";
-// @ts-ignore
-import htmlToVue from "html-to-vue";
-// @ts-ignore
-const { renderHtml, getOptionsFromNode } = htmlToVue;
+import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";
+import { renderHtml } from "../../../../helpers/html-to-vue/renderToHtml";
 
 const props = defineProps<{
   content: CmsElementText;
