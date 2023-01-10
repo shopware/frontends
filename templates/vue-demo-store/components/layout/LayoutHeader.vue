@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { count } = useCart();
+const { count: wishlistCount } = useWishlist();
 const isSidebarOpen = inject("isSidebarOpen");
 </script>
 
@@ -25,19 +26,37 @@ const isSidebarOpen = inject("isSidebarOpen");
         </div>
 
         <AccountMenu />
+        <div class="flex ml-4 flow-root lg:ml-6">
+          <button
+            class="group -m-2 p-2 flex items-center relative"
+            @click="$router.push('/wishlist')"
+            data-testid="wishlist-button"
+          >
+            <div
+              class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary"
+            ></div>
+            <span
+              v-if="wishlistCount > 0"
+              class="text-3 font-sm text-white absolute bg-red-500 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
+            >
+              {{ wishlistCount }}
+            </span>
+          </button>
+        </div>
         <!-- Cart -->
         <div class="flex ml-4 flow-root lg:ml-6">
           <button
-            class="group -m-2 p-2 flex items-center"
+            class="group -m-2 p-2 flex items-center relative"
             @click="isSidebarOpen = true"
             data-testid="cart-button"
           >
             <!-- Heroicon name: outline/shopping-bag -->
             <div
-              class="w-7 h-7 i-carbon-shopping-bag bg-gray-600 hover:bg-brand-primary"
+              class="w-7 h-7 i-carbon-shopping-bag text-gray-600 hover:text-brand-primary"
             ></div>
             <span
-              class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800 min-w-30px"
+              v-if="count > 0"
+              class="text-3 font-sm text-white absolute bg-blue rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
             >
               {{ count || "" }}
             </span>

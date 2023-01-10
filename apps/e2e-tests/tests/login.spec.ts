@@ -23,6 +23,8 @@ test.describe.only("Login user", () => {
   test("Login user", async ({ page }) => {
     await homePage.clickOnSignIn();
     await loginForm.login(userEmail, password);
-    await expect(page.locator("text =  Hello")).toBeVisible();
+    await expect(
+      page.locator("[data-testid='account-menu-hello-button']")
+    ).toBeVisible();
   });
 });

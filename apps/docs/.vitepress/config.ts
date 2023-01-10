@@ -18,27 +18,25 @@ export const sidebar = [
     items: [
       { text: "Setup Templates", link: "/getting-started/templates" },
       { text: "Navigation", link: "/getting-started/navigation" },
+      { text: "Routing", link: "/getting-started/routing" },
       { text: "Content Pages", link: "/getting-started/content-pages" },
       { text: "Cart", link: "/getting-started/cart" },
       { text: "Checkout ", link: "/getting-started/checkout" },
-      { text: "Login form", link: "/getting-started/login-form" },
+      { text: "Custom Payment", link: "/getting-started/custom-payment" },
+      { text: "Login Form", link: "/getting-started/login-form" },
       { text: "Prices", link: "/getting-started/prices" },
       { text: "Product Listing", link: "/getting-started/product-listing" },
+      { text: "Wishlist", link: "/getting-started/wishlist" },
     ],
   },
   {
     text: "FRAMEWORK",
     items: [
       { text: "Requirements", link: "/framework/requirements" },
-      { text: "Configuration", link: "/framework/configuration" },
+      { text: "Internal Structure", link: "/framework/internal-structure" },
       { text: "Shopping Experiences", link: "/framework/shopping-experiences" },
       { text: "Styling", link: "/framework/styling" },
-      {
-        text: "Asynchronous Components",
-        link: "/framework/asynchronous-components",
-      },
-      { text: "API Defaults", link: "/framework/api-defaults" },
-      { text: "Error Handling", link: "/framework/error-handling" },
+      { text: "Context Composables", link: "/framework/context-composables" },
     ],
   },
   {
@@ -53,8 +51,8 @@ export const sidebar = [
     text: "PACKAGE REFERENCE",
     items: [
       { text: "Composables", link: "/packages/composables" },
+      { text: "API Client", link: "/packages/api-client" },
       { text: "Types", link: "/packages/types" },
-      { text: "CMS Base", link: "/packages/cms-base" },
       { text: "Helpers", link: "/packages/helpers" },
     ],
   },

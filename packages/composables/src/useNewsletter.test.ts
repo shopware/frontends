@@ -36,21 +36,17 @@ describe("useNewsletter", () => {
     option: "subscribe" as const,
   };
 
-  vi.spyOn(apiExports, "newsletterSubscribe").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve();
-      });
-    }
-  );
+  vi.spyOn(apiExports, "newsletterSubscribe").mockImplementation(() => {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  });
 
-  vi.spyOn(apiExports, "newsletterUnsubscribe").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve();
-      });
-    }
-  );
+  vi.spyOn(apiExports, "newsletterUnsubscribe").mockImplementation(() => {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  });
 
   it("newsletter subscribe", () => {
     expect(wrapper.vm.newsletterSubscribe(newsletterMockData)).resolves.toEqual(

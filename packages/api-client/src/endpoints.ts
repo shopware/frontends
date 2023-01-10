@@ -152,7 +152,7 @@ export const getCustomerAccountConfirmEndpoint = () =>
  */
 export const getCustomerUpdatePaymentMethodEndpoint = (
   paymentMethodId: string
-) => `/account/change-payment-method/${paymentMethodId}`;
+) => `/store-api/account/change-payment-method/${paymentMethodId}`;
 
 // checkout
 
@@ -233,6 +233,12 @@ export const getNewsletterSubscribeEndpoint = () => `/newsletter/subscribe`; // 
  * @public
  */
 export const getNewsletterUnsubscribeEndpoint = () => `/newsletter/unsubscribe`; // replace with `/store-api/v4/newsletter/unsubscribe`
+
+/**
+ * @public
+ */
+export const getNewsletterRecipientEndpoint = () =>
+  `/store-api/account/newsletter-recipient`;
 
 /**
  * @public

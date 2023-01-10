@@ -7,6 +7,7 @@ const emits = defineEmits<{
 }>();
 
 const { isLoggedIn, login } = useUser();
+const { mergeWishlistProducts } = useWishlist();
 const { pushSuccess } = useNotifications();
 const loginErrors = ref<string[]>([]);
 
@@ -23,6 +24,7 @@ const invokeLogin = async (): Promise<void> => {
     emits("success");
     pushSuccess("You are logged in");
     emits("close");
+    mergeWishlistProducts();
   } catch (error) {
     const e = error as ClientApiError;
     loginErrors.value = e.messages.map(({ detail }) => detail);
@@ -113,6 +115,7 @@ const invokeLogin = async (): Promise<void> => {
               <nuxt-link
                 to="/register"
                 class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                data-testid="login-sign-up-link"
               >
                 Sign up
               </nuxt-link>

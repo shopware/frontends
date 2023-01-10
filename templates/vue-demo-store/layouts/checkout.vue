@@ -1,8 +1,5 @@
-<script lang="ts">
-export default {
-  name: "CheckoutLayout",
-};
-</script>
+<script setup lang="ts"></script>
+
 <template>
   <div>
     <SharedModal />

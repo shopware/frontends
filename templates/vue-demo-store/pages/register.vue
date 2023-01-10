@@ -7,10 +7,12 @@ export default {
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
+import { ClientApiError } from "@shopware-pwa/types";
 
 const { getSalutations } = useSalutations();
 const { getCountries } = useCountries();
 const { register } = useUser();
+const { pushError } = useNotifications();
 
 const router = useRouter();
 const loading = ref<boolean>();
@@ -77,7 +79,10 @@ const invokeSubmit = async () => {
       const response = await register(state);
       if (response) router.push("/");
     } catch (error) {
-      console.error(error);
+      let message =
+        (error as ClientApiError)?.messages?.[0]?.detail ||
+        "Something went wrong, please try again later";
+      pushError(message);
     } finally {
       loading.value = false;
     }

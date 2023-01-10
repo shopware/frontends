@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
-import { getRandomNumber } from "../utils/data-helpers";
 import { faker } from "@faker-js/faker";
 
 test.describe.only("Registration new user", () => {
@@ -21,8 +20,8 @@ test.describe.only("Registration new user", () => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCustomerData(
-      faker.name.firstName(),
-      faker.name.lastName(),
+      "e2e " + faker.name.firstName(),
+      "e2e " + faker.name.lastName(),
       faker.internet.exampleEmail(),
       faker.internet.password()
     );
@@ -32,6 +31,9 @@ test.describe.only("Registration new user", () => {
       faker.address.city()
     );
     await registrationPage.submitRegistraionForm();
-    await page.locator("text =  Sign out ").isVisible();
+    await page
+      .locator("[data-testid='header-sing-out-link']")
+      .nth(1)
+      .isVisible();
   });
 });

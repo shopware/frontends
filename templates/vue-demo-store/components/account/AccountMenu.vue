@@ -6,7 +6,6 @@ const modal = inject<SharedModal>("modal") as SharedModal;
 
 async function invokeLogout() {
   await logout();
-  refreshUser();
   isAccountMenuOpen.value = false;
 }
 </script>
@@ -30,6 +29,7 @@ async function invokeLogout() {
             type="button"
             class="text-sm text-gray-700 focus:outline-none"
             @click="isAccountMenuOpen = !isAccountMenuOpen"
+            data-testid="account-menu-hello-button"
           >
             Hello, {{ user?.firstName }}!
           </button>

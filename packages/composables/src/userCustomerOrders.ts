@@ -4,8 +4,17 @@ import { useShopwareContext } from "./useShopwareContext";
 import { Order, ShopwareSearchParams } from "@shopware-pwa/types";
 
 export type UseCustomerOrdersReturn = {
+  /**
+   * All placed orders belonging to the logged-in customer
+   */
   orders: Ref<Order[]>;
+  /**
+   * Changes the current page of the orders list
+   */
   changeCurrentPage: (pageNumber: number | string) => Promise<void>;
+  /**
+   * Fetches the orders list and assigns the result to the `orders` property
+   */
   loadOrders: () => Promise<void>;
 };
 

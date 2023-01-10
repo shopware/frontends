@@ -12,6 +12,7 @@ export type CalculatedPrice = {
   calculatedTaxes: CalculatedTax[];
   taxRules: TaxRule[];
   referencePrice: ReferencePrice;
+  hasRange: boolean;
   listPrice: {
     price: number;
     discount: number;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { getFormattedPrice } = usePrice();
 const props = defineProps<{
-  value: number;
+  value: number | undefined;
 }>();
 
 const getPrice = computed<string>(() => getFormattedPrice(props.value));

@@ -19,9 +19,13 @@ This guide will discuss how to use and customize Shopping Experiences in your Sh
 
 Shopping Experiences are implemented as a dedicated package that you can install in your project.
 
-If your project ist based on the [Demo Store Template](../getting-started/templates/demo-store-template.md), that package is already installed. In that case, you probably want to know how to [customize CMS components](#customize-components).
+If your project is based on the [Demo Store Template](../getting-started/templates/demo-store-template.md), that package is already installed. If you are using a custom template, follow the instructions in [content pages](./../getting-started/content-pages.md) first.
 
 ## Customize Components
+
+:::info Only for `cms-base` package
+The directory structure is only relevant, if you want to customize the components of the `cms-base` package. If you are using a custom template, you can place components where you want, because you handle their resolution by yourself. In that case skip to [Create Elements](#create-elements).
+:::
 
 In order to customize a component, you need to override it. The process is the same regardless what type of component you want to override
 
@@ -40,9 +44,9 @@ demo-store/
 
 Now the CMS module will automatically resolve that file based on the name and you can start writing your component.
 
-## Override Elements
+## Create Elements
 
-Start with importing the correct element type from the `composables-next` pacakge and using it in the `defineProps` method to define the type of your `content` property:
+Start with importing the correct element type from the `composables-next` package and using it in the `defineProps` method to define the type of your `content` property:
 
 ```vue
 <!-- components/cms/CmsElementImage.vue -->
@@ -96,7 +100,7 @@ const {
 </template>
 ```
 
-## Override Blocks
+## Create Blocks
 
 Make sure, you've created a new file as described in [the introduction](#customize-components).
 
@@ -114,6 +118,10 @@ const props = defineProps<{
 ```
 
 ### Slots
+
+:::info Only for `cms-base` package
+Also here, if you are not using the `cms-base` package, you have to come up with your own implementation of a generic component that handles the slot resolution. In that case, please ignore the mentions of `CmsGenericElement`.
+:::
 
 Since blocks are usually layouts, they have slots which can be filled with dynamic content - CMS elements. Since blocks are flexible, the specific type of the element is not known in advance.
 

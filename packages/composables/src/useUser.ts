@@ -15,57 +15,148 @@ import {
 import {
   Customer,
   CustomerRegistrationParams,
-  ClientApiError,
-  ShopwareError,
   Country,
   Salutation,
   ShopwareSearchParams,
+  PaymentMethodTranslation,
+  BillingAddress,
+  ShippingAddress,
 } from "@shopware-pwa/types";
-import { useShopwareContext, useCart, useInternationalization } from ".";
+import {
+  useShopwareContext,
+  useCart,
+  useInternationalization,
+  useSessionContext,
+} from ".";
+import { _useContext } from "./internal/_useContext";
+import { syncRefs } from "@vueuse/core";
 
 export type UseUserReturn = {
+  /**
+   * Logs-in user with given credentials
+   * @param params - username and password
+   */
   login: (params: { username: string; password: string }) => Promise<void>;
+  /**
+   * Registers the user for given credentials
+   * @param params {@link CustomerRegistrationParams}
+   * @returns {@link Customer} object on success
+   */
   register: (params: CustomerRegistrationParams) => Promise<Customer>;
+  /**
+   * Whole {@link Customer} object
+   */
   user: ComputedRef<Partial<Customer> | undefined>;
+  /**
+   * Indicates if the user is logged in
+   */
   isLoggedIn: ComputedRef<boolean>;
+  /**
+   * Indicates if the user is logged in as a customer (not a guest)
+   */
   isCustomerSession: ComputedRef<boolean>;
+  /**
+   * Indicates if the user is logged in as a guest
+   */
   isGuestSession: ComputedRef<boolean>;
+  /**
+   * {@link Country} of the user
+   */
   country: Ref<Country | null>;
+  /**
+   * {@link Salutation} of the user
+   */
   salutation: Ref<Salutation | null>;
+  /**
+   * Default billing address id
+   */
+  defaultBillingAddressId: ComputedRef<string | null>;
+  /**
+   * Default shipping address id
+   */
+  defaultShippingAddressId: ComputedRef<string | null>;
+  /**
+   * Fetches the user data from the API
+   */
   refreshUser: () => Promise<void>;
+  /**
+   * Logs out the user
+   */
   logout: () => Promise<void>;
+  /**
+   * Loads the {@link Country} of the user
+   */
   loadCountry: (countryId: string) => Promise<void>;
+  /**
+   * Loads the {@link Salutation} for given id
+   */
   loadSalutation: (salutationId: string) => Promise<void>;
+  /**
+   * Updates the user profile data
+   * @param personals {@link CustomerUpdateProfileParam}
+   * @returns
+   */
   updatePersonalInfo: (personals: CustomerUpdateProfileParam) => Promise<void>;
+  /**
+   * Updates the user email
+   * @param updateEmailData - {@link CustomerUpdateEmailParam}
+   * @returns
+   */
   updateEmail: (updateEmailData: CustomerUpdateEmailParam) => Promise<void>;
+  /**
+   * Sets the default payment method for given id
+   * @param paymentMethodId
+   * @returns
+   */
   setDefaultPaymentMethod: (paymentMethodId: string) => Promise<void>;
-  setUser: (user: Partial<Customer>) => void;
+  /**
+   * Default payment method for the user
+   */
+  userDefaultPaymentMethod: ComputedRef<PaymentMethodTranslation | null>;
+  /**
+   * Default billing address for the user
+   */
+  userDefaultBillingAddress: ComputedRef<BillingAddress | null>;
+  /**
+   * Default shipping address for the user
+   */
+  userDefaultShippingAddress: ComputedRef<ShippingAddress | null>;
 };
-
-const storeUser = ref<Partial<Customer>>();
 
 /**
  * Composable for user management. Options - {@link UseUserReturn}
  */
 export function useUser(): UseUserReturn {
   const { apiInstance } = useShopwareContext();
+  const { userFromContext, refreshSessionContext } = useSessionContext();
+
+  const _user = _useContext<Customer | undefined>("customer");
+  syncRefs(userFromContext, _user, {
+    immediate: true,
+  });
+
   const { getStorefrontUrl } = useInternationalization();
   const { refreshCart } = useCart();
 
-  const setUser = (user: Partial<Customer>) => {
-    storeUser.value = user;
-  };
-
+  const userDefaultPaymentMethod = computed(
+    () => user.value?.defaultPaymentMethod?.translated || null
+  );
+  const userDefaultBillingAddress = computed(
+    () => user.value?.defaultBillingAddress || null
+  );
+  const userDefaultShippingAddress = computed(
+    () => user.value?.defaultShippingAddress || null
+  );
   const country: Ref<Country | null> = ref(null);
   const salutation: Ref<Salutation | null> = ref(null);
-  const user = computed(() => storeUser.value);
+  const user = computed(() => _user.value);
 
   async function login({
     username,
     password,
   }: { username?: string; password?: string } = {}): Promise<void> {
     await apiLogin({ username, password }, apiInstance);
-    await refreshUser();
+    await refreshSessionContext();
     refreshCart();
   }
 
@@ -76,13 +167,14 @@ export function useUser(): UseUserReturn {
       { ...params, storefrontUrl: getStorefrontUrl() } as any,
       apiInstance
     );
-    storeUser.value = customer;
+    _user.value = customer;
+    await refreshSessionContext();
     return customer;
   }
 
   async function logout(): Promise<void> {
     await apiLogout(apiInstance);
-    await refreshUser();
+    await refreshSessionContext();
     refreshCart();
   }
 
@@ -96,9 +188,9 @@ export function useUser(): UseUserReturn {
         ),
         apiInstance
       );
-      storeUser.value = (user as Customer) || {};
+      _user.value = user as Customer;
     } catch (e) {
-      storeUser.value = {};
+      _user.value = undefined;
       console.error("[useUser][refreshUser]", e);
     }
   }
@@ -126,9 +218,14 @@ export function useUser(): UseUserReturn {
   async function setDefaultPaymentMethod(
     paymentMethodId: string
   ): Promise<void> {
-    await setDefaultCustomerPaymentMethod(paymentMethodId);
+    await setDefaultCustomerPaymentMethod(paymentMethodId, apiInstance);
   }
-
+  const defaultBillingAddressId = computed(
+    () => user.value?.defaultBillingAddressId || null
+  );
+  const defaultShippingAddressId = computed(
+    () => user.value?.defaultShippingAddressId || null
+  );
   const isLoggedIn = computed(() => !!user.value?.id && !!user.value.active);
   const isCustomerSession = computed(
     () => !!user.value?.id && !user.value.guest
@@ -151,6 +248,10 @@ export function useUser(): UseUserReturn {
     salutation,
     loadCountry,
     country,
-    setUser,
+    defaultBillingAddressId,
+    defaultShippingAddressId,
+    userDefaultPaymentMethod,
+    userDefaultBillingAddress,
+    userDefaultShippingAddress,
   };
 }

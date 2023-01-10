@@ -7,33 +7,75 @@ import {
   changeCartItemQuantity,
   getProducts,
 } from "@shopware-pwa/api-client";
-import {
-  ClientApiError,
-  Cart,
-  EntityError,
-  Product,
-  LineItem,
-} from "@shopware-pwa/types";
+import { Cart, EntityError, Product, LineItem } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 
 export type UseCartReturn = {
+  /**
+   * Adds a product with an optional quantity to the cart
+   */
   addProduct: (params: { id: string; quantity?: number }) => Promise<Cart>;
+  /**
+   * Adds a promotion code to the cart
+   */
   addPromotionCode: (promotionCode: string) => Promise<void>;
+  /**
+   * Lists all applied and active promotion codes
+   */
   appliedPromotionCodes: ComputedRef<LineItem[]>;
+  /**
+   * Current Cart object
+   */
   cart: ComputedRef<Cart | undefined>;
+  /**
+   * All items in the cart
+   */
   cartItems: ComputedRef<LineItem[]>;
+  /**
+   * Changes the quantity of a product in the cart
+   */
   changeProductQuantity: (params: { id: string; quantity: number }) => void;
+  /**
+   * The number of items in the cart
+   */
   count: ComputedRef<number>;
+  /**
+   * Refreshes the cart object and related data
+   */
   refreshCart: () => Promise<Cart>;
+  /**
+   * Removes the provided LineItem from the cart
+   */
   removeItem: (lineItem: LineItem) => Promise<void>;
+  /**
+   * The total price of the cart (including calculated costs like shipping)
+   */
   totalPrice: ComputedRef<number>;
+  /**
+   * Shipping price
+   */
   shippingTotal: ComputedRef<number>;
+  /**
+   * The total price of all cart items
+   */
   subtotal: ComputedRef<number>;
+  /**
+   * @deprecated - handle errors in your application by checking {cart.errors} object
+   */
   cartErrors: ComputedRef<EntityError[]>;
+  /**
+   * @deprecated - use product related methods to fetch an item's URL instead
+   */
   getProductItemsSeoUrlsData(): Promise<Partial<Product>[]>;
+  /**
+   * `true` if the cart contains no items
+   */
   isEmpty: ComputedRef<boolean>;
 };
 
+/**
+ * Composable for cart management
+ */
 export function useCart(): UseCartReturn {
   const { apiInstance } = useShopwareContext();
 

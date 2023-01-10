@@ -4,8 +4,16 @@ category: CMS
 
 # useWishlist
 
-Description
+Manage wishlist
 
 ## Usage
 
-// TODO: add example
+```ts
+const {
+  mergeWishlistProducts,
+  getWishlistProducts,
+  clearWishlist,
+  items,
+  count,
+} = useWishlist();
+```

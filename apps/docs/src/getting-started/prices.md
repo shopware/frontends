@@ -11,13 +11,14 @@ head:
       content: "https://frontends-og-image.vercel.app/Working%20with%20**Prices**.png"
 ---
 
-# Prices
+# Work with prices
 
 In this chapter you will learn how
 
 - The price object is structured
 - To format and indicate pricing tiers
-- Display the correct prices depending on context
+- Display the correct prices depending on the context
+- Use `useProductPrice` composable to handle the most common cases
 
 ## Structure of a price
 
@@ -73,7 +74,7 @@ A product in Shopware can have multiple prices. All these prices are defined in 
 
 :::
 
-Each product has at least one `CalculatedPrice` object assigned to it, which can be acessed through `product.calculatedPrice`. It contains the default price of the product, which applies when no other prices are defined.
+Each product has at least one `CalculatedPrice` object assigned to it, which can be accessed through `product.calculatedPrice`. It contains the product's default price, which applies when no other prices are defined.
 
 ## Display a default price
 
@@ -89,12 +90,14 @@ All prices are passed as floating point numbers, rounded to the decimals which a
 
 ```vue{4,16,24}
 <script setup>
-import { useProduct } from "@shopware-pwa/composables-next";
+import { useProductSearch } from '@shopware-pwa/composables-next';
 
 const { getFormattedPrice } = usePrice();
-const { product, search } = useProduct();
+const { search } = useProductSearch();
 
-await search("some-product-id");
+const { product } = await search('some-product-id');
+
+const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(ref(product));
 </script>
 
 <template>
@@ -103,17 +106,17 @@ await search("some-product-id");
       <b>{{ product.name }}</b>
     </div>
     <div>
-      {{ getFormattedPrice(product.calculatedPrice.totalPrice) }}
+      {{ getFormattedPrice(unitPrice) }}
       <small>
-        incl. {{ product.calculatedPrice.taxRules[0].taxRate }}% tax
+        incl. {{ price.taxRules[0].taxRate }}% tax
       </small>
     </div>
-    <div v-if="!!product.calculatedPrice.listPrice">
+    <div v-if="isListPrice">
       <small>
         <del>
-          {{ getFormattedPrice(product.calculatedPrice.listPrice.price) }}
+          {{ getFormattedPrice(price.listPrice.price) }}
         </del>
-        (-{{ product.calculatedPrice.listPrice.percentage }}%)
+        (-{{ price.listPrice.percentage }}%)
       </small>
     </div>
   </div>
@@ -122,9 +125,9 @@ await search("some-product-id");
 
 ## Pricing tiers and quantity prices
 
-Pricing tiers add one layer of complextity into the pricing model. In Shopware, you can define multiple pricing tiers for a product. Each tier has a quantity and a price.
+Pricing tiers add one layer of complexity to the pricing model. In Shopware, you can define multiple pricing tiers for a product. Each tier has a quantity and a price.
 
-These pricing tiers are passed through the `calculatedPrices` field of a product. The `calculatedPrices` field is an array of `CalculatedPrice` objects, which are sorted by the `quantity` field (which defines the bounds of a pricing range).
+These pricing tiers are passed through a product's `calculatedPrices` field. The `calculatedPrices` field is an array of `CalculatedPrice` objects sorted by the `quantity` field, which defines the bounds of a pricing range.
 
 ```json
 [
@@ -209,7 +212,7 @@ For more complex pricing models, Shopware also supports advanced prices. The API
 
 ## Display the correct price
 
-There's the intricacy that the `calculatedPrice` field of a product is not always the default price, since there may be tier prices OR a single advanced price defined for the product. For that reason, you should create a switch within your template that differs correctly. You can use the following sudo-code as a starting point:
+A product's `calculatedPrice` field is not always the default price since there may be tier prices or a single advanced price defined for the product. Therefore, you should create a switch within your template that differs correctly. You can use the following sudo-code as a starting point:
 
 **if `product.calculatedPrices.length` is more than 1**
 
@@ -287,3 +290,106 @@ const defaultPrice = computed(() => {
 ```
 
 :::
+
+## useProductPrice composable
+
+See dedicated [Composables > useProductPrice](../packages/composables/useProductPrice.md) page to check the details of the helper function.
+
+### Product listing
+
+Price for **non-variant** product (also for having tier pricing):
+
+```vue{6}
+<script setup lang="ts">
+const { totalPrice, displayFrom } = useProductPrice(/** argument omitted - Product object */);
+</script>
+<template>
+<div>
+  <span v-if="displayFrom">from</span>{{ totalPrice }} $
+</div>
+</template>
+```
+
+If there is a range of prices available, you can point this out by adding `from` prefix, using the `displayFrom` indicator. The result will be a total price, prefixed by `from` phrase. In this case, unit price is equal to the lowest price available.
+
+In order to ensure if the variant prices are available, you can utilize the `displayVariantsFrom` computed property, that contains the value in current currency:
+
+```vue
+<script setup lang="ts">
+const { totalPrice, displayVariantsFrom } =
+  useProductPrice(/** argument omitted - Product object */);
+</script>
+<template>
+  <div>
+    {{ totalPrice }} $
+    <span v-if="displayVariantsFrom">
+      Variants from {{ displayVariantsFrom }} $
+    </span>
+  </div>
+</template>
+```
+
+### Product details page
+
+In this case, there are few options to display:
+
+- Regular price
+- Product with list price (kind of discount)
+- Tier prices
+
+```ts
+const { totalPrice, price, tierPrices, isListPrice } = useProductPrice(product);
+const { getFormattedPrice } = usePrice();
+```
+
+Regular price, with list price included (in case of manufacturer's suggested retail price):
+
+```vue
+<template>
+  <div v-if="isListPrice" class="old-price line-through">
+    {{ price?.listPrice?.price }} $
+    <!-- old price before discount -->
+  </div>
+  <div v-if="totalPrice">
+    {{ totalPrice }} $
+    <!-- actual price after discount -->
+  </div>
+</template>
+```
+
+Tier prices presented as a table with range labeled by "to" and "from":
+
+```vue
+<template>
+  <div>
+    <table v-if="tierPrices.length">
+      <!-- check if tierPrices array is not empty -->
+      <tr v-for="(tierPrice, index) in tierPrices" :key="tierPrice.label">
+        <td>
+          <span v-if="index < tierPrices.length - 1"> To </span>
+          <span v-else> From </span>
+          {{ tierPrice.quantity }}
+        </td>
+        <td>{{ tierPrice.totalPrice }} $</td>
+      </tr>
+    </table>
+    <div v-else>
+      <!-- show the regular unit price instead -->
+      {{ totalPrice }} $
+    </div>
+  </div>
+</template>
+```
+
+### Format price according to current context
+
+There are additional metadata available in the _current_ API context. One of them is the _current currency_. In order to display the price together with the currency symbol applied to the current context, use `getFormattedPrice` helper.
+
+```ts
+const price = 12.95;
+const { getFormattedPrice } = usePrice();
+const priceWithCurrency = getFormattedPrice(price);
+// output: 12.95 $
+```
+
+Thanks to this, the `priceWithCurrency` will have the current currency symbol prefixed or suffixed, according to the configuration.

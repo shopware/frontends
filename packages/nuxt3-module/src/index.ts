@@ -87,6 +87,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useCmsMeta",
           "useNewsletter",
           "useNavigationContext",
+          "useOrderPayment",
         ],
       });
     });

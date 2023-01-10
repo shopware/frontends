@@ -20,6 +20,7 @@ export type PaymentMethod = {
   active: boolean;
   plugin: Plugin | null;
   translations: PaymentMethodTranslation[] | null;
+  translated: PaymentMethodTranslation | null;
   orderTransactions: OrderTransaction[] | null;
   customers: Customer[] | null;
   salesChannelDefaultAssignments: SalesChannel[] | null;
@@ -29,4 +30,14 @@ export type PaymentMethod = {
   media: Media | null;
   customFields: CustomField[];
   formattedHandlerIDentifier: string;
+  createdAt: string;
+  updatedAt: string | null;
+  distinguishableName: string;
+  afterOrderEnabled: boolean;
+  shortName: string;
+  synchronous: boolean;
+  asynchronous: boolean;
+  prepared: boolean;
+  refundable: boolean;
+  apiAlias: "payment_method";
 };

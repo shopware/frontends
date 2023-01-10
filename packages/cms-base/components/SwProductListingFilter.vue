@@ -32,13 +32,11 @@ const cmsMap = () => {
 </script>
 <template>
   <div>
-    <ClientOnly>
-      <component
-        :is="cmsMap()"
-        :filter="filter"
-        :selectedFilters="selectedFilters"
-        @select-value="emit('selectFilterValue', $event)"
-      />
-    </ClientOnly>
+    <component
+      :is="cmsMap()"
+      :filter="filter"
+      :selectedFilters="selectedFilters"
+      @select-value="emit('selectFilterValue', $event)"
+    />
   </div>
 </template>

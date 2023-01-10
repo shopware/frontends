@@ -10,5 +10,6 @@ export default defineBuildConfig({
     "@shopware-pwa/api-client",
     "@shopware-pwa/helpers-next",
     "@shopware-pwa/types",
+    "@vueuse/core",
   ],
 });

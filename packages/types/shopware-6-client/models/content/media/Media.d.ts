@@ -15,7 +15,7 @@ import { Document } from "../../checkout/document/Document";
 import { ProductManufacturer } from "../product/ProductManufacturer";
 import { OrderLineItem } from "../../checkout/order/OrderLineItem";
 import { CustomField } from "../../common/CustomField";
-import { User } from "../../system/user/User";
+import { Customer } from "../../checkout/customer/Customer";
 
 /**
  * @public
@@ -33,12 +33,13 @@ export type Media = {
   alt: string | null;
   url: string;
   fileName: string;
-  user: User;
+  user: Customer;
   translations: MediaTranslation[] | null;
+  translated: MediaTranslation | null;
   categories: Category[] | null;
   productManufacturers: ProductManufacturer[] | null;
   productMedia: ProductMedia | null;
-  avatarUser: User | null;
+  avatarUser: Customer | null;
   thumbnails: MediaThumbnail[] | null;
   mediaFolderId: string | null;
   mediaFolder: MediaFolder | null;

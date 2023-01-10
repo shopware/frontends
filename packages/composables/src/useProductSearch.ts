@@ -5,6 +5,12 @@ import { cmsAssociations } from "./cms/cmsAssociations";
 import { _useContext } from "./internal/_useContext";
 
 export type UseProductSearchReturn = {
+  /**
+   * Searches for a product by its id
+   * @param productId
+   * @param options - optional parameters accepts `withCmsAssociations` flag to fetch cms-related associations
+   * @returns {Promise<ProductResponse>}
+   */
   search: (
     productId: string,
     options?: {

@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { CmsElementText } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "@shopware-pwa/composables-next";
+import { h } from "vue";
 import { CSSProperties } from "vue";
-// @ts-ignore
-import htmlToVue from "html-to-vue";
-// @ts-ignore
-import he from "he";
-const { decode } = he;
-// @ts-ignore
-const { renderHtml, getOptionsFromNode } = htmlToVue;
+import { decodeHTML } from "entities";
+import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";
+import { renderHtml } from "../../../../helpers/html-to-vue/renderToHtml";
+
 const props = defineProps<{
   content: CmsElementText;
 }>();
@@ -27,7 +25,7 @@ const hasVerticalAlignment = computed(() => !!style.value.alignItems);
 
 const CmsTextRender = () => {
   const config = {
-    textTransformer: (text: string) => decode(text),
+    textTransformer: (text: string) => decodeHTML(text),
     extraComponentsMap: {
       link: {
         conditions(node: any) {
@@ -88,7 +86,7 @@ const CmsTextRender = () => {
     <CmsTextRender />
   </div>
 </template>
-<style>
+<style scoped>
 /** Global CSS styles for text elements */
 h1,
 h2,

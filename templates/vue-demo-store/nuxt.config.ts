@@ -3,9 +3,17 @@ import transformerDirective from "@unocss/transformer-directives";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   // shopware: {
-  //   shopwareEndpoint: "https://you.endpoint.com",
+  //   shopwareEndpoint: "http://localhost:8000",
   //   shopwareAccessToken: "your-access-token",
   // },
+  alias: {
+    /**
+     * TODO: Temp fix until new VueUse published:
+     * - https://github.com/vueuse/vueuse/pull/2449
+     * - https://github.com/vueuse/vueuse/actions/workflows/publish.yml
+     */
+    useMeta: "~/composables/useMeta",
+  },
   typescript: {
     typeCheck: true,
     strict: true,
@@ -27,6 +35,9 @@ export default defineNuxtConfig({
   // Unocss bug fix https://github.com/nuxt/framework/issues/7623
   experimental: {
     inlineSSRStyles: false,
+  },
+  nitro: {
+    compressPublicAssets: true,
   },
   unocss: {
     uno: true, // enabled `@unocss/preset-uno`

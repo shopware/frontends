@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { useSessionContext, useUser } from "@shopware-pwa/composables-next";
+import {
+  useSessionContext,
+  useCheckout,
+  useUser,
+} from "@shopware-pwa/composables-next";
 defineProps<{
   template: string;
 }>();
-const { currency, paymentMethod } = useSessionContext();
+const { currency } = useSessionContext();
+const { selectedPaymentMethod } = useCheckout();
 const { isLoggedIn } = useUser();
 </script>
 
@@ -17,7 +22,7 @@ const { isLoggedIn } = useUser();
       Currency: <strong>{{ currency?.name }} ({{ currency?.symbol }})</strong>
     </p>
     <p>
-      Default payment method: <strong>{{ paymentMethod?.name }}</strong>
+      Default payment method: <strong>{{ selectedPaymentMethod?.name }}</strong>
     </p>
     <p>
       Is customer logged in: <strong>{{ isLoggedIn }}</strong>
@@ -32,7 +37,6 @@ const { isLoggedIn } = useUser();
   width: 500px;
   margin: 0 auto;
   text-align: left;
-  background: #f5f5f5;
   padding: 10px 20px;
   border-radius: 10px;
 }

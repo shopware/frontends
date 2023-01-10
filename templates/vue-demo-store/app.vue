@@ -1,7 +1,6 @@
 <script setup lang="ts">
-definePageMeta({
-  key: (route) => route.fullPath,
-});
+import { getSessionContext } from "@shopware-pwa/api-client";
+import { SessionContext } from "@shopware-pwa/types";
 
 useHead({
   title: "Shopware Demo store",
@@ -11,15 +10,24 @@ useHead({
   },
 });
 
-const { refreshSessionContext } = useSessionContext();
+const { apiInstance } = useShopwareContext();
+const { data: sessionContextData } = await useAsyncData(
+  "sessionContext",
+  async () => {
+    return await getSessionContext(apiInstance);
+  }
+);
+useSessionContext(sessionContextData.value as SessionContext);
+
+const { getWishlistProducts } = useWishlist();
 const { refreshCart } = useCart();
+
 useNotifications();
-useWishlist();
 useAddress();
 
 onMounted(() => {
-  refreshSessionContext();
   refreshCart();
+  getWishlistProducts();
 });
 
 const isSidebarOpen = ref(false);

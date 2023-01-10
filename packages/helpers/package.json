@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/helpers-next",
-  "version": "0.1.18",
+  "version": "0.1.22",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -18,12 +18,12 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@vitest/coverage-c8": "^0.23.4",
+    "@vitest/coverage-c8": "^0.26.2",
     "eslint-config-shopware": "workspace:*",
-    "jsdom": "^20.0.1",
-    "query-string": "^7.1.1",
+    "jsdom": "^20.0.3",
+    "query-string": "^8.1.0",
     "tsconfig": "workspace:*",
-    "vitest": "^0.23.4"
+    "vitest": "^0.26.2"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*"
