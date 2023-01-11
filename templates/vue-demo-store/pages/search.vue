@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ShopwareSearchParams } from "@shopware-pwa/types";
 const route = useRoute();
+const router = useRouter();
+
 const {
   search,
   getElements: products,
@@ -23,6 +26,15 @@ const { data: productSearch } = await useAsyncData(
     watch: [route],
   }
 );
+const changePage = async (page: number) => {
+  await router.push({
+    query: {
+      ...route.query,
+      p: page,
+    },
+  });
+  changeCurrentPage(route.query as Partial<ShopwareSearchParams>);
+};
 setInitialListing(productSearch.value as any);
 </script>
 
@@ -62,7 +74,7 @@ export default {
       :total="getTotalPagesCount"
       :current="Number(getCurrentPage)"
       class="mt-10"
-      @change-page="changeCurrentPage"
+      @change-page="changePage"
     />
   </div>
 </template>
