@@ -1,3 +1,8 @@
+<script lang="ts">
+export default {
+  name: "CheckoutPage",
+};
+</script>
 <script setup lang="ts">
 import { SharedModal } from "~~/components/shared/SharedModal.vue";
 import { useVuelidate } from "@vuelidate/core";
