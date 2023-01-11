@@ -2,6 +2,8 @@
 import { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
+import { ShopwareSearchParams } from "@shopware-pwa/types";
+
 const props = defineProps<{
   content: CmsElementProductListing;
 }>();
@@ -13,12 +15,22 @@ const {
   getTotalPagesCount,
 } = useListing({ listingType: "categoryListing" });
 
-const changePage = (page: number) => {
-  changeCurrentPage(page);
+const route = useRoute();
+const router = useRouter();
+
+const changePage = async (page: number) => {
+  await router.push({
+    query: {
+      ...route.query,
+      p: page,
+    },
+  });
+  changeCurrentPage(<Partial<ShopwareSearchParams>>route.query);
 };
 const isProductListing = computed(
   () => props.content?.type === "product-listing"
 );
+
 setInitialListing(props?.content?.data?.listing);
 </script>
 
