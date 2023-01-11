@@ -1,3 +1,8 @@
+---
+nav:
+  position: 50
+---
+
 # Create a checkout
 
 In this chapter you will learn how to

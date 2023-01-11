@@ -1,4 +1,16 @@
 ---
+sidebar: true
+nav:
+  title: Shopware Frontends
+  position: 10
+  links:
+    - text: Shopware Frontends
+      items:
+        - link: /frontend/
+          text: Overview
+        - link: /frontend/why-shopware-frontends.html
+          text: Why Shopware Frontends
+      position: 5
 ---
 
 <div class="mt-10 mx-10 mb-20">

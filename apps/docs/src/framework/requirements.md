@@ -9,6 +9,8 @@ head:
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Requirements?fontSize=150px"
+nav:
+  position: 10
 ---
 
 # Environment requirements

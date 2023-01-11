@@ -9,6 +9,8 @@ head:
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Building%20a%20**Cart**.png?fontSize=150px"
+nav:
+  position: 40
 ---
 
 # Work with the cart
