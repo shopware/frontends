@@ -27,6 +27,10 @@ export const sidebar = [
       { text: "Prices", link: "/getting-started/prices" },
       { text: "Product Listing", link: "/getting-started/product-listing" },
       { text: "Wishlist", link: "/getting-started/wishlist" },
+      {
+        text: "Overwriting and extending composables",
+        link: "/getting-started/overwriting-composables",
+      },
     ],
   },
   {

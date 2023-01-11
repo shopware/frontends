@@ -3,7 +3,7 @@ defineProps<{
   template: string;
 }>();
 
-const { currency, paymentMethod } = useSessionContext();
+const { currency, selectedPaymentMethod } = useSessionContext();
 const { isLoggedIn } = useUser();
 </script>
 
@@ -17,7 +17,7 @@ const { isLoggedIn } = useUser();
       Currency: <strong>{{ currency?.name }} ({{ currency?.symbol }})</strong>
     </p>
     <p>
-      Default payment method: <strong>{{ paymentMethod?.name }}</strong>
+      Default payment method: <strong>{{ selectedPaymentMethod?.name }}</strong>
     </p>
     <p>
       Is customer logged in: <strong>{{ isLoggedIn }}</strong>
