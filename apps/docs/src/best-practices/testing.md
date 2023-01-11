@@ -9,18 +9,20 @@ head:
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Best%20practices:%20**Testing**.png"
+nav:
+  position: 10
 ---
 
 # Testing
 
-## Page object best practice 
+## Page object best practice
 
-* Use `data-testid` selectors to locate your UI elements
-* Use an unambiguous name for your page object class
-* The page class should only contain methods for interacting with the HTML page or component 
-* The page class should only contain properties and methods
-* Don't create an assertion on the page object level
-* A page object doesn't have to be an entire HTML page and can be a small component
+- Use `data-testid` selectors to locate your UI elements
+- Use an unambiguous name for your page object class
+- The page class should only contain methods for interacting with the HTML page or component
+- The page class should only contain properties and methods
+- Don't create an assertion on the page object level
+- A page object doesn't have to be an entire HTML page and can be a small component
 
 ## Waits best practice
 
@@ -29,16 +31,15 @@ Avoiding hard waits in Playwright.
 ```js
 await page.waitFor(1000); // hard wait for 1000ms
 ```
+
 Never use hard waits in production tests. However, you can use them for testing or debugging purposes.
 Replace them with playwright methods like `waitForNavigation`, `waitForLoadState`, `waitForSelector`.
 
-
 ### Pages
 
-Follow the PageObjects pattern for the suite template to encapsulate each internal page structure and responsibilities inside its highly cohesive class file. This allows you to define a new page object for each page as per your needs. 
+Follow the PageObjects pattern for the suite template to encapsulate each internal page structure and responsibilities inside its highly cohesive class file. This allows you to define a new page object for each page as per your needs.
 
 Don't confuse the page objects you create with actual pages in the application. Pages are a lightweight concept of a view, a set of cohesive elements living under a known browser location.
-
 
 ## Page objects
 
@@ -50,7 +51,7 @@ Each page must contain a cohesive set of locators and actions.
 
 |- page-objects # Set of pages for the applications
 |- tests # Set of tests
-|- utils #  Predefined helpers and their factory functions 
+|- utils # Predefined helpers and their factory functions
 
 For a page object to be as readable as possible, you must follow the below structure:
 
@@ -82,7 +83,6 @@ export class LoginForm {
   }
 };
 ```
-
 
 ## data-testid attribute
 

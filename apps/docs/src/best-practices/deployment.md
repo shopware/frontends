@@ -9,6 +9,8 @@ head:
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Best%20practices:%20**Deployment**.png?fontSize=110px"
+nav:
+  position: 30
 ---
 
 # Deployment

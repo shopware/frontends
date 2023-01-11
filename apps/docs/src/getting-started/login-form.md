@@ -1,3 +1,8 @@
+---
+nav:
+  position: 60
+---
+
 <script setup>
 import StackBlitzLiveExample from '../components/StackBlitzLiveExample.vue'
 </script>

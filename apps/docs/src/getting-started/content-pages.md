@@ -9,6 +9,8 @@ head:
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Building%20the%20**Content%20Pages**.png?fontSize=120px"
+nav:
+  position: 30
 ---
 
 # Create content pages

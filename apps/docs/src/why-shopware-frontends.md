@@ -6,6 +6,8 @@ head:
   - - meta
     - name: og:description
       content: "Shopware Frontends is a framework for building custom, cloud-native Shopware Storefronts."
+nav:
+  hidden: true
 ---
 
 # Why Shopware Frontends
