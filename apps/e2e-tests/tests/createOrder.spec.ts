@@ -69,4 +69,23 @@ test.describe.only("Create Order", () => {
     await page.waitForLoadState();
     await expect(page.locator("[data-testid='order-total']")).toBeVisible();
   });
+
+  test("Create new order as a guest user", async ({ page }) => {
+    await homePage.openCartPage();
+    await productPage.addToCart();
+    await cartPage.openMiniCart();
+    await checkoutPage.goToCheckout();
+    await checkoutPage.checkNotCreateAccount();
+    await checkoutPage.fillGuestUserData(
+      "e2e " + faker.name.firstName(),
+      "e2e " + faker.name.lastName(),
+      faker.internet.exampleEmail(),
+      faker.address.street(),
+      faker.address.zipCode(),
+      faker.address.city()
+    );
+    await checkoutPage.placeOrder();
+    await page.waitForLoadState();
+    await expect(page.locator("[data-testid='order-total']")).toBeVisible();
+  });
 });
