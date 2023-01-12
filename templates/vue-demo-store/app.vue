@@ -10,6 +10,11 @@ useHead({
   },
 });
 
+const { refreshSessionContext } = useSessionContext();
+onBeforeMount(async () => {
+  await refreshSessionContext();
+});
+
 const { apiInstance } = useShopwareContext();
 const { data: sessionContextData } = await useAsyncData(
   "sessionContext",
