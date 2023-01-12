@@ -2,7 +2,7 @@
 /**
  * Based on the https://github.com/HCESrl/html-to-vue
  */
-import parser from "html-parse-stringify";
+import { parse } from "html-to-ast";
 
 /**
  * Visit each node in the AST - with callback (adapted from https://lihautan.com/manipulating-ast-with-javascript/)
@@ -43,8 +43,8 @@ export function isNode(node) {
   return typeof node === "object" && typeof node.type !== "undefined";
 }
 
-export function generateAST(html) {
-  return parser.parse(html);
+export function generateAST(html): any {
+  return parse(html);
 }
 
 /**
@@ -58,7 +58,7 @@ export function rectifyAST(ast, config) {
   const keys = config.extraComponentsMap
     ? Object.keys(config.extraComponentsMap)
     : [];
-  _visitAST(_ast, (node, parent, key, index) => {
+  _visitAST(_ast, (node, parent, key, s) => {
     // checking whether the AST has some components that has to become Vue Components
     for (let i = 0; i < keys.length; i++) {
       const currentKey = keys[i];
