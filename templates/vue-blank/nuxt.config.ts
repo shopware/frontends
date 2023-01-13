@@ -5,4 +5,8 @@ export default defineNuxtConfig({
     shopwareAccessToken: process.env.API_ACCESS_TOKEN,
   },
   modules: ["@vueuse/nuxt", "@shopware-pwa/nuxt3-module"],
+  typescript: {
+    typeCheck: true,
+    strict: true,
+  },
 });

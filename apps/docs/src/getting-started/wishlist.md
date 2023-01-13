@@ -1,3 +1,8 @@
+---
+nav:
+  position: 90
+---
+
 # Create a wishlist
 
 In this chapter you will learn how to use the built-in wishlist API to create wishlist functionalities in your application. Specifically, you will learn how to

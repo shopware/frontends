@@ -22,10 +22,15 @@ export const sidebar = [
       { text: "Content Pages", link: "/getting-started/content-pages" },
       { text: "Cart", link: "/getting-started/cart" },
       { text: "Checkout ", link: "/getting-started/checkout" },
+      { text: "Custom Payment", link: "/getting-started/custom-payment" },
       { text: "Login Form", link: "/getting-started/login-form" },
       { text: "Prices", link: "/getting-started/prices" },
       { text: "Product Listing", link: "/getting-started/product-listing" },
       { text: "Wishlist", link: "/getting-started/wishlist" },
+      {
+        text: "Overwriting and extending composables",
+        link: "/getting-started/overwriting-composables",
+      },
     ],
   },
   {

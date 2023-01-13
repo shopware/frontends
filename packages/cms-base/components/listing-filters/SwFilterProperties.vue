@@ -52,22 +52,47 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
           :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
           class="flex items-center"
         >
-          <input
-            :id="`filter-mobile-${filter.code}-${option.id}`"
-            :checked="selectedOptionIds?.includes(option.id)"
-            :name="filter.name"
-            :value="option.name"
-            type="checkbox"
-            class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+          <label
+            :for="`filter-mobile-${filter.code}-${option.id}`"
+            class="min-w-0 flex-1 text-gray-500 flex items-center gap-2 relative"
             @click="
               emits('select-value', { code: filter.code, value: option.id })
             "
-          />
-          <label
-            :for="`filter-mobile-${filter.code}-${option.id}`"
-            class="ml-3 min-w-0 flex-1 text-gray-500"
           >
-            {{ option.name }}
+            <div v-if="option.media?.url">
+              <!-- "Active status" will be changed with the redesign task  -->
+              <img
+                class="h-6 w-6"
+                :src="option.media.url"
+                :alt="option.media.translated?.alt"
+                :class="{
+                  'border-blue border-2': selectedOptionIds?.includes(
+                    option.id
+                  ),
+                }"
+              />
+            </div>
+            <!-- "Active status" will be changed with the redesign task  -->
+            <div
+              v-else-if="option.colorHexCode"
+              class="h-6 w-6"
+              :style="`background-color: ${option.colorHexCode}`"
+              :class="{
+                'border-blue border-2': selectedOptionIds?.includes(option.id),
+              }"
+            />
+            <input
+              v-else
+              :id="`filter-mobile-${filter.code}-${option.id}`"
+              :checked="selectedOptionIds?.includes(option.id)"
+              :name="filter.name"
+              :value="option.name"
+              type="checkbox"
+              class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+            />
+            <div>
+              {{ option.name }}
+            </div>
           </label>
         </div>
       </div>

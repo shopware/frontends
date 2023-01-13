@@ -15,10 +15,10 @@ head:
 
 In this chapter you will learn how
 
-* The price object is structured
-* To format and indicate pricing tiers
-* Display the correct prices depending on the context
-* Use `useProductPrice` composable to handle the most common cases
+- The price object is structured
+- To format and indicate pricing tiers
+- Display the correct prices depending on the context
+- Use `useProductPrice` composable to handle the most common cases
 
 ## Structure of a price
 
@@ -333,9 +333,9 @@ const { totalPrice, displayVariantsFrom } =
 
 In this case, there are few options to display:
 
-* Regular price
-* Product with list price (kind of discount)
-* Tier prices
+- Regular price
+- Product with list price (kind of discount)
+- Tier prices
 
 ```ts
 const { totalPrice, price, tierPrices, isListPrice } = useProductPrice(product);
@@ -383,7 +383,7 @@ Tier prices presented as a table with range labeled by "to" and "from":
 
 ### Format price according to current context
 
-There are additional metadata available in the *current* API context. One of them is the *current currency*. In order to display the price together with the currency symbol applied to the current context, use `getFormattedPrice` helper.
+There are additional metadata available in the _current_ API context. One of them is the _current currency_. In order to display the price together with the currency symbol applied to the current context, use `getFormattedPrice` helper.
 
 ```ts
 const price = 12.95;

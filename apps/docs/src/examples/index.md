@@ -1,3 +1,8 @@
+---
+nav:
+  position: 300
+---
+
 # Examples
 
 Have a look at our examples and cookbook recipes to kickstart your frontends project.
@@ -8,7 +13,7 @@ Just copy the code snippet and paste it into your project. Sometimes it's useful
 
 ## Navigation
 
-<a href="navigation/">
+<a href="./navigation/">
 
 <img src="./navigation/simple-navigation-md.png" alt="Preview for medium screen size" class="hidden sm:block border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
@@ -18,7 +23,7 @@ Just copy the code snippet and paste it into your project. Sometimes it's useful
 
 ## Cart
 
-<a href="cart/">
+<a href="./cart/">
 
 <img src="./cart/simple-cart-md.png" alt="Preview for medium screen size" class="mx-auto block max-h-150 border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
@@ -26,7 +31,7 @@ Just copy the code snippet and paste it into your project. Sometimes it's useful
 
 ## Product Listings
 
-<a href="listing/">
+<a href="./listing/">
 
 <img src="./listing/condensed-listing-md.png" alt="Preview for medium screen size" class="hidden sm:block border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 

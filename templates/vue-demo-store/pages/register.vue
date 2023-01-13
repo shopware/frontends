@@ -284,7 +284,7 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter zipcode..."
+            placeholder="Enter zip code..."
             :disabled="loading"
             data-testid="registration-zipcode-input"
             @blur="$v.billingAddress.zipcode.$touch()"

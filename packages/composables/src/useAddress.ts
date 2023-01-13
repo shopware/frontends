@@ -1,4 +1,4 @@
-import { ref, Ref, computed, inject, provide, ComputedRef } from "vue";
+import { ref, Ref, computed, inject, provide, ComputedRef, watch } from "vue";
 
 import {
   getCustomerAddresses,
@@ -50,13 +50,18 @@ export type UseAddressReturn = {
 
 export function useAddress(): UseAddressReturn {
   const { apiInstance } = useShopwareContext();
-  const { isGuestSession } = useUser();
+  const { isLoggedIn, isGuestSession } = useUser();
 
   const _storeCustomerAddresses: Ref<CustomerAddress[]> = inject(
     "swCustomerAddresses",
     ref([])
   );
   provide("swCustomerAddresses", _storeCustomerAddresses);
+
+  watch(isLoggedIn, () => {
+    _storeCustomerAddresses.value = [];
+    loadCustomerAddresses();
+  });
 
   /**
    * Get customer address list

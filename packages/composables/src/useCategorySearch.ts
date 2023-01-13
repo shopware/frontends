@@ -3,7 +3,7 @@ import {
   invokePost,
   getCategoryDetailsEndpoint,
 } from "@shopware-pwa/api-client";
-import { Category } from "@shopware-pwa/types";
+import { Category, ShopwareSearchParams } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 import { cmsAssociations } from "./cms/cmsAssociations";
 import { _useContext } from "./internal/_useContext";
@@ -13,6 +13,7 @@ export type UseCategorySearchReturn = {
     categoryId: string,
     options?: {
       withCmsAssociations?: boolean;
+      query?: Partial<ShopwareSearchParams>;
     }
   ) => Promise<Category>;
 };
@@ -24,13 +25,14 @@ export function useCategorySearch(): UseCategorySearchReturn {
     categoryId: string,
     options?: {
       withCmsAssociations?: boolean;
+      query?: Partial<ShopwareSearchParams>;
     }
   ) {
     const associations = options?.withCmsAssociations ? cmsAssociations : {};
     const result = await invokePost<Category>(
       {
         address: getCategoryDetailsEndpoint(categoryId),
-        payload: associations,
+        payload: { associations, ...options?.query },
       },
       apiInstance
     );

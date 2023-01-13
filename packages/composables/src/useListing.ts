@@ -102,7 +102,10 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @param order - i.e. "name-asc"
    * @returns
    */
-  changeCurrentSortingOrder: (order: string) => Promise<void>;
+
+  changeCurrentSortingOrder: (
+    query?: Partial<ShopwareSearchParams>
+  ) => Promise<void>;
   /**
    * Current page number
    */
@@ -112,7 +115,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @param pageNumber - page number to change to
    * @returns
    */
-  changeCurrentPage: (pageNumber?: number) => Promise<void>;
+  changeCurrentPage: (query?: Partial<ShopwareSearchParams>) => Promise<void>;
   /**
    * Total number of elements found for the current search criteria
    */
@@ -155,6 +158,10 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * Resets the filters - clears the current filters
    */
   resetFilters: () => Promise<void>;
+  /**
+   * Change selected filters to the query object
+   */
+  filtersToQuery: (filters: any) => Record<string, any>;
 };
 
 export function useListing(params?: {
@@ -374,21 +381,15 @@ export function createListingComposable<ELEMENTS_TYPE>({
   const getCurrentSortingOrder = computed(
     () => getCurrentListing.value?.sorting
   );
-  async function changeCurrentSortingOrder(order: string) {
-    const query: Partial<ShopwareSearchParams> = {
-      //...router.currentRoute.query,
-      order,
-    };
-    await search(query);
+  async function changeCurrentSortingOrder(
+    query?: Partial<ShopwareSearchParams>
+  ) {
+    await search(query || {});
   }
 
   const getCurrentPage = computed(() => getCurrentListing.value?.page || 1);
-  const changeCurrentPage = async (pageNumber?: number) => {
-    const query: Partial<ShopwareSearchParams> = {
-      //...router.currentRoute.query,
-      p: pageNumber || 1,
-    };
-    await search(query);
+  const changeCurrentPage = async (query?: Partial<ShopwareSearchParams>) => {
+    await search(query || {});
   };
 
   const getInitialFilters = computed(() => {
@@ -447,6 +448,22 @@ export function createListingComposable<ELEMENTS_TYPE>({
     return search({ query: getCurrentFilters.value.search });
   };
 
+  const filtersToQuery = (filters: any) => {
+    let queryObject: Record<string, any> = {};
+
+    for (const filter in filters) {
+      if (filters[filter]) {
+        if (Array.isArray(filters[filter]) && filters[filter].length) {
+          queryObject[filter] = filters[filter].join("|");
+        } else if (!Array.isArray(filters[filter])) {
+          queryObject[filter] = filters[filter];
+        }
+      }
+    }
+
+    return queryObject;
+  };
+
   return {
     getInitialListing,
     setInitialListing,
@@ -470,5 +487,6 @@ export function createListingComposable<ELEMENTS_TYPE>({
     loadMore,
     loadingMore: computed(() => loadingMore.value),
     resetFilters,
+    filtersToQuery,
   };
 }

@@ -27,6 +27,7 @@ export * from "./useCheckout";
 export * from "./useSalutations";
 export * from "./useCountries";
 export * from "./useOrderDetails";
+export * from "./useOrderPayment";
 export * from "./useLocalWishlist";
 export * from "./useSyncWishlist";
 export * from "./useProductSearchSuggest";

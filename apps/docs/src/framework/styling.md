@@ -9,6 +9,8 @@ head:
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Styling.png"
+nav:
+  position: 30
 ---
 
 # Styling

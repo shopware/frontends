@@ -9,6 +9,9 @@ head:
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Setup%20**Templates**.png?fontSize=150px"
+nav:
+  position: 10
+  title: Setup templates
 ---
 
 # Setup Templates

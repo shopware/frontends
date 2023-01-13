@@ -14,6 +14,7 @@ import {
   CmsElementSidebarFilter,
   useListing,
 } from "@shopware-pwa/composables-next";
+import { ShopwareSearchParams } from "@shopware-pwa/types";
 
 defineProps<{
   content: CmsElementProductListing | CmsElementSidebarFilter;
@@ -21,6 +22,8 @@ defineProps<{
 }>();
 
 const { category } = useCategory();
+const route = useRoute();
+const router = useRouter();
 
 const isSortMenuOpen = ref(false);
 const {
@@ -30,6 +33,7 @@ const {
   getInitialFilters,
   search,
   getCurrentFilters,
+  filtersToQuery,
 } = useListing({ listingType: "categoryListing" });
 
 const sidebarSelectedFilters: UnwrapNestedRefs<{
@@ -62,6 +66,23 @@ const searchCriteriaForRequest: ComputedRef<{
   rating: sidebarSelectedFilters["rating"],
 }));
 
+for (const param in route.query) {
+  if (sidebarSelectedFilters.hasOwnProperty(param)) {
+    if (
+      sidebarSelectedFilters[param] &&
+      typeof sidebarSelectedFilters[param] === "object"
+    ) {
+      (route.query[param] as unknown as string)
+        .split("|")
+        .forEach((element) => {
+          sidebarSelectedFilters[param].add(element);
+        });
+    } else {
+      sidebarSelectedFilters[param] = route.query[param];
+    }
+  }
+}
+
 const onOptionSelectToggle = async ({
   code,
   value,
@@ -80,9 +101,14 @@ const onOptionSelectToggle = async ({
   }
 
   await search(searchCriteriaForRequest.value);
+  await router.push({
+    query: {
+      ...filtersToQuery(searchCriteriaForRequest.value),
+    },
+  });
 };
 
-const clearFilters = () => {
+const clearFilters = async () => {
   sidebarSelectedFilters.manufacturer.clear();
   sidebarSelectedFilters.properties.clear();
   sidebarSelectedFilters["min-price"] = undefined;
@@ -90,11 +116,24 @@ const clearFilters = () => {
   sidebarSelectedFilters["rating"] = undefined;
   sidebarSelectedFilters["shipping-free"] = undefined;
   search(searchCriteriaForRequest.value);
+  await router.push({
+    query: {
+      ...filtersToQuery(searchCriteriaForRequest.value),
+    },
+  });
 };
 
 const currentSortingOrder = computed({
   get: (): string => getCurrentSortingOrder.value || "",
-  set: (order: string): Promise<void> => changeCurrentSortingOrder(order),
+  set: async (order: string): Promise<void> => {
+    await router.push({
+      query: {
+        ...route.query,
+        order,
+      },
+    });
+    changeCurrentSortingOrder(<Partial<ShopwareSearchParams>>route.query);
+  },
 });
 
 const selectedOptionIds = computed(() => [
