@@ -41,6 +41,7 @@ export const sidebar = [
       { text: "Shopping Experiences", link: "/framework/shopping-experiences" },
       { text: "Styling", link: "/framework/styling" },
       { text: "Context Composables", link: "/framework/context-composables" },
+      { text: "Shared Composables", link: "/framework/shared-composables" },
     ],
   },
   {
