@@ -14,6 +14,9 @@ out/
 build
 dist
 
+# vitepress
+**/.vitepress/cache
+
 # misc
 .DS_Store
 *.pem

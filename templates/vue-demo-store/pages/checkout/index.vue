@@ -35,7 +35,7 @@ const {
   activeBillingAddress,
   setActiveBillingAddress,
 } = useSessionContext();
-const { cartItems, subtotal, totalPrice, shippingTotal } = useCart();
+const { cart, cartItems, subtotal, totalPrice, shippingTotal } = useCart();
 const { customerAddresses, loadCustomerAddresses } = useAddress();
 const modal = inject<SharedModal>("modal") as SharedModal;
 const isLoading = reactive<{ [key: string]: boolean }>({});
@@ -81,6 +81,10 @@ const selectedBillingAddress = computed({
     await setActiveBillingAddress({ id: billingAddressId });
     isLoading[`billing-${billingAddressId}`] = false;
   },
+});
+
+const isCartLoading = computed(() => {
+  return !cart.value;
 });
 
 const isCheckoutAvailable = computed(() => {
@@ -187,7 +191,13 @@ const invokeSubmit = async () => {
 
 <template>
   <div class="m-10">
-    <div v-if="isCheckoutAvailable" class="checkout-inner">
+    <div
+      v-if="isCheckoutAvailable || isCartLoading"
+      class="checkout-inner"
+      :class="{
+        'opacity-20': isCartLoading,
+      }"
+    >
       <div class="md:grid md:grid-cols-2 md:gap-6">
         <div class="md:col-span-1">
           <div class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8">
