@@ -1,4 +1,4 @@
-import { ref, Ref, computed, ComputedRef, provide, inject } from "vue";
+import { computed, ComputedRef } from "vue";
 import {
   getCart,
   addProductToCart,
@@ -9,6 +9,8 @@ import {
 } from "@shopware-pwa/api-client";
 import { Cart, EntityError, Product, LineItem } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
+import { _useContext } from "./internal/_useContext";
+import { createSharedComposable } from "@vueuse/core";
 
 export type UseCartReturn = {
   /**
@@ -74,13 +76,14 @@ export type UseCartReturn = {
 };
 
 /**
- * Composable for cart management
+ * Cart management logic.
+ *
+ * Used as [Shared](https://shopware-frontends-docs.vercel.app/framework/shared-composables.html) Composable `useCart`
  */
-export function useCart(): UseCartReturn {
+export function useCartFunction(): UseCartReturn {
   const { apiInstance } = useShopwareContext();
 
-  const _storeCart: Ref<Cart | undefined> = inject("swCart", ref());
-  provide("swCart", _storeCart);
+  const _storeCart = _useContext<Cart | undefined>("swCart");
 
   async function refreshCart(): Promise<Cart> {
     const result = await getCart(apiInstance);
@@ -234,3 +237,5 @@ export function useCart(): UseCartReturn {
     isEmpty,
   };
 }
+
+export const useCart = createSharedComposable(useCartFunction);
