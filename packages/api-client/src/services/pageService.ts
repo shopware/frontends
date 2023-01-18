@@ -57,10 +57,7 @@ export async function getSeoUrls(
   languageId?: string,
   contextInstance: ShopwareApiInstance = defaultInstance
 ): Promise<
-  {
-    apiAlias: string;
-    seoPathInfo: string;
-  }[]
+  EntityResult<"seo_url", { apiAlias: string; seoPathInfo: string }[]>
 > {
   if (languageId) {
     contextInstance.defaults.headers.common["sw-language-id"] = languageId;
