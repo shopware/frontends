@@ -131,4 +131,4 @@ const invokeLogin = () => login(loginCredentials);
 </style>
 ```
 
-<StackBlitzLiveExample projectId="mkucmus/frontends-examples" example="LoginForm" />
+<StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/login-form" openPath="/" />

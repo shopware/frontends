@@ -194,4 +194,4 @@ Thanks to the internal logic of the PayPal extension, the is already connected w
 
 The example shows the specific case, when a product can be bought in one action from the frontend.
 
-<StackBlitzLiveExample projectId="mkucmus/frontends-examples" example="ExpressCheckout" />
+<StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/express-checkout" openPath="/" />

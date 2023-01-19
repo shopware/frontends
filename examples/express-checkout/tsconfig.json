@@ -1,0 +1,15 @@
+{
+  "include": [
+    "src/**/*"
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "DOM"
+    ],
+    "types": [
+      "vite/client"
+    ]
+  }
+}

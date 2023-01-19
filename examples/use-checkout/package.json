@@ -1,0 +1,21 @@
+{
+  "name": "use-checkout",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@shopware-pwa/api-client": "canary",
+    "@shopware-pwa/composables-next": "canary",
+    "js-cookie": "^3.0.1",
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "@shopware-pwa/types": "^0.2.0",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "vite": "^4.0.0"
+  }
+}

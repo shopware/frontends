@@ -30,4 +30,4 @@ const {
 
 ## Live example
 
-<StackBlitzLiveExample projectId="mkucmus/frontends-examples" example="UseCheckout" />
+<StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/use-checkout" openPath="/" />

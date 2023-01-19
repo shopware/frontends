@@ -20,4 +20,4 @@ const { cartItems, totalPrice } = useCart();
 
 ## Live example
 
-<StackBlitzLiveExample projectId="mkucmus/frontends-examples" example="UseCart" />
+<StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/use-cart" openPath="/" />
