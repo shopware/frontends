@@ -126,3 +126,33 @@ lighthouse tests:
   script:
     - yarn global add @lhci/cli@0.9.x
     - LHCI_BUILD_CONTEXT__CURRENT_HASH=$CI_JOB_ID lhci autorun || echo "LHCI failed!"
+
+vue demo store:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.29.1-focal
+  only:
+    - schedules
+  script:
+    - pnpm install
+    - cd apps/e2e-tests/
+    - BASE_E2E_URL=https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store npx playwright test checkStackblitzTemplates.spec.ts --project=chromium 
+
+vue blank:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.29.1-focal
+  only:
+    - schedules
+  script:
+    - pnpm install
+    - cd apps/e2e-tests/
+    - BASE_E2E_URL=https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-blank npx playwright test checkStackblitzTemplates.spec.ts --project=chromium 
+
+vue vite blank:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.29.1-focal
+  only:
+    - schedules
+  script:
+    - pnpm install
+    - cd apps/e2e-tests/
+    - BASE_E2E_URL=https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-vite-blank npx playwright test checkStackblitzTemplates.spec.ts --project=chromium
