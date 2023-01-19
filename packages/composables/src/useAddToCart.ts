@@ -1,5 +1,5 @@
 import { ref, Ref, computed, unref, ComputedRef, watch } from "vue";
-import { Product, Cart, LineItem } from "@shopware-pwa/types";
+import { Product, Cart, LineItem, EntityError } from "@shopware-pwa/types";
 import { useCart } from "./useCart";
 
 export type UseAddToCartReturn = {
@@ -28,7 +28,7 @@ export type UseAddToCartReturn = {
 export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
   const _product = computed(() => unref(product));
 
-  const { addProduct, cartItems, refreshCart } = useCart();
+  const { addProduct, cartItems } = useCart();
   const quantity: Ref<number> = ref(1);
 
   async function addToCart(): Promise<Cart> {
@@ -38,7 +38,6 @@ export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
       quantity: quantity.value,
     });
     quantity.value = 1;
-    refreshCart();
     return addToCartResponse;
   }
 

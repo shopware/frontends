@@ -144,11 +144,8 @@ await removeItem({ id: "7b5b97bd48454979b14f21c8ef38ce08" });
 In case of the `useCartItem` composable, you pass the item identifier when calling the composable, but not when calling the `removeItem` method.
 
 ```ts
-const { removeItem } = useCartItem({ cartItem });
-
-const cartItem: LineItem = {
-  id: "7b5b97bd48454979b14f21c8ef38ce08",
-};
+const { cartItem } = toRefs(props);
+const { removeItem } = useCartItem(cartItem);
 
 await removeItem();
 ```

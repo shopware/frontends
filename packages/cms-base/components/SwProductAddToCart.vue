@@ -23,7 +23,9 @@ const addToCartProxy = async () => {
         id="qty"
         type="number"
         v-model="quantity"
-        min="1"
+        :min="product.minPurchase || 1"
+        :max="product.calculatedMaxPurchase"
+        :step="product.purchaseSteps || 1"
         class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
         data-testid="product-quantity"
       />

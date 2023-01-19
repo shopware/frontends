@@ -33,65 +33,64 @@ export type UseCartItemReturn = {
   getProductItemSeoUrlData(): Promise<ProductResponse | undefined>;
 };
 
-export function useCartItem(cartItem: LineItem): UseCartItemReturn {
+export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   if (!cartItem) {
     throw new Error("[useCartItem] mandatory cartItem argument is missing.");
   }
 
   const { apiInstance } = useShopwareContext();
-  const { refreshCart } = useCart();
+  const { refreshCart, changeProductQuantity } = useCart();
 
-  const itemQuantity = computed(() => cartItem.quantity);
-  const itemImageThumbnailUrl = computed(() => getMainImageUrl(cartItem));
+  const itemQuantity = computed(() => cartItem.value.quantity);
+  const itemImageThumbnailUrl = computed(() => getMainImageUrl(cartItem.value));
 
   // TODO: use helper instead
 
-  const itemRegularPrice = computed(() => cartItem.price?.unitPrice);
+  const itemRegularPrice = computed(() => cartItem.value.price?.unitPrice);
 
   const itemSpecialPrice = computed(
-    () => cartItem.price?.listPrice && cartItem.price.unitPrice
+    () => cartItem.value.price?.listPrice && cartItem.value.price.unitPrice
   );
 
   const itemOptions = computed(
     () =>
-      (cartItem.type === "product" && (cartItem.payload as Product)?.options) ||
+      (cartItem.value.type === "product" &&
+        (cartItem.value.payload as Product)?.options) ||
       []
   );
 
-  const itemStock = computed(() => cartItem.deliveryInformation?.stock);
+  const itemStock = computed(() => cartItem.value.deliveryInformation?.stock);
 
-  const itemType = computed(() => cartItem.type);
+  const itemType = computed(() => cartItem.value.type);
 
-  const isProduct = computed(() => cartItem.type === "product");
+  const isProduct = computed(() => cartItem.value.type === "product");
 
-  const isPromotion = computed(() => cartItem.type === "promotion");
+  const isPromotion = computed(() => cartItem.value.type === "promotion");
 
   async function removeItem() {
-    const result = await removeCartItem(cartItem.id, apiInstance);
+    const result = await removeCartItem(cartItem.value.id, apiInstance);
     // broadcastUpcomingErrors(result);
-    refreshCart();
+    await refreshCart();
   }
 
   async function changeItemQuantity(quantity: number): Promise<void> {
-    const result = await changeCartItemQuantity(
-      cartItem.id,
-      quantity,
-      apiInstance
-    );
+    await changeProductQuantity({
+      id: cartItem.value.id,
+      quantity: quantity,
+    });
     // broadcastUpcomingErrors(result);
-    refreshCart();
   }
 
   async function getProductItemSeoUrlData(): Promise<
     ProductResponse | undefined
   > {
-    if (!cartItem.referencedId) {
+    if (!cartItem.value.referencedId) {
       return;
     }
 
     try {
       const result = await getProduct(
-        cartItem.referencedId,
+        cartItem.value.referencedId,
         {
           // includes: (getDefaults() as any).getProductItemsSeoUrlsData.includes,
           // associations: (getDefaults() as any).getProductItemsSeoUrlsData
