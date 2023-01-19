@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "NITRO_PRESET=vercel nuxi build",
-    "lint": "eslint ./**/*.vue* app.vue --fix --max-warnings=0",
+    "lint": "eslint './**/*.{js,ts,vue}' --fix --max-warnings=0",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "analyze": "nuxi analyze"
