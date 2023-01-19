@@ -37,6 +37,7 @@ onBeforeMount(async () => {
       <template v-else>
         <AccountAddressCard
           v-for="address in customerAddresses"
+          :can-delete="true"
           :key="address.id"
           :address="address"
           :countries="getCountries"

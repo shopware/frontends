@@ -2,8 +2,12 @@
 import { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
 import { SharedModal } from "~~/components/shared/SharedModal.vue";
 const { pushSuccess, pushError } = useNotifications();
-const { setDefaultCustomerShippingAddress, setDefaultCustomerBillingAddress } =
-  useAddress();
+const {
+  setDefaultCustomerShippingAddress,
+  setDefaultCustomerBillingAddress,
+  deleteCustomerAddress,
+  loadCustomerAddresses,
+} = useAddress();
 const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
 const { refreshSessionContext } = useSessionContext();
 const modal = inject<SharedModal>("modal") as SharedModal;
@@ -15,11 +19,19 @@ const props = withDefaults(
     salutations: Array<Salutation>;
     canSetDefault?: boolean;
     canEdit?: boolean;
+    canDelete?: boolean;
   }>(),
   {
     canSetDefault: true,
     canEdit: true,
+    canDelete: false,
   }
+);
+const canBeDeleted = computed(
+  () =>
+    props.canDelete &&
+    defaultShippingAddressId.value !== props.address.id &&
+    defaultBillingAddressId.value !== props.address.id
 );
 
 const setDefaultShippingAddress = async () => {
@@ -41,6 +53,15 @@ const setDefaultBillingAddress = async () => {
     pushError("Set default billing address error");
   }
 };
+
+const removeAddress = async (addressId: string) => {
+  try {
+    await deleteCustomerAddress(addressId);
+    pushSuccess("Address deleted");
+  } catch (error) {
+    pushError("Address deleted error");
+  }
+};
 </script>
 
 <template>
@@ -51,9 +72,7 @@ const setDefaultBillingAddress = async () => {
       </h5>
       <div
         v-if="canEdit"
-        i-carbon-edit
-        text-xl
-        inline-block
+        class="cursor-pointer i-carbon-edit text-xl inline-block"
         @click.prevent="
           modal.open('AccountAddressForm', {
             address,
@@ -62,6 +81,11 @@ const setDefaultBillingAddress = async () => {
             title: 'Edit address',
           })
         "
+      />
+      <div
+        v-if="canBeDeleted"
+        class="i-carbon-delete text-xl inline-block cursor-pointer ml-2"
+        @click.prevent="removeAddress(address.id)"
       />
     </div>
     <div class="flow-root">
