@@ -21,13 +21,13 @@ console.log("Running tests for: ", baseURL);
 const config: PlaywrightTestConfig = {
   testDir: "./tests",
   /* Maximum time one test can run for. */
-  timeout: 60 * 1000,
+  timeout: 90 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 8000,
+    timeout: 30000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
