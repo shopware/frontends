@@ -2,6 +2,7 @@ packages:
   - "apps/*"
   - "packages/*"
   - "templates/*"
+  - "examples/*"
 
 templates:
   - "templates/*"

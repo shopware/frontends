@@ -1,0 +1,11 @@
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "lib": ["esnext", "DOM"],
+    "types": ["vite/client"],
+    "paths": {
+      "react": ["./stub/types__react"]
+    }
+  }
+}

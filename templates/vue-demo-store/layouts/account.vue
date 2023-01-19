@@ -104,8 +104,8 @@ provide("swNavigation-footer-navigation", footerData);
                   </li>
                   <li>
                     <button
-                      @click="invokeLogout()"
                       class="flex items-center rounded-lg p-2 hover:text-brand-primary hover:bg-gray-100 w-full"
+                      @click="invokeLogout()"
                     >
                       <div i-carbon-logout text-xl inline-block />
                       <span class="ml-3">Logout</span>

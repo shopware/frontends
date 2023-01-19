@@ -1,13 +1,13 @@
 <script setup>
 import { defineProps } from "vue";
 const props = defineProps({
-  projectId: {
-    // project id - stackblitz specific
+  projectPath: {
+    // path to github project - including gh tree path
     type: String,
     required: true,
   },
-  example: {
-    // file located in src/examples of the sample project - https://github.com/mkucmus/frontends-examples
+  openPath: {
+    // path to open in preview after the project is built
     type: String,
     required: false,
   },
@@ -17,14 +17,14 @@ const stackBlitzIframeOptions = {
   embed: 1, // embedded mode
   theme: "light", // dark
   ctl: 1, // click to load
-  initialPath: props.example, // open at specific /path
+  initialPath: props.openPath, // open at specific /path
   view: "preview", // open only a preview
-  file: `src/examples/${props.example}.vue`, // loaded file to be studied
+  file: "README.md", // loaded file to be studied
   terminalHeight: 0, // minimize terminal size
 };
 
 const queryString = new URLSearchParams(stackBlitzIframeOptions).toString();
-const exampleUrl = `https://stackblitz.com/github/${props.projectId}?${queryString}`;
+const exampleUrl = `https://stackblitz.com/github/${props.projectPath}?${queryString}`;
 </script>
 <template>
   <div

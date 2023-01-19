@@ -58,7 +58,7 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
                 ? 'i-carbon-chevron-down'
                 : 'i-carbon-chevron-up',
             ]"
-          ></div>
+          />
         </span>
       </button>
     </h3>

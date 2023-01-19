@@ -19,6 +19,7 @@ export type ShippingMethod = {
   deliveryTimeId: string;
   deliveryTime: DeliveryTime | null;
   translations: ShippingMethodTranslation[] | null;
+  translated: ShippingMethodTranslation | null;
   orderDeliveries: OrderDelivery[] | null;
   salesChannelDefaultAssignments: SalesChannel[] | null;
   salesChannels: SalesChannel[] | null;

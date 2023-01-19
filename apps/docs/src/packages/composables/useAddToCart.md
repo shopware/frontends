@@ -24,4 +24,5 @@ const { isInCart, quantity, addToCart, getStock } = useAddToCart({ product });
 
 ## Live example
 
-<StackBlitzLiveExample projectId="mkucmus/frontends-examples" example="UseAddToCart" />
+<StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/use-add-to-cart" openPath="/" />
+

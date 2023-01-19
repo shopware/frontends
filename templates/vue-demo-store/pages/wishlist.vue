@@ -74,7 +74,7 @@ watch(
       </div>
       <!-- Empty of wishlist -->
       <div v-else class="flex flex-col items-center col mx-auto">
-        <div class="w-48 h-48 i-carbon-favorite"></div>
+        <div class="w-48 h-48 i-carbon-favorite" />
         <h1 class="my-3 text-3xl font-extrabold">Wishlist is empty</h1>
         <p class="my-4">No products were added to the Wishlist.</p>
         <nuxt-link

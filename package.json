@@ -5,7 +5,8 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "templates/*"
+    "templates/*",
+    "examples/*"
   ],
   "scripts": {
     "bump": "changeset version",
