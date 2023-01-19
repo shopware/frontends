@@ -54,6 +54,7 @@ export type CrossSelling = {
  */
 export type Product = {
   calculatedCheapestPrice: CalculatedPrice;
+  calculatedMaxPurchase: number;
   calculatedListingPrice: ListingPrice;
   calculatedPrices: CalculatedPrice[];
   calculatedPrice: CalculatedPrice;

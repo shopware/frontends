@@ -11,6 +11,8 @@ Composable for cart item management.
 Display and manage single cart item in your cart.
 
 ```ts
+const { cartItem } = toRefs(props);
+
 const {
   itemOptions,
   removeItem,
@@ -19,5 +21,5 @@ const {
   isPromotion,
   itemStock,
   changeItemQuantity,
-} = useCartItem(props.cartItem);
+} = useCartItem(cartItem);
 ```

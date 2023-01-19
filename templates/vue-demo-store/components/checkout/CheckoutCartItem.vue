@@ -12,6 +12,8 @@ const props = withDefaults(
   }
 );
 
+const { cartItem } = toRefs(props);
+
 const isLoading = ref(false);
 
 const {
@@ -22,9 +24,10 @@ const {
   isPromotion,
   itemStock,
   changeItemQuantity,
-} = useCartItem(props.cartItem);
+} = useCartItem(cartItem);
 
-const quantity = ref(itemQuantity.value);
+const quantity = ref();
+syncRefs(itemQuantity, quantity);
 
 const updateQuantity = async (quantity: number | undefined) => {
   if (quantity === itemQuantity.value) return;
@@ -35,8 +38,9 @@ const updateQuantity = async (quantity: number | undefined) => {
 
   isLoading.value = false;
 };
+const debounceUpdate = useDebounceFn(updateQuantity, 800);
 
-watch(quantity, () => updateQuantity(quantity.value));
+watch(quantity, () => debounceUpdate(quantity.value));
 
 const removeCartItem = async () => {
   isLoading.value = true;
@@ -91,37 +95,34 @@ const removeCartItem = async () => {
       v-if="!isPromotion"
       class="flex flex-1 items-end justify-between text-sm"
     >
-      <select
-        v-if="itemStock && itemStock > 0"
+      <!-- v-if="itemStock && itemStock > 0" - example of using it on item when you want to block editing quantity -->
+      <input
+        type="number"
+        :disabled="isLoading"
+        :min="cartItem.quantityInformation?.minPurchase || 1"
+        :max="cartItem.quantityInformation?.maxPurchase || maxQty"
+        :step="cartItem.quantityInformation?.purchaseSteps || 1"
         data-testid="cart-product-qty-select"
         v-model="quantity"
         name="quantity"
         class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-      >
-        <option
-          v-for="entry in itemStock > maxQty ? maxQty : itemStock"
-          :key="entry"
-          :value="entry"
-          data-testid="cart-product-qty-select-option"
-        >
-          {{ entry }}
-        </option>
-      </select>
-      <!-- Stock is lower than 1 -->
-      <div v-else>
+      />
+      <!-- disabled quantity edition -->
+      <!-- <div v-else>
         <div
           data-testid="cart-product-qty"
           class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white opacity-50 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         >
           {{ quantity }}
         </div>
-      </div>
+      </div> -->
       <div class="flex">
         <button
           v-if="!isPromotion"
           type="button"
-          :class="{ 'animate-pulse': isLoading }"
+          :disabled="isLoading"
           class="font-medium text-brand-dark"
+          :class="{ 'text-gray-500': isLoading }"
           data-testid="product-remove-button"
           @click="removeCartItem"
         >
