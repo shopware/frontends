@@ -68,6 +68,8 @@ const selectedShippingAddress = computed({
   async set(shippingAddressId: string) {
     isLoading[`shipping-${shippingAddressId}`] = true;
     await setActiveShippingAddress({ id: shippingAddressId });
+    if (shippingAddressId === selectedBillingAddress.value)
+      state.customShipping = false;
     isLoading[`shipping-${shippingAddressId}`] = false;
   },
 });
@@ -79,6 +81,8 @@ const selectedBillingAddress = computed({
   async set(billingAddressId: string) {
     isLoading[`billing-${billingAddressId}`] = true;
     await setActiveBillingAddress({ id: billingAddressId });
+    if (billingAddressId === selectedShippingAddress.value)
+      state.customShipping = false;
     isLoading[`billing-${billingAddressId}`] = false;
   },
 });
