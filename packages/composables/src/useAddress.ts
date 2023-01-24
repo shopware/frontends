@@ -81,12 +81,6 @@ export function useAddress(): UseAddressReturn {
   ): Promise<CustomerAddress> {
     const result = await apiCreateCustomerAddress(customerAddress, apiInstance);
     await loadCustomerAddresses();
-    if (isGuestSession.value) {
-      return result;
-    }
-
-    await setDefaultCustomerBillingAddress(result.id);
-    await setDefaultCustomerShippingAddress(result.id);
     return result;
   }
 
