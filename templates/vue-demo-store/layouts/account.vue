@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 useAuthGuardRedirection();
 
 // Navigation for Account page
@@ -56,51 +57,51 @@ provide("swNavigation-footer-navigation", footerData);
                 </h1>
                 <ul class="space-y-2">
                   <li>
-                    <router-link
+                    <RouterLink
                       to="/account"
                       class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
                       <div i-carbon-dashboard text-xl inline-block />
                       <span class="ml-3">Account Overview</span>
-                    </router-link>
+                    </RouterLink>
                   </li>
                   <li>
-                    <router-link
+                    <RouterLink
                       to="/account/profile"
                       class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
                       <div i-carbon-user text-xl inline-block />
                       <span class="ml-3">My profile</span>
-                    </router-link>
+                    </RouterLink>
                   </li>
                   <li>
-                    <router-link
+                    <RouterLink
                       to="/account/address"
                       class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-home text-xl inline-block />
                       <span class="ml-3">My address</span>
-                    </router-link>
+                    </RouterLink>
                   </li>
                   <li>
-                    <router-link
+                    <RouterLink
                       to="/account/payment"
                       class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-wallet text-xl inline-block />
                       <span class="ml-3">Payment</span>
-                    </router-link>
+                    </RouterLink>
                   </li>
                 </ul>
                 <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200">
                   <li>
-                    <router-link
+                    <RouterLink
                       to="/account/order"
                       class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-order-details text-xl inline-block />
                       <span class="ml-3">Order history</span>
-                    </router-link>
+                    </RouterLink>
                   </li>
                   <li>
                     <button

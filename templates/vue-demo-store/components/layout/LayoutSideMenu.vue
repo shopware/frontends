@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 import {
   getCategoryUrl,
   getCategoryImageUrl,
@@ -66,7 +67,7 @@ const toggleCollapse = (navigationElement: Category) => {
                     v-for="navigationElement in navigationElements"
                     :key="navigationElement.id"
                   >
-                    <router-link
+                    <RouterLink
                       :to="getCategoryUrl(navigationElement)"
                       class="flex items-center w-full px-5 py-3 text-base font-normal text-gray-900 break-all hover:bg-gray-100"
                       @click="isSideMenuOpened = false"
@@ -88,7 +89,7 @@ const toggleCollapse = (navigationElement: Category) => {
                           ]"
                         />
                       </button>
-                    </router-link>
+                    </RouterLink>
 
                     <div
                       v-if="
@@ -116,7 +117,7 @@ const toggleCollapse = (navigationElement: Category) => {
                         v-for="childElement in navigationElement.children"
                         :key="childElement.id"
                       >
-                        <router-link
+                        <RouterLink
                           :to="getCategoryUrl(childElement)"
                           class="flex items-center p-3 text-base font-normal text-gray-500 break-all hover:bg-gray-100 pl-11"
                           @click="isSideMenuOpened = false"
@@ -124,7 +125,7 @@ const toggleCollapse = (navigationElement: Category) => {
                           <span>
                             {{ childElement.name }}
                           </span>
-                        </router-link>
+                        </RouterLink>
                       </li>
                     </ul>
                   </li>

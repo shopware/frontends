@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 definePageMeta({ layout: "checkout" });
 
 const { cartItems, subtotal, totalPrice, shippingTotal } = useCart();

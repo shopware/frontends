@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 import { getProductUrl, debounce } from "@shopware-pwa/helpers-next";
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
@@ -92,7 +93,7 @@ watch(enter, (value) => {
       v-if="showSuggest"
       class="absolute border-gray-100 border-t-1 duration-300 left-0 mt-2 overflow-hidden right-0 rounded-b-md shadow-md transition-height w-auto z-1"
     >
-      <router-link
+      <RouterLink
         v-for="product in getProducts.slice(0, displayTotal)"
         :key="product.id"
         :to="getProductUrl(product)"
@@ -100,7 +101,7 @@ watch(enter, (value) => {
         @click="[(active = false), (isSideMenuOpened = false)]"
       >
         <ProductSuggestSearch :product="product" />
-      </router-link>
+      </RouterLink>
 
       <div
         class="h-11 text-sm rounded-b-md p-3 text-center transition"
@@ -112,7 +113,7 @@ watch(enter, (value) => {
           class="w-80 h-40 bg-brand-light blur-2xl fixed animate-spin"
         />
         <div v-else>
-          <router-link
+          <RouterLink
             v-if="getTotal > 0"
             :to="`/search?query=${typingQuery}`"
             @click="[(active = false), (isSideMenuOpened = false)]"
@@ -120,7 +121,7 @@ watch(enter, (value) => {
             See <span v-if="getTotal !== 1">all</span> {{ getTotal }}
             <span v-if="getTotal !== 1">results</span
             ><span v-if="getTotal == 1">result</span>
-          </router-link>
+          </RouterLink>
           <div v-else>No results :(</div>
         </div>
       </div>

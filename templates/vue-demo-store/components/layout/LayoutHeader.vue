@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
+
 const { count } = useCart();
 const { count: wishlistCount } = useWishlist();
 const isSidebarOpen = inject("isSidebarOpen");
@@ -13,10 +15,10 @@ const isSidebarOpen = inject("isSidebarOpen");
         <div class="flex justify-start lg:flex-1 space-x-4 w-20 md:w-1/4 grow">
           <LayoutSideMenu />
 
-          <router-link to="/">
+          <RouterLink to="/">
             <span class="sr-only">Shopware</span>
             <img class="h-8 w-auto sm:h-10" src="/logo.svg" alt="Logo" />
-          </router-link>
+          </RouterLink>
         </div>
 
         <LayoutTopNavigation />

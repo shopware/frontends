@@ -29,7 +29,7 @@ const isActive = (path: string) => {
     <nav
       class="w-full flex flex-col divide-gray-200 divide-y md:flex-row md:max-w-screen-xl md:mx-auto md:divide-y-0 md:divide-x"
     >
-      <router-link
+      <RouterLink
         v-for="navigationElement in navigationElements"
         :key="navigationElement.id"
         :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo"
@@ -44,7 +44,7 @@ const isActive = (path: string) => {
         >
           {{ navigationElement.translated.name }}
         </div>
-      </router-link>
+      </RouterLink>
     </nav>
   </div>
 </template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 const { navigationElements } = useNavigation();
 
@@ -19,12 +20,12 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       class="relative"
       @mouseover="currentMenuPosition = navigationElement.id"
     >
-      <router-link
+      <RouterLink
         :to="'/' + navigationElement.seoUrls?.[0]?.seoPathInfo"
         class="text-base font-medium text-gray-500 hover:text-gray-900"
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
-      </router-link>
+      </RouterLink>
 
       <!--
             Flyout menu, show/hide based on flyout menu state.
@@ -53,7 +54,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
               :key="childElement.id"
               class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-6 sm:pb-0"
             >
-              <router-link
+              <RouterLink
                 :to="'/' + childElement?.seoUrls?.[0]?.seoPathInfo"
                 class="flex justify-between rounded-lg hover:bg-gray-50"
               >
@@ -77,7 +78,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                     alt="Category image"
                   />
                 </div>
-              </router-link>
+              </RouterLink>
             </div>
             <div
               class="px-5 py-5 bg-gray-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8"

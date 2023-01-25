@@ -1,4 +1,5 @@
 <script lang="ts">
+import { RouterLink } from "vue-router";
 export default {
   name: "CheckoutSuccessUnpaidPage",
 };
@@ -20,13 +21,13 @@ export default {
       again or contact us.
     </p>
     <div class="mt-12 text-center">
-      <router-link
+      <RouterLink
         :to="`/checkout/success/${$route.params.id}`"
         class="inline-flex justify-center items-center py-2 px-4 text-base font-medium text-center text-white bg-brand-primary rounded-lg hover:bg-gray-400 focus:ring-4 focus:ring-brand-primary dark:focus:ring-brand-primary"
       >
         Check the order details
         <div class="i-carbon-undo ml-2" />
-      </router-link>
+      </RouterLink>
     </div>
   </div>
 </template>

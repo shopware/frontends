@@ -13,10 +13,10 @@
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@types/node": "^18.11.18",
-    "@vueuse/nuxt": "^9.5.0",
-    "nuxt": "^3.0.0",
+    "@vueuse/nuxt": "^9.11.1",
+    "nuxt": "^3.1.0",
     "typescript": "^4.9.4",
-    "vue-tsc": "^1.0.16",
+    "vue-tsc": "^1.0.24",
     "vue": "^3.2.45"
   },
   "engines": {

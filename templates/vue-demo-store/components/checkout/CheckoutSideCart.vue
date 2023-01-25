@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 const isOpen = inject("isSidebarOpen");
 
 const { cartItems, totalPrice, isEmpty } = useCart();
