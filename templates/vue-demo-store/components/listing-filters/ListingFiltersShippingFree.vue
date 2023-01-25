@@ -37,7 +37,7 @@ onClickOutside(dropdownElement, () => (isOpen.value = false));
         <div
           class="h-5 w-5"
           :class="[!isOpen ? 'i-carbon-chevron-down' : 'i-carbon-chevron-up']"
-        ></div>
+        />
       </span>
     </button>
     <div

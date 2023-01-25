@@ -28,7 +28,7 @@ export default {
           class="h-full w-full object-cover object-center"
         />
       </div>
-      <div v-else class="w-24"></div>
+      <div v-else class="w-24" />
       {{ lineItem.label }}
     </div>
     <div>{{ lineItem.quantity }}</div>

@@ -15,8 +15,8 @@ async function invokeLogout() {
       <div v-show="!isLoggedIn">
         <button
           class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-          @click="modal.open('AccountLoginForm')"
           data-testid="header-sign-in-link"
+          @click="modal.open('AccountLoginForm')"
         >
           Sign in
         </button>
@@ -28,8 +28,8 @@ async function invokeLogout() {
           <button
             type="button"
             class="text-sm text-gray-700 focus:outline-none"
-            @click="isAccountMenuOpen = !isAccountMenuOpen"
             data-testid="account-menu-hello-button"
+            @click="isAccountMenuOpen = !isAccountMenuOpen"
           >
             Hello, {{ user?.firstName }}!
           </button>
@@ -65,8 +65,8 @@ async function invokeLogout() {
                 tabindex="-1"
               >
                 <button
-                  data-testid="header-my-account-link"
                   id="user-menu-item-1"
+                  data-testid="header-my-account-link"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   role="menuitem"
                   tabindex="-1"
@@ -75,8 +75,8 @@ async function invokeLogout() {
                   My Account
                 </button>
                 <button
-                  data-testid="header-sing-out-link"
                   id="user-menu-item-2"
+                  data-testid="header-sing-out-link"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   role="menuitem"
                   tabindex="-2"

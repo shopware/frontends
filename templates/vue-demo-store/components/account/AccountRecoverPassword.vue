@@ -40,7 +40,7 @@ const invokeRecover = async (): Promise<void> => {
           Reset password
         </h2>
       </div>
-      <form v-if="!isSuccess" @submit.prevent="invokeRecover" class="space-y-6">
+      <form v-if="!isSuccess" class="space-y-6" @submit.prevent="invokeRecover">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="email-address" class="sr-only">Email address</label>

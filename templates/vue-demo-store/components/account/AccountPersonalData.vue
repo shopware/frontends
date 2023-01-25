@@ -136,8 +136,8 @@ onMounted(async () => {
         <span class="font-medium">Your information has been updated.</span>
       </div>
       <div
-        class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
         v-if="errorMessages.length"
+        class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
       >
         {{ errorMessages }}
       </div>

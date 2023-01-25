@@ -105,7 +105,7 @@ const invokeLogin = async (): Promise<void> => {
             data-testid="login-submit-button"
           >
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-              <div class="w-5 h-5 i-carbon-locked"></div>
+              <div class="w-5 h-5 i-carbon-locked" />
             </span>
             Sign in
           </button>

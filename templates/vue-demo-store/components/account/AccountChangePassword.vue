@@ -94,8 +94,8 @@ const invokeChange = async (): Promise<void> => {
     </div>
     <form class="mt-8 space-y-6" @submit.prevent="invokeChange">
       <div
-        class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
         v-if="userErrorMessages.length"
+        class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
       >
         {{ userErrorMessages }}
       </div>

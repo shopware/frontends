@@ -60,7 +60,7 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                     @click="isOpen = false"
                   >
                     <span class="sr-only">Close panel</span>
-                    <div class="w-6 h-6 i-carbon-close"></div>
+                    <div class="w-6 h-6 i-carbon-close" />
                   </button>
                 </div>
               </div>
@@ -80,7 +80,7 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                       <CheckoutCartItem :cart-item="cartItem" />
                     </li>
                   </ul>
-                  <div class="text-2xl text-center" v-else>
+                  <div v-else class="text-2xl text-center">
                     Your shopping cart is empty
                   </div>
                 </div>

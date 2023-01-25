@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: "AccountPage",
+};
+</script>
+
 <script setup lang="ts">
 definePageMeta({
   layout: "account",
@@ -73,7 +79,9 @@ onBeforeMount(async () => {
       </div>
       <div class="w-1/2 flex flex-col">
         <h3 class="border-b pb-3 font-bold mb-3">Payment Method</h3>
-        <p class="font-medium">{{ userDefaultPaymentMethod?.name }}</p>
+        <p class="font-medium">
+          {{ userDefaultPaymentMethod?.name }}
+        </p>
         <p>{{ userDefaultPaymentMethod?.description }}</p>
         <div class="mt-5">
           <button
@@ -91,9 +99,9 @@ onBeforeMount(async () => {
       <div class="flex">
         <input
           id="newsletter-checkbox"
+          v-model="newsletter"
           name="newsletter-checkbox"
           type="checkbox"
-          v-model="newsletter"
           class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
           @click="updateNewsletterStatus"
         />
