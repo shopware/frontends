@@ -21,8 +21,8 @@ const addToCartProxy = async () => {
       <label for="qty" class="text-sm">Qty:</label>
       <input
         id="qty"
-        type="number"
         v-model="quantity"
+        type="number"
         :min="product.minPurchase || 1"
         :max="product.calculatedMaxPurchase"
         :step="product.purchaseSteps || 1"
@@ -32,9 +32,9 @@ const addToCartProxy = async () => {
     </div>
     <div class="basis-3/4 ml-4">
       <button
-        @click="addToCartProxy"
         class="py-2 px-6 w-full bg-gradient-to-r from-cyan-500 to-blue-500 transition ease-in-out hover:bg-gradient-to-l duration-300 cursor-pointer border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         data-testid="add-to-cart-button"
+        @click="addToCartProxy"
       >
         Add to cart
       </button>

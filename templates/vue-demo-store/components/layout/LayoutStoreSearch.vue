@@ -76,12 +76,12 @@ watch(enter, (value) => {
     <div class="flex items-center">
       <div
         class="sw-search-input i-carbon-search flex-none h-6 w-6 text-gray-400 group-hover:text-brand-primary cursor-pointer"
-      ></div>
+      />
 
       <input
-        data-testid="layout-search-input"
         ref="searchInput"
         v-model="typingQuery"
+        data-testid="layout-search-input"
         type="text"
         class="sw-search-input text-gray-400 placeholder:text-gray-400 focus:text-gray-700 p-2 ml-2 grow h-6 transition duration-200 focus:outline-none"
         placeholder="Search products"
@@ -96,8 +96,8 @@ watch(enter, (value) => {
         v-for="product in getProducts.slice(0, displayTotal)"
         :key="product.id"
         :to="getProductUrl(product)"
-        @click="[(active = false), (isSideMenuOpened = false)]"
         data-testid="layout-search-suggest-link"
+        @click="[(active = false), (isSideMenuOpened = false)]"
       >
         <ProductSuggestSearch :product="product" />
       </router-link>

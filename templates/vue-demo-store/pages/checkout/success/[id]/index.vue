@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: "CheckoutSuccessPage",
+};
+</script>
+
 <script setup lang="ts">
 import { watchDebounced } from "@vueuse/core";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
@@ -99,7 +105,9 @@ const formatDate = (date: Date) =>
         <div class="pt-8">
           <div>
             <AccountOrderSummary>
-              <div class="col-span-2">{{ order?.orderNumber }}</div>
+              <div class="col-span-2">
+                {{ order?.orderNumber }}
+              </div>
               <div>
                 <SharedPrice
                   v-if="order?.amountTotal"
@@ -113,22 +121,22 @@ const formatDate = (date: Date) =>
               </div>
               <div>{{ getTranslatedProperty(state, "name") }}</div>
               <button
-                @click="toggleView"
                 class="justify-self-end text-gray-600 px-3 text-xs font-medium text-center hover:text-white bg-gray-300 rounded-lg hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-300 dark:focus:ring-gray-400"
                 :aria-expanded="isExpand"
+                @click="toggleView"
               >
                 {{ !isExpand ? "View items" : "Hide items" }}
               </button>
             </AccountOrderSummary>
             <template v-if="order?.id">
               <transition>
-                <AccountOrderDetails v-if="isExpand" :orderId="order.id" />
+                <AccountOrderDetails v-if="isExpand" :order-id="order.id" />
               </transition>
             </template>
           </div>
         </div>
         <div class="border-t border-gray-200 flex">
-          <div class="md:w-36"></div>
+          <div class="md:w-36" />
           <div class="flex-1 flex-col ml-4">
             <div class="md:flex md:flex-wrap py-6 md:py-10">
               <div class="w-auto md:w-1/2">
@@ -228,7 +236,7 @@ const formatDate = (date: Date) =>
           <div class="text-gray-400">
             <div
               class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
-            ></div>
+            />
           </div>
         </div>
         <div>
@@ -236,36 +244,34 @@ const formatDate = (date: Date) =>
             <div>
               <div
                 class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 px-2 py-6"
-              ></div>
+              />
               <div class="px-2 py-4">
                 <div class="grid grid-cols-5 gap-y-10 pb-4 text-gray-400">
                   <div
                     class="col-span-2 h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
-                  ></div>
+                  />
                   <div
                     class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
-                  ></div>
+                  />
                   <div
                     class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"
-                  ></div>
+                  />
                   <div
                     class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-full"
-                  ></div>
+                  />
                 </div>
                 <div
                   class="grid grid-cols-5 gap-y-10 gap-x-6 py-4 border-t border-gray-200 text-gray-400 items-center"
                 >
                   <div class="flex items-center col-span-2 text-gray-900">
-                    <div
-                      class="i-carbon-image bg-gray-200 h-18 w-18 mr-2"
-                    ></div>
+                    <div class="i-carbon-image bg-gray-200 h-18 w-18 mr-2" />
                     <div
                       class="h-4 ml-4 bg-gray-200 rounded-full dark:bg-gray-700 w-full"
-                    ></div>
+                    />
                   </div>
                   <div
                     class="h-4 ml-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"
-                  ></div>
+                  />
                   <div>
                     <div
                       class="flex gap-1 text-gray-600 font-normal"
@@ -273,47 +279,47 @@ const formatDate = (date: Date) =>
                     >
                       <div
                         class="h-4 ml-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"
-                      ></div>
+                      />
                     </div>
                   </div>
                   <div
                     class="h-4 ml-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
-                  ></div>
+                  />
                 </div>
               </div>
             </div>
           </div>
           <div class="border-t border-gray-200 flex">
-            <div class="md:w-36"></div>
+            <div class="md:w-36" />
             <div class="flex-1 flex-col ml-4">
               <div class="md:flex md:flex-wrap py-6 md:py-10">
                 <div class="w-auto md:w-1/2 w-1/2 pr-4">
                   <div
                     class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-32"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-8"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48"
-                  ></div>
+                  />
                 </div>
                 <div class="w-auto md:w-1/2">
                   <div
                     class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-32"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-8"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48"
-                  ></div>
+                  />
                 </div>
               </div>
               <div
@@ -322,58 +328,58 @@ const formatDate = (date: Date) =>
                 <div class="w-auto md:w-1/2">
                   <div
                     class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-32"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-8"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48"
-                  ></div>
+                  />
                 </div>
                 <div class="w-auto md:w-1/2">
                   <div
                     class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-32"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-8"
-                  ></div>
+                  />
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48"
-                  ></div>
+                  />
                 </div>
               </div>
               <div class="border-t border-gray-100 py-6 md:py-10 space-y-4">
                 <div class="flex justify-between text-base font-medium">
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-12"
-                  ></div>
+                  />
                   <div
                     class="flex gap-1 text-gray-600 font-normal"
                     data-testid="order-subtotal"
                   >
                     <div
                       class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-16"
-                    ></div>
+                    />
                   </div>
                 </div>
                 <!--v-if-->
                 <div class="flex justify-between text-base font-medium">
                   <div
                     class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-12"
-                  ></div>
+                  />
                   <div
                     class="flex gap-1 text-gray-600 font-normal"
                     data-testid="order-total"
                   >
                     <div
                       class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-20"
-                    ></div>
+                    />
                   </div>
                 </div>
               </div>

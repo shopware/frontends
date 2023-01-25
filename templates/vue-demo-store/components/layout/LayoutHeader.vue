@@ -29,12 +29,12 @@ const isSidebarOpen = inject("isSidebarOpen");
         <div class="flex ml-4 flow-root lg:ml-6">
           <button
             class="group -m-2 p-2 flex items-center relative"
-            @click="$router.push('/wishlist')"
             data-testid="wishlist-button"
+            @click="$router.push('/wishlist')"
           >
             <div
               class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary"
-            ></div>
+            />
             <span
               v-if="wishlistCount > 0"
               class="text-3 font-sm text-white absolute bg-red-500 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
@@ -47,13 +47,13 @@ const isSidebarOpen = inject("isSidebarOpen");
         <div class="flex ml-4 flow-root lg:ml-6">
           <button
             class="group -m-2 p-2 flex items-center relative"
-            @click="isSidebarOpen = true"
             data-testid="cart-button"
+            @click="isSidebarOpen = true"
           >
             <!-- Heroicon name: outline/shopping-bag -->
             <div
               class="w-7 h-7 i-carbon-shopping-bag text-gray-600 hover:text-brand-primary"
-            ></div>
+            />
             <span
               v-if="count > 0"
               class="text-3 font-sm text-white absolute bg-blue rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"

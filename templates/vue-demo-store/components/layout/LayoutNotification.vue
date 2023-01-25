@@ -33,8 +33,8 @@ const icon = computed(() => iconsMap[props.notification.type] || "information");
 <template>
   <!-- don't remove; enforce unocss to include dynamically used classes: class="bg-blue-100 bg-green-100 bg-orange-100 bg-red-100" -->
   <div
-    :data-testid="`notification-element-${notification.type}`"
     :id="`toast-${notification.id}`"
+    :data-testid="`notification-element-${notification.type}`"
     class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
     role="alert"
   >
@@ -43,7 +43,7 @@ const icon = computed(() => iconsMap[props.notification.type] || "information");
       class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg"
     >
       <!-- don't remove; enforce unocss to include dynamically used classes: class="i-carbon-information i-carbon-checkmark i-carbon-warning-alt i-carbon-close-outline" -->
-      <div :class="`w-5 h-5 i-carbon-${icon}`"></div>
+      <div :class="`w-5 h-5 i-carbon-${icon}`" />
     </div>
     <div
       data-testid="notification-element-message"
@@ -60,7 +60,7 @@ const icon = computed(() => iconsMap[props.notification.type] || "information");
       @click="$emit('click:close', notification.id)"
     >
       <span class="sr-only">Close</span>
-      <div class="w-5 h-5 i-carbon-close"></div>
+      <div class="w-5 h-5 i-carbon-close" />
     </button>
   </div>
 </template>

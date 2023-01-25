@@ -26,18 +26,20 @@ export default {
 <template>
   <div class="border border-gray-200 mb-8 rounded">
     <AccountOrderSummary>
-      <div class="col-span-2">{{ order.orderNumber }}</div>
+      <div class="col-span-2">
+        {{ order.orderNumber }}
+      </div>
       <div>{{ order.amountTotal }} {{ currency?.symbol }}</div>
       <div>{{ orderDate }}</div>
       <div
-        @click="toggleView"
         class="justify-self-end text-brand-dark cursor-pointer"
         :aria-expanded="isExpand"
+        @click="toggleView"
       >
         View
       </div>
     </AccountOrderSummary>
 
-    <AccountOrderDetails v-if="isExpand" :orderId="order.id" />
+    <AccountOrderDetails v-if="isExpand" :order-id="order.id" />
   </div>
 </template>

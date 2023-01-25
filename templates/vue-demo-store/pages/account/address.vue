@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: "AccountAddressPage",
+};
+</script>
+
 <script setup lang="ts">
 import { SharedModal } from "~~/components/shared/SharedModal.vue";
 definePageMeta({
@@ -37,8 +43,8 @@ onBeforeMount(async () => {
       <template v-else>
         <AccountAddressCard
           v-for="address in customerAddresses"
-          :can-delete="true"
           :key="address.id"
+          :can-delete="true"
           :address="address"
           :countries="getCountries"
           :salutations="getSalutations"

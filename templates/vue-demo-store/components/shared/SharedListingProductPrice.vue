@@ -14,19 +14,21 @@ const { unitPrice, displayFromVariants, displayFrom } =
 <template>
   <div :id="product.id">
     <SharedPrice
-      class="text-xs text-gray-900 basis-2/6 justify-end"
       v-if="displayFromVariants"
+      class="text-xs text-gray-900 basis-2/6 justify-end"
       :value="displayFromVariants"
     >
-      <template #beforePrice
-        ><span v-if="displayFromVariants">variants from</span></template
-      >
+      <template #beforePrice>
+        <span v-if="displayFromVariants">variants from</span>
+      </template>
     </SharedPrice>
     <SharedPrice
       class="text-sm text-gray-900 basis-2/6 justify-end"
       :value="unitPrice"
     >
-      <template #beforePrice><span v-if="displayFrom">from</span></template>
+      <template #beforePrice>
+        <span v-if="displayFrom">from</span>
+      </template>
     </SharedPrice>
   </div>
 </template>

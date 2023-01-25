@@ -66,8 +66,8 @@ const invokeReset = async (): Promise<void> => {
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="invokeReset">
         <div
-          class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
           v-if="state.error"
+          class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
         >
           {{ state.error }}
         </div>
@@ -121,7 +121,7 @@ const invokeReset = async (): Promise<void> => {
             type="submit"
           >
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-              <div class="w-5 h-5 i-carbon-locked"></div>
+              <div class="w-5 h-5 i-carbon-locked" />
             </span>
             Set new password
           </button>
