@@ -48,6 +48,9 @@
         "vite",
         "react-dom"
       ]
+    },
+    "patchedDependencies": {
+      "@changesets/apply-release-plan@6.1.3": "patches/@changesets__apply-release-plan@6.1.3.patch"
     }
   }
 }

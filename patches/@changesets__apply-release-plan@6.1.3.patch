@@ -1,0 +1,61 @@
+diff --git a/dist/apply-release-plan.cjs.dev.js b/dist/apply-release-plan.cjs.dev.js
+index c2e8d2f5596965322ef8609b785aa2eaae5c4556..1023f8ecc3acb2d8196f7dc311bccfb875ed521f 100644
+--- a/dist/apply-release-plan.cjs.dev.js
++++ b/dist/apply-release-plan.cjs.dev.js
+@@ -164,13 +164,16 @@ function versionPackage(release, versionsToUpdate, {
+           depCurrentVersion = workspaceDepVersion;
+         }
+ 
+-        if ( // an empty string is the normalised version of x/X/*
++        if (
++        semver.validRange(depCurrentVersion) !== null &&
++        // an empty string is the normalised version of x/X/*
+         // we don't want to change these versions because they will match
+         // any version and if someone makes the range that
+         // they probably want it to stay like that...
+-        new semver__default['default'].Range(depCurrentVersion).range !== "" || // ...unless the current version of a dependency is a prerelease (which doesn't satisfy x/X/*)
++        (new semver__default['default'].Range(depCurrentVersion).range !== "" || // ...unless the current version of a dependency is a prerelease (which doesn't satisfy x/X/*)
+         // leaving those as is would leave the package in a non-installable state (wrong dep versions would get installed)
+-        semver__default['default'].prerelease(version) !== null) {
++        semver__default['default'].prerelease(version) !== null
++        )) {
+           let newNewRange = snapshot ? version : `${getVersionRangeType__default['default'](depCurrentVersion)}${version}`;
+           if (usesWorkspaceRange) newNewRange = `workspace:${newNewRange}`;
+           deps[name] = newNewRange;
+diff --git a/dist/apply-release-plan.cjs.prod.js b/dist/apply-release-plan.cjs.prod.js
+index 846b320ceac62677a415fee2366adeed4da31ffc..1cc8373be38a18b6b2490d8897d8542b8a76c6c1 100644
+--- a/dist/apply-release-plan.cjs.prod.js
++++ b/dist/apply-release-plan.cjs.prod.js
+@@ -88,7 +88,7 @@ function versionPackage(release, versionsToUpdate, {updateInternalDependencies:
+           if ("*" === workspaceDepVersion || "^" === workspaceDepVersion || "~" === workspaceDepVersion) continue;
+           depCurrentVersion = workspaceDepVersion;
+         }
+-        if ("" !== new semver__default.default.Range(depCurrentVersion).range || null !== semver__default.default.prerelease(version)) {
++        if (semver.validRange(depCurrentVersion) !== null && ("" !== new semver__default.default.Range(depCurrentVersion).range || null !== semver__default.default.prerelease(version))) {
+           let newNewRange = snapshot ? version : `${getVersionRangeType__default.default(depCurrentVersion)}${version}`;
+           usesWorkspaceRange && (newNewRange = "workspace:" + newNewRange), deps[name] = newNewRange;
+         }
+diff --git a/dist/apply-release-plan.esm.js b/dist/apply-release-plan.esm.js
+index 47a42c34459e3eb576167c363e95b56cb18c009f..286e4e94ec3990c31cf8227c88130ffaab76a71e 100644
+--- a/dist/apply-release-plan.esm.js
++++ b/dist/apply-release-plan.esm.js
+@@ -149,13 +149,16 @@ function versionPackage(release, versionsToUpdate, {
+           depCurrentVersion = workspaceDepVersion;
+         }
+ 
+-        if ( // an empty string is the normalised version of x/X/*
++        if (
++        semver.validRange(depCurrentVersion) !== null && 
++        // an empty string is the normalised version of x/X/*
+         // we don't want to change these versions because they will match
+         // any version and if someone makes the range that
+         // they probably want it to stay like that...
+-        new semver.Range(depCurrentVersion).range !== "" || // ...unless the current version of a dependency is a prerelease (which doesn't satisfy x/X/*)
++        (new semver.Range(depCurrentVersion).range !== "" || // ...unless the current version of a dependency is a prerelease (which doesn't satisfy x/X/*)
+         // leaving those as is would leave the package in a non-installable state (wrong dep versions would get installed)
+-        semver.prerelease(version) !== null) {
++        semver.prerelease(version) !== null
++        )) {
+           let newNewRange = snapshot ? version : `${getVersionRangeType(depCurrentVersion)}${version}`;
+           if (usesWorkspaceRange) newNewRange = `workspace:${newNewRange}`;
+           deps[name] = newNewRange;
