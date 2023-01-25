@@ -104,7 +104,7 @@ deploy-job: # This job runs in the deploy stage.
 
 e2e tests:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.29.1-focal
+  image: mcr.microsoft.com/playwright:v1.30.0-focal
   needs:
     - job: deploy-job
       artifacts: true
@@ -129,27 +129,27 @@ lighthouse tests:
 
 vue demo store:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.29.1-focal
+  image: mcr.microsoft.com/playwright:v1.30.0-focal
   only:
     - schedules
   script:
     - pnpm install
     - cd apps/e2e-tests/
-    - BASE_E2E_URL=https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store npx playwright test checkStackblitzTemplates.spec.ts --project=chromium 
+    - BASE_E2E_URL=https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store npx playwright test checkStackblitzTemplates.spec.ts --project=chromium
 
 vue blank:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.29.1-focal
+  image: mcr.microsoft.com/playwright:v1.30.0-focal
   only:
     - schedules
   script:
     - pnpm install
     - cd apps/e2e-tests/
-    - BASE_E2E_URL=https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-blank npx playwright test checkStackblitzTemplates.spec.ts --project=chromium 
+    - BASE_E2E_URL=https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-blank npx playwright test checkStackblitzTemplates.spec.ts --project=chromium
 
 vue vite blank:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.29.1-focal
+  image: mcr.microsoft.com/playwright:v1.30.0-focal
   only:
     - schedules
   script:

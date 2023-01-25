@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 import {
   getCategoryUrl,
   getTranslatedProperty,
@@ -32,7 +33,7 @@ function getHighlightCategory(navigationElement: Category) {
         'border-b border-gray-200': props.level === 0,
       }"
     >
-      <router-link
+      <RouterLink
         :to="getCategoryUrl(navigationElement)"
         class="flex items-center py-2 px-5 text-base rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
         :class="[
@@ -43,7 +44,7 @@ function getHighlightCategory(navigationElement: Category) {
         ]"
       >
         <span>{{ getTranslatedProperty(navigationElement, "name") }}</span>
-      </router-link>
+      </RouterLink>
       <SwCategoryNavigation
         v-if="navigationElement.children"
         :elements="navigationElement.children"

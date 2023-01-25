@@ -50,9 +50,9 @@ await loadNavigationElements({ depth: 2 });
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
     >
-      <router-link :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo">
+      <RouterLink :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo">
         {{ navigationElement.translated.name }}
-      </router-link>
+      </RouterLink>
     </li>
   </ul>
 </template>
