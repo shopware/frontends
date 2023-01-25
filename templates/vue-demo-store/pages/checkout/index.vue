@@ -215,9 +215,9 @@ const invokeSubmit = async () => {
             </div>
             <form
               v-if="!isLoggedIn"
+              id="checkout-billing-address"
               class="grid gap-8"
               name="checkout-billing-address"
-              id="checkout-billing-address"
               method="post"
               @submit.prevent="invokeSubmit"
             >
@@ -228,10 +228,7 @@ const invokeSubmit = async () => {
               >
                 <p class="font-bold">Error!!!</p>
                 <ul>
-                  <li
-                    v-for="(error, index) in registerErrors"
-                    :key="error.detail"
-                  >
+                  <li v-for="error in registerErrors" :key="error.detail">
                     {{ error.detail }}
                   </li>
                 </ul>
@@ -241,8 +238,8 @@ const invokeSubmit = async () => {
                 <a
                   href="#"
                   class="whitespace-nowrap font-medium text-brand-primary hover:text-brand-dark"
-                  @click="modal.open('AccountLoginForm')"
                   data-testid="checkout-sign-in-link"
+                  @click="modal.open('AccountLoginForm')"
                 >
                   Sign in
                 </a>
@@ -337,8 +334,8 @@ const invokeSubmit = async () => {
                   <div class="flex items-center">
                     <input
                       id="create-account"
-                      type="checkbox"
                       v-model="state.guest"
+                      type="checkbox"
                       data-testid="checkout-create-account-checkbox"
                       class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
@@ -383,11 +380,11 @@ const invokeSubmit = async () => {
                       >Password</label
                     >
                     <input
+                      id="password"
                       v-model="state.password"
                       autocomplete="off"
                       type="password"
                       name="password"
-                      id="password"
                       placeholder="Enter password..."
                       class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                       @blur="$v.password.$touch()"
@@ -532,8 +529,8 @@ const invokeSubmit = async () => {
               <a
                 href="#"
                 class="text-brand-primary hover:text-brand-dark"
-                @click="logout"
                 data-testid="checkout-logout"
+                @click="logout"
                 >here</a
               >.
             </div>
@@ -557,26 +554,26 @@ const invokeSubmit = async () => {
               </div>
             </div>
             <div
-              v-for="shippingMethod in shippingMethods"
+              v-for="singleShippingMethod in shippingMethods"
               v-else
-              :key="shippingMethod.id"
+              :key="singleShippingMethod.id"
               class="flex items-center"
             >
               <input
-                :id="shippingMethod.id"
+                :id="singleShippingMethod.id"
                 v-model="selectedShippingMethod"
-                :value="shippingMethod.id"
+                :value="singleShippingMethod.id"
                 name="shipping-method"
                 type="radio"
                 class="focus:ring-brand-primary h-4 w-4 border-gray-300"
-                :data-testid="`checkout-shipping-method-${shippingMethod.id}`"
+                :data-testid="`checkout-shipping-method-${singleShippingMethod.id}`"
               />
               <label
-                :for="shippingMethod.id"
-                :class="{ 'animate-pulse': isLoading[shippingMethod.id] }"
+                :for="singleShippingMethod.id"
+                :class="{ 'animate-pulse': isLoading[singleShippingMethod.id] }"
                 class="ml-2 block text-sm font-medium text-gray-700"
               >
-                {{ shippingMethod.name }}
+                {{ singleShippingMethod.name }}
               </label>
             </div>
           </fieldset>
@@ -599,26 +596,26 @@ const invokeSubmit = async () => {
               </div>
             </div>
             <div
+              v-for="singlePaymentMethod in paymentMethods"
               v-else
-              v-for="paymentMethod in paymentMethods"
-              :key="paymentMethod.id"
+              :key="singlePaymentMethod.id"
               class="flex items-center"
             >
               <input
-                :id="paymentMethod.id"
+                :id="singlePaymentMethod.id"
                 v-model="selectedPaymentMethod"
-                :value="paymentMethod.id"
+                :value="singlePaymentMethod.id"
                 name="payment-method"
                 type="radio"
                 class="focus:ring-brand-primary h-4 w-4 border-gray-300"
-                :data-testid="`checkout-payment-method-${paymentMethod.id}`"
+                :data-testid="`checkout-payment-method-${singlePaymentMethod.id}`"
               />
               <label
-                :for="paymentMethod.id"
-                :class="{ 'animate-pulse': isLoading[paymentMethod.id] }"
+                :for="singlePaymentMethod.id"
+                :class="{ 'animate-pulse': isLoading[singlePaymentMethod.id] }"
                 class="ml-2 block text-sm font-medium text-gray-700"
               >
-                {{ paymentMethod.name }}
+                {{ singlePaymentMethod.name }}
               </label>
             </div>
           </fieldset>
@@ -644,8 +641,8 @@ const invokeSubmit = async () => {
               </div>
             </div>
             <div
-              v-else
               v-for="address in customerAddresses"
+              v-else
               :key="address.id"
               class="flex mb-3"
             >
@@ -668,7 +665,7 @@ const invokeSubmit = async () => {
                   :address="address"
                   :countries="getCountries"
                   :salutations="getSalutations"
-                  :canSetDefault="false"
+                  :can-set-default="false"
                 />
               </label>
             </div>
@@ -688,9 +685,9 @@ const invokeSubmit = async () => {
             <label for="customShipping" class="field-label">
               <input
                 id="customShipping"
+                v-model="state.customShipping"
                 name="privacy"
                 type="checkbox"
-                v-model="state.customShipping"
                 class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
               />
               Different shipping address
@@ -722,7 +719,7 @@ const invokeSubmit = async () => {
                     :address="address"
                     :countries="getCountries"
                     :salutations="getSalutations"
-                    :canSetDefault="false"
+                    :can-set-default="false"
                   />
                 </label>
               </div>
@@ -800,8 +797,8 @@ const invokeSubmit = async () => {
                     'animate-pulse': isLoading['placeOrder'],
                   }"
                   class="w-full flex justify-center py-2 px-4 border border-transparent font-medium rounded-md text-white bg-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                  @click="placeOrder"
                   data-testid="checkout-place-order-button"
+                  @click="placeOrder"
                 >
                   Place the order
                 </button>

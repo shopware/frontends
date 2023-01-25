@@ -29,7 +29,7 @@ const toggleCollapse = (navigationElement: Category) => {
 </script>
 
 <template>
-  <button class="lg:hidden" @click="isSideMenuOpened = true" aria-label="menu">
+  <button class="lg:hidden" aria-label="menu" @click="isSideMenuOpened = true">
     <div class="i-carbon-menu text-xl" />
   </button>
   <client-only>
@@ -39,11 +39,11 @@ const toggleCollapse = (navigationElement: Category) => {
       role="dialog"
       aria-modal="true"
     >
-      <div class="fixed inset-0 bg-black opacity-25"></div>
+      <div class="fixed inset-0 bg-black opacity-25" />
       <div class="fixed inset-0 z-40 flex max-w-xs">
         <div
-          class="relative flex flex-col w-full overflow-y-auto bg-white shadow-xl"
           ref="sideMenuElement"
+          class="relative flex flex-col w-full overflow-y-auto bg-white shadow-xl"
         >
           <div class="flex px-4 py-5">
             <button
@@ -57,7 +57,9 @@ const toggleCollapse = (navigationElement: Category) => {
           </div>
           <div class="max-w-2xl">
             <aside aria-label="Sidebar">
-              <div class="px-5 pb-3"><LayoutStoreSearch /></div>
+              <div class="px-5 pb-3">
+                <LayoutStoreSearch />
+              </div>
               <div class="overflow-y-auto">
                 <ul class="flex flex-col p-0 space-y-2">
                   <li
@@ -66,15 +68,15 @@ const toggleCollapse = (navigationElement: Category) => {
                   >
                     <router-link
                       :to="getCategoryUrl(navigationElement)"
-                      @click="isSideMenuOpened = false"
                       class="flex items-center w-full px-5 py-3 text-base font-normal text-gray-900 break-all hover:bg-gray-100"
+                      @click="isSideMenuOpened = false"
                     >
                       <span class="flex-1">
                         {{ navigationElement.name }}
                       </span>
                       <button
-                        class="flex items-center w-12 p-4 -m-4 h-11"
                         v-if="navigationElement?.children?.length"
+                        class="flex items-center w-12 p-4 -m-4 h-11"
                         @click.stop.prevent="toggleCollapse(navigationElement)"
                       >
                         <span
@@ -84,7 +86,7 @@ const toggleCollapse = (navigationElement: Category) => {
                               ? 'i-carbon-chevron-up '
                               : 'i-carbon-chevron-down',
                           ]"
-                        ></span>
+                        />
                       </button>
                     </router-link>
 
@@ -116,8 +118,8 @@ const toggleCollapse = (navigationElement: Category) => {
                       >
                         <router-link
                           :to="getCategoryUrl(childElement)"
-                          @click="isSideMenuOpened = false"
                           class="flex items-center p-3 text-base font-normal text-gray-500 break-all hover:bg-gray-100 pl-11"
+                          @click="isSideMenuOpened = false"
                         >
                           <span>
                             {{ childElement.name }}

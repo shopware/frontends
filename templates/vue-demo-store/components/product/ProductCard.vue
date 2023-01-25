@@ -55,6 +55,7 @@ const ratingAverage: Ref<number> = computed(() =>
 </script>
 
 <template>
+  <!-- eslint-disable vue/no-v-html -->
   <div
     class="sw-product-card group relative flex flex-col justify-between"
     data-testid="product-box"
@@ -83,9 +84,9 @@ const ratingAverage: Ref<number> = computed(() =>
     <button
       aria-label="Add to wishlist"
       type="button"
-      @click="addToWishlistFn"
       class="absolute top-2 right-2"
       data-testid="product-box-toggle-wishlist-button"
+      @click="addToWishlistFn"
     >
       <div
         class="h-7 w-7"
@@ -111,8 +112,8 @@ const ratingAverage: Ref<number> = computed(() =>
         <div
           v-if="layoutType === 'standard'"
           class="line-clamp-4 mt-2 text-sm text-gray-500 h-20 overflow-hidden"
-          v-html="getTranslatedProperty(product, 'description')"
           data-testid="product-box-product-description"
+          v-html="getTranslatedProperty(product, 'description')"
         />
         <div class="mt-2 flex gap-2 flex-wrap">
           <span
@@ -136,10 +137,10 @@ const ratingAverage: Ref<number> = computed(() =>
           class="sw-product-rating inline-flex"
           data-testid="product-box-product-rating"
         >
-          <div v-for="value in ratingAverage">
+          <div v-for="value in ratingAverage" :key="value">
             <div class="i-carbon-star-filled h-4 w-4 c-yellow-500" />
           </div>
-          <div v-for="value in 5 - ratingAverage">
+          <div v-for="value in 5 - ratingAverage" :key="value">
             <div class="i-carbon-star h-4 w-4 c-yellow-500" />
           </div>
         </div>
@@ -149,9 +150,9 @@ const ratingAverage: Ref<number> = computed(() =>
       <button
         v-if="!fromPrice"
         type="button"
-        @click="addToCartProxy"
         class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         data-testid="add-to-cart-button"
+        @click="addToCartProxy"
       >
         Add to cart
       </button>

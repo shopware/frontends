@@ -42,6 +42,7 @@ const handleVariantChange = (val: Product) => {
 </script>
 
 <template>
+  <!-- eslint-disable vue/no-v-html -->
   <div class="flex flex-col lg:flex-row gap-10">
     <!-- Image gallery -->
     <div class="product-gallery w-full lg:w-3/5 overflow-hidden">
@@ -58,8 +59,10 @@ const handleVariantChange = (val: Product) => {
             <h1
               class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl basis-4/6"
               v-html="productName"
-            ></h1>
-            <div class="basis-2/6 text-right">{{ manufacturerName }}</div>
+            />
+            <div class="basis-2/6 text-right">
+              {{ manufacturerName }}
+            </div>
           </div>
         </div>
 
@@ -86,7 +89,7 @@ const handleVariantChange = (val: Product) => {
               </div>
             </div>
 
-            <div class="mt-10" v-if="properties?.length">
+            <div v-if="properties?.length" class="mt-10">
               <h3 class="text-sm font-medium text-gray-900">Properties</h3>
 
               <div class="mt-4">
@@ -104,9 +107,9 @@ const handleVariantChange = (val: Product) => {
               </div>
             </div>
 
-            <div class="mt-10" v-if="reviews?.length">
+            <div v-if="reviews?.length" class="mt-10">
               <h3 class="text-sm font-medium text-gray-900">Reviews</h3>
-              <div class="mt-4" v-if="reviews?.length">
+              <div v-if="reviews?.length" class="mt-4">
                 <ul role="list" class="pl-4 list-disc text-sm space-y-2">
                   <li
                     v-for="review in reviews"

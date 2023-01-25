@@ -20,8 +20,8 @@ const toggleTabs = (tabNumber: number) => {
   <div class="container mx-auto my-8">
     <div class="mb-4 border-b border-gray-200">
       <ul
-        class="flex flex-wrap -mb-px font-medium md:text-2xl md:space-x-8"
         id="myTab"
+        class="flex flex-wrap -mb-px font-medium md:text-2xl md:space-x-8"
         data-tabs-toggle="#profileTabContent"
         role="tablist"
       >

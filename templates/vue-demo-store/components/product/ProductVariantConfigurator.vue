@@ -62,23 +62,25 @@ const onHandleChange = async () => {
       :key="optionGroup.id"
       class="mt-6"
     >
-      <h3 class="text-sm text-gray-900 font-medium">{{ optionGroup.name }}</h3>
+      <h3 class="text-sm text-gray-900 font-medium">
+        {{ optionGroup.name }}
+      </h3>
       <fieldset class="mt-4 flex-1">
         <legend class="sr-only">Choose a {{ optionGroup.name }}</legend>
         <div class="flex">
           <label
+            v-for="option in optionGroup.options"
+            :key="option.id"
             data-testid="product-variant"
             class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer"
             :class="{
               'border-3 border-indigo-600': isOptionSelected(option.id),
             }"
-            v-for="option in optionGroup.options"
-            :key="option.id"
             @click="handleChange(optionGroup.name, option.id, onHandleChange)"
           >
             <p
-              data-testid="product-variant-text"
               :id="`${option.id}-choice-label`"
+              data-testid="product-variant-text"
             >
               {{ option.name }}
             </p>
