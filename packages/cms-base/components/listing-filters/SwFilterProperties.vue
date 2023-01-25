@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ListingFilter } from "@shopware-pwa/types";
 import { inject, ref } from "vue";
+import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
 defineProps<{
   filter: ListingFilter;
@@ -91,7 +92,7 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
             />
             <div>
-              {{ option.name }}
+              {{ getTranslatedProperty(option, 'name') }}
             </div>
           </label>
         </div>
