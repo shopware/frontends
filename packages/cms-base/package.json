@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/cms-base",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Vue CMS support for Shopware",
   "main": "./index.cjs",
   "module": "./dist/index.mjs",

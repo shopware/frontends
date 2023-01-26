@@ -1,5 +1,28 @@
 # @shopware-pwa/cms-base
 
+## 0.3.0
+
+### Minor Changes
+
+- [`21acce67`](https://github.com/shopware/frontends/commit/21acce67d05a2f1fcc1441174f7b4159b0b5b5d0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Move html-to-vue into the project
+
+- [`073073b6`](https://github.com/shopware/frontends/commit/073073b627a444050e969ebf33933b1a27a2fa3f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace html-parse-stringify with html-to-ast
+
+- [`0855add8`](https://github.com/shopware/frontends/commit/0855add83ca04e816caed65a0538c1dbf624bb0d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add the URL query navigation to the product listing
+
+- [`6c045a44`](https://github.com/shopware/frontends/commit/6c045a44242dad42571df6ce82c564e07031d373) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add images to the filters
+
+### Patch Changes
+
+- [`ccf4ed47`](https://github.com/shopware/frontends/commit/ccf4ed47e6bb46d1fcab7c1418a677fe575331b4) Thanks [@patzick](https://github.com/patzick)! - start deploying canary versions
+
+- [`deaf9d1b`](https://github.com/shopware/frontends/commit/deaf9d1b60f5b32862e6e1bbf25e1a45c5361cdc) Thanks [@patzick](https://github.com/patzick)! - use translated name property for listing filter label
+
+- Updated dependencies [[`57d720ab`](https://github.com/shopware/frontends/commit/57d720ab6c8f605de605dbbe9de53d4ce43347e5), [`29deb04f`](https://github.com/shopware/frontends/commit/29deb04fd1a871cb28f1fe3af3c007ae21de999f), [`ccf4ed47`](https://github.com/shopware/frontends/commit/ccf4ed47e6bb46d1fcab7c1418a677fe575331b4), [`0a8f4ea1`](https://github.com/shopware/frontends/commit/0a8f4ea1a95cd684178ae412687575bf735894a7), [`4d5b04b5`](https://github.com/shopware/frontends/commit/4d5b04b5fa09910b0c02bc59b33534772da66eeb), [`77a0bbcd`](https://github.com/shopware/frontends/commit/77a0bbcd8a5ce830219e2c04c0c99d08e6c4f4f2), [`c300b89b`](https://github.com/shopware/frontends/commit/c300b89b80cf3476e8023db1796cec972db519f8), [`0855add8`](https://github.com/shopware/frontends/commit/0855add83ca04e816caed65a0538c1dbf624bb0d), [`39d2d11c`](https://github.com/shopware/frontends/commit/39d2d11c922f5de9eb5d5c25225b6b93edd8ebcb), [`4fc1cd83`](https://github.com/shopware/frontends/commit/4fc1cd833a9ebca73536b2be45cfec35f6a27dfc), [`f364da48`](https://github.com/shopware/frontends/commit/f364da4881b2c172947e394fcd8e23ddc3689a51), [`21d8331a`](https://github.com/shopware/frontends/commit/21d8331aff13cef7ed041c60376504b2f324c1f5)]:
+  - @shopware-pwa/composables-next@0.5.0
+  - @shopware-pwa/api-client@0.2.2
+  - @shopware-pwa/helpers-next@0.1.23
+
 ## 0.2.1
 
 ### Patch Changes

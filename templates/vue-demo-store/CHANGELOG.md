@@ -1,5 +1,47 @@
 # vue-demo-store
 
+## 0.4.0
+
+### Minor Changes
+
+- [`c300b89b`](https://github.com/shopware/frontends/commit/c300b89b80cf3476e8023db1796cec972db519f8) Thanks [@patzick](https://github.com/patzick)! - Changed `useCart` in now a shared composable, so there is only one instance.
+
+- [`0855add8`](https://github.com/shopware/frontends/commit/0855add83ca04e816caed65a0538c1dbf624bb0d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add the URL query navigation to the product listing
+
+- [`b2e4dcad`](https://github.com/shopware/frontends/commit/b2e4dcadf822355d7ca9b485beaa5b5a54f7bf18) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add the possibility of removing address from the my account page
+
+- [`b0291676`](https://github.com/shopware/frontends/commit/b02916767be123277f87c0e6b0feb48e7e8830c6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add page not found component
+
+### Patch Changes
+
+- [`2080cc40`](https://github.com/shopware/frontends/commit/2080cc401dd02f91da3061dc7b6688784f1b1b6b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Display error on the registration page if occurs
+
+- [`31fd5c8d`](https://github.com/shopware/frontends/commit/31fd5c8d72db8f5a703d50e35855690c5e202131) Thanks [@mkucmus](https://github.com/mkucmus)! - Adds a possibility to checkout as a guest
+
+- [`3bda2153`](https://github.com/shopware/frontends/commit/3bda2153130b32501db0a9fe8270c374afcf4682) Thanks [@niklaswolf](https://github.com/niklaswolf)! - added optional chaining in LayoutTopNavigation.vue
+
+- [`4d5b04b5`](https://github.com/shopware/frontends/commit/4d5b04b5fa09910b0c02bc59b33534772da66eeb) Thanks [@patzick](https://github.com/patzick)! - Fixed quantity changes in sidecart
+
+- [`39d2d11c`](https://github.com/shopware/frontends/commit/39d2d11c922f5de9eb5d5c25225b6b93edd8ebcb) Thanks [@mkucmus](https://github.com/mkucmus)! - Payment related processes and documentation
+
+- [`887894f2`](https://github.com/shopware/frontends/commit/887894f26dd047a7254c3f7a6850f0cee008d86e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Checkout registration form adjustments
+
+- [`c903476c`](https://github.com/shopware/frontends/commit/c903476cb16cb1eac37ac2e081c503243f6bc191) Thanks [@patzick](https://github.com/patzick)! - fixed iconify carbon set on stackblitz env
+
+- [`63a71b7d`](https://github.com/shopware/frontends/commit/63a71b7d1171d89d36b8f61cc2672a32b6cc9d3f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix currency on the init request
+
+- [`21d8331a`](https://github.com/shopware/frontends/commit/21d8331aff13cef7ed041c60376504b2f324c1f5) Thanks [@mkucmus](https://github.com/mkucmus)! - Move checkout-related methods to useCheckout composable
+
+- [`deaf9d1b`](https://github.com/shopware/frontends/commit/deaf9d1b60f5b32862e6e1bbf25e1a45c5361cdc) Thanks [@benjamin-ott](https://github.com/benjamin-ott)! - use translated name property for listing filter label
+
+- Updated dependencies [[`21acce67`](https://github.com/shopware/frontends/commit/21acce67d05a2f1fcc1441174f7b4159b0b5b5d0), [`57d720ab`](https://github.com/shopware/frontends/commit/57d720ab6c8f605de605dbbe9de53d4ce43347e5), [`6c045a44`](https://github.com/shopware/frontends/commit/6c045a44242dad42571df6ce82c564e07031d373), [`073073b6`](https://github.com/shopware/frontends/commit/073073b627a444050e969ebf33933b1a27a2fa3f), [`29deb04f`](https://github.com/shopware/frontends/commit/29deb04fd1a871cb28f1fe3af3c007ae21de999f), [`ccf4ed47`](https://github.com/shopware/frontends/commit/ccf4ed47e6bb46d1fcab7c1418a677fe575331b4), [`0a8f4ea1`](https://github.com/shopware/frontends/commit/0a8f4ea1a95cd684178ae412687575bf735894a7), [`4d5b04b5`](https://github.com/shopware/frontends/commit/4d5b04b5fa09910b0c02bc59b33534772da66eeb), [`77a0bbcd`](https://github.com/shopware/frontends/commit/77a0bbcd8a5ce830219e2c04c0c99d08e6c4f4f2), [`c300b89b`](https://github.com/shopware/frontends/commit/c300b89b80cf3476e8023db1796cec972db519f8), [`0855add8`](https://github.com/shopware/frontends/commit/0855add83ca04e816caed65a0538c1dbf624bb0d), [`6c045a44`](https://github.com/shopware/frontends/commit/6c045a44242dad42571df6ce82c564e07031d373), [`39d2d11c`](https://github.com/shopware/frontends/commit/39d2d11c922f5de9eb5d5c25225b6b93edd8ebcb), [`4fc1cd83`](https://github.com/shopware/frontends/commit/4fc1cd833a9ebca73536b2be45cfec35f6a27dfc), [`f364da48`](https://github.com/shopware/frontends/commit/f364da4881b2c172947e394fcd8e23ddc3689a51), [`21d8331a`](https://github.com/shopware/frontends/commit/21d8331aff13cef7ed041c60376504b2f324c1f5), [`deaf9d1b`](https://github.com/shopware/frontends/commit/deaf9d1b60f5b32862e6e1bbf25e1a45c5361cdc)]:
+  - @shopware-pwa/cms-base@0.3.0
+  - @shopware-pwa/composables-next@0.5.0
+  - @shopware-pwa/types@0.3.0
+  - @shopware-pwa/api-client@0.2.2
+  - @shopware-pwa/helpers-next@0.1.23
+  - @shopware-pwa/nuxt3-module@0.2.0
+
 ## 0.3.0
 
 ### Minor Changes

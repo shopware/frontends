@@ -1,5 +1,0 @@
----
-"docs": minor
----
-
-Building wishlist

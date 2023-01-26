@@ -1,5 +1,37 @@
 # @shopware-pwa/composables-next
 
+## 0.5.0
+
+### Minor Changes
+
+- [`4d5b04b5`](https://github.com/shopware/frontends/commit/4d5b04b5fa09910b0c02bc59b33534772da66eeb) Thanks [@patzick](https://github.com/patzick)! - `useCartItem` composable takes `Ref` instead of plain object as parameter
+
+- [`c300b89b`](https://github.com/shopware/frontends/commit/c300b89b80cf3476e8023db1796cec972db519f8) Thanks [@patzick](https://github.com/patzick)! - Changed `useCart` in now a shared composable, so there is only one instance.
+
+- [`0855add8`](https://github.com/shopware/frontends/commit/0855add83ca04e816caed65a0538c1dbf624bb0d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add the URL query navigation to the product listing
+
+### Patch Changes
+
+- [`57d720ab`](https://github.com/shopware/frontends/commit/57d720ab6c8f605de605dbbe9de53d4ce43347e5) Thanks [@mkucmus](https://github.com/mkucmus)! - Avoid wishlist sync for guest session
+
+- [`ccf4ed47`](https://github.com/shopware/frontends/commit/ccf4ed47e6bb46d1fcab7c1418a677fe575331b4) Thanks [@patzick](https://github.com/patzick)! - start deploying canary versions
+
+- [`0a8f4ea1`](https://github.com/shopware/frontends/commit/0a8f4ea1a95cd684178ae412687575bf735894a7) Thanks [@mkucmus](https://github.com/mkucmus)! - Homepage resolving
+
+- [`77a0bbcd`](https://github.com/shopware/frontends/commit/77a0bbcd8a5ce830219e2c04c0c99d08e6c4f4f2) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add missing VueUse
+
+- [`39d2d11c`](https://github.com/shopware/frontends/commit/39d2d11c922f5de9eb5d5c25225b6b93edd8ebcb) Thanks [@mkucmus](https://github.com/mkucmus)! - Payment related processes and documentation
+
+- [`4fc1cd83`](https://github.com/shopware/frontends/commit/4fc1cd833a9ebca73536b2be45cfec35f6a27dfc) Thanks [@mkucmus](https://github.com/mkucmus)! - Explains an usage of useAddToCart composable
+
+- [`f364da48`](https://github.com/shopware/frontends/commit/f364da4881b2c172947e394fcd8e23ddc3689a51) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove setting default address in createCustomerAddress function
+
+- [`21d8331a`](https://github.com/shopware/frontends/commit/21d8331aff13cef7ed041c60376504b2f324c1f5) Thanks [@mkucmus](https://github.com/mkucmus)! - Move checkout-related methods to useCheckout composable
+
+- Updated dependencies [[`29deb04f`](https://github.com/shopware/frontends/commit/29deb04fd1a871cb28f1fe3af3c007ae21de999f), [`ccf4ed47`](https://github.com/shopware/frontends/commit/ccf4ed47e6bb46d1fcab7c1418a677fe575331b4)]:
+  - @shopware-pwa/api-client@0.2.2
+  - @shopware-pwa/helpers-next@0.1.23
+
 ## 0.4.0
 
 ### Minor Changes

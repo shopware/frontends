@@ -1,5 +1,16 @@
 # @shopware-pwa/api-client
 
+## 0.2.2
+
+### Patch Changes
+
+- [`29deb04f`](https://github.com/shopware/frontends/commit/29deb04fd1a871cb28f1fe3af3c007ae21de999f) Thanks [@niklaswolf](https://github.com/niklaswolf)! - adjusted return type of getSeoUrls
+
+- [`ccf4ed47`](https://github.com/shopware/frontends/commit/ccf4ed47e6bb46d1fcab7c1418a677fe575331b4) Thanks [@patzick](https://github.com/patzick)! - start deploying canary versions
+
+- Updated dependencies [[`6c045a44`](https://github.com/shopware/frontends/commit/6c045a44242dad42571df6ce82c564e07031d373), [`ccf4ed47`](https://github.com/shopware/frontends/commit/ccf4ed47e6bb46d1fcab7c1418a677fe575331b4), [`39d2d11c`](https://github.com/shopware/frontends/commit/39d2d11c922f5de9eb5d5c25225b6b93edd8ebcb)]:
+  - @shopware-pwa/types@0.3.0
+
 ## 0.2.1
 
 ### Patch Changes
