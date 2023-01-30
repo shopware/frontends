@@ -95,6 +95,8 @@ const isCheckoutAvailable = computed(() => {
   return cartItems.value.length > 0;
 });
 
+const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
+
 const state = reactive({
   salutationId: "",
   firstName: "",
@@ -214,7 +216,7 @@ const invokeSubmit = async () => {
               </div>
             </div>
             <form
-              v-if="!isLoggedIn"
+              v-if="!isUserSession"
               id="checkout-billing-address"
               class="grid gap-8"
               name="checkout-billing-address"
@@ -784,16 +786,16 @@ const invokeSubmit = async () => {
 
             <div class="mt-4">
               <div class="text-right">
-                <span v-if="!isLoggedIn" class="text-sm text-gray-600"
+                <span v-if="!isUserSession" class="text-sm text-gray-600"
                   >You must be logged-in before submitting an order.</span
                 >
                 <button
-                  :disabled="!isLoggedIn"
+                  :disabled="!isUserSession"
                   type="button"
                   :class="{
-                    grayscale: !isLoggedIn,
+                    grayscale: !isUserSession,
                     'opacity-50 cursor-not-allowed hover:bg-brand-primary':
-                      !isLoggedIn,
+                      !isUserSession,
                     'animate-pulse': isLoading['placeOrder'],
                   }"
                   class="w-full flex justify-center py-2 px-4 border border-transparent font-medium rounded-md text-white bg-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary"

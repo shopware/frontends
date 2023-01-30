@@ -1750,17 +1750,10 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
 
-  /@iconify-json/carbon/1.1.11:
-    resolution: {integrity: sha512-IHkHSNmTM6q6b8DuKSzd+AEMYPZywSxcb+37kZU7ywtcwsGen3aVEvWFykopIWjjwj3xdZ/5UdwJRqhZDQMlNg==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: false
-
   /@iconify-json/carbon/1.1.14:
     resolution: {integrity: sha512-Md5Vh3x2ALI5shFHlqZQBpEBk0coZf8bcFqzZBqf3bZuUTDg78y9vkwhQ+0PF1Q3wmZIfwkSJU9Pf6V228pXxw==}
     dependencies:
       '@iconify/types': 2.0.0
-    dev: true
 
   /@iconify/types/2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -11970,7 +11963,7 @@ packages:
     dependencies:
       '@docsearch/css': 3.3.2
       '@docsearch/js': 3.3.2_ybfvxpmapksphhgv7i2s5qhxpi
-      '@iconify-json/carbon': 1.1.11
+      '@iconify-json/carbon': 1.1.14
       '@stoplight/elements-dev-portal': 1.9.5_rlpmwl3bzxx4ron5tjjzfwnn2a
       '@vueuse/core': 9.10.0_vue@3.2.45
       axios: 0.27.2

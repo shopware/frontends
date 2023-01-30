@@ -7,11 +7,14 @@ export default {
 <script setup lang="ts">
 import { watchDebounced } from "@vueuse/core";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
-useAuthGuardRedirection();
 
 const { params } = useRoute();
+const router = useRouter();
 const orderId = params.id as string;
-
+const { isLoggedIn, isGuestSession } = useUser();
+if (!isLoggedIn.value && !isGuestSession.value) {
+  router.push("/");
+}
 const {
   loadOrderDetails,
   shippingAddress,
