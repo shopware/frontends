@@ -1,4 +1,3 @@
-import { EntityResult } from "../../../response/EntityResult";
 import { Product } from "../product/Product";
 
 export type CustomerWishlist = {

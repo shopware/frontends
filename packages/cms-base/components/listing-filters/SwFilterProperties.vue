@@ -92,7 +92,7 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
             />
             <div>
-              {{ getTranslatedProperty(option, 'name') }}
+              {{ getTranslatedProperty(option, "name") }}
             </div>
           </label>
         </div>

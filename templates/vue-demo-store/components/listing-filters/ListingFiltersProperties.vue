@@ -79,7 +79,7 @@ onClickOutside(dropdownElement, () => (isOpen.value = false));
             :for="`filter-mobile-${filter.code}-${option.id}`"
             class="ml-3 min-w-0 flex-1 text-gray-500"
           >
-            {{ getTranslatedProperty(option, 'name') }}
+            {{ getTranslatedProperty(option, "name") }}
           </label>
         </div>
       </div>
