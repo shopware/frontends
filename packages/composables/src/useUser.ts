@@ -226,7 +226,10 @@ export function useUser(): UseUserReturn {
   const defaultShippingAddressId = computed(
     () => user.value?.defaultShippingAddressId || null
   );
-  const isLoggedIn = computed(() => !!user.value?.id && !!user.value.active);
+  const isLoggedIn = computed(
+    () => !!user.value?.id && !!user.value.active && !user.value.guest
+  );
+
   const isCustomerSession = computed(
     () => !!user.value?.id && !user.value.guest
   );
