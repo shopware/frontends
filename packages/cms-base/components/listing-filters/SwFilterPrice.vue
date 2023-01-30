@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ListingFilter } from "@shopware-pwa/types";
-import { debounce } from "@shopware-pwa/helpers-next";
+import { _debounce } from "@shopware-pwa/helpers-next";
 import { reactive, ref, watch } from "vue";
 const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
@@ -24,7 +24,7 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
 
 watch(
   () => prices.min,
-  debounce((newPrice: number, oldPrice: number) => {
+  _debounce((newPrice: number, oldPrice: number) => {
     if (newPrice == oldPrice) return;
     emits("select-value", {
       code: "min-price",
@@ -35,7 +35,7 @@ watch(
 
 watch(
   () => prices.max,
-  debounce((newPrice: number, oldPrice: number) => {
+  _debounce((newPrice: number, oldPrice: number) => {
     if (newPrice == oldPrice) return;
     emits("select-value", {
       code: "max-price",

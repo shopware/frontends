@@ -30,7 +30,7 @@
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.3",
     "turbo": "^1.7.0",
-    "vercel": "^28.13.1"
+    "vercel": "^28.14.0"
   },
   "engines": {
     "node": "^16.x || ^18.x"
