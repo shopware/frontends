@@ -1,9 +1,9 @@
 /**
  * Debouce helper to invoke a method with a delay
  *
- * @public
+ * @deprecated - use useDebounceFn from @vueuse/core instead
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function _debounce<T extends (...args: any[]) => any>(
   fn: T,
   delay: number = 300
 ): T {

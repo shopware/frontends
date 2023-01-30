@@ -12,7 +12,7 @@
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "vitepress": "^1.0.0-alpha.40",
+    "vitepress": "^1.0.0-alpha.43",
     "vitepress-shopware-docs": "^0.1.9",
     "vue": "^3.2.45"
   },

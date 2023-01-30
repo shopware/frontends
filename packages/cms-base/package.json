@@ -20,7 +20,7 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.1.0",
+    "@nuxt/kit": "^3.1.1",
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
@@ -30,7 +30,7 @@
     "html-to-ast": "^0.0.6"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.1.0",
+    "@nuxt/schema": "^3.1.1",
     "@shopware-pwa/types": "workspace:*",
     "@vue/eslint-config-typescript": "^11.0.2",
     "eslint-config-shopware": "workspace:*",

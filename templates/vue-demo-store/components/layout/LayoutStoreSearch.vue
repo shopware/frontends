@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { getProductUrl, debounce } from "@shopware-pwa/helpers-next";
+import { getProductUrl, _debounce } from "@shopware-pwa/helpers-next";
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
 
@@ -37,7 +37,7 @@ watch(typingQuery, (value) => {
 });
 
 // Defer the search request to prevent the search from being triggered too after typing
-const performSuggestSearch = debounce((value) => {
+const performSuggestSearch = _debounce((value) => {
   searchTerm.value = value;
   search();
 }, 300);

@@ -12,17 +12,17 @@
   },
   "scripts": {
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
-    "build:types": "npx -p typescript tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
+    "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "export NODE_ENV=development && unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
     "test": "vitest run --segfault-retry=3"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "@vitest/coverage-c8": "^0.28.2",
+    "@vitest/coverage-c8": "^0.28.3",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
-    "vitest": "^0.28.2"
+    "vitest": "^0.28.3"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",
