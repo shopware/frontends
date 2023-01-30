@@ -116,14 +116,18 @@ export async function getCustomer(
 export async function getCustomerAddresses(
   parameters: ShopwareSearchParams = {},
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"customer_address", CustomerAddress[]>> {
-  const resp = await contextInstance.invoke.post(
-    getCustomerAddressEndpoint(),
-    parameters
-  );
+) {
+  const resp = await contextInstance.invoke.post<
+    EntityResult<"customer_address", CustomerAddress>
+  >(getCustomerAddressEndpoint(), parameters);
   return resp.data;
 }
 
+type CustomerOrdersResponse = {
+  apiAlias: "order-route-response-struct";
+  orders: EntityResult<"order", Order>;
+  paymentChangeable: Array<unknown>;
+};
 /**
  * Get all customer's orders
  *
@@ -133,8 +137,8 @@ export async function getCustomerAddresses(
 export async function getCustomerOrders(
   parameters: ShopwareSearchParams = {},
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"order", Order[]>> {
-  const resp = await contextInstance.invoke.post(
+) {
+  const resp = await contextInstance.invoke.post<CustomerOrdersResponse>(
     getCustomerOrderEndpoint(),
     parameters
   );

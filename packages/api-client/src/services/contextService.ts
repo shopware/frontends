@@ -106,10 +106,10 @@ export async function setCurrentCurrency(
  */
 export async function getAvailableLanguages(
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"language", Language[]>> {
-  const { data } = await contextInstance.invoke.get(
-    getContextLanguageEndpoint()
-  );
+) {
+  const { data } = await contextInstance.invoke.get<
+    EntityResult<"language", Language>
+  >(getContextLanguageEndpoint());
 
   return data;
 }
@@ -136,10 +136,10 @@ export async function setCurrentLanguage(
  */
 export async function getAvailableCountries(
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"country", Country[]>> {
-  const { data } = await contextInstance.invoke.get(
-    getContextCountryEndpoint()
-  );
+) {
+  const { data } = await contextInstance.invoke.get<
+    EntityResult<"country", Country>
+  >(getContextCountryEndpoint());
   return data;
 }
 
@@ -151,8 +151,10 @@ export async function getAvailableCountries(
  */
 export async function getAvailableSalutations(
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"salutation", Salutation[]>> {
-  const resp = await contextInstance.invoke.get(getContextSalutationEndpoint());
+) {
+  const resp = await contextInstance.invoke.get<
+    EntityResult<"salutation", Salutation>
+  >(getContextSalutationEndpoint());
   return resp.data;
 }
 
@@ -163,13 +165,12 @@ export async function getAvailableSalutations(
 export async function getAvailablePaymentMethods(
   contextInstance: ShopwareApiInstance = defaultInstance,
   params: { onlyAvailable?: boolean } = {}
-): Promise<EntityResult<"payment_method", PaymentMethod[]>> {
-  const resp = await contextInstance.invoke.get(
-    getContextPaymentMethodEndpoint(),
-    {
-      params,
-    }
-  );
+) {
+  const resp = await contextInstance.invoke.get<
+    EntityResult<"payment_method", PaymentMethod>
+  >(getContextPaymentMethodEndpoint(), {
+    params,
+  });
 
   return resp.data;
 }
@@ -215,13 +216,12 @@ export async function setCurrentPaymentMethod(
 export async function getAvailableShippingMethods(
   contextInstance: ShopwareApiInstance = defaultInstance,
   params: { onlyAvailable?: boolean } = {}
-): Promise<EntityResult<"shipping_method", ShippingMethod[]>> {
-  const resp = await contextInstance.invoke.get(
-    getContextShippingMethodEndpoint(),
-    {
-      params,
-    }
-  );
+) {
+  const resp = await contextInstance.invoke.get<
+    EntityResult<"shipping_method", ShippingMethod>
+  >(getContextShippingMethodEndpoint(), {
+    params,
+  });
 
   return resp.data;
 }

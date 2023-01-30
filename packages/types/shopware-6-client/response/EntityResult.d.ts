@@ -1,12 +1,14 @@
 /**
  * @beta
  */
-export type EntityResult<ENTITY, ENTITY_TYPE> = {
+export type EntityResult<ENTITY extends string, ELEMENTS_ENTITY_TYPE> = {
   entity: ENTITY;
   total: number;
   aggregations: unknown[];
   page: number;
   limit: null | number;
-  elements: ENTITY_TYPE;
+  elements: ELEMENTS_ENTITY_TYPE extends unknown[]
+    ? ELEMENTS_ENTITY_TYPE
+    : ELEMENTS_ENTITY_TYPE[];
   apiAlias: string;
 };

@@ -24,8 +24,10 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
 export async function getProducts(
   criteria?: ShopwareSearchParams,
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"product", Product[]>> {
-  const resp = await contextInstance.invoke.post(`${getProductEndpoint()}`, {
+) {
+  const resp = await contextInstance.invoke.post<
+    EntityResult<"product", Product>
+  >(`${getProductEndpoint()}`, {
     ...(criteria || {}),
   });
   return resp.data;
@@ -98,12 +100,11 @@ export async function getProductReviews(
   productId: string,
   criteria?: ShopwareSearchParams,
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"product_review", ProductReview[]>> {
-  const resp = await contextInstance.invoke.post(
-    `${getProductReviewsEndpoint(productId)}`,
-    {
-      ...(criteria || {}),
-    }
-  );
+) {
+  const resp = await contextInstance.invoke.post<
+    EntityResult<"product_review", ProductReview>
+  >(`${getProductReviewsEndpoint(productId)}`, {
+    ...(criteria || {}),
+  });
   return resp.data;
 }

@@ -13,11 +13,10 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
 export async function getCategories(
   searchCriteria?: ShopwareSearchParams,
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"category", Category[]>> {
-  const resp = await contextInstance.invoke.post(
-    getCategoryEndpoint(),
-    searchCriteria
-  );
+) {
+  const resp = await contextInstance.invoke.post<
+    EntityResult<"category", Category>
+  >(getCategoryEndpoint(), searchCriteria);
 
   return resp.data;
 }

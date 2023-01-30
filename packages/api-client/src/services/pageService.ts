@@ -56,13 +56,13 @@ export async function getSeoUrls(
   entityId: string,
   languageId?: string,
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<
-  EntityResult<"seo_url", { apiAlias: string; seoPathInfo: string }[]>
-> {
+) {
   if (languageId) {
     contextInstance.defaults.headers.common["sw-language-id"] = languageId;
   }
-  const resp = await contextInstance.invoke.post(getSeoUrlEndpoint(), {
+  const resp = await contextInstance.invoke.post<
+    EntityResult<"seo_url", SeoUrl>
+  >(getSeoUrlEndpoint(), {
     filter: [
       {
         type: "equals",
@@ -87,8 +87,8 @@ export async function getSeoUrls(
 export async function getSeoUrl(
   params: ShopwareSearchParams,
   contextInstance: ShopwareApiInstance = defaultInstance
-): Promise<EntityResult<"seo_url", SeoUrl[]>> {
-  const seoUrlResponse = await invokePost(
+) {
+  const seoUrlResponse = await invokePost<EntityResult<"seo_url", SeoUrl>>(
     {
       address: getSeoUrlEndpoint(),
       payload: params,
@@ -96,5 +96,5 @@ export async function getSeoUrl(
     contextInstance
   );
 
-  return (seoUrlResponse as { data: EntityResult<"seo_url", SeoUrl[]> }).data;
+  return seoUrlResponse.data;
 }

@@ -290,7 +290,7 @@ export type CmsElementProductDescriptionReviews = CmsSlot & {
     productId: null | string;
     ratingSuccess: boolean;
     product?: Product;
-    reviews: EntityResult<"product_review", ProductReview[]>;
+    reviews: EntityResult<"product_review", ProductReview>;
     apiAlias: "cms_product_description_reviews";
   };
 };
@@ -307,7 +307,7 @@ export type CmsElementBuyBox = CmsSlot & {
     productId: null | string;
     ratingSuccess: boolean;
     product?: Product;
-    reviews: EntityResult<"product_review", ProductReview[]>;
+    reviews: EntityResult<"product_review", ProductReview>;
     apiAlias: "cms_product_description_reviews";
   };
 };
