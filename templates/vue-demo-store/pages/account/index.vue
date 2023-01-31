@@ -22,6 +22,13 @@ const {
 const { isNewsletterSubscriber, newsletterSubscribe } = useNewsletter();
 const { pushSuccess, pushError } = useNotifications();
 
+useBreadcrumbs([
+  {
+    name: "Account Overview",
+    path: "/account",
+  },
+]);
+
 newsletter.value = await isNewsletterSubscriber();
 
 const updateNewsletterStatus = async () => {

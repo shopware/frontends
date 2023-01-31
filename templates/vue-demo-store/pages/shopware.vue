@@ -22,6 +22,13 @@ const images = ref([
 ]);
 // Remove when composable useProductSearchSuggest is merged
 const { search, searchTerm, getTotal, getProducts } = useProductSearchSuggest();
+
+useBreadcrumbs([
+  {
+    name: "Shopware",
+    path: "/shopware",
+  },
+]);
 </script>
 
 <template>

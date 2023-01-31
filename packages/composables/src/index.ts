@@ -44,6 +44,7 @@ export * from "./useNavigationContext";
 export * from "./useNavigationSearch";
 export * from "./useWishlist";
 export * from "./useProductWishlist";
+export * from "./useBreadcrumbs";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   const componentName = content.type;

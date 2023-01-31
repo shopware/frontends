@@ -151,4 +151,5 @@ export type Product = {
   crossSellings: CrossSelling[];
   cmsPage: null | CmsPage;
   apiAlias: "product";
+  seoCategory: Category;
 };

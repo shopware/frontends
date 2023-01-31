@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useProductSearch } from "@shopware-pwa/composables-next";
+import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{
   navigationId: string;
@@ -16,6 +17,15 @@ const { data: productResponse } = await useAsyncData(
     return productResponse;
   }
 );
+
+const breadcrumbs = getCategoryBreadcrumbs(
+  productResponse.value?.product.seoCategory,
+  {
+    startIndex: 2,
+  }
+);
+useBreadcrumbs(breadcrumbs);
+
 const { product } = useProduct(
   productResponse.value?.product,
   productResponse.value?.configurator

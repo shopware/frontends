@@ -5,6 +5,17 @@ definePageMeta({
 
 const { orders, loadOrders } = useCustomerOrders();
 
+useBreadcrumbs([
+  {
+    name: "Account Overview",
+    path: "/account",
+  },
+  {
+    name: "Order",
+    path: "/account/order",
+  },
+]);
+
 await useAsyncData("getOrders", () => {
   return loadOrders();
 });

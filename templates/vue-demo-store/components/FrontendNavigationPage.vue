@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Category, ShopwareSearchParams } from "@shopware-pwa/types";
+import { Category } from "@shopware-pwa/types";
 import { useCategorySearch } from "@shopware-pwa/composables-next";
 import { Ref } from "vue";
+import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{
   navigationId: string;
@@ -22,6 +23,12 @@ const { data: categoryResponse } = await useAsyncData(
     return category;
   }
 );
+
+const breadcrumbs = getCategoryBreadcrumbs(categoryResponse.value, {
+  startIndex: 2,
+});
+useBreadcrumbs(breadcrumbs);
+
 const { category } = useCategory(categoryResponse as Ref<Category>);
 </script>
 

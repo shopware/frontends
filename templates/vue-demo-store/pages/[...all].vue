@@ -12,6 +12,7 @@ import {
   useNavigationSearch,
 } from "@shopware-pwa/composables-next";
 import { SeoUrl } from "@shopware-pwa/types";
+const { clearBreadcrumbs } = useBreadcrumbs();
 
 const NOT_FOUND_COMPONENT = "errors/RoutingNotFound";
 const { resolvePath } = useNavigationSearch();
@@ -24,6 +25,11 @@ const { data: seoResult } = await useAsyncData(
     return seoUrl;
   }
 );
+
+onBeforeRouteLeave(() => {
+  clearBreadcrumbs();
+});
+
 const { routeName, foreignKey } = useNavigationContext(
   seoResult as Ref<SeoUrl>
 );

@@ -20,8 +20,18 @@ const {
   setPaymentMethod,
 } = useCheckout();
 const { setDefaultPaymentMethod } = useUser();
-
 const { pushSuccess } = useNotifications();
+
+useBreadcrumbs([
+  {
+    name: "Account Overview",
+    path: "/account",
+  },
+  {
+    name: "Payment",
+    path: "/account/payment",
+  },
+]);
 
 const isLoading = ref(true);
 

@@ -88,6 +88,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useNewsletter",
           "useNavigationContext",
           "useOrderPayment",
+          "useBreadcrumbs",
         ],
       });
     });

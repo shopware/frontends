@@ -2,6 +2,17 @@
 export default {
   name: "RecoverPassword",
 };
+
+useBreadcrumbs([
+  {
+    name: "Account Overview",
+    path: "/account",
+  },
+  {
+    name: "Recover password",
+    path: "/account/recover",
+  },
+]);
 </script>
 
 <template>
