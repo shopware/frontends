@@ -9,6 +9,13 @@ onBeforeMount(async () => {
     await logout();
   }
 });
+
+useBreadcrumbs([
+  {
+    name: "Login",
+    path: "/login",
+  },
+]);
 </script>
 
 <script lang="ts">

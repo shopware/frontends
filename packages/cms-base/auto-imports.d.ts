@@ -130,6 +130,7 @@ declare global {
   const useBase64: typeof import("@vueuse/core")["useBase64"];
   const useBattery: typeof import("@vueuse/core")["useBattery"];
   const useBluetooth: typeof import("@vueuse/core")["useBluetooth"];
+  const useBreadcrumbs: typeof import("@shopware-pwa/composables-next")["useBreadcrumbs"];
   const useBreakpoints: typeof import("@vueuse/core")["useBreakpoints"];
   const useBroadcastChannel: typeof import("@vueuse/core")["useBroadcastChannel"];
   const useBrowserLocation: typeof import("@vueuse/core")["useBrowserLocation"];
@@ -419,6 +420,7 @@ declare module "vue" {
     useBase64: typeof import("@vueuse/core")["useBase64"];
     useBattery: typeof import("@vueuse/core")["useBattery"];
     useBluetooth: typeof import("@vueuse/core")["useBluetooth"];
+    useBreadcrumbs: typeof import("@shopware-pwa/composables-next")["useBreadcrumbs"];
     useBreakpoints: typeof import("@vueuse/core")["useBreakpoints"];
     useBroadcastChannel: typeof import("@vueuse/core")["useBroadcastChannel"];
     useBrowserLocation: typeof import("@vueuse/core")["useBrowserLocation"];

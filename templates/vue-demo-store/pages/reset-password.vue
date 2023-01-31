@@ -2,6 +2,13 @@
 export default {
   name: "ResetPassword",
 };
+
+useBreadcrumbs([
+  {
+    name: "Password reset",
+    path: "/reset-password",
+  },
+]);
 </script>
 
 <template>

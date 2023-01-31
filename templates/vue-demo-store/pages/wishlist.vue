@@ -13,6 +13,13 @@ const { apiInstance } = useShopwareContext();
 const products = ref<Product[]>([]);
 const isLoading = ref(false);
 
+useBreadcrumbs([
+  {
+    name: "Wishlist",
+    path: "/wishlist",
+  },
+]);
+
 const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   isLoading.value = true;
 

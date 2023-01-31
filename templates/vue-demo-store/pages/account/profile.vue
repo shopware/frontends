@@ -11,6 +11,16 @@ definePageMeta({
 
 const currentTab = ref<number>(1);
 
+useBreadcrumbs([
+  {
+    name: "Account Overview",
+    path: "/account",
+  },
+  {
+    name: "My profile",
+    path: "/account/profile",
+  },
+]);
 const toggleTabs = (tabNumber: number) => {
   currentTab.value = tabNumber;
 };

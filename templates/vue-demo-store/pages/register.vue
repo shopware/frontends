@@ -88,6 +88,13 @@ const invokeSubmit = async () => {
     }
   }
 };
+
+useBreadcrumbs([
+  {
+    name: "Register",
+    path: "/register",
+  },
+]);
 </script>
 
 <template>

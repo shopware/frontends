@@ -2,6 +2,11 @@
 import { getSessionContext } from "@shopware-pwa/api-client";
 import { SessionContext } from "@shopware-pwa/types";
 
+/**
+ * Init breadcrumbs context
+ */
+useBreadcrumbs();
+
 useHead({
   title: "Shopware Demo store",
   meta: [{ name: "description", content: "Shopware Demo store" }],

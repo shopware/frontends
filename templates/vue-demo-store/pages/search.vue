@@ -16,6 +16,13 @@ const {
   listingType: "productSearchListing",
 });
 
+useBreadcrumbs([
+  {
+    name: "Search",
+    path: "/search",
+  },
+]);
+
 const { data: productSearch } = await useAsyncData(
   "productSearch",
   async () => {

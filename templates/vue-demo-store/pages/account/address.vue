@@ -15,6 +15,17 @@ const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const { customerAddresses, loadCustomerAddresses } = useAddress();
 
+useBreadcrumbs([
+  {
+    name: "Account Overview",
+    path: "/account",
+  },
+  {
+    name: "Address",
+    path: "/account/address",
+  },
+]);
+
 onBeforeMount(async () => {
   await loadCustomerAddresses();
   loadingData.value = false;

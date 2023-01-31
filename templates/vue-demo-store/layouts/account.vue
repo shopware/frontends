@@ -38,7 +38,7 @@ provide("swNavigation-footer-navigation", footerData);
     <SharedModal />
     <LayoutHeader />
     <LayoutNotifications />
-
+    <LayoutBreadcrumbs />
     <div class="max-w-screen-xl mx-auto min-h-full">
       <div class="m-10">
         <div class="account-inner">
