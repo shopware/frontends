@@ -46,17 +46,16 @@ watch(
 </script>
 
 <template>
-  <div ref="dropdownElement" class="filter-content">
-    <h3 class="-mx-2 -my-3 flow-root">
+  <div class="border-b border-gray-200 py-6">
+    <h3 class="-my-3 flow-root">
       <button
         type="button"
-        class="border-1 border-gray-500 px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500 rounded"
+        class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
         @click="toggle"
       >
         <span class="font-medium text-gray-900">{{ filter.label }}</span>
         <span class="ml-6 flex items-center">
-          <div
-            class="h-5 w-5"
+          <i
             :class="[
               !isFilterVisible
                 ? 'i-carbon-chevron-down'
@@ -66,8 +65,9 @@ watch(
         </span>
       </button>
     </h3>
-    <div :class="[`absolute pt-6 z-1000`, { hidden: !isFilterVisible }]">
-      <div class="space-y-6">
+
+    <transition name="fade" mode="out-in">
+      <div v-show="isFilterVisible" class="space-y-6 mt-5">
         <div class="mt-2 flex">
           <div class="w-1/2 flex rounded-md mr-4">
             <span
@@ -101,6 +101,17 @@ watch(
           </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

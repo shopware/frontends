@@ -169,7 +169,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
                 <button
                   type="button"
                   @click="isSortMenuOpen = !isSortMenuOpen"
-                  class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+                  class="group inline-flex justify-center text-base font-medium text-gray-700 hover:text-gray-900"
                   id="menu-button"
                   aria-expanded="false"
                   aria-haspopup="true"
@@ -222,7 +222,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
           <div
             v-for="filter in getInitialFilters"
             :key="`${filter?.id || filter?.code}`"
-            class="px-4 py-6 mb-2"
+            class="mb-2 w-full"
           >
             <SwProductListingFilter
               @selectFilterValue="onOptionSelectToggle"
@@ -231,7 +231,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
               class="relative"
             />
           </div>
-          <div class="text-center pl-4 pr-4 mt-4">
+          <div class="mx-auto mt-4">
             <button
               class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               @click="invokeCleanFilters"
