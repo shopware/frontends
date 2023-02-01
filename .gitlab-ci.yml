@@ -159,7 +159,7 @@ vue vite blank:
 
 code examples:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.29.1-focal
+  image: mcr.microsoft.com/playwright:v1.30.0-focal
   only:
     - schedules
   script:
