@@ -62,7 +62,7 @@ watch(
 </script>
 
 <template>
-  <div class="wishlist-page">
+  <div class="wishlist-page" data-testid="wishlist-wrapper">
     <div
       class="max-w-2xl mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8"
     >
@@ -80,13 +80,18 @@ watch(
         </div>
       </div>
       <!-- Empty of wishlist -->
-      <div v-else class="flex flex-col items-center col mx-auto">
+      <div
+        v-else
+        class="flex flex-col items-center col mx-auto"
+        data-testid="wishlist-empty"
+      >
         <div class="w-48 h-48 i-carbon-favorite" />
         <h1 class="my-3 text-3xl font-extrabold">Wishlist is empty</h1>
         <p class="my-4">No products were added to the Wishlist.</p>
         <nuxt-link
           to="/"
           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+          date-testid="wishlist-empty-continue-link"
         >
           Continue Shopping
         </nuxt-link>

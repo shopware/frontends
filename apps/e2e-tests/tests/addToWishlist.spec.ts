@@ -23,4 +23,11 @@ test.describe.parallel
     await wishlistPage.openWishlist();
     await expect(page.getByTestId("product-box")).toHaveCount(1);
   });
+
+  test("Remove product from wishlist", async ({ page }) => {
+    await homePage.addProductToWishlist();
+    await wishlistPage.openWishlist();
+    await wishlistPage.removeProductFromWishlist();
+    await expect(page.locator("[data-testid='wishlist-empty']")).toHaveCount(1);
+  });
 });
