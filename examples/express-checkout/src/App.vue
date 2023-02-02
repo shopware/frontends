@@ -109,8 +109,8 @@ const renderPaypalButtons = async () => {
     .render("#paypal-buttons");
 };
 const orderId = Array.isArray(route?.query?.order)
-  ? route?.query?.order
-  : [route?.query?.order];
+  ? route?.query?.order.shift()
+  : route?.query?.order;
 
 watch(
   () => isLoading.value,
@@ -154,6 +154,9 @@ onMounted(async () => {
     >
       <span class="font-medium">Sandbox mode!</span> You can use a sandbox
       PayPal account to test the payment flow.
+      <hr class="mt-4 mb-4" />
+      Note that Pop-ups can be blocked by StackBlitz, so it's better to run this
+      example locally.
     </div>
     <div
       v-if="!isLoading"
