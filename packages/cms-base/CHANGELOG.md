@@ -1,5 +1,22 @@
 # @shopware-pwa/cms-base
 
+## 0.4.0
+
+### Minor Changes
+
+- [`7aa2c640`](https://github.com/shopware/frontends/commit/7aa2c640203e24b6abb5b8fe0eff6d7b72e6b08d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Adjust products listing filters
+
+### Patch Changes
+
+- [`ece79b02`](https://github.com/shopware/frontends/commit/ece79b021c25499ac9ac4d54b707f27f9e25eb68) Thanks [@patzick](https://github.com/patzick)! - Removed old `_debounce` usage, we should use `useDebounceFn` from Vueuse
+
+- [`680b4b77`](https://github.com/shopware/frontends/commit/680b4b778859f5f2fdf2325ce349f5534d3b965f) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+
+- Updated dependencies [[`680b4b77`](https://github.com/shopware/frontends/commit/680b4b778859f5f2fdf2325ce349f5534d3b965f), [`313e0810`](https://github.com/shopware/frontends/commit/313e0810014611a0429b76b51747536630f24627)]:
+  - @shopware-pwa/composables-next@0.6.0
+  - @shopware-pwa/api-client@0.2.3
+  - @shopware-pwa/helpers-next@0.1.24
+
 ## 0.3.0
 
 ### Minor Changes

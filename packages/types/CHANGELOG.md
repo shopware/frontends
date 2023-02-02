@@ -1,5 +1,11 @@
 # @shopware-pwa/types
 
+## 0.4.0
+
+### Minor Changes
+
+- [`244d0dca`](https://github.com/shopware/frontends/commit/244d0dcaadf2435e1895675e373c608631e94566) Thanks [@patzick](https://github.com/patzick)! - Type `EntityResult` is now automatically assumes that `ELEMENTS_ENTITY_TYPE` is an array, no need to add this into declaration.
+
 ## 0.3.0
 
 ### Minor Changes

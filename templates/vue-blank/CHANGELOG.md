@@ -1,5 +1,11 @@
 # vue-blank
 
+## 0.0.4
+
+### Patch Changes
+
+- [`680b4b77`](https://github.com/shopware/frontends/commit/680b4b778859f5f2fdf2325ce349f5534d3b965f) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+
 ## 0.0.3
 
 ### Patch Changes

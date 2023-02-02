@@ -1,5 +1,22 @@
 # docs
 
+## 1.3.0
+
+### Minor Changes
+
+- [`313e0810`](https://github.com/shopware/frontends/commit/313e0810014611a0429b76b51747536630f24627) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add breadcrumbs page
+
+### Patch Changes
+
+- [`680b4b77`](https://github.com/shopware/frontends/commit/680b4b778859f5f2fdf2325ce349f5534d3b965f) Thanks [@patzick](https://github.com/patzick)! - Add missing declaration files for packages
+
+- [`680b4b77`](https://github.com/shopware/frontends/commit/680b4b778859f5f2fdf2325ce349f5534d3b965f) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+
+- Updated dependencies [[`680b4b77`](https://github.com/shopware/frontends/commit/680b4b778859f5f2fdf2325ce349f5534d3b965f), [`313e0810`](https://github.com/shopware/frontends/commit/313e0810014611a0429b76b51747536630f24627)]:
+  - @shopware-pwa/composables-next@0.6.0
+  - @shopware-pwa/api-client@0.2.3
+  - @shopware-pwa/helpers-next@0.1.24
+
 ## 1.2.0
 
 ### Minor Changes
