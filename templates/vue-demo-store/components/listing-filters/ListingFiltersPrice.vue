@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ListingFilter } from "@shopware-pwa/types";
-import { _debounce } from "@shopware-pwa/helpers-next";
 
 const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
@@ -20,27 +19,25 @@ const isOpen = ref<boolean>(false);
 const dropdownElement = ref(null);
 onClickOutside(dropdownElement, () => (isOpen.value = false));
 
-watch(
-  () => prices.min,
-  _debounce((newPrice: number, oldPrice: number) => {
-    if (newPrice == oldPrice) return;
-    emits("select-value", {
-      code: "min-price",
-      value: newPrice,
-    });
-  }, 1000)
-);
+function onMinPriceChange(newPrice: number, oldPrice: number) {
+  if (newPrice == oldPrice) return;
+  emits("select-value", {
+    code: "min-price",
+    value: newPrice,
+  });
+}
+const debounceMinPriceUpdate = useDebounceFn(onMinPriceChange, 1000);
+watch(() => prices.min, debounceMinPriceUpdate);
 
-watch(
-  () => prices.max,
-  _debounce((newPrice: number, oldPrice: number) => {
-    if (newPrice == oldPrice) return;
-    emits("select-value", {
-      code: "max-price",
-      value: newPrice,
-    });
-  }, 1000)
-);
+function onMaxPriceChange(newPrice: number, oldPrice: number) {
+  if (newPrice == oldPrice) return;
+  emits("select-value", {
+    code: "max-price",
+    value: newPrice,
+  });
+}
+const debounceMaxPriceUpdate = useDebounceFn(onMaxPriceChange, 1000);
+watch(() => prices.max, debounceMaxPriceUpdate);
 </script>
 
 <template>
