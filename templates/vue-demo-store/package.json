@@ -17,18 +17,18 @@
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/types": "canary",
-    "@unocss/nuxt": "^0.49.1",
+    "@unocss/nuxt": "^0.49.2",
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
     "@vueuse/nuxt": "^9.12.0",
-    "vue": "^3.2.45"
+    "vue": "^3.2.47"
   },
   "devDependencies": {
     "@vue/eslint-config-typescript": "^11.0.2",
     "@iconify-json/carbon": "^1.1.14",
     "eslint-plugin-vue": "^9.9.0",
     "nuxt": "^3.1.1",
-    "typescript": "^4.9.4",
+    "typescript": "^4.9.5",
     "vue-eslint-parser": "^9.1.0",
     "vue-tsc": "^1.0.24"
   },
