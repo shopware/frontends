@@ -23,6 +23,7 @@ const ShopwarePlugin = {
 
     const instance = createInstance({
       endpoint: "<%= options.shopwareEndpoint %>",
+      browserEndpoint: "<%= options.shopwareBrowserEndpoint %>",
       accessToken: "<%= options.shopwareAccessToken %>",
       timeout: "<%= options.shopwareApiClient.timeout %>",
       auth: {

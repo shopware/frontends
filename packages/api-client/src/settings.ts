@@ -7,6 +7,10 @@ export type ClientSettings = {
    */
   endpoint?: string;
   /**
+   * shopware URL for the browser if the differs from the base endpoint URL
+   */
+  browserEndpoint?: string;
+  /**
    * id specific for each sales channel
    */
   accessToken?: string;
@@ -30,6 +34,7 @@ export type ClientSettings = {
 
 export const defaultConfig: ClientSettings = {
   endpoint: "https://pwa-demo-api.shopware.com/prev/",
+  browserEndpoint: "https://pwa-demo-api.shopware.com/prev/",
   accessToken: "SWSC40-LJTNO6COUEN7CJMXKLA",
   contextToken: "",
   languageId: "",

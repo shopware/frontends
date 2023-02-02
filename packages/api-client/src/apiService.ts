@@ -43,6 +43,8 @@ export function _createInstance(initialConfig: ClientSettings = {}) {
 
   function reloadConfiguration() {
     apiService.defaults.baseURL = clientConfig.endpoint;
+    apiService.defaults.browserBaseURL = clientConfig.browserEndpoint;
+
     if (clientConfig.timeout) {
       apiService.defaults.timeout =
         (typeof clientConfig.timeout === "number" && clientConfig.timeout) ||
