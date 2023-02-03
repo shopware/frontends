@@ -12,14 +12,14 @@ const rightContent = getSlotContent("right");
 </script>
 
 <template>
-  <article class="cms-block-text-two-column">
+  <article class="cms-block-text-two-column flex gap-20">
     <CmsGenericElement
       :content="leftContent"
-      class="cms-block-text-two-column__text"
+      class="w-1/2 cms-block-text-two-column__text"
     />
     <CmsGenericElement
       :content="rightContent"
-      class="cms-block-text-two-column__text"
+      class="w-1/2 cms-block-text-two-column__text"
     />
   </article>
 </template>
