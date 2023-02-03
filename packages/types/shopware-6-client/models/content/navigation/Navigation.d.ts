@@ -28,10 +28,16 @@ export type SeoUrl = {
   isCanonical: boolean;
   isModified: boolean;
   isDeleted: boolean;
+  /**
+   * @deprecated removed from 6.5.0
+   */
   isValid: null | boolean;
   language: null | boolean;
   url: null | string;
   customFields: null | any;
+  /**
+   * @deprecated removed from 6.5.0
+   */
   error: null | any;
   _uniqueIdentifier: string;
   versionId: null | string;

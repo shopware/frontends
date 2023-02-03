@@ -43,7 +43,7 @@ const productName = computed(() =>
 
 const paypalMethod = computed(() => {
   return paymentMethods.value?.find(
-    (method) => (method as any).shortName === "pay_pal_payment_handler"
+    (method) => method.shortName === "pay_pal_payment_handler"
   );
 });
 

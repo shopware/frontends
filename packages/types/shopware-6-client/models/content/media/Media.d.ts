@@ -26,6 +26,9 @@ export type Media = {
   fileExtension: string | null;
   fileSize: number | null;
   title: string | null;
+  /**
+   * @deprecated removed from 6.5.0
+   */
   metaDataRaw: string | null;
   metaData: [] | null;
   mediaType: MediaType;
