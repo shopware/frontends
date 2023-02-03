@@ -24,6 +24,9 @@ export type Currency = {
   salesChannelDefaultAssignments: SalesChannel[] | null;
   salesChannelDomains: SalesChannelDomain[] | null;
   customFields: CustomField[];
+  /**
+   * @deprecated removed from 6.5.0
+   */
   shippingMethodPrices: ShippingMethodPrice[] | null;
   promotionDiscountPrices: PromotionDiscountPrice[];
   isSystemDefault: boolean | null;
