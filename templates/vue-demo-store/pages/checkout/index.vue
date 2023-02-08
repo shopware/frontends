@@ -193,6 +193,10 @@ const invokeSubmit = async () => {
     }
   }
 };
+async function invokeLogout() {
+  await logout();
+  await push("/");
+}
 </script>
 
 <template>
@@ -532,7 +536,7 @@ const invokeSubmit = async () => {
                 href="#"
                 class="text-brand-primary hover:text-brand-dark"
                 data-testid="checkout-logout"
-                @click="logout"
+                @click="invokeLogout"
                 >here</a
               >.
             </div>
