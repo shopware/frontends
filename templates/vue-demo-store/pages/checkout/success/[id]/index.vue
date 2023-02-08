@@ -59,7 +59,7 @@ watchDebounced(
   { debounce: 5000 }
 );
 
-const isExpand = ref(true);
+const isExpand = ref(false);
 
 const toggleView = () => (isExpand.value = !isExpand.value);
 const format: Intl.DateTimeFormatOptions = {
@@ -133,15 +133,16 @@ const formatDate = (date: Date) =>
             </AccountOrderSummary>
             <template v-if="order?.id">
               <transition>
-                <AccountOrderDetails v-if="isExpand" :order-id="order.id" />
+                <AccountOrderDetails v-show="isExpand" :order-id="order.id" />
               </transition>
             </template>
           </div>
         </div>
         <div class="border-t border-gray-200 flex">
-          <div class="md:w-36" />
           <div class="flex-1 flex-col ml-4">
-            <div class="md:flex md:flex-wrap py-6 md:py-10">
+            <div
+              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap py-6 md:py-10"
+            >
               <div class="w-auto md:w-1/2">
                 <div class="font-medium">Shipping address</div>
                 <div class="pt-2 text-gray-600">
@@ -173,7 +174,7 @@ const formatDate = (date: Date) =>
               </div>
             </div>
             <div
-              class="md:flex md:flex-wrap border-t border-gray-100 md:flex py-6 md:py-10"
+              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap border-t border-gray-100 md:flex py-6 md:py-10"
             >
               <div class="w-auto md:w-1/2">
                 <div class="font-medium">Payment method</div>
@@ -192,38 +193,40 @@ const formatDate = (date: Date) =>
               </div>
             </div>
             <div class="border-t border-gray-100 py-6 md:py-10 space-y-4">
-              <div
-                v-if="subtotal"
-                class="flex justify-between text-base font-medium"
-              >
-                <p>Subtotal</p>
-                <SharedPrice
-                  :value="subtotal"
-                  class="text-gray-600 font-normal"
-                  data-testid="order-subtotal"
-                />
-              </div>
-              <div
-                v-if="shippingCosts"
-                class="flex justify-between text-base font-medium"
-              >
-                <p>Shipping</p>
-                <SharedPrice
-                  :value="shippingCosts"
-                  class="text-gray-600 font-normal"
-                  data-testid="order-shipping"
-                />
-              </div>
-              <div
-                v-if="total"
-                class="flex justify-between text-base font-medium"
-              >
-                <p>Total</p>
-                <SharedPrice
-                  :value="total"
-                  class="text-gray-600 font-normal"
-                  data-testid="order-total"
-                />
+              <div class="md:w-1/2 ml-auto flex flex-col gap-2">
+                <div
+                  v-if="subtotal"
+                  class="flex justify-between text-base font-medium"
+                >
+                  <p>Subtotal</p>
+                  <SharedPrice
+                    :value="subtotal"
+                    class="text-gray-600 font-normal"
+                    data-testid="order-subtotal"
+                  />
+                </div>
+                <div
+                  v-if="shippingCosts"
+                  class="flex justify-between text-base font-medium"
+                >
+                  <p>Shipping</p>
+                  <SharedPrice
+                    :value="shippingCosts"
+                    class="text-gray-600 font-normal"
+                    data-testid="order-shipping"
+                  />
+                </div>
+                <div
+                  v-if="total"
+                  class="flex justify-between text-base font-medium"
+                >
+                  <p>Total</p>
+                  <SharedPrice
+                    :value="total"
+                    class="text-gray-600 font-normal"
+                    data-testid="order-total"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -293,7 +296,6 @@ const formatDate = (date: Date) =>
             </div>
           </div>
           <div class="border-t border-gray-200 flex">
-            <div class="md:w-36" />
             <div class="flex-1 flex-col ml-4">
               <div class="md:flex md:flex-wrap py-6 md:py-10">
                 <div class="w-auto md:w-1/2 w-1/2 pr-4">
