@@ -198,7 +198,8 @@ const {
     getElements,
     getCurrentPage,
     changeCurrentPage,
-    getTotalPagesCount
+    getTotalPagesCount,
+    getAvailableFilters
 } = useListing({
     listingType: "categoryListing",
     categoryId: "dfd52ab937f840fd87e9d24ebf6bd245",
@@ -217,14 +218,14 @@ The implementation can look similar to:
   <div>Pages: {{ getTotalPagesCount }}</div>
   <button
     v-if="getCurrentPage > 1"
-    @click="changeCurrentPage(parseInt(getCurrentPage) - 1)"
+    @click="changeCurrentPage(getCurrentPage - 1)"
   >
     prev
   </button>
   <span> {{ getCurrentPage }} </span>
   <button
     v-if="getCurrentPage < getTotalPagesCount"
-    @click="changeCurrentPage(parseInt(getCurrentPage) + 1)"
+    @click="changeCurrentPage(getCurrentPage + 1)"
   >
     next
   </button>
@@ -267,6 +268,7 @@ You can then iterate the filter objects available in the array. The filter objec
 
 ```vue{15,17}
 <script setup lang="ts">
+import { ListingFilter } from "@shopware-pwa/types";
 const { getAvailableFilters, getCurrentFilters, setCurrentFilters } = useListing(/** parameters omitted */)
 
 const selectManufacturerAndSearch = (manufacturerId: string) => {
@@ -282,21 +284,39 @@ const manufacturerFilter: ListingFilter = {
   apiAlias:"manufacturer_aggregation",
   code:"manufacturer",
   label:"manufacturer",
-  entities:[
-    {
-      name:"Boomers Gourmet"
-      link:"http://www.gewuerze-boomers.de/"
-      id:"1d39db66fd184de8bdcfbf995197f8ea"
-      apiAlias:"product_manufacturer"
-      // other properties omitted
-    },
+  entities: [
+      {
+        "extensions": {
+          "foreignKeys": {
+            "apiAlias": "array_struct"
+          }
+        },
+        "_uniqueIdentifier": "1d39db66fd184de8bdcfbf995197f8ea",
+        "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+        "translated": {
+          "name": "Boomers Gourmet",
+          "description": "Description",
+          "customFields": {}
+        },
+        "createdAt": "2020-08-06T06:26:30.608+00:00",
+        "updatedAt": null,
+        "mediaId": "ef102a5043174d8b936623b175c8af57",
+        "name": "Boomers Gourmet",
+        "link": "http://www.gewuerze-boomers.de/",
+        "description": "Description",
+        "media": null,
+        "translations": null,
+        "id": "1d39db66fd184de8bdcfbf995197f8ea",
+        "customFields": null,
+        "apiAlias": "product_manufacturer"
+      },]
     { // other manufacturer objects
     }
   ]
 }
 </script>
 <template>
-<h3>{{ manufacturerFilter.label }}
+<h3>{{ manufacturerFilter.label }}</h3>
   <div v-for="manufacturer in manufacturerFilter?.entities">
     <input
         type="checkbox"
@@ -304,7 +324,7 @@ const manufacturerFilter: ListingFilter = {
         :key="manufacturer.id"
         :name="manufacturerFilter.code"
         @click="selectManufacturerAndSearch(manufacturer.id)"
-        :checked="getCurrentFilters['manufacturer'].includes(manufacturer.id)"
+        :checked="getCurrentFilters['manufacturer']?.includes(manufacturer.id)"
       />
       <label :for="`filter-mobile-${manufacturerFilter.code}-${manufacturer.id}`">
         {{ manufacturer.name }}

@@ -10,6 +10,7 @@ import {
 import { inject, computed, ComputedRef, ref, provide } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from ".";
+import ContextError from "./helpers/ContextError";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -102,20 +103,23 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @param order - i.e. "name-asc"
    * @returns
    */
-
   changeCurrentSortingOrder: (
+    order: string,
     query?: Partial<ShopwareSearchParams>
   ) => Promise<void>;
   /**
    * Current page number
    */
-  getCurrentPage: ComputedRef<string | number>;
+  getCurrentPage: ComputedRef<number>;
   /**
    * Changes the current page number
    * @param pageNumber - page number to change to
    * @returns
    */
-  changeCurrentPage: (query?: Partial<ShopwareSearchParams>) => Promise<void>;
+  changeCurrentPage: (
+    page: number,
+    query?: Partial<ShopwareSearchParams>
+  ) => Promise<void>;
   /**
    * Total number of elements found for the current search criteria
    */
@@ -180,8 +184,18 @@ export function useListing(params?: {
       return searchProducts(searchCriteria, apiInstance);
     };
   } else {
-    const { category } = useCategory();
-    const resourceId = category.value?.id || params?.categoryId;
+    let resourceId: undefined | string;
+
+    try {
+      const { category } = useCategory();
+      resourceId = category.value?.id;
+    } catch (error) {
+      if (error instanceof ContextError) {
+        resourceId = params?.categoryId;
+      } else {
+        console.error(error);
+      }
+    }
 
     searchMethod = async (searchCriteria: Partial<ShopwareSearchParams>) => {
       if (!resourceId) {
@@ -382,14 +396,33 @@ export function createListingComposable<ELEMENTS_TYPE>({
     () => getCurrentListing.value?.sorting
   );
   async function changeCurrentSortingOrder(
+    order: string,
     query?: Partial<ShopwareSearchParams>
   ) {
-    await search(query || {});
+    await search(
+      Object.assign(
+        {
+          order,
+        },
+        query || {}
+      )
+    );
   }
 
   const getCurrentPage = computed(() => getCurrentListing.value?.page || 1);
-  const changeCurrentPage = async (query?: Partial<ShopwareSearchParams>) => {
-    await search(query || {});
+
+  const changeCurrentPage = async (
+    page: number,
+    query?: Partial<ShopwareSearchParams>
+  ) => {
+    await search(
+      Object.assign(
+        {
+          p: page,
+        },
+        query || {}
+      )
+    );
   };
 
   const getInitialFilters = computed(() => {
@@ -404,7 +437,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
   });
 
   const getCurrentFilters = computed(() => {
-    const currentFiltersResult: any = {};
+    const currentFiltersResult: any = [];
     const currentFilters = {
       ...getCurrentListing.value?.currentFilters,
       // ...router.currentRoute.query,
