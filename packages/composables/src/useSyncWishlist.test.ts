@@ -42,7 +42,7 @@ const getMockProvide = (mockedUrl: string | undefined) => ({
 });
 
 describe("useSyncWishlist", () => {
-  const wrapper = shallowMount(Component, getMockProvide(url + "/"));
+  const wrapper = shallowMount(Component, getMockProvide(url));
   const mockedResolve = { apiAlias: "mock", success: true };
   const mockedResponse = {
     products: {
