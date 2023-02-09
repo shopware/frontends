@@ -20,10 +20,7 @@ export function useInternationalization(): UseInternationalizationReturn {
     /**
      * apiIntanceUrl - should be removed after resolving backend multi domains problems
      */
-    const apiIntanceUrl = apiInstance.config.endpoint
-      ? apiInstance.config.endpoint.slice(0, -1)
-      : undefined;
-    return apiIntanceUrl ?? window.location.origin ?? "";
+    return apiInstance.config.endpoint ?? window.location.origin ?? "";
   }
 
   return {

@@ -37,7 +37,7 @@ describe("useInternationalization", () => {
   });
 
   it("should return storefrontUrl", async () => {
-    const wrapper = shallowMount(Component, getMockProvide(url + "/"));
+    const wrapper = shallowMount(Component, getMockProvide(url));
     expect(wrapper.vm.getStorefrontUrl()).toBe(url);
   });
 

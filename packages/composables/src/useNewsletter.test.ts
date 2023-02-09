@@ -29,7 +29,7 @@ const getMockProvide = (mockedUrl: string | undefined) => ({
 });
 
 describe("useNewsletter", () => {
-  const wrapper = shallowMount(Component, getMockProvide(url + "/"));
+  const wrapper = shallowMount(Component, getMockProvide(url));
   const email = "test@testemail.test";
   const newsletterMockData = {
     email: email,

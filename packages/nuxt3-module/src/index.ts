@@ -35,7 +35,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       options: {
         shopwareEndpoint:
           moduleConfig.shopwareEndpoint ??
-          "https://demo-frontends.shopware.store/",
+          "https://demo-frontends.shopware.store",
         shopwareAccessToken:
           moduleConfig.shopwareAccessToken ?? "SWSCBHFSNTVMAWNZDNFKSHLAYW",
         shopwareApiClient: {
