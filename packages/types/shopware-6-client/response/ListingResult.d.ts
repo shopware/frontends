@@ -2,6 +2,7 @@ import { Sort } from "../search/SearchCriteria";
 import {
   Aggregations,
   AggregationFilterEntityOption,
+  AggregationProductListingEntities,
 } from "../search/Aggregations";
 
 /**
@@ -28,7 +29,7 @@ export type ListingFilter = {
   code: ListingFilterCode;
   type?: "range" | "max";
   options?: AggregationFilterEntityOption[];
-  entities?: AggregationFilterEntityOption[];
+  entities?: AggregationProductListingEntities[];
   min?: number; // TODO: prepare proper listing filters based on code
   max?: number;
   value?: string;

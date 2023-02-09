@@ -40,7 +40,7 @@ const changePage = async (page: number) => {
       p: page,
     },
   });
-  changeCurrentPage(route.query as Partial<ShopwareSearchParams>);
+  changeCurrentPage(page, route.query as Partial<ShopwareSearchParams>);
 };
 setInitialListing(productSearch.value as any);
 </script>

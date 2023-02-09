@@ -25,7 +25,7 @@ const changePage = async (page: number) => {
       p: page,
     },
   });
-  changeCurrentPage(<Partial<ShopwareSearchParams>>route.query);
+  changeCurrentPage(page, <Partial<ShopwareSearchParams>>route.query);
 };
 const isProductListing = computed(
   () => props.content?.type === "product-listing"

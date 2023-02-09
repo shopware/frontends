@@ -132,7 +132,11 @@ const currentSortingOrder = computed({
         order,
       },
     });
-    changeCurrentSortingOrder(<Partial<ShopwareSearchParams>>route.query);
+
+    changeCurrentSortingOrder(
+      order,
+      <Partial<ShopwareSearchParams>>route.query
+    );
   },
 });
 
