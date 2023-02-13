@@ -34,10 +34,10 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "@vitest/coverage-c8": "^0.28.3",
+    "@vitest/coverage-c8": "^0.28.5",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
-    "vitest": "^0.28.3"
+    "vitest": "^0.28.5"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",

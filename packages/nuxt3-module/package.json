@@ -39,12 +39,12 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.1.1",
+    "@nuxt/kit": "^3.2.0",
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.1.1",
+    "@nuxt/schema": "^3.2.0",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^4.9.5",
