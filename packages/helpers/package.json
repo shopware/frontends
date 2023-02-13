@@ -1,9 +1,24 @@
 {
   "name": "@shopware-pwa/helpers-next",
   "version": "0.1.24",
+  "description": "Shopware helpers for accessing API data",
+  "author": "Shopware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://shopware-frontends-docs.vercel.app/packages/helpers.html",
+  "keywords": [
+    "shopware",
+    "api",
+    "helpers"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "license": "MIT",
   "files": [
     "dist"
   ],

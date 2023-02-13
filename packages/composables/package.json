@@ -1,12 +1,33 @@
 {
   "name": "@shopware-pwa/composables-next",
   "version": "0.6.0",
+  "description": "Shopware Frontends composables for Vue",
+  "author": "Shopware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://shopware-frontends-docs.vercel.app/packages/composables.html",
+  "keywords": [
+    "shopware",
+    "vue",
+    "composables"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "license": "MIT",
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
   "scripts": {
     "build": "unbuild && pnpm build:types",
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",

@@ -1,9 +1,24 @@
 {
   "name": "@shopware-pwa/api-client",
   "version": "0.2.3",
+  "description": "Shopware Store API client",
+  "author": "Shopware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://shopware-frontends-docs.vercel.app/packages/api-client.html",
+  "keywords": [
+    "shopware",
+    "api",
+    "client"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "license": "MIT",
   "files": [
     "dist"
   ],
