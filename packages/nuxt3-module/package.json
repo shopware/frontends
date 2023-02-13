@@ -1,10 +1,32 @@
 {
   "name": "@shopware-pwa/nuxt3-module",
   "version": "0.2.1",
-  "description": "Nuxt3 package for ShopwarePWA",
+  "description": "Nuxt 3 module for Shopware Frontends",
+  "author": "Shopware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://shopware-frontends-docs.vercel.app/framework/internal-structure.html#nuxt3-module",
+  "keywords": [
+    "Nuxt",
+    "Shopware",
+    "Vue"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
   "main": "./index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./index.cjs"
+    }
+  },
   "files": [
     "dist",
     "plugin.ts",
@@ -27,20 +49,5 @@
     "tsconfig": "workspace:*",
     "typescript": "^4.9.5",
     "unbuild": "^1.1.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shopware/frontends.git"
-  },
-  "keywords": [
-    "nuxt3",
-    "Shopware",
-    "ShopwarePWA",
-    "Vue"
-  ],
-  "author": "patzick <13100280+patzick@users.noreply.github.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/shopware/frontends/issues"
   }
 }

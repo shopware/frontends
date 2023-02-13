@@ -1,12 +1,32 @@
 {
   "name": "@shopware-pwa/vue3-plugin",
   "version": "0.1.26",
+  "description": "Shopware Fromends Vue3 plugin",
+  "author": "Shopware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://shopware-frontends-docs.vercel.app",
+  "keywords": [
+    "shopware"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
   "type": "module",
   "module": "./dist/vue3-plugin.es.js",
   "types": "./dist/main.d.ts",
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/vue3-plugin.es.js"
+    }
+  },
   "scripts": {
     "build": "tsc && vite build"
   },
