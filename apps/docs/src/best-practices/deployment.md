@@ -15,6 +15,53 @@ nav:
 
 # Deployment
 
+Shopware Frontends can be deployed in multiple ways, depending on the setup you are using. Most likely you will be using either a static hosting service or a server with a Node.js runtime. The different options and approaches are described below.
+
+## Static hosting
+
+This option is the easiest to set up and will work best for small or static projects. With a static hosting, your site will be built once during the deployment and afterwards delivered as static HTML pages with Javascript for dynamic elements.
+
+The biggest advantage is that there is no additional server needed to do the rendering of your page and it scales very well\*, because your entire site is made of files on a server.
+
+### Single page application (SPA)
+
+In a single page application the server sends the application as static HTML and Javascript. After receiving the data, the browser will parse the Javascript and the page becomes interactive. It requires an API at runtime to fetch data like products, categories or a navigation.
+
+Drawbacks of this approach are that it is heavy on the API and that initial page loads take the longest, because the browser has to parse the Javascript before anything can be displayed to the user. That delay has a negative impact on UX and search engine scoring.
+
+### Server-side generation (SSG)
+
+In server-side generation your site's pages - products pages, category pages, content pages - are generated once at build time. Afterwards the site will be delivered as static HTML and Javascript to the client.
+
+The main advantage of SSG is, that browsing activities are not affected by your API backend, because it's used to display products, categories etc. - in most cases it is the approach giving the most potential for good performance. For dynamic operations like cart, user account or checkout the API will still be called.
+
+\*The main drawback is that any change of products, categories, etc. will invalidate the generated pages and require you to re-generate them, so this approach is not ideal for sites that change often.
+
+### Popular static hosting services
+
+There are various services that provide static hosting, such as
+
+- [Vercel](https://vercel.com/)
+- [Netlify](https://www.netlify.com/)
+- [Amazon S3](https://aws.amazon.com/s3/)
+- and many more
+
+Each services has its own way of deploying your applications and you should refer to their documentation for more information.
+
+## Dynamic hosting (SSR)
+
+The dynamic hosting option requires a Node.js server to run your application. For every fresh page request, the application is rendered on the server in a process called SSR (server-side rendering) and then delivered as static HTML and Javascript to the client. Afterwards, the static page will become interactive after the browser parsed all Javascript in a process called hydration and it continues working like a [SPA](#single-page-application-spa).
+
+It is the most dynamic and versatile approach and requires no invalidation and is generally better for SEO, since the page is visible to the user right away. For most eCommerce projects it is the best fit, bringing together the SEO and UX benefits of SSG and the actuality of SPA.
+
+Drawbacks are that it requires API access at runtime for all operations. These calls are made by the Node.js server and introduce an additional round-trip (Node server>API>Node server) before the page can be fully rendered and sent to the client. For that reason, it is generally advised to optimize your network infrastructure with regard to that round trip in order to get the most out of the SSR approach. Obviously
+
+### Popular dynamic hosting services
+
+- [Vercel](https://vercel.com/)
+- [Heroku](https://www.heroku.com/)
+
+
 ## Prepare you application
 
 The final goal is always deployment, no less equal than development itself.
