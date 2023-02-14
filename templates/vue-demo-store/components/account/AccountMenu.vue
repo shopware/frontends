@@ -23,11 +23,15 @@ async function invokeLogout() {
       </div>
       <div v-if="isLoggedIn">
         <div
-          class="absolute inset-y-2 right-2 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+          class="inset-y-2 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0"
         >
+          <div
+            class="w-7 h-7 i-carbon-user text-gray-600 hover:text-brand-primary sm:hidden hover:text-brand-primary"
+            @click="isAccountMenuOpen = !isAccountMenuOpen"
+          />
           <button
             type="button"
-            class="text-sm text-gray-700 focus:outline-none"
+            class="text-sm text-gray-700 focus:outline-none hidden sm:block"
             data-testid="account-menu-hello-button"
             @click="isAccountMenuOpen = !isAccountMenuOpen"
           >
@@ -35,7 +39,7 @@ async function invokeLogout() {
           </button>
 
           <!-- Profile dropdown -->
-          <div class="ml-3 relative">
+          <div class="relative">
             <div>
               <button
                 id="user-menu-button"
@@ -58,7 +62,7 @@ async function invokeLogout() {
             >
               <div
                 :class="[isAccountMenuOpen ? 'block' : 'hidden']"
-                class="origin-top-right absolute right-0 top-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                class="z-20 origin-top-right absolute right-0 top-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-menu-button"
