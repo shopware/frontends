@@ -42,8 +42,8 @@ export function _createInstance(initialConfig: ClientSettings = {}) {
   const apiService: AxiosInstance = axios.create();
 
   function reloadConfiguration() {
-    apiService.defaults.baseURL = clientConfig.endpoint;
-    apiService.defaults.browserBaseURL = clientConfig.browserEndpoint;
+    const browserBaseUrl = clientConfig.browserEndpoint ?? clientConfig.endpoint;
+    apiService.defaults.baseURL = process.client ? browserBaseUrl :  clientConfig.endpoint;
 
     if (clientConfig.timeout) {
       apiService.defaults.timeout =

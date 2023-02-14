@@ -306,7 +306,8 @@ export async function resetPassword(
   contextInstance: ShopwareApiInstance = defaultInstance
 ): Promise<void> {
   if (params && !params.storefrontUrl) {
-    params.storefrontUrl = contextInstance.config.browserEndpoint ?? contextInstance.config.endpoint;
+    const browserEndpoint = contextInstance.config.browserEndpoint ?? contextInstance.config.endpoint;
+    params.storefrontUrl = process.client ? browserEndpoint : contextInstance.config.endpoint;;
   }
 
   await contextInstance.invoke.post(getCustomerResetPasswordEndpoint(), params);
