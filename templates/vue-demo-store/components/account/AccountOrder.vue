@@ -31,6 +31,7 @@ export default {
       </div>
       <div>{{ order.amountTotal }} {{ currency?.symbol }}</div>
       <div>{{ orderDate }}</div>
+      <div>{{ order.stateMachineState.name }}</div>
       <div
         class="justify-self-end text-brand-dark cursor-pointer"
         :aria-expanded="isExpand"

@@ -10,7 +10,7 @@ export default {
       <div class="col-span-2">Order number</div>
       <div>Total amount</div>
       <div>Order date</div>
-      <div>Payment status</div>
+      <div>Order status</div>
       <div class="justify-self-end" />
     </div>
 
