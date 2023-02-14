@@ -314,6 +314,7 @@ importers:
       '@shopware-pwa/api-client': workspace:*
       '@shopware-pwa/composables-next': workspace:*
       eslint-config-shopware: workspace:*
+      js-cookie: ^3.0.1
       tsconfig: workspace:*
       typescript: ^4.9.5
       unbuild: ^1.1.1
@@ -321,6 +322,7 @@ importers:
       '@nuxt/kit': 3.2.0_rollup@3.10.1
       '@shopware-pwa/api-client': link:../api-client
       '@shopware-pwa/composables-next': link:../composables
+      js-cookie: 3.0.1
     devDependencies:
       '@nuxt/schema': 3.2.0_rollup@3.10.1
       eslint-config-shopware: link:../eslint-config-shopware
