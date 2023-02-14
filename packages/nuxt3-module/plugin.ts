@@ -37,7 +37,7 @@ const ShopwarePlugin = {
           sameSite: "Lax",
           path: "/",
         });
-        Cookies.set("sw-language-id", config.contextToken || "", {
+        Cookies.set("sw-language-id", config.languageId || "", {
           expires: 365, //days
           sameSite: "Lax",
           path: "/",
