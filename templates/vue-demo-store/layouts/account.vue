@@ -43,15 +43,12 @@ provide("swNavigation-footer-navigation", footerData);
       <div class="m-10">
         <div class="account-inner">
           <div class="md:grid md:grid-cols-3 md:gap-6">
-            <aside
-              class="hidden md:block lg:w-64 md:col-span-"
-              aria-label="Sidebar"
-            >
+            <aside class="block lg:w-64 md:col-span-" aria-label="Sidebar">
               <div
-                class="overflow-y-auto py-4 px-3 bg-gray-50 text-base font-normal text-gray-500 rounded"
+                class="overflow-y-auto md:py-4 md:px-3 md:bg-gray-50 text-base font-normal text-gray-500 rounded"
               >
                 <h1
-                  class="self-center text-xl p-2 mb-2 font-semibold whitespace-nowrap"
+                  class="self-center text-xl px-0 md:px-2 py-2 mb-2 font-semibold whitespace-nowrap"
                 >
                   My account
                 </h1>
@@ -59,7 +56,7 @@ provide("swNavigation-footer-navigation", footerData);
                   <li>
                     <RouterLink
                       to="/account"
-                      class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
+                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
                       <div i-carbon-dashboard text-xl inline-block />
                       <span class="ml-3">Account Overview</span>
@@ -68,7 +65,7 @@ provide("swNavigation-footer-navigation", footerData);
                   <li>
                     <RouterLink
                       to="/account/profile"
-                      class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
+                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
                       <div i-carbon-user text-xl inline-block />
                       <span class="ml-3">My profile</span>
@@ -77,7 +74,7 @@ provide("swNavigation-footer-navigation", footerData);
                   <li>
                     <RouterLink
                       to="/account/address"
-                      class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
+                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-home text-xl inline-block />
                       <span class="ml-3">My address</span>
@@ -86,7 +83,7 @@ provide("swNavigation-footer-navigation", footerData);
                   <li>
                     <RouterLink
                       to="/account/payment"
-                      class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
+                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-wallet text-xl inline-block />
                       <span class="ml-3">Payment</span>
@@ -97,7 +94,7 @@ provide("swNavigation-footer-navigation", footerData);
                   <li>
                     <RouterLink
                       to="/account/order"
-                      class="flex items-center p-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
+                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-order-details text-xl inline-block />
                       <span class="ml-3">Order history</span>
@@ -105,7 +102,7 @@ provide("swNavigation-footer-navigation", footerData);
                   </li>
                   <li>
                     <button
-                      class="flex items-center rounded-lg p-2 hover:text-brand-primary hover:bg-gray-100 w-full"
+                      class="flex items-center rounded-lg px-0 md:px-2 py-2 hover:text-brand-primary hover:bg-gray-100 w-full"
                       @click="invokeLogout()"
                     >
                       <div i-carbon-logout text-xl inline-block />
