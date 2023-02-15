@@ -44,7 +44,7 @@ onMounted(() => {
     let temp = 1;
     const minWidth = +getConfigValue("elMinWidth").replace(/\D+/g, "");
     if (productSlider.value?.clientWidth) {
-      temp = Math.floor(productSlider.value?.clientWidth / (minWidth * 1.2));
+      temp = Math.ceil(productSlider.value?.clientWidth / (minWidth * 1.2));
     }
     slidesToShow.value = temp;
   }, 100);
