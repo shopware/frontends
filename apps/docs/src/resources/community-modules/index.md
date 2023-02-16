@@ -26,11 +26,11 @@ const communityModules = [
         icon: '🚀'
     },
     {
-        title: 'Nuxt Cache Keys',
+        title: 'Nuxt Cache Tags',
         maintainer: 'niklaswolf',
-        link: 'https://github.com/niklaswolf/nuxt-cache-keys',
-        description: 'Nuxt module, that provides a system to set cache-keys for later use in e.g. a full-page cache like Varnish or Fastly.',
-        icon: '🔑'
+        link: 'https://github.com/mothership-gmbh/nuxt-shopware-caching',
+        description: 'Nuxt-Module, that provides a system to set shopware cache-tags for later use in e.g. a full-page cache.',
+        icon: '⚡️'
     },
     {
         title: 'Headless CMS POC',
