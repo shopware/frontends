@@ -62,17 +62,11 @@ watchDebounced(
 const isExpand = ref(false);
 
 const toggleView = () => (isExpand.value = !isExpand.value);
-const format: Intl.DateTimeFormatOptions = {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-  hour12: true,
-};
 
 const formatDate = (date: Date) =>
-  new Date(date).toLocaleDateString("en-us", format);
+  new Date(date).toLocaleDateString(
+    (typeof navigator !== "undefined" && navigator.language) || "en-US"
+  );
 </script>
 
 <template>
@@ -108,14 +102,14 @@ const formatDate = (date: Date) =>
         <div class="pt-8">
           <div>
             <AccountOrderSummary>
-              <div class="col-span-2">
+              <div class="lg:col-span-2">
                 {{ order?.orderNumber }}
               </div>
               <div>
                 <SharedPrice
                   v-if="order?.amountTotal"
                   :value="order.amountTotal"
-                  class="text-gray-600 font-normal"
+                  class="text-gray-400 font-normal"
                   data-testid="order-subtotal"
                 />
               </div>
@@ -123,14 +117,23 @@ const formatDate = (date: Date) =>
                 {{ formatDate(order.orderDate) }}
               </div>
               <div>{{ getTranslatedProperty(state, "name") }}</div>
-              <button
-                class="justify-self-end text-gray-600 px-3 text-xs font-medium text-center hover:text-white bg-gray-300 rounded-lg hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-300 dark:focus:ring-gray-400"
+              <div
+                class="hidden sm:block justify-self-end text-brand-dark cursor-pointer"
                 :aria-expanded="isExpand"
                 @click="toggleView"
               >
-                {{ !isExpand ? "View items" : "Hide items" }}
-              </button>
+                {{ !isExpand ? "View" : "Hide" }}
+              </div>
             </AccountOrderSummary>
+            <div>
+              <div
+                class="block sm:hidden text-center text-brand-dark cursor-pointer bg-gray-100 py-2"
+                :aria-expanded="isExpand"
+                @click="toggleView"
+              >
+                {{ !isExpand ? "View" : "Hide" }}
+              </div>
+            </div>
             <template v-if="order?.id">
               <transition>
                 <AccountOrderDetails v-show="isExpand" :order-id="order.id" />
