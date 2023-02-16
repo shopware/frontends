@@ -63,8 +63,11 @@ export const sidebar = [
     ],
   },
   {
-    text: "EXAMPLES",
-    items: [{ text: "Overview", link: "/examples/" }],
+    text: "RESOURCES",
+    items: [
+      { text: "Examples", link: "/resources/examples/" },
+      { text: "Community Modules", link: "/resources/community-modules/" }
+    ],
   },
 ];
 
@@ -148,12 +151,6 @@ export default defineConfigWithTheme<ThemeConfig>({
       //   facetFilters: ["version:v1"],
       // },
     },
-
-    socialLinks: [
-      { icon: "github", link: "https://github.com/shopware/" },
-      { icon: "twitter", link: "https://twitter.com/ShopwareDevs" },
-      { icon: "slack", link: "https://slack.shopware.com" },
-    ],
   },
 
   vite: {
@@ -176,8 +173,7 @@ export default defineConfigWithTheme<ThemeConfig>({
     },
     plugins: [MarkdownTransform()],
   },
-
   vue: {
     reactivityTransform: true,
-  },
+  }
 });
