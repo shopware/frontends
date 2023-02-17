@@ -23,10 +23,17 @@ describe("Helpers - getMainImageUrl", () => {
       cover: {
         url: mediaUrl,
       },
+      media: [
+        {
+          media: {
+            url: "fallback-url",
+          },
+        },
+      ],
       apiAlias: "product",
     };
     const coverUrl = getMainImageUrl(product);
-    expect(coverUrl).toEqual(mediaUrl);
+    expect(coverUrl).toEqual("fallback-url");
   });
 
   it("Should return an empty string is the entity is not in type Product", () => {

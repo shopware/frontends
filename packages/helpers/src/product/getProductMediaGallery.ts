@@ -14,15 +14,15 @@ export function getProductMediaGallery({
       const smallThumb =
         media.media &&
         media.media.thumbnails &&
-        media.media.thumbnails.find((thumb) => thumb.width == "400");
+        media.media.thumbnails.find((thumb) => thumb.width == 400);
       const normalThumb =
         media.media &&
         media.media.thumbnails &&
-        media.media.thumbnails.find((thumb) => thumb.width == "800");
+        media.media.thumbnails.find((thumb) => thumb.width == 800);
       const bigThumb =
         media.media &&
         media.media.thumbnails &&
-        media.media.thumbnails.find((thumb) => thumb.width == "1920");
+        media.media.thumbnails.find((thumb) => thumb.width == 1920);
       return {
         icon: { url: smallThumb ? smallThumb.url : media.media.url },
         mobile: { url: normalThumb ? normalThumb.url : media.media.url },

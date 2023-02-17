@@ -21,42 +21,35 @@ import { Customer } from "../../checkout/customer/Customer";
  * @public
  */
 export type Media = {
-  userId: string | null;
-  mimeType: string | null;
-  fileExtension: string | null;
-  fileSize: number | null;
-  title: string | null;
-  /**
-   * @deprecated removed from 6.5.0
-   */
-  metaDataRaw: string | null;
-  metaData: [] | null;
-  mediaType: MediaType;
-  uploadedAt: Date | null;
-  alt: string | null;
+  mimeType: "image/jpeg" | "image/png" | "image/gif" | "image/webp" | string;
+  fileExtension: "jpg" | "png" | "gif" | "webp" | string;
+  fileSize: number;
+  title: null | string;
+  metaData: {
+    hash: string;
+    type: number;
+    width: number;
+    height: number;
+  };
+  uploadedAt: string;
+  alt: null | string;
   url: string;
   fileName: string;
-  user: Customer;
-  translations: MediaTranslation[] | null;
-  translated: MediaTranslation | null;
-  categories: Category[] | null;
-  productManufacturers: ProductManufacturer[] | null;
-  productMedia: ProductMedia | null;
-  avatarUser: Customer | null;
-  thumbnails: MediaThumbnail[] | null;
-  mediaFolderId: string | null;
-  mediaFolder: MediaFolder | null;
+  translations: null | MediaTranslation[];
+  thumbnails: MediaThumbnail[];
   hasFile: boolean;
   private: boolean;
-  propertyGroupOptions: PropertyGroupOption[] | null;
-  mailTemplateMedia: MailTemplateMedia[] | null;
-  customFields: CustomField[];
-  tags: Tag | null;
-  thumbnailsRo: string | null;
-  documentBaseConfigs: DocumentBaseConfig[] | null;
-  shippingMethods: ShippingMethod[] | null;
-  paymentMethods: PaymentMethod[] | null;
-  orderLineItems: OrderLineItem[] | null;
-  cmsBlocks: CmsBlock[] | null;
-  documents: Document[] | null;
+  _uniqueIdentifier: string;
+  versionId: null | string;
+  translated: {
+    alt: null | string;
+    title: null | string;
+    customFields: unknown;
+  };
+  createdAt: string;
+  updatedAt: null | string;
+  extensions: unknown;
+  id: string;
+  customFields: null | unknown;
+  apiAlias: "media";
 };

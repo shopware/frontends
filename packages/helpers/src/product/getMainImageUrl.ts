@@ -15,6 +15,6 @@ export function getMainImageUrl(
   product: Product | LineItem | OrderLineItem
 ): string {
   return isProduct(product)
-    ? product?.cover?.media?.url || product?.cover?.url || ""
+    ? product?.cover?.media?.url || product?.media?.[0]?.media.url || ""
     : "";
 }

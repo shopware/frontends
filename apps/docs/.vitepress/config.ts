@@ -43,6 +43,7 @@ export const sidebar = [
       { text: "Styling", link: "/framework/styling" },
       { text: "Context Composables", link: "/framework/context-composables" },
       { text: "Shared Composables", link: "/framework/shared-composables" },
+      { text: "Images", link: "/framework/images" },
     ],
   },
   {
@@ -51,6 +52,7 @@ export const sidebar = [
       { text: "Testing", link: "/best-practices/testing" },
       { text: "Performance", link: "/best-practices/performance" },
       { text: "Deployment", link: "/best-practices/deployment" },
+      { text: "Images", link: "/best-practices/images" },
     ],
   },
   {
@@ -80,6 +82,7 @@ export default defineConfigWithTheme<ThemeConfig>({
   srcDir: "src",
   // srcExclude: ["tutorial/**/description.md"], In case we need something to be excluded
   scrollOffset: "header",
+  ignoreDeadLinks: true, // remove once MR #294 is merged
   head: [
     [
       "link",
