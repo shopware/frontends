@@ -10,7 +10,13 @@ export type ProductMedia = {
   mediaId: string;
   position: number;
   media: Media;
-  product: Product;
-  customFields: CustomField[];
-  url: string;
+  customFields: null | CustomField[];
+  _uniqueIdentifier: string;
+  versionId: string;
+  translated: [];
+  createdAt: string;
+  updatedAt: string;
+  extensions: unknown;
+  id: string;
+  apiAlias: "product_media";
 };
