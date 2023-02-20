@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import type { Product } from "@shopware-pwa/types";
 import {
-  getMainImageUrl,
-  getProductCalculatedListingPrice,
+  getSmallestThumbnailUrl,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{ product: Product }>();
 
 const { product } = toRefs(props);
-const { unitPrice, displayFromVariants, displayFrom } =
+const { unitPrice, displayFrom } =
   useProductPrice(product);
 </script>
 <template>
@@ -19,7 +18,7 @@ const { unitPrice, displayFromVariants, displayFrom } =
     <div class="rounded-md border-1 border-gray-200 overflow-hidden flex-none">
       <img
         data-testid="layout-search-suggest-image"
-        :src="getMainImageUrl(product)"
+        :src="getSmallestThumbnailUrl(product.cover.media)"
         class="h-8 w-8 object-cover"
         alt="Product image"
       />

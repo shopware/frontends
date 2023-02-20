@@ -84,9 +84,9 @@ describe("useCmsElementImage", () => {
         } as any);
 
         expect(imageAttrs.value).toEqual({
-          alt: "logo.png",
+          alt: "",
           src: "https://shopware.com/logo.png",
-          srcset: " https://shopware.com/logo-128px.png 128w",
+          srcset: "https://shopware.com/logo-128px.png 128w",
         });
       });
       it("should return displayMode", () => {

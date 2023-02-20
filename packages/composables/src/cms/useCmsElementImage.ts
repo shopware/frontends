@@ -11,7 +11,7 @@ import {
   AnchorHTMLAttributes,
   ImgHTMLAttributes,
 } from "vue";
-import { MediaThumbnail } from "@shopware-pwa/types";
+import { getSrcSetForMedia } from "@shopware-pwa/helpers-next";
 
 export type UseCmsElementImage = {
   containerStyle: ComputedRef<CSSProperties>;
@@ -53,22 +53,10 @@ export function useCmsElementImage(
     return attr;
   });
 
-  const srcset = "";
   const imageAttrs: ComputedRef<ImgHTMLAttributes> = computed(() => ({
     src: element.data?.media?.url,
-    alt: element.data?.media?.fileName,
-    srcset:
-      element.data?.media?.thumbnails?.reduce(
-        (
-          previousValue: string,
-          currentValue: MediaThumbnail,
-          currentIndex: number
-        ) =>
-          `${previousValue}${currentIndex != 0 ? "," : ""} ${
-            currentValue.url
-          } ${currentValue.width}w`,
-        srcset
-      ) || "",
+    alt: element.data?.media?.alt || "",
+    srcset: getSrcSetForMedia(element.data?.media),
   }));
 
   const displayMode = computed(
