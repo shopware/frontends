@@ -72,7 +72,7 @@ watch(enter, (value) => {
   <div
     ref="searchContainer"
     class="relative group p-3 rounded-lg transition duration-300 hover:shadow-md"
-    :class="[active ? 'shadow-md' : 'shadow-sm']"
+    :class="[active ? 'shadow-lg' : 'shadow']"
   >
     <div class="flex items-center">
       <div
@@ -87,7 +87,7 @@ watch(enter, (value) => {
         class="sw-search-input text-gray-400 placeholder:text-gray-400 focus:text-gray-700 p-2 ml-2 grow h-6 transition duration-200 focus:outline-none"
         placeholder="Search products"
         @click="active = true"
-      />
+      >
     </div>
     <div
       v-if="showSuggest"
@@ -119,10 +119,12 @@ watch(enter, (value) => {
             @click="[(active = false), (isSideMenuOpened = false)]"
           >
             See <span v-if="getTotal !== 1">all</span> {{ getTotal }}
-            <span v-if="getTotal !== 1">results</span
-            ><span v-if="getTotal == 1">result</span>
+            <span v-if="getTotal !== 1">results</span>
+            <span v-if="getTotal == 1">result</span>
           </RouterLink>
-          <div v-else>No results :(</div>
+          <div v-else>
+            No results :(
+          </div>
         </div>
       </div>
     </div>
