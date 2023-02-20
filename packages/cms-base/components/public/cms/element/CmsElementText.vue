@@ -74,7 +74,7 @@ const CmsTextRender = () => {
       },
     },
   };
-  const rawHtml = mappedContent.value || "<div></div>";
+  const rawHtml = mappedContent.value?.length > 0 ? mappedContent.value : "<div></div>";
   return renderHtml(rawHtml, config, h, context);
 };
 </script>
