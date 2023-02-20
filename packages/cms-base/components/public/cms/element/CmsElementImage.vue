@@ -20,6 +20,7 @@ const {
 <template>
   <!-- TODO: using a tag only works with externalLink, need to improve this element to deal with both internalLink & externalLink -->
   <component
+    v-if="imageAttrs.src"
     class="cms-element-image relative"
     :is="imageLink.url ? 'a' : 'div'"
     :style="containerStyle"
