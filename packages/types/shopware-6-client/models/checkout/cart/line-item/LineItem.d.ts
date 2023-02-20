@@ -26,7 +26,7 @@ export type LineItem = {
   price: CalculatedPrice | null;
   good: boolean;
   description: string | null;
-  cover: Media | null;
+  cover: (Media & { url: string }) | null;
   deliveryInformation: DeliveryInformation | null;
   children: LineItem[];
   requirement: Rule | null;

@@ -31,7 +31,7 @@ export type OrderLineItem = {
   order: Order | null;
   orderDeliveryPosition: OrderDeliveryPosition[] | null;
   customFields: CustomField[];
-  cover: Media | null;
+  cover: (Media & { url: string }) | null;
   children: OrderLineItem[] | null;
   apiAlias: "order_item";
 };

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { OrderLineItem } from "@shopware-pwa/types";
-import { getMainImageUrl } from "@shopware-pwa/helpers-next";
+import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
 
 defineProps<{
   lineItem: OrderLineItem;
@@ -23,7 +23,7 @@ export default {
         class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md mr-2"
       >
         <img
-          :src="getMainImageUrl(lineItem)"
+          :src="getSmallestThumbnailUrl(lineItem.cover)"
           :alt="lineItem.label"
           class="h-full w-full object-cover object-center"
         />

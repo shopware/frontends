@@ -36,7 +36,7 @@ describe("Helpers - getMainImageUrl", () => {
     expect(coverUrl).toEqual("fallback-url");
   });
 
-  it("Should return an empty string is the entity is not in type Product", () => {
+  it("Should return url of cover if entity is not in type Product", () => {
     const product: any = {
       cover: {
         url: "https://shopware.test/media/8a/fd/cb/1572351035/msh06-gray_main_1.jpg",
@@ -47,7 +47,9 @@ describe("Helpers - getMainImageUrl", () => {
       apiAlias: "promotion",
     };
     const coverUrl = getMainImageUrl(product);
-    expect(coverUrl).toEqual("");
+    expect(coverUrl).toEqual(
+      "https://shopware.test/media/8a/fd/cb/1572351035/msh06-gray_main_1.jpg"
+    );
   });
 
   it("Should take the url from the media object first", () => {

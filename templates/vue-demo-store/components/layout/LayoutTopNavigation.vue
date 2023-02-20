@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import { getTranslatedProperty, getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
 const { navigationElements } = useNavigation();
 
 const currentMenuPosition = ref<string | null>(null);
@@ -89,7 +89,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                     class="flex"
                   >
                     <img
-                      :src="childElement.media?.url"
+                      :src="getSmallestThumbnailUrl(childElement.media)"
                       class="object-scale-down h-48 w-px-200 rounded-md"
                       alt="Category image"
                     >

@@ -3,7 +3,7 @@ import { LineItem, Product, OrderLineItem } from "@shopware-pwa/types";
 function isProduct(
   object: Product | LineItem | OrderLineItem
 ): object is Product {
-  return object?.apiAlias === "product" || object?.type === "product";
+  return object?.apiAlias === "product";
 }
 
 /**
@@ -11,10 +11,10 @@ function isProduct(
  *
  * @public
  */
-export function getMainImageUrl(
-  product: Product | LineItem | OrderLineItem
-): string {
-  return isProduct(product)
-    ? product?.cover?.media?.url || product?.media?.[0]?.media.url || ""
-    : "";
+export function getMainImageUrl(object: Product | LineItem | OrderLineItem): string {
+  if (isProduct(object)) {
+    return object?.cover?.media?.url || object?.media?.[0]?.media.url || "";
+  }
+
+  return object?.cover?.url || "";
 }
