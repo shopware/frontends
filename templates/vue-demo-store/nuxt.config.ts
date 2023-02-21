@@ -23,6 +23,7 @@ export default defineNuxtConfig({
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
     "@shopware-pwa/cms-base",
+    "@nuxt/devtools"
   ],
   // components: true,
   components: {

@@ -45,6 +45,7 @@
     "js-cookie": "^3.0.1"
   },
   "devDependencies": {
+    "@nuxt/devtools": "^0.1.0",
     "@nuxt/schema": "^3.2.0",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
