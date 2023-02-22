@@ -32,6 +32,10 @@ export const sidebar = [
         text: "Overwriting and extending composables",
         link: "/getting-started/overwriting-composables",
       },
+      {
+        text: "Overwriting CMS blocks",
+        link: "/getting-started/overwriting-cms",
+      },
     ],
   },
   {
@@ -68,7 +72,7 @@ export const sidebar = [
     text: "RESOURCES",
     items: [
       { text: "Examples", link: "/resources/examples/" },
-      { text: "Community Modules", link: "/resources/community-modules/" }
+      { text: "Community Modules", link: "/resources/community-modules/" },
     ],
   },
 ];
@@ -178,5 +182,5 @@ export default defineConfigWithTheme<ThemeConfig>({
   },
   vue: {
     reactivityTransform: true,
-  }
+  },
 });
