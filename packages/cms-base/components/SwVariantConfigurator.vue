@@ -48,7 +48,7 @@ const onHandleChange = async () => {
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex flex-col">
     <div
       v-if="isLoading"
       class="absolute inset-0 flex items-center justify-center z-10 bg-white/75"
@@ -65,7 +65,7 @@ const onHandleChange = async () => {
       <h3 class="text-sm text-gray-900 font-medium">{{ optionGroup.name }}</h3>
       <fieldset class="mt-4 flex-1">
         <legend class="sr-only">Choose a {{ optionGroup.name }}</legend>
-        <div class="flex">
+        <div class="flex gap-3">
           <label
             data-testid="product-variant"
             class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer"

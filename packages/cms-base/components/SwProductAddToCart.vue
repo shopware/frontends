@@ -18,7 +18,7 @@ const addToCartProxy = async () => {
 <template>
   <div class="flex flex-row mt-10">
     <div class="basis-1/4 relative -top-6">
-      <label for="qty" class="text-sm">Qty:</label>
+      <label for="qty" class="text-sm">Qty</label>
       <input
         id="qty"
         type="number"
