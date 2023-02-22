@@ -31,6 +31,12 @@ onMounted(async () => {
     v-if="navigations && navigations.length"
     class="cms-element-category-navigation max-w-screen-xl mx-auto"
   >
+    <h2
+      v-if="navigations.length > 0"
+      class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
+    >
+      {{ navigations.length > 1 ? "Categories" : "Category" }}
+    </h2>
     <SwCategoryNavigation
       :level="0"
       :elements="navigations"
