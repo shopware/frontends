@@ -146,8 +146,6 @@ export type Product = {
     metaTitle: string | null;
   };
   metaDescription: string | null;
-  keywords: string | null;
-  metaTitle: string | null;
   crossSellings: CrossSelling[];
   cmsPage: null | CmsPage;
   apiAlias: "product";
