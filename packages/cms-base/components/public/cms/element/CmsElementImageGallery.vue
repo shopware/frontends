@@ -142,7 +142,7 @@ function next() {
   >
     <div
       :class="{
-        'basis-20 relative flex flex-col items-center':
+        'hidden lg:flex basis-20 relative flex-col items-center':
           galleryPosition === 'left',
         'flex relative w-full': galleryPosition === 'underneath',
       }"

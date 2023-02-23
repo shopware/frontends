@@ -53,7 +53,7 @@ const children = computed(() => {
 const emit = defineEmits<{
   (e: "changeSlide", index: number): void;
 }>();
-
+const slider = ref(null);
 const imageSlider = ref<HTMLElement>();
 const imageSliderTrackStyle = ref<any>({});
 const activeSlideIndex = ref<number>(0);
@@ -64,9 +64,17 @@ const isReady = ref<boolean>();
 const isSliding = ref<boolean>();
 
 const { width: imageSliderWidth } = useElementSize(imageSlider);
+let timeoutGuard: ReturnType<typeof setTimeout> | undefined;
 
 onMounted(() => {
   initSlider();
+
+  useResizeObserver(slider, () => {
+    clearTimeout(timeoutGuard);
+    timeoutGuard = setTimeout(() => {
+      buildImageSliderTrackStyle(activeSlideIndex.value);
+    }, 100);
+  });
 });
 
 onBeforeUnmount(() => {
@@ -226,6 +234,7 @@ defineExpose({
 </script>
 <template>
   <div
+    ref="slider"
     :class="{
       'relative overflow-hidden': true,
       'px-10': navigationArrowsValue === 'outside',

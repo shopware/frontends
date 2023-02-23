@@ -11,7 +11,9 @@ const leftContent = getSlotContent("left");
 </script>
 
 <template>
-  <div class="container mx-auto flex flex-row gap-10">
+  <div
+    class="lg:container mx-auto flex flex-col lg:flex-row gap-10 justify-center"
+  >
     <div class="overflow-hidden basis-4/6">
       <CmsGenericElement :content="leftContent" />
     </div>
