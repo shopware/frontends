@@ -5,7 +5,7 @@ head:
       content: "Overwriting and extending composables"
   - - meta
     - name: og:description
-      content: "See how to overvwrite and extend core composables to make the logic work for every usecase"
+      content: "See how to overwrite and extend core composables to make the logic work for every usecase"
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Overwrite%20Composables.png"
