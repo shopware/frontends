@@ -58,3 +58,11 @@ It is possible to integrate Shopware Frontends into an existing project. As of n
 This can be applicable if you have an existing frontend application and you want to build eCommerce functionality into it.
 
 <PageRef page="./templates/custom-project" title="Custom Project" sub="Integrate Shopware Frontends into an existing Vue.js project" />
+
+## Framework supporting Vue
+
+In theory, every place where the Vue instance is available, is supported by Shopware Frontends too. 
+
+The only requirement is to have a possibility to register a Vue 3 plugin, and that's what can be done in [Astro.js](https://astro.build/) as well.
+
+<PageRef page="./templates/astro-template" title="Astro.js project" sub="Integrate Shopware Frontends into an SSR oriented project supporting Vue.js" />

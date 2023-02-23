@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Session from '../components/Session.vue';
+---
+
+<Layout title="Shopware Frontends & Astro">
+	<main>
+		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
+		<p class="instructions"><img class="frontends-logo" src="/shopware-frontends-logo.png" width="100%"> <code>empowered</code>
+			<Session/>
+		</p>
+		<p class="instructions">
+			To get started, open the file <code>src/components/Session.vue</code> in your project.<br />
+		</p>
+		
+	</main>
+</Layout>
+
+<style>
+	main {
+		margin: auto;
+		padding: 1.5rem;
+		max-width: 60ch;
+	}
+	h1 {
+		font-size: 3rem;
+		font-weight: 800;
+		margin: 0;
+	}
+	.text-gradient {
+		background-image: var(--accent-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-size: 400%;
+		background-position: 0%;
+	}
+	.instructions {
+		line-height: 1.6;
+		margin: 1rem 0;
+		border: 1px solid rgba(var(--accent), 25%);
+		background-color: white;
+		padding: 1rem;
+		border-radius: 0.4rem;
+	}
+	.instructions code {
+		font-size: 0.875em;
+		font-weight: bold;
+		background: rgba(var(--accent), 12%);
+		color: rgb(var(--accent));
+		border-radius: 4px;
+		padding: 0.3em 0.45em;
+	}
+	.instructions strong {
+		color: rgb(var(--accent));
+	}
+	.frontends-logo {
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+</style>
