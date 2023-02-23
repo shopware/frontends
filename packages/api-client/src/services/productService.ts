@@ -108,3 +108,31 @@ export async function getProductReviews(
   });
   return resp.data;
 }
+
+
+/**
+ * Get matching product variant for given options
+ * 
+ * @category Product
+ */
+export async function getProductVariantForOptions(
+  {
+    productId,
+    optionIds,
+    switchedGroup,
+  }: { productId?: string; optionIds?: string[]; switchedGroup?: string },
+  contextInstance: ShopwareApiInstance = defaultInstance
+): Promise<{
+  variantId: string;
+  options: string[];
+}> {
+  const response = await contextInstance.invoke.post<{
+    variantId: string;
+    options: string[];
+  }>(`/store-api/product/${productId}/find-variant`, {
+    options: optionIds,
+    switchedGroup,
+  });
+
+  return response?.data;
+}
