@@ -71,7 +71,7 @@ watch(enter, (value) => {
 <template>
   <div
     ref="searchContainer"
-    class="relative group p-3 rounded-lg transition duration-300 hover:shadow-md"
+    class="relative group p-3 pr-0 rounded-lg transition duration-300 hover:shadow-md inline-block"
     :class="[active ? 'shadow-lg' : 'shadow']"
   >
     <div class="flex items-center">
@@ -84,7 +84,7 @@ watch(enter, (value) => {
         v-model="typingQuery"
         data-testid="layout-search-input"
         type="text"
-        class="sw-search-input text-gray-400 placeholder:text-gray-400 focus:text-gray-700 p-2 ml-2 grow h-6 transition duration-200 focus:outline-none"
+        class="sw-search-input text-gray-400 placeholder:text-gray-400 focus:text-gray-700 p-2 ml-2 lg:ml-0 xl:ml-2 grow h-6 transition duration-200 focus:outline-none w-56 lg:w-10/12"
         placeholder="Search products"
         @click="active = true"
       >
