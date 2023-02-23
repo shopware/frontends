@@ -35,8 +35,8 @@ useBreadcrumbs([
   <div class="flex justify-center">
     <img
       class="md:w-11/12"
-      src="https://gitlab.shopware.com/product/engineering/platform-group/pwa/frontends/-/raw/main/.readme/shopware-frontends-logo.png"
-      alt="logo"
+      src="https://raw.githubusercontent.com/shopware/frontends/main/.readme/shopware-frontends-logo.png"
+      alt="logo shopware frontends"
     />
   </div>
 
@@ -48,32 +48,13 @@ useBreadcrumbs([
     >
       <img :src="image" alt="Cms image" />
     </div>
+  </div>
 
-    <!-- Remove when composable useProductSearchSuggest is merged -->
-
-    <div class="rounded-lg shadow-lg m-10 p-10 flex flex-col">
-      <input
-        v-model="searchTerm"
-        placeholder="Search a product ..."
-        class="rounded-md p-5 shadow-md mb-5"
-      />
-
-      <button
-        class="rounded-md bg-brand-primary p-3 mb-5 text-white"
-        @click="search()"
-      >
-        Search
-      </button>
-
-      <div class="text-center mb-3">Items found {{ getTotal }}</div>
-
-      <div class="text-center">
-        <div v-for="product in getProducts" :key="product.id">
-          {{ product.translated.name }}
-        </div>
-      </div>
-    </div>
-
-    <!-- Until here -->
+  <div class="mx-10 mt-10 flex flex-wrap justify-center">
+    <img
+      class="md:w-9/12"
+      src="https://raw.githubusercontent.com/shopware/frontends/main/.readme/shopware-frontends-techstack.png"
+      alt="techstack shopware frontends"
+    />
   </div>
 </template>
