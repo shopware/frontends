@@ -3,6 +3,7 @@ import { Category } from "@shopware-pwa/types";
 import { useCategorySearch } from "@shopware-pwa/composables-next";
 import { Ref } from "vue";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
+import { useCmsHead } from "@/composables/useCmsHead";
 
 const props = defineProps<{
   navigationId: string;
@@ -30,6 +31,7 @@ const breadcrumbs = getCategoryBreadcrumbs(categoryResponse.value, {
 useBreadcrumbs(breadcrumbs);
 
 const { category } = useCategory(categoryResponse as Ref<Category>);
+useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
 
 <template>

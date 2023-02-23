@@ -72,6 +72,14 @@ export type CmsPageResponse =
 /**
  * @public
  */
+export type CmsPageEntity =
+  | Category
+  | LandingPage
+  | Product;
+
+/**
+ * @public
+ */
 export type Breadcrumb = {
   name: string;
   path: string;

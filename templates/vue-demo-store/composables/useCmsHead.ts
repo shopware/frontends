@@ -1,9 +1,7 @@
-import type { CmsPageResponse, Product } from "@shopware-pwa/types";
+import type { CmsPageEntity } from "@shopware-pwa/types";
 import {
-  getCmsEntityObject,
   getCategoryImageUrl,
   getProductThumbnailUrl,
-  isCategory,
   isLandingPage,
   isProduct,
 } from "@shopware-pwa/helpers-next";
@@ -15,13 +13,14 @@ type MetaEntry = {
   content: string;
 };
 export function useCmsHead(
-  cmsPage: CmsPageResponse,
+  entity: Ref<CmsPageEntity> | ComputedRef<CmsPageEntity>,
   options?: {
     mainShopTitle?: string;
   }
 ): UseCmsHeadReturn {
+  const unrefEntity = unref(entity) as CmsPageEntity;
   // get title and meta tags available in the Shopware instance
-  const { title: metaTitle, meta } = useCmsMeta(cmsPage);
+  const { title: metaTitle, meta } = useCmsMeta(unrefEntity);
 
   const title = computed(() => {
     const title = metaTitle.value;
@@ -42,18 +41,17 @@ export function useCmsHead(
       }))
   );
 
-  const entity = getCmsEntityObject(cmsPage);
   // access to image varies depending on the type of the entity
   const ogImage = computed(() => {
-    if (isLandingPage(entity)) {
+    if (isLandingPage(unrefEntity)) {
       return {};
     }
 
     return {
       name: "og:image",
-      content: isProduct(entity)
-        ? getProductThumbnailUrl(entity)
-        : getCategoryImageUrl(entity),
+      content: isProduct(unrefEntity)
+        ? getProductThumbnailUrl(unrefEntity)
+        : getCategoryImageUrl(unrefEntity),
     };
   });
 

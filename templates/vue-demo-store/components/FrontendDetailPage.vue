@@ -30,6 +30,8 @@ const { product } = useProduct(
   productResponse.value?.product,
   productResponse.value?.configurator
 );
+
+useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
 <template>
   <div class="container mx-auto bg-white flex flex-col">
