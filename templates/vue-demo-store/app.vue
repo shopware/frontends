@@ -18,6 +18,7 @@ useHead({
 const { refreshSessionContext } = useSessionContext();
 onBeforeMount(async () => {
   await refreshSessionContext();
+  getWishlistProducts();
 });
 
 const { apiInstance } = useShopwareContext();

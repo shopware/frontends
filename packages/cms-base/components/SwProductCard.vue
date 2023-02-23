@@ -12,11 +12,11 @@ import {
   getTranslatedProperty,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
-import { Product, PropertyGroupOption } from "@shopware-pwa/types";
+import { ClientApiError, Product, PropertyGroupOption } from "@shopware-pwa/types";
 import { Ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 
-const { pushSuccess } = useNotifications();
+const { pushSuccess, pushError } = useNotifications();
 
 const props = withDefaults(
   defineProps<{
@@ -38,12 +38,22 @@ const { addToCart } = useAddToCart(product);
 const { addToWishlist, removeFromWishlist, isInWishlist } =
   useProductWishlist(product);
 
-const toggleWishlistProduct = () => {
+const toggleWishlistProduct = async () => {
   if (!isInWishlist.value) {
-    addToWishlist();
-    return pushSuccess(
-      `${props.product?.translated?.name} has been added to wishlist.`
-    );
+    try {
+     await addToWishlist();
+    return pushSuccess(`${props.product?.translated?.name} has been added to wishlist.`)
+    } catch (error) {
+      const e = error as ClientApiError;
+      const reason = e?.messages?.[0]?.detail ? `Reason: ${e?.messages?.[0]?.detail}` : '';
+      return pushError(
+      `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
+      {
+        timeout: 5000
+      }
+      );
+    }
+    
   }
   removeFromWishlist();
 };
