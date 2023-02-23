@@ -57,8 +57,10 @@ const sidebarSelectedFilters: UnwrapNestedRefs<{
 const searchCriteriaForRequest: ComputedRef<{
   [code: string]: string | string[] | number | number[] | boolean | undefined;
 }> = computed(() => ({
-  manufacturer: [...sidebarSelectedFilters.manufacturer],
-  properties: [...sidebarSelectedFilters.properties],
+  // turn Set to array and then into string with | separator
+  manufacturer: [...sidebarSelectedFilters.manufacturer]?.join("|"),
+  // turn Set to array and then into string with | separator
+  properties: [...sidebarSelectedFilters.properties]?.join("|"),
   "min-price": sidebarSelectedFilters["min-price"],
   "max-price": sidebarSelectedFilters["max-price"],
   order: getCurrentSortingOrder.value,
@@ -99,6 +101,7 @@ const onOptionSelectToggle = async ({
       sidebarSelectedFilters[code]?.add(value);
     }
   }
+
 
   await search(searchCriteriaForRequest.value);
   await router.push({
