@@ -35,4 +35,5 @@ export type LineItem = {
   quantityInformation: QuantityInformation | null;
   modified: boolean;
   apiAlias: "line_item";
+  states: string[];
 };
