@@ -39,18 +39,18 @@
   "dependencies": {
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "@vueuse/core": "^9.12.0",
+    "@vueuse/core": "^9.13.0",
     "scule": "^1.0.0"
   },
   "devDependencies": {
     "@shopware-pwa/types": "workspace:*",
     "@vitest/coverage-c8": "^0.28.5",
-    "@vue/test-utils": "^2.2.10",
+    "@vue/test-utils": "^2.3.0",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^8.2.6",
+    "happy-dom": "^8.7.2",
     "tsconfig": "workspace:*",
     "typescript": "^4.9.5",
-    "unbuild": "^1.1.1",
+    "unbuild": "^1.1.2",
     "vitest": "^0.28.5",
     "vue": "^3.2.47"
   }

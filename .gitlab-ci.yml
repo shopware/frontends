@@ -104,7 +104,7 @@ deploy-job: # This job runs in the deploy stage.
 
 e2e tests:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.30.0-focal
+  image: mcr.microsoft.com/playwright:v1.31.1-focal
   needs:
     - job: deploy-job
       artifacts: true
@@ -129,7 +129,7 @@ lighthouse tests:
 
 vue demo store:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.30.0-focal
+  image: mcr.microsoft.com/playwright:v1.31.1-focal
   only:
     - schedules
   script:
@@ -139,7 +139,7 @@ vue demo store:
 
 vue blank:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.30.0-focal
+  image: mcr.microsoft.com/playwright:v1.31.1-focal
   only:
     - schedules
   script:
@@ -149,7 +149,7 @@ vue blank:
 
 vue vite blank:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.30.0-focal
+  image: mcr.microsoft.com/playwright:v1.31.1-focal
   only:
     - schedules
   script:
@@ -159,7 +159,7 @@ vue vite blank:
 
 code examples:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.30.0-focal
+  image: mcr.microsoft.com/playwright:v1.31.1-focal
   only:
     - schedules
   script:
