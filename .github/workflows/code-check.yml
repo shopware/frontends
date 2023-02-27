@@ -10,10 +10,6 @@ jobs:
   init:
     name: Init dependencies
     timeout-minutes: 15
-    # To use Remote Caching, uncomment the next lines and follow the steps below.
-    # env:
-    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-    #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     runs-on: ubuntu-latest
 
     steps:
@@ -56,10 +52,9 @@ jobs:
     name: Build
     timeout-minutes: 15
     needs: init
-    # To use Remote Caching, uncomment the next lines and follow the steps below.
-    # env:
-    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-    #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     runs-on: ubuntu-latest
 
     steps:
