@@ -24,7 +24,7 @@ default:
       - .pnpm-store
       - ./node_modules
     policy: pull
-image: node:18.3.0
+image: node:18.14.1
 
 stages: # List of stages for jobs, and their order of execution
   - init
