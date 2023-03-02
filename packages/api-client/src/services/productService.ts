@@ -109,10 +109,9 @@ export async function getProductReviews(
   return resp.data;
 }
 
-
 /**
  * Get matching product variant for given options
- * 
+ *
  * @category Product
  */
 export async function getProductVariantForOptions(

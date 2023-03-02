@@ -11,7 +11,7 @@ const gridColumns = computed<number>(() =>
 </script>
 
 <template>
-  <footer class="px-4 sm:px-6">
+  <footer class="px-4 sm:px-6 mt-2 lg:mt-8">
     <menu class="border-t-2 border-gray-100 flex justify-center">
       <div
         class="py-10 w-full max-w-screen-xl"

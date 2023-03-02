@@ -3,7 +3,7 @@ const { breadcrumbs } = useBreadcrumbs();
 </script>
 <template>
   <nav
-    class="max-w-screen-xl mx-auto flex mt-8 mb-8 px-4 sm:px-6"
+    class="hidden lg:flex max-w-screen-xl mx-auto mt-8 mb-8 px-4 sm:px-6"
     aria-label="Breadcrumb"
   >
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -18,9 +18,9 @@ const { breadcrumbs } = useBreadcrumbs();
         <div class="w-5 h-5 i-carbon-chevron-right" />
       </li>
       <li
-        class="inline-flex items-center"
         v-for="(breadcrumb, index) in breadcrumbs"
         :key="breadcrumb.path"
+        class="inline-flex items-center"
       >
         <nuxt-link
           v-if="breadcrumb.path"
@@ -38,7 +38,7 @@ const { breadcrumbs } = useBreadcrumbs();
         <div
           v-if="index < breadcrumbs.length - 1"
           class="w-5 h-5 i-carbon-chevron-right"
-        ></div>
+        />
       </li>
     </ol>
   </nav>

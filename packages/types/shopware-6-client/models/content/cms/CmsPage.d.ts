@@ -72,10 +72,7 @@ export type CmsPageResponse =
 /**
  * @public
  */
-export type CmsPageEntity =
-  | Category
-  | LandingPage
-  | Product;
+export type CmsPageEntity = Category | LandingPage | Product;
 
 /**
  * @public

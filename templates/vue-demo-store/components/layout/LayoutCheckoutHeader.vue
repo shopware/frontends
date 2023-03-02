@@ -17,7 +17,7 @@ import { RouterLink } from "vue-router";
               alt="Logo"
               width="40px"
               height="40px"
-            >
+            />
           </RouterLink>
         </div>
         <AccountMenu />

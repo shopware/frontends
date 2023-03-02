@@ -22,7 +22,7 @@ const isSidebarOpen = inject("isSidebarOpen");
                 alt="Logo"
                 width="40px"
                 height="40px"
-              >
+              />
             </RouterLink>
           </div>
           <div class="order-1 lg:order-2 py-3 lg:p-0">

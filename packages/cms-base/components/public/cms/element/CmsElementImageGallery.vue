@@ -183,7 +183,7 @@ function next() {
             :key="image.media.url"
           >
             <div
-              class="h-20 overflow-hidden cursor-pointer p-1 border-gray-200 rounded transition duration-150 ease-in-out"
+              class="w-14 h-20 overflow-hidden cursor-pointer p-1 border-gray-200 rounded transition duration-150 ease-in-out"
               :class="{
                 border: i !== currentIndex,
                 'border-indigo-500 border-3': i === currentIndex,

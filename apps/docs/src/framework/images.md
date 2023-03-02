@@ -22,7 +22,7 @@ import StackBlitzLiveExample from "../components/StackBlitzLiveExample.vue";
 This section covers topics related to images, with a focus on what comes from API.
 
 :::warning Not auto-loaded
-Although images are not always contained in API responses, we try to keep the composables logic aware of that and ready to load if they are needed. 
+Although images are not always contained in API responses, we try to keep the composables logic aware of that and ready to load if they are needed.
 
 Which means if you need to work with images, ensure the requests contains additional [associations](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#associations).
 
@@ -35,16 +35,17 @@ Example of request's payload with media association included, to avoid an empty 
   }
 }
 ```
+
 :::
 
 ## Structure of media objects
 
 Media objects can be used in many places, such as:
 
-* CMS objects (containing [CmsElementImage](https://github.com/shopware/frontends/blob/main/packages/composables/src/types/cmsElementTypes.ts#L71) element)
-* Product (cover image, image gallery, attributes in type media, etc.)
-* Category (main image, ...)
-* ... 
+- CMS objects (containing [CmsElementImage](https://github.com/shopware/frontends/blob/main/packages/composables/src/types/cmsElementTypes.ts#L71) element)
+- Product (cover image, image gallery, attributes in type media, etc.)
+- Category (main image, ...)
+- ...
 
 Regardless the outer container (see [ProductMedia](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/models/content/product/ProductMedia.d.ts#L8) as example) an image object can be wrapped with, the inner structure is reflected in type definition at [Media](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/models/content/media/Media.d.ts#L23)
 
@@ -54,7 +55,7 @@ Let's have a look what's inside:
 {
   // irrelevant data omitted
   ...
-  "mimeType": "image/webp", // mime-type of media object, supported by the Shopware 6 platform 
+  "mimeType": "image/webp", // mime-type of media object, supported by the Shopware 6 platform
   "fileExtension": "webp",
   "fileSize": 492024,
   "title": "Frontends Logo",
@@ -90,10 +91,11 @@ The media object, and its `thumbnails` list, contain all required information ab
 
 ## Thumbnails and resolutions
 
-By default, every uploaded image is resized to the predefined width and height sizes (in pixels): 
-* 1920x1920
-* 800x800
-* 400x400
+By default, every uploaded image is resized to the predefined width and height sizes (in pixels):
+
+- 1920x1920
+- 800x800
+- 400x400
 
 In order to change those sizes, or add another one (also the quality, or to keep aspect ratio), the values need to be adjusted in administration panel, for specific media folder.
 
@@ -113,7 +115,6 @@ Example how to work with Product's main image:
 import type { Product } from "@shopware-pwa/types";
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 
-
 const coverUrl = getMainImageUrl(product as Product);
 // coverUrl is now an URL to the resource (or undefined)
 ```
@@ -129,7 +130,7 @@ const product: Product = {} // an object omitted
 // get the cover media image (main image for a product)
 const coverMedia = product.cover?.media as Media
 // prepare `srcset` string for available thumbnails
-// let the breakpoints be for every width range 
+// let the breakpoints be for every width range
 const srcset = coverMedia?.thumbnails?.map((thumb) => `${thumb.url} ${thumb.width}w`).join(", ")
 </script>
 
@@ -144,6 +145,7 @@ const srcset = coverMedia?.thumbnails?.map((thumb) => `${thumb.url} ${thumb.widt
 ```
 
 ### Live example
+
 Have a look on live example:
 <StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/responsive-images" openPath="/" />
 <br/>
@@ -153,6 +155,5 @@ The example above shows how to use dimension sizes configured in admin panel as 
 The `src` attribute points to the main image URL (not resized) as a fallback.
 
 As long as `thumbnails` array is fulfilled, the same strategy can be applied when we work with every `media` object for each entity available in Shopware 6.
-
 
 <PageRef page="../best-practices/images" title="Best Practices" sub="Best Practices to work with images" />

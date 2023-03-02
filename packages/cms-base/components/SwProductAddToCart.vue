@@ -26,14 +26,14 @@ const addToCartProxy = async () => {
         :min="product.minPurchase || 1"
         :max="product.calculatedMaxPurchase"
         :step="product.purchaseSteps || 1"
-        class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
+        class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full mt-4"
         data-testid="product-quantity"
       />
     </div>
     <div class="basis-3/4 ml-4">
       <button
         @click="addToCartProxy"
-        class="py-2 px-6 w-full bg-gradient-to-r from-cyan-500 to-blue-500 transition ease-in-out hover:bg-gradient-to-l duration-300 cursor-pointer border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        class="py-2 px-6 w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 transition ease-in-out hover:bg-gradient-to-l duration-300 cursor-pointer border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         data-testid="add-to-cart-button"
       >
         Add to cart

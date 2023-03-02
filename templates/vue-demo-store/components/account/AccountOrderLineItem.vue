@@ -29,7 +29,9 @@ export default {
         />
       </div>
       <div v-else class="w-24" />
-      <div class="my-5 text-center">{{ lineItem.label }}</div>
+      <div class="my-5 text-center">
+        {{ lineItem.label }}
+      </div>
     </div>
     <div class="flex justify-between">
       <div class="sm:hidden">Quantity</div>

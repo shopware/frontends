@@ -8,8 +8,7 @@ import {
 const props = defineProps<{ product: Product }>();
 
 const { product } = toRefs(props);
-const { unitPrice, displayFrom } =
-  useProductPrice(product);
+const { unitPrice, displayFrom } = useProductPrice(product);
 </script>
 <template>
   <div

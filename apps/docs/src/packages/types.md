@@ -2,6 +2,7 @@
 nav:
   position: 60
 ---
+
 # Types Reference
 
 ::: warning Work in progress
