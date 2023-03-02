@@ -6,9 +6,9 @@ import stackblitzIcon from '../../.assets/framework-icons/stackblitz.png';
 
 <img src="../../.assets/astro-template.png" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
 
-The blank Astro bootstrap application with pre-installed dependencies, so you can start working on your project right away. 
+The blank Astro bootstrap application with pre-installed dependencies, so you can start working on your project right away.
 
-**Now you can use `composables` and `api-client` libraries in every Vue component created in an Astro project.** 
+**Now you can use `composables` and `api-client` libraries in every Vue component created in an Astro project.**
 
 ## Setup & run
 

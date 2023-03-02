@@ -11,7 +11,9 @@ function isProduct(
  *
  * @public
  */
-export function getMainImageUrl(object: Product | LineItem | OrderLineItem): string {
+export function getMainImageUrl(
+  object: Product | LineItem | OrderLineItem
+): string {
   if (isProduct(object)) {
     return object?.cover?.media?.url || object?.media?.[0]?.media.url || "";
   }

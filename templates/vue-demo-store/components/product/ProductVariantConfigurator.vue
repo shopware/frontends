@@ -67,7 +67,7 @@ const onHandleChange = async () => {
       </h3>
       <fieldset class="mt-4 flex-1">
         <legend class="sr-only">Choose a {{ optionGroup.name }}</legend>
-        <div class="flex">
+        <div class="flex gap3">
           <label
             v-for="option in optionGroup.options"
             :key="option.id"

@@ -102,7 +102,6 @@ const onOptionSelectToggle = async ({
     }
   }
 
-
   await search(searchCriteriaForRequest.value);
   await router.push({
     query: {

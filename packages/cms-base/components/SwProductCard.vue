@@ -12,7 +12,11 @@ import {
   getTranslatedProperty,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
-import { ClientApiError, Product, PropertyGroupOption } from "@shopware-pwa/types";
+import {
+  ClientApiError,
+  Product,
+  PropertyGroupOption,
+} from "@shopware-pwa/types";
 import { Ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 
@@ -41,19 +45,22 @@ const { addToWishlist, removeFromWishlist, isInWishlist } =
 const toggleWishlistProduct = async () => {
   if (!isInWishlist.value) {
     try {
-     await addToWishlist();
-    return pushSuccess(`${props.product?.translated?.name} has been added to wishlist.`)
+      await addToWishlist();
+      return pushSuccess(
+        `${props.product?.translated?.name} has been added to wishlist.`
+      );
     } catch (error) {
       const e = error as ClientApiError;
-      const reason = e?.messages?.[0]?.detail ? `Reason: ${e?.messages?.[0]?.detail}` : '';
+      const reason = e?.messages?.[0]?.detail
+        ? `Reason: ${e?.messages?.[0]?.detail}`
+        : "";
       return pushError(
-      `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
-      {
-        timeout: 5000
-      }
+        `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
+        {
+          timeout: 5000,
+        }
       );
     }
-    
   }
   removeFromWishlist();
 };
@@ -80,20 +87,22 @@ const ratingAverage: Ref<number> = computed(() =>
         layoutType === 'image' ? 'h-80' : 'h-60',
       ]"
     >
-      <img
-        :src="getProductThumbnailUrl(product)"
-        :alt="getProductName({ product }) || ''"
-        :class="{
-          'w-full h-full': true,
-          'object-cover':
-            displayMode === 'cover' ||
-            (displayMode === 'standard' && layoutType === 'image'),
-          'object-contain': displayMode === 'contain',
-          'object-scale-down':
-            displayMode === 'standard' && layoutType !== 'image',
-        }"
-        data-testid="product-box-img"
-      />
+      <RouterLink :to="getProductUrl(product)">
+        <img
+          :src="getProductThumbnailUrl(product)"
+          :alt="getProductName({ product }) || ''"
+          :class="{
+            'w-full h-full': true,
+            'object-cover':
+              displayMode === 'cover' ||
+              (displayMode === 'standard' && layoutType === 'image'),
+            'object-contain': displayMode === 'contain',
+            'object-scale-down':
+              displayMode === 'standard' && layoutType !== 'image',
+          }"
+          data-testid="product-box-img"
+        />
+      </RouterLink>
     </div>
     <button
       aria-label="Add to wishlist"

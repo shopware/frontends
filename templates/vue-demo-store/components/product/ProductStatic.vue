@@ -43,23 +43,33 @@ const handleVariantChange = (val: Product) => {
 
 <template>
   <!-- eslint-disable vue/no-v-html -->
-  <div class="flex flex-col lg:flex-row gap-10">
-    <!-- Image gallery -->
-    <div class="product-gallery w-full lg:w-3/5 overflow-hidden">
+  <div class="flex flex-row flex-wrap justify-start">
+    <!-- Product name for mobile view -->
+    <div class="basis-12/12 display lg:hidden">
+      <h1
+        class="pl-4 py-4 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"
+        v-html="productName"
+      />
+    </div>
+    <div class="basis-12/12 lg:basis-7/12 product-gallery overflow-hidden">
       <ProductGallery :product="product" />
     </div>
-
-    <div class="product-description flex-1">
+    <div class="basis-12/12 lg:basis-5/12 product-description">
       <!-- Product info -->
       <div
-        class="max-w-2xl mx-auto pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pb-24 lg:px-8 lg:grid lg:grid-cols-1 lg:grid-rows-[auto] lg:gap-x-8"
+        class="max-w-2xl mx-auto pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pb-24 lg:pl-16 lg:pr-0"
       >
-        <div class="lg:col-span-2 lg:pr-8 static-container">
+        <!-- Product name starting from lg breakpoint -->
+        <div
+          class="hidden lg:block text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"
+          v-html="productName"
+        />
+
+        <div
+          v-show="manufacturerName !== ''"
+          class="lg:col-span-2 lg:pr-8 static-container"
+        >
           <div class="container mx-auto pt-8 flex flex-row">
-            <h1
-              class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl basis-4/6"
-              v-html="productName"
-            />
             <div class="basis-2/6 text-right">
               {{ manufacturerName }}
             </div>
@@ -83,7 +93,7 @@ const handleVariantChange = (val: Product) => {
           <div class="container mx-auto mb-8">
             <!-- Description and details -->
             <div v-if="description">
-              <h3 class="text-sm font-medium text-gray-900">Description</h3>
+              <h3 class="text-sm font-bold text-gray-900">Description</h3>
               <div class="mt-4 space-y-6">
                 <div class="text-base text-gray-900" v-html="description" />
               </div>

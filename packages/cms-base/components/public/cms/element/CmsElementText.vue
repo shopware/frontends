@@ -57,7 +57,7 @@ const CmsTextRender = () => {
         },
         renderer(node: any, children: any, createElement: any) {
           const btnClass =
-            "rounded-md py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
+            "rounded-md inline-block my-2 py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
           const _class = node?.attrs?.class
             .replace("btn-secondary", `${btnClass} bg-brand-dark text-white`)
             .replace("btn-primary", `${btnClass} bg-brand-primary text-white`);
@@ -74,7 +74,8 @@ const CmsTextRender = () => {
       },
     },
   };
-  const rawHtml = mappedContent.value?.length > 0 ? mappedContent.value : "<div></div>";
+  const rawHtml =
+    mappedContent.value?.length > 0 ? mappedContent.value : "<div></div>";
   return renderHtml(rawHtml, config, h, context);
 };
 </script>

@@ -61,7 +61,7 @@ This can be applicable if you have an existing frontend application and you want
 
 ## Framework supporting Vue
 
-In theory, every place where the Vue instance is available, is supported by Shopware Frontends too. 
+In theory, every place where the Vue instance is available, is supported by Shopware Frontends too.
 
 The only requirement is to have a possibility to register a Vue 3 plugin, and that's what can be done in [Astro.js](https://astro.build/) as well.
 

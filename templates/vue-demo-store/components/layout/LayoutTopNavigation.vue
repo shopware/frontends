@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { getTranslatedProperty, getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
+import {
+  getTranslatedProperty,
+  getSmallestThumbnailUrl,
+} from "@shopware-pwa/helpers-next";
 const { navigationElements } = useNavigation();
 
 const currentMenuPosition = ref<string | null>(null);
@@ -41,7 +44,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
         <div
           v-if="
             currentMenuPosition === navigationElement.id &&
-              navigationElement?.children?.length
+            navigationElement?.children?.length
           "
           class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/4"
           @mouseleave="currentMenuPosition = null"
@@ -62,7 +65,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                 <RouterLink
                   v-if="
                     typeof childElement?.seoUrls?.[0]?.seoPathInfo !==
-                      'undefined'
+                    'undefined'
                   "
                   :to="'/' + childElement?.seoUrls?.[0]?.seoPathInfo"
                   class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
@@ -84,21 +87,15 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                       "
                     />
                   </div>
-                  <div
-                    v-if="childElement.media"
-                    class="flex"
-                  >
+                  <div v-if="childElement.media" class="flex">
                     <img
                       :src="getSmallestThumbnailUrl(childElement.media)"
                       class="object-scale-down h-48 w-px-200 rounded-md"
                       alt="Category image"
-                    >
+                    />
                   </div>
                 </RouterLink>
-                <div
-                  v-else
-                  class="px-4 py-2 sm:py-3"
-                >
+                <div v-else class="px-4 py-2 sm:py-3">
                   <p class="text-base font-medium text-gray-500">
                     {{ getTranslatedProperty(childElement, "name") }}
                   </p>

@@ -94,17 +94,17 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     });
 
     // @ts-expect-error - private API
-    nuxt.hook('devtools:customTabs', (iframeTabs) => {  
+    nuxt.hook("devtools:customTabs", (iframeTabs) => {
       iframeTabs.push({
-        name: 'frontends',
-        title: 'Shopware',
-        icon: 'fa6-brands:shopware',
+        name: "frontends",
+        title: "Shopware",
+        icon: "fa6-brands:shopware",
         view: {
-          type: 'iframe',
-          src: 'https://shopware-frontends-docs.vercel.app/',
+          type: "iframe",
+          src: "https://shopware-frontends-docs.vercel.app/",
         },
-      })
-    })
+      });
+    });
 
     // nuxt.hook('')
   },

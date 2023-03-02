@@ -30,8 +30,7 @@ const referenceUnitName = computed(
       Content: {{ purchaseUnit }} {{ unitName }}
     </template>
     <template v-if="referencePrice">
-      (
-      <SharedPrice :value="referencePrice" /> / {{ referenceUnit }}
+      (<SharedPrice :value="referencePrice" /> / {{ referenceUnit }}
       {{ referenceUnitName }} )
     </template>
   </div>

@@ -15,20 +15,20 @@ Go to [Documentation > Requirements](https://shopware-frontends-docs.vercel.app/
 
 ## Set up your Shopware 6 instance
 
-In order to have a different API connected to the app, change two lines of code in [./src/entrypoints/_shopware.ts](./src/entrypoints/_shopware.ts):
+In order to have a different API connected to the app, change two lines of code in [./src/entrypoints/\_shopware.ts](./src/entrypoints/_shopware.ts):
 
 ```js
 // src/entrypoints/_shopware.ts
 
 export default (app: App) => {
   const apiInstance = createInstance({
-    endpoint: "https://demo-frontends.shopware.store",  // CHANGE HERE
-    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",          // AND HERE
+    endpoint: "https://demo-frontends.shopware.store", // CHANGE HERE
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW", // AND HERE
   });
   const shopwareContext = createShopwareContext(app, {
     apiInstance,
   });
-  
+
   app.use(shopwareContext);
 };
 ```
@@ -36,7 +36,6 @@ export default (app: App) => {
 ## Customize
 
 Now, you are free to use the `@shopware-pwa/composables-next` package in the application. You can start from [Session.vue](./src/components/Session.vue).
-
 
 ## Install & Run
 

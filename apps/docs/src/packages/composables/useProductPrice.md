@@ -10,11 +10,11 @@ The purpose of the `useProductPrice` function is to abstract the logic to expose
 
 ```ts
 const {
-    price,
-    unitPrice,
-    displayFromVariants,
-    displayFrom,
-    tierPrices,
-    isListPrice,
-    } = useProductPrice(product);
+  price,
+  unitPrice,
+  displayFromVariants,
+  displayFrom,
+  tierPrices,
+  isListPrice,
+} = useProductPrice(product);
 ```

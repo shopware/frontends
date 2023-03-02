@@ -36,16 +36,16 @@ export type UseOrderPaymentReturn = {
    */
   handlePayment: (
     /**
-    * URL to redirect after successful payment
-    */
+     * URL to redirect after successful payment
+     */
     successUrl?: string,
     /**
-    * URL to redirect after failed payment
-    */
+     * URL to redirect after failed payment
+     */
     errorUrl?: string,
     /**
-    * additional payment details to provide
-    */
+     * additional payment details to provide
+     */
     paymentDetails?: unknown
   ) => Promise<void | unknown>;
   /**
