@@ -73,6 +73,10 @@ export type UseCartReturn = {
    * `true` if the cart contains no items
    */
   isEmpty: ComputedRef<boolean>;
+  /**
+   * `true` if cart contains only digital items
+   */
+  isVirtualCart: ComputedRef<boolean>;
 };
 
 /**
@@ -219,6 +223,12 @@ export function useCartFunction(): UseCartReturn {
     () => (cart.value?.errors && Object.values(cart.value.errors)) || []
   );
 
+  const isVirtualCart = computed(() => {
+    return cartItems.value
+      .filter((element) => element.type !== "promotion")
+      .every((item) => item.states.includes("is-download"));
+  });
+
   return {
     addProduct,
     addPromotionCode: submitPromotionCode,
@@ -235,6 +245,7 @@ export function useCartFunction(): UseCartReturn {
     cartErrors,
     getProductItemsSeoUrlsData,
     isEmpty,
+    isVirtualCart,
   };
 }
 

@@ -35,7 +35,8 @@ const {
   activeBillingAddress,
   setActiveBillingAddress,
 } = useSessionContext();
-const { cart, cartItems, subtotal, totalPrice, shippingTotal } = useCart();
+const { cart, cartItems, subtotal, totalPrice, shippingTotal, isVirtualCart } =
+  useCart();
 const { customerAddresses, loadCustomerAddresses } = useAddress();
 const modal = inject<SharedModal>("modal") as SharedModal;
 const isLoading = reactive<{ [key: string]: boolean }>({});
@@ -170,7 +171,7 @@ onMounted(async () => {
 
   Promise.any([
     isLoggedIn.value ? loadCustomerAddresses() : null,
-    getShippingMethods(),
+    !isVirtualCart.value ? getShippingMethods() : null,
     getPaymentMethods(),
   ]).finally(() => {
     isLoading["shippingAddress"] = false;
@@ -541,7 +542,10 @@ async function invokeLogout() {
               >.
             </div>
           </div>
-          <fieldset class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8">
+          <fieldset
+            v-if="!isVirtualCart"
+            class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8"
+          >
             <legend class="pt-5">
               <h3 class="text-lg font-medium text-gray-900 m-0">
                 Shipping method
@@ -688,61 +692,63 @@ async function invokeLogout() {
             >
               Add new billing address
             </button>
-            <label for="customShipping" class="field-label">
-              <input
-                id="customShipping"
-                v-model="state.customShipping"
-                name="privacy"
-                type="checkbox"
-                class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
-              />
-              Different shipping address
-            </label>
-            <div v-if="state.customShipping">
-              <div
-                v-for="address in customerAddresses"
-                :key="address.id"
-                class="flex mb-3"
-              >
+            <template v-if="!isVirtualCart">
+              <label for="customShipping" class="field-label">
                 <input
-                  :id="`shipping-${address.id}`"
-                  v-model="selectedShippingAddress"
-                  :value="address.id"
-                  name="shipping-address"
-                  type="radio"
-                  class="focus:ring-brand-primary h-4 w-4 border-gray-300"
-                  :data-testid="`checkout-shipping-address-${address.id}`"
+                  id="customShipping"
+                  v-model="state.customShipping"
+                  name="privacy"
+                  type="checkbox"
+                  class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
                 />
-                <label
-                  :for="`shipping-${address.id}`"
-                  :class="{
-                    'animate-pulse': isLoading[`shipping-${address.id}`],
-                  }"
-                  class="ml-2 field-label"
+                Different shipping address
+              </label>
+              <div v-if="state.customShipping">
+                <div
+                  v-for="address in customerAddresses"
+                  :key="address.id"
+                  class="flex mb-3"
                 >
-                  <AccountAddressCard
-                    :key="address.id"
-                    :address="address"
-                    :countries="getCountries"
-                    :salutations="getSalutations"
-                    :can-set-default="false"
+                  <input
+                    :id="`shipping-${address.id}`"
+                    v-model="selectedShippingAddress"
+                    :value="address.id"
+                    name="shipping-address"
+                    type="radio"
+                    class="focus:ring-brand-primary h-4 w-4 border-gray-300"
+                    :data-testid="`checkout-shipping-address-${address.id}`"
                   />
-                </label>
+                  <label
+                    :for="`shipping-${address.id}`"
+                    :class="{
+                      'animate-pulse': isLoading[`shipping-${address.id}`],
+                    }"
+                    class="ml-2 field-label"
+                  >
+                    <AccountAddressCard
+                      :key="address.id"
+                      :address="address"
+                      :countries="getCountries"
+                      :salutations="getSalutations"
+                      :can-set-default="false"
+                    />
+                  </label>
+                </div>
+                <button
+                  type="button"
+                  class="flex font-medium text-brand-dark"
+                  @click="
+                    modal.open('AccountAddressForm', {
+                      countries: getCountries,
+                      salutations: getSalutations,
+                      title: 'Add new shipping address',
+                    })
+                  "
+                >
+                  Add new shipping address
+                </button>
               </div>
-              <button
-                type="button"
-                class="flex font-medium text-brand-dark"
-                @click="
-                  modal.open('AccountAddressForm', {
-                    countries: getCountries,
-                    salutations: getSalutations,
-                    title: 'Add new shipping address',
-                  })
-                "
-              >
-                Add new shipping address
-              </button>
-            </div>
+            </template>
           </fieldset>
         </div>
         <div class="mt-5 md:mt-0 md:col-span-1">

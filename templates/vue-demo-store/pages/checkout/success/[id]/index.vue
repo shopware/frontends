@@ -146,7 +146,7 @@ const formatDate = (date: Date) =>
             <div
               class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap py-6 md:py-10"
             >
-              <div class="w-auto md:w-1/2">
+              <div v-if="shippingAddress" class="w-auto md:w-1/2">
                 <div class="font-medium">Shipping address</div>
                 <div class="pt-2 text-gray-600">
                   <div>
@@ -185,7 +185,7 @@ const formatDate = (date: Date) =>
                   <div>{{ paymentMethod?.name }}</div>
                 </div>
               </div>
-              <div class="w-auto md:w-1/2">
+              <div v-if="shippingMethod" class="w-auto md:w-1/2">
                 <div class="font-medium">Shipping method</div>
                 <div class="pt-2 text-gray-600">
                   <div>{{ shippingMethod?.name }}</div>
