@@ -12,6 +12,7 @@ import {
   changeOrderPaymentMethod,
   getOrderDetails,
   handlePayment as apiHandlePayment,
+  getOrderDownloads,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 
@@ -23,6 +24,11 @@ const orderAssociations: ShopwareSearchParams = {
     lineItems: {
       associations: {
         cover: {},
+        downloads: {
+          associations: {
+            media: {},
+          },
+        },
       },
     },
     addresses: {},
@@ -115,6 +121,13 @@ export type UseOrderDetailsReturn = {
    * @returns
    */
   changePaymentMethod: (paymentMethodId: string) => Promise<void>;
+  /**
+   * Get media content
+   *
+   * @param {string} downloadId
+   * @returns {Blob}
+   */
+  getMediaFile: (downloadId: string) => Promise<Blob>;
 };
 
 /**
@@ -191,6 +204,18 @@ export function useOrderDetails(orderId: string): UseOrderDetailsReturn {
     await loadOrderDetails();
   }
 
+  async function getMediaFile(downloadId: string) {
+    const response = await getOrderDownloads(
+      {
+        orderId,
+        downloadId,
+      },
+      apiInstance
+    );
+
+    return response;
+  }
+
   return {
     order: computed(() => _sharedOrder.value),
     status,
@@ -207,5 +232,6 @@ export function useOrderDetails(orderId: string): UseOrderDetailsReturn {
     handlePayment,
     cancel,
     changePaymentMethod,
+    getMediaFile,
   };
 }

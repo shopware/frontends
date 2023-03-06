@@ -1,10 +1,23 @@
 <script setup lang="ts">
 import { OrderLineItem } from "@shopware-pwa/types";
-import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
+import { getSmallestThumbnailUrl, getMedia } from "@shopware-pwa/helpers-next";
 
-defineProps<{
+const props = defineProps<{
   lineItem: OrderLineItem;
 }>();
+
+const { getMediaFile } = useOrderDetails(props.lineItem.orderId);
+
+const getMediaFileHandler = async (mediaId: string, fileName: string) => {
+  const response = await getMediaFile(mediaId);
+  const media = document.createElement("a");
+  media.href = URL.createObjectURL(response);
+  media.download = fileName;
+
+  document.body.appendChild(media);
+  media.click();
+  document.body.removeChild(media);
+};
 </script>
 
 <script lang="ts">
@@ -55,6 +68,19 @@ export default {
         class="text-gray-600 font-normal"
         data-testid="order-item-totalprice"
       />
+    </div>
+  </div>
+  <div class="pl-5 pb-3">
+    <div
+      v-for="media in getMedia(lineItem)"
+      class="cursor-pointer"
+      :key="media.id"
+      @click="getMediaFileHandler(media.id, media.fileName)"
+    >
+      <div class="flex gap-2">
+        <div class="w-5 h-5 i-carbon-result" />
+        {{ media.fileName }}
+      </div>
     </div>
   </div>
 </template>

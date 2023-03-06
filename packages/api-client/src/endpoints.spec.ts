@@ -31,6 +31,8 @@ import {
   getLandingPageDetailsEndpoint,
   getProductListingEndpoint,
   getNewsletterRecipientEndpoint,
+  getDocumentDownloadEndpoint,
+  getOrderDownloadsEndpoint,
 } from "../src/endpoints";
 
 const sampleProductId = "eea0f69ec02d44f7a4224272b3d99478";
@@ -259,6 +261,20 @@ describe("endpoints", () => {
       const categoryId = "test";
       const result = getProductListingEndpoint(categoryId);
       expect(result).toBe(`/store-api/product-listing/${categoryId}`);
+    });
+  });
+
+  describe("getDocumentDownloadEndpoint", () => {
+    it("should return document download endpoint", () => {
+      const result = getDocumentDownloadEndpoint("123", "345");
+      expect(result).toBe(`/store-api/document/download/123/345`);
+    });
+  });
+
+  describe("getOrderDownloadsEndpoint", () => {
+    it("should return order download endpoint", () => {
+      const result = getOrderDownloadsEndpoint("123", "345");
+      expect(result).toBe(`/store-api/order/download/123/345`);
     });
   });
 });

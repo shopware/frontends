@@ -305,3 +305,17 @@ export const getRemoveWishlistProductEndpoint = (productId: string) =>
  */
 export const getMergeWishlistProductsEndpoint = () =>
   `/store-api/customer/wishlist/merge`;
+/**
+ * @public
+ */
+export const getDocumentDownloadEndpoint = (
+  documentId: string,
+  deepLinkCode: string
+) => `/store-api/document/download/${documentId}/${deepLinkCode}`;
+/**
+ * @public
+ */
+export const getOrderDownloadsEndpoint = (
+  orderId: string,
+  downloadId: string
+) => `/store-api/order/download/${orderId}/${downloadId}`;

@@ -28,6 +28,7 @@ export * from "./models/checkout/order/OrderDelivery";
 export * from "./models/checkout/order/OrderDeliveryPosition";
 export * from "./models/checkout/order/OrderLineItem";
 export * from "./models/checkout/order/OrderState";
+export * from "./models/checkout/order/OrderDownloads";
 export * from "./models/checkout/order/OrderTransaction";
 export * from "./models/checkout/payment/PaymentMethod";
 export * from "./models/checkout/payment/PaymentMethodTranslation";
