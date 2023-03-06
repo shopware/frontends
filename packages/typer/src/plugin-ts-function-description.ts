@@ -1,6 +1,6 @@
 import type { Plugin } from "vite";
 import { resolve } from "path";
-import { existsSync } from "fs";
+import { existsSync } from "fs-extra";
 import { normalizeString, replacer } from "./main";
 import { DeclarationReflection } from "typedoc";
 
