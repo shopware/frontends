@@ -4,7 +4,7 @@ category: CMS
 
 # useProductConfigurator
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

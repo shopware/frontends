@@ -8,6 +8,7 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
 
 /**
  * @throws ClientApiError
+ * @category Category
  * @public
  */
 export async function getCategories(
@@ -23,6 +24,7 @@ export async function getCategories(
 
 /**
  * @throws ClientApiError
+ * @category Category
  * @public
  */
 export async function getCategory(

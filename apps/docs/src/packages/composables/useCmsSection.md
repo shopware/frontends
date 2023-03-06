@@ -4,7 +4,7 @@ category: CMS
 
 # useCmsSection
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

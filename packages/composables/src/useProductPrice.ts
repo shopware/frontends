@@ -37,6 +37,12 @@ export type UseProductPriceReturn = {
   isListPrice: ComputedRef<boolean>;
 };
 
+/**
+ * The purpose of the `useProductPrice` function is to abstract the logic to expose most useful helpers for price displaying.
+ *
+ * @public
+ * @category Product
+ */
 export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
   const _cheapest: ComputedRef<CalculatedPrice | undefined> = computed(
     () => product.value?.calculatedCheapestPrice

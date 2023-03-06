@@ -4,7 +4,7 @@ category: CMS
 
 # useNavigationContext
 
-Get the context of current CMS page.
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

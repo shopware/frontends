@@ -4,7 +4,7 @@ category: CMS
 
 # useLandingSearch
 
-Search for the static CMS page
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

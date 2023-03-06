@@ -19,6 +19,11 @@ export type UseProductReturn = {
   changeVariant: (variant: Partial<Product>) => void;
 };
 
+/**
+ * Composable for product management.
+ * @public
+ * @category Product
+ */
 export function useProduct(
   product?: Ref<Product> | Product,
   configurator?: Ref<PropertyGroup[]> | PropertyGroup[]

@@ -57,37 +57,29 @@ describe("useSyncWishlist", () => {
     },
   };
 
-  vi.spyOn(apiExports, "addWishlistProduct").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve(mockedResolve);
-      });
-    }
-  );
+  vi.spyOn(apiExports, "addWishlistProduct").mockImplementation(() => {
+    return new Promise((resolve) => {
+      resolve(mockedResolve);
+    });
+  });
 
-  vi.spyOn(apiExports, "getWishlistProducts").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve(mockedResponse as any);
-      });
-    }
-  );
+  vi.spyOn(apiExports, "getWishlistProducts").mockImplementation(() => {
+    return new Promise((resolve) => {
+      resolve(mockedResponse as any);
+    });
+  });
 
-  vi.spyOn(apiExports, "removeWishlistProduct").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve(mockedResolve);
-      });
-    }
-  );
+  vi.spyOn(apiExports, "removeWishlistProduct").mockImplementation(() => {
+    return new Promise((resolve) => {
+      resolve(mockedResolve);
+    });
+  });
 
-  vi.spyOn(apiExports, "mergeWishlistProducts").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve(mockedResolve);
-      });
-    }
-  );
+  vi.spyOn(apiExports, "mergeWishlistProducts").mockImplementation(() => {
+    return new Promise((resolve) => {
+      resolve(mockedResolve);
+    });
+  });
 
   describe("methods", () => {
     const product: any = {

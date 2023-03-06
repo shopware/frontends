@@ -42,6 +42,10 @@ export type UseNotificationsReturn = {
   pushSuccess: (message: string, options?: NotificationOptions) => void;
 };
 
+/**
+ * Composable for managing notifications (flash messages) on frontend.
+ * @public
+ */
 export function useNotifications(): UseNotificationsReturn {
   const _notifications: Ref<Notification[]> = inject(
     "swNotifications",

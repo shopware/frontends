@@ -15,6 +15,7 @@ import {
 
 /**
  * Creates an order for logged in and guest users
+ * @category Checkout
  * @public
  */
 export async function createOrder(
@@ -33,6 +34,7 @@ export async function createOrder(
  * @param orderId - Id of an order
  * @param finishUrl - URL where the customer is redirected to after payment is done
  * @param errorUrl - URL where the customer is redirected to after payment fails
+ * @category Checkout
  * @public
  */
 export async function handlePayment(
@@ -75,6 +77,7 @@ export async function handlePayment(
  * Get order details
  *
  * @throws ClientApiError
+ * @category Checkout
  * @public
  */
 export async function getOrderDetails(
@@ -102,6 +105,7 @@ export async function getOrderDetails(
  * Cancel an order
  *
  * @throws ClientApiError
+ * @category Checkout
  * @public
  */
 export async function cancelOrder(
@@ -118,6 +122,7 @@ export async function cancelOrder(
  * Change payment method for given order
  *
  * @throws ClientApiError
+ * @category Checkout
  * @public
  */
 export async function changeOrderPaymentMethod(

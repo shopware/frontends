@@ -6,7 +6,8 @@ This article covers how to display prices for products in product listing and pr
 To see how the prices are designed in the backend, read [Building > Prices](../getting-started/prices.md) article.
 :::
 
-[[toc]]
+
+
 
 ## useProductPrice() composable
 

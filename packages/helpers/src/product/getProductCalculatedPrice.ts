@@ -6,6 +6,8 @@ import { Product } from "@shopware-pwa/types";
  * @returns (number|undefined)
  *
  * @beta
+ *
+ * @category Product
  */
 export function getProductCalculatedPrice(
   product: Product

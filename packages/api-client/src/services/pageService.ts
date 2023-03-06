@@ -15,6 +15,7 @@ import { invokePost } from "./pluginService";
 
 /**
  * @throws ClientApiError
+ * @category CMS
  * @public
  * @deprecated the method is becoming obsolete and will be removed in the future as the SwagShopwarePwa plugin won't be needed.
  */
@@ -34,6 +35,7 @@ export async function getCmsPage(
 /**
  * Fetches a landing page entity
  * @throws ClientApiError
+ * @category CMS
  * @public
  */
 export async function getLandingPage(
@@ -50,6 +52,7 @@ export async function getLandingPage(
  * Returns an array of SEO URLs for given entity
  * Can be used for other languages as well by providing the languageId
  *
+ * @category CMS
  * @public
  */
 export async function getSeoUrls(
@@ -81,6 +84,7 @@ export async function getSeoUrls(
 /**
  *
  *
+ * @category CMS
  * @public
  * @throws ClientApiError
  */

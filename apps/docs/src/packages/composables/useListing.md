@@ -4,7 +4,7 @@ category: CMS
 
 # useListing
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

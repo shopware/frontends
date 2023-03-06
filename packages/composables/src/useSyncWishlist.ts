@@ -18,6 +18,11 @@ export type UseSyncWishlistReturn = {
 
 const _wishlistItems: Ref<string[]> = ref([]);
 
+/**
+ * Composable to manage wishlist via API
+ * @public
+ * @category Wishlist
+ */
 export function useSyncWishlist(): UseSyncWishlistReturn {
   const { apiInstance } = useShopwareContext();
 

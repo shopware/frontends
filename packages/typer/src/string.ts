@@ -1,0 +1,56 @@
+export function replacer(
+  code: string,
+  value: string,
+  key: string,
+  insert: "head" | "tail" | "none" = "none"
+) {
+  const START = `<!-- ${key}_STARTS -->`;
+  const END = `<!-- ${key}_ENDS -->`;
+  const regex = new RegExp(`${START}[\\s\\S]*?${END}`, "im");
+
+  const target = value ? `${START}\n${value}\n${END}` : `${START}${END}`;
+
+  if (!code.match(regex)) {
+    if (insert === "none") return code;
+    else if (insert === "head") return `${target}\n\n${code}`;
+    else return `${code}\n\n${target}`;
+  }
+
+  return code.replace(regex, target);
+}
+
+export function normalizeString(word?: string) {
+  if (!word) return "";
+  return (
+    word
+      //.replace(/(\r\n|\n|\r)/gm, "")
+      .replace(" | >", " | null>")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+  );
+}
+
+export function getWrappedCodeBlock(
+  code: string | undefined,
+  lang: string = "ts"
+): string {
+  if (!code) return "";
+  return `
+\`\`\`${lang}
+${code}
+\`\`\`
+`;
+}
+
+export function getToggleContainer(
+  contents: string,
+  title: string = "Click to see the details"
+) {
+  return `
+
+<details>
+<summary> ${title} </summary>
+  ${contents}
+</details>
+`;
+}

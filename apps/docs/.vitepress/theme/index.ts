@@ -3,6 +3,7 @@ import { h, App } from "vue";
 import { VPTheme } from "vitepress-shopware-docs";
 
 import PageRef from "./components/PageRef.vue";
+import "./custom.css";
 
 export default Object.assign({}, VPTheme, {
   Layout: () => {

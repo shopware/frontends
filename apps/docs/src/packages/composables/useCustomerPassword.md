@@ -4,7 +4,7 @@ category: CMS
 
 # useCustomerPassword
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

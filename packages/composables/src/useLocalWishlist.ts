@@ -12,7 +12,9 @@ export type UseLocalWishlistReturn = {
 const _wishlistItems: Ref<string[]> = ref([]);
 
 /**
- * Composable for wishlist management. Options - {@link UseWishlistReturn}
+ * Composable for wishlist management.
+ * @public
+ * @category Wishlist
  */
 export function useLocalWishlist(): UseLocalWishlistReturn {
   // update wishlist in localstorage

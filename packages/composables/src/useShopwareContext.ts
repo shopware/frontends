@@ -6,6 +6,10 @@ export type ShopwareContext = {
   apiInstance: ShopwareApiInstance;
 };
 
+/**
+ * @public
+ * @category Context & Language
+ */
 export function useShopwareContext(): ShopwareContext {
   const shopwareContext = inject<ShopwareContext | null>("shopware", null);
 

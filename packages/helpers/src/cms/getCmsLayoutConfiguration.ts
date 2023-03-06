@@ -36,7 +36,7 @@ function isCmsSection(
   return content.apiAlias === "cms_section";
 }
 /**
- * @beta
+ * @category CMS (Shopping Experiences)
  */
 export function getCmsLayoutConfiguration(
   content: CmsBlock | CmsSection | CmsSlot

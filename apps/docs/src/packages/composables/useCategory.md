@@ -4,7 +4,7 @@ category: CMS
 
 # useCategory
 
-Current category context
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

@@ -4,6 +4,8 @@ import { Product } from "@shopware-pwa/types";
  * get the thumbnail image URL with the smallest width
  *
  * @beta
+ *
+ * @category Product
  */
 export function getProductThumbnailUrl(product: Product): string {
   const coverImageUrlFallback = product?.cover?.media?.url || "";

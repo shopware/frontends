@@ -124,7 +124,9 @@ export type UseUserReturn = {
 };
 
 /**
- * Composable for user management. Options - {@link UseUserReturn}
+ * Composable for user management.
+ * @public
+ * @category Customer & Account
  */
 export function useUser(): UseUserReturn {
   const { apiInstance } = useShopwareContext();

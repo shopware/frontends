@@ -32,6 +32,11 @@ export type UseProductSearchSuggestReturn = {
   getTotal: ComputedRef<number>;
 };
 
+/**
+ * Composable for product suggest search.
+ * @public
+ * @category Product
+ */
 export function useProductSearchSuggest(): UseProductSearchSuggestReturn {
   const searchTerm = ref("");
 

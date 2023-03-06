@@ -9,6 +9,8 @@ export * from "./getCmsLayoutConfiguration";
 
 /**
  * Returns the main page object depending of the type of the CMS page.
+ *
+ * @category CMS (Shopping Experiences)
  */
 export function getCmsEntityObject(
   response: CmsPageResponse
@@ -23,6 +25,11 @@ export function getCmsEntityObject(
   }
 }
 
+/**
+ * Predicate function to check if the entity is a product.
+ *
+ * @category CMS (Shopping Experiences)
+ */
 export function isProduct<T extends { apiAlias: string }>(
   entity: T | Product
 ): entity is Product {

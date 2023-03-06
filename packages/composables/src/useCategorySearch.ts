@@ -18,6 +18,11 @@ export type UseCategorySearchReturn = {
   ) => Promise<Category>;
 };
 
+/**
+ * Composable for category search.
+ * @public
+ * @category Navigation & Routing
+ */
 export function useCategorySearch(): UseCategorySearchReturn {
   const { apiInstance } = useShopwareContext();
 

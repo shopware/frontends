@@ -19,11 +19,17 @@ export type UseNewsletterReturn = {
   newsletterUnsubscribe: (email: string) => Promise<void>;
   /**
    * Indicates if the user is subscribed to the newsletter
-   * @returns {true} if the user is subscribed to the newsletter, {false} otherwise
+   *
+   * Returns `true` if the user is subscribed to the newsletter, `false` otherwise
    */
   isNewsletterSubscriber: () => Promise<any>;
 };
 
+/**
+ * Composable for newsletter subscription.
+ * @public
+ * @category Customer & Account
+ */
 export function useNewsletter(): UseNewsletterReturn {
   const { apiInstance } = useShopwareContext();
   const { getStorefrontUrl } = useInternationalization();

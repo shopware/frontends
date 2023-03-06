@@ -4,7 +4,7 @@ category: CMS
 
 # useProductAssociations
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

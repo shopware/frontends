@@ -4,7 +4,7 @@ category: CMS
 
 # useOrderDetails
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

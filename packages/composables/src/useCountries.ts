@@ -17,6 +17,11 @@ export type UseCountriesReturn = {
   fetchCountries: () => Promise<void>;
 };
 
+/**
+ * Composable to manage countries
+ * @public
+ * @category Context & Language
+ */
 export function useCountries(): UseCountriesReturn {
   const { apiInstance } = useShopwareContext();
 

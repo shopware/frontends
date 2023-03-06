@@ -13,6 +13,11 @@ export type UseNavigationSearchReturn = {
   resolvePath: (path: string) => Promise<SeoUrl | null>;
 };
 
+/**
+ * Composable to get search for SeoUrl entity for given path.
+ * @public
+ * @category Navigation & Routing
+ */
 export function useNavigationSearch(): UseNavigationSearchReturn {
   const { apiInstance } = useShopwareContext();
   const { sessionContext } = useSessionContext();

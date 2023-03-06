@@ -17,6 +17,8 @@ export type UseCmsBlockReturn = {
 
 /**
  * Composable to get cms block content
+ * @public
+ * @category CMS (Shopping Experiences)
  */
 export function useCmsBlock<BLOCK_TYPE extends CmsBlock>(
   content: BLOCK_TYPE

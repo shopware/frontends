@@ -11,7 +11,9 @@ export type UseProductWishlistReturn = {
 };
 
 /**
- * Manage wishlist for a single product. Options - {@link UseProductWishlistReturn}
+ * Manage wishlist for a single product.
+ * @public
+ * @category Product
  */
 export function useProductWishlist(
   product: Ref<Product>

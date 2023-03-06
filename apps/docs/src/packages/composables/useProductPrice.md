@@ -4,7 +4,7 @@ category: CMS
 
 # useProductPrice
 
-The purpose of the `useProductPrice` function is to abstract the logic to expose most useful helpers for price displaying.
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

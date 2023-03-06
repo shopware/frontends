@@ -45,8 +45,10 @@ export type UseSessionContextReturn = {
 };
 
 /**
- * Composable for session management. Options - {@link UseSessionContextReturn}
+ * Composable for session management.
  * SessionContext contain all related data like user, currency, country, shippingMethod, paymentMethod etc.
+ * @public
+ * @category Context & Language
  */
 export function useSessionContext(
   newContext?: SessionContext

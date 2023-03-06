@@ -35,7 +35,9 @@ export type UseProductConfiguratorReturn = {
 };
 
 /**
- * Product options - {@link UseProductConfiguratorReturn}
+ * Composable to change product variant.
+ * @public
+ * @category Product
  */
 export function useProductConfigurator(): UseProductConfiguratorReturn {
   const { apiInstance } = useShopwareContext();

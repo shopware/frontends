@@ -4,7 +4,7 @@ category: CMS
 
 # useProductSearch
 
-Search for the product
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

@@ -70,6 +70,11 @@ export type UseCheckoutReturn = {
   setPaymentMethod: (paymentMethod: Partial<PaymentMethod>) => Promise<void>;
 };
 
+/**
+ * Composable to manage checkout process
+ * @public
+ * @category Cart & Checkout
+ */
 export function useCheckout(): UseCheckoutReturn {
   const { apiInstance } = useShopwareContext();
   const { refreshCart } = useCart();

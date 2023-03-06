@@ -9,6 +9,7 @@ import {
  * Search for products based on criteria.
  * From: Shopware 6.4
  *
+ * @category Search
  * @public
  */
 export async function searchProducts(
@@ -29,6 +30,7 @@ export async function searchProducts(
  * Search for suggested products based on criteria.
  * From: Shopware 6.4
  *
+ * @category Search
  * @public
  */
 export async function searchSuggestedProducts(
