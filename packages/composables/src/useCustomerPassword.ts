@@ -28,7 +28,9 @@ export type UseCustomerPasswordReturn = {
 };
 
 /**
- * Composable for customer password management. Options - {@link UseCustomerPasswordReturn}
+ * Composable for customer password management.
+ * @public
+ * @category Customer & Account
  */
 export function useCustomerPassword(): UseCustomerPasswordReturn {
   const { apiInstance } = useShopwareContext();

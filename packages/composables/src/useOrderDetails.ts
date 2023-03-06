@@ -119,6 +119,8 @@ export type UseOrderDetailsReturn = {
 
 /**
  * Composable for managing an existing order.
+ * @public
+ * @category Customer & Account
  */
 export function useOrderDetails(orderId: string): UseOrderDetailsReturn {
   const { apiInstance } = useShopwareContext();

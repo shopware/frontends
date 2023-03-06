@@ -4,7 +4,7 @@ category: CMS
 
 # useWishlist
 
-Manage wishlist
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

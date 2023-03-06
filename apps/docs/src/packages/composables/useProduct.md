@@ -4,7 +4,7 @@ category: CMS
 
 # useProduct
 
-Add associations to the product or search for the product by its id.
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

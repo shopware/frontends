@@ -8,7 +8,9 @@ export type UseInternationalizationReturn = {
 };
 
 /**
- * Composable for internationalization management. Options - {@link UseInternationalizationReturn
+ * Composable for internationalization management.
+ * @public
+ * @category Context & Language
  */
 export function useInternationalization(): UseInternationalizationReturn {
   /**

@@ -5,6 +5,8 @@ import { UiProductReview } from "../ui-interfaces";
  * Format product reviews to ui-interfaces
  *
  * @public
+ *
+ * @category Product
  */
 export function getProductReviews({
   product,

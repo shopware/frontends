@@ -8,7 +8,7 @@ import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 
 # useCheckout
 
-Checkout management
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

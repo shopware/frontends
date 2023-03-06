@@ -4,7 +4,7 @@ category: CMS
 
 # useInternationalization
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

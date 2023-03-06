@@ -8,9 +8,7 @@ import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 
 # useAddToCart
 
-Add product to cart.
-
-[[toc]]
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

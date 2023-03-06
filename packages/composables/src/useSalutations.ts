@@ -17,6 +17,11 @@ export type UseSalutationsReturn = {
   fetchSalutations: () => Promise<void>;
 };
 
+/**
+ * Composable for fetching the salutations list.
+ * @public
+ * @category Context & Language
+ */
 export function useSalutations(): UseSalutationsReturn {
   const { apiInstance } = useShopwareContext();
 

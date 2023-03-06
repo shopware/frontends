@@ -4,7 +4,7 @@ category: CMS
 
 # useProductWishlist
 
-Manage product state inside wishlist.
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

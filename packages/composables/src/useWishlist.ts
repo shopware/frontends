@@ -14,6 +14,11 @@ export type UseWishlistReturn = {
   count: ComputedRef<number>;
 };
 
+/**
+ * Composable to manage wishlist
+ * @public
+ * @category Wishlist
+ */
 export function useWishlist(): UseWishlistReturn {
   const { isLoggedIn, isGuestSession } = useUser();
   const canSyncWishlist = computed(

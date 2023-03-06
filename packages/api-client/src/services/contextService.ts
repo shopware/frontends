@@ -24,6 +24,7 @@ import { extractContextToken } from "../helpers/context";
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 async function updateContext(
@@ -39,6 +40,7 @@ async function updateContext(
  * Loads session context, containing all session-related data.
  *
  * @throws ClientApiErrosr
+ * @category Context
  * @public
  */
 export async function getSessionContext(
@@ -51,6 +53,7 @@ export async function getSessionContext(
 /**
  * Set the current session's shipping address to correspoding to id
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export function setCurrentShippingAddress(
@@ -63,6 +66,7 @@ export function setCurrentShippingAddress(
 /**
  * Set the current session's billing address to correspoding to id
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export function setCurrentBillingAddress(
@@ -74,6 +78,7 @@ export function setCurrentBillingAddress(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getAvailableCurrencies(
@@ -88,6 +93,7 @@ export async function getAvailableCurrencies(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function setCurrentCurrency(
@@ -102,6 +108,7 @@ export async function setCurrentCurrency(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getAvailableLanguages(
@@ -116,6 +123,7 @@ export async function getAvailableLanguages(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function setCurrentLanguage(
@@ -132,11 +140,12 @@ export async function setCurrentLanguage(
  * Get all available countries
  *
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getAvailableCountries(
   contextInstance: ShopwareApiInstance = defaultInstance
-) {
+): Promise<EntityResult<"country", Country>> {
   const { data } = await contextInstance.invoke.get<
     EntityResult<"country", Country>
   >(getContextCountryEndpoint());
@@ -147,6 +156,7 @@ export async function getAvailableCountries(
  * Get all available salutations
  *
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getAvailableSalutations(
@@ -160,6 +170,7 @@ export async function getAvailableSalutations(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getAvailablePaymentMethods(
@@ -177,6 +188,7 @@ export async function getAvailablePaymentMethods(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getPaymentMethodDetails(
@@ -197,6 +209,7 @@ export async function getPaymentMethodDetails(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function setCurrentPaymentMethod(
@@ -211,6 +224,7 @@ export async function setCurrentPaymentMethod(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getAvailableShippingMethods(
@@ -228,6 +242,7 @@ export async function getAvailableShippingMethods(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getShippingMethodDetails(
@@ -248,6 +263,7 @@ export async function getShippingMethodDetails(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function setCurrentShippingMethod(
@@ -261,6 +277,7 @@ export async function setCurrentShippingMethod(
 }
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getUserCountry(
@@ -281,6 +298,7 @@ export async function getUserCountry(
 
 /**
  * @throws ClientApiError
+ * @category Context
  * @public
  */
 export async function getUserSalutation(

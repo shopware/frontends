@@ -15,6 +15,8 @@ import { Cart, ContextTokenResponse, LineItem } from "@shopware-pwa/types";
  * @throws ClientApiError
  *
  * @public
+ *
+ * @category Cart
  */
 export async function clearCart(
   contextInstance: ShopwareApiInstance = defaultInstance
@@ -28,6 +30,8 @@ export async function clearCart(
  * Gets the current cart for the sw-context-token.
  * @throws ClientApiError
  * @public
+ *
+ * @category Cart
  */
 export async function getCart(
   contextInstance: ShopwareApiInstance = defaultInstance
@@ -44,6 +48,8 @@ export async function getCart(
  *
  * @throws ClientApiError
  * @public
+ *
+ * @category Cart
  */
 export async function addProductToCart(
   productId: string,
@@ -74,6 +80,8 @@ export async function addProductToCart(
  *
  * @throws ClientApiError
  * @public
+ *
+ * @category Cart
  */
 export async function changeCartItemQuantity(
   itemId: string,
@@ -102,6 +110,7 @@ export async function changeCartItemQuantity(
  * This method may be used for deleting "product" type item lines as well as "promotion" type item lines.
  *
  * @throws ClientApiError
+ * @category Cart
  * @public
  */
 export async function removeCartItem(
@@ -121,6 +130,7 @@ export async function removeCartItem(
  * Promotion code is being added as separate cart item line.
  *
  * @throws ClientApiError
+ * @category Cart
  * @public
  */
 export async function addPromotionCode(
@@ -146,6 +156,7 @@ export async function addPromotionCode(
  * Accepts every type of cart item.
  *
  * @throws ClientApiError
+ * @category Cart
  * @public
  */
 export async function addCartItems(

@@ -1,12 +1,13 @@
 import { ref, Ref, computed, unref, ComputedRef, watch } from "vue";
 import { Product, Cart, LineItem, EntityError } from "@shopware-pwa/types";
 import { useCart } from "./useCart";
-
+// prettier-ignore
 export type UseAddToCartReturn = {
   /**
    * Add to cart method
+   * @type {function}
    */
-  addToCart: () => Promise<Cart>;
+  addToCart(): Promise<Cart>;
   /**
    * If you want to add more that 1 product set quantity before invoking `addToCart`
    */
@@ -14,7 +15,7 @@ export type UseAddToCartReturn = {
   /**
    * Returns product count in stock
    */
-  getStock: ComputedRef<number | null>;
+  getStock: ComputedRef<number|undefined>;
   /**
    * Returns product count in available stock
    */
@@ -25,6 +26,11 @@ export type UseAddToCartReturn = {
   isInCart: ComputedRef<boolean>;
 };
 
+/**
+ * Composable to manage adding product to cart
+ * @public
+ * @category Cart & Checkout
+ */
 export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
   const _product = computed(() => unref(product));
 

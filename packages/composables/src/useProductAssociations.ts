@@ -29,8 +29,9 @@ export type UseProductAssociationsReturn = {
 };
 
 /**
- * Get product association entity. Options - {@link UseProductAssociationsReturn}
- *
+ * Get product association entity.
+ * @public
+ * @category Product
  */
 export function useProductAssociations(
   product: ComputedRef<Product>,

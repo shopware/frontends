@@ -1,6 +1,11 @@
 import { CmsSlot } from "@shopware-pwa/types";
 import { ElementConfig } from "../types";
 
+/**
+ * Composable to get cms element config
+ *
+ * @category CMS (Shopping Experiences)
+ */
 export function useCmsElementConfig<
   T extends CmsSlot & {
     config: T["config"] extends {

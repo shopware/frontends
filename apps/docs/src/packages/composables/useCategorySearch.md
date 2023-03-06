@@ -4,7 +4,7 @@ category: CMS
 
 # useCategorySearch
 
-Search for the category
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

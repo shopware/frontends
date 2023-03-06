@@ -3,6 +3,7 @@ import { getTranslatedProperty } from "../getTranslatedProperty";
 
 /**
  * Get URL for category.
+ * Some link {@link isLinkCategory}
  *
  * @beta
  */

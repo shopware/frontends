@@ -3,6 +3,8 @@ import { getTranslatedProperty } from "../getTranslatedProperty";
 
 /**
  * @beta
+ *
+ * @category Product
  */
 export function getProductName({ product }: { product?: Product } = {}):
   | string

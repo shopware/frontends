@@ -4,7 +4,7 @@ category: CMS
 
 # useSessionContext
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

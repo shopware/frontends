@@ -4,7 +4,7 @@ category: CMS
 
 # useSyncWishlist
 
-Provides methods to use wishlist locally
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

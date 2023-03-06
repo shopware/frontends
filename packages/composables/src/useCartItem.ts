@@ -29,10 +29,15 @@ export type UseCartItemReturn = {
 
   itemQuantity: ComputedRef<number | undefined>;
   changeItemQuantity: (quantity: number) => Promise<void>;
-  removeItem: () => Promise<void>;
+  removeItem(): Promise<void>;
   getProductItemSeoUrlData(): Promise<ProductResponse | undefined>;
 };
 
+/**
+ * Composable to manage specific cart item
+ * @public
+ * @category Cart & Checkout
+ */
 export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   if (!cartItem) {
     throw new Error("[useCartItem] mandatory cartItem argument is missing.");

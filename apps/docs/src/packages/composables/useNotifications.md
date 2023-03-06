@@ -4,7 +4,7 @@ category: CMS
 
 # useNotifications
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

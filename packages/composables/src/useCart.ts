@@ -12,9 +12,14 @@ import { useShopwareContext } from "./useShopwareContext";
 import { _useContext } from "./internal/_useContext";
 import { createSharedComposable } from "@vueuse/core";
 
+/**
+ * Composable to manage cart
+ * @public
+ * @category Cart & Checkout
+ */
 export type UseCartReturn = {
   /**
-   * Adds a product with an optional quantity to the cart
+   * Add product by id and quantity
    */
   addProduct: (params: { id: string; quantity?: number }) => Promise<Cart>;
   /**
@@ -62,7 +67,7 @@ export type UseCartReturn = {
    */
   subtotal: ComputedRef<number>;
   /**
-   * @deprecated - handle errors in your application by checking {cart.errors} object
+   * @deprecated handle errors in your application by checking cart.errors object
    */
   cartErrors: ComputedRef<EntityError[]>;
   /**

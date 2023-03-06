@@ -4,7 +4,7 @@ category: CMS
 
 # usePrice
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

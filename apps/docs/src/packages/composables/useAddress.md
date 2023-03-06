@@ -4,9 +4,7 @@ category: CMS
 
 # useAddress
 
-Manage user addresses.
-
-[[toc]]
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

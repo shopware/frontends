@@ -32,8 +32,9 @@ export type UseProductReviewsReturn = {
 };
 
 /**
- * Composable for listing customer orders. Options - {@link UseProductReviewsReturn}
- *
+ * Composable for listing customer orders.
+ * @public
+ * @category Product
  */
 export function useProductReviews(
   product: Ref<Product>

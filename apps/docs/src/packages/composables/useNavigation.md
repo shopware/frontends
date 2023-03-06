@@ -4,7 +4,7 @@ category: CMS
 
 # useNavigation
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

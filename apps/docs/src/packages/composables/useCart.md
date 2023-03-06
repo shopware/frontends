@@ -8,7 +8,7 @@ import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 
 # useCart
 
-Cart management for your session.
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

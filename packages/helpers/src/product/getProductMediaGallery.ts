@@ -5,6 +5,8 @@ import { UiMediaGalleryItem } from "../ui-interfaces";
  * Get the media gallery of a product as ui-interfaces
  *
  * @public
+ *
+ * @category Product
  */
 export function getProductMediaGallery({
   product,

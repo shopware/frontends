@@ -11,6 +11,11 @@ export type UsePriceReturn = {
   getFormattedPrice: (value: number | string | undefined) => string;
 };
 
+/**
+ * Composable for getting formatted price
+ * @public
+ * @category Product
+ */
 export function usePrice(): UsePriceReturn {
   /**
    * Set init data from backend response

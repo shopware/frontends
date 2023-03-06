@@ -18,6 +18,7 @@ import {
  *
  * @remarks Only for logged-in users
  * @throws ClientApiError
+ * @category Wishlist
  * @public
  */
 export async function addWishlistProduct(
@@ -39,6 +40,7 @@ export async function addWishlistProduct(
  *
  * @remarks Only for logged-in users
  * @throws ClientApiError
+ * @category Wishlist
  * @public
  */
 export async function getWishlistProducts(
@@ -58,6 +60,7 @@ export async function getWishlistProducts(
  *
  * @remarks Only for logged-in users
  * @throws ClientApiError
+ * @category Wishlist
  * @public
  */
 export async function removeWishlistProduct(
@@ -79,6 +82,7 @@ export async function removeWishlistProduct(
  *
  * @remarks Only for logged-in users
  * @throws ClientApiError
+ * @category Wishlist
  * @public
  */
 export async function mergeWishlistProducts(

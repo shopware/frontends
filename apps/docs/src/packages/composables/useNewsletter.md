@@ -4,7 +4,7 @@ category: CMS
 
 # useNewsletter
 
-Provides methods for subscribing and unsubscribing to the newsletter.
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

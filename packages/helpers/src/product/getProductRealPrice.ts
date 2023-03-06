@@ -2,6 +2,7 @@ import { CalculatedPrice, Product } from "@shopware-pwa/types";
 
 /**
  * @beta
+ *
  */
 export function getProductRealPrice(
   product: Product

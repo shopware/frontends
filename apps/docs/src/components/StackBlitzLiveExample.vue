@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from "vue";
 const props = defineProps({
   projectPath: {
     // path to github project - including gh tree path

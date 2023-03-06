@@ -56,6 +56,8 @@ export type UseOrderPaymentReturn = {
 
 /**
  * Composable for managing an existing order.
+ * @public
+ * @category Customer & Account
  */
 export function useOrderPayment(
   order: ComputedRef<Order | null | undefined>

@@ -4,7 +4,7 @@ category: CMS
 
 # useCmsElementImage
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

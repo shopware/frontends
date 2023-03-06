@@ -4,7 +4,7 @@ category: CMS
 
 # useNavigationSearch
 
-Search for the context of the navigation path.
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

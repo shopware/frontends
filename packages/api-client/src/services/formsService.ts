@@ -6,6 +6,7 @@ import {
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
 
 /**
+ * @category Forms
  * @public
  */
 export interface ContactFormData {
@@ -20,6 +21,7 @@ export interface ContactFormData {
 }
 
 /**
+ * @category Forms
  * @public
  */
 export async function sendContactForm(
@@ -30,6 +32,7 @@ export async function sendContactForm(
 }
 
 /**
+ * @category Forms
  * @public
  */
 export interface NewsletterSubscribeData {
@@ -44,6 +47,7 @@ export interface NewsletterSubscribeData {
   storefrontUrl: string;
 }
 /**
+ * @category Forms
  * @public
  */
 export async function newsletterSubscribe(
@@ -57,6 +61,7 @@ export async function newsletterSubscribe(
 }
 
 /**
+ * @category Forms
  * @public
  */
 export async function newsletterUnsubscribe(

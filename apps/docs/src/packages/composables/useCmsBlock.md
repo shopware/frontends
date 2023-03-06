@@ -4,7 +4,7 @@ category: CMS
 
 # useCmsBlock
 
-Composable to extract CMS block's slot content.
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

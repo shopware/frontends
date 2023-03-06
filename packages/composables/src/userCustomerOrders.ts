@@ -18,6 +18,11 @@ export type UseCustomerOrdersReturn = {
   loadOrders: () => Promise<void>;
 };
 
+/**
+ * Composable for fetching the orders list.
+ * @public
+ * @category Customer & Account
+ */
 export function useCustomerOrders(): UseCustomerOrdersReturn {
   const { apiInstance } = useShopwareContext();
 

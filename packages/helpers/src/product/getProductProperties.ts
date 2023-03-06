@@ -6,6 +6,8 @@ import { getTranslatedProperty } from "../getTranslatedProperty";
  * Get product properties as ui-interfaces
  *
  * @public
+ *
+ * @category Product
  */
 export function getProductProperties({
   product,

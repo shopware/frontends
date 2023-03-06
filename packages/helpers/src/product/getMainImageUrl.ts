@@ -10,6 +10,8 @@ function isProduct(
  * gets the cover image
  *
  * @public
+ *
+ * @category Product
  */
 export function getMainImageUrl(
   object: Product | LineItem | OrderLineItem

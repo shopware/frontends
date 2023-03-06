@@ -4,7 +4,7 @@ category: CMS
 
 # useCartItem
 
-Composable for cart item management.
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

@@ -13,6 +13,11 @@ export type UseLandingSearchReturn = {
   ) => Promise<LandingPage>;
 };
 
+/**
+ * Composable for landing page search.
+ * @public
+ * @category Navigation & Routing
+ */
 export function useLandingSearch(): {
   search: (
     navigationId: string,

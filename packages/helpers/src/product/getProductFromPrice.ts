@@ -3,6 +3,8 @@ import { getProductRealPrice } from "./getProductRealPrice";
 
 /**
  * @beta
+ *
+ * @category Product
  */
 export function getProductFromPrice(product: Product): number | undefined {
   if (!product) {

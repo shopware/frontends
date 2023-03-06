@@ -22,6 +22,11 @@ export type UseCmsElementImage = {
   displayMode: ComputedRef<DisplayMode>;
 };
 
+/**
+ * Composable to get cms element image
+ *
+ * @category CMS (Shopping Experiences)
+ */
 export function useCmsElementImage(
   element: CmsElementImage | CmsElementManufacturerLogo
 ): UseCmsElementImage {

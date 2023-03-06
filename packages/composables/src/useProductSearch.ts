@@ -19,6 +19,11 @@ export type UseProductSearchReturn = {
   ) => Promise<ProductResponse>;
 };
 
+/**
+ * Composable for product search.
+ * @public
+ * @category Navigation & Routing
+ */
 export function useProductSearch(): {
   search: (
     productId: string,

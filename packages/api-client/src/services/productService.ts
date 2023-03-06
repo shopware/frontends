@@ -19,6 +19,7 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
  * Get default amount of products
  *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function getProducts(
@@ -37,6 +38,7 @@ export async function getProducts(
  * Get default amount of products and listing configuration for given category
  *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function getCategoryProducts(
@@ -55,6 +57,7 @@ export async function getCategoryProducts(
  * Get the product with passed productId
  *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function getProduct(
@@ -73,6 +76,7 @@ export async function getProduct(
  * Add a review to specific product by its ID
  *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function addProductReview(
@@ -94,6 +98,7 @@ export async function addProductReview(
  * Get product reviews
  *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function getProductReviews(

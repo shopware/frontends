@@ -4,7 +4,7 @@ category: CMS
 
 # useCountries
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 

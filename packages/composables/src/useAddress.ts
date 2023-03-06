@@ -48,6 +48,13 @@ export type UseAddressReturn = {
   setDefaultCustomerShippingAddress: (addressId: string) => Promise<string>;
 };
 
+/**
+ * Composable to manage customer addresses
+ *
+ * @public
+ *
+ * @category Cart & Checkout
+ */
 export function useAddress(): UseAddressReturn {
   const { apiInstance } = useShopwareContext();
   const { isLoggedIn, isGuestSession } = useUser();

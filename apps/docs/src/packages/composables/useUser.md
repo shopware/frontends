@@ -4,7 +4,7 @@ category: CMS
 
 # useUser
 
-Description
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 
