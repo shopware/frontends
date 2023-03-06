@@ -1,10 +1,29 @@
 {
   "name": "@shopware-pwa/typer",
+  "private": true,
   "version": "0.1.0",
-  "type": "module",
-  "module": "./dist/typer.js",
-  "main": "./dist/typer.cjs",
+  "description": "Generate documentation from types",
+  "author": "Shopware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://shopware-frontends-docs.vercel.app/packages/typer.html",
+  "keywords": [
+    "shopware"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
+  "module": "./dist/typer.mjs",
   "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./src/main.ts"
+    }
+  },
   "files": [
     "dist"
   ],
@@ -15,19 +34,16 @@
   "devDependencies": {
     "@shopware-pwa/types": "workspace:*",
     "@stackblitz/sdk": "^1.8.2",
-    "@types/find-in-files": "0.5.1",
-    "@types/fs-extra": "11.0.1",
-    "find-in-files": "0.5.0",
+    "@types/find-in-files": "^0.5.1",
+    "@types/fs-extra": "^11.0.1",
+    "find-in-files": "^0.5.0",
     "fishery": "^2.2.2",
     "intermock": "^0.2.5",
-    "ts-dox": "0.1.0",
-    "typedoc": "0.23.23",
-    "typescript": "4.9.4",
-    "vite-plugin-dts": "^1.7.1",
-    "vitest": "0.26.2"
-  },
-  "peerDependency": {
-    "typescript": "4.9.4",
-    "typedoc": "0.23.23"
+    "ts-dox": "^0.1.0",
+    "typedoc": "^0.23.26",
+    "typescript": "^4.9.5",
+    "vinyl": "^3.0.0",
+    "vite-plugin-dts": "^2.0.2",
+    "vitest": "^0.29.2"
   }
 }

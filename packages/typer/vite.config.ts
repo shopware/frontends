@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/main.ts"),
       name: "typer",
-      formats: ["es", "cjs"],
+      formats: ["es"],
     },
     emptyOutDir: true,
     minify: false,
