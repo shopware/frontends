@@ -214,6 +214,8 @@ export type MobileBehavior = "boxed" | "wrap" | "hidden";
  */
 export type BackgroundMediaMode = "cover";
 
+export type CmsVisibility = "mobile" | "tablet" | "desktop" | string;
+
 /**
  * @public
  */
@@ -240,5 +242,8 @@ export type CmsSection = {
   extensions: [any];
   id: string;
   blocks: CmsBlock[];
+  visibility: {
+    [key in CmsVisibility]: boolean;
+  };
   apiAlias: "cms_section";
 };
