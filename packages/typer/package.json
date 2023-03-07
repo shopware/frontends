@@ -15,13 +15,15 @@
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
+  "type": "module",
   "license": "MIT",
-  "module": "./dist/typer.mjs",
   "types": "./dist/main.d.ts",
+  "module": "./dist/typer.js",
   "exports": {
     ".": {
       "types": "./dist/main.d.ts",
-      "import": "./src/main.ts"
+      "import": "./dist/typer.js",
+      "require": "./dist/typer.cjs"
     }
   },
   "files": [
