@@ -33,6 +33,7 @@ import {
   getNewsletterRecipientEndpoint,
   getDocumentDownloadEndpoint,
   getOrderDownloadsEndpoint,
+  getSitemapEndpoint,
 } from "../src/endpoints";
 
 const sampleProductId = "eea0f69ec02d44f7a4224272b3d99478";
@@ -275,6 +276,13 @@ describe("endpoints", () => {
     it("should return order download endpoint", () => {
       const result = getOrderDownloadsEndpoint("123", "345");
       expect(result).toBe(`/store-api/order/download/123/345`);
+    });
+  });
+
+  describe("getSitemapEndpoint", () => {
+    it("should return Shopware sitemap endpoint", async () => {
+      const result = getSitemapEndpoint();
+      expect(result).toEqual("/store-api/sitemap");
     });
   });
 });
