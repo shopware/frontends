@@ -40,4 +40,12 @@ describe("usePrice", () => {
     });
     expect(getFormattedPrice("4")).toBe("$ 4.00");
   });
+
+  it("should return empty string", () => {
+    init({
+      currencyPosition: 0,
+      currencySymbol: "$",
+    });
+    expect(getFormattedPrice(undefined)).toBe("");
+  });
 });
