@@ -50,9 +50,7 @@ importers:
       '@types/markdown-it': ^12.2.3
       '@types/node': ^18.14.6
       '@vitejs/plugin-vue': ^4.0.0
-      markdown-table: ^3.0.3
       typescript: ^4.9.5
-      vite-plugin-inspect: ^0.7.15
       vitepress: ^1.0.0-alpha.49
       vitepress-shopware-docs: ^0.1.9
       vue: ^3.2.47
@@ -68,9 +66,7 @@ importers:
       '@types/markdown-it': 12.2.3
       '@types/node': 18.14.6
       '@vitejs/plugin-vue': 4.0.0_vue@3.2.47
-      markdown-table: 3.0.3
       typescript: 4.9.5
-      vite-plugin-inspect: 0.7.15
 
   apps/e2e-tests:
     specifiers:
@@ -12062,6 +12058,7 @@ packages:
 
   /markdown-table/3.0.3:
     resolution: {integrity: sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw==}
+    dev: false
 
   /marked/4.2.12:
     resolution: {integrity: sha512-yr8hSKa3Fv4D3jdZmtMMPghgVt6TWbk86WQaWhDloQjRSQhMMYCAro7jP7VDJrjjdV8pxVxMssXS8B8Y5DZ5aw==}

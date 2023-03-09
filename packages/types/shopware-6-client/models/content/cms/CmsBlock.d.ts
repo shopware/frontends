@@ -5,6 +5,7 @@ import {
   CmsSlot,
   MobileBehavior,
   SizingMode,
+  CmsVisibility,
 } from "./CmsPage";
 /**
  * @public
@@ -38,4 +39,7 @@ export type CmsBlock = {
   backgroundMedia: Media | null;
   backgroundMediaMode: BackgroundMediaMode;
   cssClass: string | null;
+  visibility: {
+    [key in CmsVisibility]: boolean;
+  };
 };

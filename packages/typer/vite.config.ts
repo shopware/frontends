@@ -8,12 +8,10 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/main.ts"),
       name: "typer",
-      formats: ["es"],
+      formats: ["es", "cjs"],
     },
     emptyOutDir: true,
-    minify: false,
-    target: "esnext",
-
+    minify: true,
     rollupOptions: {
       external: ["typescript", "path", "fs", "typedoc"],
     },
