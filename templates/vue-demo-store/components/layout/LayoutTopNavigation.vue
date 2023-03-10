@@ -20,12 +20,12 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
       ref="menuHtmlElement"
-      class="relative"
+      class="relative hover:bg-gray-50 hover:rounded-lg"
       @mouseover="currentMenuPosition = navigationElement.id"
     >
       <RouterLink
         :to="'/' + navigationElement.seoUrls?.[0]?.seoPathInfo"
-        class="text-base font-medium text-gray-500 hover:text-gray-900"
+        class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
       </RouterLink>
