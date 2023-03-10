@@ -2,7 +2,7 @@ import { Product } from "../product/Product";
 import { Media } from "../media/Media";
 import { Category } from "../category/Category";
 import { RouteName } from "../cms/CmsPage";
-import {CustomFields} from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * Navigation type to display on page.

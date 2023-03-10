@@ -3,7 +3,7 @@ import { PropertyGroup } from "./PropertyGroup";
 import { PropertyGroupOptionTranslation } from "./PropertyGroupOptionTranslation";
 import { ProductConfiguratorSetting } from "../product/ProductConfiguratorSetting";
 import { Product } from "../product/Product";
-import { CustomFields} from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public

@@ -1,5 +1,5 @@
 import { Product } from "../product/Product";
-import {CustomFields} from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 export type CustomerWishlist = {
   customerId: string;

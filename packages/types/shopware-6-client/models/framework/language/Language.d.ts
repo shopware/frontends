@@ -33,7 +33,7 @@ import { SalesChannelTranslation } from "../../system/sales-channel/SalesChannel
 import { SalesChannelTypeTranslation } from "../../system/sales-channel/SalesChannelTypeTranslation";
 import { SalesChannelDomain } from "../../system/sales-channel/SalesChannelDomain";
 import { NumberRangeTypeTranslation } from "../../system/number-range/NumberRangeTypeTranslation";
-import { CustomFields} from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { Collection } from "../../common/Collection";
 
 /**

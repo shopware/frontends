@@ -14,7 +14,7 @@ import { ProductConfiguratorSetting } from "./ProductConfiguratorSetting";
 import { PropertyGroupOption } from "../property/PropertyGroupOption";
 import { Category } from "../category/Category";
 import { Tag } from "../../system/tag/Tag";
-import { CustomFields} from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { SeoUrl } from "../navigation/Navigation";
 import { CmsPage } from "../cms/CmsPage";
 import { PropertyGroupOptionCart } from "../property/PropertyGroupOptionCart";

@@ -4,7 +4,7 @@ import {
   AggregationFilterEntityOption,
   AggregationProductListingEntities,
 } from "../search/Aggregations";
-import {CustomFields} from "../models/common/CustomField";
+import { CustomFields } from "../models/common/CustomField";
 
 /**
  * @public
@@ -35,7 +35,7 @@ export type ListingFilter = {
   max?: number;
   value?: string;
   displayType?: ListingFilterDisplayType;
-  customFields: CustomFields
+  customFields: CustomFields;
 };
 
 export type ListingResult<T> = {

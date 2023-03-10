@@ -1,5 +1,5 @@
 import { Tag } from "../../system/tag/Tag";
-import {CustomFields} from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public

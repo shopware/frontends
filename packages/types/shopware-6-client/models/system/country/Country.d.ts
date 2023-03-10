@@ -3,7 +3,7 @@ import { CountryTranslation } from "./CountryTranslation";
 import { OrderAddress } from "../../checkout/order/OrderAddress";
 import { CustomerAddress } from "../../checkout/customer/CustomerAddress";
 import { SalesChannel } from "../sales-channel/SalesChannel";
-import {CustomFields} from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public

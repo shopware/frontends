@@ -6,7 +6,7 @@ import { Currency } from "../models/system/currency/Currency";
 import { Language } from "../models/framework/language/Language";
 import { Category } from "../models/content/category/Category";
 import { Customer } from "../models/checkout/customer/Customer";
-import {CustomFields} from "../models/common/CustomField";
+import { CustomFields } from "../models/common/CustomField";
 
 export type ContextTokenResponse = {
   contextToken: string;

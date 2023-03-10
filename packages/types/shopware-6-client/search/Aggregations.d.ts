@@ -1,5 +1,5 @@
 import { Media } from "../models/content/media/Media";
-import {CustomFields} from "../models/common/CustomField";
+import { CustomFields } from "../models/common/CustomField";
 
 /**
  * @beta

@@ -2,7 +2,7 @@ import { Language } from "../../framework/language/Language";
 import { SalesChannel } from "../../system/sales-channel/SalesChannel";
 import { Tag } from "../../system/tag/Tag";
 import { Salutation } from "../../system/salutation/Salutation";
-import { CustomFields} from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public

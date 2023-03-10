@@ -6,7 +6,7 @@ import { ShippingMethodPrice } from "./ShippingMethodPrice";
 import { Media } from "../../content/media/Media";
 import { Tag } from "../../system/tag/Tag";
 import { ShippingMethodTranslation } from "./ShippingMethodTranslation";
-import { CustomFields} from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
