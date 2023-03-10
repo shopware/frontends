@@ -6,11 +6,12 @@ import { Media } from "../../content/media/Media";
 import { CustomFields } from "../../common/CustomField";
 import { Product } from "../../content/product/Product";
 import { Promotion } from "../promotion/Promotion";
-import { OrderDownloads } from "./OrderDownloads";
+import { Downloads } from "./OrderDownloads";
 /**
  * @public
  */
 export type OrderLineItem = {
+  id: string;
   orderId: string;
   identifier: string;
   referenceId: string | null;
@@ -34,5 +35,5 @@ export type OrderLineItem = {
   cover: (Media & { url: string }) | null;
   children: OrderLineItem[] | null;
   apiAlias: "order_item";
-  downloads: OrderDownloads | null;
+  downloads: Downloads | null;
 };
