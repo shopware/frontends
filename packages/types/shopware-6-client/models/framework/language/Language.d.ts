@@ -33,7 +33,7 @@ import { SalesChannelTranslation } from "../../system/sales-channel/SalesChannel
 import { SalesChannelTypeTranslation } from "../../system/sales-channel/SalesChannelTypeTranslation";
 import { SalesChannelDomain } from "../../system/sales-channel/SalesChannelDomain";
 import { NumberRangeTypeTranslation } from "../../system/number-range/NumberRangeTypeTranslation";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields} from "../../common/CustomField";
 import { Collection } from "../../common/Collection";
 
 /**
@@ -52,7 +52,7 @@ export type Language = {
   salesChannels: SalesChannel[] | null;
   customers: Customer[] | null;
   salesChannelDefaultAssignments: SalesChannel[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   categoryTranslations: CategoryTranslation[] | null;
   countryStateTranslations: CountryStateTranslation[] | null;
   countryTranslations: CategoryTranslation[] | null;

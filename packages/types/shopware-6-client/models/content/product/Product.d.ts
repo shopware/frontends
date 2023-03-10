@@ -14,7 +14,7 @@ import { ProductConfiguratorSetting } from "./ProductConfiguratorSetting";
 import { PropertyGroupOption } from "../property/PropertyGroupOption";
 import { Category } from "../category/Category";
 import { Tag } from "../../system/tag/Tag";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields} from "../../common/CustomField";
 import { SeoUrl } from "../navigation/Navigation";
 import { CmsPage } from "../cms/CmsPage";
 import { PropertyGroupOptionCart } from "../property/PropertyGroupOptionCart";
@@ -22,7 +22,7 @@ import { PropertyGroupOptionCart } from "../property/PropertyGroupOptionCart";
 export type CrossSelling = {
   apiAlias: "cross_selling_element";
   crossSelling: {
-    name: String;
+    name: string;
     position: number;
     sortBy: string;
     sortDirection: string;
@@ -129,7 +129,7 @@ export type Product = {
   options: PropertyGroupOption[] | PropertyGroupOptionCart[];
   categoriesRo: Category[] | null;
   coverId: string | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   tagIds: [] | null;
   productReviews: ProductReview[] | null;
   ratingAverage: number | null;

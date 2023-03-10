@@ -1,6 +1,6 @@
 import { Rule } from "../../content/rule/Rule";
 import { Currency } from "../../system/currency/Currency";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -13,7 +13,7 @@ export type ShippingMethodPrice = {
   quantityEnd: number | null;
   price: number;
   shippingMethod: ShippingMethodPrice | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   rule: Rule | null;
   currency: Currency | null;
   calculationRuleId: string | null;

@@ -3,7 +3,7 @@ import { PriceDefinitionInterface } from "../cart/price/PriceDefinitionInterface
 import { Order } from "./Order";
 import { OrderDeliveryPosition } from "./OrderDeliveryPosition";
 import { Media } from "../../content/media/Media";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { Product } from "../../content/product/Product";
 import { Promotion } from "../promotion/Promotion";
 import { OrderDownloads } from "./OrderDownloads";
@@ -30,7 +30,7 @@ export type OrderLineItem = {
   type: string | null;
   order: Order | null;
   orderDeliveryPosition: OrderDeliveryPosition[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   cover: (Media & { url: string }) | null;
   children: OrderLineItem[] | null;
   apiAlias: "order_item";

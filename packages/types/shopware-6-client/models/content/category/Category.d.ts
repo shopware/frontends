@@ -4,7 +4,7 @@ import { Product } from "../product/Product";
 import { Entity } from "../../common/Entity";
 import { Tag } from "../../system/tag/Tag";
 import { CategoryTranslation } from "./CategoryTranslation";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * Source: https://github.com/shopware/platform/blob/master/src/Core/Content/Category/CategoryDefinition.php#L50
@@ -33,7 +33,7 @@ export type Category = Entity & {
   products: Product[] | null;
   nestedProducts: Product[] | null;
   afterCategoryId: string | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   tags: Tag[] | null;
   cmsPageId: string | null;
   cmsPage: CmsPage | null;

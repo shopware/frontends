@@ -1,5 +1,5 @@
 import { Rule } from "./Rule";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -13,5 +13,5 @@ export type RuleCondition = {
   children: RuleCondition | null;
   parent: RuleCondition | null;
   position: number;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

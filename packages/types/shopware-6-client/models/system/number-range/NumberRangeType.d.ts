@@ -1,6 +1,6 @@
 import { NumberRange } from "./NumberRange";
 import { NumberRangeSalesChannel } from "./NumberRangeSalesChannel";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { NumberRangeTypeTranslation } from "./NumberRangeTypeTranslation";
 
 /**
@@ -12,6 +12,6 @@ export type NumberRangeType = {
   global: boolean;
   numberRanges: NumberRange[] | null;
   numberRangeSalesChannels: NumberRangeSalesChannel | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   translations: NumberRangeTypeTranslation[] | null;
 };

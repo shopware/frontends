@@ -3,6 +3,7 @@ import { CountryTranslation } from "./CountryTranslation";
 import { OrderAddress } from "../../checkout/order/OrderAddress";
 import { CustomerAddress } from "../../checkout/customer/CustomerAddress";
 import { SalesChannel } from "../sales-channel/SalesChannel";
+import {CustomFields} from "../../common/CustomField";
 
 /**
  * @public
@@ -10,7 +11,7 @@ import { SalesChannel } from "../sales-channel/SalesChannel";
 export type Country = {
   active: boolean;
   createdAt: string;
-  customFields: object | null;
+  customFields: CustomFields | null;
   name: string | null;
   iso: string | null;
   translated: any;

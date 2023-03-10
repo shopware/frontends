@@ -1,5 +1,5 @@
 import { SnippetSet } from "./SnippetSet";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -10,5 +10,5 @@ export type Snippet = {
   value: string;
   author: string;
   set: SnippetSet | null;
-  customFields: CustomField | null;
+  customFields: CustomFields | null;
 };

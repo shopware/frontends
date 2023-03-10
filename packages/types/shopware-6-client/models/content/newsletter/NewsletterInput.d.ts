@@ -1,5 +1,5 @@
 import { Tag } from "../../system/tag/Tag";
-import { CustomField } from "../../common/CustomField";
+import {CustomFields} from "../../common/CustomField";
 
 /**
  * @public
@@ -16,5 +16,5 @@ export type NewsletterInput = {
   street?: string;
   tags?: Tag[];
   languageId?: string;
-  customFields?: CustomField[];
+  customFields?: CustomFields;
 };

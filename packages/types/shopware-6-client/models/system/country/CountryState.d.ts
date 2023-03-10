@@ -2,7 +2,7 @@ import { Country } from "./Country";
 import { CountryStateTranslation } from "./CountryStateTranslation";
 import { CustomerAddress } from "../../checkout/customer/CustomerAddress";
 import { OrderAddress } from "../../checkout/order/OrderAddress";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -17,5 +17,5 @@ export type CountryState = {
   translations: CountryStateTranslation[] | null;
   customerAddresses: CustomerAddress[] | null;
   orderAddresses: OrderAddress[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

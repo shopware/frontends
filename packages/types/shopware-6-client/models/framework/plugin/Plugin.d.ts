@@ -1,6 +1,6 @@
 import { PluginTranslation } from "./PluginTranslation";
 import { PaymentMethod } from "../../checkout/payment/PaymentMethod";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields} from "../../common/CustomField";
 
 /**
  * @public
@@ -28,6 +28,6 @@ export type Plugin = {
   changelog: [] | null;
   translations: PluginTranslation[] | null;
   paymentMethods: PaymentMethod[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   autoload: [];
 };

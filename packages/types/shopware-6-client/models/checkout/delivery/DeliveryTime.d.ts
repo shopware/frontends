@@ -1,6 +1,6 @@
 import { ShippingMethod } from "../shipping/ShippingMethod";
 import { Entity } from "../../common/Entity";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -12,5 +12,5 @@ export type DeliveryTime = {
   unit: string;
   shippingMethods: ShippingMethod[] | null;
   translations: Entity[];
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

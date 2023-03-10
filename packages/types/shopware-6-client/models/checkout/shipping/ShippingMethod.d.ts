@@ -6,7 +6,7 @@ import { ShippingMethodPrice } from "./ShippingMethodPrice";
 import { Media } from "../../content/media/Media";
 import { Tag } from "../../system/tag/Tag";
 import { ShippingMethodTranslation } from "./ShippingMethodTranslation";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields} from "../../common/CustomField";
 
 /**
  * @public
@@ -23,7 +23,7 @@ export type ShippingMethod = {
   orderDeliveries: OrderDelivery[] | null;
   salesChannelDefaultAssignments: SalesChannel[] | null;
   salesChannels: SalesChannel[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   availabilityRule: Rule | null;
   availabilityRuleId: string;
   prices: ShippingMethodPrice[];

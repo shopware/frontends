@@ -53,7 +53,7 @@ interface OrderCustomer {
   customer: null;
   salutation: null;
   order: null;
-  customFields: null;
+  customFields: CustomFields;
   remoteAddress: string;
   _uniqueIdentifier: string;
   versionId: string;

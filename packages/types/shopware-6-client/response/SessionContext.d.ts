@@ -6,6 +6,7 @@ import { Currency } from "../models/system/currency/Currency";
 import { Language } from "../models/framework/language/Language";
 import { Category } from "../models/content/category/Category";
 import { Customer } from "../models/checkout/customer/Customer";
+import {CustomFields} from "../models/common/CustomField";
 
 export type ContextTokenResponse = {
   contextToken: string;
@@ -28,7 +29,7 @@ export type SalesChannelDomain = {
   salesChannelDefaultHreflang: null | string;
   hreflangUseOnlyLocale: boolean;
   id: string;
-  customFields: null | unknown;
+  customFields: CustomFields;
   apiAlias: "sales_channel_domain";
 };
 
@@ -74,7 +75,7 @@ export type SalesChannel = {
   hreflangDefaultDomainId: null | string;
   hreflangDefaultDomain: null | SalesChannelDomain;
   id: string;
-  customFields: null | unknown;
+  customFields: null | CustomFields;
   apiAlias: "sales_channel";
 };
 
