@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
   });
 
   sitemaps.push({
-    url: `${getURL(event.node.req)}/sitemap-local.xml'`,
+    url: `${getURL(event.node.req)}/sitemap-local.xml`,
   });
 
   event.node.res.setHeader("Content-Type", "application/xhtml+xml");
