@@ -53,10 +53,11 @@ export const sidebar = [
   {
     text: "BEST PRACTICES",
     items: [
-      { text: "Testing", link: "/best-practices/testing" },
-      { text: "Performance", link: "/best-practices/performance" },
       { text: "Deployment", link: "/best-practices/deployment" },
+      { text: "Error Handling", link: "/best-practices/error-handling" },
       { text: "Images", link: "/best-practices/images" },
+      { text: "Performance", link: "/best-practices/performance" },
+      { text: "Testing", link: "/best-practices/testing" },
     ],
   },
   {
