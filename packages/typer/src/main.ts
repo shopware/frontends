@@ -7,6 +7,5 @@ export * from "./stackblitz";
 import { TableOfFunctions } from "./plugin-ts-function-description";
 import { MdTypesTransformer } from "./plugin-ts-functions-list";
 
-
 export { TableOfFunctions as TsFunctionsList };
 export { MdTypesTransformer as TsFunctionDescription };

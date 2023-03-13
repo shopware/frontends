@@ -77,9 +77,14 @@ export const sidebar = [
   },
 ];
 
-export default defineConfigWithTheme<ThemeConfig>({
-  extends: baseConfig,
+interface ThemeConfigExtended extends ThemeConfig {
+  ai: {
+    endpoint: string;
+  };
+}
 
+export default defineConfigWithTheme<ThemeConfigExtended>({
+  extends: baseConfig,
   lang: "en-US",
   title: "Shopware Frontends",
   description: "Documentation for Shopware developers",
@@ -157,6 +162,9 @@ export default defineConfigWithTheme<ThemeConfig>({
       // searchParameters: {
       //   facetFilters: ["version:v1"],
       // },
+    },
+    ai: {
+      endpoint: "",
     },
   },
 
