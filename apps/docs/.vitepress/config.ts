@@ -48,6 +48,7 @@ export const sidebar = [
       { text: "Context Composables", link: "/framework/context-composables" },
       { text: "Shared Composables", link: "/framework/shared-composables" },
       { text: "Images", link: "/framework/images" },
+      { text: "Associations", link: "/framework/associations" },
     ],
   },
   {
