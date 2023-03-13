@@ -1,8 +1,9 @@
 // import './styles/index.css'
 import { h, App } from "vue";
 import { VPTheme } from "vitepress-shopware-docs";
-
 import PageRef from "./components/PageRef.vue";
+// Ai component
+// import AI from "./components/AI.vue";
 import "./custom.css";
 
 export default Object.assign({}, VPTheme, {
@@ -18,6 +19,7 @@ export default Object.assign({}, VPTheme, {
   },
   enhanceApp({ app }: { app: App }) {
     app.component("PageRef", PageRef);
+    // app.component("AI", AI);
     // app.provide('some-injection-key-if-needed', VALUE)
   },
 });
