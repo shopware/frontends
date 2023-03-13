@@ -5,6 +5,7 @@ export class HomePage extends AbstractPage {
   //readonly page: Page
   readonly signInButton: Locator;
   readonly linkToCartPage: Locator;
+  readonly linkToVariantPage: Locator;
   readonly linkToRegistrationPage: Locator;
   readonly searchBar: Locator;
   readonly addToWishlist: Locator;
@@ -14,6 +15,9 @@ export class HomePage extends AbstractPage {
     super(page);
     this.signInButton = page.locator("[data-testid='header-sign-in-link']");
     this.linkToCartPage = page.locator("text='Smoking Board Cedar Wood'");
+    this.linkToVariantPage = page.locator(
+      "text='Pepper white, ground, Muntok pearl'"
+    );
     this.searchBar = page.locator("[data-testid='layout-search-input']");
     this.linkToRegistrationPage = page.locator(
       "[data-testid='login-sign-up-link']"
@@ -39,6 +43,13 @@ export class HomePage extends AbstractPage {
       this.linkToCartPage.click(),
       this.page.waitForSelector("[data-testid='product-quantity']"),
       this.page.waitForLoadState("load"),
+    ]);
+  }
+
+  async openVariantsCartPage() {
+    await Promise.all([
+      this.linkToVariantPage.click(),
+      this.page.waitForSelector("[data-testid='product-quantity']"),
     ]);
   }
 
