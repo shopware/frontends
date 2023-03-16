@@ -2,9 +2,9 @@ import { Product } from "@shopware-pwa/types";
 
 /**
  * get the thumbnail image URL with the smallest width
- * 
+ *
  * @deprecated use `getSmallestThumbnailUrl` helper instead
- * 
+ *
  * @param {Product} product product entity
  *
  * @beta

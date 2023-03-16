@@ -8,10 +8,10 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
 
 /**
  * Get a list of categories by provided search criteria.
- * 
+ *
  * @param {ShopwareSearchParams} search criteria search criteria for categories
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Category
  * @public
@@ -29,10 +29,10 @@ export async function getCategories(
 
 /**
  * Get a single category by its id.
- * 
+ *
  * @param {string} categoryId id of the category
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Category
  * @public

@@ -13,7 +13,7 @@ import { Cart, ContextTokenResponse, LineItem } from "@shopware-pwa/types";
  * As the purpose of this method is not clear we recommend to use `getCart` method because its behaviour seems to be the same.
  *
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  *
  * @public
@@ -50,7 +50,7 @@ export async function getCart(
  *
  * @throws ClientApiError
  * @public
- * 
+ *
  * @param {string} productId id of the cart line item (usually it's a product id)
  * @param {number} quantity quantity of the product to be added to the cart
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
@@ -87,7 +87,7 @@ export async function addProductToCart(
  * @param {string} itemId id of the cart line item
  * @param {number} newQuantity new quantity of the cart line item
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @public
  *
@@ -118,10 +118,10 @@ export async function changeCartItemQuantity(
  * Deletes the cart line item by id.
  *
  * This method may be used for deleting "product" type item lines as well as "promotion" type item lines.
- *  
+ *
  * @param itemId - id of the cart line item
  * @param contextInstance - instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Cart
  * @public
@@ -144,7 +144,7 @@ export async function removeCartItem(
  *
  * @param promotionCode - code of the promotion
  * @param contextInstance - instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Cart
  * @public
@@ -170,7 +170,7 @@ export async function addPromotionCode(
 /**
  * Adds multiple items to the cart.
  * Accepts every type of cart item.
- * 
+ *
  * @param items - array of cart items
  * @param contextInstance - instance of the api client (by default it's an Axios instance)
  *

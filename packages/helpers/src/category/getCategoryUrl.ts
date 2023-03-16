@@ -4,7 +4,7 @@ import { getTranslatedProperty } from "../getTranslatedProperty";
 /**
  * Get URL for category.
  * Some link {@link isLinkCategory}
- * 
+ *
  * @param {Category} category category entity
  *
  * @beta

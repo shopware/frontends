@@ -23,6 +23,7 @@ export * from "./models/checkout/document/DocumentBaseConfig";
 export * from "./models/checkout/document/DocumentBaseConfigDefinition";
 export * from "./models/checkout/document/DocumentTypeTranslation";
 export * from "./models/checkout/order/Order";
+export * from "./models/checkout/order/OrderDocument";
 export * from "./models/checkout/order/OrderAddress";
 export * from "./models/checkout/order/OrderDelivery";
 export * from "./models/checkout/order/OrderDeliveryPosition";

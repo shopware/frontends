@@ -8,7 +8,7 @@ type DocumentDownloadParams = {
 
 /**
  * Download selected document
- * 
+ *
  * @param {DocumentDownloadParams} params documentId and deepLinkCode
  *
  * @throws ClientApiError
@@ -17,9 +17,12 @@ type DocumentDownloadParams = {
 export async function getDocumentDownload(
   params: DocumentDownloadParams,
   contextInstance: ShopwareApiInstance = defaultInstance
-) {
-  const resp = await contextInstance.invoke.post(
-    getDocumentDownloadEndpoint(params.documentId, params.deepLinkCode)
+): Promise<Blob> {
+  const resp = await contextInstance.invoke.get(
+    getDocumentDownloadEndpoint(params.documentId, params.deepLinkCode),
+    {
+      responseType: "blob",
+    }
   );
   return resp.data;
 }

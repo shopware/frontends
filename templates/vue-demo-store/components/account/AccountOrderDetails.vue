@@ -9,6 +9,8 @@ const {
   billingAddress,
   shippingAddress,
   order,
+  hasDocuments,
+  documents,
 } = useOrderDetails(props.orderId);
 
 onMounted(() => {
@@ -38,5 +40,6 @@ export default {
       :key="lineItem.identifier"
       :line-item="lineItem"
     />
+    <AccountOrderDownloads v-if="hasDocuments" :documents="documents" />
   </div>
 </template>

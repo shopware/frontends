@@ -9,7 +9,7 @@ type ProductMedia = {
  * Prepare media object
  *
  * @param {OrderLineItem} lineItem order item
- * 
+ *
  * @public
  * @category Media
  */

@@ -8,7 +8,7 @@ import {
 /**
  * Search for products based on criteria.
  * From: Shopware 6.4
- * 
+ *
  * @param {ShopwareSearchParams} criteria search criteria for products
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
  *
@@ -35,7 +35,7 @@ export async function searchProducts(
  *
  * @param {ShopwareSearchParams} criteria search criteria for products
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @category Search
  * @public
  */

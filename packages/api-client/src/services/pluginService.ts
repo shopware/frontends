@@ -4,11 +4,11 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
 /**
  * Invoke custom POST request to shopware API. Mostly for plugins usage.
  * You can skip domain and pass only endpoint ex. `/api/my/endpoint`
- * 
+ *
  * @param {string} address endpoint address
  * @param {unknown} payload payload to send
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @public
  */
@@ -28,10 +28,10 @@ export function invokePost<T>(
 /**
  * Invoke custom GET request to shopware API. Mostly for plugins usage.
  * You can skip domain and pass only endpoint ex. `/api/my/endpoint`
- * 
+ *
  * @param {string} address endpoint address
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @public
  */

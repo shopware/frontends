@@ -14,7 +14,7 @@ import { createSharedComposable } from "@vueuse/core";
 
 /**
  * Composable to manage cart
- * 
+ *
  * @public
  * @category Cart & Checkout
  */

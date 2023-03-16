@@ -34,11 +34,11 @@ export async function getCmsPage(
 
 /**
  * Fetches a landing page entity
- * 
+ *
  * @param {string} landingPageId id of the landing page
  * @param {ShopwareSearchParams} params search criteria for landing page
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category CMS
  * @public
@@ -60,7 +60,7 @@ export async function getLandingPage(
  * @param {string} entityId id of the entity
  * @param {string} languageId id of the language
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @category CMS
  * @public
  */
@@ -92,7 +92,7 @@ export async function getSeoUrls(
 
 /**
  * Returns an array of SEO URLs for given entity
- * 
+ *
  * @param {ShopwareSearchParams} params search criteria for SEO URL
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
  *

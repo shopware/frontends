@@ -16,5 +16,4 @@ const leftContent = getSlotContent("left");
 const centerContent = getSlotContent("center");
 ```
 
-
 <!-- PLACEHOLDER_DESCRIPTION -->

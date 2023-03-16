@@ -6,6 +6,7 @@ import {
   ShippingMethod,
   PaymentMethod,
   ShopwareSearchParams,
+  OrderDocument,
 } from "@shopware-pwa/types";
 import {
   cancelOrder,
@@ -13,6 +14,7 @@ import {
   getOrderDetails,
   handlePayment as apiHandlePayment,
   getOrderDownloads,
+  getDocumentDownload,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 
@@ -128,7 +130,22 @@ export type UseOrderDetailsReturn = {
    * @param {string} downloadId
    * @returns {Blob}
    */
-  getMediaFile(downloadId: string): Promise<Blob>;
+  getMediaFile: (downloadId: string) => Promise<Blob>;
+  /**
+   * Get order documents
+   * @param {string} documentId
+   * @param {string} deepLinkCode
+   * @returns
+   */
+  getDocumentFile: (documentId: string, deepLinkCode: string) => Promise<Blob>;
+  /**
+   * Check if order has documents
+   */
+  hasDocuments: ComputedRef<boolean>;
+  /**
+   * Get order documents
+   */
+  documents: ComputedRef<OrderDocument[]>;
 };
 
 /**
@@ -219,6 +236,21 @@ export function useOrderDetails(orderId: string): UseOrderDetailsReturn {
     return response;
   }
 
+  async function getDocumentFile(documentId: string, deepLinkCode: string) {
+    const response = await getDocumentDownload(
+      {
+        documentId,
+        deepLinkCode,
+      },
+      apiInstance
+    );
+
+    return response;
+  }
+
+  const hasDocuments = computed(() => !!_sharedOrder.value.documents.length);
+  const documents = computed(() => _sharedOrder.value.documents);
+
   return {
     order: computed(() => _sharedOrder.value),
     status,
@@ -231,10 +263,13 @@ export function useOrderDetails(orderId: string): UseOrderDetailsReturn {
     paymentUrl,
     shippingMethod,
     paymentMethod,
+    hasDocuments,
+    documents,
     loadOrderDetails,
     handlePayment,
     cancel,
     changePaymentMethod,
     getMediaFile,
+    getDocumentFile,
   };
 }

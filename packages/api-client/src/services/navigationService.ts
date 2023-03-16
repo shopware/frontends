@@ -21,10 +21,10 @@ export interface GetStoreNavigationParams {
 
 /**
  * Get a list of categories by provided search criteria.
- * 
+ *
  * @param {GetStoreNavigationParams} params search criteria for categories
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Navigation
  * @public

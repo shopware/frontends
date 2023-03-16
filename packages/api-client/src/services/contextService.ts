@@ -24,10 +24,10 @@ import { extractContextToken } from "../helpers/context";
 
 /**
  * Updates the current session's context
- * 
+ *
  * @param params {UpdateContextParams} params to update the context
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -45,7 +45,7 @@ async function updateContext(
  * Loads session context, containing all session-related data.
  *
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiErrosr
  * @category Context
  * @public
@@ -59,10 +59,10 @@ export async function getSessionContext(
 
 /**
  * Set the current session's shipping address to correspoding to id
- * 
+ *
  * @param {string} shippingAddressId id of the shipping address
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -76,10 +76,10 @@ export function setCurrentShippingAddress(
 
 /**
  * Set the current session's billing address to correspoding to id
- * 
+ *
  * @param {string} billingAddressId id of the billing address
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -93,9 +93,9 @@ export function setCurrentBillingAddress(
 
 /**
  * Get all available currencies
- * 
+ *
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -112,10 +112,10 @@ export async function getAvailableCurrencies(
 
 /**
  * Set the current session's currency to correspoding to id
- * 
+ *
  * @param {string} newCurrencyID id of the currency
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -132,9 +132,9 @@ export async function setCurrentCurrency(
 
 /**
  * Get all available languages
- * 
+ *
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -151,10 +151,10 @@ export async function getAvailableLanguages(
 
 /**
  * Set the current session's language to correspoding to id
- * 
+ *
  * @param {string} newLanguageId id of the language
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -173,7 +173,7 @@ export async function setCurrentLanguage(
  * Get all available countries
  *
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -191,7 +191,7 @@ export async function getAvailableCountries(
  * Get all available salutations
  *
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -207,10 +207,10 @@ export async function getAvailableSalutations(
 
 /**
  * get all available payment methods
- * 
+ *
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
  * @param {object} params additional params
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -230,10 +230,10 @@ export async function getAvailablePaymentMethods(
 
 /**
  * Get payment method details
- * 
+ *
  * @param {string} paymentId id of the payment method
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -256,10 +256,10 @@ export async function getPaymentMethodDetails(
 
 /**
  * Set the current session's payment method to correspoding to id
- * 
+ *
  * @param {string} newPaymentMethodId id of the payment method
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -276,10 +276,10 @@ export async function setCurrentPaymentMethod(
 
 /**
  * Get all available shipping methods
- * 
+ *
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
  * @param {object} params additional params
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -299,10 +299,10 @@ export async function getAvailableShippingMethods(
 
 /**
  * Get Shipping method details
- * 
+ *
  * @param {string} shippingId id of the shipping method
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -325,10 +325,10 @@ export async function getShippingMethodDetails(
 
 /**
  * Set the current session's shipping method to correspoding to id
- * 
+ *
  * @param {string} newShippingMethodId id of the shipping method
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -344,10 +344,10 @@ export async function setCurrentShippingMethod(
 }
 /**
  * Get the current session's country
- * 
+ *
  * @param {string} countryId id of the country
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public
@@ -370,10 +370,10 @@ export async function getUserCountry(
 
 /**
  * Get the current session's salutation
- * 
+ *
  * @param {string} salutationId id of the salutation
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Context
  * @public

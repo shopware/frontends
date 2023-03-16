@@ -1,4 +1,4 @@
-import { Project } from '@stackblitz/sdk';
+import { Project } from "@stackblitz/sdk";
 
 export function getStackBlitzProjectConfig({
   packageName,

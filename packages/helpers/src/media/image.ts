@@ -4,7 +4,7 @@ import { Media } from "@shopware-pwa/types";
  * Returns the smallest thumbnail url from the media object
  *
  * @param media image object
- * 
+ *
  * @public
  * @category Media
  */

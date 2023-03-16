@@ -24,11 +24,11 @@ export type UseBreadcrumbsReturn = {
 };
 
 /**
- * Composable for breadcrumbs management. 
- * Read the [guide](https://shopware-frontends-docs.vercel.app/getting-started/breadcrumbs.html#building-breadcrumbs-for-cms-pages). 
+ * Composable for breadcrumbs management.
+ * Read the [guide](https://shopware-frontends-docs.vercel.app/getting-started/breadcrumbs.html#building-breadcrumbs-for-cms-pages).
  *
  * It's recommended to use [getCategoryBreadcrumbs](https://shopware-frontends-docs.vercel.app/packages/helpers/getCategoryBreadcrumbs) for category breadcrumbs.
- * 
+ *
  * @public
  * @category CMS (Shopping Experiences)
  */
