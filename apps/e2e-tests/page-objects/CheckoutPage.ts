@@ -15,6 +15,8 @@ export class CheckoutPage {
   readonly city: Locator;
   readonly country: Locator;
   readonly submitButton: Locator;
+  readonly termsBox: Locator;
+  readonly termCheckbox: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -49,11 +51,21 @@ export class CheckoutPage {
     this.submitButton = page.locator(
       "[data-testid='checkout-pi-submit-button']"
     );
+    this.termsBox = page.locator("[data-testid='checkout-terms-box']");
+    this.termCheckbox = page.locator(
+      "[data-testid='checkout-t&c-checkbox-tos']"
+    );
   }
 
   async goToCheckout() {
     await this.page.waitForSelector("[data-testid='cart-product-image']");
     await this.goToCheckoutButton.click();
+  }
+
+  async markTerms() {
+    await this.page.waitForLoadState();
+    await this.termCheckbox.waitFor();
+    await this.termCheckbox.dispatchEvent("click");
   }
 
   async placeOrder() {

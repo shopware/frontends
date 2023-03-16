@@ -114,6 +114,13 @@ const state = reactive({
   customShipping: false,
 });
 
+const terms = reactive({
+  tos: false,
+  revocation: false,
+});
+
+const termsBox = ref();
+
 const rules = computed(() => ({
   salutationId: {
     required,
@@ -156,11 +163,23 @@ const rules = computed(() => ({
 const $v = useVuelidate(rules, state);
 
 const placeOrder = async () => {
+  placeOrderTriggered.value = true;
+
+  if (!termsSelected.value) {
+    termsBox.value.scrollIntoView();
+    return;
+  }
+
   isLoading["placeOrder"] = true;
   const order = await createOrder();
   isLoading["placeOrder"] = false;
   return push("/checkout/success/" + order.id);
 };
+
+const termsSelected = computed(() => {
+  return terms.tos && (isVirtualCart.value ? terms.revocation : true);
+});
+const placeOrderTriggered = ref(false);
 
 onMounted(async () => {
   refreshSessionContext();
@@ -749,6 +768,60 @@ async function invokeLogout() {
                 </button>
               </div>
             </template>
+          </fieldset>
+
+          <fieldset
+            class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6"
+            ref="termsBox"
+            data-testid="checkout-terms-box"
+          >
+            <legend class="pt-5">
+              <h3 class="text-lg font-medium text-gray-900 m-0">
+                Terms and conditions
+              </h3>
+            </legend>
+            <div class="flex items-center" data-testid="checkout-t&c-tos">
+              <input
+                id="tos"
+                v-model="terms.tos"
+                :value="terms.tos"
+                name="tos"
+                type="checkbox"
+                class="focus:ring-brand-primary h-4 w-4 border-gray-300 shrink-0"
+                data-testid="checkout-t&c-checkbox-tos"
+              />
+              <label
+                for="tos"
+                class="ml-2 block text-sm font-medium text-gray-700"
+                :class="{ 'text-red': !termsSelected && placeOrderTriggered }"
+              >
+                I have read and accepted the general terms and conditions.
+              </label>
+            </div>
+
+            <div
+              v-if="isVirtualCart"
+              class="flex items-center"
+              data-testid="checkout-t&c-revocation"
+            >
+              <input
+                id="revocation"
+                v-model="terms.revocation"
+                :value="terms.revocation"
+                name="revocation"
+                type="checkbox"
+                class="focus:ring-brand-primary h-4 w-4 border-gray-300 shrink-0"
+                data-testid="checkout-t&c-checkbox-revocation"
+              />
+              <label
+                for="revocation"
+                class="ml-2 block text-sm font-medium text-gray-700"
+                :class="{ 'text-red': !termsSelected && placeOrderTriggered }"
+              >
+                I want immediate access to the digital content and I acknowledge
+                that thereby I waive my right to cancel.
+              </label>
+            </div>
           </fieldset>
         </div>
         <div class="mt-5 md:mt-0 md:col-span-1">
