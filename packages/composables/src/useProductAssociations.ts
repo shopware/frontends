@@ -14,17 +14,20 @@ import { useShopwareContext } from "./useShopwareContext";
 
 export type UseProductAssociationsReturn = {
   /**
-   * Start loading resources
+   * Start loading resources. Search Parameters and HTTP method can be passed.
+   *
    */
-  loadAssociations: (params: {
+  loadAssociations(params: {
     method?: "post" | "get";
     searchParams: ShopwareSearchParams;
-  }) => Promise<void>;
+  }): Promise<void>;
   /**
    * If it's loading - indicator
    */
   isLoading: ComputedRef<boolean>;
-
+  /**
+   * Product associations, like CrossSelling[]
+   */
   productAssociations: ComputedRef<CrossSelling[]>;
 };
 

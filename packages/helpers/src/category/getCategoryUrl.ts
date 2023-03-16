@@ -4,6 +4,8 @@ import { getTranslatedProperty } from "../getTranslatedProperty";
 /**
  * Get URL for category.
  * Some link {@link isLinkCategory}
+ * 
+ * @param {Category} category category entity
  *
  * @beta
  */
@@ -22,10 +24,3 @@ export const getCategoryUrl = (category: Partial<Category>): string => {
         : "/";
   }
 };
-
-/**
- *
- * @beta
- */
-export const isLinkCategory = (category: Partial<Category>): boolean =>
-  category?.type === "link";

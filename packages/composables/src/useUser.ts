@@ -36,13 +36,13 @@ export type UseUserReturn = {
    * Logs-in user with given credentials
    * @param params - username and password
    */
-  login: (params: { username: string; password: string }) => Promise<void>;
+  login(params: { username: string; password: string }): Promise<void>;
   /**
    * Registers the user for given credentials
    * @param params {@link CustomerRegistrationParams}
    * @returns {@link Customer} object on success
    */
-  register: (params: CustomerRegistrationParams) => Promise<Customer>;
+  register(params: CustomerRegistrationParams): Promise<Customer>;
   /**
    * Whole {@link Customer} object
    */
@@ -78,37 +78,37 @@ export type UseUserReturn = {
   /**
    * Fetches the user data from the API
    */
-  refreshUser: () => Promise<void>;
+  refreshUser(): Promise<void>;
   /**
    * Logs out the user
    */
-  logout: () => Promise<void>;
+  logout(): Promise<void>;
   /**
    * Loads the {@link Country} of the user
    */
-  loadCountry: (countryId: string) => Promise<void>;
+  loadCountry(countryId: string): Promise<void>;
   /**
    * Loads the {@link Salutation} for given id
    */
-  loadSalutation: (salutationId: string) => Promise<void>;
+  loadSalutation(salutationId: string): Promise<void>;
   /**
    * Updates the user profile data
    * @param personals {@link CustomerUpdateProfileParam}
    * @returns
    */
-  updatePersonalInfo: (personals: CustomerUpdateProfileParam) => Promise<void>;
+  updatePersonalInfo(personals: CustomerUpdateProfileParam): Promise<void>;
   /**
    * Updates the user email
    * @param updateEmailData - {@link CustomerUpdateEmailParam}
    * @returns
    */
-  updateEmail: (updateEmailData: CustomerUpdateEmailParam) => Promise<void>;
+  updateEmail(updateEmailData: CustomerUpdateEmailParam): Promise<void>;
   /**
    * Sets the default payment method for given id
    * @param paymentMethodId
    * @returns
    */
-  setDefaultPaymentMethod: (paymentMethodId: string) => Promise<void>;
+  setDefaultPaymentMethod(paymentMethodId: string): Promise<void>;
   /**
    * Default payment method for the user
    */

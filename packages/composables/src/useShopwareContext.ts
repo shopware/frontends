@@ -3,6 +3,9 @@ import { inject } from "vue";
 import ContextError from "./helpers/ContextError";
 
 export type ShopwareContext = {
+  /**
+   * Shopware API instance
+   */
   apiInstance: ShopwareApiInstance;
 };
 

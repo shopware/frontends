@@ -24,23 +24,69 @@ import { usePrice } from "./usePrice";
 import { _useContext } from "./internal/_useContext";
 
 export type UseSessionContextReturn = {
-  setLanguage: (language: Partial<Language>) => Promise<void>;
+  /**
+   * Patches the context in order to use new language
+   */
+  setLanguage(language: Partial<Language>): Promise<void>;
+  /**
+   * current context's language
+   */
   sessionContext: ComputedRef<SessionContext | undefined>;
-  refreshSessionContext: () => Promise<void>;
+  /**
+   * Fetches the session context and assigns the result to the `sessionContext` property
+   */
+  refreshSessionContext(): Promise<void>;
+  /**
+   * current context's language
+   */
   selectedShippingMethod: ComputedRef<ShippingMethod | null>;
-  setShippingMethod: (shippingMethod: Partial<ShippingMethod>) => Promise<void>;
+  /**
+   * Patches the context in order to use new shipping method
+   */
+  setShippingMethod(shippingMethod: Partial<ShippingMethod>): Promise<void>;
+  /**
+   * current context's payment method
+   */
   selectedPaymentMethod: ComputedRef<PaymentMethod | null>;
-  setPaymentMethod: (paymentMethod: Partial<PaymentMethod>) => Promise<void>;
+  /**
+   * Patches the context in order to use new payment method
+   */
+  setPaymentMethod(paymentMethod: Partial<PaymentMethod>): Promise<void>;
+  /**
+   * current context's currency
+   */
   currency: ComputedRef<Currency | null>;
-  setCurrency: (currency: Partial<Currency>) => Promise<void>;
+  /**
+   * Patches the context in order to use new currency
+   */
+  setCurrency(currency: Partial<Currency>): Promise<void>;
+  /**
+   * current context's shipping address
+   */
   activeShippingAddress: ComputedRef<ShippingAddress | null>;
-  setActiveShippingAddress: (
-    address: Partial<ShippingAddress>
-  ) => Promise<void>;
+  /**
+   * Patches the context in order to use new shipping address
+   */
+  setActiveShippingAddress(address: Partial<ShippingAddress>): Promise<void>;
+  /**
+   * current context's billing address
+   */
   activeBillingAddress: ComputedRef<BillingAddress | null>;
+  /**
+   * current context's tax state
+   */
   taxState: ComputedRef<string | null>;
-  setActiveBillingAddress: (address: Partial<BillingAddress>) => Promise<void>;
+  /**
+   * Patches the context in order to use new billing address
+   */
+  setActiveBillingAddress(address: Partial<BillingAddress>): Promise<void>;
+  /**
+   * current context's country id
+   */
   countryId: ComputedRef<string | undefined>;
+  /**
+   * current context's customer object
+   */
   userFromContext: ComputedRef<Customer | undefined>;
 };
 

@@ -1,5 +1,7 @@
 /**
  * Get translated property from the given object.
+ * 
+ * @param {T} element object with translated property
  *
  * @public
  */

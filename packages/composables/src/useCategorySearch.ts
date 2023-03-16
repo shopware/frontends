@@ -9,13 +9,17 @@ import { cmsAssociations } from "./cms/cmsAssociations";
 import { _useContext } from "./internal/_useContext";
 
 export type UseCategorySearchReturn = {
-  search: (
+  /**
+   * Search for category by ID
+   * Accepts optional query params and associations
+   */
+  search(
     categoryId: string,
     options?: {
       withCmsAssociations?: boolean;
       query?: Partial<ShopwareSearchParams>;
     }
-  ) => Promise<Category>;
+  ): Promise<Category>;
 };
 
 /**

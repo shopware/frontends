@@ -8,8 +8,10 @@ type ProductMedia = {
 /**
  * Prepare media object
  *
- * @param {OrderLineItem} lineItem - order item
- * @returns
+ * @param {OrderLineItem} lineItem order item
+ * 
+ * @public
+ * @category Media
  */
 export function getMedia(lineItem: OrderLineItem) {
   return lineItem.downloads.reduce(

@@ -10,7 +10,7 @@ export type UseNavigationSearchReturn = {
    * Get {@link SeoUrl} entity for given path
    * @example resolvePath("/my-category/my-product") or resolvePath("/") for home page
    */
-  resolvePath: (path: string) => Promise<SeoUrl | null>;
+  resolvePath(path: string): Promise<SeoUrl | null>;
 };
 
 /**

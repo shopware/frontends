@@ -6,6 +6,3 @@ category: CMS
 
 <!-- PLACEHOLDER_DESCRIPTION -->
 
-## Usage
-
-// TODO: add example

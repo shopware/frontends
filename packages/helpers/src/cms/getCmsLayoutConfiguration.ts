@@ -79,6 +79,10 @@ function getVisibilityClasses(content: CmsBlock | CmsSection | CmsSlot) {
 }
 
 /**
+ * Get layout configuration for CMS content
+ * 
+ * @param {CmsBlock | CmsSection | CmsSlot} content CMS content
+ * 
  * @category CMS (Shopping Experiences)
  */
 export function getCmsLayoutConfiguration(

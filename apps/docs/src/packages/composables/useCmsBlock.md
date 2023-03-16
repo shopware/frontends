@@ -1,10 +1,4 @@
----
-category: CMS
----
-
 # useCmsBlock
-
-<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Usage
 
@@ -21,3 +15,6 @@ const { getSlotContent } = useCmsBlock(props.content);
 const leftContent = getSlotContent("left");
 const centerContent = getSlotContent("center");
 ```
+
+
+<!-- PLACEHOLDER_DESCRIPTION -->

@@ -1,9 +1,5 @@
 import { computed, ComputedRef, Ref, unref } from "vue";
-import {
-  removeCartItem,
-  changeCartItemQuantity,
-  getProduct,
-} from "@shopware-pwa/api-client";
+import { removeCartItem, getProduct } from "@shopware-pwa/api-client";
 import {
   Product,
   LineItem,
@@ -26,10 +22,18 @@ export type UseCartItemReturn = {
   isProduct: ComputedRef<boolean>;
   isPromotion: ComputedRef<boolean>;
   itemStock: ComputedRef<number | undefined>;
-
   itemQuantity: ComputedRef<number | undefined>;
-  changeItemQuantity: (quantity: number) => Promise<void>;
+  /**
+   * Changes the current item quantity in the cart
+   */
+  changeItemQuantity(quantity: number): Promise<void>;
+  /**
+   * Removes the current item from the cart
+   */
   removeItem(): Promise<void>;
+  /**
+   * Get SEO data for the current item
+   */
   getProductItemSeoUrlData(): Promise<ProductResponse | undefined>;
 };
 
