@@ -20,7 +20,7 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
  *
  * @param {ShopwareSearchParams} criteria search criteria for products
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @throws ClientApiError
  * @category Product
  * @public

@@ -1,20 +1,28 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
-import { getStackBlitzProjectConfig } from './helpers';
-import sdk from '@stackblitz/sdk';
-import { useRoute } from 'vue-router';
+import { computed, onMounted } from "vue";
+import { getStackBlitzProjectConfig } from "./helpers";
+import sdk from "@stackblitz/sdk";
+import { useRoute } from "vue-router";
 // Import stylesheets
-import './style.css';
+import "./style.css";
 
 const route = useRoute();
 
-const packageName = computed(
-  () => !Array.isArray(route.query.packageName) ? route.query.packageName?.toString() : route.query.packageName?.[0] || '@shopware-pwa/api-client'
+const packageName = computed(() =>
+  !Array.isArray(route.query.packageName)
+    ? route.query.packageName?.toString()
+    : route.query.packageName?.[0] || "@shopware-pwa/api-client"
 );
 
-const packageVersion = computed(() => !Array.isArray(route.query.packageVersion) ? route.query.packageVersion?.toString() : route.query.packageVersion?.[0] || 'latest');
-const functionName = computed(
-  () => !Array.isArray(route.query.functionName) ? route.query.functionName?.toString() : route.query.functionName[0] || 'getSessionContext'
+const packageVersion = computed(() =>
+  !Array.isArray(route.query.packageVersion)
+    ? route.query.packageVersion?.toString()
+    : route.query.packageVersion?.[0] || "latest"
+);
+const functionName = computed(() =>
+  !Array.isArray(route.query.functionName)
+    ? route.query.functionName?.toString()
+    : route.query.functionName[0] || "getSessionContext"
 );
 
 const isAsync = computed(() => !!route.query.async || true);
@@ -48,7 +56,7 @@ onMounted(() => setTimeout(openExample, 500));
           packageName,
           packageVersion,
           functionName,
-          isAsync
+          isAsync,
         }
       }}</pre>
     </div>
@@ -56,7 +64,6 @@ onMounted(() => setTimeout(openExample, 500));
   <div v-else>
     <h2>Missing configuration</h2>
   </div>
-
 </template>
 
 <style>

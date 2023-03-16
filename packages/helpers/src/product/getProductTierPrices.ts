@@ -12,7 +12,7 @@ export type TierPrice = {
 /**
  * Get the prices depending on quantity added to cart.
  * Tier prices can be set in `Advanced pricing` tab in `Product view` (admin panel)
- * 
+ *
  * @param {Product} product product entity
  *
  * @returns TierPrice[]

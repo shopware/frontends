@@ -22,10 +22,10 @@ export interface ContactFormData {
 
 /**
  * Sends contact form
- * 
+ *
  * @param {ContactFormData} params contact form data
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @category Forms
  * @public
  */
@@ -53,10 +53,10 @@ export interface NewsletterSubscribeData {
 }
 /**
  * Subscribes to newsletter
- * 
+ *
  * @param {NewsletterSubscribeData} params newsletter subscribe data
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @category Forms
  * @public
  */
@@ -72,9 +72,9 @@ export async function newsletterSubscribe(
 
 /**
  * Unsuscribes from newsletter
- * 
+ *
  * @param {NewsletterSubscribeData} params newsletter subscribe data: email
- * 
+ *
  * @category Forms
  * @public
  */

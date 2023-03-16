@@ -18,7 +18,7 @@ import {
  *
  * @param {string} productId ID of the product to add to the wishlist
  * @param {ShopwareApiInstance}contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @remarks Only for logged-in users
  * @throws ClientApiError
  * @category Wishlist
@@ -43,7 +43,7 @@ export async function addWishlistProduct(
  *
  * @param {ShopwareSearchParams} criteria search criteria for products
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @remarks Only for logged-in users
  * @throws ClientApiError
  * @category Wishlist
@@ -66,7 +66,7 @@ export async function getWishlistProducts(
  *
  * @param {string} productId ID of the product to remove from the wishlist
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @remarks Only for logged-in users
  * @throws ClientApiError
  * @category Wishlist
@@ -91,7 +91,7 @@ export async function removeWishlistProduct(
  *
  * @param {string[]} productIds IDs of the products to merge with the wishlist
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
- * 
+ *
  * @remarks Only for logged-in users
  * @throws ClientApiError
  * @category Wishlist

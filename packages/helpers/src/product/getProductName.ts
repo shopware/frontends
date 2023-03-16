@@ -3,7 +3,7 @@ import { getTranslatedProperty } from "../getTranslatedProperty";
 
 /**
  * @beta
- * 
+ *
  * @param {Product} product product entity
  *
  * @category Product

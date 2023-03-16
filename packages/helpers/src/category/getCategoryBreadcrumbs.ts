@@ -2,7 +2,7 @@ import { Category } from "@shopware-pwa/types";
 
 /**
  * Gather breadcrumbs from category
- * 
+ *
  * @param {Category} category category entity
  */
 export function getCategoryBreadcrumbs(

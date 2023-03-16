@@ -42,7 +42,7 @@ export interface CustomerRegisterResponse {
  *
  * @param params CustomerRegistrationParams
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -60,7 +60,7 @@ export async function register(
 
 /**
  * Login user to shopware instance.
- * 
+ *
  * @param {object} parameters username and password
  * @param contextInstance ShopwareApiInstance
  *
@@ -85,7 +85,7 @@ export async function login(
  * End up the user session.
  *
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -100,7 +100,7 @@ export async function logout(
  * Get customer's object
  *
  * @param parameters ShopwareSearchParams
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -127,7 +127,7 @@ export async function getCustomer(
  *
  * @param parameters ShopwareSearchParams
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -152,7 +152,7 @@ type CustomerOrdersResponse = {
  *
  * @param parameters ShopwareSearchParams
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -173,7 +173,7 @@ export async function getCustomerOrders(
  *
  * @param {string} addressId ID of the address
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -193,7 +193,7 @@ export async function getCustomerAddress(
  *
  * @param {Partial<CustomerAddress>} params address data
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -211,7 +211,7 @@ export async function createCustomerAddress(
 
 /**
  * Update an address for specific ID
- * 
+ *
  * @param {Partial<CustomerAddress>} params address data
  * @param contextInstance ShopwareApiInstance
  *
@@ -232,7 +232,7 @@ export async function updateCustomerAddress(
 
 /**
  * Delete's the customer's address by id
- * 
+ *
  * @param {string} addressId ID of the address
  * @param contextInstance ShopwareApiInstance
  *
@@ -249,7 +249,7 @@ export async function deleteCustomerAddress(
 
 /**
  * Set address as default
- * 
+ *
  * @param {string} addressId ID of the address
  * @param contextInstance ShopwareApiInstance
  *
@@ -269,7 +269,7 @@ export async function setDefaultCustomerBillingAddress(
 
 /**
  * Set address as default
- * 
+ *
  * @param {string} addressId ID of the address
  * @param contextInstance ShopwareApiInstance
  *
@@ -302,7 +302,7 @@ export interface CustomerUpdateEmailParam {
  *
  * @param params CustomerUpdateEmailParam email data
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -329,7 +329,7 @@ export interface CustomerUpdatePasswordParam {
  *
  * @param params CustomerUpdatePasswordParam password data
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -358,7 +358,7 @@ export interface CustomerResetPasswordParam {
  *
  * @param params CustomerResetPasswordParam password data
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -378,7 +378,7 @@ export async function resetPassword(
  * Confirm a customer's password reset. Set new password for account.
  *
  * @param {object} params new password and hash
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -411,7 +411,7 @@ export interface CustomerUpdateProfileParam {
 
 /**
  * Update a customer's profile data
- * 
+ *
  * @param {object} params profile data
  * @param contextInstance ShopwareApiInstance
  *
@@ -428,10 +428,10 @@ export async function updateProfile(
 
 /**
  * Confirm an account registration in double opt-in mode
- * 
+ *
  * @param params hash and em tokens
  * @param contextInstance ShopwareApiInstance
- * 
+ *
  * @throws ClientApiError
  * @category Customer
  * @public
@@ -452,7 +452,7 @@ export async function confirmAccountRegistration(
 
 /**
  * Set payment method under provided ID as default
- * 
+ *
  * @param {string} paymentMethodId ID of the payment method
  * @param contextInstance ShopwareApiInstance
  *
@@ -474,7 +474,7 @@ export async function setDefaultCustomerPaymentMethod(
 
 /**
  * Checking if user is newsletter subscriber
- * 
+ *
  * @param contextInstance ShopwareApiInstance
  *
  * @throws ClientApiError
