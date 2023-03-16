@@ -54,6 +54,7 @@ test.describe.only("Create Order", () => {
     await productPage.addToCart();
     await cartPage.openMiniCart();
     await checkoutPage.goToCheckout();
+    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await expect(page.locator("[data-testid='order-total']")).toBeVisible();
   });
@@ -65,6 +66,8 @@ test.describe.only("Create Order", () => {
     await checkoutPage.goToCheckout();
     await checkoutPage.loginOnCheckout();
     await loginform.login(userEmail, password);
+    await page.waitForLoadState();
+    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState();
     await expect(page.locator("[data-testid='order-total']")).toBeVisible();
@@ -84,6 +87,7 @@ test.describe.only("Create Order", () => {
       faker.address.zipCode(),
       faker.address.city()
     );
+    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState();
     await expect(page.locator("[data-testid='order-total']")).toBeVisible();
