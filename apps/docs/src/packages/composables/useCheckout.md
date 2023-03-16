@@ -10,24 +10,6 @@ import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 
 <!-- PLACEHOLDER_DESCRIPTION -->
 
-## Usage
-
-```js
-const {
-  getPaymentMethods,
-  paymentMethods,
-  getShippingMethods,
-  shippingMethods,
-  createOrder,
-  shippingAddress,
-  billingAddress,
-  selectedShippingMethod,
-  setShippingMethod,
-  selectedPaymentMethod,
-  setPaymentMethod,
-} = useCheckout();
-```
-
 ## Live example
 
 <StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/use-checkout" openPath="/" />

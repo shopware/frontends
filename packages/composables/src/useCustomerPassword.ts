@@ -16,15 +16,15 @@ export type UseCustomerPasswordReturn = {
   /**
    * Change customer's current password
    */
-  updatePassword: (
+  updatePassword(
     updatePasswordData: CustomerUpdatePasswordParam
-  ) => Promise<boolean>;
+  ): Promise<boolean>;
   /**
    * Reset customer's password
    */
-  resetPassword: (
+  resetPassword(
     resetPasswordData: CustomerResetPasswordParam
-  ) => Promise<boolean>;
+  ): Promise<boolean>;
 };
 
 /**

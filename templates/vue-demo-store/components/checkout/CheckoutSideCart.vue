@@ -59,6 +59,7 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                     type="button"
                     class="-m-2 p-2 text-gray-400 hover:text-gray-500"
                     @click="isOpen = false"
+                    data-testid="cart-close-button"
                   >
                     <span class="sr-only">Close panel</span>
                     <div class="w-6 h-6 i-carbon-close" />

@@ -32,6 +32,22 @@ describe("useCmsElementImage", () => {
           target: "_blank",
         });
       });
+
+      it("should return default anchorAttrs", () => {
+        const { anchorAttrs } = useCmsElementImage({
+          config: {
+            url: {
+              value: "https://shopware.com",
+            },
+          },
+        } as any);
+
+        expect(anchorAttrs.value).toEqual({
+          href: "https://shopware.com",
+          target: "_self",
+        });
+      });
+
       it("should return imageContainerAttrs", () => {
         const { imageContainerAttrs } = useCmsElementImage({
           data: {
@@ -89,6 +105,7 @@ describe("useCmsElementImage", () => {
           srcset: "https://shopware.com/logo-128px.png 128w",
         });
       });
+
       it("should return displayMode", () => {
         const { displayMode } = useCmsElementImage({
           config: {
@@ -99,6 +116,14 @@ describe("useCmsElementImage", () => {
         } as any);
 
         expect(displayMode.value).toEqual("contain");
+      });
+
+      it("should return default displayMode", () => {
+        const { displayMode } = useCmsElementImage({
+          config: {},
+        } as any);
+
+        expect(displayMode.value).toEqual("initial");
       });
     });
   });

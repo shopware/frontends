@@ -4,6 +4,8 @@ import { UiProductReview } from "../ui-interfaces";
 /**
  * Format product reviews to ui-interfaces
  *
+ * @param {Product} product product entity
+ *
  * @public
  *
  * @category Product

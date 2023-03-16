@@ -48,15 +48,17 @@ export const sidebar = [
       { text: "Context Composables", link: "/framework/context-composables" },
       { text: "Shared Composables", link: "/framework/shared-composables" },
       { text: "Images", link: "/framework/images" },
+      { text: "Associations", link: "/framework/associations" },
     ],
   },
   {
     text: "BEST PRACTICES",
     items: [
-      { text: "Testing", link: "/best-practices/testing" },
-      { text: "Performance", link: "/best-practices/performance" },
       { text: "Deployment", link: "/best-practices/deployment" },
+      { text: "Error Handling", link: "/best-practices/error-handling" },
       { text: "Images", link: "/best-practices/images" },
+      { text: "Performance", link: "/best-practices/performance" },
+      { text: "Testing", link: "/best-practices/testing" },
     ],
   },
   {
@@ -77,9 +79,14 @@ export const sidebar = [
   },
 ];
 
-export default defineConfigWithTheme<ThemeConfig>({
-  extends: baseConfig,
+interface ThemeConfigExtended extends ThemeConfig {
+  ai: {
+    endpoint: string;
+  };
+}
 
+export default defineConfigWithTheme<ThemeConfigExtended>({
+  extends: baseConfig,
   lang: "en-US",
   title: "Shopware Frontends",
   description: "Documentation for Shopware developers",
@@ -157,6 +164,9 @@ export default defineConfigWithTheme<ThemeConfig>({
       // searchParameters: {
       //   facetFilters: ["version:v1"],
       // },
+    },
+    ai: {
+      endpoint: "",
     },
   },
 

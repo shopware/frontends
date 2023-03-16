@@ -4,6 +4,8 @@ import { getProductRealPrice } from "./getProductRealPrice";
 /**
  * @beta
  *
+ * @param {Product} product product entity
+ *
  * @category Product
  */
 export function getProductFromPrice(product: Product): number | undefined {

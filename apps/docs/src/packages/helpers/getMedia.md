@@ -2,12 +2,6 @@
 category: helpers
 ---
 
-# isLinkCategory
+# getMedia
 
 <!-- PLACEHOLDER_DESCRIPTION -->
-
-## Usage
-
-```ts
-// TODO: add example
-```

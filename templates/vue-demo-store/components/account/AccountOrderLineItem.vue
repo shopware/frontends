@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { OrderLineItem } from "@shopware-pwa/types";
-import { getSmallestThumbnailUrl, getMedia } from "@shopware-pwa/helpers-next";
-
+import {
+  getSmallestThumbnailUrl,
+  getMedia,
+  downloadFile,
+} from "@shopware-pwa/helpers-next";
 const props = defineProps<{
   lineItem: OrderLineItem;
 }>();
@@ -10,13 +13,7 @@ const { getMediaFile } = useOrderDetails(props.lineItem.orderId);
 
 const getMediaFileHandler = async (mediaId: string, fileName: string) => {
   const response = await getMediaFile(mediaId);
-  const media = document.createElement("a");
-  media.href = URL.createObjectURL(response);
-  media.download = fileName;
-
-  document.body.appendChild(media);
-  media.click();
-  document.body.removeChild(media);
+  downloadFile(response, fileName);
 };
 </script>
 

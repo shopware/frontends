@@ -9,6 +9,8 @@ function isProduct(
 /**
  * gets the cover image
  *
+ * @param {Product | LineItem | OrderLineItem} object Object containing media object
+ *
  * @public
  *
  * @category Product

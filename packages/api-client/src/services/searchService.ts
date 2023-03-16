@@ -9,6 +9,9 @@ import {
  * Search for products based on criteria.
  * From: Shopware 6.4
  *
+ * @param {ShopwareSearchParams} criteria search criteria for products
+ * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
+ *
  * @category Search
  * @public
  */
@@ -29,6 +32,9 @@ export async function searchProducts(
 /**
  * Search for suggested products based on criteria.
  * From: Shopware 6.4
+ *
+ * @param {ShopwareSearchParams} criteria search criteria for products
+ * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
  *
  * @category Search
  * @public

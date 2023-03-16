@@ -45,7 +45,7 @@ export * from "./useSyncWishlist";
 export * from "./useProductSearchSuggest";
 export * from "./useCustomerPassword";
 export * from "./usePrice";
-export * from "./userCustomerOrders";
+export * from "./useCustomerOrders";
 export * from "./createShopwareContext";
 export * from "./useAddress";
 export * from "./useProductPrice";

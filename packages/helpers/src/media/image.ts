@@ -5,6 +5,7 @@ import { Media } from "@shopware-pwa/types";
  *
  * @param media image object
  *
+ * @public
  * @category Media
  */
 export function getSmallestThumbnailUrl(
@@ -26,6 +27,7 @@ export function getSmallestThumbnailUrl(
  *
  * @param media image object
  *
+ * @public
  * @category Media
  */
 export function getBiggestThumbnailUrl(media: Media): string | undefined {
@@ -45,6 +47,7 @@ export function getBiggestThumbnailUrl(media: Media): string | undefined {
  *
  * @param media image object
  *
+ * @public
  * @category Media
  */
 export function getSrcSetForMedia(media: Media): string {

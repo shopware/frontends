@@ -16,7 +16,7 @@ export type UseProductReturn = {
    * Merges the current product with the new variant data
    * @param variant - {@link Product} object with the new variant data
    */
-  changeVariant: (variant: Partial<Product>) => void;
+  changeVariant(variant: Partial<Product>): void;
 };
 
 /**

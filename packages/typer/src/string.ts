@@ -4,11 +4,10 @@ export function replacer(
   key: string,
   insert: "head" | "tail" | "none" = "none"
 ) {
-  const START = `<!-- ${key}_STARTS -->`;
-  const END = `<!-- ${key}_ENDS -->`;
-  const regex = new RegExp(`${START}[\\s\\S]*?${END}`, "im");
+  const PLACEHOLDER = `<!-- ${key} -->`;
+  const regex = new RegExp(`${PLACEHOLDER}[\\s\\S]`, "im");
 
-  const target = value ? `${START}\n${value}\n${END}` : `${START}${END}`;
+  const target = value ? `${PLACEHOLDER}\n${value}` : `${PLACEHOLDER}`;
 
   if (!code.match(regex)) {
     if (insert === "none") return code;

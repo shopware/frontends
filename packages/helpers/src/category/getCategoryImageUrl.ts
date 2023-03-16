@@ -11,6 +11,8 @@ const isCategory = (category: Partial<Category>): boolean => {
 /**
  * gets the cover image
  *
+ * @param {Category} category category entity
+ *
  * @public
  */
 export function getCategoryImageUrl(category: Partial<Category>): string {

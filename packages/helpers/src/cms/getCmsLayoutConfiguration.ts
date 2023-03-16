@@ -47,14 +47,13 @@ const deviceMap: { [key in CmsVisibility]: "md" | "xl" | "lg" } = {
   desktop: "xl",
 };
 
-
 /**
  * Get css object for visibility classes
- * 
+ *
  *  mobile  -> "md"
  *  tablet  -> "lg"
  *  desktop -> "xl"
- * 
+ *
  *  i.e. if tablet device is set to hidden, the output class will be "lg:hidden"
  */
 function getVisibilityClasses(content: CmsBlock | CmsSection | CmsSlot) {
@@ -80,6 +79,10 @@ function getVisibilityClasses(content: CmsBlock | CmsSection | CmsSlot) {
 }
 
 /**
+ * Get layout configuration for CMS content
+ *
+ * @param {CmsBlock | CmsSection | CmsSlot} content CMS content
+ *
  * @category CMS (Shopping Experiences)
  */
 export function getCmsLayoutConfiguration(

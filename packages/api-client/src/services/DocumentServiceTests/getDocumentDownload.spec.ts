@@ -6,22 +6,24 @@ vi.mock("../../../src/apiService");
 const mockedApiInstance = defaultInstance;
 
 describe("DocumentService - getDocumentDownload", () => {
-  const mockedPost = vi.fn();
+  const mockedGet = vi.fn();
   beforeEach(() => {
     vi.resetAllMocks();
     mockedApiInstance.invoke = {
-      post: mockedPost,
+      get: mockedGet,
     } as any;
   });
 
   it("should return document file", async () => {
-    mockedPost.mockResolvedValueOnce({ data: { data: {} } });
+    mockedGet.mockResolvedValueOnce({ data: { data: {} } });
     const result = await getDocumentDownload({
       documentId: "123",
       deepLinkCode: "456",
     });
-    expect(mockedPost).toBeCalledTimes(1);
-    expect(mockedPost).toBeCalledWith(`/store-api/document/download/123/456`);
+    expect(mockedGet).toBeCalledTimes(1);
+    expect(mockedGet).toBeCalledWith(`/store-api/document/download/123/456`, {
+      responseType: "blob",
+    });
     expect(result).toMatchObject({});
   });
 });
