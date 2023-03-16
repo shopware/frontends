@@ -99,35 +99,36 @@ export type UseOrderDetailsReturn = {
    * Get order object including additional associations.
    * useDefaults describes what order object should look like.
    */
-  loadOrderDetails: () => void;
+  loadOrderDetails(): void;
   /**
    * Handle payment for existing error.
    *
    * Pass custom success and error URLs (optionally).
    */
-  handlePayment: (
+  handlePayment(
     successUrl?: string,
     errorUrl?: string,
     paymentDetails?: unknown
-  ) => void;
+  ): void;
   /**
    * Cancel an order.
+   *
    * Action cannot be reverted.
    */
-  cancel: () => Promise<void>;
+  cancel(): Promise<void>;
   /**
    * Changes the payment method for current cart.
    * @param paymentMethodId - ID of the payment method to be set
    * @returns
    */
-  changePaymentMethod: (paymentMethodId: string) => Promise<void>;
+  changePaymentMethod(paymentMethodId: string): Promise<void>;
   /**
    * Get media content
    *
    * @param {string} downloadId
    * @returns {Blob}
    */
-  getMediaFile: (downloadId: string) => Promise<Blob>;
+  getMediaFile(downloadId: string): Promise<Blob>;
 };
 
 /**

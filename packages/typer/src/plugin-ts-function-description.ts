@@ -76,6 +76,8 @@ export function TableOfFunctions(): Plugin {
 | ------------- | ------------ |\n`;
 
         for (const child of category.children) {
+          const hasNoLinkLabel = child.label?.includes("NOLINK");
+
           const functionFound = functions?.find((fn) => fn.id === child.id);
           if (functionFound) {
             const summary =
@@ -89,10 +91,10 @@ export function TableOfFunctions(): Plugin {
               : normalizeString(
                   summary.replace(/(\r\n|\n|\r|Returns|Options\ \-)/gm, "")
                 );
-
-            table += `| [${functionFound.name}](./${composableName}/${
-              functionFound.name
-            }) ${
+            const functionName = hasNoLinkLabel
+              ? functionFound.name
+              : `[${functionFound.name}](./${composableName}/${functionFound.name})`;
+            table += `| ${functionName} ${
               isFunctionDeprecated(functionFound) ? "`deprecated`" : ""
             }| ${description} |\n`;
           }

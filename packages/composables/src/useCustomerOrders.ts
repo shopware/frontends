@@ -11,11 +11,11 @@ export type UseCustomerOrdersReturn = {
   /**
    * Changes the current page of the orders list
    */
-  changeCurrentPage: (pageNumber: number | string) => Promise<void>;
+  changeCurrentPage(pageNumber: number | string): Promise<void>;
   /**
    * Fetches the orders list and assigns the result to the `orders` property
    */
-  loadOrders: () => Promise<void>;
+  loadOrders(): Promise<void>;
 };
 
 /**

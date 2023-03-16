@@ -54,34 +54,34 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @param {@link initialListing} - initial listing to set
    * @returns
    */
-  setInitialListing: (
+  setInitialListing(
     initialListing: Partial<ListingResult<ELEMENTS_TYPE>>
-  ) => Promise<void>;
+  ): Promise<void>;
   /**
    * @deprecated - use `search` instead
    * Searches for the listing based on the criteria
    * @param criteria {@link ShopwareSearchParams}
    * @returns
    */
-  initSearch: (
+  initSearch(
     criteria: Partial<ShopwareSearchParams>
-  ) => Promise<ListingResult<ELEMENTS_TYPE>>;
+  ): Promise<ListingResult<ELEMENTS_TYPE>>;
   /**
    * Searches for the listing based on the criteria
    * @param criteria
    * @param options - `options.preventRouteChange` - if true, the route will not be changed
    * @returns
    */
-  search: (
+  search(
     criteria: Partial<ShopwareSearchParams>,
     options?: {
       preventRouteChange?: boolean;
     }
-  ) => Promise<void>;
+  ): Promise<void>;
   /**
    * Loads more (next page) elements to the listing
    */
-  loadMore: () => Promise<void>;
+  loadMore(): Promise<void>;
   /**
    * Listing that is currently set
    */
@@ -103,10 +103,10 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @param order - i.e. "name-asc"
    * @returns
    */
-  changeCurrentSortingOrder: (
+  changeCurrentSortingOrder(
     order: string,
     query?: Partial<ShopwareSearchParams>
-  ) => Promise<void>;
+  ): Promise<void>;
   /**
    * Current page number
    */
@@ -116,10 +116,10 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @param pageNumber - page number to change to
    * @returns
    */
-  changeCurrentPage: (
+  changeCurrentPage(
     page: number,
     query?: Partial<ShopwareSearchParams>
-  ) => Promise<void>;
+  ): Promise<void>;
   /**
    * Total number of elements found for the current search criteria
    */
@@ -149,7 +149,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @param filters
    * @returns
    */
-  setCurrentFilters: (filters: any) => Promise<void>;
+  setCurrentFilters(filters: any): Promise<void>;
   /**
    * Indicates if the listing is being fetched
    */
@@ -161,11 +161,11 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
   /**
    * Resets the filters - clears the current filters
    */
-  resetFilters: () => Promise<void>;
+  resetFilters(): Promise<void>;
   /**
    * Change selected filters to the query object
    */
-  filtersToQuery: (filters: any) => Record<string, any>;
+  filtersToQuery(filters: any): Record<string, any>;
 };
 
 /**
@@ -230,9 +230,9 @@ export function createListingComposable<ELEMENTS_TYPE>({
   searchDefaults,
   listingKey,
 }: {
-  searchMethod: (
+  searchMethod(
     searchParams: Partial<ShopwareSearchParams>
-  ) => Promise<ListingResult<ELEMENTS_TYPE>>;
+  ): Promise<ListingResult<ELEMENTS_TYPE>>;
   searchDefaults: ShopwareSearchParams;
   listingKey: string;
 }): UseListingReturn<ELEMENTS_TYPE> {

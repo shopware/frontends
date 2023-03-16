@@ -5,8 +5,17 @@ import { useLocalWishlist } from "./useLocalWishlist";
 import { useSyncWishlist } from "./useSyncWishlist";
 
 export type UseProductWishlistReturn = {
-  removeFromWishlist: () => Promise<void>;
-  addToWishlist: () => Promise<void>;
+  /**
+   * Removes product from wishlist
+   */
+  removeFromWishlist(): Promise<void>;
+  /**
+   * Adds product to wishlist
+   */
+  addToWishlist(): Promise<void>;
+  /**
+   * Indicates whether a product is in wishlist
+   */
   isInWishlist: Ref<boolean>;
 };
 

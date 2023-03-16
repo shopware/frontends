@@ -23,26 +23,6 @@ export function getFunctionReturnType(metadata: TsDoxFunction) {
   return metadata.returnType;
 }
 
-// function getFunctionDescriptionOld(metadata: TsDoxFunction) {
-//   let description = "\n";
-//   if (metadata.signature) {
-//     // prettier-ignore
-//     description += `
-// \n## ${metadata.name}\n
-
-// ${normalizeString(metadata.summary)}
-
-// ### Definition
-
-// \`\`\`ts
-// ${metadata.signature}
-// \`\`\`\n
-// `;
-//   }
-
-//   return description + "\n";
-// }
-
 export function getParametersTable(rows: PropertyMdTableRow[]) {
   let tableRow = "";
   for (const row of rows) {
@@ -59,6 +39,7 @@ export function getParametersTable(rows: PropertyMdTableRow[]) {
 export async function getTypesTable(
   metadata: Metadata,
   accessor: "properties" | "methods",
+  allowedList: string[] = [],
   transformRow?: (propertyData: Property) => Promise<PropertyMdTableRow>
 ) {
   if (!metadata[accessor]) {
@@ -67,6 +48,9 @@ export async function getTypesTable(
 
   let rows = "";
   for (const [key, property] of Object.entries(metadata[accessor])) {
+    if (!allowedList.includes(key)) {
+      continue;
+    }
     let rowData: PropertyMdTableRow = {
       key: `<b>${key}</b>`,
       type: `<pre>${normalizeString(property.returnType)}</pre>`,
@@ -114,4 +98,15 @@ export function getFunctionSignature(
   functionName: string | undefined
 ): string | undefined {
   return getFunctionData(metadata, functionName)?.signature;
+}
+
+export function getExportedAPIs(metadata: Metadata) {
+  return [
+    ...(Object.hasOwn(metadata, "properties")
+      ? Object.keys(metadata["properties"])
+      : []),
+    ...(Object.hasOwn(metadata, "methods")
+      ? Object.keys(metadata["methods"])
+      : []),
+  ];
 }

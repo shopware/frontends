@@ -21,31 +21,31 @@ export type UseAddressReturn = {
   /**
    * Loads the addresses that are available under `customerAddresses` property
    */
-  loadCustomerAddresses: () => Promise<void>;
+  loadCustomerAddresses(): Promise<void>;
   /**
    * Allows to create new address for a current customer
    */
-  createCustomerAddress: (
+  createCustomerAddress(
     customerAddress: CustomerAddress
-  ) => Promise<CustomerAddress>;
+  ): Promise<CustomerAddress>;
   /**
    * Allows to update existing address for a current customer
    */
-  updateCustomerAddress: (
+  updateCustomerAddress(
     customerAddress: CustomerAddress
-  ) => Promise<CustomerAddress>;
+  ): Promise<CustomerAddress>;
   /**
    * Allows to delete existing address for a current customer
    */
-  deleteCustomerAddress: (addressId: string) => Promise<void>;
+  deleteCustomerAddress(addressId: string): Promise<void>;
   /**
    * Sets the address for given ID as default billing address
    */
-  setDefaultCustomerBillingAddress: (addressId: string) => Promise<string>;
+  setDefaultCustomerBillingAddress(addressId: string): Promise<string>;
   /**
    * Sets the address for given ID as default shipping address
    */
-  setDefaultCustomerShippingAddress: (addressId: string) => Promise<string>;
+  setDefaultCustomerShippingAddress(addressId: string): Promise<string>;
 };
 
 /**

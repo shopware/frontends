@@ -14,6 +14,7 @@ import { createSharedComposable } from "@vueuse/core";
 
 /**
  * Composable to manage cart
+ * 
  * @public
  * @category Cart & Checkout
  */
@@ -21,11 +22,11 @@ export type UseCartReturn = {
   /**
    * Add product by id and quantity
    */
-  addProduct: (params: { id: string; quantity?: number }) => Promise<Cart>;
+  addProduct(params: { id: string; quantity?: number }): Promise<Cart>;
   /**
    * Adds a promotion code to the cart
    */
-  addPromotionCode: (promotionCode: string) => Promise<void>;
+  addPromotionCode(promotionCode: string): Promise<void>;
   /**
    * Lists all applied and active promotion codes
    */
@@ -41,7 +42,7 @@ export type UseCartReturn = {
   /**
    * Changes the quantity of a product in the cart
    */
-  changeProductQuantity: (params: { id: string; quantity: number }) => void;
+  changeProductQuantity(params: { id: string; quantity: number }): void;
   /**
    * The number of items in the cart
    */
@@ -49,11 +50,11 @@ export type UseCartReturn = {
   /**
    * Refreshes the cart object and related data
    */
-  refreshCart: () => Promise<Cart>;
+  refreshCart(): Promise<Cart>;
   /**
    * Removes the provided LineItem from the cart
    */
-  removeItem: (lineItem: LineItem) => Promise<void>;
+  removeItem(lineItem: LineItem): Promise<void>;
   /**
    * The total price of the cart (including calculated costs like shipping)
    */

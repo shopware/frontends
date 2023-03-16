@@ -12,7 +12,7 @@ export type UseCmsBlockReturn = {
    * Get slot content by slot name (identifier)
    * @example getSlotContent("main")
    */
-  getSlotContent: (slotName: string) => ArrayElement<CmsBlock["slots"]>;
+  getSlotContent(slotName: string): ArrayElement<CmsBlock["slots"]>;
 };
 
 /**

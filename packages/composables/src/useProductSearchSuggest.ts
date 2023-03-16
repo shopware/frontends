@@ -17,11 +17,11 @@ export type UseProductSearchSuggestReturn = {
    * @param additionalCriteria - additional search criteria of type {@link ShopwareSearchParams}
    * @returns
    */
-  search: (additionalCriteria?: Partial<ShopwareSearchParams>) => Promise<void>;
+  search(additionalCriteria?: Partial<ShopwareSearchParams>): Promise<void>;
   /**
    * Loads more products for current search criteria
    */
-  loadMore: () => Promise<void>;
+  loadMore(): Promise<void>;
   /**
    * Returns the product list found by the search
    */

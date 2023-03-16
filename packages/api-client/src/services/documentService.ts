@@ -8,6 +8,8 @@ type DocumentDownloadParams = {
 
 /**
  * Download selected document
+ * 
+ * @param {DocumentDownloadParams} params documentId and deepLinkCode
  *
  * @throws ClientApiError
  * @public

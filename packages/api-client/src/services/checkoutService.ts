@@ -15,6 +15,10 @@ import {
 
 /**
  * Creates an order for logged in and guest users
+ * 
+ * @param params CreateOrderParams
+ * @param contextInstance ShopwareApiInstance
+ * 
  * @category Checkout
  * @public
  */
@@ -31,9 +35,10 @@ export async function createOrder(
 }
 
 /**
- * @param orderId - Id of an order
- * @param finishUrl - URL where the customer is redirected to after payment is done
- * @param errorUrl - URL where the customer is redirected to after payment fails
+ * @param orderId Id of an order
+ * @param finishUrl URL where the customer is redirected to after payment is done
+ * @param errorUrl URL where the customer is redirected to after payment fails
+ * 
  * @category Checkout
  * @public
  */
@@ -76,6 +81,10 @@ export async function handlePayment(
 /**
  * Get order details
  *
+ * @param orderId Id of an order
+ * @param params ShopwareSearchParams
+ * @param contextInstance - ShopwareApiInstance
+ * 
  * @throws ClientApiError
  * @category Checkout
  * @public
@@ -103,6 +112,9 @@ export async function getOrderDetails(
 
 /**
  * Cancel an order
+ * 
+ * @param orderId Id of an order
+ * @param contextInstance - ShopwareApiInstance
  *
  * @throws ClientApiError
  * @category Checkout
@@ -121,6 +133,8 @@ export async function cancelOrder(
 /**
  * Change payment method for given order
  *
+ * @param orderId Id of an order
+ * 
  * @throws ClientApiError
  * @category Checkout
  * @public

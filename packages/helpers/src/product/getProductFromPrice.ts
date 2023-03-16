@@ -3,6 +3,8 @@ import { getProductRealPrice } from "./getProductRealPrice";
 
 /**
  * @beta
+ * 
+ * @param {Product} product product entity
  *
  * @category Product
  */

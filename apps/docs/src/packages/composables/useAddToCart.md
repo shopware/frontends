@@ -8,8 +8,6 @@ import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 
 # useAddToCart
 
-<!-- PLACEHOLDER_DESCRIPTION -->
-
 ## Usage
 
 Provided `product` object in the argument should be in a `Ref<Product>` type.
@@ -19,6 +17,9 @@ Provided `product` object in the argument should be in a `Ref<Product>` type.
 const { isInCart, quantity, addToCart, getStock } = useAddToCart({ product });
 </script>
 ```
+
+<!-- PLACEHOLDER_DESCRIPTION -->
+
 
 ## Live example
 

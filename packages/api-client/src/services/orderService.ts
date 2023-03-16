@@ -7,6 +7,11 @@ type GetUserCountryParams = {
 };
 
 /**
+ * Get order downloads (file)
+ * 
+ * @param {GetUserCountryParams} data orderId and downloadId
+ * @param {ShopwareApiInstance} contextInstance  instance of the api client (by default it's an Axios instance)
+ * 
  * @throws ClientApiError
  * @public
  */

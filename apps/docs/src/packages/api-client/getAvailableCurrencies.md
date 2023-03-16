@@ -6,8 +6,4 @@ category: api-client
 
 <!-- PLACEHOLDER_DESCRIPTION -->
 
-## Usage
 
-```ts
-// TODO: add example
-```

@@ -11,18 +11,18 @@ export type UseNewsletterReturn = {
    * Subscribes the user to the newsletter
    * @param params {@link NewsletterInput}
    */
-  newsletterSubscribe: (params: NewsletterInput) => Promise<void>;
+  newsletterSubscribe(params: NewsletterInput): Promise<void>;
   /**
    * Removes the email from the newsletter
    * @param email
    */
-  newsletterUnsubscribe: (email: string) => Promise<void>;
+  newsletterUnsubscribe(email: string): Promise<void>;
   /**
    * Indicates if the user is subscribed to the newsletter
    *
    * Returns `true` if the user is subscribed to the newsletter, `false` otherwise
    */
-  isNewsletterSubscriber: () => Promise<any>;
+  isNewsletterSubscriber(): Promise<any>;
 };
 
 /**

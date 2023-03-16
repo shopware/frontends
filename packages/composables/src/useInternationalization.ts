@@ -4,7 +4,7 @@ export type UseInternationalizationReturn = {
   /**
    * StorefrontUrl is needed to specify language of emails
    */
-  getStorefrontUrl: () => string;
+  getStorefrontUrl(): string;
 };
 
 /**
