@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
-
 const { count } = useCart();
 const { count: wishlistCount } = useWishlist();
 const isSidebarOpen = inject("isSidebarOpen");
@@ -14,7 +12,7 @@ const isSidebarOpen = inject("isSidebarOpen");
       >
         <div class="flex justify-start lg:flex-1 w-full md:w-1/3 lg:w-1/12">
           <div class="order-2 lg:order-1 ml-4 lg:ml-0">
-            <RouterLink to="/">
+            <NuxtLink to="/">
               <span class="sr-only">Shopware</span>
               <img
                 class="h-8 w-auto sm:h-10"
@@ -23,7 +21,7 @@ const isSidebarOpen = inject("isSidebarOpen");
                 width="40px"
                 height="40px"
               />
-            </RouterLink>
+            </NuxtLink>
           </div>
           <div class="order-1 lg:order-2 py-3 lg:p-0">
             <LayoutSideMenu />

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
@@ -102,13 +101,13 @@ const ratingAverage: Ref<number> = computed(() =>
     <div class="mt-4 flex flex-col justify-between flex-1">
       <div>
         <h3 class="text-base font-bold text-gray-700">
-          <RouterLink
+          <NuxtLink
             class="line-clamp-2 h-12"
             :to="getProductUrl(product)"
             data-testid="product-box-product-name-link"
           >
             {{ getProductName({ product }) }}
-          </RouterLink>
+          </NuxtLink>
         </h3>
         <div
           v-if="layoutType === 'standard'"
@@ -157,14 +156,14 @@ const ratingAverage: Ref<number> = computed(() =>
       >
         Add to cart
       </button>
-      <RouterLink v-else :to="getProductUrl(product)">
+      <NuxtLink v-else :to="getProductUrl(product)">
         <button
           class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           data-testid="product-box-product-show-details"
         >
           Details
         </button>
-      </RouterLink>
+      </NuxtLink>
     </div>
   </div>
 </template>
