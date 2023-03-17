@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
 const { navigationElements } = useNavigation({ type: "footer-navigation" });
@@ -18,10 +17,10 @@ const gridColumns = computed<number>(() =>
         :class="`grid grid-cols-2 md:grid-cols-${gridColumns}`"
       >
         <div class="hidden md:block">
-          <RouterLink to="/">
+          <NuxtLink to="/">
             <span class="sr-only">Shopware</span>
             <img class="h-15 w-auto sm:h-15" src="/logo.svg" alt="Logo" />
-          </RouterLink>
+          </NuxtLink>
         </div>
         <div
           v-for="navigationElement in navigationElements"
@@ -37,12 +36,12 @@ const gridColumns = computed<number>(() =>
                 :key="navigationChild.id"
                 class="pb-3 md:pb-1"
               >
-                <RouterLink
+                <NuxtLink
                   :to="'/' + navigationChild.seoUrls[0]?.seoPathInfo"
                   class="text-base font-normal text-gray-500 hover:text-gray-900"
                 >
                   {{ getTranslatedProperty(navigationChild, "name") }}
-                </RouterLink>
+                </NuxtLink>
               </li>
             </ul>
           </template>

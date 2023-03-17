@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 import {
   getTranslatedProperty,
   getSmallestThumbnailUrl,
@@ -23,12 +22,12 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       class="relative hover:bg-gray-50 hover:rounded-lg"
       @mouseover="currentMenuPosition = navigationElement.id"
     >
-      <RouterLink
+      <NuxtLink
         :to="'/' + navigationElement.seoUrls?.[0]?.seoPathInfo"
         class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
-      </RouterLink>
+      </NuxtLink>
 
       <!--
             Flyout menu, show/hide based on flyout menu state.
@@ -62,7 +61,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                 }"
                 class="relative grid gap-6 bg-white px-3 py-2 sm:gap-6 sm:p-3"
               >
-                <RouterLink
+                <NuxtLink
                   v-if="
                     typeof childElement?.seoUrls?.[0]?.seoPathInfo !==
                     'undefined'
@@ -94,7 +93,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                       alt="Category image"
                     />
                   </div>
-                </RouterLink>
+                </NuxtLink>
                 <div v-else class="px-4 py-2 sm:py-3">
                   <p class="text-base font-medium text-gray-500">
                     {{ getTranslatedProperty(childElement, "name") }}
