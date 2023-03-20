@@ -1,8 +1,7 @@
 import type { Argv } from "yargs";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import c from "picocolors";
-import { version } from "../package.json";
+// import { version } from "../package.json";
 import { generate } from "./commands/generate";
 
 export interface CommonOptions {
@@ -39,6 +38,6 @@ yargs(hideBin(process.argv))
   )
   .showHelpOnFail(false)
   .alias("h", "help")
-  .version("version", version)
+  .version("version", "0.0.1") // from package.json
   .alias("v", "version")
   .help().argv;

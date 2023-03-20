@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { dirname, isAbsolute, posix, relative, resolve, sep } from "node:path";
 import openapiTS from "openapi-typescript";
 import * as dotenv from "dotenv";
-import c from "picocolors";
+import * as c from "picocolors";
 import prettier from "prettier";
 
 const config = dotenv.config().parsed || {};
