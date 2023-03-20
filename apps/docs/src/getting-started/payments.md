@@ -22,7 +22,7 @@ In order to follow this guide properly, we recommend that you get familiar with 
 
 - [Payments Concept](https://developer.shopware.com/docs/concepts/commerce/checkout-concept/payments) - especially `asynchronous` and `synchronous` chapters.
 - [Payment API](https://shopware.stoplight.io/docs/store-api/8218801e50fe5-handling-the-payment)
-:::
+  :::
 
 ## Synchronous Payment
 
@@ -35,7 +35,7 @@ In this case, the flow looks as follows:
 const { createOrder } = useCheckout();
 
 // create an order from the current Cart
-const order = await createOrder(/** optional params omitted */)
+const order = await createOrder(/** optional params omitted */);
 // order object on success, unhandled rejection otherwise
 ```
 
@@ -48,75 +48,72 @@ In general, the client side does not have any direct control on the sync payment
 
 ## Asynchronous Payment
 
-Contrary to the sync flow, the asynchronous payment has more options and thus, more control of the payment process. 
+Contrary to the sync flow, the asynchronous payment has more options and thus, more control of the payment process.
 
 This is a better option for those payment providers that would need to pass additional data (like credentials, one time tokens) to complete the payment process.
 
-
 ### External gateway
 
-To give an example, let's say we need to implement a payment method which redirects a customer to the external payment gateway. Depending on success or failure, we need to be redirected to success page in case of payment was done properly, otherwise display an error page to the user in our shop page. 
+To give an example, let's say we need to implement a payment method which redirects a customer to the external payment gateway. Depending on success or failure, we need to be redirected to success page in case of payment was done properly, otherwise display an error page to the user in our shop page.
 
 1. Create an order
 
-    ```js{3}
-    const { createOrder } = useCheckout();
-    // create an order
-    const order = await createOrder();
-    ```
+   ```js{3}
+   const { createOrder } = useCheckout();
+   // create an order
+   const order = await createOrder();
+   ```
 
 2. Utilize `useOrderPayment` composable to proceed the payment process once order is placed
 
-    ```js
-    // utilize useOrderPayment to proceed on the provided order
-    const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
-      useOrderPayment(ref(order));
-    ```
+   ```js
+   // utilize useOrderPayment to proceed on the provided order
+   const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
+     useOrderPayment(ref(order));
+   ```
 
 3. Initialize a payment handler
 
-    This is the moment, when any additional information can be passed (if a payment extension allows to do so). Payment handler can communicate with an external service to init some additional process, like preparation of external gateway session to process the payment for specific order.
+   This is the moment, when any additional information can be passed (if a payment extension allows to do so). Payment handler can communicate with an external service to init some additional process, like preparation of external gateway session to process the payment for specific order.
 
-    ```js{6-15}
-    // where to redirect an user when payment is done correctly
-    const SUCCESS_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
-    // go to this page otherwise
-    const FAILURE_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
+   ```js{6-15}
+   // where to redirect an user when payment is done correctly
+   const SUCCESS_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
+   // go to this page otherwise
+   const FAILURE_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
 
-    const handlePaymentResponse = await handlePayment(
-      SUCCESS_PAYMENT_URL, 
-      FAILURE_PAYMENT_URL, 
-      {
-        /**
-         * here goes additional information required by payment provider
-        * can be payment intent token
-        */
-      }
-    )
-    ```
+   const handlePaymentResponse = await handlePayment(
+     SUCCESS_PAYMENT_URL,
+     FAILURE_PAYMENT_URL,
+     {
+       /**
+        * here goes additional information required by payment provider
+       * can be payment intent token
+       */
+     }
+   )
+   ```
 
-    Note that, this is an example, does not show how to create success/failure pages.
+   Note that, this is an example, does not show how to create success/failure pages.
 
 4. Do the action on processed payment handler
 
-    If payment provider (shipped via app/plugin/extension) has external payment gateway, you will probably get the URL to go to.
-    
-    ```js
-    const handlePaymentResponse = await handlePayment(
-      /* parameters omitted, see previous point */
-    )
+   If payment provider (shipped via app/plugin/extension) has external payment gateway, you will probably get the URL to go to.
 
-    const redirectUrl = handlePaymentResponse?.redirectUrl; // URL or undefined
-    ```
+   ```js
+   const handlePaymentResponse = await handlePayment();
+   /* parameters omitted, see previous point */
 
-    Then you are ready to perform a redirection of an user to the URL in order to finish the payment.
-    If succeed, the customer will be redirected back to `SUCCESS_PAYMENT_URL` defined before. Otherwise, `FAILURE_PAYMENT_URL` will be displayed.
+   const redirectUrl = handlePaymentResponse?.redirectUrl; // URL or undefined
+   ```
 
+   Then you are ready to perform a redirection of an user to the URL in order to finish the payment.
+   If succeed, the customer will be redirected back to `SUCCESS_PAYMENT_URL` defined before. Otherwise, `FAILURE_PAYMENT_URL` will be displayed.
 
 ### Credit cards
 
 Flow for the credit cards may vary between providers, nevertheless there is a general rule: asynchronous payment flow applies also in this case. Because there is always additional data to be sent, like one time tokens, hash and other security solutions.
-  
+
 Sometimes the external authorization is needed and the external gateway can be used, or a popup to interact with payment provider.
 
 However, if there are no plugin-specific endpoints to interact with, the `handlePayment` method (or `/store-api/handle-payment` endpoint) is always a good choice.

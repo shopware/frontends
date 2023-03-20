@@ -207,8 +207,8 @@ const invokeSave = async (): Promise<void> => {
           <button
             type="submit"
             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-light"
-            @click.stop.prevent="invokeSave"
             data-testid="account-address-form-submit-button"
+            @click.stop.prevent="invokeSave"
           >
             Save
           </button>

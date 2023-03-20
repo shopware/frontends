@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { dirname, isAbsolute, posix, relative, resolve, sep } from "node:path";
+import { resolve } from "node:path";
 import openapiTS from "openapi-typescript";
 import * as dotenv from "dotenv";
 import * as c from "picocolors";

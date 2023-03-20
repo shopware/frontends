@@ -64,7 +64,7 @@ function getVisibilityClasses(content: CmsBlock | CmsSection | CmsSlot) {
   )
     return {};
 
-  let visibilityCssClasses: {
+  const visibilityCssClasses: {
     "md:hidden"?: boolean;
     "xl:hidden"?: boolean;
     "lg:hidden"?: boolean;

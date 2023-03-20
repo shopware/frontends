@@ -70,8 +70,8 @@ export default {
   <div class="pl-5 pb-3">
     <div
       v-for="media in getMedia(lineItem)"
-      class="cursor-pointer"
       :key="media.id"
+      class="cursor-pointer"
       @click="getMediaFileHandler(media.id, media.fileName)"
     >
       <div class="flex gap-2">
