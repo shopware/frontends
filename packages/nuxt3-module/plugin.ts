@@ -11,13 +11,24 @@ import Cookies from "js-cookie";
 
 const ShopwarePlugin = {
   install(app, options) {
+    const runtimeConfig = useRuntimeConfig();
+
     const cookieContextToken = Cookies.get("sw-context-token");
     const cookieLanguageId = Cookies.get("sw-language-id");
 
+    if (
+      !runtimeConfig.public.shopware.shopwareEndpoint ||
+      !runtimeConfig.public.shopware.shopwareAccessToken
+    ) {
+      throw new Error(
+        "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration"
+      );
+    }
+
     const instance = createInstance({
-      endpoint: "<%= options.shopwareEndpoint %>",
-      accessToken: "<%= options.shopwareAccessToken %>",
-      timeout: "<%= options.shopwareApiClient.timeout %>",
+      endpoint: runtimeConfig.public.shopware.shopwareEndpoint,
+      accessToken: runtimeConfig.public.shopware.shopwareAccessToken,
+      timeout: runtimeConfig.public.shopware.shopwareAccessToken || 10000,
       auth: {
         username:
           "<%= options.shopwareApiClient.auth ? options.shopwareApiClient.auth.username : undefined %>",

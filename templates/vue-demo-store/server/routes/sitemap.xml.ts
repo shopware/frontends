@@ -3,14 +3,21 @@ import { streamToPromise, SitemapIndexStream } from "sitemap";
 import { Readable } from "stream";
 import { SitemapResult } from "@shopware-pwa/types";
 import getURL from "requrl";
-
+import { createInstance } from "@shopware-pwa/api-client";
 type Sitemap = {
   url: string;
 };
 
 export default defineEventHandler(async (event) => {
+  const runtimeConfig = useRuntimeConfig();
+
+  const apiContext = createInstance({
+    endpoint: runtimeConfig.public.shopware.shopwareEndpoint,
+    accessToken: runtimeConfig.public.shopware.shopwareAccessToken,
+  });
+
   const sitemaps: Sitemap[] = [];
-  const response = await getSitemap();
+  const response = await getSitemap(apiContext);
   const smis = new SitemapIndexStream();
 
   response.forEach((element: SitemapResult) => {

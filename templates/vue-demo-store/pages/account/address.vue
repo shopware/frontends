@@ -71,6 +71,7 @@ onBeforeMount(async () => {
           salutations: getSalutations,
         })
       "
+      data-testid="addresses-add-button"
     >
       Add new address
     </button>
