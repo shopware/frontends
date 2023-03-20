@@ -1,0 +1,148 @@
+import { ofetch } from "ofetch";
+
+type Operations = Record<string, unknown>;
+
+type Paths = {
+  [path: string]: {
+    [method: string]: unknown;
+  };
+};
+
+type HttpMethod = "post" | "get" | "put" | "delete" | "patch";
+
+type PathDefinition<
+  OPERATION_NAME extends string,
+  METHOD_NAME extends HttpMethod,
+  PATH_NAME extends string
+> = `${OPERATION_NAME} ${METHOD_NAME} ${PATH_NAME}`;
+
+type GetInferKey<T, NAME extends string> = T extends { [key in NAME]: infer R }
+  ? R
+  : never;
+
+export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
+  baseURL: string;
+  apiType: "store-api" | "admin-api";
+  accessToken: string;
+}) {
+  type ReturnType<T extends keyof OPERATIONS> = GetInferKey<
+    GetInferKey<
+      GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
+      "content"
+    >,
+    "application/json"
+  >;
+
+  const defaultHeaders = {
+    "sw-access-key": params.accessToken,
+  };
+
+  const apiFetch = ofetch.create({
+    baseURL: params.baseURL,
+    headers: {
+      "sw-access-key": params.accessToken,
+    },
+  });
+
+  /**
+   * Invoke API request based on provided path definition.
+   */
+  async function invoke<
+    INVOKE_PATH extends PATHS,
+    OON = INVOKE_PATH extends `${infer R} ${string}` ? R : never,
+    OPERATION_NAME extends keyof OPERATIONS = OON extends keyof OPERATIONS
+      ? OON
+      : never
+  >(
+    pathParam: INVOKE_PATH extends string ? INVOKE_PATH : never,
+    params: (OPERATIONS[OPERATION_NAME] extends {
+      parameters?: { query?: infer R };
+    }
+      ? R
+      : {}) &
+      (OPERATIONS[OPERATION_NAME] extends {
+        parameters?: { path?: infer R };
+      }
+        ? R
+        : {}) &
+      (OPERATIONS[OPERATION_NAME] extends {
+        requestBody?: { content?: { "application/json"?: infer R } };
+      }
+        ? R
+        : {}) &
+      (OPERATIONS[OPERATION_NAME] extends {
+        parameters?: { header?: infer R };
+      }
+        ? R
+        : {})
+  ): Promise<ReturnType<OPERATION_NAME>> {
+    const [requestPath, options] = transformPathToQuery(
+      pathParam,
+      params as any
+    );
+    // console.log("invoke with", requestPath, options);
+    return apiFetch<ReturnType<OPERATION_NAME>>(requestPath, {
+      ...options,
+      headers: {
+        ...defaultHeaders,
+        ...options.headers,
+      },
+    });
+  }
+
+  return {
+    invoke,
+  };
+}
+
+export function transformPathToQuery<T extends Record<string, any>>(
+  path: string,
+  params: T
+): [string, { method: HttpMethod; query: T; headers: T; body: T }] {
+  const [operationName, method, pathDefinition, headerParams] = path.split(" ");
+  const [requestPath, queryParams] = pathDefinition.split("?");
+
+  // get names in brackets
+  const pathParams: string[] =
+    requestPath
+      .match(/{[^}]+}/g)
+      //remove brackets
+      ?.map((param) => param.substring(1, param.length - 1)) || [];
+  const requestPathWithParams = pathParams.reduce((acc, paramName) => {
+    return acc.replace(`{${paramName}}`, params[paramName]);
+  }, requestPath);
+
+  const queryParamNames = queryParams?.split(",") || [];
+
+  const headerParamnames = headerParams?.split(",") || [];
+  let headers: any = {};
+  headerParamnames.forEach((paramName) => {
+    headers[paramName] = params[paramName];
+  });
+  let query: any = {};
+  queryParamNames.forEach((paramName) => {
+    query[paramName] = params[paramName];
+  });
+
+  // put another parameters to body
+  let body: any = {};
+  Object.keys(params).forEach((key) => {
+    if (
+      !pathParams.includes(key) &&
+      !queryParamNames.includes(key) &&
+      !headerParamnames.includes(key)
+    ) {
+      body[key] = params[key];
+    }
+  });
+
+  return [
+    requestPathWithParams,
+    {
+      method: method.toUpperCase() as HttpMethod,
+      headers,
+      query,
+      body,
+    },
+  ];
+}
