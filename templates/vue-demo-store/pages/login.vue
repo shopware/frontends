@@ -29,22 +29,22 @@ export default {
     <AccountLoginForm @success="navigateTo('/')">
       <div class="flex items-center justify-end">
         <div class="text-sm">
-          <nuxt-link
+          <NuxtLink
             to="/account/recover"
             class="font-medium text-indigo-600 hover:text-indigo-500"
           >
             Forgot your password?
-          </nuxt-link>
+          </NuxtLink>
         </div>
       </div>
 
       <template #action>
-        <nuxt-link
+        <NuxtLink
           to="/register"
           class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           Sign up
-        </nuxt-link>
+        </NuxtLink>
       </template>
     </AccountLoginForm>
   </div>
