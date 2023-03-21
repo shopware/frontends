@@ -4,6 +4,7 @@ import openapiTS from "openapi-typescript";
 import * as dotenv from "dotenv";
 import * as c from "picocolors";
 import prettier from "prettier";
+import tsParser from "prettier/parser-typescript";
 
 const config = dotenv.config().parsed || {};
 
@@ -22,7 +23,7 @@ if (!config.OPENAPI_JSON_URL || !config.OPENAPI_ACCESS_KEY) {
 // const TYPES_FILENAME = "admin-types.d.ts";
 const loadFromAPI = false; // TODO; cli flag
 const SCHEMA_FILENAME = "apiSchema.json";
-const TYPES_FILENAME = (version) => `apiTypes-${version}.d.ts`;
+const TYPES_FILENAME = (version: string | number) => `apiTypes-${version}.d.ts`;
 
 export async function generate() {
   try {
@@ -64,7 +65,7 @@ export async function generate() {
     });
 
     const originalSchema = JSON.parse(readedContentFromFile);
-    const { paths } = originalSchema;
+    const { paths } = originalSchema as OpenAPIV3.Document;
     console.log("schema", originalSchema.info);
 
     const address = resolve(process.cwd(), SCHEMA_FILENAME);
@@ -89,12 +90,22 @@ export async function generate() {
       }
     );
 
+    type MethodObject = {
+      operationId: string;
+      parameters: [
+        {
+          in: "query" | "header" | "path";
+          name: string;
+        }
+      ];
+    };
+
     // create map of paths
     const operationsMap = Object.keys(paths).reduce((acc, path) => {
       const pathObject = paths[path];
       const methods = Object.keys(pathObject);
       methods.forEach((method) => {
-        const methodObject = pathObject[method];
+        const methodObject = pathObject[method] as MethodObject;
         const { operationId } = methodObject;
         const queryParamNames =
           methodObject.parameters
@@ -122,7 +133,7 @@ export async function generate() {
         };
       });
       return acc;
-    }, {});
+    }, {} as Record<string, any>);
 
     schema += `\n export type operationPaths = ${Object.values(operationsMap)
       .map((el) => `"${(el as { finalPath: string }).finalPath}"`)
@@ -131,6 +142,14 @@ export async function generate() {
     // clean up
     // remove `@description ` tags
     schema = schema.replace(/@description /g, "");
+
+    schema = prettier
+      .format(schema, {
+        semi: false,
+        parser: "typescript",
+        plugins: [tsParser],
+      })
+      .trim();
 
     if (typeof schema === "string") {
       writeFileSync(TYPES_FILENAME(originalSchema.info.version), schema, {

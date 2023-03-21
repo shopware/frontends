@@ -260,6 +260,7 @@ importers:
 
   packages/api-client-next:
     specifiers:
+      '@types/prettier': ^2.7.2
       '@vitest/coverage-c8': ^0.28.5
       eslint-config-shopware: workspace:*
       ofetch: ^1.0.1
@@ -274,6 +275,7 @@ importers:
       openapi-typescript: 6.2.0
       yargs: 17.7.1
     devDependencies:
+      '@types/prettier': 2.7.2
       '@vitest/coverage-c8': 0.28.5
       eslint-config-shopware: link:../eslint-config-shopware
       picocolors: 1.0.0
@@ -5707,6 +5709,10 @@ packages:
   /@types/parse5/6.0.3:
     resolution: {integrity: sha512-SuT16Q1K51EAVPz1K29DJ/sXjhSQ0zjvsypYJ6tlwVsRV9jwW5Adq2ch8Dq8kDBCkYnELS7N7VNCSB5nC56t/g==}
     dev: false
+
+  /@types/prettier/2.7.2:
+    resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
+    dev: true
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
