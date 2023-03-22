@@ -65,7 +65,7 @@ export async function generate() {
     });
 
     const originalSchema = JSON.parse(readedContentFromFile);
-    const { paths } = originalSchema as OpenAPIV3.Document;
+    const { paths } = originalSchema;
     console.log("schema", originalSchema.info);
 
     const address = resolve(process.cwd(), SCHEMA_FILENAME);
