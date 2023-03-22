@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
-
 const { count } = useCart();
 const { count: wishlistCount } = useWishlist();
 const isSidebarOpen = inject("isSidebarOpen");
@@ -14,7 +12,7 @@ const isSidebarOpen = inject("isSidebarOpen");
       >
         <div class="flex justify-start lg:flex-1 w-full md:w-1/3 lg:w-1/12">
           <div class="order-2 lg:order-1 ml-4 lg:ml-0">
-            <RouterLink to="/">
+            <NuxtLink to="/">
               <span class="sr-only">Shopware</span>
               <img
                 class="h-8 w-auto sm:h-10"
@@ -23,7 +21,7 @@ const isSidebarOpen = inject("isSidebarOpen");
                 width="40px"
                 height="40px"
               />
-            </RouterLink>
+            </NuxtLink>
           </div>
           <div class="order-1 lg:order-2 py-3 lg:p-0">
             <LayoutSideMenu />
@@ -39,11 +37,11 @@ const isSidebarOpen = inject("isSidebarOpen");
         <div class="w-full md:w-1/3 lg:w-2/12 flex items-center justify-end">
           <AccountMenu />
           <div class="flex ml-4 flow-root lg:ml-6">
-            <button
+            <NuxtLink
               class="group -m-2 p-2 flex items-center relative"
               aria-label="wishlist"
               data-testid="wishlist-button"
-              @click="$router.push('/wishlist')"
+              to="/wishlist"
             >
               <div
                 class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary"
@@ -54,7 +52,7 @@ const isSidebarOpen = inject("isSidebarOpen");
               >
                 {{ wishlistCount }}
               </span>
-            </button>
+            </NuxtLink>
           </div>
           <!-- Cart -->
           <div class="flex ml-4 flow-root lg:ml-6">

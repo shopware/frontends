@@ -20,6 +20,7 @@ const props = defineProps<{
       | PriceAggregation
       | MaxAggregation
       | number;
+    rating: number;
   };
 }>();
 const isHoverActive = ref(false);
