@@ -46,6 +46,6 @@
     "typescript": "^5.0.2",
     "vinyl": "^3.0.0",
     "vite-plugin-dts": "^2.1.0",
-    "vitest": "^0.29.5"
+    "vitest": "^0.29.7"
   }
 }
