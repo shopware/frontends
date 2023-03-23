@@ -21,7 +21,7 @@ import { SalesChannelTranslation } from "./SalesChannelTranslation";
 import { SalesChannelDomain } from "./SalesChannelDomain";
 import { SystemConfig } from "../system-config/SystemConfig";
 import { ProductReview } from "../../content/product/ProductReview";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -57,7 +57,7 @@ export type SalesChannel = {
   translations: SalesChannelTranslation[] | null;
   domains: SalesChannelDomain[] | null;
   systemConfigs: SystemConfig[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   navigationCategory: Category | null;
   footerCategory: Category | null;
   serviceCategory: Category | null;

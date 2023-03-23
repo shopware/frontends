@@ -1,5 +1,5 @@
 import { Unit } from "./Unit";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -9,5 +9,5 @@ export type UnitTranslation = {
   shortCode: string | null;
   name: string | null;
   unit: Unit | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

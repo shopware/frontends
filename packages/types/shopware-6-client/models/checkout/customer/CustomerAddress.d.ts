@@ -1,5 +1,5 @@
 import { Country } from "../../system/country/Country";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { Salutation } from "../../system/salutation/Salutation";
 
 /**
@@ -31,6 +31,6 @@ export type CustomerAddress = {
   countryState?: string;
   salutation?: Salutation | null;
   customer?: string;
-  customFields?: CustomField;
+  customFields?: CustomFields;
   id: string;
 };
