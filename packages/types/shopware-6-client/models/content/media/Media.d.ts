@@ -14,7 +14,7 @@ import { CmsBlock } from "../cms/CmsBlock";
 import { Document } from "../../checkout/document/Document";
 import { ProductManufacturer } from "../product/ProductManufacturer";
 import { OrderLineItem } from "../../checkout/order/OrderLineItem";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { Customer } from "../../checkout/customer/Customer";
 
 /**
@@ -44,12 +44,12 @@ export type Media = {
   translated: {
     alt: null | string;
     title: null | string;
-    customFields: unknown;
+    customFields: CustomFields;
   };
   createdAt: string;
   updatedAt: null | string;
   extensions: unknown;
   id: string;
-  customFields: null | unknown;
+  customFields: CustomFields;
   apiAlias: "media";
 };

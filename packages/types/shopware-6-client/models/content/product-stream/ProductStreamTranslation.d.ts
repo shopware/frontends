@@ -1,5 +1,5 @@
 import { ProductStream } from "./ProductStream";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -9,5 +9,5 @@ export type ProductStreamTranslation = {
   name: string | null;
   description: string | null;
   productStream: ProductStream | null;
-  customFields: CustomField;
+  customFields: CustomFields;
 };

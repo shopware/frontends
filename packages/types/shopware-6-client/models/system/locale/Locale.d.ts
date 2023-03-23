@@ -1,6 +1,6 @@
 import { LocaleTranslation } from "./LocaleTranslation";
 import { Language } from "../../framework/language/Language";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { Customer } from "../../checkout/customer/Customer";
 
 /**
@@ -13,5 +13,5 @@ export type Locale = {
   translations: LocaleTranslation[] | null;
   users: Customer[] | null;
   languages: Language[] | null;
-  customFields: CustomField | null;
+  customFields: CustomFields | null;
 };

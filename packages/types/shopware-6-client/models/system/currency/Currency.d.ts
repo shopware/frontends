@@ -4,7 +4,7 @@ import { ShippingMethodPrice } from "../../checkout/shipping/ShippingMethodPrice
 import { PromotionDiscountPrice } from "../../checkout/promotion/PromotionDiscountPrice";
 import { SalesChannel } from "../sales-channel/SalesChannel";
 import { SalesChannelDomain } from "../sales-channel/SalesChannelDomain";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -23,7 +23,7 @@ export type Currency = {
   salesChannels: SalesChannel[] | null;
   salesChannelDefaultAssignments: SalesChannel[] | null;
   salesChannelDomains: SalesChannelDomain[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   /**
    * @deprecated removed from 6.5.0
    */

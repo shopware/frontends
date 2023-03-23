@@ -1,5 +1,5 @@
 import { Media } from "../../content/media/Media";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -16,6 +16,6 @@ export type Downloads = {
   media: Media;
   accessGranted: boolean;
   id: string;
-  customFields: CustomField | null;
+  customFields: CustomFields | null;
   apiAlias: string;
 };
