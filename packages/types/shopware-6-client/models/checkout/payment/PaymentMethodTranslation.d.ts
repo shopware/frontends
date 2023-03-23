@@ -1,5 +1,5 @@
 import { PaymentMethod } from "./PaymentMethod";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -9,5 +9,5 @@ export type PaymentMethodTranslation = {
   name: string | null;
   description: string | null;
   paymentMethod: PaymentMethod | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

@@ -1,4 +1,4 @@
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -7,5 +7,5 @@ export type DocumentTypeTranslation = {
   documentTypeId: string;
   documentType: DocumentType | null;
   name: string | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

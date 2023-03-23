@@ -2,7 +2,7 @@ import { Language } from "../../framework/language/Language";
 import { SalesChannel } from "./SalesChannel";
 import { SnippetSet } from "../../framework/snippet/SnippetSet";
 import { Currency } from "../currency/Currency";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -17,5 +17,5 @@ export type SalesChannelDomain = {
   salesChannel: SalesChannel | null;
   languageId: string;
   language: Language | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

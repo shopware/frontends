@@ -1,4 +1,4 @@
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { SalesChannelDomain } from "../../system/sales-channel/SalesChannelDomain";
 import { Snippet } from "./Snippet";
 
@@ -11,5 +11,5 @@ export type SnippetSet = {
   iso: string;
   snippets: Snippet[] | null;
   salesChannelDomains: SalesChannelDomain[] | null;
-  customFields: CustomField | null;
+  customFields: CustomFields | null;
 };

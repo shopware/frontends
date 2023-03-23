@@ -1,5 +1,5 @@
 import { NumberRange } from "./NumberRange";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -9,5 +9,5 @@ export type NumberRangeTranslation = {
   name: string | null;
   description: string | null;
   numberRange: NumberRange | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };
