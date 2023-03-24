@@ -155,5 +155,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Test
+      - name: Lint
         run: pnpm run lint
