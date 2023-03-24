@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-e2e:
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !github.event.deployment_status.target_url.includes('frontends-docs')
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
