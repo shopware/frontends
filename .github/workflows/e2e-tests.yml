@@ -24,7 +24,7 @@ jobs:
           node-version: 18
           cache: "pnpm"
 
-      - name: Install dependencies
+      - name: Install dependencies with Playwright
         run: |
           pnpm install
           pnpm playwright install --with-deps
