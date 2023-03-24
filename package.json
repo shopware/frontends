@@ -14,7 +14,7 @@
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
     "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint && pnpm run format",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "format": "prettier --write \"**/*.{ts,tsx,md,vue}\"",
