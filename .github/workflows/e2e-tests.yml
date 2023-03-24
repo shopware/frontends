@@ -2,7 +2,7 @@ name: Playwright Tests
 
 on:
   deployment_status:
-    
+
   run-e2es:
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
@@ -27,5 +27,5 @@ on:
 
       - name: Run tests
         run: pnpm run test:e2e
-          env:
-            BASE_URL: ${{ github.event.deployment_status.target_url }}
+        env:
+          BASE_URL: ${{ github.event.deployment_status.target_url }}
