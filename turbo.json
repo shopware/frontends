@@ -4,7 +4,13 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".nuxt/**", ".output/**", ".vercel/**"]
+      "outputs": [
+        "dist/**",
+        ".nuxt/**",
+        ".output/**",
+        ".vercel/**",
+        ".vitepress/dist/**"
+      ]
     },
     "generate": {
       "dependsOn": ["^build"],
