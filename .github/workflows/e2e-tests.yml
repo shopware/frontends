@@ -1,10 +1,11 @@
-name: Playwright Tests
+name: e2e
 
 on:
   deployment_status:
 
 jobs:
   run-e2e:
+    name: Playwright testing deployment
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
     runs-on: ubuntu-latest
     steps:
@@ -24,7 +25,9 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          pnpm install
+          pnpm playwright install --with-deps
 
       - name: Run tests
         run: pnpm run test:e2e
