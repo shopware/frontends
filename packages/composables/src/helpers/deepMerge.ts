@@ -17,7 +17,7 @@ export function isObject(object: any): boolean {
  * @returns merged object
  */
 export default function deepMerge(obj1: any, obj2: any): object {
-  let output = Object.assign({}, obj1);
+  const output = Object.assign({}, obj1);
   if (isObject(obj1) && isObject(obj2)) {
     Object.keys(obj2).forEach((key) => {
       if (isObject(obj2[key])) {

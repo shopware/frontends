@@ -8,8 +8,8 @@ const error = ref(false);
 try {
   await newsletterConfirmation(
     {
-      em: <string>route.query.em,
-      hash: <string>route.query.hash,
+      em: route.query.em as string,
+      hash: route.query.hash as string,
     },
     apiInstance
   );
