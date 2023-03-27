@@ -94,8 +94,8 @@ const invokeChange = async (): Promise<void> => {
     </div>
     <form
       class="mt-8 space-y-6"
-      @submit.prevent="invokeChange"
       data-testid="account-change-password-form"
+      @submit.prevent="invokeChange"
     >
       <div
         v-if="userErrorMessages.length"

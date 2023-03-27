@@ -69,8 +69,8 @@ async function invokeLogout() {
                 tabindex="-1"
               >
                 <NuxtLink
-                  to="/account"
                   id="user-menu-item-1"
+                  to="/account"
                   data-testid="header-my-account-link"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   tabindex="-1"
