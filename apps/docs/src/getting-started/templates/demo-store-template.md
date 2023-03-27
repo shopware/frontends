@@ -4,7 +4,7 @@ import stackblitzIcon from '../../.assets/framework-icons/stackblitz.png';
 
 # Demo Store Template
 
-<img src="../../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
+<a href="https://frontends-demo.vercel.app/" target="_blank"><img src="../../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
 
 The demo store template is a reference implementation of an online store UI.
 

@@ -1,6 +1,6 @@
 import { Product } from "./Product";
 import { ProductManufacturerTranslation } from "./ProductManufacturerTranslation";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -12,5 +12,5 @@ export type ProductManufacturer = {
   description: string | null;
   translations: ProductManufacturerTranslation | null;
   products: Product[];
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

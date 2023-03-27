@@ -38,7 +38,7 @@ const isSidebarOpen = inject("isSidebarOpen");
           <AccountMenu />
           <div class="flex ml-4 flow-root lg:ml-6">
             <NuxtLink
-              class="group -m-2 p-2 flex items-center relative"
+              class="group -m-2 p-2 flex items-center relative text-center"
               aria-label="wishlist"
               data-testid="wishlist-button"
               to="/wishlist"

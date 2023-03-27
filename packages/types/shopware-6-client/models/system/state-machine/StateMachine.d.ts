@@ -1,4 +1,4 @@
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { StateMachineTransition } from "./StateMachineTransition";
 import { StateMachineState } from "./StateMachineState";
 import { StateMachineStateTranslation } from "./StateMachineStateTranslation";
@@ -15,5 +15,5 @@ export type StateMachine = {
   initialStateId: string | null;
   translations: StateMachineStateTranslation[];
   historiEntries: StateMachineHistory[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

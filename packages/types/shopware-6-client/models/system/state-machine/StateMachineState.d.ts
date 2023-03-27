@@ -5,7 +5,7 @@ import { OrderDelivery } from "../../checkout/order/OrderDelivery";
 import { StateMachineTransition } from "./StateMachineTransition";
 import { StateMachineHistory } from "./StateMachineHistory";
 import { StateMachineStateTranslation } from "./StateMachineStateTranslation";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -22,5 +22,5 @@ export type StateMachineState = {
   orderDeliveries: OrderDelivery[] | null;
   fromStateMachineHistoryEntries: StateMachineHistory[] | null;
   toStateMachineHistoryEntries: StateMachineHistory[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

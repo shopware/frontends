@@ -1,6 +1,6 @@
 import { SalesChannel } from "./SalesChannel";
 import { SalesChannelTypeTranslation } from "./SalesChannelTypeTranslation";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -15,5 +15,5 @@ export type SalesChannelType = {
   screenshotUrls: [] | null;
   salesChannels: SalesChannel[] | null;
   translations: SalesChannelTypeTranslation[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

@@ -14,14 +14,13 @@ type ProductMedia = {
  * @category Media
  */
 export function getMedia(lineItem: OrderLineItem) {
-  return lineItem.downloads.reduce(
-    (acc: [ProductMedia], current: Downloads) => {
+  return (
+    lineItem.downloads?.reduce((acc: ProductMedia[], current: Downloads) => {
       acc.push({
         id: current.id,
         fileName: `${current.media.fileName}.${current.media.fileExtension}`,
       });
       return acc;
-    },
-    []
+    }, []) || []
   );
 }

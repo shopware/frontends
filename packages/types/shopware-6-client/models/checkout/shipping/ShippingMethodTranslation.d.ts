@@ -1,5 +1,5 @@
 import { ShippingMethod } from "./ShippingMethod";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -9,5 +9,5 @@ export type ShippingMethodTranslation = {
   name: string | null;
   description: string | null;
   shippingMethod: ShippingMethod | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

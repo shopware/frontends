@@ -152,7 +152,7 @@ onBeforeMount(async () => {
           <NuxtLink
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
             data-testid="my-account-change-default-billing-address-button"
-            to="/account/address'"
+            to="/account/address"
           >
             Change
           </NuxtLink>
