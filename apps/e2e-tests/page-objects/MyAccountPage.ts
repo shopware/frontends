@@ -5,28 +5,44 @@ export class MyAccountPage {
   readonly personalFirstName: Locator;
   readonly personalLastName: Locator;
   readonly personalEmail: Locator;
-  readonly accountPersonalDataSubmitButton: Locator
-  readonly changePaymentMethodButton: Locator
-  readonly accountPaymentSubmitButton: Locator
-  readonly accountChangeProfileButton: Locator
-  readonly accountChangeBillingAddressButton: Locator
-  readonly accountChangeShippingAddressButton: Locator
-  readonly newsletterCheckbox: Locator
-
-
+  readonly accountPersonalDataSubmitButton: Locator;
+  readonly changePaymentMethodButton: Locator;
+  readonly accountPaymentSubmitButton: Locator;
+  readonly accountChangeProfileButton: Locator;
+  readonly accountChangeBillingAddressButton: Locator;
+  readonly accountChangeShippingAddressButton: Locator;
+  readonly newsletterCheckbox: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.accountChangeProfileButton = page.locator("[data-testid='my-account-change-profile-button']")
-    this.personalFirstName = page.locator("[data-testid='account-personal-data-firstname-input']");
-    this.personalLastName = page.locator("[data-testid='account-personal-data-lastname-input']");
-    this.personalEmail = page.locator("data-testid='account-personal-data-email-input']");
-    this.accountPersonalDataSubmitButton = page.locator("[data-testid='account-personal-data-submit-button']")
-    this.changePaymentMethodButton = page.locator("[data-testid='my-account-change-payment-method-button']")
-    this.accountPaymentSubmitButton = page.locator("[data-testid='account-payment-submit-button']")
-    this.accountChangeBillingAddressButton = page.locator("[data-testid='my-account-change-default-billing-address-button']")
-    this.accountChangeShippingAddressButton = page.locator("[data-testid='my-account-change-default-shipping-address-button']")
-    this.newsletterCheckbox = page.locator("#newsletter-checkbox")
+    this.accountChangeProfileButton = page.locator(
+      "[data-testid='my-account-change-profile-button']"
+    );
+    this.personalFirstName = page.locator(
+      "[data-testid='account-personal-data-firstname-input']"
+    );
+    this.personalLastName = page.locator(
+      "[data-testid='account-personal-data-lastname-input']"
+    );
+    this.personalEmail = page.locator(
+      "data-testid='account-personal-data-email-input']"
+    );
+    this.accountPersonalDataSubmitButton = page.locator(
+      "[data-testid='account-personal-data-submit-button']"
+    );
+    this.changePaymentMethodButton = page.locator(
+      "[data-testid='my-account-change-payment-method-button']"
+    );
+    this.accountPaymentSubmitButton = page.locator(
+      "[data-testid='account-payment-submit-button']"
+    );
+    this.accountChangeBillingAddressButton = page.locator(
+      "[data-testid='my-account-change-default-billing-address-button']"
+    );
+    this.accountChangeShippingAddressButton = page.locator(
+      "[data-testid='my-account-change-default-shipping-address-button']"
+    );
+    this.newsletterCheckbox = page.locator("#newsletter-checkbox");
   }
 
   async changePersonalData() {
@@ -36,38 +52,38 @@ export class MyAccountPage {
 
   async changePersonalFirstName(firstname: string) {
     await this.page.waitForLoadState();
-    await this.personalFirstName.clear({force: true})
+    await this.personalFirstName.clear({ force: true });
     await this.personalFirstName.type(firstname);
-    await this.accountPersonalDataSubmitButton.click()
+    await this.accountPersonalDataSubmitButton.click();
     await this.page.waitForLoadState();
   }
 
   async changePersonalLastName(lastname: string) {
     await this.page.waitForLoadState();
-    await this.personalLastName.clear({ force: true })
+    await this.personalLastName.clear({ force: true });
     await this.personalLastName.type(lastname);
-    await this.accountPersonalDataSubmitButton.click()
+    await this.accountPersonalDataSubmitButton.click();
     await this.page.waitForLoadState();
   }
 
   async changePersonalEmail(email: string) {
     await this.page.waitForLoadState();
-    await this.personalEmail.clear()
+    await this.personalEmail.clear();
     await this.personalEmail.type(email);
   }
-  
-  async changeDefaultBillingAddress(){
+
+  async changeDefaultBillingAddress() {
     await this.page.waitForLoadState();
     await this.accountChangeBillingAddressButton.click();
   }
 
-  async changeDefaultShippingAddress(){
+  async changeDefaultShippingAddress() {
     await this.page.waitForLoadState();
     await this.accountChangeShippingAddressButton.click();
   }
 
-  async subsribeNewsletter(){
-    await this.newsletterCheckbox.click()
+  async subsribeNewsletter() {
+    await this.newsletterCheckbox.click();
     await this.page.waitForLoadState();
   }
 }

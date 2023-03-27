@@ -70,7 +70,7 @@ export class RegisterForm {
     await this.page.waitForLoadState();
     await this.salutation.selectOption({ label: "Mr." });
     await this.firstName.type("e2e " + faker.name.firstName());
-    await this.lastName.type("e2e " + faker.name.lastName())
+    await this.lastName.type("e2e " + faker.name.lastName());
     await this.emailAdrdress.type(faker.internet.exampleEmail());
     await this.password.type(faker.internet.password());
     await this.street.type(faker.address.street());

@@ -10,8 +10,8 @@ export class HomePage extends AbstractPage {
   readonly searchBar: Locator;
   readonly addToWishlist: Locator;
   readonly wishlistButton: Locator;
-  readonly accountMenuHelloButton: Locator
-  readonly myAccountLink: Locator
+  readonly accountMenuHelloButton: Locator;
+  readonly myAccountLink: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -28,7 +28,9 @@ export class HomePage extends AbstractPage {
       "[data-testid='product-box-wishlist-icon-not-in']"
     );
     this.myAccountLink = page.locator("[data-testid='header-my-account-link']");
-    this.accountMenuHelloButton = page.locator("[data-testid='account-menu-hello-button']");
+    this.accountMenuHelloButton = page.locator(
+      "[data-testid='account-menu-hello-button']"
+    );
   }
 
   async visitMainPage() {
@@ -74,10 +76,9 @@ export class HomePage extends AbstractPage {
     ]);
   }
 
-  async openMyAccount(){ 
-    this.page.waitForLoadState("load")
-    await this.accountMenuHelloButton.click()
-    await this.myAccountLink.click()
+  async openMyAccount() {
+    this.page.waitForLoadState("load");
+    await this.accountMenuHelloButton.click();
+    await this.myAccountLink.click();
   }
-
 }
