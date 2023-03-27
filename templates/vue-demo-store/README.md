@@ -16,15 +16,8 @@ Go to [Documentation > Requirements](https://shopware-frontends-docs.vercel.app/
 
 ## Set up your Shopware 6 instance
 
-In order to have a different API connect to the app, **uncomment** and adjust the API credentials in the `nuxt.config.ts` file:
-
-```ts
-export default defineNuxtConfig({
-  // shopware: {
-  //   shopwareEndpoint: "https://you.endpoint.com",
-  //   shopwareAccessToken: "your-access-token",
-  // },
-```
+In order to have a different API connect to the app, adjust the API credentials in the `nuxt.config.ts` file:
+`shopwareEndpoint` and `shopwareAccessToken`.
 
 ## Customize
 
