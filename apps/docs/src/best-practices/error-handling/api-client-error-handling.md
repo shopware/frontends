@@ -23,14 +23,16 @@ There is an `errorInterceptor` (see [axios interceptors](https://axios-http.com/
 When there is an error returend from a request you can expect at least the following fields: `message`, `code` and `errors` (containing an array with one or multiple `ShopwareError` objects). You can find the type definition at `packages/types/shopware-6-client/errors/ApiError.d.ts`.
 
 ### Structure
+
 Let's say we want to use the `getCustomerRegisterEndpoint` which points to `/store-api/account/register`. These function is used inside the `customerService` by an async function called `register` and returning a promise with an Customer object. Further the `register` function is used inside a composable called `useUser()`. There is also a function called `register` that is wrapping the `register` function from the API client. When you now look at the `register.vue` page inside the vue-demo-store implementation, you will see, that the submit of the form is invoked.
 
-__So the way is like this:__  
+**So the way is like this:**  
 API client Endpoint (TS) **>** API client Service (TS) **>** Composable (TS) **>** Vue
 
 ## Example (Vue page/template)
 
 Look at this `invokeSubmit` function from `templates/vue-demo-store/pages/register.vue`
+
 ```js
 <script setup lang="ts">
     const { register } = useUser();
@@ -58,7 +60,8 @@ Look at this `invokeSubmit` function from `templates/vue-demo-store/pages/regist
     //... content reduced
 </script>
 ```
-Before some request is sent the form get's validated and if it is valid, we will send the register request. The `await register(state);` part is coming from the composable `useUser()`, you see at the top of the script setup.  So the request is surrounded by a try/catch/finally (see also [axios errors handling](https://axios-http.com/docs/handling_errors)) so it is possible to react if there is some error coming back from the request. If we got an error we will push a message to a composable called `useNotifications()` that will display a nice message to the user of the website. 
+
+Before some request is sent the form get's validated and if it is valid, we will send the register request. The `await register(state);` part is coming from the composable `useUser()`, you see at the top of the script setup. So the request is surrounded by a try/catch/finally (see also [axios errors handling](https://axios-http.com/docs/handling_errors)) so it is possible to react if there is some error coming back from the request. If we got an error we will push a message to a composable called `useNotifications()` that will display a nice message to the user of the website.
 
 **API Client Reference**
 <PageRef page="../../packages/api-client" title="API Client Reference" sub="Package reference with all services" />
