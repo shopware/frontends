@@ -3,8 +3,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       shopware: {
-        shopwareEndpoint: process.env.API_URL,
-        shopwareAccessToken: process.env.API_ACCESS_TOKEN,
+        shopwareEndpoint: "https://demo-frontends.shopware.store",
+        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
       },
     },
   },
