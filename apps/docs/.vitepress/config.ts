@@ -23,7 +23,7 @@ export const sidebar = [
       { text: "Content Pages", link: "/getting-started/content-pages" },
       { text: "Cart", link: "/getting-started/cart" },
       { text: "Checkout ", link: "/getting-started/checkout" },
-      { text: "Payments", link: "/getting-started/payments"},
+      { text: "Payments", link: "/getting-started/payments" },
       { text: "Custom Payment", link: "/getting-started/custom-payment" },
       { text: "Login Form", link: "/getting-started/login-form" },
       { text: "Prices", link: "/getting-started/prices" },
@@ -36,6 +36,10 @@ export const sidebar = [
       {
         text: "Overwriting CMS blocks",
         link: "/getting-started/overwriting-cms",
+      },
+      {
+        text: "Sitemap",
+        link: "/getting-started/sitemap",
       },
     ],
   },

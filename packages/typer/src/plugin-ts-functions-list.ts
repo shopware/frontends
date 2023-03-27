@@ -192,7 +192,7 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
             openPath,
             githubTreeUrl:
               "https://stackblitz.com/github/shopware/frontends/tree/main/examples/example-builder",
-          },
+          }
         )})`;
       }
 

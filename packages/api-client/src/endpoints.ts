@@ -428,3 +428,7 @@ export const getOrderDownloadsEndpoint = (
   orderId: string,
   downloadId: string
 ) => `/store-api/order/download/${orderId}/${downloadId}`;
+/**
+ * @public
+ */
+export const getSitemapEndpoint = () => `/store-api/sitemap`;
