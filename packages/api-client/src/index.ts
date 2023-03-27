@@ -19,6 +19,7 @@ export * from "./services/wishlistService";
 export * from "./services/documentService";
 export * from "./services/orderService";
 export * from "./services/sitemapService";
+export * from "./services/newsletterService";
 export * from "./endpoints";
 
 /**

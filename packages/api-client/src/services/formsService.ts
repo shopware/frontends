@@ -71,7 +71,7 @@ export async function newsletterSubscribe(
 }
 
 /**
- * Unsuscribes from newsletter
+ * Unsubscribe from newsletter
  *
  * @param {NewsletterSubscribeData} params newsletter subscribe data: email
  *
