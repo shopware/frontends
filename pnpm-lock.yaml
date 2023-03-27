@@ -6817,7 +6817,7 @@ packages:
       c8: 7.13.0
       picocolors: 1.0.0
       std-env: 3.3.2
-      vitest: 0.29.7
+      vitest: 0.29.7_happy-dom@8.9.0
     dev: true
 
   /@vitest/expect/0.29.7:
