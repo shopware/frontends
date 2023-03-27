@@ -84,9 +84,9 @@ const { breadcrumbs } = useBreadcrumbs();
   <nav>
     <ol>
       <li v-for="(breadcrumb, index) in breadcrumbs" :key="breadcrumb.path">
-        <nuxt-link v-if="breadcrumb.path" :to="breadcrumb.path">
+        <NuxtLink v-if="breadcrumb.path" :to="breadcrumb.path">
           {{ breadcrumb.name }}
-        </nuxt-link>
+        </NuxtLink>
         <span v-else>
           {{ breadcrumb.name }}
         </span>

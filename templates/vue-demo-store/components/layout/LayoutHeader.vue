@@ -37,11 +37,11 @@ const isSidebarOpen = inject("isSidebarOpen");
         <div class="w-full md:w-1/3 lg:w-2/12 flex items-center justify-end">
           <AccountMenu />
           <div class="flex ml-4 flow-root lg:ml-6">
-            <button
-              class="group -m-2 p-2 flex items-center relative"
+            <NuxtLink
+              class="group -m-2 p-2 flex items-center relative text-center"
               aria-label="wishlist"
               data-testid="wishlist-button"
-              @click="$router.push('/wishlist')"
+              to="/wishlist"
             >
               <div
                 class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary"
@@ -52,7 +52,7 @@ const isSidebarOpen = inject("isSidebarOpen");
               >
                 {{ wishlistCount }}
               </span>
-            </button>
+            </NuxtLink>
           </div>
           <!-- Cart -->
           <div class="flex ml-4 flow-root lg:ml-6">

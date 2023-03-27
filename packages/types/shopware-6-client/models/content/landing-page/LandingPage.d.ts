@@ -1,5 +1,6 @@
 import { CmsPage } from "../cms/CmsPage";
 import { SeoUrl } from "../navigation/Navigation";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -28,7 +29,7 @@ export type LandingPage = {
   updatedAt: null | string;
   extensions: unknown;
   id: string;
-  customFields: null | unknown;
+  customFields: CustomFields;
   cmsPageVersionId: string;
   apiAlias: "landing_page";
 };

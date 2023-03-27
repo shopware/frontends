@@ -75,13 +75,13 @@ onBeforeMount(async () => {
         </p>
         <p>{{ user?.email }}</p>
         <div class="mt-5">
-          <button
+          <NuxtLink
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
             data-testid="my-account-change-profile-button"
-            @click="$router.push('/account/profile')"
+            to="/account/profile"
           >
             Change
-          </button>
+          </NuxtLink>
         </div>
       </div>
       <div class="w-1/2 flex flex-col">
@@ -91,13 +91,13 @@ onBeforeMount(async () => {
         </p>
         <p>{{ userDefaultPaymentMethod?.description }}</p>
         <div class="mt-5">
-          <button
+          <NuxtLink
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
             data-testid="my-account-change-payment-method-button"
-            @click="$router.push('/account/payment')"
+            to="/account/payment"
           >
             Change
-          </button>
+          </NuxtLink>
         </div>
       </div>
     </section>
@@ -132,13 +132,13 @@ onBeforeMount(async () => {
           :can-edit="false"
         />
         <div class="mt-5">
-          <button
+          <NuxtLink
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
             data-testid="my-account-change-default-billing-address-button"
-            @click="$router.push('/account/address')"
+            to="/account/address"
           >
             Change
-          </button>
+          </NuxtLink>
         </div>
       </div>
       <div class="w-1/2 flex flex-col">
@@ -153,13 +153,13 @@ onBeforeMount(async () => {
           :can-edit="false"
         />
         <div class="mt-5">
-          <button
+          <NuxtLink
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
             data-testid="my-account-change-default-shipping-address-button"
-            @click="$router.push('/account/address')"
+            to="/account/address"
           >
             Change
-          </button>
+          </NuxtLink>
         </div>
       </div>
     </section>

@@ -68,16 +68,15 @@ async function invokeLogout() {
                 aria-labelledby="user-menu-button"
                 tabindex="-1"
               >
-                <button
+                <NuxtLink
+                  to="/account"
                   id="user-menu-item-1"
                   data-testid="header-my-account-link"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  role="menuitem"
                   tabindex="-1"
-                  @click="$router.push('/account')"
                 >
                   My Account
-                </button>
+                </NuxtLink>
                 <button
                   id="user-menu-item-2"
                   data-testid="header-sing-out-link"

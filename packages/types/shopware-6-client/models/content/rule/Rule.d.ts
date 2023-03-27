@@ -6,7 +6,7 @@ import { PromotionSetGroup } from "../../checkout/promotion/PromotionSetGroup";
 import { Promotion } from "../../checkout/promotion/Promotion";
 import { RuleCondition } from "./RuleCondition";
 import { PaymentMethod } from "../../checkout/payment/PaymentMethod";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -21,7 +21,7 @@ export type Rule = {
   paymentMethods: PaymentMethod[];
   conditions: RuleCondition[];
   invalid: boolean;
-  customFields: CustomField[];
+  customFields: CustomFields;
   shippingMethodPrices: ShippingMethodPrice[] | null;
   promotionDiscounts: PromotionDiscount[] | null;
   promotionSetGroups: PromotionSetGroup[] | null;

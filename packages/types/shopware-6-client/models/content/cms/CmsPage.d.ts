@@ -1,4 +1,4 @@
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { Category } from "../category/Category";
 import { Product } from "../product/Product";
 import { Aggregation } from "../../../search/Aggregation";
@@ -121,7 +121,7 @@ export type CmsPage = {
   category: Category;
   type: CmsPageType;
   name: string;
-  customFields: CustomField[] | null;
+  customFields: CustomFields | null;
   locked: boolean;
   _uniqueIdentifier: string;
   versionId: string | null;
@@ -174,7 +174,7 @@ export type CmsFieldConfig = {
  */
 export type OldSlot = {
   type: CmsSlotType;
-  customFields: CustomField[] | null;
+  customFields: CustomFields | null;
   locked: boolean;
   _uniqueIdentifier: string;
   versionId: string;
@@ -232,7 +232,7 @@ export type CmsSection = {
   backgroundMedia: null;
   backgroundMediaMode: BackgroundMediaMode;
   cssClass: string | null;
-  customFields: CustomField[] | null;
+  customFields: CustomFields | null;
   locked: false;
   _uniqueIdentifier: string;
   versionId: string | null;

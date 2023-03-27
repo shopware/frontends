@@ -1,7 +1,7 @@
 import { Media } from "../media/Media";
 import { PropertyGroupOption } from "../property/PropertyGroupOption";
 import { Product } from "./Product";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -16,5 +16,5 @@ export type ProductConfiguratorSetting = {
   media: Media | null;
   selected: boolean;
   product: Product | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

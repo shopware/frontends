@@ -24,7 +24,7 @@ You can also integrate Shopware Frontends as an **npm package** into your existi
 
 ## Demo Store Template
 
-<img src="../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
+<a href="https://frontends-demo.vercel.app/" target="_blank"><img src="../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
 
 :::info
 The **Demo Store Template** is not production-ready. It is only a reference implementation that contains most of the features which you can use as a starting point. It is not possible to update it automatically or install Shopware extensions on it.
