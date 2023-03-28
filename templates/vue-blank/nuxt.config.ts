@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   modules: ["@vueuse/nuxt", "@shopware-pwa/nuxt3-module"],
   /**
    * Commented because of the StackBlitz error
-   * Should be resolved in different task
+   * Issue: https://github.com/shopware/frontends/issues/88
    */
   // typescript: {
   //   typeCheck: true,
