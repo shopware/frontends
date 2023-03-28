@@ -4,7 +4,7 @@ FROM node:${NODE_VERSION}
 ENV NODE_ENV production
 
 RUN mkdir /app
-COPY ./ /app
+COPY --chown=node:node ./ /app
 
 WORKDIR /app
 USER node
