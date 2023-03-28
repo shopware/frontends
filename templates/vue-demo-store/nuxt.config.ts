@@ -61,10 +61,7 @@ export default defineNuxtConfig({
           light: "#5ebbff",
           dark: "#0081df",
         },
-      },
-      maxWidth: {
-        "xs": "18rem",
-      },
+      }
     },
   },
   router: {
