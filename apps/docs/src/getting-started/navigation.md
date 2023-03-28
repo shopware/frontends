@@ -38,8 +38,11 @@ await loadNavigationElements({ depth: 2 });
 
 Now all values can be accessed in the template to build a navigation menu
 
+Note that all the navigation items are in type `Category`, and thanks to this the `getCategoryUrl` helper can be used to extract the correct pretty URL or technical URL as a fallback.
+
 ```vue
 <script setup lang="ts">
+import { getCategoryUrl } from "@shopware-pwa/helpers-next";
 const { loadNavigationElements, navigationElements } = useNavigation();
 await loadNavigationElements({ depth: 2 });
 </script>
@@ -50,13 +53,18 @@ await loadNavigationElements({ depth: 2 });
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
     >
-      <RouterLink :to="'/' + navigationElement.seoUrls[0]?.seoPathInfo">
+      <RouterLink 
+        :to="getCategoryUrl(navigationElement)" 
+        :target="(navigationElement.externalLink || navigationElement.linkNewTab) ? '_blank' : ''"
+      >
         {{ navigationElement.translated.name }}
       </RouterLink>
     </li>
   </ul>
 </template>
 ```
+
+There is an additional attribute `target` used, in order to open a link in another window (external links or configured as `new tab` link).
 
 ## Next steps
 
