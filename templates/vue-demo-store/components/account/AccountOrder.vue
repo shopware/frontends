@@ -49,6 +49,9 @@ export default {
         {{ !isExpand ? "View" : "Hide" }}
       </div>
     </div>
-    <AccountOrderDetails v-if="isExpand" :order-id="order.id" />
+    <AccountOrderDetails
+      v-if="isExpand"
+      :order-id="order.id"
+    />
   </div>
 </template>

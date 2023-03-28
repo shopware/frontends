@@ -12,11 +12,10 @@ export default {
       Your order
       <span
         class="underline underline-offset-3 decoration-8 decoration-red-400 dark:decoration-red-600"
-        >is not paid</span
-      >
+      >is not paid</span>
     </h1>
     <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-      Unfortunately, your order couldn't be paid.<br />You can try to pay it
+      Unfortunately, your order couldn't be paid.<br>You can try to pay it
       again or contact us.
     </p>
     <div class="mt-12 text-center">

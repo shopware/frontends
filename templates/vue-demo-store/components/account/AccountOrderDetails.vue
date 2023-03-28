@@ -27,12 +27,19 @@ export default {
 </script>
 
 <template>
-  <div v-if="lineItems.length" class="px-2 py-4">
+  <div
+    v-if="lineItems.length"
+    class="px-2 py-4"
+  >
     <div class="hidden sm:grid grid-cols-5 gap-y-10 gap-x-6 pb-4 text-gray-400">
-      <div class="col-span-2">Product</div>
+      <div class="col-span-2">
+        Product
+      </div>
       <div>Quantity</div>
       <div>Price</div>
-      <div class="justify-self-end text-primary-dark">Subtotal</div>
+      <div class="justify-self-end text-primary-dark">
+        Subtotal
+      </div>
     </div>
 
     <AccountOrderLineItem
@@ -40,6 +47,9 @@ export default {
       :key="lineItem.identifier"
       :line-item="lineItem"
     />
-    <AccountOrderDownloads v-if="hasDocuments" :documents="documents" />
+    <AccountOrderDownloads
+      v-if="hasDocuments"
+      :documents="documents"
+    />
   </div>
 </template>

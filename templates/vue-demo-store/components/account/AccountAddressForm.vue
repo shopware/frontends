@@ -52,7 +52,11 @@ const invokeSave = async (): Promise<void> => {
 <template>
   <div class="mt-5 md:mt-0 md:col-span-2">
     <div class="shadow overflow-hidden sm:rounded-md">
-      <form id="account-address" name="account-address" method="post">
+      <form
+        id="account-address"
+        name="account-address"
+        method="post"
+      >
         <div class="px-4 py-5 bg-white sm:p-6">
           <h3 class="text-2xl border-b pb-3">
             {{ props.title }}
@@ -99,7 +103,7 @@ const invokeSave = async (): Promise<void> => {
                 name="first-name"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-firstname-input"
-              />
+              >
             </div>
 
             <div class="col-span-6 sm:col-span-3">
@@ -117,7 +121,7 @@ const invokeSave = async (): Promise<void> => {
                 name="last-name"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-lastname-input"
-              />
+              >
             </div>
             <div class="col-span-6 sm:col-span-6">
               <label
@@ -162,7 +166,7 @@ const invokeSave = async (): Promise<void> => {
                 autocomplete="street-address"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-street-input"
-              />
+              >
             </div>
 
             <div class="col-span-6 sm:col-span-6 lg:col-span-4">
@@ -181,7 +185,7 @@ const invokeSave = async (): Promise<void> => {
                 autocomplete="address-level2"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-city-input"
-              />
+              >
             </div>
             <div class="col-span-6 sm:col-span-3 lg:col-span-2">
               <label
@@ -199,7 +203,7 @@ const invokeSave = async (): Promise<void> => {
                 autocomplete="postal-code"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-postal-code-input"
-              />
+              >
             </div>
           </div>
         </div>

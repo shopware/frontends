@@ -79,7 +79,7 @@ const ratingAverage: Ref<number> = computed(() =>
             displayMode === 'standard' && layoutType !== 'image',
         }"
         data-testid="product-box-img"
-      />
+      >
     </div>
     <button
       aria-label="Add to wishlist"
@@ -137,10 +137,16 @@ const ratingAverage: Ref<number> = computed(() =>
           class="sw-product-rating inline-flex"
           data-testid="product-box-product-rating"
         >
-          <div v-for="value in ratingAverage" :key="value">
+          <div
+            v-for="value in ratingAverage"
+            :key="value"
+          >
             <div class="i-carbon-star-filled h-4 w-4 c-yellow-500" />
           </div>
-          <div v-for="value in 5 - ratingAverage" :key="value">
+          <div
+            v-for="value in 5 - ratingAverage"
+            :key="value"
+          >
             <div class="i-carbon-star h-4 w-4 c-yellow-500" />
           </div>
         </div>
@@ -156,7 +162,10 @@ const ratingAverage: Ref<number> = computed(() =>
       >
         Add to cart
       </button>
-      <NuxtLink v-else :to="getProductUrl(product)">
+      <NuxtLink
+        v-else
+        :to="getProductUrl(product)"
+      >
         <button
           class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           data-testid="product-box-product-show-details"

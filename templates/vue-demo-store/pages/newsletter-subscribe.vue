@@ -19,8 +19,13 @@ try {
 </script>
 <template>
   <div class="max-w-screen-xl mx-auto px-6 sm:px-4">
-    <h1 class="text-3xl mb-3">Newsletter subscription</h1>
-    <div class="text-xl" :class="{ 'text-red': error, 'text-green': !error }">
+    <h1 class="text-3xl mb-3">
+      Newsletter subscription
+    </h1>
+    <div
+      class="text-xl"
+      :class="{ 'text-red': error, 'text-green': !error }"
+    >
       {{
         error
           ? "Something goes wrong please try again later"

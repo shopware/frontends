@@ -41,7 +41,10 @@ onClickOutside(dropdownElement, () => (isOpen.value = false));
 </script>
 
 <template>
-  <div ref="dropdownElement" class="relative">
+  <div
+    ref="dropdownElement"
+    class="relative"
+  >
     <button
       type="button"
       class="border-2 border-gray-300 px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500 rounded"
@@ -75,7 +78,7 @@ onClickOutside(dropdownElement, () => (isOpen.value = false));
             type="checkbox"
             class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
             @click="onToggleOption({ code: filter.code, id: entity.id })"
-          />
+          >
           <label
             :for="`filter-mobile-${filter.code}-${entity.id}`"
             class="ml-3 min-w-0 flex-1 text-gray-500"

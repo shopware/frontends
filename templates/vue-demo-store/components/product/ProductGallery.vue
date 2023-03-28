@@ -34,5 +34,8 @@ watch(
 </script>
 
 <template>
-  <CmsElementImageGallery v-if="content" :content="content" />
+  <CmsElementImageGallery
+    v-if="content"
+    :content="content"
+  />
 </template>

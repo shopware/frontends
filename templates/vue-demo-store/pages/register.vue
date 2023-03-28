@@ -104,7 +104,9 @@ useBreadcrumbs([
       data-testid="registration-form"
       @submit.prevent="invokeSubmit"
     >
-      <h3 class="block border-b-1 mb-5 pb-2 font-bold">I am new here.</h3>
+      <h3 class="block border-b-1 mb-5 pb-2 font-bold">
+        I am new here.
+      </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
         <div class="col-span-12">
           <label for="salutation">Salutation *</label>
@@ -122,7 +124,13 @@ useBreadcrumbs([
             data-testid="registration-salutation-select"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">Choose salutation...</option>
+            <option
+              disabled
+              selected
+              value=""
+            >
+              Choose salutation...
+            </option>
             <option
               v-for="salutation in getSalutations"
               :key="salutation.id"
@@ -157,7 +165,7 @@ useBreadcrumbs([
             :disabled="loading"
             data-testid="registration-first-name-input"
             @blur="$v.firstName.$touch()"
-          />
+          >
           <span
             v-if="$v.firstName.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -184,7 +192,7 @@ useBreadcrumbs([
             :disabled="loading"
             data-testid="registration-last-name-input"
             @blur="$v.lastName.$touch()"
-          />
+          >
           <span
             v-if="$v.lastName.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -211,7 +219,7 @@ useBreadcrumbs([
             :disabled="loading"
             data-testid="registration-email-input"
             @blur="$v.email.$touch()"
-          />
+          >
           <span
             v-if="$v.email.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -238,7 +246,7 @@ useBreadcrumbs([
             :disabled="loading"
             data-testid="registration-password-input"
             @blur="$v.password.$touch()"
-          />
+          >
           <span
             v-if="$v.password.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -248,7 +256,9 @@ useBreadcrumbs([
         </div>
       </div>
 
-      <h3 class="block border-b-1 mb-5 pb-2 font-bold">Your address</h3>
+      <h3 class="block border-b-1 mb-5 pb-2 font-bold">
+        Your address
+      </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
         <div class="col-span-12 md:col-span-4">
           <label for="street">Street *</label>
@@ -268,7 +278,7 @@ useBreadcrumbs([
             :disabled="loading"
             data-testid="registration-street-input"
             @blur="$v.billingAddress.street.$touch()"
-          />
+          >
           <span
             v-if="$v.billingAddress.street.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -295,7 +305,7 @@ useBreadcrumbs([
             :disabled="loading"
             data-testid="registration-zipcode-input"
             @blur="$v.billingAddress.zipcode.$touch()"
-          />
+          >
           <span
             v-if="$v.billingAddress.zipcode.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -322,7 +332,7 @@ useBreadcrumbs([
             :disabled="loading"
             data-testid="registration-city-input"
             @blur="$v.billingAddress.city.$touch()"
-          />
+          >
           <span
             v-if="$v.billingAddress.city.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -347,7 +357,13 @@ useBreadcrumbs([
             data-testid="registration-country-select"
             @blur="$v.billingAddress.countryId.$touch()"
           >
-            <option disabled selected value="">Choose country...</option>
+            <option
+              disabled
+              selected
+              value=""
+            >
+              Choose country...
+            </option>
             <option
               v-for="country in getCountries"
               :key="country.id"

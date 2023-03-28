@@ -109,8 +109,7 @@ const invokeChange = async (): Promise<void> => {
           <label
             for="current-password"
             class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >Curent password</label
-          >
+          >Curent password</label>
           <input
             id="current-password"
             v-model="state.password.currentPassword"
@@ -121,7 +120,7 @@ const invokeChange = async (): Promise<void> => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
             data-testid="account-change-current-password-input"
-          />
+          >
           <span
             v-if="$v.password.currentPassword.$error"
             class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
@@ -133,8 +132,7 @@ const invokeChange = async (): Promise<void> => {
           <label
             for="new-password"
             class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >New password</label
-          >
+          >New password</label>
           <input
             id="new-password"
             v-model="state.password.newPassword"
@@ -145,7 +143,7 @@ const invokeChange = async (): Promise<void> => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
             data-testid="account-change-new-password-input"
-          />
+          >
           <span
             v-if="$v.password.newPassword.$error"
             class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
@@ -157,8 +155,7 @@ const invokeChange = async (): Promise<void> => {
           <label
             for="confirm-password"
             class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >Repeat password</label
-          >
+          >Repeat password</label>
           <input
             id="confirm-password"
             v-model="state.password.newPasswordConfirm"
@@ -169,7 +166,7 @@ const invokeChange = async (): Promise<void> => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
             data-testid="account-change-confirm-password-input"
-          />
+          >
           <span
             v-if="$v.password.newPasswordConfirm.$error"
             class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"

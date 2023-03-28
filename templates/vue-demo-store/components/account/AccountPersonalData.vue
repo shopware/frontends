@@ -164,7 +164,7 @@ onMounted(async () => {
             placeholder="Enter first name..."
             data-testid="account-personal-data-firstname-input"
             @blur="$v.firstName.$touch()"
-          />
+          >
           <span
             v-if="$v.firstName.$error"
             class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
@@ -190,7 +190,7 @@ onMounted(async () => {
             placeholder="Enter last name..."
             data-testid="account-personal-data-lastname-input"
             @blur="$v.lastName.$touch()"
-          />
+          >
           <span
             v-if="$v.lastName.$error"
             class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
@@ -216,7 +216,7 @@ onMounted(async () => {
             placeholder="Enter the email..."
             data-testid="account-personal-data-email-input"
             @blur="$v.email.$touch()"
-          />
+          >
           <span
             v-if="$v.email.$error"
             class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
@@ -242,7 +242,7 @@ onMounted(async () => {
             placeholder="Enter the email..."
             data-testid="account-personal-data-email-confirmation-input"
             @blur="$v.emailConfirmation.$touch()"
-          />
+          >
           <span
             v-if="$v.emailConfirmation.$error"
             class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
@@ -268,7 +268,7 @@ onMounted(async () => {
             placeholder="••••••••"
             data-testid="account-personal-data-password-input"
             @blur="$v.password.$touch()"
-          />
+          >
           <span
             v-if="$v.password.$error"
             class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"

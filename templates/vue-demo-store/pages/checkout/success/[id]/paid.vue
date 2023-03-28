@@ -12,8 +12,7 @@ export default {
       Your order
       <span
         class="underline underline-offset-3 decoration-8 decoration-green-400 dark:decoration-green-600"
-        >has been paid</span
-      >
+      >has been paid</span>
     </h1>
     <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
       You can now check the status of the order in your account. Thank you!

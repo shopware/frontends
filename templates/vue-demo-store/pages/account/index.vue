@@ -71,11 +71,15 @@ onBeforeMount(async () => {
 <template>
   <section>
     <div class="container mx-auto my-6">
-      <h1 class="text-2xl mb-10">Account Overview</h1>
+      <h1 class="text-2xl mb-10">
+        Account Overview
+      </h1>
     </div>
     <section class="flex gap-10 mb-10">
       <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">Your profile</h3>
+        <h3 class="border-b pb-3 font-bold mb-3">
+          Your profile
+        </h3>
 
         <p>
           {{ user?.firstName }}
@@ -93,7 +97,9 @@ onBeforeMount(async () => {
         </div>
       </div>
       <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">Payment Method</h3>
+        <h3 class="border-b pb-3 font-bold mb-3">
+          Payment Method
+        </h3>
         <p class="font-medium">
           {{ userDefaultPaymentMethod?.name }}
         </p>
@@ -110,7 +116,9 @@ onBeforeMount(async () => {
       </div>
     </section>
     <section class="mb-10">
-      <h3 class="border-b pb-3 font-bold mb-5">Newsletter setting</h3>
+      <h3 class="border-b pb-3 font-bold mb-5">
+        Newsletter setting
+      </h3>
       <div
         v-if="confirmationNeeded"
         class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
@@ -129,8 +137,11 @@ onBeforeMount(async () => {
           type="checkbox"
           class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
           @click="updateNewsletterStatus"
-        />
-        <label for="newsletter-checkbox" class="pl-5 text-base mt--1">
+        >
+        <label
+          for="newsletter-checkbox"
+          class="pl-5 text-base mt--1"
+        >
           Yes, I would like to subscribe to the free Demostore newsletter. (I
           may unsubscribe at any time.)
         </label>
@@ -138,7 +149,9 @@ onBeforeMount(async () => {
     </section>
     <section class="flex gap-10 mb-10">
       <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">Default billing address</h3>
+        <h3 class="border-b pb-3 font-bold mb-3">
+          Default billing address
+        </h3>
         <AccountAddressCard
           v-if="userDefaultBillingAddress?.id"
           :key="userDefaultBillingAddress.id"
@@ -159,7 +172,9 @@ onBeforeMount(async () => {
         </div>
       </div>
       <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">Default shipping address</h3>
+        <h3 class="border-b pb-3 font-bold mb-3">
+          Default shipping address
+        </h3>
         <AccountAddressCard
           v-if="userDefaultShippingAddress?.id"
           :key="userDefaultShippingAddress.id"

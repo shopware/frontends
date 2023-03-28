@@ -252,9 +252,14 @@ async function invokeLogout() {
                 class="bg-red-200 border-l-4 border-red-500 text-red-700 p-4"
                 role="alert"
               >
-                <p class="font-bold">Error!!!</p>
+                <p class="font-bold">
+                  Error!!!
+                </p>
                 <ul>
-                  <li v-for="error in registerErrors" :key="error.detail">
+                  <li
+                    v-for="error in registerErrors"
+                    :key="error.detail"
+                  >
                     {{ error.detail }}
                   </li>
                 </ul>
@@ -269,15 +274,16 @@ async function invokeLogout() {
                 >
                   Sign in
                 </a>
-                <p class="text-gray-500">In order to place an order.</p>
+                <p class="text-gray-500">
+                  In order to place an order.
+                </p>
               </div>
               <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6">
                   <label
                     for="salutation"
                     class="block text-sm font-medium text-gray-700"
-                    >Salutation</label
-                  >
+                  >Salutation</label>
                   <select
                     id="salutation"
                     v-model="state.salutationId"
@@ -288,7 +294,11 @@ async function invokeLogout() {
                     data-testid="checkout-pi-salutation-select"
                     @blur="$v.salutationId.$touch()"
                   >
-                    <option disabled selected value="">
+                    <option
+                      disabled
+                      selected
+                      value=""
+                    >
                       Choose salutation...
                     </option>
                     <option
@@ -310,8 +320,7 @@ async function invokeLogout() {
                   <label
                     for="first-name"
                     class="block text-sm font-medium text-gray-700"
-                    >First name</label
-                  >
+                  >First name</label>
                   <input
                     id="first-name"
                     v-model="state.firstName"
@@ -322,7 +331,7 @@ async function invokeLogout() {
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-first-name-input"
                     @blur="$v.firstName.$touch()"
-                  />
+                  >
                   <span
                     v-if="$v.firstName.$error"
                     class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -335,8 +344,7 @@ async function invokeLogout() {
                   <label
                     for="last-name"
                     class="block text-sm font-medium text-gray-700"
-                    >Last name</label
-                  >
+                  >Last name</label>
                   <input
                     id="last-name"
                     v-model="state.lastName"
@@ -347,7 +355,7 @@ async function invokeLogout() {
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-last-name-input"
                     @blur="$v.lastName.$touch()"
-                  />
+                  >
                   <span
                     v-if="$v.lastName.$error"
                     class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -364,12 +372,11 @@ async function invokeLogout() {
                       type="checkbox"
                       data-testid="checkout-create-account-checkbox"
                       class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
+                    >
                     <label
                       for="create-account"
                       class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-                      >Do not create a customer account.</label
-                    >
+                    >Do not create a customer account.</label>
                   </div>
                 </div>
 
@@ -377,8 +384,7 @@ async function invokeLogout() {
                   <label
                     for="email-address"
                     class="block text-sm font-medium text-gray-700"
-                    >Email address</label
-                  >
+                  >Email address</label>
                   <input
                     id="email-address"
                     v-model="state.email"
@@ -390,7 +396,7 @@ async function invokeLogout() {
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-email-input"
                     @blur="$v.email.$touch()"
-                  />
+                  >
                   <span
                     v-if="$v.email.$error"
                     class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -403,8 +409,7 @@ async function invokeLogout() {
                     <label
                       for="password"
                       class="block text-sm font-medium text-gray-700"
-                      >Password</label
-                    >
+                    >Password</label>
                     <input
                       id="password"
                       v-model="state.password"
@@ -414,7 +419,7 @@ async function invokeLogout() {
                       placeholder="Enter password..."
                       class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                       @blur="$v.password.$touch()"
-                    />
+                    >
                     <span
                       v-if="$v.password.$error"
                       class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -428,8 +433,7 @@ async function invokeLogout() {
                   <label
                     for="street-address"
                     class="block text-sm font-medium text-gray-700"
-                    >Street address</label
-                  >
+                  >Street address</label>
                   <input
                     id="street-address"
                     v-model="state.billingAddress.street"
@@ -441,7 +445,7 @@ async function invokeLogout() {
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-street-address-input"
                     @blur="$v.billingAddress.street.$touch()"
-                  />
+                  >
                   <span
                     v-if="$v.billingAddress.street.$error"
                     class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -454,8 +458,7 @@ async function invokeLogout() {
                   <label
                     for="postal-code"
                     class="block text-sm font-medium text-gray-700"
-                    >ZIP / Postal code</label
-                  >
+                  >ZIP / Postal code</label>
                   <input
                     id="postal-code"
                     v-model="state.billingAddress.zipcode"
@@ -467,7 +470,7 @@ async function invokeLogout() {
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-zip-code-input"
                     @blur="$v.billingAddress.zipcode.$touch()"
-                  />
+                  >
                   <span
                     v-if="$v.billingAddress.zipcode.$error"
                     class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -480,8 +483,7 @@ async function invokeLogout() {
                   <label
                     for="city"
                     class="block text-sm font-medium text-gray-700"
-                    >City</label
-                  >
+                  >City</label>
                   <input
                     id="city"
                     v-model="state.billingAddress.city"
@@ -493,7 +495,7 @@ async function invokeLogout() {
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-city-input"
                     @blur="$v.billingAddress.city.$touch()"
-                  />
+                  >
                   <span
                     v-if="$v.billingAddress.city.$error"
                     class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
@@ -506,8 +508,7 @@ async function invokeLogout() {
                   <label
                     for="country"
                     class="block text-sm font-medium text-gray-700"
-                    >Country</label
-                  >
+                  >Country</label>
                   <select
                     id="country"
                     v-model="state.billingAddress.countryId"
@@ -518,7 +519,11 @@ async function invokeLogout() {
                     data-testid="checkout-pi-country-input"
                     @blur="$v.billingAddress.countryId.$touch()"
                   >
-                    <option disabled selected value="">
+                    <option
+                      disabled
+                      selected
+                      value=""
+                    >
                       Choose country...
                     </option>
                     <option
@@ -550,15 +555,13 @@ async function invokeLogout() {
               <span
                 v-if="isGuestSession"
                 class="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
-                >guest</span
-              >! You can log out
+              >guest</span>! You can log out
               <a
                 href="#"
                 class="text-brand-primary hover:text-brand-dark"
                 data-testid="checkout-logout"
                 @click="invokeLogout"
-                >here</a
-              >.
+              >here</a>.
             </div>
           </div>
           <fieldset
@@ -569,9 +572,14 @@ async function invokeLogout() {
               <h3 class="text-lg font-medium text-gray-900 m-0">
                 Shipping method
               </h3>
-              <div class="text-sm text-gray-600">Select a payment method.</div>
+              <div class="text-sm text-gray-600">
+                Select a payment method.
+              </div>
             </legend>
-            <div v-if="isLoading['shippingMethods']" class="w-60 h-24">
+            <div
+              v-if="isLoading['shippingMethods']"
+              class="w-60 h-24"
+            >
               <div
                 class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
               >
@@ -596,7 +604,7 @@ async function invokeLogout() {
                 type="radio"
                 class="focus:ring-brand-primary h-4 w-4 border-gray-300"
                 :data-testid="`checkout-shipping-method-${singleShippingMethod.id}`"
-              />
+              >
               <label
                 :for="singleShippingMethod.id"
                 :class="{ 'animate-pulse': isLoading[singleShippingMethod.id] }"
@@ -611,9 +619,14 @@ async function invokeLogout() {
               <h3 class="text-lg font-medium text-gray-900 m-0">
                 Payment method
               </h3>
-              <div class="text-sm text-gray-600">Select a payment method</div>
+              <div class="text-sm text-gray-600">
+                Select a payment method
+              </div>
             </legend>
-            <div v-if="isLoading['paymentMethods']" class="w-60 h-24">
+            <div
+              v-if="isLoading['paymentMethods']"
+              class="w-60 h-24"
+            >
               <div
                 class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
               >
@@ -638,7 +651,7 @@ async function invokeLogout() {
                 type="radio"
                 class="focus:ring-brand-primary h-4 w-4 border-gray-300"
                 :data-testid="`checkout-payment-method-${singlePaymentMethod.id}`"
-              />
+              >
               <label
                 :for="singlePaymentMethod.id"
                 :class="{ 'animate-pulse': isLoading[singlePaymentMethod.id] }"
@@ -656,9 +669,14 @@ async function invokeLogout() {
               <h3 class="text-lg font-medium text-gray-900 m-0">
                 Billing Address
               </h3>
-              <div class="text-sm text-gray-600">Select a billing address</div>
+              <div class="text-sm text-gray-600">
+                Select a billing address
+              </div>
             </legend>
-            <div v-if="isLoading['paymentMethods']" class="w-60 h-24">
+            <div
+              v-if="isLoading['paymentMethods']"
+              class="w-60 h-24"
+            >
               <div
                 class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
               >
@@ -683,7 +701,7 @@ async function invokeLogout() {
                 type="radio"
                 class="focus:ring-brand-primary h-4 w-4 border-gray-300"
                 :data-testid="`checkout-billing-address-${address.id}`"
-              />
+              >
               <label
                 :for="`billing-${address.id}`"
                 :class="{ 'animate-pulse': isLoading[`billing-${address.id}`] }"
@@ -712,14 +730,17 @@ async function invokeLogout() {
               Add new billing address
             </button>
             <template v-if="!isVirtualCart">
-              <label for="customShipping" class="field-label">
+              <label
+                for="customShipping"
+                class="field-label"
+              >
                 <input
                   id="customShipping"
                   v-model="state.customShipping"
                   name="privacy"
                   type="checkbox"
                   class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
-                />
+                >
                 Different shipping address
               </label>
               <div v-if="state.customShipping">
@@ -736,7 +757,7 @@ async function invokeLogout() {
                     type="radio"
                     class="focus:ring-brand-primary h-4 w-4 border-gray-300"
                     :data-testid="`checkout-shipping-address-${address.id}`"
-                  />
+                  >
                   <label
                     :for="`shipping-${address.id}`"
                     :class="{
@@ -780,7 +801,10 @@ async function invokeLogout() {
                 Terms and conditions
               </h3>
             </legend>
-            <div class="flex items-center" data-testid="checkout-t&c-tos">
+            <div
+              class="flex items-center"
+              data-testid="checkout-t&c-tos"
+            >
               <input
                 id="tos"
                 v-model="terms.tos"
@@ -789,7 +813,7 @@ async function invokeLogout() {
                 type="checkbox"
                 class="focus:ring-brand-primary h-4 w-4 border-gray-300 shrink-0"
                 data-testid="checkout-t&c-checkbox-tos"
-              />
+              >
               <label
                 for="tos"
                 class="ml-2 block text-sm font-medium text-gray-700"
@@ -812,7 +836,7 @@ async function invokeLogout() {
                 type="checkbox"
                 class="focus:ring-brand-primary h-4 w-4 border-gray-300 shrink-0"
                 data-testid="checkout-t&c-checkbox-revocation"
-              />
+              >
               <label
                 for="revocation"
                 class="ml-2 block text-sm font-medium text-gray-700"
@@ -830,9 +854,14 @@ async function invokeLogout() {
               <h3 class="text-lg font-medium text-gray-900 m-0">
                 Order summary
               </h3>
-              <p class="text-sm text-gray-600">Order details and totals.</p>
+              <p class="text-sm text-gray-600">
+                Order details and totals.
+              </p>
             </div>
-            <ul role="list" class="-my-4 divide-y divide-gray-200 pl-0">
+            <ul
+              role="list"
+              class="-my-4 divide-y divide-gray-200 pl-0"
+            >
               <li
                 v-for="cartItem in cartItems"
                 :key="cartItem.id"
@@ -864,14 +893,18 @@ async function invokeLogout() {
 
             <div class="flex justify-between text-gray-900 font-medium">
               <p>Order total</p>
-              <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
+              <SharedPrice
+                :value="totalPrice"
+                data-testid="cart-subtotal"
+              />
             </div>
 
             <div class="mt-4">
               <div class="text-right">
-                <span v-if="!isUserSession" class="text-sm text-gray-600"
-                  >You must be logged-in before submitting an order.</span
-                >
+                <span
+                  v-if="!isUserSession"
+                  class="text-sm text-gray-600"
+                >You must be logged-in before submitting an order.</span>
                 <button
                   :disabled="!isUserSession"
                   type="button"
@@ -893,7 +926,10 @@ async function invokeLogout() {
         </div>
       </div>
     </div>
-    <div v-else class="text-center">
+    <div
+      v-else
+      class="text-center"
+    >
       <h1 class="m-10 text-2xl font-medium text-gray-900">
         Your cart is empty!
       </h1>

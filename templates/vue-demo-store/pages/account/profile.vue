@@ -35,7 +35,10 @@ const toggleTabs = (tabNumber: number) => {
         data-tabs-toggle="#profileTabContent"
         role="tablist"
       >
-        <li class="w-1/2 md:w-auto" role="presentation">
+        <li
+          class="w-1/2 md:w-auto"
+          role="presentation"
+        >
           <a
             class="inline-block pb-3 rounded-t-lg hover:text-brand-primary"
             :class="[
@@ -48,7 +51,10 @@ const toggleTabs = (tabNumber: number) => {
             Personal data
           </a>
         </li>
-        <li class="w-1/2 md:w-auto" role="presentation">
+        <li
+          class="w-1/2 md:w-auto"
+          role="presentation"
+        >
           <a
             class="inline-block pb-3 rounded-t-lg hover:text-brand-primary"
             :class="[

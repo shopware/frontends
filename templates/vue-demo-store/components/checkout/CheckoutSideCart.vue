@@ -43,7 +43,10 @@ const { cartItems, totalPrice, isEmpty } = useCart();
           From: "translate-x-0"
           To: "translate-x-full"
       -->
-        <div v-if="isOpen" class="pointer-events-auto w-screen max-w-md">
+        <div
+          v-if="isOpen"
+          class="pointer-events-auto w-screen max-w-md"
+        >
           <div class="flex h-full flex-col bg-white shadow-xl">
             <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
               <div class="flex items-start justify-between">
@@ -81,7 +84,10 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                       <CheckoutCartItem :cart-item="cartItem" />
                     </li>
                   </ul>
-                  <div v-else class="text-2xl text-center">
+                  <div
+                    v-else
+                    class="text-2xl text-center"
+                  >
                     Your shopping cart is empty
                   </div>
                 </div>
@@ -93,7 +99,10 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                 class="flex justify-between text-base font-medium text-gray-900"
               >
                 <p>Subtotal</p>
-                <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
+                <SharedPrice
+                  :value="totalPrice"
+                  data-testid="cart-subtotal"
+                />
               </div>
               <p class="mt-0.5 text-sm text-gray-500">
                 Shipping and taxes calculated at checkout.

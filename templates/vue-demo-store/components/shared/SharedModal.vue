@@ -36,7 +36,11 @@ const { close, modalContent, modalProps } = inject<SharedModal>(
       <div
         class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all duration-500 sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
       >
-        <component :is="modalContent" v-bind="modalProps" @close="close" />
+        <component
+          :is="modalContent"
+          v-bind="modalProps"
+          @close="close"
+        />
       </div>
     </div>
   </div>

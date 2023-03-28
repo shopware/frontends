@@ -60,7 +60,9 @@ onMounted(async () => {
   <div class="container mx-auto my-8">
     <fieldset class="mt-6">
       <legend class="contents text-2xl font-medium text-gray-900">
-        <h1 class="border-b pb-3">Payment method</h1>
+        <h1 class="border-b pb-3">
+          Payment method
+        </h1>
       </legend>
       <p class="text-sm text-gray-500 mt-3">
         Select your default payment method:
@@ -70,7 +72,10 @@ onMounted(async () => {
         data-testid="account-payment"
         @submit.prevent="invokeSave"
       >
-        <div v-if="isLoading" class="w-60 h-24">
+        <div
+          v-if="isLoading"
+          class="w-60 h-24"
+        >
           <div
             class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
           >
@@ -81,7 +86,10 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-        <div v-else class="mt-4 space-y-4">
+        <div
+          v-else
+          class="mt-4 space-y-4"
+        >
           <div
             v-for="paymentMethod in paymentMethods"
             :key="paymentMethod.id"
@@ -96,7 +104,7 @@ onMounted(async () => {
               type="radio"
               class="focus:ring-brand-light h-4 w-4 text-brand-primary border-gray-300"
               data-testid="account-payment-checkbox"
-            />
+            >
             <label
               :for="paymentMethod.id"
               class="ml-3 block text-sm font-medium text-gray-700"

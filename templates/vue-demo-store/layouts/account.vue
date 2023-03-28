@@ -42,7 +42,10 @@ provide("swNavigation-footer-navigation", footerData);
       <div class="m-10">
         <div class="account-inner">
           <div class="md:grid md:grid-cols-3 md:gap-6">
-            <aside class="block lg:w-64 md:col-span-" aria-label="Sidebar">
+            <aside
+              class="block lg:w-64 md:col-span-"
+              aria-label="Sidebar"
+            >
               <div
                 class="overflow-y-auto md:py-4 md:px-3 md:bg-gray-50 text-base font-normal text-gray-500 rounded"
               >
@@ -57,7 +60,11 @@ provide("swNavigation-footer-navigation", footerData);
                       to="/account"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
-                      <div i-carbon-dashboard text-xl inline-block />
+                      <div
+                        i-carbon-dashboard
+                        text-xl
+                        inline-block
+                      />
                       <span class="ml-3">Account Overview</span>
                     </NuxtLink>
                   </li>
@@ -66,7 +73,11 @@ provide("swNavigation-footer-navigation", footerData);
                       to="/account/profile"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
-                      <div i-carbon-user text-xl inline-block />
+                      <div
+                        i-carbon-user
+                        text-xl
+                        inline-block
+                      />
                       <span class="ml-3">My profile</span>
                     </NuxtLink>
                   </li>
@@ -75,7 +86,11 @@ provide("swNavigation-footer-navigation", footerData);
                       to="/account/address"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
-                      <div i-carbon-home text-xl inline-block />
+                      <div
+                        i-carbon-home
+                        text-xl
+                        inline-block
+                      />
                       <span class="ml-3">My address</span>
                     </NuxtLink>
                   </li>
@@ -84,7 +99,11 @@ provide("swNavigation-footer-navigation", footerData);
                       to="/account/payment"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
-                      <div i-carbon-wallet text-xl inline-block />
+                      <div
+                        i-carbon-wallet
+                        text-xl
+                        inline-block
+                      />
                       <span class="ml-3">Payment</span>
                     </NuxtLink>
                   </li>
@@ -95,7 +114,11 @@ provide("swNavigation-footer-navigation", footerData);
                       to="/account/order"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
-                      <div i-carbon-order-details text-xl inline-block />
+                      <div
+                        i-carbon-order-details
+                        text-xl
+                        inline-block
+                      />
                       <span class="ml-3">Order history</span>
                     </NuxtLink>
                   </li>
@@ -104,7 +127,11 @@ provide("swNavigation-footer-navigation", footerData);
                       class="flex items-center rounded-lg px-0 md:px-2 py-2 hover:text-brand-primary hover:bg-gray-100 w-full"
                       @click="invokeLogout()"
                     >
-                      <div i-carbon-logout text-xl inline-block />
+                      <div
+                        i-carbon-logout
+                        text-xl
+                        inline-block
+                      />
                       <span class="ml-3">Logout</span>
                     </button>
                   </li>

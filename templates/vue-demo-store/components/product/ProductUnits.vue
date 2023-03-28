@@ -25,7 +25,10 @@ const referenceUnitName = computed(
 </script>
 
 <template>
-  <div v-if="purchaseUnit" class="flex text-gray-500 justify-end gap-1">
+  <div
+    v-if="purchaseUnit"
+    class="flex text-gray-500 justify-end gap-1"
+  >
     <template v-if="props.showContent">
       Content: {{ purchaseUnit }} {{ unitName }}
     </template>

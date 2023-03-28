@@ -59,7 +59,7 @@ const removeCartItem = async () => {
       alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
       class="h-full w-full object-cover object-center"
       data-testid="cart-product-image"
-    />
+    >
   </div>
 
   <div class="flex flex-1 flex-col">
@@ -67,7 +67,10 @@ const removeCartItem = async () => {
       <div
         class="flex flex-col lg:flex-row justify-between text-base font-medium text-gray-900"
       >
-        <h3 class="text-base" data-testid="cart-product-name">
+        <h3
+          class="text-base"
+          data-testid="cart-product-name"
+        >
           {{ cartItem.label }}
         </h3>
         <SharedPrice
@@ -106,7 +109,7 @@ const removeCartItem = async () => {
         data-testid="cart-product-qty-select"
         name="quantity"
         class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-      />
+      >
       <!-- disabled quantity edition -->
       <!-- <div v-else>
         <div

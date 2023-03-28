@@ -36,19 +36,29 @@ export default {
           :src="getSmallestThumbnailUrl(lineItem.cover)"
           :alt="lineItem.label"
           class="h-full w-full object-cover object-center"
-        />
+        >
       </div>
-      <div v-else class="w-24" />
+      <div
+        v-else
+        class="w-24"
+      />
       <div class="my-5 text-center">
         {{ lineItem.label }}
       </div>
     </div>
     <div class="flex justify-between">
-      <div class="sm:hidden">Quantity</div>
+      <div class="sm:hidden">
+        Quantity
+      </div>
       <div>{{ lineItem.quantity }}</div>
     </div>
-    <div v-if="lineItem.unitPrice" class="flex justify-between">
-      <div class="sm:hidden">Price</div>
+    <div
+      v-if="lineItem.unitPrice"
+      class="flex justify-between"
+    >
+      <div class="sm:hidden">
+        Price
+      </div>
       <SharedPrice
         :value="lineItem.unitPrice"
         class="text-gray-600 font-normal"
@@ -59,7 +69,9 @@ export default {
       v-if="lineItem.totalPrice"
       class="flex justify-between sm:justify-self-end"
     >
-      <div class="sm:hidden">Subtotal</div>
+      <div class="sm:hidden">
+        Subtotal
+      </div>
       <SharedPrice
         :value="lineItem.totalPrice"
         class="text-gray-600 font-normal"

@@ -35,13 +35,18 @@ onBeforeMount(async () => {
 <template>
   <div class="container mx-auto my-8">
     <div class="contents text-2xl font-medium text-gray-900">
-      <h1 class="border-b pb-3">Addresses</h1>
+      <h1 class="border-b pb-3">
+        Addresses
+      </h1>
     </div>
     <p class="text-sm text-gray-500 mt-3">
       View your current default addresses or add new ones.
     </p>
     <div class="grid grid-cols-6 gap-12 mt-8">
-      <div v-if="loadingData" class="col-span-6 lg:col-span-3 max-w-md">
+      <div
+        v-if="loadingData"
+        class="col-span-6 lg:col-span-3 max-w-md"
+      >
         <div class="flex mb-2 space-x-2">
           <div class="w-36 bg-gray-300 h-6 rounded-md" />
           <div class="w-6 bg-gray-300 h-6 rounded-md" />

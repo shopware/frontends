@@ -94,13 +94,22 @@ const removeAddress = async (addressId: string) => {
       />
     </div>
     <div class="flow-root">
-      <span class="block" data-testid="address-box-street">{{
+      <span
+        class="block"
+        data-testid="address-box-street"
+      >{{
         address.street
       }}</span>
-      <span class="block" data-testid="address-box-zipcode">{{
+      <span
+        class="block"
+        data-testid="address-box-zipcode"
+      >{{
         address.zipcode
       }}</span>
-      <span class="block" data-testid="address-box-city">{{
+      <span
+        class="block"
+        data-testid="address-box-city"
+      >{{
         address.city
       }}</span>
     </div>

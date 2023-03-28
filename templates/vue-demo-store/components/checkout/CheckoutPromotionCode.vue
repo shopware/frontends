@@ -18,11 +18,14 @@ const promoCode = ref("");
         placeholder="Enter promo code"
         class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
         @keyup.enter="addPromotionCode(promoCode)"
-      />
+      >
     </div>
     <div v-if="showPromotionCodes">
       <div>Applied promo codes:</div>
-      <ul role="list" class="text-sm pl-0">
+      <ul
+        role="list"
+        class="text-sm pl-0"
+      >
         <li
           v-for="appliedPromotionCode in appliedPromotionCodes"
           :key="appliedPromotionCode.id"

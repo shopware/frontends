@@ -52,7 +52,7 @@ export default {
         class="w-full h-full max-w-md max-h-md"
         src="~/assets/error-background.png"
         alt="Error"
-      />
+      >
     </div>
   </div>
 </template>

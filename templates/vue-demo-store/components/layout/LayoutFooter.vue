@@ -19,7 +19,11 @@ const gridColumns = computed<number>(() =>
         <div class="hidden md:block">
           <NuxtLink to="/">
             <span class="sr-only">Shopware</span>
-            <img class="h-15 w-auto sm:h-15" src="/logo.svg" alt="Logo" />
+            <img
+              class="h-15 w-auto sm:h-15"
+              src="/logo.svg"
+              alt="Logo"
+            >
           </NuxtLink>
         </div>
         <div
@@ -52,8 +56,7 @@ const gridColumns = computed<number>(() =>
               <a
                 href="mailto:info@shopware.com"
                 class="text-base font-medium text-gray-500 hover:text-gray-900"
-                >info@shopware.com</a
-              >
+              >info@shopware.com</a>
             </li>
             <li class="pb-1">
               <a

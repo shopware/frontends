@@ -2,7 +2,9 @@
 
 <template>
   <section class="container mx-auto text-center my-20">
-    <h1 class="text-4xl font-bold mb-3">Page not found</h1>
+    <h1 class="text-4xl font-bold mb-3">
+      Page not found
+    </h1>
     <p class="text-sm mb-3">
       We are sorry, the page you're looking for could not be found. It may no
       longer exist or may have been moved.

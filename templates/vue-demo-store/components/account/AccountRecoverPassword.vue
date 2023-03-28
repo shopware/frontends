@@ -40,10 +40,17 @@ const invokeRecover = async (): Promise<void> => {
           Reset password
         </h2>
       </div>
-      <form v-if="!isSuccess" class="space-y-6" @submit.prevent="invokeRecover">
+      <form
+        v-if="!isSuccess"
+        class="space-y-6"
+        @submit.prevent="invokeRecover"
+      >
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="email-address" class="sr-only">Email address</label>
+            <label
+              for="email-address"
+              class="sr-only"
+            >Email address</label>
             <input
               id="email-address"
               v-model="formData.email"
@@ -53,7 +60,7 @@ const invokeRecover = async (): Promise<void> => {
               required
               class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
               placeholder="Email address"
-            />
+            >
           </div>
         </div>
 
@@ -82,7 +89,10 @@ const invokeRecover = async (): Promise<void> => {
         </div>
       </form>
 
-      <p v-else class="text-center text-gray-900">
+      <p
+        v-else
+        class="text-center text-gray-900"
+      >
         You should receive a link in a few moments. Please open that link to
         reset your password.
       </p>

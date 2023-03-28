@@ -13,15 +13,24 @@ export default {
 </script>
 
 <template>
-  <div v-if="hasItems" class="m-10">
-    <h1 class="mb-3 text-2xl font-medium text-gray-900">Shopping cart</h1>
+  <div
+    v-if="hasItems"
+    class="m-10"
+  >
+    <h1 class="mb-3 text-2xl font-medium text-gray-900">
+      Shopping cart
+    </h1>
 
     <div class="my-10 md:grid md:grid-cols-3 md:gap-8">
       <ul
         role="list"
         class="divide-y pl-0 divide-gray-200 md:col-span-2 border-t"
       >
-        <li v-for="cartItem in cartItems" :key="cartItem.id" class="flex py-6">
+        <li
+          v-for="cartItem in cartItems"
+          :key="cartItem.id"
+          class="flex py-6"
+        >
           <CheckoutCartItem :cart-item="cartItem" />
         </li>
       </ul>
@@ -29,7 +38,9 @@ export default {
       <aside
         class="md:col-span-1 pb-4 px-4 bg-gray-50 rounded dark:bg-gray-800"
       >
-        <h2 class="text-xl font-medium text-gray-900">Order summary</h2>
+        <h2 class="text-xl font-medium text-gray-900">
+          Order summary
+        </h2>
 
         <div class="flex py-4 border-b justify-between text-sm text-gray-500">
           <p>Subtotal</p>
@@ -51,7 +62,10 @@ export default {
 
         <div class="flex py-4 mb-8 justify-between text-gray-900 font-medium">
           <p>Order total</p>
-          <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
+          <SharedPrice
+            :value="totalPrice"
+            data-testid="cart-subtotal"
+          />
         </div>
 
         <div class="pb-4 mb-8 justify-between text-gray-900 font-medium">
@@ -68,7 +82,10 @@ export default {
       </aside>
     </div>
   </div>
-  <h1 v-else class="m-10 text-center text-2xl font-medium text-gray-900">
+  <h1
+    v-else
+    class="m-10 text-center text-2xl font-medium text-gray-900"
+  >
     Your cart is empty!
   </h1>
 </template>

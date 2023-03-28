@@ -46,12 +46,14 @@ const { getFormattedPrice } = usePrice();
           </tr>
         </thead>
         <tbody class="bg-white dark:bg-slate-800">
-          <tr v-for="(tierPrice, index) in tierPrices" :key="tierPrice.label">
+          <tr
+            v-for="(tierPrice, index) in tierPrices"
+            :key="tierPrice.label"
+          >
             <td
               class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
             >
-              <span v-if="index < tierPrices.length - 1">To</span
-              ><span v-else>From</span> {{ tierPrice.quantity }}
+              <span v-if="index < tierPrices.length - 1">To</span><span v-else>From</span> {{ tierPrice.quantity }}
             </td>
             <td
               class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 font-medium text-current-500 dark:text-slate-400"

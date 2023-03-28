@@ -35,23 +35,36 @@ const invokeLogin = async (): Promise<void> => {
   <div
     class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
   >
-    <div v-if="!isLoggedIn" class="max-w-md w-full space-y-8">
+    <div
+      v-if="!isLoggedIn"
+      class="max-w-md w-full space-y-8"
+    >
       <div>
-        <img class="mx-auto h-12 w-auto" src="/logo.svg" alt="Logo" />
+        <img
+          class="mx-auto h-12 w-auto"
+          src="/logo.svg"
+          alt="Logo"
+        >
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Sign in to your account
         </h2>
       </div>
-      <form class="mt-8 space-y-6" @submit.prevent="invokeLogin">
+      <form
+        class="mt-8 space-y-6"
+        @submit.prevent="invokeLogin"
+      >
         <input
           v-model="formData.remember"
           type="hidden"
           name="remember"
           data-testid="login-remember-input"
-        />
+        >
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="email-address" class="sr-only">Email address</label>
+            <label
+              for="email-address"
+              class="sr-only"
+            >Email address</label>
             <input
               id="email-address"
               v-model="formData.username"
@@ -62,10 +75,13 @@ const invokeLogin = async (): Promise<void> => {
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Email address"
               data-testid="login-email-input"
-            />
+            >
           </div>
           <div>
-            <label for="password" class="sr-only">Password</label>
+            <label
+              for="password"
+              class="sr-only"
+            >Password</label>
             <input
               id="password"
               v-model="formData.password"
@@ -76,7 +92,7 @@ const invokeLogin = async (): Promise<void> => {
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Password"
               data-testid="login-password-input"
-            />
+            >
           </div>
         </div>
 
@@ -126,7 +142,9 @@ const invokeLogin = async (): Promise<void> => {
     </div>
     <div v-else>
       <h2>you are logged in</h2>
-      <button @click="$emit('close')">close</button>
+      <button @click="$emit('close')">
+        close
+      </button>
     </div>
   </div>
 </template>

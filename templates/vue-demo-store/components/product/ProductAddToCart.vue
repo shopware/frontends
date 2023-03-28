@@ -18,7 +18,10 @@ const addToCartProxy = async () => {
 <template>
   <div class="flex flex-row mt-10">
     <div class="basis-1/4 relative -top-6">
-      <label for="qty" class="text-sm">Qty</label>
+      <label
+        for="qty"
+        class="text-sm"
+      >Qty</label>
       <input
         id="qty"
         v-model="quantity"
@@ -28,7 +31,7 @@ const addToCartProxy = async () => {
         :step="product.purchaseSteps || 1"
         class="border rounded-md py-2 px-4 mt-4 border-solid border-1 border-cyan-600 w-full"
         data-testid="product-quantity"
-      />
+      >
     </div>
     <div class="basis-3/4 ml-4">
       <button

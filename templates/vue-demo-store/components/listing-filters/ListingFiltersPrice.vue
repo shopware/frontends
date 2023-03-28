@@ -41,7 +41,10 @@ watch(() => prices.max, debounceMaxPriceUpdate);
 </script>
 
 <template>
-  <div ref="dropdownElement" class="relative">
+  <div
+    ref="dropdownElement"
+    class="relative"
+  >
     <button
       type="button"
       class="border-2 border-gray-300 px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500 rounded"
@@ -71,7 +74,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
             name="min-price"
             class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full border border-gray-300 rounded"
             :placeholder="prices.min?.toString()"
-          />
+          >
         </div>
         <div class="w-36">
           <div>Max</div>
@@ -82,7 +85,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
             name="max-price"
             class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full border border-gray-300 rounded"
             :placeholder="prices.max?.toString()"
-          />
+          >
         </div>
       </div>
     </div>

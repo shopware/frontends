@@ -29,7 +29,11 @@ const toggleCollapse = (navigationElement: Category) => {
 </script>
 
 <template>
-  <button class="lg:hidden" aria-label="menu" @click="isSideMenuOpened = true">
+  <button
+    class="lg:hidden"
+    aria-label="menu"
+    @click="isSideMenuOpened = true"
+  >
     <div class="i-carbon-menu text-xl" />
   </button>
   <client-only>
@@ -93,7 +97,7 @@ const toggleCollapse = (navigationElement: Category) => {
                     <div
                       v-if="
                         navigationElement.media &&
-                        !isCollapsed(navigationElement)
+                          !isCollapsed(navigationElement)
                       "
                       class="relative"
                     >
@@ -102,13 +106,13 @@ const toggleCollapse = (navigationElement: Category) => {
                           :src="getCategoryImageUrl(navigationElement)"
                           class="object-cover object-center"
                           alt="Category image"
-                        />
+                        >
                       </div>
                     </div>
                     <ul
                       v-if="
                         navigationElement?.children?.length &&
-                        !isCollapsed(navigationElement)
+                          !isCollapsed(navigationElement)
                       "
                       class="px-0 py-2 m-0"
                     >

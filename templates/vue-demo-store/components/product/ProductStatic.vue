@@ -78,10 +78,15 @@ const handleVariantChange = (val: Product) => {
 
         <!-- Options -->
         <div class="mt-4 lg:mt-0 lg:row-span-3">
-          <h2 class="sr-only">Product information</h2>
+          <h2 class="sr-only">
+            Product information
+          </h2>
           <div class="product-variants mt-10">
             <ProductPrice :product="product" />
-            <ProductUnits :product="product" class="text-sm" />
+            <ProductUnits
+              :product="product"
+              class="text-sm"
+            />
             <ProductVariantConfigurator @change="handleVariantChange" />
             <ProductAddToCart :product="product" />
           </div>
@@ -93,17 +98,30 @@ const handleVariantChange = (val: Product) => {
           <div class="container mx-auto mb-8">
             <!-- Description and details -->
             <div v-if="description">
-              <h3 class="text-sm font-bold text-gray-900">Description</h3>
+              <h3 class="text-sm font-bold text-gray-900">
+                Description
+              </h3>
               <div class="mt-4 space-y-6">
-                <div class="text-base text-gray-900" v-html="description" />
+                <div
+                  class="text-base text-gray-900"
+                  v-html="description"
+                />
               </div>
             </div>
 
-            <div v-if="properties?.length" class="mt-10">
-              <h3 class="text-sm font-medium text-gray-900">Properties</h3>
+            <div
+              v-if="properties?.length"
+              class="mt-10"
+            >
+              <h3 class="text-sm font-medium text-gray-900">
+                Properties
+              </h3>
 
               <div class="mt-4">
-                <ul role="list" class="pl-4 list-disc text-sm space-y-2">
+                <ul
+                  role="list"
+                  class="pl-4 list-disc text-sm space-y-2"
+                >
                   <li
                     v-for="property in properties"
                     :key="property.id"
@@ -117,10 +135,21 @@ const handleVariantChange = (val: Product) => {
               </div>
             </div>
 
-            <div v-if="reviews?.length" class="mt-10">
-              <h3 class="text-sm font-medium text-gray-900">Reviews</h3>
-              <div v-if="reviews?.length" class="mt-4">
-                <ul role="list" class="pl-4 list-disc text-sm space-y-2">
+            <div
+              v-if="reviews?.length"
+              class="mt-10"
+            >
+              <h3 class="text-sm font-medium text-gray-900">
+                Reviews
+              </h3>
+              <div
+                v-if="reviews?.length"
+                class="mt-4"
+              >
+                <ul
+                  role="list"
+                  class="pl-4 list-disc text-sm space-y-2"
+                >
                   <li
                     v-for="review in reviews"
                     :key="review.id"

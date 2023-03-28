@@ -25,5 +25,8 @@ if (typeof landingResponse?.value !== null) {
 </script>
 
 <template>
-  <CmsPage v-if="landingResponse?.cmsPage" :content="landingResponse.cmsPage" />
+  <CmsPage
+    v-if="landingResponse?.cmsPage"
+    :content="landingResponse.cmsPage"
+  />
 </template>

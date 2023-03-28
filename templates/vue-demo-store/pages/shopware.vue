@@ -37,7 +37,7 @@ useBreadcrumbs([
       class="md:w-11/12"
       src="https://raw.githubusercontent.com/shopware/frontends/main/.readme/shopware-frontends-logo.png"
       alt="logo shopware frontends"
-    />
+    >
   </div>
 
   <div class="mx-10 mt-10 flex flex-wrap justify-center">
@@ -46,7 +46,10 @@ useBreadcrumbs([
       :key="image"
       class="max-w-30 rounded-full overflow-hidden m-3"
     >
-      <img :src="image" alt="Cms image" />
+      <img
+        :src="image"
+        alt="Cms image"
+      >
     </div>
   </div>
 
@@ -55,6 +58,6 @@ useBreadcrumbs([
       class="md:w-9/12"
       src="https://raw.githubusercontent.com/shopware/frontends/main/.readme/shopware-frontends-techstack.png"
       alt="techstack shopware frontends"
-    />
+    >
   </div>
 </template>

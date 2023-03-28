@@ -64,7 +64,10 @@ const invokeReset = async (): Promise<void> => {
           Reset password
         </h2>
       </div>
-      <form class="mt-8 space-y-6" @submit.prevent="invokeReset">
+      <form
+        class="mt-8 space-y-6"
+        @submit.prevent="invokeReset"
+      >
         <div
           v-if="state.error"
           class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
@@ -74,7 +77,10 @@ const invokeReset = async (): Promise<void> => {
 
         <div class="-space-y-px">
           <div>
-            <label for="new-password" class="sr-only">New Password</label>
+            <label
+              for="new-password"
+              class="sr-only"
+            >New Password</label>
             <input
               id="new-password"
               v-model="state.password.newPassword"
@@ -84,7 +90,7 @@ const invokeReset = async (): Promise<void> => {
               required
               class="appearance-none rounded-none shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
               placeholder="New Password"
-            />
+            >
             <span
               v-if="$v.password.newPassword.$error"
               class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
@@ -93,9 +99,10 @@ const invokeReset = async (): Promise<void> => {
             </span>
           </div>
           <div>
-            <label for="confirm-password" class="sr-only"
-              >Repeat Password</label
-            >
+            <label
+              for="confirm-password"
+              class="sr-only"
+            >Repeat Password</label>
             <input
               id="confirm-password"
               v-model="state.password.newPasswordConfirm"
@@ -105,7 +112,7 @@ const invokeReset = async (): Promise<void> => {
               required
               class="appearance-none rounded-none shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
               placeholder="Repeat Password"
-            />
+            >
             <span
               v-if="$v.password.newPasswordConfirm.$error"
               class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"

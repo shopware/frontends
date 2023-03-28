@@ -69,7 +69,10 @@ const toggle = () => {
         </span>
       </button>
     </h3>
-    <transition name="fade" mode="out-in">
+    <transition
+      name="fade"
+      mode="out-in"
+    >
       <div v-show="isFilterVisible">
         <div class="space-y-6 mt-4">
           <div class="flex">

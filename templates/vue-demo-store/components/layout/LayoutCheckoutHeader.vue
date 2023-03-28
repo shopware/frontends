@@ -15,7 +15,7 @@
               alt="Logo"
               width="40px"
               height="40px"
-            />
+            >
           </NuxtLink>
         </div>
         <AccountMenu />
