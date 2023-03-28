@@ -25,7 +25,7 @@ function getEntityPrefix(category: LinkedCategory) {
  *
  * @param {Category} category category entity
  *
- * @beta
+ * @public
  */
 export function getCategoryUrl(category: LinkedCategory): string {
   if (!category) return "/";
