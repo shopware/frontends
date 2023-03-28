@@ -63,7 +63,7 @@ export default defineNuxtConfig({
         },
       },
       maxWidth: {
-        "xxs": "18rem",
+        "xs": "18rem",
       },
     },
   },

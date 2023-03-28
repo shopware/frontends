@@ -78,7 +78,7 @@ const ratingAverage: Ref<number> = computed(() =>
 
 <template>
   <div
-    class="sw-product-card group relative max-w-full md:max-w-xxs inline-block p-4"
+    class="sw-product-card group relative max-w-full md:max-w-xs inline-block p-4"
     data-testid="product-box"
   >
     <div
