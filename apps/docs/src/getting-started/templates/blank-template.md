@@ -23,16 +23,20 @@ npm i && npm run dev
 
 The blank template is pre-configured to connect to a public Shopware backend, so you can follow our [building guides](./../navigation.md) right away.
 
-In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and add a configuration object with `shopware` as a key:
+In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and add a configuration details:
 
 ```ts{4-7}
 /* ... */
 export default defineNuxtConfig({
   /* ... */
-  shopware: {
-    endpoint: "https://your-business.shopware.store",
-    accessToken: "access-token-from-settings",
-  }
+  runtimeConfig: {
+    public: {
+      shopware: {
+        shopwareEndpoint: "https://your-business.shopware.store",
+        shopwareAccessToken: "access-token-from-settings",
+      },
+    },
+  },
 });
 ```
 

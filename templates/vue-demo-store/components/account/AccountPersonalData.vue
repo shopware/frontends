@@ -129,8 +129,8 @@ onMounted(async () => {
     </div>
     <form
       class="mt-8 space-y-6"
-      @submit.prevent="invokeUpdate"
       data-testid="account-personal-data-form"
+      @submit.prevent="invokeUpdate"
     >
       <div
         v-if="isSuccess"
@@ -162,8 +162,8 @@ onMounted(async () => {
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="Enter first name..."
-            @blur="$v.firstName.$touch()"
             data-testid="account-personal-data-firstname-input"
+            @blur="$v.firstName.$touch()"
           />
           <span
             v-if="$v.firstName.$error"
@@ -188,8 +188,8 @@ onMounted(async () => {
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="Enter last name..."
-            @blur="$v.lastName.$touch()"
             data-testid="account-personal-data-lastname-input"
+            @blur="$v.lastName.$touch()"
           />
           <span
             v-if="$v.lastName.$error"
@@ -214,8 +214,8 @@ onMounted(async () => {
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="Enter the email..."
-            @blur="$v.email.$touch()"
             data-testid="account-personal-data-email-input"
+            @blur="$v.email.$touch()"
           />
           <span
             v-if="$v.email.$error"
@@ -240,8 +240,8 @@ onMounted(async () => {
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="Enter the email..."
-            @blur="$v.emailConfirmation.$touch()"
             data-testid="account-personal-data-email-confirmation-input"
+            @blur="$v.emailConfirmation.$touch()"
           />
           <span
             v-if="$v.emailConfirmation.$error"
@@ -266,8 +266,8 @@ onMounted(async () => {
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
-            @blur="$v.password.$touch()"
             data-testid="account-personal-data-password-input"
+            @blur="$v.password.$touch()"
           />
           <span
             v-if="$v.password.$error"

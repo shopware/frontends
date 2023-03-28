@@ -67,8 +67,8 @@ onMounted(async () => {
       </p>
       <form
         class="mt-4 space-y-6"
-        @submit.prevent="invokeSave"
         data-testid="account-payment"
+        @submit.prevent="invokeSave"
       >
         <div v-if="isLoading" class="w-60 h-24">
           <div

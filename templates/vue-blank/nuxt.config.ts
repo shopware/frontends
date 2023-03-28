@@ -3,8 +3,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       shopware: {
-        shopwareEndpoint: "https://you.endpoint.com",
-        shopwareAccessToken: "your-access-token",
+        shopwareEndpoint: "https://demo-frontends.shopware.store",
+        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
       },
     },
   },

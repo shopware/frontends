@@ -771,8 +771,8 @@ async function invokeLogout() {
           </fieldset>
 
           <fieldset
-            class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6"
             ref="termsBox"
+            class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6"
             data-testid="checkout-terms-box"
           >
             <legend class="pt-5">
