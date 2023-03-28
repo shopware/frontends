@@ -18,6 +18,10 @@ export default defineNuxtConfig({
      */
     useMeta: "~/composables/useMeta",
   },
+  /**
+   * Commented because of the StackBlitz error
+   * Should be resolved in different task
+   */
   // typescript: {
   //   typeCheck: true,
   //   strict: true,
