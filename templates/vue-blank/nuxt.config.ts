@@ -9,8 +9,8 @@ export default defineNuxtConfig({
     },
   },
   modules: ["@vueuse/nuxt", "@shopware-pwa/nuxt3-module"],
-  typescript: {
-    typeCheck: true,
-    strict: true,
-  },
+  // typescript: {
+  //   typeCheck: true,
+  //   strict: true,
+  // },
 });

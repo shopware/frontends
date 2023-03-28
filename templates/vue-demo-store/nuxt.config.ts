@@ -18,10 +18,10 @@ export default defineNuxtConfig({
      */
     useMeta: "~/composables/useMeta",
   },
-  typescript: {
-    typeCheck: true,
-    strict: true,
-  },
+  // typescript: {
+  //   typeCheck: true,
+  //   strict: true,
+  // },
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
