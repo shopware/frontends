@@ -9,8 +9,12 @@ export default defineNuxtConfig({
     },
   },
   modules: ["@vueuse/nuxt", "@shopware-pwa/nuxt3-module"],
-  typescript: {
-    typeCheck: true,
-    strict: true,
-  },
+  /**
+   * Commented because of the StackBlitz error
+   * Issue: https://github.com/shopware/frontends/issues/88
+   */
+  // typescript: {
+  //   typeCheck: true,
+  //   strict: true,
+  // },
 });

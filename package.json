@@ -48,7 +48,7 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@7.30.3",
+  "packageManager": "pnpm@8.0.0",
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
