@@ -29,7 +29,10 @@ function getEntityPrefix(category: LinkedCategory) {
  */
 export function getCategoryUrl(category: LinkedCategory): string {
   if (!category) return "/";
+
   switch (category.type) {
+    case undefined:
+      return "/";
     case "link":
       return (
         category.externalLink ||
