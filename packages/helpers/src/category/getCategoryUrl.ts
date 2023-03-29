@@ -44,4 +44,4 @@ export function getCategoryUrl(category: LinkedCategory): string {
         ? `/${category.seoUrls[0].seoPathInfo}`
         : `/${getEntityPrefix(category)}/${category.id}`;
   }
-};
+}

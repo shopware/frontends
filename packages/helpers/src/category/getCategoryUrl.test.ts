@@ -16,7 +16,7 @@ describe("getCategoryUrl", () => {
         type: "link",
         linkType: "category",
         internalLink: "123",
-      } as any),
+      } as any)
     ).toBe("/navigation/123");
   });
   it("should return technical URL for product", () => {
@@ -25,7 +25,7 @@ describe("getCategoryUrl", () => {
         type: "link",
         linkType: "product",
         internalLink: "123",
-      } as any),
+      } as any)
     ).toBe("/detail/123");
   });
 
@@ -35,7 +35,7 @@ describe("getCategoryUrl", () => {
         type: "link",
         linkType: "landing_page",
         internalLink: "123",
-      } as any),
+      } as any)
     ).toBe("/landingPage/123");
   });
 
@@ -44,7 +44,7 @@ describe("getCategoryUrl", () => {
       getCategoryUrl({
         type: "link",
         externalLink: "https://shopware.com",
-      } as any),
+      } as any)
     ).toBe("https://shopware.com");
   });
 
@@ -53,7 +53,7 @@ describe("getCategoryUrl", () => {
       getCategoryUrl({
         type: "link",
         seoUrls: [{ seoPathInfo: "/test" }],
-      } as any),
+      } as any)
     ).toBe("/test");
   });
 
@@ -62,7 +62,7 @@ describe("getCategoryUrl", () => {
       getCategoryUrl({
         type: "unknown",
         seoUrls: [{ seoPathInfo: "test" }],
-      } as any),
+      } as any)
     ).toBe("/test");
   });
   it("should try to return technical URL for unknown type", () => {
@@ -71,7 +71,7 @@ describe("getCategoryUrl", () => {
         type: "unknown",
         id: "123",
         linkType: "category",
-      } as any),
+      } as any)
     ).toBe("/navigation/123");
   });
 });
