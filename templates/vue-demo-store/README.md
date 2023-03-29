@@ -39,6 +39,7 @@ Now, you can have a look on the pages and components and add your stuff there.
 There are many ways and many providers for deployment a production build of JS app. For more, read documentation [Best Practices > Deployment](https://shopware-frontends-docs.vercel.app/best-practices/deployment.html) section.
 
 In this chapter we will cover:
+
 - SSR on Node server
 - How to dockerize it
 
@@ -71,6 +72,7 @@ pnpm start
 ### Get app running as docker container
 
 Create or edit a [Dockerfile](./Dockerfile) to:
+
 - Have a node.js environment available
 - Have a built project files copied
 - Run `start` script as an entrypoint
