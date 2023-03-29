@@ -18,10 +18,14 @@ export default defineNuxtConfig({
      */
     useMeta: "~/composables/useMeta",
   },
-  typescript: {
-    typeCheck: true,
-    strict: true,
-  },
+  /**
+   * Commented because of the StackBlitz error
+   * Issue: https://github.com/shopware/frontends/issues/88
+   */
+  // typescript: {
+  //   typeCheck: true,
+  //   strict: true,
+  // },
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
@@ -61,7 +65,7 @@ export default defineNuxtConfig({
           light: "#5ebbff",
           dark: "#0081df",
         },
-      }
+      },
     },
   },
   router: {

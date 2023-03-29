@@ -5,7 +5,6 @@ import {
   getProductTierPrices,
   getProductCalculatedListingPrice,
 } from "@shopware-pwa/helpers-next";
-import { Product } from "@shopware-pwa/types";
 import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
 
@@ -27,13 +26,15 @@ const price = computed(() => {
   if (product.value) {
     const tierPrices = getProductTierPrices(product.value);
     return (
-      tierPrices?.[0]?.unitPrice ||
-      getProductCalculatedListingPrice(product.value)
+      tierPrices?.[0]?.unitPrice || product.value?.calculatedPrice?.totalPrice
     );
   } else {
     return null;
   }
 });
+const listPrice = computed(() =>
+  getProductCalculatedListingPrice(product.value)
+);
 const referencePrice = computed(
   () => product.value?.calculatedPrice?.referencePrice
 );
@@ -57,9 +58,17 @@ const restockTime = computed(() => product.value?.restockTime);
   >
     <div>
       <SharedPrice
+        v-if="listPrice"
+        :value="listPrice"
+        class="text-2xl text-gray-900 text-left line-through"
+      />
+      <SharedPrice
         v-if="price"
         :value="price"
         class="font-bold text-2xl text-gray-900 text-left"
+        :class="{
+          'text-red': listPrice,
+        }"
       />
       <div v-if="purchaseUnit && unitName" class="mt-1">
         <span class="font-light"> Content: </span>
