@@ -12,9 +12,9 @@ import { Country } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 
 export type UseCountriesReturn = {
-  mountedCallback: () => Promise<void>;
+  mountedCallback(): Promise<void>;
   getCountries: ComputedRef<Country[]>;
-  fetchCountries: () => Promise<void>;
+  fetchCountries(): Promise<void>;
 };
 
 /**

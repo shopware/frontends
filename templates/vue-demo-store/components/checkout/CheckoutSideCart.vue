@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 const isOpen = inject("isSidebarOpen");
 
 const { cartItems, totalPrice, isEmpty } = useCart();
@@ -58,8 +57,8 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                   <button
                     type="button"
                     class="-m-2 p-2 text-gray-400 hover:text-gray-500"
-                    @click="isOpen = false"
                     data-testid="cart-close-button"
+                    @click="isOpen = false"
                   >
                     <span class="sr-only">Close panel</span>
                     <div class="w-6 h-6 i-carbon-close" />
@@ -110,14 +109,14 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                   Checkout
                 </NuxtLink>
 
-                <RouterLink
+                <NuxtLink
                   class="flex items-center justify-center py-3 text-sm font-medium text-brand-dark"
                   to="/checkout/cart"
                   data-testid="cart-checkout-shopping-cart"
                   @click="isOpen = false"
                 >
                   Go to shopping cart
-                </RouterLink>
+                </NuxtLink>
               </div>
               <div
                 class="mt-6 flex justify-center text-center text-sm text-brand-dark"

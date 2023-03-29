@@ -5,7 +5,7 @@ import { SalesChannel } from "../../system/sales-channel/SalesChannel";
 import { Rule } from "../../content/rule/Rule";
 import { PaymentMethodTranslation } from "./PaymentMethodTranslation";
 import { OrderTransaction } from "../order/OrderTransaction";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @beta
@@ -28,7 +28,7 @@ export type PaymentMethod = {
   availabilityRuleId: string;
   mediaId: string | null;
   media: Media | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   formattedHandlerIDentifier: string;
   createdAt: string;
   updatedAt: string | null;

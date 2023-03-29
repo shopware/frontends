@@ -8,8 +8,6 @@ import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 
 # useCart
 
-<!-- PLACEHOLDER_DESCRIPTION -->
-
 ## Usage
 
 You can use it to display sidecart or part of the cart anywhere on the page.
@@ -17,6 +15,8 @@ You can use it to display sidecart or part of the cart anywhere on the page.
 ```ts
 const { cartItems, totalPrice } = useCart();
 ```
+
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Live example
 

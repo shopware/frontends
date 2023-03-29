@@ -1,5 +1,5 @@
 import { PropertyGroupOption } from "./PropertyGroupOption";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -9,5 +9,5 @@ export type PropertyGroupOptionTranslation = {
   name: string | null;
   position: number | null;
   propertyGroupOption: PropertyGroupOption | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

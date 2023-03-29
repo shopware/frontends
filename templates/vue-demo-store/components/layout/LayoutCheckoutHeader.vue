@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { RouterLink } from "vue-router";
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="relative bg-white">
@@ -9,7 +7,7 @@ import { RouterLink } from "vue-router";
         class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10"
       >
         <div class="flex justify-start lg:w-0 lg:flex-1 space-x-4 md:space-x-0">
-          <RouterLink to="/">
+          <NuxtLink to="/">
             <span class="sr-only">Shopware</span>
             <img
               class="h-8 w-auto sm:h-10"
@@ -18,7 +16,7 @@ import { RouterLink } from "vue-router";
               width="40px"
               height="40px"
             />
-          </RouterLink>
+          </NuxtLink>
         </div>
         <AccountMenu />
       </div>

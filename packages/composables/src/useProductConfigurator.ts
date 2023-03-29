@@ -1,6 +1,5 @@
 import { ref, Ref, computed, unref, ComputedRef, inject } from "vue";
 import { Product, PropertyGroup } from "@shopware-pwa/types";
-import { ProductResponse } from "./types";
 import { useProduct, useShopwareContext } from ".";
 import { invokePost, getProductEndpoint } from "@shopware-pwa/api-client";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
@@ -9,15 +8,16 @@ export type UseProductConfiguratorReturn = {
   /**
    * Handler for action when the selected option is changed
    */
-  handleChange: (
+  handleChange(
     attribute: string,
     option: string,
-    onChangeHandled?: () => void
-  ) => Promise<void>;
+    onChangeHandled: () => void
+  ): Promise<void>;
 
-  findVariantForSelectedOptions: (options?: {
+  findVariantForSelectedOptions(options?: {
     [key: string]: string;
-  }) => Promise<Product | undefined>;
+  }): Promise<Product | undefined>;
+
   /**
    * Indicates if the options are being (re)loaded
    */
@@ -69,16 +69,16 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   };
 
   // create a group -> optionId map
-  product.value.optionIds?.forEach((optionId) => {
+  product.value.optionIds?.forEach((optionId: string) => {
     const optionGroupCode = findGroupCodeForOption(optionId);
     if (optionGroupCode) {
       selected.value[optionGroupCode] = optionId;
     }
   });
 
-  const findVariantForSelectedOptions = async (options?: {
+  async function findVariantForSelectedOptions(options?: {
     [code: string]: string;
-  }): Promise<Product | undefined> => {
+  }): Promise<Product | undefined> {
     const filter = [
       {
         type: "equals",
@@ -118,7 +118,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);
     }
-  };
+  }
 
   const handleChange = async (
     group: string,

@@ -92,7 +92,11 @@ const invokeChange = async (): Promise<void> => {
         <span class="text-gray-900">{{ state.email }}</span>
       </div>
     </div>
-    <form class="mt-8 space-y-6" @submit.prevent="invokeChange">
+    <form
+      class="mt-8 space-y-6"
+      data-testid="account-change-password-form"
+      @submit.prevent="invokeChange"
+    >
       <div
         v-if="userErrorMessages.length"
         class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
@@ -116,6 +120,7 @@ const invokeChange = async (): Promise<void> => {
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
+            data-testid="account-change-current-password-input"
           />
           <span
             v-if="$v.password.currentPassword.$error"
@@ -139,6 +144,7 @@ const invokeChange = async (): Promise<void> => {
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
+            data-testid="account-change-new-password-input"
           />
           <span
             v-if="$v.password.newPassword.$error"
@@ -162,6 +168,7 @@ const invokeChange = async (): Promise<void> => {
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
+            data-testid="account-change-confirm-password-input"
           />
           <span
             v-if="$v.password.newPasswordConfirm.$error"
@@ -176,6 +183,7 @@ const invokeChange = async (): Promise<void> => {
         <button
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
+          data-testid="account-change-current-submit-button"
         >
           Change password
         </button>

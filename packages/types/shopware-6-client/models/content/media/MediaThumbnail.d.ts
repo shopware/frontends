@@ -1,3 +1,5 @@
+import { CustomFields } from "../../common/CustomField";
+
 export type MediaThumbnail = {
   width: number;
   height: number;
@@ -10,6 +12,6 @@ export type MediaThumbnail = {
   updatedAt: null | string;
   extensions: unknown;
   id: string;
-  customFields: null | unknown;
+  customFields: CustomFields;
   apiAlias: "media_thumbnail";
 };

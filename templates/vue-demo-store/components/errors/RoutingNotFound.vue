@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { RouterLink } from "vue-router";
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <section class="container mx-auto text-center my-20">
@@ -9,11 +7,11 @@ import { RouterLink } from "vue-router";
       We are sorry, the page you're looking for could not be found. It may no
       longer exist or may have been moved.
     </p>
-    <RouterLink
+    <NuxtLink
       class="inline-flex justify-center items-center py-2 px-4 text-base font-medium text-center text-white bg-brand-primary rounded-lg hover:bg-gray-400"
       to="/"
     >
       Back to homepage
-    </RouterLink>
+    </NuxtLink>
   </section>
 </template>

@@ -7,8 +7,14 @@ const currencyPosition = ref<number>(1);
 const decimalPrecision = 2;
 
 export type UsePriceReturn = {
-  init: (options: { currencySymbol: string; currencyPosition: number }) => void;
-  getFormattedPrice: (value: number | string | undefined) => string;
+  /**
+   * Set init data: currencySymbol & currencyPosition
+   */
+  init(options: { currencySymbol: string; currencyPosition: number }): void;
+  /**
+   * Format price i.e. (2) -> 2.00 $
+   */
+  getFormattedPrice(value: number | string | undefined): string;
 };
 
 /**

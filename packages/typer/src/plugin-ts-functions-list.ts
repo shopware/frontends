@@ -76,6 +76,7 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
 
       const {
         getFunctionSignature,
+        getUsageCodeBlock,
         getFunctionParameters,
         getFunctionDescription,
         getFunctionReturnType,
@@ -89,6 +90,14 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
 
       let description = "## Definition\n\n";
       description += getFunctionDescription(functionName) || "";
+
+      // FUNCTION USAGE EXAMPLE
+      const usageCodeBlock = getUsageCodeBlock();
+      if (usageCodeBlock.length > 1) {
+        description += `\n\n### Basic usage`;
+        description += `\n\n${usageCodeBlock}`;
+      }
+
       // FUNCTION SIGNATURE
       const functionSignature = getFunctionSignature(functionName);
       if (functionSignature) {
@@ -172,20 +181,19 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
       }
 
       if (!hasMethods() && dirActive.autogenExampleAlias) {
+        const openPath = `?packageName=@shopware-pwa/${dirActive.autogenExampleAlias}&async=1&functionName=${functionName}`;
         apiSection += "\n## Usage example\n\n";
         apiSection +=
-          ":::warning\nExample is generated automatically. Sometimes needs to be adjusted to your needs.\n\n:::\n\n";
+          ":::warning\nExample is generated automatically. Sometimes it's required to be adjusted to your needs.\n\n:::\n\n";
+
         apiSection += `
-<div class="stackblitz-example border-slate-400 border-dashed border-1 rounded-md p-2">
-  <iframe class="w-full h-500px border-none" src="${getStackBlitzExampleEmbedUrl(
-    {
-      openPath: `?packageName=@shopware-pwa/${dirActive.autogenExampleAlias}&async=1&functionName=${functionName}`,
-      githubTreeUrl: "https://stackblitz.com/github/mkucmus/exampler",
-    }
-  )}">
-  </iframe>
-</div>
-`;
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](${getStackBlitzExampleEmbedUrl(
+          {
+            openPath,
+            githubTreeUrl:
+              "https://stackblitz.com/github/shopware/frontends/tree/main/examples/example-builder",
+          }
+        )})`;
       }
 
       code = replacer(

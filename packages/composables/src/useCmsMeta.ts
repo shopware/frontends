@@ -3,7 +3,13 @@ import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import type { CmsPageEntity } from "@shopware-pwa/types";
 
 export type UseCmsMetaReturn = {
+  /**
+   * Meta title for current page/entity
+   */
   title: ComputedRef<string>;
+  /**
+   * Meta tags for current page/entity
+   */
   meta: ComputedRef<{ name: string; content: string }[]>;
 };
 

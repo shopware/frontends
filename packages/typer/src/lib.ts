@@ -7,7 +7,7 @@ import {
 } from "ts-dox";
 import { find, FindResult } from "find-in-files";
 import { existsSync } from "fs-extra";
-import { resolve } from "path";
+import { basename, resolve } from "path";
 import {
   getTypesTable as _getTypesTable,
   getFunctionDescription as _getFunctionDescription,
@@ -15,6 +15,7 @@ import {
   getFunctionReturnTypeSignature as _getFunctionReturnTypeSignature,
   getFunctionSignature as _getFunctionSignature,
   getFunctionData as _getFunctionData,
+  getExportedAPIs,
 } from "./extractor";
 import { Property, PropertyMdTableRow } from "./types";
 
@@ -164,6 +165,7 @@ export type TypesParserReturn = {
   hasMethods(): boolean;
   hasMultipleFunctions(): boolean;
   hasFunctionDefinition(): boolean;
+  getUsageCodeBlock(): string;
 };
 
 export function TypesParser({
@@ -193,11 +195,57 @@ export function TypesParser({
     );
   }
 
+  function getUsageCodeBlock(): string {
+    if (!hasProperties() && !hasMethods()) {
+      return "";
+    }
+
+    const functionName = basename(metadata.name, ".ts");
+    const exportedApiList = getExportedApiList();
+    if (!exportedApiList.length) {
+      return "";
+    }
+
+    const breakLine = exportedApiList.length > 2;
+    const parametersList = getFunctionParameters(functionName)?.map(
+      ({ name }) => name
+    );
+
+    return `\`\`\`ts
+const { ${breakLine ? "\n" : ""} ${
+      breakLine ? exportedApiList.join(",\n ") : exportedApiList.join(", ")
+    } ${breakLine ? "\n" : ""}} = ${functionName}(${parametersList?.join(
+      ", "
+    )});
+\`\`\``;
+  }
+
+  function getExportedApiList(): string[] {
+    const functionName = basename(metadata.name, ".ts");
+
+    const returnTypeSignature = getFunctionReturnTypeSignature(
+      getFunctionReturnType(functionName) || ""
+    );
+    // filter out properties that are not present in the return signature (BUG)
+    const exportedApiList = getExportedAPIs(metadata as any)?.filter(
+      (property) =>
+        returnTypeSignature?.includes(` ${property}:`) ||
+        returnTypeSignature?.includes(` ${property}(`)
+    );
+
+    return exportedApiList;
+  }
+
   async function getTypesTable(
     accessor: "properties" | "methods",
     transformRow?: (propertyData: Property) => Promise<PropertyMdTableRow>
   ): Promise<string> {
-    return _getTypesTable(metadata as any, accessor, transformRow);
+    return _getTypesTable(
+      metadata as any,
+      accessor,
+      getExportedApiList(),
+      transformRow
+    );
   }
 
   function getFunctionDescription(functionName: string): string | undefined {
@@ -242,9 +290,9 @@ export function TypesParser({
     getFunctionReturnType,
     getFunctionReturnTypeSignature,
     getFunctionSignature,
-
     getFunctionDescription,
     getTypesTable,
+    getUsageCodeBlock,
     hasProperties,
     hasMethods,
     hasMultipleFunctions,

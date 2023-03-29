@@ -45,14 +45,14 @@
   },
   "devDependencies": {
     "@shopware-pwa/types": "workspace:*",
-    "@vitest/coverage-c8": "^0.29.2",
-    "@vue/test-utils": "^2.3.0",
+    "@vitest/coverage-c8": "^0.29.7",
+    "@vue/test-utils": "^2.3.2",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "^8.9.0",
     "tsconfig": "workspace:*",
-    "typescript": "^4.9.5",
+    "typescript": "^5.0.2",
     "unbuild": "^1.1.2",
-    "vitest": "^0.29.2",
+    "vitest": "^0.29.7",
     "vue": "^3.2.47"
   }
 }

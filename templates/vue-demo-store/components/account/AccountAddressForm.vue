@@ -72,11 +72,13 @@ const invokeSave = async (): Promise<void> => {
                 name="salutation"
                 autocomplete="salutation-name"
                 class="mt-1 block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-light focus:border-brand-light sm:text-sm"
+                data-testid="account-address-form-salutation-select"
               >
                 <option
                   v-for="salutation in props.salutations"
                   :key="salutation.id"
                   :value="salutation.id"
+                  data-testid="account-address-form-salutation-select-option"
                 >
                   {{ salutation.displayName }}
                 </option>
@@ -96,6 +98,7 @@ const invokeSave = async (): Promise<void> => {
                 required
                 name="first-name"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                data-testid="account-address-form-firstname-input"
               />
             </div>
 
@@ -113,6 +116,7 @@ const invokeSave = async (): Promise<void> => {
                 required
                 name="last-name"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                data-testid="account-address-form-lastname-input"
               />
             </div>
             <div class="col-span-6 sm:col-span-6">
@@ -129,11 +133,13 @@ const invokeSave = async (): Promise<void> => {
                 name="country"
                 autocomplete="country-name"
                 class="mt-1 block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-light focus:border-brand-light sm:text-sm"
+                data-testid="account-address-form-country-select"
               >
                 <option
                   v-for="country in props.countries"
                   :key="country.id"
                   :value="country.id"
+                  data-testid="account-address-form-country-select-option"
                 >
                   {{ country.name }}
                 </option>
@@ -155,6 +161,7 @@ const invokeSave = async (): Promise<void> => {
                 name="street-address"
                 autocomplete="street-address"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                data-testid="account-address-form-street-input"
               />
             </div>
 
@@ -173,6 +180,7 @@ const invokeSave = async (): Promise<void> => {
                 name="city"
                 autocomplete="address-level2"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                data-testid="account-address-form-city-input"
               />
             </div>
             <div class="col-span-6 sm:col-span-3 lg:col-span-2">
@@ -190,6 +198,7 @@ const invokeSave = async (): Promise<void> => {
                 name="postal-code"
                 autocomplete="postal-code"
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                data-testid="account-address-form-postal-code-input"
               />
             </div>
           </div>
@@ -198,6 +207,7 @@ const invokeSave = async (): Promise<void> => {
           <button
             type="submit"
             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-light"
+            data-testid="account-address-form-submit-button"
             @click.stop.prevent="invokeSave"
           >
             Save

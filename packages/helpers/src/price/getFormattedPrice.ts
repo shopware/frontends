@@ -18,6 +18,10 @@ type Options = {
 /**
  * Get formatted price
  *
+ * @param value price value
+ * @param currency currency symbol
+ * @param options formatting options (direction, removeDecimals, removeCurrency)
+ *
  * @public
  */
 export function getFormattedPrice(

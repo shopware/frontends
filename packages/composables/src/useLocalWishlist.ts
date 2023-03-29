@@ -1,11 +1,29 @@
 import { ref, Ref, computed, ComputedRef } from "vue";
 
 export type UseLocalWishlistReturn = {
-  getWishlistProducts: () => void;
-  addToWishlist: (id: string) => Promise<void>;
-  removeFromWishlist: (id: string) => Promise<void>;
-  clearWishlist: () => Promise<void>;
+  /**
+   * Get wishlist products from localstorage
+   */
+  getWishlistProducts(): void;
+  /**
+   * Add product to wishlist by its id
+   */
+  addToWishlist(id: string): Promise<void>;
+  /**
+   * Remove product from wishlist by its id
+   */
+  removeFromWishlist(id: string): Promise<void>;
+  /**
+   * Remove all products from wishlist
+   */
+  clearWishlist(): Promise<void>;
+  /**
+   * List of wishlist items
+   */
   items: ComputedRef<string[]>;
+  /**
+   * Count of wishlist items
+   */
   count: ComputedRef<number>;
 };
 

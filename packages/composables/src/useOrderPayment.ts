@@ -34,7 +34,7 @@ export type UseOrderPaymentReturn = {
   /**
    * Invokes the payment process for the order in the backend
    */
-  handlePayment: (
+  handlePayment(
     /**
      * URL to redirect after successful payment
      */
@@ -47,11 +47,11 @@ export type UseOrderPaymentReturn = {
      * additional payment details to provide
      */
     paymentDetails?: unknown
-  ) => Promise<void | unknown>;
+  ): Promise<void | unknown>;
   /**
    * Change a payment method for the order
    */
-  changePaymentMethod: (paymentMethodId: string) => Promise<void>;
+  changePaymentMethod(paymentMethodId: string): Promise<void>;
 };
 
 /**

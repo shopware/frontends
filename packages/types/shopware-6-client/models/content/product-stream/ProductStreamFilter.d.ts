@@ -1,5 +1,5 @@
 import { ProductStream } from "./ProductStream";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -16,5 +16,5 @@ export type ProductStreamFilter = {
   parent: ProductStreamFilter | null;
   position: number;
   parameters: [] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

@@ -19,9 +19,9 @@ export type UseCheckoutReturn = {
   /**
    * Fetches all available shipping methods
    */
-  getShippingMethods: (options?: {
+  getShippingMethods(options?: {
     forceReload: boolean;
-  }) => Promise<ComputedRef<ShippingMethod[]>>;
+  }): Promise<ComputedRef<ShippingMethod[]>>;
   /**
    * List of available shipping methods
    */
@@ -29,9 +29,9 @@ export type UseCheckoutReturn = {
   /**
    * Fetches all available payment methods
    */
-  getPaymentMethods: (options?: {
+  getPaymentMethods(options?: {
     forceReload: boolean;
-  }) => Promise<ComputedRef<PaymentMethod[]>>;
+  }): Promise<ComputedRef<PaymentMethod[]>>;
   /**
    * List of available payment methods
    */
@@ -39,7 +39,7 @@ export type UseCheckoutReturn = {
   /**
    * Creates order based on the current cart
    */
-  createOrder: (params?: CreateOrderParams) => Promise<Order>;
+  createOrder(params?: CreateOrderParams): Promise<Order>;
   /**
    * Shipping address for the current session
    */
@@ -57,7 +57,7 @@ export type UseCheckoutReturn = {
    * Sets shipping method for the current session
    * Sugar for {@link useSessionContext.setShippingMethod}
    */
-  setShippingMethod: (shippingMethod: Partial<ShippingMethod>) => Promise<void>;
+  setShippingMethod(shippingMethod: Partial<ShippingMethod>): Promise<void>;
   /**
    * Selected payment method for the current session
    * Sugar for {@link useSessionContext.selectedPaymentMethod}
@@ -67,7 +67,7 @@ export type UseCheckoutReturn = {
    * Sets payment method for the current session
    * Sugar for {@link useSessionContext.setPaymentMethod}
    */
-  setPaymentMethod: (paymentMethod: Partial<PaymentMethod>) => Promise<void>;
+  setPaymentMethod(paymentMethod: Partial<PaymentMethod>): Promise<void>;
 };
 
 /**

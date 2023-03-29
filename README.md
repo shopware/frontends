@@ -5,7 +5,7 @@
 </div>
 
 <p align="center">
-	📚 <a href="https://shopware-frontends-docs.vercel.app/" target="_blank">Docs</a> | 💬 <a href="https://github.com/shopware/frontends/discussions">Discussions</a> | 🚀 <a href="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" target="_blank">Try it out</a>
+<a href="https://frontends-demo.vercel.app/" target="_blank">🚀 Demo</a> | 📚 <a href="https://shopware-frontends-docs.vercel.app/" target="_blank">Docu</a> | <img style="position:relative; top:3px;" src="https://d33wubrfki0l68.cloudfront.net/9a3dab7d5789ca17d6b0b9af993d40a26be9e5b6/a0243/img/theme/docs-logo.svg" width="16"> <a href="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" target="_blank">Try it out</a> | 💬 <a href="https://github.com/shopware/frontends/discussions">Discuss</a> | <img style="display: inline-block;-webkit-user-select: none;margin: auto;cursor: zoom-in;background-color: hsl(0, 0%, 100%);transition: background-color 300ms; position:relative; top:3px;" src="https://previews.us-east-1.widencdn.net/preview/48045879/assets/asset-view/120e11d9-89e2-4f3a-8989-8e60478c762d/thumbnail/eyJ3IjoyMDQ4LCJoIjoyMDQ4LCJzY29wZSI6ImFwcCJ9?Expires=1679997600&amp;Signature=U3Ob94iOoUfZcsRzpkowvuQ36vcI8rfslbRnbRAmx3AiFbB~oDO5-4OTsDpA4DeF5VTFZBzqTDgRn7V1U9rYqH6zzAM2UV6qcQV3o13~eAYvU5UtfqNeYw4CACgvB2NWV~BtI2Yt4j05Ki1vTqL-tD-hRWSRMHwRakFIaIcOmQPZfbM1mbCUIQ2w3Be--mKZjoZBKZ4XCgxeyPyBqhWG67fm~DTVRJuMUwjXJyfW0kj9hrv3NJGNjHHk93qJhqC31rgMtMpFvvrymTASIjdbbwXMYFqc5eNcXPZ4-FGpQS5~NK6hA6Hqa83j1vtydfhp9o7YDWz4O99IaU556vwyeA__&amp;Key-Pair-Id=APKAJM7FVRD2EPOYUXBQ" width="16"> <a href="https://shopwarecommunity.slack.com/archives/C050L6NCMGQ" target="_blank">Channel</a>
 </p>
 
 <p align="center">

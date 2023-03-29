@@ -5,12 +5,16 @@ import { cmsAssociations } from "./cms/cmsAssociations";
 import { _useContext } from "./internal/_useContext";
 
 export type UseLandingSearchReturn = {
-  search: (
+  /**
+   * Search for landing page by ID
+   * Accepts optional media associations
+   */
+  search(
     navigationId: string,
     options?: {
       withCmsAssociations?: boolean;
     }
-  ) => Promise<LandingPage>;
+  ): Promise<LandingPage>;
 };
 
 /**

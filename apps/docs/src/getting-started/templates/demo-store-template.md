@@ -4,7 +4,7 @@ import stackblitzIcon from '../../.assets/framework-icons/stackblitz.png';
 
 # Demo Store Template
 
-<img src="../../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
+<a href="https://frontends-demo.vercel.app/" target="_blank"><img src="../../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
 
 The demo store template is a reference implementation of an online store UI.
 
@@ -68,18 +68,24 @@ One exception to the rule are CMS components. CMS components are handled as a se
 
 The blank template is pre-configured to connect to a public Shopware backend, so you start building right away.
 
-In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and add a configuration object with `shopware` as a key:
+In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and edit a configuration object with `shopware` as a key:
 
-```ts{4-7}
+```ts{7-8}
 /* ... */
 export default defineNuxtConfig({
   /* ... */
-  shopware: {
-    endpoint: "https://your-business.shopware.store",
-    accessToken: "access-token-from-settings",
+  runtimeConfig: {
+    public: {
+      shopware: {
+        endpoint: "https://your-business.shopware.store",
+        accessToken: "access-token-from-settings",
+      }
+    }
   }
 });
 ```
+
+You can also use `.env` file to override this configuration. More about this you can find [here](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables)
 
 ## Limitations
 
