@@ -2,7 +2,7 @@
 const { push } = useRouter();
 const { logout, isLoggedIn } = useUser();
 
-const redirectAfterLogin = (path = "/") => push(path);
+const redirectAfterLogin = (path = "/account") => push(path);
 
 onBeforeMount(async () => {
   if (process.client && isLoggedIn.value) { // redirect to account page if user is logged in
@@ -28,7 +28,7 @@ export default {
 
 <template>
   <div class="login-wrapper">
-    <AccountLoginForm @success="redirectAfterLogin('/')">
+    <AccountLoginForm @success="redirectAfterLogin('/account')">
       <div class="flex items-center justify-end">
         <div class="text-sm">
           <NuxtLink
