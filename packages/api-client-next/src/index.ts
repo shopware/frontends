@@ -98,7 +98,7 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
 export function transformPathToQuery<T extends Record<string, any>>(
   path: string,
   params: T
-): [string, { method: HttpMethod; query: T; headers: T; body: T }] {
+): [string, { method: HttpMethod; query: T; headers: T; body?: T }] {
   const [operationName, method, pathDefinition, headerParams] = path.split(" ");
   const [requestPath, queryParams] = pathDefinition.split("?");
 
@@ -124,25 +124,26 @@ export function transformPathToQuery<T extends Record<string, any>>(
     query[paramName] = params[paramName];
   });
 
-  // put another parameters to body
-  let body: any = {};
+  const returnOptions = {
+    method: method.toUpperCase() as HttpMethod,
+    headers,
+    query,
+  } as {
+    method: HttpMethod;
+    headers: any;
+    query: any;
+    body?: any;
+  };
   Object.keys(params).forEach((key) => {
     if (
       !pathParams.includes(key) &&
       !queryParamNames.includes(key) &&
       !headerParamnames.includes(key)
     ) {
-      body[key] = params[key];
+      returnOptions.body ??= {};
+      returnOptions.body[key] = params[key];
     }
   });
 
-  return [
-    requestPathWithParams,
-    {
-      method: method.toUpperCase() as HttpMethod,
-      headers,
-      query,
-      body,
-    },
-  ];
+  return [requestPathWithParams, returnOptions];
 }

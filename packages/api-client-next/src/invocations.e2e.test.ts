@@ -7,7 +7,7 @@ const apiType = "store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
 describe("Test real API invocations", () => {
-  it("should fail on unprovided assess token", async () => {
+  it("should fail on unprovided access token", async () => {
     const apiInstance = createAPIClient<operations, operationPaths>({
       baseURL,
       apiType,
@@ -18,7 +18,7 @@ describe("Test real API invocations", () => {
         name: "qwe",
       })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      '"Request with GET/HEAD method cannot have body. (https://demo-frontends.shopware.store/store-api/checkout/cart?name=qwe)"'
+      '" (401 Unauthorized (https://demo-frontends.shopware.store/store-api/checkout/cart?name=qwe))"'
     );
   });
 

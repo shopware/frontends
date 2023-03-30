@@ -12,7 +12,6 @@ describe("transform path to query request", () => {
     expect(path).toEqual("/checkout/cart");
     expect(params).toMatchInlineSnapshot(`
       {
-        "body": {},
         "headers": {},
         "method": "GET",
         "query": {
@@ -32,7 +31,6 @@ describe("transform path to query request", () => {
     expect(path).toEqual("/product/someId1234/cross-selling");
     expect(params).toMatchInlineSnapshot(`
       {
-        "body": {},
         "headers": {},
         "method": "POST",
         "query": {},
@@ -105,7 +103,6 @@ describe("transform path to query request", () => {
     expect(path).toEqual("/navigation/act123/root123");
     expect(params).toMatchInlineSnapshot(`
       {
-        "body": {},
         "headers": {
           "sw-include-seo-urls": true,
         },
