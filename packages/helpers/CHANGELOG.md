@@ -1,5 +1,14 @@
 # @shopware-pwa/helpers-next
 
+## 0.1.26
+
+### Patch Changes
+
+- fixed published packages readme
+
+- Updated dependencies []:
+  - @shopware-pwa/types@0.5.1
+
 ## 0.1.25
 
 ### Patch Changes
