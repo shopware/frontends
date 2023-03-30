@@ -3,8 +3,11 @@ import { resolve } from "node:path";
 import openapiTS from "openapi-typescript";
 import * as dotenv from "dotenv";
 import * as c from "picocolors";
-import prettier from "prettier";
-import tsParser from "prettier/parser-typescript";
+import { format } from "prettier";
+// /**
+//  * @ts-ignore
+//  */
+// import tsParser from "prettier/parser-typescript";
 
 const config = dotenv.config().parsed || {};
 
@@ -47,12 +50,10 @@ export async function generate() {
         },
       }).then((res) => res.json());
 
-      const content = prettier
-        .format(JSON.stringify(apiJSON), {
-          semi: false,
-          parser: "json",
-        })
-        .trim();
+      const content = format(JSON.stringify(apiJSON), {
+        semi: false,
+        parser: "json",
+      }).trim();
 
       writeFileSync(SCHEMA_FILENAME, content, {
         encoding: "utf-8",
@@ -143,13 +144,11 @@ export async function generate() {
     // remove `@description ` tags
     schema = schema.replace(/@description /g, "");
 
-    schema = prettier
-      .format(schema, {
-        semi: false,
-        parser: "typescript",
-        plugins: [tsParser],
-      })
-      .trim();
+    schema = format(schema, {
+      semi: false,
+      parser: "typescript",
+      // plugins: [tsParser],
+    }).trim();
 
     if (typeof schema === "string") {
       writeFileSync(TYPES_FILENAME(originalSchema.info.version), schema, {
