@@ -134,7 +134,7 @@ export async function generate() {
         };
       });
       return acc;
-    }, {} as Record<string, any>);
+    }, {} as Record<string, unknown>);
 
     schema += `\n export type operationPaths = ${Object.values(operationsMap)
       .map((el) => `"${(el as { finalPath: string }).finalPath}"`)
