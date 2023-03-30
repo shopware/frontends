@@ -68,18 +68,24 @@ One exception to the rule are CMS components. CMS components are handled as a se
 
 The blank template is pre-configured to connect to a public Shopware backend, so you start building right away.
 
-In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and add a configuration object with `shopware` as a key:
+In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and edit a configuration object with `shopware` as a key:
 
-```ts{4-7}
+```ts{7-8}
 /* ... */
 export default defineNuxtConfig({
   /* ... */
-  shopware: {
-    endpoint: "https://your-business.shopware.store",
-    accessToken: "access-token-from-settings",
+  runtimeConfig: {
+    public: {
+      shopware: {
+        endpoint: "https://your-business.shopware.store",
+        accessToken: "access-token-from-settings",
+      }
+    }
   }
 });
 ```
+
+You can also use `.env` file to override this configuration. More about this you can find [here](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables)
 
 ## Limitations
 

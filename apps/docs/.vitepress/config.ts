@@ -37,6 +37,10 @@ export const sidebar = [
         text: "Overwriting CMS blocks",
         link: "/getting-started/overwriting-cms",
       },
+      {
+        text: "Sitemap",
+        link: "/getting-started/sitemap",
+      },
     ],
   },
   {

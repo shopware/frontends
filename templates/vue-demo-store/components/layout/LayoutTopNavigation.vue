@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  getCategoryUrl,
   getTranslatedProperty,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
@@ -23,7 +24,12 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       @mouseover="currentMenuPosition = navigationElement.id"
     >
       <NuxtLink
-        :to="'/' + navigationElement.seoUrls?.[0]?.seoPathInfo"
+        :target="
+          navigationElement.externalLink || navigationElement.linkNewTab
+            ? '_blank'
+            : ''
+        "
+        :to="getCategoryUrl(navigationElement)"
         class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
@@ -62,11 +68,12 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                 class="relative grid gap-6 bg-white px-3 py-2 sm:gap-6 sm:p-3"
               >
                 <NuxtLink
-                  v-if="
-                    typeof childElement?.seoUrls?.[0]?.seoPathInfo !==
-                    'undefined'
+                  :to="getCategoryUrl(childElement)"
+                  :target="
+                    childElement.externalLink || childElement.linkNewTab
+                      ? '_blank'
+                      : ''
                   "
-                  :to="'/' + childElement?.seoUrls?.[0]?.seoPathInfo"
                   class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
                 >
                   <div
@@ -94,11 +101,6 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                     />
                   </div>
                 </NuxtLink>
-                <div v-else class="px-4 py-2 sm:py-3">
-                  <p class="text-base font-medium text-gray-500">
-                    {{ getTranslatedProperty(childElement, "name") }}
-                  </p>
-                </div>
               </div>
             </template>
             <div

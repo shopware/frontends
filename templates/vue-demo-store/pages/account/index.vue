@@ -19,7 +19,14 @@ const {
   userDefaultBillingAddress,
   userDefaultShippingAddress,
 } = useUser();
-const { isNewsletterSubscriber, newsletterSubscribe } = useNewsletter();
+const {
+  isNewsletterSubscriber,
+  newsletterUnsubscribe,
+  newsletterSubscribe,
+  getNewsletterStatus,
+  newsletterStatus,
+  confirmationNeeded,
+} = useNewsletter();
 const { pushSuccess, pushError } = useNotifications();
 
 useBreadcrumbs([
@@ -28,8 +35,6 @@ useBreadcrumbs([
     path: "/account",
   },
 ]);
-
-newsletter.value = await isNewsletterSubscriber();
 
 const updateNewsletterStatus = async () => {
   try {
@@ -40,20 +45,23 @@ const updateNewsletterStatus = async () => {
       });
       pushSuccess("Newsletter subscribed");
     } else {
-      await newsletterSubscribe({
-        email: user.value?.email || "",
-        option: "unsubscribe",
-      });
+      await newsletterUnsubscribe(user.value?.email || "");
       pushSuccess("Newsletter unsubscribe");
     }
   } catch (error) {
-    newsletter.value = !newsletter.value;
     console.log("error", error);
     pushError("Something goes wrong please try again later");
+  } finally {
+    getNewsletterStatus().then(() => {
+      newsletter.value = isNewsletterSubscriber.value;
+    });
   }
 };
 
 onBeforeMount(async () => {
+  getNewsletterStatus().then(() => {
+    newsletter.value = isNewsletterSubscriber.value;
+  });
   if (user?.value?.salutationId) {
     await loadSalutation(user.value.salutationId);
   }
@@ -103,6 +111,16 @@ onBeforeMount(async () => {
     </section>
     <section class="mb-10">
       <h3 class="border-b pb-3 font-bold mb-5">Newsletter setting</h3>
+      <div
+        v-if="confirmationNeeded"
+        class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
+      >
+        <p class="text-sm">
+          You have just subscribed to our newsletter. To complete the sign-up
+          process, search your inbox for our confirmation email and click on the
+          link provided with it.
+        </p>
+      </div>
       <div class="flex">
         <input
           id="newsletter-checkbox"
@@ -112,7 +130,6 @@ onBeforeMount(async () => {
           class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
           @click="updateNewsletterStatus"
         />
-
         <label for="newsletter-checkbox" class="pl-5 text-base mt--1">
           Yes, I would like to subscribe to the free Demostore newsletter. (I
           may unsubscribe at any time.)

@@ -7,14 +7,19 @@ const props = defineProps<{
 }>();
 const { product } = toRefs(props);
 
-const { unitPrice, displayFromVariants, displayFrom } =
+const { price, unitPrice, displayFromVariants, displayFrom, isListPrice } =
   useProductPrice(product);
 </script>
 
 <template>
   <div :id="product.id">
     <SharedPrice
-      class="text-xs text-gray-900 basis-2/6 justify-end"
+      v-if="isListPrice"
+      class="text-xs text-gray-900 basis-2/6 justify-end line-through"
+      :value="price?.listPrice?.price"
+    />
+    <SharedPrice
+      class="text-sm text-gray-900 basis-2/6 justify-end"
       v-if="displayFromVariants"
       :value="displayFromVariants"
     >
@@ -24,10 +29,13 @@ const { unitPrice, displayFromVariants, displayFrom } =
     </SharedPrice>
     <SharedPrice
       class="text-sm text-gray-900 basis-2/6 justify-end"
+      :class="{
+        'text-red': isListPrice,
+      }"
       :value="unitPrice"
     >
       <template #beforePrice
-        ><span v-if="displayFrom || displayFromVariants">from</span></template
+        ><span v-if="displayFrom || displayFromVariants">to</span></template
       >
     </SharedPrice>
   </div>

@@ -136,6 +136,7 @@ export * from "./response/ListingResult";
 export * from "./response/ProductListingResult";
 export * from "./response/ProductResult";
 export * from "./response/SessionContext";
+export * from "./response/SitemapResult";
 export * from "./search/Aggregation";
 export * from "./search/Aggregations";
 export * from "./search/Association";
