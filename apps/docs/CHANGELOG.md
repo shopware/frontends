@@ -1,5 +1,26 @@
 # docs
 
+## 1.4.0
+
+### Minor Changes
+
+- [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b) Thanks [@mkucmus](https://github.com/mkucmus)! - Added missing function definitions
+
+- [`04bfd596`](https://github.com/shopware/frontends/commit/04bfd596105d334506090c23172b925f04556ac7) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add CMS overwriting section
+
+### Patch Changes
+
+- [`31184c1c`](https://github.com/shopware/frontends/commit/31184c1c8748e2620d21bf1ff17841c45d22b8b3) Thanks [@elkmod](https://github.com/elkmod)! - Moved examples and added community modules section
+
+- [#86](https://github.com/shopware/frontends/pull/86) [`909ffcde`](https://github.com/shopware/frontends/commit/909ffcde24d5ae873d814027be0920a9e5976c72) Thanks [@mkucmus](https://github.com/mkucmus)! - Expand Navigation building section
+
+- [`a15a3083`](https://github.com/shopware/frontends/commit/a15a308359497bb9d483bebe040d717114946ff0) Thanks [@mkucmus](https://github.com/mkucmus)! - Working with images
+
+- Updated dependencies [[`e2718c7d`](https://github.com/shopware/frontends/commit/e2718c7d20fac95c57436166083d6e5f599937c2), [`50e74be5`](https://github.com/shopware/frontends/commit/50e74be52034d1947e273985f778e986f077db44), [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b), [`d358854c`](https://github.com/shopware/frontends/commit/d358854c632447228e719efdf639c428cf6ba804), [`dab0f839`](https://github.com/shopware/frontends/commit/dab0f839eeebe6bb9999cdd0ec11925d935b08b9), [`ec030631`](https://github.com/shopware/frontends/commit/ec0306312fa42451f5f4a98c3e8985b70496fd37), [`5008dcbf`](https://github.com/shopware/frontends/commit/5008dcbf065fc54a3f51517460e409556f370adf), [`da2f6897`](https://github.com/shopware/frontends/commit/da2f6897e6839fbeb3ba7eae1eac376f423f2f99), [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b), [`30493417`](https://github.com/shopware/frontends/commit/30493417ad5b97ee1f0553f68357a23446b85522), [`e13d3d9a`](https://github.com/shopware/frontends/commit/e13d3d9adde759e97ca7fa9b7a782b7991428679), [`909ffcde`](https://github.com/shopware/frontends/commit/909ffcde24d5ae873d814027be0920a9e5976c72), [`a15a3083`](https://github.com/shopware/frontends/commit/a15a308359497bb9d483bebe040d717114946ff0), [`e71cc788`](https://github.com/shopware/frontends/commit/e71cc788c375c19ec449b820c0813b83503ef067)]:
+  - @shopware-pwa/helpers-next@0.1.25
+  - @shopware-pwa/composables-next@0.7.0
+  - @shopware-pwa/api-client@0.3.0
+
 ## 1.3.0
 
 ### Minor Changes

@@ -1,5 +1,59 @@
 # vue-demo-store
 
+## 0.6.0
+
+### Minor Changes
+
+- [#72](https://github.com/shopware/frontends/pull/72) [`e13d3d9a`](https://github.com/shopware/frontends/commit/e13d3d9adde759e97ca7fa9b7a782b7991428679) Thanks [@patzick](https://github.com/patzick)! - Add a confirmation instruction box to the newsletter subscription panel
+
+- [`dab0f839`](https://github.com/shopware/frontends/commit/dab0f839eeebe6bb9999cdd0ec11925d935b08b9) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add digital product to the order history list
+
+- [`a0ed2c8a`](https://github.com/shopware/frontends/commit/a0ed2c8ad2373e74b43d879c73f667ae829bb1f3) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add basic checkout terms and conditions
+
+- [`240eae89`](https://github.com/shopware/frontends/commit/240eae89daf685dff1b76914d263ee08f9e44b41) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add documents to the order summary
+
+- [#71](https://github.com/shopware/frontends/pull/71) [`e71cc788`](https://github.com/shopware/frontends/commit/e71cc788c375c19ec449b820c0813b83503ef067) Thanks [@patzick](https://github.com/patzick)! - Add merged sitemap
+
+- [`da14d573`](https://github.com/shopware/frontends/commit/da14d57327ab66e022dde775ce8ce2f2fc416f3a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add data-testid for a AccountAddressCard
+
+- [`30493417`](https://github.com/shopware/frontends/commit/30493417ad5b97ee1f0553f68357a23446b85522) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Hide the shipping address and shipping method for a digital cart (checkout, success page)
+
+### Patch Changes
+
+- [`e951d93a`](https://github.com/shopware/frontends/commit/e951d93ae8c085cd50d6b63317b982982a77ab42) Thanks [@patzick](https://github.com/patzick)! - Replaced `RouterLink` with `NuxtLink` for prefetch performance gain
+
+- [`6038bb1a`](https://github.com/shopware/frontends/commit/6038bb1a9d0535161bdbdfa6159ed21f729c9305) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix order status in the orders list
+
+- [`e2718c7d`](https://github.com/shopware/frontends/commit/e2718c7d20fac95c57436166083d6e5f599937c2) Thanks [@mkucmus](https://github.com/mkucmus)! - Use image thumbnails in specific cases
+
+- [`7805daf4`](https://github.com/shopware/frontends/commit/7805daf4c0519e78bfa8cf1a9ae6011e75537244) Thanks [@mkucmus](https://github.com/mkucmus)! - Notification on failed action within wishlist
+
+- [#86](https://github.com/shopware/frontends/pull/86) [`909ffcde`](https://github.com/shopware/frontends/commit/909ffcde24d5ae873d814027be0920a9e5976c72) Thanks [@mkucmus](https://github.com/mkucmus)! - Use correct URLs and target for navigation links
+
+- [`f394092b`](https://github.com/shopware/frontends/commit/f394092b7796c9757c41a0721a41020d9a5ab3ef) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix my account menu (mobile)
+
+- [`e50702db`](https://github.com/shopware/frontends/commit/e50702db725086a97f182a7213eaf03c913cd870) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Checkout logout redirect and breadcrumbs style adjustments
+
+- [`5cf30847`](https://github.com/shopware/frontends/commit/5cf308478a822c15706c2c096f4341d50b3b8af6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Checkout style adjustments
+
+- [`42d29bb4`](https://github.com/shopware/frontends/commit/42d29bb4beb739d12c934183c83ce7e50a171576) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace button links with NuxtLink
+
+- [`1fca0eae`](https://github.com/shopware/frontends/commit/1fca0eae50d9d628954f66e4401389ac5b815152) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Order details style adjustments
+
+- [#79](https://github.com/shopware/frontends/pull/79) [`b2fde982`](https://github.com/shopware/frontends/commit/b2fde98223ad49a791d01803349ee5664743c714) Thanks [@patzick](https://github.com/patzick)! - upgraded Nuxt to 3.3.2
+
+- [#90](https://github.com/shopware/frontends/pull/90) [`d394ca0c`](https://github.com/shopware/frontends/commit/d394ca0cade39e40102f5e67995cc60b73e8a8a1) Thanks [@mkucmus](https://github.com/mkucmus)! - Production build example for node-ssr and docker env
+
+- [`aff245cb`](https://github.com/shopware/frontends/commit/aff245cb43ac2b69772ffd08e3250c52decf31f4) Thanks [@elkmod](https://github.com/elkmod)! - Added devtools integration to nuxt-module
+
+- Updated dependencies [[`e2718c7d`](https://github.com/shopware/frontends/commit/e2718c7d20fac95c57436166083d6e5f599937c2), [`9c7a0f28`](https://github.com/shopware/frontends/commit/9c7a0f280c20ccbafca0e3063533820e21050bee), [`09e49987`](https://github.com/shopware/frontends/commit/09e499877efe6f7ccccf6fc166a07d806a68a136), [`5008dcbf`](https://github.com/shopware/frontends/commit/5008dcbf065fc54a3f51517460e409556f370adf), [`7805daf4`](https://github.com/shopware/frontends/commit/7805daf4c0519e78bfa8cf1a9ae6011e75537244), [`50e74be5`](https://github.com/shopware/frontends/commit/50e74be52034d1947e273985f778e986f077db44), [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b), [`d358854c`](https://github.com/shopware/frontends/commit/d358854c632447228e719efdf639c428cf6ba804), [`dab0f839`](https://github.com/shopware/frontends/commit/dab0f839eeebe6bb9999cdd0ec11925d935b08b9), [`e50702db`](https://github.com/shopware/frontends/commit/e50702db725086a97f182a7213eaf03c913cd870), [`e71cc788`](https://github.com/shopware/frontends/commit/e71cc788c375c19ec449b820c0813b83503ef067), [`ec030631`](https://github.com/shopware/frontends/commit/ec0306312fa42451f5f4a98c3e8985b70496fd37), [`e2718c7d`](https://github.com/shopware/frontends/commit/e2718c7d20fac95c57436166083d6e5f599937c2), [`da2f6897`](https://github.com/shopware/frontends/commit/da2f6897e6839fbeb3ba7eae1eac376f423f2f99), [`e54e494a`](https://github.com/shopware/frontends/commit/e54e494aefa4d9418c0daf7e3b805b3b17d18c15), [`9c7a0f28`](https://github.com/shopware/frontends/commit/9c7a0f280c20ccbafca0e3063533820e21050bee), [`3a90d299`](https://github.com/shopware/frontends/commit/3a90d299279b451e391a946dafecc857fe1f67fc), [`2f64a718`](https://github.com/shopware/frontends/commit/2f64a71824594ffcc4e5d59f8d5e30cd627893db), [`5008dcbf`](https://github.com/shopware/frontends/commit/5008dcbf065fc54a3f51517460e409556f370adf), [`da2f6897`](https://github.com/shopware/frontends/commit/da2f6897e6839fbeb3ba7eae1eac376f423f2f99), [`b2fde982`](https://github.com/shopware/frontends/commit/b2fde98223ad49a791d01803349ee5664743c714), [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b), [`30493417`](https://github.com/shopware/frontends/commit/30493417ad5b97ee1f0553f68357a23446b85522), [`909ffcde`](https://github.com/shopware/frontends/commit/909ffcde24d5ae873d814027be0920a9e5976c72), [`a15a3083`](https://github.com/shopware/frontends/commit/a15a308359497bb9d483bebe040d717114946ff0), [`e13d3d9a`](https://github.com/shopware/frontends/commit/e13d3d9adde759e97ca7fa9b7a782b7991428679), [`909ffcde`](https://github.com/shopware/frontends/commit/909ffcde24d5ae873d814027be0920a9e5976c72), [`aff245cb`](https://github.com/shopware/frontends/commit/aff245cb43ac2b69772ffd08e3250c52decf31f4), [`a15a3083`](https://github.com/shopware/frontends/commit/a15a308359497bb9d483bebe040d717114946ff0), [`d358854c`](https://github.com/shopware/frontends/commit/d358854c632447228e719efdf639c428cf6ba804), [`e71cc788`](https://github.com/shopware/frontends/commit/e71cc788c375c19ec449b820c0813b83503ef067)]:
+  - @shopware-pwa/helpers-next@0.1.25
+  - @shopware-pwa/cms-base@0.4.1
+  - @shopware-pwa/nuxt3-module@0.3.0
+  - @shopware-pwa/types@0.5.0
+  - @shopware-pwa/composables-next@0.7.0
+  - @shopware-pwa/api-client@0.3.0
+
 ## 0.5.0
 
 ### Minor Changes
