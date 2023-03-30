@@ -11,11 +11,15 @@ import { ClientApiError } from "@shopware-pwa/types";
 
 const { getSalutations } = useSalutations();
 const { getCountries } = useCountries();
-const { register } = useUser();
+const { register, isLoggedIn } = useUser();
 const { pushError } = useNotifications();
 
 const router = useRouter();
 const loading = ref<boolean>();
+
+if (process.client && isLoggedIn.value) { // redirect to account page if user is logged in
+  navigateTo({ path: "/account" });
+}
 
 const state = reactive({
   salutationId: "",
