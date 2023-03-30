@@ -31,7 +31,6 @@ jobs:
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
 
-
   build:
     name: Build
     timeout-minutes: 15
@@ -63,10 +62,9 @@ jobs:
       - name: Build
         run: pnpm build
 
-       - name: audit
+      - name: audit
         if: (${{ success() }} || ${{ failure() }})
         run: pnpm audit
-
 
   test:
     name: Test
