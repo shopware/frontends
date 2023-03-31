@@ -1,6 +1,10 @@
 export type Price = {
-  currencyId: number;
   net: number;
   gross: number;
   linked: boolean;
+  listPrice: null;
+  currencyId: number;
+  regulationPrice: Price;
+  percentage: null;
+  apiAlias: "price";
 };

@@ -19,4 +19,8 @@ export type CalculatedPrice = {
     percentage: number;
     apiAlias: string;
   };
+  regulationPrice: {
+    price: number;
+  };
+  apiAlias: "calculated_price";
 };
