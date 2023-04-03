@@ -44,6 +44,7 @@ setInitialListing(props?.content?.data?.listing);
             :key="product.id"
             :product="product"
             :isProductListing="isProductListing"
+            class="sm:w-6/12 lg:w-3/12 md:max-w-xs"
           />
         </div>
         <div class="mt-10">

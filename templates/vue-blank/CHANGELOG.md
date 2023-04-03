@@ -1,5 +1,11 @@
 # vue-blank
 
+## 0.0.5
+
+### Patch Changes
+
+- [#79](https://github.com/shopware/frontends/pull/79) [`b2fde982`](https://github.com/shopware/frontends/commit/b2fde98223ad49a791d01803349ee5664743c714) Thanks [@patzick](https://github.com/patzick)! - upgraded Nuxt to 3.3.2
+
 ## 0.0.4
 
 ### Patch Changes

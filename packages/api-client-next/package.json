@@ -37,16 +37,16 @@
   },
   "devDependencies": {
     "@types/prettier": "^2.7.2",
-    "@vitest/coverage-c8": "^0.28.5",
+    "@vitest/coverage-c8": "^0.29.8",
     "eslint-config-shopware": "workspace:*",
     "picocolors": "^1.0.0",
-    "prettier": "^2.8.5",
+    "prettier": "^2.8.7",
     "tsconfig": "workspace:*",
-    "vitest": "^0.28.5"
+    "vitest": "^0.29.8"
   },
   "dependencies": {
     "ofetch": "^1.0.1",
-    "openapi-typescript": "^6.2.0",
+    "openapi-typescript": "^6.2.1",
     "yargs": "^17.7.1"
   }
 }
