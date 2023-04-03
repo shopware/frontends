@@ -170,7 +170,7 @@ export function useUser(): UseUserReturn {
       apiInstance
     );
     _user.value = customer;
-    await refreshSessionContext();
+    if (_user.value?.active) await refreshSessionContext();
     return customer;
   }
 

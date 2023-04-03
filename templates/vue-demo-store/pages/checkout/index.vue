@@ -16,6 +16,7 @@ definePageMeta({
 const { push } = useRouter();
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
+const { pushInfo } = useNotifications();
 const {
   paymentMethods,
   shippingMethods,
@@ -206,7 +207,11 @@ const invokeSubmit = async () => {
   const valid = await $v.value.$validate();
   if (valid) {
     try {
-      await register(state);
+      const response = await register(state);
+      if (!response.active) {
+        pushInfo('Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.')
+        await push('/')
+      }
     } catch (error) {
       const e = error as ClientApiError;
       registerErrors.value = e.messages;
