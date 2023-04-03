@@ -127,5 +127,5 @@ jobs:
 
       - name: Lint
         run: |
-          pnpm i
+          pnpm run build
           pnpm run lint
