@@ -19,8 +19,8 @@
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
     "@unocss/nuxt": "^0.50.6",
-    "@vuelidate/core": "^2.0.1",
-    "@vuelidate/validators": "^2.0.1",
+    "@vuelidate/core": "^2.0.2",
+    "@vuelidate/validators": "^2.0.2",
     "@vueuse/nuxt": "^9.13.0",
     "requrl": "^3.0.2",
     "sitemap": "^7.1.1",
@@ -31,9 +31,9 @@
     "@nuxt/devtools": "^0.3.1",
     "@vue/eslint-config-typescript": "^11.0.2",
     "eslint-plugin-vue": "^9.10.0",
-    "nuxt": "^3.3.2",
-    "typescript": "^5.0.2",
-    "vue-eslint-parser": "^9.1.0",
+    "nuxt": "^3.3.3",
+    "typescript": "^5.0.3",
+    "vue-eslint-parser": "^9.1.1",
     "vue-tsc": "^1.2.0"
   },
   "engines": {
