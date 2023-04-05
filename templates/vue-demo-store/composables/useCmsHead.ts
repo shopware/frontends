@@ -65,7 +65,7 @@ export function useCmsHead(
     },
     {
       name: "og:site_name",
-      content: "Shopware Frontends",
+      content: title.value,
     },
   ]);
 

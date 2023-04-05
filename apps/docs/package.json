@@ -14,7 +14,7 @@
     "@shopware-pwa/helpers-next": "workspace:*",
     "flexsearch": "^0.7.31",
     "markdown-it": "^13.0.1",
-    "vitepress": "^1.0.0-alpha.63",
+    "vitepress": "1.0.0-alpha.65",
     "vitepress-plugin-search": "1.0.4-alpha.19",
     "vitepress-shopware-docs": "^0.1.9",
     "vue": "^3.2.47"
@@ -22,9 +22,9 @@
   "devDependencies": {
     "@shopware-pwa/typer": "workspace:*",
     "@types/markdown-it": "^12.2.3",
-    "@types/node": "^18.15.10",
+    "@types/node": "^18.15.11",
     "@vitejs/plugin-vue": "^4.1.0",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.3"
   },
   "pnpm": {
     "peerDependencyRules": {
