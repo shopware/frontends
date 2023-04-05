@@ -5,7 +5,7 @@ head:
       content: Prices
   - - meta
     - name: og:description
-      content: "Learn how to work with prices in Shopware Frontends."
+      content: "Learn how to work with prices in Shopware Composable Frontends."
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Working%20with%20**Prices**.png"

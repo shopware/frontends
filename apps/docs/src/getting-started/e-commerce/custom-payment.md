@@ -12,7 +12,7 @@ head:
 ---
 
 <script setup>
-import StackBlitzLiveExample from '../components/StackBlitzLiveExample.vue'
+import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 </script>
 
 # Custom payment flow based on PayPal Express Checkout
@@ -24,7 +24,7 @@ In order to follow this guide properly, we recommend that you get familiar with 
 - [Payment API](https://shopware.stoplight.io/docs/store-api/8218801e50fe5-handling-the-payment)
   :::
 
-In this chapter you will learn how to integrate a payment flow with Shopware Frontends. There are various ways in which payment providers integrate with Shopware's API, so it is likely that you need to consult the documentation of your payment provider to get the details.
+In this chapter you will learn how to integrate a payment flow with Shopware Composable Frontends. There are various ways in which payment providers integrate with Shopware's API, so it is likely that you need to consult the documentation of your payment provider to get the details.
 
 This specific guides shows how to integrate the **PayPal Express Checkout**. However, the general flow is the same for all payment providers, so you will be able to use this guide as a reference for different providers.
 

@@ -5,7 +5,7 @@ head:
       content: Shopping Experiences
   - - meta
     - name: og:description
-      content: "This guide will discuss how to use and customize Shopping Experiences in your Shopware Frontends project."
+      content: "This guide will discuss how to use and customize Shopping Experiences in your Shopware Composable Frontends project."
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Shopping%20Experiences?fontSize=150px"
@@ -15,7 +15,7 @@ nav:
 
 # Shopping Experiences
 
-This guide will discuss how to use and customize Shopping Experiences in your Shopware Frontends project.
+This guide will discuss how to use and customize Shopping Experiences in your Shopware Composable Frontends project.
 
 ## How it works
 

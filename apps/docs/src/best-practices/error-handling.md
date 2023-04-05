@@ -15,6 +15,6 @@ nav:
 
 # Error Handling
 
-The sub-pages will describe the way for error handling in different areas and different cases with examples.
+How to for error handling in different areas and different cases with examples.
 
-- [API Client](./error-handling/api-client-error-handling.md)
+<PageRef page="./error-handling/api-client-error-handling" title="API Client" sub="Example how to handle API errors with the API Client" />

@@ -2,27 +2,27 @@
 head:
   - - meta
     - name: og:title
-      content: Why Shopware Frontends
+      content: Why Shopware Composable Frontends
   - - meta
     - name: og:description
-      content: "Shopware Frontends is a framework for building custom, cloud-native Shopware Storefronts."
+      content: "Shopware Composable Frontends is a framework for building custom, cloud-native Shopware Storefronts."
 nav:
   hidden: true
 ---
 
-# Why Shopware Frontends
+# Why Shopware Composable Frontends?
 
-Shopware **Frontends** is a framework for building custom, cloud-native Shopware Storefronts.
+Shopware Composable **Frontends** is a framework for building custom, cloud-native Shopware Storefronts.
 
 We observe, that a theme-based approach to customize a Shopware storefront can be limiting. With more customizations, it becomes increasingly hard to maintain and keep in sync with the growing matrix of dependencies like the Shopware Core, the theme, plugins and custom extensions.
 
-In those cases, a headless approach can be less complex and more agile and scalable. It turns the dependency hierarchy inside out, by decoupling the frontend from the backend. Shopware Frontends implements that approach with an open architecture which favors flexibilty and scalability over feature-completeness and configurability.
+In those cases, a headless approach can be less complex and more agile and scalable. It turns the dependency hierarchy inside out, by decoupling the frontend from the backend. Shopware Composable Frontends implements that approach with an open architecture which favors flexibilty and scalability over feature-completeness and configurability.
 
 ➡ [Also see its limitations](#limitations)
 
 ## Key Aspects
 
-Below are some key aspects explanining why Shopware Frontends could be a good fit for your project.
+Below are some key aspects explanining why Shopware Composable Frontends could be a good fit for your project.
 
 ### Shopware native
 
@@ -58,12 +58,12 @@ to what your site can look like. Build your site in a lego-block-manner by using
 
 ## Limitations
 
-Shopware Frontends is a framework and not a finished product. Even it the [demo store template](./getting-started/templates/demo-store-template.md) looks like a proper store, it's not an off-the-shelf solution.
+Shopware Composable Frontends is a framework and not a finished product. Even it the [demo store template](./getting-started/templates/demo-store-template.md) looks like a proper store, it's not an off-the-shelf solution.
 
-In contrast to Shopware's Twig Storefront, Shopware Frontends is not compatible with any apps, themes or plugins. If you want to use third party extensions, you need to ensure that they come with useful Store API endpoints and implement the frontend logic and UI yourself.
+In contrast to Shopware's Twig Storefront, Shopware Composable Frontends is not compatible with any apps, themes or plugins. If you want to use third party extensions, you need to ensure that they come with useful Store API endpoints and implement the frontend logic and UI yourself.
 
-We recommend having profound knowledge of Vue.js or another reactive Javascript framework and experience with headless frontend architecture when you plan to implement a project with Shopware Frontends.
+We recommend having profound knowledge of Vue.js or another reactive Javascript framework and experience with headless frontend architecture when you plan to implement a project with Shopware Composable Frontends.
 
 ---
 
-<PageRef page="../getting-started/templates" title="Getting Started" sub="Get started with Shopware Frontends" />
+<PageRef page="../getting-started/templates" title="Getting Started" sub="Get started with Shopware Composable Frontends" />

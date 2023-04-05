@@ -102,7 +102,7 @@ In this example, browser will decide which image format is available to serve, o
   />
   <img
     src="https://images.swfrontends.com/frontends-unsplash.png"
-    alt="Logo Shopware Frontends"
+    alt="Logo Shopware Composable Frontends"
   />
 </picture>
 ```

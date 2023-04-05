@@ -15,7 +15,7 @@ nav:
 
 # Deployment
 
-Shopware Frontends can be deployed in multiple ways, depending on the setup you are using. Most likely you will be using either a static hosting service or a server with a Node.js runtime. The different options and approaches are described below.
+Shopware Composable Frontends can be deployed in multiple ways, depending on the setup you are using. Most likely you will be using either a static hosting service or a server with a Node.js runtime. The different options and approaches are described below.
 
 ## Static hosting
 

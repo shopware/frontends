@@ -12,8 +12,8 @@
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "vitepress": "1.0.0-alpha.64",
-    "vitepress-shopware-docs": "^0.1.9",
+    "vitepress": "1.0.0-alpha.65",
+    "vitepress-shopware-docs": "0.3.0-beta.38",
     "vue": "^3.2.47"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@ head:
       content: "Work with routing"
   - - meta
     - name: og:description
-      content: "Understand which tools for routing Shopware Frontends provides"
+      content: "Understand which tools for routing Shopware Composable Frontends provides"
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Work%20with%20**Routing**.png?fontSize=150px"
