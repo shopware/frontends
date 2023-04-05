@@ -19,7 +19,7 @@ const { product, changeVariant } = useProduct(
 );
 
 const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(product);
-const regulationPrice = computed(() => price?.value?.regulationPrice?.price)
+const regulationPrice = computed(() => price.value?.regulationPrice?.price)
 const { getFormattedPrice } = usePrice();
 
 const referencePrice = computed(

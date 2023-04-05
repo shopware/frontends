@@ -9,7 +9,7 @@ const { product } = toRefs(props);
 
 const { price, unitPrice, displayFromVariants, displayFrom, isListPrice } =
   useProductPrice(product);
-const regulationPrice = computed(() => price?.value?.regulationPrice?.price)
+const regulationPrice = computed(() => price.value?.regulationPrice?.price)
 
 </script>
 
