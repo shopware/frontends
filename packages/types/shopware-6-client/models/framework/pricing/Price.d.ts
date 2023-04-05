@@ -4,7 +4,7 @@ export type Price = {
   linked: boolean;
   listPrice: null;
   currencyId: number;
-  regulationPrice: Partial<Price>;
+  regulationPrice: null | Partial<Price>;
   percentage: null;
   apiAlias: "price";
 };
