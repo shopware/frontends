@@ -1,5 +1,61 @@
 # @shopware-pwa/nuxt3-module
 
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @shopware-pwa/composables-next@0.7.1
+  - @shopware-pwa/api-client@0.3.1
+
+## 0.3.0
+
+### Minor Changes
+
+- [#71](https://github.com/shopware/frontends/pull/71) [`e71cc788`](https://github.com/shopware/frontends/commit/e71cc788c375c19ec449b820c0813b83503ef067) Thanks [@patzick](https://github.com/patzick)! - **BREAKING**: Remove default config and use Nuxt runtime config
+
+  change your `nuxt.config.js` from:
+
+  ```ts
+  export default defineNuxtConfig({
+    ///...
+    shopware: {
+      shopwareEndpoint: "http://localhost:8000",
+      shopwareAccessToken: "your-access-token",
+    },
+    ///...
+  });
+  ```
+
+  to
+
+  ```ts
+  export default defineNuxtConfig({
+    ///...
+    runtimeConfig: {
+      public: {
+        shopware: {
+          shopwareEndpoint: "http://localhost:8000",
+          shopwareAccessToken: "your-access-token",
+        },
+      },
+    },
+    ///...
+  });
+  ```
+
+### Patch Changes
+
+- [`09e49987`](https://github.com/shopware/frontends/commit/09e499877efe6f7ccccf6fc166a07d806a68a136) Thanks [@mkucmus](https://github.com/mkucmus)! - Correct languageId access on config change
+
+- [#79](https://github.com/shopware/frontends/pull/79) [`b2fde982`](https://github.com/shopware/frontends/commit/b2fde98223ad49a791d01803349ee5664743c714) Thanks [@patzick](https://github.com/patzick)! - upgraded Nuxt to 3.3.2
+
+- [`aff245cb`](https://github.com/shopware/frontends/commit/aff245cb43ac2b69772ffd08e3250c52decf31f4) Thanks [@elkmod](https://github.com/elkmod)! - Added devtools integration to nuxt-module
+
+- Updated dependencies [[`50e74be5`](https://github.com/shopware/frontends/commit/50e74be52034d1947e273985f778e986f077db44), [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b), [`d358854c`](https://github.com/shopware/frontends/commit/d358854c632447228e719efdf639c428cf6ba804), [`dab0f839`](https://github.com/shopware/frontends/commit/dab0f839eeebe6bb9999cdd0ec11925d935b08b9), [`ec030631`](https://github.com/shopware/frontends/commit/ec0306312fa42451f5f4a98c3e8985b70496fd37), [`da2f6897`](https://github.com/shopware/frontends/commit/da2f6897e6839fbeb3ba7eae1eac376f423f2f99), [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b), [`30493417`](https://github.com/shopware/frontends/commit/30493417ad5b97ee1f0553f68357a23446b85522), [`e13d3d9a`](https://github.com/shopware/frontends/commit/e13d3d9adde759e97ca7fa9b7a782b7991428679), [`e71cc788`](https://github.com/shopware/frontends/commit/e71cc788c375c19ec449b820c0813b83503ef067)]:
+  - @shopware-pwa/composables-next@0.7.0
+  - @shopware-pwa/api-client@0.3.0
+
 ## 0.2.1
 
 ### Patch Changes

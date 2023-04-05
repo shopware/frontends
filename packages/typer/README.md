@@ -100,3 +100,14 @@ Paths for type resolver and codebase are configured during plugin registration.
 - ensure that dev dependencies should not be bundled
 - minify plugin configuration and use more smart algorithms to resolve corresponding types
 - use synchronized functions for file system actions to minimize promises
+<!-- AUTO GENERATED CHANGELOG -->
+
+## Changelog
+
+Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/typer/CHANGELOG.md)
+
+### Latest changes: 0.1.1
+
+### Patch Changes
+
+- [`6083a618`](https://github.com/shopware/frontends/commit/6083a618c5389c0850a2a777f8b1bf54656606c5) Thanks [@mkucmus](https://github.com/mkucmus)! - Correct github tree path for examples builder
