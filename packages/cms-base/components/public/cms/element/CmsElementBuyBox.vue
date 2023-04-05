@@ -96,7 +96,7 @@ const restockTime = computed(() => product.value?.restockTime);
       >
       <span v-else>No longer available</span>
     </div>
-    <SwVariantConfigurator :product="product" @change="changeVariant" />
+    <SwVariantConfigurator @change="changeVariant" />
     <SwProductAddToCart :product="product" />
     <div class="mt-3 product-detail-ordernumber-container">
       <span class="font-bold text-gray-900"> Product number: </span>

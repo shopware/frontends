@@ -11,22 +11,24 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Setup Node.js environment
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
+      - run: corepack enable
+      - run: pnpm --version
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
           cache: "pnpm"
+          cache-dependency-path: "**/pnpm-lock.yaml"
+      - name: install
+        run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Install dependencies with Playwright
         run: |
-          pnpm install
           pnpm playwright install --with-deps
 
       - name: Run tests

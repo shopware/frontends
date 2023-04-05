@@ -16,8 +16,10 @@ const { pushError } = useNotifications();
 
 const router = useRouter();
 const loading = ref<boolean>();
+const doubleOptInBox = ref()
+const showDoubleOptInBox = ref(false)
 
-const state = reactive({
+const initialState = {
   salutationId: "",
   firstName: "",
   lastName: "",
@@ -29,7 +31,9 @@ const state = reactive({
     city: "",
     countryId: "",
   },
-});
+}
+
+const state = reactive(JSON.parse(JSON.stringify(initialState)));
 
 const rules = computed(() => ({
   salutationId: {
@@ -77,7 +81,14 @@ const invokeSubmit = async () => {
     try {
       loading.value = true;
       const response = await register(state);
-      if (response) router.push("/");
+      if (response && response.active) router.push("/");
+      else if (response && !response.active) {
+        Object.assign(state, JSON.parse(JSON.stringify(initialState)));
+        showDoubleOptInBox.value = true
+        await nextTick()
+        doubleOptInBox.value.scrollIntoView();
+        $v.value.$reset()
+      }
     } catch (error) {
       let message =
         (error as ClientApiError)?.messages?.[0]?.detail ||
@@ -99,6 +110,7 @@ useBreadcrumbs([
 
 <template>
   <div class="max-w-screen-xl mx-auto px-6 sm:px-4">
+    <div v-if="showDoubleOptInBox" class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4" ref="doubleOptInBox">Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.</div>
     <form
       class="w-full relative"
       data-testid="registration-form"

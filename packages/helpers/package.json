@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/helpers-next",
-  "version": "0.1.24",
+  "version": "0.1.26",
   "description": "Shopware helpers for accessing API data",
   "author": "Shopware",
   "repository": {
@@ -33,11 +33,11 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@vitest/coverage-c8": "^0.29.7",
+    "@vitest/coverage-c8": "^0.29.8",
     "eslint-config-shopware": "workspace:*",
     "jsdom": "^21.1.1",
     "tsconfig": "workspace:*",
-    "vitest": "^0.29.7"
+    "vitest": "^0.29.8"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*"
