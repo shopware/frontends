@@ -13,7 +13,7 @@ const { getFormattedPrice } = usePrice();
 
 <template>
   <div>
-    <div v-if="!tierPrices.length">
+    <div v-if="tierPrices.length <= 1">
       <SharedPrice
         v-if="isListPrice"
         class="text-1xl text-gray-900 basis-2/6 justify-end line-through"
