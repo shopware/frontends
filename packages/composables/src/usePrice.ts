@@ -53,7 +53,7 @@ export function usePrice(): UsePriceReturn {
       return "";
     }
 
-    if (typeof Intl === "undefined" || !currencyLocale.value) {
+    if (!currencyLocale.value) {
       return value.toString();
     }
 
