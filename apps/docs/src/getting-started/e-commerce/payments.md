@@ -12,7 +12,7 @@ head:
 ---
 
 <script setup>
-import StackBlitzLiveExample from '../components/StackBlitzLiveExample.vue'
+import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 </script>
 
 # Payments
@@ -122,4 +122,4 @@ However, if there are no plugin-specific endpoints to interact with, the `handle
 
 See what can be achieved on Express Checkout example for PayPal provider.
 
-<PageRef page="./custom-payment.md" title="Custom Payment with PayPal" sub="Custom payment flow based on PayPal Express Checkout." />
+<PageRef page="custom-payment" title="Custom Payment with PayPal" sub="Custom payment flow based on PayPal Express Checkout." />
