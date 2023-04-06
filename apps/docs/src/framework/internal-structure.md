@@ -2,10 +2,10 @@
 head:
   - - meta
     - name: og:title
-      content: Shopware Composable Frontends Internal Structure
+      content: Shopware Frontends Internal Structure
   - - meta
     - name: og:description
-      content: "Details about the internal structure of Shopware Composable Frontends"
+      content: "Details about the internal structure of Shopware Frontends"
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Internal%20Structure?fontSize=150px"
@@ -17,13 +17,13 @@ import githubIcon from '../.assets/framework-icons/github.png';
 
 # Internal Structure
 
-The internal structure of Shopware Composable Frontends is designed to provide flexibility, reusability and abstraction. Shopware Composable Frontends is a framework that is build with JavaScript and TypeScript.
+The internal structure of Shopware Frontends is designed to provide flexibility, reusability and abstraction. Shopware Frontends is a framework that is build with JavaScript and TypeScript.
 
 Some of its components are based on Vue.js and Nuxt.js. The framework is designed to be used mostly with Vue.js and Nuxt.js, but it is not limited to these technologies. You can use it with any other JavaScript framework or library.
 
 This section deals with the different packages and their abstractions. It is sorted by reusability / abstraction level from high to low and shows the main dependencies of each component respectively.
 
-<PageRef title="shopware/frontends packages" sub="Explore all Shopware Composable Frontends packages on GitHub" :icon="githubIcon" page="https://github.com/shopware/frontends/tree/main/packages" target="_blank" />
+<PageRef title="shopware/frontends packages" sub="Explore all Shopware Frontends packages on GitHub" :icon="githubIcon" page="https://github.com/shopware/frontends/tree/main/packages" target="_blank" />
 
 ## api-client
 
@@ -74,9 +74,9 @@ The composables are a set of Vue.js composition functions that can be used in an
     <img src="../.assets/framework-icons/nuxt.png" alt="This package depends on Nuxt 3" title="This package depends on Nuxt 3" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware-pwa/nuxt3-module" target="_blank">@shopware-pwa/nuxt3-module</a>
 </div>
 
-The Nuxt 3 module allows you to set up a Nuxt 3 project with Shopware Composable Frontends. It provides the [composables](#composables) and [api-client](#api-client) packages.
+The Nuxt 3 module allows you to set up a Nuxt 3 project with Shopware Frontends. It provides the [composables](#composables) and [api-client](#api-client) packages.
 
-If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Composable Frontends in a [custom project](../getting-started/templates/custom-project.md) or use the [vue3-plugin](#vue3-plugin).
+If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Frontends in a [custom project](../getting-started/templates/custom-project.md) or use the [vue3-plugin](#vue3-plugin).
 
 ## cms-base
 
@@ -93,4 +93,4 @@ Head to our [Content Pages](../getting-started/content-pages.md#use-the-cms-base
 
 ## Templates & Examples
 
-Our GitHub repository also contains reference implementations for different frameworks and use cases. You can find them in the [templates](https://github.com/shopware/frontends/tree/main/templates) and [examples](https://github.com/shopware/frontends/tree/main/examples) folders. These examples are not directly part of the framework, but can be useful for learning how to use Shopware Composable Frontends.
+Our GitHub repository also contains reference implementations for different frameworks and use cases. You can find them in the [templates](https://github.com/shopware/frontends/tree/main/templates) and [examples](https://github.com/shopware/frontends/tree/main/examples) folders. These examples are not directly part of the framework, but can be useful for learning how to use Shopware Frontends.

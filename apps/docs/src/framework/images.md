@@ -65,7 +65,7 @@ Let's have a look what's inside:
       "width": 3505, // original width
       "height": 5258 // original height
   },
-  "alt": "Shopware Composable Frontends",
+  "alt": "Shopware Frontends",
   "url": "http://localhost/media/shopware-frontends-4P8HWu_NRp4-unsplash.jpg",
   "fileName": "shopware-frontends-4P8HWu_NRp4-unsplash",
   "thumbnails": [ // list of resized images for previously configured ranges

@@ -22,7 +22,7 @@ const communityModules = [
         title: 'Middleware Proxy Module',
         maintainer: 'meeshoogendoorn',
         link: 'https://github.com/meeshoogendoorn/shopware-frontends-proxy',
-        description: 'Nuxt middleware proxy for Shopware Composable Frontends. Remove the need for CORS preflight requests',
+        description: 'Nuxt middleware proxy for Shopware Frontends. Remove the need for CORS preflight requests',
         icon: '🚀'
     },
     {
@@ -36,7 +36,7 @@ const communityModules = [
         title: 'Headless CMS POC',
         maintainer: 'meeshoogendoorn',
         link: 'https://github.com/meeshoogendoorn/shopware-frontends-headless-cms-integration',
-        description: 'Prototype for a headless CMS integration for Shopware Composable Frontends with Storyblok',
+        description: 'Prototype for a headless CMS integration for Shopware Frontends with Storyblok',
         icon: '📝'
     }
 ]

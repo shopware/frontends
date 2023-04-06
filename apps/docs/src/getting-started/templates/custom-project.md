@@ -1,6 +1,6 @@
 # Custom project
 
-Follow these steps to integrate Shopware Composable Frontends into an existing, custom Vue.js project
+Follow these steps to integrate Shopware Frontends into an existing, custom Vue.js project
 
 - Install the required dependencies
 - Prepare a Vue plugin for better encapsulation
@@ -259,6 +259,6 @@ export default {
 
 ## Next steps
 
-After your setup, you can follow our building guides to get started with Shopware Composable Frontends
+After your setup, you can follow our building guides to get started with Shopware Frontends
 
 <PageRef page="../../getting-started/navigation" title="Getting Started - Navigation" sub="Let's implement a store navigation" />

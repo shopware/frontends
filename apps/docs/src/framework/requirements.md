@@ -2,10 +2,10 @@
 head:
   - - meta
     - name: og:title
-      content: Shopware Composable Frontends Requirements
+      content: Shopware Frontends Requirements
   - - meta
     - name: og:description
-      content: "Which Node.js version, package manager, IDE and extensions should you use to get started with Shopware Composable Frontends?"
+      content: "Which Node.js version, package manager, IDE and extensions should you use to get started with Shopware Frontends?"
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Requirements?fontSize=150px"
@@ -15,11 +15,11 @@ nav:
 
 # Environment requirements
 
-Shopware Composable Frontends requires a Node.js runtime environment. Besides that, for development you can use your favourite package manager.
+Shopware Frontends requires a Node.js runtime environment. Besides that, for development you can use your favourite package manager.
 
 ## Shopware API
 
-Shopware Composable Frontends does not differ between provisioning of the Shopware API. Both, cloud and self-managed Shopware 6 instances are supported.
+Shopware Frontends does not differ between provisioning of the Shopware API. Both, cloud and self-managed Shopware 6 instances are supported.
 
 Every development instance / setup template is pre-configured with a public demo API. That way you don't have to set up a Shopware instance yourself.
 
@@ -39,7 +39,7 @@ If you are using the `demo-store-template`, we also recommend the following exte
 
 ## Node.js
 
-Shopware Composable Frontends requires a Node.js runtime environment.
+Shopware Frontends requires a Node.js runtime environment.
 
 Supported versions:
 

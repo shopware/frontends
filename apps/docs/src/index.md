@@ -1,15 +1,15 @@
 ---
 sidebar: true
 nav:
-  title: Shopware Composable Frontends
+  title: Shopware Frontends
   position: 10
   links:
-    - text: Shopware Composable Frontends
+    - text: Shopware Frontends
       items:
         - link: /frontend/
           text: Overview
         - link: /frontend/why-shopware-frontends.html
-          text: Why Shopware Composable Frontends
+          text: Why Shopware Frontends
       position: 5
 ---
 
@@ -20,9 +20,9 @@ nav:
 
 <div class="text-center">
 
-Shopware Composable Frontends is Shopware's Vue.js <strong>framework</strong> for building custom storefronts.
+**Shopware Composable Frontends** is Shopware's toolkit for creating **platform agnostics** custom storefronts. The demo store implementation is based on **Vue.js** and **Nuxt3**.
 
-<PageRef title="Get Started 🚀" sub="Start building your first Shopware Composable Frontends project" page="../getting-started/templates" />
+<PageRef title="Get Started 🚀" sub="Start building your first Shopware Frontends project" page="../getting-started/templates" />
 
 </div>
 
@@ -34,11 +34,11 @@ Frontends is a collection of multiple packages that you can use to implement you
 
 ### Data Sources
 
-Shopware 6 is considered one "supported" data source, but you can integrate any other data source you like - such as CMS or analytics. Shopware Composable Frontends uses the Store API to connect with your Shopware 6 instance at runtime.
+Shopware 6 is considered one "supported" data source, but you can integrate any other data source you like - such as CMS or analytics. Shopware Frontends uses the Store API to connect with your Shopware 6 instance at runtime.
 
 ### Logic
 
-A big part (and a risk factor) of every custom storefront project is the implementation of domain-specific business functionality. That's why Shopware Composable Frontends offers various packages that take care of some heavy lifting:
+A big part (and a risk factor) of every custom storefront project is the implementation of domain-specific business functionality. That's why Shopware Frontends offers various packages that take care of some heavy lifting:
 
 - Routing
 - Shopping worlds (Shopware CMS) integration
@@ -52,4 +52,4 @@ It also comes with TypeScript support.
 
 You can decide to start from scratch and use no template at all, but we recommend looking at our [Templates](./getting-started/templates.md) which are based on **Nuxt.js** and **Tailwind CSS**.
 
-<PageRef title="Internal Structure" sub="Details about the internal structure of Shopware Composable Frontends" page="/framework/internal-structure" />
+<PageRef title="Internal Structure" sub="Details about the internal structure of Shopware Frontends" page="/framework/internal-structure" />
