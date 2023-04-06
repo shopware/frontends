@@ -4,7 +4,6 @@ import baseConfig from "vitepress-shopware-docs/config";
 import { TsFunctionDescription, TsFunctionsList } from "@shopware-pwa/typer";
 import nav from "./navigation";
 import { resolve } from "node:path";
-import { SearchPlugin } from "vitepress-plugin-search";
 
 export const sidebar = [
   {
@@ -195,7 +194,6 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       stringify: true,
     },
     plugins: [
-      SearchPlugin(),
       TsFunctionsList(),
       TsFunctionDescription({
         rootDir: resolve(__dirname, "../../../"),
