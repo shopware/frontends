@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
-    "build": "nuxi build --dotenv .env.production",
+    "build": "nuxi build",
     "start": "nuxi start",
     "lint": "eslint './**/*.{js,ts,vue}' --fix --max-warnings=0",
     "generate": "nuxt generate",

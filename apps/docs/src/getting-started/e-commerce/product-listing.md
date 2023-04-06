@@ -250,7 +250,7 @@ Built-in aggregations:
 
 ### Get list of all available filters
 
-<img src="../.assets/filter.getAvailableFilters.svg" />
+<img src="../../.assets/filter.getAvailableFilters.svg" />
 
 [comment]: # "mermaid source: https://gist.github.com/mkucmus/4002882a229c2a9eb60fe83b84483b2b"
 
@@ -392,7 +392,7 @@ setCurrentFilters({
 
 ### Get list of applied (active) filters or its options
 
-<img src="../.assets/filter.getCurrentFilters.svg" />
+<img src="../../.assets/filter.getCurrentFilters.svg" />
 
 ```vue
 <script setup lang="ts">

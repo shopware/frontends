@@ -4,7 +4,7 @@ nav:
 ---
 
 <script setup>
-import StackBlitzLiveExample from '../components/StackBlitzLiveExample.vue'
+import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 </script>
 
 # Create a login form
