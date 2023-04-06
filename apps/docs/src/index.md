@@ -20,7 +20,7 @@ nav:
 
 <div class="text-center">
 
-Shopware Frontends is Shopware's Vue.js <strong>framework</strong> for building custom storefronts.
+**Shopware Composable Frontends** is Shopware's toolkit for creating **platform agnostics** custom storefronts. The demo store implementation is based on **Vue.js** and **Nuxt3**.
 
 <PageRef title="Get Started 🚀" sub="Start building your first Shopware Frontends project" page="../getting-started/templates" />
 

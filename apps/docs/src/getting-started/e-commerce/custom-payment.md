@@ -12,7 +12,7 @@ head:
 ---
 
 <script setup>
-import StackBlitzLiveExample from '../components/StackBlitzLiveExample.vue'
+import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 </script>
 
 # Custom payment flow based on PayPal Express Checkout
