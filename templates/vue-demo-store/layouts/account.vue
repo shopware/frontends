@@ -5,7 +5,11 @@ export default {
 </script>
 
 <script setup lang="ts">
-useAuthGuardRedirection();
+const route = useRoute()
+const to = route.query.to as string;
+const params = {to: to}
+
+useAuthGuardRedirection(params);
 
 // Navigation for Account page
 const { loadNavigationElements } = useNavigation();
