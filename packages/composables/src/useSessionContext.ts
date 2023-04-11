@@ -111,9 +111,10 @@ export function useSessionContext(
     try {
       const context = await getSessionContext(apiInstance);
       _sessionContext.value = context;
+
       init({
-        currencyPosition: context.currency.position,
-        currencySymbol: context.currency.symbol,
+        currencyCode: context.currency?.isoCode,
+        localeCode: context.salesChannel?.language?.locale?.code,
       });
     } catch (e) {
       console.error("[UseSessionContext][refreshSessionContext]", e);
