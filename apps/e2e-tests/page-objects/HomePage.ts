@@ -32,22 +32,22 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await this.page.waitForLoadState("load"),
-      await this.signInButton.isEnabled();
+    await this.page.waitForLoadState("load");
+    await this.signInButton.isEnabled();
     await this.signInButton.click();
   }
 
   async openCartPage() {
     await this.page.waitForLoadState("load");
-    await this.linkToCartPage.click(),
-      await this.page.waitForSelector("[data-testid='product-quantity']"),
-      await this.page.waitForLoadState("load");
+    await this.linkToCartPage.click();
+    await this.page.waitForSelector("[data-testid='product-quantity']");
+    await this.page.waitForLoadState("load");
   }
 
   async openVariantsCartPage() {
     await this.page.waitForLoadState("load");
-    await this.linkToVariantPage.click(),
-      await this.page.waitForSelector("[data-testid='product-quantity']");
+    await this.linkToVariantPage.click();
+    await this.page.waitForSelector("[data-testid='product-quantity']");
   }
 
   async openRegistrationPage() {
@@ -65,7 +65,7 @@ export class HomePage extends AbstractPage {
   async addProductToWishlist() {
     await Promise.all([
       this.page.waitForLoadState("load"),
-      await this.addToWishlist.nth(13).click(),
+      await this.addToWishlist.nth(13).click()
     ]);
   }
 }
