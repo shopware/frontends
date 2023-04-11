@@ -32,28 +32,27 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await Promise.all([
-      this.page.waitForLoadState("load"),
-      this.signInButton.click(),
-    ]);
+    await this.page.waitForLoadState("load"),
+      await this.signInButton.isEnabled();
+    await this.signInButton.click();
   }
 
   async openCartPage() {
-    await Promise.all([
-      this.linkToCartPage.click(),
-      this.page.waitForSelector("[data-testid='product-quantity']"),
-      this.page.waitForLoadState("load"),
-    ]);
+    await this.page.waitForLoadState("load");
+    await this.linkToCartPage.click(),
+      await this.page.waitForSelector("[data-testid='product-quantity']"),
+      await this.page.waitForLoadState("load");
   }
 
   async openVariantsCartPage() {
-    await Promise.all([
-      this.linkToVariantPage.click(),
-      this.page.waitForSelector("[data-testid='product-quantity']"),
-    ]);
+    await this.page.waitForLoadState("load");
+    await this.linkToVariantPage.click(),
+      await this.page.waitForSelector("[data-testid='product-quantity']");
   }
 
   async openRegistrationPage() {
+    await this.page.waitForLoadState("load");
+    await this.linkToRegistrationPage.isVisible();
     await this.linkToRegistrationPage.click();
   }
 

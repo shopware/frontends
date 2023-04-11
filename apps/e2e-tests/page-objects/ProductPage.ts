@@ -20,23 +20,23 @@ export class ProductPage {
   }
 
   async addToCart() {
-    await Promise.all([
-      this.page.waitForLoadState("load"),
-      this.addToCartButton.click(),
-    ]);
+    await this.page.waitForLoadState("networkidle"),
+      await this.addToCartButton.click();
   }
 
   async addVariantToCart() {
     for (const variant of await this.page
       .locator("[data-testid='product-variant-text']")
       .all())
-      await variant.click(),
-        await this.addToCartButton.click(),
-        await this.miniCartLink.click(),
-        expect(this.variantText.textContent).toEqual(
-          this.productOption.textContent
-        ),
-        await this.productRemove.click(),
-        await this.page.locator("[data-testid='cart-close-button']").click();
+      await variant.click(), await this.page.waitForLoadState("load");
+    await this.addToCartButton.isEnabled();
+    await this.addToCartButton.click(),
+      await this.miniCartLink.click(),
+      expect(this.variantText.textContent).toEqual(
+        this.productOption.textContent
+      ),
+      await this.page.waitForLoadState("networkidle");
+    await this.productRemove.click(),
+      await this.page.locator("[data-testid='cart-close-button']").click();
   }
 }
