@@ -98,13 +98,13 @@ Tier prices presented as a table with range labeled by "to" and "from":
 
 ## Format price according to current context
 
-There are additional metadata available in current API context. One of them is current currency. In order to display price together with currency symbol applied to the current context, use `getFormattedPrice` helper:
+There are additional metadata available in current API context. One of them is current currency. In order to display price together with currency symbol applied to the current context, use `getFormattedPrice` helper from [usePrice](../packages/composables/usePrice.md) composable:
 
 ```ts
 const price = 12.95;
 const { getFormattedPrice } = usePrice();
 const priceWithCurrency = getFormattedPrice(price);
-// output: 12.95 $
+// output: $12.95
 ```
 
 Thanks to this, the `priceWithCurrency` will have the current currency symbol prefixed or suffixed, according to the configuration.
