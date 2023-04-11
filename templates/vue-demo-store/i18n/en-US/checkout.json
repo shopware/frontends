@@ -1,0 +1,20 @@
+{
+    "checkout": {
+        "header": "Shopping cart",
+        "empty": "Your shopping cart is empty",
+        "close": "Close panel",
+        "subtotal": "Subtotal",
+        "taxesLabel": "Shipping and taxes calculated at checkout.",
+        "linkCheckout": "Checkout",
+        "linkShippingCart": "Go to shopping cart",
+        "or":"or",
+        "continueShopping": "Continue Shopping",
+        "promoCode": {
+            "label": "Applied promo codes",
+            "remove": "Remove"
+        },
+        "items": {
+            "removeButton": "Remove"
+        }
+    }
+}

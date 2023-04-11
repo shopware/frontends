@@ -7,6 +7,7 @@ const emits = defineEmits<{
 }>();
 
 const { isLoggedIn, login } = useUser();
+const {t} = useI18n()
 const { mergeWishlistProducts } = useWishlist();
 const { pushSuccess } = useNotifications();
 const loginErrors = ref<string[]>([]);
@@ -22,7 +23,7 @@ const invokeLogin = async (): Promise<void> => {
   try {
     await login(formData.value);
     emits("success");
-    pushSuccess("You are logged in");
+    pushSuccess(t("account.messages.loggedInSuccess"));
     emits("close");
     mergeWishlistProducts();
   } catch (error) {
@@ -39,7 +40,7 @@ const invokeLogin = async (): Promise<void> => {
       <div>
         <img class="mx-auto h-12 w-auto" src="/logo.svg" alt="Logo" />
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
+          {{  $t('account.signInLabel') }}
         </h2>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="invokeLogin">
@@ -51,7 +52,7 @@ const invokeLogin = async (): Promise<void> => {
         />
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="email-address" class="sr-only">Email address</label>
+            <label for="email-address" class="sr-only">{{$t('form.email')}}</label>
             <input
               id="email-address"
               v-model="formData.username"
@@ -65,7 +66,7 @@ const invokeLogin = async (): Promise<void> => {
             />
           </div>
           <div>
-            <label for="password" class="sr-only">Password</label>
+            <label for="password" class="sr-only">{{ $t('form.password') }}</label>
             <input
               id="password"
               v-model="formData.password"
@@ -107,7 +108,7 @@ const invokeLogin = async (): Promise<void> => {
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
               <div class="w-5 h-5 i-carbon-locked" />
             </span>
-            Sign in
+            {{ $t('account.signIn') }}
           </button>
 
           <slot name="action">
@@ -117,7 +118,7 @@ const invokeLogin = async (): Promise<void> => {
                 class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 data-testid="login-sign-up-link"
               >
-                Sign up
+                {{ $t('account.signUp') }}
               </NuxtLink>
             </div>
           </slot>
@@ -125,7 +126,7 @@ const invokeLogin = async (): Promise<void> => {
       </form>
     </div>
     <div v-else>
-      <h2>you are logged in</h2>
+      <h2>{{ $t('account.loggedInInfo')}}</h2>
       <button @click="$emit('close')">close</button>
     </div>
   </div>

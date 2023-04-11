@@ -1,0 +1,15 @@
+{
+    "form": {
+        "salutation": "Salutation",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "country": "Country",
+        "streetAddress": "Street address",
+        "password": "Password",
+        "email": "Email address",
+        "confirmEmail": "Confirm e-mail",
+        "city": "City",
+        "postalCode": "ZIP / Postal code",
+        "save": "Save"
+    }
+}

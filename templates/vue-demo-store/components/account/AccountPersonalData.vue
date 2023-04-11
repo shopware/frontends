@@ -123,8 +123,7 @@ onMounted(async () => {
   <div class="space-y-8">
     <div class="text-sm text-gray-500">
       <div>
-        Feel free to edit any of your details below so your account is always up
-        to date
+        {{ $t('account.personalData.infoBox') }}
       </div>
     </div>
     <form
@@ -137,7 +136,7 @@ onMounted(async () => {
         class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg"
         role="alert"
       >
-        <span class="font-medium">Your information has been updated.</span>
+        <span class="font-medium">{{$t('account.messages.personalDataUpdateSuccess')}}</span>
       </div>
       <div
         v-if="errorMessages.length"
@@ -151,7 +150,7 @@ onMounted(async () => {
             for="firstname"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            First name
+            {{$t('form.firstName')}}
           </label>
           <input
             id="firstname"
@@ -177,7 +176,7 @@ onMounted(async () => {
             for="lastname"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            Last name
+            {{ $t('form.lastName') }}
           </label>
           <input
             id="lastname"
@@ -203,7 +202,7 @@ onMounted(async () => {
             for="email"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            Your email
+            {{ $t('form.email') }}
           </label>
           <input
             id="email"
@@ -229,7 +228,7 @@ onMounted(async () => {
             for="email-confirm"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            Confirm e-mail
+            {{ $t('form.confirmEmail') }}
           </label>
           <input
             id="email-confirm"
@@ -255,7 +254,7 @@ onMounted(async () => {
             for="password"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            Your password
+            {{ $t('form.password') }}
           </label>
           <input
             id="password"
@@ -284,7 +283,7 @@ onMounted(async () => {
           type="submit"
           data-testid="account-personal-data-submit-button"
         >
-          Save changes
+          {{ $t('form.save') }}
         </button>
       </div>
     </form>

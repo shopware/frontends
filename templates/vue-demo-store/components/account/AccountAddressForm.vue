@@ -63,7 +63,7 @@ const invokeSave = async (): Promise<void> => {
                 for="country"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                Salutation
+                {{ $t('form.salutation') }}
               </label>
               <select
                 id="salutation"
@@ -89,7 +89,7 @@ const invokeSave = async (): Promise<void> => {
                 for="first-name"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                First name
+                {{ $t('form.firstName') }}
               </label>
               <input
                 id="first-name"
@@ -107,7 +107,7 @@ const invokeSave = async (): Promise<void> => {
                 for="last-name"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                Last name
+               {{ $t('form.lastName') }}
               </label>
               <input
                 id="last-name"
@@ -124,7 +124,7 @@ const invokeSave = async (): Promise<void> => {
                 for="country"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                Country
+                  {{ $t('form.country') }}
               </label>
               <select
                 id="country"
@@ -151,7 +151,7 @@ const invokeSave = async (): Promise<void> => {
                 for="street-address"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                Street address
+                 {{ $t('form.streetAddress') }}
               </label>
               <input
                 id="street-address"
@@ -170,7 +170,7 @@ const invokeSave = async (): Promise<void> => {
                 for="city"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                City
+                 {{ $t('form.city') }}
               </label>
               <input
                 id="city"
@@ -188,7 +188,7 @@ const invokeSave = async (): Promise<void> => {
                 for="postal-code"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                ZIP / Postal code
+                {{ $t('form.postalCode') }}
               </label>
               <input
                 id="postal-code"
@@ -210,7 +210,7 @@ const invokeSave = async (): Promise<void> => {
             data-testid="account-address-form-submit-button"
             @click.stop.prevent="invokeSave"
           >
-            Save
+            {{ $t('form.save') }}
           </button>
         </div>
       </form>

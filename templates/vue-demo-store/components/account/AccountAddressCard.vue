@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
 import { SharedModal } from "~~/components/shared/SharedModal.vue";
+
 const { pushSuccess, pushError } = useNotifications();
 const {
   setDefaultCustomerShippingAddress,
@@ -11,6 +12,7 @@ const {
 const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
 const { refreshSessionContext } = useSessionContext();
 const modal = inject<SharedModal>("modal") as SharedModal;
+const { t } = useI18n();
 
 const props = withDefaults(
   defineProps<{
@@ -38,9 +40,9 @@ const setDefaultShippingAddress = async () => {
   try {
     await setDefaultCustomerShippingAddress(props.address.id);
     refreshSessionContext();
-    pushSuccess("Set default shipping address successfully");
+    pushSuccess(t("account.messages.defaultShippingAddressSuccess"));
   } catch (error) {
-    pushError("Set default shipping address error");
+    pushError(t("account.messages.defaultShippingAddressError"));
   }
 };
 
@@ -48,18 +50,18 @@ const setDefaultBillingAddress = async () => {
   try {
     await setDefaultCustomerBillingAddress(props.address.id);
     refreshSessionContext();
-    pushSuccess("Set default billing address successfully");
+    pushSuccess(t("account.messages.defaultBillingAddressSuccess"));
   } catch (error) {
-    pushError("Set default billing address error");
+    pushError(t("account.messages.defaultBillingAddressError"));
   }
 };
 
 const removeAddress = async (addressId: string) => {
   try {
     await deleteCustomerAddress(addressId);
-    pushSuccess("Address deleted");
+    pushSuccess(t("account.messages.addressDeletedSuccess"));
   } catch (error) {
-    pushError("Address deleted error");
+    pushError(t("account.messages.addressDeletedError"));
   }
 };
 </script>
@@ -113,7 +115,7 @@ const removeAddress = async (addressId: string) => {
         data-testid="address-set-default-shipping"
         @click="setDefaultShippingAddress()"
       >
-        Set as default shipping address
+      {{ $t('account.setDefaultShippingAddress') }}
       </a>
       <a
         v-if="defaultBillingAddressId !== address.id"
@@ -123,7 +125,7 @@ const removeAddress = async (addressId: string) => {
         data-testid="address-set-default-billing"
         @click="setDefaultBillingAddress()"
       >
-        Set as default billing address
+      {{ $t('account.setDefaultBillingAddress') }}
       </a>
     </div>
   </div>

@@ -1,0 +1,8 @@
+{
+    "backToHomepage": "Back to homepage",
+    "home": "Home",
+    "pageNotFound": {
+        "header": "Page not found",
+        "text": " We are sorry, the page you're looking for could not be found. It may no longer exist or may have been moved."
+    }
+}

@@ -51,7 +51,7 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                   id="slide-over-title"
                   class="text-lg font-medium text-gray-900 py-0"
                 >
-                  Shopping cart
+                  {{$t('checkout.header')}}
                 </h2>
                 <div class="ml-3 flex h-7 items-center">
                   <button
@@ -60,7 +60,7 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                     data-testid="cart-close-button"
                     @click="isOpen = false"
                   >
-                    <span class="sr-only">Close panel</span>
+                    <span class="sr-only">{{ $t('checkout.close') }}</span>
                     <div class="w-6 h-6 i-carbon-close" />
                   </button>
                 </div>
@@ -82,7 +82,7 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                     </li>
                   </ul>
                   <div v-else class="text-2xl text-center">
-                    Your shopping cart is empty
+                     {{ $t('checkout.empty') }} 
                   </div>
                 </div>
               </div>
@@ -92,11 +92,11 @@ const { cartItems, totalPrice, isEmpty } = useCart();
               <div
                 class="flex justify-between text-base font-medium text-gray-900"
               >
-                <p>Subtotal</p>
+                <p>  {{ $t('checkout.subtotal') }} </p>
                 <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
               </div>
               <p class="mt-0.5 text-sm text-gray-500">
-                Shipping and taxes calculated at checkout.
+               {{ $t('checkout.taxesLabel') }}
               </p>
               <div class="mt-6">
                 <NuxtLink
@@ -106,7 +106,7 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                   data-testid="cart-checkout-link"
                   @click="isOpen = !isEmpty ? false : true"
                 >
-                  Checkout
+                 {{ $t('checkout.linkCheckout') }}
                 </NuxtLink>
 
                 <NuxtLink
@@ -115,21 +115,21 @@ const { cartItems, totalPrice, isEmpty } = useCart();
                   data-testid="cart-checkout-shopping-cart"
                   @click="isOpen = false"
                 >
-                  Go to shopping cart
+                 {{ $t('checkout.linkShippingCart') }}
                 </NuxtLink>
               </div>
               <div
                 class="mt-6 flex justify-center text-center text-sm text-brand-dark"
               >
                 <p>
-                  or
+                {{ $t('checkout.or') }}
                   <button
                     type="button"
                     class="font-medium"
                     data-testid="cart-continue-button"
                     @click="isOpen = false"
                   >
-                    Continue Shopping<span aria-hidden="true"> &rarr;</span>
+                     {{ $t('checkout.continueShopping') }}<span aria-hidden="true"> &rarr;</span>
                   </button>
                 </p>
               </div>
