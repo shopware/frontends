@@ -36,9 +36,7 @@ setInitialListing(props?.content?.data?.listing);
 
 <template>
   <div class="bg-white">
-    <div
-      class="max-w-2xl mx-auto lg:max-w-full"
-    >
+    <div class="max-w-2xl mx-auto lg:max-w-full">
       <div v-if="getElements.length" class="mt-6">
         <div class="flex-1 flex-col justify-around">
           <SwProductCard
