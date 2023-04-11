@@ -13,18 +13,14 @@ export class HomePage extends AbstractPage {
 
   constructor(page: Page) {
     super(page);
-    this.signInButton = page.locator("[data-testid='header-sign-in-link']");
+    this.signInButton = page.getByTestId("header-sign-in-link");
     this.linkToCartPage = page.locator("text='Smoking Board Cedar Wood'");
     this.linkToVariantPage = page.locator(
       "text='Pepper white, ground, Muntok pearl'"
     );
-    this.searchBar = page.locator("[data-testid='layout-search-input']");
-    this.linkToRegistrationPage = page.locator(
-      "[data-testid='login-sign-up-link']"
-    );
-    this.addToWishlist = page.locator(
-      "[data-testid='product-box-wishlist-icon-not-in']"
-    );
+    this.searchBar = page.getByTestId("layout-search-input");
+    this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
+    this.addToWishlist = page.getByTestId("product-box-wishlist-icon-not-in");
   }
 
   async visitMainPage() {
@@ -65,7 +61,7 @@ export class HomePage extends AbstractPage {
   async addProductToWishlist() {
     await Promise.all([
       this.page.waitForLoadState("load"),
-      await this.addToWishlist.nth(13).click()
+      await this.addToWishlist.nth(13).click(),
     ]);
   }
 }

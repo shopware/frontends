@@ -57,7 +57,7 @@ test.describe.only("Create Order", () => {
     await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState("domcontentloaded");
-    await expect(page.locator("[data-testid='order-total']")).toHaveCount(1);
+    await expect(page.getByTestId("order-total")).toHaveCount(1);
   });
 
   test("Create new order with login on checkout", async ({ page }) => {
@@ -71,7 +71,7 @@ test.describe.only("Create Order", () => {
     await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState("domcontentloaded");
-    await expect(page.locator("[data-testid='order-total']")).toHaveCount(1);
+    await expect(page.getByTestId("order-total")).toHaveCount(1);
   });
 
   test("Create new order as a guest user", async ({ page }) => {
@@ -91,6 +91,6 @@ test.describe.only("Create Order", () => {
     await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState("domcontentloaded");
-    await expect(page.locator("[data-testid='order-total']")).toHaveCount(1);
+    await expect(page.getByTestId("order-total")).toHaveCount(1);
   });
 });
