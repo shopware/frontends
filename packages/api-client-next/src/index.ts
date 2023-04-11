@@ -24,6 +24,8 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
   baseURL: string;
   apiType: "store-api" | "admin-api";
   accessToken: string;
+  contextToken?: string;
+  onContextChanged?: (newContextToken: string) => void;
 }) {
   type ReturnType<T extends keyof OPERATIONS> = GetInferKey<
     GetInferKey<
@@ -35,13 +37,25 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
 
   const defaultHeaders = {
     "sw-access-key": params.accessToken,
-  };
+    "sw-context-token": params.contextToken,
+  } as any;
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
-    headers: {
-      "sw-access-key": params.accessToken,
+    async onRequest({ request, options }) {},
+    async onRequestError({ request, options, error }) {},
+    async onResponse(context) {
+      if (
+        defaultHeaders["sw-context-token"] !==
+        context.response.headers.get("sw-context-token")
+      ) {
+        const newContextToken =
+          context.response.headers.get("sw-context-token") || "";
+        defaultHeaders["sw-context-token"] = newContextToken;
+        params.onContextChanged?.(newContextToken);
+      }
     },
+    async onResponseError({ request, response, options }) {},
   });
 
   /**
