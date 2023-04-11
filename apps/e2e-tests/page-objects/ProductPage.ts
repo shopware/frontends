@@ -35,7 +35,7 @@ export class ProductPage {
     expect(this.variantText.textContent).toEqual(
       this.productOption.textContent
     );
-    await this.page.waitForLoadState("networkidle");
+    await this.page.waitForLoadState("load");
     await this.productRemove.click();
     await this.page.locator("[data-testid='cart-close-button']").click();
   }
