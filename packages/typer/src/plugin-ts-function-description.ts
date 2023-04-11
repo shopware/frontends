@@ -76,10 +76,15 @@ export function TableOfFunctions(): Plugin {
 | ------------- | ------------ |\n`;
 
         for (const child of category.children) {
-          const hasNoLinkLabel = child.label?.includes("NOLINK");
+          let hasNoLinkLabel = false;
 
           const functionFound = functions?.find((fn) => fn.id === child.id);
           if (functionFound) {
+            hasNoLinkLabel =
+              !!functionFound?.signatures?.[0]?.comment?.blockTags.find(
+                ({ tag }) => tag === "@nolink",
+              );
+
             const summary =
               functionFound.signatures
                 ?.find((signature) => signature?.comment?.summary)
@@ -89,7 +94,7 @@ export function TableOfFunctions(): Plugin {
             const description = isFunctionDeprecated(functionFound)
               ? getDeprecationMessage(functionFound)
               : normalizeString(
-                  summary.replace(/(\r\n|\n|\r|Returns|Options\ \-)/gm, "")
+                  summary.replace(/(\r\n|\n|\r|Returns|Options\ \-)/gm, ""),
                 );
             const functionName = hasNoLinkLabel
               ? functionFound.name
