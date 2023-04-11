@@ -129,5 +129,5 @@ You are done at this point if you choose to build/design custom pages or integra
 
 ## Next steps
 
-<PageRef page="content-pages" title="Create content pages" sub="Integrate routing and Shopping Experiences" />
-<PageRef page="product-listing" title="Create a product listing" sub="Display a list of products" />
+<PageRef page="cms/content-pages" title="Create content pages" sub="Integrate routing and Shopping Experiences" />
+<PageRef page="e-commerce/product-listing" title="Create a product listing" sub="Display a list of products" />
