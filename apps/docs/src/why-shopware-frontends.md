@@ -10,9 +10,9 @@ nav:
   hidden: true
 ---
 
-# Why Shopware Frontends
+# Why Shopware Frontends?
 
-Shopware **Frontends** is a framework for building custom, cloud-native Shopware Storefronts.
+Shopware Composable **Frontends** is a framework for building custom, cloud-native Shopware Storefronts.
 
 We observe, that a theme-based approach to customize a Shopware storefront can be limiting. With more customizations, it becomes increasingly hard to maintain and keep in sync with the growing matrix of dependencies like the Shopware Core, the theme, plugins and custom extensions.
 

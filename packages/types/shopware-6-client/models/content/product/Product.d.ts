@@ -148,6 +148,6 @@ export type Product = {
   metaDescription: string | null;
   crossSellings: CrossSelling[];
   cmsPage: null | CmsPage;
-  apiAlias: "product";
   seoCategory: Category;
+  apiAlias: "product";
 };

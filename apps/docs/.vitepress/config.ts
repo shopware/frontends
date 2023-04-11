@@ -14,36 +14,6 @@ export const sidebar = [
     ],
   },
   {
-    text: "BUILDING",
-    items: [
-      { text: "Setup Templates", link: "/getting-started/templates" },
-      { text: "Navigation", link: "/getting-started/navigation" },
-      { text: "Breadcrumbs", link: "/getting-started/breadcrumbs" },
-      { text: "Routing", link: "/getting-started/routing" },
-      { text: "Content Pages", link: "/getting-started/content-pages" },
-      { text: "Cart", link: "/getting-started/cart" },
-      { text: "Checkout ", link: "/getting-started/checkout" },
-      { text: "Payments", link: "/getting-started/payments" },
-      { text: "Custom Payment", link: "/getting-started/custom-payment" },
-      { text: "Login Form", link: "/getting-started/login-form" },
-      { text: "Prices", link: "/getting-started/prices" },
-      { text: "Product Listing", link: "/getting-started/product-listing" },
-      { text: "Wishlist", link: "/getting-started/wishlist" },
-      {
-        text: "Overwriting and extending composables",
-        link: "/getting-started/overwriting-composables",
-      },
-      {
-        text: "Overwriting CMS blocks",
-        link: "/getting-started/overwriting-cms",
-      },
-      {
-        text: "Sitemap",
-        link: "/getting-started/sitemap",
-      },
-    ],
-  },
-  {
     text: "FRAMEWORK",
     items: [
       { text: "Requirements", link: "/framework/requirements" },
@@ -54,6 +24,25 @@ export const sidebar = [
       { text: "Shared Composables", link: "/framework/shared-composables" },
       { text: "Images", link: "/framework/images" },
       { text: "Associations", link: "/framework/associations" },
+    ],
+  },
+  {
+    text: "BUILDING",
+    items: [
+      { text: "Setup Templates", link: "/getting-started/templates" },
+      { text: "Routing", link: "/getting-started/routing" },
+      { text: "CMS", link: "/getting-started/cms/index" },
+      { text: "E-Commerce", link: "/getting-started/e-commerce/index" },
+      { text: "Page elements", link: "/getting-started/page-elements/index" },
+      {
+        text: "Overwriting and extending composables",
+        link: "/getting-started/overwriting-composables",
+      },
+      {
+        text: "Sitemap",
+        link: "/getting-started/sitemap",
+      },
+      { text: "Wishlist", link: "/getting-started/wishlist" },
     ],
   },
   {

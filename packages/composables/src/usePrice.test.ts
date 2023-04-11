@@ -21,8 +21,8 @@ export function withSetup(composable: any) {
 describe("usePrice", () => {
   const { init, getFormattedPrice } = usePrice();
   init({
-    currencyPosition: 1,
-    currencySymbol: "$",
+    localeCode: "en-US",
+    currencyCode: "USD",
   });
 
   it("should be defined", () => {
@@ -30,22 +30,23 @@ describe("usePrice", () => {
   });
 
   it("should init price object", () => {
-    expect(getFormattedPrice("2")).toBe("2.00 $");
+    expect(getFormattedPrice("2")).toBe("$2.00");
   });
 
   it("should update config", () => {
     init({
-      currencyPosition: 0,
-      currencySymbol: "$",
+      localeCode: "de-DE",
+      currencyCode: "EUR",
     });
-    expect(getFormattedPrice("4")).toBe("$ 4.00");
+    // applied workaround for non-breaking space that is inserted by Intl.NumberFormat
+    expect(getFormattedPrice(4.1).replace(/\s/g, " ")).toBe("4,10 €");
   });
 
-  it("should return empty string", () => {
+  it("should return price with language locale code taken from navigator", () => {
     init({
-      currencyPosition: 0,
-      currencySymbol: "$",
-    });
-    expect(getFormattedPrice(undefined)).toBe("");
+      currencyCode: "USD",
+      currencyLocale: undefined,
+    } as any);
+    expect(getFormattedPrice(2.55)).toStrictEqual(`$2.55`);
   });
 });

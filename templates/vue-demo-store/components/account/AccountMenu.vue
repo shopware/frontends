@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { SharedModal } from "~~/components/shared/SharedModal.vue";
-const { isLoggedIn, logout, user, refreshUser } = useUser();
+const { isLoggedIn, logout, user } = useUser();
 const isAccountMenuOpen = ref(false);
 const modal = inject<SharedModal>("modal") as SharedModal;
 
