@@ -715,6 +715,9 @@ importers:
       '@vue/eslint-config-typescript':
         specifier: ^11.0.2
         version: 11.0.2(eslint-plugin-vue@9.10.0)(eslint@8.38.0)(typescript@5.0.4)
+      consola:
+        specifier: ^3.0.1
+        version: 3.0.1
       eslint-plugin-vue:
         specifier: ^9.10.0
         version: 9.10.0(eslint@8.38.0)
@@ -8167,6 +8170,10 @@ packages:
 
   /consola@2.15.3:
     resolution: {integrity: sha512-9vAdYbHj6x2fLKC4+oPH0kFzY/orMZyG2Aj+kNylHxKGJ/Ed4dpNyAQYwJOdqO4zdM7XpVHmyejQDcQHrnuXbw==}
+
+  /consola@3.0.1:
+    resolution: {integrity: sha512-08E7bC2N6gaFdzPU/qtBi4ulVvJitYnfrDdxEiwElC3jSNICbOvkcE+8N56EfIrBoxp37O9Qnn5ZZPElov83UQ==}
+    dev: true
 
   /console-control-strings@1.1.0:
     resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}

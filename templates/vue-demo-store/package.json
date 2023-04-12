@@ -30,6 +30,7 @@
     "@iconify-json/carbon": "^1.1.16",
     "@nuxt/devtools": "^0.3.2",
     "@vue/eslint-config-typescript": "^11.0.2",
+    "consola": "^3.0.1",
     "eslint-plugin-vue": "^9.10.0",
     "nuxt": "^3.3.3",
     "typescript": "^5.0.4",
