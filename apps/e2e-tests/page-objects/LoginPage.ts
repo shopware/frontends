@@ -17,8 +17,11 @@ export class LoginForm {
 
   // Define login page methods
   async login(username: string, password: string) {
+    await this.usernameInput.isVisible();
     await this.usernameInput.type(username);
     await this.passwordInput.type(password);
+    await this.page.waitForLoadState("networkidle");
     await this.submitButton.click();
+    await this.page.waitForLoadState("load");
   }
 }

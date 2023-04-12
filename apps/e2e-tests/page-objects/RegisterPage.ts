@@ -59,9 +59,11 @@ export class RegisterForm {
     await this.zipcode.type(zipcode);
     await this.city.type(city);
     await this.country.selectOption({ label: "Germany" });
+    await this.page.waitForLoadState("load");
   }
 
   async submitRegistraionForm() {
+    await this.page.waitForLoadState("load");
     await this.submitButton.click();
   }
 }
