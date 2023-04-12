@@ -72,7 +72,7 @@ const isSidebarOpen = inject("isSidebarOpen");
               >
                 {{ count || "" }}
               </span>
-              <span class="sr-only">items in cart, view bag</span>
+              <span class="sr-only">{{ $t('cart.itemsInCart') }}, {{$t('cart.viewCart')}}</span>
             </button>
           </div>
         </div>

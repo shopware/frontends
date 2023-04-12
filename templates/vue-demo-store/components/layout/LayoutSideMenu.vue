@@ -51,7 +51,7 @@ const toggleCollapse = (navigationElement: Category) => {
               class="inline-flex items-center justify-center p-2 -m-2 text-gray-400 rounded-md"
               @click="isSideMenuOpened = false"
             >
-              <span class="sr-only">Close menu</span>
+              <span class="sr-only">{{$t('sidebar.closeMenu')}}</span>
               <div class="i-carbon-close text-3xl" />
             </button>
           </div>

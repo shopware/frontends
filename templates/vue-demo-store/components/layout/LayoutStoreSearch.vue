@@ -117,11 +117,10 @@ watch(enter, (value) => {
             :to="`/search?query=${typingQuery}`"
             @click="[(active = false), (isSideMenuOpened = false)]"
           >
-            See <span v-if="getTotal !== 1">all</span> {{ getTotal }}
-            <span v-if="getTotal !== 1">results</span>
-            <span v-if="getTotal == 1">result</span>
+            {{$t('search.see')}} <span v-if="getTotal !== 1">{{$t('search.all')}}</span> {{ getTotal }}
+            <span>{{ $tc('search.result', getTotal) }}</span>
           </NuxtLink>
-          <div v-else>No results :(</div>
+          <div v-else>{{ $t('search.noResults') }}</div>
         </div>
       </div>
     </div>

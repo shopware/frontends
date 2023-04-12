@@ -1,8 +1,18 @@
 {
     "backToHomepage": "Back to homepage",
     "home": "Home",
+    "close": "Close",
     "pageNotFound": {
         "header": "Page not found",
         "text": " We are sorry, the page you're looking for could not be found. It may no longer exist or may have been moved."
+    },
+    "sidebar": {
+        "closeMenu": "Close menu"
+    },
+    "search": {
+        "noResults": "No results :(",
+        "all": "all",
+        "result": "result | results",
+        "see": "see"
     }
 }

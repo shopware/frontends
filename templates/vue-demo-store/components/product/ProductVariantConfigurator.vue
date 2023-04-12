@@ -66,7 +66,7 @@ const onHandleChange = async () => {
         {{ optionGroup.name }}
       </h3>
       <fieldset class="mt-4 flex-1">
-        <legend class="sr-only">Choose a {{ optionGroup.name }}</legend>
+        <legend class="sr-only"> {{ $t('product.choose') }} {{ optionGroup.name }}</legend>
         <div class="flex gap3">
           <label
             v-for="option in optionGroup.options"

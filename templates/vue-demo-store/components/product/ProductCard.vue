@@ -25,7 +25,7 @@ const props = withDefaults(
 );
 const { product } = toRefs(props);
 const { addToCart } = useAddToCart(product);
-
+const { t } = useI18n();
 const { addToWishlist, removeFromWishlist, isInWishlist } =
   useProductWishlist(product);
 
@@ -33,19 +33,20 @@ const addToWishlistFn = () => {
   if (isInWishlist.value) {
     removeFromWishlist();
     pushInfo(
-      `${props.product?.translated?.name} has been removed from wishlist.`
+      t(`product.messages.removedFromWishlist`, { p: props.product?.translated?.name })
     );
   } else {
     addToWishlist();
     pushSuccess(
-      `${props.product?.translated?.name} has been added to wishlist.`
+      t(`product.messages.addedToWishlist`, { p: props.product?.translated?.name })
     );
   }
 };
 
 const addToCartProxy = async () => {
   await addToCart();
-  pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
+  pushSuccess(
+   t(`cart.messages.addedToCart`, { p: props.product?.translated?.name }));
 };
 
 const fromPrice = getProductFromPrice(props.product);
@@ -154,14 +155,14 @@ const ratingAverage: Ref<number> = computed(() =>
         data-testid="add-to-cart-button"
         @click="addToCartProxy"
       >
-        Add to cart
+      {{  $t('product.addToCart') }}
       </button>
       <NuxtLink v-else :to="getProductUrl(product)">
         <button
           class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           data-testid="product-box-product-show-details"
         >
-          Details
+          {{ $t('product.details')}}
         </button>
       </NuxtLink>
     </div>

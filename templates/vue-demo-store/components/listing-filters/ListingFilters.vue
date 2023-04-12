@@ -49,7 +49,7 @@ const handleReset = () => {
       type="button"
       @click="handleReset"
     >
-      Reset filters
+      {{$t('listing.resetFilters')}}
     </button>
   </div>
 </template>

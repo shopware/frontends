@@ -1,0 +1,9 @@
+{
+    "cart": {
+        "itemsInCart": "items in cart",
+        "viewCart": "view bag",
+        "messages": {
+            "addedToCart": "{p} has been added to cart."
+        }
+    }
+}
