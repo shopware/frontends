@@ -5,9 +5,6 @@ const props = defineProps<{
 
 const {
   loadOrderDetails,
-  personalDetails,
-  billingAddress,
-  shippingAddress,
   order,
   hasDocuments,
   documents,

@@ -65,8 +65,14 @@ watch(() => prices.max, debounceMaxPriceUpdate);
       </button>
     </h3>
 
-    <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible" class="space-y-6 mt-5">
+    <transition
+      name="fade"
+      mode="out-in"
+    >
+      <div
+        v-show="isFilterVisible"
+        class="space-y-6 mt-5"
+      >
         <div class="mt-2 flex">
           <div class="w-1/2 flex rounded-md mr-4">
             <span
@@ -81,7 +87,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
               name="min-price"
               class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-gray-300"
               :placeholder="prices.min?.toString()"
-            />
+            >
           </div>
           <div class="w-1/2 flex rounded-md">
             <span
@@ -96,7 +102,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
               name="max-price"
               class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-gray-300"
               :placeholder="prices.max?.toString()"
-            />
+            >
           </div>
         </div>
       </div>

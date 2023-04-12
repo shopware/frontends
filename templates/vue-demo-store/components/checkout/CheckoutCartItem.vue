@@ -22,7 +22,6 @@ const {
   itemRegularPrice,
   itemQuantity,
   isPromotion,
-  itemStock,
   changeItemQuantity,
 } = useCartItem(cartItem);
 
