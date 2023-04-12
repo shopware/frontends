@@ -143,7 +143,7 @@ importers:
     dependencies:
       '@stackblitz/sdk':
         specifier: latest
-        version: 1.8.2
+        version: 1.9.0
       vue:
         specifier: ^3.2.47
         version: 3.2.47
@@ -4748,13 +4748,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /@stackblitz/sdk@1.8.2:
-    resolution: {integrity: sha512-3aTg0Tb9dNs1huPkpdYxPEX/yc8A28eZneUMOEJzOLi7EJwl5onr9gCAVjIOkN4WLYu1iBSiJiGBYT629bZIJQ==}
-    dev: false
-
   /@stackblitz/sdk@1.9.0:
     resolution: {integrity: sha512-3m6C7f8pnR5KXys/Hqx2x6ylnpqOak6HtnZI6T5keEO0yT+E4Spkw37VEbdwuC+2oxmjdgq6YZEgiKX7hM1GmQ==}
-    dev: true
 
   /@stoplight/elements-core@7.7.15(@babel/core@7.21.4)(react@17.0.2):
     resolution: {integrity: sha512-9ACyiXYMuH8rPMetrSPe1oLFoiHL6lIusSb6ILPBMuWL+d9uJRE5Y8oul0rxbDVYiTv2O7Wlbt40HAQWziiD8Q==}
