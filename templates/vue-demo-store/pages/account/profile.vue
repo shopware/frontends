@@ -10,14 +10,16 @@ definePageMeta({
 });
 
 const currentTab = ref<number>(1);
+const {t} = useI18n()
 
 useBreadcrumbs([
   {
-    name: "Account Overview",
+    name: t('account.breadcrumbs.accountOverview'),
     path: "/account",
   },
   {
-    name: "My profile",
+    
+    name: t('account.breadcrumbs.myAccount'),
     path: "/account/profile",
   },
 ]);
@@ -45,7 +47,7 @@ const toggleTabs = (tabNumber: number) => {
             ]"
             @click="() => toggleTabs(1)"
           >
-            Personal data
+            {{ $t('account.personalData.label')}}
           </a>
         </li>
         <li class="w-1/2 md:w-auto" role="presentation">
@@ -58,7 +60,7 @@ const toggleTabs = (tabNumber: number) => {
             ]"
             @click="() => toggleTabs(2)"
           >
-            Change password
+            {{ $t('account.changePassword') }}
           </a>
         </li>
       </ul>

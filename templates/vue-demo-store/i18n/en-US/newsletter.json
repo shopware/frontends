@@ -1,0 +1,10 @@
+{
+    "newsletter": {
+        "subscriptionCheckbox": "Yes, I would like to subscribe to the free Demostore newsletter. (I may unsubscribe at any time.)",
+        "subscriptionInfo": "You have just subscribed to our newsletter. To complete the sign-up process, search your inbox for our confirmation email and click on the link provided with it.",
+        "messages": {
+            "newsletterSubscribed": "Newsletter subscribed",
+            "newsletterUnsubscribed": "Newsletter unsubscribe"
+        }
+    }
+}

@@ -1,6 +1,20 @@
 {
     "account": {
+        "addresses": "Addresses",
+        "addressesLabel": "View your current default addresses or add new ones.",
+        "addressAddNew": "Add new address",
+        "accountOverviewHeader": "Account Overview",
+        "paymentMethodHeader": "Payment Method",
+        "newsletterSettingHeader": "Newsletter setting",
+        "defaultBillingAddressHeader": "Default billing address",
+        "defaultShippingAddressHeader":"Default shipping address",
+        "orderHistoryHeader": "Order history",
+        "yourProfile": "Your profile",
         "documentsLabel": "Documents",
+        "changePassword": "Change password",
+        "selectDefaultPaymentLabel": " Select your default payment method",
+        "change": "change",
+        "save": "save",
         "setDefaultShippingAddress": "Set as default shipping address",
         "setDefaultBillingAddress": "Set as default billing address",
         "signInLabel": "Sign in to your account",
@@ -9,6 +23,15 @@
         "loggedInInfo": "you are logged in",
         "view": "View",
         "hide": "Hide",
+       
+        "breadcrumbs": {
+            "accountOverview": "Account Overview",
+            "address": "Address",
+            "order": "Order",
+            "payment": "Payment",
+            "myAccount": "My account",
+            "recoverPassword": "Recover password"
+        },
         "menu": {
             "signIn": "Sign in",
             "hello": "Hello",
@@ -27,7 +50,8 @@
             "orderStatus": "Order status"
         },
         "personalData": {
-            "infoBox": "Feel free to edit any of your details below so your account is always up to date"
+            "infoBox": "Feel free to edit any of your details below so your account is always up to date",
+            "label": "Personal data"
         },
         "messages": {
             "defaultShippingAddressSuccess": "Set default shipping address successfully",
@@ -37,7 +61,8 @@
             "addressDeletedSuccess": "Address deleted",
             "addressDeletedError": "Address deleted error",
             "loggedInSuccess": "You are logged in",
-            "personalDataUpdateSuccess": "Your information has been updated."
+            "personalDataUpdateSuccess": "Your information has been updated.",
+            "paymentSetSuccessfully": "Set default payment method successfully"
         }
     }
 }

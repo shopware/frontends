@@ -21,14 +21,15 @@ const {
 } = useCheckout();
 const { setDefaultPaymentMethod } = useUser();
 const { pushSuccess } = useNotifications();
+const { t } = useI18n();
 
 useBreadcrumbs([
   {
-    name: "Account Overview",
+    name: t('account.breadcrumbs.accountOverview'),
     path: "/account",
   },
   {
-    name: "Payment",
+    name: t('account.breadcrumbs.payment'),
     path: "/account/payment",
   },
 ]);
@@ -44,7 +45,7 @@ const invokeSave = async (): Promise<void> => {
     await setPaymentMethod({ id: formData.paymentMethod });
     await setDefaultPaymentMethod(formData.paymentMethod);
     emits("success");
-    pushSuccess("Set default payment method successfully");
+    pushSuccess(t('account.messages.paymentSetSuccessfully'));
   } catch (error) {
     console.error("error set default payment method", error);
   }
@@ -60,10 +61,10 @@ onMounted(async () => {
   <div class="container mx-auto my-8">
     <fieldset class="mt-6">
       <legend class="contents text-2xl font-medium text-gray-900">
-        <h1 class="border-b pb-3">Payment method</h1>
+        <h1 class="border-b pb-3">{{ $t('account.paymentMethodHeader') }}</h1>
       </legend>
       <p class="text-sm text-gray-500 mt-3">
-        Select your default payment method:
+        {{ $t('account.selectDefaultPaymentLabel') }}:
       </p>
       <form
         class="mt-4 space-y-6"
@@ -109,7 +110,7 @@ onMounted(async () => {
             type="submit"
             data-testid="account-payment-submit-button"
           >
-            Save
+            {{ $t('account.save') }}
           </button>
         </div>
       </form>
