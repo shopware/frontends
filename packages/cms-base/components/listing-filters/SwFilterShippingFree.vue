@@ -63,20 +63,10 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
         </span>
       </button>
     </h3>
-    <transition
-      name="fade"
-      mode="out-in"
-    >
-      <div
-        v-show="isFilterVisible"
-        id="filter-section-0"
-        class="pt-6"
-      >
+    <transition name="fade" mode="out-in">
+      <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
         <div class="space-y-4">
-          <div
-            class="flex items-center"
-            @click="onChangeOption()"
-          >
+          <div class="flex items-center" @click="onChangeOption()">
             <input
               :id="`filter-mobile-${filter.id || filter.code}`"
               :checked="currentFilterData"
@@ -84,7 +74,7 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
               :value="filter.name"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-            >
+            />
 
             <label
               :for="`filter-mobile-${filter.id || filter.code}`"

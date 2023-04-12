@@ -39,15 +39,8 @@ const toggle = () => {
         </span>
       </button>
     </h3>
-    <transition
-      name="fade"
-      mode="out-in"
-    >
-      <div
-        v-show="isFilterVisible"
-        id="filter-section-0"
-        class="pt-6"
-      >
+    <transition name="fade" mode="out-in">
+      <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
         <div class="space-y-4">
           <div
             v-for="option in filter.options || filter.entities"
@@ -64,7 +57,7 @@ const toggle = () => {
               :value="option.name"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-            >
+            />
 
             <div v-if="option.media?.url">
               <img
@@ -76,7 +69,7 @@ const toggle = () => {
                     option.id
                   ),
                 }"
-              >
+              />
             </div>
             <div
               v-else-if="option.colorHexCode"
@@ -86,10 +79,7 @@ const toggle = () => {
                 'border-blue border-2': selectedOptionIds?.includes(option.id),
               }"
             />
-            <label
-              for="filter-color-0"
-              class="ml-3 text-gray-600"
-            >
+            <label for="filter-color-0" class="ml-3 text-gray-600">
               {{ getTranslatedProperty(option, "name") }}
             </label>
           </div>

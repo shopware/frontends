@@ -4,7 +4,6 @@ export default {
 };
 </script>
 <script setup lang="ts">
-
 const images = ref([
   "https://ca.slack-edge.com/T04UKLWGP-UC04NDP6U-cd3e568af126-512",
   "https://ca.slack-edge.com/T04UKLWGP-U019L64GA0N-20cbf24d0fef-512",
