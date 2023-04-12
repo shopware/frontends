@@ -44,6 +44,7 @@ export default defineNuxtConfig({
   // Unocss bug fix https://github.com/nuxt/framework/issues/7623
   experimental: {
     inlineSSRStyles: false,
+    renderJsonPayloads: true,
   },
   nitro: {
     compressPublicAssets: true,
