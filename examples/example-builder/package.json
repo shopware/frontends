@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@stackblitz/sdk": "latest",
+    "@stackblitz/sdk": "^1.9.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
