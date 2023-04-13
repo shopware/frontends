@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { getTranslatedProperty, getCategoryUrl } from "@shopware-pwa/helpers-next";
+import {
+  getTranslatedProperty,
+  getCategoryUrl,
+} from "@shopware-pwa/helpers-next";
 
 const { navigationElements } = useNavigation({ type: "footer-navigation" });
 const gridColumns = computed<number>(() =>
@@ -37,7 +40,11 @@ const gridColumns = computed<number>(() =>
                 class="pb-3 md:pb-1"
               >
                 <NuxtLink
-                  :target="(navigationChild.externalLink || navigationChild.linkNewTab) ? '_blank' : ''"
+                  :target="
+                    navigationChild.externalLink || navigationChild.linkNewTab
+                      ? '_blank'
+                      : ''
+                  "
                   :to="getCategoryUrl(navigationChild)"
                   class="text-base font-normal text-gray-500 hover:text-gray-900"
                 >
