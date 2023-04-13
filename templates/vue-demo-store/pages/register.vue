@@ -117,8 +117,8 @@ useBreadcrumbs([
   <div class="max-w-screen-xl mx-auto px-6 sm:px-4">
     <div
       v-if="showDoubleOptInBox"
-      class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
       ref="doubleOptInBox"
+      class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
     >
       Thank you for signing up! You will receive a confirmation email shortly.
       Click on the link in it to complete the sign-up.

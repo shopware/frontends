@@ -5,6 +5,7 @@ import {
   Media,
   Product,
   ProductListingResult,
+  ProductMedia,
   ProductReview,
   PropertyGroup,
   Salutation,
@@ -134,12 +135,15 @@ export type CmsElementImageGallery = CmsSlot & {
     // actually a CmsElementImageSlider data, consider unify this
     apiAlias: "cms_image_slider";
     navigation: unknown;
-    sliderItems: {
-      url: null | string;
-      newTab: boolean;
-      media: Media;
-      apiAlias: "cms_image_slider_item";
-    }[];
+    sliderItems: Array<
+      | {
+          url: null | string;
+          newTab: boolean;
+          media: Media;
+          apiAlias: "cms_image_slider_item";
+        }
+      | ProductMedia
+    >;
   };
 };
 
