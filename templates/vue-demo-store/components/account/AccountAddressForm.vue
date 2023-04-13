@@ -36,7 +36,6 @@ const formData = reactive<CustomerAddress>({
 
 const invokeSave = async (): Promise<void> => {
   try {
-    let addressResult = false;
     const saveAddress = formData.id
       ? updateCustomerAddress
       : createCustomerAddress;

@@ -24,7 +24,6 @@ const {
   newsletterUnsubscribe,
   newsletterSubscribe,
   getNewsletterStatus,
-  newsletterStatus,
   confirmationNeeded,
 } = useNewsletter();
 const { pushSuccess, pushError } = useNotifications();

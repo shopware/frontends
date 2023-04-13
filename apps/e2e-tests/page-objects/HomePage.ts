@@ -65,7 +65,7 @@ export class HomePage extends AbstractPage {
   async addProductToWishlist() {
     await Promise.all([
       this.page.waitForLoadState("load"),
-      await this.addToWishlist.nth(13).click()
+      await this.addToWishlist.nth(13).click(),
     ]);
   }
 }
