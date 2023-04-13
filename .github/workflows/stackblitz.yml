@@ -1,0 +1,39 @@
+name: Add Preview URLs for templates on StackBlitz
+
+on:
+  pull_request:
+    types:
+      - opened
+    paths-ignore:
+      - "*.md"
+      - "scripts/**"
+      - ".vscode/**"
+      - "apps/**"
+
+jobs:
+  add_preview_urls:
+    name: Append StackBlitz preview links
+    runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+    steps:
+      - uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            ### Templates Quick Preview on StackBlitz
+
+            ##### vue-demo-store
+
+            [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/${BRANCH_NAME}/templates/vue-demo-store?file=README.md)
+
+            ##### vue-blank
+            
+            [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/${BRANCH_NAME}/templates/vue-blank?file=README.md)
+
+            ##### vue-vite-blank
+            
+            [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/${BRANCH_NAME}/templates/vue-vite-blank?file=README.md)
+
+            ##### astro
+                  
+            [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/${BRANCH_NAME}/templates/astro?file=README.md)
