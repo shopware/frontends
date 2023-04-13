@@ -8,10 +8,10 @@ export class WishlistPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.addToCartButton = page.locator("[data-testid='add-to-cart-button']");
-    this.wishlistButton = page.locator("[data-testid='wishlist-button']");
-    this.productInWishlistButton = page.locator(
-      "[data-testid='product-box-wishlist-icon']"
+    this.addToCartButton = page.getByTestId("add-to-cart-button");
+    this.wishlistButton = page.getByTestId("wishlist-button");
+    this.productInWishlistButton = page.getByTestId(
+      "product-box-wishlist-icon"
     );
   }
 
