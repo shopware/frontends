@@ -17,5 +17,4 @@ const regularPrice = getFormattedPrice(49.95);
 // regularPrice: '49,95 €'
 ```
 
-
 <!-- PLACEHOLDER_DESCRIPTION -->

@@ -9,8 +9,7 @@ const { product } = toRefs(props);
 
 const { price, unitPrice, displayFromVariants, displayFrom, isListPrice } =
   useProductPrice(product);
-const regulationPrice = computed(() => price.value?.regulationPrice?.price)
-
+const regulationPrice = computed(() => price.value?.regulationPrice?.price);
 </script>
 
 <template>
@@ -41,7 +40,7 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price)
       >
     </SharedPrice>
     <div class="text-xs flex text-gray-500" v-if="regulationPrice">
-      Previously <SharedPrice class="ml-1" :value="regulationPrice"/>
+      Previously <SharedPrice class="ml-1" :value="regulationPrice" />
     </div>
   </div>
 </template>
