@@ -30,13 +30,13 @@ If we want to create our own product card **component** in **demo-store** the co
 
 **Nuxt** is resolving names by folder structure, so if you have:  
 `/components/public/some/name.vue`  
-then component name is **PublicSomeName**.  
+then component name is **PublicSomeName**.
 
 You can repeat folder structure in name like:  
 `/components/cms/Name.vue`  
 `/components/cms/CmsName.vue`
 
-These are the same components resolving as **CmsName**. 💡  
+These are the same components resolving as **CmsName**. 💡
 
 ### Generic CMS components
 

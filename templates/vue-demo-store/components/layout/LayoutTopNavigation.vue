@@ -24,7 +24,11 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       @mouseover="currentMenuPosition = navigationElement.id"
     >
       <NuxtLink
-        :target="(navigationElement.externalLink || navigationElement.linkNewTab) ? '_blank' : ''"
+        :target="
+          navigationElement.externalLink || navigationElement.linkNewTab
+            ? '_blank'
+            : ''
+        "
         :to="getCategoryUrl(navigationElement)"
         class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
       >
@@ -65,7 +69,11 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
               >
                 <NuxtLink
                   :to="getCategoryUrl(childElement)"
-                  :target="(childElement.externalLink || childElement.linkNewTab) ? '_blank' : ''"
+                  :target="
+                    childElement.externalLink || childElement.linkNewTab
+                      ? '_blank'
+                      : ''
+                  "
                   class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
                 >
                   <div
