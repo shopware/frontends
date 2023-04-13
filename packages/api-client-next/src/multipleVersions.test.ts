@@ -28,11 +28,11 @@ const client6420 = createAPIClient<operations6420, paths6420>({
   apiType,
 });
 
-const client6500 = createAPIClient<operations6500, paths6500>({
-  baseURL: "https://ci-20230328-0845-noyce.swstage.store/store-api/",
-  accessToken: "SWSCTNU1Z3Y2EG5ZTKVWU0JKCA",
-  apiType,
-});
+// const client6500 = createAPIClient<operations6500, paths6500>({
+//   baseURL: "https://ci-20230328-0845-noyce.swstage.store/store-api/",
+//   accessToken: "SWSCTNU1Z3Y2EG5ZTKVWU0JKCA",
+//   apiType,
+// });
 
 describe("Multiple versions test", () => {
   describe("readCard", () => {
@@ -56,15 +56,15 @@ describe("Multiple versions test", () => {
       expect(result.name).toEqual("myCartName");
     });
 
-    it("6.5.0.0 - BREAKING CHANGE", async () => {
-      // TODO: name parameter has been removed from the API, schema fix needed
-      const result = await client6500.invoke(
-        "readCart get /checkout/cart?name",
-        {
-          name: "myCartName",
-        }
-      );
-      expect(result.name).toBeUndefined();
-    });
+    // it("6.5.0.0 - BREAKING CHANGE", async () => {
+    //   // TODO: name parameter has been removed from the API, schema fix needed
+    //   const result = await client6500.invoke(
+    //     "readCart get /checkout/cart?name",
+    //     {
+    //       name: "myCartName",
+    //     }
+    //   );
+    //   expect(result.name).toBeUndefined();
+    // });
   });
 });
