@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { CmsElementBuyBox } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig, useProductPrice } from "@shopware-pwa/composables-next";
+import {
+  useCmsElementConfig,
+  useProductPrice,
+} from "@shopware-pwa/composables-next";
 import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
 
@@ -19,7 +22,7 @@ const { product, changeVariant } = useProduct(
 );
 
 const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(product);
-const regulationPrice = computed(() => price.value?.regulationPrice?.price)
+const regulationPrice = computed(() => price.value?.regulationPrice?.price);
 const { getFormattedPrice } = usePrice();
 
 const referencePrice = computed(
@@ -59,43 +62,43 @@ const restockTime = computed(() => product.value?.restockTime);
           :value="unitPrice"
         />
         <div class="text-xs flex text-gray-500" v-if="regulationPrice">
-          Previously <SharedPrice class="ml-1" :value="regulationPrice"/>
+          Previously <SharedPrice class="ml-1" :value="regulationPrice" />
         </div>
       </div>
       <div v-else>
-      <table class="border-collapse table-auto w-full text-sm mb-8">
-        <thead>
-          <tr>
-            <th
-              class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
-            >
-              Amount
-            </th>
+        <table class="border-collapse table-auto w-full text-sm mb-8">
+          <thead>
+            <tr>
+              <th
+                class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
+              >
+                Amount
+              </th>
 
-            <th
-              class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
-            >
-              Price
-            </th>
-          </tr>
-        </thead>
-        <tbody class="bg-white dark:bg-slate-800">
-          <tr v-for="(tierPrice, index) in tierPrices" :key="tierPrice.label">
-            <td
-              class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
-            >
-              <span v-if="index < tierPrices.length - 1">To</span
-              ><span v-else>From</span> {{ tierPrice.quantity }}
-            </td>
-            <td
-              class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 font-medium text-current-500 dark:text-slate-400"
-            >
-              {{ getFormattedPrice(tierPrice.unitPrice) }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+              <th
+                class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
+              >
+                Price
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-slate-800">
+            <tr v-for="(tierPrice, index) in tierPrices" :key="tierPrice.label">
+              <td
+                class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
+              >
+                <span v-if="index < tierPrices.length - 1">To</span
+                ><span v-else>From</span> {{ tierPrice.quantity }}
+              </td>
+              <td
+                class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 font-medium text-current-500 dark:text-slate-400"
+              >
+                {{ getFormattedPrice(tierPrice.unitPrice) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div v-if="purchaseUnit && unitName" class="mt-1">
         <span class="font-light"> Content: </span>
         <span class="font-light"> {{ purchaseUnit }} {{ unitName }} </span>

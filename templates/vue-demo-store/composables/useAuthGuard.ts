@@ -14,7 +14,9 @@ export function useAuthGuardRedirection(params?: { to: string }) {
       if (process.client && !isLoggedIn) {
         if (!params?.to) {
           router.push({ path: "/" });
-          pushInfo(`Login is required to access this page. You are redirected to the homepage.`);
+          pushInfo(
+            `Login is required to access this page. You are redirected to the homepage.`
+          );
         }
         if (params?.to) {
           router.push({ path: params.to });

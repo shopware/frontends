@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { ShopwareSearchParams } from "@shopware-pwa/types";
+import {
+  ListingResult,
+  Product,
+  ShopwareSearchParams,
+} from "@shopware-pwa/types";
 const route = useRoute();
 const router = useRouter();
 
@@ -42,7 +46,7 @@ const changePage = async (page: number) => {
   });
   changeCurrentPage(page, route.query as Partial<ShopwareSearchParams>);
 };
-setInitialListing(productSearch.value as any);
+setInitialListing(productSearch.value as Partial<ListingResult<Product>>);
 </script>
 
 <script lang="ts">
