@@ -4,10 +4,12 @@
         "addressesLabel": "View your current default addresses or add new ones.",
         "addressAddNew": "Add new address",
         "accountOverviewHeader": "Account Overview",
+        "signUpHeader": "I am new here.",
         "paymentMethodHeader": "Payment Method",
         "newsletterSettingHeader": "Newsletter setting",
         "defaultBillingAddressHeader": "Default billing address",
         "defaultShippingAddressHeader":"Default shipping address",
+        "yourAddress": "Your address",
         "orderHistoryHeader": "Order history",
         "yourProfile": "Your profile",
         "documentsLabel": "Documents",
@@ -23,14 +25,17 @@
         "loggedInInfo": "you are logged in",
         "view": "View",
         "hide": "Hide",
-       
+        
         "breadcrumbs": {
             "accountOverview": "Account Overview",
             "address": "Address",
             "order": "Order",
             "payment": "Payment",
             "myAccount": "My account",
-            "recoverPassword": "Recover password"
+            "recoverPassword": "Recover password",
+            "register": "Register",
+            "passwordReset": "Password reset",
+            "search": "Search"
         },
         "menu": {
             "signIn": "Sign in",
@@ -62,7 +67,8 @@
             "addressDeletedError": "Address deleted error",
             "loggedInSuccess": "You are logged in",
             "personalDataUpdateSuccess": "Your information has been updated.",
-            "paymentSetSuccessfully": "Set default payment method successfully"
+            "paymentSetSuccessfully": "Set default payment method successfully",
+            "signUpSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up."
         }
     }
 }

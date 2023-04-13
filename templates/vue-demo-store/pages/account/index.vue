@@ -51,7 +51,7 @@ const updateNewsletterStatus = async () => {
     }
   } catch (error) {
     console.log("error", error);
-    pushError("general.messages.error");
+    pushError(t("messages.error"));
   } finally {
     getNewsletterStatus().then(() => {
       newsletter.value = isNewsletterSubscriber.value;

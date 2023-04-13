@@ -35,7 +35,7 @@ export default {
             to="/account/recover"
             class="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            Forgot your password?
+           {{ $t('recoveryPassword.forgotPassword')}}
           </NuxtLink>
         </div>
       </div>
@@ -45,7 +45,7 @@ export default {
           to="/register"
           class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
-          Sign up
+          {{ $t('account.signUp')}}
         </NuxtLink>
       </template>
     </AccountLoginForm>

@@ -15,10 +15,10 @@ const {
 } = useListing({
   listingType: "productSearchListing",
 });
-
+const{t} = useI18n()
 useBreadcrumbs([
   {
-    name: "Search",
+    name: t('account.breadcrumbs.search'),
     path: "/search",
   },
 ]);
@@ -59,8 +59,8 @@ export default {
     <IconsLoadingCircle v-if="loading" />
 
     <h1 class="mb-8 text-3xl font-extrabold text-center">
-      <span v-if="products.length">Search Result</span>
-      <span v-else>No products found</span>
+      <span v-if="products.length">{{$t('search.resultsHeader')}}</span>
+      <span v-else>{{$t('search.noResults')}}</span>
     </h1>
 
     <ListingFilters class="mb-4" />

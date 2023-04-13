@@ -18,7 +18,7 @@ const router = useRouter();
 const loading = ref<boolean>();
 const doubleOptInBox = ref();
 const showDoubleOptInBox = ref(false);
-
+const {t} = useI18n()
 if (process.client && isLoggedIn.value) {
   // redirect to account page if user is logged in
   navigateTo({ path: "/account" });
@@ -97,7 +97,7 @@ const invokeSubmit = async () => {
     } catch (error) {
       let message =
         (error as ClientApiError)?.messages?.[0]?.detail ||
-        "Something went wrong, please try again later";
+        t("messages.error");
       pushError(message);
     } finally {
       loading.value = false;
@@ -107,7 +107,7 @@ const invokeSubmit = async () => {
 
 useBreadcrumbs([
   {
-    name: "Register",
+    name: t('account.breadcrumbs.register'),
     path: "/register",
   },
 ]);
@@ -120,18 +120,17 @@ useBreadcrumbs([
       class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
       ref="doubleOptInBox"
     >
-      Thank you for signing up! You will receive a confirmation email shortly.
-      Click on the link in it to complete the sign-up.
+      {{ $t('account.messages.signUpSuccess') }}
     </div>
     <form
       class="w-full relative"
       data-testid="registration-form"
       @submit.prevent="invokeSubmit"
     >
-      <h3 class="block border-b-1 mb-5 pb-2 font-bold">I am new here.</h3>
+      <h3 class="block border-b-1 mb-5 pb-2 font-bold">{{$t('account.signUpHeader')}}</h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
         <div class="col-span-12">
-          <label for="salutation">Salutation *</label>
+          <label for="salutation">{{$t('form.salutation')}} *</label>
           <select
             id="salutation"
             v-model="state.salutationId"
@@ -146,7 +145,7 @@ useBreadcrumbs([
             data-testid="registration-salutation-select"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">Choose salutation...</option>
+            <option disabled selected value="">{{$t('form.chooseSalutation')}}</option>
             <option
               v-for="salutation in getSalutations"
               :key="salutation.id"
@@ -164,7 +163,7 @@ useBreadcrumbs([
         </div>
 
         <div class="col-span-12 md:col-span-4">
-          <label for="first-name">First name *</label>
+          <label for="first-name">{{$t('form.firstName')}} *</label>
           <input
             id="first-name"
             v-model="state.firstName"
@@ -191,7 +190,7 @@ useBreadcrumbs([
         </div>
 
         <div class="col-span-12 md:col-span-4">
-          <label for="last-name">Last name *</label>
+          <label for="last-name">{{ $t('form.lastName') }} *</label>
           <input
             id="last-name"
             v-model="state.lastName"
@@ -218,7 +217,7 @@ useBreadcrumbs([
         </div>
 
         <div class="col-span-12 md:col-span-6">
-          <label for="email-address">Email address *</label>
+          <label for="email-address">{{$t('form.email')}} *</label>
           <input
             id="email-address"
             v-model="state.email"
@@ -245,7 +244,7 @@ useBreadcrumbs([
         </div>
 
         <div class="col-span-12 md:col-span-4">
-          <label for="password">Password *</label>
+          <label for="password">{{$t('form.password')}} *</label>
           <input
             id="password"
             v-model="state.password"
@@ -272,10 +271,10 @@ useBreadcrumbs([
         </div>
       </div>
 
-      <h3 class="block border-b-1 mb-5 pb-2 font-bold">Your address</h3>
+      <h3 class="block border-b-1 mb-5 pb-2 font-bold">{{$t('account.yourAddress')}}</h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
         <div class="col-span-12 md:col-span-4">
-          <label for="street">Street *</label>
+          <label for="street">{{$t('form.street')}} *</label>
           <input
             id="Street"
             v-model="state.billingAddress.street"
@@ -302,7 +301,7 @@ useBreadcrumbs([
         </div>
 
         <div class="col-span-12 md:col-span-4">
-          <label for="zipcode">Zipcode *</label>
+          <label for="zipcode">{{ $t('form.postalCode') }} *</label>
           <input
             id="zipcode"
             v-model="state.billingAddress.zipcode"
@@ -329,7 +328,7 @@ useBreadcrumbs([
         </div>
 
         <div class="col-span-12 md:col-span-4">
-          <label for="city">City *</label>
+          <label for="city">{{$t('form.city')}} *</label>
           <input
             id="city"
             v-model="state.billingAddress.city"
@@ -356,7 +355,7 @@ useBreadcrumbs([
         </div>
 
         <div class="col-span-12 md:col-span-4">
-          <label for="country">Country *</label>
+          <label for="country">{{$t('form.country')}} *</label>
           <select
             id="country"
             v-model="state.billingAddress.countryId"
@@ -371,7 +370,7 @@ useBreadcrumbs([
             data-testid="registration-country-select"
             @blur="$v.billingAddress.countryId.$touch()"
           >
-            <option disabled selected value="">Choose country...</option>
+            <option disabled selected value="">{{$t('form.chooseCountry')}}</option>
             <option
               v-for="country in getCountries"
               :key="country.id"
@@ -395,7 +394,7 @@ useBreadcrumbs([
           :disabled="loading"
           data-testid="registration-submit-button"
         >
-          Submit
+          {{$t('form.submit')}}
         </button>
       </div>
     </form>

@@ -17,6 +17,7 @@ const { push } = useRouter();
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const { pushInfo } = useNotifications();
+const {t} = useI18n()
 const {
   paymentMethods,
   shippingMethods,
@@ -210,7 +211,7 @@ const invokeSubmit = async () => {
       const response = await register(state);
       if (!response.active) {
         pushInfo(
-          "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up."
+          t('checkout.messages.checkoutSignInSuccess')
         );
         await push("/");
       }
@@ -240,10 +241,10 @@ async function invokeLogout() {
           <div class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8">
             <div>
               <h3 class="text-lg font-medium text-gray-900 m-0">
-                Personal Information
+               {{$t('checkout.personalInformationLabel')}}
               </h3>
               <div class="text-sm text-gray-600">
-                Use a permanent address where you can receive mail.
+                {{$t('checkout.personalInformationInfo')}}
               </div>
             </div>
             <form
@@ -267,23 +268,23 @@ async function invokeLogout() {
                 </ul>
               </div>
               <div class="text-sm">
-                Register or
+                {{$t('checkout.register')}} {{ $t('checkout.or') }}
                 <a
                   href="#"
                   class="whitespace-nowrap font-medium text-brand-primary hover:text-brand-dark"
                   data-testid="checkout-sign-in-link"
                   @click="modal.open('AccountLoginForm')"
                 >
-                  Sign in
+                  {{$t('checkout.signIn')}}
                 </a>
-                <p class="text-gray-500">In order to place an order.</p>
+                <p class="text-gray-500">{{$t('checkout.signInToOrder')}}</p>
               </div>
               <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6">
                   <label
                     for="salutation"
                     class="block text-sm font-medium text-gray-700"
-                    >Salutation</label
+                    >{{$t('form.salutation')}}</label
                   >
                   <select
                     id="salutation"
@@ -296,7 +297,7 @@ async function invokeLogout() {
                     @blur="$v.salutationId.$touch()"
                   >
                     <option disabled selected value="">
-                      Choose salutation...
+                      {{$t('form.chooseSalutation')}}
                     </option>
                     <option
                       v-for="salutation in getSalutations"
@@ -317,7 +318,7 @@ async function invokeLogout() {
                   <label
                     for="first-name"
                     class="block text-sm font-medium text-gray-700"
-                    >First name</label
+                    >{{ $t('form.firstName')}}</label
                   >
                   <input
                     id="first-name"
@@ -342,7 +343,7 @@ async function invokeLogout() {
                   <label
                     for="last-name"
                     class="block text-sm font-medium text-gray-700"
-                    >Last name</label
+                    >{{ $t('form.lastName') }}</label
                   >
                   <input
                     id="last-name"
@@ -375,7 +376,7 @@ async function invokeLogout() {
                     <label
                       for="create-account"
                       class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-                      >Do not create a customer account.</label
+                      >{{ $t('checkout.notCreateAccount')}}</label
                     >
                   </div>
                 </div>
@@ -384,7 +385,7 @@ async function invokeLogout() {
                   <label
                     for="email-address"
                     class="block text-sm font-medium text-gray-700"
-                    >Email address</label
+                    >{{ $t('form.email') }}</label
                   >
                   <input
                     id="email-address"
@@ -410,7 +411,7 @@ async function invokeLogout() {
                     <label
                       for="password"
                       class="block text-sm font-medium text-gray-700"
-                      >Password</label
+                      >{{ $t('form.password')}}</label
                     >
                     <input
                       id="password"
@@ -435,7 +436,7 @@ async function invokeLogout() {
                   <label
                     for="street-address"
                     class="block text-sm font-medium text-gray-700"
-                    >Street address</label
+                    >{{ $t('form.streetAddress')}}</label
                   >
                   <input
                     id="street-address"
@@ -461,7 +462,7 @@ async function invokeLogout() {
                   <label
                     for="postal-code"
                     class="block text-sm font-medium text-gray-700"
-                    >ZIP / Postal code</label
+                    >{{ $t('form.postalCode')}}</label
                   >
                   <input
                     id="postal-code"
@@ -487,7 +488,7 @@ async function invokeLogout() {
                   <label
                     for="city"
                     class="block text-sm font-medium text-gray-700"
-                    >City</label
+                    >{{$t('form.city')}}</label
                   >
                   <input
                     id="city"
@@ -513,7 +514,7 @@ async function invokeLogout() {
                   <label
                     for="country"
                     class="block text-sm font-medium text-gray-700"
-                    >Country</label
+                    >{{ $t('form.country' )}}</label
                   >
                   <select
                     id="country"
@@ -526,7 +527,7 @@ async function invokeLogout() {
                     @blur="$v.billingAddress.countryId.$touch()"
                   >
                     <option disabled selected value="">
-                      Choose country...
+                      {{ $t('form.chooseCountry')}}
                     </option>
                     <option
                       v-for="country in getCountries"
@@ -549,22 +550,22 @@ async function invokeLogout() {
                 class="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
                 data-testid="checkout-pi-submit-button"
               >
-                Save
+                {{$t('form.save')}}
               </button>
             </form>
             <div v-else>
-              You are logged-in as {{ user?.firstName }}
+              {{ $t('checkout.loggedInAs')}} {{ user?.firstName }}
               <span
                 v-if="isGuestSession"
                 class="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
-                >guest</span
-              >! You can log out
+                >{{ $t('checkout.guest')}}</span
+              >! {{ $t('checkout.logOut')}}
               <a
                 href="#"
                 class="text-brand-primary hover:text-brand-dark"
                 data-testid="checkout-logout"
                 @click="invokeLogout"
-                >here</a
+                >{{ $t('checkout.here')}}</a
               >.
             </div>
           </div>
@@ -574,9 +575,9 @@ async function invokeLogout() {
           >
             <legend class="pt-5">
               <h3 class="text-lg font-medium text-gray-900 m-0">
-                Shipping method
+                {{ $t('checkout.shippingMethodLabel')}}
               </h3>
-              <div class="text-sm text-gray-600">Select a payment method.</div>
+              <div class="text-sm text-gray-600">{{ $t('checkout.selectPaymentMethod') }}</div>
             </legend>
             <div v-if="isLoading['shippingMethods']" class="w-60 h-24">
               <div
@@ -616,9 +617,9 @@ async function invokeLogout() {
           <fieldset class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
             <legend class="pt-5">
               <h3 class="text-lg font-medium text-gray-900 m-0">
-                Payment method
+                {{ $t('checkout.paymentMethodLabel')}}
               </h3>
-              <div class="text-sm text-gray-600">Select a payment method</div>
+              <div class="text-sm text-gray-600">{{ $t('checkout.selectPaymentMethod') }}</div>
             </legend>
             <div v-if="isLoading['paymentMethods']" class="w-60 h-24">
               <div
@@ -661,9 +662,9 @@ async function invokeLogout() {
           >
             <legend class="pt-5">
               <h3 class="text-lg font-medium text-gray-900 m-0">
-                Billing Address
+                {{$t('checkout.billingAddressLabel')}}
               </h3>
-              <div class="text-sm text-gray-600">Select a billing address</div>
+              <div class="text-sm text-gray-600">{{ $t('checkout.selectBillingAddress') }}</div>
             </legend>
             <div v-if="isLoading['paymentMethods']" class="w-60 h-24">
               <div
@@ -712,11 +713,11 @@ async function invokeLogout() {
                 modal.open('AccountAddressForm', {
                   countries: getCountries,
                   salutations: getSalutations,
-                  title: 'Add new billing address',
+                  title: $t('checkout.addNewBillingAddress'),
                 })
               "
             >
-              Add new billing address
+              {{$t('checkout.addNewBillingAddress')}}
             </button>
             <template v-if="!isVirtualCart">
               <label for="customShipping" class="field-label">
@@ -727,7 +728,7 @@ async function invokeLogout() {
                   type="checkbox"
                   class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
                 />
-                Different shipping address
+               {{$t('checkout.differentBillingAddress')}}
               </label>
               <div v-if="state.customShipping">
                 <div
@@ -771,7 +772,7 @@ async function invokeLogout() {
                     })
                   "
                 >
-                  Add new shipping address
+                 {{$t('checkout.addNewShippingAddress')}}
                 </button>
               </div>
             </template>
@@ -784,7 +785,7 @@ async function invokeLogout() {
           >
             <legend class="pt-5">
               <h3 class="text-lg font-medium text-gray-900 m-0">
-                Terms and conditions
+                {{ $t('checkout.termsAdnConditions')}}
               </h3>
             </legend>
             <div class="flex items-center" data-testid="checkout-t&c-tos">
@@ -802,7 +803,7 @@ async function invokeLogout() {
                 class="ml-2 block text-sm font-medium text-gray-700"
                 :class="{ 'text-red': !termsSelected && placeOrderTriggered }"
               >
-                I have read and accepted the general terms and conditions.
+                {{ $t('checkout.termsAdnConditionsLabel')}}
               </label>
             </div>
 
@@ -825,8 +826,7 @@ async function invokeLogout() {
                 class="ml-2 block text-sm font-medium text-gray-700"
                 :class="{ 'text-red': !termsSelected && placeOrderTriggered }"
               >
-                I want immediate access to the digital content and I acknowledge
-                that thereby I waive my right to cancel.
+                {{ $t('checkout.digitalTerms')}}
               </label>
             </div>
           </fieldset>
@@ -835,9 +835,9 @@ async function invokeLogout() {
           <div class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
             <div>
               <h3 class="text-lg font-medium text-gray-900 m-0">
-                Order summary
+                {{$t('checkout.orderSummary')}}
               </h3>
-              <p class="text-sm text-gray-600">Order details and totals.</p>
+              <p class="text-sm text-gray-600">{{ $t('checkout.orderSummaryLabel')}}</p>
             </div>
             <ul role="list" class="-my-4 divide-y divide-gray-200 pl-0">
               <li
@@ -850,7 +850,7 @@ async function invokeLogout() {
             </ul>
 
             <div class="flex justify-between text-sm text-gray-500">
-              <p>Subtotal</p>
+              <p>{{ $t('checkout.subtotal')}}</p>
               <SharedPrice
                 :value="subtotal"
                 class="text-gray-900 font-medium"
@@ -861,7 +861,7 @@ async function invokeLogout() {
             <div
               class="flex pb-4 border-b justify-between text-sm text-gray-500"
             >
-              <p>Shipping estimate</p>
+              <p>{{$t('checkout.shippingEstimate')}}</p>
               <SharedPrice
                 :value="shippingTotal"
                 class="text-gray-900 font-medium"
@@ -870,14 +870,14 @@ async function invokeLogout() {
             </div>
 
             <div class="flex justify-between text-gray-900 font-medium">
-              <p>Order total</p>
+              <p>{{$t('checkout.orderTotal')}}l</p>
               <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
             </div>
 
             <div class="mt-4">
               <div class="text-right">
                 <span v-if="!isUserSession" class="text-sm text-gray-600"
-                  >You must be logged-in before submitting an order.</span
+                  >{{$t('checkout.loginRequired')}}</span
                 >
                 <button
                   :disabled="!isUserSession"
@@ -892,7 +892,7 @@ async function invokeLogout() {
                   data-testid="checkout-place-order-button"
                   @click="placeOrder"
                 >
-                  Place the order
+                  {{ $t('checkout.placeOrder')}}
                 </button>
               </div>
             </div>
@@ -902,14 +902,14 @@ async function invokeLogout() {
     </div>
     <div v-else class="text-center">
       <h1 class="m-10 text-2xl font-medium text-gray-900">
-        Your cart is empty!
+        {{ $t('cart.emptyCartLabel')}}
       </h1>
       <NuxtLink
         class="inline-flex justify-center py-2 px-4 my-8 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
         to="/"
         data-testid="checkout-go-home-link"
       >
-        Go to home page
+       {{$t('checkout.goToHomepage')}}
       </NuxtLink>
     </div>
   </div>
