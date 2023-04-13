@@ -14,12 +14,12 @@ const {t} = useI18n()
 
 useBreadcrumbs([
   {
-    name: t('account.breadcrumbs.accountOverview'),
+    name: t('breadcrumbs.accountOverview'),
     path: "/account",
   },
   {
     
-    name: t('account.breadcrumbs.myAccount'),
+    name: t('breadcrumbs.myAccount'),
     path: "/account/profile",
   },
 ]);

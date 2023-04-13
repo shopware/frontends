@@ -18,7 +18,7 @@ const {
 const{t} = useI18n()
 useBreadcrumbs([
   {
-    name: t('account.breadcrumbs.search'),
+    name: t('breadcrumbs.search'),
     path: "/search",
   },
 ]);

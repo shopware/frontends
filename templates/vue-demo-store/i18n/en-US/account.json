@@ -25,18 +25,6 @@
         "loggedInInfo": "you are logged in",
         "view": "View",
         "hide": "Hide",
-        
-        "breadcrumbs": {
-            "accountOverview": "Account Overview",
-            "address": "Address",
-            "order": "Order",
-            "payment": "Payment",
-            "myAccount": "My account",
-            "recoverPassword": "Recover password",
-            "register": "Register",
-            "passwordReset": "Password reset",
-            "search": "Search"
-        },
         "menu": {
             "signIn": "Sign in",
             "hello": "Hello",

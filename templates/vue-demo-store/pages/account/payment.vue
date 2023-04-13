@@ -25,11 +25,11 @@ const { t } = useI18n();
 
 useBreadcrumbs([
   {
-    name: t('account.breadcrumbs.accountOverview'),
+    name: t('breadcrumbs.accountOverview'),
     path: "/account",
   },
   {
-    name: t('account.breadcrumbs.payment'),
+    name: t('breadcrumbs.payment'),
     path: "/account/payment",
   },
 ]);

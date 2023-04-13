@@ -15,7 +15,7 @@ const promoCode = ref("");
         v-model="promoCode"
         type="text"
         name="promoCode"
-        placeholder="Enter promo code"
+        :placeholder="$t('form.promoCodePlaceholder')"
         class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
         @keyup.enter="addPromotionCode(promoCode)"
       />

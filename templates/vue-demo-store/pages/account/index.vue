@@ -32,7 +32,7 @@ const { t } = useI18n();
 
 useBreadcrumbs([
   {
-    name: t('account.breadcrumbs.accountOverview'),
+    name: t('breadcrumbs.accountOverview'),
     path: "/account",
   },
 ]);

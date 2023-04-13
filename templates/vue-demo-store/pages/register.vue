@@ -107,7 +107,7 @@ const invokeSubmit = async () => {
 
 useBreadcrumbs([
   {
-    name: t('account.breadcrumbs.register'),
+    name: t('breadcrumbs.register'),
     path: "/register",
   },
 ]);
@@ -176,7 +176,7 @@ useBreadcrumbs([
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter first name..."
+             :placeholder="$t('form.firstNamePlaceholder')"
             :disabled="loading"
             data-testid="registration-first-name-input"
             @blur="$v.firstName.$touch()"
@@ -203,7 +203,7 @@ useBreadcrumbs([
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter last name..."
+            :placeholder="$t('form.lastNamePlaceholder')"
             :disabled="loading"
             data-testid="registration-last-name-input"
             @blur="$v.lastName.$touch()"
@@ -230,7 +230,7 @@ useBreadcrumbs([
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Enter email address..."
+            :placeholder="$t('form.emailPlaceholder')"
             :disabled="loading"
             data-testid="registration-email-input"
             @blur="$v.email.$touch()"
@@ -257,7 +257,7 @@ useBreadcrumbs([
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter password..."
+            :placeholder="$t('form.passwordPlaceholder')"
             :disabled="loading"
             data-testid="registration-password-input"
             @blur="$v.password.$touch()"
@@ -287,7 +287,7 @@ useBreadcrumbs([
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter street..."
+            :placeholder="$t('form.streetPlaceholder')"
             :disabled="loading"
             data-testid="registration-street-input"
             @blur="$v.billingAddress.street.$touch()"
@@ -314,7 +314,7 @@ useBreadcrumbs([
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter zip code..."
+            :placeholder="$t('form.postalCodePlaceholder')"
             :disabled="loading"
             data-testid="registration-zipcode-input"
             @blur="$v.billingAddress.zipcode.$touch()"
@@ -341,7 +341,7 @@ useBreadcrumbs([
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter city..."
+            :placeholder="$t('form.cityPlaceholder')"
             :disabled="loading"
             data-testid="registration-city-input"
             @blur="$v.billingAddress.city.$touch()"

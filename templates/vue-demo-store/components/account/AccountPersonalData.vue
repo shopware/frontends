@@ -160,7 +160,7 @@ onMounted(async () => {
             autocomplete="firstname"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="Enter first name..."
+            :placeholder="$t('form.firstNamePlaceholder')"
             data-testid="account-personal-data-firstname-input"
             @blur="$v.firstName.$touch()"
           />
@@ -186,7 +186,7 @@ onMounted(async () => {
             autocomplete="lastname"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="Enter last name..."
+             :placeholder="$t('form.lastNamePlaceholder')"
             data-testid="account-personal-data-lastname-input"
             @blur="$v.lastName.$touch()"
           />
@@ -212,7 +212,7 @@ onMounted(async () => {
             autocomplete="email"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="Enter the email..."
+            :placeholder="$t('form.emailPlaceholder')"
             data-testid="account-personal-data-email-input"
             @blur="$v.email.$touch()"
           />
@@ -238,7 +238,7 @@ onMounted(async () => {
             autocomplete="email-confirm"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="Enter the email..."
+            :placeholder="$t('form.emailPlaceholder')"
             data-testid="account-personal-data-email-confirmation-input"
             @blur="$v.emailConfirmation.$touch()"
           />

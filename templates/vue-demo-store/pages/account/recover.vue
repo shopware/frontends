@@ -6,12 +6,12 @@ const { t } = useI18n()
 
 useBreadcrumbs([
   {
-    name: t('account.breadcrumbs.accountOverview'),
+    name: t('breadcrumbs.accountOverview'),
     path: "/account",
   },
   {
     
-    name: t('account.breadcrumbs.recoverPassword'),
+    name: t('breadcrumbs.recoverPassword'),
     path: "/account/recover",
   },
 ]);

@@ -326,7 +326,7 @@ async function invokeLogout() {
                     type="text"
                     required
                     name="first-name"
-                    placeholder="Enter first name..."
+                    :placeholder="$t('form.firstNamePlaceholder')"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-first-name-input"
                     @blur="$v.firstName.$touch()"
@@ -351,7 +351,7 @@ async function invokeLogout() {
                     type="text"
                     required
                     name="last-name"
-                    placeholder="Enter last name..."
+                    :placeholder="$t('form.lastNamePlaceholder')"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-last-name-input"
                     @blur="$v.lastName.$touch()"
@@ -393,7 +393,7 @@ async function invokeLogout() {
                     type="email"
                     required
                     name="email-address"
-                    placeholder="Enter email address..."
+                    :placeholder="$t('form.emailPlaceholder')"
                     autocomplete="off"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-email-input"
@@ -419,7 +419,7 @@ async function invokeLogout() {
                       autocomplete="off"
                       type="password"
                       name="password"
-                      placeholder="Enter password..."
+                      :placeholder="$t('form.passwordPlaceholder')"
                       class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                       @blur="$v.password.$touch()"
                     />
@@ -444,7 +444,7 @@ async function invokeLogout() {
                     type="text"
                     required
                     name="street-address"
-                    placeholder="Enter street..."
+                    :placeholder="$t('form.streetPlaceholder')"
                     autocomplete="street-address"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-street-address-input"
@@ -470,7 +470,7 @@ async function invokeLogout() {
                     type="text"
                     required
                     name="postal-code"
-                    placeholder="Enter zip code..."
+                    :placeholder="$t('form.postalCodePlaceholder')"
                     autocomplete="postal-code"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-zip-code-input"
@@ -496,7 +496,7 @@ async function invokeLogout() {
                     type="text"
                     required
                     name="city"
-                    placeholder="Enter city..."
+                    :placeholder="$t('form.cityPlaceholder')"
                     autocomplete="address-level2"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-city-input"

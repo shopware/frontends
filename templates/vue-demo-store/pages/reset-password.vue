@@ -5,7 +5,7 @@ export default {
 const {t} = useI18n()
 useBreadcrumbs([
   {
-    name: t('account.breadcrumbs.passwordReset'),
+    name: t('breadcrumbs.passwordReset'),
     path: "/reset-password",
   },
 ]);

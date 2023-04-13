@@ -12,10 +12,10 @@ const { items } = useWishlist();
 const { apiInstance } = useShopwareContext();
 const products = ref<Product[]>([]);
 const isLoading = ref(false);
-
+const {t} = useI18n()
 useBreadcrumbs([
   {
-    name: "Wishlist",
+    name: t('breadcrumbs.wishlist'),
     path: "/wishlist",
   },
 ]);
@@ -68,7 +68,7 @@ watch(
     >
       <!-- Wishlist is completed -->
       <div v-if="products.length">
-        <h1 class="my-3 text-3xl font-extrabold">Wishlist</h1>
+        <h1 class="my-3 text-3xl font-extrabold">{{$t('wishlist.header')}}</h1>
         <div
           class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
         >
@@ -86,14 +86,14 @@ watch(
         data-testid="wishlist-empty"
       >
         <div class="w-48 h-48 i-carbon-favorite" />
-        <h1 class="my-3 text-3xl font-extrabold">Wishlist is empty</h1>
-        <p class="my-4">No products were added to the Wishlist.</p>
+        <h1 class="my-3 text-3xl font-extrabold">{{ $t('wishlist.emptyLabel') }}</h1>
+        <p class="my-4">{{$t('wishlist.emptyText')}}</p>
         <NuxtLink
           to="/"
           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
           date-testid="wishlist-empty-continue-link"
         >
-          Continue Shopping
+          {{$t('wishlist.continueShopping')}}
         </NuxtLink>
       </div>
     </div>
