@@ -34,7 +34,7 @@ onMounted(async () => {
       style="margin-top: 20px"
     >
       <div>{{ product.translated?.name }}</div>
-      <div>{{ product.calculatedPrice.unitPrice }}</div>
+      <div>{{ product.calculatedPrice?.unitPrice }}</div>
     </div>
   </div>
   <LoginForm />
