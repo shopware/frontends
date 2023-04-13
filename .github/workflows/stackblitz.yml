@@ -21,20 +21,22 @@ jobs:
       - uses: mshick/add-pr-comment@v2
         with:
           message: |
-            ### Templates Quick Preview on StackBlitz
+            ### Templates Quick Preview on [StackBlitz](https://stackblitz.com) :zap:
 
-            ##### vue-demo-store
+            Enables to run each template in `dev` mode.
+
+            #### templates/vue-demo-store
 
             [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/${{env.BRANCH_NAME}}/templates/vue-demo-store?file=README.md)
 
-            ##### vue-blank
+            #### templates/vue-blank
             
             [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/${{env.BRANCH_NAME}}/templates/vue-blank?file=README.md)
 
-            ##### vue-vite-blank
+            #### templates/vue-vite-blank
             
             [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/${{env.BRANCH_NAME}}/templates/vue-vite-blank?file=README.md)
 
-            ##### astro
+            #### templates/astro
                   
             [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/${{env.BRANCH_NAME}}/templates/astro?file=README.md)
