@@ -1,6 +1,6 @@
 name: 🐞 Bug
 description: File a bug/issue
-title: "[BUG] <title>"
+title: "[BUG] "
 labels: [bug]
 body:
 - type: checkboxes
@@ -38,13 +38,13 @@ body:
     label: Environment
     description: |
       examples:
-        - **OS**: Ubuntu 20.04
-        - **Node**: 13.14.0
-        - **npm**: 7.6.3
+        - **OS**: Manjaro Linux 22.1.0
+        - **Node**: 18.14.2
+        - **pnpm**: 8.2.0
     value: |
         - OS:
         - Node:
-        - npm:
+        - pnpm:
     render: markdown
   validations:
     required: false
