@@ -12,7 +12,7 @@ This repository shows an example of demo application built with Shopware Fronten
 
 ## Requirements
 
-Go to [Documentation > Requirements](https://shopware-frontends-docs.vercel.app/framework/requirements.html) to see the details.
+Go to [Documentation > Requirements](https://frontends.shopware.com/framework/requirements.html) to see the details.
 
 ## Set up your Shopware 6 instance
 
@@ -36,7 +36,7 @@ Now, you can have a look on the pages and components and add your stuff there.
 
 ## Production
 
-There are many ways and many providers for deployment a production build of JS app. For more, read documentation [Best Practices > Deployment](https://shopware-frontends-docs.vercel.app/best-practices/deployment.html) section.
+There are many ways and many providers for deployment a production build of JS app. For more, read documentation [Best Practices > Deployment](https://frontends.shopware.com/best-practices/deployment.html) section.
 
 In this chapter we will cover:
 
