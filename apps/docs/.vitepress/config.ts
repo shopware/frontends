@@ -194,25 +194,25 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
             autogenExampleAlias: "api-client",
             functions: resolve(
               __dirname,
-              "../../../packages/api-client/src/services",
+              "../../../packages/api-client/src/services"
             ),
             types: resolve(
               __dirname,
-              "../../../packages/types/shopware-6-client/",
+              "../../../packages/types/shopware-6-client/"
             ),
           },
           {
             functions: resolve(__dirname, "../../../packages/composables/src/"),
             types: resolve(
               __dirname,
-              "../../../packages/types/shopware-6-client/",
+              "../../../packages/types/shopware-6-client/"
             ),
           },
           {
             functions: resolve(__dirname, "../../../packages/helpers/src/"),
             types: resolve(
               __dirname,
-              "../../../packages/types/shopware-6-client/",
+              "../../../packages/types/shopware-6-client/"
             ),
           },
         ],

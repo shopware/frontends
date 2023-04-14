@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/packages/typer.html",
+  "homepage": "https://frontends.shopware.com/packages/typer.html",
   "keywords": [
     "shopware"
   ],
