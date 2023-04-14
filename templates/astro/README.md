@@ -11,7 +11,7 @@ This repository shows an example of application built using Shopware Frontends F
 
 ## Requirements
 
-Go to [Documentation > Requirements](https://shopware-frontends-docs.vercel.app/framework/requirements.html) to see the details.
+Go to [Documentation > Requirements](https://frontends.shopware.com/framework/requirements.html) to see the details.
 
 ## Set up your Shopware 6 instance
 

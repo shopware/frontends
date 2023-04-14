@@ -37,7 +37,7 @@ export function usePrice(): UsePriceReturn {
     _setLocaleCode(
       params.localeCode ||
         (typeof navigator !== "undefined" && navigator?.language) ||
-        "en-US",
+        "en-US"
     );
   }
 

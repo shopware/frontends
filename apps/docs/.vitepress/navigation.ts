@@ -8,7 +8,7 @@ const nav = [
     text: "Themes",
   },
   {
-    link: "https://shopware-frontends-docs.vercel.app/",
+    link: "https://frontends.shopware.com/",
     text: "Frontends",
     repo: "shopware/frontends",
   },
