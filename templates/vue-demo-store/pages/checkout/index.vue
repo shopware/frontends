@@ -209,8 +209,10 @@ const invokeSubmit = async () => {
     try {
       const response = await register(state);
       if (!response.active) {
-        pushInfo('Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.')
-        await push('/')
+        pushInfo(
+          "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up."
+        );
+        await push("/");
       }
     } catch (error) {
       const e = error as ClientApiError;

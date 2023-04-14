@@ -16,7 +16,6 @@ test.describe.only("Registration new user", () => {
   });
 
   test("Registration new user", async ({ page }) => {
-    // let randomNumber = await getRandomNumber();
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCustomerData(
@@ -31,9 +30,7 @@ test.describe.only("Registration new user", () => {
       faker.address.city()
     );
     await registrationPage.submitRegistraionForm();
-    await page
-      .locator("[data-testid='header-sing-out-link']")
-      .nth(1)
-      .isVisible();
+    await page.waitForLoadState("load");
+    await page.locator("header-sing-out-link").nth(1).isVisible();
   });
 });

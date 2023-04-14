@@ -24,9 +24,7 @@ test.describe.parallel.only("Add product to cart / Remove from cart", () => {
     await homePage.openCartPage();
     await productPage.addToCart();
     await cartPage.openMiniCart();
-    await expect(
-      page.locator("[data-testid='cart-product-image']")
-    ).toBeVisible();
+    await expect(page.getByTestId("cart-product-image")).toBeVisible();
   });
 
   test("Add product to cart from wishlist", async ({ page }) => {
@@ -35,8 +33,6 @@ test.describe.parallel.only("Add product to cart / Remove from cart", () => {
     await expect(page.getByTestId("product-box")).toHaveCount(1);
     await productPage.addToCart();
     await cartPage.openMiniCart();
-    await expect(
-      page.locator("[data-testid='cart-product-image']")
-    ).toBeVisible();
+    await expect(page.getByTestId("cart-product-image")).toBeVisible();
   });
 });

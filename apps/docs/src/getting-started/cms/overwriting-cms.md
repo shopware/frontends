@@ -18,7 +18,27 @@ Because of auto importing, CMS component import will be overwritten by the new f
 
 More about auto imports can be found [here](https://nuxt.com/docs/guide/concepts/auto-imports)
 
-## Generic CMS components
+## Example how to overwrite the product card
+
+We have this cms product card **component** from **cms-base package**:  
+`packages/cms-base/components/SwProductCard.vue`
+
+If we want to create our own product card **component** in **demo-store** the correct place would be:
+`templates/vue-demo-store/components/cms/SwProductCard.vue`
+
+### Resolving folder structure
+
+**Nuxt** is resolving names by folder structure, so if you have:  
+`/components/public/some/name.vue`  
+then component name is **PublicSomeName**.
+
+You can repeat folder structure in name like:  
+`/components/cms/Name.vue`  
+`/components/cms/CmsName.vue`
+
+These are the same components resolving as **CmsName**. 💡
+
+### Generic CMS components
 
 Generic components are responsible for resolving each CMS element
 

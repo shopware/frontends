@@ -1,14 +1,14 @@
 // category
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCategoryEndpoint = () => `/store-api/category`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -17,7 +17,7 @@ export const getCategoryDetailsEndpoint = (categoryId: string) =>
 
 // landing-page
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -27,7 +27,7 @@ export const getLandingPageDetailsEndpoint = (landingPageId: string) =>
 // product-listing
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -37,14 +37,14 @@ export const getProductListingEndpoint = (categoryId: string) =>
 // product
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getProductEndpoint = () => `/store-api/product`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -54,7 +54,7 @@ export const getProductDetailsEndpoint = (productId: string) =>
 // product-reviews
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -64,14 +64,14 @@ export const getProductReviewsEndpoint = (productId: string) =>
 // search
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getSuggestSearchEndpoint = () => `/store-api/search-suggest`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -79,14 +79,14 @@ export const getSearchEndpoint = () => `/store-api/search`;
 
 // customer
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCustomerAddAddressEndpoint = () => `/store-api/account/address`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -99,7 +99,7 @@ const getCustomerDefaultAddressEndpoint = (type: string, addressId: string) =>
   `/store-api/account/address/default-${type}/${addressId}`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -107,7 +107,7 @@ export const getCustomerDefaultBillingAddressEndpoint = (addressId: string) =>
   getCustomerDefaultAddressEndpoint("billing", addressId);
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -115,19 +115,19 @@ export const getCustomerDefaultShippingAddressEndpoint = (addressId: string) =>
   getCustomerDefaultAddressEndpoint("shipping", addressId);
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCustomerEndpoint = () => `/store-api/account/customer`;
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCustomerRegisterEndpoint = () => `/store-api/account/register`;
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -135,28 +135,28 @@ export const getCustomerDetailsUpdateEndpoint = () =>
   `/store-api/account/change-profile`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCustomerLoginEndpoint = () => `/store-api/account/login`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCustomerLogoutEndpoint = () => `/store-api/account/logout`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCustomerOrderEndpoint = () => `/store-api/order`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -164,7 +164,7 @@ export const getCustomerUpdateEmailEndpoint = () =>
   `/store-api/account/change-email`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -172,7 +172,7 @@ export const getCustomerUpdatePasswordEndpoint = () =>
   `/store-api/account/change-password`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -180,7 +180,7 @@ export const getCustomerResetPasswordEndpoint = () =>
   `/store-api/account/recovery-password`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -188,7 +188,7 @@ export const getConfirmPasswordResetEndpoint = () =>
   `/store-api/account/recovery-password-confirm`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -196,7 +196,7 @@ export const getCustomerAccountConfirmEndpoint = () =>
   `/store-api/account/register-confirm`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -207,14 +207,14 @@ export const getCustomerUpdatePaymentMethodEndpoint = (
 // checkout
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCheckoutCartEndpoint = () => `/store-api/checkout/cart`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -222,21 +222,21 @@ export const getCheckoutCartLineItemEndpoint = () =>
   `/store-api/checkout/cart/line-item`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCheckoutOrderEndpoint = () => `/store-api/checkout/order`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getCancelOrderEndpoint = () => `/store-api/order/state/cancel`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -246,35 +246,35 @@ export const getChangeOrderPaymentMethodEndpoint = () =>
 // context
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getContextEndpoint = () => `/store-api/context`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getContextCurrencyEndpoint = () => `/store-api/currency`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getContextLanguageEndpoint = () => `/store-api/language`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getContextCountryEndpoint = () => `/store-api/country`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -282,7 +282,7 @@ export const getContextPaymentMethodEndpoint = () =>
   `/store-api/payment-method`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -290,7 +290,7 @@ export const getContextShippingMethodEndpoint = () =>
   `/store-api/shipping-method`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -299,21 +299,21 @@ export const getContextSalutationEndpoint = () => `/store-api/salutation`;
 // newsletter
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getNewsletterSubscribeEndpoint = () => `/newsletter/subscribe`; // replace with `/store-api/v4/newsletter/subscribe`, consider using `/store-api/v4/newsletter/confirm`
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getNewsletterUnsubscribeEndpoint = () => `/newsletter/unsubscribe`; // replace with `/store-api/v4/newsletter/unsubscribe`
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -321,21 +321,21 @@ export const getNewsletterRecipientEndpoint = () =>
   `/store-api/account/newsletter-recipient`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getPageResolverEndpoint = () => `/store-api/pwa/page`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getSeoUrlEndpoint = () => "/store-api/seo-url";
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -345,20 +345,20 @@ export const getStoreNavigationEndpoint = (
 ) => `/store-api/navigation/${requestActiveId}/${requestRootId}`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getContactFormEndpoint = () => `/store-api/contact-form`;
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const handlePaymentEndpoint = () => `/store-api/handle-payment`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -366,7 +366,7 @@ export const getStoreNewsletterSubscribeEndpoint = () =>
   `/store-api/newsletter/subscribe`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -374,7 +374,7 @@ export const getStoreNewsletterConfirmEndpoint = () =>
   `/store-api/newsletter/confirm`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -382,36 +382,36 @@ export const getStoreNewsletterUnsubscribeEndpoint = () =>
   `/store-api/newsletter/unsubscribe`;
 
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getGetWishlistProductsEndpoint = () =>
   `/store-api/customer/wishlist`;
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getAddWishlistProductEndpoint = (productId: string) =>
   `/store-api/customer/wishlist/add/${productId}`;
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getRemoveWishlistProductEndpoint = (productId: string) =>
   `/store-api/customer/wishlist/delete/${productId}`;
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */
 export const getMergeWishlistProductsEndpoint = () =>
   `/store-api/customer/wishlist/merge`;
 /**
- * {@label NOLINK}
- * {@label NOLINK}
+ * @nolink
+ * @nolink
  * @category Endpoints
  * @public
  */
@@ -420,7 +420,7 @@ export const getDocumentDownloadEndpoint = (
   deepLinkCode: string
 ) => `/store-api/document/download/${documentId}/${deepLinkCode}`;
 /**
- * {@label NOLINK}
+ * @nolink
  * @category Endpoints
  * @public
  */

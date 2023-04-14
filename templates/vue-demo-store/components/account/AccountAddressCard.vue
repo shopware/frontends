@@ -6,7 +6,6 @@ const {
   setDefaultCustomerShippingAddress,
   setDefaultCustomerBillingAddress,
   deleteCustomerAddress,
-  loadCustomerAddresses,
 } = useAddress();
 const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
 const { refreshSessionContext } = useSessionContext();

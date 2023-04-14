@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComputedRef } from "vue";
+import { Product } from "@shopware-pwa/types";
 
 const props = withDefaults(
   defineProps<{
@@ -11,7 +11,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: "change", selected: any): void;
+  (e: "change", selected: Product | undefined): void;
 }>();
 const isLoading = ref<boolean>();
 const router = useRouter();
@@ -22,16 +22,13 @@ const {
   findVariantForSelectedOptions,
 } = useProductConfigurator();
 
-const selectedOptions: ComputedRef<any> = computed(() =>
-  Object.values(unref(getSelectedOptions))
-);
 const isOptionSelected = (optionId: string) =>
   Object.values(getSelectedOptions.value).includes(optionId);
 
 const onHandleChange = async () => {
   isLoading.value = true;
   const variantFound = await findVariantForSelectedOptions(
-    unref(selectedOptions)
+    getSelectedOptions.value
   );
   const selectedOptionsVariantPath = variantFound?.seoUrls?.[0]?.seoPathInfo;
   if (props.allowRedirect && selectedOptionsVariantPath) {

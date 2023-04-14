@@ -15,22 +15,14 @@ export class HomePage extends AbstractPage {
 
   constructor(page: Page) {
     super(page);
-    this.signInButton = page.locator("[data-testid='header-sign-in-link']");
+    this.signInButton = page.getByTestId("header-sign-in-link");
     this.linkToCartPage = page.locator("text='Smoking Board Cedar Wood'");
     this.linkToVariantPage = page.locator(
       "text='Pepper white, ground, Muntok pearl'"
     );
-    this.searchBar = page.locator("[data-testid='layout-search-input']");
-    this.linkToRegistrationPage = page.locator(
-      "[data-testid='login-sign-up-link']"
-    );
-    this.addToWishlist = page.locator(
-      "[data-testid='product-box-wishlist-icon-not-in']"
-    );
-    this.myAccountLink = page.locator("[data-testid='header-my-account-link']");
-    this.accountMenuHelloButton = page.locator(
-      "[data-testid='account-menu-hello-button']"
-    );
+    this.searchBar = page.getByTestId("layout-search-input");
+    this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
+    this.addToWishlist = page.getByTestId("product-box-wishlist-icon-not-in");
   }
 
   async visitMainPage() {
@@ -38,28 +30,27 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await Promise.all([
-      this.page.waitForLoadState("load"),
-      this.signInButton.click(),
-    ]);
+    await this.page.waitForLoadState("load");
+    await this.signInButton.isEnabled();
+    await this.signInButton.click();
   }
 
   async openCartPage() {
-    await Promise.all([
-      this.linkToCartPage.click(),
-      this.page.waitForSelector("[data-testid='product-quantity']"),
-      this.page.waitForLoadState("load"),
-    ]);
+    await this.page.waitForLoadState("load");
+    await this.linkToCartPage.click();
+    await this.page.waitForSelector("[data-testid='product-quantity']");
+    await this.page.waitForLoadState("load");
   }
 
   async openVariantsCartPage() {
-    await Promise.all([
-      this.linkToVariantPage.click(),
-      this.page.waitForSelector("[data-testid='product-quantity']"),
-    ]);
+    await this.page.waitForLoadState("load");
+    await this.linkToVariantPage.click();
+    await this.page.waitForSelector("[data-testid='product-quantity']");
   }
 
   async openRegistrationPage() {
+    await this.page.waitForLoadState("load");
+    await this.linkToRegistrationPage.isVisible();
     await this.linkToRegistrationPage.click();
   }
 
