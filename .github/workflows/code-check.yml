@@ -61,6 +61,8 @@ jobs:
 
       - name: Build
         run: pnpm build
+        env:
+          NITRO_PRESET: vercel
 
       - name: Lint
         run: pnpm lint
