@@ -5,6 +5,8 @@ import StackBlitzLiveExample from "../../../components/StackBlitzLiveExample.vue
 
 In this chapter you will find how to build static product detail page on short example.
 
+![Image of Product Detail Page example](./pdp-md.png)
+
 ## Get Product data
 
 In order to display information of a product there is a `Product` object needed, containing basic information like:
