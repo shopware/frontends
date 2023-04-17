@@ -1,3 +1,6 @@
+<script setup>
+import StackBlitzLiveExample from "../../../components/StackBlitzLiveExample.vue";
+</script>
 # Product Detail Page
 
 In this chapter you will find how to build static product detail page on short example.
@@ -13,6 +16,11 @@ In order to display information of a product there is a `Product` object needed,
 - ...
 
 To achieve that, you can utilize methods available within `composables` package (or directly via API client package named `@shopware-pwa/api-client`). In this example we will use [useProductSearch](../../../packages/composables/useProductSearch.md). 
+
+:::info Associations
+Keep in mind that not every field, or inner object of the `Product` entity is available automatically.
+Some of relations need to be assigned explicitly by [associations](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#associations). The most common case is `media` object like `product.cover` or `product.media`, which keep additional information about the images: img url, thumbnails and so on. 
+:::
 
 The `useProductSearch` allows us to `search` in the product's collection:
 
@@ -61,6 +69,14 @@ const { loadAssociations, isLoading, productAssociations } =
       associationContext: "cross-selling",
     });
 ```
+
+## Full source
+
+<PageRef page="https://github.com/shopware/frontends/tree/main/examples/product-detail-page"
+  title="Product Detail Page Example"
+  target="_blank"
+  sub="Explore full example of PDP implementation"
+  />
 
 ## Live demo
 
