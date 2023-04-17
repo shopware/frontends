@@ -3,6 +3,7 @@
     "src/**/*"
   ],
   "compilerOptions": {
+    "allowJs": true,
     "paths": {
       "@/*": [
         "./src/*" // set path `@/*` as alias of `src/*`
