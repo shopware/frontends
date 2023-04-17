@@ -5,9 +5,20 @@ const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
 }>();
 
-const props = defineProps<{
+const props = withDefaults(
+  defineProps<{
   filter: ListingFilter;
-}>();
+  translations: {
+    min: string;
+    max: string;
+  }
+}>(),{
+  translations: () => ({
+   "min": "min",
+   "max": "max"
+  })
+});
+
 const prices = reactive<{ min: number; max: number }>({
   min: props.filter?.min || 0,
   max: props.filter?.max || 0,
@@ -72,7 +83,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
             <span
               class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
             >
-              min
+              {{ props.translations.min }}
             </span>
             <input
               id="min-price"
@@ -87,7 +98,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
             <span
               class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
             >
-              max
+               {{ props.translations.max }}
             </span>
             <input
               id="max-price"

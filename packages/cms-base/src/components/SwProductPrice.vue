@@ -2,9 +2,26 @@
 import { useProductPrice } from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
 
-const props = defineProps<{
-  product: Product;
-}>();
+const props = withDefaults(
+  defineProps<{
+    product: Product;
+    translations: {
+      amount: string
+      price: string
+      to: string
+      from: string
+    }
+  }>(),
+  {
+    translations: () => ({
+      amount: "Amount",
+      price: "Price",
+      to: "To",
+      from: "From"
+    })
+  }
+);
+
 const { product } = toRefs(props);
 
 const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(product);
@@ -35,13 +52,13 @@ const { getFormattedPrice } = usePrice();
             <th
               class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
             >
-              Amount
+              {{props.translations.amount}}
             </th>
 
             <th
               class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
             >
-              Price
+              {{props.translations.price}}
             </th>
           </tr>
         </thead>
@@ -50,8 +67,8 @@ const { getFormattedPrice } = usePrice();
             <td
               class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
             >
-              <span v-if="index < tierPrices.length - 1">To</span
-              ><span v-else>From</span> {{ tierPrice.quantity }}
+              <span v-if="index < tierPrices.length - 1">{{props.translations.to}}</span
+              ><span v-else>{{props.translations.from}}</span> {{ tierPrice.quantity }}
             </td>
             <td
               class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 font-medium text-current-500 dark:text-slate-400"

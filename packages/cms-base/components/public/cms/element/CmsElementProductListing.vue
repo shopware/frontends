@@ -4,9 +4,19 @@ import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
 import { ShopwareSearchParams } from "@shopware-pwa/types";
 
-const props = defineProps<{
-  content: CmsElementProductListing;
-}>();
+const props = withDefaults(
+  defineProps<{
+    content: CmsElementProductListing;
+    translations: {
+      noProducts: string;
+
+    }
+  }>(), {
+  translations: () => ({
+    "noProducts": "No products found 😔",
+  })
+});
+
 const {
   getElements,
   setInitialListing,
@@ -56,7 +66,7 @@ setInitialListing(props?.content?.data?.listing);
         </div>
       </div>
       <div v-else>
-        <h2 class="mx-auto text-center">No products found 😔</h2>
+        <h2 class="mx-auto text-center">{{ props.translations.noProducts }}</h2>
       </div>
     </div>
   </div>

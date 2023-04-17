@@ -4,9 +4,41 @@ import { useCmsElementConfig, useProductPrice } from "@shopware-pwa/composables-
 import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
 
-const props = defineProps<{
-  content: CmsElementBuyBox;
-}>();
+
+const props = withDefaults(
+  defineProps<{
+    content: CmsElementBuyBox;
+    translations: {
+      previously: string;
+      amount: string;
+      price: string;
+      to: string;
+      from: string;
+      content: string;
+      pricesIncl: string;
+      pricesExcl: string;
+      deliveryTime: string;
+      days: string;
+      noAvailable: string;
+      productNumber: string;
+
+    }
+  }>(), {
+  translations: () => ({
+    "previously": "Previously",
+    "amount": "Amount",
+    "price": "Price",
+    "to": "To",
+    "from": "From",
+    "content": "Content",
+    "pricesIncl": "Prices incl. VAT plus shipping costs",
+    "pricesExcl": "Prices excl. VAT plus shipping costs",
+    "deliveryTime":"Available, delivery time",
+    "days": "days",
+    "noAvailable": "No longer available",
+    "productNumber": "Product number"
+  })
+});
 
 const { getConfigValue } = useCmsElementConfig(props.content);
 const alignment = computed(() => getConfigValue("alignment"));
@@ -59,7 +91,7 @@ const restockTime = computed(() => product.value?.restockTime);
           :value="unitPrice"
         />
         <div class="text-xs flex text-gray-500" v-if="regulationPrice">
-          Previously <SharedPrice class="ml-1" :value="regulationPrice"/>
+          {{props.translations.previously}} <SharedPrice class="ml-1" :value="regulationPrice"/>
         </div>
       </div>
       <div v-else>
@@ -69,13 +101,13 @@ const restockTime = computed(() => product.value?.restockTime);
             <th
               class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
             >
-              Amount
+              {{props.translations.amount}}
             </th>
 
             <th
               class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
             >
-              Price
+              {{props.translations.price}}
             </th>
           </tr>
         </thead>
@@ -84,8 +116,8 @@ const restockTime = computed(() => product.value?.restockTime);
             <td
               class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
             >
-              <span v-if="index < tierPrices.length - 1">To</span
-              ><span v-else>From</span> {{ tierPrice.quantity }}
+              <span v-if="index < tierPrices.length - 1">{{props.translations.to}}</span
+              ><span v-else>{{props.translations.from}}</span> {{ tierPrice.quantity }}
             </td>
             <td
               class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 font-medium text-current-500 dark:text-slate-400"
@@ -97,7 +129,7 @@ const restockTime = computed(() => product.value?.restockTime);
       </table>
     </div>
       <div v-if="purchaseUnit && unitName" class="mt-1">
-        <span class="font-light"> Content: </span>
+        <span class="font-light"> {{props.translations.content}}: </span>
         <span class="font-light"> {{ purchaseUnit }} {{ unitName }} </span>
         <span v-if="referencePrice" class="font-light">
           {{ currency?.symbol }} {{ referencePrice?.price }} / /
@@ -106,26 +138,26 @@ const restockTime = computed(() => product.value?.restockTime);
       </div>
       <span class="text-indigo-600">
         <template v-if="taxState === 'gross'">
-          Prices incl. VAT plus shipping costs
+          {{  translations.pricesIncl }}
         </template>
-        <template v-else> Prices excl. VAT plus shipping costs </template>
+        <template v-else> {{ translations.pricesExcl}} </template>
       </span>
     </div>
     <div class="mt-4">
       <span v-if="availableStock >= minPurchase && deliveryTime"
-        >Available, delivery time {{ deliveryTime?.name }}
+        >{{props.translations.deliveryTime}} {{ deliveryTime?.name }}
       </span>
       <span
         v-else-if="availableStock < minPurchase && deliveryTime && restockTime"
-        >Available in {{ restockTime }} day, delivery time
+        > {{ props.translations.deliveryTime }} {{ restockTime }} {{ props.translations.days }}
         {{ deliveryTime?.name }}</span
       >
-      <span v-else>No longer available</span>
+      <span v-else>{{props.translations.noAvailable}}</span>
     </div>
     <SwVariantConfigurator @change="changeVariant" />
     <SwProductAddToCart :product="product" />
     <div class="mt-3 product-detail-ordernumber-container">
-      <span class="font-bold text-gray-900"> Product number: </span>
+      <span class="font-bold text-gray-900"> {{props.translations.productNumber}}: </span>
       <span>
         {{ productNumber }}
       </span>

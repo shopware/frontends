@@ -16,10 +16,22 @@ import {
 } from "@shopware-pwa/composables-next";
 import { ShopwareSearchParams } from "@shopware-pwa/types";
 
-defineProps<{
-  content: CmsElementProductListing | CmsElementSidebarFilter;
-  listingType?: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    content: CmsElementProductListing | CmsElementSidebarFilter;
+    listingType?: string;
+    translations: {
+      sort: string
+      resetFilters: string
+    }
+  }>(),
+  {
+    translations: () => ({
+      sort: "Sort",
+      resetFilters: "Reset filters"
+    })
+  }
+);
 
 const { category } = useCategory();
 const route = useRoute();
@@ -180,7 +192,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
                   aria-expanded="false"
                   aria-haspopup="true"
                 >
-                  Sort
+                  {{props.translations.sort }}
                   <div
                     class="i-carbon-chevron-down h-5 w-5 ml-1"
                     :class="{ hidden: isSortMenuOpen }"
@@ -243,7 +255,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
               @click="invokeCleanFilters"
               type="button"
             >
-              Reset filters<span
+              {{props.translations.resetFilters}}<span
                 class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"
               ></span>
             </button>
@@ -264,7 +276,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
             </div>
 
             <div class="text-sm font-medium text-gray-700 hover:text-gray-900">
-              Sort
+              {{props.translations.sort}}
             </div>
             <div class="i-carbon-chevron-down h-5 w-5 ml-1"></div>
           </div>

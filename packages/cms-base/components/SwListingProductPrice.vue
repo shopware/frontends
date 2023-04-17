@@ -2,9 +2,22 @@
 import { useProductPrice } from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
 
-const props = defineProps<{
-  product: Product;
-}>();
+const props = withDefaults(
+  defineProps<{
+    product: Product;
+    translations: {
+      variantsFrom: string
+      previously: string
+      to: string
+    }
+  }>(), {
+  translations: () => ({
+    variantsFrom: "variants from",
+    previously: "Previously",
+    to: "to"
+  })
+});
+
 const { product } = toRefs(props);
 
 const { price, unitPrice, displayFromVariants, displayFrom, isListPrice } =
@@ -26,7 +39,7 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price)
       :value="displayFromVariants"
     >
       <template #beforePrice
-        ><span v-if="displayFromVariants">variants from</span></template
+        ><span v-if="displayFromVariants">{{props.translations.variantsFrom}}</span></template
       >
     </SharedPrice>
     <SharedPrice
@@ -37,11 +50,11 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price)
       :value="unitPrice"
     >
       <template #beforePrice
-        ><span v-if="displayFrom || displayFromVariants">to</span></template
+        ><span v-if="displayFrom || displayFromVariants">{{props.translations.to}}</span></template
       >
     </SharedPrice>
     <div class="text-xs flex text-gray-500" v-if="regulationPrice">
-      Previously <SharedPrice class="ml-1" :value="regulationPrice"/>
+      {{props.translations.previously}} <SharedPrice class="ml-1" :value="regulationPrice"/>
     </div>
   </div>
 </template>

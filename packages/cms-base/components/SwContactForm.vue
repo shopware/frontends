@@ -8,9 +8,57 @@ import {
 } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
 
-const props = defineProps<{
-  content: CmsElementForm;
-}>();
+const props = withDefaults(
+  defineProps<{
+    content: CmsElementForm;
+    translations: {
+      messages: {
+        submitSuccess: string
+      },
+      salutation: string
+      salutationPlaceholder: string,
+      firstName: string
+      firstNamePlaceholder: string
+      lastName: string
+      lastNamePlaceholder: string
+      email: string
+      emailPlaceholder: string
+      phone: string
+      phonePlaceholder: string
+      subject: string
+      subjectPlaceholder: string
+      comment: string
+      commentPlaceholder: string
+      privacy: string
+      dataProtection: string
+      submit: string
+    }
+  }>(), {
+  translations: () => ({
+    messages: {
+      submitSuccess: "We have received your contact request and will process it as soon as possible."
+    },
+    salutation: "Salutation",
+    salutationPlaceholder: "Enter salutation...",
+    firstName: "First name",
+    firstNamePlaceholder: "Enter first name...",
+    lastName: "Last name",
+    lastNamePlaceholder: "Enter last name...",
+    email: "Email address",
+    emailPlaceholder: "Enter email address...",
+    phone: "Phone number",
+    phonePlaceholder: "Enter phone number...",
+    subject: "Subject",
+    subjectPlaceholder: "Enter subject...",
+    comment: "Comment",
+    commentPlaceholder: "Enter comment...",
+    privacy: "Privacy",
+    dataProtection: "I have read the data protection information.",
+    submit: "Submit"
+  })
+});
+
+
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);
 const errorMessages = ref<any[]>([]);
@@ -22,7 +70,7 @@ const { getConfigValue } = useCmsElementConfig(props.content);
 const getConfirmationText = computed(
   () =>
     getConfigValue("confirmationText") ??
-    "We have received your contact request and will process it as soon as possible."
+    props.translations.messages.submitSuccess
 );
 const getFormTitle = computed(() => getConfigValue("title") || "Contact");
 const state = reactive({
@@ -109,7 +157,7 @@ const invokeSubmit = async () => {
     <template v-if="!formSent">
       <div class="grid grid-cols-12 gap-5">
         <div class="col-span-4">
-          <label for="salutation">Salutation *</label>
+          <label for="salutation">{{props.translations.salutation}} *</label>
           <select
             id="salutation"
             name="salutation"
@@ -122,7 +170,7 @@ const invokeSubmit = async () => {
             v-model="state.salutationId"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">Enter salutation...</option>
+            <option disabled selected value="">{{props.translations.salutationPlaceholder}}</option>
             <option
               v-for="salutation in getSalutations"
               :key="salutation.id"
@@ -139,7 +187,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-4">
-          <label for="first-name">First name *</label>
+          <label for="first-name">{{ props.translations.firstName }} *</label>
           <input
             id="first-name"
             name="first-name"
@@ -153,7 +201,7 @@ const invokeSubmit = async () => {
             ]"
             @blur="$v.firstName.$touch()"
             v-model="state.firstName"
-            placeholder="Enter first name..."
+            :placeholder="props.translations.firstNamePlaceholder"
           />
           <span
             v-if="$v.firstName.$error"
@@ -163,7 +211,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-4">
-          <label for="last-name">Last name *</label>
+          <label for="last-name">{{props.translations.lastName}} *</label>
           <input
             id="last-name"
             name="last-name"
@@ -177,7 +225,7 @@ const invokeSubmit = async () => {
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             @blur="$v.lastName.$touch()"
-            placeholder="Enter last name..."
+            :placeholder="props.translations.lastNamePlaceholder"
           />
           <span
             v-if="$v.lastName.$error"
@@ -187,7 +235,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-6">
-          <label for="email-address">Email address *</label>
+          <label for="email-address">{{ props.translations.email }} *</label>
           <input
             id="email-address"
             name="email"
@@ -201,7 +249,7 @@ const invokeSubmit = async () => {
             v-model="state.email"
             @blur="$v.email.$touch()"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Enter email address..."
+            :placeholder="props.translations.emailPlaceholder"
           />
           <span
             v-if="$v.email.$error"
@@ -211,7 +259,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-6">
-          <label for="phone">Phone *</label>
+          <label for="phone">{{props.translations.phone}} *</label>
           <input
             id="phone"
             name="phone"
@@ -225,7 +273,7 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter phone number..."
+            :placeholder="props.translations.phonePlaceholder"
           />
           <span
             v-if="$v.phone.$error"
@@ -235,7 +283,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label for="subject">Subject *</label>
+          <label for="subject">{{props.translations.subject}} *</label>
           <input
             id="subject"
             name="subject"
@@ -249,7 +297,7 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter subject..."
+            :placeholder="props.translations.subjectPlaceholder"
           />
           <span
             v-if="$v.subject.$error"
@@ -259,7 +307,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label for="comment">Comment *</label>
+          <label for="comment">{{props.translations.comment}} *</label>
           <textarea
             id="comment"
             name="comment"
@@ -273,7 +321,7 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            placeholder="Enter comment..."
+            :placeholder="props.translations.commentPlaceholder"
             rows="5"
           />
           <span
@@ -284,7 +332,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label>Privacy *</label>
+          <label>{{props.translations.privacy }} *</label>
           <div class="flex gap-3 items-start">
             <input
               id="privacy"
@@ -301,8 +349,7 @@ const invokeSubmit = async () => {
                 :class="[$v.checkbox.$error ? 'text-red-600' : '']"
                 for="privacy"
               >
-                I have read the
-                <a class="text-indigo-700">data protection information.</a>
+                {{props.translations.dataProtection}}
               </label>
             </div>
           </div>
@@ -314,7 +361,7 @@ const invokeSubmit = async () => {
           type="submit"
           :disabled="loading"
         >
-          Submit
+          {{props.translations.submit }}
         </button>
       </div>
     </template>

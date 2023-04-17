@@ -5,9 +5,15 @@ const props = withDefaults(
   defineProps<{
     product: Product;
     showContent?: boolean;
+    translations: {
+      content: string
+    }
   }>(),
   {
     showContent: true,
+    translations: () => ({
+      content: "Content"
+    })
   }
 );
 
@@ -27,7 +33,7 @@ const referenceUnitName = computed(
 <template>
   <div v-if="purchaseUnit" class="flex text-gray-500 justify-end gap-1">
     <template v-if="props.showContent">
-      Content: {{ purchaseUnit }} {{ unitName }}
+      {{props.translations.content}}: {{ purchaseUnit }} {{ unitName }}
     </template>
     <template v-if="referencePrice">
       (<SharedPrice :value="referencePrice" /> / {{ referenceUnit }}

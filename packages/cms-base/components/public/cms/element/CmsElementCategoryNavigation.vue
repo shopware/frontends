@@ -2,6 +2,21 @@
 import { ClientApiError } from "@shopware-pwa/types";
 import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
 import { Category } from "@shopware-pwa/types";
+
+const props = withDefaults(
+  defineProps<{
+    translations: {
+      category: string;
+      categories: string;
+
+    }
+  }>(), {
+  translations: () => ({
+    "category": "Category",
+    "categories": "Categories"
+  })
+});
+
 const { category: activeCategory } = useCategory();
 const { loadNavigationElements, navigationElements } = useNavigation();
 const navigations = computed(() => {
@@ -35,7 +50,7 @@ onMounted(async () => {
       v-if="navigations.length > 0"
       class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
     >
-      {{ navigations.length > 1 ? "Categories" : "Category" }}
+      {{ navigations.length > 1 ? props.translations.categories: props.translations.category }}
     </h2>
     <SwCategoryNavigation
       :level="0"

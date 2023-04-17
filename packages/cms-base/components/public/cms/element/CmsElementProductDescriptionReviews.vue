@@ -6,9 +6,21 @@ import {
 } from "@shopware-pwa/helpers-next";
 import SwProductReviews from "../../../SwProductReviews.vue";
 
-const props = defineProps<{
-  content: CmsElementProductDescriptionReviews;
-}>();
+
+const props = withDefaults(
+  defineProps<{
+     content: CmsElementProductDescriptionReviews;
+    translations: {
+      description: string;
+      reviews: string;
+
+    }
+  }>(), {
+  translations: () => ({
+    "description": "Description",
+    "reviews": "Reviews"
+  })
+});
 const currentTab = ref<number>(1);
 const { product } = useProduct(props.content.data?.product);
 
@@ -42,7 +54,7 @@ const reviews = computed(() => props.content.data.reviews?.elements);
             ]"
             @click="() => toggleTabs(1)"
           >
-            <i class="fas fa-space-shuttle text-base mr-1" /> Description
+            <i class="fas fa-space-shuttle text-base mr-1" /> {{props.translations.description}}
           </a>
         </li>
         <li class="mr-2 text-center">
@@ -55,7 +67,7 @@ const reviews = computed(() => props.content.data.reviews?.elements);
             ]"
             @click="() => toggleTabs(2)"
           >
-            <i class="fas fa-cog text-base mr-1" /> Reviews
+            <i class="fas fa-cog text-base mr-1" /> {{props.translations.reviews}}
           </a>
         </li>
       </ul>

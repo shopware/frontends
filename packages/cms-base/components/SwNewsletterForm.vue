@@ -4,9 +4,48 @@ import { required, email } from "@vuelidate/validators";
 import { CmsElementForm } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
 
-const props = defineProps<{
-  content: CmsElementForm;
-}>();
+
+const props = withDefaults(
+  defineProps<{
+    content: CmsElementForm;
+    translations: {
+     subscribeLabel: string
+     unsubscribeLabel: string
+     action: string
+     email: string
+     emailPlaceholder: string
+     salutation: string
+     salutationPlaceholder: string
+     firstName: string
+     firstNamePlaceholder: string
+     lastName: string
+     lastNamePlaceholder: string
+     privacy: string
+     privacyLabel: string
+     submit: string
+     newsletterBenefits: string
+    }
+  }>(), {
+  translations: () => ({
+    subscribeLabel: "Subscribe to newsletter",
+    unsubscribeLabel: "Unsubscribe from newsletter",
+    action: "Action",
+    email: "Email address",
+    emailPlaceholder: "Enter email address...",
+    salutation: "Salutation",
+    salutationPlaceholder: "Enter salutation...",
+    firstName: "First name",
+    firstNamePlaceholder: "Enter first name...",
+    lastName: "Last name",
+    lastNamePlaceholder: "Enter last name...",
+    privacy: "Privacy",
+    privacyLabel: "I have read the data protection information.",
+    submit: "Submit",
+    newsletterBenefits: "Be aware of upcoming sales and events.Receive gifts and special offers!"
+  })
+});
+
+
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);
 const errorMessages = ref<any[]>([]);
@@ -15,11 +54,11 @@ const subscriptionOptions: {
   value: "subscribe" | "unsubscribe";
 }[] = [
   {
-    label: "Subscribe to newsletter",
+    label: props.translations.subscribeLabel,
     value: "subscribe",
   },
   {
-    label: "Unsubscribe to newsletter",
+    label: props.translations.unsubscribeLabel,
     value: "unsubscribe",
   },
 ];
@@ -105,14 +144,14 @@ const invokeSubmit = async () => {
         getFormTitle
           ? getFormTitle
           : state.option === "subscribe"
-          ? "Subscribe to newsletter"
-          : "Unsubscribe to newsletter"
+          ? props.translations.subscribeLabel
+          : props.translations.unsubscribeLabel
       }}
     </h3>
     <template v-if="!formSent">
       <div class="grid grid-cols-12 gap-5">
         <div class="col-span-12">
-          <label for="option">Action *</label>
+          <label for="option">{{props.translations.action}} *</label>
           <select
             id="option"
             name="option"
@@ -129,7 +168,7 @@ const invokeSubmit = async () => {
           </select>
         </div>
         <div class="col-span-12">
-          <label for="email-address">Email address *</label>
+          <label for="email-address">{{props.translations.email}} *</label>
           <input
             id="email-address"
             name="email"
@@ -143,7 +182,7 @@ const invokeSubmit = async () => {
             v-model="state.email"
             @blur="$v.email.$touch()"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Enter email address..."
+            :placeholder="props.translations.emailPlaceholder"
           />
           <span
             v-if="$v.email.$error"
@@ -153,7 +192,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
-          <label for="salutation">Salutation *</label>
+          <label for="salutation">{{props.translations.salutation}} *</label>
           <select
             id="salutation"
             name="salutation"
@@ -166,7 +205,7 @@ const invokeSubmit = async () => {
             v-model="state.salutationId"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">Enter salutation...</option>
+            <option disabled selected value="">{{ props.translations.salutationPlaceholder }}</option>
             <option
               v-for="salutation in getSalutations"
               :key="salutation.id"
@@ -183,7 +222,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
-          <label for="first-name">First name *</label>
+          <label for="first-name">{{ props.translations.firstName }} *</label>
           <input
             id="first-name"
             name="first-name"
@@ -197,7 +236,7 @@ const invokeSubmit = async () => {
             ]"
             @blur="$v.firstName.$touch()"
             v-model="state.firstName"
-            placeholder="Enter first name..."
+            :placeholder="props.translations.firstNamePlaceholder"
           />
           <span
             v-if="$v.firstName.$error"
@@ -207,7 +246,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
-          <label for="last-name">Last name *</label>
+          <label for="last-name">{{ props.translations.lastName }} *</label>
           <input
             id="last-name"
             name="last-name"
@@ -221,7 +260,7 @@ const invokeSubmit = async () => {
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             @blur="$v.lastName.$touch()"
-            placeholder="Enter last name..."
+            :placeholder="props.translations.lastNamePlaceholder"
           />
           <span
             v-if="$v.lastName.$error"
@@ -231,7 +270,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label>Privacy *</label>
+          <label>{{ props.translations.privacy }} *</label>
           <div class="flex gap-3 items-start">
             <input
               id="privacy"
@@ -248,8 +287,7 @@ const invokeSubmit = async () => {
                 :class="[$v.checkbox.$error ? 'text-red-600' : '']"
                 for="privacy"
               >
-                I have read the
-                <a class="text-indigo-700">data protection information.</a>
+                {{props.translations.privacyLabel }}
               </label>
             </div>
           </div>
@@ -261,13 +299,13 @@ const invokeSubmit = async () => {
           type="submit"
           :disabled="loading"
         >
-          Submit
+          {{props.translations.submit }}
         </button>
       </div>
     </template>
     <template v-else>
       <p class="py-10 text-lg text-center">
-        Be aware of upcoming sales and events. Receive gifts and special offers!
+        {{ props.translations.newsletterBenefits }}
       </p>
     </template>
   </form>

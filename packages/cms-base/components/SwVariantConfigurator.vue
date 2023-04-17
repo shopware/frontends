@@ -4,9 +4,15 @@ import { ComputedRef } from "vue";
 const props = withDefaults(
   defineProps<{
     allowRedirect?: boolean;
+    translations: {
+      chooseA:string
+    }
   }>(),
   {
     allowRedirect: false,
+    translations: () => ({
+      chooseA: "Choose a"
+    })
   }
 );
 
@@ -64,7 +70,7 @@ const onHandleChange = async () => {
     >
       <h3 class="text-sm text-gray-900 font-medium">{{ optionGroup.name }}</h3>
       <fieldset class="mt-4 flex-1">
-        <legend class="sr-only">Choose a {{ optionGroup.name }}</legend>
+        <legend class="sr-only">{{ props.translations.chooseA }} {{ optionGroup.name }}</legend>
         <div class="flex gap-3">
           <label
             data-testid="product-variant"

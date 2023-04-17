@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { Product, ProductReview } from "@shopware-pwa/types";
 
-const props = defineProps<{
-  product: Product;
-  reviews?: ProductReview[];
-}>();
+const props = withDefaults(
+  defineProps<{
+    product: Product;
+    reviews?: ProductReview[];
+    translations: {
+      noComments: string
+    }
+  }>(),
+  {
+    translations: () => ({
+      noComments: "No comments yet."
+    })
+  }
+);
+
 const { product, reviews } = toRefs(props);
 
 const shouldLoadReviews = !reviews?.value;
@@ -72,5 +83,5 @@ const formatDate = (date: string) =>
     </div>
   </div>
 
-  <div v-else>No comments yet.</div>
+  <div v-else>{{props.translations.noComments}}.</div>
 </template>
