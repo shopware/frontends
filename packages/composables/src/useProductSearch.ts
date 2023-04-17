@@ -45,8 +45,8 @@ export function useProductSearch(): {
     }
   ) => {
     const associations = deepMerge(
-      options?.withCmsAssociations && cmsAssociations,
-      options?.criteria
+      options?.withCmsAssociations ? cmsAssociations : {},
+      options?.criteria,
     );
     const result = await getProduct(productId, associations, apiInstance);
     return result;

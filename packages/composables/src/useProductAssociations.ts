@@ -53,16 +53,16 @@ export function useProductAssociations(
     searchParams: ShopwareSearchParams;
   }) => {
     isLoading.value = true;
-    const method = params.method || "get";
+    const method = params?.method || "get";
     try {
       if (method && method === "get") {
         const response = await invokeGet(
           {
             address: `${getProductDetailsEndpoint(
-              product.value.id
-            )}/${association}${params.searchParams || ""}`,
+              product.value?.id,
+            )}/${association}${params?.searchParams || ""}`,
           },
-          apiInstance
+          apiInstance,
         );
 
         associations.value = response?.data as [];
@@ -72,18 +72,18 @@ export function useProductAssociations(
       const response = await invokePost(
         {
           address: `${getProductDetailsEndpoint(
-            product.value.id
+            product.value.id,
           )}/${association}`,
-          payload: params,
+          payload: params?.searchParams || {},
         },
-        apiInstance
+        apiInstance,
       );
 
       associations.value = response?.data as [];
     } catch (error) {
       console.error(
         "[useProductAssociations][loadAssociations][error]:",
-        error
+        error,
       );
     } finally {
       isLoading.value = false;
