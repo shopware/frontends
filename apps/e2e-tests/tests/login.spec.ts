@@ -24,8 +24,6 @@ test.describe.only("Login user", () => {
     await homePage.clickOnSignIn();
     await loginForm.login(userEmail, password);
     await page.waitForLoadState("load");
-    await expect(
-      page.locator("[data-testid='account-menu-hello-button']")
-    ).toHaveCount(1);
+    await expect(page.getByTestId("account-menu-hello-button")).toHaveCount(1);
   });
 });

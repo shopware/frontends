@@ -35,6 +35,8 @@ export type UseUserReturn = {
   /**
    * Logs-in user with given credentials
    * @param params - username and password
+   *
+   * @see https://github.com/shopware/frontends/issues/112 if login fails due to missing context token
    */
   login(params: { username: string; password: string }): Promise<void>;
   /**

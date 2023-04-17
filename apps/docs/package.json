@@ -16,7 +16,7 @@
     "markdown-it": "^13.0.1",
     "vitepress": "1.0.0-alpha.65",
     "vitepress-plugin-search": "1.0.4-alpha.20",
-    "vitepress-shopware-docs": "0.3.0-beta.41",
+    "vitepress-shopware-docs": "0.3.0-beta.43",
     "vue": "^3.2.47"
   },
   "devDependencies": {

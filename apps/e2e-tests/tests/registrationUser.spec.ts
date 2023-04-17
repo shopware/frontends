@@ -31,9 +31,6 @@ test.describe.only("Registration new user", () => {
     );
     await registrationPage.submitRegistraionForm();
     await page.waitForLoadState("load");
-    await page
-      .locator("[data-testid='header-sing-out-link']")
-      .nth(1)
-      .isVisible();
+    await page.locator("header-sing-out-link").nth(1).isVisible();
   });
 });
