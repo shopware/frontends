@@ -79,7 +79,7 @@ export default defineNuxtConfig({
     langDir: "i18n/",
     locales: [
       {
-        code: "en",
+        code: "en-US",
         iso: "en-US",
         file: "en-US.ts"
       }

@@ -10,7 +10,7 @@ import SwProductReviews from "../../../SwProductReviews.vue";
 const props = withDefaults(
   defineProps<{
      content: CmsElementProductDescriptionReviews;
-    translations: {
+    translations?: {
       description: string;
       reviews: string;
 

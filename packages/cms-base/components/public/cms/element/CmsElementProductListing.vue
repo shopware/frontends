@@ -7,7 +7,7 @@ import { ShopwareSearchParams } from "@shopware-pwa/types";
 const props = withDefaults(
   defineProps<{
     content: CmsElementProductListing;
-    translations: {
+    translations?: {
       noProducts: string;
 
     }

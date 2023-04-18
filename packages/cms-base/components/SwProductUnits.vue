@@ -5,7 +5,7 @@ const props = withDefaults(
   defineProps<{
     product: Product;
     showContent?: boolean;
-    translations: {
+    translations?: {
       content: string
     }
   }>(),

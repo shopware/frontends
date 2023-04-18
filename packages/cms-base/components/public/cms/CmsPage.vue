@@ -6,6 +6,7 @@ import { useNavigationContext } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsPage;
+  translations?: any
 }>();
 
 const { routeName } = useNavigationContext();
@@ -20,6 +21,7 @@ const cmsSections = computed<CmsSection[]>(() => {
 const DynamicRender = () => {
   const componentsMap = cmsSections.value.map((section) => {
     return {
+      name: `CmsSection${pascalCase(section.type)}`,
       component: resolveComponent(`CmsSection${pascalCase(section.type)}`),
       section: section,
     };
@@ -31,6 +33,7 @@ const DynamicRender = () => {
     if (typeof componentObject.component === "string")
       return h("div", {}, "There is no " + componentObject.component);
     return h(componentObject.component, {
+      translations: props.translations,
       content: componentObject.section,
       class: {
         [cssClasses ?? ""]: true,

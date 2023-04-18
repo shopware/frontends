@@ -3,7 +3,7 @@ const props = withDefaults(
   defineProps<{
     total: number;
     current: number;
-    translations: {
+    translations?: {
       previous: string
       next: string
     }

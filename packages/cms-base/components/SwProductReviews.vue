@@ -5,7 +5,7 @@ const props = withDefaults(
   defineProps<{
     product: Product;
     reviews?: ProductReview[];
-    translations: {
+    translations?: {
       noComments: string
     }
   }>(),

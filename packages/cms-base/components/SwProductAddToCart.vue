@@ -5,7 +5,7 @@ const { pushSuccess } = useNotifications();
 const props = withDefaults(
   defineProps<{
     product: Product;
-    translations: {
+    translations?: {
       addedToCart: string
       qty: string
       addToCart: string

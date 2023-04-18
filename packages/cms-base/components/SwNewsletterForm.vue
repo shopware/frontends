@@ -8,7 +8,7 @@ import { ClientApiError } from "@shopware-pwa/types";
 const props = withDefaults(
   defineProps<{
     content: CmsElementForm;
-    translations: {
+    translations?: {
      subscribeLabel: string
      unsubscribeLabel: string
      action: string

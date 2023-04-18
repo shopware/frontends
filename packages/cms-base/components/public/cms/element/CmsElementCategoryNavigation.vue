@@ -5,7 +5,7 @@ import { Category } from "@shopware-pwa/types";
 
 const props = withDefaults(
   defineProps<{
-    translations: {
+    translations?: {
       category: string;
       categories: string;
 

@@ -4,7 +4,7 @@ import { ComputedRef } from "vue";
 const props = withDefaults(
   defineProps<{
     allowRedirect?: boolean;
-    translations: {
+    translations?: {
       chooseA:string
     }
   }>(),

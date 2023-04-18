@@ -5,7 +5,7 @@ import { Product } from "@shopware-pwa/types";
 const props = withDefaults(
   defineProps<{
     product: Product;
-    translations: {
+    translations?: {
       variantsFrom: string
       previously: string
       to: string

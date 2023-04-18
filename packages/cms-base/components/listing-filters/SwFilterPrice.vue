@@ -8,7 +8,7 @@ const emits = defineEmits<{
 const props = withDefaults(
   defineProps<{
   filter: ListingFilter;
-  translations: {
+  translations?: {
     min: string;
     max: string;
   }

@@ -5,6 +5,7 @@ import { resolveCmsComponent } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsSlot;
+  translations?: any;
 }>();
 
 const DynamicRender = () => {
@@ -18,11 +19,11 @@ const DynamicRender = () => {
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
       props.content
     );
-
     return h(resolvedComponent, {
       content: props.content,
       style: layoutStyles,
       class: cssClasses,
+      translations: props.translations
     });
   }
   return h("div", {}, "Loading...");

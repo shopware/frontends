@@ -3,6 +3,7 @@ import { CmsSectionDefault } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsSectionDefault;
+  translations?: any;
 }>();
 </script>
 
@@ -13,6 +14,7 @@ const props = defineProps<{
       class="overflow-auto"
       :key="cmsBlock.id"
       :content="cmsBlock"
+      :translations="props.translations"
     />
   </div>
 </template>

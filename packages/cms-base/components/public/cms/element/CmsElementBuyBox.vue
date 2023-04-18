@@ -8,7 +8,7 @@ import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
 const props = withDefaults(
   defineProps<{
     content: CmsElementBuyBox;
-    translations: {
+    translations?: {
       previously: string;
       amount: string;
       price: string;

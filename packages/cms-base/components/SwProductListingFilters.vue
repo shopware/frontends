@@ -20,7 +20,7 @@ const props = withDefaults(
   defineProps<{
     content: CmsElementProductListing | CmsElementSidebarFilter;
     listingType?: string;
-    translations: {
+    translations?: {
       sort: string
       resetFilters: string
     }

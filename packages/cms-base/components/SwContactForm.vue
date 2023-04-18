@@ -11,7 +11,7 @@ import { ClientApiError } from "@shopware-pwa/types";
 const props = withDefaults(
   defineProps<{
     content: CmsElementForm;
-    translations: {
+    translations?: {
       messages: {
         submitSuccess: string
       },
