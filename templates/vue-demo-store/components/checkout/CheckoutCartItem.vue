@@ -83,10 +83,10 @@ const removeCartItem = async () => {
       >
         <span
           v-for="option in itemOptions"
-          :key="(option as PropertyGroupOptionCart).group"
+          :key="option.group"
           class="mr-2"
         >
-          {{ option.group }}: {{ (option as PropertyGroupOptionCart).option }}
+          {{ option.group }}: {{ option.option }}
         </span>
       </p>
     </div>

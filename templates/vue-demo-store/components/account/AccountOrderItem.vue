@@ -37,10 +37,10 @@ const productOptions = computed(() =>
       <p class="mt-1 text-sm text-gray-500">
         <span
           v-for="option in productOptions"
-          :key="(option as PropertyGroupOptionCart).group"
+          :key="option.group"
           class="mr-2"
         >
-          {{ option.group }}: {{ (option as PropertyGroupOptionCart).option }}
+          {{ option.group }}: {{ option.option }}
         </span>
       </p>
     </div>
