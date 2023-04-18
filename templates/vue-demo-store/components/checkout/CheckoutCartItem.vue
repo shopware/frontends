@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-import { LineItem, PropertyGroupOptionCart } from "@shopware-pwa/types";
+import { LineItem } from "@shopware-pwa/types";
 
 const props = withDefaults(
   defineProps<{
