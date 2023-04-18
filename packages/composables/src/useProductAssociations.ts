@@ -42,6 +42,10 @@ export function useProductAssociations(
     associationContext: "cross-selling" | "reviews";
   }
 ): UseProductAssociationsReturn {
+
+  if (!product.value)
+    throw new Error("[useProductAssociations]: Product is not provided.");
+
   const association = options.associationContext;
 
   const { apiInstance } = useShopwareContext();
@@ -53,14 +57,14 @@ export function useProductAssociations(
     searchParams: ShopwareSearchParams;
   }) => {
     isLoading.value = true;
-    const method = params?.method || "get";
+    const method = params.method || "get";
     try {
       if (method && method === "get") {
         const response = await invokeGet(
           {
             address: `${getProductDetailsEndpoint(
-              product.value?.id,
-            )}/${association}${params?.searchParams || ""}`,
+              product.value.id,
+            )}/${association}${params.searchParams || ""}`,
           },
           apiInstance,
         );
