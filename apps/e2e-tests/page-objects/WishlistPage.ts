@@ -21,6 +21,5 @@ export class WishlistPage {
 
   async removeProductFromWishlist() {
     await this.productInWishlistButton.click();
-    await this.page.waitForLoadState("networkidle");
   }
 }
