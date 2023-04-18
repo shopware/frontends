@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed, unref, defineProps, ref } from "vue";
+  import { Product } from "@shopware-pwa/types";
   import {
-    getProductName,
     getSmallestThumbnailUrl,
     getSrcSetForMedia,
   } from "@shopware-pwa/helpers-next";
@@ -13,7 +13,10 @@
   } from "@shopware-pwa/composables-next";
   import ProductCard from "./ProductCard.vue";
 
-  const props = defineProps(["product"]);
+  const props = defineProps<{
+    product: Product;
+  }>();
+
   const product = computed(() => props.product);
 
   const activeTab = ref<
@@ -25,9 +28,15 @@
     useProductAssociations(product, {
       associationContext: "cross-selling",
     });
-  const openRecommendedTab = () => {
+
+  const recommendedTabLoaded = ref<boolean>(false);
+  const openRecommendedTab = async () => {
     activeTab.value = "product-cross-sell";
-    loadAssociations({
+    if (recommendedTabLoaded.value) {
+      return;
+    }
+
+    await loadAssociations({
       method: "post",
       searchParams: {
         associations: {
@@ -40,6 +49,8 @@
         },
       },
     });
+
+    recommendedTabLoaded.value = true;
   };
   const addToCartProxy = async () => {
     await addToCart();
