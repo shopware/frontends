@@ -1,4 +1,4 @@
-import { ref, computed, ComputedRef, Ref, unref } from "vue";
+import { ref, computed, ComputedRef } from "vue";
 import {
   Product,
   CrossSelling,
@@ -40,9 +40,8 @@ export function useProductAssociations(
   product: ComputedRef<Product>,
   options: {
     associationContext: "cross-selling" | "reviews";
-  }
+  },
 ): UseProductAssociationsReturn {
-
   if (!product.value)
     throw new Error("[useProductAssociations]: Product is not provided.");
 
