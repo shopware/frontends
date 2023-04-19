@@ -122,18 +122,12 @@ importers:
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
-      '@shopware-pwa/helpers-next':
-        specifier: workspace:^
-        version: link:../../packages/helpers
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.1
       vue:
         specifier: ^3.2.47
         version: 3.2.47
-      vue-router:
-        specifier: ^4.1.6
-        version: 4.1.6(vue@3.2.47)
     devDependencies:
       '@shopware-pwa/types':
         specifier: canary
