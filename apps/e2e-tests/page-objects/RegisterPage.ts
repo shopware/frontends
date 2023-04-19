@@ -17,26 +17,16 @@ export class RegisterForm {
   // Init selectors using constructor
   constructor(page: Page) {
     this.page = page;
-    this.salutation = page.locator(
-      "[data-testid='registration-salutation-select']"
-    );
-    this.firstName = page.locator(
-      "[data-testid='registration-first-name-input']"
-    );
-    this.lastName = page.locator(
-      "[data-testid='registration-last-name-input']"
-    );
-    this.emailAdrdress = page.locator(
-      "[data-testid='registration-email-input']"
-    );
-    this.password = page.locator("[data-testid='registration-password-input']");
-    this.street = page.locator("[data-testid='registration-street-input']");
-    this.zipcode = page.locator("[data-testid='registration-zipcode-input']");
-    this.city = page.locator("[data-testid='registration-city-input']");
-    this.country = page.locator("[data-testid='registration-country-select']");
-    this.submitButton = page.locator(
-      "[data-testid='registration-submit-button']"
-    );
+    this.salutation = page.getByTestId("registration-salutation-select");
+    this.firstName = page.getByTestId("registration-first-name-input");
+    this.lastName = page.getByTestId("registration-last-name-input");
+    this.emailAdrdress = page.getByTestId("registration-email-input");
+    this.password = page.getByTestId("registration-password-input");
+    this.street = page.getByTestId("registration-street-input");
+    this.zipcode = page.getByTestId("registration-zipcode-input");
+    this.city = page.getByTestId("registration-city-input");
+    this.country = page.getByTestId("registration-country-select");
+    this.submitButton = page.getByTestId("registration-submit-button");
   }
 
   // Define login page methods
@@ -59,9 +49,11 @@ export class RegisterForm {
     await this.zipcode.type(zipcode);
     await this.city.type(city);
     await this.country.selectOption({ label: "Germany" });
+    await this.page.waitForLoadState("load");
   }
 
   async submitRegistraionForm() {
+    await this.page.waitForLoadState("load");
     await this.submitButton.click();
   }
 }

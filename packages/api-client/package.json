@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/packages/api-client.html",
+  "homepage": "https://frontends.shopware.com/packages/api-client.html",
   "keywords": [
     "shopware",
     "api",
@@ -34,10 +34,10 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "@vitest/coverage-c8": "^0.29.8",
+    "@vitest/coverage-c8": "^0.30.1",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
-    "vitest": "^0.29.8"
+    "vitest": "^0.30.1"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",

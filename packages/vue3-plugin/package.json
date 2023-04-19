@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app",
+  "homepage": "https://frontends.shopware.com",
   "keywords": [
     "shopware"
   ],
@@ -31,7 +31,7 @@
     "build": "tsc && vite build"
   },
   "devDependencies": {
-    "typescript": "^5.0.3",
+    "typescript": "^5.0.4",
     "vite": "^4.2.1",
     "vite-dts": "^1.0.4"
   },

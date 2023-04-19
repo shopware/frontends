@@ -8,6 +8,7 @@ const emits = defineEmits<{
 
 const { isLoggedIn, login } = useUser();
 const {t} = useI18n()
+const { refreshSessionContext } = useSessionContext();
 const { mergeWishlistProducts } = useWishlist();
 const { pushSuccess } = useNotifications();
 const loginErrors = ref<string[]>([]);
@@ -21,6 +22,8 @@ const formData = ref({
 const invokeLogin = async (): Promise<void> => {
   loginErrors.value = [];
   try {
+    // TODO: remove this line once the https://github.com/shopware/frontends/issues/112 issue is fixed
+    await refreshSessionContext();
     await login(formData.value);
     emits("success");
     pushSuccess(t("account.messages.loggedInSuccess"));

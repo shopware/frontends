@@ -2,9 +2,9 @@
 
 Welcome to `@shopware-pwa/cms-base` package.
 
-For getting started documentation visit [https://shopware-frontends-docs.vercel.app/](https://shopware-frontends-docs.vercel.app/)
+For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
 
-Documentation specific for this package: [cms-base](https://shopware-frontends-docs.vercel.app/packages/cms-base.html)
+Documentation specific for this package: [cms-base](https://frontends.shopware.com/packages/cms-base.html)
 
 <!-- AUTO GENERATED CHANGELOG -->
 

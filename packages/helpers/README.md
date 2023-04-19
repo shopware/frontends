@@ -2,9 +2,9 @@
 
 Welcome to `@shopware-pwa/helpers-next` package.
 
-For getting started documentation visit [https://shopware-frontends-docs.vercel.app/](https://shopware-frontends-docs.vercel.app/)
+For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
 
-Documentation specific for this package: [helpers](https://shopware-frontends-docs.vercel.app/packages/helpers.html)
+Documentation specific for this package: [helpers](https://frontends.shopware.com/packages/helpers.html)
 
 <!-- AUTO GENERATED CHANGELOG -->
 

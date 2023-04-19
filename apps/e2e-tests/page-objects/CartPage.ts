@@ -8,9 +8,9 @@ export class CartPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.miniCartLink = page.locator("[data-testid='cart-button']");
-    this.removeMiniCart = page.locator("[data-testid='product-remove-button']");
-    this.productOption = page.locator("[data-testid='cart-product-options']");
+    this.miniCartLink = page.getByTestId("cart-button");
+    this.removeMiniCart = page.getByTestId("product-remove-button");
+    this.productOption = page.getByTestId("cart-product-options");
   }
 
   async openMiniCart() {

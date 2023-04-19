@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { CmsElementBuyBox } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig, useProductPrice } from "@shopware-pwa/composables-next";
+import {
+  useCmsElementConfig,
+  useProductPrice,
+} from "@shopware-pwa/composables-next";
 import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
 
@@ -51,7 +54,7 @@ const { product, changeVariant } = useProduct(
 );
 
 const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(product);
-const regulationPrice = computed(() => price.value?.regulationPrice?.price)
+const regulationPrice = computed(() => price.value?.regulationPrice?.price);
 const { getFormattedPrice } = usePrice();
 
 const referencePrice = computed(

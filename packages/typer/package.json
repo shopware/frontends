@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/packages/typer.html",
+  "homepage": "https://frontends.shopware.com/packages/typer.html",
   "keywords": [
     "shopware"
   ],
@@ -35,17 +35,17 @@
   },
   "devDependencies": {
     "@shopware-pwa/types": "workspace:*",
-    "@stackblitz/sdk": "^1.8.2",
+    "@stackblitz/sdk": "^1.9.0",
     "@types/find-in-files": "^0.5.1",
     "@types/fs-extra": "^11.0.1",
     "find-in-files": "^0.5.0",
     "fishery": "^2.2.2",
     "intermock": "^0.2.5",
     "ts-dox": "^0.1.0",
-    "typedoc": "^0.23.28",
-    "typescript": "^5.0.3",
+    "typedoc": "^0.24.1",
+    "typescript": "^5.0.4",
     "vinyl": "^3.0.0",
-    "vite-plugin-dts": "^2.1.0",
-    "vitest": "^0.29.8"
+    "vite-plugin-dts": "^2.2.0",
+    "vitest": "^0.30.1"
   }
 }

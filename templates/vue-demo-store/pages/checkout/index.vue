@@ -610,7 +610,7 @@ async function invokeLogout() {
                 :class="{ 'animate-pulse': isLoading[singleShippingMethod.id] }"
                 class="ml-2 block text-sm font-medium text-gray-700"
               >
-                {{ singleShippingMethod.name }}
+                {{ singleShippingMethod.translated?.name }}
               </label>
             </div>
           </fieldset>
@@ -652,7 +652,7 @@ async function invokeLogout() {
                 :class="{ 'animate-pulse': isLoading[singlePaymentMethod.id] }"
                 class="ml-2 block text-sm font-medium text-gray-700"
               >
-                {{ singlePaymentMethod.name }}
+                {{ singlePaymentMethod.translated?.name }}
               </label>
             </div>
           </fieldset>

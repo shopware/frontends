@@ -30,8 +30,8 @@ const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
   useOrderPayment(order);
 
 onMounted(async () => {
-  const SUCCESS_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
-  const FAILURE_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
+  const SUCCESS_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
+  const FAILURE_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
 
   await loadOrderDetails();
   handlePayment(SUCCESS_PAYMENT_URL, FAILURE_PAYMENT_URL);
@@ -180,13 +180,13 @@ const formatDate = (date: Date) =>
               <div class="w-auto md:w-1/2">
                 <div class="font-medium">{{ $t('checkout.paymentMethodLabel') }}</div>
                 <div class="pt-2 text-gray-600">
-                  <div>{{ paymentMethod?.name }}</div>
+                  <div>{{ paymentMethod?.translated?.name }}</div>
                 </div>
               </div>
               <div v-if="shippingMethod" class="w-auto md:w-1/2">
                 <div class="font-medium">{{ $t('checkout.shippingMethodLabel') }} </div>
                 <div class="pt-2 text-gray-600">
-                  <div>{{ shippingMethod?.name }}</div>
+                  <div>{{ shippingMethod?.translated?.name }}</div>
                   <div v-if="shippingMethod?.deliveryTime">
                     {{$t('checkout.takesUpTo')}} {{ shippingMethod.deliveryTime?.name }}
                   </div>

@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-const route = useRoute()
+const route = useRoute();
 const to = route.query.to as string;
-const params = {to: to}
+const params = { to: to };
 
 useAuthGuardRedirection(params);
 

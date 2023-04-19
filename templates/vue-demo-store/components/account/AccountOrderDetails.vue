@@ -3,15 +3,9 @@ const props = defineProps<{
   orderId: string;
 }>();
 
-const {
-  loadOrderDetails,
-  personalDetails,
-  billingAddress,
-  shippingAddress,
-  order,
-  hasDocuments,
-  documents,
-} = useOrderDetails(props.orderId);
+const { loadOrderDetails, order, hasDocuments, documents } = useOrderDetails(
+  props.orderId
+);
 
 onMounted(() => {
   loadOrderDetails();

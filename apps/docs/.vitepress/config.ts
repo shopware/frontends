@@ -88,6 +88,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
   // srcExclude: ["tutorial/**/description.md"], In case we need something to be excluded
   scrollOffset: "header",
   ignoreDeadLinks: true, // remove once MR #294 is merged
+
   head: [
     [
       "link",
@@ -162,6 +163,8 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
     ai: {
       endpoint: "",
     },
+    // TODO: temporarily disabled; change to actual repository pattern once vitepress is upgraded to have editLink.pattern: https://vitepress.dev/reference/default-theme-edit-link#site-level-config
+    editLink: false as any,
   },
 
   vite: {

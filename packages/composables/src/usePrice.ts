@@ -34,7 +34,11 @@ export function usePrice(): UsePriceReturn {
     currencyCode: string;
   }): void {
     _setCurrencyCode(params.currencyCode);
-    _setLocaleCode(params.localeCode || navigator?.language);
+    _setLocaleCode(
+      params.localeCode ||
+        (typeof navigator !== "undefined" && navigator?.language) ||
+        "en-US"
+    );
   }
 
   function _setCurrencyCode(code: string) {

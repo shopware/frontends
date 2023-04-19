@@ -16,10 +16,11 @@ const mobileBehavior = computed(() => props.content.mobileBehavior);
 </script>
 
 <template>
-  <div class="cms-section-sidebar flex flex-col md:block ">
+  <div class="cms-section-sidebar flex flex-col md:block">
     <div
       :class="{
-        'inline-block align-top w-12/12 md:w-3/12 order-2 md:order-1': mobileBehavior !== 'hidden',
+        'inline-block align-top w-12/12 md:w-3/12 order-2 md:order-1':
+          mobileBehavior !== 'hidden',
         'hidden md:block': mobileBehavior === 'hidden',
       }"
     >

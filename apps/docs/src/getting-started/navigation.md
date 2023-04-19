@@ -53,9 +53,13 @@ await loadNavigationElements({ depth: 2 });
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
     >
-      <RouterLink 
-        :to="getCategoryUrl(navigationElement)" 
-        :target="(navigationElement.externalLink || navigationElement.linkNewTab) ? '_blank' : ''"
+      <RouterLink
+        :to="getCategoryUrl(navigationElement)"
+        :target="
+          navigationElement.externalLink || navigationElement.linkNewTab
+            ? '_blank'
+            : ''
+        "
       >
         {{ navigationElement.translated.name }}
       </RouterLink>
