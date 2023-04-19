@@ -3,7 +3,7 @@
 <img src="./footer-navigation-md.png" alt="Preview for medium screen size" class="hidden sm:block border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
 ## Explanation
-Implementing Footer navigation can be described in two steps:
+Implementing Footer navigation can be described in few steps:
 
 1. Use [useNavigation](../../../packages/composables/useNavigation) composable to `loadNavigationElements` to display a navigation configured in admin panel.
 2. Iterate over `navigationElements` array of categories and display them.
