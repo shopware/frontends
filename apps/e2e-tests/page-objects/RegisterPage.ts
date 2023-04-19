@@ -69,6 +69,7 @@ export class RegisterForm {
     await this.zipcode.type(faker.address.zipCode());
     await this.city.type(faker.address.city());
     await this.country.selectOption({ label: "Germany" });
+    await this.page.waitForLoadState("load");
     await this.submitButton.click();
   }
 }

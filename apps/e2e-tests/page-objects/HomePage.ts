@@ -23,6 +23,8 @@ export class HomePage extends AbstractPage {
     this.searchBar = page.getByTestId("layout-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
     this.addToWishlist = page.getByTestId("product-box-wishlist-icon-not-in");
+    this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
+    this.myAccountLink = page.getByTestId("header-my-account-link");
   }
 
   async visitMainPage() {

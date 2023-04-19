@@ -48,22 +48,19 @@ export class MyAccountPage {
   async changePersonalData() {
     await this.page.waitForLoadState();
     await this.accountChangeProfileButton.click();
+    await this.page.waitForLoadState("load")
   }
 
   async changePersonalFirstName(firstname: string) {
-    await this.page.waitForLoadState();
     await this.personalFirstName.clear({ force: true });
     await this.personalFirstName.type(firstname);
     await this.accountPersonalDataSubmitButton.click();
-    await this.page.waitForLoadState();
   }
 
   async changePersonalLastName(lastname: string) {
-    await this.page.waitForLoadState();
     await this.personalLastName.clear({ force: true });
     await this.personalLastName.type(lastname);
     await this.accountPersonalDataSubmitButton.click();
-    await this.page.waitForLoadState();
   }
 
   async changePersonalEmail(email: string) {

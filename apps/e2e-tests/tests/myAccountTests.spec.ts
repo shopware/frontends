@@ -26,11 +26,15 @@ test.describe.parallel.only("My account functionalities tests", () => {
     await myAccountPage.changePersonalData();
     await myAccountPage.changePersonalFirstName("test first name");
     await myAccountPage.changePersonalLastName("test last name");
-    await expect(
-      page.locator("[data-testid='account-personal-data-firstname-input']")
-    ).toHaveText("test first name");
-    await expect(
-      page.locator("[data-testid='account-personal-data-lastname-input']")
-    ).toHaveText("test last name");
+    expect(
+      await page
+        .getByTestId("account-personal-data-firstname-input")
+        .inputValue()
+    ).toEqual("test first name");
+    expect(
+      await page
+        .getByTestId("account-personal-data-lastname-input")
+        .inputValue()
+    ).toEqual("test last name");
   });
 });
