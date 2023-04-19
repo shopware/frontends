@@ -97,7 +97,6 @@ const ratingAverage: Ref<number> = computed(() =>
     class="sw-product-card group relative max-w-full inline-block p-4"
     data-testid="product-box"
   >
-  ------------------------------
     <div
       :class="[
         'w-full rounded-md overflow-hidden hover:opacity-75',
@@ -202,11 +201,7 @@ const ratingAverage: Ref<number> = computed(() =>
         @click="addToCartProxy"
         class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         data-testid="add-to-cart-button"
-      > ;;
-      <pre>
-  {{ props.translations }}
-      </pre>
-      
+      >
         {{props.translations.addToCart}}
       </button>
       <RouterLink v-else :to="getProductUrl(product)">
