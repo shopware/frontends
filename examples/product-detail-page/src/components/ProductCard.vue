@@ -9,8 +9,12 @@
     useProductPrice,
     usePrice,
   } from "@shopware-pwa/composables-next";
+import { Product } from "@shopware-pwa/types";
 
-  const props = defineProps(["product"]);
+  const props = defineProps<{
+    product: Product
+  }>();
+  
   const product = computed(() => props.product);
 
   const { unitPrice } = useProductPrice(product);
