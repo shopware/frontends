@@ -21,7 +21,7 @@ This guide will discuss how to use and customize Shopping Experiences in your Sh
 
 Shopping Experiences are implemented as a dedicated package that you can install in your project.
 
-If your project is based on the [Demo Store Template](../getting-started/templates/demo-store-template.md), that package is already installed. If you are using a custom template, follow the instructions in [content pages](./../getting-started/cms/content-pages.md) first.
+If your project is based on the [Demo Store Template](../getting-started/templates/demo-store-template.md), that package is already installed. If you are using a custom template, follow the instructions in [content pages](../getting-started/cms/content-pages.md) first.
 
 ## Customize Components
 
