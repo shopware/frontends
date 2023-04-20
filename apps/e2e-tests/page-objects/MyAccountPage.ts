@@ -53,13 +53,13 @@ export class MyAccountPage {
 
   async changePersonalFirstName(firstname: string) {
     await this.personalFirstName.clear({ force: true });
-    await this.personalFirstName.type(firstname);
+    await this.personalFirstName.fill(firstname);
     await this.accountPersonalDataSubmitButton.click();
   }
 
   async changePersonalLastName(lastname: string) {
     await this.personalLastName.clear({ force: true });
-    await this.personalLastName.type(lastname);
+    await this.personalLastName.fill(lastname);
     await this.accountPersonalDataSubmitButton.click();
   }
 
