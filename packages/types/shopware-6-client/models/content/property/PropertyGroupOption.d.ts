@@ -23,7 +23,7 @@ export type PropertyGroupOption = {
   media: Media | null;
   customFields: CustomFields;
   translated: {
-    [key: string]: unknown;
+    [key: string]: string;
   };
   apiAlias: "property_group_option";
 };

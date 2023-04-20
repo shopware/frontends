@@ -15,7 +15,7 @@ export type PropertyGroup = {
   translations: PropertyGroupOptionTranslation[] | null;
   customFields: CustomFields;
   translated: {
-    [key: string]: unknown;
+    [key: string]: string;
   };
   apiAlias: "property_group";
 };
