@@ -1,4 +1,4 @@
-import { ref, computed, ComputedRef, Ref, unref } from "vue";
+import { ref, computed, ComputedRef } from "vue";
 import {
   Product,
   CrossSelling,
@@ -40,8 +40,11 @@ export function useProductAssociations(
   product: ComputedRef<Product>,
   options: {
     associationContext: "cross-selling" | "reviews";
-  }
+  },
 ): UseProductAssociationsReturn {
+  if (!product.value)
+    throw new Error("[useProductAssociations]: Product is not provided.");
+
   const association = options.associationContext;
 
   const { apiInstance } = useShopwareContext();
@@ -59,10 +62,10 @@ export function useProductAssociations(
         const response = await invokeGet(
           {
             address: `${getProductDetailsEndpoint(
-              product.value.id
+              product.value.id,
             )}/${association}${params.searchParams || ""}`,
           },
-          apiInstance
+          apiInstance,
         );
 
         associations.value = response?.data as [];
@@ -72,18 +75,18 @@ export function useProductAssociations(
       const response = await invokePost(
         {
           address: `${getProductDetailsEndpoint(
-            product.value.id
+            product.value.id,
           )}/${association}`,
-          payload: params,
+          payload: params?.searchParams || {},
         },
-        apiInstance
+        apiInstance,
       );
 
       associations.value = response?.data as [];
     } catch (error) {
       console.error(
         "[useProductAssociations][loadAssociations][error]:",
-        error
+        error,
       );
     } finally {
       isLoading.value = false;

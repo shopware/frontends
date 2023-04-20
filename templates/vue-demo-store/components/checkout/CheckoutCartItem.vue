@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-import { LineItem, PropertyGroupOptionCart } from "@shopware-pwa/types";
+import { LineItem } from "@shopware-pwa/types";
 
 const props = withDefaults(
   defineProps<{
@@ -83,10 +83,10 @@ const removeCartItem = async () => {
       >
         <span
           v-for="option in itemOptions"
-          :key="(option as PropertyGroupOptionCart).group"
+          :key="option.group"
           class="mr-2"
         >
-          {{ option.group }}: {{ (option as PropertyGroupOptionCart).option }}
+          {{ option.group }}: {{ option.option }}
         </span>
       </p>
     </div>

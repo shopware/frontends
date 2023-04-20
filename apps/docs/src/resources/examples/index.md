@@ -41,4 +41,8 @@ Just copy the code snippet and paste it into your project. Sometimes it's useful
 
 ## Product Detail Page
 
+<a href="./product-detail-page/">
+  <img src="./product-detail-page/pdp-md.png" alt="Preview for medium screen size" class="mx-auto block max-h-150 border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
+</a>
+
 ## Footer
