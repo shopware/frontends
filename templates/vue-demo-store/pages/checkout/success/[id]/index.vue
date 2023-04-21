@@ -182,13 +182,13 @@ const formatDate = (date: Date) =>
               <div class="w-auto md:w-1/2">
                 <div class="font-medium">Payment method</div>
                 <div class="pt-2 text-gray-600">
-                  <div>{{ paymentMethod?.name }}</div>
+                  <div>{{ paymentMethod?.translated?.name }}</div>
                 </div>
               </div>
               <div v-if="shippingMethod" class="w-auto md:w-1/2">
                 <div class="font-medium">Shipping method</div>
                 <div class="pt-2 text-gray-600">
-                  <div>{{ shippingMethod?.name }}</div>
+                  <div>{{ shippingMethod?.translated?.name }}</div>
                   <div v-if="shippingMethod?.deliveryTime">
                     Takes up to {{ shippingMethod.deliveryTime?.name }}
                   </div>

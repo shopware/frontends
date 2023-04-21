@@ -261,4 +261,4 @@ export default {
 
 After your setup, you can follow our building guides to get started with Shopware Frontends
 
-<PageRef page="../../getting-started/navigation" title="Getting Started - Navigation" sub="Let's implement a store navigation" />
+<PageRef page="../../getting-started/page-elements/navigation" title="Getting Started - Navigation" sub="Let's implement a store navigation" />

@@ -28,6 +28,6 @@ test.describe.parallel
     await homePage.addProductToWishlist();
     await wishlistPage.openWishlist();
     await wishlistPage.removeProductFromWishlist();
-    await expect(page.locator("[data-testid='wishlist-empty']")).toHaveCount(1);
+    await expect(page.getByTestId("wishlist-empty")).toHaveCount(1);
   });
 });

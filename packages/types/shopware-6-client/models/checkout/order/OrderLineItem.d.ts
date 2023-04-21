@@ -4,7 +4,7 @@ import { Order } from "./Order";
 import { OrderDeliveryPosition } from "./OrderDeliveryPosition";
 import { Media } from "../../content/media/Media";
 import { CustomFields } from "../../common/CustomField";
-import { Product } from "../../content/product/Product";
+import { CartProductItem, Product } from "../../content/product/Product";
 import { Promotion } from "../promotion/Promotion";
 import { Downloads } from "./OrderDownloads";
 /**
@@ -26,7 +26,7 @@ export type OrderLineItem = {
   stackable: boolean;
   price: CalculatedPrice | null;
   priceDefinition: PriceDefinitionInterface | null;
-  payload: Product | Promotion;
+  payload: CartProductItem | Promotion;
   parentId: string | null;
   type: string | null;
   order: Order | null;

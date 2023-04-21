@@ -16,6 +16,7 @@ const errorMessages = ref<string[]>([]);
 const isSuccess = ref(false);
 const updated = ref(false);
 const isUpdating = ref(false);
+const loadingData = ref(false);
 
 const state = reactive({
   firstName: "",
@@ -73,6 +74,7 @@ const invokeUpdate = async (): Promise<void> => {
   errorMessages.value = [];
   isSuccess.value = false;
   try {
+    loadingData.value = true;
     updated.value = false;
     $v.value.$touch();
     if (
@@ -108,15 +110,19 @@ const invokeUpdate = async (): Promise<void> => {
   } catch (err) {
     const e = err as ClientApiError;
     errorMessages.value = e.messages.map((m) => m.detail);
+  } finally {
+    loadingData.value = false;
   }
 };
-onMounted(async () => {
+onBeforeMount(async () => {
+  loadingData.value = true;
   await refreshUser();
   state.firstName = user.value?.firstName || "";
   state.lastName = user.value?.lastName || "";
   state.email = user.value?.email || "";
   state.salutationId = user.value?.salutationId || "";
   state.title = user.value?.title || "";
+  loadingData.value = false;
 });
 </script>
 <template>
@@ -164,6 +170,7 @@ onMounted(async () => {
             placeholder="Enter first name..."
             data-testid="account-personal-data-firstname-input"
             @blur="$v.firstName.$touch()"
+            :disabled="loadingData"
           />
           <span
             v-if="$v.firstName.$error"
@@ -190,6 +197,7 @@ onMounted(async () => {
             placeholder="Enter last name..."
             data-testid="account-personal-data-lastname-input"
             @blur="$v.lastName.$touch()"
+            :disabled="loadingData"
           />
           <span
             v-if="$v.lastName.$error"
@@ -216,6 +224,7 @@ onMounted(async () => {
             placeholder="Enter the email..."
             data-testid="account-personal-data-email-input"
             @blur="$v.email.$touch()"
+            :disabled="loadingData"
           />
           <span
             v-if="$v.email.$error"
@@ -242,6 +251,7 @@ onMounted(async () => {
             placeholder="Enter the email..."
             data-testid="account-personal-data-email-confirmation-input"
             @blur="$v.emailConfirmation.$touch()"
+            :disabled="loadingData"
           />
           <span
             v-if="$v.emailConfirmation.$error"
@@ -268,6 +278,7 @@ onMounted(async () => {
             placeholder="••••••••"
             data-testid="account-personal-data-password-input"
             @blur="$v.password.$touch()"
+            :disabled="loadingData"
           />
           <span
             v-if="$v.password.$error"
@@ -283,6 +294,7 @@ onMounted(async () => {
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
           data-testid="account-personal-data-submit-button"
+          :disabled="loadingData"
         >
           Save changes
         </button>

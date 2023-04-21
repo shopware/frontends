@@ -6,8 +6,6 @@ export class SearchResultPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.searchResultBox = page.locator(
-      "[data-testid='search-results-container']"
-    );
+    this.searchResultBox = page.getByTestId("search-results-container");
   }
 }

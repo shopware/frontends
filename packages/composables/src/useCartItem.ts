@@ -1,13 +1,12 @@
 import { computed, ComputedRef, Ref, unref } from "vue";
 import { removeCartItem, getProduct } from "@shopware-pwa/api-client";
 import {
-  Product,
   LineItem,
   LineItemType,
   ClientApiError,
   PropertyGroupOptionCart,
-  PropertyGroupOption,
   ProductResponse,
+  CartProductItem,
 } from "@shopware-pwa/types";
 
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
@@ -17,7 +16,7 @@ export type UseCartItemReturn = {
   itemRegularPrice: ComputedRef<number | undefined>;
   itemSpecialPrice: ComputedRef<number | undefined>;
   itemImageThumbnailUrl: ComputedRef<string>;
-  itemOptions: ComputedRef<PropertyGroupOption[] | PropertyGroupOptionCart[]>;
+  itemOptions: ComputedRef<PropertyGroupOptionCart[]>;
   itemType: ComputedRef<LineItemType | undefined>;
   isProduct: ComputedRef<boolean>;
   isPromotion: ComputedRef<boolean>;
@@ -64,7 +63,7 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   const itemOptions = computed(
     () =>
       (cartItem.value.type === "product" &&
-        (cartItem.value.payload as Product)?.options) ||
+        (cartItem.value.payload as CartProductItem)?.options) ||
       []
   );
 

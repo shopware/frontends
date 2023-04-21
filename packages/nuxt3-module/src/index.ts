@@ -101,7 +101,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
         icon: "fa6-brands:shopware",
         view: {
           type: "iframe",
-          src: "https://shopware-frontends-docs.vercel.app/",
+          src: "https://frontends.shopware.com/",
         },
       });
     });

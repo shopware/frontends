@@ -11,12 +11,12 @@ export class ProductPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.addToCartButton = page.locator("[data-testid='add-to-cart-button']");
-    this.variant = page.locator("[data-testid='product-variant']");
-    this.variantText = page.locator("[data-testid='product-variant-text']");
-    this.productOption = page.locator("[data-testid='cart-product-options']");
-    this.miniCartLink = page.locator("[data-testid='cart-button']");
-    this.productRemove = page.locator("[data-testid='product-remove-button']");
+    this.addToCartButton = page.getByTestId("add-to-cart-button");
+    this.variant = page.getByTestId("product-variant");
+    this.variantText = page.getByTestId("product-variant-text");
+    this.productOption = page.getByTestId("cart-product-options");
+    this.miniCartLink = page.getByTestId("cart-button");
+    this.productRemove = page.getByTestId("product-remove-button");
   }
 
   async addToCart() {
@@ -26,7 +26,7 @@ export class ProductPage {
 
   async addVariantToCart() {
     for (const variant of await this.page
-      .locator("[data-testid='product-variant-text']")
+      .getByTestId("product-variant-text")
       .all())
       await variant.click(), await this.page.waitForLoadState("load");
     await this.addToCartButton.isEnabled();
@@ -37,6 +37,6 @@ export class ProductPage {
     );
     await this.page.waitForLoadState("load");
     await this.productRemove.click();
-    await this.page.locator("[data-testid='cart-close-button']").click();
+    await this.page.getByTestId("cart-close-button").click();
   }
 }
