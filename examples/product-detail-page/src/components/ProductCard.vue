@@ -1,25 +1,25 @@
 <script setup lang="ts">
-  import { computed, defineProps } from "vue";
-  import {
-    getSmallestThumbnailUrl,
-    getSrcSetForMedia,
-  } from "@shopware-pwa/helpers-next";
-  import {
-    useAddToCart,
-    useProductPrice,
-    usePrice,
-  } from "@shopware-pwa/composables-next";
+import { computed, defineProps } from "vue";
+import {
+  getSmallestThumbnailUrl,
+  getSrcSetForMedia,
+} from "@shopware-pwa/helpers-next";
+import {
+  useAddToCart,
+  useProductPrice,
+  usePrice,
+} from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
 
-  const props = defineProps<{
-    product: Product
-  }>();
-  
-  const product = computed(() => props.product);
+const props = defineProps<{
+  product: Product;
+}>();
 
-  const { unitPrice } = useProductPrice(product);
-  const { getFormattedPrice } = usePrice();
-  const { addToCart } = useAddToCart(product);
+const product = computed(() => props.product);
+
+const { unitPrice } = useProductPrice(product);
+const { getFormattedPrice } = usePrice();
+const { addToCart } = useAddToCart(product);
 </script>
 <template>
   <div

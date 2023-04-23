@@ -14,7 +14,7 @@ const userErrorMessages = computed(() =>
 );
 
 const isSuccess = ref(false);
-const loadingData = ref(false)
+const loadingData = ref(false);
 
 const state = reactive({
   password: {
@@ -45,7 +45,7 @@ const rules = computed(() => ({
 const $v = useVuelidate(rules, state);
 
 const invokeChange = async (): Promise<void> => {
-  loadingData.value = true
+  loadingData.value = true;
   try {
     const isFormCorrect = await $v.value.$validate();
 
@@ -73,7 +73,7 @@ const invokeChange = async (): Promise<void> => {
   } catch (err) {
     console.error("error change password", err);
   } finally {
-    loadingData.value = false
+    loadingData.value = false;
   }
 };
 </script>
