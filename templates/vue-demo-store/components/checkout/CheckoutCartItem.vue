@@ -81,11 +81,7 @@ const removeCartItem = async () => {
         class="mt-1 text-sm text-gray-500"
         data-testid="cart-product-options"
       >
-        <span
-          v-for="option in itemOptions"
-          :key="option.group"
-          class="mr-2"
-        >
+        <span v-for="option in itemOptions" :key="option.group" class="mr-2">
           {{ option.group }}: {{ option.option }}
         </span>
       </p>

@@ -1,76 +1,76 @@
 <script setup lang="ts">
-  import { computed, unref, defineProps, ref } from "vue";
-  import { Product } from "@shopware-pwa/types";
-  import {
-    getSmallestThumbnailUrl,
-    getSrcSetForMedia,
-  } from "@shopware-pwa/helpers-next";
-  import {
-    useAddToCart,
-    useProductPrice,
-    usePrice,
-    useProductAssociations,
-  } from "@shopware-pwa/composables-next";
-  import ProductCard from "./ProductCard.vue";
+import { computed, unref, defineProps, ref } from "vue";
+import { Product } from "@shopware-pwa/types";
+import {
+  getSmallestThumbnailUrl,
+  getSrcSetForMedia,
+} from "@shopware-pwa/helpers-next";
+import {
+  useAddToCart,
+  useProductPrice,
+  usePrice,
+  useProductAssociations,
+} from "@shopware-pwa/composables-next";
+import ProductCard from "./ProductCard.vue";
 
-  const props = defineProps<{
-    product: Product;
-  }>();
+const props = defineProps<{
+  product: Product;
+}>();
 
-  const product = computed(() => props.product);
+const product = computed(() => props.product);
 
-  const activeTab = ref<
-    "product-description" | "product-properties" | "product-cross-sell"
-  >("product-description");
+const activeTab = ref<
+  "product-description" | "product-properties" | "product-cross-sell"
+>("product-description");
 
-  const { addToCart } = useAddToCart(product);
-  const { loadAssociations, isLoading, productAssociations } =
-    useProductAssociations(product, {
-      associationContext: "cross-selling",
-    });
+const { addToCart } = useAddToCart(product);
+const { loadAssociations, isLoading, productAssociations } =
+  useProductAssociations(product, {
+    associationContext: "cross-selling",
+  });
 
-  const recommendedTabLoaded = ref<boolean>(false);
-  const openRecommendedTab = async () => {
-    activeTab.value = "product-cross-sell";
-    if (recommendedTabLoaded.value) {
-      return;
-    }
+const recommendedTabLoaded = ref<boolean>(false);
+const openRecommendedTab = async () => {
+  activeTab.value = "product-cross-sell";
+  if (recommendedTabLoaded.value) {
+    return;
+  }
 
-    await loadAssociations({
-      method: "post",
-      searchParams: {
-        associations: {
-          media: {},
-          cover: {
-            associations: {
-              media: {},
-            },
+  await loadAssociations({
+    method: "post",
+    searchParams: {
+      associations: {
+        media: {},
+        cover: {
+          associations: {
+            media: {},
           },
         },
       },
-    });
-
-    recommendedTabLoaded.value = true;
-  };
-  const addToCartProxy = async () => {
-    await addToCart();
-    console.info(`${product.value.translated.name} has been added to cart`);
-  };
-
-  const { unitPrice, price } = useProductPrice(product);
-  const regulationPrice = computed(() => price.value?.regulationPrice?.price);
-  const { getFormattedPrice, init } = usePrice();
-  init({
-    localeCode: "de-DE",
-    currencyCode: "EUR",
+    },
   });
 
-  const productName = computed(() => product.value?.translated?.name);
-  const manufacturer = computed(() => product.value?.manufacturer?.name);
-  const description = computed(() => product.value?.translated?.description);
-  const productNumber = computed(() => product.value?.productNumber);
-  const purchaseUnit = computed(() => product.value?.purchaseUnit);
-  const unitName = computed(() => product.value?.unit?.name);
+  recommendedTabLoaded.value = true;
+};
+const addToCartProxy = async () => {
+  await addToCart();
+  console.info(`${product.value.translated.name} has been added to cart`);
+};
+
+const { unitPrice, price } = useProductPrice(product);
+const regulationPrice = computed(() => price.value?.regulationPrice?.price);
+const { getFormattedPrice, init } = usePrice();
+init({
+  localeCode: "de-DE",
+  currencyCode: "EUR",
+});
+
+const productName = computed(() => product.value?.translated?.name);
+const manufacturer = computed(() => product.value?.manufacturer?.name);
+const description = computed(() => product.value?.translated?.description);
+const productNumber = computed(() => product.value?.productNumber);
+const purchaseUnit = computed(() => product.value?.purchaseUnit);
+const unitName = computed(() => product.value?.unit?.name);
 </script>
 <template>
   <div class="md:flex items-start justify-center py-12 2xl:px-20 md:px-6 px-4">

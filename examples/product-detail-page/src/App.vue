@@ -1,28 +1,28 @@
 <script setup lang="ts">
-  import { onMounted, ref } from "vue";
-  import { useProductSearch } from "@shopware-pwa/composables-next";
-  import type { Product } from "@shopware-pwa/types";
-  import ProductView from "@/components/ProductView.vue";
+import { onMounted, ref } from "vue";
+import { useProductSearch } from "@shopware-pwa/composables-next";
+import type { Product } from "@shopware-pwa/types";
+import ProductView from "@/components/ProductView.vue";
 
-  const { search } = useProductSearch();
+const { search } = useProductSearch();
 
-  const product = ref<Product>();
-  onMounted(async () => {
-    const productResponse = await search("b2e974a54f8a48949a6397c72d2bffb5", {
-      criteria: {
-        associations: {
-          properties: {},
-          options: {
-            associations: {
-              group: {},
-            },
+const product = ref<Product>();
+onMounted(async () => {
+  const productResponse = await search("b2e974a54f8a48949a6397c72d2bffb5", {
+    criteria: {
+      associations: {
+        properties: {},
+        options: {
+          associations: {
+            group: {},
           },
-          manufacturer: {},
         },
+        manufacturer: {},
       },
-    });
-    product.value = productResponse.product;
+    },
   });
+  product.value = productResponse.product;
+});
 </script>
 <template>
   <Transition mode="out-in">
@@ -30,14 +30,14 @@
   </Transition>
 </template>
 <style>
-  /* we will explain what these classes do next! */
-  .v-enter-active,
-  .v-leave-active {
-    transition: opacity 1s ease;
-  }
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 1s ease;
+}
 
-  .v-enter-from,
-  .v-leave-to {
-    opacity: 0;
-  }
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>
