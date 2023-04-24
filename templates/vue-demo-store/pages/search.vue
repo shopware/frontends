@@ -60,7 +60,11 @@ export default {
     class="container mb-8 mx-4 md:mx-auto"
     data-testid="search-results-container"
   >
-    <IconsLoadingCircle v-if="loading" />
+    <div v-if="loading" class="flex justify-center">
+      <div
+        class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+      />
+    </div>
 
     <h1 class="mb-8 text-3xl font-extrabold text-center">
       <span v-if="products.length">Search Result</span>
