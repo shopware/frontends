@@ -28,7 +28,7 @@ watch(escape, () => {
         @click="close"
       >
         <div
-          class="flex items-start justify-center min-h-screen pt-1/3 text-center"
+          class="flex items-start justify-center min-h-screen pt-1/6 text-center"
         >
           <Transition
             enter-active-class="transition ease-out duration-500 transform "
@@ -39,7 +39,7 @@ watch(escape, () => {
             leave-to-class="opacity-0 translate-y-10 translate-y-0 scale-95"
           >
             <div
-              class="bg-white rounded-lg text-left overflow-hidden shadow-xl p-8 w-1/2"
+              class="bg-white rounded-lg text-left overflow-hidden shadow-xl p-8 lg:max-w-1/2"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-headline"

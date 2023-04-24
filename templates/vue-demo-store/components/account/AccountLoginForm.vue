@@ -33,6 +33,9 @@ const invokeLogin = async (): Promise<void> => {
     loginErrors.value = e.messages.map(({ detail }) => detail);
   }
 };
+
+const emailImputElement = ref();
+useFocus(emailImputElement, { initialValue: true });
 </script>
 <template>
   <div
@@ -57,6 +60,7 @@ const invokeLogin = async (): Promise<void> => {
             <label for="email-address" class="sr-only">Email address</label>
             <input
               id="email-address"
+              ref="emailImputElement"
               v-model="formData.username"
               name="email"
               type="email"
