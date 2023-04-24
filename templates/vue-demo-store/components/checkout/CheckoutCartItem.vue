@@ -1,51 +1,51 @@
 <script setup lang="ts">
-import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-import { LineItem } from "@shopware-pwa/types";
+  import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
+  import { LineItem } from "@shopware-pwa/types";
 
-const props = withDefaults(
-  defineProps<{
-    cartItem: LineItem;
-    maxQty?: number;
-  }>(),
-  {
-    maxQty: 100,
-  }
-);
+  const props = withDefaults(
+    defineProps<{
+      cartItem: LineItem;
+      maxQty?: number;
+    }>(),
+    {
+      maxQty: 100,
+    },
+  );
 
-const { cartItem } = toRefs(props);
+  const { cartItem } = toRefs(props);
 
-const isLoading = ref(false);
+  const isLoading = ref(false);
 
-const {
-  itemOptions,
-  removeItem,
-  itemRegularPrice,
-  itemQuantity,
-  isPromotion,
-  changeItemQuantity,
-} = useCartItem(cartItem);
+  const {
+    itemOptions,
+    removeItem,
+    itemTotalPrice,
+    itemQuantity,
+    isPromotion,
+    changeItemQuantity,
+  } = useCartItem(cartItem);
 
-const quantity = ref();
-syncRefs(itemQuantity, quantity);
+  const quantity = ref();
+  syncRefs(itemQuantity, quantity);
 
-const updateQuantity = async (quantity: number | undefined) => {
-  if (quantity === itemQuantity.value) return;
+  const updateQuantity = async (quantity: number | undefined) => {
+    if (quantity === itemQuantity.value) return;
 
-  isLoading.value = true;
+    isLoading.value = true;
 
-  await changeItemQuantity(Number(quantity));
+    await changeItemQuantity(Number(quantity));
 
-  isLoading.value = false;
-};
-const debounceUpdate = useDebounceFn(updateQuantity, 800);
+    isLoading.value = false;
+  };
+  const debounceUpdate = useDebounceFn(updateQuantity, 800);
 
-watch(quantity, () => debounceUpdate(quantity.value));
+  watch(quantity, () => debounceUpdate(quantity.value));
 
-const removeCartItem = async () => {
-  isLoading.value = true;
-  await removeItem();
-  isLoading.value = false;
-};
+  const removeCartItem = async () => {
+    isLoading.value = true;
+    await removeItem();
+    isLoading.value = false;
+  };
 </script>
 
 <template>
@@ -67,11 +67,11 @@ const removeCartItem = async () => {
         class="flex flex-col lg:flex-row justify-between text-base font-medium text-gray-900"
       >
         <h3 class="text-base" data-testid="cart-product-name">
-          {{ cartItem.label }}
+          {{ cartItem.label }} <span v-if="isPromotion" class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Promotion</span>
         </h3>
         <SharedPrice
-          v-if="itemRegularPrice"
-          :value="itemRegularPrice"
+          v-if="itemTotalPrice"
+          :value="itemTotalPrice"
           data-testid="cart-product-price"
         />
       </div>
@@ -90,7 +90,6 @@ const removeCartItem = async () => {
       v-if="!isPromotion"
       class="flex flex-1 items-end justify-between text-sm"
     >
-      <!-- v-if="itemStock && itemStock > 0" - example of using it on item when you want to block editing quantity -->
       <input
         v-model="quantity"
         type="number"
@@ -102,15 +101,6 @@ const removeCartItem = async () => {
         name="quantity"
         class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       />
-      <!-- disabled quantity edition -->
-      <!-- <div v-else>
-        <div
-          data-testid="cart-product-qty"
-          class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white opacity-50 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        >
-          {{ quantity }}
-        </div>
-      </div> -->
       <div class="flex">
         <button
           v-if="!isPromotion"
