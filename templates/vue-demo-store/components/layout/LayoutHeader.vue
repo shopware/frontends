@@ -7,15 +7,13 @@ const isSidebarOpen = inject("isSidebarOpen");
 <template>
   <div class="relative bg-white">
     <div class="mx-auto px-4 sm:px-6">
-      <div
-        class="flex justify-between items-center border-b-2 border-gray-100 py-6 space-x-4"
-      >
-        <div class="flex justify-start lg:flex-1 w-full md:w-1/3 lg:w-1/12">
+      <div class="flex items-center border-b-2 border-gray-100 py-6 space-x-4">
+        <div class="flex justify-start items-center min-w-10 lg:min-w-12">
           <div class="order-2 lg:order-1 ml-4 lg:ml-0">
             <NuxtLink to="/">
               <span class="sr-only">Shopware</span>
               <img
-                class="h-8 w-auto sm:h-10"
+                class="h-10 w-10 lg:h-12 lg:w-12"
                 src="/logo.svg"
                 alt="Logo"
                 width="40px"
@@ -23,18 +21,19 @@ const isSidebarOpen = inject("isSidebarOpen");
               />
             </NuxtLink>
           </div>
-          <div class="order-1 lg:order-2 py-3 lg:p-0">
+          <div class="order-1 lg:order-2">
             <LayoutSideMenu />
           </div>
         </div>
 
         <LayoutTopNavigation />
+        <div class="flex flex-1"></div>
 
-        <div class="hidden md:block w-full md:w-1/3 lg:w-2/12">
+        <div class="hidden md:flex md:min-w-1/4">
           <LayoutStoreSearch />
         </div>
 
-        <div class="w-full md:w-1/3 lg:w-2/12 flex items-center justify-end">
+        <div class="flex items-center justify-end">
           <AccountMenu />
           <div class="flex ml-4 flow-root lg:ml-6">
             <NuxtLink
