@@ -19,7 +19,7 @@ const { visible, close } = inject<SharedModal>("modal") as SharedModal;
   >
     <div
       class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50"
-      :class="[visible ? 'block' : 'hidden']"
+      v-show="visible"
       @click="close"
     >
       <div
@@ -40,6 +40,7 @@ const { visible, close } = inject<SharedModal>("modal") as SharedModal;
             aria-modal="true"
             aria-labelledby="modal-headline"
             id="modal-content"
+            @click.stop
           ></div>
         </transition>
       </div>
