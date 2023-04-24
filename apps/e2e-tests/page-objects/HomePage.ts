@@ -10,6 +10,8 @@ export class HomePage extends AbstractPage {
   readonly searchBar: Locator;
   readonly addToWishlist: Locator;
   readonly wishlistButton: Locator;
+  readonly accountMenuHelloButton: Locator;
+  readonly myAccountLink: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -21,6 +23,8 @@ export class HomePage extends AbstractPage {
     this.searchBar = page.getByTestId("layout-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
     this.addToWishlist = page.getByTestId("product-box-wishlist-icon-not-in");
+    this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
+    this.myAccountLink = page.getByTestId("header-my-account-link");
   }
 
   async visitMainPage() {
@@ -63,5 +67,11 @@ export class HomePage extends AbstractPage {
       this.page.waitForLoadState("load"),
       await this.addToWishlist.nth(13).click(),
     ]);
+  }
+
+  async openMyAccount() {
+    this.page.waitForLoadState("load");
+    await this.accountMenuHelloButton.click();
+    await this.myAccountLink.click();
   }
 }
