@@ -18,6 +18,6 @@ const sharedModal = useTeamModal();
     Open Team Modal
   </button>
   <AppModal :controller="sharedModal">
-    <p>Hello from the wishlist page!</p>
+    <p>Hello from the team page!</p>
   </AppModal>
 </template>
