@@ -15,34 +15,34 @@ export class MyAccountPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.accountChangeProfileButton = page.locator(
-      "[data-testid='my-account-change-profile-button']"
+    this.accountChangeProfileButton = page.getByTestId(
+      "my-account-change-profile-button"
     );
-    this.personalFirstName = page.locator(
-      "[data-testid='account-personal-data-firstname-input']"
+    this.personalFirstName = page.getByTestId(
+      "account-personal-data-firstname-input"
     );
-    this.personalLastName = page.locator(
-      "[data-testid='account-personal-data-lastname-input']"
+    this.personalLastName = page.getByTestId(
+      "account-personal-data-lastname-input"
     );
-    this.personalEmail = page.locator(
-      "data-testid='account-personal-data-email-input']"
+    this.personalEmail = page.getByTestId(
+      "account-personal-data-email-input"
     );
-    this.accountPersonalDataSubmitButton = page.locator(
-      "[data-testid='account-personal-data-submit-button']"
+    this.accountPersonalDataSubmitButton = page.getByTestId(
+      "account-personal-data-submit-button"
     );
-    this.changePaymentMethodButton = page.locator(
-      "[data-testid='my-account-change-payment-method-button']"
+    this.changePaymentMethodButton = page.getByTestId(
+      "my-account-change-payment-method-button"
     );
-    this.accountPaymentSubmitButton = page.locator(
-      "[data-testid='account-payment-submit-button']"
+    this.accountPaymentSubmitButton = page.getByTestId(
+      "account-payment-submit-button"
     );
-    this.accountChangeBillingAddressButton = page.locator(
-      "[data-testid='my-account-change-default-billing-address-button']"
+    this.accountChangeBillingAddressButton = page.getByTestId(
+      "my-account-change-default-billing-address-button"
     );
-    this.accountChangeShippingAddressButton = page.locator(
-      "[data-testid='my-account-change-default-shipping-address-button']"
+    this.accountChangeShippingAddressButton = page.getByTestId(
+      "my-account-change-default-shipping-address-button"
     );
-    this.newsletterCheckbox = page.locator("#newsletter-checkbox");
+    this.newsletterCheckbox = page.getByTestId("#newsletter-checkbox");
   }
 
   async changePersonalData() {
