@@ -155,7 +155,7 @@ const ratingAverage: Ref<number> = computed(() =>
         data-testid="add-to-cart-button"
         @click="addToCartProxy"
       >
-      {{  $t('product.addToCart') }}
+        🛍 {{ $t('product.addToCart') }}
       </button>
       <NuxtLink v-else :to="getProductUrl(product)">
         <button

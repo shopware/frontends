@@ -1,0 +1,21 @@
+{
+  "include": [
+    "src/**/*"
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "paths": {
+      "@/*": [
+        "./src/*" // set path `@/*` as alias of `src/*`
+      ]
+    },
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "DOM"
+    ],
+    "types": [
+      "vite/client"
+    ]
+  }
+}

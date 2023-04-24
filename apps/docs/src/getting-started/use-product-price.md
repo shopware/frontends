@@ -3,7 +3,7 @@
 This article covers how to display prices for products in product listing and product details page using available helpers.
 
 :::tip
-To see how the prices are designed in the backend, read [Building > Prices](../getting-started/prices.md) article.
+To see how the prices are designed in the backend, read [Building > Prices](../getting-started/e-commerce/prices.md) article.
 :::
 
 ## useProductPrice() composable

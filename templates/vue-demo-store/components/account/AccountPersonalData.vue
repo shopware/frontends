@@ -16,6 +16,7 @@ const errorMessages = ref<string[]>([]);
 const isSuccess = ref(false);
 const updated = ref(false);
 const isUpdating = ref(false);
+const loadingData = ref(false);
 
 const state = reactive({
   firstName: "",
@@ -73,6 +74,7 @@ const invokeUpdate = async (): Promise<void> => {
   errorMessages.value = [];
   isSuccess.value = false;
   try {
+    loadingData.value = true;
     updated.value = false;
     $v.value.$touch();
     if (
@@ -108,15 +110,19 @@ const invokeUpdate = async (): Promise<void> => {
   } catch (err) {
     const e = err as ClientApiError;
     errorMessages.value = e.messages.map((m) => m.detail);
+  } finally {
+    loadingData.value = false;
   }
 };
-onMounted(async () => {
+onBeforeMount(async () => {
+  loadingData.value = true;
   await refreshUser();
   state.firstName = user.value?.firstName || "";
   state.lastName = user.value?.lastName || "";
   state.email = user.value?.email || "";
   state.salutationId = user.value?.salutationId || "";
   state.title = user.value?.title || "";
+  loadingData.value = false;
 });
 </script>
 <template>
@@ -162,6 +168,7 @@ onMounted(async () => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             :placeholder="$t('form.firstNamePlaceholder')"
             data-testid="account-personal-data-firstname-input"
+            :disabled="loadingData"
             @blur="$v.firstName.$touch()"
           />
           <span
@@ -188,6 +195,7 @@ onMounted(async () => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
              :placeholder="$t('form.lastNamePlaceholder')"
             data-testid="account-personal-data-lastname-input"
+            :disabled="loadingData"
             @blur="$v.lastName.$touch()"
           />
           <span
@@ -214,6 +222,7 @@ onMounted(async () => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             :placeholder="$t('form.emailPlaceholder')"
             data-testid="account-personal-data-email-input"
+            :disabled="loadingData"
             @blur="$v.email.$touch()"
           />
           <span
@@ -240,6 +249,7 @@ onMounted(async () => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             :placeholder="$t('form.emailPlaceholder')"
             data-testid="account-personal-data-email-confirmation-input"
+            :disabled="loadingData"
             @blur="$v.emailConfirmation.$touch()"
           />
           <span
@@ -266,6 +276,7 @@ onMounted(async () => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
             data-testid="account-personal-data-password-input"
+            :disabled="loadingData"
             @blur="$v.password.$touch()"
           />
           <span
@@ -282,6 +293,7 @@ onMounted(async () => {
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
           data-testid="account-personal-data-submit-button"
+          :disabled="loadingData"
         >
           {{ $t('form.save') }}
         </button>

@@ -7,6 +7,7 @@ import {
   PaymentMethod,
   ShopwareSearchParams,
   OrderDocument,
+  ShopwareAssociation
 } from "@shopware-pwa/types";
 import {
   cancelOrder,
@@ -17,6 +18,7 @@ import {
   getDocumentDownload,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
+import deepMerge from "./helpers/deepMerge";
 
 /**
  * Data for api requests to fetch all necessary data
@@ -153,7 +155,7 @@ export type UseOrderDetailsReturn = {
  * @public
  * @category Customer & Account
  */
-export function useOrderDetails(orderId: string): UseOrderDetailsReturn {
+export function useOrderDetails(orderId: string, associations?: ShopwareAssociation): UseOrderDetailsReturn {
   const { apiInstance } = useShopwareContext();
 
   const _sharedOrder = inject("swOrderDetails", ref());
@@ -190,7 +192,7 @@ export function useOrderDetails(orderId: string): UseOrderDetailsReturn {
   async function loadOrderDetails() {
     const orderDetailsResponse = await getOrderDetails(
       orderId,
-      orderAssociations,
+      deepMerge(orderAssociations, associations? associations: {}),
       apiInstance
     );
     _sharedOrder.value = orderDetailsResponse ?? null;
