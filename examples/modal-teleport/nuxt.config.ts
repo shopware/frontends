@@ -2,7 +2,6 @@
 export default defineNuxtConfig({
   modules: ["@vueuse/nuxt", "@nuxt/devtools", "@unocss/nuxt"],
   typescript: {
-    typeCheck: true,
     strict: true,
   },
   components: {
