@@ -1,20 +1,28 @@
 <script setup lang="ts">
 import { Product, ProductReview } from "@shopware-pwa/types";
+import deepMerge from '../helpers/deepMerge'
 
-const props = withDefaults(
+const props = 
   defineProps<{
     product: Product;
     reviews?: ProductReview[];
-    translations?: {
-      noComments: string
-    }
-  }>(),
-  {
-    translations: () => ({
-      noComments: "No comments yet."
-    })
+  }>()
+
+type Translations = {
+  product: {
+    reviewNoComments: string
   }
-);
+}
+
+let translations: Translations = {
+  product: {
+     reviewNoComments: "No comments yet."
+  }
+}
+
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
+
 
 const { product, reviews } = toRefs(props);
 
@@ -83,5 +91,5 @@ const formatDate = (date: string) =>
     </div>
   </div>
 
-  <div v-else>{{props.translations.noComments}}.</div>
+  <div v-else>{{translations.product.reviewNoComments }}.</div>
 </template>

@@ -93,7 +93,7 @@ const handleVariantChange = (val: Product) => {
           <div class="container mx-auto mb-8">
             <!-- Description and details -->
             <div v-if="description">
-              <h3 class="text-sm font-bold text-gray-900">  {{ $t('product.price.description') }}</h3>
+              <h3 class="text-sm font-bold text-gray-900">  {{ $t('product.description') }}</h3>
               <div class="mt-4 space-y-6">
                 <div class="text-base text-gray-900" v-html="description" />
               </div>

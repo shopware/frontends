@@ -5,22 +5,29 @@ import {
   getProductName,
 } from "@shopware-pwa/helpers-next";
 import SwProductReviews from "../../../SwProductReviews.vue";
+import deepMerge from '../../../../helpers/deepMerge'
 
-
-const props = withDefaults(
+const props = 
   defineProps<{
      content: CmsElementProductDescriptionReviews;
-    translations?: {
-      description: string;
-      reviews: string;
+  }>();
 
-    }
-  }>(), {
-  translations: () => ({
-    "description": "Description",
-    "reviews": "Reviews"
-  })
-});
+type Translations = {
+  products: {
+    description: string;
+    reviews: string;
+  }
+}
+
+let translations: Translations = {
+  products: {
+    description: "Description",
+    reviews: "Reviews"
+  }
+}
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
+
 const currentTab = ref<number>(1);
 const { product } = useProduct(props.content.data?.product);
 
@@ -54,7 +61,7 @@ const reviews = computed(() => props.content.data.reviews?.elements);
             ]"
             @click="() => toggleTabs(1)"
           >
-            <i class="fas fa-space-shuttle text-base mr-1" /> {{props.translations.description}}
+            <i class="fas fa-space-shuttle text-base mr-1" /> {{translations.products.description}}
           </a>
         </li>
         <li class="mr-2 text-center">
@@ -67,7 +74,7 @@ const reviews = computed(() => props.content.data.reviews?.elements);
             ]"
             @click="() => toggleTabs(2)"
           >
-            <i class="fas fa-cog text-base mr-1" /> {{props.translations.reviews}}
+            <i class="fas fa-cog text-base mr-1" /> {{translations.products.reviews}}
           </a>
         </li>
       </ul>

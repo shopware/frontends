@@ -1,22 +1,32 @@
 <script setup lang="ts">
 import { useProductPrice } from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
+import deepMerge from '../helpers/deepMerge'
 
-const props = withDefaults(
+const props =
   defineProps<{
     product: Product;
-    translations?: {
-      variantsFrom: string
-      previously: string
-      to: string
-    }
-  }>(), {
-  translations: () => ({
+  }>();
+
+type Translations = {
+  listing: {
+    variantsFrom: string
+    previously: string
+    to: string
+  }
+}
+
+let translations: Translations = {
+  listing: {
     variantsFrom: "variants from",
     previously: "Previously",
     to: "to"
-  })
-});
+  }
+}
+
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
+
 
 const { product } = toRefs(props);
 
@@ -38,7 +48,7 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
       :value="displayFromVariants"
     >
       <template #beforePrice
-        ><span v-if="displayFromVariants">{{props.translations.variantsFrom}}</span></template
+        ><span v-if="displayFromVariants">{{translations.listing.variantsFrom}}</span></template
       >
     </SharedPrice>
     <SharedPrice
@@ -49,11 +59,11 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
       :value="unitPrice"
     >
       <template #beforePrice
-        ><span v-if="displayFrom || displayFromVariants">{{props.translations.to}}</span></template
+        ><span v-if="displayFrom || displayFromVariants">{{translations.listing.to}}</span></template
       >
     </SharedPrice>
     <div class="text-xs flex text-gray-500" v-if="regulationPrice">
-      {{props.translations.previously}} <SharedPrice class="ml-1" :value="regulationPrice"/>
+      {{translations.listing.previously}} <SharedPrice class="ml-1" :value="regulationPrice"/>
     </div>
   </div>
 </template>

@@ -6,7 +6,6 @@ import { useNavigationContext } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsPage;
-  translations?: any
 }>();
 
 const { routeName } = useNavigationContext();
@@ -33,7 +32,6 @@ const DynamicRender = () => {
     if (typeof componentObject.component === "string")
       return h("div", {}, "There is no " + componentObject.component);
     return h(componentObject.component, {
-      translations: props.translations,
       content: componentObject.section,
       class: {
         [cssClasses ?? ""]: true,

@@ -2,20 +2,24 @@
 import { ClientApiError } from "@shopware-pwa/types";
 import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
 import { Category } from "@shopware-pwa/types";
+import deepMerge from '../../../../helpers/deepMerge'
 
-const props = withDefaults(
-  defineProps<{
-    translations?: {
-      category: string;
-      categories: string;
+type Translations = {
+  listing: {
+    category: string;
+    categories: string;
+  }
+}
 
-    }
-  }>(), {
-  translations: () => ({
-    "category": "Category",
-    "categories": "Categories"
-  })
-});
+let translations: Translations = {
+  listing: {
+    category: "Category",
+    categories: "Categories"
+  }
+}
+
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
 
 const { category: activeCategory } = useCategory();
 const { loadNavigationElements, navigationElements } = useNavigation();
@@ -50,7 +54,7 @@ onMounted(async () => {
       v-if="navigations.length > 0"
       class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
     >
-      {{ navigations.length > 1 ? props.translations.categories: props.translations.category }}
+      {{ navigations.length > 1 ? translations.listing.categories: translations.listing.category }}
     </h2>
     <SwCategoryNavigation
       :level="0"

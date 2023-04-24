@@ -19,6 +19,7 @@ import {
 } from "@shopware-pwa/types";
 import { Ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
+import deepMerge from '../helpers/deepMerge'
 
 const { pushSuccess, pushError } = useNotifications();
 
@@ -28,29 +29,39 @@ const props = withDefaults(
     layoutType?: BoxLayout;
     isProductListing?: boolean;
     displayMode?: DisplayMode;
-    translations?: {
-      addedToWishlist: string
-      reason: string
-      cannotAddToWishlist: string
-      addedToCart: string
-      addToCart: string
-      details: string
-    }
   }>(),
   {
     layoutType: "standard",
     displayMode: "standard",
     isProductListing: false,
-    translations: () => ({
-      addedToWishlist: "has been added to wishlist.",
-      reason: "Reason",
-      cannotAddToWishlist: "cannot be added to wishlist.",
-      addedToCart: "has been added to cart.",
-      addToCart: "Add to cart",
-      details: "Details"
-    })
   }
 );
+
+type Translations = {
+  product: {
+    addedToWishlist: string
+    reason: string
+    cannotAddToWishlist: string
+    addedToCart: string
+    addToCart: string
+    details: string
+  }
+}
+
+let translations: Translations = {
+  product: {
+    addedToWishlist: "has been added to wishlist.",
+    reason: "Reason",
+    cannotAddToWishlist: "cannot be added to wishlist.",
+    addedToCart: "has been added to cart.",
+    addToCart: "Add to cart",
+    details: "Details"
+  }
+}
+
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
+
 const { product } = toRefs(props);
 
 const { addToCart } = useAddToCart(product);
@@ -63,15 +74,15 @@ const toggleWishlistProduct = async () => {
     try {
       await addToWishlist();
       return pushSuccess(
-        `${props.product?.translated?.name} ${props.translations.addedToWishlist}`
+        `${props.product?.translated?.name} ${translations.product.addedToWishlist}`
       );
     } catch (error) {
       const e = error as ClientApiError;
       const reason = e?.messages?.[0]?.detail
-        ? `${props.translations.reason}: ${e?.messages?.[0]?.detail}`
+        ? `${translations.product.reason}: ${e?.messages?.[0]?.detail}`
         : "";
       return pushError(
-        `${props.product?.translated?.name} ${props.translations.cannotAddToWishlist}\n${reason}`,
+        `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
         {
           timeout: 5000,
         }
@@ -83,7 +94,7 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
-  pushSuccess(`${props.product?.translated?.name} ${props.translations.addedToCart}`);
+  pushSuccess(`${props.product?.translated?.name} ${translations.product.addedToCart}`);
 };
 
 const fromPrice = getProductFromPrice(props.product);
@@ -202,14 +213,14 @@ const ratingAverage: Ref<number> = computed(() =>
         class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         data-testid="add-to-cart-button"
       >
-        {{props.translations.addToCart}}
+        {{translations.product.addToCart}}
       </button>
       <RouterLink v-else :to="getProductUrl(product)">
         <button
           class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           data-testid="product-box-product-show-details"
         >
-          {{ props.translations.details }}
+          {{ translations.product.details }}
         </button>
       </RouterLink>
     </div>

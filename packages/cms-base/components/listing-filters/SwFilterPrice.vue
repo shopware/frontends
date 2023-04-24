@@ -1,23 +1,30 @@
 <script setup lang="ts">
 import { ListingFilter } from "@shopware-pwa/types";
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, watch, inject } from "vue";
+import deepMerge from '../../helpers/deepMerge'
+
 const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
 }>();
 
-const props = withDefaults(
-  defineProps<{
+const props = defineProps<{
   filter: ListingFilter;
-  translations?: {
-    min: string;
-    max: string;
+}>();
+
+type Translations = {
+    "listing": {
+      "min": string,
+      "max": string
   }
-}>(),{
-  translations: () => ({
-   "min": "min",
-   "max": "max"
-  })
-});
+}
+let translations: Translations = {
+   "listing": {
+      "min": "Min",
+      "max": "Max"
+  }
+}
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
 
 const prices = reactive<{ min: number; max: number }>({
   min: props.filter?.min || 0,
@@ -83,7 +90,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
             <span
               class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
             >
-              {{ props.translations.min }}
+              {{ translations.listing.min }}
             </span>
             <input
               id="min-price"
@@ -98,7 +105,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
             <span
               class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
             >
-               {{ props.translations.max }}
+               {{ translations.listing.max }}
             </span>
             <input
               id="max-price"

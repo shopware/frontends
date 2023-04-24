@@ -7,37 +7,39 @@ import {
   useNavigationContext,
 } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
+import deepMerge from '../helpers/deepMerge'
 
-const props = withDefaults(
-  defineProps<{
+const props = defineProps<{
     content: CmsElementForm;
-    translations?: {
-      messages: {
-        submitSuccess: string
-      },
-      salutation: string
-      salutationPlaceholder: string,
-      firstName: string
-      firstNamePlaceholder: string
-      lastName: string
-      lastNamePlaceholder: string
-      email: string
-      emailPlaceholder: string
-      phone: string
-      phonePlaceholder: string
-      subject: string
-      subjectPlaceholder: string
-      comment: string
-      commentPlaceholder: string
-      privacy: string
-      dataProtection: string
-      submit: string
-    }
-  }>(), {
-  translations: () => ({
+  }>()
+
+type Translations = {
+  form: {
+    salutation: string
+    salutationPlaceholder: string,
+    firstName: string
+    firstNamePlaceholder: string
+    lastName: string
+    lastNamePlaceholder: string
+    email: string
+    emailPlaceholder: string
+    phone: string
+    phonePlaceholder: string
+    subject: string
+    subjectPlaceholder: string
+    comment: string
+    commentPlaceholder: string
+    privacy: string
+    dataProtection: string
+    submit: string
     messages: {
-      submitSuccess: "We have received your contact request and will process it as soon as possible."
-    },
+      contactFormSuccess: string
+    }
+  }
+}
+
+let translations: Translations = {
+  form: {
     salutation: "Salutation",
     salutationPlaceholder: "Enter salutation...",
     firstName: "First name",
@@ -54,9 +56,15 @@ const props = withDefaults(
     commentPlaceholder: "Enter comment...",
     privacy: "Privacy",
     dataProtection: "I have read the data protection information.",
-    submit: "Submit"
-  })
-});
+    submit: "Submit",
+    messages: {
+      contactFormSuccess: "We have received your contact request and will process it as soon as possible."
+    }
+  }
+}
+
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
 
 
 const loading = ref<boolean>();
@@ -70,7 +78,7 @@ const { getConfigValue } = useCmsElementConfig(props.content);
 const getConfirmationText = computed(
   () =>
     getConfigValue("confirmationText") ??
-    props.translations.messages.submitSuccess
+    translations.form.messages.contactFormSuccess
 );
 const getFormTitle = computed(() => getConfigValue("title") || "Contact");
 const state = reactive({
@@ -157,7 +165,7 @@ const invokeSubmit = async () => {
     <template v-if="!formSent">
       <div class="grid grid-cols-12 gap-5">
         <div class="col-span-4">
-          <label for="salutation">{{props.translations.salutation}} *</label>
+          <label for="salutation">{{translations.form.salutation}} *</label>
           <select
             id="salutation"
             name="salutation"
@@ -170,7 +178,7 @@ const invokeSubmit = async () => {
             v-model="state.salutationId"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">{{props.translations.salutationPlaceholder}}</option>
+            <option disabled selected value="">{{translations.form.salutationPlaceholder}}</option>
             <option
               v-for="salutation in getSalutations"
               :key="salutation.id"
@@ -187,7 +195,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-4">
-          <label for="first-name">{{ props.translations.firstName }} *</label>
+          <label for="first-name">{{ translations.form.firstName }} *</label>
           <input
             id="first-name"
             name="first-name"
@@ -201,7 +209,7 @@ const invokeSubmit = async () => {
             ]"
             @blur="$v.firstName.$touch()"
             v-model="state.firstName"
-            :placeholder="props.translations.firstNamePlaceholder"
+            :placeholder="translations.form.firstNamePlaceholder"
           />
           <span
             v-if="$v.firstName.$error"
@@ -211,7 +219,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-4">
-          <label for="last-name">{{props.translations.lastName}} *</label>
+          <label for="last-name">{{translations.form.lastName}} *</label>
           <input
             id="last-name"
             name="last-name"
@@ -225,7 +233,7 @@ const invokeSubmit = async () => {
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             @blur="$v.lastName.$touch()"
-            :placeholder="props.translations.lastNamePlaceholder"
+            :placeholder="translations.form.lastNamePlaceholder"
           />
           <span
             v-if="$v.lastName.$error"
@@ -235,7 +243,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-6">
-          <label for="email-address">{{ props.translations.email }} *</label>
+          <label for="email-address">{{ translations.form.email }} *</label>
           <input
             id="email-address"
             name="email"
@@ -249,7 +257,7 @@ const invokeSubmit = async () => {
             v-model="state.email"
             @blur="$v.email.$touch()"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            :placeholder="props.translations.emailPlaceholder"
+            :placeholder="translations.form.emailPlaceholder"
           />
           <span
             v-if="$v.email.$error"
@@ -259,7 +267,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-6">
-          <label for="phone">{{props.translations.phone}} *</label>
+          <label for="phone">{{translations.form.phone}} *</label>
           <input
             id="phone"
             name="phone"
@@ -273,7 +281,7 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            :placeholder="props.translations.phonePlaceholder"
+            :placeholder="translations.form.phonePlaceholder"
           />
           <span
             v-if="$v.phone.$error"
@@ -283,7 +291,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label for="subject">{{props.translations.subject}} *</label>
+          <label for="subject">{{translations.form.subject}} *</label>
           <input
             id="subject"
             name="subject"
@@ -297,7 +305,7 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            :placeholder="props.translations.subjectPlaceholder"
+            :placeholder="translations.form.subjectPlaceholder"
           />
           <span
             v-if="$v.subject.$error"
@@ -307,7 +315,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label for="comment">{{props.translations.comment}} *</label>
+          <label for="comment">{{translations.form.comment}} *</label>
           <textarea
             id="comment"
             name="comment"
@@ -321,7 +329,7 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            :placeholder="props.translations.commentPlaceholder"
+            :placeholder="translations.form.commentPlaceholder"
             rows="5"
           />
           <span
@@ -332,7 +340,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label>{{props.translations.privacy }} *</label>
+          <label>{{translations.form.privacy }} *</label>
           <div class="flex gap-3 items-start">
             <input
               id="privacy"
@@ -349,7 +357,7 @@ const invokeSubmit = async () => {
                 :class="[$v.checkbox.$error ? 'text-red-600' : '']"
                 for="privacy"
               >
-                {{props.translations.dataProtection}}
+                {{translations.form.dataProtection}}
               </label>
             </div>
           </div>
@@ -361,7 +369,7 @@ const invokeSubmit = async () => {
           type="submit"
           :disabled="loading"
         >
-          {{props.translations.submit }}
+          {{translations.form.submit }}
         </button>
       </div>
     </template>

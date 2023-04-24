@@ -4,7 +4,6 @@ import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 import { resolveCmsComponent } from "@shopware-pwa/composables-next";
 const props = defineProps<{
   content: CmsBlock;
-  translations: any;
 }>();
 
 const DynamicRender = () => {
@@ -36,7 +35,6 @@ const DynamicRender = () => {
         content: props.content,
         style: layoutStyles,
         class: cssClasses,
-        translations: props.translations
       })
     );
   }

@@ -1,19 +1,29 @@
 <script setup lang="ts">
-const props = withDefaults(
+import deepMerge from '../helpers/deepMerge'
+
+const props = 
   defineProps<{
     total: number;
     current: number;
-    translations?: {
-      previous: string
-      next: string
-    }
-  }>(), {
-  translations: () => ({
+
+  }>()
+
+type Translations = {
+  listing: {
+    previous: string
+    next: string
+  }
+}
+
+let translations: Translations = {
+  listing: {
     previous: "Previous",
     next: "Next"
-  })
-});
+  }
+}
 
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
 
 defineEmits<{
   (e: "changePage", page: number): void;
@@ -34,7 +44,7 @@ defineEmits<{
         class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
       >
         <span class="w-10 h-10 i-carbon-chevron-left text-blue-700"></span>
-        <span class="sr-only">{{props.translations.previous}}</span>
+        <span class="sr-only">{{translations.listing.previous}}</span>
       </button>
       <button
         v-if="current > 2"
@@ -90,7 +100,7 @@ defineEmits<{
         @click="$emit('changePage', total)"
         class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
       >
-        <span class="sr-only">{{props.translations.next}}</span>
+        <span class="sr-only">{{translations.listing.next}}</span>
         <span class="w-10 h-10 i-carbon-chevron-right text-blue-700"></span>
       </button>
     </nav>

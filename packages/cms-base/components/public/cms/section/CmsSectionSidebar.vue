@@ -6,7 +6,6 @@ import {
 
 const props = defineProps<{
   content: CmsSectionSidebar;
-  translations?: any;
 }>();
 const { getPositionContent } = useCmsSection(props.content);
 
@@ -29,7 +28,6 @@ const mobileBehavior = computed(() => props.content.mobileBehavior);
         class="overflow-auto"
         :key="cmsBlock.id"
         :content="cmsBlock"
-        :translations="props.translations"
       />
     </div>
     <div class="inline-block w-12/12 md:w-9/12 order-1 md:order-2">
@@ -38,7 +36,6 @@ const mobileBehavior = computed(() => props.content.mobileBehavior);
         class="overflow-auto"
         :key="cmsBlock.id"
         :content="cmsBlock"
-        :translations="props.translations"
       />
     </div>
   </div>

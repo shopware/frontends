@@ -3,19 +3,25 @@ import { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
 import { ShopwareSearchParams } from "@shopware-pwa/types";
+import deepMerge from '../../../../helpers/deepMerge'
 
-const props = withDefaults(
+const props = 
   defineProps<{
     content: CmsElementProductListing;
-    translations?: {
-      noProducts: string;
+  }>();
 
-    }
-  }>(), {
-  translations: () => ({
+type Translations = {
+  listing: {
+    noProducts: string;
+  }
+}
+let translations: Translations = {
+  listing: {
     "noProducts": "No products found 😔",
-  })
-});
+  }
+}
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
 
 const {
   getElements,
@@ -66,7 +72,7 @@ setInitialListing(props?.content?.data?.listing);
         </div>
       </div>
       <div v-else>
-        <h2 class="mx-auto text-center">{{ props.translations.noProducts }}</h2>
+        <h2 class="mx-auto text-center">{{ translations.listing.noProducts }}</h2>
       </div>
     </div>
   </div>

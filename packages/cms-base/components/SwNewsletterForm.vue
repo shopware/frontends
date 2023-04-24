@@ -3,30 +3,35 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { CmsElementForm } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
+import deepMerge from '../helpers/deepMerge'
 
-
-const props = withDefaults(
+const props = 
   defineProps<{
     content: CmsElementForm;
-    translations?: {
-     subscribeLabel: string
-     unsubscribeLabel: string
-     action: string
-     email: string
-     emailPlaceholder: string
-     salutation: string
-     salutationPlaceholder: string
-     firstName: string
-     firstNamePlaceholder: string
-     lastName: string
-     lastNamePlaceholder: string
-     privacy: string
-     privacyLabel: string
-     submit: string
-     newsletterBenefits: string
-    }
-  }>(), {
-  translations: () => ({
+  }>()
+
+type Translations = {
+  form: {
+    subscribeLabel: string
+    unsubscribeLabel: string
+    action: string
+    email: string
+    emailPlaceholder: string
+    salutation: string
+    salutationPlaceholder: string
+    firstName: string
+    firstNamePlaceholder: string
+    lastName: string
+    lastNamePlaceholder: string
+    privacy: string
+    privacyLabel: string
+    submit: string
+    newsletterBenefits: string
+  }
+}
+
+let translations: Translations = {
+     form: {
     subscribeLabel: "Subscribe to newsletter",
     unsubscribeLabel: "Unsubscribe from newsletter",
     action: "Action",
@@ -42,9 +47,11 @@ const props = withDefaults(
     privacyLabel: "I have read the data protection information.",
     submit: "Submit",
     newsletterBenefits: "Be aware of upcoming sales and events.Receive gifts and special offers!"
-  })
-});
+  }
+}
 
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
 
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);
@@ -54,11 +61,11 @@ const subscriptionOptions: {
   value: "subscribe" | "unsubscribe";
 }[] = [
   {
-    label: props.translations.subscribeLabel,
+    label: translations.form.subscribeLabel,
     value: "subscribe",
   },
   {
-    label: props.translations.unsubscribeLabel,
+    label: translations.form.unsubscribeLabel,
     value: "unsubscribe",
   },
 ];
@@ -144,14 +151,14 @@ const invokeSubmit = async () => {
         getFormTitle
           ? getFormTitle
           : state.option === "subscribe"
-          ? props.translations.subscribeLabel
-          : props.translations.unsubscribeLabel
+          ? translations.form.subscribeLabel
+          : translations.form.unsubscribeLabel
       }}
     </h3>
     <template v-if="!formSent">
       <div class="grid grid-cols-12 gap-5">
         <div class="col-span-12">
-          <label for="option">{{props.translations.action}} *</label>
+          <label for="option">{{translations.form.action}} *</label>
           <select
             id="option"
             name="option"
@@ -168,7 +175,7 @@ const invokeSubmit = async () => {
           </select>
         </div>
         <div class="col-span-12">
-          <label for="email-address">{{props.translations.email}} *</label>
+          <label for="email-address">{{translations.form.email}} *</label>
           <input
             id="email-address"
             name="email"
@@ -182,7 +189,7 @@ const invokeSubmit = async () => {
             v-model="state.email"
             @blur="$v.email.$touch()"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            :placeholder="props.translations.emailPlaceholder"
+            :placeholder="translations.form.emailPlaceholder"
           />
           <span
             v-if="$v.email.$error"
@@ -192,7 +199,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
-          <label for="salutation">{{props.translations.salutation}} *</label>
+          <label for="salutation">{{translations.form.salutation}} *</label>
           <select
             id="salutation"
             name="salutation"
@@ -205,7 +212,7 @@ const invokeSubmit = async () => {
             v-model="state.salutationId"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">{{ props.translations.salutationPlaceholder }}</option>
+            <option disabled selected value="">{{ translations.form.salutationPlaceholder }}</option>
             <option
               v-for="salutation in getSalutations"
               :key="salutation.id"
@@ -222,7 +229,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
-          <label for="first-name">{{ props.translations.firstName }} *</label>
+          <label for="first-name">{{ translations.form.firstName }} *</label>
           <input
             id="first-name"
             name="first-name"
@@ -236,7 +243,7 @@ const invokeSubmit = async () => {
             ]"
             @blur="$v.firstName.$touch()"
             v-model="state.firstName"
-            :placeholder="props.translations.firstNamePlaceholder"
+            :placeholder="translations.form.firstNamePlaceholder"
           />
           <span
             v-if="$v.firstName.$error"
@@ -246,7 +253,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
-          <label for="last-name">{{ props.translations.lastName }} *</label>
+          <label for="last-name">{{ translations.form.lastName }} *</label>
           <input
             id="last-name"
             name="last-name"
@@ -260,7 +267,7 @@ const invokeSubmit = async () => {
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             @blur="$v.lastName.$touch()"
-            :placeholder="props.translations.lastNamePlaceholder"
+            :placeholder="translations.form.lastNamePlaceholder"
           />
           <span
             v-if="$v.lastName.$error"
@@ -270,7 +277,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label>{{ props.translations.privacy }} *</label>
+          <label>{{ translations.form.privacy }} *</label>
           <div class="flex gap-3 items-start">
             <input
               id="privacy"
@@ -287,7 +294,7 @@ const invokeSubmit = async () => {
                 :class="[$v.checkbox.$error ? 'text-red-600' : '']"
                 for="privacy"
               >
-                {{props.translations.privacyLabel }}
+                {{translations.form.privacyLabel }}
               </label>
             </div>
           </div>
@@ -299,13 +306,13 @@ const invokeSubmit = async () => {
           type="submit"
           :disabled="loading"
         >
-          {{props.translations.submit }}
+          {{translations.form.submit }}
         </button>
       </div>
     </template>
     <template v-else>
       <p class="py-10 text-lg text-center">
-        {{ props.translations.newsletterBenefits }}
+        {{ translations.form.newsletterBenefits }}
       </p>
     </template>
   </form>

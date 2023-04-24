@@ -1,26 +1,33 @@
 <script setup lang="ts">
 import { useProductPrice } from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
+import deepMerge from '../../helpers/deepMerge'
 
-const props = withDefaults(
+const props = 
   defineProps<{
     product: Product;
-    translations?: {
-      amount: string
-      price: string
-      to: string
-      from: string
-    }
-  }>(),
-  {
-    translations: () => ({
-      amount: "Amount",
-      price: "Price",
-      to: "To",
-      from: "From"
-    })
+  }>()
+
+type Translations = {
+   product: {
+    amount: string
+    price: string
+    to: string
+    from: string
   }
-);
+}
+
+let translations: Translations = {
+  product: {
+    amount: "Amount",
+    price: "Price",
+    to: "To",
+    from: "From"
+  }
+}
+
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
 
 const { product } = toRefs(props);
 

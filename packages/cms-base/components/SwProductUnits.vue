@@ -1,21 +1,32 @@
 <script setup lang="ts">
 import { Product } from "@shopware-pwa/types";
+import deepMerge from '../helpers/deepMerge'
 
 const props = withDefaults(
   defineProps<{
     product: Product;
     showContent?: boolean;
-    translations?: {
-      content: string
-    }
   }>(),
   {
     showContent: true,
-    translations: () => ({
-      content: "Content"
-    })
   }
 );
+
+type Translations = {
+   product: {
+    content: string
+  }
+
+}
+
+let translations: Translations = {
+ product: {
+    content: "Content"
+  }
+}
+
+const globalTranslations = inject("cmsTranslations")
+translations = deepMerge(translations, globalTranslations) as Translations
 
 const purchaseUnit = computed(() => props.product?.purchaseUnit);
 const unitName = computed(() => props.product?.unit?.translated?.name);
@@ -33,7 +44,7 @@ const referenceUnitName = computed(
 <template>
   <div v-if="purchaseUnit" class="flex text-gray-500 justify-end gap-1">
     <template v-if="props.showContent">
-      {{props.translations.content}}: {{ purchaseUnit }} {{ unitName }}
+      {{translations.product.content}}: {{ purchaseUnit }} {{ unitName }}
     </template>
     <template v-if="referencePrice">
       (<SharedPrice :value="referencePrice" /> / {{ referenceUnit }}
