@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
-import { SharedModal } from "~~/components/shared/SharedModal.vue";
-const { createCustomerAddress, updateCustomerAddress } = useAddress();
+import { CustomerAddress } from "@shopware-pwa/types";
 
-const { close } = inject<SharedModal>("modal") as SharedModal;
+const { createCustomerAddress, updateCustomerAddress } = useAddress();
 
 const emits = defineEmits<{
   (e: "success"): void;
@@ -13,8 +11,6 @@ const emits = defineEmits<{
 const props = withDefaults(
   defineProps<{
     address?: CustomerAddress;
-    countries: Array<Country>;
-    salutations: Array<Salutation>;
     title?: string;
   }>(),
   {
@@ -22,6 +18,9 @@ const props = withDefaults(
     address: undefined,
   }
 );
+
+const { getCountries } = useCountries();
+const { getSalutations } = useSalutations();
 
 const formData = reactive<CustomerAddress>({
   countryId: props.address?.countryId ?? "",
@@ -41,17 +40,24 @@ const invokeSave = async (): Promise<void> => {
       : createCustomerAddress;
     await saveAddress(formData);
     emits("success");
-    close();
   } catch (error) {
     console.error("error save address", error);
   }
 };
+
+const firstNameInputElement = ref();
+useFocus(firstNameInputElement, { initialValue: true });
 </script>
 
 <template>
   <div class="mt-5 md:mt-0 md:col-span-2">
     <div class="shadow overflow-hidden sm:rounded-md">
-      <form id="account-address" name="account-address" method="post">
+      <form
+        id="account-address"
+        name="account-address"
+        method="post"
+        ref="formElement"
+      >
         <div class="px-4 py-5 bg-white sm:p-6">
           <h3 class="text-2xl border-b pb-3">
             {{ props.title }}
@@ -74,7 +80,7 @@ const invokeSave = async (): Promise<void> => {
                 data-testid="account-address-form-salutation-select"
               >
                 <option
-                  v-for="salutation in props.salutations"
+                  v-for="salutation in getSalutations"
                   :key="salutation.id"
                   :value="salutation.id"
                   data-testid="account-address-form-salutation-select-option"
@@ -92,6 +98,7 @@ const invokeSave = async (): Promise<void> => {
               </label>
               <input
                 id="first-name"
+                ref="firstNameInputElement"
                 v-model="formData.firstName"
                 type="text"
                 required
@@ -135,7 +142,7 @@ const invokeSave = async (): Promise<void> => {
                 data-testid="account-address-form-country-select"
               >
                 <option
-                  v-for="country in props.countries"
+                  v-for="country in getCountries"
                   :key="country.id"
                   :value="country.id"
                   data-testid="account-address-form-country-select-option"

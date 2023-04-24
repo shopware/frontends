@@ -55,12 +55,12 @@ if (process.client) {
 const { enter } = useMagicKeys({ target: searchInput });
 const { push } = useRouter();
 
-const isSideMenuOpened = inject("isSideMenuOpened", ref(false));
+const sideMenuModal = useSideMenuModal();
 
 watch(enter, (value) => {
   if (!value) return;
 
-  isSideMenuOpened.value = false;
+  sideMenuModal.close();
 
   active.value = false;
   push("/search?query=" + typingQuery.value);

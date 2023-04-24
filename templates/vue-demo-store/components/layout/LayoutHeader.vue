@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const { count } = useCart();
 const { count: wishlistCount } = useWishlist();
-const isSidebarOpen = inject("isSidebarOpen");
+
+const sidebarController = useModal();
 </script>
 
 <template>
@@ -59,7 +60,7 @@ const isSidebarOpen = inject("isSidebarOpen");
               class="group -m-2 p-2 flex items-center relative"
               aria-label="cart"
               data-testid="cart-button"
-              @click="isSidebarOpen = true"
+              @click="sidebarController.open"
             >
               <!-- Heroicon name: outline/shopping-bag -->
               <div
@@ -74,6 +75,7 @@ const isSidebarOpen = inject("isSidebarOpen");
               <span class="sr-only">items in cart, view bag</span>
             </button>
           </div>
+          <CheckoutSideCart :controller="sidebarController" />
         </div>
       </div>
     </div>
