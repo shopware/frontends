@@ -22,7 +22,8 @@ const { isLoggedIn } = useUser();
       Currency: <strong>{{ currency?.name }} ({{ currency?.symbol }})</strong>
     </p>
     <p>
-      Default payment method: <strong>{{ selectedPaymentMethod?.name }}</strong>
+      Default payment method:
+      <strong>{{ selectedPaymentMethod?.translated?.name }}</strong>
     </p>
     <p>
       Is customer logged in: <strong>{{ isLoggedIn }}</strong>

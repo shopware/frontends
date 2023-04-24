@@ -18,7 +18,7 @@
     "@vitejs/plugin-vue": "^4.1.0",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "astro": "^2.2.1",
-    "js-cookie": "^3.0.1",
+    "js-cookie": "^3.0.4",
     "vue": "^3.2.47"
   },
   "engines": {

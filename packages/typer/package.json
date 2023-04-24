@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/packages/typer.html",
+  "homepage": "https://frontends.shopware.com/packages/typer.html",
   "keywords": [
     "shopware"
   ],
@@ -42,10 +42,10 @@
     "fishery": "^2.2.2",
     "intermock": "^0.2.5",
     "ts-dox": "^0.1.0",
-    "typedoc": "^0.24.1",
+    "typedoc": "^0.24.5",
     "typescript": "^5.0.4",
     "vinyl": "^3.0.0",
-    "vite-plugin-dts": "^2.2.0",
+    "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
   }
 }

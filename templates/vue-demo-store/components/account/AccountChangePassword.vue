@@ -14,6 +14,7 @@ const userErrorMessages = computed(() =>
 );
 
 const isSuccess = ref(false);
+const loadingData = ref(false);
 
 const state = reactive({
   password: {
@@ -44,6 +45,7 @@ const rules = computed(() => ({
 const $v = useVuelidate(rules, state);
 
 const invokeChange = async (): Promise<void> => {
+  loadingData.value = true;
   try {
     const isFormCorrect = await $v.value.$validate();
 
@@ -70,6 +72,8 @@ const invokeChange = async (): Promise<void> => {
     }
   } catch (err) {
     console.error("error change password", err);
+  } finally {
+    loadingData.value = false;
   }
 };
 </script>
@@ -121,6 +125,7 @@ const invokeChange = async (): Promise<void> => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
             data-testid="account-change-current-password-input"
+            :disabled="loadingData"
           />
           <span
             v-if="$v.password.currentPassword.$error"
@@ -145,6 +150,7 @@ const invokeChange = async (): Promise<void> => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
             data-testid="account-change-new-password-input"
+            :disabled="loadingData"
           />
           <span
             v-if="$v.password.newPassword.$error"
@@ -169,6 +175,7 @@ const invokeChange = async (): Promise<void> => {
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
             data-testid="account-change-confirm-password-input"
+            :disabled="loadingData"
           />
           <span
             v-if="$v.password.newPasswordConfirm.$error"
@@ -184,6 +191,7 @@ const invokeChange = async (): Promise<void> => {
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
           data-testid="account-change-current-submit-button"
+          :disabled="loadingData"
         >
           Change password
         </button>

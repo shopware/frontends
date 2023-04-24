@@ -186,7 +186,7 @@ const ratingAverage: Ref<number> = computed(() =>
         class="mt-3 w-full justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         data-testid="add-to-cart-button"
       >
-        Add to cart
+        🛍 Add to cart
       </button>
       <RouterLink v-else :to="getProductUrl(product)">
         <button
