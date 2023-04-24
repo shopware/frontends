@@ -21,7 +21,7 @@ const isSidebarOpen = inject("isSidebarOpen");
               />
             </NuxtLink>
           </div>
-          <div class="order-1 lg:order-2">
+          <div class="order-1 lg:order-2 flex justify-start items-center">
             <LayoutSideMenu />
           </div>
         </div>
