@@ -38,8 +38,7 @@ const { isOpen, close } = props.controller;
               ref="modal"
               aria-modal="true"
               aria-labelledby="modal-headline"
-              id="modal-content"
-              @click.stop
+              v-if="isOpen"
             >
               <slot></slot>
             </div>
