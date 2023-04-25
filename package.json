@@ -37,7 +37,7 @@
     "prettier": "^2.8.8",
     "taze": "^0.9.1",
     "turbo": "^1.9.3",
-    "typedoc": "^0.24.5",
+    "typedoc": "^0.24.6",
     "vercel": "^28.20.0"
   },
   "engines": {
@@ -50,6 +50,9 @@
   },
   "packageManager": "pnpm@8.3.1",
   "pnpm": {
+    "overrides": {
+      "yaml": "^2.2.2"
+    },
     "peerDependencyRules": {
       "ignoreMissing": [
         "webpack",
