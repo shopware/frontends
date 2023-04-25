@@ -120,7 +120,7 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   }
 
   async function changeItemQuantity(quantity: number): Promise<void> {
-    changeProductQuantity({
+    await changeProductQuantity({
       id: cartItem.value.id,
       quantity: quantity,
     });
