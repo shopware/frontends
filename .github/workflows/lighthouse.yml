@@ -15,7 +15,7 @@ jobs:
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v9
         with:
-          serverBaseUrl: ${{ secrets.LHCI_SERVER_BASE_URL }}
+          serverBaseUrl: ${{ secrets.LHCI_SERVER_URL }}
           serverToken: ${{ secrets.LHCI_SERVER_TOKEN }}
           urls: |
             "https://frontends-demo.vercel.app/"
