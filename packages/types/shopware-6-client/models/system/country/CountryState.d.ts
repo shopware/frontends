@@ -18,4 +18,20 @@ export type CountryState = {
   customerAddresses: CustomerAddress[] | null;
   orderAddresses: OrderAddress[] | null;
   customFields: CustomFields;
+  extensions: unknown;
+  _uniqueIdentifier: string;
+  versionId: string | null;
+  translated: {
+    name: string;
+    customFields: unknown;
+  };
+  createdAt: string;
+  updatedAt: string | null;
+  countryId: string;
+  shortCode: string;
+  name: string | null;
+  position: number;
+  active: boolean;
+  id: string;
+  apiAlias: "country_state";
 };

@@ -5,6 +5,13 @@ import { CustomerAddress } from "../../checkout/customer/CustomerAddress";
 import { SalesChannel } from "../sales-channel/SalesChannel";
 import { CustomFields } from "../../common/CustomField";
 
+type CountryTaxSetting = {
+  enabled: boolean;
+  currencyId: string;
+  amount: number;
+  apiAlias: string;
+};
+
 /**
  * @public
  */
@@ -30,4 +37,25 @@ export type Country = {
   customerAddress: CustomerAddress[] | null;
   salesChannelDefaultAssignments: SalesChannel[] | null;
   salesChannels: SalesChannel[] | null;
+  extensions: unknown;
+  _uniqueIdentifier: string;
+  translated: {
+    name: string;
+    customFields: unknown;
+    addressFormat: string[][];
+  };
+  companyTaxFree: boolean;
+  checkVatIdPattern: boolean;
+  vatIdPattern: string;
+  vatIdRequired: boolean;
+  customerTax: CountryTaxSetting;
+  companyTax: CountryTaxSetting;
+  states: CountryState[];
+  postalCodeRequired: boolean;
+  checkPostalCodePattern: boolean;
+  checkAdvancedPostalCodePattern: boolean;
+  advancedPostalCodePattern: null | string;
+  defaultPostalCodePattern: string;
+  addressFormat: string[][];
+  apiAlias: "country";
 };
