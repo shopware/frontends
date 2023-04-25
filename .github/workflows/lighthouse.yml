@@ -1,0 +1,24 @@
+name: Lighthouse CI
+run-name: run Lighthouse CI 🚀
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '59 23 * * *'
+jobs:
+  lighthouseci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          serverBaseUrl: ${{ secrets.LHCI_SERVER_URL }}
+          serverToken: ${{ secrets.LHCI_SERVER_TOKEN }}
+          urls: |
+            "https://frontends-demo.vercel.app/"
+            "https://frontends-demo.vercel.app/Products/"
+            "https://frontends-demo.vercel.app/Summer-BBQ/"
+          configPath: './lighthouserc.js'
