@@ -3,7 +3,8 @@ const props = defineProps<{
   controller: ReturnType<typeof useModal>;
 }>();
 
-const { isOpen, close } = props.controller;
+const { controller } = toRefs(props);
+const { isOpen, close } = controller.value;
 
 const { escape } = useMagicKeys();
 
@@ -23,8 +24,8 @@ watch(escape, () => {
       leave-to-class="opacity-0"
     >
       <div
-        class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50"
         v-show="isOpen"
+        class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50"
         @click="close"
       >
         <div
@@ -39,12 +40,12 @@ watch(escape, () => {
             leave-to-class="opacity-0 translate-y-10 translate-y-0 scale-95"
           >
             <div
+              v-if="isOpen"
+              id="modal-content"
               class="bg-white rounded-lg text-left overflow-hidden shadow-xl p-8 lg:max-w-1/2"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-headline"
-              id="modal-content"
-              v-if="isOpen"
             >
               <slot></slot>
             </div>

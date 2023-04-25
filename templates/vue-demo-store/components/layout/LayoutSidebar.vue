@@ -9,7 +9,8 @@ const props = withDefaults(
   }
 );
 
-const { isOpen, close } = props.controller;
+const { controller } = toRefs(props);
+const { isOpen, close } = controller.value;
 
 const sidebarContentElement = ref();
 onClickOutside(sidebarContentElement, () => close());
@@ -26,8 +27,8 @@ onClickOutside(sidebarContentElement, () => close());
       leave-to-class="opacity-0"
     >
       <div
-        class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50"
         v-show="isOpen"
+        class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50"
       >
         <div
           class="flex items-start justify-center min-h-screen pt-24 text-center"
@@ -57,8 +58,8 @@ onClickOutside(sidebarContentElement, () => close());
               }"
             >
               <div
-                class="pointer-events-auto w-screen max-w-md"
                 ref="sidebarContentElement"
+                class="pointer-events-auto w-screen max-w-md"
               >
                 <div class="flex h-full flex-col bg-white shadow-xl">
                   <slot></slot>

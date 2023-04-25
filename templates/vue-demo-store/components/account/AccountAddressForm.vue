@@ -54,9 +54,9 @@ useFocus(firstNameInputElement, { initialValue: true });
     <div class="shadow overflow-hidden sm:rounded-md">
       <form
         id="account-address"
+        ref="formElement"
         name="account-address"
         method="post"
-        ref="formElement"
       >
         <div class="px-4 py-5 bg-white sm:p-6">
           <h3 class="text-2xl border-b pb-3">

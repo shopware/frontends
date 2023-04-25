@@ -24,9 +24,7 @@ export class MyAccountPage {
     this.personalLastName = page.getByTestId(
       "account-personal-data-lastname-input"
     );
-    this.personalEmail = page.getByTestId(
-      "account-personal-data-email-input"
-    );
+    this.personalEmail = page.getByTestId("account-personal-data-email-input");
     this.accountPersonalDataSubmitButton = page.getByTestId(
       "account-personal-data-submit-button"
     );
@@ -48,7 +46,7 @@ export class MyAccountPage {
   async changePersonalData() {
     await this.page.waitForLoadState();
     await this.accountChangeProfileButton.click();
-    await this.page.waitForLoadState("load")
+    await this.page.waitForLoadState("load");
   }
 
   async changePersonalFirstName(firstname: string) {
