@@ -10,7 +10,7 @@
   "dependencies": {
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
-    "js-cookie": "^3.0.4",
+    "js-cookie": "^3.0.5",
     "vue": "^3.2.47"
   },
   "devDependencies": {

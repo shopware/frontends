@@ -38,7 +38,7 @@
   "dependencies": {
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
-    "js-cookie": "^3.0.4"
+    "js-cookie": "^3.0.5"
   },
   "peerDependencies": {
     "vue": "^3.2.47"
