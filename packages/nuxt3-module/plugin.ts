@@ -13,6 +13,18 @@ const ShopwarePlugin = {
   install(app, options) {
     const runtimeConfig = useRuntimeConfig();
 
+    const contextToken = useCookie("sw-context-token", {
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "Lax",
+      path: "/",
+    });
+    const languageId = useCookie("sw-language-id", {
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "Lax",
+      path: "/",
+    });
+
+    // workaround for SSG case, where cookies contains additional dot in name, related: https://github.com/shopware/frontends/commit/ee5b8a71e1e016c973a7852efa3b85a136e6ea14
     const cookieContextToken = Cookies.get("sw-context-token");
     const cookieLanguageId = Cookies.get("sw-language-id");
 
@@ -35,14 +47,16 @@ const ShopwarePlugin = {
         password:
           "<%=  options.shopwareApiClient.auth ? options.shopwareApiClient.auth.password : undefined %>",
       },
-      contextToken: cookieContextToken,
-      languageId: cookieLanguageId,
+      contextToken: contextToken.value || cookieContextToken,
+      languageId: languageId.value || cookieLanguageId,
     });
     /**
      * Save current contextToken when its change
      */
     instance.onConfigChange(({ config }) => {
       try {
+        contextToken.value = config.contextToken;
+        languageId.value = config.languageId;
         Cookies.set("sw-context-token", config.contextToken || "", {
           expires: 365, //days
           sameSite: "Lax",

@@ -7,7 +7,7 @@ import {
   PaymentMethod,
   ShopwareSearchParams,
   OrderDocument,
-  ShopwareAssociation
+  ShopwareAssociation,
 } from "@shopware-pwa/types";
 import {
   cancelOrder,
@@ -155,7 +155,10 @@ export type UseOrderDetailsReturn = {
  * @public
  * @category Customer & Account
  */
-export function useOrderDetails(orderId: string, associations?: ShopwareAssociation): UseOrderDetailsReturn {
+export function useOrderDetails(
+  orderId: string,
+  associations?: ShopwareAssociation
+): UseOrderDetailsReturn {
   const { apiInstance } = useShopwareContext();
 
   const _sharedOrder = inject("swOrderDetails", ref());
@@ -192,7 +195,7 @@ export function useOrderDetails(orderId: string, associations?: ShopwareAssociat
   async function loadOrderDetails() {
     const orderDetailsResponse = await getOrderDetails(
       orderId,
-      deepMerge(orderAssociations, associations? associations: {}),
+      deepMerge(orderAssociations, associations ? associations : {}),
       apiInstance
     );
     _sharedOrder.value = orderDetailsResponse ?? null;

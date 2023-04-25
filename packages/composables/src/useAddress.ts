@@ -65,11 +65,6 @@ export function useAddress(): UseAddressReturn {
   );
   provide("swCustomerAddresses", _storeCustomerAddresses);
 
-  watch(isLoggedIn, () => {
-    _storeCustomerAddresses.value = [];
-    loadCustomerAddresses();
-  });
-
   /**
    * Get customer address list
    */
