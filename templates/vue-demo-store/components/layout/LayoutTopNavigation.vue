@@ -15,7 +15,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
 
 <template>
   <!-- eslint-disable vue/no-v-html -->
-  <nav class="hidden lg:flex space-x-4 items-center lg:w-7/12">
+  <nav class="hidden lg:flex space-x-4 items-center">
     <div
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
@@ -51,7 +51,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
             currentMenuPosition === navigationElement.id &&
             navigationElement?.children?.length
           "
-          class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/4"
+          class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/6"
           @mouseleave="currentMenuPosition = null"
         >
           <div
