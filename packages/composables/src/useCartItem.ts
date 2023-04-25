@@ -115,8 +115,8 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   const isPromotion = computed(() => cartItem.value.type === "promotion");
 
   async function removeItem() {
-    await removeCartItem(cartItem.value.id, apiInstance);
-    refreshCart();
+    const newCart = await removeCartItem(cartItem.value.id, apiInstance);
+    await refreshCart(newCart);
   }
 
   async function changeItemQuantity(quantity: number): Promise<void> {
