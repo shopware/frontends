@@ -4,8 +4,6 @@ export default defineConfig({
   theme: {
     colors: {},
   },
-  presets: [
-    presetWind(),
-  ],
+  presets: [presetWind()],
   transformers: [],
 });
