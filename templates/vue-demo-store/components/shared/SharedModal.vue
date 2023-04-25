@@ -11,6 +11,9 @@ const { escape } = useMagicKeys();
 watch(escape, () => {
   isOpen.value && close();
 });
+
+const modalContentElement = ref();
+onClickOutside(modalContentElement, () => close());
 </script>
 
 <template>
@@ -26,7 +29,6 @@ watch(escape, () => {
       <div
         v-show="isOpen"
         class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50"
-        @click="close"
       >
         <div
           class="flex items-start justify-center min-h-screen pt-1/6 text-center"
@@ -41,6 +43,7 @@ watch(escape, () => {
           >
             <div
               v-if="isOpen"
+              ref="modalContentElement"
               id="modal-content"
               class="bg-white rounded-lg text-left overflow-hidden shadow-xl p-8 lg:max-w-1/2"
               role="dialog"
