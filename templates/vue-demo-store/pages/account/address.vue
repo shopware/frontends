@@ -5,15 +5,15 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { SharedModal } from "~~/components/shared/SharedModal.vue";
 definePageMeta({
   layout: "account",
 });
 const loadingData = ref(true);
-const modal = inject<SharedModal>("modal") as SharedModal;
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const { customerAddresses, loadCustomerAddresses } = useAddress();
+
+const addAddressModalController = useModal();
 
 useBreadcrumbs([
   {
@@ -66,14 +66,12 @@ onBeforeMount(async () => {
       class="group relative justify-center py-2 px-4 my-8 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
       type="submit"
       data-testid="addresses-add-button"
-      @click="
-        modal.open('AccountAddressForm', {
-          countries: getCountries,
-          salutations: getSalutations,
-        })
-      "
+      @click="addAddressModalController.open"
     >
       Add new address
     </button>
+    <SharedModal :controller="addAddressModalController">
+      <AccountAddressForm />
+    </SharedModal>
   </div>
 </template>
