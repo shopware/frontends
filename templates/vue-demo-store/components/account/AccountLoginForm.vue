@@ -33,6 +33,9 @@ const invokeLogin = async (): Promise<void> => {
     loginErrors.value = e.messages.map(({ detail }) => detail);
   }
 };
+
+const emailImputElement = ref();
+useFocus(emailImputElement, { initialValue: true });
 </script>
 <template>
   <div
@@ -57,6 +60,7 @@ const invokeLogin = async (): Promise<void> => {
             <label for="email-address" class="sr-only">Email address</label>
             <input
               id="email-address"
+              ref="emailImputElement"
               v-model="formData.username"
               name="email"
               type="email"
@@ -129,7 +133,12 @@ const invokeLogin = async (): Promise<void> => {
     </div>
     <div v-else>
       <h2>you are logged in</h2>
-      <button @click="$emit('close')">close</button>
+      <button
+        class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        @click="$emit('close')"
+      >
+        close
+      </button>
     </div>
   </div>
 </template>

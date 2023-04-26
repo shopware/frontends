@@ -38,7 +38,6 @@ provide("swNavigation-footer-navigation", footerData);
 
 <template>
   <div>
-    <SharedModal />
     <LayoutHeader />
     <LayoutNotifications />
     <LayoutBreadcrumbs />
@@ -123,7 +122,6 @@ provide("swNavigation-footer-navigation", footerData);
       </div>
     </div>
 
-    <CheckoutSideCart />
     <LayoutFooter />
   </div>
 </template>
