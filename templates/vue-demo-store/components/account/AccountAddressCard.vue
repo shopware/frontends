@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
-import { SharedModal } from "~~/components/shared/SharedModal.vue";
-
 const { pushSuccess, pushError } = useNotifications();
 const {
   setDefaultCustomerShippingAddress,
@@ -10,7 +8,6 @@ const {
 } = useAddress();
 const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
 const { refreshSessionContext } = useSessionContext();
-const modal = inject<SharedModal>("modal") as SharedModal;
 const { t } = useI18n();
 
 const props = withDefaults(
@@ -63,6 +60,8 @@ const removeAddress = async (addressId: string) => {
     pushError(t("account.messages.addressDeletedError"));
   }
 };
+
+const addAddressModalController = useModal();
 </script>
 
 <template>
@@ -74,19 +73,15 @@ const removeAddress = async (addressId: string) => {
       >
         {{ `${address.firstName} ${address.lastName}` }}
       </h5>
-      <div
+      <button
         v-if="canEdit"
         class="cursor-pointer i-carbon-edit text-xl inline-block"
         data-testid="address-edit"
-        @click.prevent="
-          modal.open('AccountAddressForm', {
-            address,
-            salutations,
-            countries,
-            title: 'Edit address',
-          })
-        "
+        @click.prevent="addAddressModalController.open"
       />
+      <SharedModal :controller="addAddressModalController">
+        <AccountAddressForm :address="address" title="EditAddress" />
+      </SharedModal>
       <div
         v-if="canBeDeleted"
         class="i-carbon-delete text-xl inline-block cursor-pointer ml-2"

@@ -7,8 +7,9 @@ export default {
 <script setup lang="ts">
 import { getProducts } from "@shopware-pwa/api-client";
 import { ClientApiError, Product } from "@shopware-pwa/types";
+import { removeWishlistProduct } from "@shopware-pwa/api-client";
 
-const { items } = useWishlist();
+const { items, getWishlistProducts } = useWishlist();
 const { apiInstance } = useShopwareContext();
 const products = ref<Product[]>([]);
 const isLoading = ref(false);
@@ -59,6 +60,13 @@ watch(
     immediate: true,
   }
 );
+
+async function clearWishlist() {
+  await Promise.all(
+    items.value.map((id) => removeWishlistProduct(id, apiInstance))
+  );
+  getWishlistProducts();
+}
 </script>
 
 <template>
@@ -67,8 +75,23 @@ watch(
       class="max-w-2xl mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8"
     >
       <!-- Wishlist is completed -->
-      <div v-if="products.length">
-        <h1 class="my-3 text-3xl font-extrabold">{{$t('wishlist.header')}}</h1>
+      <div
+        v-if="isLoading"
+        class="absolute inset-0 flex items-center justify-center z-10 bg-white/50"
+      >
+        <div
+          class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+        />
+      </div>
+      <div v-else-if="products.length">
+        <h1 class="my-3 text-3xl font-extrabold">{{ $t('wishlist.header') }}</h1>
+        <button
+          class="mb-4 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          data-testid="clear-wishlist-button"
+          @click="clearWishlist"
+        >
+          Clear wishlist
+        </button>
         <div
           class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
         >
