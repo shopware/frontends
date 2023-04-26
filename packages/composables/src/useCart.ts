@@ -49,8 +49,9 @@ export type UseCartReturn = {
   count: ComputedRef<number>;
   /**
    * Refreshes the cart object and related data
+   * If @param newCart is provided, it will be used as a new cart object
    */
-  refreshCart(): Promise<Cart>;
+  refreshCart(newCart?: Cart): Promise<Cart>;
   /**
    * Removes the provided LineItem from the cart
    */
@@ -95,7 +96,12 @@ export function useCartFunction(): UseCartReturn {
 
   const _storeCart = _useContext<Cart | undefined>("swCart");
 
-  async function refreshCart(): Promise<Cart> {
+  async function refreshCart(newCart?: Cart): Promise<Cart> {
+    if (newCart) {
+      _storeCart.value = newCart;
+      return newCart;
+    }
+
     const result = await getCart(apiInstance);
     _storeCart.value = result;
     return result;
@@ -108,7 +114,7 @@ export function useCartFunction(): UseCartReturn {
     const addToCartResult = await addProductToCart(
       params.id,
       params.quantity,
-      apiInstance
+      apiInstance,
     );
     _storeCart.value = addToCartResult;
     return addToCartResult;
@@ -126,7 +132,7 @@ export function useCartFunction(): UseCartReturn {
     const result = await changeCartItemQuantity(
       params.id,
       params.quantity,
-      apiInstance
+      apiInstance,
     );
     _storeCart.value = result;
   }
@@ -179,14 +185,14 @@ export function useCartFunction(): UseCartReturn {
         // associations: (getDefaults() as any).getProductItemsSeoUrlsData
         //   .associations,
       },
-      apiInstance
+      apiInstance,
     );
     return result?.elements || [];
   }
 
   const appliedPromotionCodes = computed(() => {
     return cartItems.value.filter(
-      (cartItem: LineItem) => cartItem.type === "promotion"
+      (cartItem: LineItem) => cartItem.type === "promotion",
     );
   });
 
@@ -202,7 +208,7 @@ export function useCartFunction(): UseCartReturn {
         lineItem.type === "product"
           ? lineItem.quantity + accumulator
           : accumulator,
-      0
+      0,
     );
   });
 
@@ -226,7 +232,7 @@ export function useCartFunction(): UseCartReturn {
   });
 
   const cartErrors: ComputedRef<EntityError[]> = computed(
-    () => (cart.value?.errors && Object.values(cart.value.errors)) || []
+    () => (cart.value?.errors && Object.values(cart.value.errors)) || [],
   );
 
   const isVirtualCart = computed(() => {
