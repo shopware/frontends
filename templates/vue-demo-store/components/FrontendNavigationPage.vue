@@ -7,7 +7,6 @@ import { useCmsHead } from "@/composables/useCmsHead";
 
 const props = defineProps<{
   navigationId: string;
-  translations?: any
 }>();
 
 const { search } = useCategorySearch();
