@@ -21,7 +21,8 @@
     "version": "changeset version",
     "postversion": "pnpm run versionReadme",
     "versionReadme": "pnpx ts-node scripts/addChangelogBodyToReadmeFile.ts",
-    "taze": "taze major -wr"
+    "taze": "taze major -wr",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
@@ -33,6 +34,7 @@
     "changelog-parser": "^3.0.1",
     "dotenv-cli": "^7.2.1",
     "globby": "^13.1.4",
+    "husky": "^8.0.3",
     "lint-staged": "^13.2.1",
     "prettier": "^2.8.8",
     "taze": "^0.9.1",

@@ -39,6 +39,9 @@ importers:
       globby:
         specifier: ^13.1.4
         version: 13.1.4
+      husky:
+        specifier: ^8.0.3
+        version: 8.0.3
       lint-staged:
         specifier: ^13.2.1
         version: 13.2.1
@@ -10571,6 +10574,12 @@ packages:
       ms: 2.1.3
     dev: true
 
+  /husky@8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
   /hyphenate-style-name@1.0.4:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}
     dev: false
@@ -17665,8 +17674,8 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.16.0
-      esbuild: 0.17.16
-      postcss: 8.4.21
+      esbuild: 0.17.18
+      postcss: 8.4.23
       rollup: 3.20.2
     optionalDependencies:
       fsevents: 2.3.2
