@@ -56,6 +56,8 @@ Since all CMS components are registered in your Nuxt application, you can now st
 </template>
 ```
 
+> You can use default styling by installing/importing Tailwind CSS stylesheet in your project.
+
 See a [short guide](https://frontends.shopware.com/getting-started/cms/content-pages.html#use-the-cms-base-package) how to use `cms-base` package in your project based on Nuxt v3.
 
 
@@ -63,7 +65,7 @@ See a [short guide](https://frontends.shopware.com/getting-started/cms/content-p
 
 All components are fully typed with TypeScript. 
 
-No additional packages needed.
+No additional packages needed to be installed.
 
 
 ## Links
