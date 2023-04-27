@@ -14,7 +14,7 @@ export class CartPage {
   }
 
   async openMiniCart() {
-    await this.page.waitForLoadState();
+    await this.miniCartLink.waitFor();
     await this.miniCartLink.click();
   }
 
