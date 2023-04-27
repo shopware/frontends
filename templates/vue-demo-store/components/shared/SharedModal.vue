@@ -43,8 +43,8 @@ onClickOutside(modalContentElement, () => close());
           >
             <div
               v-if="isOpen"
-              ref="modalContentElement"
               id="modal-content"
+              ref="modalContentElement"
               class="bg-white rounded-lg text-left overflow-hidden shadow-xl p-8 lg:max-w-1/2"
               role="dialog"
               aria-modal="true"

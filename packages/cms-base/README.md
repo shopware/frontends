@@ -5,8 +5,7 @@
 ![](https://img.shields.io/github/license/shopware/frontends?color=blue)
 [![](https://img.shields.io/github/issues/shopware/frontends/cms-base?label=cms-base%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acms-base)
 
-
-Nuxt [module](https://nuxt.com/docs/guide/going-further/modules) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html) using unocss/Tailwind.css syntax. 
+Nuxt [module](https://nuxt.com/docs/guide/going-further/modules) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html) using unocss/Tailwind.css syntax.
 
 It is useful for projects that want to use the CMS components but design their own layout.
 
@@ -15,7 +14,6 @@ It is useful for projects that want to use the CMS components but design their o
 - Vue components for [Shopping Experiences](https://www.shopware.com/en/products/shopping-experiences/) CMS
 - CMS sections, blocks and elements styled using [Tailwind CSS](https://tailwindcss.com/) classes
 - 🚀 Empowered by [@shopware-pwa/composables-next](https://www.npmjs.com/package/@shopware-pwa/composables-next)
-
 
 ## Setup
 
@@ -60,20 +58,17 @@ Since all CMS components are registered in your Nuxt application, you can now st
 
 See a [short guide](https://frontends.shopware.com/getting-started/cms/content-pages.html#use-the-cms-base-package) how to use `cms-base` package in your project based on Nuxt v3.
 
-
 ## TypeScript support
 
-All components are fully typed with TypeScript. 
+All components are fully typed with TypeScript.
 
 No additional packages needed to be installed.
 
-
 ## Links
 
-* [📘 Documentation](https://frontends.shopware.com)
+- [📘 Documentation](https://frontends.shopware.com)
 
-* [👥 Community](https://shopwarecommunity.slack.com ()
-) (`#shopware-frontends` & `#shopware-pwa` channel)
+- [👥 Community](https://shopwarecommunity.slack.com) (`#shopware-frontends` & `#shopware-pwa` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
