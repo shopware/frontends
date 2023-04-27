@@ -11,7 +11,6 @@ import {
   Product,
   PropertyGroupOption,
 } from "@shopware-pwa/types";
-import { Ref } from "vue";
 
 const { pushSuccess, pushError } = useNotifications();
 
@@ -61,9 +60,6 @@ const addToCartProxy = async () => {
 };
 
 const fromPrice = getProductFromPrice(props.product);
-const ratingAverage: Ref<number> = computed(() =>
-  props.product.ratingAverage ? Math.round(props.product.ratingAverage) : 0
-);
 
 const imageElement = ref(null);
 const { height } = useElementSize(imageElement);
