@@ -44,9 +44,8 @@ export class MyAccountPage {
   }
 
   async changePersonalData() {
-    await this.page.waitForLoadState();
-    await this.accountChangeProfileButton.click();
-    await this.page.waitForLoadState("load");
+    await this.accountChangeProfileButton.waitFor();
+    await this.accountChangeProfileButton.dispatchEvent("click");
   }
 
   async changePersonalFirstName(firstname: string) {

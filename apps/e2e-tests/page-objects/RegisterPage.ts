@@ -50,16 +50,19 @@ export class RegisterForm {
     await this.zipcode.type(zipcode);
     await this.city.type(city);
     await this.country.selectOption({ label: "Germany" });
-    await this.page.waitForLoadState("load");
   }
 
   async submitRegistraionForm() {
-    await this.page.waitForLoadState("load");
-    await this.submitButton.click();
+    await Promise.all([
+      this.page.waitForLoadState(),
+      await this.submitButton.dispatchEvent("click"),
+    ]);
+    await this.page.waitForSelector(
+      "[data-testid='product-box-wishlist-icon-not-in']"
+    );
   }
 
   async createUser() {
-    await this.page.waitForLoadState();
     await this.salutation.selectOption({ label: "Mr." });
     await this.firstName.type("e2e " + faker.name.firstName());
     await this.lastName.type("e2e " + faker.name.lastName());
@@ -69,7 +72,9 @@ export class RegisterForm {
     await this.zipcode.type(faker.address.zipCode());
     await this.city.type(faker.address.city());
     await this.country.selectOption({ label: "Germany" });
-    await this.page.waitForLoadState("load");
     await this.submitButton.click();
+    await this.page.waitForSelector(
+      "[data-testid='product-box-wishlist-icon-not-in']"
+    );
   }
 }
