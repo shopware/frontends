@@ -27,7 +27,7 @@ const props = withDefaults(
   }
 );
 const { product } = toRefs(props);
-const { addToCart } = useAddToCart(product);
+const { addToCart, isInCart, count } = useAddToCart(product);
 
 const { addToWishlist, removeFromWishlist, isInWishlist } =
   useProductWishlist(product);
@@ -168,10 +168,18 @@ const srcPath = computed(() => {
           v-if="!fromPrice"
           type="button"
           @click="addToCartProxy"
-          class="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 md:hover:scale-120"
+          class="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 md:hover:scale-120 flex"
+          :class="{
+            'text-white bg-blue-500 hover:bg-blue-600': !isInCart,
+            'text-gray-500 bg-gray-100': isInCart,
+          }"
           data-testid="add-to-cart-button"
         >
           Add to cart
+          <div v-if="isInCart" class="flex ml-2">
+            <div class="w-5 h-5 i-carbon-shopping-bag text-gray-600" />
+            {{ count }}
+          </div>
         </button>
         <RouterLink
           v-else
