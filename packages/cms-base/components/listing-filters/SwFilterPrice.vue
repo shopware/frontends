@@ -2,6 +2,7 @@
 import { ListingFilter } from "@shopware-pwa/types";
 import { reactive, ref, watch, inject } from "vue";
 import deepMerge from '../../helpers/deepMerge'
+import getTranslations from "../../helpers/getTranslations";
 
 const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
@@ -23,7 +24,7 @@ let translations: Translations = {
       "max": "Max"
   }
 }
-const globalTranslations = inject("cmsTranslations")
+const globalTranslations = getTranslations()
 translations = deepMerge(translations, globalTranslations) as Translations
 
 const prices = reactive<{ min: number; max: number }>({

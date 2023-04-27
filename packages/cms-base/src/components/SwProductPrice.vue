@@ -2,6 +2,7 @@
 import { useProductPrice } from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
 import deepMerge from '../../helpers/deepMerge'
+import getTranslations from "../../helpers/getTranslations";
 
 const props = 
   defineProps<{
@@ -26,7 +27,7 @@ let translations: Translations = {
   }
 }
 
-const globalTranslations = inject("cmsTranslations")
+const globalTranslations = getTranslations()
 translations = deepMerge(translations, globalTranslations) as Translations
 
 const { product } = toRefs(props);

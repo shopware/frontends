@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ComputedRef } from "vue";
 import deepMerge from '../helpers/deepMerge'
+import getTranslations from "../helpers/getTranslations";
 
 const props = withDefaults(
   defineProps<{
@@ -23,7 +24,7 @@ let translations: Translations = {
   }
 }
 
-const globalTranslations = inject("cmsTranslations")
+const globalTranslations = getTranslations()
 translations = deepMerge(translations, globalTranslations) as Translations
 
 const emit = defineEmits<{

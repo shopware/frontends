@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Product } from "@shopware-pwa/types";
 import deepMerge from '../helpers/deepMerge'
+import getTranslations from "../helpers/getTranslations";
 
 const { pushSuccess } = useNotifications();
 const props = 
@@ -24,7 +25,7 @@ let translations: Translations = {
   }
 }
 
-const globalTranslations = inject("cmsTranslations")
+const globalTranslations = getTranslations()
 translations = deepMerge(translations, globalTranslations) as Translations
 
 

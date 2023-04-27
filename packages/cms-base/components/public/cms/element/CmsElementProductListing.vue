@@ -4,7 +4,7 @@ import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
 import { ShopwareSearchParams } from "@shopware-pwa/types";
 import deepMerge from '../../../../helpers/deepMerge'
-
+import getTranslations from "../../../../helpers/getTranslations";
 const props = 
   defineProps<{
     content: CmsElementProductListing;
@@ -20,7 +20,7 @@ let translations: Translations = {
     "noProducts": "No products found 😔",
   }
 }
-const globalTranslations = inject("cmsTranslations")
+const globalTranslations = getTranslations()
 translations = deepMerge(translations, globalTranslations) as Translations
 
 const {

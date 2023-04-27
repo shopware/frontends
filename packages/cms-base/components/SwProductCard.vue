@@ -20,6 +20,7 @@ import {
 import { Ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from '../helpers/deepMerge'
+import getTranslations from "../helpers/getTranslations";
 
 const { pushSuccess, pushError } = useNotifications();
 
@@ -59,7 +60,7 @@ let translations: Translations = {
   }
 }
 
-const globalTranslations = inject("cmsTranslations")
+const globalTranslations = getTranslations()
 translations = deepMerge(translations, globalTranslations) as Translations
 
 const { product } = toRefs(props);

@@ -6,6 +6,7 @@ import {
 } from "@shopware-pwa/helpers-next";
 import SwProductReviews from "../../../SwProductReviews.vue";
 import deepMerge from '../../../../helpers/deepMerge'
+import getTranslations from "../../../../helpers/getTranslations";
 
 const props = 
   defineProps<{
@@ -25,7 +26,7 @@ let translations: Translations = {
     reviews: "Reviews"
   }
 }
-const globalTranslations = inject("cmsTranslations")
+const globalTranslations = getTranslations()
 translations = deepMerge(translations, globalTranslations) as Translations
 
 const currentTab = ref<number>(1);

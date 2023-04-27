@@ -3,6 +3,7 @@ import { ClientApiError } from "@shopware-pwa/types";
 import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
 import { Category } from "@shopware-pwa/types";
 import deepMerge from '../../../../helpers/deepMerge'
+import getTranslations from "../../../../helpers/getTranslations";
 
 type Translations = {
   listing: {
@@ -18,7 +19,7 @@ let translations: Translations = {
   }
 }
 
-const globalTranslations = inject("cmsTranslations")
+const globalTranslations = getTranslations()
 translations = deepMerge(translations, globalTranslations) as Translations
 
 const { category: activeCategory } = useCategory();
