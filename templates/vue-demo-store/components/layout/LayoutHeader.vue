@@ -44,7 +44,7 @@ const sidebarController = useModal();
               to="/wishlist"
             >
               <div
-                class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary"
+                class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary hover:animate-count-infinite hover:animate-heart-beat"
               />
               <span
                 v-if="wishlistCount > 0"

@@ -38,13 +38,13 @@ setInitialListing(props?.content?.data?.listing);
   <div class="bg-white">
     <div class="max-w-2xl mx-auto lg:max-w-full">
       <div v-if="getElements.length" class="mt-6">
-        <div class="flex-1 flex-col justify-around">
+        <div class="flex flex-wrap justify-center sm:justify-between">
           <SwProductCard
             v-for="product in getElements"
             :key="product.id"
             :product="product"
             :isProductListing="isProductListing"
-            class="sm:w-6/12 lg:w-3/12 md:max-w-xs"
+            class="w-full sm:w-3/7 lg:w-2/7 mb-8"
           />
         </div>
         <div class="mt-10">
