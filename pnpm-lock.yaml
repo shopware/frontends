@@ -735,8 +735,8 @@ importers:
         specifier: ^3.2.47
         version: 3.2.47
       vue-tsc:
-        specifier: ^1.4.4
-        version: 1.4.4(typescript@5.0.4)
+        specifier: ^1.6.1
+        version: 1.6.1(typescript@5.0.4)
 
   templates/vue-demo-store:
     dependencies:
@@ -827,8 +827,8 @@ importers:
         specifier: ^4.3.1
         version: 4.3.1(@types/node@14.18.33)
       vue-tsc:
-        specifier: ^1.4.4
-        version: 1.4.4(typescript@5.0.4)
+        specifier: ^1.6.1
+        version: 1.6.1(typescript@5.0.4)
 
 packages:
 
