@@ -18,9 +18,7 @@ describe("ContextService - getAvailableShippingMethods", () => {
 
     const result = await getAvailableShippingMethods();
     expect(mockedPost).toBeCalledTimes(1);
-    expect(mockedPost).toBeCalledWith("/store-api/shipping-method", {
-      params: {},
-    });
+    expect(mockedPost).toBeCalledWith("/store-api/shipping-method", {});
     expect(result).toHaveLength(2);
   });
 });
