@@ -1,16 +1,11 @@
 import { ref } from "vue";
-
-const currencySymbol = ref<string>("");
-const currencyPosition = ref<number>(1);
-
-// @ToDo make sure why there is no decimal precision in api response
-const decimalPrecision = 2;
+import { createSharedComposable } from "@vueuse/core";
 
 export type UsePriceReturn = {
   /**
-   * Set init data: currencySymbol & currencyPosition
+   * Set init data: localeCode & currencyCode
    */
-  init(options: { currencySymbol: string; currencyPosition: number }): void;
+  init(options: { localeCode: string | undefined; currencyCode: string }): void;
   /**
    * Format price i.e. (2) -> 2.00 $
    */
@@ -22,45 +17,54 @@ export type UsePriceReturn = {
  * @public
  * @category Product
  */
-export function usePrice(): UsePriceReturn {
+function _usePrice(): UsePriceReturn {
+  const currencyLocale = ref<string>("");
+  const currencyCode = ref<string>("");
+
+  // TODO: make sure why there is no decimal precision in api response
+  const decimalPrecision = 2;
   /**
    * Set init data from backend response
    *
+   * as a fallback for params.localeCode is navigator?.language
    * @param params
    */
   function init(params: {
-    currencySymbol: string;
-    currencyPosition: number;
+    localeCode: string | undefined;
+    currencyCode: string;
   }): void {
-    _setCurrencySymbol(params.currencySymbol);
-    _setCurrencyPosition(params.currencyPosition);
+    _setCurrencyCode(params.currencyCode);
+    _setLocaleCode(
+      params.localeCode ||
+        (typeof navigator !== "undefined" && navigator?.language) ||
+        "en-US"
+    );
   }
 
-  function _setCurrencySymbol(symbol: string) {
-    currencySymbol.value = symbol;
+  function _setCurrencyCode(code: string) {
+    currencyCode.value = code;
   }
 
-  function _setCurrencyPosition(position: number) {
-    currencyPosition.value = position;
+  function _setLocaleCode(locale: string) {
+    currencyLocale.value = locale;
   }
 
   /**
-   * Format price (2) -> 2.00 $
+   * Format price (2) -> $ 2.00
    */
   function getFormattedPrice(value: number | string | undefined): string {
     if (typeof value === "undefined") {
       return "";
     }
-    let formattedPrice = [
-      (+value).toFixed(decimalPrecision),
-      currencySymbol.value,
-    ];
 
-    if (currencyPosition.value === 0) {
-      formattedPrice = formattedPrice.reverse();
+    if (!currencyLocale.value) {
+      return value.toString();
     }
 
-    return formattedPrice.join(" ");
+    return new Intl.NumberFormat(currencyLocale.value, {
+      style: "currency",
+      currency: currencyCode.value,
+    }).format(+value);
   }
 
   return {
@@ -68,3 +72,5 @@ export function usePrice(): UsePriceReturn {
     getFormattedPrice,
   };
 }
+
+export const usePrice = createSharedComposable(_usePrice);

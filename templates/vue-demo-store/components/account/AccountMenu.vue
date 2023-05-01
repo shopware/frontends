@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { SharedModal } from "~~/components/shared/SharedModal.vue";
-const { isLoggedIn, logout, user, refreshUser } = useUser();
+const { isLoggedIn, logout, user } = useUser();
+
+const loginModalController = useModal();
+
 const isAccountMenuOpen = ref(false);
-const modal = inject<SharedModal>("modal") as SharedModal;
 
 async function invokeLogout() {
   await logout();
@@ -16,11 +17,17 @@ async function invokeLogout() {
         <button
           class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
           data-testid="header-sign-in-link"
-          @click="modal.open('AccountLoginForm')"
+          @click="loginModalController.open"
         >
           Sign in
         </button>
       </div>
+      <SharedModal :controller="loginModalController">
+        <AccountLoginForm
+          @close="loginModalController.close"
+          @success="loginModalController.close"
+        />
+      </SharedModal>
       <div v-if="isLoggedIn">
         <div
           class="inset-y-2 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0"

@@ -4,7 +4,6 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { SharedModal } from "~~/components/shared/SharedModal.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength, requiredIf } from "@vuelidate/validators";
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
@@ -39,7 +38,6 @@ const {
 const { cart, cartItems, subtotal, totalPrice, shippingTotal, isVirtualCart } =
   useCart();
 const { customerAddresses, loadCustomerAddresses } = useAddress();
-const modal = inject<SharedModal>("modal") as SharedModal;
 const isLoading = reactive<{ [key: string]: boolean }>({});
 
 const selectedShippingMethod = computed({
@@ -209,8 +207,10 @@ const invokeSubmit = async () => {
     try {
       const response = await register(state);
       if (!response.active) {
-        pushInfo('Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.')
-        await push('/')
+        pushInfo(
+          "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up."
+        );
+        await push("/");
       }
     } catch (error) {
       const e = error as ClientApiError;
@@ -222,10 +222,22 @@ async function invokeLogout() {
   await logout();
   await push("/");
 }
+
+const loginModalController = useModal();
+const addAddressModalController = useModal();
 </script>
 
 <template>
   <div class="m-10">
+    <SharedModal :controller="loginModalController">
+      <AccountLoginForm
+        @close="loginModalController.close"
+        @success="loginModalController.close"
+      />
+    </SharedModal>
+    <SharedModal :controller="addAddressModalController">
+      <AccountAddressForm />
+    </SharedModal>
     <div
       v-if="isCheckoutAvailable || isCartLoading"
       class="checkout-inner"
@@ -270,7 +282,7 @@ async function invokeLogout() {
                   href="#"
                   class="whitespace-nowrap font-medium text-brand-primary hover:text-brand-dark"
                   data-testid="checkout-sign-in-link"
-                  @click="modal.open('AccountLoginForm')"
+                  @click="loginModalController.open"
                 >
                   Sign in
                 </a>
@@ -607,7 +619,7 @@ async function invokeLogout() {
                 :class="{ 'animate-pulse': isLoading[singleShippingMethod.id] }"
                 class="ml-2 block text-sm font-medium text-gray-700"
               >
-                {{ singleShippingMethod.name }}
+                {{ singleShippingMethod.translated?.name }}
               </label>
             </div>
           </fieldset>
@@ -649,7 +661,7 @@ async function invokeLogout() {
                 :class="{ 'animate-pulse': isLoading[singlePaymentMethod.id] }"
                 class="ml-2 block text-sm font-medium text-gray-700"
               >
-                {{ singlePaymentMethod.name }}
+                {{ singlePaymentMethod.translated?.name }}
               </label>
             </div>
           </fieldset>
@@ -706,13 +718,7 @@ async function invokeLogout() {
             <button
               type="button"
               class="flex font-medium text-brand-dark"
-              @click="
-                modal.open('AccountAddressForm', {
-                  countries: getCountries,
-                  salutations: getSalutations,
-                  title: 'Add new billing address',
-                })
-              "
+              @click="addAddressModalController.open"
             >
               Add new billing address
             </button>
@@ -761,13 +767,7 @@ async function invokeLogout() {
                 <button
                   type="button"
                   class="flex font-medium text-brand-dark"
-                  @click="
-                    modal.open('AccountAddressForm', {
-                      countries: getCountries,
-                      salutations: getSalutations,
-                      title: 'Add new shipping address',
-                    })
-                  "
+                  @click="addAddressModalController.open"
                 >
                   Add new shipping address
                 </button>

@@ -49,8 +49,9 @@ export type UseCartReturn = {
   count: ComputedRef<number>;
   /**
    * Refreshes the cart object and related data
+   * If @param newCart is provided, it will be used as a new cart object
    */
-  refreshCart(): Promise<Cart>;
+  refreshCart(newCart?: Cart): Promise<Cart>;
   /**
    * Removes the provided LineItem from the cart
    */
@@ -88,14 +89,19 @@ export type UseCartReturn = {
 /**
  * Cart management logic.
  *
- * Used as [Shared](https://shopware-frontends-docs.vercel.app/framework/shared-composables.html) Composable `useCart`
+ * Used as [Shared](https://frontends.shopware.com/framework/shared-composables.html) Composable `useCart`
  */
 export function useCartFunction(): UseCartReturn {
   const { apiInstance } = useShopwareContext();
 
   const _storeCart = _useContext<Cart | undefined>("swCart");
 
-  async function refreshCart(): Promise<Cart> {
+  async function refreshCart(newCart?: Cart): Promise<Cart> {
+    if (newCart) {
+      _storeCart.value = newCart;
+      return newCart;
+    }
+
     const result = await getCart(apiInstance);
     _storeCart.value = result;
     return result;

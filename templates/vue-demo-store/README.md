@@ -12,7 +12,7 @@ This repository shows an example of demo application built with Shopware Fronten
 
 ## Requirements
 
-Go to [Documentation > Requirements](https://shopware-frontends-docs.vercel.app/framework/requirements.html) to see the details.
+Go to [Documentation > Requirements](https://frontends.shopware.com/framework/requirements.html) to see the details.
 
 ## Set up your Shopware 6 instance
 
@@ -36,7 +36,7 @@ Now, you can have a look on the pages and components and add your stuff there.
 
 ## Production
 
-There are many ways and many providers for deployment a production build of JS app. For more, read documentation [Best Practices > Deployment](https://shopware-frontends-docs.vercel.app/best-practices/deployment.html) section.
+There are many ways and many providers for deployment a production build of JS app. For more, read documentation [Best Practices > Deployment](https://frontends.shopware.com/best-practices/deployment.html) section.
 
 In this chapter we will cover:
 
@@ -45,13 +45,7 @@ In this chapter we will cover:
 
 ### Node server
 
-To set a production build to run on node-server (SSR), change `NITRO_PRESET` entry in `.env.production` file:
-
-```
-NITRO_PRESET="node-server"
-```
-
-Then, the `build` script will invoke building the application for provided preset:
+Use the `build` script to invoke building the application:
 
 ```bash
 pnpm build
@@ -60,7 +54,7 @@ pnpm build
 # or yarn build
 ```
 
-The last step is to run `start` script in order to make the application running:
+Then run `start` script in order to make the application running:
 
 ```bash
 pnpm start
@@ -91,3 +85,9 @@ Run a container from the image:
 # the application is exposed via 3000 port and mapped to 3000 port on host
 docker run -p3000:3000 vue-demo-store
 ```
+
+### Nitro presets
+
+[HERE](https://nitro.unjs.io/deploy) can be found more about generating different outputs related to the platform
+
+Our recommendation is to use `.env` file for changing platform presets

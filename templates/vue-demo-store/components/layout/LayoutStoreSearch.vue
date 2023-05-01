@@ -55,12 +55,12 @@ if (process.client) {
 const { enter } = useMagicKeys({ target: searchInput });
 const { push } = useRouter();
 
-const isSideMenuOpened = inject("isSideMenuOpened", ref(false));
+const sideMenuModal = useSideMenuModal();
 
 watch(enter, (value) => {
   if (!value) return;
 
-  isSideMenuOpened.value = false;
+  sideMenuModal.close();
 
   active.value = false;
   push("/search?query=" + typingQuery.value);
@@ -70,7 +70,7 @@ watch(enter, (value) => {
 <template>
   <div
     ref="searchContainer"
-    class="relative group p-3 pr-0 rounded-lg transition duration-300 hover:shadow-md inline-block"
+    class="relative group p-3 pr-0 rounded-lg transition duration-300 hover:shadow-md inline-block w-full"
     :class="[active ? 'shadow-lg' : 'shadow']"
   >
     <div class="flex items-center">

@@ -1,27 +1,57 @@
-import { computed, ComputedRef, Ref, unref } from "vue";
+import { computed, ComputedRef, Ref } from "vue";
 import { removeCartItem, getProduct } from "@shopware-pwa/api-client";
-import {
-  Product,
+import type {
   LineItem,
   LineItemType,
   ClientApiError,
   PropertyGroupOptionCart,
-  PropertyGroupOption,
   ProductResponse,
+  CartProductItem,
 } from "@shopware-pwa/types";
 
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCart } from ".";
 
 export type UseCartItemReturn = {
+  /**
+   * Calculated price {number} for the current item
+   */
   itemRegularPrice: ComputedRef<number | undefined>;
+  /**
+   * Calculated price {number} for the current item if list price is set
+   */
   itemSpecialPrice: ComputedRef<number | undefined>;
+  /**
+   * Total price for the current item of given quantity in the cart
+   */
+  itemTotalPrice: ComputedRef<number | undefined>;
+  /**
+   * Thumbnail url for the current item's entity
+   */
   itemImageThumbnailUrl: ComputedRef<string>;
-  itemOptions: ComputedRef<PropertyGroupOption[] | PropertyGroupOptionCart[]>;
+  /**
+   * Options (of variation) for the current item
+   */
+  itemOptions: ComputedRef<PropertyGroupOptionCart[]>;
+  /**
+   * Type of the current item: "product" or "promotion"
+   */
   itemType: ComputedRef<LineItemType | undefined>;
+  /**
+   * Determines if the current item is a product
+   */
   isProduct: ComputedRef<boolean>;
+  /**
+   * Determines if the current item is a promotion
+   */
   isPromotion: ComputedRef<boolean>;
+  /**
+   * Stock information for the current item
+   */
   itemStock: ComputedRef<number | undefined>;
+  /**
+   * Quantity of the current item in the cart
+   */
   itemQuantity: ComputedRef<number | undefined>;
   /**
    * Changes the current item quantity in the cart
@@ -33,6 +63,8 @@ export type UseCartItemReturn = {
   removeItem(): Promise<void>;
   /**
    * Get SEO data for the current item
+   *
+   * @deprecated
    */
   getProductItemSeoUrlData(): Promise<ProductResponse | undefined>;
 };
@@ -53,18 +85,24 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   const itemQuantity = computed(() => cartItem.value.quantity);
   const itemImageThumbnailUrl = computed(() => getMainImageUrl(cartItem.value));
 
-  // TODO: use helper instead
-
-  const itemRegularPrice = computed(() => cartItem.value.price?.unitPrice);
+  const itemRegularPrice = computed(
+    () =>
+      cartItem.value?.price?.listPrice?.price ||
+      cartItem.value?.price?.unitPrice
+  );
 
   const itemSpecialPrice = computed(
-    () => cartItem.value.price?.listPrice && cartItem.value.price.unitPrice
+    () =>
+      cartItem.value?.price?.listPrice?.price &&
+      cartItem.value?.price?.unitPrice
   );
+
+  const itemTotalPrice = computed(() => cartItem.value.price?.totalPrice);
 
   const itemOptions = computed(
     () =>
       (cartItem.value.type === "product" &&
-        (cartItem.value.payload as Product)?.options) ||
+        (cartItem.value.payload as CartProductItem)?.options) ||
       []
   );
 
@@ -77,9 +115,8 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   const isPromotion = computed(() => cartItem.value.type === "promotion");
 
   async function removeItem() {
-    const result = await removeCartItem(cartItem.value.id, apiInstance);
-    // broadcastUpcomingErrors(result);
-    await refreshCart();
+    const newCart = await removeCartItem(cartItem.value.id, apiInstance);
+    await refreshCart(newCart);
   }
 
   async function changeItemQuantity(quantity: number): Promise<void> {
@@ -87,9 +124,11 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
       id: cartItem.value.id,
       quantity: quantity,
     });
-    // broadcastUpcomingErrors(result);
   }
 
+  /**
+   * @deprecated Method is not used anymore and the case should be solved on project level instead due to performance reasons.
+   */
   async function getProductItemSeoUrlData(): Promise<
     ProductResponse | undefined
   > {
@@ -124,6 +163,7 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
     getProductItemSeoUrlData,
     itemRegularPrice,
     itemSpecialPrice,
+    itemTotalPrice,
     itemOptions,
     itemStock,
     itemQuantity,

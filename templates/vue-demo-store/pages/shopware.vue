@@ -4,9 +4,6 @@ export default {
 };
 </script>
 <script setup lang="ts">
-// Remove when composable useProductSearchSuggest is merged
-import { useProductSearchSuggest } from "@shopware-pwa/composables-next";
-
 const images = ref([
   "https://ca.slack-edge.com/T04UKLWGP-UC04NDP6U-cd3e568af126-512",
   "https://ca.slack-edge.com/T04UKLWGP-U019L64GA0N-20cbf24d0fef-512",
@@ -20,9 +17,6 @@ const images = ref([
   "https://ca.slack-edge.com/T04UKLWGP-U02132D5JKS-206e488a36a8-512",
   "https://ca.slack-edge.com/T04UKLWGP-U01HACL0RQ9-8d9dfcecfc64-512",
 ]);
-// Remove when composable useProductSearchSuggest is merged
-const { search, searchTerm, getTotal, getProducts } = useProductSearchSuggest();
-
 useBreadcrumbs([
   {
     name: "Shopware",

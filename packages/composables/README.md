@@ -2,9 +2,9 @@
 
 Welcome to `@shopware-pwa/composables-next` package.
 
-For getting started documentation visit [https://shopware-frontends-docs.vercel.app/](https://shopware-frontends-docs.vercel.app/)
+For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
 
-Documentation specific for this package: [composables](https://shopware-frontends-docs.vercel.app/packages/composables.html)
+Documentation specific for this package: [composables](https://frontends.shopware.com/packages/composables.html)
 
 <!-- AUTO GENERATED CHANGELOG -->
 

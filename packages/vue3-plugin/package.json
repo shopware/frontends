@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app",
+  "homepage": "https://frontends.shopware.com",
   "keywords": [
     "shopware"
   ],
@@ -31,14 +31,14 @@
     "build": "tsc && vite build"
   },
   "devDependencies": {
-    "typescript": "^5.0.2",
-    "vite": "^4.2.1",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.1",
     "vite-dts": "^1.0.4"
   },
   "dependencies": {
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
-    "js-cookie": "^3.0.1"
+    "js-cookie": "^3.0.5"
   },
   "peerDependencies": {
     "vue": "^3.2.47"

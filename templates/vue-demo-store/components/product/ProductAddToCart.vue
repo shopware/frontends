@@ -36,7 +36,7 @@ const addToCartProxy = async () => {
         data-testid="add-to-cart-button"
         @click="addToCartProxy"
       >
-        Add to cart
+        🛍 Add to cart
       </button>
     </div>
   </div>

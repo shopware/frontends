@@ -16,7 +16,7 @@ nav:
 
 # Setup Templates
 
-Shopware Frontends offers two shortcuts to getting started with your custom frontend. These so-called templates offer different levels of "completeness" of a project.
+Shopware Frontends offers shortcuts to getting started with your custom frontend. These so-called templates offer different levels of "completeness" of a project.
 
 :::tip HINT 💡
 You can also integrate Shopware Frontends as an **npm package** into your existing [custom Javascript project](./templates/custom-project).

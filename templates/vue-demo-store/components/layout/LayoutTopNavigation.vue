@@ -15,7 +15,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
 
 <template>
   <!-- eslint-disable vue/no-v-html -->
-  <nav class="hidden lg:flex space-x-4 items-center lg:w-7/12">
+  <nav class="hidden lg:flex space-x-4 items-center">
     <div
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
@@ -24,7 +24,11 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       @mouseover="currentMenuPosition = navigationElement.id"
     >
       <NuxtLink
-        :target="(navigationElement.externalLink || navigationElement.linkNewTab) ? '_blank' : ''"
+        :target="
+          navigationElement.externalLink || navigationElement.linkNewTab
+            ? '_blank'
+            : ''
+        "
         :to="getCategoryUrl(navigationElement)"
         class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
       >
@@ -47,7 +51,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
             currentMenuPosition === navigationElement.id &&
             navigationElement?.children?.length
           "
-          class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/4"
+          class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/6"
           @mouseleave="currentMenuPosition = null"
         >
           <div
@@ -65,7 +69,11 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
               >
                 <NuxtLink
                   :to="getCategoryUrl(childElement)"
-                  :target="(childElement.externalLink || childElement.linkNewTab) ? '_blank' : ''"
+                  :target="
+                    childElement.externalLink || childElement.linkNewTab
+                      ? '_blank'
+                      : ''
+                  "
                   class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
                 >
                   <div

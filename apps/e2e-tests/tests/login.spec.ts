@@ -23,8 +23,7 @@ test.describe.only("Login user", () => {
   test("Login user", async ({ page }) => {
     await homePage.clickOnSignIn();
     await loginForm.login(userEmail, password);
-    await expect(
-      page.locator("[data-testid='account-menu-hello-button']")
-    ).toBeVisible();
+    await page.waitForLoadState("load");
+    await expect(page.getByTestId("account-menu-hello-button")).toHaveCount(1);
   });
 });

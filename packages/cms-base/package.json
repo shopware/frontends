@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/getting-started/content-pages.html",
+  "homepage": "https://frontends.shopware.com/getting-started/content-pages.html",
   "keywords": [
     "Shopware",
     "Vue",
@@ -37,29 +37,29 @@
     "dev": "unbuild --stub",
     "check-types": "vue-tsc --noemit",
     "eslint": "eslint components/**/*.vue* --fix --max-warnings=0",
-    "lint": "npm run eslint && npm run check-types",
+    "lint": "pnpm run eslint && pnpm run check-types",
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.3.2",
+    "@nuxt/kit": "^3.4.2",
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "@vuelidate/core": "^2.0.1",
-    "@vuelidate/validators": "^2.0.1",
-    "entities": "^4.4.0",
+    "@vuelidate/core": "^2.0.2",
+    "@vuelidate/validators": "^2.0.2",
+    "entities": "^4.5.0",
     "html-to-ast": "^0.0.6"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.3.2",
+    "@nuxt/schema": "^3.4.2",
     "@shopware-pwa/types": "workspace:*",
     "@vue/eslint-config-typescript": "^11.0.2",
     "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "^9.10.0",
+    "eslint-plugin-vue": "^9.11.0",
     "tsconfig": "workspace:*",
-    "typescript": "^5.0.2",
-    "unbuild": "^1.1.2",
-    "vue-eslint-parser": "^9.1.0",
-    "vue-tsc": "^1.2.0"
+    "typescript": "^5.0.4",
+    "unbuild": "^1.2.1",
+    "vue-eslint-parser": "^9.1.1",
+    "vue-tsc": "^1.4.4"
   }
 }

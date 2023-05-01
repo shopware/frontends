@@ -11,13 +11,18 @@ import { ClientApiError } from "@shopware-pwa/types";
 
 const { getSalutations } = useSalutations();
 const { getCountries } = useCountries();
-const { register } = useUser();
+const { register, isLoggedIn } = useUser();
 const { pushError } = useNotifications();
 
 const router = useRouter();
 const loading = ref<boolean>();
-const doubleOptInBox = ref()
-const showDoubleOptInBox = ref(false)
+const doubleOptInBox = ref();
+const showDoubleOptInBox = ref(false);
+
+if (process.client && isLoggedIn.value) {
+  // redirect to account page if user is logged in
+  navigateTo({ path: "/account" });
+}
 
 const initialState = {
   salutationId: "",
@@ -31,7 +36,7 @@ const initialState = {
     city: "",
     countryId: "",
   },
-}
+};
 
 const state = reactive(JSON.parse(JSON.stringify(initialState)));
 
@@ -84,10 +89,10 @@ const invokeSubmit = async () => {
       if (response && response.active) router.push("/");
       else if (response && !response.active) {
         Object.assign(state, JSON.parse(JSON.stringify(initialState)));
-        showDoubleOptInBox.value = true
-        await nextTick()
+        showDoubleOptInBox.value = true;
+        await nextTick();
         doubleOptInBox.value.scrollIntoView();
-        $v.value.$reset()
+        $v.value.$reset();
       }
     } catch (error) {
       let message =
@@ -110,7 +115,14 @@ useBreadcrumbs([
 
 <template>
   <div class="max-w-screen-xl mx-auto px-6 sm:px-4">
-    <div v-if="showDoubleOptInBox" class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4" ref="doubleOptInBox">Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.</div>
+    <div
+      v-if="showDoubleOptInBox"
+      ref="doubleOptInBox"
+      class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
+    >
+      Thank you for signing up! You will receive a confirmation email shortly.
+      Click on the link in it to complete the sign-up.
+    </div>
     <form
       class="w-full relative"
       data-testid="registration-form"

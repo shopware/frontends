@@ -1,4 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { faker } from "@faker-js/faker";
 
 export class RegisterForm {
   // Define selectors
@@ -17,26 +18,16 @@ export class RegisterForm {
   // Init selectors using constructor
   constructor(page: Page) {
     this.page = page;
-    this.salutation = page.locator(
-      "[data-testid='registration-salutation-select']"
-    );
-    this.firstName = page.locator(
-      "[data-testid='registration-first-name-input']"
-    );
-    this.lastName = page.locator(
-      "[data-testid='registration-last-name-input']"
-    );
-    this.emailAdrdress = page.locator(
-      "[data-testid='registration-email-input']"
-    );
-    this.password = page.locator("[data-testid='registration-password-input']");
-    this.street = page.locator("[data-testid='registration-street-input']");
-    this.zipcode = page.locator("[data-testid='registration-zipcode-input']");
-    this.city = page.locator("[data-testid='registration-city-input']");
-    this.country = page.locator("[data-testid='registration-country-select']");
-    this.submitButton = page.locator(
-      "[data-testid='registration-submit-button']"
-    );
+    this.salutation = page.getByTestId("registration-salutation-select");
+    this.firstName = page.getByTestId("registration-first-name-input");
+    this.lastName = page.getByTestId("registration-last-name-input");
+    this.emailAdrdress = page.getByTestId("registration-email-input");
+    this.password = page.getByTestId("registration-password-input");
+    this.street = page.getByTestId("registration-street-input");
+    this.zipcode = page.getByTestId("registration-zipcode-input");
+    this.city = page.getByTestId("registration-city-input");
+    this.country = page.getByTestId("registration-country-select");
+    this.submitButton = page.getByTestId("registration-submit-button");
   }
 
   // Define login page methods
@@ -62,6 +53,28 @@ export class RegisterForm {
   }
 
   async submitRegistraionForm() {
+    await Promise.all([
+      this.page.waitForLoadState(),
+      await this.submitButton.dispatchEvent("click"),
+    ]);
+    await this.page.waitForSelector(
+      "[data-testid='product-box-wishlist-icon-not-in']"
+    );
+  }
+
+  async createUser() {
+    await this.salutation.selectOption({ label: "Mr." });
+    await this.firstName.type("e2e " + faker.name.firstName());
+    await this.lastName.type("e2e " + faker.name.lastName());
+    await this.emailAdrdress.type(faker.internet.exampleEmail());
+    await this.password.type(faker.internet.password());
+    await this.street.type(faker.address.street());
+    await this.zipcode.type(faker.address.zipCode());
+    await this.city.type(faker.address.city());
+    await this.country.selectOption({ label: "Germany" });
     await this.submitButton.click();
+    await this.page.waitForSelector(
+      "[data-testid='product-box-wishlist-icon-not-in']"
+    );
   }
 }

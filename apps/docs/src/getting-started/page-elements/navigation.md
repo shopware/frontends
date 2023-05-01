@@ -53,9 +53,13 @@ await loadNavigationElements({ depth: 2 });
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
     >
-      <RouterLink 
-        :to="getCategoryUrl(navigationElement)" 
-        :target="(navigationElement.externalLink || navigationElement.linkNewTab) ? '_blank' : ''"
+      <RouterLink
+        :to="getCategoryUrl(navigationElement)"
+        :target="
+          navigationElement.externalLink || navigationElement.linkNewTab
+            ? '_blank'
+            : ''
+        "
       >
         {{ navigationElement.translated.name }}
       </RouterLink>
@@ -68,4 +72,4 @@ There is an additional attribute `target` used, in order to open a link in anoth
 
 ## Next steps
 
-<PageRef page="routing" title="Work with routing" sub="Resolve paths and fetch content dynamically" />
+<PageRef page="../routing" title="Work with routing" sub="Resolve paths and fetch content dynamically" />

@@ -10,14 +10,13 @@ import { PropertyGroup } from "../property/PropertyGroup";
 import { DeliveryTime } from "../../checkout/delivery/DeliveryTime";
 import { ProductManufacturer } from "./ProductManufacturer";
 import { ProductTranslation } from "./ProductTranslation";
-import { ProductConfiguratorSetting } from "./ProductConfiguratorSetting";
-import { PropertyGroupOption } from "../property/PropertyGroupOption";
 import { Category } from "../category/Category";
 import { Tag } from "../../system/tag/Tag";
 import { CustomFields } from "../../common/CustomField";
 import { SeoUrl } from "../navigation/Navigation";
 import { CmsPage } from "../cms/CmsPage";
 import { PropertyGroupOptionCart } from "../property/PropertyGroupOptionCart";
+import { PropertyGroupOption } from "../property/PropertyGroupOption";
 
 export type CrossSelling = {
   apiAlias: "cross_selling_element";
@@ -126,7 +125,7 @@ export type Product = {
   categories: Category[];
   tags: Tag[];
   properties: PropertyGroupOption[] | null;
-  options: PropertyGroupOption[] | PropertyGroupOptionCart[];
+  options: PropertyGroupOption[];
   categoriesRo: Category[] | null;
   coverId: string | null;
   customFields: CustomFields;
@@ -148,6 +147,10 @@ export type Product = {
   metaDescription: string | null;
   crossSellings: CrossSelling[];
   cmsPage: null | CmsPage;
-  apiAlias: "product";
   seoCategory: Category;
+  apiAlias: "product";
+};
+
+export type CartProductItem = Product & {
+  options: PropertyGroupOptionCart[];
 };
