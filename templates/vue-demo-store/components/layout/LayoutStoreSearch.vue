@@ -97,7 +97,7 @@ watch(enter, (value) => {
         :key="product.id"
         :to="getProductUrl(product)"
         data-testid="layout-search-suggest-link"
-        @click="[(active = false), (isSideMenuOpened = false)]"
+        @click="[(active = false), $emit('link-clicked')]"
       >
         <ProductSuggestSearch :product="product" />
       </NuxtLink>
@@ -115,7 +115,7 @@ watch(enter, (value) => {
           <NuxtLink
             v-if="getTotal > 0"
             :to="`/search?query=${typingQuery}`"
-            @click="[(active = false), (isSideMenuOpened = false)]"
+            @click="[(active = false), $emit('link-clicked')]"
           >
             See <span v-if="getTotal !== 1">all</span> {{ getTotal }}
             <span v-if="getTotal !== 1">results</span>
