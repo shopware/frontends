@@ -23,7 +23,7 @@ export default defineNuxtConfig({
    * Issue: https://github.com/shopware/frontends/issues/88
    */
   typescript: {
-    // typeCheck: true,
+    typeCheck: true,
     strict: true,
   },
   modules: [
