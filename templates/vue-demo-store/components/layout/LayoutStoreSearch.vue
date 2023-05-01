@@ -9,6 +9,7 @@ withDefaults(
   }>(),
   { displayTotal: 10 }
 );
+
 defineEmits<{
   (e: "link-clicked"): void;
 }>();
