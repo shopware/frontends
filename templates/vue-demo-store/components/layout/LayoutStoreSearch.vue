@@ -9,6 +9,9 @@ withDefaults(
   }>(),
   { displayTotal: 10 }
 );
+defineEmits<{
+  (e: "link-clicked"): void;
+}>();
 
 const { searchTerm, search, getProducts, getTotal, loading } =
   useProductSearchSuggest();
