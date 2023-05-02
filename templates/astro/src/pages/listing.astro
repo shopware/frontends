@@ -1,19 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Session from '../components/Session.vue';
+import Listing from '../components/Listing.vue';
 ---
 
 <Layout title="Shopware Frontends & Astro">
 	<main>
 		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions"><img class="frontends-logo" src="/shopware-frontends-logo.png" width="100%"> <code>empowered</code>
-			<Session/>
-		</p>
+		<p class="instructions"><img class="frontends-logo" src="/shopware-frontends-logo.png" width="100%"> <code>empowered</code></p>
+        <Listing/>
 		<p class="instructions">
-			To get started, open the file <code>src/components/Session.vue</code> in your project.<br />
+			To get started, open the file <code>src/components/Listing.vue</code> in your project.<br />
 		</p>
 		<h2>Other pages</h2>
-		<a href="listing">Listing page</a>
+		<a href="/">Home</a>
 	</main>
 </Layout>
 
