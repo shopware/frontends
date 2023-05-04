@@ -21,7 +21,6 @@ export type Country = {
   customFields: CustomFields | null;
   name: string | null;
   iso: string | null;
-  translated: any;
   updatedAt: string | null;
   versionId: string | null;
   id: string;
@@ -31,7 +30,6 @@ export type Country = {
   iso3: string | null;
   displayStateInRegistration: boolean;
   forceStateInRegistration: boolean;
-  states: CountryState[] | null;
   translations: CountryTranslation[] | null;
   orderAddresses: OrderAddress[] | null;
   customerAddress: CustomerAddress[] | null;
@@ -41,7 +39,7 @@ export type Country = {
   _uniqueIdentifier: string;
   translated: {
     name: string;
-    customFields: unknown;
+    customFields: CustomFields;
     addressFormat: string[][];
   };
   companyTaxFree: boolean;
