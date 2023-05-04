@@ -236,9 +236,12 @@ export function useCartFunction(): UseCartReturn {
   );
 
   const isVirtualCart = computed(() => {
-    return cartItems.value
-      .filter((element) => element.type !== "promotion")
-      .every((item) => item.states.includes("is-download"));
+    return (
+      cartItems.value.length > 0 &&
+      cartItems.value
+        .filter((element) => element.type !== "promotion")
+        .every((item) => item.states.includes("is-download"))
+    );
   });
 
   return {
