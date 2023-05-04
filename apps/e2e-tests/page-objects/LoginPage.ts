@@ -20,8 +20,7 @@ export class LoginForm {
     await this.usernameInput.isVisible();
     await this.usernameInput.type(username);
     await this.passwordInput.type(password);
-    await this.page.waitForLoadState("networkidle");
+    await this.page.waitForLoadState();
     await this.submitButton.click();
-    await this.page.waitForLoadState("load");
   }
 }

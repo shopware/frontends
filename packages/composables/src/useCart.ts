@@ -49,8 +49,9 @@ export type UseCartReturn = {
   count: ComputedRef<number>;
   /**
    * Refreshes the cart object and related data
+   * If @param newCart is provided, it will be used as a new cart object
    */
-  refreshCart(): Promise<Cart>;
+  refreshCart(newCart?: Cart): Promise<Cart>;
   /**
    * Removes the provided LineItem from the cart
    */
@@ -95,7 +96,12 @@ export function useCartFunction(): UseCartReturn {
 
   const _storeCart = _useContext<Cart | undefined>("swCart");
 
-  async function refreshCart(): Promise<Cart> {
+  async function refreshCart(newCart?: Cart): Promise<Cart> {
+    if (newCart) {
+      _storeCart.value = newCart;
+      return newCart;
+    }
+
     const result = await getCart(apiInstance);
     _storeCart.value = result;
     return result;

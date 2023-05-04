@@ -16,7 +16,8 @@ export class WishlistPage {
   }
 
   async openWishlist() {
-    await this.page.waitForLoadState(), await this.wishlistButton.click();
+    await this.page.waitForLoadState();
+    await this.wishlistButton.click();
   }
 
   async removeProductFromWishlist() {

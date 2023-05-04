@@ -1,43 +1,60 @@
 <script setup lang="ts">
-export type SharedModal = {
-  modalContent: string;
-  modalProps: object | null;
-  open: (component: string, props?: object | null) => void;
-  close: () => void;
-};
+const props = defineProps<{
+  controller: ReturnType<typeof useModal>;
+}>();
 
-const { close, modalContent, modalProps } = inject<SharedModal>(
-  "modal"
-) as SharedModal;
+const { controller } = toRefs(props);
+const { isOpen, close } = controller.value;
+
+const { escape } = useMagicKeys();
+
+watch(escape, () => {
+  isOpen.value && close();
+});
+
+const modalContentElement = ref();
+onClickOutside(modalContentElement, () => close());
 </script>
 
 <template>
-  <div
-    v-if="modalContent.length"
-    class="fixed z-10 inset-0 overflow-y-auto"
-    aria-labelledby="modal-title"
-    role="dialog"
-    aria-modal="true"
-  >
-    <div
-      class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+  <Teleport to="body">
+    <Transition
+      enter-active-class="transition ease-out duration-200 transform"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition ease-in duration-200 transform"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
     >
       <div
-        class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-        aria-hidden="true"
-        @click="close"
-      />
-      <span
-        class="hidden sm:inline-block sm:align-middle sm:h-screen"
-        aria-hidden="true"
+        v-show="isOpen"
+        class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50"
       >
-        &#8203;
-      </span>
-      <div
-        class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all duration-500 sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-      >
-        <component :is="modalContent" v-bind="modalProps" @close="close" />
+        <div
+          class="flex items-center justify-center min-h-screen lg:-mt-3% text-center"
+        >
+          <Transition
+            enter-active-class="transition ease-out duration-500 transform "
+            enter-from-class="opacity-0 translate-y-10 scale-95"
+            enter-to-class="opacity-100 translate-y-0 scale-100"
+            leave-active-class="ease-in duration-200"
+            leave-from-class="opacity-100 translate-y-0 scale-100"
+            leave-to-class="opacity-0 translate-y-10 translate-y-0 scale-95"
+          >
+            <div
+              v-if="isOpen"
+              id="modal-content"
+              ref="modalContentElement"
+              class="bg-white rounded-lg text-left overflow-hidden shadow-xl p-8 lg:max-w-1/2"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-headline"
+            >
+              <slot></slot>
+            </div>
+          </Transition>
+        </div>
       </div>
-    </div>
-  </div>
+    </Transition>
+  </Teleport>
 </template>

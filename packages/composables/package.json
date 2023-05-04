@@ -40,7 +40,7 @@
   "dependencies": {
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "@vueuse/core": "^9.13.0",
+    "@vueuse/core": "^10.1.0",
     "scule": "^1.0.0"
   },
   "devDependencies": {
@@ -48,7 +48,7 @@
     "@vitest/coverage-c8": "^0.30.1",
     "@vue/test-utils": "^2.3.2",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^9.3.2",
+    "happy-dom": "^9.9.2",
     "tsconfig": "workspace:*",
     "typescript": "^5.0.4",
     "unbuild": "^1.2.1",

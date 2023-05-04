@@ -15,12 +15,6 @@ useHead({
   },
 });
 
-const { refreshSessionContext } = useSessionContext();
-onBeforeMount(async () => {
-  await refreshSessionContext();
-  getWishlistProducts();
-});
-
 const { apiInstance } = useShopwareContext();
 const { data: sessionContextData } = await useAsyncData(
   "sessionContext",
@@ -40,27 +34,6 @@ onMounted(() => {
   refreshCart();
   getWishlistProducts();
 });
-
-const isSidebarOpen = ref(false);
-provide("isSidebarOpen", isSidebarOpen);
-
-const modalContent = ref<string>("");
-const modalProps = ref<object | null | undefined>({});
-const modalHandler = {
-  open: (component: string, props?: object | null) => {
-    modalContent.value = component;
-    modalProps.value = props;
-  },
-  close: () => {
-    modalContent.value = "";
-    modalProps.value = {};
-  },
-};
-
-provide("modal", { modalContent, modalProps, ...modalHandler });
-
-const isSideMenuOpened = ref(false);
-provide("isSideMenuOpened", isSideMenuOpened);
 </script>
 
 <template>

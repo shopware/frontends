@@ -10,6 +10,8 @@ export class HomePage extends AbstractPage {
   readonly searchBar: Locator;
   readonly addToWishlist: Locator;
   readonly wishlistButton: Locator;
+  readonly accountMenuHelloButton: Locator;
+  readonly myAccountLink: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -21,6 +23,8 @@ export class HomePage extends AbstractPage {
     this.searchBar = page.getByTestId("layout-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
     this.addToWishlist = page.getByTestId("product-box-wishlist-icon-not-in");
+    this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
+    this.myAccountLink = page.getByTestId("header-my-account-link");
   }
 
   async visitMainPage() {
@@ -28,13 +32,13 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await this.page.waitForLoadState("load");
-    await this.signInButton.isEnabled();
-    await this.signInButton.click();
+    await expect(this.page.getByTestId("header-sign-in-link")).toBeVisible();
+    await this.signInButton.waitFor();
+    await this.signInButton.dispatchEvent("click");
   }
 
   async openCartPage() {
-    await this.page.waitForLoadState("load");
+    await this.linkToCartPage.waitFor();
     await this.linkToCartPage.click();
     await this.page.waitForSelector("[data-testid='product-quantity']");
     await this.page.waitForLoadState("load");
@@ -47,9 +51,10 @@ export class HomePage extends AbstractPage {
   }
 
   async openRegistrationPage() {
-    await this.page.waitForLoadState("load");
-    await this.linkToRegistrationPage.isVisible();
-    await this.linkToRegistrationPage.click();
+    await Promise.all([
+      await this.page.waitForLoadState("load"),
+      await this.linkToRegistrationPage.click(),
+    ]);
   }
 
   async typeSearchPhrase(phrase: string) {
@@ -61,7 +66,14 @@ export class HomePage extends AbstractPage {
   async addProductToWishlist() {
     await Promise.all([
       this.page.waitForLoadState("load"),
-      await this.addToWishlist.nth(13).click(),
+      await this.addToWishlist.nth(13).dispatchEvent("click"),
     ]);
+  }
+
+  async openMyAccount() {
+    await this.accountMenuHelloButton.waitFor();
+    await this.accountMenuHelloButton.dispatchEvent("click");
+    await this.myAccountLink.waitFor();
+    await this.myAccountLink.dispatchEvent("click");
   }
 }
