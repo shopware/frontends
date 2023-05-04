@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "typescript": "^5.0.4",
-    "vite": "^4.3.3",
+    "vite": "^4.3.4",
     "vite-dts": "^1.0.4"
   },
   "dependencies": {
