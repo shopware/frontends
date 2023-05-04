@@ -42,13 +42,13 @@ const slidesToShow = computed(() =>
     ? childrenRaw.value.length
     : props.slidesToShow
 );
-const children = computed(() => {
+const children = computed<string[]>(() => {
   if (childrenRaw.value.length === 0) return [];
   return [
     ...childrenRaw.value.slice(-slidesToShow.value),
     ...childrenRaw.value,
     ...childrenRaw.value.slice(0, slidesToShow.value),
-  ];
+  ] as string[];
 });
 const emit = defineEmits<{
   (e: "changeSlide", index: number): void;

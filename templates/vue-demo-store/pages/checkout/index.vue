@@ -181,7 +181,7 @@ const termsSelected = computed(() => {
 const placeOrderTriggered = ref(false);
 
 onMounted(async () => {
-  refreshSessionContext();
+  await refreshSessionContext();
 
   isLoading["shippingAddress"] = true;
   isLoading["shippingMethods"] = true;
@@ -603,7 +603,7 @@ const addAddressModalController = useModal();
               v-for="singleShippingMethod in shippingMethods"
               v-else
               :key="singleShippingMethod.id"
-              class="flex items-center"
+              class="flex items-center w-full"
             >
               <input
                 :id="singleShippingMethod.id"
@@ -617,9 +617,17 @@ const addAddressModalController = useModal();
               <label
                 :for="singleShippingMethod.id"
                 :class="{ 'animate-pulse': isLoading[singleShippingMethod.id] }"
-                class="ml-2 block text-sm font-medium text-gray-700"
+                class="ml-2 block text-sm font-medium text-gray-700 w-full"
               >
-                {{ singleShippingMethod.translated?.name }}
+              <div class="flex justify-between">
+                  <div>
+                    {{ singleShippingMethod.translated?.name }}
+                    <span v-if="singleShippingMethod.translated?.description" class="italic text-sm text-gray-500 block"> {{ singleShippingMethod.translated.description }}</span>
+                  </div>
+                  <div v-if="singleShippingMethod.media?.url">
+                    <img :src="singleShippingMethod.media.url" alt="payment-image" />
+                  </div>
+              </div>
               </label>
             </div>
           </fieldset>
