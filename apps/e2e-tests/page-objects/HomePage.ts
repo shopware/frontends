@@ -34,7 +34,7 @@ export class HomePage extends AbstractPage {
   async clickOnSignIn() {
     await expect(this.page.getByTestId("header-sign-in-link")).toBeVisible();
     await this.signInButton.waitFor();
-    await this.signInButton.dispatchEvent("click");
+    await this.signInButton.click({ delay: 500 });
   }
 
   async openCartPage() {
@@ -51,10 +51,7 @@ export class HomePage extends AbstractPage {
   }
 
   async openRegistrationPage() {
-    await Promise.all([
-      await this.page.waitForLoadState("load"),
-      await this.linkToRegistrationPage.click(),
-    ]);
+    await this.linkToRegistrationPage.click({ delay: 500 });
   }
 
   async typeSearchPhrase(phrase: string) {

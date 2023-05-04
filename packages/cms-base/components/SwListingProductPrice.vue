@@ -16,27 +16,31 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
   <div :id="product.id">
     <SharedPrice
       v-if="isListPrice"
-      class="text-xs text-gray-900 basis-2/6 justify-end line-through"
+      class="text-l text-gray-900 basis-2/6 justify-end line-through"
       :value="price?.listPrice?.price"
     />
     <SharedPrice
-      class="text-sm text-gray-900 basis-2/6 justify-end"
+      class="text-xl text-gray-900 basis-2/6 justify-end"
       v-if="displayFromVariants"
       :value="displayFromVariants"
     >
       <template #beforePrice
-        ><span v-if="displayFromVariants">variants from</span></template
+        ><span v-if="displayFromVariants" class="text-sm">from</span></template
       >
     </SharedPrice>
     <SharedPrice
-      class="text-sm text-gray-900 basis-2/6 justify-end"
+      class="text-gray-900 basis-2/6"
       :class="{
-        'text-red': isListPrice,
+        'text-red-600 font-bold': isListPrice,
+        'justify-start text-xl': regulationPrice || !displayFromVariants,
+        'justify-end text-l': !regulationPrice,
       }"
       :value="unitPrice"
     >
       <template #beforePrice
-        ><span v-if="displayFrom || displayFromVariants">to</span></template
+        ><span v-if="displayFrom || displayFromVariants" class="text-sm"
+          >to</span
+        ></template
       >
     </SharedPrice>
     <div class="text-xs flex text-gray-500" v-if="regulationPrice">
