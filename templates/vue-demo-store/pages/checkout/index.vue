@@ -619,15 +619,23 @@ const addAddressModalController = useModal();
                 :class="{ 'animate-pulse': isLoading[singleShippingMethod.id] }"
                 class="ml-2 block text-sm font-medium text-gray-700 w-full"
               >
-              <div class="flex justify-between">
+                <div class="flex justify-between">
                   <div>
                     {{ singleShippingMethod.translated?.name }}
-                    <span v-if="singleShippingMethod.translated?.description" class="italic text-sm text-gray-500 block"> {{ singleShippingMethod.translated.description }}</span>
+                    <span
+                      v-if="singleShippingMethod.translated?.description"
+                      class="italic text-sm text-gray-500 block"
+                    >
+                      {{ singleShippingMethod.translated.description }}</span
+                    >
                   </div>
                   <div v-if="singleShippingMethod.media?.url">
-                    <img :src="singleShippingMethod.media.url" alt="payment-image" />
+                    <img
+                      :src="singleShippingMethod.media.url"
+                      alt="payment-image"
+                    />
                   </div>
-              </div>
+                </div>
               </label>
             </div>
           </fieldset>

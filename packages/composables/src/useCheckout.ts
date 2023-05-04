@@ -72,11 +72,10 @@ export type UseCheckoutReturn = {
   setPaymentMethod(paymentMethod: Partial<PaymentMethod>): Promise<void>;
 };
 
-
 const shippingMethodsAssociations: ShopwareSearchParams = {
   associations: {
-    prices: {}
-  }
+    prices: {},
+  },
 };
 
 /**
@@ -104,11 +103,17 @@ export function useCheckout(): UseCheckoutReturn {
   const shippingMethods = computed(() => storeShippingMethods.value || []);
   const paymentMethods = computed(() => storePaymentMethods.value || []);
 
-  async function getShippingMethods({ forceReload } = { forceReload: false }, associations: ShopwareSearchParams = {}) {
+  async function getShippingMethods(
+    { forceReload } = { forceReload: false },
+    associations: ShopwareSearchParams = {}
+  ) {
     if (shippingMethods.value.length && !forceReload) return shippingMethods;
-    const mergedAssociations: ShopwareSearchParams = deepMerge(shippingMethodsAssociations, associations)
+    const mergedAssociations: ShopwareSearchParams = deepMerge(
+      shippingMethodsAssociations,
+      associations
+    );
     const response = await getAvailableShippingMethods(apiInstance, {
-      ...mergedAssociations
+      ...mergedAssociations,
     });
     storeShippingMethods.value = response?.elements || [];
     return shippingMethods;
