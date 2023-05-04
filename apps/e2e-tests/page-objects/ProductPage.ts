@@ -22,7 +22,7 @@ export class ProductPage {
   async addToCart() {
     await expect(this.page.getByTestId("add-to-cart-button")).toBeVisible();
     await this.addToCartButton.waitFor();
-    await this.addToCartButton.click();
+    await this.addToCartButton.click({ delay: 500 });
   }
 
   async addVariantToCart() {

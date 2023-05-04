@@ -44,7 +44,7 @@ const sidebarController = useModal();
               to="/wishlist"
             >
               <div
-                class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary"
+                class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary hover:animate-count-infinite hover:animate-heart-beat"
               />
               <span
                 v-if="wishlistCount > 0"
@@ -72,7 +72,9 @@ const sidebarController = useModal();
               >
                 {{ count || "" }}
               </span>
-              <span class="sr-only">{{ $t('cart.itemsInCart') }}, {{$t('cart.viewCart')}}</span>
+              <span class="sr-only"
+                >{{ $t("cart.itemsInCart") }}, {{ $t("cart.viewCart") }}</span
+              >
             </button>
           </div>
           <CheckoutSideCart :controller="sidebarController" />

@@ -55,7 +55,7 @@ export class RegisterForm {
   async submitRegistraionForm() {
     await Promise.all([
       this.page.waitForLoadState(),
-      await this.submitButton.dispatchEvent("click"),
+      await this.submitButton.click({ delay: 500 }),
     ]);
     await this.page.waitForSelector(
       "[data-testid='product-box-wishlist-icon-not-in']"
