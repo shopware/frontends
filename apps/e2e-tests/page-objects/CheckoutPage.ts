@@ -40,8 +40,10 @@ export class CheckoutPage {
   }
 
   async goToCheckout() {
-    await this.page.waitForSelector("[data-testid='cart-product-image']");
-    await this.goToCheckoutButton.click();
+    await Promise.all([
+      await this.page.waitForSelector("[data-testid='cart-product-image']"),
+      await this.goToCheckoutButton.click(),
+    ]);
   }
 
   async markTerms() {

@@ -102,6 +102,13 @@ export function useSessionContext(
   const { apiInstance } = useShopwareContext();
   const { init } = usePrice();
 
+  if (newContext) {
+    init({
+      currencyCode: newContext.currency?.isoCode,
+      localeCode: newContext.salesChannel?.language?.locale?.code,
+    });
+  }
+
   const _sessionContext = _useContext("swSessionContext", {
     replace: newContext,
   });

@@ -114,7 +114,7 @@ export function useCartFunction(): UseCartReturn {
     const addToCartResult = await addProductToCart(
       params.id,
       params.quantity,
-      apiInstance,
+      apiInstance
     );
     _storeCart.value = addToCartResult;
     return addToCartResult;
@@ -132,7 +132,7 @@ export function useCartFunction(): UseCartReturn {
     const result = await changeCartItemQuantity(
       params.id,
       params.quantity,
-      apiInstance,
+      apiInstance
     );
     _storeCart.value = result;
   }
@@ -185,14 +185,14 @@ export function useCartFunction(): UseCartReturn {
         // associations: (getDefaults() as any).getProductItemsSeoUrlsData
         //   .associations,
       },
-      apiInstance,
+      apiInstance
     );
     return result?.elements || [];
   }
 
   const appliedPromotionCodes = computed(() => {
     return cartItems.value.filter(
-      (cartItem: LineItem) => cartItem.type === "promotion",
+      (cartItem: LineItem) => cartItem.type === "promotion"
     );
   });
 
@@ -208,7 +208,7 @@ export function useCartFunction(): UseCartReturn {
         lineItem.type === "product"
           ? lineItem.quantity + accumulator
           : accumulator,
-      0,
+      0
     );
   });
 
@@ -232,13 +232,16 @@ export function useCartFunction(): UseCartReturn {
   });
 
   const cartErrors: ComputedRef<EntityError[]> = computed(
-    () => (cart.value?.errors && Object.values(cart.value.errors)) || [],
+    () => (cart.value?.errors && Object.values(cart.value.errors)) || []
   );
 
   const isVirtualCart = computed(() => {
-    return cartItems.value
-      .filter((element) => element.type !== "promotion")
-      .every((item) => item.states.includes("is-download"));
+    return (
+      cartItems.value.length > 0 &&
+      cartItems.value
+        .filter((element) => element.type !== "promotion")
+        .every((item) => item.states.includes("is-download"))
+    );
   });
 
   return {
