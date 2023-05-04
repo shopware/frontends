@@ -13,10 +13,10 @@ const { items, getWishlistProducts } = useWishlist();
 const { apiInstance } = useShopwareContext();
 const products = ref<Product[]>([]);
 const isLoading = ref(false);
-const {t} = useI18n()
+const { t } = useI18n();
 useBreadcrumbs([
   {
-    name: t('breadcrumbs.wishlist'),
+    name: t("breadcrumbs.wishlist"),
     path: "/wishlist",
   },
 ]);
@@ -84,7 +84,9 @@ async function clearWishlist() {
         />
       </div>
       <div v-else-if="products.length">
-        <h1 class="my-3 text-3xl font-extrabold">{{ $t('wishlist.header') }}</h1>
+        <h1 class="my-3 text-3xl font-extrabold">
+          {{ $t("wishlist.header") }}
+        </h1>
         <button
           class="mb-4 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           data-testid="clear-wishlist-button"
@@ -109,14 +111,16 @@ async function clearWishlist() {
         data-testid="wishlist-empty"
       >
         <div class="w-48 h-48 i-carbon-favorite" />
-        <h1 class="my-3 text-3xl font-extrabold">{{ $t('wishlist.emptyLabel') }}</h1>
-        <p class="my-4">{{$t('wishlist.emptyText')}}</p>
+        <h1 class="my-3 text-3xl font-extrabold">
+          {{ $t("wishlist.emptyLabel") }}
+        </h1>
+        <p class="my-4">{{ $t("wishlist.emptyText") }}</p>
         <NuxtLink
           to="/"
           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
           date-testid="wishlist-empty-continue-link"
         >
-          {{$t('wishlist.continueShopping')}}
+          {{ $t("wishlist.continueShopping") }}
         </NuxtLink>
       </div>
     </div>

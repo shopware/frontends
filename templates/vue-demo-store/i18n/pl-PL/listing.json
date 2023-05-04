@@ -1,7 +1,7 @@
 {
-"listing": {
-"resetFilters": "Resetuj filtry",
-"min": "Min",
-"max": "Max"
-}
+  "listing": {
+    "resetFilters": "Resetuj filtry",
+    "min": "Min",
+    "max": "Max"
+  }
 }
