@@ -35,11 +35,15 @@ jobs:
         run: pnpm run test:e2e
         env:
           BASE_E2E_URL: ${{ github.event.deployment_status.target_url }}
+          
+      - name: try zip the test result folder
+        if: failure()
+        run: zip -r playwright-report.zip apps/e2e-tests/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         if: ${{ failure() }}
         with:
-          name: playwright-report
+          name: playwright-report.zip
           path: apps/e2e-tests/
           retention-days: 7
