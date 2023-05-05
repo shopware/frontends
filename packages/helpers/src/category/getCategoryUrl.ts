@@ -45,3 +45,27 @@ export function getCategoryUrl(category: LinkedCategory): string {
         : `/${getEntityPrefix(category)}/${category.id}`;
   }
 }
+
+// TODO: move to separate file and add tests
+export function getCategoryRoute(category: LinkedCategory) {
+  return {
+    path: getCategoryUrl(category),
+    state: {
+      routeName: "frontend.navigation.page",
+      foreignKey: category?.id,
+    },
+  };
+}
+
+// TODO: move to separate file and add tests
+export function getNavigationRoute(navigationElement: LinkedCategory) {
+  if (navigationElement.linkType == "product") {
+    return {
+      path: getCategoryUrl(navigationElement),
+      // TODO: figure out navigation links pointed directly into product page
+      // state: {},
+    };
+  } else {
+    return getCategoryRoute(navigationElement);
+  }
+}

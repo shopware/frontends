@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getProductRoute } from "@shopware-pwa/helpers-next";
 import { ComputedRef } from "vue";
 
 const props = withDefaults(
@@ -33,10 +34,12 @@ const onHandleChange = async () => {
   const variantFound = await findVariantForSelectedOptions(
     unref(selectedOptions)
   );
-  const selectedOptionsVariantPath = variantFound?.seoUrls?.[0]?.seoPathInfo;
+  // const selectedOptionsVariantPath = variantFound?.seoUrls?.[0]?.seoPathInfo;
+  const selectedOptionsVariantPath = getProductRoute(variantFound);
   if (props.allowRedirect && selectedOptionsVariantPath) {
     try {
-      router.push("/" + selectedOptionsVariantPath);
+      console.error("pushing route", selectedOptionsVariantPath);
+      router.push(selectedOptionsVariantPath);
     } catch (error) {
       console.error("incorrect URL", selectedOptionsVariantPath);
     }

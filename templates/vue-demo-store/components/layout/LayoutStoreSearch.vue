@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getProductUrl } from "@shopware-pwa/helpers-next";
+import { getProductRoute } from "@shopware-pwa/helpers-next";
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
 
@@ -95,7 +95,7 @@ watch(enter, (value) => {
       <NuxtLink
         v-for="product in getProducts.slice(0, displayTotal)"
         :key="product.id"
-        :to="getProductUrl(product)"
+        :to="getProductRoute(product)"
         data-testid="layout-search-suggest-link"
         @click="[(active = false), (isSideMenuOpened = false)]"
       >
