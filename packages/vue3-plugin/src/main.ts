@@ -55,6 +55,7 @@ export default {
     const shopwareContext = createShopwareContext(app, {
       apiInstance: instance,
       enableDevtools: !!options.enableDevtools,
+      devStorefrontUrl: null,
     });
 
     app.provide("shopware", shopwareContext);

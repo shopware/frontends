@@ -14,6 +14,7 @@ export function createShopwareContext(
     // initialStore?: any;
     // shopwareDefaults: ApiDefaults;
     apiInstance: ShopwareApiInstance;
+    devStorefrontUrl: string | null;
     enableDevtools?: boolean;
   }
 ) {
@@ -44,6 +45,7 @@ export function createShopwareContext(
     _a: app,
     _e: scope,
     apiInstance: options.apiInstance,
+    devStorefrontUrl: options.devStorefrontUrl,
     state,
   });
 

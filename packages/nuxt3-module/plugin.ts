@@ -75,6 +75,7 @@ const ShopwarePlugin = {
       apiInstance: instance,
       enableDevtools: true,
       shopwareDefaults: options.apiDefaults,
+      devStorefrontUrl: runtimeConfig.public.shopware?.devStorefrontUrl || null,
     });
     app.provide("shopware", shopwareContext);
     const sessionContextData = ref();
