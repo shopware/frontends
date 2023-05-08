@@ -28,7 +28,7 @@ If you are developing a local frontend app using a cloud instance, you may encou
 Windows "C:\Windows\System32\drivers\etc".
 Linux/macOS "/etc/hosts"
 
-### preview instance
+### Preview instance
 
 Another problem that you may encounter is with the preview instance. For example, the backend may expect http://frontends.shopware.com, but your preview instance may be http://1.0.4.frontends.shopware.com. To address this problem, you can set the `devStorefrontUrl` parameter as shown below:
 
@@ -41,4 +41,10 @@ runtimeConfig: {
       },
     },
   }
+```
+
+or, by env variable
+
+```
+NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL: https://demo-frontends.shopware.store
 ```
