@@ -6,6 +6,7 @@ import {
 } from "@shopware-pwa/composables-next";
 import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
+import SwSharedPrice from "../../../SwSharedPrice.vue";
 
 const props = defineProps<{
   content: CmsElementBuyBox;

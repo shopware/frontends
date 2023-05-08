@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useProductPrice } from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
-
+import SwSharedPrice from "./SwSharedPrice.vue";
 const props = defineProps<{
   product: Product;
 }>();

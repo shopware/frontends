@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Product } from "@shopware-pwa/types";
+import SwSharedPrice from "./SwSharedPrice.vue";
 
 const props = withDefaults(
   defineProps<{
