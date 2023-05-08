@@ -14,12 +14,12 @@ const { getFormattedPrice } = usePrice();
 <template>
   <div>
     <div v-if="!tierPrices.length">
-      <SharedPrice
+      <SwSharedPrice
         v-if="isListPrice"
         class="text-1xl text-gray-900 basis-2/6 justify-end line-through"
         :value="price?.listPrice?.price"
       />
-      <SharedPrice
+      <SwSharedPrice
         v-if="unitPrice"
         class="text-3xl text-gray-900 basis-2/6 justify-end"
         :class="{
