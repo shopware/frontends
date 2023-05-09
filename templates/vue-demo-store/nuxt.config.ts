@@ -38,6 +38,18 @@ export default defineNuxtConfig({
     dirs: ["~/components"],
     global: true,
   },
+  // vite: {
+  //   resolve: {
+  //     alias: [
+  //       {
+  //         find: /^@shopware-pwa\/cms-base\/components\/(.*)/,
+  //         replacement: resolve(
+  //           "./node_modules/@shopware-pwa/cms-base/components/public/cms/$1",
+  //         ),
+  //       },
+  //     ],
+  //   },
+  // },
   vueuse: {
     ssrHandlers: true,
   },

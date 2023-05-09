@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "skipLibCheck": true,
+        "lib": [
+            "dom",
+            "es2019"
+        ],
+        "declaration": true,
+        "emitDeclarationOnly": false,
+        "outDir": "dist/components",
+        "types": [
+            "vite/client",
+            "./auto-imports.d.ts",
+            "./components.d.ts"
+        ],
+    },
+    "include": [
+        "./components/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules/"
+    ]
+}

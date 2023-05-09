@@ -23,7 +23,8 @@
     "dist"
   ],
   "exports": {
-    "import": "./dist/index.mjs"
+    "import": "./dist/index.mjs",
+    "types": "./dist/index.d.ts"
   },
   "scripts": {
     "build": "unbuild && pnpm build:types",

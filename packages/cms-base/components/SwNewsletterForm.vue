@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import { CmsElementForm } from "@shopware-pwa/composables-next";
-import { ClientApiError } from "@shopware-pwa/types";
+import type { CmsElementForm } from "@shopware-pwa/composables-next";
+import type { ClientApiError } from "@shopware-pwa/types";
 
 const props = defineProps<{
   content: CmsElementForm;

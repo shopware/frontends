@@ -1,9 +1,16 @@
 {
   "extends": "tsconfig/vue-library.json",
-  "include": ["./components.d.ts", "./auto-imports.d.ts", "."],
+  "include": [
+    "./components.d.ts",
+    "./auto-imports.d.ts",
+    ".",
+    "./components/**/*.{vue|ts}"
+  ],
   "exclude": ["dist"],
   "compilerOptions": {
     "jsx": "preserve",
+    "checkJs": false,
+    "isolatedModules": true,
     "lib": ["dom"]
   }
 }

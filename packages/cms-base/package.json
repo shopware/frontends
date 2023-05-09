@@ -24,6 +24,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./components/index.mjs"
     }
   },
   "files": [
@@ -54,6 +58,7 @@
     "@nuxt/schema": "^3.4.3",
     "@shopware-pwa/types": "workspace:*",
     "@vue/eslint-config-typescript": "^11.0.3",
+    "@vue/tsconfig": "^0.3.2",
     "eslint-config-shopware": "workspace:*",
     "eslint-plugin-vue": "^9.11.0",
     "tsconfig": "workspace:*",
