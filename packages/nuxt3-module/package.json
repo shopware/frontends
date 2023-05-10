@@ -48,6 +48,7 @@
     "@nuxt/devtools": "^0.4.5",
     "@nuxt/schema": "^3.4.3",
     "eslint-config-shopware": "workspace:*",
+    "package-json-parser": "^2.2.0",
     "tsconfig": "workspace:*",
     "typescript": "^5.0.4",
     "unbuild": "^1.2.1"

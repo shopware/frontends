@@ -3,7 +3,7 @@
  */
 import { defineNuxtModule, addPluginTemplate } from "@nuxt/kit";
 import { resolve } from "path";
-import { resolveOwnDependency } from "./utils";
+import { isDependencyInstalledLocally, resolveOwnDependency } from "./utils";
 
 export default defineNuxtModule<ShopwareNuxtOptions>({
   meta: {
@@ -27,6 +27,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
         },
       },
     });
+
     // TODO: remove it once nitro server build contains all external packages of nuxt3-module (composables-next)
     nuxt.options.build.transpile.push("@shopware-pwa/composables-next");
 
@@ -35,15 +36,24 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       "@shopware-pwa/api-client",
       nuxt
     );
-    if (apiClientDependencyPath) {
+    const isApiClientInstalledLocally = await isDependencyInstalledLocally(
+      nuxt.options.rootDir,
+      "@shopware-pwa/api-client"
+    );
+    if (!isApiClientInstalledLocally && apiClientDependencyPath) {
       nuxt.options.alias["@shopware-pwa/api-client"] = apiClientDependencyPath;
     }
 
+    const isComposablesNextInstalledLocally =
+      await isDependencyInstalledLocally(
+        nuxt.options.rootDir,
+        "@shopware-pwa/composables-next"
+      );
     const composablesDependencyPath = await resolveOwnDependency(
       "@shopware-pwa/composables-next",
       nuxt
     );
-    if (composablesDependencyPath) {
+    if (!isComposablesNextInstalledLocally && composablesDependencyPath) {
       nuxt.options.alias["@shopware-pwa/composables-next"] =
         composablesDependencyPath;
     }
