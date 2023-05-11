@@ -41,5 +41,5 @@ jobs:
         if: ${{ failure() }}
         with:
           name: reports
-          path: apps/e2e-tests/reports
+          path: apps/e2e-tests/reports/
           retention-days: 7
