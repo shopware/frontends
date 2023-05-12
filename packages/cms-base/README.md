@@ -41,6 +41,11 @@ export default defineNuxtConfig({
 });
 ```
 
+### ⚠️ `<RouterLink/>` components used
+
+Some components use `RouterLink` component internally, available in [Vue Router](https://github.com/vuejs/router).
+In order to parse CMS components correctly and avoid missing component warning, it's **highly recommended** to have **Vue Router installed** or **Nuxt router enabled** in your application.
+
 ## Basic usage
 
 Since all CMS components are registered in your Nuxt application, you can now start using them in your template (no imports needed):

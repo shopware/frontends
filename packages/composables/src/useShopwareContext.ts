@@ -7,6 +7,7 @@ export type ShopwareContext = {
    * Shopware API instance
    */
   apiInstance: ShopwareApiInstance;
+  devStorefrontUrl: string | null;
 };
 
 /**
@@ -20,5 +21,6 @@ export function useShopwareContext(): ShopwareContext {
 
   return {
     apiInstance: shopwareContext.apiInstance,
+    devStorefrontUrl: shopwareContext.devStorefrontUrl,
   };
 }

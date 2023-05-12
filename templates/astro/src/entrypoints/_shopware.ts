@@ -22,6 +22,7 @@ export default (app: App) => {
   // create a Shopware context plugin and inject it to the Vue app
   const shopwareContext = createShopwareContext(app, {
     apiInstance,
+    devStorefrontUrl: null,
   });
   // register a plugin
   app.use(shopwareContext);

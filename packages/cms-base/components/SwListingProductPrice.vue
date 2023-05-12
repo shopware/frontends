@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useProductPrice } from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
+import SwSharedPrice from "./SwSharedPrice.vue";
 
 const props = defineProps<{
   product: Product;
@@ -14,12 +15,12 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
 
 <template>
   <div :id="product.id">
-    <SharedPrice
+    <SwSharedPrice
       v-if="isListPrice"
       class="text-l text-gray-900 basis-2/6 justify-end line-through"
       :value="price?.listPrice?.price"
     />
-    <SharedPrice
+    <SwSharedPrice
       class="text-xl text-gray-900 basis-2/6 justify-end"
       v-if="displayFromVariants"
       :value="displayFromVariants"
@@ -27,8 +28,8 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
       <template #beforePrice
         ><span v-if="displayFromVariants" class="text-sm">from</span></template
       >
-    </SharedPrice>
-    <SharedPrice
+    </SwSharedPrice>
+    <SwSharedPrice
       class="text-gray-900 basis-2/6"
       :class="{
         'text-red-600 font-bold': isListPrice,
@@ -42,9 +43,9 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
           >to</span
         ></template
       >
-    </SharedPrice>
+    </SwSharedPrice>
     <div class="text-xs flex text-gray-500" v-if="regulationPrice">
-      Previously <SharedPrice class="ml-1" :value="regulationPrice" />
+      Previously <SwSharedPrice class="ml-1" :value="regulationPrice" />
     </div>
   </div>
 </template>
