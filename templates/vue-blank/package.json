@@ -10,11 +10,11 @@
   },
   "devDependencies": {
     "@shopware-pwa/nuxt3-module": "canary",
-    "@types/node": "^18.16.3",
+    "@types/node": "^18.16.8",
     "@vueuse/nuxt": "^10.1.2",
     "nuxt": "^3.4.3",
     "typescript": "^5.0.4",
-    "vue": "^3.2.47",
+    "vue": "^3.3.1",
     "vue-tsc": "^1.6.4"
   },
   "engines": {
