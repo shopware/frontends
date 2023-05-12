@@ -12,9 +12,7 @@
     "analyze": "nuxi analyze"
   },
   "dependencies": {
-    "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/cms-base": "canary",
-    "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
