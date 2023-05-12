@@ -7,7 +7,7 @@ vi.mock("../../../src/apiService");
 const mockedApiInstance = defaultInstance;
 
 describe("CartService - clearCart", () => {
-  let contextToken = faker.datatype.uuid();
+  let contextToken = faker.string.uuid();
 
   const mockedPost = vi.fn();
   beforeEach(() => {

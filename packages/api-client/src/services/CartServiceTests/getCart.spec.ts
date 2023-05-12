@@ -18,23 +18,23 @@ describe("CartService - getCart", () => {
     mockedGet.mockResolvedValueOnce({
       data: {
         data: {
-          name: faker.datatype.uuid(),
-          token: faker.datatype.uuid(),
+          name: faker.string.uuid(),
+          token: faker.string.uuid(),
           lineItems: [
             {
-              id: faker.datatype.uuid(),
+              id: faker.string.uuid(),
               label: faker.commerce.productName(),
               quantity: 5,
               payload: {
-                productNumber: faker.datatype.uuid(),
+                productNumber: faker.string.uuid(),
               },
             },
             {
-              id: faker.datatype.uuid(),
+              id: faker.string.uuid(),
               label: faker.commerce.productName(),
               quantity: 3,
               payload: {
-                productNumber: faker.datatype.uuid(),
+                productNumber: faker.string.uuid(),
               },
             },
           ],
