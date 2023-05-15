@@ -6,7 +6,7 @@
     "dev": "nuxi dev",
     "build": "nuxi build",
     "start": "nuxi start",
-    "lint": "eslint './**/*.{js,ts,vue}' --fix --max-warnings=0",
+    "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "analyze": "nuxi analyze"
