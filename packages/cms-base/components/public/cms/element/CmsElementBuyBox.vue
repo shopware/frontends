@@ -8,6 +8,7 @@ import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
 import deepMerge from "../../../../helpers/deepMerge";
 import getTranslations from "../../../../helpers/getTranslations";
+import SwSharedPrice from "../../../SwSharedPrice.vue";
 
 const props = defineProps<{
   content: CmsElementBuyBox;
@@ -87,12 +88,12 @@ const restockTime = computed(() => product.value?.restockTime);
   >
     <div>
       <div v-if="tierPrices.length <= 1">
-        <SharedPrice
+        <SwSharedPrice
           v-if="isListPrice"
           class="text-1xl text-gray-900 basis-2/6 justify-start line-through"
           :value="price?.listPrice?.price"
         />
-        <SharedPrice
+        <SwSharedPrice
           v-if="unitPrice"
           class="text-3xl text-gray-900 basis-2/6 justify-start"
           :class="{
@@ -102,7 +103,7 @@ const restockTime = computed(() => product.value?.restockTime);
         />
         <div class="text-xs flex text-gray-500" v-if="regulationPrice">
           {{ translations.product.previously }}
-          <SharedPrice class="ml-1" :value="regulationPrice" />
+          <SwSharedPrice class="ml-1" :value="regulationPrice" />
         </div>
       </div>
       <div v-else>

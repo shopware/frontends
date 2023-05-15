@@ -1,34 +1,33 @@
 <script setup lang="ts">
 import { useProductPrice } from "@shopware-pwa/composables-next";
 import { Product } from "@shopware-pwa/types";
-import deepMerge from '../helpers/deepMerge'
+import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import SwSharedPrice from "./SwSharedPrice.vue";
+const props = defineProps<{
+  product: Product;
+}>();
 
-const props = 
-  defineProps<{
-    product: Product;
-  }>()
- 
 type Translations = {
   product: {
-    amount: string
-    price: string
-    to: string
-    from: string
-  }
-}
+    amount: string;
+    price: string;
+    to: string;
+    from: string;
+  };
+};
 
 let translations: Translations = {
   product: {
-      amount: "Amount",
-      price: "Price",
-      to: "To",
-      from: "From"
-  }
-}
+    amount: "Amount",
+    price: "Price",
+    to: "To",
+    from: "From",
+  },
+};
 
-const globalTranslations = getTranslations()
-translations = deepMerge(translations, globalTranslations) as Translations
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { product } = toRefs(props);
 
@@ -39,12 +38,12 @@ const { getFormattedPrice } = usePrice();
 <template>
   <div>
     <div v-if="!tierPrices.length">
-      <SharedPrice
+      <SwSharedPrice
         v-if="isListPrice"
         class="text-1xl text-gray-900 basis-2/6 justify-end line-through"
         :value="price?.listPrice?.price"
       />
-      <SharedPrice
+      <SwSharedPrice
         v-if="unitPrice"
         class="text-3xl text-gray-900 basis-2/6 justify-end"
         :class="{
@@ -60,13 +59,13 @@ const { getFormattedPrice } = usePrice();
             <th
               class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
             >
-              {{translations.product.amount}}
+              {{ translations.product.amount }}
             </th>
 
             <th
               class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
             >
-              {{translations.product.price}}
+              {{ translations.product.price }}
             </th>
           </tr>
         </thead>
@@ -75,8 +74,11 @@ const { getFormattedPrice } = usePrice();
             <td
               class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
             >
-              <span v-if="index < tierPrices.length - 1">{{translations.product.to}}</span
-              ><span v-else>{{translations.product.from}}</span> {{ tierPrice.quantity }}
+              <span v-if="index < tierPrices.length - 1">{{
+                translations.product.to
+              }}</span
+              ><span v-else>{{ translations.product.from }}</span>
+              {{ tierPrice.quantity }}
             </td>
             <td
               class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 font-medium text-current-500 dark:text-slate-400"

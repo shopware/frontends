@@ -29,7 +29,8 @@ export class ProductPage {
     for (const variant of await this.page
       .getByTestId("product-variant-text")
       .all())
-      await variant.click(), await this.page.waitForLoadState("load");
+      await variant.click();
+    await this.page.waitForLoadState("load");
     await this.addToCartButton.waitFor();
     await this.addToCartButton.click();
     await this.miniCartLink.click();

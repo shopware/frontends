@@ -9,13 +9,13 @@ const mockedApiInstance = defaultInstance;
 describe("CustomerService - updateCustomerAddress", () => {
   const newAddressData = {
     id: "some-address-id",
-    countryId: faker.datatype.uuid(),
-    salutationId: faker.datatype.uuid(),
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    zipcode: faker.address.zipCode(),
-    city: faker.address.city(),
-    street: faker.address.streetName(),
+    countryId: faker.string.uuid(),
+    salutationId: faker.string.uuid(),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    zipcode: faker.location.zipCode(),
+    city: faker.location.city(),
+    street: faker.location.street(),
   };
   const mockedPatch = vi.fn();
 

@@ -143,6 +143,7 @@ export type Product = {
     metaDescription: string | null;
     keywords: string | null;
     metaTitle: string | null;
+    customFields: CustomFields;
   };
   metaDescription: string | null;
   crossSellings: CrossSelling[];

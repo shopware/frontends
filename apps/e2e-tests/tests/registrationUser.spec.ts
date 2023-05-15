@@ -19,15 +19,15 @@ test.describe.only("Registration new user", () => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCustomerData(
-      "e2e " + faker.name.firstName(),
-      "e2e " + faker.name.lastName(),
+      "e2e " + faker.person.firstName(),
+      "e2e " + faker.person.lastName(),
       faker.internet.exampleEmail(),
       faker.internet.password()
     );
     await registrationPage.fillAddressData(
-      faker.address.street(),
-      faker.address.zipCode(),
-      faker.address.city()
+      faker.location.street(),
+      faker.location.zipCode(),
+      faker.location.city()
     );
     await registrationPage.submitRegistraionForm();
     await page.waitForLoadState("load");

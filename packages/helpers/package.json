@@ -35,7 +35,7 @@
   "devDependencies": {
     "@vitest/coverage-c8": "^0.31.0",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^9.10.8",
+    "happy-dom": "^9.18.3",
     "tsconfig": "workspace:*",
     "vitest": "^0.31.0"
   },
