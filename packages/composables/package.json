@@ -48,11 +48,11 @@
     "@vitest/coverage-c8": "^0.31.0",
     "@vue/test-utils": "^2.3.2",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^9.17.0",
+    "happy-dom": "^9.18.3",
     "tsconfig": "workspace:*",
     "typescript": "^5.0.4",
     "unbuild": "^1.2.1",
     "vitest": "^0.31.0",
-    "vue": "^3.3.1"
+    "vue": "^3.3.2"
   }
 }

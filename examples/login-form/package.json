@@ -11,7 +11,7 @@
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
     "js-cookie": "^3.0.5",
-    "vue": "^3.3.1"
+    "vue": "^3.3.2"
   },
   "devDependencies": {
     "@shopware-pwa/types": "canary",

@@ -50,7 +50,7 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.5.0",
+  "packageManager": "pnpm@8.5.1",
   "pnpm": {
     "overrides": {
       "yaml": "^2.2.2"
