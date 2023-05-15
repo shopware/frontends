@@ -120,7 +120,7 @@ describe("Settings", () => {
 
   describe("onConfigChange", () => {
     it("should notify, when update method has been called", () => {
-      const contextToken = faker.datatype.uuid();
+      const contextToken = faker.string.uuid();
       onConfigChange((configChangedArgs: ConfigChangedArgs) => {
         expect(configChangedArgs.config.contextToken).toEqual(contextToken);
       });
