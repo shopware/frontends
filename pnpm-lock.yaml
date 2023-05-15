@@ -593,9 +593,6 @@ importers:
       eslint-config-shopware:
         specifier: workspace:*
         version: link:../eslint-config-shopware
-      package-json-parser:
-        specifier: ^2.2.0
-        version: 2.2.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -5618,7 +5615,7 @@ packages:
   /@types/node-fetch@2.6.3:
     resolution: {integrity: sha512-ETTL1mOEdq/sxUtgtOhKjyB2Irra4cjxksvcMUR5Zr4n+PxVhsCD9WS46oPbHL3et9Zde7CNRr+WUNlcHvsX+w==}
     dependencies:
-      '@types/node': 14.18.33
+      '@types/node': 18.16.9
       form-data: 3.0.1
     dev: true
 
@@ -14512,12 +14509,6 @@ packages:
       degenerator: 3.0.4
       ip: 1.1.8
       netmask: 2.0.2
-    dev: true
-
-  /package-json-parser@2.2.0:
-    resolution: {integrity: sha512-yrLg4z/NeyIYTGjH/QFQBmobZUF1FkuxdJy09j7l4PiPEjkxbtRNk1dl88jRvKgW5DGaqQ3azClJNqmQNzPZyg==}
-    dependencies:
-      type-fest: 0.21.3
     dev: true
 
   /pacote@15.1.3:
