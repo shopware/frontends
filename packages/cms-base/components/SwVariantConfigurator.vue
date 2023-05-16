@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getProductRoute } from "@shopware-pwa/helpers-next";
 import { ComputedRef } from "vue";
-import deepMerge from '../helpers/deepMerge'
+import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 
 const props = withDefaults(
@@ -15,18 +15,18 @@ const props = withDefaults(
 
 type Translations = {
   product: {
-    chooseA: string
-  }
-}
+    chooseA: string;
+  };
+};
 
 let translations: Translations = {
-   product: {
-    chooseA: "Choose a"
-  }
-}
+  product: {
+    chooseA: "Choose a",
+  },
+};
 
-const globalTranslations = getTranslations()
-translations = deepMerge(translations, globalTranslations) as Translations
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
 
 const emit = defineEmits<{
   (e: "change", selected: any): void;
@@ -55,7 +55,6 @@ const onHandleChange = async () => {
   const selectedOptionsVariantPath = getProductRoute(variantFound);
   if (props.allowRedirect && selectedOptionsVariantPath) {
     try {
-      console.error("pushing route", selectedOptionsVariantPath);
       router.push(selectedOptionsVariantPath);
     } catch (error) {
       console.error("incorrect URL", selectedOptionsVariantPath);
@@ -84,7 +83,9 @@ const onHandleChange = async () => {
     >
       <h3 class="text-sm text-gray-900 font-medium">{{ optionGroup.name }}</h3>
       <fieldset class="mt-4 flex-1">
-        <legend class="sr-only">{{ translations.product.chooseA }} {{ optionGroup.name }}</legend>
+        <legend class="sr-only">
+          {{ translations.product.chooseA }} {{ optionGroup.name }}
+        </legend>
         <div class="flex gap-3">
           <label
             data-testid="product-variant"
