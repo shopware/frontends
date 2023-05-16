@@ -6,6 +6,8 @@ type LinkedCategory = Pick<
 >;
 
 /**
+ * Get category/navigation route information for Vue Router.
+ *
  * Returns category or navigation URL and route informations for resolving SEO url.
  * Use it with combination of <RouterLink> or <NuxtLink> in Vue.js or Nuxt.js projects.
  *
