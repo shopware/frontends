@@ -28,7 +28,7 @@ export class HomePage extends AbstractPage {
   }
 
   async visitMainPage() {
-    await this.page.goto("/");
+    await this.page.goto("/", { waitUntil: "networkidle" });
   }
 
   async clickOnSignIn() {
