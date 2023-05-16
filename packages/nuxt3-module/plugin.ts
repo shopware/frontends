@@ -29,8 +29,8 @@ const ShopwarePlugin = {
     const cookieLanguageId = Cookies.get("sw-language-id");
 
     if (
-      !runtimeConfig.public.shopware.shopwareEndpoint ||
-      !runtimeConfig.public.shopware.shopwareAccessToken
+      !runtimeConfig.public?.shopware?.shopwareEndpoint ||
+      !runtimeConfig.public?.shopware?.shopwareAccessToken
     ) {
       throw new Error(
         "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration"
@@ -75,6 +75,7 @@ const ShopwarePlugin = {
       apiInstance: instance,
       enableDevtools: true,
       shopwareDefaults: options.apiDefaults,
+      devStorefrontUrl: runtimeConfig.public.shopware?.devStorefrontUrl || null,
     });
     app.provide("shopware", shopwareContext);
     const sessionContextData = ref();
@@ -85,15 +86,7 @@ const ShopwarePlugin = {
 };
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const newConfig = getDefaultApiParams();
-  // newConfig.add("useOrderDetails.associations",{
-  //   "lineItems": {
-  //     "associations": {
-  //         "cover": {}
-  //     }
-  // }
-  // });
   nuxtApp.vueApp.use(ShopwarePlugin, {
-    apiDefaults: newConfig,
+    apiDefaults: getDefaultApiParams(),
   });
 });

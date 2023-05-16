@@ -59,7 +59,7 @@ const icon = computed(() => iconsMap[props.notification.type] || "information");
       aria-label="Close"
       @click="$emit('click:close', notification.id)"
     >
-      <span class="sr-only">Close</span>
+      <span class="sr-only">{{ $t("close") }}</span>
       <div class="w-5 h-5 i-carbon-close" />
     </button>
   </div>

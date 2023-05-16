@@ -19,6 +19,7 @@ import {
   UpdateContextParams,
   ContextTokenResponse,
   SessionContext,
+  ShopwareSearchParams,
 } from "@shopware-pwa/types";
 import { extractContextToken } from "../helpers/context";
 
@@ -286,13 +287,11 @@ export async function setCurrentPaymentMethod(
  */
 export async function getAvailableShippingMethods(
   contextInstance: ShopwareApiInstance = defaultInstance,
-  params: { onlyAvailable?: boolean } = {}
+  params: ShopwareSearchParams = {}
 ) {
-  const resp = await contextInstance.invoke.get<
+  const resp = await contextInstance.invoke.post<
     EntityResult<"shipping_method", ShippingMethod>
-  >(getContextShippingMethodEndpoint(), {
-    params,
-  });
+  >(getContextShippingMethodEndpoint(), params);
 
   return resp.data;
 }

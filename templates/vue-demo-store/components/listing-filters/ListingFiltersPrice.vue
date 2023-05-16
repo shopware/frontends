@@ -63,7 +63,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
     >
       <div class="flex gap-4 text-sm text-gray-500">
         <div class="w-36">
-          <div>Min</div>
+          <div>{{ $t("listing.min") }}</div>
           <input
             id="min-price"
             v-model="prices.min"
@@ -74,7 +74,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
           />
         </div>
         <div class="w-36">
-          <div>Max</div>
+          <div>{{ $t("listing.max") }}</div>
           <input
             id="max-price"
             v-model="prices.max"

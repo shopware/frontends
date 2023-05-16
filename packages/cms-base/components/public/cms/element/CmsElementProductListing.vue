@@ -3,10 +3,25 @@ import { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
 import { ShopwareSearchParams } from "@shopware-pwa/types";
-
+import deepMerge from "../../../../helpers/deepMerge";
+import getTranslations from "../../../../helpers/getTranslations";
 const props = defineProps<{
   content: CmsElementProductListing;
 }>();
+
+type Translations = {
+  listing: {
+    noProducts: string;
+  };
+};
+let translations: Translations = {
+  listing: {
+    noProducts: "No products found 😔",
+  },
+};
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
+
 const {
   getElements,
   setInitialListing,
@@ -38,13 +53,13 @@ setInitialListing(props?.content?.data?.listing);
   <div class="bg-white">
     <div class="max-w-2xl mx-auto lg:max-w-full">
       <div v-if="getElements.length" class="mt-6">
-        <div class="flex-1 flex-col justify-around">
+        <div class="flex flex-wrap justify-center sm:justify-between">
           <SwProductCard
             v-for="product in getElements"
             :key="product.id"
             :product="product"
             :isProductListing="isProductListing"
-            class="sm:w-6/12 lg:w-3/12 md:max-w-xs"
+            class="w-full sm:w-3/7 lg:w-2/7 mb-8"
           />
         </div>
         <div class="mt-10">
@@ -56,7 +71,9 @@ setInitialListing(props?.content?.data?.listing);
         </div>
       </div>
       <div v-else>
-        <h2 class="mx-auto text-center">No products found 😔</h2>
+        <h2 class="mx-auto text-center">
+          {{ translations.listing.noProducts }}
+        </h2>
       </div>
     </div>
   </div>

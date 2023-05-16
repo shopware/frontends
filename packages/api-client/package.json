@@ -33,12 +33,12 @@
     "test": "vitest run --segfault-retry=3"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
-    "@vitest/coverage-c8": "^0.30.1",
+    "@faker-js/faker": "^8.0.0",
+    "@vitest/coverage-c8": "^0.31.0",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^9.9.2",
+    "happy-dom": "^9.18.3",
     "tsconfig": "workspace:*",
-    "vitest": "^0.30.1"
+    "vitest": "^0.31.0"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",

@@ -24,6 +24,10 @@ export type UseAddToCartReturn = {
    * Flag if product is already in cart
    */
   isInCart: ComputedRef<boolean>;
+  /**
+   * count of the product quantity already in the cart
+   */
+  count: ComputedRef<number>;
 };
 
 /**
@@ -63,5 +67,11 @@ export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
     getStock,
     getAvailableStock,
     isInCart,
+    count: computed(
+      () =>
+        cartItems.value.find(
+          (item: LineItem) => item.referencedId === _product.value?.id
+        )?.quantity || 0
+    ),
   };
 }

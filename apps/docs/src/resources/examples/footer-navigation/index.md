@@ -16,7 +16,7 @@ Implementing Footer navigation can be described in few steps:
 ```vue
 <script setup lang="ts">
 import { useNavigation } from "@shopware-pwa/composables-next";
-import { getCategoryUrl } from "@shopware-pwa/helpers-next";
+import { getCategoryRoute } from "@shopware-pwa/helpers-next";
 const { navigationElements, loadNavigationElements } = useNavigation({
   type: "footer-navigation", // footer-navigation selected
 });
@@ -46,7 +46,7 @@ loadNavigationElements({
                 :key="childCategory.id"
               >
                 <a
-                  :href="getCategoryUrl(childCategory)"
+                  :href="getCategoryRoute(childCategory)"
                   class="hover:underline"
                   >{{ childCategory.translated?.name }}</a
                 >

@@ -8,7 +8,7 @@ describe("apiInterceptors", () => {
   });
   describe("createResponseInterceptor", () => {
     it("should update contextToken after any request", async () => {
-      const contextToken = faker.datatype.uuid();
+      const contextToken = faker.string.uuid();
       const updateMethod = vi.fn();
       const responseInterceptor = createResponseInterceptor(updateMethod);
       responseInterceptor({
@@ -22,7 +22,7 @@ describe("apiInterceptors", () => {
     });
 
     it("should get contextToken from response, not header, if there is one", () => {
-      const contextToken = faker.datatype.uuid();
+      const contextToken = faker.string.uuid();
       const updateMethod = vi.fn();
       const responseInterceptor = createResponseInterceptor(updateMethod);
       responseInterceptor({

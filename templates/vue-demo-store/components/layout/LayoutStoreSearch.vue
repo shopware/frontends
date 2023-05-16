@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getProductUrl } from "@shopware-pwa/helpers-next";
+import { getProductRoute } from "@shopware-pwa/helpers-next";
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
 
@@ -88,7 +88,7 @@ watch(enter, (value) => {
         data-testid="layout-search-input"
         type="text"
         class="sw-search-input text-gray-400 placeholder:text-gray-400 focus:text-gray-700 p-2 ml-2 lg:ml-0 xl:ml-2 grow h-6 transition duration-200 focus:outline-none w-56 lg:w-10/12"
-        placeholder="Search products"
+        :placeholder="$t('form.searchPlaceholder')"
         @click="active = true"
       />
     </div>
@@ -99,7 +99,7 @@ watch(enter, (value) => {
       <NuxtLink
         v-for="product in getProducts.slice(0, displayTotal)"
         :key="product.id"
-        :to="getProductUrl(product)"
+        :to="getProductRoute(product)"
         data-testid="layout-search-suggest-link"
         @click="[(active = false), $emit('link-clicked')]"
       >
@@ -121,11 +121,12 @@ watch(enter, (value) => {
             :to="`/search?query=${typingQuery}`"
             @click="[(active = false), $emit('link-clicked')]"
           >
-            See <span v-if="getTotal !== 1">all</span> {{ getTotal }}
-            <span v-if="getTotal !== 1">results</span>
-            <span v-if="getTotal == 1">result</span>
+            {{ $t("search.see") }}
+            <span v-if="getTotal !== 1">{{ $t("search.all") }}</span>
+            {{ getTotal }}
+            <span>{{ $tc("search.result", getTotal) }}</span>
           </NuxtLink>
-          <div v-else>No results :(</div>
+          <div v-else>{{ $t("search.noResults") }}</div>
         </div>
       </div>
     </div>

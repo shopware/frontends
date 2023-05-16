@@ -55,7 +55,7 @@ export class RegisterForm {
   async submitRegistraionForm() {
     await Promise.all([
       this.page.waitForLoadState(),
-      await this.submitButton.dispatchEvent("click"),
+      await this.submitButton.click({ delay: 500 }),
     ]);
     await this.page.waitForSelector(
       "[data-testid='product-box-wishlist-icon-not-in']"
@@ -64,13 +64,13 @@ export class RegisterForm {
 
   async createUser() {
     await this.salutation.selectOption({ label: "Mr." });
-    await this.firstName.type("e2e " + faker.name.firstName());
-    await this.lastName.type("e2e " + faker.name.lastName());
+    await this.firstName.type("e2e " + faker.person.firstName());
+    await this.lastName.type("e2e " + faker.person.lastName());
     await this.emailAdrdress.type(faker.internet.exampleEmail());
     await this.password.type(faker.internet.password());
-    await this.street.type(faker.address.street());
-    await this.zipcode.type(faker.address.zipCode());
-    await this.city.type(faker.address.city());
+    await this.street.type(faker.location.street());
+    await this.zipcode.type(faker.location.zipCode());
+    await this.city.type(faker.location.city());
     await this.country.selectOption({ label: "Germany" });
     await this.submitButton.click();
     await this.page.waitForSelector(

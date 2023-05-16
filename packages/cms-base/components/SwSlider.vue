@@ -42,13 +42,13 @@ const slidesToShow = computed(() =>
     ? childrenRaw.value.length
     : props.slidesToShow
 );
-const children = computed(() => {
+const children = computed<string[]>(() => {
   if (childrenRaw.value.length === 0) return [];
   return [
     ...childrenRaw.value.slice(-slidesToShow.value),
     ...childrenRaw.value,
     ...childrenRaw.value.slice(0, slidesToShow.value),
-  ];
+  ] as string[];
 });
 const emit = defineEmits<{
   (e: "changeSlide", index: number): void;
@@ -236,13 +236,17 @@ defineExpose({
   <div
     ref="slider"
     :class="{
-      'relative overflow-hidden': true,
+      'relative overflow-hidden h-full': true,
       'px-10': navigationArrowsValue === 'outside',
       'pb-15': navigationDotsValue === 'outside',
       'opacity-0': !isReady,
     }"
   >
-    <div class="overflow-hidden" ref="imageSlider" :style="imageSliderStyle">
+    <div
+      class="overflow-hidden h-full"
+      ref="imageSlider"
+      :style="imageSliderStyle"
+    >
       <div
         ref="imageSliderTrack"
         :class="{
@@ -269,7 +273,7 @@ defineExpose({
             height: displayModeValue === 'standard' ? 'min-content' : '100%',
           }"
         >
-          <component :is="child as any" />
+          <component :is="child as any" class="w-[300px]" />
         </div>
       </div>
     </div>

@@ -6,10 +6,50 @@ import {
 } from "@shopware-pwa/composables-next";
 import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
+import deepMerge from "../../../../helpers/deepMerge";
+import getTranslations from "../../../../helpers/getTranslations";
+import SwSharedPrice from "../../../SwSharedPrice.vue";
 
 const props = defineProps<{
   content: CmsElementBuyBox;
 }>();
+
+type Translations = {
+  product: {
+    previously: string;
+    amount: string;
+    price: string;
+    to: string;
+    from: string;
+    content: string;
+    pricesIncl: string;
+    pricesExcl: string;
+    deliveryTime: string;
+    days: string;
+    noAvailable: string;
+    productNumber: string;
+  };
+};
+
+let translations: Translations = {
+  product: {
+    previously: "Previously",
+    amount: "Amount",
+    price: "Price",
+    to: "To",
+    from: "From",
+    content: "Content",
+    pricesIncl: "Prices incl. VAT plus shipping costs",
+    pricesExcl: "Prices excl. VAT plus shipping costs",
+    deliveryTime: "Available, delivery time",
+    days: "days",
+    noAvailable: "No longer available",
+    productNumber: "Product number",
+  },
+};
+
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { getConfigValue } = useCmsElementConfig(props.content);
 const alignment = computed(() => getConfigValue("alignment"));
@@ -48,12 +88,12 @@ const restockTime = computed(() => product.value?.restockTime);
   >
     <div>
       <div v-if="tierPrices.length <= 1">
-        <SharedPrice
+        <SwSharedPrice
           v-if="isListPrice"
           class="text-1xl text-gray-900 basis-2/6 justify-start line-through"
           :value="price?.listPrice?.price"
         />
-        <SharedPrice
+        <SwSharedPrice
           v-if="unitPrice"
           class="text-3xl text-gray-900 basis-2/6 justify-start"
           :class="{
@@ -62,7 +102,8 @@ const restockTime = computed(() => product.value?.restockTime);
           :value="unitPrice"
         />
         <div class="text-xs flex text-gray-500" v-if="regulationPrice">
-          Previously <SharedPrice class="ml-1" :value="regulationPrice" />
+          {{ translations.product.previously }}
+          <SwSharedPrice class="ml-1" :value="regulationPrice" />
         </div>
       </div>
       <div v-else>
@@ -72,13 +113,13 @@ const restockTime = computed(() => product.value?.restockTime);
               <th
                 class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
               >
-                Amount
+                {{ translations.product.amount }}
               </th>
 
               <th
                 class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
               >
-                Price
+                {{ translations.product.price }}
               </th>
             </tr>
           </thead>
@@ -87,8 +128,11 @@ const restockTime = computed(() => product.value?.restockTime);
               <td
                 class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
               >
-                <span v-if="index < tierPrices.length - 1">To</span
-                ><span v-else>From</span> {{ tierPrice.quantity }}
+                <span v-if="index < tierPrices.length - 1">{{
+                  translations.product.to
+                }}</span
+                ><span v-else>{{ translations.product.from }}</span>
+                {{ tierPrice.quantity }}
               </td>
               <td
                 class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 font-medium text-current-500 dark:text-slate-400"
@@ -100,7 +144,7 @@ const restockTime = computed(() => product.value?.restockTime);
         </table>
       </div>
       <div v-if="purchaseUnit && unitName" class="mt-1">
-        <span class="font-light"> Content: </span>
+        <span class="font-light"> {{ translations.product.content }}: </span>
         <span class="font-light"> {{ purchaseUnit }} {{ unitName }} </span>
         <span v-if="referencePrice" class="font-light">
           {{ currency?.symbol }} {{ referencePrice?.price }} / /
@@ -109,26 +153,29 @@ const restockTime = computed(() => product.value?.restockTime);
       </div>
       <span class="text-indigo-600">
         <template v-if="taxState === 'gross'">
-          Prices incl. VAT plus shipping costs
+          {{ translations.product.pricesIncl }}
         </template>
-        <template v-else> Prices excl. VAT plus shipping costs </template>
+        <template v-else> {{ translations.product.pricesExcl }} </template>
       </span>
     </div>
     <div class="mt-4">
       <span v-if="availableStock >= minPurchase && deliveryTime"
-        >Available, delivery time {{ deliveryTime?.name }}
+        >{{ translations.product.deliveryTime }} {{ deliveryTime?.name }}
       </span>
       <span
         v-else-if="availableStock < minPurchase && deliveryTime && restockTime"
-        >Available in {{ restockTime }} day, delivery time
-        {{ deliveryTime?.name }}</span
       >
-      <span v-else>No longer available</span>
+        {{ translations.product.deliveryTime }} {{ restockTime }}
+        {{ translations.product.days }} {{ deliveryTime?.name }}</span
+      >
+      <span v-else>{{ translations.product.noAvailable }}</span>
     </div>
     <SwVariantConfigurator @change="changeVariant" />
     <SwProductAddToCart :product="product" />
     <div class="mt-3 product-detail-ordernumber-container">
-      <span class="font-bold text-gray-900"> Product number: </span>
+      <span class="font-bold text-gray-900">
+        {{ translations.product.productNumber }}:
+      </span>
       <span>
         {{ productNumber }}
       </span>

@@ -13,16 +13,10 @@ export type UseInternationalizationReturn = {
  * @category Context & Language
  */
 export function useInternationalization(): UseInternationalizationReturn {
-  /**
-   * Should be removed after resolving backend multi domains problems
-   */
-  const { apiInstance } = useShopwareContext();
+  const { devStorefrontUrl } = useShopwareContext();
 
   function getStorefrontUrl() {
-    /**
-     * apiIntanceUrl - should be removed after resolving backend multi domains problems
-     */
-    return apiInstance.config.endpoint ?? window.location.origin ?? "";
+    return devStorefrontUrl ?? window.location.origin ?? "";
   }
 
   return {

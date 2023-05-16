@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  getCategoryUrl,
+  getCategoryRoute,
   getCategoryImageUrl,
 } from "@shopware-pwa/helpers-next";
 import { Category } from "@shopware-pwa/types";
@@ -54,7 +54,7 @@ const toggleCollapse = (navigationElement: Category) => {
               class="flex flex-col flex-1 w-full"
             >
               <NuxtLink
-                :to="getCategoryUrl(navigationElement)"
+                :to="getCategoryRoute(navigationElement)"
                 class="flex items-center px-5 py-3 text-base font-normal text-gray-900 break-all hover:bg-gray-100"
                 @click="sideMenuController.close"
               >
@@ -104,7 +104,7 @@ const toggleCollapse = (navigationElement: Category) => {
                   :key="childElement.id"
                 >
                   <NuxtLink
-                    :to="getCategoryUrl(childElement)"
+                    :to="getCategoryRoute(childElement)"
                     class="flex items-center p-3 text-base font-normal text-gray-500 break-all hover:bg-gray-100 pl-11"
                     @click="sideMenuController.close"
                   >
