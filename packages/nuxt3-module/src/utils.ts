@@ -2,7 +2,6 @@ import { Nuxt } from "@nuxt/schema";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "node:url";
 import { promises as fs, constants as FS_CONSTANTS } from "node:fs";
-import packageJson from "package-json-parser";
 
 type DEPENDENCY = "@shopware-pwa/api-client" | "@shopware-pwa/composables-next";
 
@@ -16,15 +15,18 @@ export async function isDependencyInstalledLocally(
 ) {
   try {
     const projectPackageJsonPath = resolve(rootDir, "package.json");
-    const packageJsonDefinition = packageJson.json(projectPackageJsonPath);
+    const packageJson = JSON.parse(
+      await fs.readFile(projectPackageJsonPath, "utf8")
+    );
+
     if (
-      packageJsonDefinition?.dependencies?.[dependency] ||
-      packageJsonDefinition?.devDependencies?.[dependency]
+      packageJson?.dependencies?.[dependency] ||
+      packageJson?.devDependencies?.[dependency]
     ) {
       return true;
     }
   } catch (error) {
-    console.error("nuxt3-module: unable to check local dependencies");
+    console.error("nuxt3-module: unable to check local dependencies", error);
   }
   return false;
 }
