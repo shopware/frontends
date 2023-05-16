@@ -153,6 +153,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
   themeConfig: {
     nav,
     sidebar,
+    swag: {}, // TODO: set correct config here at some point
     algolia: {
       indexName: "",
       appId: "",
