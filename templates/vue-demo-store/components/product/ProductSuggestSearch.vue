@@ -56,7 +56,7 @@ const srcPath = computed(() => {
           :value="unitPrice"
         >
           <template #beforePrice>
-            <span v-if="displayFrom">from</span>
+            <span v-if="displayFrom">{{ $t("product.price.from") }}</span>
           </template>
         </SharedPrice>
         <ProductUnits

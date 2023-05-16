@@ -1,24 +1,48 @@
 <script setup lang="ts">
 import { Product } from "@shopware-pwa/types";
+import deepMerge from '../helpers/deepMerge'
+import getTranslations from "../helpers/getTranslations";
 
 const { pushSuccess } = useNotifications();
-const props = defineProps<{
-  product: Product;
-}>();
+const props = 
+  defineProps<{
+    product: Product;
+  }>();
+
+type Translations = {
+  product: {
+    addedToCart: string
+    qty: string
+    addToCart: string
+  }
+}
+
+let translations: Translations = {
+  product: {
+    addedToCart: "has been added to cart.",
+    qty: "Qty",
+    addToCart: "Add to cart"
+  }
+}
+
+const globalTranslations = getTranslations()
+translations = deepMerge(translations, globalTranslations) as Translations
+
+
 const { product } = toRefs(props);
 
 const { addToCart, quantity } = useAddToCart(product);
 
 const addToCartProxy = async () => {
   await addToCart();
-  pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
+  pushSuccess(`${props.product?.translated?.name} ${translations.product.addedToCart}`);
 };
 </script>
 
 <template>
   <div class="flex flex-row mt-10">
     <div class="basis-1/4 relative -top-6">
-      <label for="qty" class="text-sm">Qty</label>
+      <label for="qty" class="text-sm">{{translations.product.qty}}</label>
       <input
         id="qty"
         type="number"
@@ -36,7 +60,7 @@ const addToCartProxy = async () => {
         class="py-2 px-6 w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 transition ease-in-out hover:bg-gradient-to-l duration-300 cursor-pointer border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         data-testid="add-to-cart-button"
       >
-        🛍 Add to cart
+        🛍 {{ translations.product.addToCart }}
       </button>
     </div>
   </div>

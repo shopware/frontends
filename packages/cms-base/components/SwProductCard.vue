@@ -14,6 +14,8 @@ import {
 } from "@shopware-pwa/types";
 import { Ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
+import deepMerge from "../helpers/deepMerge";
+import getTranslations from "../helpers/getTranslations";
 
 const { pushSuccess, pushError } = useNotifications();
 
@@ -30,6 +32,32 @@ const props = withDefaults(
     isProductListing: false,
   }
 );
+
+type Translations = {
+  product: {
+    addedToWishlist: string;
+    reason: string;
+    cannotAddToWishlist: string;
+    addedToCart: string;
+    addToCart: string;
+    details: string;
+  };
+};
+
+let translations: Translations = {
+  product: {
+    addedToWishlist: "has been added to wishlist.",
+    reason: "Reason",
+    cannotAddToWishlist: "cannot be added to wishlist.",
+    addedToCart: "has been added to cart.",
+    addToCart: "Add to cart",
+    details: "Details",
+  },
+};
+
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
+
 const { product } = toRefs(props);
 
 const { addToCart, isInCart, count } = useAddToCart(product);
@@ -42,15 +70,15 @@ const toggleWishlistProduct = async () => {
     try {
       await addToWishlist();
       return pushSuccess(
-        `${props.product?.translated?.name} has been added to wishlist.`
+        `${props.product?.translated?.name} ${translations.product.addedToWishlist}`
       );
     } catch (error) {
       const e = error as ClientApiError;
       const reason = e?.messages?.[0]?.detail
-        ? `Reason: ${e?.messages?.[0]?.detail}`
+        ? `${translations.product.reason}: ${e?.messages?.[0]?.detail}`
         : "";
       return pushError(
-        `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
+        `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
         {
           timeout: 5000,
         }
@@ -62,7 +90,9 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
-  pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
+  pushSuccess(
+    `${props.product?.translated?.name} ${translations.product.addedToCart}`
+  );
 };
 
 const fromPrice = getProductFromPrice(props.product);
@@ -180,7 +210,7 @@ const srcPath = computed(() => {
           }"
           data-testid="add-to-cart-button"
         >
-          Add to cart
+          {{ translations.product.addToCart }}
           <div v-if="isInCart" class="flex ml-2">
             <div class="w-5 h-5 i-carbon-shopping-bag text-gray-600" />
             {{ count }}

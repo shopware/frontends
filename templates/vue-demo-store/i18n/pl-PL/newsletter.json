@@ -1,0 +1,11 @@
+{
+  "newsletter": {
+    "subscriptionHeader": "Subskrypcja newslettera",
+    "subscriptionCheckbox": "Tak, chcę otrzymywać bezpłatny newsletter Demostore. (Mogę wypisać się w każdej chwili.)",
+    "subscriptionInfo": "Właśnie zapisałeś/aś się na nasz newsletter. Aby zakończyć proces rejestracji, wyszukaj w swojej skrzynce odbiorczej naszego e-maila potwierdzającego i kliknij na link w nim zawarty.",
+    "messages": {
+      "newsletterSubscribed": "Dziękujemy! Zapisaliśmy Twój adres e-mail.",
+      "newsletterUnsubscribed": "Wypisanie z newslettera"
+    }
+  }
+}

@@ -19,7 +19,7 @@ const { unitPrice, displayFromVariants, displayFrom } =
       :value="displayFromVariants"
     >
       <template #beforePrice>
-        <span v-if="displayFromVariants">variants from</span>
+        <span v-if="displayFromVariants">{{ $t('product.variantsFrom') }}</span>
       </template>
     </SharedPrice>
     <SharedPrice
@@ -27,7 +27,7 @@ const { unitPrice, displayFromVariants, displayFrom } =
       :value="unitPrice"
     >
       <template #beforePrice>
-        <span v-if="displayFrom">from</span>
+        <span v-if="displayFrom">{{$t('product.price.from')}}</span>
       </template>
     </SharedPrice>
   </div>
