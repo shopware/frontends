@@ -13,6 +13,10 @@ type LinkedCategory = Pick<
  * ```html
  * <RouterLink :to="getCategoryRoute(navigationElement)">
  * ```
+ *
+ * @public
+ * @category Category
+ * @category Routing
  */
 export function getCategoryRoute(category: LinkedCategory) {
   if (!category) return "/";

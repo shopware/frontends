@@ -9,6 +9,10 @@ import { getProductUrl } from "./getProductUrl";
  * ```html
  * <RouterLink :to="getProductRoute(product)">
  * ```
+ *
+ * @public
+ * @category Product
+ * @category Routing
  */
 export function getProductRoute<
   T extends { id: string; seoUrls: SeoUrl[] | null }
