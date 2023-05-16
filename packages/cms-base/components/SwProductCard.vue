@@ -4,7 +4,7 @@ import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductThumbnailUrl,
-  getProductUrl,
+  getProductRoute,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
 import {
@@ -126,7 +126,7 @@ const srcPath = computed(() => {
         layoutType === 'image' ? 'h-80' : 'h-60',
       ]"
     >
-      <RouterLink :to="getProductUrl(product)" class="overflow-hidden">
+      <RouterLink :to="getProductRoute(product)" class="overflow-hidden">
         <img
           ref="imageElement"
           :src="srcPath"
@@ -181,7 +181,7 @@ const srcPath = computed(() => {
     <div class="px-4 pb-4">
       <RouterLink
         class="line-clamp-2"
-        :to="getProductUrl(product)"
+        :to="getProductRoute(product)"
         data-testid="product-box-product-name-link"
       >
         <h5
@@ -218,7 +218,7 @@ const srcPath = computed(() => {
         </button>
         <RouterLink
           v-else
-          :to="getProductUrl(product)"
+          :to="getProductRoute(product)"
           class="justify-center py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 hover:scale-120"
         >
           <span data-testid="product-box-product-show-details"> Details </span>
