@@ -19,16 +19,3 @@ export function getProductUrl<
   const seoUrl = product.seoUrls?.[0]?.seoPathInfo;
   return seoUrl ? `/${seoUrl}` : `/detail/${product.id}`;
 }
-
-// TODO: move to separate file and add tests
-export function getProductRoute<
-  T extends { id: string; seoUrls: SeoUrl[] | null }
->(product?: T) {
-  return {
-    path: getProductUrl(product),
-    state: {
-      routeName: "frontend.detail.page",
-      foreignKey: product?.id,
-    },
-  };
-}
