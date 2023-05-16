@@ -129,8 +129,7 @@ onBeforeMount(async () => {
   <div class="space-y-8">
     <div class="text-sm text-gray-500">
       <div>
-        Feel free to edit any of your details below so your account is always up
-        to date
+        {{ $t('account.personalData.infoBox') }}
       </div>
     </div>
     <form
@@ -143,7 +142,7 @@ onBeforeMount(async () => {
         class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg"
         role="alert"
       >
-        <span class="font-medium">Your information has been updated.</span>
+        <span class="font-medium">{{$t('account.messages.personalDataUpdateSuccess')}}</span>
       </div>
       <div
         v-if="errorMessages.length"
@@ -157,7 +156,7 @@ onBeforeMount(async () => {
             for="firstname"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            First name
+            {{$t('form.firstName')}}
           </label>
           <input
             id="firstname"
@@ -167,7 +166,7 @@ onBeforeMount(async () => {
             autocomplete="firstname"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="Enter first name..."
+            :placeholder="$t('form.firstNamePlaceholder')"
             data-testid="account-personal-data-firstname-input"
             :disabled="loadingData"
             @blur="$v.firstName.$touch()"
@@ -184,7 +183,7 @@ onBeforeMount(async () => {
             for="lastname"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            Last name
+            {{ $t('form.lastName') }}
           </label>
           <input
             id="lastname"
@@ -194,7 +193,7 @@ onBeforeMount(async () => {
             autocomplete="lastname"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="Enter last name..."
+             :placeholder="$t('form.lastNamePlaceholder')"
             data-testid="account-personal-data-lastname-input"
             :disabled="loadingData"
             @blur="$v.lastName.$touch()"
@@ -211,7 +210,7 @@ onBeforeMount(async () => {
             for="email"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            Your email
+            {{ $t('form.email') }}
           </label>
           <input
             id="email"
@@ -221,7 +220,7 @@ onBeforeMount(async () => {
             autocomplete="email"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="Enter the email..."
+            :placeholder="$t('form.emailPlaceholder')"
             data-testid="account-personal-data-email-input"
             :disabled="loadingData"
             @blur="$v.email.$touch()"
@@ -238,7 +237,7 @@ onBeforeMount(async () => {
             for="email-confirm"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            Confirm e-mail
+            {{ $t('form.confirmEmail') }}
           </label>
           <input
             id="email-confirm"
@@ -248,7 +247,7 @@ onBeforeMount(async () => {
             autocomplete="email-confirm"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="Enter the email..."
+            :placeholder="$t('form.emailPlaceholder')"
             data-testid="account-personal-data-email-confirmation-input"
             :disabled="loadingData"
             @blur="$v.emailConfirmation.$touch()"
@@ -265,7 +264,7 @@ onBeforeMount(async () => {
             for="password"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            Your password
+            {{ $t('form.password') }}
           </label>
           <input
             id="password"
@@ -296,7 +295,7 @@ onBeforeMount(async () => {
           data-testid="account-personal-data-submit-button"
           :disabled="loadingData"
         >
-          Save changes
+          {{ $t('form.save') }}
         </button>
       </div>
     </form>

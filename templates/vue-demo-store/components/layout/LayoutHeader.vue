@@ -72,7 +72,9 @@ const sidebarController = useModal();
               >
                 {{ count || "" }}
               </span>
-              <span class="sr-only">items in cart, view bag</span>
+              <span class="sr-only"
+                >{{ $t("cart.itemsInCart") }}, {{ $t("cart.viewCart") }}</span
+              >
             </button>
           </div>
           <CheckoutSideCart :controller="sidebarController" />

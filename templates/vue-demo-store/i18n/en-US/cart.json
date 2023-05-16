@@ -1,0 +1,16 @@
+{
+  "cart": {
+    "checkout": "Checkout",
+    "header": "Shopping cart",
+    "itemsInCart": "items in cart",
+    "viewCart": "view bag",
+    "orderSummary": "Order summary",
+    "orderTotal": "Order total",
+    "subtotal": "Subtotal",
+    "shippingEstimate": "Shipping estimate",
+    "emptyCartLabel": "Your cart is empty!",
+    "messages": {
+      "addedToCart": "{p} has been added to cart."
+    }
+  }
+}

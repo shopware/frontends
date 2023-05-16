@@ -84,7 +84,7 @@ watch(enter, (value) => {
         data-testid="layout-search-input"
         type="text"
         class="sw-search-input text-gray-400 placeholder:text-gray-400 focus:text-gray-700 p-2 ml-2 lg:ml-0 xl:ml-2 grow h-6 transition duration-200 focus:outline-none w-56 lg:w-10/12"
-        placeholder="Search products"
+        :placeholder="$t('form.searchPlaceholder')"
         @click="active = true"
       />
     </div>
@@ -117,11 +117,10 @@ watch(enter, (value) => {
             :to="`/search?query=${typingQuery}`"
             @click="[(active = false), (isSideMenuOpened = false)]"
           >
-            See <span v-if="getTotal !== 1">all</span> {{ getTotal }}
-            <span v-if="getTotal !== 1">results</span>
-            <span v-if="getTotal == 1">result</span>
+            {{$t('search.see')}} <span v-if="getTotal !== 1">{{$t('search.all')}}</span> {{ getTotal }}
+            <span>{{ $tc('search.result', getTotal) }}</span>
           </NuxtLink>
-          <div v-else>No results :(</div>
+          <div v-else>{{ $t('search.noResults') }}</div>
         </div>
       </div>
     </div>

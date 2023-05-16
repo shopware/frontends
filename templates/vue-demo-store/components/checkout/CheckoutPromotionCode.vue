@@ -15,13 +15,13 @@ const promoCode = ref("");
         v-model="promoCode"
         type="text"
         name="promoCode"
-        placeholder="Enter promo code"
+        :placeholder="$t('form.promoCodePlaceholder')"
         class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
         @keyup.enter="addPromotionCode(promoCode)"
       />
     </div>
     <div v-if="showPromotionCodes">
-      <div>Applied promo codes:</div>
+      <div>{{$t('checkout.promoCode.label')}}:</div>
       <ul role="list" class="text-sm pl-0">
         <li
           v-for="appliedPromotionCode in appliedPromotionCodes"
@@ -34,7 +34,7 @@ const promoCode = ref("");
             type="button"
             @click="removeItem(appliedPromotionCode)"
           >
-            Remove
+            {{ $t('checkout.promoCode.remove') }}
           </button>
         </li>
       </ul>

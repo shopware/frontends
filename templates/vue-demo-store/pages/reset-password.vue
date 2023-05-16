@@ -2,10 +2,10 @@
 export default {
   name: "ResetPassword",
 };
-
+const { t } = useI18n();
 useBreadcrumbs([
   {
-    name: "Password reset",
+    name: t("breadcrumbs.passwordReset"),
     path: "/reset-password",
   },
 ]);
@@ -19,7 +19,7 @@ useBreadcrumbs([
           to="/"
           class="w-full flex justify-center py-2 px-4 border border-brand-primary text-sm font-medium rounded-md text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary"
         >
-          Return to Homepage
+          {{ $t("returnToHomepage") }}
         </NuxtLink>
       </template>
     </AccountResetPasswordForm>

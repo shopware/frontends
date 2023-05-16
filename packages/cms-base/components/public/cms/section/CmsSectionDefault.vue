@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CmsSectionDefault } from "@shopware-pwa/composables-next";
 
-const props = defineProps<{
+defineProps<{
   content: CmsSectionDefault;
 }>();
 </script>

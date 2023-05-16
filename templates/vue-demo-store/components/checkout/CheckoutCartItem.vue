@@ -116,7 +116,7 @@ const removeCartItem = async () => {
           data-testid="product-remove-button"
           @click="removeCartItem"
         >
-          Remove
+          {{ $t("checkout.items.removeButton") }}
         </button>
       </div>
     </div>

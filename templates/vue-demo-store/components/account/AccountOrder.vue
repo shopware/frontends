@@ -6,7 +6,7 @@ const props = defineProps<{
 }>();
 
 const isExpand = ref(false);
-
+const { t } = useI18n()
 const toggleView = () => (isExpand.value = !isExpand.value);
 const { currency } = useSessionContext();
 
@@ -37,7 +37,7 @@ export default {
         :aria-expanded="isExpand"
         @click="toggleView"
       >
-        {{ !isExpand ? "View" : "Hide" }}
+        {{ !isExpand ? t("account.view") : t("account.hide") }}
       </div>
     </AccountOrderSummary>
     <div>
@@ -46,7 +46,7 @@ export default {
         :aria-expanded="isExpand"
         @click="toggleView"
       >
-        {{ !isExpand ? "View" : "Hide" }}
+        {{ !isExpand ? t("account.view") : t("account.hide") }}
       </div>
     </div>
     <AccountOrderDetails v-if="isExpand" :order-id="order.id" />

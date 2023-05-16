@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ComputedRef } from "vue";
+import deepMerge from '../helpers/deepMerge'
+import getTranslations from "../helpers/getTranslations";
 
 const props = withDefaults(
   defineProps<{
@@ -9,6 +11,21 @@ const props = withDefaults(
     allowRedirect: false,
   }
 );
+
+type Translations = {
+  product: {
+    chooseA: string
+  }
+}
+
+let translations: Translations = {
+   product: {
+    chooseA: "Choose a"
+  }
+}
+
+const globalTranslations = getTranslations()
+translations = deepMerge(translations, globalTranslations) as Translations
 
 const emit = defineEmits<{
   (e: "change", selected: any): void;
@@ -64,7 +81,7 @@ const onHandleChange = async () => {
     >
       <h3 class="text-sm text-gray-900 font-medium">{{ optionGroup.name }}</h3>
       <fieldset class="mt-4 flex-1">
-        <legend class="sr-only">Choose a {{ optionGroup.name }}</legend>
+        <legend class="sr-only">{{ translations.product.chooseA }} {{ optionGroup.name }}</legend>
         <div class="flex gap-3">
           <label
             data-testid="product-variant"

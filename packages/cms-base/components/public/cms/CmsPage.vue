@@ -20,6 +20,7 @@ const cmsSections = computed<CmsSection[]>(() => {
 const DynamicRender = () => {
   const componentsMap = cmsSections.value.map((section) => {
     return {
+      name: `CmsSection${pascalCase(section.type)}`,
       component: resolveComponent(`CmsSection${pascalCase(section.type)}`),
       section: section,
     };

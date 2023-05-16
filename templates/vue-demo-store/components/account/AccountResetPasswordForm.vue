@@ -61,7 +61,7 @@ const invokeReset = async (): Promise<void> => {
     <div class="max-w-md w-full space-y-8">
       <div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Reset password
+          {{$t('resetPassword.header')}}
         </h2>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="invokeReset">
@@ -74,7 +74,7 @@ const invokeReset = async (): Promise<void> => {
 
         <div class="-space-y-px">
           <div>
-            <label for="new-password" class="sr-only">New Password</label>
+            <label for="new-password" class="sr-only">{{$t('resetPassword.form.newPassword')}}</label>
             <input
               id="new-password"
               v-model="state.password.newPassword"
@@ -83,7 +83,7 @@ const invokeReset = async (): Promise<void> => {
               autocomplete="new-password"
               required
               class="appearance-none rounded-none shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-              placeholder="New Password"
+              :placeholder="$t('form.newPasswordPlaceholder')"
             />
             <span
               v-if="$v.password.newPassword.$error"
@@ -94,7 +94,7 @@ const invokeReset = async (): Promise<void> => {
           </div>
           <div>
             <label for="confirm-password" class="sr-only"
-              >Repeat Password</label
+              >{{ $t('resetPassword.form.repeatPassword') }}</label
             >
             <input
               id="confirm-password"
@@ -104,7 +104,7 @@ const invokeReset = async (): Promise<void> => {
               autocomplete="repeat-password"
               required
               class="appearance-none rounded-none shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-              placeholder="Repeat Password"
+              :placeholder="$t('form.repeatPasswordPlaceholder')"
             />
             <span
               v-if="$v.password.newPasswordConfirm.$error"
@@ -123,7 +123,8 @@ const invokeReset = async (): Promise<void> => {
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
               <div class="w-5 h-5 i-carbon-locked" />
             </span>
-            Set new password
+            {{ $t('resetPassword.form.button') }}
+          
           </button>
           <slot name="action" />
         </div>

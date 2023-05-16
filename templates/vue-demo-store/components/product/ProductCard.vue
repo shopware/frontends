@@ -36,7 +36,9 @@ const toggleWishlistProduct = async () => {
     try {
       await addToWishlist();
       return pushSuccess(
-        `${props.product?.translated?.name} has been added to wishlist.`
+        t(`product.messages.addedToWishlist`, {
+          p: props.product?.translated?.name,
+        })
       );
     } catch (error) {
       const e = error as ClientApiError;
@@ -56,7 +58,9 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
-  pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
+  pushSuccess(
+    t(`cart.messages.addedToCart`, { p: props.product?.translated?.name })
+  );
 };
 
 const fromPrice = getProductFromPrice(props.product);
@@ -171,7 +175,7 @@ const srcPath = computed(() => {
           data-testid="add-to-cart-button"
           @click="addToCartProxy"
         >
-          Add to cart
+          {{ $t("product.addToCart") }}
           <div v-if="isInCart" class="flex ml-2">
             <div class="w-5 h-5 i-carbon-shopping-bag text-gray-600" />
             {{ count }}
