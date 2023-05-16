@@ -26,6 +26,6 @@ export type NewsletterRecipient = {
   customFields: CustomFields;
   confirmedAt: Date | null;
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   tags: Tag[] | null;
 };

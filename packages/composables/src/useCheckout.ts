@@ -115,7 +115,11 @@ export function useCheckout(): UseCheckoutReturn {
     const response = await getAvailableShippingMethods(apiInstance, {
       ...mergedAssociations,
     });
-    storeShippingMethods.value = response?.elements || [];
+    storeShippingMethods.value =
+      response?.elements.sort(
+        (a: ShippingMethod, b: ShippingMethod) =>
+          (a.position ?? 0) - (b.position ?? 0)
+      ) || [];
     return shippingMethods;
   }
 

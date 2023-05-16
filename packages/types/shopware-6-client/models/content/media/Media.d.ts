@@ -47,7 +47,7 @@ export type Media = {
     customFields: CustomFields;
   };
   createdAt: string;
-  updatedAt: null | string;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   customFields: CustomFields;

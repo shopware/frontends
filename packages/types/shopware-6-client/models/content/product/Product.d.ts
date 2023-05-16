@@ -37,7 +37,7 @@ export type CrossSelling = {
     versionId: null | string;
     translated: unknown;
     createdAt: Date;
-    updatedAt: null | Date;
+    updatedAt: Date | string | null;
     extensions: unknown;
     id: string;
     productVersionId: string;

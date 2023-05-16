@@ -26,7 +26,7 @@ export type CountryState = {
     customFields: CustomFields;
   };
   createdAt: string;
-  updatedAt: string | null;
+  updatedAt: Date | string | null;
   id: string;
   apiAlias: "country_state";
 };

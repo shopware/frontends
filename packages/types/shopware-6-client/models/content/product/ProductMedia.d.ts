@@ -15,7 +15,7 @@ export type ProductMedia = {
   versionId: string;
   translated: [];
   createdAt: string;
-  updatedAt: string;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   apiAlias: "product_media";

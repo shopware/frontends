@@ -31,7 +31,7 @@ export type PaymentMethod = {
   customFields: CustomFields;
   formattedHandlerIDentifier: string;
   createdAt: string;
-  updatedAt: string | null;
+  updatedAt: Date | string | null;
   distinguishableName: string;
   afterOrderEnabled: boolean;
   shortName: string;
