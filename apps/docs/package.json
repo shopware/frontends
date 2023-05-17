@@ -22,7 +22,7 @@
   "devDependencies": {
     "@shopware-pwa/typer": "workspace:*",
     "@types/markdown-it": "^12.2.3",
-    "@types/node": "^18.16.9",
+    "@types/node": "^18.16.12",
     "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.0.4"
   },
