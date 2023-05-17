@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Product, ProductReview } from "@shopware-pwa/types";
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import {
+  getProductRoute,
+  getTranslatedProperty,
+} from "@shopware-pwa/helpers-next";
 import { getProductReviews } from "@shopware-pwa/api-client";
 import { Ref } from "vue";
 
@@ -8,7 +11,6 @@ const props = defineProps<{
   product: Product;
 }>();
 const reviews: Ref<ProductReview[]> = ref([]);
-const route = useRoute();
 const router = useRouter();
 
 const { apiInstance } = useShopwareContext();
@@ -34,10 +36,8 @@ const description = computed(() =>
 const properties = computed(() => props.product?.properties || []);
 
 const handleVariantChange = (val: Product) => {
-  const path = val.seoUrls?.[0].seoPathInfo;
-  if (path && route.path !== `/${path}`) {
-    router.push(`/${path}`);
-  }
+  const newRoute = getProductRoute(val);
+  router.push(newRoute);
 };
 </script>
 

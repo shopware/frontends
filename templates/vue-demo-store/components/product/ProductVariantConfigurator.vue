@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Product } from "@shopware-pwa/types";
+import { getProductRoute } from "@shopware-pwa/helpers-next";
 
 const props = withDefaults(
   defineProps<{
@@ -30,10 +31,10 @@ const onHandleChange = async () => {
   const variantFound = await findVariantForSelectedOptions(
     getSelectedOptions.value
   );
-  const selectedOptionsVariantPath = variantFound?.seoUrls?.[0]?.seoPathInfo;
+  const selectedOptionsVariantPath = getProductRoute(variantFound);
   if (props.allowRedirect && selectedOptionsVariantPath) {
     try {
-      router.push("/" + selectedOptionsVariantPath);
+      router.push(selectedOptionsVariantPath);
     } catch (error) {
       console.error("incorrect URL", selectedOptionsVariantPath);
     }
