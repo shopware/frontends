@@ -3,7 +3,9 @@ export default {
   name: "CheckoutSuccessUnpaidPage",
 };
 </script>
-
+<script setup lang="ts">
+const { params } = useRoute();
+</script>
 <template>
   <div class="container mx-auto w-1/2 mb-24 mt-24 text-center">
     <h1
@@ -20,7 +22,7 @@ export default {
     </p>
     <div class="mt-12 text-center">
       <NuxtLink
-        :to="`/checkout/success/${$route.params.id}`"
+        :to="`/checkout/success/${params.id}`"
         class="inline-flex justify-center items-center py-2 px-4 text-base font-medium text-center text-white bg-brand-primary rounded-lg hover:bg-gray-400 focus:ring-4 focus:ring-brand-primary dark:focus:ring-brand-primary"
       >
         {{ $t("checkout.checkOrderDetails") }}
