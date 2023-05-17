@@ -7,11 +7,11 @@
 .DocSearch-Search-Icon,
 .DocSearch-Button-Key,
 .DocSearch-Button:hover .DocSearch-Search-Icon {
-    color: var(--vt-c-white);
+    color: var(--vp-c-white);
 }
 
 .search-item:hover,
 .VPPluginSearch-search-item:hover,
 .DocSearch-Button:hover .DocSearch-Button-Placeholder {
-    color: var(--vt-c-blue);
+    color: var(--c-blue-brand);
 }
