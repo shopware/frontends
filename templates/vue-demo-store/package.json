@@ -27,7 +27,7 @@
   "devDependencies": {
     "@iconify-json/carbon": "^1.1.16",
     "@nuxt/devtools": "^0.4.6",
-    "@nuxtjs/i18n": "8.0.0-beta.12",
+    "@nuxtjs/i18n": "8.0.0-beta.10",
     "@vue/eslint-config-typescript": "^11.0.3",
     "eslint-plugin-vue": "^9.13.0",
     "nuxt": "^3.5.0",
