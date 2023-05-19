@@ -73,22 +73,22 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
       parameters?: { query?: infer R };
     }
       ? R
-      : Record<string, never>) &
+      : Record<string, unknown>) &
       (OPERATIONS[OPERATION_NAME] extends {
         parameters?: { path?: infer R };
       }
         ? R
-        : Record<string, never>) &
+        : Record<string, unknown>) &
       (OPERATIONS[OPERATION_NAME] extends {
         requestBody?: { content?: { "application/json"?: infer R } };
       }
         ? R
-        : Record<string, never>) &
+        : Record<string, unknown>) &
       (OPERATIONS[OPERATION_NAME] extends {
         parameters?: { header?: infer R };
       }
         ? R
-        : Record<string, never>)
+        : Record<string, unknown>)
   ): Promise<ReturnType<OPERATION_NAME>> {
     const [requestPath, options] = transformPathToQuery(
       pathParam,
@@ -109,10 +109,18 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
   };
 }
 
-export function transformPathToQuery<T extends Record<string, string>>(
+export function transformPathToQuery<T extends Record<string, unknown>>(
   path: string,
   params: T
-): [string, { method: HttpMethod; query: T; headers: T; body?: T }] {
+): [
+  string,
+  {
+    method: HttpMethod;
+    query: Record<string, unknown>;
+    headers: HeadersInit;
+    body?: Partial<T>;
+  }
+] {
   // first param is operationName, not used here though
   const [, method, pathDefinition, headerParams] = path.split(" ");
   const [requestPath, queryParams] = pathDefinition.split("?");
@@ -124,7 +132,7 @@ export function transformPathToQuery<T extends Record<string, string>>(
       //remove brackets
       ?.map((param) => param.substring(1, param.length - 1)) || [];
   const requestPathWithParams = pathParams.reduce((acc, paramName) => {
-    return acc.replace(`{${paramName}}`, params[paramName]);
+    return acc.replace(`{${paramName}}`, params[paramName] as string);
   }, requestPath);
 
   const queryParamNames = queryParams?.split(",") || [];
@@ -132,9 +140,9 @@ export function transformPathToQuery<T extends Record<string, string>>(
   const headerParamnames = headerParams?.split(",") || [];
   const headers: HeadersInit = {};
   headerParamnames.forEach((paramName) => {
-    headers[paramName] = params[paramName];
+    headers[paramName] = params[paramName] as string;
   });
-  const query: HeadersInit = {};
+  const query: Record<string, unknown> = {};
   queryParamNames.forEach((paramName) => {
     query[paramName] = params[paramName];
   });
@@ -146,8 +154,8 @@ export function transformPathToQuery<T extends Record<string, string>>(
   } as {
     method: HttpMethod;
     headers: HeadersInit;
-    query: HeadersInit;
-    body?: Record<string, string>;
+    query: Record<string, unknown>;
+    body?: Partial<T>;
   };
   Object.keys(params).forEach((key) => {
     if (
@@ -155,8 +163,8 @@ export function transformPathToQuery<T extends Record<string, string>>(
       !queryParamNames.includes(key) &&
       !headerParamnames.includes(key)
     ) {
-      returnOptions.body ??= {};
-      returnOptions.body[key] = params[key];
+      returnOptions.body ??= {} as T;
+      Reflect.set(returnOptions, key, params[key]);
     }
   });
 

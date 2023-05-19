@@ -34,11 +34,11 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.1",
-    "@vitest/coverage-c8": "^0.31.0",
+    "@vitest/coverage-c8": "^0.31.1",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^9.18.3",
+    "happy-dom": "^9.19.2",
     "tsconfig": "workspace:*",
-    "vitest": "^0.31.0"
+    "vitest": "^0.31.1"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",

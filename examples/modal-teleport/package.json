@@ -9,7 +9,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.4.6",
+    "@nuxt/devtools": "^0.5.0",
     "@nuxt/types": "^2.16.3",
     "@nuxt/typescript-build": "^3.0.1",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "@vueuse/nuxt": "^10.1.2",
-    "vue": "^3.3.2"
+    "vue": "^3.3.4"
   }
 }
