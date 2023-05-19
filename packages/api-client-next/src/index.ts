@@ -164,7 +164,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
       !headerParamnames.includes(key)
     ) {
       returnOptions.body ??= {} as T;
-      Reflect.set(returnOptions, key, params[key]);
+      Reflect.set(returnOptions.body, key, params[key]);
     }
   });
 

@@ -43,16 +43,9 @@ describe("Test real API invocations", () => {
         "apiAlias": "dal_entity_search_result",
         "elements": [
           {
-            "_uniqueIdentifier": "4a105064127e49ccbba360e2c739b464",
             "apiAlias": "seo_url",
             "createdAt": "2020-08-06T06:26:52.576+00:00",
             "customFields": null,
-            "error": null,
-            "extensions": {
-              "foreignKeys": {
-                "apiAlias": "array_struct",
-              },
-            },
             "foreignKey": "24cc835ccc944665a94a31c392c27366",
             "id": "4a105064127e49ccbba360e2c739b464",
             "isCanonical": true,
@@ -67,7 +60,6 @@ describe("Test real API invocations", () => {
             "translated": [],
             "updatedAt": "2022-08-10T05:53:28.819+00:00",
             "url": null,
-            "versionId": null,
           },
         ],
         "entity": "seo_url",

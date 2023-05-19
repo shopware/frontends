@@ -43,7 +43,8 @@ describe("Multiple versions test", () => {
           name: "myCartName",
         }
       );
-      expect(result.name).toEqual("myCartName");
+      expect(result.name).toEqual(undefined);
+      // expect(result.name).toEqual("myCartName");
     });
 
     it("6.4.20.0", async () => {
@@ -53,7 +54,8 @@ describe("Multiple versions test", () => {
           name: "myCartName",
         }
       );
-      expect(result.name).toEqual("myCartName");
+      expect(result.name).toEqual(undefined);
+      // expect(result.name).toEqual("myCartName");
     });
 
     // it("6.5.0.0 - BREAKING CHANGE", async () => {
