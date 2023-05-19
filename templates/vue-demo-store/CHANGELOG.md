@@ -1,5 +1,52 @@
 # vue-demo-store
 
+## 0.7.0
+
+### Minor Changes
+
+- [#95](https://github.com/shopware/frontends/pull/95) [`ef73e1f3`](https://github.com/shopware/frontends/commit/ef73e1f31e287d96a9f2c3ed9310cfc0c22556ee) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Redirect user from login and register page to account in demo-store if they are already logged in (only client side).
+
+- [#168](https://github.com/shopware/frontends/pull/168) [`eddcfcca`](https://github.com/shopware/frontends/commit/eddcfcca8e00530147e77bd1122fc9e6828fbf57) Thanks [@mkucmus](https://github.com/mkucmus)! - Display cart item total price instead of unit price
+
+- [#107](https://github.com/shopware/frontends/pull/107) [`58bd8d6a`](https://github.com/shopware/frontends/commit/58bd8d6ad8dc0f35c702deb910cf05a4db9e5911) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove Nitro preset initialisation
+
+- [#124](https://github.com/shopware/frontends/pull/124) [`8e30002d`](https://github.com/shopware/frontends/commit/8e30002d0c93cce6485e7e476386d55f755fc44b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add i18n module and translations
+
+- [#169](https://github.com/shopware/frontends/pull/169) [`7c43afbb`](https://github.com/shopware/frontends/commit/7c43afbbac108e8943b599ab8562f3ced462234b) Thanks [@patzick](https://github.com/patzick)! - Added template composable `useModal` which `SharedModal` component refactor.
+  New modal system is using Vue's Teleport feature to render modals outside of the root component and keeping component context in the modal.
+
+- [#155](https://github.com/shopware/frontends/pull/155) [`b53ac01c`](https://github.com/shopware/frontends/commit/b53ac01c72ddff1f484ccd75cca49b1ff1d44676) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Block editing data when fetching an update - my account
+
+- [#180](https://github.com/shopware/frontends/pull/180) [`f1bd80b4`](https://github.com/shopware/frontends/commit/f1bd80b4082e2a23e94cfe4485f14715f125441a) Thanks [@patzick](https://github.com/patzick)! - Images for CMS elements and Product cart are now optimised for displayed size. This is decreasing weight of the whole page. Also small thumbnail of the image is shown.
+
+- [#180](https://github.com/shopware/frontends/pull/180) [`f1bd80b4`](https://github.com/shopware/frontends/commit/f1bd80b4082e2a23e94cfe4485f14715f125441a) Thanks [@patzick](https://github.com/patzick)! - Product Card design has changed.
+
+- [#194](https://github.com/shopware/frontends/pull/194) [`81f45335`](https://github.com/shopware/frontends/commit/81f4533513b2ee538111159f8e37cd7bd1db9f1e) Thanks [@patzick](https://github.com/patzick)! - Updated links to use new `getCategoryRoute` and `getProductRoute`. Resolve mechanism is now omiting additional `/seo-url` api request and makes internal navigation much faster. Special thanks to [@niklaswolf](https://github.com/niklaswolf) for inspiration and cooperation on that feature!
+
+- [#187](https://github.com/shopware/frontends/pull/187) [`7fe30878`](https://github.com/shopware/frontends/commit/7fe3087844007d12dc26d9c6817ecd12eb431b9b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add shipping methods description and icon
+
+### Patch Changes
+
+- [#169](https://github.com/shopware/frontends/pull/169) [`7c43afbb`](https://github.com/shopware/frontends/commit/7c43afbbac108e8943b599ab8562f3ced462234b) Thanks [@patzick](https://github.com/patzick)! - Added transitions for modals and sidemenus appearance.
+
+- [#172](https://github.com/shopware/frontends/pull/172) [`4b323a14`](https://github.com/shopware/frontends/commit/4b323a14f3cb7b8c76f53133e43a64fc56d27c3a) Thanks [@patzick](https://github.com/patzick)! - Proper SSR context for requests. Logged in client have hydrated data on reload.
+
+- [#143](https://github.com/shopware/frontends/pull/143) [`ffde908c`](https://github.com/shopware/frontends/commit/ffde908c4d5c0b48311f16e6da62bb0cb4f844d8) Thanks [@patzick](https://github.com/patzick)! - payment method name displayed properly in checkout
+
+- [#200](https://github.com/shopware/frontends/pull/200) [`329b0aec`](https://github.com/shopware/frontends/commit/329b0aec74c85683f4b69c3cc94ef398f797cf8b) Thanks [@mkucmus](https://github.com/mkucmus)! - Remove unnecessary dependencies
+
+- [#138](https://github.com/shopware/frontends/pull/138) [`62cb5b0c`](https://github.com/shopware/frontends/commit/62cb5b0c2ad568593383cf2b78510a1bab36a1be) Thanks [@mkucmus](https://github.com/mkucmus)! - Refresh token before login
+
+- [#101](https://github.com/shopware/frontends/pull/101) [`58932a83`](https://github.com/shopware/frontends/commit/58932a83106f7c415e68c4c1555180ff844ec151) Thanks [@mkucmus](https://github.com/mkucmus)! - Show regulation price on PDP and listing
+
+- [#108](https://github.com/shopware/frontends/pull/108) [`15c7915d`](https://github.com/shopware/frontends/commit/15c7915db1c648d030469f257fbfceed77f5dacd) Thanks [@patzick](https://github.com/patzick)! - `og:site_name` value is now by default set to page title
+
+- Updated dependencies [[`53f81c32`](https://github.com/shopware/frontends/commit/53f81c32b50c1658ee5758820085580cceea8161), [`47221193`](https://github.com/shopware/frontends/commit/472211939db34c8c81e957bd3e91a765056c088c), [`8e30002d`](https://github.com/shopware/frontends/commit/8e30002d0c93cce6485e7e476386d55f755fc44b), [`58932a83`](https://github.com/shopware/frontends/commit/58932a83106f7c415e68c4c1555180ff844ec151), [`4b323a14`](https://github.com/shopware/frontends/commit/4b323a14f3cb7b8c76f53133e43a64fc56d27c3a), [`58932a83`](https://github.com/shopware/frontends/commit/58932a83106f7c415e68c4c1555180ff844ec151), [`6320ca6f`](https://github.com/shopware/frontends/commit/6320ca6f00771b9f7d0a736c6438ca80ae60f33f), [`a1edcd18`](https://github.com/shopware/frontends/commit/a1edcd18f3665b9ecdc32f7d33902d9c394b4fb6), [`81f45335`](https://github.com/shopware/frontends/commit/81f4533513b2ee538111159f8e37cd7bd1db9f1e), [`ed35e37d`](https://github.com/shopware/frontends/commit/ed35e37dbedf43aef3ab34dde54230e912f8fa35), [`f1bd80b4`](https://github.com/shopware/frontends/commit/f1bd80b4082e2a23e94cfe4485f14715f125441a), [`f1bd80b4`](https://github.com/shopware/frontends/commit/f1bd80b4082e2a23e94cfe4485f14715f125441a), [`a367dba6`](https://github.com/shopware/frontends/commit/a367dba68ab73f9ed2213236c696718c222565bc), [`329b0aec`](https://github.com/shopware/frontends/commit/329b0aec74c85683f4b69c3cc94ef398f797cf8b)]:
+  - @shopware-pwa/types@0.5.2
+  - @shopware-pwa/cms-base@0.5.0
+  - @shopware-pwa/nuxt3-module@0.3.2
+  - @shopware-pwa/helpers-next@0.2.0
+
 ## 0.6.0
 
 ### Minor Changes

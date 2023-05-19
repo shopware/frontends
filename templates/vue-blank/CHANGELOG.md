@@ -1,5 +1,11 @@
 # vue-blank
 
+## 0.0.6
+
+### Patch Changes
+
+- [#200](https://github.com/shopware/frontends/pull/200) [`329b0aec`](https://github.com/shopware/frontends/commit/329b0aec74c85683f4b69c3cc94ef398f797cf8b) Thanks [@mkucmus](https://github.com/mkucmus)! - Remove unnecessary dependencies
+
 ## 0.0.5
 
 ### Patch Changes
