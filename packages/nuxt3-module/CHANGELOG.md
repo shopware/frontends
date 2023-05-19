@@ -1,5 +1,15 @@
 # @shopware-pwa/nuxt3-module
 
+## 0.3.3
+
+### Patch Changes
+
+- updated changelog in readme
+
+- Updated dependencies []:
+  - @shopware-pwa/composables-next@0.8.1
+  - @shopware-pwa/api-client@0.4.1
+
 ## 0.3.2
 
 ### Patch Changes

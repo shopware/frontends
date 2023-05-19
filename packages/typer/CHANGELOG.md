@@ -1,5 +1,11 @@
 # @shopware-pwa/typer
 
+## 0.1.4
+
+### Patch Changes
+
+- updated changelog in readme
+
 ## 0.1.3
 
 ### Patch Changes

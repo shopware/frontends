@@ -12,19 +12,15 @@ Documentation specific for this package: [api-client](https://frontends.shopware
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 0.3.0
+### Latest changes: 0.4.0
 
 ### Minor Changes
 
-- [`dab0f839`](https://github.com/shopware/frontends/commit/dab0f839eeebe6bb9999cdd0ec11925d935b08b9) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add document and product media service
-
-- [#72](https://github.com/shopware/frontends/pull/72) [`e13d3d9a`](https://github.com/shopware/frontends/commit/e13d3d9adde759e97ca7fa9b7a782b7991428679) Thanks [@patzick](https://github.com/patzick)! - Add newsletter confirmation endpoint
-
-- [#71](https://github.com/shopware/frontends/pull/71) [`e71cc788`](https://github.com/shopware/frontends/commit/e71cc788c375c19ec449b820c0813b83503ef067) Thanks [@patzick](https://github.com/patzick)! - Add sitemap service
+- [#187](https://github.com/shopware/frontends/pull/187) [`7fe30878`](https://github.com/shopware/frontends/commit/7fe3087844007d12dc26d9c6817ecd12eb431b9b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - getAvailableShippingMethods - use POST method and add search params
 
 ### Patch Changes
 
-- [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b) Thanks [@mkucmus](https://github.com/mkucmus)! - JS-Doc improvements
+- [#123](https://github.com/shopware/frontends/pull/123) [`0188b36a`](https://github.com/shopware/frontends/commit/0188b36acdf43278163a2fee74ff5b1c1aba55d8) Thanks [@mkucmus](https://github.com/mkucmus)! - Replace NOLINK label by @nolink tag
 
-- Updated dependencies [[`5008dcbf`](https://github.com/shopware/frontends/commit/5008dcbf065fc54a3f51517460e409556f370adf), [`e2718c7d`](https://github.com/shopware/frontends/commit/e2718c7d20fac95c57436166083d6e5f599937c2), [`9c7a0f28`](https://github.com/shopware/frontends/commit/9c7a0f280c20ccbafca0e3063533820e21050bee), [`3a90d299`](https://github.com/shopware/frontends/commit/3a90d299279b451e391a946dafecc857fe1f67fc), [`2f64a718`](https://github.com/shopware/frontends/commit/2f64a71824594ffcc4e5d59f8d5e30cd627893db), [`909ffcde`](https://github.com/shopware/frontends/commit/909ffcde24d5ae873d814027be0920a9e5976c72), [`a15a3083`](https://github.com/shopware/frontends/commit/a15a308359497bb9d483bebe040d717114946ff0), [`d358854c`](https://github.com/shopware/frontends/commit/d358854c632447228e719efdf639c428cf6ba804)]:
-  - @shopware-pwa/types@0.5.0
+- Updated dependencies [[`53f81c32`](https://github.com/shopware/frontends/commit/53f81c32b50c1658ee5758820085580cceea8161), [`47221193`](https://github.com/shopware/frontends/commit/472211939db34c8c81e957bd3e91a765056c088c), [`58932a83`](https://github.com/shopware/frontends/commit/58932a83106f7c415e68c4c1555180ff844ec151), [`a1edcd18`](https://github.com/shopware/frontends/commit/a1edcd18f3665b9ecdc32f7d33902d9c394b4fb6), [`a367dba6`](https://github.com/shopware/frontends/commit/a367dba68ab73f9ed2213236c696718c222565bc)]:
+  - @shopware-pwa/types@0.5.2

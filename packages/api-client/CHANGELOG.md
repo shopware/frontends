@@ -1,5 +1,14 @@
 # @shopware-pwa/api-client
 
+## 0.4.1
+
+### Patch Changes
+
+- updated changelog in readme
+
+- Updated dependencies []:
+  - @shopware-pwa/types@0.5.3
+
 ## 0.4.0
 
 ### Minor Changes

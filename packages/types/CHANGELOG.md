@@ -1,5 +1,11 @@
 # @shopware-pwa/types
 
+## 0.5.3
+
+### Patch Changes
+
+- updated changelog in readme
+
 ## 0.5.2
 
 ### Patch Changes

@@ -12,24 +12,32 @@ Documentation specific for this package: [composables](https://frontends.shopwar
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.7.0
+### Latest changes: 0.8.0
 
 ### Minor Changes
 
-- [`d358854c`](https://github.com/shopware/frontends/commit/d358854c632447228e719efdf639c428cf6ba804) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add new ContextError and fix useListing category context
+- [#158](https://github.com/shopware/frontends/pull/158) [`693f9829`](https://github.com/shopware/frontends/commit/693f9829d5082307cb1f3b18d5b0217e42c6cf68) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add associations parameter to the useOrderDetails composable
 
-- [`ec030631`](https://github.com/shopware/frontends/commit/ec0306312fa42451f5f4a98c3e8985b70496fd37) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - useProductSearch add criteria as a parameter
-
-- [`30493417`](https://github.com/shopware/frontends/commit/30493417ad5b97ee1f0553f68357a23446b85522) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Check if the cart is a virtual
+- [#187](https://github.com/shopware/frontends/pull/187) [`7fe30878`](https://github.com/shopware/frontends/commit/7fe3087844007d12dc26d9c6817ecd12eb431b9b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - getShippingMethods - add price associations and merge option
 
 ### Patch Changes
 
-- [`50e74be5`](https://github.com/shopware/frontends/commit/50e74be52034d1947e273985f778e986f077db44) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Return full url for storefrontURL
+- [#82](https://github.com/shopware/frontends/pull/82) [`0e85ad14`](https://github.com/shopware/frontends/commit/0e85ad14c7a115a9e4e79cb3d89e41129be30f03) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Don't refresh the context when after registration user is not activated (useUser)
 
-- [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b) Thanks [@mkucmus](https://github.com/mkucmus)! - JS-Doc improvements
+- [#189](https://github.com/shopware/frontends/pull/189) [`3764736e`](https://github.com/shopware/frontends/commit/3764736e52fffb7f7abeb4c044dee2adc812cbb6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix isVirtualCart method - check length before use `every` method
 
-- [`da2f6897`](https://github.com/shopware/frontends/commit/da2f6897e6839fbeb3ba7eae1eac376f423f2f99) Thanks [@mkucmus](https://github.com/mkucmus)! - Prevent using mapped field configurations directly
+- [#137](https://github.com/shopware/frontends/pull/137) [`e03c67a8`](https://github.com/shopware/frontends/commit/e03c67a8d553694be6e14e2c8d1a3f99b1b2ffbe) Thanks [@mkucmus](https://github.com/mkucmus)! - Safe check for navigator on SSR and fallback locale
 
-- Updated dependencies [[`e2718c7d`](https://github.com/shopware/frontends/commit/e2718c7d20fac95c57436166083d6e5f599937c2), [`dab0f839`](https://github.com/shopware/frontends/commit/dab0f839eeebe6bb9999cdd0ec11925d935b08b9), [`5008dcbf`](https://github.com/shopware/frontends/commit/5008dcbf065fc54a3f51517460e409556f370adf), [`0eaf57e1`](https://github.com/shopware/frontends/commit/0eaf57e17a1d8ee454533c33f7528b72021aed4b), [`e13d3d9a`](https://github.com/shopware/frontends/commit/e13d3d9adde759e97ca7fa9b7a782b7991428679), [`909ffcde`](https://github.com/shopware/frontends/commit/909ffcde24d5ae873d814027be0920a9e5976c72), [`a15a3083`](https://github.com/shopware/frontends/commit/a15a308359497bb9d483bebe040d717114946ff0), [`e71cc788`](https://github.com/shopware/frontends/commit/e71cc788c375c19ec449b820c0813b83503ef067)]:
-  - @shopware-pwa/helpers-next@0.1.25
-  - @shopware-pwa/api-client@0.3.0
+- [#116](https://github.com/shopware/frontends/pull/116) [`1fd1962f`](https://github.com/shopware/frontends/commit/1fd1962f7f4ee26461e8918e70e5f686fa431c6d) Thanks [@mkucmus](https://github.com/mkucmus)! - Intl as a price formatter
+
+- [#179](https://github.com/shopware/frontends/pull/179) [`bb64070f`](https://github.com/shopware/frontends/commit/bb64070f69e47c14653c524d864f7a8ab8290724) Thanks [@patzick](https://github.com/patzick)! - Currency and price context are properly set during the hydration. `usePrice` is not a shared composable.
+
+- [#168](https://github.com/shopware/frontends/pull/168) [`eddcfcca`](https://github.com/shopware/frontends/commit/eddcfcca8e00530147e77bd1122fc9e6828fbf57) Thanks [@mkucmus](https://github.com/mkucmus)! - `getProductItemSeoUrlData` method of `useCart` marked as deprecated
+
+- [#149](https://github.com/shopware/frontends/pull/149) [`8dc64e31`](https://github.com/shopware/frontends/commit/8dc64e31756e8509866efdc2b52915b8862598cb) Thanks [@mkucmus](https://github.com/mkucmus)! - Safe parameters access
+
+- [#168](https://github.com/shopware/frontends/pull/168) [`eddcfcca`](https://github.com/shopware/frontends/commit/eddcfcca8e00530147e77bd1122fc9e6828fbf57) Thanks [@mkucmus](https://github.com/mkucmus)! - Add item total price property for useCartItem composable
+
+- Updated dependencies [[`81f45335`](https://github.com/shopware/frontends/commit/81f4533513b2ee538111159f8e37cd7bd1db9f1e), [`7fe30878`](https://github.com/shopware/frontends/commit/7fe3087844007d12dc26d9c6817ecd12eb431b9b), [`0188b36a`](https://github.com/shopware/frontends/commit/0188b36acdf43278163a2fee74ff5b1c1aba55d8)]:
+  - @shopware-pwa/helpers-next@0.2.0
+  - @shopware-pwa/api-client@0.4.0

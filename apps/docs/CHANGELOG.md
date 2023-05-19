@@ -1,5 +1,14 @@
 # docs
 
+## 1.5.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @shopware-pwa/composables-next@0.8.1
+  - @shopware-pwa/api-client@0.4.1
+  - @shopware-pwa/helpers-next@0.2.1
+
 ## 1.5.0
 
 ### Minor Changes

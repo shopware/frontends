@@ -1,5 +1,13 @@
 # @shopware-pwa/vue3-plugin
 
+## 0.1.30
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @shopware-pwa/composables-next@0.8.1
+  - @shopware-pwa/api-client@0.4.1
+
 ## 0.1.29
 
 ### Patch Changes
