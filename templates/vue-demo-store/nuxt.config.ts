@@ -7,6 +7,7 @@ export default defineNuxtConfig({
       shopware: {
         shopwareEndpoint: "https://demo-frontends.shopware.store",
         shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        devStorefrontUrl: "",
       },
     },
   },
@@ -32,6 +33,7 @@ export default defineNuxtConfig({
     "@shopware-pwa/nuxt3-module",
     "@shopware-pwa/cms-base",
     "@nuxt/devtools",
+    "@nuxtjs/i18n",
   ],
   // components: true,
   components: {
@@ -72,5 +74,16 @@ export default defineNuxtConfig({
     options: {
       linkExactActiveClass: "text-brand-primary",
     },
+  },
+  i18n: {
+    strategy: "no_prefix",
+    langDir: "i18n/src/",
+    locales: [
+      {
+        code: "en-US",
+        iso: "en-US",
+        file: "en-US.ts",
+      },
+    ],
   },
 });

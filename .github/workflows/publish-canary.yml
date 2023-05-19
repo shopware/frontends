@@ -15,6 +15,8 @@ jobs:
   publish:
     name: Publish canary version
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -55,3 +57,6 @@ jobs:
 
       - name: Publish canary packages
         run: pnpm changeset publish --no-git-tag --no-git-checks --tag canary
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_CONFIG_PROVENANCE: true

@@ -18,23 +18,23 @@ describe("CustomerService - register", () => {
       post: mockedPost,
     } as any;
     customerData = {
-      salutationId: faker.datatype.uuid(),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
+      salutationId: faker.string.uuid(),
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
       password: faker.internet.password(8),
       email: faker.internet.email(),
       billingAddress: {
-        countryId: faker.datatype.uuid(),
-        street: faker.address.streetName(),
-        zipcode: faker.address.zipCode(),
-        city: faker.address.city(),
-        phoneNumber: faker.phone.phoneNumber(),
+        countryId: faker.string.uuid(),
+        street: faker.location.street(),
+        zipcode: faker.location.zipCode(),
+        city: faker.location.city(),
+        phoneNumber: faker.phone.number(),
       },
     };
   });
 
   it("should register the new customer with basic data provided", async () => {
-    const customerId = faker.datatype.uuid();
+    const customerId = faker.string.uuid();
     mockedPost.mockResolvedValueOnce({ data: customerId });
     const result = await register(customerData);
     expect(mockedPost).toBeCalledTimes(1);

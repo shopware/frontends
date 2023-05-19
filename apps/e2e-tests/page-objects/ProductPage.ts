@@ -22,14 +22,15 @@ export class ProductPage {
   async addToCart() {
     await expect(this.page.getByTestId("add-to-cart-button")).toBeVisible();
     await this.addToCartButton.waitFor();
-    await this.addToCartButton.click();
+    await this.addToCartButton.click({ delay: 500 });
   }
 
   async addVariantToCart() {
     for (const variant of await this.page
       .getByTestId("product-variant-text")
       .all())
-      await variant.click(), await this.page.waitForLoadState("load");
+      await variant.click();
+    await this.page.waitForLoadState("load");
     await this.addToCartButton.waitFor();
     await this.addToCartButton.click();
     await this.miniCartLink.click();

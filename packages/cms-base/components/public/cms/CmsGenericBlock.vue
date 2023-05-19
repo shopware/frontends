@@ -26,7 +26,6 @@ const DynamicRender = () => {
 
     layoutStyles.backgroundColor = null;
     layoutStyles.backgroundImage = null;
-
     return h(
       "div",
       {

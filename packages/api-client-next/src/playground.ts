@@ -29,15 +29,16 @@ const apiInstance = createAPIClient<extendedOPerations, extendedPaths>({
   accessToken,
   apiType,
 });
+apiInstance.invoke("readSitemap get /sitemap", {});
 
-async function customOperation() {
-  const resp = await apiInstance.invoke("qweqwe post /some/{addressId}/pathh", {
-    addressId: "123",
-  });
+// async function customOperation() {
+//   const resp = await apiInstance.invoke("qweqwe post /some/{addressId}/pathh", {
+//     addressId: "123",
+//   });
 
-  // resp.;
-}
-
-async function test() {
-  const resp = await apiInstance.invoke("readSitemap get /sitemap", {});
-}
+//   // resp.;
+// }
+// async function test() {
+//   const resp = await apiInstance.invoke("readSitemap get /sitemap", {});
+//   console.log("resp", resp);
+// }

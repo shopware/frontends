@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/vue3-plugin",
-  "version": "0.1.28",
+  "version": "0.1.30",
   "description": "Shopware Fromends Vue3 plugin",
   "author": "Shopware",
   "repository": {
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "typescript": "^5.0.4",
-    "vite": "^4.3.4",
+    "vite": "^4.3.7",
     "vite-dts": "^1.0.4"
   },
   "dependencies": {
@@ -41,6 +41,6 @@
     "js-cookie": "^3.0.5"
   },
   "peerDependencies": {
-    "vue": "^3.2.47"
+    "vue": "^3.3.2"
   }
 }

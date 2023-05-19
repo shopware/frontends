@@ -18,8 +18,8 @@ describe("CartService - addPromotionCode", () => {
   it("should call valid endpoint and return a cart", async () => {
     mockedPost.mockResolvedValueOnce({
       data: {
-        name: faker.datatype.uuid(),
-        token: faker.datatype.uuid(),
+        name: faker.string.uuid(),
+        token: faker.string.uuid(),
         price: {
           netPrice: 150,
         },

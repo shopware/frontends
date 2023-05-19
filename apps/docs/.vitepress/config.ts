@@ -24,6 +24,7 @@ export const sidebar = [
       { text: "Shared Composables", link: "/framework/shared-composables" },
       { text: "Images", link: "/framework/images" },
       { text: "Associations", link: "/framework/associations" },
+      { text: "Storefront url", link: "/framework/storefront-url" },
     ],
   },
   {

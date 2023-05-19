@@ -14,7 +14,7 @@ watch(
     content.value = {
       config: {
         minHeight: {
-          value: "300px",
+          value: "600px",
           source: "static",
         },
         navigationArrows: {

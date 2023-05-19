@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Product, ProductReview } from "@shopware-pwa/types";
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import {
+  getProductRoute,
+  getTranslatedProperty,
+} from "@shopware-pwa/helpers-next";
 import { getProductReviews } from "@shopware-pwa/api-client";
 import { Ref } from "vue";
 
@@ -8,7 +11,6 @@ const props = defineProps<{
   product: Product;
 }>();
 const reviews: Ref<ProductReview[]> = ref([]);
-const route = useRoute();
 const router = useRouter();
 
 const { apiInstance } = useShopwareContext();
@@ -34,10 +36,8 @@ const description = computed(() =>
 const properties = computed(() => props.product?.properties || []);
 
 const handleVariantChange = (val: Product) => {
-  const path = val.seoUrls?.[0].seoPathInfo;
-  if (path && route.path !== `/${path}`) {
-    router.push(`/${path}`);
-  }
+  const newRoute = getProductRoute(val);
+  router.push(newRoute);
 };
 </script>
 
@@ -93,14 +93,18 @@ const handleVariantChange = (val: Product) => {
           <div class="container mx-auto mb-8">
             <!-- Description and details -->
             <div v-if="description">
-              <h3 class="text-sm font-bold text-gray-900">Description</h3>
+              <h3 class="text-sm font-bold text-gray-900">
+                {{ $t("product.description") }}
+              </h3>
               <div class="mt-4 space-y-6">
                 <div class="text-base text-gray-900" v-html="description" />
               </div>
             </div>
 
             <div v-if="properties?.length" class="mt-10">
-              <h3 class="text-sm font-medium text-gray-900">Properties</h3>
+              <h3 class="text-sm font-medium text-gray-900">
+                {{ $t("product.price.properties") }}
+              </h3>
 
               <div class="mt-4">
                 <ul role="list" class="pl-4 list-disc text-sm space-y-2">
@@ -118,7 +122,9 @@ const handleVariantChange = (val: Product) => {
             </div>
 
             <div v-if="reviews?.length" class="mt-10">
-              <h3 class="text-sm font-medium text-gray-900">Reviews</h3>
+              <h3 class="text-sm font-medium text-gray-900">
+                {{ $t("product.price.reviews") }}
+              </h3>
               <div v-if="reviews?.length" class="mt-4">
                 <ul role="list" class="pl-4 list-disc text-sm space-y-2">
                   <li

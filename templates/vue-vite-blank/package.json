@@ -11,13 +11,13 @@
   "dependencies": {
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/vue3-plugin": "canary",
-    "vue": "^3.2.47"
+    "vue": "^3.3.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.1",
+    "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.0.4",
-    "vite": "^4.3.4",
-    "vue-tsc": "^1.6.4"
+    "vite": "^4.3.7",
+    "vue-tsc": "^1.6.5"
   },
   "engines": {
     "node": "^16.x || ^18.x"

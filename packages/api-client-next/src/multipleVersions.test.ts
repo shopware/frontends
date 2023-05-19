@@ -8,10 +8,10 @@ import {
   operationPaths as paths6420,
   operations as operations6420,
 } from "../api-types/apiTypes-6.4.20.0";
-import {
-  operationPaths as paths6500,
-  operations as operations6500,
-} from "../api-types/apiTypes-6.5.0.0";
+// import {
+//   operationPaths as paths6500,
+//   operations as operations6500,
+// } from "../api-types/apiTypes-6.5.0.0";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";

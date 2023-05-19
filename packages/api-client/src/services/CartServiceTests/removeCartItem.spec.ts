@@ -19,8 +19,8 @@ describe("CartService - removeCartItem", () => {
     mockedDelete.mockResolvedValueOnce({
       data: {
         data: {
-          name: faker.datatype.uuid(),
-          token: faker.datatype.uuid(),
+          name: faker.string.uuid(),
+          token: faker.string.uuid(),
           lineItems: [],
         },
       },

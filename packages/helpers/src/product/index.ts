@@ -8,3 +8,4 @@ export * from "./getProductRatingAverage";
 export * from "./getProductThumbnailUrl";
 export * from "./getProductCalculatedListingPrice";
 export * from "./getProductFromPrice";
+export * from "./getProductRoute";

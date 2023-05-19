@@ -23,15 +23,10 @@ export type CountryState = {
   versionId: string | null;
   translated: {
     name: string;
-    customFields: unknown;
+    customFields: CustomFields;
   };
   createdAt: string;
   updatedAt: string | null;
-  countryId: string;
-  shortCode: string;
-  name: string | null;
-  position: number;
-  active: boolean;
   id: string;
   apiAlias: "country_state";
 };

@@ -2,19 +2,19 @@ import { ofetch } from "ofetch";
 
 type Operations = Record<string, unknown>;
 
-type Paths = {
-  [path: string]: {
-    [method: string]: unknown;
-  };
-};
+// type Paths = {
+//   [path: string]: {
+//     [method: string]: unknown;
+//   };
+// };
 
 type HttpMethod = "post" | "get" | "put" | "delete" | "patch";
 
-type PathDefinition<
-  OPERATION_NAME extends string,
-  METHOD_NAME extends HttpMethod,
-  PATH_NAME extends string
-> = `${OPERATION_NAME} ${METHOD_NAME} ${PATH_NAME}`;
+// type PathDefinition<
+//   OPERATION_NAME extends string,
+//   METHOD_NAME extends HttpMethod,
+//   PATH_NAME extends string
+// > = `${OPERATION_NAME} ${METHOD_NAME} ${PATH_NAME}`;
 
 type GetInferKey<T, NAME extends string> = T extends { [key in NAME]: infer R }
   ? R
@@ -38,12 +38,12 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
   const defaultHeaders = {
     "sw-access-key": params.accessToken,
     "sw-context-token": params.contextToken,
-  } as any;
+  };
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
-    async onRequest({ request, options }) {},
-    async onRequestError({ request, options, error }) {},
+    // async onRequest({ request, options }) {},
+    // async onRequestError({ request, options, error }) {},
     async onResponse(context) {
       if (
         defaultHeaders["sw-context-token"] !==
@@ -55,7 +55,7 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
         params.onContextChanged?.(newContextToken);
       }
     },
-    async onResponseError({ request, response, options }) {},
+    // async onResponseError({ request, response, options }) {},
   });
 
   /**
@@ -73,26 +73,26 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
       parameters?: { query?: infer R };
     }
       ? R
-      : {}) &
+      : Record<string, never>) &
       (OPERATIONS[OPERATION_NAME] extends {
         parameters?: { path?: infer R };
       }
         ? R
-        : {}) &
+        : Record<string, never>) &
       (OPERATIONS[OPERATION_NAME] extends {
         requestBody?: { content?: { "application/json"?: infer R } };
       }
         ? R
-        : {}) &
+        : Record<string, never>) &
       (OPERATIONS[OPERATION_NAME] extends {
         parameters?: { header?: infer R };
       }
         ? R
-        : {})
+        : Record<string, never>)
   ): Promise<ReturnType<OPERATION_NAME>> {
     const [requestPath, options] = transformPathToQuery(
       pathParam,
-      params as any
+      params as Record<string, string>
     );
     // console.log("invoke with", requestPath, options);
     return apiFetch<ReturnType<OPERATION_NAME>>(requestPath, {
@@ -100,7 +100,7 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
       headers: {
         ...defaultHeaders,
         ...options.headers,
-      },
+      } as HeadersInit,
     });
   }
 
@@ -109,11 +109,12 @@ export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
   };
 }
 
-export function transformPathToQuery<T extends Record<string, any>>(
+export function transformPathToQuery<T extends Record<string, string>>(
   path: string,
   params: T
 ): [string, { method: HttpMethod; query: T; headers: T; body?: T }] {
-  const [operationName, method, pathDefinition, headerParams] = path.split(" ");
+  // first param is operationName, not used here though
+  const [, method, pathDefinition, headerParams] = path.split(" ");
   const [requestPath, queryParams] = pathDefinition.split("?");
 
   // get names in brackets
@@ -129,11 +130,11 @@ export function transformPathToQuery<T extends Record<string, any>>(
   const queryParamNames = queryParams?.split(",") || [];
 
   const headerParamnames = headerParams?.split(",") || [];
-  let headers: any = {};
+  const headers: HeadersInit = {};
   headerParamnames.forEach((paramName) => {
     headers[paramName] = params[paramName];
   });
-  let query: any = {};
+  const query: HeadersInit = {};
   queryParamNames.forEach((paramName) => {
     query[paramName] = params[paramName];
   });
@@ -144,9 +145,9 @@ export function transformPathToQuery<T extends Record<string, any>>(
     query,
   } as {
     method: HttpMethod;
-    headers: any;
-    query: any;
-    body?: any;
+    headers: HeadersInit;
+    query: HeadersInit;
+    body?: Record<string, string>;
   };
   Object.keys(params).forEach((key) => {
     if (

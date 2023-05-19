@@ -20,6 +20,7 @@ const cmsSections = computed<CmsSection[]>(() => {
 const DynamicRender = () => {
   const componentsMap = cmsSections.value.map((section) => {
     return {
+      name: `CmsSection${pascalCase(section.type)}`,
       component: resolveComponent(`CmsSection${pascalCase(section.type)}`),
       section: section,
     };
@@ -34,7 +35,7 @@ const DynamicRender = () => {
       content: componentObject.section,
       class: {
         [cssClasses ?? ""]: true,
-        "max-w-screen-xl mx-auto": layoutStyles?.sizingMode === "boxed",
+        "max-w-screen-2xl mx-auto": layoutStyles?.sizingMode === "boxed",
       },
       style: {
         backgroundColor: layoutStyles?.backgroundColor,
