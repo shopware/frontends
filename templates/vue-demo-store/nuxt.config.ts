@@ -1,4 +1,5 @@
 import transformerDirective from "@unocss/transformer-directives";
+import type { PluginOption } from "vite";
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
@@ -86,4 +87,43 @@ export default defineNuxtConfig({
       },
     ],
   },
+  vite: {
+    plugins: [VueDisableInputsBeforeMount()],
+  },
 });
+
+function VueDisableInputsBeforeMount(): PluginOption {
+  return {
+    name: "vite-vue-disable-inputs-before-mount",
+    enforce: "pre",
+    transform(code, id) {
+      let newCode = code;
+
+      if (id.endsWith(".vue")) {
+        if (newCode.includes("<button") || newCode.includes("<select")) {
+          console.warn("transform", id.endsWith("vue"), id);
+          newCode = newCode.replaceAll(
+            "</script>",
+            `
+          
+              const isDisabled = ref(true);
+              if(typeof onMounted !=="undefined") {
+                onMounted(() => {
+                  console.warn('enabling button');
+                  isDisabled.value = false;
+                });
+              }
+              
+              </script>
+              `
+              .replaceAll("<button", '<button :disabled="isDisabled" ')
+              .replaceAll("<select", '<select :disabled="isDisabled" ')
+          );
+        }
+        return { code: newCode, id };
+      }
+
+      return null;
+    },
+  };
+}

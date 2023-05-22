@@ -110,7 +110,6 @@ const removeCartItem = async () => {
         <button
           v-if="!isPromotion"
           type="button"
-          :disabled="isLoading"
           class="font-medium text-brand-dark"
           :class="{ 'text-gray-500': isLoading }"
           data-testid="product-remove-button"

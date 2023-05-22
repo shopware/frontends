@@ -149,7 +149,6 @@ function next() {
     >
       <button
         v-if="mediaGallery.length > slidesToShow"
-        :disabled="currentThumb <= 0"
         class="disabled:opacity-10 p-1"
         @click="previous"
       >
@@ -201,7 +200,6 @@ function next() {
       </div>
       <button
         v-if="mediaGallery.length > slidesToShow"
-        :disabled="currentThumb + slidesToShow >= mediaGallery.length"
         class="disabled:opacity-10 p-1"
         @click="next"
       >
