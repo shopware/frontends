@@ -11,6 +11,9 @@ head:
       content: "https://frontends-og-image.vercel.app/Building%20the%20**Content%20Pages**.png?fontSize=120px"
 nav:
   position: 30
+footer:
+  prev: false
+  next: false
 ---
 
 # Create content pages
@@ -26,25 +29,8 @@ Using the cms-base package, you don't have to implement any CMS components by yo
 
 ### Install the package
 
-The `@shopware-pwa/cms-base` package provides an implementation of all default CMS components in Shopware's Shopping Experiences. It uses Tailwind.css syntax for styling. You will now use it to render a content page.
-
-First of all, add the package to your project:
-
-```bash
-npm install -D @shopware-pwa/cms-base
-```
-
-Next, you need to register all components in its `components/public` directory globally. How to do it, depends on your environment. However, the package also comes with a nuxt module which does that for you. So in any Nuxt application, you can just add if to the `modules` section of your Nuxt config file:
-
-```diff
-/* nuxt.config.ts */
-
-export default defineNuxtConfig({
-  /* ... */
-- modules: [/* ... */, "@shopware-pwa/nuxt3-module"],
-+ modules: [/* ... */, "@shopware-pwa/cms-base"],
-});
-```
+Depending on which template you are using you need to install the package first.  
+See [install the package](../../framework/shopping-experiences.html#install-the-package).
 
 ### Render the page
 
@@ -62,7 +48,7 @@ if you followed the previous chapter on [routing](../routing.md). The `data` val
 
 The `cms-base` package has an opinionated style of components and is based on Tailwind.css. If you want to override components or add custom ones, you can build them right into your project or import them as a separate package.
 
-<PageRef page="../../framework/shopping-experiences" title="Shopping Experiences" sub="Customize CMS components" />
+<PageRef page="customize-components" title="Customize Components" sub="Customize CMS components (Shopping Experiences)" />
 
 ## Use custom components
 

@@ -8,9 +8,7 @@ nav:
 
 - [Requirements](requirements)
 - [Internal Structure](internal-structure)
+- [Composables](composables)
 - [Shopping Experiences](shopping-experiences)
 - [Styling](styling)
-- [Context Composables](context-composables)
-- [Shared composables](shared-composables)
-- [Images](images)
 - [Associations](associations)
