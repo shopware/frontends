@@ -37,6 +37,7 @@ test.describe.only("Create Order", () => {
   test("Create new order", async ({ page }) => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
+    await page.waitForLoadState("networkidle");
     await registrationPage.fillCustomerData(
       "e2e " + faker.person.firstName(),
       "e2e " + faker.person.lastName(),

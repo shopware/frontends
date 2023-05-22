@@ -21,6 +21,7 @@ test.describe.parallel.only("My account functionalities tests", () => {
   test("Change personal data", async ({ page }) => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
+    await page.waitForLoadState("networkidle");
     await registrationPage.createUser();
     await homePage.openMyAccount();
     await myAccountPage.changePersonalData();
