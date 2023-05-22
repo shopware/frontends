@@ -106,7 +106,6 @@ function VueDisableInputsBeforeMount(): PluginOption {
           newCode = newCode.replaceAll(
             "</script>",
             `
-          
               const isDisabled = ref(typeof onMounted !=="undefined" ? true : false);
               if(typeof onMounted !=="undefined") {
                 onMounted(() => {
@@ -117,9 +116,19 @@ function VueDisableInputsBeforeMount(): PluginOption {
               
               </script>
               `
-              .replaceAll("<button", '<button :disabled="isDisabled" ')
-              .replaceAll("<select", '<select :disabled="isDisabled" ')
           );
+          newCode = newCode.replaceAll(
+            "<button",
+            '<button :disabled="isDisabled" '
+          );
+          newCode = newCode.replaceAll(
+            "<select",
+            '<select :disabled="isDisabled" '
+          );
+        }
+
+        if (id.endsWith("register.vue")) {
+          console.warn("code", newCode);
         }
         return { code: newCode, id };
       }

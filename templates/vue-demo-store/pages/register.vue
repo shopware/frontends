@@ -111,7 +111,6 @@ useBreadcrumbs([
   },
 ]);
 </script>
-
 <template>
   <div class="max-w-screen-xl mx-auto px-6 sm:px-4">
     <div
@@ -145,7 +144,7 @@ useBreadcrumbs([
             data-testid="registration-salutation-select"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">
+            <option selected value="">
               {{ $t("form.chooseSalutation") }}
             </option>
             <option
