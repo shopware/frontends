@@ -61,23 +61,23 @@ export class MyAccountPage {
   }
 
   async changePersonalEmail(email: string) {
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState("networkidle");
     await this.personalEmail.clear();
     await this.personalEmail.type(email);
   }
 
   async changeDefaultBillingAddress() {
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState("networkidle");
     await this.accountChangeBillingAddressButton.click();
   }
 
   async changeDefaultShippingAddress() {
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState("networkidle");
     await this.accountChangeShippingAddressButton.click();
   }
 
   async subsribeNewsletter() {
     await this.newsletterCheckbox.click();
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState("networkidle");
   }
 }
