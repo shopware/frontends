@@ -63,7 +63,8 @@ export class RegisterForm {
   }
 
   async createUser() {
-    await this.salutation.selectOption({ label: "Mr." });
+    this.page.waitForLoadState("networkidle"),
+      await this.salutation.selectOption({ label: "Mr." });
     await this.firstName.type("e2e " + faker.person.firstName());
     await this.lastName.type("e2e " + faker.person.lastName());
     await this.emailAdrdress.type(faker.internet.exampleEmail());
