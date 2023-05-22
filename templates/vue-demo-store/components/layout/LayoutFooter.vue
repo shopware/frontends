@@ -76,4 +76,6 @@ const gridColumns = computed<number>(() =>
       </div>
     </menu>
   </footer>
+
+  <LanguageSwitcher />
 </template>

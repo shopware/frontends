@@ -29,7 +29,10 @@ const { refreshCart } = useCart();
 
 useNotifications();
 useAddress();
+const { getAvailableLanguages } = useInternationalization();
+const a = await getAvailableLanguages();
 
+console.log("aa", a);
 onMounted(() => {
   refreshCart();
   getWishlistProducts();
