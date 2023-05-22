@@ -7,37 +7,37 @@ import {
   useNavigationContext,
 } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
-import deepMerge from '../helpers/deepMerge'
+import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 
 const props = defineProps<{
-    content: CmsElementForm;
-  }>()
+  content: CmsElementForm;
+}>();
 
 type Translations = {
   form: {
-    salutation: string
-    salutationPlaceholder: string,
-    firstName: string
-    firstNamePlaceholder: string
-    lastName: string
-    lastNamePlaceholder: string
-    email: string
-    emailPlaceholder: string
-    phone: string
-    phonePlaceholder: string
-    subject: string
-    subjectPlaceholder: string
-    comment: string
-    commentPlaceholder: string
-    privacy: string
-    dataProtection: string
-    submit: string
+    salutation: string;
+    salutationPlaceholder: string;
+    firstName: string;
+    firstNamePlaceholder: string;
+    lastName: string;
+    lastNamePlaceholder: string;
+    email: string;
+    emailPlaceholder: string;
+    phone: string;
+    phonePlaceholder: string;
+    subject: string;
+    subjectPlaceholder: string;
+    comment: string;
+    commentPlaceholder: string;
+    privacy: string;
+    dataProtection: string;
+    submit: string;
     messages: {
-      contactFormSuccess: string
-    }
-  }
-}
+      contactFormSuccess: string;
+    };
+  };
+};
 
 let translations: Translations = {
   form: {
@@ -59,14 +59,14 @@ let translations: Translations = {
     dataProtection: "I have read the data protection information.",
     submit: "Submit",
     messages: {
-      contactFormSuccess: "We have received your contact request and will process it as soon as possible."
-    }
-  }
-}
+      contactFormSuccess:
+        "We have received your contact request and will process it as soon as possible.",
+    },
+  },
+};
 
-const globalTranslations = getTranslations()
-translations = deepMerge(translations, globalTranslations) as Translations
-
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
 
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);
@@ -166,7 +166,7 @@ const invokeSubmit = async () => {
     <template v-if="!formSent">
       <div class="grid grid-cols-12 gap-5">
         <div class="col-span-4">
-          <label for="salutation">{{translations.form.salutation}} *</label>
+          <label for="salutation">{{ translations.form.salutation }} *</label>
           <select
             id="salutation"
             name="salutation"
@@ -179,7 +179,9 @@ const invokeSubmit = async () => {
             v-model="state.salutationId"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">{{translations.form.salutationPlaceholder}}</option>
+            <option disabled selected value="">
+              {{ translations.form.salutationPlaceholder }}
+            </option>
             <option
               v-for="salutation in getSalutations"
               :key="salutation.id"
@@ -220,7 +222,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-4">
-          <label for="last-name">{{translations.form.lastName}} *</label>
+          <label for="last-name">{{ translations.form.lastName }} *</label>
           <input
             id="last-name"
             name="last-name"
@@ -268,7 +270,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-6">
-          <label for="phone">{{translations.form.phone}} *</label>
+          <label for="phone">{{ translations.form.phone }} *</label>
           <input
             id="phone"
             name="phone"
@@ -292,7 +294,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label for="subject">{{translations.form.subject}} *</label>
+          <label for="subject">{{ translations.form.subject }} *</label>
           <input
             id="subject"
             name="subject"
@@ -316,7 +318,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label for="comment">{{translations.form.comment}} *</label>
+          <label for="comment">{{ translations.form.comment }} *</label>
           <textarea
             id="comment"
             name="comment"
@@ -341,7 +343,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div class="col-span-12">
-          <label>{{translations.form.privacy }} *</label>
+          <label>{{ translations.form.privacy }} *</label>
           <div class="flex gap-3 items-start">
             <input
               id="privacy"
@@ -358,7 +360,7 @@ const invokeSubmit = async () => {
                 :class="[$v.checkbox.$error ? 'text-red-600' : '']"
                 for="privacy"
               >
-                {{translations.form.dataProtection}}
+                {{ translations.form.dataProtection }}
               </label>
             </div>
           </div>
@@ -368,9 +370,8 @@ const invokeSubmit = async () => {
         <button
           class="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-75"
           type="submit"
-          :disabled="loading"
         >
-          {{translations.form.submit }}
+          {{ translations.form.submit }}
         </button>
       </div>
     </template>

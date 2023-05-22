@@ -111,6 +111,7 @@ function VueDisableInputsBeforeMount(): PluginOption {
                 onMounted(() => {
                   console.warn('enabling an input');
                   isDisabled.value = false;
+                  
                 });
               }
               
