@@ -28,6 +28,7 @@ export default defineNuxtConfig({
   //   typeCheck: true,
   //   strict: true,
   // },
+  debug: true,
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
@@ -102,6 +103,9 @@ function VueDisableInputsBeforeMount(): PluginOption {
 
       if (id.endsWith(".vue")) {
         if (newCode.includes("<button") || newCode.includes("<select")) {
+          if (newCode.includes(":disabled=")) {
+            return null;
+          }
           console.warn("transform", id.endsWith("vue"), id);
           newCode = newCode.replaceAll(
             "</script>",
@@ -129,7 +133,7 @@ function VueDisableInputsBeforeMount(): PluginOption {
         }
 
         if (id.endsWith("register.vue")) {
-          console.warn("code", newCode);
+          //console.warn("code", newCode);
         }
         return { code: newCode, id };
       }

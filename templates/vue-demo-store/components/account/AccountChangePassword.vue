@@ -84,14 +84,16 @@ const invokeChange = async (): Promise<void> => {
       class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
       role="alert"
     >
-      <span class="font-medium">{{ $t('changePassword.messages.passwordUpdateSuccess') }}</span>
+      <span class="font-medium">{{
+        $t("changePassword.messages.passwordUpdateSuccess")
+      }}</span>
     </div>
     <div class="text-sm text-gray-500">
       <div>
-        {{ $t('changePassword.infoBox') }}
+        {{ $t("changePassword.infoBox") }}
       </div>
       <div v-if="state.email">
-        {{  $t('changePassword.currentEmail') }}
+        {{ $t("changePassword.currentEmail") }}
         <span class="text-gray-900">{{ state.email }}</span>
       </div>
     </div>
@@ -112,7 +114,7 @@ const invokeChange = async (): Promise<void> => {
           <label
             for="current-password"
             class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >{{$t('changePassword.form.currentPassword')}}</label
+            >{{ $t("changePassword.form.currentPassword") }}</label
           >
           <input
             id="current-password"
@@ -137,7 +139,7 @@ const invokeChange = async (): Promise<void> => {
           <label
             for="new-password"
             class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >{{ $t('changePassword.form.newPassword') }}</label
+            >{{ $t("changePassword.form.newPassword") }}</label
           >
           <input
             id="new-password"
@@ -162,7 +164,7 @@ const invokeChange = async (): Promise<void> => {
           <label
             for="confirm-password"
             class="block mb-2 text-sm font-medium text-gray-500 dark:text-white"
-            >{{ $t('changePassword.form.resetPassword') }}</label
+            >{{ $t("changePassword.form.resetPassword") }}</label
           >
           <input
             id="confirm-password"
@@ -190,9 +192,8 @@ const invokeChange = async (): Promise<void> => {
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
           data-testid="account-change-current-submit-button"
-          :disabled="loadingData"
         >
-         {{ $t('changePassword.form.changePassword') }}
+          {{ $t("changePassword.form.changePassword") }}
         </button>
       </div>
     </form>

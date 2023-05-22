@@ -129,7 +129,7 @@ onBeforeMount(async () => {
   <div class="space-y-8">
     <div class="text-sm text-gray-500">
       <div>
-        {{ $t('account.personalData.infoBox') }}
+        {{ $t("account.personalData.infoBox") }}
       </div>
     </div>
     <form
@@ -142,7 +142,9 @@ onBeforeMount(async () => {
         class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg"
         role="alert"
       >
-        <span class="font-medium">{{$t('account.messages.personalDataUpdateSuccess')}}</span>
+        <span class="font-medium">{{
+          $t("account.messages.personalDataUpdateSuccess")
+        }}</span>
       </div>
       <div
         v-if="errorMessages.length"
@@ -156,7 +158,7 @@ onBeforeMount(async () => {
             for="firstname"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            {{$t('form.firstName')}}
+            {{ $t("form.firstName") }}
           </label>
           <input
             id="firstname"
@@ -183,7 +185,7 @@ onBeforeMount(async () => {
             for="lastname"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            {{ $t('form.lastName') }}
+            {{ $t("form.lastName") }}
           </label>
           <input
             id="lastname"
@@ -193,7 +195,7 @@ onBeforeMount(async () => {
             autocomplete="lastname"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-             :placeholder="$t('form.lastNamePlaceholder')"
+            :placeholder="$t('form.lastNamePlaceholder')"
             data-testid="account-personal-data-lastname-input"
             :disabled="loadingData"
             @blur="$v.lastName.$touch()"
@@ -210,7 +212,7 @@ onBeforeMount(async () => {
             for="email"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            {{ $t('form.email') }}
+            {{ $t("form.email") }}
           </label>
           <input
             id="email"
@@ -237,7 +239,7 @@ onBeforeMount(async () => {
             for="email-confirm"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            {{ $t('form.confirmEmail') }}
+            {{ $t("form.confirmEmail") }}
           </label>
           <input
             id="email-confirm"
@@ -264,7 +266,7 @@ onBeforeMount(async () => {
             for="password"
             class="block mb-2 text-sm font-medium text-gray-500"
           >
-            {{ $t('form.password') }}
+            {{ $t("form.password") }}
           </label>
           <input
             id="password"
@@ -293,9 +295,8 @@ onBeforeMount(async () => {
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
           data-testid="account-personal-data-submit-button"
-          :disabled="loadingData"
         >
-          {{ $t('form.save') }}
+          {{ $t("form.save") }}
         </button>
       </div>
     </form>
