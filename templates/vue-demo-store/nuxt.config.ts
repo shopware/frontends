@@ -92,6 +92,7 @@ export default defineNuxtConfig({
   },
 });
 
+// excuse me, just for tests
 function VueDisableInputsBeforeMount(): PluginOption {
   return {
     name: "vite-vue-disable-inputs-before-mount",
@@ -106,10 +107,10 @@ function VueDisableInputsBeforeMount(): PluginOption {
             "</script>",
             `
           
-              const isDisabled = ref(true);
+              const isDisabled = ref(typeof onMounted !=="undefined" ? true : false);
               if(typeof onMounted !=="undefined") {
                 onMounted(() => {
-                  console.warn('enabling button');
+                  console.warn('enabling an input');
                   isDisabled.value = false;
                 });
               }
