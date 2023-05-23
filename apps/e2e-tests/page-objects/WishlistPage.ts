@@ -16,11 +16,12 @@ export class WishlistPage {
   }
 
   async openWishlist() {
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState("networkidle");
     await this.wishlistButton.click();
   }
 
   async removeProductFromWishlist() {
+    await this.page.waitForLoadState("networkidle");
     await this.productInWishlistButton.click();
   }
 }
