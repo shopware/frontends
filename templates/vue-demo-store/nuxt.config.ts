@@ -84,6 +84,11 @@ export default defineNuxtConfig({
         iso: "en-US",
         file: "en-US.ts",
       },
+      {
+        code: "pl-PL",
+        iso: "pl-PL",
+        file: "pl-PL.ts",
+      },
     ],
   },
 });

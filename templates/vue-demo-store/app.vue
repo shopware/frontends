@@ -26,13 +26,21 @@ useSessionContext(sessionContextData.value as SessionContext);
 
 const { getWishlistProducts } = useWishlist();
 const { refreshCart } = useCart();
+const { locale } = useI18n();
 
 useNotifications();
 useAddress();
-const { getAvailableLanguages } = useInternationalization();
-const a = await getAvailableLanguages();
 
-console.log("aa", a);
+const { getAvailableLanguages, getLanguageCodeFromId } =
+  useInternationalization();
+const { languageIdChain } = useSessionContext();
+
+const languages = await getAvailableLanguages();
+
+if (languages.elements.length) {
+  locale.value = getLanguageCodeFromId(languageIdChain.value);
+}
+
 onMounted(() => {
   refreshCart();
   getWishlistProducts();
