@@ -6,9 +6,9 @@ This listing shows the product name and price with soft hover effects and a fade
 
 <div class="flex flex-col items-center">
 
-<img src="./condensed-listing-md.png" alt="Preview for medium screen size" class="p-3 hidden sm:block border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
+<img src="../../../.assets/condensed-listing-md.png" alt="Preview for medium screen size" class="p-3 hidden sm:block border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
-<img src="./condensed-listing-sm.png" alt="Preview for small screen size" class="sm:hidden border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
+<img src="../../../.assets/condensed-listing-sm.png" alt="Preview for small screen size" class="sm:hidden border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
 </div>
 

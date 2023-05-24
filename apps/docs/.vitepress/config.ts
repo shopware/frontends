@@ -15,6 +15,7 @@ export const sidebar = [
   },
   {
     text: "FRAMEWORK",
+    link: "/framework/",
     items: [
       { text: "Requirements", link: "/framework/requirements" },
       { text: "Internal Structure", link: "/framework/internal-structure" },
@@ -42,6 +43,7 @@ export const sidebar = [
   },
   {
     text: "BUILDING",
+    link: "/getting-started/",
     items: [
       {
         text: "Setup Templates",
@@ -68,7 +70,7 @@ export const sidebar = [
       { text: "Routing", link: "/getting-started/routing" },
       {
         text: "CMS",
-        link: "/getting-started/cms/index",
+        link: "/getting-started/cms/",
         items: [
           { text: "Content Pages", link: "/getting-started/cms/content-pages" },
           {
@@ -88,11 +90,15 @@ export const sidebar = [
       },
       {
         text: "E-Commerce",
-        link: "/getting-started/e-commerce/index",
+        link: "/getting-started/e-commerce/",
         items: [
           {
             text: "Product listing",
             link: "/getting-started/e-commerce/product-listing",
+          },
+          {
+            text: "Product detail page",
+            link: "/getting-started/e-commerce/product-detail-page",
           },
           { text: "Prices", link: "/getting-started/e-commerce/prices" },
           { text: "Cart", link: "/getting-started/e-commerce/cart" },
@@ -106,7 +112,7 @@ export const sidebar = [
       },
       {
         text: "Page elements",
-        link: "/getting-started/page-elements/index",
+        link: "/getting-started/page-elements/",
         items: [
           {
             text: "Breadcrumbs",
@@ -132,6 +138,7 @@ export const sidebar = [
   },
   {
     text: "BEST PRACTICES",
+    link: "/best-practices/",
     items: [
       { text: "Deployment", link: "/best-practices/deployment" },
       {
@@ -151,6 +158,7 @@ export const sidebar = [
   },
   {
     text: "PACKAGE REFERENCE",
+    link: "/packages/",
     items: [
       { text: "Composables", link: "/packages/composables" },
       {
@@ -173,8 +181,25 @@ export const sidebar = [
   },
   {
     text: "RESOURCES",
+    link: "/resources/",
     items: [
-      { text: "Examples", link: "/resources/examples/" },
+      {
+        text: "Examples",
+        link: "/resources/examples/",
+        items: [
+          { text: "Navigation", link: "/resources/examples/navigation/" },
+          { text: "Cart", link: "/resources/examples/cart/" },
+          { text: "Product listing", link: "/resources/examples/listing/" },
+          {
+            text: "Product Detail Page",
+            link: "/resources/examples/product-detail-page/",
+          },
+          {
+            text: "Footer Navigation",
+            link: "/resources/examples/footer-navigation/",
+          },
+        ],
+      },
       { text: "Community Modules", link: "/resources/community-modules/" },
     ],
   },
