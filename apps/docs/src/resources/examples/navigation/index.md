@@ -4,9 +4,9 @@
 
 <div class="flex flex-col items-center">
 
-<img src="../../../.assets/simple-navigation-md.png" alt="Preview for medium screen size" class="hidden sm:block border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
+<img src="./simple-navigation-md.png" alt="Preview for medium screen size" class="hidden sm:block border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
-<img src="../../../.assets/simple-navigation-sm.png" alt="Preview for small screen size" class="sm:hidden border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
+<img src="./simple-navigation-sm.png" alt="Preview for small screen size" class="sm:hidden border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
 </div>
 

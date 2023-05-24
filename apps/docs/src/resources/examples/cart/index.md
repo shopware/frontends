@@ -6,7 +6,7 @@ This cart is position in a sticky position on the right side of your screen and 
 
 <div class="flex flex-col items-center">
 
-<img src="../../../.assets/simple-cart-md.png" alt="Preview for medium screen size" class="p-3 border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
+<img src="./simple-cart-md.png" alt="Preview for medium screen size" class="p-3 border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
 </div>
 

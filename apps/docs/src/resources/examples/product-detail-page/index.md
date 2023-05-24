@@ -6,7 +6,7 @@ See also the [complete guide](../../../getting-started/e-commerce/product-detail
 
 <div class="flex flex-col items-center">
 
-<img src="../../../.assets/pdp-simple-example.png" alt="Image of Product Detail Page simple example" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
+<img src="./pdp-simple-example.png" alt="Image of Product Detail Page simple example" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
 
 </div>
 
