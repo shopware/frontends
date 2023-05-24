@@ -109,7 +109,7 @@ const addAddressModalController = useModal();
         data-testid="address-set-default-shipping"
         @click="setDefaultShippingAddress()"
       >
-      {{ $t('account.setDefaultShippingAddress') }}
+        {{ $t("account.setDefaultShippingAddress") }}
       </a>
       <a
         v-if="defaultBillingAddressId !== address.id"
@@ -119,7 +119,7 @@ const addAddressModalController = useModal();
         data-testid="address-set-default-billing"
         @click="setDefaultBillingAddress()"
       >
-      {{ $t('account.setDefaultBillingAddress') }}
+        {{ $t("account.setDefaultBillingAddress") }}
       </a>
     </div>
   </div>

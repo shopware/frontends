@@ -11,11 +11,11 @@ const props = withDefaults(
 );
 const { t } = useI18n();
 const errorMessageMap: { [key: number]: string } = {
-  404: t('errorPages.404'),
-  408: t('errorPages.408'),
-  500: t('errorPages.500'),
-  502: t('errorPages.502'),
-  503: t('errorPages.503'),
+  404: t("errorPages.404"),
+  408: t("errorPages.408"),
+  500: t("errorPages.500"),
+  502: t("errorPages.502"),
+  503: t("errorPages.503"),
 };
 
 const errorMessage = props.errorMessage || errorMessageMap[props.errorCode];
@@ -34,7 +34,8 @@ export default {
     <div class="flex flex-col items-center justify-center my-8">
       <div class="max-w-md text-center">
         <h1 class="mb-8 font-extrabold text-9xl">
-          <span class="sr-only">{{ $t('error')}}</span>{{ errorCode }}
+          <span class="sr-only">{{ $t("error") }}</span
+          >{{ errorCode }}
         </h1>
         <p class="text-xl md:text-3xl font-semibold mt-4 mb-8">
           {{ errorMessage }}
@@ -43,7 +44,7 @@ export default {
           to="/"
           class="w-full lg:w-auto justify-center py-3 px-8 border shadow-sm text-sm font-medium rounded-md text-white bg-brand-light hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
         >
-          {{ $t('goBackHome')}}
+          {{ $t("goBackHome") }}
         </NuxtLink>
       </div>
     </div>

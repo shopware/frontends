@@ -13,6 +13,7 @@ import {
 } from "@shopware-pwa/types";
 
 const { pushSuccess, pushError } = useNotifications();
+const { t } = useI18n();
 
 const props = withDefaults(
   defineProps<{
