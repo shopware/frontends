@@ -7,7 +7,7 @@ export type CustomerWishlist = {
   versionId: null | string;
   translated: string[];
   createdAt: string;
-  updatedAt: null | string;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   customFields: CustomFields;

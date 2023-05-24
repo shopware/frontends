@@ -21,7 +21,7 @@ export type Country = {
   customFields: CustomFields | null;
   name: string | null;
   iso: string | null;
-  updatedAt: string | null;
+  updatedAt: Date | string | null;
   versionId: string | null;
   id: string;
   position: number;

@@ -7,6 +7,7 @@ export default {
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength, requiredIf } from "@vuelidate/validators";
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
+import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 
 definePageMeta({
   layout: "checkout",
@@ -623,6 +624,12 @@ const addAddressModalController = useModal();
                 <div class="flex justify-between">
                   <div>
                     {{ singleShippingMethod.translated?.name }}
+                    <span
+                      v-if="getShippingMethodDeliveryTime(singleShippingMethod)"
+                      >({{
+                        getShippingMethodDeliveryTime(singleShippingMethod)
+                      }})</span
+                    >
                     <span
                       v-if="singleShippingMethod.translated?.description"
                       class="italic text-sm text-gray-500 block"

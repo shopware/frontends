@@ -8,7 +8,7 @@ export type Downloads = {
   versionId: string;
   translated: { [key: string]: string };
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | string | null;
   orderLineItemId: string;
   orderLineItemVersionId: string;
   mediaId: string;

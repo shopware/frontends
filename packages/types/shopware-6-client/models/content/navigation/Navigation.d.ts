@@ -44,7 +44,7 @@ export type SeoUrl = {
   versionId: null | string;
   translated: [];
   createdAt: Date;
-  updatedAt: null | Date;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   apiAlias: string;
