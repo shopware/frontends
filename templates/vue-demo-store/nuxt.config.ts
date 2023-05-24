@@ -80,9 +80,9 @@ export default defineNuxtConfig({
     langDir: "i18n/src/",
     locales: [
       {
-        code: "en-US",
-        iso: "en-US",
-        file: "en-US.ts",
+        code: "en-GB",
+        iso: "en-GB",
+        file: "en-GB.ts",
       },
       {
         code: "pl-PL",

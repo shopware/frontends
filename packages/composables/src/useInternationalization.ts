@@ -1,9 +1,9 @@
 import { useShopwareContext } from "./useShopwareContext";
 import { getAvailableLanguages as getAvailableLanguagesAPI } from "@shopware-pwa/api-client";
 import { _useContext } from "./internal/_useContext";
-
+import { ContextUpdateResult, Language } from "@shopware-pwa/types";
 import { setCurrentLanguage } from "@shopware-pwa/api-client";
-
+import { Ref } from "vue";
 export type UseInternationalizationReturn = {
   /**
    * StorefrontUrl is needed to specify language of emails
@@ -12,8 +12,8 @@ export type UseInternationalizationReturn = {
   getAvailableLanguages(): any;
   changeLanguage(languageId: string): Promise<void>;
   getLanguageCodeFromId(languageId: string): string;
-  languages: any;
-  currentLanguage: any;
+  languages: Ref<Language[]>;
+  currentLanguage: Ref<string>;
 };
 
 /**
@@ -25,8 +25,10 @@ export function useInternationalization(): UseInternationalizationReturn {
   const { devStorefrontUrl } = useShopwareContext();
   const { apiInstance } = useShopwareContext();
 
-  const _storeLanguages = _useContext<any>("swLanguages");
-  const _storeCurrentLanguage = _useContext<any>("swLanguagesCurrentLanguage");
+  const _storeLanguages = _useContext<Language[]>("swLanguages");
+  const _storeCurrentLanguage = _useContext<string>(
+    "swLanguagesCurrentLanguage"
+  );
 
   function getStorefrontUrl() {
     return devStorefrontUrl ?? window.location.origin ?? "";
@@ -43,14 +45,10 @@ export function useInternationalization(): UseInternationalizationReturn {
   }
 
   function getLanguageCodeFromId(languageId: string) {
-    console.log("language.id", languageId);
-    console.log(
-      "oooo",
-      _storeLanguages.value.find((element: any) => element.id === languageId)
+    return (
+      _storeLanguages.value.find((element: any) => element?.id === languageId)
+        ?.translationCode?.code || ""
     );
-    return _storeLanguages.value.find(
-      (element: any) => element.id === languageId
-    )?.translationCode.code;
   }
 
   return {
