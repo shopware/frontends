@@ -39,15 +39,18 @@ export function useWishlist(): UseWishlistReturn {
   const canSyncWishlist = computed(
     () => isLoggedIn.value && !isGuestSession.value
   );
+
   const {
     getWishlistProducts: getWishlistProductsLocal,
     items: itemsLocal,
     clearWishlist: clearWishlistLocal,
   } = useLocalWishlist();
+
   const {
     getWishlistProducts: getWishlistProductsSync,
     items: itemsSync,
     mergeWishlistProducts: mergeWishlistProductsSync,
+    removeFromWishlistSync,
   } = useSyncWishlist();
 
   const getWishlistProducts = async () => {
@@ -58,8 +61,13 @@ export function useWishlist(): UseWishlistReturn {
     }
   };
 
-  const clearWishlist = () => {
-    clearWishlistLocal();
+  const clearWishlist = async () => {
+    if (canSyncWishlist.value) {
+      await Promise.all(items.value.map((id) => removeFromWishlistSync(id)));
+      await getWishlistProductsSync();
+    } else {
+      clearWishlistLocal();
+    }
   };
 
   const mergeWishlistProducts = async () => {

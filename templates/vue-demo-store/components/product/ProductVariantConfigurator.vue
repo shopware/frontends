@@ -12,8 +12,9 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: "change", selected: Product | undefined): void;
+  (e: "change", selected: Product): void;
 }>();
+
 const isLoading = ref<boolean>();
 const router = useRouter();
 const {
@@ -39,7 +40,7 @@ const onHandleChange = async () => {
       console.error("incorrect URL", selectedOptionsVariantPath);
     }
   } else {
-    emit("change", variantFound);
+    if (variantFound) emit("change", variantFound);
   }
   isLoading.value = false;
 };
@@ -64,7 +65,9 @@ const onHandleChange = async () => {
         {{ optionGroup.name }}
       </h3>
       <fieldset class="mt-4 flex-1">
-        <legend class="sr-only"> {{ $t('product.choose') }} {{ optionGroup.name }}</legend>
+        <legend class="sr-only">
+          {{ $t("product.choose") }} {{ optionGroup.name }}
+        </legend>
         <div class="flex gap3">
           <label
             v-for="option in optionGroup.options"

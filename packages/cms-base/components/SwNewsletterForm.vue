@@ -3,36 +3,35 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { CmsElementForm } from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
-import deepMerge from '../helpers/deepMerge'
+import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 
-const props = 
-  defineProps<{
-    content: CmsElementForm;
-  }>()
+const props = defineProps<{
+  content: CmsElementForm;
+}>();
 
 type Translations = {
   form: {
-    subscribeLabel: string
-    unsubscribeLabel: string
-    action: string
-    email: string
-    emailPlaceholder: string
-    salutation: string
-    salutationPlaceholder: string
-    firstName: string
-    firstNamePlaceholder: string
-    lastName: string
-    lastNamePlaceholder: string
-    privacy: string
-    privacyLabel: string
-    submit: string
-    newsletterBenefits: string
-  }
-}
+    subscribeLabel: string;
+    unsubscribeLabel: string;
+    action: string;
+    email: string;
+    emailPlaceholder: string;
+    salutation: string;
+    salutationPlaceholder: string;
+    firstName: string;
+    firstNamePlaceholder: string;
+    lastName: string;
+    lastNamePlaceholder: string;
+    privacy: string;
+    privacyLabel: string;
+    submit: string;
+    newsletterBenefits: string;
+  };
+};
 
 let translations: Translations = {
-     form: {
+  form: {
     subscribeLabel: "Subscribe to newsletter",
     unsubscribeLabel: "Unsubscribe from newsletter",
     action: "Action",
@@ -47,12 +46,13 @@ let translations: Translations = {
     privacy: "Privacy",
     privacyLabel: "I have read the data protection information.",
     submit: "Submit",
-    newsletterBenefits: "Be aware of upcoming sales and events.Receive gifts and special offers!"
-  }
-}
+    newsletterBenefits:
+      "Be aware of upcoming sales and events.Receive gifts and special offers!",
+  },
+};
 
-const globalTranslations = getTranslations()
-translations = deepMerge(translations, globalTranslations) as Translations
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
 
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);
@@ -159,7 +159,7 @@ const invokeSubmit = async () => {
     <template v-if="!formSent">
       <div class="grid grid-cols-12 gap-5">
         <div class="col-span-12">
-          <label for="option">{{translations.form.action}} *</label>
+          <label for="option">{{ translations.form.action }} *</label>
           <select
             id="option"
             name="option"
@@ -176,7 +176,7 @@ const invokeSubmit = async () => {
           </select>
         </div>
         <div class="col-span-12">
-          <label for="email-address">{{translations.form.email}} *</label>
+          <label for="email-address">{{ translations.form.email }} *</label>
           <input
             id="email-address"
             name="email"
@@ -200,7 +200,7 @@ const invokeSubmit = async () => {
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
-          <label for="salutation">{{translations.form.salutation}} *</label>
+          <label for="salutation">{{ translations.form.salutation }} *</label>
           <select
             id="salutation"
             name="salutation"
@@ -213,7 +213,9 @@ const invokeSubmit = async () => {
             v-model="state.salutationId"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">{{ translations.form.salutationPlaceholder }}</option>
+            <option disabled selected value="">
+              {{ translations.form.salutationPlaceholder }}
+            </option>
             <option
               v-for="salutation in getSalutations"
               :key="salutation.id"
@@ -295,7 +297,7 @@ const invokeSubmit = async () => {
                 :class="[$v.checkbox.$error ? 'text-red-600' : '']"
                 for="privacy"
               >
-                {{translations.form.privacyLabel }}
+                {{ translations.form.privacyLabel }}
               </label>
             </div>
           </div>
@@ -307,7 +309,7 @@ const invokeSubmit = async () => {
           type="submit"
           :disabled="loading"
         >
-          {{translations.form.submit }}
+          {{ translations.form.submit }}
         </button>
       </div>
     </template>

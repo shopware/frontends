@@ -1,33 +1,31 @@
 <script setup lang="ts">
 import { Product } from "@shopware-pwa/types";
-import deepMerge from '../helpers/deepMerge'
+import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 
 const { pushSuccess } = useNotifications();
-const props = 
-  defineProps<{
-    product: Product;
-  }>();
+const props = defineProps<{
+  product: Product;
+}>();
 
 type Translations = {
   product: {
-    addedToCart: string
-    qty: string
-    addToCart: string
-  }
-}
+    addedToCart: string;
+    qty: string;
+    addToCart: string;
+  };
+};
 
 let translations: Translations = {
   product: {
     addedToCart: "has been added to cart.",
     qty: "Qty",
-    addToCart: "Add to cart"
-  }
-}
+    addToCart: "Add to cart",
+  },
+};
 
-const globalTranslations = getTranslations()
-translations = deepMerge(translations, globalTranslations) as Translations
-
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { product } = toRefs(props);
 
@@ -35,14 +33,16 @@ const { addToCart, quantity } = useAddToCart(product);
 
 const addToCartProxy = async () => {
   await addToCart();
-  pushSuccess(`${props.product?.translated?.name} ${translations.product.addedToCart}`);
+  pushSuccess(
+    `${props.product?.translated?.name} ${translations.product.addedToCart}`
+  );
 };
 </script>
 
 <template>
   <div class="flex flex-row mt-10">
     <div class="basis-1/4 relative -top-6">
-      <label for="qty" class="text-sm">{{translations.product.qty}}</label>
+      <label for="qty" class="text-sm">{{ translations.product.qty }}</label>
       <input
         id="qty"
         type="number"

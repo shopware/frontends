@@ -26,7 +26,8 @@
     "header": "Wishlist",
     "emptyLabel": "Wishlist is empty",
     "emptyText": "No products were added to the Wishlist.",
-    "continueShopping": "Continue Shopping"
+    "continueShopping": "Continue Shopping",
+    "clearWishlist": "Clear wishlist"
   },
   "errorPages": {
     "404": "We can't find what you are looking for. Are you lost?",

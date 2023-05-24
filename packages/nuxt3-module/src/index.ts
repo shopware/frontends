@@ -128,6 +128,7 @@ export type ShopwareNuxtOptions = {
    */
   shopwareEndpoint?: string;
   shopwareAccessToken?: string;
+  devStorefrontUrl?: string;
   apiClientConfig?: {
     timeout?: number | string;
   };

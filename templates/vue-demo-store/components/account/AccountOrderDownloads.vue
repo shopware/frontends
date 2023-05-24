@@ -26,7 +26,7 @@ const getDocumentDate = (documentDate: Date) =>
 </script>
 <template>
   <div>
-    <h3 class="font-medium">{{$t('account.documentsLabel')}}</h3>
+    <h3 class="font-medium">{{ $t("account.documentsLabel") }}</h3>
     <ul class="list-disc pl-6">
       <li
         v-for="document in documents"

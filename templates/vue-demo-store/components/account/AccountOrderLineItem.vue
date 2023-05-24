@@ -44,11 +44,11 @@ export default {
       </div>
     </div>
     <div class="flex justify-between">
-      <div class="sm:hidden">{{ $t('account.order.quantity') }}</div>
+      <div class="sm:hidden">{{ $t("account.order.quantity") }}</div>
       <div>{{ lineItem.quantity }}</div>
     </div>
     <div v-if="lineItem.unitPrice" class="flex justify-between">
-      <div class="sm:hidden">{{ $t('account.order.price') }}</div>
+      <div class="sm:hidden">{{ $t("account.order.price") }}</div>
       <SharedPrice
         :value="lineItem.unitPrice"
         class="text-gray-600 font-normal"
@@ -59,7 +59,7 @@ export default {
       v-if="lineItem.totalPrice"
       class="flex justify-between sm:justify-self-end"
     >
-      <div class="sm:hidden">{{ $t('account.order.subtotal') }}</div>
+      <div class="sm:hidden">{{ $t("account.order.subtotal") }}</div>
       <SharedPrice
         :value="lineItem.totalPrice"
         class="text-gray-600 font-normal"

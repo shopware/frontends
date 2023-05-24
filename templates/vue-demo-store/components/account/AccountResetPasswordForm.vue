@@ -61,7 +61,7 @@ const invokeReset = async (): Promise<void> => {
     <div class="max-w-md w-full space-y-8">
       <div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          {{$t('resetPassword.header')}}
+          {{ $t("resetPassword.header") }}
         </h2>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="invokeReset">
@@ -74,7 +74,9 @@ const invokeReset = async (): Promise<void> => {
 
         <div class="-space-y-px">
           <div>
-            <label for="new-password" class="sr-only">{{$t('resetPassword.form.newPassword')}}</label>
+            <label for="new-password" class="sr-only">{{
+              $t("resetPassword.form.newPassword")
+            }}</label>
             <input
               id="new-password"
               v-model="state.password.newPassword"
@@ -93,9 +95,9 @@ const invokeReset = async (): Promise<void> => {
             </span>
           </div>
           <div>
-            <label for="confirm-password" class="sr-only"
-              >{{ $t('resetPassword.form.repeatPassword') }}</label
-            >
+            <label for="confirm-password" class="sr-only">{{
+              $t("resetPassword.form.repeatPassword")
+            }}</label>
             <input
               id="confirm-password"
               v-model="state.password.newPasswordConfirm"
@@ -123,8 +125,7 @@ const invokeReset = async (): Promise<void> => {
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
               <div class="w-5 h-5 i-carbon-locked" />
             </span>
-            {{ $t('resetPassword.form.button') }}
-          
+            {{ $t("resetPassword.form.button") }}
           </button>
           <slot name="action" />
         </div>
