@@ -1,5 +1,25 @@
 # vue-demo-store
 
+## 0.8.0
+
+### Minor Changes
+
+- [#99](https://github.com/shopware/frontends/pull/99) [`4c3ec0e2`](https://github.com/shopware/frontends/commit/4c3ec0e23fe0015324574388c1b12f5930b7ad63) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix types for `ProductVariantConfigurator.vue`
+
+- [#99](https://github.com/shopware/frontends/pull/99) [`4c3ec0e2`](https://github.com/shopware/frontends/commit/4c3ec0e23fe0015324574388c1b12f5930b7ad63) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix closing sidebar for mobile view search
+
+- [#99](https://github.com/shopware/frontends/pull/99) [`4c3ec0e2`](https://github.com/shopware/frontends/commit/4c3ec0e23fe0015324574388c1b12f5930b7ad63) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Upgrade vue-tsc and fix type checks
+
+### Patch Changes
+
+- [#220](https://github.com/shopware/frontends/pull/220) [`0242a3ad`](https://github.com/shopware/frontends/commit/0242a3adcde82e301f2e53fb562c0bbd767c04f9) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix clear all items from the wishlist
+
+- [#221](https://github.com/shopware/frontends/pull/221) [`672dbecb`](https://github.com/shopware/frontends/commit/672dbecb8ee6ffd2d0d898e9d843e492abba515e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add missing useI18n composable for ProductCard component
+
+- Updated dependencies []:
+  - @shopware-pwa/nuxt3-module@0.3.4
+  - @shopware-pwa/cms-base@0.5.2
+
 ## 0.7.0
 
 ### Minor Changes
