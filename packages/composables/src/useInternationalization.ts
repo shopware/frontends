@@ -1,7 +1,7 @@
 import { useShopwareContext } from "./useShopwareContext";
 import { getAvailableLanguages as getAvailableLanguagesAPI } from "@shopware-pwa/api-client";
 import { _useContext } from "./internal/_useContext";
-import { ContextUpdateResult, Language } from "@shopware-pwa/types";
+import { Language } from "@shopware-pwa/types";
 import { setCurrentLanguage } from "@shopware-pwa/api-client";
 import { Ref } from "vue";
 export type UseInternationalizationReturn = {
