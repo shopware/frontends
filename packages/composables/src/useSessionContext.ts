@@ -84,8 +84,14 @@ export type UseSessionContextReturn = {
    * current context's country id
    */
   countryId: ComputedRef<string | undefined>;
+  /**
+   * current language id
+   */
   languageId: ComputedRef<string | undefined>;
-  languageIdChain: ComputedRef<string | undefined>;
+  /**
+   * current language id chain
+   */
+  languageIdChain: ComputedRef<string>;
   /**
    * current context's customer object
    */
