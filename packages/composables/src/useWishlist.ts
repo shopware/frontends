@@ -51,11 +51,13 @@ export function useWishlist(): UseWishlistReturn {
   } = useSyncWishlist();
 
   const getWishlistProducts = async () => {
-    if (canSyncWishlist.value) {
-      await getWishlistProductsSync();
-    } else {
-      await getWishlistProductsLocal();
-    }
+    try {
+      if (canSyncWishlist.value) {
+        await getWishlistProductsSync();
+      } else {
+        await getWishlistProductsLocal();
+      }
+    } catch (error) {}
   };
 
   const clearWishlist = () => {

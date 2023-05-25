@@ -49,6 +49,8 @@ export class MyAccountPage {
   }
 
   async changePersonalFirstName(firstname: string) {
+    await this.page.waitForURL("**/account/profile");
+    await this.page.reload({ waitUntil: "networkidle" });
     await this.personalFirstName.clear({ force: true });
     await this.personalFirstName.fill(firstname);
     await this.accountPersonalDataSubmitButton.click();

@@ -57,14 +57,11 @@ export class RegisterForm {
       this.page.waitForLoadState("networkidle"),
       await this.submitButton.click({ delay: 500 }),
     ]);
-    await this.page.waitForSelector(
-      "[data-testid='product-box-wishlist-icon-not-in']"
-    );
+    await this.page.waitForURL("/", { waitUntil: "networkidle" });
   }
 
   async createUser() {
-    this.page.waitForLoadState("networkidle"),
-      await this.salutation.selectOption({ label: "Mr." });
+    await this.salutation.selectOption({ label: "Mr." });
     await this.firstName.type("e2e " + faker.person.firstName());
     await this.lastName.type("e2e " + faker.person.lastName());
     await this.emailAdrdress.type(faker.internet.exampleEmail());
@@ -74,8 +71,6 @@ export class RegisterForm {
     await this.city.type(faker.location.city());
     await this.country.selectOption({ label: "Germany" });
     await this.submitButton.click();
-    await this.page.waitForSelector(
-      "[data-testid='product-box-wishlist-icon-not-in']"
-    );
+    await this.page.waitForURL("/");
   }
 }

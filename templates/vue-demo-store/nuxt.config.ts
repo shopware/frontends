@@ -6,9 +6,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       shopware: {
-        shopwareEndpoint: "https://demo-frontends.shopware.store",
-        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-        devStorefrontUrl: "",
+        shopwareEndpoint: "http://localhost:8000",
+        shopwareAccessToken: "SWSCBZRHQ052R0I5MUU5AW9BVA",
+        devStorefrontUrl: "http://localhost:3000",
       },
     },
   },
@@ -113,7 +113,7 @@ function VueDisableInputsBeforeMount(): PluginOption {
               const isDisabled = ref(typeof onMounted !=="undefined" ? true : false);
               if(typeof onMounted !=="undefined") {
                 onMounted(() => {
-                  console.warn('enabling an input');
+                  console.warn('enabling an input', '${id}');
                   isDisabled.value = false;
                   
                 });
@@ -132,8 +132,8 @@ function VueDisableInputsBeforeMount(): PluginOption {
           );
         }
 
-        if (id.endsWith("register.vue")) {
-          //console.warn("code", newCode);
+        if (id.endsWith("AccountLoginForm.vue")) {
+          console.warn("AccountLoginForm.vue code", newCode);
         }
         return { code: newCode, id };
       }

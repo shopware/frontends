@@ -51,7 +51,8 @@ export class HomePage extends AbstractPage {
   }
 
   async openRegistrationPage() {
-    await this.linkToRegistrationPage.click({ delay: 500 });
+    await this.linkToRegistrationPage.click();
+    await this.page.waitForURL("**/register");
   }
 
   async typeSearchPhrase(phrase: string) {
@@ -72,5 +73,6 @@ export class HomePage extends AbstractPage {
     await this.accountMenuHelloButton.dispatchEvent("click");
     await this.myAccountLink.waitFor();
     await this.myAccountLink.dispatchEvent("click");
+    await this.page.waitForURL("**/account");
   }
 }

@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { HomePage } from "../page-objects/HomePage";
-import { MyAccountPage } from "../page-objects/MyAccountPage";
-import { RegisterForm } from "../page-objects/RegisterPage";
+import { HomePage } from "../../page-objects/HomePage";
+import { MyAccountPage } from "../../page-objects/MyAccountPage";
+import { RegisterForm } from "../../page-objects/RegisterPage";
 import { faker } from "@faker-js/faker";
 
 test.describe.parallel.only("My account functionalities tests", () => {
@@ -21,7 +21,6 @@ test.describe.parallel.only("My account functionalities tests", () => {
   test("Change personal data", async ({ page }) => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
-    await page.waitForLoadState("networkidle");
     await registrationPage.createUser();
     await homePage.openMyAccount();
     await myAccountPage.changePersonalData();
