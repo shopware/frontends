@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getLanguageName } from "@shopware-pwa/helpers-next";
+
 const { languages, changeLanguage } = useInternationalization();
 const { languageIdChain } = useSessionContext();
 
@@ -18,7 +20,7 @@ const onChangeHandler = (option: Event) => {
       :value="language.id"
       :selected="languageIdChain === language.id"
     >
-      {{ language.translationCode.translated.name }}
+      {{ getLanguageName(language) }}
     </option>
   </select>
 </template>
