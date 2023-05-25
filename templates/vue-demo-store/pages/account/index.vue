@@ -31,7 +31,7 @@ const { t } = useI18n();
 
 useBreadcrumbs([
   {
-    name: t('breadcrumbs.accountOverview'),
+    name: t("breadcrumbs.accountOverview"),
     path: "/account",
   },
 ]);
@@ -43,10 +43,10 @@ const updateNewsletterStatus = async () => {
         email: user.value?.email || "",
         option: "subscribe",
       });
-      pushSuccess(t('newsletter.messages.newsletterSubscribed'));
+      pushSuccess(t("newsletter.messages.newsletterSubscribed"));
     } else {
       await newsletterUnsubscribe(user.value?.email || "");
-      pushSuccess(t('newsletter.messages.newsletterUnsubscribed'));
+      pushSuccess(t("newsletter.messages.newsletterUnsubscribed"));
     }
   } catch (error) {
     console.log("error", error);
@@ -71,12 +71,12 @@ onBeforeMount(async () => {
 <template>
   <section>
     <div class="container mx-auto my-6">
-      <h1 class="text-2xl mb-10">{{ $t('account.accountOverviewHeader') }}</h1>
+      <h1 class="text-2xl mb-10">{{ $t("account.accountOverviewHeader") }}</h1>
     </div>
     <section class="flex gap-10 mb-10">
       <div class="w-1/2 flex flex-col">
         <h3 class="border-b pb-3 font-bold mb-3">
-          {{ $t('account.yourProfile') }}
+          {{ $t("account.yourProfile") }}
         </h3>
         <p>
           {{ user?.firstName }}
@@ -89,12 +89,14 @@ onBeforeMount(async () => {
             data-testid="my-account-change-profile-button"
             to="/account/profile"
           >
-            {{  $t('account.change') }}
+            {{ $t("account.change") }}
           </NuxtLink>
         </div>
       </div>
       <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">{{ $t('account.paymentMethodHeader') }}</h3>
+        <h3 class="border-b pb-3 font-bold mb-3">
+          {{ $t("account.paymentMethodHeader") }}
+        </h3>
         <p class="font-medium">
           {{ userDefaultPaymentMethod?.name }}
         </p>
@@ -105,19 +107,21 @@ onBeforeMount(async () => {
             data-testid="my-account-change-payment-method-button"
             to="/account/payment"
           >
-            {{ $t('account.change') }}
+            {{ $t("account.change") }}
           </NuxtLink>
         </div>
       </div>
     </section>
     <section class="mb-10">
-      <h3 class="border-b pb-3 font-bold mb-5">{{ $t('account.newsletterSettingHeader') }}</h3>
+      <h3 class="border-b pb-3 font-bold mb-5">
+        {{ $t("account.newsletterSettingHeader") }}
+      </h3>
       <div
         v-if="confirmationNeeded"
         class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3 mb-4"
       >
         <p class="text-sm">
-          {{$t('newsletter.subscriptionInfo')}}
+          {{ $t("newsletter.subscriptionInfo") }}
         </p>
       </div>
       <div class="flex">
@@ -130,13 +134,15 @@ onBeforeMount(async () => {
           @click="updateNewsletterStatus"
         />
         <label for="newsletter-checkbox" class="pl-5 text-base mt--1">
-          {{ $t('newsletter.subscriptionCheckbox') }}
+          {{ $t("newsletter.subscriptionCheckbox") }}
         </label>
       </div>
     </section>
     <section class="flex gap-10 mb-10">
       <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">{{  $t('account.defaultBillingAddressHeader') }}</h3>
+        <h3 class="border-b pb-3 font-bold mb-3">
+          {{ $t("account.defaultBillingAddressHeader") }}
+        </h3>
         <AccountAddressCard
           v-if="userDefaultBillingAddress?.id"
           :key="userDefaultBillingAddress.id"
@@ -152,12 +158,14 @@ onBeforeMount(async () => {
             data-testid="my-account-change-default-billing-address-button"
             to="/account/address"
           >
-            {{$t('account.change')}}
+            {{ $t("account.change") }}
           </NuxtLink>
         </div>
       </div>
       <div class="w-1/2 flex flex-col">
-        <h3 class="border-b pb-3 font-bold mb-3">{{ $t('account.defaultShippingAddressHeader')}}</h3>
+        <h3 class="border-b pb-3 font-bold mb-3">
+          {{ $t("account.defaultShippingAddressHeader") }}
+        </h3>
         <AccountAddressCard
           v-if="userDefaultShippingAddress?.id"
           :key="userDefaultShippingAddress.id"
@@ -173,7 +181,7 @@ onBeforeMount(async () => {
             data-testid="my-account-change-default-shipping-address-button"
             to="/account/address"
           >
-            {{  $t('account.change') }}
+            {{ $t("account.change") }}
           </NuxtLink>
         </div>
       </div>

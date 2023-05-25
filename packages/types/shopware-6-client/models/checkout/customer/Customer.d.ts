@@ -37,7 +37,7 @@ export type Customer = {
   lastOrderDate: Date;
   orderCount: number;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | string | null;
   group: CustomerGroup;
   defaultPaymentMethod: PaymentMethod;
   defaultBillingAddress: BillingAddress;

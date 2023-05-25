@@ -26,7 +26,8 @@
     "header": "Lista życzeń",
     "emptyLabel": "Lista życzeń jest pusta",
     "emptyText": "Nie dodano żadnych produktów do listy życzeń.",
-    "continueShopping": "Kontynuuj zakupy"
+    "continueShopping": "Kontynuuj zakupy",
+    "clearWishlist": "Usuń wszystko"
   },
   "errorPages": {
     "404": "Nie możemy znaleźć tego, czego szukasz. Zgubiłeś się?",

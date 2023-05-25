@@ -21,7 +21,7 @@ const promoCode = ref("");
       />
     </div>
     <div v-if="showPromotionCodes">
-      <div>{{$t('checkout.promoCode.label')}}:</div>
+      <div>{{ $t("checkout.promoCode.label") }}:</div>
       <ul role="list" class="text-sm pl-0">
         <li
           v-for="appliedPromotionCode in appliedPromotionCodes"
@@ -34,7 +34,7 @@ const promoCode = ref("");
             type="button"
             @click="removeItem(appliedPromotionCode)"
           >
-            {{ $t('checkout.promoCode.remove') }}
+            {{ $t("checkout.promoCode.remove") }}
           </button>
         </li>
       </ul>

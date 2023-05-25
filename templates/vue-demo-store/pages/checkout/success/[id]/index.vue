@@ -76,7 +76,7 @@ const formatDate = (date: Date) =>
     >
       <div class="space-y-1">
         <div class="text-gray-800">
-          {{  $t('checkout.success.header', {n: order?.orderNumber }) }}
+          {{ $t("checkout.success.header", { n: order?.orderNumber }) }}
         </div>
         <div
           v-if="isAsynchronous && paymentUrl && state?.technicalName === 'open'"
@@ -84,13 +84,16 @@ const formatDate = (date: Date) =>
           role="alert"
         >
           <div class="text-center w-full">
-            <span class="font-medium">   {{ $t('checkout.success.paymentProcessLabel') }}</span>  {{ $t('checkout.success.paymentProcessLabel') }}
+            <span class="font-medium">
+              {{ $t("checkout.success.paymentProcessLabel") }}</span
+            >
+            {{ $t("checkout.success.paymentProcessLabel") }}
             <div>
               <button
                 class="mt-4 rounded-md border border-transparent px-2 py-1 text-base font-small text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
                 @click="goToUrl(paymentUrl)"
               >
-                {{$t('checkout.goToPayment')}}
+                {{ $t("checkout.goToPayment") }}
               </button>
             </div>
           </div>
@@ -145,7 +148,9 @@ const formatDate = (date: Date) =>
               class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap py-6 md:py-10"
             >
               <div v-if="shippingAddress" class="w-auto md:w-1/2">
-                <div class="font-medium">{{$t('checkout.shippingAddressLabel')}}</div>
+                <div class="font-medium">
+                  {{ $t("checkout.shippingAddressLabel") }}
+                </div>
                 <div class="pt-2 text-gray-600">
                   <div>
                     {{ shippingAddress?.firstName }}
@@ -160,7 +165,9 @@ const formatDate = (date: Date) =>
                 </div>
               </div>
               <div class="w-auto md:w-1/2">
-                <div class="font-medium">{{ $t('checkout.billingAddressLabel') }} </div>
+                <div class="font-medium">
+                  {{ $t("checkout.billingAddressLabel") }}
+                </div>
                 <div class="pt-2 text-gray-600">
                   <div>
                     {{ billingAddress.firstName }} {{ billingAddress.lastName }}
@@ -178,17 +185,22 @@ const formatDate = (date: Date) =>
               class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap border-t border-gray-100 md:flex py-6 md:py-10"
             >
               <div class="w-auto md:w-1/2">
-                <div class="font-medium">{{ $t('checkout.paymentMethodLabel') }}</div>
+                <div class="font-medium">
+                  {{ $t("checkout.paymentMethodLabel") }}
+                </div>
                 <div class="pt-2 text-gray-600">
                   <div>{{ paymentMethod?.translated?.name }}</div>
                 </div>
               </div>
               <div v-if="shippingMethod" class="w-auto md:w-1/2">
-                <div class="font-medium">{{ $t('checkout.shippingMethodLabel') }} </div>
+                <div class="font-medium">
+                  {{ $t("checkout.shippingMethodLabel") }}
+                </div>
                 <div class="pt-2 text-gray-600">
                   <div>{{ shippingMethod?.translated?.name }}</div>
                   <div v-if="shippingMethod?.deliveryTime">
-                    {{$t('checkout.takesUpTo')}} {{ shippingMethod.deliveryTime?.name }}
+                    {{ $t("checkout.takesUpTo") }}
+                    {{ shippingMethod.deliveryTime?.name }}
                   </div>
                 </div>
               </div>
@@ -199,7 +211,7 @@ const formatDate = (date: Date) =>
                   v-if="subtotal"
                   class="flex justify-between text-base font-medium"
                 >
-                  <p>{{$t('checkout.subtotal')}}</p>
+                  <p>{{ $t("checkout.subtotal") }}</p>
                   <SharedPrice
                     :value="subtotal"
                     class="text-gray-600 font-normal"
@@ -210,7 +222,7 @@ const formatDate = (date: Date) =>
                   v-if="shippingCosts"
                   class="flex justify-between text-base font-medium"
                 >
-                  <p>{{$t('checkout.shippingPriceLabel')}}</p>
+                  <p>{{ $t("checkout.shippingPriceLabel") }}</p>
                   <SharedPrice
                     :value="shippingCosts"
                     class="text-gray-600 font-normal"
@@ -221,7 +233,7 @@ const formatDate = (date: Date) =>
                   v-if="total"
                   class="flex justify-between text-base font-medium"
                 >
-                  <p>{{$t('checkout.totalLabel')}}</p>
+                  <p>{{ $t("checkout.totalLabel") }}</p>
                   <SharedPrice
                     :value="total"
                     class="text-gray-600 font-normal"

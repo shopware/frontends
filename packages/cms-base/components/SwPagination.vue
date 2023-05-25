@@ -1,30 +1,28 @@
 <script setup lang="ts">
-import deepMerge from '../helpers/deepMerge'
+import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 
-const props = 
-  defineProps<{
-    total: number;
-    current: number;
-
-  }>()
+const props = defineProps<{
+  total: number;
+  current: number;
+}>();
 
 type Translations = {
   listing: {
-    previous: string
-    next: string
-  }
-}
+    previous: string;
+    next: string;
+  };
+};
 
 let translations: Translations = {
   listing: {
     previous: "Previous",
-    next: "Next"
-  }
-}
+    next: "Next",
+  },
+};
 
-const globalTranslations = getTranslations()
-translations = deepMerge(translations, globalTranslations) as Translations
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
 
 defineEmits<{
   (e: "changePage", page: number): void;
@@ -45,7 +43,7 @@ defineEmits<{
         class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
       >
         <span class="w-10 h-10 i-carbon-chevron-left text-blue-700"></span>
-        <span class="sr-only">{{translations.listing.previous}}</span>
+        <span class="sr-only">{{ translations.listing.previous }}</span>
       </button>
       <button
         v-if="current > 2"
@@ -101,7 +99,7 @@ defineEmits<{
         @click="$emit('changePage', total)"
         class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
       >
-        <span class="sr-only">{{translations.listing.next}}</span>
+        <span class="sr-only">{{ translations.listing.next }}</span>
         <span class="w-10 h-10 i-carbon-chevron-right text-blue-700"></span>
       </button>
     </nav>

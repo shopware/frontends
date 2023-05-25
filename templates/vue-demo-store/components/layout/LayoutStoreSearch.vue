@@ -10,6 +10,10 @@ withDefaults(
   { displayTotal: 10 }
 );
 
+defineEmits<{
+  (e: "link-clicked"): void;
+}>();
+
 const { searchTerm, search, getProducts, getTotal, loading } =
   useProductSearchSuggest();
 
@@ -97,7 +101,7 @@ watch(enter, (value) => {
         :key="product.id"
         :to="getProductRoute(product)"
         data-testid="layout-search-suggest-link"
-        @click="[(active = false), (isSideMenuOpened = false)]"
+        @click="[(active = false), $emit('link-clicked')]"
       >
         <ProductSuggestSearch :product="product" />
       </NuxtLink>
@@ -115,12 +119,14 @@ watch(enter, (value) => {
           <NuxtLink
             v-if="getTotal > 0"
             :to="`/search?query=${typingQuery}`"
-            @click="[(active = false), (isSideMenuOpened = false)]"
+            @click="[(active = false), $emit('link-clicked')]"
           >
-            {{$t('search.see')}} <span v-if="getTotal !== 1">{{$t('search.all')}}</span> {{ getTotal }}
-            <span>{{ $tc('search.result', getTotal) }}</span>
+            {{ $t("search.see") }}
+            <span v-if="getTotal !== 1">{{ $t("search.all") }}</span>
+            {{ getTotal }}
+            <span>{{ $tc("search.result", getTotal) }}</span>
           </NuxtLink>
-          <div v-else>{{ $t('search.noResults') }}</div>
+          <div v-else>{{ $t("search.noResults") }}</div>
         </div>
       </div>
     </div>

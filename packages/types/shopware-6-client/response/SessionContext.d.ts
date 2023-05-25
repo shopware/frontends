@@ -18,7 +18,7 @@ export type SalesChannelDomain = {
   versionId: null | string;
   translated: { [key: string]: string };
   createdAt: string;
-  updatedAt: null | string;
+  updatedAt: Date | string | null;
   url: string;
   currencyId: string;
   currency: null | Currency;
@@ -41,7 +41,7 @@ export type SalesChannel = {
     [key: string]: string;
   };
   createdAt: string;
-  updatedAt: null | string;
+  updatedAt: Date | string | null;
   languageId: string;
   currencyId: string;
   paymentMethodId: string;

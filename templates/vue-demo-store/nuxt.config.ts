@@ -23,10 +23,10 @@ export default defineNuxtConfig({
    * Commented because of the StackBlitz error
    * Issue: https://github.com/shopware/frontends/issues/88
    */
-  // typescript: {
-  //   typeCheck: true,
-  //   strict: true,
-  // },
+  typescript: {
+    typeCheck: true,
+    strict: true,
+  },
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",

@@ -106,8 +106,8 @@ Paths for type resolver and codebase are configured during plugin registration.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/typer/CHANGELOG.md)
 
-### Latest changes: 0.1.3
+### Latest changes: 0.1.4
 
 ### Patch Changes
 
-- [#123](https://github.com/shopware/frontends/pull/123) [`0188b36a`](https://github.com/shopware/frontends/commit/0188b36acdf43278163a2fee74ff5b1c1aba55d8) Thanks [@mkucmus](https://github.com/mkucmus)! - Use custom @nolink tag instead of unsupported label
+- updated changelog in readme

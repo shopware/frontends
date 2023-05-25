@@ -273,7 +273,7 @@ defineExpose({
             height: displayModeValue === 'standard' ? 'min-content' : '100%',
           }"
         >
-          <component :is="child" class="w-[300px]" />
+          <component :is="child as any" class="w-[300px]" />
         </div>
       </div>
     </div>

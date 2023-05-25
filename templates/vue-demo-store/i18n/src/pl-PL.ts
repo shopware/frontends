@@ -1,3 +1,3 @@
-import plPL from '../pl-PL/pl-PL'
+import plPL from "../pl-PL/pl-PL";
 
-export default plPL
+export default plPL;

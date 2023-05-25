@@ -1,5 +1,11 @@
 # @shopware-pwa/composables-next
 
+## 0.8.2
+
+### Patch Changes
+
+- [#220](https://github.com/shopware/frontends/pull/220) [`0242a3ad`](https://github.com/shopware/frontends/commit/0242a3adcde82e301f2e53fb562c0bbd767c04f9) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add clearWishlist function to the useWihslist composable
+
 ## 0.8.1
 
 ### Patch Changes
