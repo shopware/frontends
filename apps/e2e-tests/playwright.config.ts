@@ -13,7 +13,7 @@ require("dotenv").config({ path: findEnv() });
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const newLocal = "http://localhost:3000";
+const newLocal = "https://frontends-demo.vercel.app";
 const baseURL = process.env.BASE_E2E_URL || newLocal;
 
 console.log("Running tests for: ", baseURL);
