@@ -6,9 +6,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       shopware: {
-        shopwareEndpoint: "http://localhost:8000",
-        shopwareAccessToken: "SWSCBZRHQ052R0I5MUU5AW9BVA",
-        devStorefrontUrl: "http://localhost:3000",
+        shopwareEndpoint: "https://demo-frontends.shopware.store",
+        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        devStorefrontUrl: "",
       },
     },
   },
