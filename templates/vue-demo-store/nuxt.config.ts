@@ -99,6 +99,7 @@ function VueDisableInputsBeforeMount(): PluginOption {
     name: "vite-vue-disable-inputs-before-mount",
     enforce: "pre",
     transform(code, id) {
+      return null;
       let newCode = code;
 
       if (id.endsWith(".vue")) {
