@@ -1,3 +1,8 @@
+<script lang="ts">
+export default {
+  name: "RecoverPassword",
+};
+</script>
 <script setup lang="ts">
 const { t } = useI18n();
 const localePath = useLocalePath();
