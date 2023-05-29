@@ -38,6 +38,7 @@ export class HomePage extends AbstractPage {
   }
 
   async openCartPage() {
+    await this.page.waitForTimeout(500);
     await this.linkToCartPage.waitFor();
     await this.linkToCartPage.click();
     await this.page.waitForSelector("[data-testid='product-quantity']");
@@ -45,7 +46,7 @@ export class HomePage extends AbstractPage {
   }
 
   async openVariantsCartPage() {
-    await this.page.waitForLoadState("load");
+    await this.page.waitForLoadState("networkidle");
     await this.linkToVariantPage.click();
     await this.page.waitForSelector("[data-testid='product-quantity']");
   }
@@ -62,10 +63,8 @@ export class HomePage extends AbstractPage {
   }
 
   async addProductToWishlist() {
-    await Promise.all([
-      this.page.waitForLoadState("load"),
-      await this.addToWishlist.nth(13).dispatchEvent("click"),
-    ]);
+    await this.page.waitForLoadState("networkidle");
+    await this.addToWishlist.nth(5).dispatchEvent("click");
   }
 
   async openMyAccount() {

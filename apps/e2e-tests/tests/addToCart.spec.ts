@@ -28,6 +28,7 @@ test.describe.parallel.only("Add product to cart / Remove from cart", () => {
   });
 
   test("Add product to cart from wishlist", async ({ page }) => {
+    await page.waitForEvent("requestfinished");
     await homePage.addProductToWishlist();
     await wishlistPage.openWishlist();
     await expect(page.getByTestId("product-box")).toHaveCount(1);
