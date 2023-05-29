@@ -5,6 +5,7 @@ import {
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import { Category, StoreNavigationElement } from "@shopware-pwa/types";
+import getUrlPrefix from "../helpers/getUrlPrefix";
 
 const props = withDefaults(
   defineProps<{
@@ -34,7 +35,7 @@ function getHighlightCategory(navigationElement: Category) {
       }"
     >
       <RouterLink
-        :to="getCategoryRoute(navigationElement)"
+        :to="getUrlPrefix(getCategoryRoute(navigationElement))"
         class="flex items-center py-2 px-5 text-base rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 my-2"
         :class="[
           getHighlightCategory(navigationElement) ? 'font-bold' : 'font-normal',

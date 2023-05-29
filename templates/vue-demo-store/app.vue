@@ -39,6 +39,7 @@ const languages = await getAvailableLanguages();
 
 if (languages.elements.length) {
   locale.value = getLanguageCodeFromId(languageIdChain.value);
+  provide("urlPrefix", locale.value);
 }
 
 onMounted(() => {
