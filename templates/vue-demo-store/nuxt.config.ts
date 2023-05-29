@@ -102,7 +102,7 @@ function VueDisableInputsBeforeMount(): PluginOption {
       let newCode = code;
 
       if (id.endsWith(".vue")) {
-        if (newCode.includes("<button") || newCode.includes("<select")) {
+        if (newCode.includes("<select")) {
           if (newCode.includes(":disabled=")) {
             return null;
           }
@@ -122,19 +122,16 @@ function VueDisableInputsBeforeMount(): PluginOption {
               </script>
               `
           );
-          newCode = newCode.replaceAll(
-            "<button",
-            '<button :disabled="isDisabled" '
-          );
+          // newCode = newCode.replaceAll(
+          //   "<button",
+          //   '<button :disabled="isDisabled" '
+          // );
           newCode = newCode.replaceAll(
             "<select",
             '<select :disabled="isDisabled" '
           );
         }
 
-        if (id.endsWith("AccountLoginForm.vue")) {
-          console.warn("AccountLoginForm.vue code", newCode);
-        }
         return { code: newCode, id };
       }
 
