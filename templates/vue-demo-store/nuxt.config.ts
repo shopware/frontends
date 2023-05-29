@@ -76,7 +76,11 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
-    strategy: "no_prefix",
+    vueI18n: {
+      fallbackLocale: "en-GB",
+    },
+    strategy: "prefix_except_default",
+    defaultLocale: "en-GB",
     langDir: "i18n/src/",
     locales: [
       {

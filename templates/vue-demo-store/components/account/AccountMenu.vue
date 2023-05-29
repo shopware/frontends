@@ -2,6 +2,7 @@
 const { isLoggedIn, logout, user } = useUser();
 
 const loginModalController = useModal();
+const localePath = useLocalePath();
 
 const isAccountMenuOpen = ref(false);
 
@@ -77,7 +78,7 @@ async function invokeLogout() {
               >
                 <NuxtLink
                   id="user-menu-item-1"
-                  to="/account"
+                  :to="localePath('/account')"
                   data-testid="header-my-account-link"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   tabindex="-1"

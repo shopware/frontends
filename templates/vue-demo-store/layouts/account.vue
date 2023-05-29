@@ -15,6 +15,7 @@ useAuthGuardRedirection(params);
 const { loadNavigationElements } = useNavigation();
 const { logout } = useUser();
 const router = useRouter();
+const localePath = useLocalePath();
 
 const { data } = await useAsyncData("mainNavigation", () => {
   return loadNavigationElements({ depth: 2 });
@@ -57,7 +58,7 @@ provide("swNavigation-footer-navigation", footerData);
                 <ul class="space-y-2">
                   <li>
                     <NuxtLink
-                      to="/account"
+                      :to="localePath(`/account`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
                       <div i-carbon-dashboard text-xl inline-block />
@@ -66,7 +67,7 @@ provide("swNavigation-footer-navigation", footerData);
                   </li>
                   <li>
                     <NuxtLink
-                      to="/account/profile"
+                      :to="localePath(`/account/profile`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
                       <div i-carbon-user text-xl inline-block />
@@ -75,7 +76,7 @@ provide("swNavigation-footer-navigation", footerData);
                   </li>
                   <li>
                     <NuxtLink
-                      to="/account/address"
+                      :to="localePath(`/account/address`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-home text-xl inline-block />
@@ -84,7 +85,7 @@ provide("swNavigation-footer-navigation", footerData);
                   </li>
                   <li>
                     <NuxtLink
-                      to="/account/payment"
+                      :to="localePath(`/account/payment`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-wallet text-xl inline-block />
@@ -95,7 +96,7 @@ provide("swNavigation-footer-navigation", footerData);
                 <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200">
                   <li>
                     <NuxtLink
-                      to="/account/order"
+                      :to="localePath(`/account/order`)"
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-order-details text-xl inline-block />

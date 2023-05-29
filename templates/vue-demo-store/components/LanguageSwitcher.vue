@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { getLanguageName } from "@shopware-pwa/helpers-next";
 
-const { languages, changeLanguage } = useInternationalization();
+const { languages, changeLanguage, replaceToDevStorefront } =
+  useInternationalization();
 const { languageIdChain } = useSessionContext();
 
-const onChangeHandler = (option: Event) => {
-  changeLanguage((option.target as HTMLSelectElement).value);
-  window.location.reload();
+const onChangeHandler = async (option: Event) => {
+  const data = await changeLanguage((option.target as HTMLSelectElement).value);
+
+  if (data.redirectUrl) {
+    window.location.replace(replaceToDevStorefront(data.redirectUrl));
+  } else {
+    window.location.reload();
+  }
 };
 </script>
 <template>

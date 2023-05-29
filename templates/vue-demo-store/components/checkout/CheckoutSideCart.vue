@@ -4,6 +4,7 @@ const props = defineProps<{
 }>();
 
 const { cartItems, totalPrice, isEmpty } = useCart();
+const localePath = useLocalePath();
 </script>
 
 <template>
@@ -66,7 +67,7 @@ const { cartItems, totalPrice, isEmpty } = useCart();
             'bg-gray': isEmpty,
             'hover:bg-gray': isEmpty,
           }"
-          :to="isEmpty ? '' : '/checkout'"
+          :to="localePath(isEmpty ? '' : '/checkout')"
           data-testid="cart-checkout-link"
         >
           Checkout
@@ -74,7 +75,7 @@ const { cartItems, totalPrice, isEmpty } = useCart();
 
         <NuxtLink
           class="flex items-center justify-center py-3 text-sm font-medium text-brand-dark"
-          to="/checkout/cart"
+          :to="localePath(`/checkout/cart`)"
           data-testid="cart-checkout-shopping-cart"
           @click="props.controller.close"
         >

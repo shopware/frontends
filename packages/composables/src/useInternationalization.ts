@@ -1,7 +1,7 @@
 import { useShopwareContext } from "./useShopwareContext";
 import { getAvailableLanguages as getAvailableLanguagesAPI } from "@shopware-pwa/api-client";
 import { _useContext } from "./internal/_useContext";
-import { Language } from "@shopware-pwa/types";
+import { Language, ContextTokenResponse } from "@shopware-pwa/types";
 import { setCurrentLanguage } from "@shopware-pwa/api-client";
 import { Ref } from "vue";
 export type UseInternationalizationReturn = {
@@ -10,8 +10,9 @@ export type UseInternationalizationReturn = {
    */
   getStorefrontUrl(): string;
   getAvailableLanguages(): any;
-  changeLanguage(languageId: string): Promise<void>;
+  changeLanguage(languageId: string): Promise<ContextTokenResponse>;
   getLanguageCodeFromId(languageId: string): string;
+  replaceToDevStorefront(url: string): string;
   languages: Ref<Language[]>;
   currentLanguage: Ref<string>;
 };
@@ -40,8 +41,8 @@ export function useInternationalization(): UseInternationalizationReturn {
     return data;
   }
 
-  async function changeLanguage(languageId: string) {
-    await setCurrentLanguage(languageId, apiInstance);
+  function changeLanguage(languageId: string) {
+    return setCurrentLanguage(languageId, apiInstance);
   }
 
   function getLanguageCodeFromId(languageId: string) {
@@ -51,11 +52,19 @@ export function useInternationalization(): UseInternationalizationReturn {
     );
   }
 
+  function replaceToDevStorefront(url: string) {
+    const current = new URL(url);
+    return devStorefrontUrl
+      ? url.replace(`${current.protocol}//${current.host}`, devStorefrontUrl)
+      : url;
+  }
+
   return {
     getAvailableLanguages,
     getStorefrontUrl,
     changeLanguage,
     getLanguageCodeFromId,
+    replaceToDevStorefront,
     languages: _storeLanguages,
     currentLanguage: _storeCurrentLanguage,
   };
