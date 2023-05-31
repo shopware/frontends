@@ -12,9 +12,11 @@ export type UseInternationalizationReturn = {
   getAvailableLanguages(): any;
   changeLanguage(languageId: string): Promise<ContextTokenResponse>;
   getLanguageCodeFromId(languageId: string): string;
+  getLanguageIdFromCode(languageCode: string): string;
   replaceToDevStorefront(url: string): string;
   languages: Ref<Language[]>;
   currentLanguage: Ref<string>;
+  currentPrefix: Ref<string>;
 };
 
 /**
@@ -30,6 +32,7 @@ export function useInternationalization(): UseInternationalizationReturn {
   const _storeCurrentLanguage = _useContext<string>(
     "swLanguagesCurrentLanguage"
   );
+  const _storeCurrentPrefix = _useContext<string>("swLanguagesCurrentPrefix");
 
   function getStorefrontUrl() {
     return devStorefrontUrl ?? window.location.origin ?? "";
@@ -52,6 +55,14 @@ export function useInternationalization(): UseInternationalizationReturn {
     );
   }
 
+  function getLanguageIdFromCode(languageCode: string) {
+    return (
+      _storeLanguages.value.find(
+        (element: any) => element?.translationCode.code === languageCode
+      )?.id || ""
+    );
+  }
+
   function replaceToDevStorefront(url: string) {
     const current = new URL(url);
     return devStorefrontUrl
@@ -64,8 +75,10 @@ export function useInternationalization(): UseInternationalizationReturn {
     getStorefrontUrl,
     changeLanguage,
     getLanguageCodeFromId,
+    getLanguageIdFromCode,
     replaceToDevStorefront,
     languages: _storeLanguages,
     currentLanguage: _storeCurrentLanguage,
+    currentPrefix: _storeCurrentPrefix,
   };
 }

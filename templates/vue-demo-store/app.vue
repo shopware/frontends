@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getSessionContext } from "@shopware-pwa/api-client";
 import { SessionContext } from "@shopware-pwa/types";
+import { getPrefix, getDefaultLocale } from "./i18n/src/helpers/prefix";
 
 /**
  * Init breadcrumbs context
@@ -26,20 +27,39 @@ useSessionContext(sessionContextData.value as SessionContext);
 
 const { getWishlistProducts } = useWishlist();
 const { refreshCart } = useCart();
-const { locale } = useI18n();
 
 useNotifications();
 useAddress();
 
-const { getAvailableLanguages, getLanguageCodeFromId } =
-  useInternationalization();
-const { languageIdChain } = useSessionContext();
+const { locale } = useI18n();
+const { availableLocales } = useI18n();
+const router = useRouter();
+const {
+  getAvailableLanguages,
+  getLanguageCodeFromId,
+  getLanguageIdFromCode,
+  changeLanguage,
+} = useInternationalization();
+const { languageIdChain, refreshSessionContext } = useSessionContext();
 
 const languages = await getAvailableLanguages();
 
-if (languages.elements.length) {
-  locale.value = getLanguageCodeFromId(languageIdChain.value);
-  provide("urlPrefix", locale.value);
+if (languages.elements.length && router.currentRoute.value.name) {
+  const prefix = getPrefix(
+    availableLocales,
+    router.currentRoute.value.name as string
+  );
+  const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
+
+  if (sessionLanguage !== prefix && sessionLanguage !== getDefaultLocale()) {
+    await changeLanguage(
+      getLanguageIdFromCode(prefix ? prefix : getDefaultLocale())
+    );
+    await refreshSessionContext();
+  }
+
+  locale.value = prefix ? prefix : getDefaultLocale();
+  provide("urlPrefix", prefix);
 }
 
 onMounted(() => {
