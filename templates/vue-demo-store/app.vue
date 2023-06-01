@@ -45,12 +45,15 @@ const { languageIdChain, refreshSessionContext } = useSessionContext();
 const languages = await getAvailableLanguages();
 
 if (languages.elements.length && router.currentRoute.value.name) {
+  // Prefix from url
   const prefix = getPrefix(
     availableLocales,
     router.currentRoute.value.name as string
   );
+  // Language set on the backend side
   const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
 
+  // If languages are not the same, set one from prefix
   if (sessionLanguage !== prefix && sessionLanguage !== getDefaultLocale()) {
     await changeLanguage(
       getLanguageIdFromCode(prefix ? prefix : getDefaultLocale())
@@ -59,6 +62,7 @@ if (languages.elements.length && router.currentRoute.value.name) {
   }
 
   locale.value = prefix ? prefix : getDefaultLocale();
+  // Set prefix from CMS components
   provide("urlPrefix", prefix);
 }
 

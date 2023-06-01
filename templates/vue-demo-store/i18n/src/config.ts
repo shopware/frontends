@@ -1,3 +1,6 @@
+/**
+ * i18n configuration
+ */
 export default {
   defaultLocale: "en-GB",
   locales: [
@@ -10,6 +13,11 @@ export default {
       code: "pl-PL",
       iso: "pl-PL",
       file: "pl-PL.ts",
+    },
+    {
+      code: "de-DE",
+      iso: "de-DE",
+      file: "de-DE.ts",
     },
   ],
 };
