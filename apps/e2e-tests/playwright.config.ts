@@ -20,6 +20,7 @@ console.log("Running tests for: ", baseURL);
 
 const config: PlaywrightTestConfig = {
   testDir: "./tests",
+  outputDir: "./reports",
   /* Maximum time one test can run for. */
   timeout: 90 * 1000,
   expect: {
