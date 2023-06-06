@@ -7,10 +7,10 @@
     "test:e2e": "playwright test e2e"
   },
   "devDependencies": {
-    "@playwright/test": "^1.33.0",
-    "playwright": "^1.33.0"
+    "@playwright/test": "^1.34.3",
+    "playwright": "^1.34.3"
   },
   "dependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.1.4"
   }
 }
