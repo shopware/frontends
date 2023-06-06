@@ -467,15 +467,17 @@ export function createListingComposable<ELEMENTS_TYPE>({
     const appliedFilters = Object.assign({}, getCurrentFilters.value, filter, {
       query: getCurrentFilters.value.search,
     });
-    _storeAppliedListing.value.currentFilters = appliedFilters;
+    if (_storeAppliedListing.value) {
+      _storeAppliedListing.value.currentFilters = appliedFilters;
+    }
     return search(appliedFilters);
   };
 
   const resetFilters = () => {
     const defaultFilters = Object.assign(
       {
-        manufacturer: [],
-        properties: [],
+        manufacturer: "",
+        properties: "",
         price: { min: 0, max: 0 },
         search: getCurrentFilters.value.search,
       },
