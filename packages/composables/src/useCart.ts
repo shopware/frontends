@@ -26,7 +26,7 @@ export type UseCartReturn = {
   /**
    * Adds a promotion code to the cart
    */
-  addPromotionCode(promotionCode: string): Promise<void>;
+  addPromotionCode(promotionCode: string): Promise<Cart>;
   /**
    * Lists all applied and active promotion codes
    */
@@ -138,10 +138,10 @@ export function useCartFunction(): UseCartReturn {
   }
 
   async function submitPromotionCode(promotionCode: string) {
-    if (promotionCode) {
-      const result = await addPromotionCode(promotionCode, apiInstance);
-      _storeCart.value = result;
-    }
+    const result = await addPromotionCode(promotionCode, apiInstance);
+    _storeCart.value = result;
+
+    return result;
   }
 
   // TODO: move to separate composable recognizing cart error changes

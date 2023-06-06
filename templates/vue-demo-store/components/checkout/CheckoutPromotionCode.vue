@@ -1,5 +1,15 @@
 <script setup lang="ts">
 const { appliedPromotionCodes, addPromotionCode, removeItem } = useCart();
+const { pushError } = useNotifications();
+
+const addPromotionCodeHandler = async (code: string) => {
+  const response = await addPromotionCode(code);
+  if (Object.keys(response.errors)?.length) {
+    Object.keys(response.errors).forEach((element) => {
+      pushError(response.errors[element].message);
+    });
+  }
+};
 
 const showPromotionCodes = computed(
   () => appliedPromotionCodes.value.length > 0
@@ -17,7 +27,7 @@ const promoCode = ref("");
         name="promoCode"
         :placeholder="$t('form.promoCodePlaceholder')"
         class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
-        @keyup.enter="addPromotionCode(promoCode)"
+        @keyup.enter="addPromotionCodeHandler(promoCode)"
       />
     </div>
     <div v-if="showPromotionCodes">
