@@ -217,11 +217,11 @@ const srcPath = computed(() => {
           </div>
         </button>
         <RouterLink v-else :to="getProductRoute(product)" class="">
-          <button
+          <div
             class="justify-center w-full md:w-auto my-8 md-m-0 py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 hover:scale-120"
           >
             <span data-testid="product-box-product-show-details">Details</span>
-          </button>
+          </div>
         </RouterLink>
       </div>
     </div>
