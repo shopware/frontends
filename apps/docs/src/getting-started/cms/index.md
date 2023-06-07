@@ -6,7 +6,9 @@ nav:
 
 # CMS
 
-Everything related to CMS (Shopping Experiences).
-<PageRef page="../../framework/shopping-experiences" title="Shopping Experiences" sub="How to use and customize Shopping Experiences in your Shopware Frontends project" />
-<PageRef page="content-pages" title="Create content pages" sub="Render a content page using the cms-base package, Render a content page using custom components" />
-<PageRef page="overwriting-cms" title="Overwrite CMS blocks in Nuxt 3 app" sub="Example how to overwrite a CMS composables in your store" />
+Everything related to CMS ([Shopping Experiences](../../framework/shopping-experiences.md)).
+<PageRef page="content-pages" title="Create content pages" sub="In this chapter you will learn how to display content pages with data from Shopware's own CMS." />
+<PageRef page="customize-components" title="Customize Components" sub="In order to customize a component, you need to override it." />
+<PageRef page="create-blocks" title="Create Blocks" sub="In this chapter you will learn how to create CMS blocks." />
+<PageRef page="create-elements" title="Create Elements" sub="In this chapter you will learn how to create CMS elements." />
+<PageRef page="overwriting-cms" title="Overwrite CMS blocks in Nuxt 3 APP" sub="Example how to overwrite the product card." />

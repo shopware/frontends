@@ -124,7 +124,7 @@ watch(enter, (value) => {
             {{ $t("search.see") }}
             <span v-if="getTotal !== 1">{{ $t("search.all") }}</span>
             {{ getTotal }}
-            <span>{{ $tc("search.result", getTotal) }}</span>
+            <span>{{ $t("search.result", getTotal) }}</span>
           </NuxtLink>
           <div v-else>{{ $t("search.noResults") }}</div>
         </div>
