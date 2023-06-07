@@ -27,10 +27,6 @@ jobs:
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
 
-      - name: Install dependencies with Playwright
-        run: |
-          pnpm playwright install --with-deps
-
       - name: Run tests
         run: pnpm run test:e2e
         env:
