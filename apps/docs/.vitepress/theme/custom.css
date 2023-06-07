@@ -15,3 +15,11 @@
 .DocSearch-Button:hover .DocSearch-Button-Placeholder {
     color: var(--vt-c-blue);
 }
+
+.group .VPSidebarGroup .VPSidebarGroup {
+    margin-left: .6rem;
+}
+
+.group .VPSidebarGroup .VPSidebarGroup h2.title-text {
+    font-size: 11px;
+}

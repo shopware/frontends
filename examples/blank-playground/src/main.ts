@@ -13,13 +13,24 @@ const languageId = ref(cookieLanguageId);
 
 const app = createApp(App);
 
+const apiInstance = createInstance({
+  endpoint: "https://demo-frontends.shopware.store",
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  contextToken: contextToken.value,
+  languageId: languageId.value,
+});
+
+apiInstance.onConfigChange(({ config }) => {
+  // set the context-token in the cookie
+  Cookies.set("sw-context-token", config.contextToken || "", {
+    expires: 365, // days
+    path: "/",
+    sameSite: "lax",
+  });
+});
+
 const shopwareContext = createShopwareContext(app, {
-  apiInstance: createInstance({
-    endpoint: "https://demo-frontends.shopware.store",
-    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-    contextToken: contextToken.value,
-    languageId: languageId.value,
-  }),
+  apiInstance,
 });
 app.use(shopwareContext);
 app.mount("#app");
