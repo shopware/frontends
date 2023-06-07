@@ -1,14 +1,9 @@
 <script setup lang="ts">
 const { appliedPromotionCodes, addPromotionCode, removeItem } = useCart();
-const { pushError } = useNotifications();
-
+const { promotionCodeNotification } = useCartNotification();
 const addPromotionCodeHandler = async (code: string) => {
   const response = await addPromotionCode(code);
-  if (Object.keys(response.errors)?.length) {
-    Object.keys(response.errors).forEach((element) => {
-      pushError(response.errors[element].message);
-    });
-  }
+  promotionCodeNotification(response.errors);
 };
 
 const showPromotionCodes = computed(

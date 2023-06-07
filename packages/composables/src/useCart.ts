@@ -71,7 +71,7 @@ export type UseCartReturn = {
   /**
    * @deprecated handle errors in your application by checking cart.errors object
    */
-  cartErrors: ComputedRef<EntityError[]>;
+  // cartErrors: ComputedRef<EntityError[]>;
   /**
    * @deprecated - use product related methods to fetch an item's URL instead
    */
@@ -231,9 +231,9 @@ export function useCartFunction(): UseCartReturn {
     return cartPrice || 0;
   });
 
-  const cartErrors: ComputedRef<EntityError[]> = computed(
-    () => (cart.value?.errors && Object.values(cart.value.errors)) || []
-  );
+  // const cartErrors: ComputedRef<EntityError[]> = computed(
+  //   () => (cart.value?.errors && Object.values(cart.value.errors)) || []
+  // );
 
   const isVirtualCart = computed(() => {
     return (
@@ -257,7 +257,7 @@ export function useCartFunction(): UseCartReturn {
     totalPrice,
     shippingTotal,
     subtotal,
-    cartErrors,
+    // cartErrors,
     getProductItemsSeoUrlsData,
     isEmpty,
     isVirtualCart,
