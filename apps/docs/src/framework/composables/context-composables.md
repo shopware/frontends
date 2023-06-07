@@ -52,7 +52,7 @@ const props = defineProps<{
 
 A parent component calls the composable and provides context - all child components can feed off that context. Have a look at the example below:
 
-![wireframe of an application showing multiple context composables](../.assets/wireframe-proposal-01.png)
+![wireframe of an application showing multiple context composables](../../.assets/wireframe-proposal-01.png)
 
 In the example above, there are multiple usages of the `useProduct` composable and one usage of the `useNavigationContext` composable. All calls create a new context boundary (indicated by the coloured boxes). Within their context boundaries (meaning further down the component tree), the child components can access the state of the parent component.
 
