@@ -27,6 +27,10 @@ jobs:
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
 
+      - name: Install dependencies with Playwright
+        run: |
+          pnpm playwright install --with-deps
+
       - name: Run tests
         working-directory: ./apps/e2e-test/
         run: npx playwright test checkCodeExamples.spec.ts --project=chromium
