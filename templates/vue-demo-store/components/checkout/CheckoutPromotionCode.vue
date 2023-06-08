@@ -4,6 +4,7 @@ const { promotionCodeNotification } = useCartNotification();
 const addPromotionCodeHandler = async (code: string) => {
   const response = await addPromotionCode(code);
   promotionCodeNotification(response.errors);
+  promoCode.value = "";
 };
 
 const showPromotionCodes = computed(
@@ -16,14 +17,21 @@ const promoCode = ref("");
 <template>
   <div>
     <div class="mb-4">
-      <input
-        v-model="promoCode"
-        type="text"
-        name="promoCode"
-        :placeholder="$t('form.promoCodePlaceholder')"
-        class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
-        @keyup.enter="addPromotionCodeHandler(promoCode)"
-      />
+      <div class="flex gap-3">
+        <input
+          v-model="promoCode"
+          type="text"
+          name="promoCode"
+          :placeholder="$t('form.promoCodePlaceholder')"
+          class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
+        />
+        <button
+          class="text-white bg-blue-500 hover:bg-blue-600 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md"
+          @click="addPromotionCodeHandler(promoCode)"
+        >
+          Add
+        </button>
+      </div>
     </div>
     <div v-if="showPromotionCodes">
       <div>{{ $t("checkout.promoCode.label") }}:</div>
