@@ -7,7 +7,7 @@ import {
   changeCartItemQuantity,
   getProducts,
 } from "@shopware-pwa/api-client";
-import { Cart, EntityError, Product, LineItem } from "@shopware-pwa/types";
+import { Cart, Product, LineItem } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 import { _useContext } from "./internal/_useContext";
 import { createSharedComposable } from "@vueuse/core";
@@ -68,10 +68,6 @@ export type UseCartReturn = {
    * The total price of all cart items
    */
   subtotal: ComputedRef<number>;
-  /**
-   * @deprecated handle errors in your application by checking cart.errors object
-   */
-  // cartErrors: ComputedRef<EntityError[]>;
   /**
    * @deprecated - use product related methods to fetch an item's URL instead
    */
@@ -144,33 +140,6 @@ export function useCartFunction(): UseCartReturn {
     return result;
   }
 
-  // TODO: move to separate composable recognizing cart error changes
-  // function broadcastUpcomingErrors(cartResult: Cart): void {
-  //   if (!cartResult) {
-  //     return;
-  //   }
-
-  //   try {
-  //     const cartErrorsKeys = Object.keys(_storeCart.value?.errors || {});
-  //     const cartResultErrorKeys = Object.keys(cartResult.errors || {});
-  //     const upcomingErrorsKeys = cartResultErrorKeys.filter(
-  //       (resultErrorKey) => !cartErrorsKeys.includes(resultErrorKey)
-  //     );
-  //     const entityErrors: EntityError[] = Object.values(
-  //       cartResult.errors || {}
-  //     ).filter(
-  //       // don't ignore ERROR level of incoming errors or if they are new
-  //       (entityError) =>
-  //         entityError.level === 20 ||
-  //         upcomingErrorsKeys.includes(entityError.key)
-  //     );
-
-  //     // broadcastErrors(entityErrors, `[${contextName}][cartError]`, broadcast);
-  //   } catch (error) {
-  //     console.error("[useCart][broadcastUpcomingErrors]", error);
-  //   }
-  // }
-
   async function getProductItemsSeoUrlsData(): Promise<Partial<Product>[]> {
     if (!cartItems.value.length) {
       return [];
@@ -231,10 +200,6 @@ export function useCartFunction(): UseCartReturn {
     return cartPrice || 0;
   });
 
-  // const cartErrors: ComputedRef<EntityError[]> = computed(
-  //   () => (cart.value?.errors && Object.values(cart.value.errors)) || []
-  // );
-
   const isVirtualCart = computed(() => {
     return (
       cartItems.value.length > 0 &&
@@ -257,7 +222,6 @@ export function useCartFunction(): UseCartReturn {
     totalPrice,
     shippingTotal,
     subtotal,
-    // cartErrors,
     getProductItemsSeoUrlsData,
     isEmpty,
     isVirtualCart,
