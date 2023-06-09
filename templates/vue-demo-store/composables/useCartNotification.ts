@@ -1,17 +1,31 @@
 import { CartErrors } from "@shopware-pwa/types";
 
-const promotionCodeAddedKey = "promotion-discount-added";
+const successCodes = ["promotion-discount-added"];
 
 export type UseCmsHeadReturn = {
-  promotionCodeNotification(errors: CartErrors): void;
+  codeErrorsNotification(): void;
 };
 
+/**
+ * UI composable
+ *
+ * @returns
+ */
 export function useCartNotification() {
   const { pushError, pushSuccess } = useNotifications();
+  const { consumeCartErrors } = useCart();
 
-  const promotionCodeNotification = (errors: CartErrors) => {
+  /**
+   * Get cart error and display
+   *
+   * @returns {void}
+   */
+  const codeErrorsNotification = () => {
+    const errors: CartErrors | null = consumeCartErrors();
+    if (!errors) return;
+
     Object.keys(errors).forEach((element) => {
-      if (errors[element].messageKey === promotionCodeAddedKey) {
+      if (successCodes.includes(errors[element].messageKey)) {
         pushSuccess(errors[element].message);
       } else {
         pushError(errors[element].message);
@@ -20,6 +34,6 @@ export function useCartNotification() {
   };
 
   return {
-    promotionCodeNotification,
+    codeErrorsNotification,
   };
 }

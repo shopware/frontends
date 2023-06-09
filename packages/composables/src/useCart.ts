@@ -7,7 +7,7 @@ import {
   changeCartItemQuantity,
   getProducts,
 } from "@shopware-pwa/api-client";
-import { Cart, Product, LineItem } from "@shopware-pwa/types";
+import { Cart, Product, LineItem, CartErrors } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 import { _useContext } from "./internal/_useContext";
 import { createSharedComposable } from "@vueuse/core";
@@ -80,6 +80,10 @@ export type UseCartReturn = {
    * `true` if cart contains only digital items
    */
   isVirtualCart: ComputedRef<boolean>;
+  /**
+   * Get cart errors
+   */
+  consumeCartErrors(): CartErrors;
 };
 
 /**
@@ -91,6 +95,7 @@ export function useCartFunction(): UseCartReturn {
   const { apiInstance } = useShopwareContext();
 
   const _storeCart = _useContext<Cart | undefined>("swCart");
+  const _storeCartErrors = _useContext<CartErrors | null>("swCartErrors");
 
   async function refreshCart(newCart?: Cart): Promise<Cart> {
     if (newCart) {
@@ -100,6 +105,7 @@ export function useCartFunction(): UseCartReturn {
 
     const result = await getCart(apiInstance);
     _storeCart.value = result;
+    setCartErrors(result);
     return result;
   }
 
@@ -113,12 +119,14 @@ export function useCartFunction(): UseCartReturn {
       apiInstance
     );
     _storeCart.value = addToCartResult;
+    setCartErrors(addToCartResult);
     return addToCartResult;
   }
 
   async function removeItem(lineItem: LineItem) {
     const result = await removeCartItem(lineItem.id, apiInstance);
     _storeCart.value = result;
+    setCartErrors(result);
   }
 
   async function changeProductQuantity(params: {
@@ -131,12 +139,13 @@ export function useCartFunction(): UseCartReturn {
       apiInstance
     );
     _storeCart.value = result;
+    setCartErrors(result);
   }
 
   async function submitPromotionCode(promotionCode: string) {
     const result = await addPromotionCode(promotionCode, apiInstance);
     _storeCart.value = result;
-
+    setCartErrors(result);
     return result;
   }
 
@@ -209,6 +218,33 @@ export function useCartFunction(): UseCartReturn {
     );
   });
 
+  /**
+   * Add cart errors to the sharable variable
+   *
+   * @param {Cart} cart
+   */
+  const setCartErrors = (cart: Cart) => {
+    if (Object.keys(cart.errors).length) {
+      _storeCartErrors.value = Object.assign(
+        _storeCartErrors.value ? _storeCartErrors.value : {},
+        cart.errors
+      );
+    }
+  };
+
+  /**
+   * Get cart errors and clear variable
+   *
+   * @returns {CartErrors}
+   */
+  const consumeCartErrors = () => {
+    const errors = _storeCartErrors.value
+      ? JSON.parse(JSON.stringify(_storeCartErrors.value))
+      : null;
+    _storeCartErrors.value = null;
+    return errors;
+  };
+
   return {
     addProduct,
     addPromotionCode: submitPromotionCode,
@@ -225,6 +261,7 @@ export function useCartFunction(): UseCartReturn {
     getProductItemsSeoUrlsData,
     isEmpty,
     isVirtualCart,
+    consumeCartErrors,
   };
 }
 

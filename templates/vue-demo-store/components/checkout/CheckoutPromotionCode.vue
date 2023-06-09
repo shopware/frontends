@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import { LineItem } from "@shopware-pwa/types";
 const { appliedPromotionCodes, addPromotionCode, removeItem } = useCart();
-const { promotionCodeNotification } = useCartNotification();
+const { codeErrorsNotification } = useCartNotification();
 const addPromotionCodeHandler = async (code: string) => {
-  const response = await addPromotionCode(code);
-  promotionCodeNotification(response.errors);
+  await addPromotionCode(code);
+  codeErrorsNotification();
   promoCode.value = "";
+};
+
+const removeItemHandler = (appliedPromotionCode: LineItem) => {
+  removeItem(appliedPromotionCode);
+  codeErrorsNotification();
 };
 
 const showPromotionCodes = computed(
@@ -45,7 +51,7 @@ const promoCode = ref("");
           <button
             class="text-brand-dark"
             type="button"
-            @click="removeItem(appliedPromotionCode)"
+            @click="removeItemHandler(appliedPromotionCode)"
           >
             {{ $t("checkout.promoCode.remove") }}
           </button>

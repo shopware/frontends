@@ -6,11 +6,12 @@ const props = defineProps<{
   product: Product;
 }>();
 const { product } = toRefs(props);
-
+const { codeErrorsNotification } = useCartNotification();
 const { addToCart, quantity } = useAddToCart(product);
 
 const addToCartProxy = async () => {
   await addToCart();
+  codeErrorsNotification();
   pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
 };
 

@@ -14,6 +14,7 @@ import {
 
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
+const { codeErrorsNotification } = useCartNotification();
 
 const props = withDefaults(
   defineProps<{
@@ -59,6 +60,7 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
+  codeErrorsNotification();
   pushSuccess(
     t(`cart.messages.addedToCart`, { p: props.product?.translated?.name })
   );
