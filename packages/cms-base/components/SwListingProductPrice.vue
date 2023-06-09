@@ -42,6 +42,9 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
       class="text-l text-gray-900 basis-2/6 justify-end line-through"
       :value="price?.listPrice?.price"
     />
+    <template v-if="!isListPrice">
+      <div class="h-6"><!-- placeholder --></div>
+    </template>
     <SwSharedPrice
       class="text-xl text-gray-900 basis-2/6 justify-end"
       v-if="displayFromVariants"
@@ -57,8 +60,8 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
       class="text-gray-900 basis-2/6"
       :class="{
         'text-red-600 font-bold': isListPrice,
-        'justify-start text-xl': regulationPrice || !displayFromVariants,
-        'justify-end text-l': !regulationPrice,
+        'justify-end text-xl':
+          regulationPrice || !regulationPrice || !displayFromVariants,
       }"
       :value="unitPrice"
     >
@@ -68,9 +71,14 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
         }}</span></template
       >
     </SwSharedPrice>
-    <div class="text-xs flex text-gray-500" v-if="regulationPrice">
-      {{ translations.listing.previously }}
-      <SharedPrice class="ml-1" :value="regulationPrice" />
-    </div>
+    <template v-if="regulationPrice">
+      <div class="text-xs flex text-gray-500">
+        {{ translations.listing.previously }}
+        <SharedPrice class="ml-1" :value="regulationPrice" />
+      </div>
+    </template>
+    <template v-if="!regulationPrice">
+      <div class="h-4"><!-- placeholder --></div>
+    </template>
   </div>
 </template>
