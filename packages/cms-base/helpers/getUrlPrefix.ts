@@ -1,11 +1,7 @@
-export default function getUrlPrefix(url: string | any) {
-  const prefix = inject("urlPrefix", "");
-  if (typeof url === "string") {
-    return prefix ? `/${prefix}${url}` : url;
+export default function getUrlPrefix() {
+  try {
+    return inject("urlPrefix", "");
+  } catch ($error) {
+    return "";
   }
-  if (url.path && prefix) {
-    url.path = `/${prefix}${url.path}`;
-  }
-
-  return url;
 }

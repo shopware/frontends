@@ -23,6 +23,7 @@ const { data: sessionContextData } = await useAsyncData(
     return await getSessionContext(apiInstance);
   }
 );
+
 useSessionContext(sessionContextData.value as SessionContext);
 
 const { getWishlistProducts } = useWishlist();
@@ -39,17 +40,22 @@ const {
   getLanguageCodeFromId,
   getLanguageIdFromCode,
   changeLanguage,
+  languages: storeLanguages,
 } = useInternationalization();
 const { languageIdChain, refreshSessionContext } = useSessionContext();
 
-const languages = await getAvailableLanguages();
+const { data: languages } = await useAsyncData("languages", async () => {
+  return await getAvailableLanguages();
+});
 
-if (languages.elements.length && router.currentRoute.value.name) {
+if (languages.value?.elements.length && router.currentRoute.value.name) {
+  storeLanguages.value = languages.value?.elements;
   // Prefix from url
   const prefix = getPrefix(
     availableLocales,
     router.currentRoute.value.name as string
   );
+
   // Language set on the backend side
   const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
 

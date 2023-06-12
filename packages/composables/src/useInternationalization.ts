@@ -13,7 +13,7 @@ export type UseInternationalizationReturn = {
    * StorefrontUrl is needed to specify language of emails
    */
   getStorefrontUrl(): string;
-  getAvailableLanguages(): EntityResult<"language", Language>;
+  getAvailableLanguages(): Promise<EntityResult<"language", Language>>;
   changeLanguage(languageId: string): Promise<ContextTokenResponse>;
   getLanguageCodeFromId(languageId: string): string;
   getLanguageIdFromCode(languageCode: string): string;

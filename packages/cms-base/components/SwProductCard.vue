@@ -17,6 +17,7 @@ import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 import getUrlPrefix from "../helpers/getUrlPrefix";
+import buildUrlPrefix from "../helpers/buildUrlPrefix";
 
 const { pushSuccess, pushError } = useNotifications();
 
@@ -97,6 +98,7 @@ const addToCartProxy = async () => {
 };
 
 const fromPrice = getProductFromPrice(props.product);
+const urlPrefix = getUrlPrefix();
 const ratingAverage: Ref<number> = computed(() =>
   props.product.ratingAverage ? Math.round(props.product.ratingAverage) : 0
 );
@@ -128,7 +130,7 @@ const srcPath = computed(() => {
       ]"
     >
       <RouterLink
-        :to="getUrlPrefix(getProductRoute(product))"
+        :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
         class="overflow-hidden"
       >
         <img
@@ -185,7 +187,7 @@ const srcPath = computed(() => {
     <div class="px-4 pb-4 h-52 md:h-32">
       <RouterLink
         class="line-clamp-2"
-        :to="getUrlPrefix(getProductRoute(product))"
+        :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
         data-testid="product-box-product-name-link"
       >
         <h5
@@ -222,7 +224,7 @@ const srcPath = computed(() => {
         </button>
         <RouterLink
           v-else
-          :to="getUrlPrefix(getProductRoute(product))"
+          :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
           class=""
         >
           <div
