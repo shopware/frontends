@@ -32,8 +32,7 @@ const { refreshCart } = useCart();
 useNotifications();
 useAddress();
 
-const { locale } = useI18n();
-const { availableLocales } = useI18n();
+const { locale, availableLocales } = useI18n();
 const router = useRouter();
 const {
   getAvailableLanguages,
