@@ -16,10 +16,14 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
 <template>
   <!-- eslint-disable vue/no-v-html -->
   <nav class="hidden lg:flex space-x-4 items-center">
+    <!--  
+       ref="menuHtmlElement" was removed because of nuxt/vue bug
+       https://github.com/nuxt/nuxt/issues/13309
+
+    -->
     <div
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
-      ref="menuHtmlElement"
       class="relative hover:bg-gray-50 hover:rounded-lg"
       @mouseover="currentMenuPosition = navigationElement.id"
     >

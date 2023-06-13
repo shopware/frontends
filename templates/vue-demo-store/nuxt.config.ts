@@ -11,20 +11,12 @@ export default defineNuxtConfig({
       },
     },
   },
-  alias: {
-    /**
-     * TODO: Temp fix until new VueUse published:
-     * - https://github.com/vueuse/vueuse/pull/2449
-     * - https://github.com/vueuse/vueuse/actions/workflows/publish.yml
-     */
-    useMeta: "~/composables/useMeta",
-  },
   /**
    * Commented because of the StackBlitz error
    * Issue: https://github.com/shopware/frontends/issues/88
    */
   typescript: {
-    typeCheck: true,
+    // typeCheck: true,
     strict: true,
   },
   modules: [
