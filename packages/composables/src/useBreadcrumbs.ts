@@ -25,9 +25,9 @@ export type UseBreadcrumbsReturn = {
 
 /**
  * Composable for breadcrumbs management.
- * Read the [guide](https://frontends.shopware.com/getting-started/breadcrumbs.html#building-breadcrumbs-for-cms-pages).
+ * Read the [guide](https://frontends.shopware.com/getting-started/page-elements/breadcrumbs.html#building-breadcrumbs-for-cms-pages).
  *
- * It's recommended to use [getCategoryBreadcrumbs](https://frontends.shopware.com/packages/helpers/getCategoryBreadcrumbs) for category breadcrumbs.
+ * It's recommended to use [getCategoryBreadcrumbs](https://github.com/shopware/frontends/blob/main/packages/helpers/src/category/getCategoryBreadcrumbs.ts) for category breadcrumbs.
  *
  * @public
  * @category CMS (Shopping Experiences)

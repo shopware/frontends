@@ -4,6 +4,10 @@ import { useCategorySearch } from "@shopware-pwa/composables-next";
 import { Ref } from "vue";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 import { useCmsHead } from "@/composables/useCmsHead";
+import {
+  UseNavigationReturn,
+  useBreadcrumbsMainNavigation,
+} from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   navigationId: string;
@@ -25,10 +29,14 @@ const { data: categoryResponse } = await useAsyncData(
   }
 );
 
+const mainNavigation = inject(
+  "swNavigation-main-navigation"
+) as ComputedRef<UseNavigationReturn>;
+
 const breadcrumbs = getCategoryBreadcrumbs(categoryResponse.value, {
   startIndex: 2,
 });
-useBreadcrumbs(breadcrumbs);
+useBreadcrumbsMainNavigation(mainNavigation, breadcrumbs);
 
 const { category } = useCategory(categoryResponse as Ref<Category>);
 useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });
