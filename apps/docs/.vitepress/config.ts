@@ -68,6 +68,7 @@ export const sidebar = [
         ],
       },
       { text: "Routing", link: "/getting-started/routing" },
+      { text: "Languages", link: "/getting-started/languages" },
       {
         text: "CMS",
         link: "/getting-started/cms/",

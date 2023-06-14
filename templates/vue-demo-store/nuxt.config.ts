@@ -1,5 +1,5 @@
 import transformerDirective from "@unocss/transformer-directives";
-
+import i18nConfig from "./i18n/src/config";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -68,14 +68,12 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
-    strategy: "no_prefix",
+    vueI18n: {
+      fallbackLocale: "en-GB",
+    },
+    strategy: "prefix_except_default",
+    defaultLocale: i18nConfig.defaultLocale,
     langDir: "i18n/src/",
-    locales: [
-      {
-        code: "en-US",
-        iso: "en-US",
-        file: "en-US.ts",
-      },
-    ],
+    locales: i18nConfig.locales,
   },
 });
