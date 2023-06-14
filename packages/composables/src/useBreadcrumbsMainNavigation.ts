@@ -7,7 +7,6 @@ export function useBreadcrumbsMainNavigation(
   mainNavigation: ComputedRef<StoreNavigationElement[]>,
   newBreadcrumbs?: Breadcrumb[]
 ) {
-  const start = Date.now();
   // Store for breadcrumbs
   const _breadcrumbs = _useContext<Breadcrumb[]>("swBreadcrumb", {
     replace: newBreadcrumbs,
@@ -47,9 +46,6 @@ export function useBreadcrumbsMainNavigation(
     }
   }
 
-  const end = Date.now();
-  console.log(`Execution time: ${end - start} ms`);
-
   return {
     clearBreadcrumbs,
     breadcrumbs: computed(() => createdBreadcrumbs.value),
@@ -69,10 +65,10 @@ function findMatchingNodes(
 
   for (const node of nodes) {
     if (node.name === currentCrumb.name) {
-      matchingNodes.push(node);
       if (remainingCrumbs.length === 0) {
         matchingNodes.push(node);
       } else {
+        matchingNodes.push(node);
         if (!node.children) {
           continue;
         }
@@ -104,6 +100,7 @@ function extendBreadcrumbWithSeoPath(
         matchingNode.name === breadcrumbItem.name &&
         matchingNode.seoUrls?.[0]?.seoPathInfo
       ) {
+        // @ToDo: How to know which seoPathInfo is the main one to push?
         breadcrumbItem.path = "/" + matchingNode.seoUrls?.[0]?.seoPathInfo;
         break;
       }
