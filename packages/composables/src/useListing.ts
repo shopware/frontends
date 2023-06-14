@@ -7,14 +7,7 @@ import {
   Sort,
   ListingFilter,
 } from "@shopware-pwa/types";
-import {
-  inject,
-  computed,
-  ComputedRef,
-  ref,
-  provide,
-  useSSRContext,
-} from "vue";
+import { inject, computed, ComputedRef, ref, provide } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from ".";
 import ContextError from "./helpers/ContextError";
