@@ -32,7 +32,7 @@ export default {
         class="md:col-span-1 pb-4 px-4 bg-gray-50 rounded dark:bg-gray-800"
       >
         <h2 class="text-xl font-medium text-gray-900">
-          {{ $t("order.orderSummary") }}
+          {{ $t("cart.orderSummary") }}
         </h2>
 
         <div class="flex py-4 border-b justify-between text-sm text-gray-500">

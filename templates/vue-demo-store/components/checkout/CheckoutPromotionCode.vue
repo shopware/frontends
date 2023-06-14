@@ -1,5 +1,17 @@
 <script setup lang="ts">
+import { LineItem } from "@shopware-pwa/types";
 const { appliedPromotionCodes, addPromotionCode, removeItem } = useCart();
+const { codeErrorsNotification } = useCartNotification();
+const addPromotionCodeHandler = async (code: string) => {
+  await addPromotionCode(code);
+  codeErrorsNotification();
+  promoCode.value = "";
+};
+
+const removeItemHandler = (appliedPromotionCode: LineItem) => {
+  removeItem(appliedPromotionCode);
+  codeErrorsNotification();
+};
 
 const showPromotionCodes = computed(
   () => appliedPromotionCodes.value.length > 0
@@ -11,14 +23,21 @@ const promoCode = ref("");
 <template>
   <div>
     <div class="mb-4">
-      <input
-        v-model="promoCode"
-        type="text"
-        name="promoCode"
-        :placeholder="$t('form.promoCodePlaceholder')"
-        class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
-        @keyup.enter="addPromotionCode(promoCode)"
-      />
+      <div class="flex gap-3">
+        <input
+          v-model="promoCode"
+          type="text"
+          name="promoCode"
+          :placeholder="$t('form.promoCodePlaceholder')"
+          class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
+        />
+        <button
+          class="text-white bg-blue-500 hover:bg-blue-600 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md"
+          @click="addPromotionCodeHandler(promoCode)"
+        >
+          Add
+        </button>
+      </div>
     </div>
     <div v-if="showPromotionCodes">
       <div>{{ $t("checkout.promoCode.label") }}:</div>
@@ -32,7 +51,7 @@ const promoCode = ref("");
           <button
             class="text-brand-dark"
             type="button"
-            @click="removeItem(appliedPromotionCode)"
+            @click="removeItemHandler(appliedPromotionCode)"
           >
             {{ $t("checkout.promoCode.remove") }}
           </button>
