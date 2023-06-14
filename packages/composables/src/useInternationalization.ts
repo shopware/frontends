@@ -11,15 +11,55 @@ import { Ref } from "vue";
 export type UseInternationalizationReturn = {
   /**
    * StorefrontUrl is needed to specify language of emails
+   *
+   *  @returns {string} storefront URL
    */
   getStorefrontUrl(): string;
+  /**
+   * Get available languages from backend
+   *
+   * @returns {Promise<EntityResult<"language", Language>>} list of languages
+   */
   getAvailableLanguages(): Promise<EntityResult<"language", Language>>;
+  /**
+   * Change current language
+   *
+   * @param {string} languageId
+   * @returns {Promise<ContextTokenResponse>} context object
+   */
   changeLanguage(languageId: string): Promise<ContextTokenResponse>;
+  /**
+   * Get language code from backend language id
+   *
+   * @param {string} languageId
+   * @returns {string} language code
+   */
   getLanguageCodeFromId(languageId: string): string;
+  /**
+   * Get backend language id from language code
+   *
+   * @param {string} languageCode
+   * @returns {string} language
+   */
   getLanguageIdFromCode(languageCode: string): string;
+  /**
+   * Replace to dev url if it is set
+   *
+   * @param {string} url
+   * @returns {string} prefixed url
+   */
   replaceToDevStorefront(url: string): string;
+  /**
+   * List of available languages
+   */
   languages: Ref<Language[]>;
+  /**
+   * Currently used language
+   */
   currentLanguage: Ref<string>;
+  /**
+   * Current prefix from the context
+   */
   currentPrefix: Ref<string>;
 };
 

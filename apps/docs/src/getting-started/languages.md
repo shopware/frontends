@@ -67,6 +67,56 @@ www.example.com/de-DE   // DE site
 }
 ```
 
+**_When you are using different domains:_**
+
+```
+www.example1.com     // GB site
+www.example2.com     // DE site
+```
+
+```
+{
+  i18n: {
+    vueI18n: {
+      fallbackLocale: "en-GB",
+    },
+    langDir: "i18n/src/",
+    locales: [
+    {
+      domain: 'example1.com'
+      code: "en-GB",
+      iso: "en-GB",
+      file: "en-GB.ts",
+    },
+    {
+      domain: 'example2.com'
+      code: "de-DE",
+      iso: "de-DE",
+      file: "de-DE.ts",
+    },
+  ],
+  },
+}
+```
+
 ## Routing
 
+When you are using _prefix_ domain languages, you have to use `useLocalePath()` composable for building URLs.
+The main task of this composable is to add a prefix to URL if needed.
+
+```vue
+<script setup lang="ts">
+const localePath = useLocalePath();
+</script>
+<template>
+  <NuxtLink :to="localePath('/account')"> Account</NuxtLink>
+</template>
+```
+
 ## Testing
+
+If you want to test languages locally, and your local domain differs from what is declared on the backend, you can use environment variables.
+
+```
+NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=http://127.0.0.1:3000
+```
