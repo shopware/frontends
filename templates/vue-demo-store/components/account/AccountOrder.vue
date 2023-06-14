@@ -6,7 +6,7 @@ const props = defineProps<{
 }>();
 
 const isExpand = ref(false);
-const { t } = useI18n()
+const { t } = useI18n();
 const toggleView = () => (isExpand.value = !isExpand.value);
 const { currency } = useSessionContext();
 

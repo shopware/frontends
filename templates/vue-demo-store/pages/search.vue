@@ -19,10 +19,10 @@ const {
 } = useListing({
   listingType: "productSearchListing",
 });
-const{t} = useI18n()
+const { t } = useI18n();
 useBreadcrumbs([
   {
-    name: t('breadcrumbs.search'),
+    name: t("breadcrumbs.search"),
     path: "/search",
   },
 ]);
@@ -66,23 +66,31 @@ export default {
       />
     </div>
 
-    <h1 class="mb-8 text-3xl font-extrabold text-center">
-      <span v-if="products.length">{{$t('search.resultsHeader')}}</span>
-      <span v-else>{{$t('search.noResults')}}</span>
+    <h1 class="mb-8 mt-8 md:mt-0 text-3xl text-center">
+      <span v-if="products.length"
+        >{{ $t("search.resultsHeader") }} "<strong>{{
+          route.query.query
+        }}</strong
+        >"</span
+      >
+      <span v-else>{{ $t("search.noResults") }}</span>
     </h1>
 
-    <ListingFilters class="mb-4" />
-
-    <hr />
-
-    <div
-      class="grid grid-cols-1 mt-4 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
-    >
-      <ProductCard
-        v-for="product in products"
-        :key="product.id"
-        :product="product"
-      />
+    <div class="cms-section-sidebar flex flex-col md:block">
+      <div class="inline-block align-top w-12/12 md:w-3/12 order-2 md:order-1">
+        <h2>{{ $t("search.filters") }}</h2>
+        <ListingFilters class="pr-4 md:pr-8" />
+      </div>
+      <div class="inline-block w-12/12 md:w-9/12 order-1 md:order-2">
+        <div class="flex flex-wrap justify-center sm:justify-between">
+          <ProductCard
+            v-for="product in products"
+            :key="product.id"
+            :product="product"
+            class="w-full sm:w-3/7 lg:w-2/7 mb-8"
+          />
+        </div>
+      </div>
     </div>
 
     <SharedPagination

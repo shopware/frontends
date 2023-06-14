@@ -1,2 +1,2 @@
-import enUs from '../en-US/en-US'
-export default enUs
+import enUs from "../en-US/en-US";
+export default enUs;

@@ -1,10 +1,10 @@
 name: Code examples
 
 run-name: Playwright is testing code examples 🚀
-on: 
+on:
   workflow_dispatch:
   schedule:
-    - cron: '59 23 * * *'
+    - cron: "59 23 * * *"
 jobs:
   run-code_examples-tests:
     runs-on: ubuntu-latest

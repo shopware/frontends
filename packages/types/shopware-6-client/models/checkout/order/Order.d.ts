@@ -59,7 +59,7 @@ interface OrderCustomer {
   versionId: string;
   translated: [];
   createdAt: Date;
-  updatedAt: null;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   orderVersionId: string;
@@ -101,7 +101,7 @@ export type Order = {
   versionId: string;
   translated: any[];
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   billingAddressVersionId: string;

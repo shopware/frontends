@@ -15,32 +15,30 @@ import {
   useListing,
 } from "@shopware-pwa/composables-next";
 import { ShopwareSearchParams } from "@shopware-pwa/types";
-import deepMerge from '../helpers/deepMerge'
+import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 
-const props = 
-  defineProps<{
-    content: CmsElementProductListing | CmsElementSidebarFilter;
-    listingType?: string;
-  }>()
-  
+const props = defineProps<{
+  content: CmsElementProductListing | CmsElementSidebarFilter;
+  listingType?: string;
+}>();
+
 type Translations = {
-   listing: {
-    sort: string
-    resetFilters: string
-  }
-}
+  listing: {
+    sort: string;
+    resetFilters: string;
+  };
+};
 
 let translations: Translations = {
-   listing: {
+  listing: {
     sort: "Sort",
-    resetFilters: "Reset filters"
-  }
-}
+    resetFilters: "Reset filters",
+  },
+};
 
-const globalTranslations = getTranslations()
-translations = deepMerge(translations, globalTranslations) as Translations
-
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { category } = useCategory();
 const route = useRoute();
@@ -201,7 +199,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
                   aria-expanded="false"
                   aria-haspopup="true"
                 >
-                  {{translations.listing.sort }}
+                  {{ translations.listing.sort }}
                   <div
                     class="i-carbon-chevron-down h-5 w-5 ml-1"
                     :class="{ hidden: isSortMenuOpen }"
@@ -264,7 +262,8 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
               @click="invokeCleanFilters"
               type="button"
             >
-              {{translations.listing.resetFilters}}<span
+              {{ translations.listing.resetFilters
+              }}<span
                 class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"
               ></span>
             </button>
@@ -285,7 +284,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
             </div>
 
             <div class="text-sm font-medium text-gray-700 hover:text-gray-900">
-              {{translations.listing.sort}}
+              {{ translations.listing.sort }}
             </div>
             <div class="i-carbon-chevron-down h-5 w-5 ml-1"></div>
           </div>

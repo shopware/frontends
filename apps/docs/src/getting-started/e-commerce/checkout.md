@@ -64,6 +64,14 @@ const selectedShippingMethod = computed({
 </template>
 ```
 
+The shipping method position on the list is determined by the `position` field settled on the admin panel. Sorting logic in `useCheckout.ts::getShippingMethods()`
+
+You can also display:
+
+- Shipping delivery time
+- Shipping icon
+- Shipping description
+
 **Get payment methods**
 
 ```ts

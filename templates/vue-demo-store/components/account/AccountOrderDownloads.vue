@@ -19,14 +19,14 @@ const getMediaFileHandler = async (documentObject: OrderDocument) => {
   );
 };
 
-const getDocumentDate = (documentDate: Date) =>
+const getDocumentDate = (documentDate: Date | string) =>
   new Date(documentDate).toLocaleDateString(
     (typeof navigator !== "undefined" && navigator.language) || "en-US"
   );
 </script>
 <template>
   <div>
-    <h3 class="font-medium">{{$t('account.documentsLabel')}}</h3>
+    <h3 class="font-medium">{{ $t("account.documentsLabel") }}</h3>
     <ul class="list-disc pl-6">
       <li
         v-for="document in documents"
@@ -37,7 +37,11 @@ const getDocumentDate = (documentDate: Date) =>
         <span class="text-brand-dark">{{
           document.config.title || document.config.name
         }}</span>
-        ({{ getDocumentDate(document.updatedAt) }})
+        ({{
+          getDocumentDate(
+            document.updatedAt ? document.updatedAt : document.createdAt
+          )
+        }})
       </li>
     </ul>
   </div>

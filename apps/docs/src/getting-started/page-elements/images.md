@@ -14,7 +14,7 @@ nav:
 ---
 
 <script setup>
-import StackBlitzLiveExample from "../components/StackBlitzLiveExample.vue";
+import StackBlitzLiveExample from "../../components/StackBlitzLiveExample.vue";
 </script>
 
 # Working with Images
@@ -99,7 +99,7 @@ By default, every uploaded image is resized to the predefined width and height s
 
 In order to change those sizes, or add another one (also the quality, or to keep aspect ratio), the values need to be adjusted in administration panel, for specific media folder.
 
-![Edit media sizes](../.assets/edit-media-sizes.png)
+![Edit media sizes](../../.assets/edit-media-sizes.png)
 
 :::warning Image processing
 While a file is uploaded, it's been automatically resized for the current configuration in Administration > Media section. Thanks to this, the newly uploaded files will be available for all required dimensions. However keep in mind that if your settings have changes, the new dimensions won't be applied automatically for the old images.

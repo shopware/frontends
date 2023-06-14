@@ -13,11 +13,13 @@
     "closeMenu": "Close menu"
   },
   "search": {
-    "noResults": "No products found",
     "all": "all",
+    "filters": "Filters",
+    "noResults": "No products found",
+    "resetFilters": "Reset Filters",
     "result": "result | results",
-    "see": "see",
-    "resultsHeader": "Search Result"
+    "resultsHeader": "Search Result for",
+    "see": "see"
   },
   "messages": {
     "error": "Something goes wrong please try again later"
@@ -26,7 +28,8 @@
     "header": "Wishlist",
     "emptyLabel": "Wishlist is empty",
     "emptyText": "No products were added to the Wishlist.",
-    "continueShopping": "Continue Shopping"
+    "continueShopping": "Continue Shopping",
+    "clearWishlist": "Clear wishlist"
   },
   "errorPages": {
     "404": "We can't find what you are looking for. Are you lost?",

@@ -1,5 +1,14 @@
 # @shopware-pwa/nuxt3-module
 
+## 0.3.4
+
+### Patch Changes
+
+- Types for `devStorefrontUrl`
+
+- Updated dependencies [[`0242a3ad`](https://github.com/shopware/frontends/commit/0242a3adcde82e301f2e53fb562c0bbd767c04f9)]:
+  - @shopware-pwa/composables-next@0.8.2
+
 ## 0.3.3
 
 ### Patch Changes

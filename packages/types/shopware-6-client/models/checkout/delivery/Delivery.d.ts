@@ -32,7 +32,7 @@ export type Delivery = {
   stateMachineState: StateMachineState;
   trackingCodes: unknown[];
   translated: unknown[];
-  updatedAt: string | null;
+  updatedAt: Date | string | null;
   versionId: string;
   _uniqueIdentifier: string;
 };

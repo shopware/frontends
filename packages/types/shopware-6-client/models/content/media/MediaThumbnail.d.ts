@@ -9,7 +9,7 @@ export type MediaThumbnail = {
   versionId: null | string;
   translated: unknown;
   createdAt: string;
-  updatedAt: null | string;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   customFields: CustomFields;

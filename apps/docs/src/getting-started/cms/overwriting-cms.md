@@ -11,7 +11,7 @@ head:
       content: "https://frontends-og-image.vercel.app/Overwrite%20CMS.png"
 ---
 
-# Overwrite CMS blocks in Nuxt 3 app
+# Overwrite CMS blocks in Nuxt 3 APP
 
 To override CMS blocks in the Nuxt 3 app, create a `.vue` file with the cms block name in the components directory.
 Because of auto importing, CMS component import will be overwritten by the new file path.

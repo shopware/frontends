@@ -7,7 +7,7 @@ export type OrderState = {
   versionId: string | null;
   translated: unknown;
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   extensions: unknown;
   customFields: CustomFields;
   apiAlias: string;
