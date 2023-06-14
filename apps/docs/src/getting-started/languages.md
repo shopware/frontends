@@ -13,6 +13,9 @@ head:
 
 # Work with languages
 
+:::warning
+This is the implementation working with `vue-demo-store` template only. To see the details, please go to the `templates/vue-demo-store` directory in the repository.
+:::
 Each store has two sources of translations.
 
 Backend source for:
