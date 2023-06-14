@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { count } = useCart();
 const { count: wishlistCount } = useWishlist();
+const localePath = useLocalePath();
 
 const sidebarController = useModal();
 </script>
@@ -11,7 +12,7 @@ const sidebarController = useModal();
       <div class="flex items-center border-b-2 border-gray-100 py-6 space-x-4">
         <div class="flex justify-start items-center min-w-10 lg:min-w-12">
           <div class="order-2 lg:order-1 ml-4 lg:ml-0">
-            <NuxtLink to="/">
+            <NuxtLink :to="localePath(`/`)">
               <span class="sr-only">Shopware</span>
               <img
                 class="h-10 w-10 lg:h-12 lg:w-12"
@@ -41,7 +42,7 @@ const sidebarController = useModal();
               class="group -m-2 p-2 flex items-center relative text-center"
               aria-label="wishlist"
               data-testid="wishlist-button"
-              to="/wishlist"
+              :to="localePath(`/wishlist`)"
             >
               <div
                 class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary hover:animate-count-infinite hover:animate-heart-beat"

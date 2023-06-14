@@ -146,3 +146,4 @@ export * from "./search/RangeFilters";
 export * from "./search/SearchCriteria";
 export * from "./search/SearchFilter";
 export * from "./search/TotalCountMode";
+export * from "./response/ContextUpdateResult";
