@@ -85,6 +85,14 @@ export type UseSessionContextReturn = {
    */
   countryId: ComputedRef<string | undefined>;
   /**
+   * current language id
+   */
+  languageId: ComputedRef<string | undefined>;
+  /**
+   * current language id chain
+   */
+  languageIdChain: ComputedRef<string>;
+  /**
    * current context's customer object
    */
   userFromContext: ComputedRef<Customer | undefined>;
@@ -211,6 +219,12 @@ export function useSessionContext(
     () => sessionContext.value?.salesChannel?.countryId
   );
 
+  const languageId = computed(
+    () => sessionContext.value?.salesChannel?.languageId
+  );
+  const languageIdChain = computed(
+    () => sessionContext.value?.context?.languageIdChain?.[0]
+  );
   const taxState = computed(() => sessionContext.value?.context?.taxState);
   const userFromContext = computed(() => sessionContext.value?.customer);
 
@@ -231,5 +245,7 @@ export function useSessionContext(
     taxState,
     userFromContext,
     setLanguage,
+    languageId,
+    languageIdChain,
   };
 }

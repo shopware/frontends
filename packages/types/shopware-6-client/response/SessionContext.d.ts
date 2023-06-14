@@ -10,6 +10,7 @@ import { CustomFields } from "../models/common/CustomField";
 
 export type ContextTokenResponse = {
   contextToken: string;
+  redirectUrl?: string;
 };
 
 export type SalesChannelDomain = {

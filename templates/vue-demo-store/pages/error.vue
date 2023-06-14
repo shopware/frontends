@@ -10,6 +10,8 @@ const props = withDefaults(
   }
 );
 const { t } = useI18n();
+const localePath = useLocalePath();
+
 const errorMessageMap: { [key: number]: string } = {
   404: t("errorPages.404"),
   408: t("errorPages.408"),
@@ -41,7 +43,7 @@ export default {
           {{ errorMessage }}
         </p>
         <NuxtLink
-          to="/"
+          :to="localePath(`/`)"
           class="w-full lg:w-auto justify-center py-3 px-8 border shadow-sm text-sm font-medium rounded-md text-white bg-brand-light hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
         >
           {{ $t("goBackHome") }}

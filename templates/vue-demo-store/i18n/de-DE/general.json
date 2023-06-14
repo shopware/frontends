@@ -1,0 +1,51 @@
+{
+  "backToHomepage": "Zurück zur Startseite",
+  "home": "Startseite",
+  "error": "Fehler",
+  "close": "Schließen",
+  "goBackHome": "Zurück zur Startseite",
+  "returnToHomepage": "Zurück zur Startseite",
+  "pageNotFound": {
+    "header": "Seite nicht gefunden",
+    "text": "Es tut uns leid, die von Ihnen gesuchte Seite konnte nicht gefunden werden. Sie existiert möglicherweise nicht mehr oder wurde verschoben."
+  },
+  "sidebar": {
+    "closeMenu": "Menü schließen"
+  },
+  "search": {
+    "noResults": "Keine Produkte gefunden",
+    "all": "alle",
+    "result": "Ergebnis | Ergebnisse",
+    "see": "anzeigen",
+    "resultsHeader": "Suchergebnis"
+  },
+  "messages": {
+    "error": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+  },
+  "wishlist": {
+    "header": "Wunschliste",
+    "emptyLabel": "Wunschliste ist leer",
+    "emptyText": "Es wurden keine Produkte zur Wunschliste hinzugefügt.",
+    "continueShopping": "Weiter einkaufen",
+    "clearWishlist": "Wunschliste leeren"
+  },
+  "errorPages": {
+    "404": "Wir können nicht finden, wonach Sie suchen. Sind Sie verloren?",
+    "408": "Die API benötigt zu lange, um zu antworten",
+    "500": "Hoppla, es ist ein schwerwiegender Fehler aufgetreten",
+    "502": "Der Server konnte Ihre Anfrage nicht abschließen. Bitte versuchen Sie es in wenigen Sekunden erneut.",
+    "503": "Der Server ist derzeit sehr beschäftigt"
+  },
+  "breadcrumbs": {
+    "accountOverview": "Kontoübersicht",
+    "address": "Adresse",
+    "order": "Bestellung",
+    "payment": "Zahlung",
+    "myAccount": "Mein Konto",
+    "recoverPassword": "Passwort wiederherstellen",
+    "register": "Registrieren",
+    "passwordReset": "Passwort zurücksetzen",
+    "search": "Suche",
+    "wishlist": "Wunschliste"
+  }
+}

@@ -11,6 +11,7 @@ const { t } = useI18n();
 const { refreshSessionContext } = useSessionContext();
 const { mergeWishlistProducts } = useWishlist();
 const { pushSuccess } = useNotifications();
+const localePath = useLocalePath();
 const loginErrors = ref<string[]>([]);
 
 const formData = ref({
@@ -125,7 +126,7 @@ useFocus(emailImputElement, { initialValue: true });
           <slot name="action">
             <div @click="$emit('close')">
               <NuxtLink
-                to="/register"
+                :to="localePath('/register')"
                 class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 data-testid="login-sign-up-link"
               >

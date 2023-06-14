@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const localePath = useLocalePath();
+</script>
 
 <template>
   <section class="container mx-auto text-center my-20">
@@ -8,7 +10,7 @@
     </p>
     <NuxtLink
       class="inline-flex justify-center items-center py-2 px-4 text-base font-medium text-center text-white bg-brand-primary rounded-lg hover:bg-gray-400"
-      to="/"
+      :to="localePath(`/`)"
     >
       {{ $t("backToHomepage") }}
     </NuxtLink>
