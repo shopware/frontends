@@ -7,7 +7,14 @@ import {
   Sort,
   ListingFilter,
 } from "@shopware-pwa/types";
-import { inject, computed, ComputedRef, ref, provide } from "vue";
+import {
+  inject,
+  computed,
+  ComputedRef,
+  ref,
+  provide,
+  useSSRContext,
+} from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from ".";
 import ContextError from "./helpers/ContextError";
@@ -267,20 +274,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
   const setInitialListing = async (
     initialListing: Partial<ListingResult<ELEMENTS_TYPE>>
   ) => {
-    // note: only v6.3.x compatible
-    /* istanbul ignore next */
-    if (
-      initialListing?.currentFilters?.manufacturer?.length ||
-      initialListing?.currentFilters?.properties?.length
-    ) {
-      loading.value = true;
-      const allFiltersResult = await searchMethod({
-        query: initialListing.currentFilters.search || undefined,
-      });
-      initialListing = Object.assign({}, initialListing, {
-        aggregations: allFiltersResult?.aggregations,
-      });
-    }
+    loading.value = true;
     _storeInitialListing.value = initialListing;
     _storeAppliedListing.value = null;
     loading.value = false;
@@ -309,39 +303,11 @@ export function createListingComposable<ELEMENTS_TYPE>({
     }
   ) {
     loading.value = true;
-    // const changeRoute = options?.preventRouteChange !== true && !cmsContext;
     try {
-      // replace URL query params with currently selected criteria
-      // changeRoute &&
-      //   router
-      //     .replace({
-      //       query: {
-      //         ...criteria,
-      //       },
-      //     })
-      //     .catch(() => {});
-
-      // prepare full criteria using defaults and currently selected criteria
       const searchCriteria = merge({}, searchDefaults, criteria);
+      const result = await searchMethod(searchCriteria);
 
-      // TODO: investigate why filters are not complete
-      const [result, allFiltersResult] = await Promise.all([
-        searchMethod(searchCriteria),
-        searchMethod({
-          query: searchCriteria.query,
-          includes: { product_listing: ["aggregations"] },
-        }),
-      ]);
-
-      _storeAppliedListing.value = Object.assign({}, result, {
-        aggregations: Object.assign(
-          {},
-          result?.aggregations,
-          allFiltersResult?.aggregations
-        ),
-      });
-      // final result should be:
-      // _storeAppliedListing.value = result;
+      _storeAppliedListing.value = result;
     } catch (e) {
       throw e;
     } finally {
