@@ -16,6 +16,8 @@ import { Ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import getUrlPrefix from "../helpers/getUrlPrefix";
+import buildUrlPrefix from "../helpers/buildUrlPrefix";
 
 const { pushSuccess, pushError } = useNotifications();
 
@@ -96,6 +98,7 @@ const addToCartProxy = async () => {
 };
 
 const fromPrice = getProductFromPrice(props.product);
+const urlPrefix = getUrlPrefix();
 const ratingAverage: Ref<number> = computed(() =>
   props.product.ratingAverage ? Math.round(props.product.ratingAverage) : 0
 );
@@ -126,7 +129,10 @@ const srcPath = computed(() => {
         layoutType === 'image' ? 'h-80' : 'h-60',
       ]"
     >
-      <RouterLink :to="getProductRoute(product)" class="overflow-hidden">
+      <RouterLink
+        :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
+        class="overflow-hidden"
+      >
         <img
           ref="imageElement"
           :src="srcPath"
@@ -181,7 +187,7 @@ const srcPath = computed(() => {
     <div class="px-4 pb-4 h-52 md:h-32">
       <RouterLink
         class="line-clamp-2"
-        :to="getProductRoute(product)"
+        :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
         data-testid="product-box-product-name-link"
       >
         <h5
@@ -216,12 +222,16 @@ const srcPath = computed(() => {
             {{ count }}
           </div>
         </button>
-        <RouterLink v-else :to="getProductRoute(product)" class="">
-          <button
+        <RouterLink
+          v-else
+          :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
+          class=""
+        >
+          <div
             class="justify-center w-full md:w-auto my-8 md-m-0 py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 hover:scale-120"
           >
             <span data-testid="product-box-product-show-details">Details</span>
-          </button>
+          </div>
         </RouterLink>
       </div>
     </div>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getSessionContext } from "@shopware-pwa/api-client";
 import { SessionContext } from "@shopware-pwa/types";
+import { getPrefix, getDefaultLocale } from "./i18n/src/helpers/prefix";
 
 /**
  * Init breadcrumbs context
@@ -22,6 +23,7 @@ const { data: sessionContextData } = await useAsyncData(
     return await getSessionContext(apiInstance);
   }
 );
+
 useSessionContext(sessionContextData.value as SessionContext);
 
 const { getWishlistProducts } = useWishlist();
@@ -29,6 +31,45 @@ const { refreshCart } = useCart();
 
 useNotifications();
 useAddress();
+
+const { locale, availableLocales } = useI18n();
+const router = useRouter();
+const {
+  getAvailableLanguages,
+  getLanguageCodeFromId,
+  getLanguageIdFromCode,
+  changeLanguage,
+  languages: storeLanguages,
+} = useInternationalization();
+const { languageIdChain, refreshSessionContext } = useSessionContext();
+
+const { data: languages } = await useAsyncData("languages", async () => {
+  return await getAvailableLanguages();
+});
+
+if (languages.value?.elements.length && router.currentRoute.value.name) {
+  storeLanguages.value = languages.value?.elements;
+  // Prefix from url
+  const prefix = getPrefix(
+    availableLocales,
+    router.currentRoute.value.name as string
+  );
+
+  // Language set on the backend side
+  const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
+
+  // If languages are not the same, set one from prefix
+  if (sessionLanguage !== prefix && sessionLanguage !== getDefaultLocale()) {
+    await changeLanguage(
+      getLanguageIdFromCode(prefix ? prefix : getDefaultLocale())
+    );
+    await refreshSessionContext();
+  }
+
+  locale.value = prefix ? prefix : getDefaultLocale();
+  // Set prefix from CMS components
+  provide("urlPrefix", prefix);
+}
 
 onMounted(() => {
   refreshCart();

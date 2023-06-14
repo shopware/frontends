@@ -39,7 +39,7 @@ async function updateContext(
 ): Promise<ContextTokenResponse> {
   const resp = await contextInstance.invoke.patch(getContextEndpoint(), params);
   const contextToken = extractContextToken(resp);
-  return { contextToken };
+  return { contextToken, redirectUrl: resp.data.redirectUrl };
 }
 
 /**

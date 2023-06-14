@@ -101,6 +101,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useNavigationContext",
           "useOrderPayment",
           "useBreadcrumbs",
+          "useInternationalization",
         ],
       });
     });

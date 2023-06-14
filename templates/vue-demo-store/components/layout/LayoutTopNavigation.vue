@@ -5,10 +5,10 @@ import {
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
 const { navigationElements } = useNavigation();
-
 const currentMenuPosition = ref<string | null>(null);
 
 const menuHtmlElement = ref(null);
+const localePath = useLocalePath();
 
 onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
 </script>
@@ -33,7 +33,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
             ? '_blank'
             : ''
         "
-        :to="getCategoryRoute(navigationElement)"
+        :to="localePath(getCategoryRoute(navigationElement))"
         class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
@@ -72,7 +72,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                 class="relative grid gap-6 bg-white px-3 py-2 sm:gap-6 sm:p-3"
               >
                 <NuxtLink
-                  :to="getCategoryRoute(childElement)"
+                  :to="localePath(getCategoryRoute(childElement))"
                   :target="
                     childElement.externalLink || childElement.linkNewTab
                       ? '_blank'

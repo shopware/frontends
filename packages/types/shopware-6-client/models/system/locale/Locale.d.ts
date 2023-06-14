@@ -11,7 +11,12 @@ export type Locale = {
   name: string | null;
   territory: string | null;
   translations: LocaleTranslation[] | null;
+  translated: LocaleTranslation[] | null;
   users: Customer[] | null;
   languages: Language[] | null;
+  id: string;
   customFields: CustomFields | null;
+  apiAlias: "locale";
+  createdAt: Date | string;
+  updatedAt: Date | string | null;
 };
