@@ -267,10 +267,8 @@ export function createListingComposable<ELEMENTS_TYPE>({
   const setInitialListing = async (
     initialListing: Partial<ListingResult<ELEMENTS_TYPE>>
   ) => {
-    loading.value = true;
     _storeInitialListing.value = initialListing;
     _storeAppliedListing.value = null;
-    loading.value = false;
   };
 
   const initSearch = async (
