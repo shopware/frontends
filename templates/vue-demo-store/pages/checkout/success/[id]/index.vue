@@ -76,7 +76,7 @@ const formatDate = (date: Date) =>
     >
       <div class="space-y-1">
         <div class="text-gray-800">
-          {{ $t("checkout.success.header", { n: order?.orderNumber }) }}
+          {{ $t("checkout.success.header", [order?.orderNumber]) }}
         </div>
         <div
           v-if="isAsynchronous && paymentUrl && state?.technicalName === 'open'"

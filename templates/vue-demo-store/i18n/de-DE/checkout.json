@@ -57,7 +57,7 @@
       "removeButton": "Entfernen"
     },
     "success": {
-      "header": "Ihre Bestellung #{n} wurde versandt und wird in Kürze bei Ihnen eintreffen",
+      "header": "Wir haben Ihre Bestellung #{0} erhalten und werden diese schnellstmöglich bearbeiten.",
       "paymentProcessLabel": "Zahlungsvorgang abschließen.",
       "paymentProcessInfo": "Sie werden in 5 Sekunden zum Zahlungsgateway weitergeleitet."
     },

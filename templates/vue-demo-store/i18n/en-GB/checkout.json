@@ -57,7 +57,7 @@
       "removeButton": "Remove"
     },
     "success": {
-      "header": "Your order #{n} has shipped and will be with you soon",
+      "header": "We have received your order #{0} and will process it as soon as possible.",
       "paymentProcessLabel": "Finish payment process.",
       "paymentProcessInfo": "You will be redirected to the payment gateway in 5 seconds."
     },
