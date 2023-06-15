@@ -51,6 +51,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
 
   async function removeFromWishlistSync(id: string) {
     await removeWishlistProduct(id, apiInstance);
+    getWishlistProducts();
   }
 
   /**
