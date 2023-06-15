@@ -112,6 +112,7 @@ const state = reactive({
     zipcode: "",
     city: "",
     countryId: "",
+    stateId: "",
   },
   customShipping: false,
 });
@@ -494,31 +495,11 @@ const addAddressModalController = useModal();
                   </span>
                 </div>
 
-                <div class="col-span-6 sm:col-span-3">
-                  <label
-                    for="city"
-                    class="block text-sm font-medium text-gray-700"
-                    >{{ $t("form.city") }}</label
-                  >
-                  <input
-                    id="city"
-                    v-model="state.billingAddress.city"
-                    type="text"
-                    required
-                    name="city"
-                    :placeholder="$t('form.cityPlaceholder')"
-                    autocomplete="address-level2"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
-                    data-testid="checkout-pi-city-input"
-                    @blur="$v.billingAddress.city.$touch()"
-                  />
-                  <span
-                    v-if="$v.billingAddress.city.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
-                  >
-                    {{ $v.billingAddress.city.$errors[0].$message }}
-                  </span>
-                </div>
+                <SharedCountryStateInput
+                  v-model:countryId="state.billingAddress.countryId"
+                  v-model:stateId="state.billingAddress.stateId"
+                  class="col-span-6"
+                />
 
                 <div class="col-span-6">
                   <label
