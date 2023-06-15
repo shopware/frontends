@@ -119,7 +119,7 @@ watch(enter, (value) => {
         <div v-else>
           <NuxtLink
             v-if="getTotal > 0"
-            :to="localePath(`/search`) + `?query=${typingQuery}`"
+            :to="localePath({ path: `/search`, query: { query: typingQuery } })"
             @click="[(active = false), $emit('link-clicked')]"
           >
             {{ $t("search.see") }}
