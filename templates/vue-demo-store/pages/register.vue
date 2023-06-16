@@ -6,11 +6,11 @@ export default {
 
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
+import { required, email, minLength, requiredIf } from "@vuelidate/validators";
 import { ClientApiError } from "@shopware-pwa/types";
 
 const { getSalutations } = useSalutations();
-const { getCountries } = useCountries();
+const { getStatesForCountry } = useCountries();
 const { register, isLoggedIn } = useUser();
 const { pushError } = useNotifications();
 
@@ -35,6 +35,7 @@ const initialState = {
     zipcode: "",
     city: "",
     countryId: "",
+    countryStateId: "",
   },
 };
 
@@ -73,6 +74,11 @@ const rules = computed(() => ({
     },
     countryId: {
       required,
+    },
+    countryStateId: {
+      required: requiredIf(() => {
+        return !!getStatesForCountry(state.billingAddress.countryId)?.length;
+      }),
     },
   },
 }));
@@ -279,7 +285,7 @@ useBreadcrumbs([
       </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
         <div class="col-span-12 md:col-span-4">
-          <label for="street">{{ $t("form.street") }} *</label>
+          <label for="street">{{ $t("form.streetAddress") }} *</label>
           <input
             id="Street"
             v-model="state.billingAddress.street"
@@ -359,7 +365,14 @@ useBreadcrumbs([
           </span>
         </div>
 
-        <div class="col-span-12 md:col-span-4">
+        <SharedCountryStateInput
+          v-model:countryId="state.billingAddress.countryId"
+          v-model:stateId="state.billingAddress.countryStateId"
+          :country-id-validation="$v.billingAddress.countryId"
+          :state-id-validation="$v.billingAddress.countryStateId"
+          class="col-span-12 md:col-span-4"
+        />
+        <!-- <div class="col-span-12 md:col-span-4">
           <label for="country">{{ $t("form.country") }} *</label>
           <select
             id="country"
@@ -392,7 +405,7 @@ useBreadcrumbs([
           >
             {{ $v.salutationId.$errors[0].$message }}
           </span>
-        </div>
+        </div> -->
       </div>
       <div class="mb-5 text-right">
         <button

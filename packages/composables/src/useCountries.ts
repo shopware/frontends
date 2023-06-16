@@ -15,7 +15,7 @@ export type UseCountriesReturn = {
   mountedCallback(): Promise<void>;
   getCountries: ComputedRef<Country[]>;
   fetchCountries(): Promise<void>;
-  getStatesForCountry(countryId: string): CountryState | null;
+  getStatesForCountry(countryId: string): CountryState[] | null;
 };
 
 /**

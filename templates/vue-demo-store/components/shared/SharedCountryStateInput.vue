@@ -7,15 +7,19 @@ const emit = defineEmits<{
 const props = withDefaults(
   defineProps<{
     countryId: string;
-    stateId: string;
+    stateId: string | null;
+    countryIdValidation?: object | null;
+    stateIdValidation?: object | null;
   }>(),
   {
     countryId: "",
     stateId: "",
+    countryIdValidation: null,
+    stateIdValidation: null,
   }
 );
 
-const localCountry = ref(props.stateId);
+const localCountry = ref(props.countryId);
 const localState = ref(props.stateId);
 
 const { getCountries, getStatesForCountry } = useCountries();
@@ -39,24 +43,23 @@ const handleStateUpdate = (e: Event) => {
 };
 </script>
 
-<!-- @input="$emit('update:email', $event.target.value)" -->
-
 <template>
   <div class="flex gap-6">
-    <div>
+    <div class="w-full">
       <label for="country" class="block text-sm font-medium text-gray-700">{{
         $t("form.country")
       }}</label>
       <select
         id="country"
+        v-model="localCountry"
         required
         name="country"
         autocomplete="country-name"
         class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
         data-testid="checkout-pi-country-input"
         @change="handleCountryUpdate"
+        @blur="countryIdValidation && countryIdValidation.$touch()"
       >
-        <!-- @blur="$v.billingAddress.countryId.$touch()" -->
         <option disabled selected value="">
           {{ $t("form.chooseCountry") }}
         </option>
@@ -68,14 +71,14 @@ const handleStateUpdate = (e: Event) => {
           {{ country.name }}
         </option>
       </select>
-      <!-- <span
-        v-if="$v.billingAddress.countryId.$error"
+      <span
+        v-if="countryIdValidation && countryIdValidation.$error"
         class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
       >
-        {{ $v.billingAddress.countryId.$errors[0].$message }}
-      </span> -->
+        {{ countryIdValidation.$errors[0].$message }}
+      </span>
     </div>
-    <div v-if="states">
+    <div v-if="states && states.length" class="w-full">
       <label for="state" class="block text-sm font-medium text-gray-700">{{
         $t("form.state")
       }}</label>
@@ -88,8 +91,8 @@ const handleStateUpdate = (e: Event) => {
         class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
         data-testid="checkout-pi-state-input"
         @change="handleStateUpdate"
+        @blur="stateIdValidation && stateIdValidation.$touch()"
       >
-        <!-- @blur="$v.billingAddress.stateId.$touch()" -->
         <option disabled selected value="">
           {{ $t("form.chooseState") }}
         </option>
@@ -98,12 +101,12 @@ const handleStateUpdate = (e: Event) => {
           {{ state.name }}
         </option>
       </select>
-      <!-- <span
-        v-if="$v.billingAddress.countryId.$error"
+      <span
+        v-if="stateIdValidation && stateIdValidation.$error"
         class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
       >
-        {{ $v.billingAddress.countryId.$errors[0].$message }}
-      </span> -->
+        {{ stateIdValidation.$errors[0].$message }}
+      </span>
     </div>
   </div>
 </template>
