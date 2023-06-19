@@ -188,7 +188,7 @@ export function useSessionContext(
   };
 
   const activeShippingAddress = computed(
-    () => sessionContext.value?.customer?.activeShippingAddress || null
+    () => sessionContext.value?.shippingLocation?.address || null
   );
   const setActiveShippingAddress = async (
     address: Partial<ShippingAddress>
@@ -202,8 +202,9 @@ export function useSessionContext(
     refreshSessionContext();
   };
 
+  // TODO: replace the source from defaultBillingAddress by new value once NEXT-28627 is solved
   const activeBillingAddress = computed(
-    () => sessionContext.value?.customer?.activeBillingAddress || null
+    () => sessionContext.value?.customer?.defaultBillingAddress || null
   );
   const setActiveBillingAddress = async (address: Partial<BillingAddress>) => {
     if (!address?.id) {
