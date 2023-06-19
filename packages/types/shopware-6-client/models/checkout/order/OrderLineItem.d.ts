@@ -11,20 +11,24 @@ import { Downloads } from "./OrderDownloads";
  * @public
  */
 export type OrderLineItem = {
-  id: string;
+  versionId: string;
+  translated: string[];
+  createdAt: string;
+  updatedAt: null | string;
   orderId: string;
   identifier: string;
-  referenceId: string | null;
+  referencedId: string;
+  productId: string;
   quantity: number;
   unitPrice: number;
   totalPrice: number;
   label: string;
-  description: string | null;
-  good: boolean;
-  removable: boolean;
-  coverId: string | null;
+  description: null | string;
+  good: string;
+  removable: string;
+  coverId: string;
   stackable: boolean;
-  price: CalculatedPrice | null;
+  position: number;
   priceDefinition: PriceDefinitionInterface | null;
   payload: CartProductItem | Promotion;
   parentId: string | null;
@@ -34,6 +38,12 @@ export type OrderLineItem = {
   customFields: CustomFields;
   cover: (Media & { url: string }) | null;
   children: OrderLineItem[] | null;
-  apiAlias: "order_item";
   downloads: Downloads[] | null;
+  states: string[];
+  orderVersionId: string;
+  productVersionId: string;
+  parentVersionId: string;
+  customFields: unknown;
+  id: string;
+  apiAlias: "order_line_item";
 };
