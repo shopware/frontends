@@ -58,7 +58,7 @@
       "removeButton": "Usuń"
     },
     "success": {
-      "header": "Twoje zamówienie #{n} zostało wysłane i wkrótce dotrze do Ciebie",
+      "header": "Otrzymaliśmy zamówienie #{0} i przetworzymy je tak szybko, jak to możliwe.",
       "paymentProcessLabel": "Zakończ proces płatności.",
       "paymentProcessInfo": "Zostaniesz przekierowany do bramy płatności za 5 sekund."
     },
