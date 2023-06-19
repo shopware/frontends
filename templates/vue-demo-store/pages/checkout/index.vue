@@ -243,7 +243,7 @@ const addAddressModalController = useModal();
       />
     </SharedModal>
     <SharedModal :controller="addAddressModalController">
-      <AccountAddressForm />
+      <AccountAddressForm @success="addAddressModalController.close" />
     </SharedModal>
     <div
       v-if="isCheckoutAvailable || isCartLoading"
