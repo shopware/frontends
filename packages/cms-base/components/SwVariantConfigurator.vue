@@ -9,7 +9,7 @@ const props = withDefaults(
     allowRedirect?: boolean;
   }>(),
   {
-    allowRedirect: false,
+    allowRedirect: true,
   }
 );
 
@@ -53,6 +53,7 @@ const onHandleChange = async () => {
   );
   // const selectedOptionsVariantPath = variantFound?.seoUrls?.[0]?.seoPathInfo;
   const selectedOptionsVariantPath = getProductRoute(variantFound);
+  console.warn("onchange", props.allowRedirect, selectedOptionsVariantPath);
   if (props.allowRedirect && selectedOptionsVariantPath) {
     try {
       router.push(selectedOptionsVariantPath);
