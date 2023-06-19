@@ -127,7 +127,7 @@ If you use the `@shopware-pwa/nuxt3-module`, all composables will be automatical
 
 You are done at this point if you choose to build/design custom pages or integrate an external CMS system for the page content.
 
-## Omiting store API calls for seoURLs
+## Omitting store API calls for seoURLs
 
 To create speaking links for products or categories, you must know the `seoPathInfo` from the `seoURLs` object. In some situations, you only have the ID of the product or category and then you may need to make an additional call to get the speaking link. This call costs time and can be omitted.
 
@@ -161,7 +161,7 @@ import { getProductRoute } from "@shopware-pwa/helpers-next";
 </template>
 ```
 
-##### How does "Omiting store API calls for seoURLs" work in detail?
+##### How does "Omitting store API calls for seoURLs" work in detail?
 
 Several things happen during a request. It should be noted that some operations take place on the server side and some on the client side. Also, data can be passed from the server side to the client side and reused there without the need for a new request. Check the documentation about [useAsyncData](https://nuxt.com/docs/api/composables/use-async-data) in a Nuxt environment.
 
