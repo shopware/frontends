@@ -372,40 +372,6 @@ useBreadcrumbs([
           :state-id-validation="$v.billingAddress.countryStateId"
           class="col-span-12 md:col-span-4"
         />
-        <!-- <div class="col-span-12 md:col-span-4">
-          <label for="country">{{ $t("form.country") }} *</label>
-          <select
-            id="country"
-            v-model="state.billingAddress.countryId"
-            name="country"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            :class="[
-              $v.billingAddress.countryId.$error
-                ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
-            ]"
-            :disabled="loading"
-            data-testid="registration-country-select"
-            @blur="$v.billingAddress.countryId.$touch()"
-          >
-            <option disabled selected value="">
-              {{ $t("form.chooseCountry") }}
-            </option>
-            <option
-              v-for="country in getCountries"
-              :key="country.id"
-              :value="country.id"
-            >
-              {{ country.name }}
-            </option>
-          </select>
-          <span
-            v-if="$v.salutationId.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
-          >
-            {{ $v.salutationId.$errors[0].$message }}
-          </span>
-        </div> -->
       </div>
       <div class="mb-5 text-right">
         <button
