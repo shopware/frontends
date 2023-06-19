@@ -13,7 +13,7 @@ head:
 
 # Work with routing
 
-In the [building a navigation](./navigation.md) chapter you have already learned how to create a menu structure for your frontend. In this chapter you will learn how to resolve the paths of each menu item, so that users can navigate the store. Specifically, you will learn how to
+In the [building a navigation](./page-elements/navigation.md) chapter you have already learned how to create a menu structure for your frontend. In this chapter you will learn how to resolve the paths of each menu item, so that users can navigate the store. Specifically, you will learn how to
 
 - Resolve a path string to a route configuration
 - Resolve a route configuration to its page or entity
