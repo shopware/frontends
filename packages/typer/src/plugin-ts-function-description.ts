@@ -27,6 +27,11 @@ export function TableOfFunctions(): Plugin {
       // @ts-ignore
       const [pkg, fileName] = id.split("/").slice(-2);
       const composableName = fileName.replace(/\.md$/, "");
+
+      if (pkg !== "packages") {
+        return code;
+      }
+
       if (
         !existsSync(resolve(`../../packages/${composableName}/src/index.ts`))
       ) {

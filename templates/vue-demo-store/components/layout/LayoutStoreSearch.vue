@@ -10,6 +10,10 @@ withDefaults(
   { displayTotal: 10 }
 );
 
+defineEmits<{
+  (e: "link-clicked"): void;
+}>();
+
 const { searchTerm, search, getProducts, getTotal, loading } =
   useProductSearchSuggest();
 
@@ -19,6 +23,7 @@ const active = ref(false);
 // Reference to the search container
 const searchContainer = ref(null);
 const searchInput = ref();
+const localePath = useLocalePath();
 
 watch(active, (value) => {
   const { focused } = useFocus(searchInput);
@@ -95,9 +100,9 @@ watch(enter, (value) => {
       <NuxtLink
         v-for="product in getProducts.slice(0, displayTotal)"
         :key="product.id"
-        :to="getProductRoute(product)"
+        :to="localePath(getProductRoute(product))"
         data-testid="layout-search-suggest-link"
-        @click="[(active = false), (isSideMenuOpened = false)]"
+        @click="[(active = false), $emit('link-clicked')]"
       >
         <ProductSuggestSearch :product="product" />
       </NuxtLink>
@@ -114,13 +119,13 @@ watch(enter, (value) => {
         <div v-else>
           <NuxtLink
             v-if="getTotal > 0"
-            :to="`/search?query=${typingQuery}`"
-            @click="[(active = false), (isSideMenuOpened = false)]"
+            :to="localePath({ path: `/search`, query: { query: typingQuery } })"
+            @click="[(active = false), $emit('link-clicked')]"
           >
             {{ $t("search.see") }}
             <span v-if="getTotal !== 1">{{ $t("search.all") }}</span>
             {{ getTotal }}
-            <span>{{ $tc("search.result", getTotal) }}</span>
+            <span>{{ $t("search.result", getTotal) }}</span>
           </NuxtLink>
           <div v-else>{{ $t("search.noResults") }}</div>
         </div>

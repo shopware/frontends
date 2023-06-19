@@ -12,8 +12,9 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: "change", selected: Product | undefined): void;
+  (e: "change", selected: Product): void;
 }>();
+
 const isLoading = ref<boolean>();
 const router = useRouter();
 const {
@@ -39,7 +40,7 @@ const onHandleChange = async () => {
       console.error("incorrect URL", selectedOptionsVariantPath);
     }
   } else {
-    emit("change", variantFound);
+    if (variantFound) emit("change", variantFound);
   }
   isLoading.value = false;
 };

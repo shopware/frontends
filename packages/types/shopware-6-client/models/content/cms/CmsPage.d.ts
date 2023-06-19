@@ -127,7 +127,7 @@ export type CmsPage = {
   versionId: string | null;
   translated: unknown;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | string | null;
   extensions: [any];
   id: string;
   entity: any | null;
@@ -180,7 +180,7 @@ export type OldSlot = {
   versionId: string;
   translated: unknown;
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   extensions: [any];
   id: string;
   translations: any | null;
@@ -238,7 +238,7 @@ export type CmsSection = {
   versionId: string | null;
   translated: any;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | string | null;
   extensions: [any];
   id: string;
   blocks: CmsBlock[];

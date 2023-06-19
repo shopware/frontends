@@ -1,88 +1,164 @@
-<script setup>
-import StackBlitzLiveExample from "../../../components/StackBlitzLiveExample.vue";
-</script>
+# Simple Product Detail Page
 
-# Product Detail Page
+See also the [complete guide](../../../getting-started/e-commerce/product-detail-page) about the product detail page from the BUILDING section.
 
-In this chapter you will find how to build static product detail page on short example.
+## Simple Product Detail Page
 
-![Image of Product Detail Page example](./pdp-md.png)
+<div class="flex flex-col items-center">
 
-## Get Product data
+<img src="./pdp-simple-example.png" alt="Image of Product Detail Page simple example" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
 
-In order to display information of a product there is a `Product` object needed, containing basic information like:
+</div>
 
-- Name
-- Price
-- Description
-- Properties
-- Images
-- ...
+<div>
 
-To achieve that, you can utilize methods available within `composables` package (or directly via API client package named `@shopware-pwa/api-client`). In this example we will use [useProductSearch](../../../packages/composables/useProductSearch.md).
+Path: `templates/vue-demo-store/components/product/ProductStatic.vue`
 
-:::info Associations
-Keep in mind that not every field, or inner object of the `Product` entity is available automatically.
-Some of relations need to be assigned explicitly by [associations](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#associations). The most common case is `media` object like `product.cover` or `product.media`, which keep additional information about the images: img url, thumbnails and so on.
-:::
+```vue
+<script setup lang="ts">
+import { Product, ProductReview } from "@shopware-pwa/types";
+import {
+  getProductRoute,
+  getTranslatedProperty,
+} from "@shopware-pwa/helpers-next";
+import { getProductReviews } from "@shopware-pwa/api-client";
+import { Ref } from "vue";
 
-The `useProductSearch` allows us to `search` in the product's collection:
+const props = defineProps<{
+  product: Product;
+}>();
+const reviews: Ref<ProductReview[]> = ref([]);
+const router = useRouter();
 
-```ts
-import type { Product, PropertyGroup } from "@shopware-pwa/types";
-import { useProductSearch } from "@shopware-pwa/composables-next";
-
-const { search } = useProductSearch();
-
-const productResponse = await search("some-product-id", {
-  /** parameters omitted */
+const { apiInstance } = useShopwareContext();
+onMounted(async () => {
+  const reviewsResponse = await getProductReviews(
+    props.product.id,
+    undefined,
+    apiInstance
+  );
+  reviews.value = reviewsResponse?.elements || [];
 });
 
-// object that keeps a Product entity
-const product: Product = productResponse.product;
-// object with variants configuration
-const propertyGroups: PropertyGroup[] = productResponse.configurator;
+const productName = computed(() =>
+  getTranslatedProperty(props.product, "name")
+);
+const manufacturerName = computed(() =>
+  getTranslatedProperty(props.product.manufacturer, "name")
+);
+
+const description = computed(() =>
+  getTranslatedProperty(props.product, "description")
+);
+const properties = computed(() => props.product?.properties || []);
+
+const handleVariantChange = (val: Product) => {
+  const newRoute = getProductRoute(val);
+  router.push(newRoute);
+};
+</script>
+
+<template>
+  <div class="flex flex-row flex-wrap justify-start">
+    <!-- Product name for mobile view -->
+    <div class="basis-12/12 display lg:hidden">
+      <h1
+        class="pl-4 py-4 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"
+        v-html="productName"
+      />
+    </div>
+    <div class="basis-12/12 lg:basis-7/12 product-gallery overflow-hidden">
+      <ProductGallery :product="product" />
+    </div>
+    <div class="basis-12/12 lg:basis-5/12 product-description">
+      <!-- Product info -->
+      <div
+        class="max-w-2xl mx-auto pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pb-24 lg:pl-16 lg:pr-0"
+      >
+        <!-- Product name starting from lg breakpoint -->
+        <div
+          class="hidden lg:block text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"
+          v-html="productName"
+        />
+
+        <div
+          v-show="manufacturerName !== ''"
+          class="lg:col-span-2 lg:pr-8 static-container"
+        >
+          <div class="container mx-auto pt-8 flex flex-row">
+            <div class="basis-2/6 text-right">
+              {{ manufacturerName }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Options -->
+        <div class="mt-4 lg:mt-0 lg:row-span-3">
+          <h2 class="sr-only">Product information</h2>
+          <div class="product-variants mt-10">
+            <ProductPrice :product="product" />
+            <ProductUnits :product="product" class="text-sm" />
+            <ProductVariantConfigurator @change="handleVariantChange" />
+            <ProductAddToCart :product="product" />
+          </div>
+        </div>
+
+        <div
+          class="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:pr-8"
+        >
+          <div class="container mx-auto mb-8">
+            <!-- Description and details -->
+            <div v-if="description">
+              <h3 class="text-sm font-bold text-gray-900">
+                {{ $t("product.description") }}
+              </h3>
+              <div class="mt-4 space-y-6">
+                <div class="text-base text-gray-900" v-html="description" />
+              </div>
+            </div>
+
+            <div v-if="properties?.length" class="mt-10">
+              <h3 class="text-sm font-medium text-gray-900">
+                {{ $t("product.price.properties") }}
+              </h3>
+
+              <div class="mt-4">
+                <ul role="list" class="pl-4 list-disc text-sm space-y-2">
+                  <li
+                    v-for="property in properties"
+                    :key="property.id"
+                    class="text-gray-400"
+                  >
+                    <span class="text-gray-600">{{
+                      getTranslatedProperty(property, "name")
+                    }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div v-if="reviews?.length" class="mt-10">
+              <h3 class="text-sm font-medium text-gray-900">
+                {{ $t("product.price.reviews") }}
+              </h3>
+              <div v-if="reviews?.length" class="mt-4">
+                <ul role="list" class="pl-4 list-disc text-sm space-y-2">
+                  <li
+                    v-for="review in reviews"
+                    :key="review.id"
+                    class="text-gray-400"
+                  >
+                    <span class="text-gray-600">{{ review.content }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 ```
 
-Thanks to this, in the response we are able to access `Product` and `configurator` object. The latter is responsible for keeping related variants information to be used for more complex products.
-
-:::info
-If you are using Nuxt.js and a `Product` entity object contains `.cmsPage` property, you can also utilize `@shopware-pwa/cms-base` Nuxt 3 module to display the whole Product page designed in Shopping Experiences.
-:::
-
-Having source of the data, you can display all you need in your Vue.js template:
-
-```js
-import { computed } from "vue";
-...
-const productName = computed(() => product.value?.translated?.name);
-const manufacturer = computed(() => product.value?.manufacturer?.name);
-const description = computed(() => product.value?.translated?.description);
-const productNumber = computed(() => product.value?.productNumber);
-...
-```
-
-## Load additional data asynchronously
-
-Each product can have additional resource loaded asynchronously like Cross-Sells, or Customer Reviews.
-
-Thanks to [useProductAssociations](../../../packages/composables/useProductAssociations.md) composable, you can load it providing the product you are on:
-
-```js
-const { loadAssociations, isLoading, productAssociations } =
-  useProductAssociations(product, {
-    associationContext: "cross-selling",
-  });
-```
-
-## Full source
-
-<PageRef page="https://github.com/shopware/frontends/tree/main/examples/product-detail-page"
-  title="Product Detail Page Example"
-  target="_blank"
-  sub="Explore full example of PDP implementation"
-  />
-
-## Live demo
-
-<StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/product-detail-page" openPath="/" />
+</div>

@@ -9,5 +9,5 @@ export type OrderDocument = {
   orderId: string;
   fileType: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | string | null;
 };

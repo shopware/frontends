@@ -101,6 +101,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useNavigationContext",
           "useOrderPayment",
           "useBreadcrumbs",
+          "useInternationalization",
         ],
       });
     });
@@ -128,6 +129,7 @@ export type ShopwareNuxtOptions = {
    */
   shopwareEndpoint?: string;
   shopwareAccessToken?: string;
+  devStorefrontUrl?: string;
   apiClientConfig?: {
     timeout?: number | string;
   };

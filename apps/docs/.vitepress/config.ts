@@ -15,29 +15,120 @@ export const sidebar = [
   },
   {
     text: "FRAMEWORK",
+    link: "/framework/",
     items: [
       { text: "Requirements", link: "/framework/requirements" },
       { text: "Internal Structure", link: "/framework/internal-structure" },
+      {
+        text: "Composables",
+        link: "/framework/composables",
+        items: [
+          {
+            text: "Context Composables",
+            link: "/framework/composables/context-composables",
+          },
+          {
+            text: "Shared Composables",
+            link: "/framework/composables/shared-composables",
+          },
+          {
+            text: "Overwriting Composables",
+            link: "/framework/composables/overwriting-composables",
+          },
+        ],
+      },
       { text: "Shopping Experiences", link: "/framework/shopping-experiences" },
       { text: "Styling", link: "/framework/styling" },
-      { text: "Context Composables", link: "/framework/context-composables" },
-      { text: "Shared Composables", link: "/framework/shared-composables" },
-      { text: "Images", link: "/framework/images" },
-      { text: "Associations", link: "/framework/associations" },
-      { text: "Storefront url", link: "/framework/storefront-url" },
     ],
   },
   {
     text: "BUILDING",
+    link: "/getting-started/",
     items: [
-      { text: "Setup Templates", link: "/getting-started/templates" },
-      { text: "Routing", link: "/getting-started/routing" },
-      { text: "CMS", link: "/getting-started/cms/index" },
-      { text: "E-Commerce", link: "/getting-started/e-commerce/index" },
-      { text: "Page elements", link: "/getting-started/page-elements/index" },
       {
-        text: "Overwriting and extending composables",
-        link: "/getting-started/overwriting-composables",
+        text: "Setup Templates",
+        link: "/getting-started/templates",
+        items: [
+          {
+            text: "Demo Store",
+            link: "/getting-started/templates/demo-store-template",
+          },
+          {
+            text: "Blank Template",
+            link: "/getting-started/templates/blank-template",
+          },
+          {
+            text: "Custom Project",
+            link: "/getting-started/templates/custom-project",
+          },
+          {
+            text: "Astro Template",
+            link: "/getting-started/templates/astro-template",
+          },
+        ],
+      },
+      { text: "Routing", link: "/getting-started/routing" },
+      { text: "Languages", link: "/getting-started/languages" },
+      {
+        text: "CMS",
+        link: "/getting-started/cms/",
+        items: [
+          { text: "Content Pages", link: "/getting-started/cms/content-pages" },
+          {
+            text: "Customize Components",
+            link: "/getting-started/cms/customize-components",
+          },
+          { text: "Create Blocks", link: "/getting-started/cms/create-blocks" },
+          {
+            text: "Create Elements",
+            link: "/getting-started/cms/create-elements",
+          },
+          {
+            text: "Overwriting CMS",
+            link: "/getting-started/cms/overwriting-cms",
+          },
+        ],
+      },
+      {
+        text: "E-Commerce",
+        link: "/getting-started/e-commerce/",
+        items: [
+          {
+            text: "Product listing",
+            link: "/getting-started/e-commerce/product-listing",
+          },
+          {
+            text: "Product detail page",
+            link: "/getting-started/e-commerce/product-detail-page",
+          },
+          { text: "Prices", link: "/getting-started/e-commerce/prices" },
+          { text: "Cart", link: "/getting-started/e-commerce/cart" },
+          { text: "Checkout", link: "/getting-started/e-commerce/checkout" },
+          { text: "Payments", link: "/getting-started/e-commerce/payments" },
+          {
+            text: "Custome Payment",
+            link: "/getting-started/e-commerce/custom-payment",
+          },
+        ],
+      },
+      {
+        text: "Page elements",
+        link: "/getting-started/page-elements/",
+        items: [
+          {
+            text: "Breadcrumbs",
+            link: "/getting-started/page-elements/breadcrumbs",
+          },
+          { text: "Images", link: "/getting-started/page-elements/images" },
+          {
+            text: "Login Form",
+            link: "/getting-started/page-elements/login-form",
+          },
+          {
+            text: "Navigation",
+            link: "/getting-started/page-elements/navigation",
+          },
+        ],
       },
       {
         text: "Sitemap",
@@ -48,9 +139,19 @@ export const sidebar = [
   },
   {
     text: "BEST PRACTICES",
+    link: "/best-practices/",
     items: [
       { text: "Deployment", link: "/best-practices/deployment" },
-      { text: "Error Handling", link: "/best-practices/error-handling" },
+      {
+        text: "Error Handling",
+        link: "/best-practices/error-handling",
+        items: [
+          {
+            text: "API Client Error Handling",
+            link: "/best-practices/error-handling/api-client-error-handling",
+          },
+        ],
+      },
       { text: "Images", link: "/best-practices/images" },
       { text: "Performance", link: "/best-practices/performance" },
       { text: "Testing", link: "/best-practices/testing" },
@@ -58,17 +159,48 @@ export const sidebar = [
   },
   {
     text: "PACKAGE REFERENCE",
+    link: "/packages/",
     items: [
       { text: "Composables", link: "/packages/composables" },
-      { text: "API Client", link: "/packages/api-client" },
+      {
+        text: "API Client",
+        link: "/packages/api-client",
+        items: [
+          {
+            text: "Associations",
+            link: "/packages/api-client/docs/associations",
+          },
+          {
+            text: "Storefront URL",
+            link: "/packages/api-client/docs/storefront-url",
+          },
+        ],
+      },
       { text: "Types", link: "/packages/types" },
       { text: "Helpers", link: "/packages/helpers" },
     ],
   },
   {
     text: "RESOURCES",
+    link: "/resources/",
     items: [
-      { text: "Examples", link: "/resources/examples/" },
+      {
+        text: "Examples",
+        link: "/resources/examples/",
+        items: [
+          { text: "Navigation", link: "/resources/examples/navigation/" },
+          { text: "Cart", link: "/resources/examples/cart/" },
+          { text: "Product listing", link: "/resources/examples/listing/" },
+          {
+            text: "Product Detail Page",
+            link: "/resources/examples/product-detail-page/",
+          },
+          {
+            text: "Footer Navigation",
+            link: "/resources/examples/footer-navigation/",
+          },
+        ],
+      },
       { text: "Community Modules", link: "/resources/community-modules/" },
     ],
   },

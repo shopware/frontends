@@ -11,6 +11,6 @@ export type Entity = {
   versionId: string;
   translated: unknown;
   createdAt: Date | null;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   apiAlias: string;
 };

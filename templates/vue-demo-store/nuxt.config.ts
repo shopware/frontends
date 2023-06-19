@@ -1,5 +1,5 @@
 import transformerDirective from "@unocss/transformer-directives";
-
+import i18nConfig from "./i18n/src/config";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -11,22 +11,14 @@ export default defineNuxtConfig({
       },
     },
   },
-  alias: {
-    /**
-     * TODO: Temp fix until new VueUse published:
-     * - https://github.com/vueuse/vueuse/pull/2449
-     * - https://github.com/vueuse/vueuse/actions/workflows/publish.yml
-     */
-    useMeta: "~/composables/useMeta",
-  },
   /**
    * Commented because of the StackBlitz error
    * Issue: https://github.com/shopware/frontends/issues/88
    */
-  // typescript: {
-  //   typeCheck: true,
-  //   strict: true,
-  // },
+  typescript: {
+    // typeCheck: true,
+    strict: true,
+  },
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
@@ -76,14 +68,12 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
-    strategy: "no_prefix",
+    vueI18n: {
+      fallbackLocale: "en-GB",
+    },
+    strategy: "prefix_except_default",
+    defaultLocale: i18nConfig.defaultLocale,
     langDir: "i18n/src/",
-    locales: [
-      {
-        code: "en-US",
-        iso: "en-US",
-        file: "en-US.ts",
-      },
-    ],
+    locales: i18nConfig.locales,
   },
 });

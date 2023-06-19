@@ -38,7 +38,7 @@ export type AggregationFilterEntityOption = {
     customFields: CustomFields | null;
   };
   createdAt: Date;
-  updatedAt: null;
+  updatedAt: Date | string | null;
   extensions: {
     foreignKeys: {
       apiAlias: string;

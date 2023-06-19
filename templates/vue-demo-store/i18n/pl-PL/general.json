@@ -13,11 +13,13 @@
     "closeMenu": "Zamknij menu"
   },
   "search": {
-    "noResults": "Nie znaleziono produktów",
     "all": "wszystkie",
+    "filters": "Filtr",
+    "noResults": "Nie znaleziono produktów",
+    "resetFilters": "Zresetuj filtry",
     "result": "wynik | wyniki | wyników",
-    "see": "zobacz",
-    "resultsHeader": "Wyniki wyszukiwania"
+    "resultsHeader": "Wynik wyszukiwania dla",
+    "see": "zobacz"
   },
   "messages": {
     "error": "Coś poszło nie tak, spróbuj ponownie później"
@@ -26,7 +28,8 @@
     "header": "Lista życzeń",
     "emptyLabel": "Lista życzeń jest pusta",
     "emptyText": "Nie dodano żadnych produktów do listy życzeń.",
-    "continueShopping": "Kontynuuj zakupy"
+    "continueShopping": "Kontynuuj zakupy",
+    "clearWishlist": "Usuń wszystko"
   },
   "errorPages": {
     "404": "Nie możemy znaleźć tego, czego szukasz. Zgubiłeś się?",

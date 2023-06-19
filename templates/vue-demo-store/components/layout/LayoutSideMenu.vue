@@ -8,7 +8,7 @@ import { Category } from "@shopware-pwa/types";
 const { navigationElements } = useNavigation();
 
 const sideMenuController = useSideMenuModal();
-
+const localePath = useLocalePath();
 const expandedIds = ref<Array<string>>([]);
 
 function isCollapsed(navigationelement: Category): boolean {
@@ -44,7 +44,7 @@ const toggleCollapse = (navigationElement: Category) => {
     <div class="max-w-2xl">
       <aside aria-label="Sidebar" class="flex flex-col">
         <div class="w-full">
-          <LayoutStoreSearch />
+          <LayoutStoreSearch @link-clicked="sideMenuController.close" />
         </div>
         <div class="overflow-y-auto">
           <ul class="flex flex-col items-start p-x-2 space-y-2">
@@ -54,7 +54,7 @@ const toggleCollapse = (navigationElement: Category) => {
               class="flex flex-col flex-1 w-full"
             >
               <NuxtLink
-                :to="getCategoryRoute(navigationElement)"
+                :to="localePath(getCategoryRoute(navigationElement))"
                 class="flex items-center px-5 py-3 text-base font-normal text-gray-900 break-all hover:bg-gray-100"
                 @click="sideMenuController.close"
               >
@@ -104,7 +104,7 @@ const toggleCollapse = (navigationElement: Category) => {
                   :key="childElement.id"
                 >
                   <NuxtLink
-                    :to="getCategoryRoute(childElement)"
+                    :to="localePath(getCategoryRoute(childElement))"
                     class="flex items-center p-3 text-base font-normal text-gray-500 break-all hover:bg-gray-100 pl-11"
                     @click="sideMenuController.close"
                   >

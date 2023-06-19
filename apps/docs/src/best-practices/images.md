@@ -133,7 +133,7 @@ When Images occupy a big amount of space on web pages, they are a common cause o
 - Never use `loading="lazy"` on `<img>` elements if they are part of what an user see first on they viewport (consider editing the attributes for CMS elements in Shopware Experiences).
 - Utilize `fetchpriority="high"` on `<img>` also tells the browser, that the asset (LCP resource is prioritized) is important and should be taken care of as fast as possible.
 
-<PageRef page="../framework/images" title="Framework" sub="How to display images served by API" />
+<PageRef page="../getting-started/page-elements/images" title="Images as Page-Element" sub="How to display images served by API" />
 
 ## Resources
 

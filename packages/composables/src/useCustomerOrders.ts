@@ -10,12 +10,14 @@ export type UseCustomerOrdersReturn = {
   orders: Ref<Order[]>;
   /**
    * Changes the current page of the orders list
+   *
+   * In order to change a page with additional parameters please use `loadOrders` method.
    */
   changeCurrentPage(pageNumber: number | string): Promise<void>;
   /**
    * Fetches the orders list and assigns the result to the `orders` property
    */
-  loadOrders(): Promise<void>;
+  loadOrders(parameters: ShopwareSearchParams): Promise<void>;
 };
 
 /**

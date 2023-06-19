@@ -1,5 +1,12 @@
 # @shopware-pwa/vue3-plugin
 
+## 0.1.31
+
+### Patch Changes
+
+- Updated dependencies [[`0242a3ad`](https://github.com/shopware/frontends/commit/0242a3adcde82e301f2e53fb562c0bbd767c04f9)]:
+  - @shopware-pwa/composables-next@0.8.2
+
 ## 0.1.30
 
 ### Patch Changes

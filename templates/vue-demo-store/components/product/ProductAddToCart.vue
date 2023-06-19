@@ -6,13 +6,19 @@ const props = defineProps<{
   product: Product;
 }>();
 const { product } = toRefs(props);
-
+const { codeErrorsNotification } = useCartNotification();
 const { addToCart, quantity } = useAddToCart(product);
 
 const addToCartProxy = async () => {
   await addToCart();
+  codeErrorsNotification();
   pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
 };
+
+const loading = ref(true);
+onMounted(() => {
+  loading.value = false;
+});
 </script>
 
 <template>
@@ -34,6 +40,7 @@ const addToCartProxy = async () => {
       <button
         class="py-2 px-6 mt-4 w-full bg-gradient-to-r from-cyan-500 to-blue-500 transition ease-in-out hover:bg-gradient-to-l duration-300 border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         data-testid="add-to-cart-button"
+        :disabled="loading"
         @click="addToCartProxy"
       >
         🛍 {{ $t("product.addToCart") }}

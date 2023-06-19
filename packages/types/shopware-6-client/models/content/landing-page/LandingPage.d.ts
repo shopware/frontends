@@ -26,7 +26,7 @@ export type LandingPage = {
     keywords: string | null;
   };
   createdAt: string;
-  updatedAt: null | string;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   customFields: CustomFields;

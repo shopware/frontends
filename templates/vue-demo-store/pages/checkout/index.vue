@@ -7,6 +7,7 @@ export default {
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength, requiredIf } from "@vuelidate/validators";
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
+import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 
 definePageMeta({
   layout: "checkout",
@@ -17,6 +18,7 @@ const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const { pushInfo } = useNotifications();
 const { t } = useI18n();
+const localePath = useLocalePath();
 const {
   paymentMethods,
   shippingMethods,
@@ -624,6 +626,12 @@ const addAddressModalController = useModal();
                   <div>
                     {{ singleShippingMethod.translated?.name }}
                     <span
+                      v-if="getShippingMethodDeliveryTime(singleShippingMethod)"
+                      >({{
+                        getShippingMethodDeliveryTime(singleShippingMethod)
+                      }})</span
+                    >
+                    <span
                       v-if="singleShippingMethod.translated?.description"
                       class="italic text-sm text-gray-500 block"
                     >
@@ -678,9 +686,27 @@ const addAddressModalController = useModal();
               <label
                 :for="singlePaymentMethod.id"
                 :class="{ 'animate-pulse': isLoading[singlePaymentMethod.id] }"
-                class="ml-2 block text-sm font-medium text-gray-700"
+                class="ml-2 block text-sm font-medium text-gray-700 w-full"
               >
-                {{ singlePaymentMethod.translated?.name }}
+                <div class="flex justify-between">
+                  <div>
+                    <span>
+                      {{ singlePaymentMethod.translated?.name }}
+                    </span>
+                    <span
+                      v-if="singlePaymentMethod.translated?.description"
+                      class="italic text-sm text-gray-500 block"
+                    >
+                      {{ singlePaymentMethod.translated.description }}</span
+                    >
+                  </div>
+                  <div v-if="singlePaymentMethod.media?.url">
+                    <img
+                      :src="singlePaymentMethod.media.url"
+                      alt="payment-image"
+                    />
+                  </div>
+                </div>
               </label>
             </div>
           </fieldset>
@@ -926,7 +952,7 @@ const addAddressModalController = useModal();
       </h1>
       <NuxtLink
         class="inline-flex justify-center py-2 px-4 my-8 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
-        to="/"
+        :to="localePath(`/`)"
         data-testid="checkout-go-home-link"
       >
         {{ $t("checkout.goToHomepage") }}

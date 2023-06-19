@@ -11,7 +11,8 @@ const props = defineProps<{
 const items = computed(() => props.content.data.sliderItems);
 </script>
 <template>
-  <div class="cms-element-image-slider">
+  <!-- need some with here for small views that the slider can calculate the correct items with -->
+  <div class="cms-element-image-slider w-[92vw] sm:w-[94vw] md:w-auto">
     <SwSlider :config="props.content.config">
       <CmsElementImage
         v-for="image of items"

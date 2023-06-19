@@ -1,10 +1,135 @@
-# shopware/frontends - composables
+# shopware/frontends - composables-next
 
-Welcome to `@shopware-pwa/composables-next` package.
+[![](https://img.shields.io/npm/v/@shopware-pwa/composables-next?color=blue&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCA0ODggNTUzIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDM5LjA0MSAxMjkuNTkzTDI1OC43NjkgMzEuMzA3NkMyNDQuOTE1IDIzLjc1NDEgMjI4LjExNiAyNC4wMDkzIDIxNC40OTcgMzEuOTgwMkw0Ny4yNjkgMTI5Ljg1OEMzMy40NzYzIDEzNy45MzEgMjUgMTUyLjcxMyAyNSAxNjguNjk1VjM4OC40NjZDMjUgNDA0LjczMiAzMy43Nzg1IDQxOS43MzIgNDcuOTYwMiA0MjcuNjk5TDIxNS4xNzggNTIxLjYzNkMyMjguNDUxIDUyOS4wOTIgMjQ0LjU5MyA1MjkuMzMyIDI1OC4wODIgNTIyLjI3NEw0MzguMzY0IDQyNy45MzRDNDUzLjIwMSA0MjAuMTcgNDYyLjUgNDA0LjgwOSA0NjIuNSAzODguMDYzVjE2OS4xMDJDNDYyLjUgMTUyLjYzMiA0NTMuNTAyIDEzNy40NzcgNDM5LjA0MSAxMjkuNTkzWiIgc3Ryb2tlPSJ1cmwoI3BhaW50MF9saW5lYXJfMTUzXzY5MjY1KSIgc3Ryb2tlLXdpZHRoPSI1MCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzE1M182OTI2NSIgeDE9Ii0xNi4yOTg5IiB5MT0iMTY1LjM0OSIgeDI9IjI3Ni40MTIiIHkyPSItODkuMzIzNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDA4NUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0MwRTJGNSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==)](https://npmjs.com/package/@shopware-pwa/composables-next)
+[![](https://img.shields.io/github/package-json/v/shopware/frontends?color=blue&filename=packages%2Fcomposables%2Fpackage.json&label=composables-next%40monorepo&logo=github)](https://github.com/shopware/frontends/tree/main/packages/composables)
+![](https://img.shields.io/github/license/shopware/frontends?color=blue)
+[![](https://img.shields.io/github/issues/shopware/frontends/composables-next?label=composables-next%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acomposables-next)
 
-For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
+Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://frontends.shopware.com/getting-started/page-elements/navigation.html).
 
-Documentation specific for this package: [composables](https://frontends.shopware.com/packages/composables.html)
+[👉 Composables Reference](https://frontends.shopware.com/packages/composables.html)
+
+## Features
+
+- `createShopwareContext` method to create a Vue 3 plugin to install
+- State management
+- Logic for UI
+- Communication with Store-API via [api-client](https://www.npmjs.com/package/@shopware-pwa/api-client) package
+
+## Setup
+
+Install npm packages (composables & api-client):
+
+```bash
+# Using pnpm
+pnpm add @shopware-pwa/composables-next @shopware-pwa/api-client
+
+# Using yarn
+yarn add @shopware-pwa/composables-next @shopware-pwa/api-client
+
+# Using npm
+npm i @shopware-pwa/composables-next @shopware-pwa/api-client
+```
+
+Initialize the [api-client](https://www.npmjs.com/package/@shopware-pwa/api-client) instance:
+
+```js
+import { createInstance } from "@shopware-pwa/api-client";
+const apiInstance = createInstance({
+  endpoint: "https://your-api-instance.com",
+  accessToken: "your-sales-channel-access-token",
+});
+```
+
+Now, we can create a Vue 3 plugin to install a Shopware context in an app:
+
+```js
+// app variable in type of App
+
+const shopwareContext = createShopwareContext(app, {
+  apiInstance, // apiInstance from previous step
+  devStorefrontUrl: "https://your-sales-channel-configured-domain.com",
+});
+// register a plugin in a Vue instance
+app.use(shopwareContext);
+```
+
+> The example does not provide the session handling and that means you need to do few additional steps if you need to keep your session after the page reload (see the chapter below with 🍪)
+
+## Basic usage
+
+Now you can use any composable function in your setup function:
+
+```html
+<script setup>
+    import { useUser, useSessionContext } from "@shopware-pwa/composables-next";
+
+    const { login } = useUser();
+    const { refreshSessionContext, sessionContext } = useSessionContext();
+    refreshSessionContext();
+</script>
+<template>
+    <pre>{{ sessionContext }}</pre>
+    <button @click="login({
+        username: "some-user",
+        password: "secret-passwd"
+    })">
+        Try to login!
+    </button>
+</template>
+```
+
+## Session persistence with 🍪
+
+By default, the API-Client is stateless, but accepts an optional context token as a parameter while initializing an instance. In order to keep a session, install some cookie parser to work with cookies easier:
+
+```bash
+# Using pnpm
+pnpm add js-cookie
+
+# Using yarn
+yarn add js-cookie
+
+# Using npm
+npm i js-cookie
+```
+
+Let's get back to the step where the `api-client` was initialized:
+
+```js
+import { createInstance } from "@shopware-pwa/api-client";
+import Cookies from "js-cookie";
+
+const apiInstance = createInstance({
+  endpoint: "https://your-api-instance.com",
+  accessToken: "your-sales-channel-access-token",
+  contextToken: Cookies.get("sw-context-token"), // get the context token if exists in the cookies
+});
+
+// callback to detect a `sw-context-token` in the response
+apiInstance.onConfigChange(({ config }) => {
+  // set the context-token in the cookie
+  Cookies.set("sw-context-token", config.contextToken || "", {
+    expires: 365, // days
+    path: "/",
+    sameSite: "lax",
+  });
+});
+```
+
+Thanks to this, the session will be kept to the corresponding `sw-context-token` saved in the cookie, so it can be reachable also in the SSR. Check the example to see it in action:
+
+[![](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/examples/blank-playground?file=src%2Fmain.ts)
+
+## TypeScript support
+
+All composable functions are fully typed with TypeScript and they are registed globally in Nuxt.js application, so the type hinting will help you to work with all of them.
+
+## Links
+
+- [📘 Documentation](https://frontends.shopware.com)
+
+- [👥 Community](https://shopwarecommunity.slack.com) (`#shopware-frontends` & `#shopware-pwa` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
@@ -12,32 +137,8 @@ Documentation specific for this package: [composables](https://frontends.shopwar
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.8.0
-
-### Minor Changes
-
-- [#158](https://github.com/shopware/frontends/pull/158) [`693f9829`](https://github.com/shopware/frontends/commit/693f9829d5082307cb1f3b18d5b0217e42c6cf68) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add associations parameter to the useOrderDetails composable
-
-- [#187](https://github.com/shopware/frontends/pull/187) [`7fe30878`](https://github.com/shopware/frontends/commit/7fe3087844007d12dc26d9c6817ecd12eb431b9b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - getShippingMethods - add price associations and merge option
+### Latest changes: 0.8.2
 
 ### Patch Changes
 
-- [#82](https://github.com/shopware/frontends/pull/82) [`0e85ad14`](https://github.com/shopware/frontends/commit/0e85ad14c7a115a9e4e79cb3d89e41129be30f03) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Don't refresh the context when after registration user is not activated (useUser)
-
-- [#189](https://github.com/shopware/frontends/pull/189) [`3764736e`](https://github.com/shopware/frontends/commit/3764736e52fffb7f7abeb4c044dee2adc812cbb6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix isVirtualCart method - check length before use `every` method
-
-- [#137](https://github.com/shopware/frontends/pull/137) [`e03c67a8`](https://github.com/shopware/frontends/commit/e03c67a8d553694be6e14e2c8d1a3f99b1b2ffbe) Thanks [@mkucmus](https://github.com/mkucmus)! - Safe check for navigator on SSR and fallback locale
-
-- [#116](https://github.com/shopware/frontends/pull/116) [`1fd1962f`](https://github.com/shopware/frontends/commit/1fd1962f7f4ee26461e8918e70e5f686fa431c6d) Thanks [@mkucmus](https://github.com/mkucmus)! - Intl as a price formatter
-
-- [#179](https://github.com/shopware/frontends/pull/179) [`bb64070f`](https://github.com/shopware/frontends/commit/bb64070f69e47c14653c524d864f7a8ab8290724) Thanks [@patzick](https://github.com/patzick)! - Currency and price context are properly set during the hydration. `usePrice` is not a shared composable.
-
-- [#168](https://github.com/shopware/frontends/pull/168) [`eddcfcca`](https://github.com/shopware/frontends/commit/eddcfcca8e00530147e77bd1122fc9e6828fbf57) Thanks [@mkucmus](https://github.com/mkucmus)! - `getProductItemSeoUrlData` method of `useCart` marked as deprecated
-
-- [#149](https://github.com/shopware/frontends/pull/149) [`8dc64e31`](https://github.com/shopware/frontends/commit/8dc64e31756e8509866efdc2b52915b8862598cb) Thanks [@mkucmus](https://github.com/mkucmus)! - Safe parameters access
-
-- [#168](https://github.com/shopware/frontends/pull/168) [`eddcfcca`](https://github.com/shopware/frontends/commit/eddcfcca8e00530147e77bd1122fc9e6828fbf57) Thanks [@mkucmus](https://github.com/mkucmus)! - Add item total price property for useCartItem composable
-
-- Updated dependencies [[`81f45335`](https://github.com/shopware/frontends/commit/81f4533513b2ee538111159f8e37cd7bd1db9f1e), [`7fe30878`](https://github.com/shopware/frontends/commit/7fe3087844007d12dc26d9c6817ecd12eb431b9b), [`0188b36a`](https://github.com/shopware/frontends/commit/0188b36acdf43278163a2fee74ff5b1c1aba55d8)]:
-  - @shopware-pwa/helpers-next@0.2.0
-  - @shopware-pwa/api-client@0.4.0
+- [#220](https://github.com/shopware/frontends/pull/220) [`0242a3ad`](https://github.com/shopware/frontends/commit/0242a3adcde82e301f2e53fb562c0bbd767c04f9) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add clearWishlist function to the useWihslist composable
