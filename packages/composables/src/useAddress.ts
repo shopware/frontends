@@ -80,8 +80,7 @@ export function useAddress(): UseAddressReturn {
       _storeCustomerAddresses.value = elements;
     } catch (error) {
       const apiError = error as ClientApiError;
-      // TODO: check all possible cases here
-      if (apiError.statusCode.toString().startsWith("4")) {
+      if (apiError?.statusCode === 403) {
         _storeCustomerAddresses.value = [];
       }
     }
