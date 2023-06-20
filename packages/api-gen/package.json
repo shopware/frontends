@@ -46,6 +46,7 @@
   "dependencies": {
     "ofetch": "^1.0.1",
     "openapi-typescript": "^6.2.4",
+    "semver": "^7.3.8",
     "yargs": "^17.7.2"
   }
 }

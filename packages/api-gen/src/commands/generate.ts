@@ -4,6 +4,8 @@ import openapiTS from "openapi-typescript";
 import * as dotenv from "dotenv";
 import * as c from "picocolors";
 import { format } from "prettier";
+import { patches } from "../patches";
+import semver from "semver";
 // /**
 //  * @ts-ignore
 //  */
@@ -25,19 +27,23 @@ if (!config.OPENAPI_JSON_URL || !config.OPENAPI_ACCESS_KEY) {
 // const SCHEMA_FILENAME = "schema-admin.json";
 // const TYPES_FILENAME = "admin-types.d.ts";
 const loadFromAPI = false; // TODO; cli flag
-const SCHEMA_FILENAME = "apiSchema.json";
+const SCHEMA_FILENAME = (version?: string | number) =>
+  `apiSchema${version ? "-" + version : ""}.json`;
+// const SCHEMA_FILENAME = "apiSchema.json";
 const TYPES_FILENAME = (version: string | number) => `apiTypes-${version}.d.ts`;
 
 export async function generate() {
   try {
+    let version = config.API_VERSION; // TODO: read scanning files
+
     //check if file exist
-    const fileExist = existsSync(SCHEMA_FILENAME);
+    const fileExist = existsSync(SCHEMA_FILENAME(version));
 
     if (fileExist && !loadFromAPI) {
       console.log(
         c.yellow(
           `Schema file ${c.bold(
-            SCHEMA_FILENAME
+            SCHEMA_FILENAME(version)
           )} already exist. Remove it or use --overwrite flag to overwrite it.`
         )
       );
@@ -55,13 +61,38 @@ export async function generate() {
         parser: "json",
       }).trim();
 
-      writeFileSync(SCHEMA_FILENAME, content, {
+      version = apiJSON?.info?.version;
+
+      writeFileSync(SCHEMA_FILENAME(version), content, {
         encoding: "utf-8",
       });
     }
 
+    // Apply patches
+    const schemaFile = readFileSync(SCHEMA_FILENAME(version), {
+      encoding: "utf-8",
+    });
+    let schemaForPatching = JSON.parse(schemaFile);
+    const allPatches = Object.keys(patches);
+    const semverVersion = version.slice(2);
+    const patchesToApply = allPatches.filter((patch) => {
+      return semver.satisfies(semverVersion, patch);
+    });
+    patchesToApply.forEach((patchName) => {
+      schemaForPatching = patches[patchName].patch(schemaForPatching);
+    });
+    patchesToApply.length &&
+      console.log("Applied", patchesToApply.length, "patches");
+    const content = format(JSON.stringify(schemaForPatching), {
+      semi: false,
+      parser: "json",
+    }).trim();
+    writeFileSync(SCHEMA_FILENAME(version), content, {
+      encoding: "utf-8",
+    });
+
     // const readedContentFromFile = readFileSync("./openapi/schema.json", {
-    const readedContentFromFile = readFileSync(SCHEMA_FILENAME, {
+    const readedContentFromFile = readFileSync(SCHEMA_FILENAME(version), {
       encoding: "utf-8",
     });
 
@@ -69,7 +100,7 @@ export async function generate() {
     const { paths } = originalSchema;
     console.log("schema", originalSchema.info);
 
-    const address = resolve(process.cwd(), SCHEMA_FILENAME);
+    const address = resolve(process.cwd(), SCHEMA_FILENAME(version));
     let schema = await openapiTS(
       // new URL(SCHEMA_FILENAME, import.meta.url),
       address,
