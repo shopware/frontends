@@ -23,7 +23,7 @@ if (process.client && isLoggedIn.value) {
 }
 
 const initialState = {
-  customerGroupId: props.customerGroupId,
+  requestedGroupId: props.customerGroupId,
   salutationId: "",
   firstName: "",
   lastName: "",
