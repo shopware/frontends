@@ -26,7 +26,7 @@ export class RegisterForm {
     this.street = page.getByTestId("registration-street-input");
     this.zipcode = page.getByTestId("registration-zipcode-input");
     this.city = page.getByTestId("registration-city-input");
-    this.country = page.getByTestId("registration-country-select");
+    this.country = page.getByTestId("country-select");
     this.submitButton = page.getByTestId("registration-submit-button");
   }
 

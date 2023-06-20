@@ -56,7 +56,7 @@ const handleStateUpdate = (e: Event) => {
         name="country"
         autocomplete="country-name"
         class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
-        data-testid="checkout-pi-country-input"
+        data-testid="country-select"
         @change="handleCountryUpdate"
         @blur="countryIdValidation && countryIdValidation.$touch()"
       >
