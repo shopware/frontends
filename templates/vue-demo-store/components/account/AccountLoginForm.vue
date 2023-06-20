@@ -22,7 +22,7 @@ const formData = ref({
 
 const goToRegister = () => {
   emits("close");
-  router.push("/register");
+  router.push(localePath("/register"));
 };
 
 const invokeLogin = async (): Promise<void> => {
