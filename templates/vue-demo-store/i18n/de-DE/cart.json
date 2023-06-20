@@ -1,0 +1,16 @@
+{
+  "cart": {
+    "checkout": "Zur Kasse gehen",
+    "header": "Warenkorb",
+    "itemsInCart": "Artikel im Warenkorb",
+    "viewCart": "Warenkorb anzeigen",
+    "orderSummary": "Bestellübersicht",
+    "orderTotal": "Gesamtbestellwert",
+    "subtotal": "Zwischensumme",
+    "shippingEstimate": "Versandkostenabschätzung",
+    "emptyCartLabel": "Ihr Warenkorb ist leer!",
+    "messages": {
+      "addedToCart": "{p} wurde dem Warenkorb hinzugefügt."
+    }
+  }
+}

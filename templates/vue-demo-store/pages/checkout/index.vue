@@ -18,6 +18,7 @@ const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const { pushInfo } = useNotifications();
 const { t } = useI18n();
+const localePath = useLocalePath();
 const {
   paymentMethods,
   shippingMethods,
@@ -41,6 +42,12 @@ const { cart, cartItems, subtotal, totalPrice, shippingTotal, isVirtualCart } =
   useCart();
 const { customerAddresses, loadCustomerAddresses } = useAddress();
 const isLoading = reactive<{ [key: string]: boolean }>({});
+
+watch([isLoggedIn, isGuestSession], ([isLogged, isLoggedGuest]) => {
+  if (isLogged || isLoggedGuest) {
+    loadCustomerAddresses();
+  }
+});
 
 const selectedShippingMethod = computed({
   get(): string {
@@ -190,7 +197,7 @@ onMounted(async () => {
   isLoading["paymentMethods"] = true;
 
   Promise.any([
-    isLoggedIn.value ? loadCustomerAddresses() : null,
+    loadCustomerAddresses(),
     !isVirtualCart.value ? getShippingMethods() : null,
     getPaymentMethods(),
   ]).finally(() => {
@@ -236,7 +243,7 @@ const addAddressModalController = useModal();
       />
     </SharedModal>
     <SharedModal :controller="addAddressModalController">
-      <AccountAddressForm />
+      <AccountAddressForm @success="addAddressModalController.close" />
     </SharedModal>
     <div
       v-if="isCheckoutAvailable || isCartLoading"
@@ -709,10 +716,7 @@ const addAddressModalController = useModal();
               </label>
             </div>
           </fieldset>
-          <fieldset
-            v-if="isLoggedIn"
-            class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6"
-          >
+          <fieldset class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
             <legend class="pt-5">
               <h3 class="text-lg font-medium text-gray-900 m-0">
                 {{ $t("checkout.billingAddressLabel") }}
@@ -734,7 +738,6 @@ const addAddressModalController = useModal();
             </div>
             <div
               v-for="address in customerAddresses"
-              v-else
               :key="address.id"
               class="flex mb-3"
             >
@@ -951,7 +954,7 @@ const addAddressModalController = useModal();
       </h1>
       <NuxtLink
         class="inline-flex justify-center py-2 px-4 my-8 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
-        to="/"
+        :to="localePath(`/`)"
         data-testid="checkout-go-home-link"
       >
         {{ $t("checkout.goToHomepage") }}

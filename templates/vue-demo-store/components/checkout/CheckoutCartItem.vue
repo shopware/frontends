@@ -15,6 +15,7 @@ const props = withDefaults(
 const { cartItem } = toRefs(props);
 
 const isLoading = ref(false);
+const { codeErrorsNotification } = useCartNotification();
 
 const {
   itemOptions,
@@ -34,6 +35,7 @@ const updateQuantity = async (quantity: number | undefined) => {
   isLoading.value = true;
 
   await changeItemQuantity(Number(quantity));
+  codeErrorsNotification();
 
   isLoading.value = false;
 };

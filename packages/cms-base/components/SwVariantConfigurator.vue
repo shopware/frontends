@@ -9,7 +9,7 @@ const props = withDefaults(
     allowRedirect?: boolean;
   }>(),
   {
-    allowRedirect: false,
+    allowRedirect: true,
   }
 );
 
@@ -51,7 +51,7 @@ const onHandleChange = async () => {
   const variantFound = await findVariantForSelectedOptions(
     unref(selectedOptions)
   );
-  // const selectedOptionsVariantPath = variantFound?.seoUrls?.[0]?.seoPathInfo;
+
   const selectedOptionsVariantPath = getProductRoute(variantFound);
   if (props.allowRedirect && selectedOptionsVariantPath) {
     try {

@@ -85,6 +85,14 @@ export type UseSessionContextReturn = {
    */
   countryId: ComputedRef<string | undefined>;
   /**
+   * current language id
+   */
+  languageId: ComputedRef<string | undefined>;
+  /**
+   * current language id chain
+   */
+  languageIdChain: ComputedRef<string>;
+  /**
    * current context's customer object
    */
   userFromContext: ComputedRef<Customer | undefined>;
@@ -180,7 +188,7 @@ export function useSessionContext(
   };
 
   const activeShippingAddress = computed(
-    () => sessionContext.value?.customer?.activeShippingAddress || null
+    () => sessionContext.value?.shippingLocation?.address || null
   );
   const setActiveShippingAddress = async (
     address: Partial<ShippingAddress>
@@ -194,8 +202,9 @@ export function useSessionContext(
     refreshSessionContext();
   };
 
+  // TODO: replace the source from defaultBillingAddress by new value once NEXT-28627 is solved
   const activeBillingAddress = computed(
-    () => sessionContext.value?.customer?.activeBillingAddress || null
+    () => sessionContext.value?.customer?.defaultBillingAddress || null
   );
   const setActiveBillingAddress = async (address: Partial<BillingAddress>) => {
     if (!address?.id) {
@@ -211,6 +220,12 @@ export function useSessionContext(
     () => sessionContext.value?.salesChannel?.countryId
   );
 
+  const languageId = computed(
+    () => sessionContext.value?.salesChannel?.languageId
+  );
+  const languageIdChain = computed(
+    () => sessionContext.value?.context?.languageIdChain?.[0]
+  );
   const taxState = computed(() => sessionContext.value?.context?.taxState);
   const userFromContext = computed(() => sessionContext.value?.customer);
 
@@ -231,5 +246,7 @@ export function useSessionContext(
     taxState,
     userFromContext,
     setLanguage,
+    languageId,
+    languageIdChain,
   };
 }

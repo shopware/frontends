@@ -10,7 +10,11 @@ import {
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 
-import { CustomerAddress, ShopwareSearchParams } from "@shopware-pwa/types";
+import {
+  ClientApiError,
+  CustomerAddress,
+  ShopwareSearchParams,
+} from "@shopware-pwa/types";
 import { useUser } from "./useUser";
 
 export type UseAddressReturn = {
@@ -71,8 +75,15 @@ export function useAddress(): UseAddressReturn {
   async function loadCustomerAddresses(
     parameters: ShopwareSearchParams = {}
   ): Promise<void> {
-    const { elements } = await getCustomerAddresses(parameters, apiInstance);
-    _storeCustomerAddresses.value = elements;
+    try {
+      const { elements } = await getCustomerAddresses(parameters, apiInstance);
+      _storeCustomerAddresses.value = elements;
+    } catch (error) {
+      const apiError = error as ClientApiError;
+      if (apiError?.statusCode === 403) {
+        _storeCustomerAddresses.value = [];
+      }
+    }
   }
 
   /**

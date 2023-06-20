@@ -11,6 +11,7 @@ const { t } = useI18n();
 const { refreshSessionContext } = useSessionContext();
 const { mergeWishlistProducts } = useWishlist();
 const { pushSuccess } = useNotifications();
+const localePath = useLocalePath();
 const loginErrors = ref<string[]>([]);
 
 const formData = ref({
@@ -128,7 +129,7 @@ useFocus(emailImputElement, { initialValue: true });
           </button>
 
           <slot name="action">
-            <div class="w-full mt-4">
+            <div class="w-full mt-4" @click="$emit('close')">
               <button
                 type="button"
                 class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
