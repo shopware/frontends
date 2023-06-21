@@ -1,0 +1,17 @@
+{
+  "name": "ls",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && vite build"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vite": "^4.3.9"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.3"
+  }
+}
