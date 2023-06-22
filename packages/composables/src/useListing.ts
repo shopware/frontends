@@ -279,7 +279,6 @@ export function createListingComposable<ELEMENTS_TYPE>({
       const searchCriteria = merge({}, searchDefaults, criteria);
       const result = await searchMethod(searchCriteria);
       return result;
-      await setInitialListing(result);
     } catch (e) {
       throw e;
     } finally {

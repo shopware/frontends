@@ -1,4 +1,3 @@
-import transformerDirective from "@unocss/transformer-directives";
 import i18nConfig from "./i18n/src/config";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
@@ -35,32 +34,12 @@ export default defineNuxtConfig({
   vueuse: {
     ssrHandlers: true,
   },
-  // Unocss bug fix https://github.com/nuxt/framework/issues/7623
-  experimental: {
-    inlineSSRStyles: false,
-  },
   nitro: {
     compressPublicAssets: true,
   },
   unocss: {
-    uno: true, // enabled `@unocss/preset-uno`
-    icons: true, // enabled `@unocss/preset-icons`
-    attributify: true, // enabled `@unocss/preset-attributify`,
-    preflight: true,
-    transformers: [transformerDirective()],
-    theme: {
-      extend: {
-        width: "width",
-        height: "height",
-      },
-      colors: {
-        brand: {
-          primary: "#189eff",
-          light: "#5ebbff",
-          dark: "#0081df",
-        },
-      },
-    },
+    preflight: true, // this is needed by @unocss/reset
+    // for presets, theme config, ... look at the uno.config.ts file
   },
   router: {
     options: {

@@ -2,8 +2,8 @@
 import type { CmsElementText } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import { h } from "vue";
-import { CSSProperties } from "vue";
 import { decodeHTML } from "entities";
+import { CSSProperties } from "vue";
 import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";
 import { renderHtml } from "../../../../helpers/html-to-vue/renderToHtml";
 
@@ -66,6 +66,30 @@ const CmsTextRender = () => {
             "a",
             {
               class: _class,
+              ...getOptionsFromNode(node).attrs,
+            },
+            [...children]
+          );
+        },
+      },
+      font: {
+        conditions(node: any) {
+          return node.type === "tag" && node.name === "font";
+        },
+        renderer(node: any, children: any, createElement: any) {
+          // convert from <font color="#ce0000">Headline 1</font> to <span style="color:#ce0000">Headline 1</span>
+          let newStyle = null;
+          const styleColor = node.attrs?.color ?? null;
+          if (styleColor) {
+            const currentStyle = node.attrs?.style ?? "";
+            newStyle = "color:" + styleColor + ";" + currentStyle;
+            delete node.attrs.color;
+          }
+
+          return createElement(
+            "span",
+            {
+              style: newStyle,
               ...getOptionsFromNode(node).attrs,
             },
             [...children]
