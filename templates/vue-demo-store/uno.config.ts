@@ -57,6 +57,9 @@ export default defineConfig({
         margin-top: 0;
         margin-bottom: 1rem;
       }
+      ol {
+        list-style-type: decimal;
+      }
       `,
     },
   ],
