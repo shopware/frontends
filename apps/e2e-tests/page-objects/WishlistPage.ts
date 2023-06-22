@@ -16,7 +16,6 @@ export class WishlistPage {
   }
 
   async openWishlist() {
-    // await this.page.waitForLoadState("networkidle");
     await this.wishlistButton.click();
   }
 

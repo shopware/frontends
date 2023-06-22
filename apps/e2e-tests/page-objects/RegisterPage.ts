@@ -37,7 +37,6 @@ export class RegisterForm {
     email: string,
     password: string
   ) {
-    // await this.page.waitForLoadState("networkidle");
     await this.salutation.selectOption({ label: "Mr." });
     await this.firstName.type(firstName);
     await this.lastName.type(lastName);
