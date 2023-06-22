@@ -38,8 +38,15 @@ const {
   activeBillingAddress,
   setActiveBillingAddress,
 } = useSessionContext();
-const { cart, cartItems, subtotal, totalPrice, shippingTotal, isVirtualCart } =
-  useCart();
+const {
+  cart,
+  cartItems,
+  subtotal,
+  totalPrice,
+  shippingTotal,
+  isVirtualCart,
+  refreshCart,
+} = useCart();
 const { customerAddresses, loadCustomerAddresses } = useAddress();
 const isLoading = reactive<{ [key: string]: boolean }>({});
 
@@ -181,7 +188,8 @@ const placeOrder = async () => {
   isLoading["placeOrder"] = true;
   const order = await createOrder();
   isLoading["placeOrder"] = false;
-  return push("/checkout/success/" + order.id);
+  await push("/checkout/success/" + order.id);
+  refreshCart();
 };
 
 const termsSelected = computed(() => {
