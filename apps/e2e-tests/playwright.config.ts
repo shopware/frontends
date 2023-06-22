@@ -13,15 +13,13 @@ require("dotenv").config({ path: findEnv() });
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const newLocal =
-  "https://frontends-demo-git-feat-gh-245-shopware-frontends.vercel.app" ||
-  "http://localhost:3000";
+const newLocal = "https://frontends-demo.vercel.app/";
 const baseURL = process.env.BASE_E2E_URL || newLocal;
 
 console.log("Running tests for: ", baseURL);
 
 const config: PlaywrightTestConfig = {
-  testDir: "./tests/valid",
+  testDir: "./tests",
   outputDir: "./reports",
   /* Maximum time one test can run for. */
   timeout: 90 * 1000,
@@ -114,9 +112,9 @@ const config: PlaywrightTestConfig = {
     //   },
     // },
     // {
-    //   name: "Google Chrome",
+    //   name: 'Google Chrome',
     //   use: {
-    //     channel: "chrome",
+    //     channel: 'chrome',
     //   },
     // },
   ],
@@ -126,8 +124,7 @@ const config: PlaywrightTestConfig = {
 
   /* Run your local dev server before starting the tests */
   // webServer: {
-  //   command: 'npm run start',    //await this.page.waitForTimeout(1000);
-
+  //   command: 'npm run start',
   //   port: 3000,
   // },
 };
