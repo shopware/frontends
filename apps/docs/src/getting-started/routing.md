@@ -129,9 +129,16 @@ You are done at this point if you choose to build/design custom pages or integra
 
 ## Omitting store API calls for seoURLs
 
+Having pretty URLs is important for SEO and user experience. To display the proper page for that URL, it must be resolved first. This often requires two API calls.
+
+- seoURL lookup, which returns the kind of page we should display and the id of the entity
+- API call to fetch the entity data
+
+Thankfully, we do not need to do that in every case. Only the first request (handled on the server side) is required to resolve the URL. After we render the page, every link information contains not only SEOUrl for redirection but also metadata information containing redirection data. Thanks to this, we can load page data directly without first resolving the URL.
+
 To create speaking links for products or categories, you must know the `seoPathInfo` from the `seoURLs` object. In some situations, you only have the ID of the product or category and then you may need to make an additional call to get the speaking link. This call costs time and can be omitted.
 
-We have created two new helper functions that can be used to avoid these extra calls. Just use `getCategoryRoute` ([see GitHub](https://github.com/shopware/frontends/blob/main/packages/helpers/src/category/getCategoryRoute.ts)) and `getProductRoute` ([see GitHub](https://github.com/shopware/frontends/blob/main/packages/helpers/src/product/getProductRoute.ts)) from [packages/helpers](https://github.com/shopware/frontends/tree/main/packages/helpers). Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
+We have created two new helper functions that can be used to avoid these extra calls. Just use [getCategoryRoute](/packages/helpers/getCategoryRoute) and [getProductRoute](/packages/helpers/src/product/getProductRoute) from [packages/helpers](/packages/helpers). Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
 
 ##### Example getCategoryRoute with NuxtLink
 
@@ -169,7 +176,7 @@ Several things happen during a request. It should be noted that some operations 
 >
 > 1. The user loads an arbitrary page (we don't know which one it is)
 > 2. The server-side rendering (SSR) always happens first and that's where we need to resolve the page, as you learned [above](#resolve-a-route-to-a-page). You will see in the developer tools (network tab) that we load the CMS data (seoURL is included in the response) from the store API.
-> 3. After the initial loading (as described in 1 and 2), we already show speaking links to the user. From now on, we don't need to call the store API endpoint for seo-urls, because we already have the data we need. So we simply return it to the user via the [History State API](https://developer.mozilla.org/en-US/docs/Web/API/History/state). This is why we use the helpers always in our demo-store template.
+> 3. After the initial loading (as described in 1 and 2), we already show pretty links to the user. From now on, we don't need to call the store API endpoint for seo-urls, because we already have the data we need. So we simply return it to the user via the [History State API](https://developer.mozilla.org/en-US/docs/Web/API/History/state). This is why we use helpers always in our demo-store template.
 
 To check it out on a code level have a look at the `[...all].vue` file in the demo-store template.
 
