@@ -7,7 +7,7 @@ const props = withDefaults(
     allowRedirect?: boolean;
   }>(),
   {
-    allowRedirect: false,
+    allowRedirect: true,
   }
 );
 
