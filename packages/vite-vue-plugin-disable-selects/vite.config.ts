@@ -9,5 +9,6 @@ export default defineConfig({
       formats: ["es"],
       fileName: (format: string) => `index.${format}.js`,
     },
+    emptyOutDir: false,
   },
 });

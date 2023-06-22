@@ -1,17 +1,16 @@
 {
-  "name": "ls",
+  "name": "vite-vue-plugin-disable-selects",
   "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Disable select elements before mount",
+  "main": "dist/index.es.js",
+  "types": "dist/plugin.d.ts",
   "scripts": {
     "build": "tsc && vite build"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "vite": "^4.3.9"
-  },
+  "private": true,
+  "license": "MIT",
   "devDependencies": {
+    "vite": "^4.3.9",
     "typescript": "^5.1.3"
   }
 }
