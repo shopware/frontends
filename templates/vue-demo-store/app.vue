@@ -23,6 +23,14 @@ const { data: sessionContextData } = await useAsyncData(
     return await getSessionContext(apiInstance);
   }
 );
+const { init } = usePrice();
+const headers = useRequestHeaders();
+const localeFromHeader = headers?.["accept-language"]?.split(",")?.[0];
+
+init({
+  currencyCode: sessionContextData.value?.currency?.isoCode || "",
+  localeCode: localeFromHeader,
+});
 
 useSessionContext(sessionContextData.value as SessionContext);
 

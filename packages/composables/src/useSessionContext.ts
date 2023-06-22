@@ -1,4 +1,4 @@
-import { computed, ComputedRef, inject, provide, Ref, ref } from "vue";
+import { computed, ComputedRef } from "vue";
 import {
   ShippingMethod,
   PaymentMethod,
@@ -109,13 +109,6 @@ export function useSessionContext(
 ): UseSessionContextReturn {
   const { apiInstance } = useShopwareContext();
   const { init } = usePrice();
-
-  if (newContext) {
-    init({
-      currencyCode: newContext.currency?.isoCode,
-      localeCode: newContext.salesChannel?.language?.locale?.code,
-    });
-  }
 
   const _sessionContext = _useContext("swSessionContext", {
     replace: newContext,
