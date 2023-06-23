@@ -19,8 +19,7 @@ export function withSetup(composable: any) {
 }
 
 describe("usePrice", () => {
-  const { init, getFormattedPrice } = usePrice();
-  init({
+  const { getFormattedPrice, update } = usePrice({
     localeCode: "en-US",
     currencyCode: "USD",
   });
@@ -34,7 +33,7 @@ describe("usePrice", () => {
   });
 
   it("should update config", () => {
-    init({
+    update({
       localeCode: "de-DE",
       currencyCode: "EUR",
     });
@@ -43,7 +42,7 @@ describe("usePrice", () => {
   });
 
   it("should return price with language locale code taken from navigator", () => {
-    init({
+    update({
       currencyCode: "USD",
       currencyLocale: undefined,
     } as any);

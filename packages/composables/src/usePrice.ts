@@ -6,6 +6,13 @@ export type UsePriceReturn = {
    * Format price i.e. (2) -> 2.00 $
    */
   getFormattedPrice(value: number | string | undefined): string;
+  /**
+   * Update configuration
+   */
+  update(params: {
+    localeCode: string | undefined;
+    currencyCode: string;
+  }): void;
 };
 
 /**
@@ -22,12 +29,19 @@ function _usePrice(params: {
   const currencyLocale = ref<string>("");
   const currencyCode = ref<string>("");
 
-  _setCurrencyCode(params.currencyCode);
-  _setLocaleCode(
-    params.localeCode ||
-      (typeof navigator !== "undefined" && navigator?.language) ||
-      "en-US"
-  );
+  update(params);
+
+  function update(params: {
+    localeCode: string | undefined;
+    currencyCode: string;
+  }) {
+    _setCurrencyCode(params.currencyCode);
+    _setLocaleCode(
+      params.localeCode ||
+        (typeof navigator !== "undefined" && navigator?.language) ||
+        "en-US"
+    );
+  }
 
   // TODO: make sure why there is no decimal precision in api response
   const decimalPrecision = 2;
@@ -60,6 +74,7 @@ function _usePrice(params: {
 
   return {
     getFormattedPrice,
+    update,
   };
 }
 
