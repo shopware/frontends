@@ -3,10 +3,6 @@ import { createSharedComposable } from "@vueuse/core";
 
 export type UsePriceReturn = {
   /**
-   * Set init data: localeCode & currencyCode
-   */
-  init(options: { localeCode: string | undefined; currencyCode: string }): void;
-  /**
    * Format price i.e. (2) -> 2.00 $
    */
   getFormattedPrice(value: number | string | undefined): string;
@@ -14,32 +10,27 @@ export type UsePriceReturn = {
 
 /**
  * Composable for getting formatted price
+ * Set the default currency code and locale in order to format a price correctly
+ *
  * @public
  * @category Product
  */
-function _usePrice(): UsePriceReturn {
+function _usePrice(params: {
+  localeCode: string | undefined;
+  currencyCode: string;
+}): UsePriceReturn {
   const currencyLocale = ref<string>("");
   const currencyCode = ref<string>("");
 
+  _setCurrencyCode(params.currencyCode);
+  _setLocaleCode(
+    params.localeCode ||
+      (typeof navigator !== "undefined" && navigator?.language) ||
+      "en-US"
+  );
+
   // TODO: make sure why there is no decimal precision in api response
   const decimalPrecision = 2;
-  /**
-   * Set init data from backend response
-   *
-   * as a fallback for params.localeCode is navigator?.language
-   * @param params
-   */
-  function init(params: {
-    localeCode: string | undefined;
-    currencyCode: string;
-  }): void {
-    _setCurrencyCode(params.currencyCode);
-    _setLocaleCode(
-      params.localeCode ||
-        (typeof navigator !== "undefined" && navigator?.language) ||
-        "en-US"
-    );
-  }
 
   function _setCurrencyCode(code: string) {
     currencyCode.value = code;
@@ -68,7 +59,6 @@ function _usePrice(): UsePriceReturn {
   }
 
   return {
-    init,
     getFormattedPrice,
   };
 }
