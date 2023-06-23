@@ -1,5 +1,6 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { createSharedComposable } from "@vueuse/core";
+import { useSessionContext } from "./useSessionContext";
 
 export type UsePriceReturn = {
   /**
@@ -26,20 +27,18 @@ function _usePrice(params: {
   localeCode: string | undefined;
   currencyCode: string;
 }): UsePriceReturn {
-  const currencyLocale = ref<string>("");
-  const currencyCode = ref<string>("");
-
-  console.warn("set constructor", params);
-  update(params);
+  const { sessionContext } = useSessionContext();
+  const currencyLocale = ref<string | undefined>(params.localeCode);
+  const currencyCode = ref<string>(params.currencyCode);
 
   function update(params: {
-    localeCode: string | undefined;
+    localeCode?: string | undefined;
     currencyCode: string;
   }) {
-    console.warn("update params", params);
     _setCurrencyCode(params.currencyCode);
     _setLocaleCode(
       params.localeCode ||
+        currencyLocale.value ||
         (typeof navigator !== "undefined" && navigator?.language) ||
         "en-US"
     );
@@ -73,6 +72,19 @@ function _usePrice(params: {
       currency: currencyCode.value,
     }).format(+value);
   }
+
+  watch(
+    () => sessionContext.value?.currency,
+    (newCurrency) => {
+      update({
+        // locale code is read only once on SSR because it's unavailable in the context
+        currencyCode: newCurrency?.isoCode as string,
+      });
+    },
+    {
+      immediate: true,
+    }
+  );
 
   return {
     getFormattedPrice,

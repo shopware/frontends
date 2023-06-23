@@ -20,7 +20,6 @@ import {
   setCurrentLanguage,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
-import { usePrice } from "./usePrice";
 import { _useContext } from "./internal/_useContext";
 
 export type UseSessionContextReturn = {
@@ -118,11 +117,6 @@ export function useSessionContext(
     try {
       const context = await getSessionContext(apiInstance);
       _sessionContext.value = context;
-
-      usePrice({
-        currencyCode: context.currency?.isoCode,
-        localeCode: context.salesChannel?.language?.locale?.code,
-      });
     } catch (e) {
       console.error("[UseSessionContext][refreshSessionContext]", e);
     }
