@@ -29,12 +29,14 @@ function _usePrice(params: {
   const currencyLocale = ref<string>("");
   const currencyCode = ref<string>("");
 
+  console.warn("set constructor", params);
   update(params);
 
   function update(params: {
     localeCode: string | undefined;
     currencyCode: string;
   }) {
+    console.warn("update params", params);
     _setCurrencyCode(params.currencyCode);
     _setLocaleCode(
       params.localeCode ||
