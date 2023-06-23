@@ -30,6 +30,10 @@ const headers = useRequestHeaders();
 const localeFromHeader = headers?.["accept-language"]
   ?.split(",")
   ?.find((languageConfig) => languageConfig.match(/([a-z]){2}\-([A-Z]{2})/));
+
+console.warn("headers", headers);
+console.warn("localeFromHeader", localeFromHeader);
+
 usePrice({
   currencyCode: sessionContextData.value?.currency?.isoCode || "",
   localeCode: localeFromHeader,
