@@ -1,9 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { HomePage } from "../page-objects/HomePage";
-import { ProductPage } from "../page-objects/ProductPage";
-import { CartPage } from "../page-objects/CartPage";
-import { WishlistPage } from "../page-objects/WishlistPage";
+import { HomePage } from "../../page-objects/HomePage";
+import { ProductPage } from "../../page-objects/ProductPage";
+import { CartPage } from "../../page-objects/CartPage";
+import { WishlistPage } from "../../page-objects/WishlistPage";
 
+test.setTimeout(50000);
 test.describe.parallel.only("Add product to cart / Remove from cart", () => {
   let homePage: HomePage;
   let productPage: ProductPage;
@@ -24,6 +25,7 @@ test.describe.parallel.only("Add product to cart / Remove from cart", () => {
     await homePage.openCartPage();
     await productPage.addToCart();
     await cartPage.openMiniCart();
+    await page.getByTestId("cart-product-image").waitFor();
     await expect(page.getByTestId("cart-product-image")).toBeVisible();
   });
 

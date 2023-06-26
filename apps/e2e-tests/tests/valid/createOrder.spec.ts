@@ -1,11 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { HomePage } from "../page-objects/HomePage";
-import { RegisterForm } from "../page-objects/RegisterPage";
-import { getRandomNumber } from "../utils/data-helpers";
-import { CheckoutPage } from "../page-objects/CheckoutPage";
-import { ProductPage } from "../page-objects/ProductPage";
-import { CartPage } from "../page-objects/CartPage";
-import { LoginForm } from "../page-objects/LoginPage";
+import { HomePage } from "../../page-objects/HomePage";
+import { RegisterForm } from "../../page-objects/RegisterPage";
+import { CheckoutPage } from "../../page-objects/CheckoutPage";
+import { ProductPage } from "../../page-objects/ProductPage";
+import { CartPage } from "../../page-objects/CartPage";
+import { LoginForm } from "../../page-objects/LoginPage";
 import find from "find-up";
 export const findEnv = () => find.sync(process.env.ENV_FILE || ".env");
 import { faker } from "@faker-js/faker";
@@ -13,6 +12,7 @@ import { faker } from "@faker-js/faker";
 require("dotenv").config({ path: findEnv() });
 const userEmail = process.env.USER_EMAIL || "test@shopware.com";
 const password = process.env.PASSWORD || "shopware123";
+test.setTimeout(50000);
 
 test.describe.only("Create Order", () => {
   let homePage: HomePage;

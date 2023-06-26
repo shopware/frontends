@@ -22,7 +22,9 @@ export class HomePage extends AbstractPage {
     );
     this.searchBar = page.getByTestId("layout-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
-    this.addToWishlist = page.getByTestId("product-box-wishlist-icon-not-in");
+    this.addToWishlist = page
+      .getByTestId("product-box-wishlist-icon-not-in")
+      .first();
     this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
     this.myAccountLink = page.getByTestId("header-my-account-link");
   }
@@ -32,8 +34,7 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await expect(this.page.getByTestId("header-sign-in-link")).toBeVisible();
-    await this.signInButton.waitFor();
+    await this.signInButton.waitFor({ state: "visible" });
     await this.signInButton.click({ delay: 500 });
   }
 
@@ -41,7 +42,9 @@ export class HomePage extends AbstractPage {
     await this.page.waitForTimeout(500);
     await this.linkToCartPage.waitFor();
     await this.linkToCartPage.click();
-    await this.page.waitForSelector("[data-testid='product-quantity']");
+    await this.page.waitForSelector("[data-testid='product-quantity']", {
+      state: "visible",
+    });
     await this.page.waitForLoadState("load");
   }
 
@@ -64,7 +67,7 @@ export class HomePage extends AbstractPage {
 
   async addProductToWishlist() {
     await this.page.waitForLoadState("networkidle");
-    await this.addToWishlist.nth(5).dispatchEvent("click");
+    await this.addToWishlist.dispatchEvent("click");
   }
 
   async openMyAccount() {

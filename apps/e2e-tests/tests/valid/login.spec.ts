@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { HomePage } from "../page-objects/HomePage";
-import { LoginForm } from "../page-objects/LoginPage";
+import { HomePage } from "../../page-objects/HomePage";
+import { LoginForm } from "../../page-objects/LoginPage";
 import find from "find-up";
 export const findEnv = () => find.sync(process.env.ENV_FILE || ".env");
 
@@ -23,7 +23,7 @@ test.describe.only("Login user", () => {
   test("Login user", async ({ page }) => {
     await homePage.clickOnSignIn();
     await loginForm.login(userEmail, password);
-    await page.waitForLoadState("load");
+    await page.waitForLoadState("networkidle");
     await expect(page.getByTestId("account-menu-hello-button")).toHaveCount(1);
   });
 });

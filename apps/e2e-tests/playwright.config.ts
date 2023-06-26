@@ -14,15 +14,15 @@ require("dotenv").config({ path: findEnv() });
  * See https://playwright.dev/docs/test-configuration.
  */
 const newLocal = "https://frontends-demo.vercel.app/";
-const baseURL = process.env.BASE_E2E_URL || newLocal;
+const baseURL = "http://localhost:3000";
 
 console.log("Running tests for: ", baseURL);
 
 const config: PlaywrightTestConfig = {
-  testDir: "./tests",
+  testDir: "./tests/valid",
   outputDir: "./reports",
   /* Maximum time one test can run for. */
-  timeout: 90 * 1000,
+  timeout: 30 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -56,21 +56,21 @@ const config: PlaywrightTestConfig = {
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "chromium",
+      name: "Desktop Chrome",
       use: {
         ...devices["Desktop Chrome"],
       },
     },
 
     {
-      name: "firefox",
+      name: "Desktop Firefox",
       use: {
         ...devices["Desktop Firefox"],
       },
     },
 
     {
-      name: "webkit",
+      name: "Desktop Safari",
       use: {
         ...devices["Desktop Safari"],
       },
@@ -84,7 +84,7 @@ const config: PlaywrightTestConfig = {
     // },
 
     {
-      name: "Tablet Chrome",
+      name: "iPad Mini",
       use: {
         ...devices["iPad Mini"],
       },

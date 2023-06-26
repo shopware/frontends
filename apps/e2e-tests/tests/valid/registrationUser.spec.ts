@@ -1,6 +1,6 @@
-import { test, expect } from "@playwright/test";
-import { HomePage } from "../page-objects/HomePage";
-import { RegisterForm } from "../page-objects/RegisterPage";
+import { test } from "@playwright/test";
+import { HomePage } from "../../page-objects/HomePage";
+import { RegisterForm } from "../../page-objects/RegisterPage";
 import { faker } from "@faker-js/faker";
 
 test.describe.only("Registration new user", () => {
