@@ -1,0 +1,34 @@
+{
+  "name": "vite-vue-plugin-disable-inputs",
+  "version": "0.1.0",
+  "description": "Disable input elements before mount",
+  "author": "Shopware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://frontends.shopware.com",
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
+  "type": "module",
+  "module": "./dist/index.es.js",
+  "types": "./dist/plugin.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/plugin.d.ts",
+      "import": "./dist/index.es.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "vite": "^4.3.9",
+    "typescript": "^5.1.3"
+  }
+}

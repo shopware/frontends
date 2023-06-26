@@ -29,7 +29,7 @@ function VueDisableInputsBeforeMount(): PluginOption {
             "</script>",
             `
           const isDisabled = ref(typeof onMounted !=="undefined" ? true : false);
-          if(typeof onMounted !=="undefined") {
+          if(typeof onMounted !== "undefined") {
             onMounted(() => {
               isDisabled.value = false;
 

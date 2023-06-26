@@ -1,6 +1,6 @@
 import transformerDirective from "@unocss/transformer-directives";
 import i18nConfig from "./i18n/src/config";
-import { VueDisableInputsBeforeMount } from "vite-vue-plugin-disable-selects";
+import { VueDisableInputsBeforeMount } from "vite-vue-plugin-disable-inputs";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   runtimeConfig: {
