@@ -1,9 +1,22 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createApp } from "vue";
 import { usePrice } from "./usePrice";
 
 export function withSetup(composable: any) {
   let result;
+
+  vi.mock("./useSessionContext.ts", () => ({
+    useSessionContext() {
+      return {
+        sessionContext: {
+          currency: {
+            isoCode: "EUR",
+          },
+        },
+      };
+    },
+  }));
+
   const app = createApp({
     setup() {
       result = composable();
@@ -12,9 +25,8 @@ export function withSetup(composable: any) {
       return () => {};
     },
   });
+
   app.mount(document.createElement("div"));
-  // return the result and the app instance
-  // for testing provide / unmount
   return [result, app];
 }
 
@@ -41,11 +53,11 @@ describe("usePrice", () => {
     expect(getFormattedPrice(4.1).replace(/\s/g, " ")).toBe("4,10 €");
   });
 
-  it("should return price with language locale code taken from navigator", () => {
+  it("should return price with current locale", () => {
     update({
       currencyCode: "USD",
       currencyLocale: undefined,
     } as any);
-    expect(getFormattedPrice(2.55)).toStrictEqual(`$2.55`);
+    expect(getFormattedPrice(2.55).replace(/\s/g, " ")).toStrictEqual(`2,55 $`);
   });
 });

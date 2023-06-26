@@ -76,10 +76,11 @@ function _usePrice(params: {
   watch(
     () => sessionContext.value?.currency,
     (newCurrency) => {
-      update({
-        // locale code is read only once on SSR because it's unavailable in the context
-        currencyCode: newCurrency?.isoCode as string,
-      });
+      if (!!newCurrency)
+        update({
+          // locale code is read only once on SSR because it's unavailable in the context
+          currencyCode: newCurrency?.isoCode as string,
+        });
     },
     {
       immediate: true,
