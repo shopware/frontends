@@ -23,6 +23,7 @@ function VueDisableInputsBeforeMount(): PluginOption {
 
         const foundScriptBlock = foundScriptBlocks[0];
         if (!foundScriptBlock) {
+          console.error("no script section found");
           return null;
         }
         // add isDisabled ref with true value
@@ -66,8 +67,12 @@ function VueDisableInputsBeforeMount(): PluginOption {
           );
         }
 
+        console.warn(id, " changed to be:", component);
+
         return { code: component, id };
       }
+
+      console.warn(id, " was not changed at all");
 
       return null;
     },
