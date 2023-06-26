@@ -766,6 +766,7 @@ const addAddressModalController = useModal();
             </div>
             <button
               type="button"
+              data-testid="checkout-add-new-billing-address-button"
               class="flex font-medium text-brand-dark"
               @click="addAddressModalController.open"
             >
@@ -776,6 +777,7 @@ const addAddressModalController = useModal();
                 <input
                   id="customShipping"
                   v-model="state.customShipping"
+                  data-testid="checkout-custom-shipping-address-checkbox"
                   name="privacy"
                   type="checkbox"
                   class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
@@ -815,6 +817,7 @@ const addAddressModalController = useModal();
                 </div>
                 <button
                   type="button"
+                  data-testid="checkout-add-new-shipping-address-button"
                   class="flex font-medium text-brand-dark"
                   @click="addAddressModalController.open"
                 >
