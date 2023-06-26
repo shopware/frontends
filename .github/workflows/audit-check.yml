@@ -1,0 +1,39 @@
+name: Audit check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 8 * * *"
+  push:
+    branches: ["main"]
+    paths:
+      - "pnpm-lock.yaml"
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "pnpm-lock.yaml"
+
+jobs:
+  init:
+    name: Check audit
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: corepack enable
+      - run: pnpm --version
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+          cache-dependency-path: "**/pnpm-lock.yaml"
+      - name: Audit
+        run: pnpm audit
