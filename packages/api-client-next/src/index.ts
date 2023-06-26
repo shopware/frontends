@@ -1,4 +1,8 @@
 import { ofetch } from "ofetch";
+import {
+  operations as defaultOperations,
+  paths as defaultPaths,
+} from "../api-types";
 
 type Operations = Record<string, unknown>;
 
@@ -20,7 +24,10 @@ type GetInferKey<T, NAME extends string> = T extends { [key in NAME]: infer R }
   ? R
   : never;
 
-export function createAPIClient<OPERATIONS extends Operations, PATHS>(params: {
+export function createAPIClient<
+  OPERATIONS extends Operations = defaultOperations,
+  PATHS = defaultPaths
+>(params: {
   baseURL: string;
   apiType: "store-api" | "admin-api";
   accessToken: string;

@@ -14,6 +14,8 @@ type OneOf<T extends any[]> = T extends [infer Only]
   ? OneOf<[XOR<A, B>, ...Rest]>
   : never;
 
+type GenericRecord = never | { [key: string]: GenericRecord };
+
 export type paths = {
   "/account/address": {
     /**
@@ -633,9 +635,7 @@ export type components = {
     };
     ArrayStruct: components["schemas"]["Struct"];
     /** Members of the attributes object ("attributes") represent information about the resource object in which it's defined. */
-    attributes: {
-      [key: string]: unknown;
-    };
+    attributes: GenericRecord;
     Cart: components["schemas"]["ArrayStruct"] & {
       /** An affiliate tracking code */
       affiliateCode?: string;
@@ -700,7 +700,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customEntityTypeId?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       displayNestedProducts: boolean;
       externalLink?: string;
@@ -722,7 +722,28 @@ export type components = {
       path?: string;
       productAssignmentType: string;
       seoUrls?: components["schemas"]["SeoUrl"];
-      translated?: Record<string, never>;
+      translated?: {
+        afterCategoryId?: string;
+        afterCategoryVersionId?: string;
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        customEntityTypeId?: string;
+        description?: string;
+        externalLink?: string;
+        internalLink?: string;
+        keywords?: string;
+        linkType?: string;
+        mediaId?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        parentId?: string;
+        parentVersionId?: string;
+        path?: string;
+        productAssignmentType?: string;
+        type?: string;
+        versionId?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -749,7 +770,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customEntityTypeId?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       displayNestedProducts: boolean;
       externalLink?: string;
@@ -771,7 +792,7 @@ export type components = {
       relationships?: {
         children?: {
           data?: {
-            /** @example 0188df387ce07205a09f1f1d6d41a138 */
+            /** @example 0188f8334a2a7224bc6f4f9d2589f76e */
             id?: string;
             /** @example category */
             type?: string;
@@ -779,14 +800,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/0188df387ce07205a09f1f1d6d0fbae9/children
+             * @example /category/0188f8334a2a7224bc6f4f9d23ddd8ec/children
              */
             related?: string;
           };
         };
         cmsPage?: {
           data?: {
-            /** @example 0188df387ce07205a09f1f1d6ee11ee9 */
+            /** @example 0188f8334a2a7224bc6f4f9d26fe9251 */
             id?: string;
             /** @example cms_page */
             type?: string;
@@ -794,14 +815,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/0188df387ce07205a09f1f1d6d0fbae9/cmsPage
+             * @example /category/0188f8334a2a7224bc6f4f9d23ddd8ec/cmsPage
              */
             related?: string;
           };
         };
         media?: {
           data?: {
-            /** @example 0188df387ce07205a09f1f1d6e15778e */
+            /** @example 0188f8334a2a7224bc6f4f9d261b0ef8 */
             id?: string;
             /** @example media */
             type?: string;
@@ -809,14 +830,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/0188df387ce07205a09f1f1d6d0fbae9/media
+             * @example /category/0188f8334a2a7224bc6f4f9d23ddd8ec/media
              */
             related?: string;
           };
         };
         parent?: {
           data?: {
-            /** @example 0188df387ce07205a09f1f1d6d28325e */
+            /** @example 0188f8334a2a7224bc6f4f9d24c6c257 */
             id?: string;
             /** @example category */
             type?: string;
@@ -824,14 +845,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/0188df387ce07205a09f1f1d6d0fbae9/parent
+             * @example /category/0188f8334a2a7224bc6f4f9d23ddd8ec/parent
              */
             related?: string;
           };
         };
         seoUrls?: {
           data?: {
-            /** @example 0188df387ce07205a09f1f1d6fd664d2 */
+            /** @example 0188f8334a2a7224bc6f4f9d2755e03b */
             id?: string;
             /** @example seo_url */
             type?: string;
@@ -839,13 +860,34 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/0188df387ce07205a09f1f1d6d0fbae9/seoUrls
+             * @example /category/0188f8334a2a7224bc6f4f9d23ddd8ec/seoUrls
              */
             related?: string;
           };
         };
       };
-      translated?: Record<string, never>;
+      translated?: {
+        afterCategoryId?: string;
+        afterCategoryVersionId?: string;
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        customEntityTypeId?: string;
+        description?: string;
+        externalLink?: string;
+        internalLink?: string;
+        keywords?: string;
+        linkType?: string;
+        mediaId?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        parentId?: string;
+        parentVersionId?: string;
+        path?: string;
+        productAssignmentType?: string;
+        type?: string;
+        versionId?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -867,11 +909,11 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       cssClass?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       extensions?: {
         swagCmsExtensionsBlockRule?: {
           data?: {
-            /** @example 0188df387ce171bbb5249a8963d5088e */
+            /** @example 0188f8334a2b7161b75c68356973a98a */
             id?: string;
             /** @example swag_cms_extensions_block_rule */
             type?: string;
@@ -879,14 +921,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /cms-block/0188df387ce07205a09f1f1d71a1d6ac/swagCmsExtensionsBlockRule
+             * @example /cms-block/0188f8334a2a7224bc6f4f9d284557ed/swagCmsExtensionsBlockRule
              */
             related?: string;
           };
         };
         swagCmsExtensionsQuickview?: {
           data?: {
-            /** @example 0188df387ce171bbb5249a896344df86 */
+            /** @example 0188f8334a2b7161b75c6835696f14f7 */
             id?: string;
             /** @example swag_cms_extensions_quickview */
             type?: string;
@@ -894,7 +936,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /cms-block/0188df387ce07205a09f1f1d71a1d6ac/swagCmsExtensionsQuickview
+             * @example /cms-block/0188f8334a2a7224bc6f4f9d284557ed/swagCmsExtensionsQuickview
              */
             related?: string;
           };
@@ -929,12 +971,12 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       cssClass?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       entity?: string;
       extensions?: {
         swagCmsExtensionsScrollNavigationPageSettings?: {
           data?: {
-            /** @example 0188df387ce171bbb5249a8965604c51 */
+            /** @example 0188f8334a2b7161b75c68356c80b6b2 */
             id?: string;
             /** @example swag_cms_extensions_scroll_navigation_page_settings */
             type?: string;
@@ -942,7 +984,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /cms-page/0188df387ce171bbb5249a8963d8fcd8/swagCmsExtensionsScrollNavigationPageSettings
+             * @example /cms-page/0188f8334a2b7161b75c683569f9dfb7/swagCmsExtensionsScrollNavigationPageSettings
              */
             related?: string;
           };
@@ -954,7 +996,14 @@ export type components = {
       previewMedia?: components["schemas"]["Media"];
       previewMediaId?: string;
       sections?: components["schemas"]["CmsSection"];
-      translated?: Record<string, never>;
+      translated?: {
+        cssClass?: string;
+        entity?: string;
+        name?: string;
+        previewMediaId?: string;
+        type?: string;
+        versionId?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -987,11 +1036,11 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       cssClass?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       extensions?: {
         swagCmsExtensionsScrollNavigation?: {
           data?: {
-            /** @example 0188df387ce27016ad3f3fca447b6638 */
+            /** @example 0188f8334a2c70408696d00e502c9862 */
             id?: string;
             /** @example swag_cms_extensions_scroll_navigation */
             type?: string;
@@ -999,7 +1048,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /cms-section/0188df387ce171bbb5249a89667e8bb3/swagCmsExtensionsScrollNavigation
+             * @example /cms-section/0188f8334a2c70408696d00e4e76e691/swagCmsExtensionsScrollNavigation
              */
             related?: string;
           };
@@ -1027,16 +1076,22 @@ export type components = {
       block?: components["schemas"]["CmsBlock"];
       blockId: string;
       cmsBlockVersionId?: string;
-      config?: Record<string, never>;
+      config?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
-      data?: Record<string, never>;
-      fieldConfig?: Record<string, never>;
+      customFields?: GenericRecord;
+      data?: GenericRecord;
+      fieldConfig?: GenericRecord;
       id?: string;
       locked?: boolean;
       slot: string;
-      translated?: Record<string, never>;
+      translated?: {
+        blockId?: string;
+        cmsBlockVersionId?: string;
+        slot?: string;
+        type?: string;
+        versionId?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -1049,7 +1104,7 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     Country: {
       active?: boolean;
-      addressFormat: Record<string, never>;
+      addressFormat: GenericRecord;
       advancedPostalCodePattern?: string;
       checkAdvancedPostalCodePattern?: boolean;
       checkPostalCodePattern?: boolean;
@@ -1068,7 +1123,7 @@ export type components = {
         currencyId: string;
         enabled: boolean;
       };
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       defaultPostalCodePattern?: string;
       displayStateInRegistration?: boolean;
       forceStateInRegistration?: boolean;
@@ -1081,7 +1136,14 @@ export type components = {
       postalCodeRequired?: boolean;
       shippingAvailable?: boolean;
       states?: components["schemas"]["CountryState"];
-      translated?: Record<string, never>;
+      translated?: {
+        advancedPostalCodePattern?: string;
+        defaultPostalCodePattern?: string;
+        iso?: string;
+        iso3?: string;
+        name?: string;
+        vatIdPattern?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       vatIdPattern?: string;
@@ -1090,7 +1152,7 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     CountryJsonApi: components["schemas"]["resource"] & {
       active?: boolean;
-      addressFormat: Record<string, never>;
+      addressFormat: GenericRecord;
       advancedPostalCodePattern?: string;
       checkAdvancedPostalCodePattern?: boolean;
       checkPostalCodePattern?: boolean;
@@ -1109,7 +1171,7 @@ export type components = {
         currencyId: string;
         enabled: boolean;
       };
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       defaultPostalCodePattern?: string;
       displayStateInRegistration?: boolean;
       forceStateInRegistration?: boolean;
@@ -1123,7 +1185,7 @@ export type components = {
       relationships?: {
         states?: {
           data?: {
-            /** @example 0188df387ce27016ad3f3fca46a8bac4 */
+            /** @example 0188f8334a2d7287b5c9797ef464fd7a */
             id?: string;
             /** @example country_state */
             type?: string;
@@ -1131,14 +1193,21 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /country/0188df387ce27016ad3f3fca46740882/states
+             * @example /country/0188f8334a2c70408696d00e522c26db/states
              */
             related?: string;
           };
         };
       };
       shippingAvailable?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        advancedPostalCodePattern?: string;
+        defaultPostalCodePattern?: string;
+        iso?: string;
+        iso3?: string;
+        name?: string;
+        vatIdPattern?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       vatIdPattern?: string;
@@ -1150,13 +1219,17 @@ export type components = {
       countryId: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       /** Format: int64 */
       position?: number;
       shortCode: string;
-      translated?: Record<string, never>;
+      translated?: {
+        countryId?: string;
+        name?: string;
+        shortCode?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1166,13 +1239,17 @@ export type components = {
       countryId: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       /** Format: int64 */
       position?: number;
       shortCode: string;
-      translated?: Record<string, never>;
+      translated?: {
+        countryId?: string;
+        name?: string;
+        shortCode?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1188,7 +1265,7 @@ export type components = {
         type: string;
       }[];
       /** Used to fetch associations which are not fetched by default. */
-      associations?: Record<string, never>;
+      associations?: GenericRecord;
       /** Fields which should be returned in the search result. */
       fields?: string[];
       /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
@@ -1244,7 +1321,7 @@ export type components = {
     Currency: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       /** Format: float */
       factor: number;
       id?: string;
@@ -1272,7 +1349,12 @@ export type components = {
         interval?: number;
         roundForNet?: boolean;
       };
-      translated?: Record<string, never>;
+      translated?: {
+        isoCode?: string;
+        name?: string;
+        shortName?: string;
+        symbol?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1288,7 +1370,7 @@ export type components = {
     CurrencyJsonApi: components["schemas"]["resource"] & {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       /** Format: float */
       factor: number;
       id?: string;
@@ -1316,7 +1398,12 @@ export type components = {
         interval?: number;
         roundForNet?: boolean;
       };
-      translated?: Record<string, never>;
+      translated?: {
+        isoCode?: string;
+        name?: string;
+        shortName?: string;
+        symbol?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1341,7 +1428,7 @@ export type components = {
       createdAt: string;
       createdById?: string;
       customerNumber: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       defaultBillingAddress?: components["schemas"]["CustomerAddress"];
       defaultBillingAddressId: string;
       defaultPaymentMethod?: components["schemas"]["PaymentMethod"];
@@ -1400,7 +1487,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customerId: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       department?: string;
       firstName: string;
       id?: string;
@@ -1418,7 +1505,7 @@ export type components = {
     CustomerGroup: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       displayGross?: boolean;
       id?: string;
       name: string;
@@ -1427,7 +1514,12 @@ export type components = {
       registrationOnlyCompanyRegistration?: boolean;
       registrationSeoMetaDescription?: string;
       registrationTitle?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        registrationIntroduction?: string;
+        registrationSeoMetaDescription?: string;
+        registrationTitle?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1451,7 +1543,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customerId: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -1499,7 +1591,7 @@ export type components = {
       customerGroupId?: string;
       customerId?: string;
       id?: string;
-      price: Record<string, never>;
+      price: GenericRecord;
       product?: components["schemas"]["Product"];
       productId: string;
       productVersionId?: string;
@@ -1514,24 +1606,27 @@ export type components = {
     DeliveryTime: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       /** Format: int64 */
       max: number;
       /** Format: int64 */
       min: number;
       name: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        unit?: string;
+      };
       unit: string;
       /** Format: date-time */
       updatedAt?: string;
     };
     /** Added since version: 6.0.0.0 */
     Document: {
-      config: Record<string, never>;
+      config: GenericRecord;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deepLinkCode: string;
       dependentDocuments?: components["schemas"]["Document"];
       documentMediaFile?: components["schemas"]["Media"];
@@ -1552,10 +1647,10 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     DocumentBaseConfig: {
-      config?: Record<string, never>;
+      config?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       documentNumber?: string;
       documentTypeId: string;
       filenamePrefix?: string;
@@ -1583,17 +1678,20 @@ export type components = {
     DocumentType: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       technicalName: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
     EntitySearchResult: components["schemas"]["ArrayStruct"] & {
       /** Contains aggregated data. A simple example is the determination of the average price from a product search query. */
-      aggregations?: Record<string, never>[];
+      aggregations?: GenericRecord[];
       entity?: string;
       /** The actual limit. This is used for pagination and goes together with the page. */
       limit?: number;
@@ -1708,15 +1806,24 @@ export type components = {
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       keywords?: string;
       metaDescription?: string;
       metaTitle?: string;
       name: string;
       seoUrls?: components["schemas"]["SeoUrl"];
-      slotConfig?: Record<string, never>;
-      translated?: Record<string, never>;
+      slotConfig?: GenericRecord;
+      translated?: {
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        keywords?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        url?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       url: string;
@@ -1729,7 +1836,7 @@ export type components = {
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       keywords?: string;
       metaDescription?: string;
@@ -1738,7 +1845,7 @@ export type components = {
       relationships?: {
         cmsPage?: {
           data?: {
-            /** @example 0188df387ce770709bb1c1ad9b208803 */
+            /** @example 0188f8334a3371508da83536076f5d02 */
             id?: string;
             /** @example cms_page */
             type?: string;
@@ -1746,14 +1853,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /landing-page/0188df387ce770709bb1c1ad9a5ce8a1/cmsPage
+             * @example /landing-page/0188f8334a3371508da835360727da28/cmsPage
              */
             related?: string;
           };
         };
         seoUrls?: {
           data?: {
-            /** @example 0188df387ce770709bb1c1ad9bafcc2d */
+            /** @example 0188f8334a3371508da8353607fb977f */
             id?: string;
             /** @example seo_url */
             type?: string;
@@ -1761,14 +1868,23 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /landing-page/0188df387ce770709bb1c1ad9a5ce8a1/seoUrls
+             * @example /landing-page/0188f8334a3371508da835360727da28/seoUrls
              */
             related?: string;
           };
         };
       };
-      slotConfig?: Record<string, never>;
-      translated?: Record<string, never>;
+      slotConfig?: GenericRecord;
+      translated?: {
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        keywords?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        url?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       url: string;
@@ -1779,7 +1895,7 @@ export type components = {
       children?: components["schemas"]["Language"];
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       locale?: components["schemas"]["Locale"];
       localeId: string;
@@ -1795,7 +1911,7 @@ export type components = {
     LanguageJsonApi: components["schemas"]["resource"] & {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       localeId: string;
       name: string;
@@ -1803,7 +1919,7 @@ export type components = {
       relationships?: {
         children?: {
           data?: {
-            /** @example 0188df387ce770709bb1c1ad9f559320 */
+            /** @example 0188f8334a3471fb97fef3b5dd5bdeef */
             id?: string;
             /** @example language */
             type?: string;
@@ -1811,14 +1927,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /language/0188df387ce770709bb1c1ad9d2f32b4/children
+             * @example /language/0188f8334a3471fb97fef3b5dbb3b49f/children
              */
             related?: string;
           };
         };
         locale?: {
           data?: {
-            /** @example 0188df387ce770709bb1c1ad9e79f639 */
+            /** @example 0188f8334a3471fb97fef3b5dc1432ad */
             id?: string;
             /** @example locale */
             type?: string;
@@ -1826,14 +1942,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /language/0188df387ce770709bb1c1ad9d2f32b4/locale
+             * @example /language/0188f8334a3471fb97fef3b5dbb3b49f/locale
              */
             related?: string;
           };
         };
         parent?: {
           data?: {
-            /** @example 0188df387ce770709bb1c1ad9e1ad1a6 */
+            /** @example 0188f8334a3471fb97fef3b5dbbdb24d */
             id?: string;
             /** @example language */
             type?: string;
@@ -1841,14 +1957,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /language/0188df387ce770709bb1c1ad9d2f32b4/parent
+             * @example /language/0188f8334a3471fb97fef3b5dbb3b49f/parent
              */
             related?: string;
           };
         };
         translationCode?: {
           data?: {
-            /** @example 0188df387ce770709bb1c1ad9e7ee975 */
+            /** @example 0188f8334a3471fb97fef3b5dce52fac */
             id?: string;
             /** @example locale */
             type?: string;
@@ -1856,7 +1972,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /language/0188df387ce770709bb1c1ad9d2f32b4/translationCode
+             * @example /language/0188f8334a3471fb97fef3b5dbb3b49f/translationCode
              */
             related?: string;
           };
@@ -1899,19 +2015,21 @@ export type components = {
       meta?: components["schemas"]["meta"];
       type: string;
     };
-    links: {
-      [key: string]: components["schemas"]["link"] | undefined;
-    };
+    links: GenericRecord;
     /** Added since version: 6.0.0.0 */
     Locale: {
       code: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       territory: string;
-      translated?: Record<string, never>;
+      translated?: {
+        code?: string;
+        name?: string;
+        territory?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1935,7 +2053,14 @@ export type components = {
       id?: string;
       name: string;
       systemDefault?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        footerHtml?: string;
+        footerPlain?: string;
+        headerHtml?: string;
+        headerPlain?: string;
+        name?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1945,13 +2070,17 @@ export type components = {
       contentPlain: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       mailTemplateType?: components["schemas"]["MailTemplateType"];
       media?: components["schemas"]["MailTemplateMedia"];
       senderName?: string;
       systemDefault?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        contentHtml?: string;
+        contentPlain?: string;
+        senderName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1969,11 +2098,14 @@ export type components = {
     MailTemplateType: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       technicalName: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -2008,11 +2140,11 @@ export type components = {
       alt?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       extensions?: {
         mediaAiTag?: {
           data?: {
-            /** @example 0188df387ce970d6ab1cd354c5ab3fe2 */
+            /** @example 0188f8334a3670679577cca714656bdf */
             id?: string;
             /** @example media_ai_tag */
             type?: string;
@@ -2020,7 +2152,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /media/0188df387ce870ae952d7318310b0ec4/mediaAiTag
+             * @example /media/0188f8334a3670679577cca713097429/mediaAiTag
              */
             related?: string;
           };
@@ -2033,12 +2165,20 @@ export type components = {
       /** Runtime field, cannot be used as part of the criteria. */
       hasFile?: boolean;
       id?: string;
-      metaData?: Record<string, never>;
+      metaData?: GenericRecord;
       mimeType?: string;
       private?: boolean;
       thumbnails?: components["schemas"]["MediaThumbnail"];
       title?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        alt?: string;
+        fileExtension?: string;
+        fileName?: string;
+        mimeType?: string;
+        title?: string;
+        uploadedAt?: string;
+        url?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       /** Format: date-time */
@@ -2093,7 +2233,7 @@ export type components = {
     MediaThumbnail: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       /** Format: int64 */
       height: number;
       id?: string;
@@ -2109,7 +2249,7 @@ export type components = {
     MediaThumbnailSize: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       /** Format: int64 */
       height: number;
       id?: string;
@@ -2119,9 +2259,7 @@ export type components = {
       width: number;
     };
     /** Non-standard meta-information that can not be represented as an attribute or relationship. */
-    meta: {
-      [key: string]: unknown;
-    };
+    meta: GenericRecord;
     NavigationRouteResponse: components["schemas"]["Category"][];
     /** Added since version: 6.0.0.0 */
     NewsletterRecipient: {
@@ -2201,14 +2339,14 @@ export type components = {
       currencyFactor: number;
       currencyId: string;
       customerComment?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deepLinkCode?: string;
       deliveries?: components["schemas"]["OrderDelivery"];
       documents?: components["schemas"]["Document"];
       extensions?: {
         returns?: {
           data?: {
-            /** @example 0188df387ceb73d68fdb6c6c98c34f6e */
+            /** @example 0188f8334a3971cabdd5f601ba4bcdc4 */
             id?: string;
             /** @example order_return */
             type?: string;
@@ -2216,7 +2354,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /order/0188df387cea7171a2f428357afa1c65/returns
+             * @example /order/0188f8334a387386ab9b000ef2e2f216/returns
              */
             related?: string;
           };
@@ -2234,21 +2372,21 @@ export type components = {
       /** Format: float */
       positionPrice?: number;
       price?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         /** Format: float */
         netPrice: number;
         /** Format: float */
         positionPrice: number;
         /** Format: float */
         rawTotal: number;
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         taxStatus: string;
         /** Format: float */
         totalPrice: number;
       };
       salesChannelId: string;
       shippingCosts?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2259,12 +2397,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2293,7 +2431,7 @@ export type components = {
       countryStateId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       department?: string;
       firstName: string;
       id?: string;
@@ -2314,7 +2452,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customerNumber?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       email: string;
       firstName: string;
       id?: string;
@@ -2331,13 +2469,13 @@ export type components = {
     OrderDelivery: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       orderId: string;
       orderVersionId?: string;
       positions?: components["schemas"]["OrderDeliveryPosition"];
       shippingCosts?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2348,12 +2486,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2379,14 +2517,14 @@ export type components = {
     OrderDeliveryPosition: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       orderDeliveryId: string;
       orderDeliveryVersionId?: string;
       orderLineItemId: string;
       orderLineItemVersionId?: string;
       price?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2397,12 +2535,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2425,13 +2563,13 @@ export type components = {
       coverId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       downloads?: components["schemas"]["OrderLineItemDownload"];
       extensions?: {
         returns?: {
           data?: {
-            /** @example 0188df387cec7102ab2af1d2fff3b876 */
+            /** @example 0188f8334a3b72a794436c60aa753810 */
             id?: string;
             /** @example order_return_line_item */
             type?: string;
@@ -2439,14 +2577,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /order-line-item/0188df387cec7102ab2af1d2fc59b683/returns
+             * @example /order-line-item/0188f8334a3b72a794436c60a7f605e7/returns
              */
             related?: string;
           };
         };
         state?: {
           data?: {
-            /** @example 0188df387cec7102ab2af1d3005152bd */
+            /** @example 0188f8334a3b72a794436c60aad25086 */
             id?: string;
             /** @example state_machine_state */
             type?: string;
@@ -2454,7 +2592,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /order-line-item/0188df387cec7102ab2af1d2fc59b683/state
+             * @example /order-line-item/0188f8334a3b72a794436c60a7f605e7/state
              */
             related?: string;
           };
@@ -2470,10 +2608,10 @@ export type components = {
       parent?: components["schemas"]["OrderLineItem"];
       parentId?: string;
       parentVersionId?: string;
-      payload?: Record<string, never>;
+      payload?: GenericRecord;
       /** Format: int64 */
       position: number;
-      priceDefinition?: Record<string, never>;
+      priceDefinition?: GenericRecord;
       productId?: string;
       productVersionId?: string;
       /** Format: int64 */
@@ -2496,7 +2634,7 @@ export type components = {
       accessGranted: boolean;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       media?: components["schemas"]["Media"];
       mediaId: string;
@@ -2531,14 +2669,14 @@ export type components = {
       orderId: string;
       orderVersionId?: string;
       price?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         /** Format: float */
         netPrice: number;
         /** Format: float */
         positionPrice: number;
         /** Format: float */
         rawTotal: number;
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         taxStatus: string;
         /** Format: float */
         totalPrice: number;
@@ -2547,7 +2685,7 @@ export type components = {
       requestedAt: string;
       returnNumber: string;
       shippingCosts?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2558,12 +2696,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2580,7 +2718,7 @@ export type components = {
     OrderReturnLineItem: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       orderLineItemId: string;
       orderLineItemVersionId?: string;
@@ -2607,16 +2745,17 @@ export type components = {
       createdAt: string;
       id?: string;
       reasonKey: string;
-      translated?: Record<string, never>;
+      translated?: {
+        content?: string;
+        reasonKey?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
     OrderRouteResponse: {
       orders?: Record<string, never>;
       /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
-      paymentChangeable?: {
-        [key: string]: boolean | undefined;
-      };
+      paymentChangeable?: GenericRecord;
     };
     /** Added since version: 6.0.0.0 */
     OrderTag: {
@@ -2630,7 +2769,7 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     OrderTransaction: {
       amount: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2641,12 +2780,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2655,7 +2794,7 @@ export type components = {
       captures?: components["schemas"]["OrderTransactionCapture"];
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       orderId: string;
       orderVersionId?: string;
@@ -2670,7 +2809,7 @@ export type components = {
     /** Added since version: 6.4.12.0 */
     OrderTransactionCapture: {
       amount: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2681,12 +2820,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2694,7 +2833,7 @@ export type components = {
       };
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       externalReference?: string;
       id?: string;
       orderTransactionId: string;
@@ -2709,7 +2848,7 @@ export type components = {
     /** Added since version: 6.4.12.0 */
     OrderTransactionCaptureRefund: {
       amount: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2720,12 +2859,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2734,7 +2873,7 @@ export type components = {
       captureId: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       externalReference?: string;
       id?: string;
       positions?: components["schemas"]["OrderTransactionCaptureRefundPosition"];
@@ -2748,7 +2887,7 @@ export type components = {
     /** Added since version: 6.4.12.0 */
     OrderTransactionCaptureRefundPosition: {
       amount: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2759,12 +2898,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2772,7 +2911,7 @@ export type components = {
       };
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       externalReference?: string;
       id?: string;
       orderLineItem?: components["schemas"]["OrderLineItem"];
@@ -2824,7 +2963,7 @@ export type components = {
       asynchronous?: boolean;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       distinguishableName?: string;
       id?: string;
@@ -2841,7 +2980,13 @@ export type components = {
       shortName?: string;
       /** Runtime field, cannot be used as part of the criteria. */
       synchronous?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        distinguishableName?: string;
+        mediaId?: string;
+        name?: string;
+        shortName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -2853,7 +2998,7 @@ export type components = {
       asynchronous?: boolean;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       distinguishableName?: string;
       id?: string;
@@ -2868,7 +3013,7 @@ export type components = {
       relationships?: {
         media?: {
           data?: {
-            /** @example 0188df387cef72bf9b1a6f123c73700a */
+            /** @example 0188f8334a3e72eaac34aa0e8fdba60c */
             id?: string;
             /** @example media */
             type?: string;
@@ -2876,7 +3021,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /payment-method/0188df387cef72bf9b1a6f123c3ea7b5/media
+             * @example /payment-method/0188f8334a3e72eaac34aa0e8f0d11e9/media
              */
             related?: string;
           };
@@ -2886,7 +3031,13 @@ export type components = {
       shortName?: string;
       /** Runtime field, cannot be used as part of the criteria. */
       synchronous?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        distinguishableName?: string;
+        mediaId?: string;
+        name?: string;
+        shortName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -2905,13 +3056,13 @@ export type components = {
       available?: boolean;
       /** Format: int64 */
       availableStock?: number;
-      calculatedCheapestPrice?: Record<string, never>;
+      calculatedCheapestPrice?: GenericRecord;
       /**
        * Format: int64
        * Runtime field, cannot be used as part of the criteria.
        */
       calculatedMaxPurchase?: number;
-      calculatedPrice?: Record<string, never>;
+      calculatedPrice?: GenericRecord;
       calculatedPrices?: unknown[];
       canonicalProduct?: components["schemas"]["Product"];
       canonicalProductId?: string;
@@ -2931,7 +3082,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       crossSellings?: components["schemas"]["ProductCrossSelling"];
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deliveryTime?: components["schemas"]["DeliveryTime"];
       deliveryTimeId?: string;
       description?: string;
@@ -2941,7 +3092,7 @@ export type components = {
       extensions?: {
         reviewSummaries?: {
           data?: {
-            /** @example 0188df387cf071748acf5c3910a68b3d */
+            /** @example 0188f8334a407238b554caed891d5bf9 */
             id?: string;
             /** @example product_review_summary */
             type?: string;
@@ -2949,14 +3100,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/reviewSummaries
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/reviewSummaries
              */
             related?: string;
           };
         };
         swagCustomizedProductsTemplate?: {
           data?: {
-            /** @example 0188df387cf172fca46d3f24e71f4f0b */
+            /** @example 0188f8334a407238b554caed8958c5e7 */
             id?: string;
             /** @example swag_customized_products_template */
             type?: string;
@@ -2964,7 +3115,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/swagCustomizedProductsTemplate
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/swagCustomizedProductsTemplate
              */
             related?: string;
           };
@@ -3022,7 +3173,7 @@ export type components = {
       seoCategory?: components["schemas"]["Category"];
       seoUrls?: components["schemas"]["SeoUrl"];
       shippingFree?: boolean;
-      sortedProperties?: Record<string, never>;
+      sortedProperties?: GenericRecord;
       states?: readonly string[];
       /** Format: int64 */
       stock: number;
@@ -3030,7 +3181,33 @@ export type components = {
       streams?: components["schemas"]["ProductStream"];
       tax?: components["schemas"]["Tax"];
       taxId: string;
-      translated?: Record<string, never>;
+      translated?: {
+        canonicalProductId?: string;
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        coverId?: string;
+        deliveryTimeId?: string;
+        description?: string;
+        displayGroup?: string;
+        ean?: string;
+        keywords?: string;
+        manufacturerId?: string;
+        manufacturerNumber?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        packUnit?: string;
+        packUnitPlural?: string;
+        parentId?: string;
+        parentVersionId?: string;
+        productManufacturerVersionId?: string;
+        productMediaVersionId?: string;
+        productNumber?: string;
+        releaseDate?: string;
+        taxId?: string;
+        unitId?: string;
+        versionId?: string;
+      };
       unit?: components["schemas"]["Unit"];
       unitId?: string;
       /** Format: date-time */
@@ -3045,7 +3222,7 @@ export type components = {
     ProductConfiguratorSetting: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
@@ -3072,7 +3249,12 @@ export type components = {
       position: number;
       sortBy?: string;
       sortDirection?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        sortBy?: string;
+        sortDirection?: string;
+        type?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -3095,7 +3277,7 @@ export type components = {
     ProductDownload: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       media?: components["schemas"]["Media"];
       mediaId: string;
@@ -3131,13 +3313,13 @@ export type components = {
       available?: boolean;
       /** Format: int64 */
       availableStock?: number;
-      calculatedCheapestPrice?: Record<string, never>;
+      calculatedCheapestPrice?: GenericRecord;
       /**
        * Format: int64
        * Runtime field, cannot be used as part of the criteria.
        */
       calculatedMaxPurchase?: number;
-      calculatedPrice?: Record<string, never>;
+      calculatedPrice?: GenericRecord;
       calculatedPrices?: unknown[];
       canonicalProductId?: string;
       categoryIds?: readonly string[];
@@ -3149,7 +3331,7 @@ export type components = {
       coverId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deliveryTimeId?: string;
       description?: string;
       displayGroup?: string;
@@ -3157,7 +3339,7 @@ export type components = {
       extensions?: {
         reviewSummaries?: {
           data?: {
-            /** @example 0188df387cf071748acf5c3910a68b3d */
+            /** @example 0188f8334a407238b554caed891d5bf9 */
             id?: string;
             /** @example product_review_summary */
             type?: string;
@@ -3165,14 +3347,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/reviewSummaries
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/reviewSummaries
              */
             related?: string;
           };
         };
         swagCustomizedProductsTemplate?: {
           data?: {
-            /** @example 0188df387cf172fca46d3f24e71f4f0b */
+            /** @example 0188f8334a407238b554caed8958c5e7 */
             id?: string;
             /** @example swag_customized_products_template */
             type?: string;
@@ -3180,7 +3362,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/swagCustomizedProductsTemplate
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/swagCustomizedProductsTemplate
              */
             related?: string;
           };
@@ -3225,7 +3407,7 @@ export type components = {
       relationships?: {
         canonicalProduct?: {
           data?: {
-            /** @example 0188df387cf071748acf5c3909fb9511 */
+            /** @example 0188f8334a407238b554caed828d5d76 */
             id?: string;
             /** @example product */
             type?: string;
@@ -3233,14 +3415,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/canonicalProduct
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/canonicalProduct
              */
             related?: string;
           };
         };
         categories?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390eb092c0 */
+            /** @example 0188f8334a407238b554caed86f22aeb */
             id?: string;
             /** @example category */
             type?: string;
@@ -3248,14 +3430,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/categories
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/categories
              */
             related?: string;
           };
         };
         categoriesRo?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390f8f0893 */
+            /** @example 0188f8334a407238b554caed87f3c986 */
             id?: string;
             /** @example category */
             type?: string;
@@ -3263,14 +3445,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/categoriesRo
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/categoriesRo
              */
             related?: string;
           };
         };
         children?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390762b7dc */
+            /** @example 0188f8334a3f7253b847b4936f987d95 */
             id?: string;
             /** @example product */
             type?: string;
@@ -3278,14 +3460,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/children
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/children
              */
             related?: string;
           };
         };
         cmsPage?: {
           data?: {
-            /** @example 0188df387cf071748acf5c3909ed0e59 */
+            /** @example 0188f8334a3f7253b847b49373864110 */
             id?: string;
             /** @example cms_page */
             type?: string;
@@ -3293,14 +3475,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/cmsPage
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/cmsPage
              */
             related?: string;
           };
         };
         configuratorSettings?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390c038832 */
+            /** @example 0188f8334a407238b554caed84e10090 */
             id?: string;
             /** @example product_configurator_setting */
             type?: string;
@@ -3308,14 +3490,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/configuratorSettings
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/configuratorSettings
              */
             related?: string;
           };
         };
         cover?: {
           data?: {
-            /** @example 0188df387cf071748acf5c3909ce04ee */
+            /** @example 0188f8334a3f7253b847b493729736ca */
             id?: string;
             /** @example product_media */
             type?: string;
@@ -3323,14 +3505,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/cover
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/cover
              */
             related?: string;
           };
         };
         crossSellings?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390b28e015 */
+            /** @example 0188f8334a407238b554caed83f60d79 */
             id?: string;
             /** @example product_cross_selling */
             type?: string;
@@ -3338,14 +3520,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/crossSellings
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/crossSellings
              */
             related?: string;
           };
         };
         deliveryTime?: {
           data?: {
-            /** @example 0188df387cf071748acf5c3908244299 */
+            /** @example 0188f8334a3f7253b847b493701a96ea */
             id?: string;
             /** @example delivery_time */
             type?: string;
@@ -3353,14 +3535,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/deliveryTime
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/deliveryTime
              */
             related?: string;
           };
         };
         downloads?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390639e29d */
+            /** @example 0188f8334a3f7253b847b4936f08f801 */
             id?: string;
             /** @example product_download */
             type?: string;
@@ -3368,14 +3550,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/downloads
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/downloads
              */
             related?: string;
           };
         };
         mainCategories?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390db294f8 */
+            /** @example 0188f8334a407238b554caed8593aecf */
             id?: string;
             /** @example main_category */
             type?: string;
@@ -3383,14 +3565,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/mainCategories
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/mainCategories
              */
             related?: string;
           };
         };
         manufacturer?: {
           data?: {
-            /** @example 0188df387cf071748acf5c39090b27f7 */
+            /** @example 0188f8334a3f7253b847b493712fbfc9 */
             id?: string;
             /** @example product_manufacturer */
             type?: string;
@@ -3398,14 +3580,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/manufacturer
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/manufacturer
              */
             related?: string;
           };
         };
         media?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390af4b85b */
+            /** @example 0188f8334a407238b554caed832b9d78 */
             id?: string;
             /** @example product_media */
             type?: string;
@@ -3413,14 +3595,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/media
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/media
              */
             related?: string;
           };
         };
         options?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390e293a5e */
+            /** @example 0188f8334a407238b554caed86a31928 */
             id?: string;
             /** @example property_group_option */
             type?: string;
@@ -3428,14 +3610,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/options
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/options
              */
             related?: string;
           };
         };
         parent?: {
           data?: {
-            /** @example 0188df387cf071748acf5c3907386fa7 */
+            /** @example 0188f8334a3f7253b847b4936f97cdbd */
             id?: string;
             /** @example product */
             type?: string;
@@ -3443,14 +3625,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/parent
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/parent
              */
             related?: string;
           };
         };
         productReviews?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390cbcac49 */
+            /** @example 0188f8334a407238b554caed84f7846e */
             id?: string;
             /** @example product_review */
             type?: string;
@@ -3458,14 +3640,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/productReviews
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/productReviews
              */
             related?: string;
           };
         };
         properties?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390e5ab706 */
+            /** @example 0188f8334a407238b554caed86e4ee70 */
             id?: string;
             /** @example property_group_option */
             type?: string;
@@ -3473,14 +3655,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/properties
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/properties
              */
             related?: string;
           };
         };
         seoCategory?: {
           data?: {
-            /** @example 0188df387cf071748acf5c39107447b3 */
+            /** @example 0188f8334a407238b554caed886084b2 */
             id?: string;
             /** @example category */
             type?: string;
@@ -3488,14 +3670,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/seoCategory
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/seoCategory
              */
             related?: string;
           };
         };
         seoUrls?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390e18b5f7 */
+            /** @example 0188f8334a407238b554caed85b35097 */
             id?: string;
             /** @example seo_url */
             type?: string;
@@ -3503,14 +3685,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/seoUrls
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/seoUrls
              */
             related?: string;
           };
         };
         streams?: {
           data?: {
-            /** @example 0188df387cf071748acf5c390f39c138 */
+            /** @example 0188f8334a407238b554caed877212b4 */
             id?: string;
             /** @example product_stream */
             type?: string;
@@ -3518,14 +3700,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/streams
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/streams
              */
             related?: string;
           };
         };
         tax?: {
           data?: {
-            /** @example 0188df387cf071748acf5c39089a2fe8 */
+            /** @example 0188f8334a3f7253b847b49370fb0a4b */
             id?: string;
             /** @example tax */
             type?: string;
@@ -3533,14 +3715,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/tax
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/tax
              */
             related?: string;
           };
         };
         unit?: {
           data?: {
-            /** @example 0188df387cf071748acf5c3909311a6f */
+            /** @example 0188f8334a3f7253b847b493720b964c */
             id?: string;
             /** @example unit */
             type?: string;
@@ -3548,7 +3730,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/0188df387cef72bf9b1a6f123de9907b/unit
+             * @example /product/0188f8334a3e72eaac34aa0e9089a538/unit
              */
             related?: string;
           };
@@ -3561,13 +3743,39 @@ export type components = {
       /** Format: int64 */
       sales?: number;
       shippingFree?: boolean;
-      sortedProperties?: Record<string, never>;
+      sortedProperties?: GenericRecord;
       states?: readonly string[];
       /** Format: int64 */
       stock: number;
       streamIds?: readonly string[];
       taxId: string;
-      translated?: Record<string, never>;
+      translated?: {
+        canonicalProductId?: string;
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        coverId?: string;
+        deliveryTimeId?: string;
+        description?: string;
+        displayGroup?: string;
+        ean?: string;
+        keywords?: string;
+        manufacturerId?: string;
+        manufacturerNumber?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        packUnit?: string;
+        packUnitPlural?: string;
+        parentId?: string;
+        parentVersionId?: string;
+        productManufacturerVersionId?: string;
+        productMediaVersionId?: string;
+        productNumber?: string;
+        releaseDate?: string;
+        taxId?: string;
+        unitId?: string;
+        versionId?: string;
+      };
       unitId?: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -3653,16 +3861,16 @@ export type components = {
     };
     ProductListingResult: components["schemas"]["EntitySearchResult"] & {
       /** Contains the available sorting. These can be used to show a sorting select-box in the product listing. */
-      availableSortings?: Record<string, never>[];
+      availableSortings?: GenericRecord[];
       /** Contains the state of the filters. These can be used to create listing filters. */
       currentFilters?: {
-        manufacturer?: Record<string, never>[];
+        manufacturer?: GenericRecord[];
         navigationId?: string;
         price?: {
           max?: number;
           min?: number;
         };
-        properties?: Record<string, never>[];
+        properties?: GenericRecord[];
         rating?: number;
         "shipping-free"?: boolean;
       };
@@ -3673,14 +3881,20 @@ export type components = {
     ProductManufacturer: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       id?: string;
       link?: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        link?: string;
+        mediaId?: string;
+        name?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
@@ -3689,7 +3903,7 @@ export type components = {
     ProductMedia: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       media?: components["schemas"]["Media"];
       mediaId: string;
@@ -3715,7 +3929,7 @@ export type components = {
       content: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       languageId: string;
       /** Format: float */
@@ -3738,7 +3952,11 @@ export type components = {
       salesChannel?: components["schemas"]["SalesChannel"];
       salesChannelId: string;
       summary?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        productId?: string;
+        salesChannelId?: string;
+        summary?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       visible?: boolean;
@@ -3776,7 +3994,10 @@ export type components = {
       label: string;
       /** Format: int64 */
       priority: number;
-      translated?: Record<string, never>;
+      translated?: {
+        key?: string;
+        label?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -3784,11 +4005,14 @@ export type components = {
     ProductStream: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       id?: string;
       name: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        name?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -3820,7 +4044,7 @@ export type components = {
     Promotion: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       translated?: Record<string, never>;
       /** Format: date-time */
@@ -3870,7 +4094,7 @@ export type components = {
     PropertyGroup: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       displayType: string;
       filterable?: boolean;
@@ -3880,7 +4104,12 @@ export type components = {
       /** Format: int64 */
       position?: number;
       sortingType: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayType?: string;
+        name?: string;
+        sortingType?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       visibleOnProductDetailPage?: boolean;
@@ -3890,7 +4119,7 @@ export type components = {
       colorHexCode?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       group?: components["schemas"]["PropertyGroup"];
       groupId: string;
       id?: string;
@@ -3899,14 +4128,19 @@ export type components = {
       name: string;
       /** Format: int64 */
       position?: number;
-      translated?: Record<string, never>;
+      translated?: {
+        colorHexCode?: string;
+        groupId?: string;
+        mediaId?: string;
+        name?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
     /** A resource object **MAY** contain references to other resource objects ("relationships"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object. */
     relationshipLinks: {
       related?: components["schemas"]["link"];
-      self?: Record<string, never>[] & components["schemas"]["link"];
+      self?: GenericRecord[] & components["schemas"]["link"];
       [key: string]: unknown;
     };
     /** Members of the relationships object ("relationships") represent references from the resource object in which it's defined to other resource objects. */
@@ -3927,12 +4161,12 @@ export type components = {
     Rule: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       extensions?: {
         warehouseGroup?: {
           data?: {
-            /** @example 0188df387cf57326b759f8e2790494d9 */
+            /** @example 0188f8334a4672a58b03a3d55bfc502f */
             id?: string;
             /** @example warehouse_group */
             type?: string;
@@ -3940,7 +4174,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /rule/0188df387cf57326b759f8e2789b45fa/warehouseGroup
+             * @example /rule/0188f8334a4672a58b03a3d55bb70070/warehouseGroup
              */
             related?: string;
           };
@@ -3994,7 +4228,7 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     SalesChannel: {
       active?: boolean;
-      configuration?: Record<string, never>;
+      configuration?: GenericRecord;
       country?: components["schemas"]["Country"];
       countryId: string;
       /** Format: date-time */
@@ -4002,7 +4236,7 @@ export type components = {
       currency?: components["schemas"]["Currency"];
       currencyId: string;
       customerGroupId: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       domains?: components["schemas"]["SalesChannelDomain"];
       footerCategory?: components["schemas"]["Category"];
       footerCategoryId?: string;
@@ -4030,7 +4264,25 @@ export type components = {
       shippingMethodId: string;
       shortName?: string;
       taxCalculationType?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        countryId?: string;
+        currencyId?: string;
+        customerGroupId?: string;
+        footerCategoryId?: string;
+        footerCategoryVersionId?: string;
+        hreflangDefaultDomainId?: string;
+        languageId?: string;
+        mailHeaderFooterId?: string;
+        name?: string;
+        navigationCategoryId?: string;
+        navigationCategoryVersionId?: string;
+        paymentMethodId?: string;
+        serviceCategoryId?: string;
+        serviceCategoryVersionId?: string;
+        shippingMethodId?: string;
+        shortName?: string;
+        taxCalculationType?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4185,7 +4437,7 @@ export type components = {
       createdAt: string;
       currency?: components["schemas"]["Currency"];
       currencyId: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       hreflangUseOnlyLocale?: boolean;
       id?: string;
       language?: components["schemas"]["Language"];
@@ -4210,12 +4462,16 @@ export type components = {
     Salutation: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       displayName: string;
       id?: string;
       letterName: string;
       salutationKey: string;
-      translated?: Record<string, never>;
+      translated?: {
+        displayName?: string;
+        letterName?: string;
+        salutationKey?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4223,12 +4479,16 @@ export type components = {
     SalutationJsonApi: components["schemas"]["resource"] & {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       displayName: string;
       id?: string;
       letterName: string;
       salutationKey: string;
-      translated?: Record<string, never>;
+      translated?: {
+        displayName?: string;
+        letterName?: string;
+        salutationKey?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4252,7 +4512,7 @@ export type components = {
     SeoUrl: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       foreignKey: string;
       id?: string;
       isCanonical?: boolean;
@@ -4274,7 +4534,7 @@ export type components = {
     SeoUrlJsonApi: components["schemas"]["resource"] & {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       foreignKey: string;
       id?: string;
       isCanonical?: boolean;
@@ -4296,7 +4556,7 @@ export type components = {
     SeoUrlTemplate: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       isValid?: boolean;
       salesChannelId?: string;
@@ -4309,7 +4569,7 @@ export type components = {
       availabilityRule?: components["schemas"]["Rule"];
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deliveryTime?: components["schemas"]["DeliveryTime"];
       deliveryTimeId: string;
       description?: string;
@@ -4324,7 +4584,14 @@ export type components = {
       tax?: components["schemas"]["Tax"];
       taxType: string;
       trackingUrl?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        deliveryTimeId?: string;
+        description?: string;
+        mediaId?: string;
+        name?: string;
+        taxType?: string;
+        trackingUrl?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4333,7 +4600,7 @@ export type components = {
       active?: boolean;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deliveryTimeId: string;
       description?: string;
       id?: string;
@@ -4344,7 +4611,7 @@ export type components = {
       relationships?: {
         availabilityRule?: {
           data?: {
-            /** @example 0188df387cf7720b8e76851a74af1f05 */
+            /** @example 0188f8334a4973b68b11e7ce4ed9f9ee */
             id?: string;
             /** @example rule */
             type?: string;
@@ -4352,14 +4619,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/0188df387cf7720b8e76851a735aaa1a/availabilityRule
+             * @example /shipping-method/0188f8334a4973b68b11e7ce4e6ade1e/availabilityRule
              */
             related?: string;
           };
         };
         deliveryTime?: {
           data?: {
-            /** @example 0188df387cf7720b8e76851a74118aa4 */
+            /** @example 0188f8334a4973b68b11e7ce4e8bf6ea */
             id?: string;
             /** @example delivery_time */
             type?: string;
@@ -4367,14 +4634,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/0188df387cf7720b8e76851a735aaa1a/deliveryTime
+             * @example /shipping-method/0188f8334a4973b68b11e7ce4e6ade1e/deliveryTime
              */
             related?: string;
           };
         };
         media?: {
           data?: {
-            /** @example 0188df387cf7720b8e76851a7591274c */
+            /** @example 0188f8334a4973b68b11e7ce4f745547 */
             id?: string;
             /** @example media */
             type?: string;
@@ -4382,14 +4649,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/0188df387cf7720b8e76851a735aaa1a/media
+             * @example /shipping-method/0188f8334a4973b68b11e7ce4e6ade1e/media
              */
             related?: string;
           };
         };
         prices?: {
           data?: {
-            /** @example 0188df387cf7720b8e76851a7536c99b */
+            /** @example 0188f8334a4973b68b11e7ce4f520b9d */
             id?: string;
             /** @example shipping_method_price */
             type?: string;
@@ -4397,14 +4664,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/0188df387cf7720b8e76851a735aaa1a/prices
+             * @example /shipping-method/0188f8334a4973b68b11e7ce4e6ade1e/prices
              */
             related?: string;
           };
         };
         tags?: {
           data?: {
-            /** @example 0188df387cf7720b8e76851a764335e9 */
+            /** @example 0188f8334a4973b68b11e7ce500bf752 */
             id?: string;
             /** @example tag */
             type?: string;
@@ -4412,14 +4679,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/0188df387cf7720b8e76851a735aaa1a/tags
+             * @example /shipping-method/0188f8334a4973b68b11e7ce4e6ade1e/tags
              */
             related?: string;
           };
         };
         tax?: {
           data?: {
-            /** @example 0188df387cf7720b8e76851a765a95e8 */
+            /** @example 0188f8334a4973b68b11e7ce506a4c6d */
             id?: string;
             /** @example tax */
             type?: string;
@@ -4427,7 +4694,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/0188df387cf7720b8e76851a735aaa1a/tax
+             * @example /shipping-method/0188f8334a4973b68b11e7ce4e6ade1e/tax
              */
             related?: string;
           };
@@ -4435,7 +4702,14 @@ export type components = {
       };
       taxType: string;
       trackingUrl?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        deliveryTimeId?: string;
+        description?: string;
+        mediaId?: string;
+        name?: string;
+        taxType?: string;
+        trackingUrl?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4565,8 +4839,8 @@ export type components = {
       calculationRuleId?: string;
       /** Format: date-time */
       createdAt: string;
-      currencyPrice?: Record<string, never>;
-      customFields?: Record<string, never>;
+      currencyPrice?: GenericRecord;
+      customFields?: GenericRecord;
       id?: string;
       /** Format: float */
       quantityEnd?: number;
@@ -4586,7 +4860,7 @@ export type components = {
     Snippet: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       setId: string;
       translationKey: string;
@@ -4598,7 +4872,7 @@ export type components = {
     SnippetSet: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       iso: string;
       name: string;
@@ -4631,11 +4905,14 @@ export type components = {
     StateMachineState: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       technicalName: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4726,7 +5003,11 @@ export type components = {
       createdAt: string;
       displayName?: string;
       id?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        cmsSectionId?: string;
+        cmsSectionVersionId?: string;
+        displayName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4755,7 +5036,7 @@ export type components = {
       confirmInput?: boolean;
       /** Format: date-time */
       createdAt: string;
-      decisionTree?: Record<string, never>;
+      decisionTree?: GenericRecord;
       description?: string;
       displayName: string;
       exclusions?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"];
@@ -4768,14 +5049,21 @@ export type components = {
       parentVersionId?: string;
       products?: components["schemas"]["Product"];
       stepByStep?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayName?: string;
+        internalName?: string;
+        mediaId?: string;
+        parentVersionId?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
     };
     /** Added since version: */
     SwagCustomizedProductsTemplateConfiguration: {
-      configuration: Record<string, never>;
+      configuration: GenericRecord;
       /** Format: date-time */
       createdAt: string;
       hash: string;
@@ -4790,7 +5078,7 @@ export type components = {
     };
     /** Added since version: */
     SwagCustomizedProductsTemplateConfigurationJsonApi: components["schemas"]["resource"] & {
-      configuration: Record<string, never>;
+      configuration: GenericRecord;
       /** Format: date-time */
       createdAt: string;
       hash: string;
@@ -4798,7 +5086,7 @@ export type components = {
       relationships?: {
         template?: {
           data?: {
-            /** @example 0188df387cfa715fb0596566ecf6df9d */
+            /** @example 0188f8334a4b73b8a052702133a9a162 */
             id?: string;
             /** @example swag_customized_products_template */
             type?: string;
@@ -4806,14 +5094,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-configuration/0188df387cfa715fb0596566ec215cf4/template
+             * @example /swag-customized-products-template-configuration/0188f8334a4b73b8a052702132e04837/template
              */
             related?: string;
           };
         };
         templateConfigurationShares?: {
           data?: {
-            /** @example 0188df387cfa715fb0596566ed3b336d */
+            /** @example 0188f8334a4b73b8a05270213400704d */
             id?: string;
             /** @example swag_customized_products_template_configuration_share */
             type?: string;
@@ -4821,7 +5109,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-configuration/0188df387cfa715fb0596566ec215cf4/templateConfigurationShares
+             * @example /swag-customized-products-template-configuration/0188f8334a4b73b8a052702132e04837/templateConfigurationShares
              */
             related?: string;
           };
@@ -4882,7 +5170,11 @@ export type components = {
       operator: string;
       templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"];
       templateOptionType: string;
-      translated?: Record<string, never>;
+      translated?: {
+        label?: string;
+        operator?: string;
+        templateOptionType?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4892,7 +5184,7 @@ export type components = {
       confirmInput?: boolean;
       /** Format: date-time */
       createdAt: string;
-      decisionTree?: Record<string, never>;
+      decisionTree?: GenericRecord;
       description?: string;
       displayName: string;
       id?: string;
@@ -4903,7 +5195,7 @@ export type components = {
       relationships?: {
         configurations?: {
           data?: {
-            /** @example 0188df387cfa715fb0596566eb664c39 */
+            /** @example 0188f8334a4b73b8a052702132b1488f */
             id?: string;
             /** @example swag_customized_products_template_configuration */
             type?: string;
@@ -4911,14 +5203,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/0188df387cf97390bd272354a597939a/configurations
+             * @example /swag-customized-products-template/0188f8334a4b73b8a052702130b55d12/configurations
              */
             related?: string;
           };
         };
         exclusions?: {
           data?: {
-            /** @example 0188df387cfa715fb0596566ea8d5e10 */
+            /** @example 0188f8334a4b73b8a052702132a974ef */
             id?: string;
             /** @example swag_customized_products_template_exclusion */
             type?: string;
@@ -4926,14 +5218,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/0188df387cf97390bd272354a597939a/exclusions
+             * @example /swag-customized-products-template/0188f8334a4b73b8a052702130b55d12/exclusions
              */
             related?: string;
           };
         };
         media?: {
           data?: {
-            /** @example 0188df387cf97390bd272354a5a363b4 */
+            /** @example 0188f8334a4b73b8a052702130f74665 */
             id?: string;
             /** @example media */
             type?: string;
@@ -4941,14 +5233,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/0188df387cf97390bd272354a597939a/media
+             * @example /swag-customized-products-template/0188f8334a4b73b8a052702130b55d12/media
              */
             related?: string;
           };
         };
         options?: {
           data?: {
-            /** @example 0188df387cf97390bd272354a61753bb */
+            /** @example 0188f8334a4b73b8a052702131e12911 */
             id?: string;
             /** @example swag_customized_products_template_option */
             type?: string;
@@ -4956,14 +5248,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/0188df387cf97390bd272354a597939a/options
+             * @example /swag-customized-products-template/0188f8334a4b73b8a052702130b55d12/options
              */
             related?: string;
           };
         };
         products?: {
           data?: {
-            /** @example 0188df387cfa715fb0596566e9e9400a */
+            /** @example 0188f8334a4b73b8a052702131ef8519 */
             id?: string;
             /** @example product */
             type?: string;
@@ -4971,14 +5263,21 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/0188df387cf97390bd272354a597939a/products
+             * @example /swag-customized-products-template/0188f8334a4b73b8a052702130b55d12/products
              */
             related?: string;
           };
         };
       };
       stepByStep?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayName?: string;
+        internalName?: string;
+        mediaId?: string;
+        parentVersionId?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
@@ -4986,7 +5285,7 @@ export type components = {
     /** Added since version: */
     SwagCustomizedProductsTemplateOption: {
       advancedSurcharge?: boolean;
-      calculatedPrice?: Record<string, never>;
+      calculatedPrice?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
       description?: string;
@@ -4999,7 +5298,7 @@ export type components = {
       placeholder?: string;
       /** Format: int64 */
       position?: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionPrice"];
       relativeSurcharge?: boolean;
       required?: boolean;
@@ -5009,9 +5308,18 @@ export type components = {
       templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"];
       templateId: string;
       templateVersionId?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayName?: string;
+        itemNumber?: string;
+        placeholder?: string;
+        taxId?: string;
+        templateId?: string;
+        templateVersionId?: string;
+        type?: string;
+      };
       type: string;
-      typeProperties?: Record<string, never>;
+      typeProperties?: GenericRecord;
       /** Format: date-time */
       updatedAt?: string;
       values?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"];
@@ -5019,7 +5327,7 @@ export type components = {
     /** Added since version: */
     SwagCustomizedProductsTemplateOptionJsonApi: components["schemas"]["resource"] & {
       advancedSurcharge?: boolean;
-      calculatedPrice?: Record<string, never>;
+      calculatedPrice?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
       description?: string;
@@ -5032,11 +5340,11 @@ export type components = {
       placeholder?: string;
       /** Format: int64 */
       position?: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       relationships?: {
         prices?: {
           data?: {
-            /** @example 0188df387cfb70c588e8f43592b71ab1 */
+            /** @example 0188f8334a4c7391b3c2465a968e2341 */
             id?: string;
             /** @example swag_customized_products_template_option_price */
             type?: string;
@@ -5044,14 +5352,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/0188df387cfb70c588e8f43591c50b17/prices
+             * @example /swag-customized-products-template-option/0188f8334a4c7391b3c2465a9651c8e9/prices
              */
             related?: string;
           };
         };
         tax?: {
           data?: {
-            /** @example 0188df387cfb70c588e8f43594be4e70 */
+            /** @example 0188f8334a4d701badec9fc5347f84d1 */
             id?: string;
             /** @example tax */
             type?: string;
@@ -5059,14 +5367,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/0188df387cfb70c588e8f43591c50b17/tax
+             * @example /swag-customized-products-template-option/0188f8334a4c7391b3c2465a9651c8e9/tax
              */
             related?: string;
           };
         };
         template?: {
           data?: {
-            /** @example 0188df387cfb70c588e8f4359408c9ba */
+            /** @example 0188f8334a4d701badec9fc533c5f8dc */
             id?: string;
             /** @example swag_customized_products_template */
             type?: string;
@@ -5074,14 +5382,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/0188df387cfb70c588e8f43591c50b17/template
+             * @example /swag-customized-products-template-option/0188f8334a4c7391b3c2465a9651c8e9/template
              */
             related?: string;
           };
         };
         templateExclusionConditions?: {
           data?: {
-            /** @example 0188df387cfb70c588e8f43593533f67 */
+            /** @example 0188f8334a4d701badec9fc5334d96ab */
             id?: string;
             /** @example swag_customized_products_template_exclusion_condition */
             type?: string;
@@ -5089,14 +5397,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/0188df387cfb70c588e8f43591c50b17/templateExclusionConditions
+             * @example /swag-customized-products-template-option/0188f8334a4c7391b3c2465a9651c8e9/templateExclusionConditions
              */
             related?: string;
           };
         };
         values?: {
           data?: {
-            /** @example 0188df387cfb70c588e8f43593530bdf */
+            /** @example 0188f8334a4d701badec9fc533327b23 */
             id?: string;
             /** @example swag_customized_products_template_option_value */
             type?: string;
@@ -5104,7 +5412,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/0188df387cfb70c588e8f43591c50b17/values
+             * @example /swag-customized-products-template-option/0188f8334a4c7391b3c2465a9651c8e9/values
              */
             related?: string;
           };
@@ -5115,9 +5423,18 @@ export type components = {
       taxId?: string;
       templateId: string;
       templateVersionId?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayName?: string;
+        itemNumber?: string;
+        placeholder?: string;
+        taxId?: string;
+        templateId?: string;
+        templateVersionId?: string;
+        type?: string;
+      };
       type: string;
-      typeProperties?: Record<string, never>;
+      typeProperties?: GenericRecord;
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -5128,7 +5445,7 @@ export type components = {
       id?: string;
       /** Format: float */
       percentageSurcharge?: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       rule?: components["schemas"]["Rule"];
       ruleId?: string;
       templateOption?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
@@ -5152,7 +5469,7 @@ export type components = {
       percentageSurcharge?: number;
       /** Format: int64 */
       position: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionValuePrice"];
       relativeSurcharge?: boolean;
       tax?: components["schemas"]["Tax"];
@@ -5161,10 +5478,17 @@ export type components = {
       templateOption?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
       templateOptionId: string;
       templateOptionVersionId?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        displayName?: string;
+        itemNumber?: string;
+        taxId?: string;
+        templateOptionId?: string;
+        templateOptionVersionId?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
-      value?: Record<string, never>;
+      value?: GenericRecord;
       versionId?: string;
     };
     /** Added since version: */
@@ -5181,11 +5505,11 @@ export type components = {
       percentageSurcharge?: number;
       /** Format: int64 */
       position: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       relationships?: {
         prices?: {
           data?: {
-            /** @example 0188df387cfb70c588e8f43598149103 */
+            /** @example 0188f8334a4d701badec9fc53843050a */
             id?: string;
             /** @example swag_customized_products_template_option_value_price */
             type?: string;
@@ -5193,14 +5517,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option-value/0188df387cfb70c588e8f435974bfc9c/prices
+             * @example /swag-customized-products-template-option-value/0188f8334a4d701badec9fc5375ebce7/prices
              */
             related?: string;
           };
         };
         tax?: {
           data?: {
-            /** @example 0188df387cfb70c588e8f435994dd4d2 */
+            /** @example 0188f8334a4d701badec9fc538b6a4b7 */
             id?: string;
             /** @example tax */
             type?: string;
@@ -5208,14 +5532,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option-value/0188df387cfb70c588e8f435974bfc9c/tax
+             * @example /swag-customized-products-template-option-value/0188f8334a4d701badec9fc5375ebce7/tax
              */
             related?: string;
           };
         };
         templateExclusionConditions?: {
           data?: {
-            /** @example 0188df387cfb70c588e8f4359a4a0528 */
+            /** @example 0188f8334a4d701badec9fc5390730a1 */
             id?: string;
             /** @example swag_customized_products_template_exclusion_condition */
             type?: string;
@@ -5223,14 +5547,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option-value/0188df387cfb70c588e8f435974bfc9c/templateExclusionConditions
+             * @example /swag-customized-products-template-option-value/0188f8334a4d701badec9fc5375ebce7/templateExclusionConditions
              */
             related?: string;
           };
         };
         templateOption?: {
           data?: {
-            /** @example 0188df387cfb70c588e8f43598ff8d98 */
+            /** @example 0188f8334a4d701badec9fc538670459 */
             id?: string;
             /** @example swag_customized_products_template_option */
             type?: string;
@@ -5238,7 +5562,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option-value/0188df387cfb70c588e8f435974bfc9c/templateOption
+             * @example /swag-customized-products-template-option-value/0188f8334a4d701badec9fc5375ebce7/templateOption
              */
             related?: string;
           };
@@ -5248,10 +5572,17 @@ export type components = {
       taxId?: string;
       templateOptionId: string;
       templateOptionVersionId?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        displayName?: string;
+        itemNumber?: string;
+        taxId?: string;
+        templateOptionId?: string;
+        templateOptionVersionId?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
-      value?: Record<string, never>;
+      value?: GenericRecord;
       versionId?: string;
     };
     /** Added since version: */
@@ -5261,7 +5592,7 @@ export type components = {
       id?: string;
       /** Format: float */
       percentageSurcharge?: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       rule?: components["schemas"]["Rule"];
       ruleId?: string;
       templateOptionValue?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"];
@@ -5423,7 +5754,7 @@ export type components = {
     SystemConfig: {
       configurationKey: string;
       configurationValue: {
-        _value?: Record<string, never>;
+        _value?: GenericRecord;
       };
       /** Format: date-time */
       createdAt: string;
@@ -5445,7 +5776,7 @@ export type components = {
     Tax: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       /**
@@ -5464,13 +5795,17 @@ export type components = {
       appId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       /** Format: int64 */
       priority: number;
       processUrl?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        appId?: string;
+        name?: string;
+        processUrl?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -5495,21 +5830,28 @@ export type components = {
     Theme: {
       active: boolean;
       author: string;
-      baseConfig?: Record<string, never>;
-      configValues?: Record<string, never>;
+      baseConfig?: GenericRecord;
+      configValues?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
-      helpTexts?: Record<string, never>;
+      helpTexts?: GenericRecord;
       id?: string;
-      labels?: Record<string, never>;
+      labels?: GenericRecord;
       media?: components["schemas"]["Media"];
       name: string;
       parentThemeId?: string;
       previewMediaId?: string;
       technicalName?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        author?: string;
+        description?: string;
+        name?: string;
+        parentThemeId?: string;
+        previewMediaId?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -5517,11 +5859,14 @@ export type components = {
     Unit: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       shortCode: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        shortCode?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -6166,7 +6511,7 @@ export type operations = {
    */
   readCategory: {
     parameters: {
-      query: {
+      query?: {
         /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
         slots?: string;
       };
@@ -6196,7 +6541,7 @@ export type operations = {
    */
   readCart: {
     parameters: {
-      query: {
+      query?: {
         /** The name of the new cart. This parameter will only be used when creating a new cart. */
         name?: string;
       };
@@ -6749,7 +7094,7 @@ export type operations = {
    */
   readNavigation: {
     parameters: {
-      header: {
+      header?: {
         /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
         "sw-include-seo-urls"?: boolean;
       };
@@ -6971,7 +7316,7 @@ export type operations = {
         content: {
           "application/json": {
             /** aggregation result */
-            aggregations?: Record<string, never>;
+            aggregations?: GenericRecord;
             elements?: components["schemas"]["PaymentMethod"][];
             /** Total amount */
             total?: number;
@@ -7281,7 +7626,7 @@ export type operations = {
    */
   readShippingMethod: {
     parameters: {
-      query: {
+      query?: {
         /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
         onlyAvailable?: boolean;
       };
@@ -7296,7 +7641,7 @@ export type operations = {
         content: {
           "application/json": {
             /** aggregation result */
-            aggregations?: Record<string, never>;
+            aggregations?: GenericRecord;
             elements?: components["schemas"]["ShippingMethod"][];
             /** Total amount */
             total?: number;

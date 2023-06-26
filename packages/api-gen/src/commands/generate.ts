@@ -73,7 +73,7 @@ export async function generate() {
       encoding: "utf-8",
     });
     let schemaForPatching = JSON.parse(schemaFile);
-    const allPatches = Object.keys(patches);
+    const allPatches = Object.keys(patches) as Array<keyof typeof patches>;
     const semverVersion = version.slice(2);
     const patchesToApply = allPatches.filter((patch) => {
       return semver.satisfies(semverVersion, patch);
@@ -107,18 +107,73 @@ export async function generate() {
       {
         version: +(config.OPENAPI_VERSION || 3),
         exportType: true,
-        pathParamsAsTypes: true,
+        // pathParamsAsTypes: true,
         // rawSchema: false,
         additionalProperties: false,
         alphabetize: true,
-        // transform(schemaObject, metadata): string {
-        // transform(schemaObject, metadata) {
-        // if ("format" in schemaObject && schemaObject.format === "date-time") {
-        //   return "Date";
-        // }
-        // console.log("transform", schemaObject);
-        // return "null";
-        // },
+        /**
+         * GenericRecord is used for types like associations
+         */
+        inject: `
+            type GenericRecord = never | {[key: string]: GenericRecord};
+            `,
+
+        transform(schemaObject) {
+          /**
+           * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
+           */
+          if (
+            "type" in schemaObject &&
+            "properties" in schemaObject &&
+            schemaObject.type === "object" &&
+            !!schemaObject?.properties?.translated
+          ) {
+            const notAllowedKeys = [
+              "id",
+              "createdAt",
+              "updatedAt",
+              "translated",
+            ];
+            const stringFields = Object.keys(schemaObject.properties).filter(
+              (key) => {
+                if (notAllowedKeys.includes(key)) return false;
+                const property = schemaObject.properties?.[key];
+                return (
+                  !!property && "type" in property && property.type === "string"
+                );
+              }
+            );
+
+            schemaObject.properties.translated = {
+              type: "object",
+              properties: stringFields.reduce((acc, key) => {
+                acc[key] = {
+                  type: "string",
+                };
+                return acc;
+              }, {} as Record<string, { type: "string" }>),
+            };
+          }
+
+          /**
+           * We're changing "object" declarations into "GenericRecord" to allow recursive types like `associations`
+           */
+          if (
+            // for object types
+            (schemaObject as { type: string }).type === "object" &&
+            // without properties, items, anyOf, allOf
+            !(schemaObject as { properties?: object }).properties &&
+            !(schemaObject as { items?: [] }).items &&
+            !(schemaObject as { anyOf?: [] }).anyOf &&
+            !(schemaObject as { allOf?: [] }).allOf
+          ) {
+            return "GenericRecord";
+          }
+          // transform(schemaObject, metadata) {
+          // if ("format" in schemaObject && schemaObject.format === "date-time") {
+          //   return "Date";
+          // }
+        },
       }
     );
 
@@ -176,7 +231,7 @@ export async function generate() {
     schema = schema.replace(/@description /g, "");
 
     schema = format(schema, {
-      semi: false,
+      // semi: false,
       parser: "typescript",
       // plugins: [tsParser],
     }).trim();

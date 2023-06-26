@@ -30,17 +30,18 @@
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "export NODE_ENV=development && unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
-    "test": "vitest run",
+    "test": "vitest run && pnpm run test:types",
+    "test:types": "vitest typecheck --run",
     "test:bench": "vitest bench",
     "test:watch": "vitest"
   },
   "devDependencies": {
     "@types/prettier": "^2.7.2",
-    "@vitest/coverage-c8": "^0.31.1",
+    "@vitest/coverage-c8": "^0.32.2",
     "eslint-config-shopware": "workspace:*",
     "prettier": "^2.8.8",
     "tsconfig": "workspace:*",
-    "vitest": "^0.31.1"
+    "vitest": "^0.32.2"
   },
   "dependencies": {
     "ofetch": "^1.0.1"
