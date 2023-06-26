@@ -7,7 +7,11 @@ function VueDisableInputsBeforeMount(): PluginOption {
     name: "vite-vue-disable-inputs-before-mount",
     enforce: "pre",
     transform(code, id) {
-      if (id.endsWith(".vue") && code.includes("<select")) {
+      if (
+        id.endsWith(".vue") &&
+        (code.includes("<select") ||
+          code.includes("<button" || code.includes("<input")))
+      ) {
         let component = code;
 
         const foundScriptBlocks =
@@ -28,13 +32,10 @@ function VueDisableInputsBeforeMount(): PluginOption {
           foundScriptBlock.replace(
             "</script>",
             `
-          const isDisabled = ref(typeof onMounted !=="undefined" ? true : false);
-          if(typeof onMounted !== "undefined") {
-            onMounted(() => {
-              isDisabled.value = false;
-
-            });
-          }
+          const isDisabled = ref(true);
+          onMounted(() => {
+            isDisabled.value = false;
+          });
 
           </script>
           `
@@ -42,14 +43,14 @@ function VueDisableInputsBeforeMount(): PluginOption {
         );
 
         const foundSelectElements =
-          component.match(/<select(.*\s?)([\s\S]*?)?\<\/select\>/gm) || [];
+          component.match(/<(select|input|button)(.*\s?)([\s\S]*?)?\>/gm) || [];
 
         for (const selectBlock of foundSelectElements) {
           if (hasDisabled(selectBlock)) {
             // inject isDisabled ref to existing :disabled
             component = component.replace(
               selectBlock,
-              selectBlock.replace(':disabled="', ':disabled="isDisabled && ')
+              selectBlock.replace(':disabled="', ':disabled="isDisabled || ')
             );
 
             continue;
@@ -58,7 +59,10 @@ function VueDisableInputsBeforeMount(): PluginOption {
           // add :disabled attribute together with isDisabled ref
           component = component.replace(
             selectBlock,
-            selectBlock.replace("<select", '<select :disabled="isDisabled"')
+            selectBlock
+              .replace("<select", '<select :disabled="isDisabled"')
+              .replace("<button", '<button :disabled="isDisabled"')
+              .replace("<input", '<input :disabled="isDisabled"')
           );
         }
 
