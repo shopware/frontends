@@ -14,6 +14,7 @@ import {
   ClientApiError,
   CustomerAddress,
   ShopwareSearchParams,
+  Error,
 } from "@shopware-pwa/types";
 import { useUser } from "./useUser";
 
@@ -50,6 +51,12 @@ export type UseAddressReturn = {
    * Sets the address for given ID as default shipping address
    */
   setDefaultCustomerShippingAddress(addressId: string): Promise<string>;
+  /**
+   * Returns formatted error message
+   *
+   * @param {Error} error
+   */
+  errorMessageBuilder(error: Error): string | null;
 };
 
 /**
@@ -135,6 +142,21 @@ export function useAddress(): UseAddressReturn {
     return await apiSetDefaultCustomerShippingAddress(addressId, apiInstance);
   }
 
+  /**
+   * Returns formatted error message
+   *
+   * @param {error} error
+   * @returns {string | null}
+   */
+  function errorMessageBuilder(error: Error): string | null {
+    switch (error.code) {
+      case "VIOLATION::IS_BLANK_ERROR":
+        return `${error?.source?.pointer.slice(1)} - ${error.detail}`;
+      default:
+        return null;
+    }
+  }
+
   return {
     customerAddresses: computed(() => _storeCustomerAddresses.value || []),
     loadCustomerAddresses,
@@ -143,5 +165,6 @@ export function useAddress(): UseAddressReturn {
     deleteCustomerAddress,
     setDefaultCustomerBillingAddress,
     setDefaultCustomerShippingAddress,
+    errorMessageBuilder,
   };
 }
