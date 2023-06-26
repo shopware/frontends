@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { CustomerAddress } from "@shopware-pwa/types";
+import { CustomerAddress, Error } from "@shopware-pwa/types";
 
-const { createCustomerAddress, updateCustomerAddress } = useAddress();
+const { createCustomerAddress, updateCustomerAddress, errorMessageBuilder } =
+  useAddress();
 
 const emits = defineEmits<{
   (e: "success"): void;
@@ -21,6 +22,8 @@ const props = withDefaults(
 
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
+const { t } = useI18n();
+const { pushError } = useNotifications();
 
 const formData = reactive<CustomerAddress>({
   countryId: props.address?.countryId ?? "",
@@ -40,8 +43,10 @@ const invokeSave = async (): Promise<void> => {
       : createCustomerAddress;
     await saveAddress(formData);
     emits("success");
-  } catch (error) {
-    console.error("error save address", error);
+  } catch (errors: Error[]) {
+    errors.messages.forEach((element: Error) => {
+      pushError(errorMessageBuilder(element) || t("messages.error"));
+    });
   }
 };
 
