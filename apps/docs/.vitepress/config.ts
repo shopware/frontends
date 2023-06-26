@@ -155,6 +155,7 @@ export const sidebar = [
       { text: "Images", link: "/best-practices/images" },
       { text: "Performance", link: "/best-practices/performance" },
       { text: "Testing", link: "/best-practices/testing" },
+      { text: "3rd party integration", link: "/best-practices/integration" },
     ],
   },
   {
