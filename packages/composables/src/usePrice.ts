@@ -23,13 +23,18 @@ export type UsePriceReturn = {
  * @public
  * @category Product
  */
-function _usePrice(params: {
+function _usePrice(params?: {
   localeCode: string | undefined;
   currencyCode: string;
 }): UsePriceReturn {
   const { sessionContext } = useSessionContext();
-  const currencyLocale = ref<string | undefined>(params.localeCode);
-  const currencyCode = ref<string>(params.currencyCode);
+  const currencyLocale = ref<string | undefined>();
+  const currencyCode = ref<string>("");
+
+  if (params) {
+    currencyCode.value = params.currencyCode;
+    currencyLocale.value = params.localeCode;
+  }
 
   function update(params: {
     localeCode?: string | undefined;
