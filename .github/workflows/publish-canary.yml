@@ -14,7 +14,7 @@ on:
 jobs:
   publish:
     name: Publish canary version
-    if: ${{ !contains(github.event.head_commit.message, 'chore: next version release') }}
+    if: !contains(github.event.head_commit.message, 'chore: next version release')
     runs-on: ubuntu-latest
     permissions:
       id-token: write
