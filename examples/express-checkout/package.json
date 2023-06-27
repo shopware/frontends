@@ -1,5 +1,5 @@
 {
-  "name": "express-checkout",
+  "name": "example-express-checkout",
   "version": "0.0.0",
   "private": true,
   "scripts": {
