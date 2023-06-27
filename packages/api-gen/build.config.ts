@@ -4,7 +4,6 @@ export default defineBuildConfig({
   rollup: {
     inlineDependencies: true,
   },
-  clean: true,
-  // declaration: true,
-  externals: [],
+  declaration: true,
+  externals: ["prettier"],
 });
