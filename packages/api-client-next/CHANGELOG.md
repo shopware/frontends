@@ -1,5 +1,11 @@
 # @shopware/api-client
 
+## 0.0.3
+
+### Patch Changes
+
+- [#290](https://github.com/shopware/frontends/pull/290) [`9562a8a`](https://github.com/shopware/frontends/commit/9562a8add35751093d766017abba474f0ad578f8) Thanks [@patzick](https://github.com/patzick)! - ship api-types with package
+
 ## 0.0.2
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # vue-demo-store
 
+## 0.10.0
+
+### Minor Changes
+
+- [#281](https://github.com/shopware/frontends/pull/281) [`558c9d0`](https://github.com/shopware/frontends/commit/558c9d0f2127776a0542e8d1d95734cb5d4c7e75) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Checkout - refresh the cart after redirecting to the summary page
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @shopware-pwa/cms-base@0.6.1
+  - @shopware-pwa/nuxt3-module@0.3.6
+
 ## 0.9.0
 
 ### Minor Changes
