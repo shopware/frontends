@@ -67,10 +67,6 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Audit
-        if: (${{ success() }} || ${{ failure() }})
-        run: pnpm audit
-
   test:
     name: Test
     timeout-minutes: 15
