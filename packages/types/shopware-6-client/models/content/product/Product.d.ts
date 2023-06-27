@@ -65,21 +65,22 @@ export type Product = {
   calculatedPrices: CalculatedPrice[];
   canonicalProduct: any;
   canonicalProductId: string | null;
-  categories: Category[];
+  categories: Category[] | null;
   categoriesRo: Category[] | null;
   categoryIds: string[];
-  categoryTree: [] | null;
+  categoryTree: string[] | null;
   cheapestPrice: ProductCheapestPrice;
-  childCount: number;
-  children: Product[];
+  childCount: number | null;
+  children: Product[] | null;
   cmsPage: null | CmsPage;
   cmsPageId: string | null;
   configuratorSettings: PropertyGroup[] | null;
   cover: ProductMedia;
   coverId: string | null;
-  createdAt: Date;
-  crossSellings: CrossSelling[];
+  createdAt: Date | string;
+  crossSellings: CrossSelling[] | null;
   customFields: CustomFields;
+  updatedAt: Date | string | null;
   deliveryTime: DeliveryTime;
   deliveryTimeId: string | null;
   description: string | null;
@@ -94,7 +95,7 @@ export type Product = {
   keywords: string | null;
   length: number | null;
   listingPrices: ListingPrice[] | null;
-  mainCategories: ProductMainCategories;
+  mainCategories: ProductMainCategories | null;
   manufacturer: ProductManufacturer | null;
   manufacturerId: string | null;
   manufacturerNumber: string | null;
@@ -106,10 +107,10 @@ export type Product = {
   minPurchase: number | null;
   name: string | null;
   optionIds?: string[];
-  options: PropertyGroupOption[];
+  options: PropertyGroupOption[] | null;
   packUnit: string | null;
   packUnitPlural: string | null;
-  parent: Product;
+  parent: Product | null;
   parentId: string | null;
   parentVersionId: string;
   price: Price[] | null;
@@ -124,7 +125,7 @@ export type Product = {
   purchaseUnit: number | null;
   ratingAverage: number | null;
   referenceUnit: number | null;
-  releaseDate: Date;
+  releaseDate: Date | string | null;
   restockTime: number;
   sales: number;
   seoCategory: Category;
@@ -134,13 +135,13 @@ export type Product = {
   states: string[];
   stock: number;
   streamIds: string[] | null;
-  streams: ProductStreams;
+  streams: ProductStreams | null;
   tagIds: [] | null;
   tags: Tag[];
   tax: Tax;
   taxId: string | null;
   translated: ProductTranslated;
-  translations: ProductTranslation[];
+  translations: ProductTranslation[] | null;
   unit: Unit | null;
   unitId: string | null;
   updatedAt: Date;
@@ -172,6 +173,8 @@ export type ProductTranslated = {
   keywords: string | null;
   metaTitle: string | null;
   customFields: CustomFields;
+  packUnit: string | null;
+  packUnitPlural: string | null;
 };
 
 export type ProductMainCategories = {

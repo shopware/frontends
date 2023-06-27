@@ -7,6 +7,12 @@ import { CustomFields } from "../../common/CustomField";
 export type Tax = {
   taxRate: number;
   name: string;
-  products: Product[] | null;
-  customFields: CustomFields;
+  products?: Product[] | null;
+  customFields: CustomFields | null;
+  translated: [];
+  createdAt: Date | string;
+  updatedAt: Date | string | null;
+  position: number;
+  id: string;
+  apiAlias: string;
 };

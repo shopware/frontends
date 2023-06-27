@@ -5,7 +5,7 @@ import { Entity } from "../../common/Entity";
 import { Tag } from "../../system/tag/Tag";
 import { CategoryTranslation } from "./CategoryTranslation";
 import { CustomFields } from "../../common/CustomField";
-
+import { SeoUrl } from "../navigation/Navigation";
 /**
  * Source: https://github.com/shopware/platform/blob/master/src/Core/Content/Category/CategoryDefinition.php#L50
  *
@@ -33,16 +33,16 @@ export type Category = Entity & {
   products: Product[] | null;
   nestedProducts: Product[] | null;
   afterCategoryId: string | null;
-  customFields: CustomFields;
+  customFields: CustomFields | null;
   tags: Tag[] | null;
   cmsPageId: string | null;
   cmsPage: CmsPage | null;
   slotConfig: [] | null;
   externalLink: string | null;
-  linkNewTab: boolean;
+  linkNewTab: boolean | null;
   visible: boolean;
   type: CategoryType;
-  description: string;
+  description: string | null;
   id: string;
   parentVersionId: string;
   childrenCount: number;
@@ -51,24 +51,28 @@ export type Category = Entity & {
   route?: {
     path?: string;
   };
-  seoUrls: {
-    apiAlias: string;
-    pathInfo: string;
-    seoPathInfo: string;
-  }[];
+  seoUrls: SeoUrl[] | null;
   metaTitle: string | null;
   metaDescription: string | null;
   keywords: string | null;
   translated: {
     name: string;
     breadcrumb: string[];
-    description: string;
-    externalLink: string;
+    description: string | null;
+    externalLink: string | null;
     metaTitle: string | null;
     metaDescription: string | null;
     keywords: string | null;
-    customFields: CustomFields;
+    customFields: CustomFields | null;
+    linkType: string | null;
+    internalLink: string | null;
+    linkNewTab: string | null;
   };
-  linkType: "product" | "category" | "landing_page" | string;
+  linkType: "product" | "category" | "landing_page" | string | null;
   internalLink: string | null;
+  extensions?: unknown;
+  visibleChildCount?: number | null;
+  cmsPageIdSwitched?: boolean;
+  productAssignmentType?: string;
+  customEntityTypeId?: string | null;
 };
