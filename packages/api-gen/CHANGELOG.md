@@ -1,5 +1,11 @@
 # @shopware/api-gen
 
+## 0.0.3
+
+### Patch Changes
+
+- [#292](https://github.com/shopware/frontends/pull/292) [`b68ca7f`](https://github.com/shopware/frontends/commit/b68ca7fbd51d22f4be84a228ca107972e07bfa32) Thanks [@patzick](https://github.com/patzick)! - fixed cli building, prettier is not inlined into bundle
+
 ## 0.0.2
 
 ### Patch Changes
