@@ -1,13 +1,13 @@
 {
   "name": "@shopware/api-gen",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shopware CLI for API client generation.",
   "author": "Shopware",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/packages/api-cli.html",
+  "homepage": "https://frontends.shopware.com/packages/api-cli.html",
   "keywords": [
     "shopware",
     "api",

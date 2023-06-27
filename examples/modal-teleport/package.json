@@ -1,5 +1,5 @@
 {
-  "name": "modal-teleport-example",
+  "name": "example-modal-teleport",
   "private": true,
   "scripts": {
     "build": "nuxt build",
