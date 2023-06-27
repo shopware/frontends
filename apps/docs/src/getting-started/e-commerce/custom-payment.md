@@ -167,6 +167,7 @@ This event is called when the user approves the payment process. It's the last s
     );
     // createOrder from useCheckout composable
     orderCreated.value = await createOrder();
+    refreshCart()
     // apiInstance from useShopwareContext composable
     const handlePaymentResponse = await apiInstance.invoke.post(
       "/store-api/handle-payment",
