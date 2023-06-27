@@ -13,8 +13,8 @@ on:
 
 jobs:
   publish:
-    name: Publish canary version ${{ github.event_name }}
-    # if: github.event_name && !contains(github.event.head_commit.message, 'chore: next version release')
+    name: Publish canary version - ${{ github.event_name }}
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, 'chore: next version release')
     runs-on: ubuntu-latest
     permissions:
       id-token: write
