@@ -1,5 +1,12 @@
 # docs
 
+## 1.5.4
+
+### Patch Changes
+
+- Updated dependencies [[`558c9d0`](https://github.com/shopware/frontends/commit/558c9d0f2127776a0542e8d1d95734cb5d4c7e75)]:
+  - @shopware-pwa/composables-next@0.10.0
+
 ## 1.5.3
 
 ### Patch Changes
