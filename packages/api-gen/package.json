@@ -1,6 +1,6 @@
 {
   "name": "@shopware/api-gen",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shopware CLI for API client generation.",
   "author": "Shopware",
   "repository": {

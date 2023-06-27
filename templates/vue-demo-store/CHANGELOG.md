@@ -1,5 +1,37 @@
 # vue-demo-store
 
+## 0.9.0
+
+### Minor Changes
+
+- [#241](https://github.com/shopware/frontends/pull/241) [`51007dc`](https://github.com/shopware/frontends/commit/51007dc744c9bf9d7eb7477b1ba57702b64b3db8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add payment description and logo
+
+- [#282](https://github.com/shopware/frontends/pull/282) [`e828f0a`](https://github.com/shopware/frontends/commit/e828f0aac8f2b83ba44536b2512eaad5d2635e33) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add missing data-testid
+
+- [#230](https://github.com/shopware/frontends/pull/230) [`d1e07d6`](https://github.com/shopware/frontends/commit/d1e07d6f73135cb742807aba78f1271943d47beb) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add language switcher
+
+- [#280](https://github.com/shopware/frontends/pull/280) [`55db3a6`](https://github.com/shopware/frontends/commit/55db3a695ee6638f33f836890dad65742ddccf94) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add error notification for add new address form
+
+- [#212](https://github.com/shopware/frontends/pull/212) [`e359aa2`](https://github.com/shopware/frontends/commit/e359aa28c9c9c7fb2521be3ebd5b847c855e4d24) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Display delivery time on the checkout page
+
+### Patch Changes
+
+- [#231](https://github.com/shopware/frontends/pull/231) [`24acfb9`](https://github.com/shopware/frontends/commit/24acfb9e78df57313060784238356a7787a264a2) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - fix getDocument date type
+
+- [#238](https://github.com/shopware/frontends/pull/238) [`0a44331`](https://github.com/shopware/frontends/commit/0a44331b55d805e87913ae935e7d9e2505fff2da) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove ref from the menu element (temporary)
+
+- [#271](https://github.com/shopware/frontends/pull/271) [`b9881b8`](https://github.com/shopware/frontends/commit/b9881b89da2605a5ccd78617d3f8ae8e05e8c43a) Thanks [@mkucmus](https://github.com/mkucmus)! - Allow to edit addresses on the checkout for guests
+
+- [#274](https://github.com/shopware/frontends/pull/274) [`96d1290`](https://github.com/shopware/frontends/commit/96d12900e37a80d583ca003c4420b4f019652227) Thanks [@mkucmus](https://github.com/mkucmus)! - Redirect to the corresponding URL on variant change in PDP
+
+- [#243](https://github.com/shopware/frontends/pull/243) [`d5f0bcc`](https://github.com/shopware/frontends/commit/d5f0bcc18cb581a48185cb8622d0e0d9b7fea23f) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+
+- Updated dependencies [[`d1e07d6`](https://github.com/shopware/frontends/commit/d1e07d6f73135cb742807aba78f1271943d47beb), [`e359aa2`](https://github.com/shopware/frontends/commit/e359aa28c9c9c7fb2521be3ebd5b847c855e4d24), [`5bb88e9`](https://github.com/shopware/frontends/commit/5bb88e9f4422141de916b704f13e9ecce9b8f2f2), [`96d1290`](https://github.com/shopware/frontends/commit/96d12900e37a80d583ca003c4420b4f019652227), [`d5f0bcc`](https://github.com/shopware/frontends/commit/d5f0bcc18cb581a48185cb8622d0e0d9b7fea23f), [`d1e07d6`](https://github.com/shopware/frontends/commit/d1e07d6f73135cb742807aba78f1271943d47beb)]:
+  - @shopware-pwa/helpers-next@0.3.0
+  - @shopware-pwa/types@0.5.4
+  - @shopware-pwa/cms-base@0.6.0
+  - @shopware-pwa/nuxt3-module@0.3.5
+
 ## 0.8.0
 
 ### Minor Changes
