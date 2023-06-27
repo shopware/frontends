@@ -16,7 +16,7 @@ Full changelog for stable version is available [here](https://github.com/shopwar
 
 ### Minor Changes
 
-- [#230](https://github.com/shopware/frontends/pull/230) [`d1e07d6`](https://github.com/shopware/frontends/commit/d1e07d6f73135cb742807aba78f1271943d47beb) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add internatiolization helpers with mocks data
+- [#230](https://github.com/shopware/frontends/pull/230) [`d1e07d6`](https://github.com/shopware/frontends/commit/d1e07d6f73135cb742807aba78f1271943d47beb) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add internationalization helpers with mocks data
 
 ### Patch Changes
 
