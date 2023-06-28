@@ -229,7 +229,7 @@ Display <a href="#display-tier-prices">pricing tier table</a>
 <div class="border-l ml-2 pl-2 mb-3">
 <strong>set</strong> <code>product.calculatedPrice</code> <strong>to</strong> <code>product.calculatedPrices[0]</code>
 </div>
-Display <a href="#display-prices">default price</a>
+Display <a href="#display-a-default-price">default price</a>
 </div>
 
 ### Full example

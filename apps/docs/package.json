@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "private": true,
-  "version": "1.5.2",
+  "version": "1.5.4",
   "description": "",
   "scripts": {
     "dev": "vitepress",
@@ -14,7 +14,7 @@
     "@shopware-pwa/helpers-next": "workspace:*",
     "flexsearch": "^0.7.31",
     "markdown-it": "^13.0.1",
-    "vitepress": "1.0.0-beta.1",
+    "vitepress": "1.0.0-beta.3",
     "vitepress-plugin-search": "1.0.4-alpha.20",
     "vitepress-shopware-docs": "0.3.0-beta.44",
     "vue": "^3.3.4"
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@shopware-pwa/typer": "workspace:*",
     "@types/markdown-it": "^12.2.3",
-    "@types/node": "^18.16.16",
+    "@types/node": "^18.16.18",
     "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.1.3"
   },

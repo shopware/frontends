@@ -95,6 +95,7 @@ watch(enter, (value) => {
     </div>
     <div
       v-if="showSuggest"
+      data-testid="layout-search-result-box"
       class="absolute border-gray-100 border-t-1 duration-300 left-0 mt-2 overflow-hidden right-0 rounded-b-md shadow-md transition-height w-auto z-1"
     >
       <NuxtLink
@@ -119,6 +120,7 @@ watch(enter, (value) => {
         <div v-else>
           <NuxtLink
             v-if="getTotal > 0"
+            data-testid="layout-search-result-box-more-link"
             :to="localePath({ path: `/search`, query: { query: typingQuery } })"
             @click="[(active = false), $emit('link-clicked')]"
           >
@@ -127,7 +129,9 @@ watch(enter, (value) => {
             {{ getTotal }}
             <span>{{ $t("search.result", getTotal) }}</span>
           </NuxtLink>
-          <div v-else>{{ $t("search.noResults") }}</div>
+          <div v-else data-testid="layout-search-result-box-no-result">
+            {{ $t("search.noResults") }}
+          </div>
         </div>
       </div>
     </div>

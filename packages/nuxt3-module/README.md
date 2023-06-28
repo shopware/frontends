@@ -93,11 +93,9 @@ Internally, the module uses [API Client](https://npmjs.com/package/@shopware-pwa
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt3-module/CHANGELOG.md)
 
-### Latest changes: 0.3.4
+### Latest changes: 0.3.6
 
 ### Patch Changes
 
-- Types for `devStorefrontUrl`
-
-- Updated dependencies [[`0242a3ad`](https://github.com/shopware/frontends/commit/0242a3adcde82e301f2e53fb562c0bbd767c04f9)]:
-  - @shopware-pwa/composables-next@0.8.2
+- Updated dependencies [[`558c9d0`](https://github.com/shopware/frontends/commit/558c9d0f2127776a0542e8d1d95734cb5d4c7e75)]:
+  - @shopware-pwa/composables-next@0.10.0
