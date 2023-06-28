@@ -1,8 +1,18 @@
+export type NodeObject = {
+  type: string;
+  name: string;
+  attrs?: Options;
+  children: NodeObject[];
+  voidElement: boolean;
+  content: string;
+};
+
 type Options = {
-  align: String | null;
-  attrs: Object | null;
-  class: String | null;
-  style: String | null;
+  align?: string;
+  attrs?: Record<string, string>;
+  class?: string;
+  color?: string;
+  style?: string;
 };
 
 export function getOptionsFromNode(node: any): Options {
@@ -25,12 +35,7 @@ export function getOptionsFromNode(node: any): Options {
     delete node.attrs.align;
   }
 
-  const { ...rest } = node.attrs;
-  let attrs = rest;
-
-  if (Object.keys(rest).length === 0) {
-    attrs = null;
-  }
+  const attrs = Object.keys(node.attrs).length === 0 ? null : { ...node.attrs };
 
   return {
     align: align,
