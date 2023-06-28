@@ -1,0 +1,37 @@
+name: Vue demo store
+
+run-name: Playwright is testing vue demo store 🚀
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '52 23 * * *'
+jobs:
+  run-code_examples-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: corepack enable
+      - run: pnpm --version
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+          cache-dependency-path: "**/pnpm-lock.yaml"
+      - name: install
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Install dependencies with Playwright
+        run: |
+          pnpm playwright install --with-deps
+          
+      - name: Run tests
+        run: |
+          cd apps/e2e-tests
+          BASE_E2E_URL=https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store npx playwright test checkStackblitzTemplates.spec.ts --project=chromium
