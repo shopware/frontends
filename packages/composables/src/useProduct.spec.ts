@@ -11,11 +11,13 @@ const Component = {
   },
 };
 
-describe("usePrice", () => {
+describe("useProduct", () => {
   const wrapper = shallowMount(Component);
+
   it("should return product object", () => {
     expect(wrapper.vm.product).toStrictEqual(mockedProduct);
   });
+
   it("should return undefined configurator object", () => {
     expect(wrapper.vm.configurator).toBe(undefined);
   });
