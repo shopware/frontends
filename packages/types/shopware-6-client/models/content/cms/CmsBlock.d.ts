@@ -30,7 +30,7 @@ export type CmsBlock = {
   slots: CmsSlot[];
   translated: unknown;
   type: string;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   versionId: string | null;
   _uniqueIdentifier: string;
   sizingMode: SizingMode;

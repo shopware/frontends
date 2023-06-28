@@ -18,7 +18,6 @@ const DynamicRender = () => {
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
       props.content
     );
-
     return h(resolvedComponent, {
       content: props.content,
       style: layoutStyles,

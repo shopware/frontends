@@ -1,0 +1,23 @@
+{
+  "product": {
+    "addToCart": "Dodaj do koszyka",
+    "details": "Szczegóły",
+    "amount": "Ilość",
+    "description": "Opis",
+    "properties": "Właściwości",
+    "reviews": "Recenzje",
+    "content": "Zawartość",
+    "choose": "Wybierz",
+    "variantsFrom": "wariantów od",
+    "price": {
+      "label": "Cena",
+      "to": "do",
+      "from": "od"
+    },
+    "messages": {
+      "addedToWishlist": "{p} został dodany do listy życzeń.",
+      "removedFromWishlist": "{p} został usunięty z listy życzeń.",
+      "addedToCart": "{p} został dodany do koszyka."
+    }
+  }
+}

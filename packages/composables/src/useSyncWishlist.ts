@@ -46,12 +46,10 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
 
   async function addToWishlistSync(id: string) {
     await addWishlistProduct(id, apiInstance);
-    getWishlistProducts();
   }
 
   async function removeFromWishlistSync(id: string) {
     await removeWishlistProduct(id, apiInstance);
-    getWishlistProducts();
   }
 
   /**

@@ -6,15 +6,32 @@ import { CustomFields } from "../../common/CustomField";
  * @public
  */
 export type ShippingMethodPrice = {
+  id: string;
   shippingMethodId: string;
-  currencyId: string;
   calculation: number | null;
   quantityStart: number | null;
   quantityEnd: number | null;
-  price: number;
-  shippingMethod: ShippingMethodPrice | null;
-  customFields: CustomFields;
-  rule: Rule | null;
-  currency: Currency | null;
+  price?: number;
+  shippingMethod?: ShippingMethodPrice | null;
+  customFields: CustomField | null;
+  rule?: Rule | null;
+  currency?: Currency | null;
   calculationRuleId: string | null;
+  translated: [];
+  createdAt: Date | string;
+  updatedAt: Date | string | null;
+  ruleId: string | null;
+  currencyPrice: CurrencyPriceShippingMethodPrice[];
+  apiAlias: "shipping_method_price";
+};
+
+export type CurrencyPriceShippingMethodPrice = {
+  currencyId: string;
+  net: number;
+  gross: number;
+  linked: boolean;
+  listPrice: unknown;
+  percentage: number | null;
+  regulationPrice: unknown;
+  apiAlias: "price";
 };

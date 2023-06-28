@@ -60,6 +60,7 @@ To give an example, let's say we need to implement a payment method which redire
 
    ```js{3}
    const { createOrder } = useCheckout();
+   const { refreshCart } = useCart();
    // create an order
    const order = await createOrder();
    ```

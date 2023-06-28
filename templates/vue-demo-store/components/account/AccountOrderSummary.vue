@@ -9,10 +9,10 @@ export default {
     <div
       class="flex flex-col sm:grid grid-cols-5 lg:grid-cols-6 gap-y-5 gap-x-7"
     >
-      <div class="lg:col-span-2">Order number</div>
-      <div>Total amount</div>
-      <div>Order date</div>
-      <div>Order status</div>
+      <div class="lg:col-span-2">{{ $t("account.order.orderNumber") }}</div>
+      <div>{{ $t("account.order.totalAmount") }}</div>
+      <div>{{ $t("account.order.orderDate") }}</div>
+      <div>{{ $t("account.order.orderStatus") }}</div>
       <div class="justify-self-end" />
     </div>
 

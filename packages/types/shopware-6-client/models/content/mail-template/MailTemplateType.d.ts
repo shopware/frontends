@@ -14,5 +14,5 @@ export type MailTemplateType = {
   customFields: CustomFields;
   salesChannels: MailTemplateSalesChannel[] | null;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | string | null;
 };

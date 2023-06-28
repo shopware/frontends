@@ -7,9 +7,11 @@ const emits = defineEmits<{
 }>();
 
 const { isLoggedIn, login } = useUser();
+const { t } = useI18n();
 const { refreshSessionContext } = useSessionContext();
 const { mergeWishlistProducts } = useWishlist();
 const { pushSuccess } = useNotifications();
+const localePath = useLocalePath();
 const loginErrors = ref<string[]>([]);
 
 const formData = ref({
@@ -25,7 +27,7 @@ const invokeLogin = async (): Promise<void> => {
     await refreshSessionContext();
     await login(formData.value);
     emits("success");
-    pushSuccess("You are logged in");
+    pushSuccess(t("account.messages.loggedInSuccess"));
     emits("close");
     mergeWishlistProducts();
   } catch (error) {
@@ -45,7 +47,7 @@ useFocus(emailImputElement, { initialValue: true });
       <div>
         <img class="mx-auto h-12 w-auto" src="/logo.svg" alt="Logo" />
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
+          {{ $t("account.signInLabel") }}
         </h2>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="invokeLogin">
@@ -57,7 +59,9 @@ useFocus(emailImputElement, { initialValue: true });
         />
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="email-address" class="sr-only">Email address</label>
+            <label for="email-address" class="sr-only">{{
+              $t("form.email")
+            }}</label>
             <input
               id="email-address"
               ref="emailImputElement"
@@ -67,12 +71,14 @@ useFocus(emailImputElement, { initialValue: true });
               autocomplete="email"
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Email address"
+              :placeholder="$t('form.email')"
               data-testid="login-email-input"
             />
           </div>
           <div>
-            <label for="password" class="sr-only">Password</label>
+            <label for="password" class="sr-only">{{
+              $t("form.password")
+            }}</label>
             <input
               id="password"
               v-model="formData.password"
@@ -81,7 +87,7 @@ useFocus(emailImputElement, { initialValue: true });
               autocomplete="current-password"
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Password"
+              :placeholder="$t('form.password')"
               data-testid="login-password-input"
             />
           </div>
@@ -114,17 +120,17 @@ useFocus(emailImputElement, { initialValue: true });
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
               <div class="w-5 h-5 i-carbon-locked" />
             </span>
-            Sign in
+            {{ $t("account.signIn") }}
           </button>
 
           <slot name="action">
             <div @click="$emit('close')">
               <NuxtLink
-                to="/register"
+                :to="localePath('/register')"
                 class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 data-testid="login-sign-up-link"
               >
-                Sign up
+                {{ $t("account.signUp") }}
               </NuxtLink>
             </div>
           </slot>
@@ -132,7 +138,7 @@ useFocus(emailImputElement, { initialValue: true });
       </form>
     </div>
     <div v-else>
-      <h2>you are logged in</h2>
+      <h2>{{ $t("account.loggedInInfo") }}</h2>
       <button
         class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         @click="$emit('close')"

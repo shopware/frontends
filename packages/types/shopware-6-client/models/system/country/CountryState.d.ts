@@ -18,4 +18,15 @@ export type CountryState = {
   customerAddresses: CustomerAddress[] | null;
   orderAddresses: OrderAddress[] | null;
   customFields: CustomFields;
+  extensions: unknown;
+  _uniqueIdentifier: string;
+  versionId: string | null;
+  translated: {
+    name: string;
+    customFields: CustomFields;
+  };
+  createdAt: string;
+  updatedAt: Date | string | null;
+  id: string;
+  apiAlias: "country_state";
 };

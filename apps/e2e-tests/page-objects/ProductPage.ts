@@ -20,23 +20,27 @@ export class ProductPage {
   }
 
   async addToCart() {
-    await this.page.waitForLoadState("load");
-    await this.addToCartButton.click();
+    await expect(this.page.getByTestId("add-to-cart-button")).toBeVisible();
+    await this.addToCartButton.waitFor();
+    await this.addToCartButton.click({ delay: 500 });
   }
 
   async addVariantToCart() {
     for (const variant of await this.page
       .getByTestId("product-variant-text")
       .all())
-      await variant.click(), await this.page.waitForLoadState("load");
-    await this.addToCartButton.isEnabled();
+      await variant.click();
+    await this.page.waitForLoadState("load");
+    await this.addToCartButton.waitFor();
     await this.addToCartButton.click();
     await this.miniCartLink.click();
     expect(this.variantText.textContent).toEqual(
       this.productOption.textContent
     );
-    await this.page.waitForLoadState("load");
-    await this.productRemove.click();
+    await Promise.all([
+      await this.page.waitForLoadState("load"),
+      await this.productRemove.click(),
+    ]);
     await this.page.getByTestId("cart-close-button").click();
   }
 }

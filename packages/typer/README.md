@@ -106,8 +106,8 @@ Paths for type resolver and codebase are configured during plugin registration.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/typer/CHANGELOG.md)
 
-### Latest changes: 0.1.1
+### Latest changes: 0.1.5
 
 ### Patch Changes
 
-- [`6083a618`](https://github.com/shopware/frontends/commit/6083a618c5389c0850a2a777f8b1bf54656606c5) Thanks [@mkucmus](https://github.com/mkucmus)! - Correct github tree path for examples builder
+- [#243](https://github.com/shopware/frontends/pull/243) [`d5f0bcc`](https://github.com/shopware/frontends/commit/d5f0bcc18cb581a48185cb8622d0e0d9b7fea23f) Thanks [@patzick](https://github.com/patzick)! - bump dependencies

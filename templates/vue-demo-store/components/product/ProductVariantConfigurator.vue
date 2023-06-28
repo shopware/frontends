@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { Product } from "@shopware-pwa/types";
+import { getProductRoute } from "@shopware-pwa/helpers-next";
 
 const props = withDefaults(
   defineProps<{
     allowRedirect?: boolean;
   }>(),
   {
-    allowRedirect: false,
+    allowRedirect: true,
   }
 );
 
 const emit = defineEmits<{
-  (e: "change", selected: Product | undefined): void;
+  (e: "change", selected: Product): void;
 }>();
+
 const isLoading = ref<boolean>();
 const router = useRouter();
 const {
@@ -30,15 +32,15 @@ const onHandleChange = async () => {
   const variantFound = await findVariantForSelectedOptions(
     getSelectedOptions.value
   );
-  const selectedOptionsVariantPath = variantFound?.seoUrls?.[0]?.seoPathInfo;
+  const selectedOptionsVariantPath = getProductRoute(variantFound);
   if (props.allowRedirect && selectedOptionsVariantPath) {
     try {
-      router.push("/" + selectedOptionsVariantPath);
+      router.push(selectedOptionsVariantPath);
     } catch (error) {
       console.error("incorrect URL", selectedOptionsVariantPath);
     }
   } else {
-    emit("change", variantFound);
+    if (variantFound) emit("change", variantFound);
   }
   isLoading.value = false;
 };
@@ -63,7 +65,9 @@ const onHandleChange = async () => {
         {{ optionGroup.name }}
       </h3>
       <fieldset class="mt-4 flex-1">
-        <legend class="sr-only">Choose a {{ optionGroup.name }}</legend>
+        <legend class="sr-only">
+          {{ $t("product.choose") }} {{ optionGroup.name }}
+        </legend>
         <div class="flex gap3">
           <label
             v-for="option in optionGroup.options"

@@ -32,13 +32,13 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await this.page.waitForLoadState("load");
-    await this.signInButton.isEnabled();
-    await this.signInButton.click();
+    await expect(this.page.getByTestId("header-sign-in-link")).toBeVisible();
+    await this.signInButton.waitFor();
+    await this.signInButton.click({ delay: 500 });
   }
 
   async openCartPage() {
-    await this.page.waitForLoadState("load");
+    await this.linkToCartPage.waitFor();
     await this.linkToCartPage.click();
     await this.page.waitForSelector("[data-testid='product-quantity']");
     await this.page.waitForLoadState("load");
@@ -51,9 +51,7 @@ export class HomePage extends AbstractPage {
   }
 
   async openRegistrationPage() {
-    await this.page.waitForLoadState("load");
-    await this.linkToRegistrationPage.isVisible();
-    await this.linkToRegistrationPage.click();
+    await this.linkToRegistrationPage.click({ delay: 500 });
   }
 
   async typeSearchPhrase(phrase: string) {
@@ -65,13 +63,14 @@ export class HomePage extends AbstractPage {
   async addProductToWishlist() {
     await Promise.all([
       this.page.waitForLoadState("load"),
-      await this.addToWishlist.nth(13).click(),
+      await this.addToWishlist.nth(13).dispatchEvent("click"),
     ]);
   }
 
   async openMyAccount() {
-    this.page.waitForLoadState("load");
-    await this.accountMenuHelloButton.click();
-    await this.myAccountLink.click();
+    await this.accountMenuHelloButton.waitFor();
+    await this.accountMenuHelloButton.dispatchEvent("click");
+    await this.myAccountLink.waitFor();
+    await this.myAccountLink.dispatchEvent("click");
   }
 }

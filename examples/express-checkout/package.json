@@ -1,5 +1,5 @@
 {
-  "name": "express-checkout",
+  "name": "example-express-checkout",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -8,17 +8,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@paypal/paypal-js": "^5.1.6",
+    "@paypal/paypal-js": "^6.0.0",
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/helpers-next": "canary",
     "js-cookie": "^3.0.5",
-    "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@shopware-pwa/types": "canary",
-    "@vitejs/plugin-vue": "^4.1.0",
-    "vite": "^4.3.1"
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.3.9"
   }
 }

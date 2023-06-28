@@ -7,20 +7,27 @@ export default {
 <script setup lang="ts">
 import { getProducts } from "@shopware-pwa/api-client";
 import { ClientApiError, Product } from "@shopware-pwa/types";
-import { removeWishlistProduct } from "@shopware-pwa/api-client";
 
-const { items, getWishlistProducts } = useWishlist();
+const { items, clearWishlist } = useWishlist();
 const { apiInstance } = useShopwareContext();
 const products = ref<Product[]>([]);
 const isLoading = ref(false);
-
+const { t } = useI18n();
+const localePath = useLocalePath();
 useBreadcrumbs([
   {
-    name: "Wishlist",
+    name: t("breadcrumbs.wishlist"),
     path: "/wishlist",
   },
 ]);
-
+const clearWishlistHandler = async () => {
+  try {
+    isLoading.value = true;
+    await clearWishlist();
+  } finally {
+    isLoading.value = false;
+  }
+};
 const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   isLoading.value = true;
 
@@ -60,13 +67,6 @@ watch(
     immediate: true,
   }
 );
-
-async function clearWishlist() {
-  await Promise.all(
-    items.value.map((id) => removeWishlistProduct(id, apiInstance))
-  );
-  getWishlistProducts();
-}
 </script>
 
 <template>
@@ -84,13 +84,15 @@ async function clearWishlist() {
         />
       </div>
       <div v-else-if="products.length">
-        <h1 class="my-3 text-3xl font-extrabold">Wishlist</h1>
+        <h1 class="my-3 text-3xl font-extrabold">
+          {{ $t("wishlist.header") }}
+        </h1>
         <button
           class="mb-4 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           data-testid="clear-wishlist-button"
-          @click="clearWishlist"
+          @click="clearWishlistHandler"
         >
-          Clear wishlist
+          {{ $t("wishlist.clearWishlist") }}
         </button>
         <div
           class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
@@ -109,14 +111,16 @@ async function clearWishlist() {
         data-testid="wishlist-empty"
       >
         <div class="w-48 h-48 i-carbon-favorite" />
-        <h1 class="my-3 text-3xl font-extrabold">Wishlist is empty</h1>
-        <p class="my-4">No products were added to the Wishlist.</p>
+        <h1 class="my-3 text-3xl font-extrabold">
+          {{ $t("wishlist.emptyLabel") }}
+        </h1>
+        <p class="my-4">{{ $t("wishlist.emptyText") }}</p>
         <NuxtLink
-          to="/"
+          :to="localePath(`/`)"
           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
           date-testid="wishlist-empty-continue-link"
         >
-          Continue Shopping
+          {{ $t("wishlist.continueShopping") }}
         </NuxtLink>
       </div>
     </div>

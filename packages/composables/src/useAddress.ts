@@ -10,7 +10,12 @@ import {
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 
-import { CustomerAddress, ShopwareSearchParams } from "@shopware-pwa/types";
+import {
+  ClientApiError,
+  CustomerAddress,
+  ShopwareSearchParams,
+  Error,
+} from "@shopware-pwa/types";
 import { useUser } from "./useUser";
 
 export type UseAddressReturn = {
@@ -46,6 +51,12 @@ export type UseAddressReturn = {
    * Sets the address for given ID as default shipping address
    */
   setDefaultCustomerShippingAddress(addressId: string): Promise<string>;
+  /**
+   * Returns formatted error message
+   *
+   * @param {Error} error
+   */
+  errorMessageBuilder(error: Error): string | null;
 };
 
 /**
@@ -71,8 +82,15 @@ export function useAddress(): UseAddressReturn {
   async function loadCustomerAddresses(
     parameters: ShopwareSearchParams = {}
   ): Promise<void> {
-    const { elements } = await getCustomerAddresses(parameters, apiInstance);
-    _storeCustomerAddresses.value = elements;
+    try {
+      const { elements } = await getCustomerAddresses(parameters, apiInstance);
+      _storeCustomerAddresses.value = elements;
+    } catch (error) {
+      const apiError = error as ClientApiError;
+      if (apiError?.statusCode === 403) {
+        _storeCustomerAddresses.value = [];
+      }
+    }
   }
 
   /**
@@ -124,6 +142,21 @@ export function useAddress(): UseAddressReturn {
     return await apiSetDefaultCustomerShippingAddress(addressId, apiInstance);
   }
 
+  /**
+   * Returns formatted error message
+   *
+   * @param {error} error
+   * @returns {string | null}
+   */
+  function errorMessageBuilder(error: Error): string | null {
+    switch (error.code) {
+      case "VIOLATION::IS_BLANK_ERROR":
+        return `${error?.source?.pointer.slice(1)} - ${error.detail}`;
+      default:
+        return null;
+    }
+  }
+
   return {
     customerAddresses: computed(() => _storeCustomerAddresses.value || []),
     loadCustomerAddresses,
@@ -132,5 +165,6 @@ export function useAddress(): UseAddressReturn {
     deleteCustomerAddress,
     setDefaultCustomerBillingAddress,
     setDefaultCustomerShippingAddress,
+    errorMessageBuilder,
   };
 }

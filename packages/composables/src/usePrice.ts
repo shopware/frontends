@@ -1,10 +1,5 @@
 import { ref } from "vue";
-
-const currencyLocale = ref<string>("");
-const currencyCode = ref<string>("");
-
-// @ToDo make sure why there is no decimal precision in api response
-const decimalPrecision = 2;
+import { createSharedComposable } from "@vueuse/core";
 
 export type UsePriceReturn = {
   /**
@@ -22,7 +17,12 @@ export type UsePriceReturn = {
  * @public
  * @category Product
  */
-export function usePrice(): UsePriceReturn {
+function _usePrice(): UsePriceReturn {
+  const currencyLocale = ref<string>("");
+  const currencyCode = ref<string>("");
+
+  // TODO: make sure why there is no decimal precision in api response
+  const decimalPrecision = 2;
   /**
    * Set init data from backend response
    *
@@ -72,3 +72,5 @@ export function usePrice(): UsePriceReturn {
     getFormattedPrice,
   };
 }
+
+export const usePrice = createSharedComposable(_usePrice);

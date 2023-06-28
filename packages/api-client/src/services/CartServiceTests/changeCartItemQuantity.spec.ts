@@ -18,15 +18,15 @@ describe("CartService - changeCartItemQuantity", () => {
   it("should call valid endpoint and return cart with no items", async () => {
     mockedPatch.mockResolvedValueOnce({
       data: {
-        name: faker.datatype.uuid(),
-        token: faker.datatype.uuid(),
+        name: faker.string.uuid(),
+        token: faker.string.uuid(),
         lineItems: [
           {
             id: "geawq90a5dab4206843d0vc3sa8wefdf",
             label: faker.commerce.productName(),
             quantity: 3,
             payload: {
-              productNumber: faker.datatype.uuid,
+              productNumber: faker.string.uuid,
             },
           },
         ],

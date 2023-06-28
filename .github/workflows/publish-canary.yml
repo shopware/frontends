@@ -14,7 +14,10 @@ on:
 jobs:
   publish:
     name: Publish canary version
+    if: "!contains(github.event.commits[0].message, 'chore: next version release')"
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -55,3 +58,6 @@ jobs:
 
       - name: Publish canary packages
         run: pnpm changeset publish --no-git-tag --no-git-checks --tag canary
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_CONFIG_PROVENANCE: true

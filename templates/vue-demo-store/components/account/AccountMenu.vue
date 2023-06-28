@@ -2,6 +2,7 @@
 const { isLoggedIn, logout, user } = useUser();
 
 const loginModalController = useModal();
+const localePath = useLocalePath();
 
 const isAccountMenuOpen = ref(false);
 
@@ -19,7 +20,7 @@ async function invokeLogout() {
           data-testid="header-sign-in-link"
           @click="loginModalController.open"
         >
-          Sign in
+          {{ $t("account.menu.signIn") }}
         </button>
       </div>
       <SharedModal :controller="loginModalController">
@@ -42,7 +43,7 @@ async function invokeLogout() {
             data-testid="account-menu-hello-button"
             @click="isAccountMenuOpen = !isAccountMenuOpen"
           >
-            Hello, {{ user?.firstName }}!
+            {{ $t("account.menu.hello") }}, {{ user?.firstName }}!
           </button>
 
           <!-- Profile dropdown -->
@@ -56,7 +57,7 @@ async function invokeLogout() {
                 aria-haspopup="true"
                 @click="isAccountMenuOpen = !isAccountMenuOpen"
               >
-                <span class="sr-only">Open user menu</span>
+                <span class="sr-only">{{ $t("account.menu.openMenu") }}</span>
               </button>
             </div>
             <Transition
@@ -77,12 +78,12 @@ async function invokeLogout() {
               >
                 <NuxtLink
                   id="user-menu-item-1"
-                  to="/account"
+                  :to="localePath('/account')"
                   data-testid="header-my-account-link"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                   tabindex="-1"
                 >
-                  My Account
+                  {{ $t("account.menu.myAccount") }}
                 </NuxtLink>
                 <button
                   id="user-menu-item-2"
@@ -92,7 +93,7 @@ async function invokeLogout() {
                   tabindex="-2"
                   @click="invokeLogout"
                 >
-                  Sign out
+                  {{ $t("account.menu.signOut") }}
                 </button>
               </div>
             </Transition>

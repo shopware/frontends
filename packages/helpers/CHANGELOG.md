@@ -1,5 +1,38 @@
 # @shopware-pwa/helpers-next
 
+## 0.3.0
+
+### Minor Changes
+
+- [#230](https://github.com/shopware/frontends/pull/230) [`d1e07d6`](https://github.com/shopware/frontends/commit/d1e07d6f73135cb742807aba78f1271943d47beb) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add internationalization helpers with mocks data
+
+### Patch Changes
+
+- [#243](https://github.com/shopware/frontends/pull/243) [`d5f0bcc`](https://github.com/shopware/frontends/commit/d5f0bcc18cb581a48185cb8622d0e0d9b7fea23f) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+
+- Updated dependencies [[`e359aa2`](https://github.com/shopware/frontends/commit/e359aa28c9c9c7fb2521be3ebd5b847c855e4d24), [`5bb88e9`](https://github.com/shopware/frontends/commit/5bb88e9f4422141de916b704f13e9ecce9b8f2f2)]:
+  - @shopware-pwa/types@0.5.4
+
+## 0.2.1
+
+### Patch Changes
+
+- updated changelog in readme
+
+- Updated dependencies []:
+  - @shopware-pwa/types@0.5.3
+
+## 0.2.0
+
+### Minor Changes
+
+- [#194](https://github.com/shopware/frontends/pull/194) [`81f45335`](https://github.com/shopware/frontends/commit/81f4533513b2ee538111159f8e37cd7bd1db9f1e) Thanks [@niklaswolf](https://github.com/niklaswolf) and [@patzick](https://github.com/patzick)! - Added `getCategoryRoute` and `getProductRoute` helpers to create router lins with history API metadata
+
+### Patch Changes
+
+- Updated dependencies [[`53f81c32`](https://github.com/shopware/frontends/commit/53f81c32b50c1658ee5758820085580cceea8161), [`47221193`](https://github.com/shopware/frontends/commit/472211939db34c8c81e957bd3e91a765056c088c), [`58932a83`](https://github.com/shopware/frontends/commit/58932a83106f7c415e68c4c1555180ff844ec151), [`a1edcd18`](https://github.com/shopware/frontends/commit/a1edcd18f3665b9ecdc32f7d33902d9c394b4fb6), [`a367dba6`](https://github.com/shopware/frontends/commit/a367dba68ab73f9ed2213236c696718c222565bc)]:
+  - @shopware-pwa/types@0.5.2
+
 ## 0.1.26
 
 ### Patch Changes

@@ -11,6 +11,6 @@ export type Salutation = {
   createdAt: string;
   translations: SalutationTranslation[] | null;
   translated: object;
-  updatedAt: string | null;
+  updatedAt: Date | string | null;
   extenstions: object;
 };

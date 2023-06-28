@@ -12,24 +12,10 @@ Documentation specific for this package: [types](https://frontends.shopware.com/
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/types/CHANGELOG.md)
 
-### Latest changes: 0.5.0
-
-### Minor Changes
-
-- [`2f64a718`](https://github.com/shopware/frontends/commit/2f64a71824594ffcc4e5d59f8d5e30cd627893db) Thanks [@patzick](https://github.com/patzick)! - Marked deprecated fields, which will be removed from Shopware API 6.5
-
-- [`a15a3083`](https://github.com/shopware/frontends/commit/a15a308359497bb9d483bebe040d717114946ff0) Thanks [@mkucmus](https://github.com/mkucmus)! - Improved media types
-
-- [`d358854c`](https://github.com/shopware/frontends/commit/d358854c632447228e719efdf639c428cf6ba804) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add AggregationProductListingEntities type
+### Latest changes: 0.5.4
 
 ### Patch Changes
 
-- [`5008dcbf`](https://github.com/shopware/frontends/commit/5008dcbf065fc54a3f51517460e409556f370adf) Thanks [@mkucmus](https://github.com/mkucmus)! - Adds visibility object to section and block type
+- [#212](https://github.com/shopware/frontends/pull/212) [`e359aa2`](https://github.com/shopware/frontends/commit/e359aa28c9c9c7fb2521be3ebd5b847c855e4d24) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add translated property to the DeliveryTime type. Fix updateAt type
 
-- [`e2718c7d`](https://github.com/shopware/frontends/commit/e2718c7d20fac95c57436166083d6e5f599937c2) Thanks [@mkucmus](https://github.com/mkucmus)! - Define different cover image for non-product entities
-
-- [`9c7a0f28`](https://github.com/shopware/frontends/commit/9c7a0f280c20ccbafca0e3063533820e21050bee) Thanks [@mkucmus](https://github.com/mkucmus)! - Remove duplicated property definitions
-
-- [`3a90d299`](https://github.com/shopware/frontends/commit/3a90d299279b451e391a946dafecc857fe1f67fc) Thanks [@niklaswolf](https://github.com/niklaswolf)! - improve typings of CustomFields
-
-- [#86](https://github.com/shopware/frontends/pull/86) [`909ffcde`](https://github.com/shopware/frontends/commit/909ffcde24d5ae873d814027be0920a9e5976c72) Thanks [@mkucmus](https://github.com/mkucmus)! - Expand Category type
+- [#256](https://github.com/shopware/frontends/pull/256) [`5bb88e9`](https://github.com/shopware/frontends/commit/5bb88e9f4422141de916b704f13e9ecce9b8f2f2) Thanks [@mkucmus](https://github.com/mkucmus)! - Proper type for order line item entity

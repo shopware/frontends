@@ -40,6 +40,6 @@ jobs:
         uses: actions/upload-artifact@v3
         if: ${{ failure() }}
         with:
-          name: playwright-report
-          path: apps/e2e-tests
+          name: reports
+          path: apps/e2e-tests/reports/
           retention-days: 7

@@ -7,7 +7,7 @@ import {
   changeCartItemQuantity,
   getProducts,
 } from "@shopware-pwa/api-client";
-import { Cart, EntityError, Product, LineItem } from "@shopware-pwa/types";
+import { Cart, Product, LineItem, CartErrors } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 import { _useContext } from "./internal/_useContext";
 import { createSharedComposable } from "@vueuse/core";
@@ -26,7 +26,7 @@ export type UseCartReturn = {
   /**
    * Adds a promotion code to the cart
    */
-  addPromotionCode(promotionCode: string): Promise<void>;
+  addPromotionCode(promotionCode: string): Promise<Cart>;
   /**
    * Lists all applied and active promotion codes
    */
@@ -69,10 +69,6 @@ export type UseCartReturn = {
    */
   subtotal: ComputedRef<number>;
   /**
-   * @deprecated handle errors in your application by checking cart.errors object
-   */
-  cartErrors: ComputedRef<EntityError[]>;
-  /**
    * @deprecated - use product related methods to fetch an item's URL instead
    */
   getProductItemsSeoUrlsData(): Promise<Partial<Product>[]>;
@@ -84,6 +80,10 @@ export type UseCartReturn = {
    * `true` if cart contains only digital items
    */
   isVirtualCart: ComputedRef<boolean>;
+  /**
+   * Get cart errors
+   */
+  consumeCartErrors(): CartErrors;
 };
 
 /**
@@ -95,6 +95,7 @@ export function useCartFunction(): UseCartReturn {
   const { apiInstance } = useShopwareContext();
 
   const _storeCart = _useContext<Cart | undefined>("swCart");
+  const _storeCartErrors = _useContext<CartErrors | null>("swCartErrors");
 
   async function refreshCart(newCart?: Cart): Promise<Cart> {
     if (newCart) {
@@ -104,6 +105,7 @@ export function useCartFunction(): UseCartReturn {
 
     const result = await getCart(apiInstance);
     _storeCart.value = result;
+    setCartErrors(result);
     return result;
   }
 
@@ -114,15 +116,17 @@ export function useCartFunction(): UseCartReturn {
     const addToCartResult = await addProductToCart(
       params.id,
       params.quantity,
-      apiInstance,
+      apiInstance
     );
     _storeCart.value = addToCartResult;
+    setCartErrors(addToCartResult);
     return addToCartResult;
   }
 
   async function removeItem(lineItem: LineItem) {
     const result = await removeCartItem(lineItem.id, apiInstance);
     _storeCart.value = result;
+    setCartErrors(result);
   }
 
   async function changeProductQuantity(params: {
@@ -132,44 +136,18 @@ export function useCartFunction(): UseCartReturn {
     const result = await changeCartItemQuantity(
       params.id,
       params.quantity,
-      apiInstance,
+      apiInstance
     );
     _storeCart.value = result;
+    setCartErrors(result);
   }
 
   async function submitPromotionCode(promotionCode: string) {
-    if (promotionCode) {
-      const result = await addPromotionCode(promotionCode, apiInstance);
-      _storeCart.value = result;
-    }
+    const result = await addPromotionCode(promotionCode, apiInstance);
+    _storeCart.value = result;
+    setCartErrors(result);
+    return result;
   }
-
-  // TODO: move to separate composable recognizing cart error changes
-  // function broadcastUpcomingErrors(cartResult: Cart): void {
-  //   if (!cartResult) {
-  //     return;
-  //   }
-
-  //   try {
-  //     const cartErrorsKeys = Object.keys(_storeCart.value?.errors || {});
-  //     const cartResultErrorKeys = Object.keys(cartResult.errors || {});
-  //     const upcomingErrorsKeys = cartResultErrorKeys.filter(
-  //       (resultErrorKey) => !cartErrorsKeys.includes(resultErrorKey)
-  //     );
-  //     const entityErrors: EntityError[] = Object.values(
-  //       cartResult.errors || {}
-  //     ).filter(
-  //       // don't ignore ERROR level of incoming errors or if they are new
-  //       (entityError) =>
-  //         entityError.level === 20 ||
-  //         upcomingErrorsKeys.includes(entityError.key)
-  //     );
-
-  //     // broadcastErrors(entityErrors, `[${contextName}][cartError]`, broadcast);
-  //   } catch (error) {
-  //     console.error("[useCart][broadcastUpcomingErrors]", error);
-  //   }
-  // }
 
   async function getProductItemsSeoUrlsData(): Promise<Partial<Product>[]> {
     if (!cartItems.value.length) {
@@ -185,14 +163,14 @@ export function useCartFunction(): UseCartReturn {
         // associations: (getDefaults() as any).getProductItemsSeoUrlsData
         //   .associations,
       },
-      apiInstance,
+      apiInstance
     );
     return result?.elements || [];
   }
 
   const appliedPromotionCodes = computed(() => {
     return cartItems.value.filter(
-      (cartItem: LineItem) => cartItem.type === "promotion",
+      (cartItem: LineItem) => cartItem.type === "promotion"
     );
   });
 
@@ -208,7 +186,7 @@ export function useCartFunction(): UseCartReturn {
         lineItem.type === "product"
           ? lineItem.quantity + accumulator
           : accumulator,
-      0,
+      0
     );
   });
 
@@ -231,15 +209,41 @@ export function useCartFunction(): UseCartReturn {
     return cartPrice || 0;
   });
 
-  const cartErrors: ComputedRef<EntityError[]> = computed(
-    () => (cart.value?.errors && Object.values(cart.value.errors)) || [],
-  );
-
   const isVirtualCart = computed(() => {
-    return cartItems.value
-      .filter((element) => element.type !== "promotion")
-      .every((item) => item.states.includes("is-download"));
+    return (
+      cartItems.value.length > 0 &&
+      cartItems.value
+        .filter((element) => element.type !== "promotion")
+        .every((item) => item.states.includes("is-download"))
+    );
   });
+
+  /**
+   * Add cart errors to the sharable variable
+   *
+   * @param {Cart} cart
+   */
+  const setCartErrors = (cart: Cart) => {
+    if (Object.keys(cart.errors).length) {
+      _storeCartErrors.value = Object.assign(
+        _storeCartErrors.value ? _storeCartErrors.value : {},
+        cart.errors
+      );
+    }
+  };
+
+  /**
+   * Get cart errors and clear variable
+   *
+   * @returns {CartErrors}
+   */
+  const consumeCartErrors = () => {
+    const errors = _storeCartErrors.value
+      ? JSON.parse(JSON.stringify(_storeCartErrors.value))
+      : null;
+    _storeCartErrors.value = null;
+    return errors;
+  };
 
   return {
     addProduct,
@@ -254,10 +258,10 @@ export function useCartFunction(): UseCartReturn {
     totalPrice,
     shippingTotal,
     subtotal,
-    cartErrors,
     getProductItemsSeoUrlsData,
     isEmpty,
     isVirtualCart,
+    consumeCartErrors,
   };
 }
 

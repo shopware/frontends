@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { CustomerAddress } from "@shopware-pwa/types";
+import { CustomerAddress, Error } from "@shopware-pwa/types";
 
-const { createCustomerAddress, updateCustomerAddress } = useAddress();
+const { createCustomerAddress, updateCustomerAddress, errorMessageBuilder } =
+  useAddress();
 
 const emits = defineEmits<{
   (e: "success"): void;
@@ -21,6 +22,8 @@ const props = withDefaults(
 
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
+const { t } = useI18n();
+const { pushError } = useNotifications();
 
 const formData = reactive<CustomerAddress>({
   countryId: props.address?.countryId ?? "",
@@ -40,8 +43,10 @@ const invokeSave = async (): Promise<void> => {
       : createCustomerAddress;
     await saveAddress(formData);
     emits("success");
-  } catch (error) {
-    console.error("error save address", error);
+  } catch (errors: Error[]) {
+    errors.messages.forEach((element: Error) => {
+      pushError(errorMessageBuilder(element) || t("messages.error"));
+    });
   }
 };
 
@@ -68,7 +73,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 for="country"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                Salutation
+                {{ $t("form.salutation") }}
               </label>
               <select
                 id="salutation"
@@ -94,7 +99,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 for="first-name"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                First name
+                {{ $t("form.firstName") }}
               </label>
               <input
                 id="first-name"
@@ -113,7 +118,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 for="last-name"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                Last name
+                {{ $t("form.lastName") }}
               </label>
               <input
                 id="last-name"
@@ -130,7 +135,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 for="country"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                Country
+                {{ $t("form.country") }}
               </label>
               <select
                 id="country"
@@ -157,7 +162,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 for="street-address"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                Street address
+                {{ $t("form.streetAddress") }}
               </label>
               <input
                 id="street-address"
@@ -176,7 +181,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 for="city"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                City
+                {{ $t("form.city") }}
               </label>
               <input
                 id="city"
@@ -194,7 +199,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 for="postal-code"
                 class="block mb-2 text-sm font-medium text-gray-500"
               >
-                ZIP / Postal code
+                {{ $t("form.postalCode") }}
               </label>
               <input
                 id="postal-code"
@@ -216,7 +221,7 @@ useFocus(firstNameInputElement, { initialValue: true });
             data-testid="account-address-form-submit-button"
             @click.stop.prevent="invokeSave"
           >
-            Save
+            {{ $t("form.save") }}
           </button>
         </div>
       </form>

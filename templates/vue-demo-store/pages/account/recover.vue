@@ -2,14 +2,17 @@
 export default {
   name: "RecoverPassword",
 };
-
+</script>
+<script setup lang="ts">
+const { t } = useI18n();
+const localePath = useLocalePath();
 useBreadcrumbs([
   {
-    name: "Account Overview",
+    name: t("breadcrumbs.accountOverview"),
     path: "/account",
   },
   {
-    name: "Recover password",
+    name: t("breadcrumbs.recoverPassword"),
     path: "/account/recover",
   },
 ]);
@@ -21,19 +24,19 @@ useBreadcrumbs([
       <template #action>
         <div class="text-center space-y-2">
           <p class="py-2 px-4 text-lg text-brand-primary">
-            Don't have an account yet?
+            {{ $t("recoveryPassword.label") }}
           </p>
           <NuxtLink
-            to="/register"
+            :to="localePath(`/register`)"
             class="text-sm font-medium px-4 text-gray-600 focus:outline-none underline"
           >
-            Register today!
+            {{ $t("recoveryPassword.register") }}
           </NuxtLink>
           <NuxtLink
-            to="/login"
+            :to="localePath(`/login`)"
             class="flex justify-center align-center text-sm font-medium text-gray-600 py-2 px-4 focus:outline-none underline"
           >
-            or try to log in again.
+            {{ $t("recoveryPassword.orLogin") }}
           </NuxtLink>
         </div>
       </template>

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import {
   getTranslatedProperty,
-  getCategoryUrl,
+  getCategoryRoute,
 } from "@shopware-pwa/helpers-next";
 
 const { navigationElements } = useNavigation({ type: "footer-navigation" });
+const localePath = useLocalePath();
+
 const gridColumns = computed<number>(() =>
   navigationElements.value
     ? Object.keys(navigationElements.value).length + 2
@@ -20,7 +22,7 @@ const gridColumns = computed<number>(() =>
         :class="`grid grid-cols-2 md:grid-cols-${gridColumns}`"
       >
         <div class="hidden md:block">
-          <NuxtLink to="/">
+          <NuxtLink :to="localePath(`/`)">
             <span class="sr-only">Shopware</span>
             <img class="h-15 w-auto sm:h-15" src="/logo.svg" alt="Logo" />
           </NuxtLink>
@@ -45,7 +47,7 @@ const gridColumns = computed<number>(() =>
                       ? '_blank'
                       : ''
                   "
-                  :to="getCategoryUrl(navigationChild)"
+                  :to="localePath(getCategoryRoute(navigationChild))"
                   class="text-base font-normal text-gray-500 hover:text-gray-900"
                 >
                   {{ getTranslatedProperty(navigationChild, "name") }}
@@ -72,6 +74,7 @@ const gridColumns = computed<number>(() =>
               </a>
             </li>
           </ul>
+          <LanguageSwitcher />
         </div>
       </div>
     </menu>

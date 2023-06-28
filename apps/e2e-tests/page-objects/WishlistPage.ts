@@ -11,7 +11,7 @@ export class WishlistPage {
     this.addToCartButton = page.getByTestId("add-to-cart-button");
     this.wishlistButton = page.getByTestId("wishlist-button");
     this.productInWishlistButton = page.getByTestId(
-      "product-box-wishlist-icon"
+      "product-box-toggle-wishlist-button"
     );
   }
 

@@ -7,6 +7,7 @@ import {
   CreateOrderParams,
   Order,
   BillingAddress,
+  ShopwareSearchParams,
 } from "@shopware-pwa/types";
 import {
   getAvailableShippingMethods,
@@ -14,6 +15,7 @@ import {
   createOrder as createApiOrder,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext, useCart, useSessionContext } from ".";
+import deepMerge from "./helpers/deepMerge";
 
 export type UseCheckoutReturn = {
   /**
@@ -70,6 +72,12 @@ export type UseCheckoutReturn = {
   setPaymentMethod(paymentMethod: Partial<PaymentMethod>): Promise<void>;
 };
 
+const shippingMethodsAssociations: ShopwareSearchParams = {
+  associations: {
+    prices: {},
+  },
+};
+
 /**
  * Composable to manage checkout process
  * @public
@@ -95,12 +103,23 @@ export function useCheckout(): UseCheckoutReturn {
   const shippingMethods = computed(() => storeShippingMethods.value || []);
   const paymentMethods = computed(() => storePaymentMethods.value || []);
 
-  async function getShippingMethods({ forceReload } = { forceReload: false }) {
+  async function getShippingMethods(
+    { forceReload } = { forceReload: false },
+    associations: ShopwareSearchParams = {}
+  ) {
     if (shippingMethods.value.length && !forceReload) return shippingMethods;
+    const mergedAssociations: ShopwareSearchParams = deepMerge(
+      shippingMethodsAssociations,
+      associations
+    );
     const response = await getAvailableShippingMethods(apiInstance, {
-      onlyAvailable: true, // depending on the context, some of them can be hidden due to applied rules describing whether a method can be available
+      ...mergedAssociations,
     });
-    storeShippingMethods.value = response?.elements || [];
+    storeShippingMethods.value =
+      response?.elements.sort(
+        (a: ShippingMethod, b: ShippingMethod) =>
+          (a.position ?? 0) - (b.position ?? 0)
+      ) || [];
     return shippingMethods;
   }
 
@@ -120,8 +139,6 @@ export function useCheckout(): UseCheckoutReturn {
     } catch (e) {
       const err = e as ClientApiError;
       throw err;
-    } finally {
-      refreshCart();
     }
   }
 

@@ -64,6 +64,14 @@ const selectedShippingMethod = computed({
 </template>
 ```
 
+The shipping method position on the list is determined by the `position` field settled on the admin panel. Sorting logic in `useCheckout.ts::getShippingMethods()`
+
+You can also display:
+
+- Shipping delivery time
+- Shipping icon
+- Shipping description
+
 **Get payment methods**
 
 ```ts
@@ -283,8 +291,10 @@ After placing an order with the `createOrder` method, the cart is refreshed auto
 
 ```ts
 const { createOrder } = useCheckout();
+const { refreshCart } = useCart();
 
 const order = await createOrder();
+refreshCart();
 ```
 
 After creating an order, you can fetch order data. `orderId` is returned by the `createOrder` method from the `useCheckout` composable.

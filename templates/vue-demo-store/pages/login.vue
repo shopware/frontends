@@ -3,6 +3,7 @@ const { push } = useRouter();
 const { logout, isLoggedIn } = useUser();
 
 const redirectAfterLogin = (path = "/account") => push(path);
+const localePath = useLocalePath();
 
 onBeforeMount(async () => {
   if (process.client && isLoggedIn.value) {
@@ -33,20 +34,20 @@ export default {
       <div class="flex items-center justify-end">
         <div class="text-sm">
           <NuxtLink
-            to="/account/recover"
+            :to="localePath(`/account/recover`)"
             class="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            Forgot your password?
+            {{ $t("recoveryPassword.forgotPassword") }}
           </NuxtLink>
         </div>
       </div>
 
       <template #action>
         <NuxtLink
-          to="/register"
+          :to="localePath(`/register`)"
           class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
-          Sign up
+          {{ $t("account.signUp") }}
         </NuxtLink>
       </template>
     </AccountLoginForm>

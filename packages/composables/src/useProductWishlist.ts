@@ -38,12 +38,14 @@ export function useProductWishlist(
     addToWishlistSync: addItemSync,
     removeFromWishlistSync: removeItemSync,
     items: itemsSync,
+    getWishlistProducts,
   } = useSyncWishlist();
 
   // removes item from the list
   async function removeFromWishlist() {
     if (isLoggedIn.value) {
       await removeItemSync(product.value.id);
+      await getWishlistProducts();
     } else {
       await removeItem(product.value.id);
     }
@@ -52,6 +54,7 @@ export function useProductWishlist(
   async function addToWishlist() {
     if (isLoggedIn.value) {
       await addItemSync(product.value.id);
+      await getWishlistProducts();
     } else {
       await addItem(product.value.id);
     }

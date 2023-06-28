@@ -27,6 +27,7 @@ export default (app: App) => {
   });
   const shopwareContext = createShopwareContext(app, {
     apiInstance,
+    devStorefrontUrl: null,
   });
 
   app.use(shopwareContext);

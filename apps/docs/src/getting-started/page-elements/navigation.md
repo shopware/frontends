@@ -54,7 +54,7 @@ await loadNavigationElements({ depth: 2 });
       :key="navigationElement.id"
     >
       <RouterLink
-        :to="getCategoryUrl(navigationElement)"
+        :to="getCategoryRoute(navigationElement)"
         :target="
           navigationElement.externalLink || navigationElement.linkNewTab
             ? '_blank'

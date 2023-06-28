@@ -67,6 +67,7 @@ export type Category = Entity & {
     metaTitle: string | null;
     metaDescription: string | null;
     keywords: string | null;
+    customFields: CustomFields;
   };
   linkType: "product" | "category" | "landing_page" | string;
   internalLink: string | null;

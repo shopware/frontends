@@ -17,11 +17,22 @@ const { clearBreadcrumbs } = useBreadcrumbs();
 const NOT_FOUND_COMPONENT = "errors/RoutingNotFound";
 const { resolvePath } = useNavigationSearch();
 const route = useRoute();
+const { locale } = useI18n();
+const routePath = route.path.replace(`${locale.value}`, "").replace("//", "/");
 
 const { data: seoResult } = await useAsyncData(
-  "cmsResponse" + route.path,
+  "cmsResponse" + routePath,
   async () => {
-    const seoUrl = await resolvePath(route.path);
+    // For client links if the history state contains seo url information we can omit the api call
+    if (process.client) {
+      if (history.state?.routeName) {
+        return {
+          routeName: history.state?.routeName,
+          foreignKey: history.state?.foreignKey,
+        };
+      }
+    }
+    const seoUrl = await resolvePath(routePath);
     return seoUrl;
   }
 );
