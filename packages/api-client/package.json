@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/api-client",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Shopware Store API client",
   "author": "Shopware",
   "repository": {
@@ -34,11 +34,11 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
-    "@vitest/coverage-v8": "^0.32.0",
+    "@vitest/coverage-v8": "^0.32.2",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "^9.20.3",
     "tsconfig": "workspace:*",
-    "vitest": "^0.32.0"
+    "vitest": "^0.32.2"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",

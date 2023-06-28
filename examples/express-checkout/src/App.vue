@@ -15,6 +15,7 @@ import {
   usePrice,
   useShopwareContext,
   useAddToCart,
+  useCart,
 } from "@shopware-pwa/composables-next";
 import {
   getProductThumbnailUrl,
@@ -36,6 +37,7 @@ const { paymentMethods, getPaymentMethods, createOrder } = useCheckout();
 const { setPaymentMethod } = useSessionContext();
 const { apiInstance } = useShopwareContext();
 const { addToCart } = useAddToCart(productFound);
+const { refreshCart } = useCart();
 
 const productName = computed(() =>
   getTranslatedProperty(productFound.value, "name")
@@ -95,6 +97,7 @@ const renderPaypalButtons = async () => {
           }
         );
         orderCreated.value = await createOrder();
+        refreshCart();
         const handlePaymentResponse = await apiInstance.invoke.post(
           "/store-api/handle-payment",
           {

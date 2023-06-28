@@ -38,8 +38,15 @@ const {
   activeBillingAddress,
   setActiveBillingAddress,
 } = useSessionContext();
-const { cart, cartItems, subtotal, totalPrice, shippingTotal, isVirtualCart } =
-  useCart();
+const {
+  cart,
+  cartItems,
+  subtotal,
+  totalPrice,
+  shippingTotal,
+  isVirtualCart,
+  refreshCart,
+} = useCart();
 const { customerAddresses, loadCustomerAddresses } = useAddress();
 const isLoading = reactive<{ [key: string]: boolean }>({});
 
@@ -181,7 +188,8 @@ const placeOrder = async () => {
   isLoading["placeOrder"] = true;
   const order = await createOrder();
   isLoading["placeOrder"] = false;
-  return push("/checkout/success/" + order.id);
+  await push("/checkout/success/" + order.id);
+  refreshCart();
 };
 
 const termsSelected = computed(() => {
@@ -766,6 +774,7 @@ const addAddressModalController = useModal();
             </div>
             <button
               type="button"
+              data-testid="checkout-add-new-billing-address-button"
               class="flex font-medium text-brand-dark"
               @click="addAddressModalController.open"
             >
@@ -776,6 +785,7 @@ const addAddressModalController = useModal();
                 <input
                   id="customShipping"
                   v-model="state.customShipping"
+                  data-testid="checkout-custom-shipping-address-checkbox"
                   name="privacy"
                   type="checkbox"
                   class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
@@ -815,6 +825,7 @@ const addAddressModalController = useModal();
                 </div>
                 <button
                   type="button"
+                  data-testid="checkout-add-new-shipping-address-button"
                   class="flex font-medium text-brand-dark"
                   @click="addAddressModalController.open"
                 >
