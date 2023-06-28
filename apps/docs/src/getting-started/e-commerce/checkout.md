@@ -291,8 +291,10 @@ After placing an order with the `createOrder` method, the cart is refreshed auto
 
 ```ts
 const { createOrder } = useCheckout();
+const { refreshCart } = useCart();
 
 const order = await createOrder();
+refreshCart();
 ```
 
 After creating an order, you can fetch order data. `orderId` is returned by the `createOrder` method from the `useCheckout` composable.

@@ -139,8 +139,6 @@ export function useCheckout(): UseCheckoutReturn {
     } catch (e) {
       const err = e as ClientApiError;
       throw err;
-    } finally {
-      refreshCart();
     }
   }
 

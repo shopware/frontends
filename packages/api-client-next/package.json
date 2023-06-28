@@ -1,13 +1,13 @@
 {
   "name": "@shopware/api-client",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Shopware client for API connection.",
   "author": "Shopware",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/packages/api-client.html",
+  "homepage": "https://frontends.shopware.com/packages/api-client.html",
   "keywords": [
     "shopware",
     "api",
@@ -20,7 +20,8 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "api-types"
   ],
   "exports": {
     "import": "./dist/index.mjs"
