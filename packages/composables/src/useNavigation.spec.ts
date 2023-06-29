@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
-import { useNavigation } from "./useNAvigation";
+import { useNavigation } from "./useNavigation";
 import * as apiExports from "@shopware-pwa/api-client";
 import Menu from "./mocks/Menu";
 
