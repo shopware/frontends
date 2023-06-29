@@ -13,6 +13,9 @@ patchedDependencies:
   '@changesets/apply-release-plan@6.1.3':
     hash: wcmywso7j3jgatbexo6loixhc4
     path: patches/@changesets__apply-release-plan@6.1.3.patch
+  '@changesets/apply-release-plan@6.1.4':
+    hash: mwkf7n4kxou2fhv74zlqi5v6fu
+    path: patches/@changesets__apply-release-plan@6.1.4.patch
 
 importers:
 
@@ -2507,7 +2510,7 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@changesets/apply-release-plan@6.1.4:
+  /@changesets/apply-release-plan@6.1.4(patch_hash=mwkf7n4kxou2fhv74zlqi5v6fu):
     resolution: {integrity: sha512-FMpKF1fRlJyCZVYHr3CbinpZZ+6MwvOtWUuO8uo+svcATEoc1zRDcj23pAurJ2TZ/uVz1wFHH6K3NlACy0PLew==}
     dependencies:
       '@babel/runtime': 7.22.5
@@ -2524,6 +2527,7 @@ packages:
       resolve-from: 5.0.0
       semver: 7.5.3
     dev: true
+    patched: true
 
   /@changesets/assemble-release-plan@5.2.4:
     resolution: {integrity: sha512-xJkWX+1/CUaOUWTguXEbCDTyWJFECEhmdtbkjhn5GVBGxdP/JwaHBIU9sW3FR6gD07UwZ7ovpiPclQZs+j+mvg==}
@@ -2557,7 +2561,7 @@ packages:
     hasBin: true
     dependencies:
       '@babel/runtime': 7.22.5
-      '@changesets/apply-release-plan': 6.1.4
+      '@changesets/apply-release-plan': 6.1.4(patch_hash=mwkf7n4kxou2fhv74zlqi5v6fu)
       '@changesets/assemble-release-plan': 5.2.4
       '@changesets/changelog-git': 0.1.14
       '@changesets/config': 2.3.1
