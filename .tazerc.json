@@ -4,6 +4,7 @@
   "install": true,
   "recursive": true,
   "packageMode": {
-    "axios": "ignore"
+    "axios": "ignore",
+    "@types/node": "ignore"
   }
 }
