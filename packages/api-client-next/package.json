@@ -37,7 +37,7 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "@types/prettier": "^2.7.2",
+    "@types/prettier": "^2.7.3",
     "@vitest/coverage-c8": "^0.32.2",
     "eslint-config-shopware": "workspace:*",
     "prettier": "^2.8.8",
@@ -45,6 +45,6 @@
     "vitest": "^0.32.2"
   },
   "dependencies": {
-    "ofetch": "^1.0.1"
+    "ofetch": "^1.1.1"
   }
 }
