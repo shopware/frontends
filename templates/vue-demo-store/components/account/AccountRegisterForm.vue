@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
@@ -395,3 +394,4 @@ useBreadcrumbs([
       </div>
     </form>
   </div>
+</template>
