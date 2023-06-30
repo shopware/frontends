@@ -1,7 +1,6 @@
 name: e2e
 
 on:
-  workflow_dispatch:
   deployment_status: 
 
 jobs:
