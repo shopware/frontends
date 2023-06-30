@@ -13,7 +13,7 @@ require("dotenv").config({ path: findEnv() });
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const newLocal = "https://frontends-demo.vercel.app/";
+const newLocal = "http://localhost:3000";
 const baseURL = process.env.BASE_E2E_URL || newLocal;
 
 console.log("Running tests for: ", baseURL);
@@ -69,64 +69,20 @@ const config: PlaywrightTestConfig = {
       },
     },
 
-    {
-      name: "Desktop Safari",
-      use: {
-        ...devices["Desktop Safari"],
-      },
-    },
-
-    // {
-    //   name: "Mobile Safari",
-    //   use: {
-    //     ...devices["iPhone 12"],
-    //   },
-    // },
-
-    {
-      name: "iPad Mini",
-      use: {
-        ...devices["iPad Mini"],
-      },
-    },
-
     /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: {
-    //     ...devices['Pixel 5'],
-    //   },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: {
-    //     ...devices['iPhone 12'],
-    //   },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: {
-    //     channel: 'chrome',
-    //   },
-    // },
+    {
+      name: "Pixel 9",
+      use: {
+        ...devices["Pixel 9"],
+      },
+    },
+    {
+      name: "Galaxy S9+ landscape",
+      use: {
+        ...devices["Galaxy S9+ landscape"],
+      },
+    },
   ],
-
-  /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   port: 3000,
-  // },
 };
 
 export default config;

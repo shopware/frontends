@@ -17,6 +17,7 @@ export class CheckoutPage {
   readonly submitButton: Locator;
   readonly termsBox: Locator;
   readonly termCheckbox: Locator;
+  readonly checkoutLayout: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -37,18 +38,20 @@ export class CheckoutPage {
     this.submitButton = page.getByTestId("checkout-pi-submit-button");
     this.termsBox = page.getByTestId("checkout-terms-box");
     this.termCheckbox = page.getByTestId("checkout-t&c-checkbox-tos");
+    this.checkoutLayout = page.getByTestId("checkout-layout");
   }
 
   async goToCheckout() {
-    await Promise.all([
-      await this.page.waitForSelector("[data-testid='cart-product-image']"),
-      await this.goToCheckoutButton.click(),
-    ]);
+    await this.page.waitForSelector("[data-testid='sidebar-right']");
+    await this.page.getByTestId("sidebar-right").isVisible();
+    await this.goToCheckoutButton.click();
+    await this.page.waitForURL("**/checkout");
   }
 
   async markTerms() {
     await this.page.waitForLoadState();
-    await this.termCheckbox.waitFor();
+    await this.termsBox.isVisible();
+    await this.termCheckbox.isVisible();
     await this.termCheckbox.dispatchEvent("click");
   }
 

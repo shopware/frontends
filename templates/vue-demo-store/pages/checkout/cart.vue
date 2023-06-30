@@ -62,13 +62,13 @@ export default {
           <CheckoutPromotionCode />
         </div>
 
-        <NuxtLink
+        <button
           class="flex items-center justify-center rounded-md px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
-          :to="localePath(`/checkout`)"
           data-testid="cart-checkout-link"
+          @click="$router.push(localePath(`/checkout`))"
         >
           {{ $t("cart.checkout") }}
-        </NuxtLink>
+        </button>
       </aside>
     </div>
   </div>

@@ -204,7 +204,7 @@ onMounted(async () => {
   isLoading["shippingMethods"] = true;
   isLoading["paymentMethods"] = true;
 
-  Promise.any([
+  await Promise.any([
     loadCustomerAddresses(),
     !isVirtualCart.value ? getShippingMethods() : null,
     getPaymentMethods(),

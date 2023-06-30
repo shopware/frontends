@@ -20,9 +20,13 @@ export class ProductPage {
   }
 
   async addToCart() {
-    await this.page.getByTestId("add-to-cart-button").waitFor();
-    await expect(this.page.getByTestId("add-to-cart-button")).toBeVisible();
-    await this.addToCartButton.click({ delay: 500 });
+    await this.addToCartButton.waitFor();
+    await expect(this.addToCartButton).toBeVisible();
+    await this.addToCartButton.dispatchEvent("click");
+    await this.page.getByTestId("notification-element-message").isVisible();
+    await expect(
+      this.page.getByTestId("notification-element-message").last()
+    ).toHaveText(/has been added to cart.$/);
   }
 
   async addVariantToCart() {

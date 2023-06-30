@@ -16,7 +16,7 @@ export class HomePage extends AbstractPage {
   constructor(page: Page) {
     super(page);
     this.signInButton = page.getByTestId("header-sign-in-link");
-    this.linkToCartPage = page.locator("text='Smoking Board Cedar Wood'");
+    this.linkToCartPage = page.locator("text='YORK 3'");
     this.linkToVariantPage = page.locator(
       "text='Pepper white, ground, Muntok pearl'"
     );
