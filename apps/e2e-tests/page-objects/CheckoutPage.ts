@@ -17,7 +17,6 @@ export class CheckoutPage {
   readonly submitButton: Locator;
   readonly termsBox: Locator;
   readonly termCheckbox: Locator;
-  readonly checkoutLayout: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -38,7 +37,6 @@ export class CheckoutPage {
     this.submitButton = page.getByTestId("checkout-pi-submit-button");
     this.termsBox = page.getByTestId("checkout-terms-box");
     this.termCheckbox = page.getByTestId("checkout-t&c-checkbox-tos");
-    this.checkoutLayout = page.getByTestId("checkout-layout");
   }
 
   async goToCheckout() {

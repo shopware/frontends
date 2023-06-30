@@ -1,10 +1,4 @@
 {
   // https://v3.nuxtjs.org/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "lib": [
-      "ESNext"
-    ],
-    "target": "ES6"
-  }
+  "extends": "./.nuxt/tsconfig.json"
 }

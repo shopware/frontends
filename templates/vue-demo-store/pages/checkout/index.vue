@@ -204,7 +204,7 @@ onMounted(async () => {
   isLoading["shippingMethods"] = true;
   isLoading["paymentMethods"] = true;
 
-  await Promise.any([
+  Promise.any([
     loadCustomerAddresses(),
     !isVirtualCart.value ? getShippingMethods() : null,
     getPaymentMethods(),
@@ -849,6 +849,7 @@ const addAddressModalController = useModal();
               <input
                 id="tos"
                 v-model="terms.tos"
+                :value="terms.tos"
                 name="tos"
                 type="checkbox"
                 class="focus:ring-brand-primary h-4 w-4 border-gray-300 shrink-0"
@@ -871,6 +872,7 @@ const addAddressModalController = useModal();
               <input
                 id="revocation"
                 v-model="terms.revocation"
+                :value="terms.revocation"
                 name="revocation"
                 type="checkbox"
                 class="focus:ring-brand-primary h-4 w-4 border-gray-300 shrink-0"
