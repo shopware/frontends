@@ -24,6 +24,8 @@
     "save": "Zapisz",
     "submit": "Zatwierdź",
     "promoCodePlaceholder": "Wpisz kod promocyjny",
-    "searchPlaceholder": "Szukaj produktów"
+    "searchPlaceholder": "Szukaj produktów",
+    "chooseState": "Wybierz stan",
+    "state": "Stan"
   }
 }

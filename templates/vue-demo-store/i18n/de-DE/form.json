@@ -24,6 +24,8 @@
     "save": "Speichern",
     "submit": "Senden",
     "promoCodePlaceholder": "Promo-Code eingeben",
-    "searchPlaceholder": "Produkte suchen"
+    "searchPlaceholder": "Produkte suchen",
+    "chooseState": "Wählen Sie den Staat",
+    "state": "Zustand"
   }
 }
