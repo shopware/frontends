@@ -1,8 +1,11 @@
 import { useUser } from "./useUser";
+import * as useSessionContext from "./useSessionContext";
+import * as useCart from "./useCart";
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import * as apiExports from "@shopware-pwa/api-client";
 import LoginResponse from "./mocks/LoginResponse";
+
 const Component = {
   template: "<div/>",
   props: {},
@@ -74,9 +77,26 @@ describe("useUser", () => {
     });
   });
 
+  const useSessionContextSpy = vi
+    .spyOn(useSessionContext, "useSessionContext")
+    .mockImplementation((): any => {
+      return {
+        refreshSessionContext: () => undefined,
+      };
+    });
+  const useCartSpy = vi
+    .spyOn(useCart, "useCart")
+    .mockImplementation((): any => {
+      return {
+        refreshCart: () => undefined,
+      };
+    });
+
   const wrapper = shallowMount(Component, getMockProvide());
-  it("login ", async () => {
+  it("login function", async () => {
     await wrapper.vm.login("test@test.zzz", "test");
-    // expect(wrapper.vm.getSalutations).toStrictEqual(Salutations);
+
+    expect(useSessionContextSpy).toHaveBeenCalled();
+    expect(useCartSpy).toHaveBeenCalled();
   });
 });
