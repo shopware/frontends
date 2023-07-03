@@ -19,28 +19,14 @@ const props = withDefaults(
   }
 );
 
-const localCountry = ref(props.countryId);
-const localState = ref(props.stateId);
-
+const { countryId, stateId } = useVModels(props, emit);
 const { getCountries, getStatesForCountry } = useCountries();
-
 const states = computed(() => {
-  return getStatesForCountry(localCountry.value);
+  return getStatesForCountry(countryId.value);
 });
-
-const handleCountryUpdate = (e: Event) => {
-  const target = e.target as HTMLInputElement;
-  localCountry.value = target.value;
-  localState.value = "";
-  emit("update:stateId", "");
-  emit("update:countryId", target.value);
-};
-
-const handleStateUpdate = (e: Event) => {
-  const target = e.target as HTMLInputElement;
-  localState.value = target.value;
-  emit("update:stateId", target.value);
-};
+function onCountrySelectChanged() {
+  stateId.value = "";
+}
 </script>
 
 <template>
@@ -51,13 +37,13 @@ const handleStateUpdate = (e: Event) => {
       }}</label>
       <select
         id="country"
-        v-model="localCountry"
+        v-model="countryId"
         required
         name="country"
         autocomplete="country-name"
         class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
         data-testid="country-select"
-        @change="handleCountryUpdate"
+        @change="onCountrySelectChanged"
         @blur="countryIdValidation && countryIdValidation.$touch()"
       >
         <option disabled selected value="">
@@ -84,13 +70,12 @@ const handleStateUpdate = (e: Event) => {
       }}</label>
       <select
         id="state"
-        v-model="localState"
+        v-model="stateId"
         required
         name="state"
         autocomplete="state-name"
         class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
         data-testid="checkout-pi-state-input"
-        @change="handleStateUpdate"
         @blur="stateIdValidation && stateIdValidation.$touch()"
       >
         <option disabled selected value="">
