@@ -24,6 +24,8 @@
     "save": "Save",
     "submit": "Submit",
     "promoCodePlaceholder": "Enter promo code",
-    "searchPlaceholder": "Search products"
+    "searchPlaceholder": "Search products",
+    "chooseState": "Choose state",
+    "state": "State"
   }
 }

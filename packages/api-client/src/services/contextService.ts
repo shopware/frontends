@@ -182,9 +182,13 @@ export async function setCurrentLanguage(
 export async function getAvailableCountries(
   contextInstance: ShopwareApiInstance = defaultInstance
 ): Promise<EntityResult<"country", Country>> {
-  const { data } = await contextInstance.invoke.get<
+  const { data } = await contextInstance.invoke.post<
     EntityResult<"country", Country>
-  >(getContextCountryEndpoint());
+  >(getContextCountryEndpoint(), {
+    associations: {
+      states: {},
+    },
+  });
   return data;
 }
 

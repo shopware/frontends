@@ -20,13 +20,13 @@ const props = withDefaults(
   }
 );
 
-const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
 const { t } = useI18n();
 const { pushError } = useNotifications();
 
 const formData = reactive<CustomerAddress>({
   countryId: props.address?.countryId ?? "",
+  countryStateId: props.address?.countryStateId ?? "",
   salutationId: props.address?.salutationId ?? "",
   firstName: props.address?.firstName ?? "",
   lastName: props.address?.lastName ?? "",
@@ -130,33 +130,11 @@ useFocus(firstNameInputElement, { initialValue: true });
                 data-testid="account-address-form-lastname-input"
               />
             </div>
-            <div class="col-span-6 sm:col-span-6">
-              <label
-                for="country"
-                class="block mb-2 text-sm font-medium text-gray-500"
-              >
-                {{ $t("form.country") }}
-              </label>
-              <select
-                id="country"
-                v-model="formData.countryId"
-                required
-                name="country"
-                autocomplete="country-name"
-                class="mt-1 block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-light focus:border-brand-light sm:text-sm"
-                data-testid="account-address-form-country-select"
-              >
-                <option
-                  v-for="country in getCountries"
-                  :key="country.id"
-                  :value="country.id"
-                  data-testid="account-address-form-country-select-option"
-                >
-                  {{ country.name }}
-                </option>
-              </select>
-            </div>
-
+            <SharedCountryStateInput
+              v-model:countryId="formData.countryId"
+              v-model:stateId="formData.countryStateId"
+              class="col-span-6 sm:col-span-6"
+            />
             <div class="col-span-6">
               <label
                 for="street-address"
