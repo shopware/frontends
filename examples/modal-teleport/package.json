@@ -9,18 +9,18 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.6.3",
+    "@nuxt/devtools": "^0.6.4",
     "@nuxt/types": "^2.17.0",
     "@nuxt/typescript-build": "^3.0.1",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
-    "@unocss/nuxt": "^0.53.3",
-    "@unocss/reset": "^0.53.3",
+    "@unocss/nuxt": "^0.53.4",
+    "@unocss/reset": "^0.53.4",
     "eslint": "^8.43.0",
-    "nuxt": "^3.6.0",
-    "unocss": "^0.53.3"
+    "nuxt": "^3.6.1",
+    "unocss": "^0.53.4"
   },
   "dependencies": {
-    "@vueuse/nuxt": "^10.2.0",
+    "@vueuse/nuxt": "^10.2.1",
     "vue": "^3.3.4"
   }
 }
