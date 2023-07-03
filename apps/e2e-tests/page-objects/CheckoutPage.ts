@@ -33,7 +33,7 @@ export class CheckoutPage {
     this.street = page.getByTestId("checkout-pi-street-address-input");
     this.zipcode = page.getByTestId("checkout-pi-zip-code-input");
     this.city = page.getByTestId("checkout-pi-city-input");
-    this.country = page.getByTestId("checkout-pi-country-input");
+    this.country = page.getByTestId("country-select");
     this.submitButton = page.getByTestId("checkout-pi-submit-button");
     this.termsBox = page.getByTestId("checkout-terms-box");
     this.termCheckbox = page.getByTestId("checkout-t&c-checkbox-tos");
