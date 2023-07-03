@@ -1,7 +1,7 @@
 {
   "name": "@shopware-pwa/typer",
   "private": true,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Generate documentation from types",
   "author": "Shopware",
   "repository": {
@@ -43,9 +43,9 @@
     "intermock": "^0.2.5",
     "ts-dox": "^0.1.0",
     "typedoc": "^0.24.8",
-    "typescript": "^5.1.3",
+    "typescript": "^5.1.6",
     "vinyl": "^3.0.0",
     "vite-plugin-dts": "^2.3.0",
-    "vitest": "^0.32.0"
+    "vitest": "^0.32.2"
   }
 }

@@ -1,0 +1,53 @@
+{
+  "name": "@shopware/api-gen",
+  "version": "0.0.3",
+  "description": "Shopware CLI for API client generation.",
+  "author": "Shopware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://frontends.shopware.com/packages/api-cli.html",
+  "keywords": [
+    "shopware",
+    "api",
+    "client",
+    "cli"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "api-gen": "bin/api-gen.mjs"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "cli": "esno ./src/cli.ts",
+    "dev": "export NODE_ENV=development && unbuild --stub",
+    "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:bench": "vitest bench",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/prettier": "^2.7.3",
+    "@types/yargs": "^17.0.24",
+    "@vitest/coverage-c8": "^0.32.2",
+    "eslint-config-shopware": "workspace:*",
+    "picocolors": "^1.0.0",
+    "tsconfig": "workspace:*",
+    "vitest": "^0.32.2"
+  },
+  "dependencies": {
+    "ofetch": "^1.1.1",
+    "openapi-typescript": "^6.2.8",
+    "prettier": "^2.8.8",
+    "semver": "^7.5.3",
+    "yargs": "^17.7.2"
+  }
+}

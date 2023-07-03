@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
-import { useCheckout, useSessionContext } from "@shopware-pwa/composables-next";
+import {
+  useCart,
+  useCheckout,
+  useSessionContext,
+} from "@shopware-pwa/composables-next";
 import { Error } from "@shopware-pwa/types";
 
 const {
@@ -17,6 +21,7 @@ const {
   selectedShippingMethod: shippingMethod,
   refreshSessionContext,
 } = useSessionContext();
+const { refreshCart } = useCart();
 
 const checkoutPaymentMethod = computed({
   get: () => paymentMethod.value?.id,
@@ -33,6 +38,7 @@ const createOrderError = ref<Error[]>([]);
 const createOrderProxy = async () => {
   try {
     const response = await createOrder();
+    refreshCart();
   } catch (error) {
     createOrderError.value = (error as any).messages || [];
   }
