@@ -1,0 +1,103 @@
+diff --git a/dist/apply-release-plan.cjs.dev.js b/dist/apply-release-plan.cjs.dev.js
+index a537ba7a436f047f4c372117d7851932bc4c6bce..3754e9ee1d1c076d5ded2f919dfb626f69bc164c 100644
+--- a/dist/apply-release-plan.cjs.dev.js
++++ b/dist/apply-release-plan.cjs.dev.js
+@@ -13,6 +13,7 @@ var getVersionRangeType = require('@changesets/get-version-range-type');
+ var Range = require('semver/classes/range');
+ var semverPrerelease = require('semver/functions/prerelease');
+ var semverSatisfies = require('semver/functions/satisfies');
++var semverValidRange = require("semver/ranges/valid");
+ var startCase = require('lodash.startcase');
+ 
+ function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
+@@ -25,6 +26,7 @@ var prettier__default = /*#__PURE__*/_interopDefault(prettier);
+ var getVersionRangeType__default = /*#__PURE__*/_interopDefault(getVersionRangeType);
+ var Range__default = /*#__PURE__*/_interopDefault(Range);
+ var semverPrerelease__default = /*#__PURE__*/_interopDefault(semverPrerelease);
++var semverValidRange__default = /*#__PURE__*/ _interopDefault(semverValidRange);
+ var semverSatisfies__default = /*#__PURE__*/_interopDefault(semverSatisfies);
+ var startCase__default = /*#__PURE__*/_interopDefault(startCase);
+ 
+@@ -168,13 +170,16 @@ function versionPackage(release, versionsToUpdate, {
+           depCurrentVersion = workspaceDepVersion;
+         }
+ 
+-        if ( // an empty string is the normalised version of x/X/*
++        if (
++        semverValidRange__default.default(depCurrentVersion) !== null &&
++        // an empty string is the normalised version of x/X/*
+         // we don't want to change these versions because they will match
+         // any version and if someone makes the range that
+         // they probably want it to stay like that...
+-        new Range__default['default'](depCurrentVersion).range !== "" || // ...unless the current version of a dependency is a prerelease (which doesn't satisfy x/X/*)
++        (new Range__default['default'](depCurrentVersion).range !== "" || // ...unless the current version of a dependency is a prerelease (which doesn't satisfy x/X/*)
+         // leaving those as is would leave the package in a non-installable state (wrong dep versions would get installed)
+-        semverPrerelease__default['default'](version) !== null) {
++        semverPrerelease__default['default'](version) !== null
++        )) {
+           let newNewRange = snapshot ? version : `${getVersionRangeType__default['default'](depCurrentVersion)}${version}`;
+           if (usesWorkspaceRange) newNewRange = `workspace:${newNewRange}`;
+           deps[name] = newNewRange;
+diff --git a/dist/apply-release-plan.cjs.prod.js b/dist/apply-release-plan.cjs.prod.js
+index 41b2127a84124c660742df42eacc80e9d44b3c8c..81b9ecdaed20ba8b59d5a7a8c9ecb50f9b270ef5 100644
+--- a/dist/apply-release-plan.cjs.prod.js
++++ b/dist/apply-release-plan.cjs.prod.js
+@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
+   value: !0
+ });
+ 
+-var config = require("@changesets/config"), git = require("@changesets/git"), resolveFrom = require("resolve-from"), detectIndent = require("detect-indent"), fs = require("fs-extra"), path = require("path"), prettier = require("prettier"), getVersionRangeType = require("@changesets/get-version-range-type"), Range = require("semver/classes/range"), semverPrerelease = require("semver/functions/prerelease"), semverSatisfies = require("semver/functions/satisfies"), startCase = require("lodash.startcase");
++var config = require("@changesets/config"), git = require("@changesets/git"), resolveFrom = require("resolve-from"), detectIndent = require("detect-indent"), fs = require("fs-extra"), path = require("path"), prettier = require("prettier"), getVersionRangeType = require("@changesets/get-version-range-type"), Range = require("semver/classes/range"), semverPrerelease = require("semver/functions/prerelease"), semverValidRange = require("semver/ranges/valid"), semverSatisfies = require("semver/functions/satisfies"), startCase = require("lodash.startcase");
+ 
+ function _interopDefault(e) {
+   return e && e.__esModule ? e : {
+@@ -12,7 +12,7 @@ function _interopDefault(e) {
+   };
+ }
+ 
+-var resolveFrom__default = _interopDefault(resolveFrom), detectIndent__default = _interopDefault(detectIndent), fs__default = _interopDefault(fs), path__default = _interopDefault(path), prettier__default = _interopDefault(prettier), getVersionRangeType__default = _interopDefault(getVersionRangeType), Range__default = _interopDefault(Range), semverPrerelease__default = _interopDefault(semverPrerelease), semverSatisfies__default = _interopDefault(semverSatisfies), startCase__default = _interopDefault(startCase);
++var resolveFrom__default = _interopDefault(resolveFrom), detectIndent__default = _interopDefault(detectIndent), fs__default = _interopDefault(fs), path__default = _interopDefault(path), prettier__default = _interopDefault(prettier), getVersionRangeType__default = _interopDefault(getVersionRangeType), Range__default = _interopDefault(Range), semverPrerelease__default = _interopDefault(semverPrerelease), semverValidRange__default = _interopDefault(semverValidRange), semverSatisfies__default = _interopDefault(semverSatisfies), startCase__default = _interopDefault(startCase);
+ 
+ function _defineProperty(obj, key, value) {
+   return key in obj ? Object.defineProperty(obj, key, {
+@@ -88,7 +88,7 @@ function versionPackage(release, versionsToUpdate, {updateInternalDependencies:
+           if ("*" === workspaceDepVersion || "^" === workspaceDepVersion || "~" === workspaceDepVersion) continue;
+           depCurrentVersion = workspaceDepVersion;
+         }
+-        if ("" !== new Range__default.default(depCurrentVersion).range || null !== semverPrerelease__default.default(version)) {
++        if (semverValidRange__default.default(depCurrentVersion) !== null && ("" !== new Range__default.default(depCurrentVersion).range || null !== semverPrerelease__default.default(version))) {
+           let newNewRange = snapshot ? version : `${getVersionRangeType__default.default(depCurrentVersion)}${version}`;
+           usesWorkspaceRange && (newNewRange = "workspace:" + newNewRange), deps[name] = newNewRange;
+         }
+diff --git a/dist/apply-release-plan.esm.js b/dist/apply-release-plan.esm.js
+index 68be505362cd3ab36ab8fc1ba0f7956065678671..c2a2be92fa69c1d650fa7311b2c01557900ffad4 100644
+--- a/dist/apply-release-plan.esm.js
++++ b/dist/apply-release-plan.esm.js
+@@ -9,6 +9,7 @@ import getVersionRangeType from '@changesets/get-version-range-type';
+ import Range from 'semver/classes/range';
+ import semverPrerelease from 'semver/functions/prerelease';
+ import semverSatisfies from 'semver/functions/satisfies';
++import semverValidRange from "semver/ranges/valid";
+ import startCase from 'lodash.startcase';
+ 
+ function _defineProperty(obj, key, value) {
+@@ -151,13 +152,16 @@ function versionPackage(release, versionsToUpdate, {
+           depCurrentVersion = workspaceDepVersion;
+         }
+ 
+-        if ( // an empty string is the normalised version of x/X/*
++        if (
++        semverValidRange(depCurrentVersion) !== null &&
++        // an empty string is the normalised version of x/X/*
+         // we don't want to change these versions because they will match
+         // any version and if someone makes the range that
+         // they probably want it to stay like that...
+-        new Range(depCurrentVersion).range !== "" || // ...unless the current version of a dependency is a prerelease (which doesn't satisfy x/X/*)
++        (new Range(depCurrentVersion).range !== "" || // ...unless the current version of a dependency is a prerelease (which doesn't satisfy x/X/*)
+         // leaving those as is would leave the package in a non-installable state (wrong dep versions would get installed)
+-        semverPrerelease(version) !== null) {
++        semverPrerelease(version) !== null
++        )) {
+           let newNewRange = snapshot ? version : `${getVersionRangeType(depCurrentVersion)}${version}`;
+           if (usesWorkspaceRange) newNewRange = `workspace:${newNewRange}`;
+           deps[name] = newNewRange;
