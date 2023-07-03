@@ -6,19 +6,23 @@ vi.mock("../../../src/apiService");
 const mockedApiInstance = defaultInstance;
 
 describe("ContextService - getAvailableCountries", () => {
-  const mockedGet = vi.fn();
+  const mockedPost = vi.fn();
   beforeEach(() => {
     vi.resetAllMocks();
     mockedApiInstance.invoke = {
-      get: mockedGet,
+      post: mockedPost,
     } as any;
   });
   it("should return array with countries", async () => {
-    mockedGet.mockResolvedValueOnce({ data: { total: 2 } });
+    mockedPost.mockResolvedValueOnce({ data: { total: 2 } });
 
     const result = await getAvailableCountries();
-    expect(mockedGet).toBeCalledTimes(1);
-    expect(mockedGet).toBeCalledWith("/store-api/country");
+    expect(mockedPost).toBeCalledTimes(1);
+    expect(mockedPost).toBeCalledWith("/store-api/country", {
+      associations: {
+        states: {},
+      },
+    });
     expect(result.total).toEqual(2);
   });
 });
