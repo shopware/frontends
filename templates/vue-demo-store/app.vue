@@ -24,6 +24,17 @@ const { data: sessionContextData } = await useAsyncData(
   }
 );
 
+// read the locale from accept-language header (i.e. en-GB or de-DE)
+// and set configuration for price formatting globally
+const headers = useRequestHeaders();
+const localeFromHeader = headers?.["accept-language"]
+  ?.split(",")
+  ?.find((languageConfig) => languageConfig.match(/([a-z]){2}\-([A-Z]{2})/));
+usePrice({
+  currencyCode: sessionContextData.value?.currency?.isoCode || "",
+  localeCode: localeFromHeader,
+});
+
 useSessionContext(sessionContextData.value as SessionContext);
 
 const { getWishlistProducts } = useWishlist();

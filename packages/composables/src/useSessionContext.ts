@@ -1,4 +1,4 @@
-import { computed, ComputedRef, inject, provide, Ref, ref } from "vue";
+import { computed, ComputedRef } from "vue";
 import {
   ShippingMethod,
   PaymentMethod,
@@ -20,7 +20,6 @@ import {
   setCurrentLanguage,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
-import { usePrice } from "./usePrice";
 import { _useContext } from "./internal/_useContext";
 
 export type UseSessionContextReturn = {
@@ -108,14 +107,6 @@ export function useSessionContext(
   newContext?: SessionContext
 ): UseSessionContextReturn {
   const { apiInstance } = useShopwareContext();
-  const { init } = usePrice();
-
-  if (newContext) {
-    init({
-      currencyCode: newContext.currency?.isoCode,
-      localeCode: newContext.salesChannel?.language?.locale?.code,
-    });
-  }
 
   const _sessionContext = _useContext("swSessionContext", {
     replace: newContext,
@@ -126,11 +117,6 @@ export function useSessionContext(
     try {
       const context = await getSessionContext(apiInstance);
       _sessionContext.value = context;
-
-      init({
-        currencyCode: context.currency?.isoCode,
-        localeCode: context.salesChannel?.language?.locale?.code,
-      });
     } catch (e) {
       console.error("[UseSessionContext][refreshSessionContext]", e);
     }

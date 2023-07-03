@@ -1,45 +1,56 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { createSharedComposable } from "@vueuse/core";
+import { useSessionContext } from "./useSessionContext";
 
 export type UsePriceReturn = {
-  /**
-   * Set init data: localeCode & currencyCode
-   */
-  init(options: { localeCode: string | undefined; currencyCode: string }): void;
   /**
    * Format price i.e. (2) -> 2.00 $
    */
   getFormattedPrice(value: number | string | undefined): string;
+  /**
+   * Update configuration
+   */
+  update(params: {
+    localeCode: string | undefined;
+    currencyCode: string;
+  }): void;
 };
 
 /**
  * Composable for getting formatted price
+ * Set the default currency code and locale in order to format a price correctly
+ *
  * @public
  * @category Product
  */
-function _usePrice(): UsePriceReturn {
-  const currencyLocale = ref<string>("");
+function _usePrice(params?: {
+  localeCode: string | undefined;
+  currencyCode: string;
+}): UsePriceReturn {
+  const { sessionContext } = useSessionContext();
+  const currencyLocale = ref<string | undefined>();
   const currencyCode = ref<string>("");
 
-  // TODO: make sure why there is no decimal precision in api response
-  const decimalPrecision = 2;
-  /**
-   * Set init data from backend response
-   *
-   * as a fallback for params.localeCode is navigator?.language
-   * @param params
-   */
-  function init(params: {
-    localeCode: string | undefined;
+  if (params) {
+    currencyCode.value = params.currencyCode;
+    currencyLocale.value = params.localeCode;
+  }
+
+  function update(params: {
+    localeCode?: string | undefined;
     currencyCode: string;
-  }): void {
+  }) {
     _setCurrencyCode(params.currencyCode);
     _setLocaleCode(
       params.localeCode ||
+        currencyLocale.value ||
         (typeof navigator !== "undefined" && navigator?.language) ||
         "en-US"
     );
   }
+
+  // TODO: make sure why there is no decimal precision in api response
+  const decimalPrecision = 2;
 
   function _setCurrencyCode(code: string) {
     currencyCode.value = code;
@@ -67,9 +78,23 @@ function _usePrice(): UsePriceReturn {
     }).format(+value);
   }
 
+  watch(
+    () => sessionContext.value?.currency,
+    (newCurrency) => {
+      if (!!newCurrency)
+        update({
+          // locale code is read only once on SSR because it's unavailable in the context
+          currencyCode: newCurrency?.isoCode as string,
+        });
+    },
+    {
+      immediate: true,
+    }
+  );
+
   return {
-    init,
     getFormattedPrice,
+    update,
   };
 }
 
