@@ -24,7 +24,7 @@ export class HomePage extends AbstractPage {
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
     this.addToWishlist = page
       .getByTestId("product-box-wishlist-icon-not-in")
-      .first();
+      .last();
     this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
     this.myAccountLink = page.getByTestId("header-my-account-link");
   }
