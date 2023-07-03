@@ -29,8 +29,8 @@ export type ClientSettings = {
 };
 
 export const defaultConfig: ClientSettings = {
-  endpoint: "https://pwa-demo-api.shopware.com/prev/",
-  accessToken: "SWSC40-LJTNO6COUEN7CJMXKLA",
+  endpoint: "",
+  accessToken: "",
   contextToken: "",
   languageId: "",
   defaultPaginationLimit: 10,

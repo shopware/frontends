@@ -34,6 +34,25 @@ export interface ShopwareApiInstance {
 }
 
 /**
+ * Check if api-client has minimum settings set
+ *
+ * @throws {Error}
+ *
+ * @param initialConfig {ClientSettings}
+ */
+function checkMinimumConfig(initialConfig: ClientSettings): void {
+  const getMessage = (missing: string) =>
+    `${missing} was not provided. Check your api-client settings. Read more at https://github.com/shopware/frontends/issues/276`;
+  if (!initialConfig?.endpoint || initialConfig?.endpoint?.length === 0) {
+    throw new Error(getMessage("API Endpoint"));
+  }
+
+  if (!initialConfig.accessToken || initialConfig?.accessToken?.length === 0) {
+    throw new Error(getMessage("Access Token"));
+  }
+}
+
+/**
  * Internal method for creating new instance, exported only for tests, not exported by package
  */
 export function _createInstance(initialConfig: ClientSettings = {}) {
@@ -42,6 +61,8 @@ export function _createInstance(initialConfig: ClientSettings = {}) {
   const apiService: AxiosInstance = axios.create();
 
   function reloadConfiguration() {
+    checkMinimumConfig(clientConfig);
+
     apiService.defaults.baseURL = clientConfig.endpoint;
     if (clientConfig.timeout) {
       apiService.defaults.timeout =
