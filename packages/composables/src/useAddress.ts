@@ -68,7 +68,6 @@ export type UseAddressReturn = {
  */
 export function useAddress(): UseAddressReturn {
   const { apiInstance } = useShopwareContext();
-  const { isLoggedIn, isGuestSession } = useUser();
 
   const _storeCustomerAddresses: Ref<CustomerAddress[]> = inject(
     "swCustomerAddresses",
@@ -100,7 +99,6 @@ export function useAddress(): UseAddressReturn {
     customerAddress: Omit<CustomerAddress, "id" | "salutation">
   ): Promise<CustomerAddress> {
     const result = await apiCreateCustomerAddress(customerAddress, apiInstance);
-    await loadCustomerAddresses();
     return result;
   }
 
@@ -111,7 +109,6 @@ export function useAddress(): UseAddressReturn {
     customerAddress: CustomerAddress
   ): Promise<CustomerAddress> {
     const result = await apiUpdateCustomerAddress(customerAddress, apiInstance);
-    await loadCustomerAddresses();
     return result;
   }
 
@@ -120,7 +117,6 @@ export function useAddress(): UseAddressReturn {
    */
   async function deleteCustomerAddress(addressId: string): Promise<void> {
     const result = apiDeleteCustomerAddress(addressId, apiInstance);
-    await loadCustomerAddresses();
     return result;
   }
 

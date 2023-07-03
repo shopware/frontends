@@ -1,18 +1,11 @@
 import { AxiosResponse, AxiosError } from "axios";
-
+import { Error } from "../response/Error";
 /**
  * API error structure for incoming errors
  *
  * @public
  */
-export type ShopwareError = {
-  status: string;
-  code: string;
-  title: string;
-  detail: string;
-  source: unknown;
-  meta: unknown;
-};
+export type ShopwareError = Error;
 
 /**
  * API Error response from Shopware backend
