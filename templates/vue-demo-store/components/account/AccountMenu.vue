@@ -17,7 +17,7 @@ async function invokeLogout() {
       <div v-show="!isLoggedIn">
         <button
           type="button"
-          class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+          class="whitespace-nowrap bg-transparent text-base font-medium text-gray-500 hover:text-gray-900"
           data-testid="header-sign-in-link"
           @click="loginModalController.open"
         >
@@ -40,7 +40,7 @@ async function invokeLogout() {
           />
           <button
             type="button"
-            class="text-sm text-gray-700 focus:outline-none hidden sm:block"
+            class="text-sm text-gray-700 bg-transparent focus:outline-none hidden sm:block"
             data-testid="account-menu-hello-button"
             @click="isAccountMenuOpen = !isAccountMenuOpen"
           >

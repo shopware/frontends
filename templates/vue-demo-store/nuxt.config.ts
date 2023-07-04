@@ -40,9 +40,11 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
   },
   unocss: {
-    preflight: true, // this is needed by @unocss/reset
     // for presets, theme config, ... look at the uno.config.ts file
   },
+  css: [
+    "@unocss/reset/tailwind-compat.css", // needed to reset styles see https://unocss.dev/guide/style-reset (@unocss/reset)
+  ],
   router: {
     options: {
       linkExactActiveClass: "text-brand-primary",
