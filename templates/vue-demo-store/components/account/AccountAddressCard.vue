@@ -80,7 +80,7 @@ const addAddressModalController = useModal();
         @click.prevent="addAddressModalController.open"
       />
       <SharedModal :controller="addAddressModalController">
-        <AccountAddressForm
+        <SharedAccountAddressForm
           :address="address"
           :title="$t('account.editAddress')"
           @success="addAddressModalController.close"
