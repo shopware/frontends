@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { apiClient, ApiReturnTypes } from "./apiClient";
+import { apiClient, ApiReturnType } from "./apiClient";
 import HelloWorld from "./components/HelloWorld.vue";
 import LoginForm from "./components/LoginForm.vue";
 
-const productsResponse = ref<ApiReturnTypes<"readProduct">>();
+const productsResponse = ref<ApiReturnType<"readProduct">>();
 
 onMounted(async () => {
   await apiClient.invoke("readContext get /context", {});

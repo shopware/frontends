@@ -28,7 +28,7 @@ export const apiClient = createAPIClient<operations, operationPaths>({
 export type ApiSchemas = components["schemas"];
 export type ApiRequestParams<OPERATION_NAME extends keyof operations> =
   RequestParameters<OPERATION_NAME, operations>;
-export type ApiReturnTypes<OPERATION_NAME extends keyof operations> =
+export type ApiReturnType<OPERATION_NAME extends keyof operations> =
   RequestReturnType<OPERATION_NAME, operations>;
 
 // predefine navigation loading method with depth settings

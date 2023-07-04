@@ -54,6 +54,9 @@ export type ApiSchemas = components["schemas"];
 // reimport operations request parameters to use it in application
 export type ApiRequestParams<OPERATION_NAME extends keyof operations> =
   RequestParameters<OPERATION_NAME, operations>;
+// reimport operations return types to use it in application
+export type ApiReturnType<OPERATION_NAME extends keyof operations> =
+  RequestReturnType<OPERATION_NAME, operations>;
 ```
 
 ## Example use case
@@ -63,10 +66,10 @@ Take a look at [example project using API Client](https://stackblitz.com/github/
 ### Simple invocation
 
 ```typescript
-import { apiClient, ApiReturnTypes } from "./apiClient";
+import { apiClient, ApiReturnType } from "./apiClient";
 
-// could be reactive value, you can use ApiReturnTypes to type it properly
-let productsResponse: ApiReturnTypes<"readProduct">;
+// could be reactive value, you can use ApiReturnType to type it properly
+let productsResponse: ApiReturnType<"readProduct">;
 
 async function loadProducts() {
   productsResponse = await apiClient.invoke("readProduct post /product", {
@@ -112,11 +115,3 @@ Full changelog for stable version is available [here](https://github.com/shopwar
 ### Patch Changes
 
 - [#290](https://github.com/shopware/frontends/pull/290) [`9562a8a`](https://github.com/shopware/frontends/commit/9562a8add35751093d766017abba474f0ad578f8) Thanks [@patzick](https://github.com/patzick)! - ship api-types with package
-
-```
-
-```
-
-```
-
-```
