@@ -155,7 +155,7 @@ const srcPath = computed(() => {
       aria-label="Add to wishlist"
       type="button"
       @click="toggleWishlistProduct"
-      class="absolute top-2 right-2 hover:animate-count-infinite hover:animate-heart-beat"
+      class="absolute bg-transparent top-2 right-2 hover:animate-count-infinite hover:animate-heart-beat"
       data-testid="product-box-toggle-wishlist-button"
     >
       <client-only>
