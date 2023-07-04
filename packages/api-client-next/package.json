@@ -30,6 +30,7 @@
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "export NODE_ENV=development && unbuild --stub",
+    "generate": "esno ../api-gen/src/cli.ts generate",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
     "test": "vitest run && pnpm run test:types",
     "test:types": "vitest typecheck --run",
@@ -37,6 +38,7 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
+    "@shopware/api-gen": "workspace:*",
     "@types/prettier": "^2.7.3",
     "@vitest/coverage-c8": "^0.32.2",
     "eslint-config-shopware": "workspace:*",

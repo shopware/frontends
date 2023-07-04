@@ -1,9 +1,13 @@
-import { createAPIClient } from "@shopware/api-client";
+import {
+  RequestParameters,
+  RequestReturnType,
+  createAPIClient,
+} from "@shopware/api-client";
 import {
   operationPaths,
   operations,
   components,
-} from "@shopware/api-client/api-types/apiTypes-6.4.20.0";
+} from "@shopware/api-client/api-types";
 import Cookies from "js-cookie";
 
 export const apiClient = createAPIClient<operations, operationPaths>({
@@ -21,4 +25,18 @@ export const apiClient = createAPIClient<operations, operationPaths>({
   },
 });
 
-export type Schemas = components["schemas"];
+export type ApiSchemas = components["schemas"];
+export type ApiRequestParams<OPERATION_NAME extends keyof operations> =
+  RequestParameters<OPERATION_NAME, operations>;
+export type ApiReturnTypes<OPERATION_NAME extends keyof operations> =
+  RequestReturnType<OPERATION_NAME, operations>;
+
+// predefine navigation loading method with depth settings
+export const readNavigation = (params: ApiRequestParams<"readNavigation">) =>
+  apiClient.invoke(
+    "readNavigation post /navigation/{activeId}/{rootId} sw-include-seo-urls",
+    {
+      depth: 2,
+      ...params,
+    }
+  );

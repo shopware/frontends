@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { apiClient, Schemas } from "./apiClient";
+import { apiClient, ApiReturnTypes } from "./apiClient";
 import HelloWorld from "./components/HelloWorld.vue";
 import LoginForm from "./components/LoginForm.vue";
 
-const products = ref<
-  Schemas["EntitySearchResult"] & { elements?: Array<Schemas["Product"]> }
->();
+const productsResponse = ref<ApiReturnTypes<"readProduct">>();
 
 onMounted(async () => {
   await apiClient.invoke("readContext get /context", {});
-  products.value = await apiClient.invoke("readProduct post /product", {
+  productsResponse.value = await apiClient.invoke("readProduct post /product", {
     limit: 2,
   });
-  console.log(products.value);
+  console.log(productsResponse.value);
 });
 </script>
 
@@ -29,7 +27,7 @@ onMounted(async () => {
   <HelloWorld msg="Vite + Vue" />
   <div>
     <div
-      v-for="product in products?.elements"
+      v-for="product in productsResponse?.elements"
       :key="product.id"
       style="margin-top: 20px"
     >
