@@ -55,7 +55,7 @@ provide("swNavigation-footer-navigation", footerData);
                 >
                   My account
                 </h1>
-                <ul class="space-y-2">
+                <ul class="space-y-2 list-none pl-0">
                   <li>
                     <NuxtLink
                       :to="localePath(`/account`)"
@@ -93,7 +93,9 @@ provide("swNavigation-footer-navigation", footerData);
                     </NuxtLink>
                   </li>
                 </ul>
-                <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200">
+                <ul
+                  class="pt-4 mt-4 space-y-2 border-t border-gray-200 list-none pl-0"
+                >
                   <li>
                     <NuxtLink
                       :to="localePath(`/account/order`)"

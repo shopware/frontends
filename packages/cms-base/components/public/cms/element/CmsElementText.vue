@@ -64,7 +64,7 @@ const CmsTextRender = () => {
             const btnClass =
               "rounded-md inline-block my-2 py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
 
-            _class = node?.attrs?.class
+            _class = node.attrs.class
               .replace("btn-secondary", `${btnClass} bg-brand-dark text-white`)
               .replace(
                 "btn-primary",
