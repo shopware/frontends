@@ -24,6 +24,41 @@ type GetInferKey<T, NAME extends string> = T extends { [key in NAME]: infer R }
   ? R
   : never;
 
+export type RequestParameters<
+  OPERATION_NAME extends keyof OPERATIONS,
+  OPERATIONS = defaultOperations
+> = (OPERATIONS[OPERATION_NAME] extends {
+  parameters?: { query?: infer R };
+}
+  ? R
+  : Record<string, unknown>) &
+  (OPERATIONS[OPERATION_NAME] extends {
+    parameters?: { path?: infer R };
+  }
+    ? R
+    : Record<string, unknown>) &
+  (OPERATIONS[OPERATION_NAME] extends {
+    requestBody?: { content?: { "application/json"?: infer R } };
+  }
+    ? R
+    : Record<string, unknown>) &
+  (OPERATIONS[OPERATION_NAME] extends {
+    parameters?: { header?: infer R };
+  }
+    ? R
+    : Record<string, unknown>);
+
+export type RequestReturnType<
+  T extends keyof OPERATIONS,
+  OPERATIONS = defaultOperations
+> = GetInferKey<
+  GetInferKey<
+    GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
+    "content"
+  >,
+  "application/json"
+>;
+
 export function createAPIClient<
   OPERATIONS extends Operations = defaultOperations,
   PATHS = defaultPaths
@@ -34,14 +69,6 @@ export function createAPIClient<
   contextToken?: string;
   onContextChanged?: (newContextToken: string) => void;
 }) {
-  type ReturnType<T extends keyof OPERATIONS> = GetInferKey<
-    GetInferKey<
-      GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
-      "content"
-    >,
-    "application/json"
-  >;
-
   const defaultHeaders = {
     "sw-access-key": params.accessToken,
     "sw-context-token": params.contextToken,
@@ -76,39 +103,23 @@ export function createAPIClient<
       : never
   >(
     pathParam: INVOKE_PATH extends string ? INVOKE_PATH : never,
-    params: (OPERATIONS[OPERATION_NAME] extends {
-      parameters?: { query?: infer R };
-    }
-      ? R
-      : Record<string, unknown>) &
-      (OPERATIONS[OPERATION_NAME] extends {
-        parameters?: { path?: infer R };
-      }
-        ? R
-        : Record<string, unknown>) &
-      (OPERATIONS[OPERATION_NAME] extends {
-        requestBody?: { content?: { "application/json"?: infer R } };
-      }
-        ? R
-        : Record<string, unknown>) &
-      (OPERATIONS[OPERATION_NAME] extends {
-        parameters?: { header?: infer R };
-      }
-        ? R
-        : Record<string, unknown>)
-  ): Promise<ReturnType<OPERATION_NAME>> {
+    params: RequestParameters<OPERATION_NAME, OPERATIONS>
+  ): Promise<RequestReturnType<OPERATION_NAME, OPERATIONS>> {
     const [requestPath, options] = transformPathToQuery(
       pathParam,
       params as Record<string, string>
     );
     // console.log("invoke with", requestPath, options);
-    return apiFetch<ReturnType<OPERATION_NAME>>(requestPath, {
-      ...options,
-      headers: {
-        ...defaultHeaders,
-        ...options.headers,
-      } as HeadersInit,
-    });
+    return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
+      requestPath,
+      {
+        ...options,
+        headers: {
+          ...defaultHeaders,
+          ...options.headers,
+        } as HeadersInit,
+      }
+    );
   }
 
   return {
