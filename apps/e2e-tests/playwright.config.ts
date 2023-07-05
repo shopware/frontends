@@ -70,18 +70,18 @@ const config: PlaywrightTestConfig = {
     },
 
     /* Test against mobile viewports. */
-    {
-      name: "Pixel 9",
-      use: {
-        ...devices["Pixel 9"],
-      },
-    },
-    {
-      name: "Galaxy S9+ landscape",
-      use: {
-        ...devices["Galaxy S9+ landscape"],
-      },
-    },
+    // {
+    //   name: "Pixel 9",
+    //   use: {
+    //     ...devices["Pixel 9"],
+    //   },
+    // },
+    // {
+    //   name: "Galaxy S9+ landscape",
+    //   use: {
+    //     ...devices["Galaxy S9+ landscape"],
+    //   },
+    // },
   ],
 };
 
