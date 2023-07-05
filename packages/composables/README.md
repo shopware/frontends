@@ -137,8 +137,18 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.10.0
+### Latest changes: 0.11.0
 
 ### Minor Changes
 
-- [#281](https://github.com/shopware/frontends/pull/281) [`558c9d0`](https://github.com/shopware/frontends/commit/558c9d0f2127776a0542e8d1d95734cb5d4c7e75) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Remove refreshing cart from create order function
+- [#284](https://github.com/shopware/frontends/pull/284) [`bb48e13`](https://github.com/shopware/frontends/commit/bb48e131570a2db4b7431c842e54ad67d9384cd5) Thanks [@mkucmus](https://github.com/mkucmus)! - Use function constructor instead of init method to set config for price displaying
+
+### Patch Changes
+
+- [#283](https://github.com/shopware/frontends/pull/283) [`e6a52ec`](https://github.com/shopware/frontends/commit/e6a52ec4b7c28627c55cbd8ca15b8458cedf53bd) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Fixed initial listing suring search
+
+- [#295](https://github.com/shopware/frontends/pull/295) [`23a0a53`](https://github.com/shopware/frontends/commit/23a0a532410990c0075ea7fff622949ccdecfd49) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+
+- Updated dependencies [[`14d97c5`](https://github.com/shopware/frontends/commit/14d97c5942adf5a49163625b2740d95bc5772689)]:
+  - @shopware-pwa/api-client@0.5.1
+  - @shopware-pwa/helpers-next@0.3.1
