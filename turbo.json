@@ -27,9 +27,6 @@
     },
     "test:e2e": {
       "outputs": []
-    },
-    "test:e2e:chrome": {
-      "outputs": []
-    } 
+    }
   }
 }
