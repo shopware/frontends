@@ -32,5 +32,6 @@ jobs:
           pnpm playwright install --with-deps
 
       - name: Run tests
-        working-directory: ./apps/e2e-test/
-        run: npx playwright test checkCodeExamples.spec.ts --project=chromium
+        run: |
+          cd apps/e2e-tests
+          npx playwright test checkCodeExamples.spec.ts --project=chromium
