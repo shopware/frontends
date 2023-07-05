@@ -7,7 +7,12 @@ export const patches = {
      * Fixes the problem  with schema >=5.0 where ContextTokenResponse is not defined
      */
     name: "ContextTokenResponse",
-    patch: (schema: Object) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    patch: (schema: any) => {
+      schema.components ??= {};
+      schema.components.schemas ??= {};
+      schema.paths ??= {};
+
       schema.components.schemas["ContextTokenResponse"] ??= {
         type: "object",
         properties: {

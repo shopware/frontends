@@ -15,25 +15,24 @@
     "url": "https://github.com/shopware/frontends/issues"
   },
   "license": "MIT",
-  "type": "module",
-  "module": "./dist/vue3-plugin.es.js",
-  "types": "./dist/main.d.ts",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
-    ".": {
-      "types": "./dist/main.d.ts",
-      "import": "./dist/vue3-plugin.es.js"
-    }
+    "import": "./dist/index.mjs"
   },
   "scripts": {
-    "build": "tsc && vite build"
+    "build": "unbuild && pnpm build:types",
+    "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --esModuleInterop --outDir ./temp --skipLibCheck",
+    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "typescript": "^5.1.6",
-    "vite": "^4.3.9",
-    "vite-dts": "^1.0.4"
+    "eslint-config-shopware": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "@shopware-pwa/api-client": "workspace:*",
