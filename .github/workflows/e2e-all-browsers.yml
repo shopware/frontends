@@ -1,12 +1,12 @@
-name: e2e
+name: Vue demo store
 
-on:
-  deployment_status:
-
+run-name: Playwright is testing all browsers 🚀
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '30 22 * * *'
 jobs:
-  run-e2e:
-    name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
+  run-code_examples-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -33,13 +33,3 @@ jobs:
 
       - name: Run tests
         run: pnpm run test:e2e:chrome
-        env:
-          BASE_E2E_URL: ${{ github.event.deployment_status.target_url }}
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        if: ${{ failure() }}
-        with:
-          name: reports
-          path: apps/e2e-tests/reports/
-          retention-days: 7
