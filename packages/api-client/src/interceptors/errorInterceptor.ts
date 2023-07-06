@@ -70,7 +70,9 @@ const extractNotApiErrorMessage = (error: AxiosError): ShopwareError[] => [
     code: "",
     title: "",
     meta: {},
-    source: {},
+    source: {
+      pointer: "",
+    },
   },
 ];
 

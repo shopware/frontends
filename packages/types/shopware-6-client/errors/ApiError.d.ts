@@ -10,7 +10,9 @@ export type ShopwareError = {
   code: string;
   title: string;
   detail: string;
-  source: unknown;
+  source?: {
+    pointer: string;
+  };
   meta: unknown;
 };
 

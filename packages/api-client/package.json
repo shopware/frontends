@@ -29,7 +29,8 @@
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "export NODE_ENV=development && unbuild --stub",
-    "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
+    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run --segfault-retry=3"
   },
   "devDependencies": {

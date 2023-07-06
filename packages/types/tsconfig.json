@@ -1,0 +1,5 @@
+{
+  "extends": "tsconfig/base.json",
+  "include": ["shopware-6-client"],
+  "exclude": ["node_modules"]
+}

@@ -6,12 +6,14 @@
     "dev": "nuxi dev",
     "build": "nuxi build",
     "start": "nuxi start",
-    "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0",
+    "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
+    "typecheck": "vue-tsc --noEmit",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "analyze": "nuxi analyze"
   },
   "dependencies": {
+    "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/cms-base": "canary",
     "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
@@ -30,6 +32,7 @@
     "@nuxtjs/i18n": "8.0.0-beta.10",
     "@vue/eslint-config-typescript": "^11.0.3",
     "eslint-plugin-vue": "^9.15.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "nuxt": "^3.6.1",
     "typescript": "^5.1.6",
     "vite-vue-plugin-disable-inputs": "canary",
