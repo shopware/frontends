@@ -278,7 +278,7 @@ useBreadcrumbs([
       </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
         <div class="col-span-12 md:col-span-4">
-          <label for="street">{{ $t("form.street") }} *</label>
+          <label for="street">{{ $t("form.streetAddress") }} *</label>
           <input
             id="Street"
             v-model="state.billingAddress.street"
