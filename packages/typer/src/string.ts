@@ -31,7 +31,7 @@ export function normalizeString(word?: string) {
 
 export function getWrappedCodeBlock(
   code: string | undefined,
-  lang: string = "ts"
+  lang = "ts"
 ): string {
   if (!code) return "";
   return `
@@ -43,7 +43,7 @@ ${code}
 
 export function getToggleContainer(
   contents: string,
-  title: string = "Click to see the details"
+  title = "Click to see the details"
 ) {
   return `
 

@@ -14,7 +14,7 @@ import {
   ClientApiError,
   CustomerAddress,
   ShopwareSearchParams,
-  Error,
+  ShopwareError,
 } from "@shopware-pwa/types";
 import { useUser } from "./useUser";
 
@@ -54,9 +54,9 @@ export type UseAddressReturn = {
   /**
    * Returns formatted error message
    *
-   * @param {Error} error
+   * @param {ShopwareError} error
    */
-  errorMessageBuilder(error: Error): string | null;
+  errorMessageBuilder(error: ShopwareError): string | null;
 };
 
 /**
@@ -144,7 +144,7 @@ export function useAddress(): UseAddressReturn {
    * @param {error} error
    * @returns {string | null}
    */
-  function errorMessageBuilder(error: Error): string | null {
+  function errorMessageBuilder(error: ShopwareError): string | null {
     switch (error.code) {
       case "VIOLATION::IS_BLANK_ERROR":
         return `${error?.source?.pointer.slice(1)} - ${error.detail}`;

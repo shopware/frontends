@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
-import openapiTS from "openapi-typescript";
+import openapiTS, { OpenAPI3 } from "openapi-typescript";
 import * as dotenv from "dotenv";
 import * as c from "picocolors";
 import { format } from "prettier";
@@ -72,7 +72,7 @@ export async function generate() {
     const schemaFile = readFileSync(SCHEMA_FILENAME(version), {
       encoding: "utf-8",
     });
-    let schemaForPatching = JSON.parse(schemaFile);
+    let schemaForPatching = JSON.parse(schemaFile) as OpenAPI3;
     const allPatches = Object.keys(patches) as Array<keyof typeof patches>;
     const semverVersion = version.slice(2);
     const patchesToApply = allPatches.filter((patch) => {

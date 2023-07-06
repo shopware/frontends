@@ -17,7 +17,7 @@ export function getStackBlitzExampleEmbedUrl({
   };
 
   const queryString = new URLSearchParams(
-    stackBlitzIframeOptions as any
+    stackBlitzIframeOptions as unknown as Record<string, string>
   ).toString();
 
   const exampleUrl = `${githubTreeUrl}?${queryString}`;

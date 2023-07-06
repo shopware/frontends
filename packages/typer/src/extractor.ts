@@ -3,7 +3,7 @@ import type { Metadata, Property, PropertyMdTableRow } from "./types";
 import type { TsDoxFile, TsDoxFunction, TsDoxDict } from "ts-dox";
 import { normalizeString } from "./string";
 
-let tableHeader = `
+const tableHeader = `
 <table>
   <tr>
     <th>Name</th>
