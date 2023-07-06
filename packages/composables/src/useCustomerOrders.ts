@@ -17,7 +17,7 @@ export type UseCustomerOrdersReturn = {
   /**
    * Fetches the orders list and assigns the result to the `orders` property
    */
-  loadOrders(parameters: ShopwareSearchParams): Promise<void>;
+  loadOrders(parameters?: ShopwareSearchParams): Promise<void>;
 };
 
 /**

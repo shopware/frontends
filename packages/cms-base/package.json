@@ -35,9 +35,9 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "check-types": "vue-tsc --noemit",
     "eslint": "eslint components/**/*.vue* --fix --max-warnings=0",
-    "lint": "pnpm run eslint && pnpm run check-types",
+    "lint": "pnpm run eslint && pnpm run typecheck",
+    "typecheck": "tsc --noEmit",
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {

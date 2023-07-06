@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "lint": "vue-tsc --noEmit",
     "generate": "nuxt generate",
     "preview": "nuxt preview"
   },
