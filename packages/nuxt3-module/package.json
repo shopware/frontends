@@ -35,7 +35,8 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "lint": "eslint plugin.ts src/**/*.ts* --fix --max-warnings=0",
+    "lint": "eslint plugin.ts src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "typecheck": "tsc --noEmit",
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {

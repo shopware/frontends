@@ -14,7 +14,7 @@ definePageMeta({
 });
 
 const { push } = useRouter();
-const { getCountries } = useCountries();
+const { getCountries, getStatesForCountry } = useCountries();
 const { getSalutations } = useSalutations();
 const { pushInfo } = useNotifications();
 const { t } = useI18n();
@@ -125,6 +125,7 @@ const state = reactive({
     zipcode: "",
     city: "",
     countryId: "",
+    countryStateId: "",
   },
   customShipping: false,
 });
@@ -171,6 +172,11 @@ const rules = computed(() => ({
     },
     countryId: {
       required,
+    },
+    countryStateId: {
+      required: requiredIf(() => {
+        return !!getStatesForCountry(state.billingAddress.countryId)?.length;
+      }),
     },
   },
 }));
@@ -507,7 +513,6 @@ const addAddressModalController = useModal();
                     {{ $v.billingAddress.zipcode.$errors[0].$message }}
                   </span>
                 </div>
-
                 <div class="col-span-6 sm:col-span-3">
                   <label
                     for="city"
@@ -533,41 +538,13 @@ const addAddressModalController = useModal();
                     {{ $v.billingAddress.city.$errors[0].$message }}
                   </span>
                 </div>
-
-                <div class="col-span-6">
-                  <label
-                    for="country"
-                    class="block text-sm font-medium text-gray-700"
-                    >{{ $t("form.country") }}</label
-                  >
-                  <select
-                    id="country"
-                    v-model="state.billingAddress.countryId"
-                    required
-                    name="country"
-                    autocomplete="country-name"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
-                    data-testid="checkout-pi-country-input"
-                    @blur="$v.billingAddress.countryId.$touch()"
-                  >
-                    <option disabled selected value="">
-                      {{ $t("form.chooseCountry") }}
-                    </option>
-                    <option
-                      v-for="country in getCountries"
-                      :key="country.id"
-                      :value="country.id"
-                    >
-                      {{ country.name }}
-                    </option>
-                  </select>
-                  <span
-                    v-if="$v.billingAddress.countryId.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
-                  >
-                    {{ $v.billingAddress.countryId.$errors[0].$message }}
-                  </span>
-                </div>
+                <SharedCountryStateInput
+                  v-model:countryId="state.billingAddress.countryId"
+                  v-model:stateId="state.billingAddress.countryStateId"
+                  :country-id-validation="$v.billingAddress.countryId"
+                  :state-id-validation="$v.billingAddress.countryStateId"
+                  class="col-span-6"
+                />
               </div>
               <button
                 type="submit"
@@ -775,7 +752,7 @@ const addAddressModalController = useModal();
             <button
               type="button"
               data-testid="checkout-add-new-billing-address-button"
-              class="flex font-medium text-brand-dark"
+              class="flex font-medium text-brand-dark bg-transparent"
               @click="addAddressModalController.open"
             >
               {{ $t("checkout.addNewBillingAddress") }}
@@ -826,7 +803,7 @@ const addAddressModalController = useModal();
                 <button
                   type="button"
                   data-testid="checkout-add-new-shipping-address-button"
-                  class="flex font-medium text-brand-dark"
+                  class="flex font-medium text-brand-dark bg-transparent"
                   @click="addAddressModalController.open"
                 >
                   {{ $t("checkout.addNewShippingAddress") }}

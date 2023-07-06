@@ -20,7 +20,7 @@ const localePath = useLocalePath();
         <div class="ml-3 flex h-7 items-center">
           <button
             type="button"
-            class="-m-2 p-2 text-gray-400 hover:text-gray-500"
+            class="-m-2 p-2 bg-transparent text-gray-400 hover:text-gray-500"
             data-testid="cart-close-button"
             @click="props.controller.close"
           >
@@ -87,7 +87,7 @@ const localePath = useLocalePath();
           or
           <button
             type="button"
-            class="font-medium"
+            class="font-medium bg-transparent"
             data-testid="cart-continue-button"
             @click="props.controller.close"
           >
