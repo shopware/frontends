@@ -13,6 +13,7 @@ export class RegisterForm {
   readonly zipcode: Locator;
   readonly city: Locator;
   readonly country: Locator;
+  readonly countryState: Locator;
   readonly submitButton: Locator;
 
   // Init selectors using constructor
@@ -27,6 +28,7 @@ export class RegisterForm {
     this.zipcode = page.getByTestId("registration-zipcode-input");
     this.city = page.getByTestId("registration-city-input");
     this.country = page.getByTestId("country-select");
+    this.countryState = page.getByTestId("checkout-pi-state-input");
     this.submitButton = page.getByTestId("registration-submit-button");
   }
 
@@ -49,6 +51,7 @@ export class RegisterForm {
     await this.zipcode.type(zipcode);
     await this.city.type(city);
     await this.country.selectOption({ label: "Germany" });
+    await this.countryState.selectOption({ label: "Bavaria" });
   }
 
   async submitRegistraionForm() {
@@ -67,6 +70,7 @@ export class RegisterForm {
     await this.zipcode.type(faker.location.zipCode());
     await this.city.type(faker.location.city());
     await this.country.selectOption({ label: "Germany" });
+    await this.countryState.selectOption({ label: "Bavaria" });
     await this.submitButton.click();
     await this.page.waitForURL("/");
   }
