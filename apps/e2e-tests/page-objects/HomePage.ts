@@ -34,18 +34,17 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await this.signInButton.waitFor({ state: "visible" });
+    await this.signInButton.waitFor();
     await this.signInButton.click({ delay: 500 });
   }
 
   async openCartPage() {
-    await this.page.waitForTimeout(500);
+    // await this.page.waitForTimeout(500);
     await this.linkToCartPage.waitFor();
     await this.linkToCartPage.click();
     await this.page.waitForSelector("[data-testid='product-quantity']", {
       state: "visible",
     });
-    await this.page.waitForLoadState("load");
   }
 
   async openVariantsCartPage() {

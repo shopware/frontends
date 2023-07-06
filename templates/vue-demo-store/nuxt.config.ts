@@ -15,7 +15,6 @@ export default defineNuxtConfig({
    * Commented because of the StackBlitz error
    * Issue: https://github.com/shopware/frontends/issues/88
    */
-  debug: true,
   typescript: {
     // typeCheck: true,
     strict: true,

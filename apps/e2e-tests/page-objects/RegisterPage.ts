@@ -55,8 +55,7 @@ export class RegisterForm {
   }
 
   async submitRegistraionForm() {
-    await this.page.waitForLoadState("networkidle");
-    await this.submitButton.click({ delay: 500 });
+    await this.submitButton.click();
     await this.page.waitForURL("/", { waitUntil: "networkidle" });
   }
 

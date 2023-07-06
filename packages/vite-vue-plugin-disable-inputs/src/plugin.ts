@@ -67,12 +67,8 @@ function VueDisableInputsBeforeMount(): PluginOption {
           );
         }
 
-        console.warn(id, " changed to be:", component);
-
         return { code: component, id };
       }
-
-      console.warn(id, " was not changed at all");
 
       return null;
     },
