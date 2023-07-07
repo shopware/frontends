@@ -6,7 +6,6 @@ import { Error } from "../response/Error";
  * @public
  */
 export type ShopwareError = Error;
-
 /**
  * API Error response from Shopware backend
  *
