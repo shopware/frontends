@@ -47,14 +47,14 @@ export async function SourceResolver({
 }): Promise<SourceResolverReturn> {
   const metadata = await getTypesMetadata();
   if (!metadata?.activeConfig || !metadata?.typesMetadata) {
-    return {} as any;
+    return {} as SourceResolverReturn;
   }
   const { activeConfig, typesMetadata } = metadata;
 
   async function getTypesMetadata(): Promise<
     | {
         activeConfig: SourcePath;
-        typesMetadata: any;
+        typesMetadata?: TsDoxFunction | TsDoxFile;
       }
     | undefined
   > {
@@ -171,7 +171,7 @@ export type TypesParserReturn = {
 export function TypesParser({
   metadata,
 }: {
-  metadata: TsDoxFunction | TsDoxFile;
+  metadata: TsDoxFunction | TsDoxFile | TsDoxClass;
 }): TypesParserReturn {
   function hasProperties(): boolean {
     return metadata.hasOwnProperty("properties");
@@ -227,7 +227,7 @@ const { ${breakLine ? "\n" : ""} ${
       getFunctionReturnType(functionName) || ""
     );
     // filter out properties that are not present in the return signature (BUG)
-    const exportedApiList = getExportedAPIs(metadata as any)?.filter(
+    const exportedApiList = getExportedAPIs(metadata as TsDoxClass)?.filter(
       (property) =>
         returnTypeSignature?.includes(` ${property}:`) ||
         returnTypeSignature?.includes(` ${property}(`)
@@ -241,7 +241,7 @@ const { ${breakLine ? "\n" : ""} ${
     transformRow?: (propertyData: Property) => Promise<PropertyMdTableRow>
   ): Promise<string> {
     return _getTypesTable(
-      metadata as any,
+      metadata as TsDoxClass,
       accessor,
       getExportedApiList(),
       transformRow

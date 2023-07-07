@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { CustomerAddress, Error } from "@shopware-pwa/types";
+import {
+  ClientApiError,
+  CustomerAddress,
+  ShopwareError,
+} from "@shopware-pwa/types";
 
 const { createCustomerAddress, updateCustomerAddress, errorMessageBuilder } =
   useAddress();
@@ -43,8 +47,8 @@ const invokeSave = async (): Promise<void> => {
       : createCustomerAddress;
     await saveAddress(formData);
     emits("success");
-  } catch (errors: Error[]) {
-    errors.messages.forEach((element: Error) => {
+  } catch (errors) {
+    (errors as ClientApiError).messages.forEach((element: ShopwareError) => {
       pushError(errorMessageBuilder(element) || t("messages.error"));
     });
   }

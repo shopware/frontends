@@ -33,7 +33,8 @@
     "build": "unbuild && pnpm build:types",
     "build:types": "npx -p typescript tsc --project tsconfig.build.json",
     "dev": "unbuild --stub",
-    "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
+    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "coverage": "vitest run --coverage"
   },

@@ -198,7 +198,9 @@ describe("apiInterceptors", () => {
             code: "",
             detail: "timeout of 5ms",
             meta: {},
-            source: {},
+            source: {
+              pointer: "",
+            },
             status: "",
             title: "",
           },
@@ -217,7 +219,9 @@ describe("apiInterceptors", () => {
             code: "",
             detail: "Network Error",
             meta: {},
-            source: {},
+            source: {
+              pointer: "",
+            },
             status: "",
             title: "",
           },
@@ -255,7 +259,9 @@ describe("apiInterceptors", () => {
               code: "",
               title: "",
               meta: {},
-              source: {},
+              source: {
+                pointer: "",
+              },
             },
           ],
           statusCode: 408,

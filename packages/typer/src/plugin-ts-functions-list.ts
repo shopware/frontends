@@ -2,14 +2,11 @@ import type { Plugin } from "vite";
 import { basename } from "path";
 import {
   normalizeString,
-  getFunctionSignature as _getFunctionSignature,
-  getFunctionDescription as _getFunctionDescription,
-  getFunctionReturnType as _getFunctionReturnType,
   getParametersTable,
   getToggleContainer,
   getStackBlitzExampleEmbedUrl,
   Property,
-} from "./main";
+} from ".";
 
 import { getWrappedCodeBlock, replacer } from "./string";
 import {
@@ -18,7 +15,6 @@ import {
   SourceResolver,
   TypesParser,
 } from "./lib";
-// import { globby } from "globby";
 
 function isFileMd(fileName: string): boolean {
   return !!fileName.match(/\.md\b/);
@@ -108,7 +104,7 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
       // FUNCTION PARAMETERS TABLE
       const functionParameters = getFunctionParameters(functionName);
       if (functionParameters?.length) {
-        let parameters = [];
+        const parameters = [];
         for (const param of functionParameters) {
           const extractedType = extractType(param.type);
           const type =
