@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { BaseValidation } from "@vuelidate/core";
+
 const emit = defineEmits<{
   (e: "update:countryId", value: string): void;
   (e: "update:stateId", value: string): void;
@@ -6,23 +8,23 @@ const emit = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    countryId: string;
+    countryId: string | null;
     stateId: string | null;
-    countryIdValidation?: object | null;
-    stateIdValidation?: object | null;
+    countryIdValidation?: BaseValidation;
+    stateIdValidation?: BaseValidation;
   }>(),
   {
     countryId: "",
     stateId: "",
-    countryIdValidation: null,
-    stateIdValidation: null,
+    countryIdValidation: undefined,
+    stateIdValidation: undefined,
   }
 );
 
 const { countryId, stateId } = useVModels(props, emit);
 const { getCountries, getStatesForCountry } = useCountries();
 const states = computed(() => {
-  return getStatesForCountry(countryId.value);
+  return getStatesForCountry(countryId.value || "");
 });
 function onCountrySelectChanged() {
   stateId.value = "";
@@ -44,7 +46,7 @@ function onCountrySelectChanged() {
         class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
         data-testid="country-select"
         @change="onCountrySelectChanged"
-        @blur="countryIdValidation && countryIdValidation.$touch()"
+        @blur="countryIdValidation?.$touch()"
       >
         <option disabled selected value="">
           {{ $t("form.chooseCountry") }}
@@ -58,7 +60,7 @@ function onCountrySelectChanged() {
         </option>
       </select>
       <span
-        v-if="countryIdValidation && countryIdValidation.$error"
+        v-if="countryIdValidation?.$error"
         class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
       >
         {{ countryIdValidation.$errors[0].$message }}
@@ -76,7 +78,7 @@ function onCountrySelectChanged() {
         autocomplete="state-name"
         class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
         data-testid="checkout-pi-state-input"
-        @blur="stateIdValidation && stateIdValidation.$touch()"
+        @blur="stateIdValidation?.$touch()"
       >
         <option disabled selected value="">
           {{ $t("form.chooseState") }}
@@ -87,7 +89,7 @@ function onCountrySelectChanged() {
         </option>
       </select>
       <span
-        v-if="stateIdValidation && stateIdValidation.$error"
+        v-if="stateIdValidation?.$error"
         class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
       >
         {{ stateIdValidation.$errors[0].$message }}

@@ -752,7 +752,7 @@ const addAddressModalController = useModal();
             <button
               type="button"
               data-testid="checkout-add-new-billing-address-button"
-              class="flex font-medium text-brand-dark"
+              class="flex font-medium text-brand-dark bg-transparent"
               @click="addAddressModalController.open"
             >
               {{ $t("checkout.addNewBillingAddress") }}
@@ -803,7 +803,7 @@ const addAddressModalController = useModal();
                 <button
                   type="button"
                   data-testid="checkout-add-new-shipping-address-button"
-                  class="flex font-medium text-brand-dark"
+                  class="flex font-medium text-brand-dark bg-transparent"
                   @click="addAddressModalController.open"
                 >
                   {{ $t("checkout.addNewShippingAddress") }}

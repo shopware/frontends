@@ -1,7 +1,7 @@
 import type { Plugin } from "vite";
 import { resolve } from "path";
 import { existsSync } from "fs-extra";
-import { normalizeString, replacer } from "./main";
+import { normalizeString, replacer } from ".";
 import { DeclarationReflection } from "typedoc";
 
 function isFunctionDeprecated(fn: DeclarationReflection): boolean {
@@ -24,7 +24,6 @@ export function TableOfFunctions(): Plugin {
     enforce: "pre",
     async transform(code, id) {
       if (!id.match(/\.md\b/)) return null;
-      // @ts-ignore
       const [pkg, fileName] = id.split("/").slice(-2);
       const composableName = fileName.replace(/\.md$/, "");
 
@@ -66,10 +65,10 @@ export function TableOfFunctions(): Plugin {
         return code;
       }
 
-      let description = "\n";
+      const description = "\n";
       // get functions from the project only with "isPublic" flag (@public)
       const functions = project.children?.filter((fn) => fn.flags?.isPublic);
-      let categories =
+      const categories =
         project.groups?.find((group) => group.title == "Functions")
           ?.categories || [];
 

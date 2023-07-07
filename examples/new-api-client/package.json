@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@shopware/api-client": "workspace:*",
+    "@shopware/api-client": "canary",
     "js-cookie": "^3.0.5",
     "vue": "^3.3.4"
   },
