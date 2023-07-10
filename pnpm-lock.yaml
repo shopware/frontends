@@ -809,6 +809,9 @@ importers:
 
   templates/react-demo-store:
     dependencies:
+      '@shopware-pwa/helpers-next':
+        specifier: workspace:*
+        version: link:../../packages/helpers
       '@shopware/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client-next

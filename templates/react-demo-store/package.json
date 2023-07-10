@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@shopware/api-client": "workspace:*",
+    "@shopware-pwa/helpers-next": "workspace:*",
     "@types/node": "20.3.1",
     "@types/react": "18.2.13",
     "@types/react-dom": "18.2.6",
