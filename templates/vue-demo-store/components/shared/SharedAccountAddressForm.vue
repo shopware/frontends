@@ -1,8 +1,15 @@
 <script setup lang="ts">
-import { CustomerAddress, Error } from "@shopware-pwa/types";
+import {
+  CustomerAddress,
+  ClientApiError,
+  ShopwareError,
+} from "@shopware-pwa/types";
+import { useVuelidate } from "@vuelidate/core";
+import { required, minLength, requiredIf } from "@vuelidate/validators";
 
 const { createCustomerAddress, updateCustomerAddress, errorMessageBuilder } =
   useAddress();
+const { getStatesForCountry } = useCountries();
 
 const emits = defineEmits<{
   (e: "success"): void;
@@ -24,7 +31,7 @@ const { getSalutations } = useSalutations();
 const { t } = useI18n();
 const { pushError } = useNotifications();
 
-const formData = reactive<CustomerAddress>({
+const formData = reactive({
   countryId: props.address?.countryId ?? "",
   countryStateId: props.address?.countryStateId ?? "",
   salutationId: props.address?.salutationId ?? "",
@@ -41,10 +48,15 @@ const invokeSave = async (): Promise<void> => {
     const saveAddress = formData.id
       ? updateCustomerAddress
       : createCustomerAddress;
-    await saveAddress(formData);
-    emits("success");
-  } catch (errors: Error[]) {
-    errors.messages.forEach((element: Error) => {
+
+    $v.value.$touch();
+    const valid = await $v.value.$validate();
+    if (valid) {
+      await saveAddress(formData);
+      emits("success");
+    }
+  } catch (errors) {
+    (errors as ClientApiError).messages.forEach((element: ShopwareError) => {
       pushError(errorMessageBuilder(element) || t("messages.error"));
     });
   }
@@ -52,6 +64,40 @@ const invokeSave = async (): Promise<void> => {
 
 const firstNameInputElement = ref();
 useFocus(firstNameInputElement, { initialValue: true });
+
+const rules = computed(() => ({
+  salutationId: {
+    required,
+  },
+  firstName: {
+    required,
+    minLength: minLength(3),
+  },
+  lastName: {
+    required,
+    minLength: minLength(3),
+  },
+  zipcode: {
+    required,
+  },
+  street: {
+    required,
+    minLength: minLength(3),
+  },
+  city: {
+    required,
+  },
+  countryId: {
+    required,
+  },
+  countryStateId: {
+    required: requiredIf(() => {
+      return !!getStatesForCountry(formData.countryId)?.length;
+    }),
+  },
+}));
+
+const $v = useVuelidate(rules, formData);
 </script>
 
 <template>
@@ -93,6 +139,12 @@ useFocus(firstNameInputElement, { initialValue: true });
                   {{ salutation.displayName }}
                 </option>
               </select>
+              <span
+                v-if="$v.salutationId.$error"
+                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+              >
+                {{ $v.salutationId.$errors[0].$message }}
+              </span>
             </div>
             <div class="col-span-6 sm:col-span-3">
               <label
@@ -111,6 +163,12 @@ useFocus(firstNameInputElement, { initialValue: true });
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-firstname-input"
               />
+              <span
+                v-if="$v.firstName.$error"
+                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+              >
+                {{ $v.firstName.$errors[0].$message }}
+              </span>
             </div>
 
             <div class="col-span-6 sm:col-span-3">
@@ -129,10 +187,19 @@ useFocus(firstNameInputElement, { initialValue: true });
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-lastname-input"
               />
+              <span
+                v-if="$v.lastName.$error"
+                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+              >
+                {{ $v.lastName.$errors[0].$message }}
+              </span>
             </div>
+
             <SharedCountryStateInput
               v-model:countryId="formData.countryId"
               v-model:stateId="formData.countryStateId"
+              :country-id-validation="$v.countryId"
+              :state-id-validation="$v.countryStateId"
               class="col-span-6 sm:col-span-6"
             />
             <div class="col-span-6">
@@ -152,6 +219,12 @@ useFocus(firstNameInputElement, { initialValue: true });
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-street-input"
               />
+              <span
+                v-if="$v.street.$error"
+                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+              >
+                {{ $v.street.$errors[0].$message }}
+              </span>
             </div>
 
             <div class="col-span-6 sm:col-span-6 lg:col-span-4">
@@ -171,6 +244,12 @@ useFocus(firstNameInputElement, { initialValue: true });
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-city-input"
               />
+              <span
+                v-if="$v.city.$error"
+                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+              >
+                {{ $v.city.$errors[0].$message }}
+              </span>
             </div>
             <div class="col-span-6 sm:col-span-3 lg:col-span-2">
               <label
@@ -189,6 +268,12 @@ useFocus(firstNameInputElement, { initialValue: true });
                 class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                 data-testid="account-address-form-postal-code-input"
               />
+              <span
+                v-if="$v.zipcode.$error"
+                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+              >
+                {{ $v.zipcode.$errors[0].$message }}
+              </span>
             </div>
           </div>
         </div>
