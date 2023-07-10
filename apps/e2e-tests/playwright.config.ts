@@ -19,7 +19,7 @@ const baseURL = process.env.BASE_E2E_URL || newLocal;
 console.log("Running tests for: ", baseURL);
 
 const config: PlaywrightTestConfig = {
-  testDir: "./tests/valid",
+  testDir: "./tests",
   outputDir: "./reports",
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
