@@ -10,6 +10,27 @@ export default defineNuxtConfig({
       },
     },
   },
+  routeRules: {
+    "/": { isr: 60 * 60 * 24 },
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    "/account**/**": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    "/**": {
+      headers: {
+        "Cache-Control":
+          "public, max-age=60, s-maxage=60, stale-while-revalidate=60",
+      },
+    },
+  },
   /**
    * Commented because of the StackBlitz error
    * Issue: https://github.com/shopware/frontends/issues/88
