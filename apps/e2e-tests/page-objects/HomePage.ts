@@ -39,7 +39,7 @@ export class HomePage extends AbstractPage {
   }
 
   async openCartPage() {
-    // await this.page.waitForTimeout(500);
+    await this.page.waitForTimeout(500);
     await this.linkToCartPage.waitFor();
     await this.linkToCartPage.click();
     await this.page.waitForSelector("[data-testid='product-quantity']", {
