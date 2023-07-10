@@ -22,7 +22,8 @@
     "postversion": "pnpm run versionReadme",
     "versionReadme": "pnpx ts-node scripts/addChangelogBodyToReadmeFile.ts",
     "taze": "taze major -wr",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
