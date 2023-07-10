@@ -33,7 +33,7 @@ const icon = computed(() => iconsMap[props.notification.type] || "information");
 <template>
   <!-- don't remove; enforce unocss to include dynamically used classes: class="bg-blue-100 bg-green-100 bg-orange-100 bg-red-100" -->
   <div
-    v-show="notification.message?.length > 0"
+    v-show="notification?.message?.length > 0"
     :id="`toast-${notification.id}`"
     :data-testid="`notification-element-${notification.type}`"
     class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
