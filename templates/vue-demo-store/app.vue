@@ -24,9 +24,8 @@ const { data: sessionContextData } = await useAsyncData(
   }
 );
 
-// read the locale from accept-language header (i.e. en-GB or de-DE)
+// read the locale/lang code from accept-language header (i.e. en, en-GB or de-DE)
 // and set configuration for price formatting globally
-const { fallbackLocale } = useI18n();
 const headers = useRequestHeaders();
 // Extract the first (with highest priority order) locale or lang code from accept-language header
 // for example: "en-US;q=0.7,en;q=0.3" will return "en-US"
@@ -39,7 +38,7 @@ const localeFromHeader = headers?.["accept-language"]
 
 usePrice({
   currencyCode: sessionContextData.value?.currency?.isoCode || "",
-  localeCode: localeFromHeader || fallbackLocale.value,
+  localeCode: localeFromHeader,
 });
 
 useSessionContext(sessionContextData.value as SessionContext);
