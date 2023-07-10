@@ -13,9 +13,9 @@ export default defineNuxtConfig({
   routeRules: {
     "/": {
       isr: 60 * 60 * 24,
-      headers: {
-        "Set-Cookie": "",
-      },
+      // headers: {
+      //   "Set-Cookie": "",
+      // },
     },
     "/checkout": {
       ssr: false,

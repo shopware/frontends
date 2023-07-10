@@ -43,6 +43,7 @@ const srcPath = computed(() => {
     v-bind="imageContainerAttrs"
   >
     <img
+      lazy="true"
       ref="imageElement"
       :class="{
         'h-full w-full': true,

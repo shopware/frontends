@@ -101,6 +101,7 @@ const srcPath = computed(() => {
       >
         <img
           ref="imageElement"
+          lazy="true"
           :src="srcPath"
           :alt="getProductName({ product }) || ''"
           class="transform transition duration-400 hover:scale-120"

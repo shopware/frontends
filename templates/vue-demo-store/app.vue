@@ -17,12 +17,14 @@ useHead({
 });
 
 const { apiInstance } = useShopwareContext();
-const { data: sessionContextData } = await useAsyncData(
-  "sessionContext",
-  async () => {
-    return await getSessionContext(apiInstance);
-  }
-);
+const sessionContextData = ref();
+sessionContextData.value = await getSessionContext(apiInstance);
+// const { data: sessionContextData } = await useAsyncData(
+//   "sessionContext",
+//   async () => {
+//     return await getSessionContext(apiInstance);
+//   }
+// );
 
 // read the locale from accept-language header (i.e. en-GB or de-DE)
 // and set configuration for price formatting globally

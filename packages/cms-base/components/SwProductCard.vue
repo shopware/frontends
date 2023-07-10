@@ -134,6 +134,7 @@ const srcPath = computed(() => {
         class="overflow-hidden"
       >
         <img
+          lazy="true"
           ref="imageElement"
           :src="srcPath"
           :alt="getProductName({ product }) || ''"
