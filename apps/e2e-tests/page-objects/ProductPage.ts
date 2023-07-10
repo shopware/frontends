@@ -23,7 +23,13 @@ export class ProductPage {
     await this.addToCartButton.waitFor();
     await expect(this.addToCartButton).toBeVisible();
     await this.addToCartButton.dispatchEvent("click");
-    await this.page.getByTestId("notification-element-message").isVisible();
+    await this.page.waitForSelector(
+      "[data-testid=notification-element-message]"
+    );
+    await this.page
+      .getByTestId("notification-element-message")
+      .last()
+      .isVisible();
     await expect(
       this.page.getByTestId("notification-element-message").last()
     ).toHaveText(/has been added to cart.$/);

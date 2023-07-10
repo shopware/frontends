@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { HomePage } from "../../page-objects/HomePage";
-import { SearchResultPage } from "../../page-objects/SearchResultPage";
+import { HomePage } from "../page-objects/HomePage";
+import { SearchResultPage } from "../page-objects/SearchResultPage";
 
 test.describe.only("Search phrase", () => {
   let homePage: HomePage;

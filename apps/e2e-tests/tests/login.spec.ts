@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { HomePage } from "../../page-objects/HomePage";
-import { LoginForm } from "../../page-objects/LoginPage";
+import { HomePage } from "../page-objects/HomePage";
+import { LoginForm } from "../page-objects/LoginPage";
 import find from "find-up";
 export const findEnv = () => find.sync(process.env.ENV_FILE || ".env");
 

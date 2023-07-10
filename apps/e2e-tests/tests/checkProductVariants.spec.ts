@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
-import { HomePage } from "../../page-objects/HomePage";
-import { ProductPage } from "../../page-objects/ProductPage";
-import { CartPage } from "../../page-objects/CartPage";
+import { HomePage } from "../page-objects/HomePage";
+import { ProductPage } from "../page-objects/ProductPage";
+import { CartPage } from "../page-objects/CartPage";
 
 test.describe.parallel.only("Check product variants", () => {
   let homePage: HomePage;
