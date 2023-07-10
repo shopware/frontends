@@ -6,9 +6,8 @@
     "dev": "nuxt dev",
     "build": "nuxt build",
     "start": "nuxt start",
-    "postinstall": "nuxt prepare",
     "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
-    "typecheck": "vue-tsc --noEmit",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "analyze": "nuxt analyze"
