@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         "Cache-Control": "no-cache, no-store, must-revalidate",
       },
     },
-    "/account**/**": {
+    "/account": {
       ssr: false,
       headers: {
         "Cache-Control": "no-cache, no-store, must-revalidate",
