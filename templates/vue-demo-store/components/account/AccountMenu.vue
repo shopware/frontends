@@ -14,16 +14,16 @@ async function invokeLogout() {
 <template>
   <div class="md:w-auto min-w-140px flex justify-end">
     <div class="my-account-area">
-      <div v-show="!isLoggedIn">
-        <button
-          class="whitespace-nowrap bg-transparent text-base font-medium text-gray-500 hover:text-gray-900"
-          data-testid="header-sign-in-link"
-          @click="loginModalController.open"
-        >
-          {{ $t("account.menu.signIn") }}
-        </button>
-      </div>
       <ClientOnly>
+        <div v-show="!isLoggedIn">
+          <button
+            class="whitespace-nowrap bg-transparent text-base font-medium text-gray-500 hover:text-gray-900"
+            data-testid="header-sign-in-link"
+            @click="loginModalController.open"
+          >
+            {{ $t("account.menu.signIn") }}
+          </button>
+        </div>
         <SharedModal :controller="loginModalController">
           <AccountLoginForm
             @close="loginModalController.close"
