@@ -3,14 +3,14 @@
   "version": "0.11.0",
   "private": true,
   "scripts": {
-    "dev": "nuxi dev",
-    "build": "nuxi build",
-    "start": "nuxi start",
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "start": "nuxt start",
     "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
     "typecheck": "vue-tsc --noEmit",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "analyze": "nuxi analyze"
+    "analyze": "nuxt analyze"
   },
   "dependencies": {
     "@shopware-pwa/api-client": "canary",
