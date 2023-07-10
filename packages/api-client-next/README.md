@@ -127,8 +127,17 @@ async function loadMainNavigation() {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client-next/CHANGELOG.md)
 
-### Latest changes: 0.0.3
+### Latest changes: 0.1.0
+
+### Minor Changes
+
+- [#300](https://github.com/shopware/frontends/pull/300) [`da347b5`](https://github.com/shopware/frontends/commit/da347b548aea93afaab1cc9ebab63f732ecdb964) Thanks [@patzick](https://github.com/patzick)! - Predefining methods: exported `RequestReturnType ` and `RequestParameters` types. You can now create predefined methods:
+
+  ```typescript
+  const readCart = (params: RequestParameters<"readCart", operations>) =>
+    apiInstance.invoke("readCart get /checkout/cart?name", params);
+  ```
 
 ### Patch Changes
 
-- [#290](https://github.com/shopware/frontends/pull/290) [`9562a8a`](https://github.com/shopware/frontends/commit/9562a8add35751093d766017abba474f0ad578f8) Thanks [@patzick](https://github.com/patzick)! - ship api-types with package
+- [#295](https://github.com/shopware/frontends/pull/295) [`23a0a53`](https://github.com/shopware/frontends/commit/23a0a532410990c0075ea7fff622949ccdecfd49) Thanks [@patzick](https://github.com/patzick)! - bump dependencies

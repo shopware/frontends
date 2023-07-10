@@ -12,8 +12,8 @@ Documentation specific for this package: [api-gen](https://frontends.shopware.co
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 0.0.3
+### Latest changes: 0.0.4
 
 ### Patch Changes
 
-- [#292](https://github.com/shopware/frontends/pull/292) [`b68ca7f`](https://github.com/shopware/frontends/commit/b68ca7fbd51d22f4be84a228ca107972e07bfa32) Thanks [@patzick](https://github.com/patzick)! - fixed cli building, prettier is not inlined into bundle
+- [#295](https://github.com/shopware/frontends/pull/295) [`23a0a53`](https://github.com/shopware/frontends/commit/23a0a532410990c0075ea7fff622949ccdecfd49) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
