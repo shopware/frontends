@@ -22,7 +22,9 @@ export class ProductPage {
   async addToCart() {
     await this.addToCartButton.waitFor();
     await expect(this.addToCartButton).toBeVisible();
-    await this.addToCartButton.dispatchEvent("click");
+    await this.addToCartButton.dispatchEvent("click", null, {
+      timeout: 1000,
+    });
     await this.page.waitForSelector(
       "[data-testid=notification-element-message]"
     );

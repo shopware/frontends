@@ -16,7 +16,6 @@ test.describe.only("Registration new user", () => {
   });
 
   test("Registration new user", async ({ page }) => {
-    await page.waitForLoadState("networkidle");
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCustomerData(
