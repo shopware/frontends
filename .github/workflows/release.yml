@@ -47,11 +47,8 @@ jobs:
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
 
-      - name: Build
-        run: pnpm run build
-
-      - name: Lint
-        run: pnpm run lint
+      - name: Build packages
+        run: pnpm run build --filter='./packages/*'
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
