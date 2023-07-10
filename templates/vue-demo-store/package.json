@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
-    "typecheck": "vue-tsc --noEmit",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "analyze": "nuxt analyze"
@@ -16,6 +16,7 @@
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/cms-base": "canary",
     "@shopware-pwa/helpers-next": "canary",
+    "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
     "@unocss/nuxt": "^0.53.4",
