@@ -191,7 +191,7 @@ function next() {
               @click="() => changeCover(i)"
             >
               <img
-                lazy="true"
+                loading="lazy"
                 :src="image.media.url"
                 class="w-full h-full object-center object-cover"
                 alt="Product image"

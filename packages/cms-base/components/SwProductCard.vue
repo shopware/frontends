@@ -134,8 +134,8 @@ const srcPath = computed(() => {
         class="overflow-hidden"
       >
         <img
-          lazy="true"
           ref="imageElement"
+          loading="lazy"
           :src="srcPath"
           :alt="getProductName({ product }) || ''"
           class="transform transition duration-400 hover:scale-120"
