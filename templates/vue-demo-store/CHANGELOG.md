@@ -1,5 +1,27 @@
 # vue-demo-store
 
+## 0.11.0
+
+### Minor Changes
+
+- [#270](https://github.com/shopware/frontends/pull/270) [`14d97c5`](https://github.com/shopware/frontends/commit/14d97c5942adf5a49163625b2740d95bc5772689) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add state to the address forms
+
+- [#283](https://github.com/shopware/frontends/pull/283) [`e6a52ec`](https://github.com/shopware/frontends/commit/e6a52ec4b7c28627c55cbd8ca15b8458cedf53bd) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Moved UnoCSS config into separate file, enabled preflight for styles reset
+
+### Patch Changes
+
+- [#295](https://github.com/shopware/frontends/pull/295) [`23a0a53`](https://github.com/shopware/frontends/commit/23a0a532410990c0075ea7fff622949ccdecfd49) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+
+- [#284](https://github.com/shopware/frontends/pull/284) [`bb48e13`](https://github.com/shopware/frontends/commit/bb48e131570a2db4b7431c842e54ad67d9384cd5) Thanks [@mkucmus](https://github.com/mkucmus)! - Set default locale from accept-language header in SSR
+
+- [#263](https://github.com/shopware/frontends/pull/263) [`8a94e37`](https://github.com/shopware/frontends/commit/8a94e3739a24e5d748ba807852c5e5c2dfbe6cb4) Thanks [@mkucmus](https://github.com/mkucmus)! - custom registration page
+
+- Updated dependencies [[`23a0a53`](https://github.com/shopware/frontends/commit/23a0a532410990c0075ea7fff622949ccdecfd49), [`8a94e37`](https://github.com/shopware/frontends/commit/8a94e3739a24e5d748ba807852c5e5c2dfbe6cb4), [`e6a52ec`](https://github.com/shopware/frontends/commit/e6a52ec4b7c28627c55cbd8ca15b8458cedf53bd)]:
+  - @shopware-pwa/nuxt3-module@0.3.7
+  - @shopware-pwa/cms-base@0.7.0
+  - @shopware-pwa/types@0.5.5
+  - @shopware-pwa/helpers-next@0.3.1
+
 ## 0.10.0
 
 ### Minor Changes
