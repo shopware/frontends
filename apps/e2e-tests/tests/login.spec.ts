@@ -23,7 +23,7 @@ test.describe.only("Login user", () => {
   test("Login user", async ({ page }) => {
     await homePage.clickOnSignIn();
     await loginForm.login(userEmail, password);
-    await page.waitForLoadState("load");
+    await page.waitForLoadState("networkidle");
     await expect(page.getByTestId("account-menu-hello-button")).toHaveCount(1);
   });
 });

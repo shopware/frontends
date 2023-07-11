@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { MyAccountPage } from "../page-objects/MyAccountPage";
 import { RegisterForm } from "../page-objects/RegisterPage";
-import { faker } from "@faker-js/faker";
 
 test.describe.parallel.only("My account functionalities tests", () => {
   let homePage: HomePage;

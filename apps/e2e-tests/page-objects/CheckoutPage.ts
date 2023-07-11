@@ -14,6 +14,7 @@ export class CheckoutPage {
   readonly zipcode: Locator;
   readonly city: Locator;
   readonly country: Locator;
+  readonly countryState: Locator;
   readonly submitButton: Locator;
   readonly termsBox: Locator;
   readonly termCheckbox: Locator;
@@ -34,21 +35,23 @@ export class CheckoutPage {
     this.zipcode = page.getByTestId("checkout-pi-zip-code-input");
     this.city = page.getByTestId("checkout-pi-city-input");
     this.country = page.getByTestId("country-select");
+    this.countryState = page.getByTestId("checkout-pi-state-input");
     this.submitButton = page.getByTestId("checkout-pi-submit-button");
     this.termsBox = page.getByTestId("checkout-terms-box");
     this.termCheckbox = page.getByTestId("checkout-t&c-checkbox-tos");
   }
 
   async goToCheckout() {
-    await Promise.all([
-      await this.page.waitForSelector("[data-testid='cart-product-image']"),
-      await this.goToCheckoutButton.click(),
-    ]);
+    await this.page.waitForSelector("[data-testid='sidebar-right']");
+    await this.page.getByTestId("sidebar-right").isVisible();
+    await this.goToCheckoutButton.click();
+    await this.page.waitForURL("**/checkout");
   }
 
   async markTerms() {
     await this.page.waitForLoadState();
-    await this.termCheckbox.waitFor();
+    await this.termsBox.isVisible();
+    await this.termCheckbox.isVisible();
     await this.termCheckbox.dispatchEvent("click");
   }
 
@@ -83,6 +86,7 @@ export class CheckoutPage {
     await this.zipcode.type(zipcode);
     await this.city.type(city);
     await this.country.selectOption({ label: "Germany" });
+    await this.countryState.selectOption({ label: "Bavaria" });
     await this.submitButton.click();
   }
 }

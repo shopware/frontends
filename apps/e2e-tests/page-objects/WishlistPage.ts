@@ -10,17 +10,17 @@ export class WishlistPage {
     this.page = page;
     this.addToCartButton = page.getByTestId("add-to-cart-button");
     this.wishlistButton = page.getByTestId("wishlist-button");
-    this.productInWishlistButton = page.getByTestId(
-      "product-box-toggle-wishlist-button"
-    );
+    this.productInWishlistButton = page
+      .getByTestId("product-box-toggle-wishlist-button")
+      .first();
   }
 
   async openWishlist() {
-    await this.page.waitForLoadState();
     await this.wishlistButton.click();
   }
 
   async removeProductFromWishlist() {
+    await this.page.waitForLoadState("networkidle");
     await this.productInWishlistButton.click();
   }
 }

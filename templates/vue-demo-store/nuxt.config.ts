@@ -1,4 +1,5 @@
 import i18nConfig from "./i18n/src/config";
+import { VueDisableInputsBeforeMount } from "vite-vue-plugin-disable-inputs";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -91,5 +92,8 @@ export default defineNuxtConfig({
     defaultLocale: i18nConfig.defaultLocale,
     langDir: "i18n/src/",
     locales: i18nConfig.locales,
+  },
+  vite: {
+    plugins: [VueDisableInputsBeforeMount()],
   },
 });

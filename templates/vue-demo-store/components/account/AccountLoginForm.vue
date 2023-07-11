@@ -5,7 +5,7 @@ const emits = defineEmits<{
   (e: "success"): void;
   (e: "close"): void;
 }>();
-
+const router = useRouter();
 const { isLoggedIn, login } = useUser();
 const { t } = useI18n();
 const { refreshSessionContext } = useSessionContext();
@@ -19,6 +19,11 @@ const formData = ref({
   password: "",
   remember: true,
 });
+
+const goToRegister = () => {
+  emits("close");
+  router.push(localePath("/register"));
+};
 
 const invokeLogin = async (): Promise<void> => {
   loginErrors.value = [];
@@ -124,14 +129,15 @@ useFocus(emailImputElement, { initialValue: true });
           </button>
 
           <slot name="action">
-            <div @click="$emit('close')">
-              <NuxtLink
-                :to="localePath('/register')"
-                class="w-full flex justify-center py-2 px-4 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            <div class="w-full mt-4" @click="$emit('close')">
+              <button
+                type="button"
+                class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 data-testid="login-sign-up-link"
+                @click="goToRegister()"
               >
                 {{ $t("account.signUp") }}
-              </NuxtLink>
+              </button>
             </div>
           </slot>
         </div>

@@ -295,7 +295,6 @@ onBeforeMount(async () => {
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
           data-testid="account-personal-data-submit-button"
-          :disabled="loadingData"
         >
           {{ $t("form.save") }}
         </button>
