@@ -13,7 +13,9 @@ const ShopwarePlugin = {
   install(app, options) {
     const runtimeConfig = useRuntimeConfig();
 
-    // TODO: add runtime option to disable cookies on SSR
+    const useUserCookieContext =
+      !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
+      !options.isServer;
 
     const contextToken = useCookie("sw-context-token", {
       maxAge: 60 * 60 * 24 * 365,
@@ -49,12 +51,12 @@ const ShopwarePlugin = {
         password:
           "<%=  options.shopwareApiClient.auth ? options.shopwareApiClient.auth.password : undefined %>",
       },
-      contextToken: options.isServer
-        ? ""
-        : contextToken.value || cookieContextToken,
-      languageId: options.isServer
-        ? undefined
-        : languageId.value || cookieLanguageId,
+      contextToken: useUserCookieContext
+        ? contextToken.value || cookieContextToken
+        : "",
+      languageId: useUserCookieContext
+        ? languageId.value || cookieLanguageId
+        : undefined,
     });
     /**
      * Save current contextToken when its change
@@ -62,7 +64,7 @@ const ShopwarePlugin = {
     instance.onConfigChange(({ config }) => {
       try {
         // only save cookies on client side render
-        if (!options.isServer) {
+        if (useUserCookieContext) {
           contextToken.value = config.contextToken;
           languageId.value = config.languageId;
           Cookies.set("sw-context-token", config.contextToken || "", {
