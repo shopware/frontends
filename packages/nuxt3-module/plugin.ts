@@ -13,6 +13,8 @@ const ShopwarePlugin = {
   install(app, options) {
     const runtimeConfig = useRuntimeConfig();
 
+    // TODO: add runtime option to disable cookies on SSR
+
     const contextToken = useCookie("sw-context-token", {
       maxAge: 60 * 60 * 24 * 365,
       sameSite: "Lax",
@@ -47,26 +49,33 @@ const ShopwarePlugin = {
         password:
           "<%=  options.shopwareApiClient.auth ? options.shopwareApiClient.auth.password : undefined %>",
       },
-      contextToken: contextToken.value || cookieContextToken,
-      languageId: languageId.value || cookieLanguageId,
+      contextToken: options.isServer
+        ? ""
+        : contextToken.value || cookieContextToken,
+      languageId: options.isServer
+        ? undefined
+        : languageId.value || cookieLanguageId,
     });
     /**
      * Save current contextToken when its change
      */
     instance.onConfigChange(({ config }) => {
       try {
-        contextToken.value = config.contextToken;
-        languageId.value = config.languageId;
-        Cookies.set("sw-context-token", config.contextToken || "", {
-          expires: 365, //days
-          sameSite: "Lax",
-          path: "/",
-        });
-        Cookies.set("sw-language-id", config.languageId || "", {
-          expires: 365, //days
-          sameSite: "Lax",
-          path: "/",
-        });
+        // only save cookies on client side render
+        if (!options.isServer) {
+          contextToken.value = config.contextToken;
+          languageId.value = config.languageId;
+          Cookies.set("sw-context-token", config.contextToken || "", {
+            expires: 365, //days
+            sameSite: "Lax",
+            path: "/",
+          });
+          Cookies.set("sw-language-id", config.languageId || "", {
+            expires: 365, //days
+            sameSite: "Lax",
+            path: "/",
+          });
+        }
       } catch (e) {
         // Sometimes cookie is set on server after request is send, it can fail silently
       }
@@ -88,5 +97,6 @@ const ShopwarePlugin = {
 export default defineNuxtPlugin(async (nuxtApp) => {
   nuxtApp.vueApp.use(ShopwarePlugin, {
     apiDefaults: getDefaultApiParams(),
+    isServer: !!nuxtApp.ssrContext,
   });
 });
