@@ -13,9 +13,6 @@ export default defineNuxtConfig({
   routeRules: {
     "/": {
       isr: 60 * 60 * 24,
-      // headers: {
-      //   "Set-Cookie": "",
-      // },
     },
     "/checkout": {
       ssr: false,
@@ -23,17 +20,29 @@ export default defineNuxtConfig({
         "Cache-Control": "no-cache, no-store, must-revalidate",
       },
     },
+    "/checkout/**": {
+      ssr: false,
+    },
+    "/login": {
+      ssr: false,
+    },
+    "/register": {
+      ssr: false,
+    },
+    "/reset-password": {
+      ssr: false,
+    },
+    "/wishlist": {
+      ssr: false,
+    },
     "/account": {
       ssr: false,
-      headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-      },
+    },
+    "/account/**": {
+      ssr: false,
     },
     "/**": {
-      headers: {
-        "Cache-Control":
-          "public, max-age=60, s-maxage=60, stale-while-revalidate=60",
-      },
+      isr: 60 * 60 * 24,
     },
   },
   /**
