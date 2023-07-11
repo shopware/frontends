@@ -17,12 +17,16 @@ useHead({
 });
 
 const { apiInstance } = useShopwareContext();
-const { data: sessionContextData } = await useAsyncData(
-  "sessionContext",
-  async () => {
-    return await getSessionContext(apiInstance);
-  }
-);
+const sessionContextData = ref();
+sessionContextData.value = await getSessionContext(apiInstance);
+
+// If you enable runtimeConfig.shopware.useUserContextInSSR, then you can use this code to share session between server and client.
+// const { data: sessionContextData } = await useAsyncData(
+//   "sessionContext",
+//   async () => {
+//     return await getSessionContext(apiInstance);
+//   }
+// );
 
 // read the locale from accept-language header (i.e. en-GB or de-DE)
 // and set configuration for price formatting globally

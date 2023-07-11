@@ -133,6 +133,13 @@ export type ShopwareNuxtOptions = {
   apiClientConfig?: {
     timeout?: number | string;
   };
+  /**
+   * Use user context in SSR mode. Warning: with wrong edge caching it can cause serving another user's data.
+   * Use when edge caching is configured properly.
+   *
+   * @default false
+   */
+  useUserContextInSSR?: boolean;
 };
 
 declare module "@nuxt/schema" {

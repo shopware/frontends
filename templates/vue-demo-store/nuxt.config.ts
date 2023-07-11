@@ -10,6 +10,41 @@ export default defineNuxtConfig({
       },
     },
   },
+  routeRules: {
+    "/": {
+      isr: 60 * 60 * 24,
+    },
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    "/checkout/**": {
+      ssr: false,
+    },
+    "/login": {
+      ssr: false,
+    },
+    "/register": {
+      ssr: false,
+    },
+    "/reset-password": {
+      ssr: false,
+    },
+    "/wishlist": {
+      ssr: false,
+    },
+    "/account": {
+      ssr: false,
+    },
+    "/account/**": {
+      ssr: false,
+    },
+    "/**": {
+      isr: 60 * 60 * 24,
+    },
+  },
   /**
    * Commented because of the StackBlitz error
    * Issue: https://github.com/shopware/frontends/issues/88

@@ -22,6 +22,12 @@ if (process.client && isLoggedIn.value) {
   navigateTo({ path: "/account" });
 }
 
+watch(isLoggedIn, (isLoggedIn) => {
+  if (isLoggedIn) {
+    navigateTo({ path: "/account" });
+  }
+});
+
 const initialState = {
   requestedGroupId: props.customerGroupId,
   salutationId: "",
