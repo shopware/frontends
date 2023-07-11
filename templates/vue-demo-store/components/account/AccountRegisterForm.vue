@@ -22,6 +22,12 @@ if (process.client && isLoggedIn.value) {
   navigateTo({ path: "/account" });
 }
 
+watch(isLoggedIn, (isLoggedIn) => {
+  if (isLoggedIn) {
+    navigateTo({ path: "/account" });
+  }
+});
+
 const initialState = {
   requestedGroupId: props.customerGroupId,
   salutationId: "",
@@ -110,7 +116,6 @@ useBreadcrumbs([
   },
 ]);
 </script>
-
 <template>
   <div class="max-w-screen-xl mx-auto px-6 sm:px-4">
     <div
@@ -136,7 +141,6 @@ useBreadcrumbs([
             v-model="state.salutationId"
             name="salutation"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            :disabled="loading"
             :class="[
               $v.salutationId.$error
                 ? 'border-red-600 focus:border-red-600'
@@ -145,7 +149,7 @@ useBreadcrumbs([
             data-testid="registration-salutation-select"
             @blur="$v.salutationId.$touch()"
           >
-            <option disabled selected value="">
+            <option selected value="">
               {{ $t("form.chooseSalutation") }}
             </option>
             <option
@@ -179,7 +183,6 @@ useBreadcrumbs([
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.firstNamePlaceholder')"
-            :disabled="loading"
             data-testid="registration-first-name-input"
             @blur="$v.firstName.$touch()"
           />
@@ -206,7 +209,6 @@ useBreadcrumbs([
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.lastNamePlaceholder')"
-            :disabled="loading"
             data-testid="registration-last-name-input"
             @blur="$v.lastName.$touch()"
           />
@@ -233,7 +235,6 @@ useBreadcrumbs([
             ]"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :placeholder="$t('form.emailPlaceholder')"
-            :disabled="loading"
             data-testid="registration-email-input"
             @blur="$v.email.$touch()"
           />
@@ -260,7 +261,6 @@ useBreadcrumbs([
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.passwordPlaceholder')"
-            :disabled="loading"
             data-testid="registration-password-input"
             @blur="$v.password.$touch()"
           />
@@ -292,7 +292,6 @@ useBreadcrumbs([
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.streetPlaceholder')"
-            :disabled="loading"
             data-testid="registration-street-input"
             @blur="$v.billingAddress.street.$touch()"
           />
@@ -319,7 +318,6 @@ useBreadcrumbs([
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.postalCodePlaceholder')"
-            :disabled="loading"
             data-testid="registration-zipcode-input"
             @blur="$v.billingAddress.zipcode.$touch()"
           />
@@ -346,7 +344,6 @@ useBreadcrumbs([
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.cityPlaceholder')"
-            :disabled="loading"
             data-testid="registration-city-input"
             @blur="$v.billingAddress.city.$touch()"
           />
@@ -397,7 +394,6 @@ useBreadcrumbs([
         <button
           class="group relative py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-75 w-full md:w-auto"
           type="submit"
-          :disabled="loading"
           data-testid="registration-submit-button"
         >
           {{ $t("form.submit") }}

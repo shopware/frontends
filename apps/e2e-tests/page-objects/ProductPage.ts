@@ -20,9 +20,21 @@ export class ProductPage {
   }
 
   async addToCart() {
-    await expect(this.page.getByTestId("add-to-cart-button")).toBeVisible();
     await this.addToCartButton.waitFor();
-    await this.addToCartButton.click({ delay: 500 });
+    await expect(this.addToCartButton).toBeVisible();
+    await this.addToCartButton.dispatchEvent("click", null, {
+      timeout: 1000,
+    });
+    await this.page.waitForSelector(
+      "[data-testid=notification-element-message]"
+    );
+    await this.page
+      .getByTestId("notification-element-message")
+      .last()
+      .isVisible();
+    await expect(
+      this.page.getByTestId("notification-element-message").last()
+    ).toHaveText(/has been added to cart.$/);
   }
 
   async addVariantToCart() {
@@ -37,10 +49,8 @@ export class ProductPage {
     expect(this.variantText.textContent).toEqual(
       this.productOption.textContent
     );
-    await Promise.all([
-      await this.page.waitForLoadState("load"),
-      await this.productRemove.click(),
-    ]);
+    await this.page.waitForLoadState("networkidle");
+    await this.productRemove.click();
     await this.page.getByTestId("cart-close-button").click();
   }
 }

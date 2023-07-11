@@ -631,6 +631,7 @@ const addAddressModalController = useModal();
                   </div>
                   <div v-if="singleShippingMethod.media?.url">
                     <img
+                      loading="lazy"
                       :src="singleShippingMethod.media.url"
                       alt="payment-image"
                     />
@@ -693,6 +694,7 @@ const addAddressModalController = useModal();
                   </div>
                   <div v-if="singlePaymentMethod.media?.url">
                     <img
+                      loading="lazy"
                       :src="singlePaymentMethod.media.url"
                       alt="payment-image"
                     />

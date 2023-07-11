@@ -35,6 +35,7 @@ const srcPath = computed(() => {
     <div class="rounded-md border-1 border-gray-200 overflow-hidden flex-none">
       <img
         ref="imageElement"
+        loading="lazy"
         data-testid="layout-search-suggest-image"
         :src="srcPath"
         class="h-8 w-8 object-cover"
