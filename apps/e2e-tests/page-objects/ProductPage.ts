@@ -26,14 +26,14 @@ export class ProductPage {
       timeout: 1000,
     });
     await this.page.waitForSelector(
-      "[data-testid=notification-element-message]"
+      "[data-testid=notification-element-message]",
     );
     await this.page
       .getByTestId("notification-element-message")
       .last()
       .isVisible();
     await expect(
-      this.page.getByTestId("notification-element-message").last()
+      this.page.getByTestId("notification-element-message").last(),
     ).toHaveText(/has been added to cart.$/);
   }
 
@@ -47,7 +47,7 @@ export class ProductPage {
     await this.addToCartButton.click();
     await this.miniCartLink.click();
     expect(this.variantText.textContent).toEqual(
-      this.productOption.textContent
+      this.productOption.textContent,
     );
     await this.page.waitForLoadState("networkidle");
     await this.productRemove.click();

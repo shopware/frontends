@@ -55,7 +55,7 @@ we can convert current `string` array to the `Breadcrumb` object using [getCateg
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 
 let breadcrumbs = getCategoryBreadcrumbs(
-  productResponse.value?.product?.seoCategory
+  productResponse.value?.product?.seoCategory,
 );
 useBreadcrumbs(breadcrumbs);
 ```

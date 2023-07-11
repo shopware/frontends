@@ -12,7 +12,7 @@ type UseCmsSectionType = {
    * Position of the section
    */
   getPositionContent(
-    position: ArrayElement<CmsSection["blocks"]>["sectionPosition"]
+    position: ArrayElement<CmsSection["blocks"]>["sectionPosition"],
   ): Array<CmsBlock>;
 };
 
@@ -22,13 +22,13 @@ type UseCmsSectionType = {
  * @category CMS (Shopping Experiences)
  */
 export function useCmsSection<SECTION_TYPE extends CmsSection>(
-  content: SECTION_TYPE
+  content: SECTION_TYPE,
 ): UseCmsSectionType {
   function getPositionContent(
-    position: ArrayElement<SECTION_TYPE["blocks"]>["sectionPosition"]
+    position: ArrayElement<SECTION_TYPE["blocks"]>["sectionPosition"],
   ) {
     return content.blocks.filter(
-      (block) => block.sectionPosition === position
+      (block) => block.sectionPosition === position,
     ) as Array<CmsBlock>;
   }
 

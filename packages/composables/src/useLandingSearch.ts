@@ -13,7 +13,7 @@ export type UseLandingSearchReturn = {
     navigationId: string,
     options?: {
       withCmsAssociations?: boolean;
-    }
+    },
   ): Promise<LandingPage>;
 };
 
@@ -27,7 +27,7 @@ export function useLandingSearch(): {
     navigationId: string,
     options?: {
       withCmsAssociations?: boolean;
-    }
+    },
   ) => Promise<LandingPage>;
 } {
   const { apiInstance } = useShopwareContext();
@@ -36,13 +36,13 @@ export function useLandingSearch(): {
     navigationId: string,
     options?: {
       withCmsAssociations?: boolean;
-    }
+    },
   ) => {
     const associations = options?.withCmsAssociations && cmsAssociations;
     const result = await getLandingPage(
       navigationId,
       associations || {},
-      apiInstance
+      apiInstance,
     );
     return result;
   };

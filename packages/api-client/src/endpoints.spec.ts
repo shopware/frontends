@@ -51,7 +51,7 @@ describe("endpoints", () => {
     it("should return Shopware product review endpoint", async () => {
       const result = getProductReviewsEndpoint(sampleProductId);
       expect(result).toEqual(
-        "/store-api/product/" + sampleProductId + "/reviews"
+        "/store-api/product/" + sampleProductId + "/reviews",
       );
     });
   });
@@ -199,10 +199,10 @@ describe("endpoints", () => {
     it("should return store navigation endpoint", async () => {
       const result = getStoreNavigationEndpoint(
         "footer-navigation",
-        "footer-navigation"
+        "footer-navigation",
       );
       expect(result).toEqual(
-        "/store-api/navigation/footer-navigation/footer-navigation"
+        "/store-api/navigation/footer-navigation/footer-navigation",
       );
     });
   });

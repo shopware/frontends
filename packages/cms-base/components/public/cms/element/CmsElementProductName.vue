@@ -7,5 +7,5 @@ const props = defineProps<{
 }>();
 </script>
 <template>
-  <CmsElementText :content="(content as any)" />
+  <CmsElementText :content="content as any" />
 </template>

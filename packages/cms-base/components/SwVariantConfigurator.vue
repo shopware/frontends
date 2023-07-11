@@ -10,7 +10,7 @@ const props = withDefaults(
   }>(),
   {
     allowRedirect: true,
-  }
+  },
 );
 
 type Translations = {
@@ -41,7 +41,7 @@ const {
 } = useProductConfigurator();
 
 const selectedOptions: ComputedRef<any> = computed(() =>
-  Object.values(unref(getSelectedOptions))
+  Object.values(unref(getSelectedOptions)),
 );
 const isOptionSelected = (optionId: string) =>
   Object.values(getSelectedOptions.value).includes(optionId);
@@ -49,7 +49,7 @@ const isOptionSelected = (optionId: string) =>
 const onHandleChange = async () => {
   isLoading.value = true;
   const variantFound = await findVariantForSelectedOptions(
-    unref(selectedOptions)
+    unref(selectedOptions),
   );
 
   const selectedOptionsVariantPath = getProductRoute(variantFound);

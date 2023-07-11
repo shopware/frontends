@@ -37,7 +37,7 @@ export async function getStoreNavigation(
     buildTree,
     searchCriteria,
   }: GetStoreNavigationParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<StoreNavigationElement[]> {
   const resp = await contextInstance.invoke.post(
     getStoreNavigationEndpoint(requestActiveId, requestRootId),
@@ -47,7 +47,7 @@ export async function getStoreNavigation(
         depth,
         buildTree,
       },
-    }
+    },
   );
 
   return resp.data;

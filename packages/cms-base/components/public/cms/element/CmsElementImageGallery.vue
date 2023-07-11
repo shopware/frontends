@@ -11,7 +11,7 @@ const props = withDefaults(
   {
     slidesToShow: 5,
     slidesToScroll: 4,
-  }
+  },
 );
 
 const { getConfigValue } = useCmsElementConfig(props.content);
@@ -27,7 +27,7 @@ const imageThumbs = ref();
 const imageThumbsStyle = ref({});
 const mediaGallery = computed(() => props.content.data?.sliderItems ?? []);
 const galleryPosition = computed<string>(
-  () => getConfigValue("galleryPosition") ?? "left"
+  () => getConfigValue("galleryPosition") ?? "left",
 );
 const scrollPx = ref(0);
 

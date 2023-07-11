@@ -25,7 +25,7 @@ export class CheckoutPage {
     this.placeOrderButton = page.getByTestId("checkout-place-order-button");
     this.loginOnCheckoutButton = page.getByTestId("checkout-sign-in-link");
     this.notCreateAccountCheck = page.getByTestId(
-      "checkout-create-account-checkbox"
+      "checkout-create-account-checkbox",
     );
     this.salutation = page.getByTestId("checkout-pi-salutation-select");
     this.firstName = page.getByTestId("checkout-pi-first-name-input");
@@ -75,7 +75,7 @@ export class CheckoutPage {
     email: string,
     street: string,
     zipcode: string,
-    city: string
+    city: string,
   ) {
     await this.page.waitForLoadState();
     await this.salutation.selectOption({ label: "Mr." });

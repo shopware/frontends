@@ -35,7 +35,7 @@ const { data: productSearch } = await useAsyncData(
   },
   {
     watch: [route],
-  }
+  },
 );
 const changePage = async (page: number) => {
   await router.push({

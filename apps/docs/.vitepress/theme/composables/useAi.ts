@@ -7,7 +7,7 @@ type UseAiReturn = {
     query: string,
     isCorrectAnswer: boolean,
     isCorrectDocument: boolean,
-    document: Answer
+    document: Answer,
   ) => Promise<string>;
   buildHighlight: (answers: Answer) => string;
   prepareData: (answers: Answer[]) => Answer[];
@@ -32,7 +32,7 @@ export function useAi(): UseAiReturn {
         body: JSON.stringify({
           query,
         }),
-      }
+      },
     ).then((response) => response.json());
     return response;
   };
@@ -50,7 +50,7 @@ export function useAi(): UseAiReturn {
     query: string,
     isCorrectAnswer: boolean,
     isCorrectDocument: boolean,
-    document: Answer
+    document: Answer,
   ): Promise<string> => {
     const response = await fetch(
       `${site.value.themeConfig.ai.endpoint}/feedback`,
@@ -67,7 +67,7 @@ export function useAi(): UseAiReturn {
           is_correct_document: isCorrectDocument,
           origin: "user-feedback",
         }),
-      }
+      },
     ).then((response) => response.json());
 
     return response;

@@ -74,7 +74,7 @@ export function useInternationalization(): UseInternationalizationReturn {
 
   const _storeLanguages = _useContext<Language[]>("swLanguages");
   const _storeCurrentLanguage = _useContext<string>(
-    "swLanguagesCurrentLanguage"
+    "swLanguagesCurrentLanguage",
   );
   const _storeCurrentPrefix = _useContext<string>("swLanguagesCurrentPrefix");
 
@@ -102,7 +102,7 @@ export function useInternationalization(): UseInternationalizationReturn {
   function getLanguageIdFromCode(languageCode: string) {
     return (
       _storeLanguages.value.find(
-        (element: any) => element?.translationCode.code === languageCode
+        (element: any) => element?.translationCode.code === languageCode,
       )?.id || ""
     );
   }

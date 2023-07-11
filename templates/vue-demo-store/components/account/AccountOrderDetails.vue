@@ -4,7 +4,7 @@ const props = defineProps<{
 }>();
 
 const { loadOrderDetails, order, hasDocuments, documents } = useOrderDetails(
-  props.orderId
+  props.orderId,
 );
 
 onMounted(() => {

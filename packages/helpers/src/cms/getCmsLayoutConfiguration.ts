@@ -24,19 +24,19 @@ export type LayoutConfiguration = {
 
 // predicate types
 function isCmsSlot(
-  content: CmsBlock | CmsSection | CmsSlot
+  content: CmsBlock | CmsSection | CmsSlot,
 ): content is CmsSlot {
   return content.apiAlias === "cms_slot";
 }
 
 function isCmsBlock(
-  content: CmsBlock | CmsSection | CmsSlot
+  content: CmsBlock | CmsSection | CmsSlot,
 ): content is CmsBlock {
   return content.apiAlias === "cms_block";
 }
 
 function isCmsSection(
-  content: CmsBlock | CmsSection | CmsSlot
+  content: CmsBlock | CmsSection | CmsSlot,
 ): content is CmsSection {
   return content.apiAlias === "cms_section";
 }
@@ -86,7 +86,7 @@ function getVisibilityClasses(content: CmsBlock | CmsSection | CmsSlot) {
  * @category CMS (Shopping Experiences)
  */
 export function getCmsLayoutConfiguration(
-  content: CmsBlock | CmsSection | CmsSlot
+  content: CmsBlock | CmsSection | CmsSlot,
 ): LayoutConfiguration {
   if (!content || isCmsSlot(content)) {
     return {

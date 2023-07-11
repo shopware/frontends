@@ -67,7 +67,7 @@ const toggle = () => {
                 :alt="option.media.translated?.alt || ''"
                 :class="{
                   'border-blue border-2': selectedOptionIds?.includes(
-                    option.id
+                    option.id,
                   ),
                 }"
               />

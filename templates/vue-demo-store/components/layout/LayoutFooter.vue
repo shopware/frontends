@@ -10,7 +10,7 @@ const localePath = useLocalePath();
 const gridColumns = computed<number>(() =>
   navigationElements.value
     ? Object.keys(navigationElements.value).length + 2
-    : 2
+    : 2,
 );
 </script>
 

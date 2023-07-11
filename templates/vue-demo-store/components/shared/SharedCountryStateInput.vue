@@ -18,7 +18,7 @@ const props = withDefaults(
     stateId: "",
     countryIdValidation: undefined,
     stateIdValidation: undefined,
-  }
+  },
 );
 
 const { countryId, stateId } = useVModels(props, emit);

@@ -8,7 +8,7 @@ import ListingFiltersShippingFree from "./ListingFiltersShippingFree.vue";
 const emit = defineEmits<{
   (
     e: "selectFilterValue",
-    { code, value }: { code: string; value: string }
+    { code, value }: { code: string; value: string },
   ): void;
 }>();
 

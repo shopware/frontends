@@ -17,13 +17,13 @@ export type UseCustomerPasswordReturn = {
    * Change customer's current password
    */
   updatePassword(
-    updatePasswordData: CustomerUpdatePasswordParam
+    updatePasswordData: CustomerUpdatePasswordParam,
   ): Promise<boolean>;
   /**
    * Reset customer's password
    */
   resetPassword(
-    resetPasswordData: CustomerResetPasswordParam
+    resetPasswordData: CustomerResetPasswordParam,
   ): Promise<boolean>;
 };
 
@@ -44,7 +44,7 @@ export function useCustomerPassword(): UseCustomerPasswordReturn {
   });
 
   async function updatePassword(
-    updatePasswordData: CustomerUpdatePasswordParam
+    updatePasswordData: CustomerUpdatePasswordParam,
   ) {
     try {
       errors.updatePassword = [];

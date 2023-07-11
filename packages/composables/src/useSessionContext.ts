@@ -104,7 +104,7 @@ export type UseSessionContextReturn = {
  * @category Context & Language
  */
 export function useSessionContext(
-  newContext?: SessionContext
+  newContext?: SessionContext,
 ): UseSessionContextReturn {
   const { apiInstance } = useShopwareContext();
 
@@ -123,14 +123,14 @@ export function useSessionContext(
   };
 
   const selectedShippingMethod = computed(
-    () => sessionContext.value?.shippingMethod || null
+    () => sessionContext.value?.shippingMethod || null,
   );
   const setShippingMethod = async (
-    shippingMethod: Partial<ShippingMethod> = {}
+    shippingMethod: Partial<ShippingMethod> = {},
   ) => {
     if (!shippingMethod?.id) {
       throw new Error(
-        "You need to provide shipping method id in order to set shipping method."
+        "You need to provide shipping method id in order to set shipping method.",
       );
     }
     await setCurrentShippingMethod(shippingMethod.id, apiInstance);
@@ -138,14 +138,14 @@ export function useSessionContext(
   };
 
   const selectedPaymentMethod = computed(
-    () => sessionContext.value?.paymentMethod || null
+    () => sessionContext.value?.paymentMethod || null,
   );
   const setPaymentMethod = async (
-    paymentMethod: Partial<PaymentMethod> = {}
+    paymentMethod: Partial<PaymentMethod> = {},
   ) => {
     if (!paymentMethod?.id) {
       throw new Error(
-        "You need to provide payment method id in order to set payment method."
+        "You need to provide payment method id in order to set payment method.",
       );
     }
     await setCurrentPaymentMethod(paymentMethod.id, apiInstance);
@@ -157,7 +157,7 @@ export function useSessionContext(
     if (!currency.id) {
       console.error(
         "You need to provide currency id in order to set currency.",
-        currency
+        currency,
       );
       return;
     }
@@ -174,14 +174,14 @@ export function useSessionContext(
   };
 
   const activeShippingAddress = computed(
-    () => sessionContext.value?.shippingLocation?.address || null
+    () => sessionContext.value?.shippingLocation?.address || null,
   );
   const setActiveShippingAddress = async (
-    address: Partial<ShippingAddress>
+    address: Partial<ShippingAddress>,
   ) => {
     if (!address?.id) {
       throw new Error(
-        "You need to provide address id in order to set the address."
+        "You need to provide address id in order to set the address.",
       );
     }
     await setCurrentShippingAddress(address.id, apiInstance);
@@ -190,12 +190,12 @@ export function useSessionContext(
 
   // TODO: replace the source from defaultBillingAddress by new value once NEXT-28627 is solved
   const activeBillingAddress = computed(
-    () => sessionContext.value?.customer?.defaultBillingAddress || null
+    () => sessionContext.value?.customer?.defaultBillingAddress || null,
   );
   const setActiveBillingAddress = async (address: Partial<BillingAddress>) => {
     if (!address?.id) {
       throw new Error(
-        "You need to provide address id in order to set the address."
+        "You need to provide address id in order to set the address.",
       );
     }
     await setCurrentBillingAddress(address.id, apiInstance);
@@ -203,14 +203,14 @@ export function useSessionContext(
   };
 
   const countryId = computed(
-    () => sessionContext.value?.salesChannel?.countryId
+    () => sessionContext.value?.salesChannel?.countryId,
   );
 
   const languageId = computed(
-    () => sessionContext.value?.salesChannel?.languageId
+    () => sessionContext.value?.salesChannel?.languageId,
   );
   const languageIdChain = computed(
-    () => sessionContext.value?.context?.languageIdChain?.[0]
+    () => sessionContext.value?.context?.languageIdChain?.[0],
   );
   const taxState = computed(() => sessionContext.value?.context?.taxState);
   const userFromContext = computed(() => sessionContext.value?.customer);

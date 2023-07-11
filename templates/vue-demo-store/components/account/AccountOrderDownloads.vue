@@ -11,17 +11,17 @@ const { getDocumentFile } = useOrderDetails(props.documents[0].orderId);
 const getMediaFileHandler = async (documentObject: OrderDocument) => {
   const response = await getDocumentFile(
     documentObject.id,
-    documentObject.deepLinkCode
+    documentObject.deepLinkCode,
   );
   downloadFile(
     response,
-    `${documentObject.config.name}.${documentObject.fileType}`
+    `${documentObject.config.name}.${documentObject.fileType}`,
   );
 };
 
 const getDocumentDate = (documentDate: Date | string) =>
   new Date(documentDate).toLocaleDateString(
-    (typeof navigator !== "undefined" && navigator.language) || "en-US"
+    (typeof navigator !== "undefined" && navigator.language) || "en-US",
   );
 </script>
 <template>
@@ -39,7 +39,7 @@ const getDocumentDate = (documentDate: Date | string) =>
         }}</span>
         ({{
           getDocumentDate(
-            document.updatedAt ? document.updatedAt : document.createdAt
+            document.updatedAt ? document.updatedAt : document.createdAt,
           )
         }})
       </li>

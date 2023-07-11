@@ -55,7 +55,7 @@ export function useNewsletter(): UseNewsletterReturn {
   const { apiInstance } = useShopwareContext();
   const { getStorefrontUrl } = useInternationalization();
   const newsletterStatus: Ref<NewsletterStatus> = ref(
-    NewsletterStatus.UNDEFINED
+    NewsletterStatus.UNDEFINED,
   );
 
   async function newsletterSubscribe(params: NewsletterInput) {
@@ -64,7 +64,7 @@ export function useNewsletter(): UseNewsletterReturn {
         ...params,
         storefrontUrl: getStorefrontUrl(),
       },
-      apiInstance
+      apiInstance,
     );
   }
 
@@ -73,7 +73,7 @@ export function useNewsletter(): UseNewsletterReturn {
       {
         email,
       },
-      apiInstance
+      apiInstance,
     );
   }
 
@@ -89,12 +89,12 @@ export function useNewsletter(): UseNewsletterReturn {
   const isNewsletterSubscriber = computed(
     () =>
       ![NewsletterStatus.OPT_OUT, NewsletterStatus.UNDEFINED].includes(
-        newsletterStatus.value
-      )
+        newsletterStatus.value,
+      ),
   );
 
   const confirmationNeeded = computed(
-    () => newsletterStatus.value === NewsletterStatus.NOT_SET
+    () => newsletterStatus.value === NewsletterStatus.NOT_SET,
   );
 
   return {

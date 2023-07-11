@@ -8,6 +8,6 @@ export default defineEventHandler(async (event) => {
   event.node.res.setHeader("Content-Type", "application/xhtml+xml");
 
   return streamToPromise(Readable.from(sitemapObject).pipe(stream)).then(
-    (data) => data.toString()
+    (data) => data.toString(),
   );
 });

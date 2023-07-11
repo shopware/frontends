@@ -23,7 +23,7 @@ describe("CustomerService - updateEmail", () => {
 
   it("rejects the promise if the email confirmation is wrong", async () => {
     mockedPost.mockRejectedValueOnce(
-      new Error("400 - email confirmation is wrong")
+      new Error("400 - email confirmation is wrong"),
     );
     const differentEmail = faker.internet.email();
     expect(
@@ -31,7 +31,7 @@ describe("CustomerService - updateEmail", () => {
         email: credentials.email,
         emailConfirmation: differentEmail,
         password: credentials.password,
-      })
+      }),
     ).rejects.toThrow("400 - email confirmation is wrong");
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(getCustomerUpdateEmailEndpoint(), {

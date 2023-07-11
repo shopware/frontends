@@ -24,7 +24,7 @@ const srcPath = computed(() => {
       ? `width=${roundUp(width.value)}`
       : `height=${roundUp(height.value)}`;
   return `${getSmallestThumbnailUrl(
-    product.value.cover?.media
+    product.value.cover?.media,
   )}?${biggestParam}&fit=crop,smart`;
 });
 </script>

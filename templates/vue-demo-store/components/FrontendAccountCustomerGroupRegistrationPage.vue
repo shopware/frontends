@@ -15,10 +15,10 @@ const { data: registrationResponse } = await useAsyncData(
       {
         address: `/store-api/customer-group-registration/config/${props.navigationId}`,
       },
-      apiInstance
+      apiInstance,
     );
     return response?.data || {};
-  }
+  },
 );
 </script>
 

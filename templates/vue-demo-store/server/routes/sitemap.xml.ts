@@ -27,6 +27,6 @@ export default defineEventHandler(async (event) => {
   event.node.res.setHeader("Content-Type", "application/xhtml+xml");
 
   return streamToPromise(Readable.from(sitemaps).pipe(smis)).then((data) =>
-    data.toString()
+    data.toString(),
   );
 });

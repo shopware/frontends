@@ -11,7 +11,7 @@ export function isTypeDefinitionExists(pkg: string, name: string) {
   deepFindFilePath(name, join(__dirname, `../packages/${pkg}/temp`));
   const typingFilepath = join(
     __dirname,
-    `../packages/${pkg}/temp/${name}.d.ts`
+    `../packages/${pkg}/temp/${name}.d.ts`,
   );
   return fs.existsSync(typingFilepath);
 }
@@ -35,11 +35,11 @@ async function deepFindFilePath(filename, startPath) {
 
 export async function getTypeDefinition(
   pkg: string,
-  name: string
+  name: string,
 ): Promise<string | undefined> {
   const typingFilepath = join(
     __dirname,
-    `../packages/${pkg}/temp/${name}.d.ts`
+    `../packages/${pkg}/temp/${name}.d.ts`,
   );
 
   deepFindFilePath(name, join(__dirname, `../packages/${pkg}/temp`));
@@ -66,7 +66,7 @@ export async function getTypeDefinition(
 }
 
 export async function getTypeDefinition2(
-  filePath: string
+  filePath: string,
 ): Promise<string | undefined> {
   // const typingFilepath = join(
   //   __dirname,
@@ -102,7 +102,7 @@ export function replacer(
   code: string,
   value: string,
   key: string,
-  insert: "head" | "tail" | "none" = "none"
+  insert: "head" | "tail" | "none" = "none",
 ) {
   const START = `<!--${key}_STARTS-->`;
   const END = `<!--${key}_ENDS-->`;
@@ -139,7 +139,7 @@ function extractCommentsFromFileContent(content: string): string[] {
 function extractCommentBeforeExport(content: string, name: string): string {
   const regex = new RegExp(
     `\/\\*\\*[\s\S]*?\\*\/[\s\S]*?export[\s\S]*?${name}`,
-    "gm"
+    "gm",
   );
   //console.log("extracting comment", content);
   //console.log("extracting comment", content);

@@ -29,7 +29,7 @@ describe("ProductService - getProductVariantForOptions", () => {
       {
         options: ["option-id-1", "option-id-2"],
         switchedGroup: "switched-group-id",
-      }
+      },
     );
   });
   it("should return data with specific format", async () => {

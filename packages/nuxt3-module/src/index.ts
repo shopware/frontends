@@ -34,11 +34,11 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     // use a module's dependency in order to not install it again within an end-project to keep compatibility
     const apiClientDependencyPath = await resolveOwnDependency(
       "@shopware-pwa/api-client",
-      nuxt
+      nuxt,
     );
     const isApiClientInstalledLocally = await isDependencyInstalledLocally(
       nuxt.options.rootDir,
-      "@shopware-pwa/api-client"
+      "@shopware-pwa/api-client",
     );
     if (!isApiClientInstalledLocally && apiClientDependencyPath) {
       nuxt.options.alias["@shopware-pwa/api-client"] = apiClientDependencyPath;
@@ -47,11 +47,11 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     const isComposablesNextInstalledLocally =
       await isDependencyInstalledLocally(
         nuxt.options.rootDir,
-        "@shopware-pwa/composables-next"
+        "@shopware-pwa/composables-next",
       );
     const composablesDependencyPath = await resolveOwnDependency(
       "@shopware-pwa/composables-next",
-      nuxt
+      nuxt,
     );
     if (!isComposablesNextInstalledLocally && composablesDependencyPath) {
       nuxt.options.alias["@shopware-pwa/composables-next"] =

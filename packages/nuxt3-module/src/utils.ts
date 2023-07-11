@@ -11,12 +11,12 @@ const pkgModulesDir = resolve(pkgDir, "./node_modules");
 
 export async function isDependencyInstalledLocally(
   rootDir: string,
-  dependency: DEPENDENCY
+  dependency: DEPENDENCY,
 ) {
   try {
     const projectPackageJsonPath = resolve(rootDir, "package.json");
     const packageJson = JSON.parse(
-      await fs.readFile(projectPackageJsonPath, "utf8")
+      await fs.readFile(projectPackageJsonPath, "utf8"),
     );
 
     if (

@@ -37,7 +37,7 @@ export class RegisterForm {
     firstName: string,
     lastName: string,
     email: string,
-    password: string
+    password: string,
   ) {
     await this.salutation.selectOption({ label: "Mr." });
     await this.firstName.type(firstName);

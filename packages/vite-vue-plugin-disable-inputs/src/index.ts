@@ -39,8 +39,8 @@ function VueDisableInputsBeforeMount(): PluginOption {
           });
 
           </script>
-          `
-          )
+          `,
+          ),
         );
 
         const foundSelectElements =
@@ -51,7 +51,7 @@ function VueDisableInputsBeforeMount(): PluginOption {
             // inject isDisabled ref to existing :disabled
             component = component.replace(
               selectBlock,
-              selectBlock.replace(':disabled="', ':disabled="isDisabled || ')
+              selectBlock.replace(':disabled="', ':disabled="isDisabled || '),
             );
 
             continue;
@@ -63,7 +63,7 @@ function VueDisableInputsBeforeMount(): PluginOption {
             selectBlock
               .replace("<select", '<select :disabled="isDisabled"')
               .replace("<button", '<button :disabled="isDisabled"')
-              .replace("<input", '<input :disabled="isDisabled"')
+              .replace("<input", '<input :disabled="isDisabled"'),
           );
         }
 

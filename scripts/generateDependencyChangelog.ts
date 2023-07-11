@@ -6,9 +6,9 @@ import writeChangeset from "@changesets/write";
 
 async function getJsonFileBaseVersion(
   filename: string,
-  cwd: string
+  cwd: string,
 ): Promise<PackageJSON> {
-  const { stdout, code } = await spawn("git", ["show", `HEAD:./${filename}`], {
+  const { stdout, code } = await spawn("git", ["show", `main:./${filename}`], {
     cwd,
   });
 
@@ -20,7 +20,7 @@ function createLineDescription(
   name: string,
   type: "dependency" | "peerDependency",
   from: string | undefined,
-  to: string | undefined
+  to: string | undefined,
 ): string {
   if (from && to) {
     return ` - Changed ${type} _${name}_ from **${from}** to **${to}**`;
@@ -76,8 +76,8 @@ async function run() {
             dep,
             "dependency",
             baseDependencies[dep],
-            currentDependencies[dep]
-          )
+            currentDependencies[dep],
+          ),
         );
       }
     });
@@ -94,8 +94,8 @@ async function run() {
             dep,
             "peerDependency",
             basePeerDependencies[dep],
-            currentPeerDependencies[dep]
-          )
+            currentPeerDependencies[dep],
+          ),
         );
       }
     });
@@ -107,7 +107,7 @@ async function run() {
           summary: `Dependency changes:\n${updatedEntries.join("\n")}`,
           releases: [{ name: pkg.packageJson.name, type: "patch" }],
         },
-        rootDir
+        rootDir,
       );
       console.log("Saved dependency changeset: ", id);
     }
