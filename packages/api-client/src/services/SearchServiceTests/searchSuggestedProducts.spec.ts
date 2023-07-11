@@ -29,7 +29,7 @@ describe("SearchService - searchSuggestedProducts", () => {
         query: "searchTerm",
         limit: 10,
         p: 1,
-      }
+      },
     );
     expect(result).toHaveProperty("apiAlias");
   });
@@ -42,7 +42,7 @@ describe("SearchService - searchSuggestedProducts", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       "/store-api/search-suggest?search=",
-      undefined
+      undefined,
     );
     expect(result).toHaveProperty("apiAlias");
   });

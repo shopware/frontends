@@ -31,7 +31,7 @@ export function getFormattedPrice(
     direction: "ltr",
     removeDecimals: false,
     removeCurrency: false,
-  }
+  },
 ): string {
   let formattedPrice = [(+value).toFixed(toFixedValue), currency];
 

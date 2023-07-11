@@ -28,12 +28,12 @@ test.describe.parallel.only("My account functionalities tests", () => {
     expect(
       await page
         .getByTestId("account-personal-data-firstname-input")
-        .inputValue()
+        .inputValue(),
     ).toEqual("test first name");
     expect(
       await page
         .getByTestId("account-personal-data-lastname-input")
-        .inputValue()
+        .inputValue(),
     ).toEqual("test last name");
   });
 });

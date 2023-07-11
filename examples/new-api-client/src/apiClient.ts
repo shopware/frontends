@@ -38,5 +38,5 @@ export const readNavigation = (params: ApiRequestParams<"readNavigation">) =>
     {
       depth: 2,
       ...params,
-    }
+    },
   );

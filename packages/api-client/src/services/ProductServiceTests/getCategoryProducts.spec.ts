@@ -22,7 +22,7 @@ describe("ProductService - getCategoryProducts", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       "/store-api/product-listing/044a190a54ab4f06803909c3ee8063ef",
-      undefined
+      undefined,
     );
     expect(result).toHaveProperty("elements");
   });
@@ -37,7 +37,7 @@ describe("ProductService - getCategoryProducts", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       "/store-api/product-listing/044a190a54ab4f06803909c3ee8063ef",
-      { limit: 10 }
+      { limit: 10 },
     );
     expect(result).toHaveProperty("elements");
   });

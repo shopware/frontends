@@ -12,6 +12,7 @@ nav:
           text: Why Shopware Frontends
       position: 5
 ---
+
 # Overview
 
 Shopware Composable Frontends is Shopware's toolkit for creating platform-agnostic custom storefronts. The demo store implementation is based on Vue.js and Nuxt3.

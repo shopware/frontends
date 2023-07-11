@@ -16,29 +16,29 @@ export class MyAccountPage {
   constructor(page: Page) {
     this.page = page;
     this.accountChangeProfileButton = page.getByTestId(
-      "my-account-change-profile-button"
+      "my-account-change-profile-button",
     );
     this.personalFirstName = page.getByTestId(
-      "account-personal-data-firstname-input"
+      "account-personal-data-firstname-input",
     );
     this.personalLastName = page.getByTestId(
-      "account-personal-data-lastname-input"
+      "account-personal-data-lastname-input",
     );
     this.personalEmail = page.getByTestId("account-personal-data-email-input");
     this.accountPersonalDataSubmitButton = page.getByTestId(
-      "account-personal-data-submit-button"
+      "account-personal-data-submit-button",
     );
     this.changePaymentMethodButton = page.getByTestId(
-      "my-account-change-payment-method-button"
+      "my-account-change-payment-method-button",
     );
     this.accountPaymentSubmitButton = page.getByTestId(
-      "account-payment-submit-button"
+      "account-payment-submit-button",
     );
     this.accountChangeBillingAddressButton = page.getByTestId(
-      "my-account-change-default-billing-address-button"
+      "my-account-change-default-billing-address-button",
     );
     this.accountChangeShippingAddressButton = page.getByTestId(
-      "my-account-change-default-shipping-address-button"
+      "my-account-change-default-shipping-address-button",
     );
     this.newsletterCheckbox = page.getByTestId("#newsletter-checkbox");
   }

@@ -26,7 +26,7 @@ const iconsMap = {
 };
 
 const themeTypeColor: ComputedRef<string> = computed(
-  () => colorCssMap[props.notification.type] || "blue"
+  () => colorCssMap[props.notification.type] || "blue",
 );
 const icon = computed(() => iconsMap[props.notification.type] || "information");
 </script>

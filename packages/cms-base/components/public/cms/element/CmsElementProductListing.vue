@@ -43,7 +43,7 @@ const changePage = async (page: number) => {
   changeCurrentPage(page, <Partial<ShopwareSearchParams>>route.query);
 };
 const isProductListing = computed(
-  () => props.content?.type === "product-listing"
+  () => props.content?.type === "product-listing",
 );
 
 setInitialListing(props?.content?.data?.listing);

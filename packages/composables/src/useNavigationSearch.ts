@@ -53,7 +53,7 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
           },
         ],
       },
-      apiInstance
+      apiInstance,
     );
 
     return seoResult.elements?.[0];

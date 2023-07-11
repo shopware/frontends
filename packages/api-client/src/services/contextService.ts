@@ -35,7 +35,7 @@ import { extractContextToken } from "../helpers/context";
  */
 async function updateContext(
   params: UpdateContextParams,
-  contextInstance: ShopwareApiInstance
+  contextInstance: ShopwareApiInstance,
 ): Promise<ContextTokenResponse> {
   const resp = await contextInstance.invoke.patch(getContextEndpoint(), params);
   const contextToken = extractContextToken(resp);
@@ -52,7 +52,7 @@ async function updateContext(
  * @public
  */
 export async function getSessionContext(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<SessionContext> {
   const { data } = await contextInstance.invoke.get(getContextEndpoint());
   return data;
@@ -70,7 +70,7 @@ export async function getSessionContext(
  */
 export function setCurrentShippingAddress(
   shippingAddressId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   return updateContext({ shippingAddressId }, contextInstance);
 }
@@ -87,7 +87,7 @@ export function setCurrentShippingAddress(
  */
 export function setCurrentBillingAddress(
   billingAddressId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   return updateContext({ billingAddressId }, contextInstance);
 }
@@ -102,10 +102,10 @@ export function setCurrentBillingAddress(
  * @public
  */
 export async function getAvailableCurrencies(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Currency[]> {
   const { data } = await contextInstance.invoke.get(
-    getContextCurrencyEndpoint()
+    getContextCurrencyEndpoint(),
   );
 
   return data;
@@ -123,7 +123,7 @@ export async function getAvailableCurrencies(
  */
 export async function setCurrentCurrency(
   newCurrencyID: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { currencyId: newCurrencyID };
   const resp = await updateContext(params, contextInstance);
@@ -141,7 +141,7 @@ export async function setCurrentCurrency(
  * @public
  */
 export async function getAvailableLanguages(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   const { data } = await contextInstance.invoke.get<
     EntityResult<"language", Language>
@@ -162,7 +162,7 @@ export async function getAvailableLanguages(
  */
 export async function setCurrentLanguage(
   newLanguageId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { languageId: newLanguageId };
   const resp = await updateContext(params, contextInstance);
@@ -180,7 +180,7 @@ export async function setCurrentLanguage(
  * @public
  */
 export async function getAvailableCountries(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<EntityResult<"country", Country>> {
   const { data } = await contextInstance.invoke.post<
     EntityResult<"country", Country>
@@ -202,7 +202,7 @@ export async function getAvailableCountries(
  * @public
  */
 export async function getAvailableSalutations(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   const resp = await contextInstance.invoke.get<
     EntityResult<"salutation", Salutation>
@@ -222,7 +222,7 @@ export async function getAvailableSalutations(
  */
 export async function getAvailablePaymentMethods(
   contextInstance: ShopwareApiInstance = defaultInstance,
-  params: { onlyAvailable?: boolean } = {}
+  params: { onlyAvailable?: boolean } = {},
 ) {
   const resp = await contextInstance.invoke.get<
     EntityResult<"payment_method", PaymentMethod>
@@ -245,7 +245,7 @@ export async function getAvailablePaymentMethods(
  */
 export async function getPaymentMethodDetails(
   paymentId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<PaymentMethod> {
   const { data } = await contextInstance.invoke.get(
     getContextPaymentMethodEndpoint(),
@@ -253,7 +253,7 @@ export async function getPaymentMethodDetails(
       params: {
         "filter[id]": paymentId,
       },
-    }
+    },
   );
 
   return data?.elements?.[0];
@@ -271,7 +271,7 @@ export async function getPaymentMethodDetails(
  */
 export async function setCurrentPaymentMethod(
   newPaymentMethodId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { paymentMethodId: newPaymentMethodId };
   const resp = await updateContext(params, contextInstance);
@@ -291,7 +291,7 @@ export async function setCurrentPaymentMethod(
  */
 export async function getAvailableShippingMethods(
   contextInstance: ShopwareApiInstance = defaultInstance,
-  params: ShopwareSearchParams = {}
+  params: ShopwareSearchParams = {},
 ) {
   const resp = await contextInstance.invoke.post<
     EntityResult<"shipping_method", ShippingMethod>
@@ -312,7 +312,7 @@ export async function getAvailableShippingMethods(
  */
 export async function getShippingMethodDetails(
   shippingId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ShippingMethod> {
   const { data } = await contextInstance.invoke.get(
     getContextShippingMethodEndpoint(),
@@ -320,7 +320,7 @@ export async function getShippingMethodDetails(
       params: {
         "filter[id]": shippingId,
       },
-    }
+    },
   );
 
   return data?.elements?.[0];
@@ -338,7 +338,7 @@ export async function getShippingMethodDetails(
  */
 export async function setCurrentShippingMethod(
   newShippingMethodId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { shippingMethodId: newShippingMethodId };
   const resp = await updateContext(params, contextInstance);
@@ -357,7 +357,7 @@ export async function setCurrentShippingMethod(
  */
 export async function getUserCountry(
   countryId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Country> {
   const { data } = await contextInstance.invoke.get(
     getContextCountryEndpoint(),
@@ -365,7 +365,7 @@ export async function getUserCountry(
       params: {
         "filter[id]": countryId,
       },
-    }
+    },
   );
 
   return data?.elements?.[0];
@@ -383,7 +383,7 @@ export async function getUserCountry(
  */
 export async function getUserSalutation(
   salutationId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Salutation> {
   const { data } = await contextInstance.invoke.get(
     getContextSalutationEndpoint(),
@@ -391,7 +391,7 @@ export async function getUserSalutation(
       params: {
         "filter[id]": salutationId,
       },
-    }
+    },
   );
 
   return data?.elements?.[0];

@@ -44,7 +44,7 @@ const invokeReset = async (): Promise<void> => {
           newPassword: state.password.newPasswordConfirm,
           hash: hashQuery,
         },
-        apiInstance
+        apiInstance,
       );
     }
   } catch (err) {

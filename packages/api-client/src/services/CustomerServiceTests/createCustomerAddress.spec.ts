@@ -33,7 +33,7 @@ describe("CustomerService - createCustomerAddress", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       "/store-api/account/address",
-      newAddressData
+      newAddressData,
     );
   });
 });

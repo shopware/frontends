@@ -101,7 +101,7 @@ const readNavigation = (params: ApiRequestParams<"readNavigation">) =>
     {
       depth: 2,
       ...params,
-    }
+    },
   );
 
 // in another file you can use it, and depth property will be set to 2 by default

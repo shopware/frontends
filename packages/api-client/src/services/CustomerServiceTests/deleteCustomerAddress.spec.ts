@@ -17,14 +17,14 @@ describe("CustomerService - deleteCustomerAddress", () => {
 
   it("rejects the promise if the address does not exist", async () => {
     mockedDelete.mockRejectedValueOnce(
-      new Error("400 - customer's address not found")
+      new Error("400 - customer's address not found"),
     );
     expect(
-      deleteCustomerAddress("2bbb89dfa4664bc681e80b37eaa80fb7")
+      deleteCustomerAddress("2bbb89dfa4664bc681e80b37eaa80fb7"),
     ).rejects.toThrow("400 - customer's address not found");
     expect(mockedDelete).toBeCalledTimes(1);
     expect(mockedDelete).toBeCalledWith(
-      getCustomerAddressEndpoint("2bbb89dfa4664bc681e80b37eaa80fb7")
+      getCustomerAddressEndpoint("2bbb89dfa4664bc681e80b37eaa80fb7"),
     );
   });
 
@@ -34,7 +34,7 @@ describe("CustomerService - deleteCustomerAddress", () => {
     await deleteCustomerAddress("2bbb89dfa4664bc681e80b37eaa80fb7");
     expect(mockedDelete).toBeCalledTimes(1);
     expect(mockedDelete).toBeCalledWith(
-      getCustomerAddressEndpoint("2bbb89dfa4664bc681e80b37eaa80fb7")
+      getCustomerAddressEndpoint("2bbb89dfa4664bc681e80b37eaa80fb7"),
     );
   });
 });

@@ -15,7 +15,7 @@ export function useAuthGuardRedirection(params?: { to: string }) {
         if (!params?.to) {
           router.push({ path: "/" });
           pushInfo(
-            `Login is required to access this page. You are redirected to the homepage.`
+            `Login is required to access this page. You are redirected to the homepage.`,
           );
         }
         if (params?.to) {
@@ -26,6 +26,6 @@ export function useAuthGuardRedirection(params?: { to: string }) {
     },
     {
       immediate: true,
-    }
+    },
   );
 }

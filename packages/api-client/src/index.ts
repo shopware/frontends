@@ -43,5 +43,5 @@ export const update: (config?: ClientSettings) => void = defaultInstance.update;
  * @public
  */
 export const onConfigChange: (
-  fn: (context: ConfigChangedArgs) => void
+  fn: (context: ConfigChangedArgs) => void,
 ) => void = defaultInstance.onConfigChange;

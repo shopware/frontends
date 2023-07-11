@@ -30,7 +30,7 @@ describe("CustomerService - updatePassword", () => {
         password: credentials.password,
         newPassword: "!23",
         newPasswordConfirm: "!23",
-      })
+      }),
     ).rejects.toThrow("400 - password too short");
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(getCustomerUpdatePasswordEndpoint(), {
@@ -42,14 +42,14 @@ describe("CustomerService - updatePassword", () => {
 
   it("rejects the promise if the passwordConfirmation does not match", async () => {
     mockedPost.mockRejectedValueOnce(
-      new Error("400 - new password confirmation does not match")
+      new Error("400 - new password confirmation does not match"),
     );
     expect(
       updatePassword({
         password: credentials.password,
         newPassword: credentials.newPassword,
         newPasswordConfirm: `${credentials.newPassword}_123`,
-      })
+      }),
     ).rejects.toThrow("400 - new password confirmation does not match");
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(getCustomerUpdatePasswordEndpoint(), {

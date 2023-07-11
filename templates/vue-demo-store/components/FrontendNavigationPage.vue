@@ -22,7 +22,7 @@ const { data: categoryResponse } = await useAsyncData(
       },
     });
     return category;
-  }
+  },
 );
 
 const breadcrumbs = getCategoryBreadcrumbs(categoryResponse.value, {

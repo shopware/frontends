@@ -25,7 +25,7 @@ export type UseProductWishlistReturn = {
  * @category Product
  */
 export function useProductWishlist(
-  product: Ref<Product>
+  product: Ref<Product>,
 ): UseProductWishlistReturn {
   const { isLoggedIn } = useUser();
   const {
@@ -64,7 +64,7 @@ export function useProductWishlist(
   const isInWishlist = computed(() =>
     isLoggedIn.value
       ? itemsSync.value?.includes(product.value.id)
-      : items.value?.includes(product.value.id)
+      : items.value?.includes(product.value.id),
   );
 
   return {

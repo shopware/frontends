@@ -57,7 +57,7 @@ describe("Settings", () => {
       update({ contextToken: "xxx" });
 
       expect(
-        defaultInstance.defaults.headers.common["sw-context-token"]
+        defaultInstance.defaults.headers.common["sw-context-token"],
       ).toEqual("xxx");
     });
 
@@ -66,7 +66,7 @@ describe("Settings", () => {
       setup();
 
       expect(
-        defaultInstance.defaults.headers.common["sw-context-token"]
+        defaultInstance.defaults.headers.common["sw-context-token"],
       ).toBeUndefined();
     });
 
@@ -74,7 +74,7 @@ describe("Settings", () => {
       update({ languageId: "someLanguageId" });
 
       expect(defaultInstance.defaults.headers.common["sw-language-id"]).toEqual(
-        "someLanguageId"
+        "someLanguageId",
       );
     });
 
@@ -83,7 +83,7 @@ describe("Settings", () => {
       setup();
 
       expect(
-        defaultInstance.defaults.headers.common["sw-language-id"]
+        defaultInstance.defaults.headers.common["sw-language-id"],
       ).toBeUndefined();
     });
 
@@ -131,7 +131,7 @@ describe("Settings", () => {
       const apiInstance = _createInstance();
       apiInstance.update({ contextToken: "xxx" }, { url: "/some-url" });
       expect(consoleWarnSpy).toBeCalledWith(
-        '[shopware-6-api] After calling API method /some-url there is no "onConfigChange" listener. See https://shopware-pwa-docs.vuestorefront.io/landing/fundamentals/security.html#context-awareness'
+        '[shopware-6-api] After calling API method /some-url there is no "onConfigChange" listener. See https://shopware-pwa-docs.vuestorefront.io/landing/fundamentals/security.html#context-awareness',
       );
     });
   });
@@ -148,7 +148,7 @@ describe("Settings", () => {
           "invoke",
           "defaults",
           "_axiosInstance",
-        ])
+        ]),
       );
     });
   });

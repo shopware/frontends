@@ -111,7 +111,7 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
             (extractedType &&
               (await linkExternalTypes(
                 normalizeString(param.type),
-                removeRedundantItems(extractedType)
+                removeRedundantItems(extractedType),
               ))) ||
             normalizeString(param.type);
 
@@ -136,8 +136,8 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
             getToggleContainer(
               getWrappedCodeBlock(signature),
               `See <span style="color:#FFCB6B;">${normalizeString(
-                functionReturnType
-              )}</span>`
+                functionReturnType,
+              )}</span>`,
             )) ||
           getWrappedCodeBlock(functionReturnType);
       }
@@ -155,12 +155,12 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
             (extractedType &&
               (await linkExternalTypes(
                 normalizeString(row.returnType),
-                removeRedundantItems(extractedType)
+                removeRedundantItems(extractedType),
               ))) ||
             normalizeString(row.returnType),
           description: normalizeString(row.summary).replace(
             /(\r\n|\n|\r)/gm,
-            ""
+            "",
           ),
         };
       }
@@ -188,7 +188,7 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
             openPath,
             githubTreeUrl:
               "https://stackblitz.com/github/shopware/frontends/tree/main/examples/example-builder",
-          }
+          },
         )})`;
       }
 
@@ -196,7 +196,7 @@ export function MdTypesTransformer(config: PluginConfig): Plugin {
         code,
         description + apiSection,
         "PLACEHOLDER_DESCRIPTION",
-        "tail"
+        "tail",
       );
 
       return code;

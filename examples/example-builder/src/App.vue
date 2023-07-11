@@ -11,18 +11,18 @@ const route = useRoute();
 const packageName = computed(() =>
   !Array.isArray(route.query.packageName)
     ? route.query.packageName?.toString()
-    : route.query.packageName?.[0] || "@shopware-pwa/api-client"
+    : route.query.packageName?.[0] || "@shopware-pwa/api-client",
 );
 
 const packageVersion = computed(() =>
   !Array.isArray(route.query.packageVersion)
     ? route.query.packageVersion?.toString()
-    : route.query.packageVersion?.[0] || "latest"
+    : route.query.packageVersion?.[0] || "latest",
 );
 const functionName = computed(() =>
   !Array.isArray(route.query.functionName)
     ? route.query.functionName?.toString()
-    : route.query.functionName[0] || "getSessionContext"
+    : route.query.functionName[0] || "getSessionContext",
 );
 
 const isAsync = computed(() => !!route.query.async || true);
@@ -40,7 +40,7 @@ const openExample = () => {
       functionName: functionName.value,
       isAsync: isAsync.value,
     }),
-    { newWindow: false }
+    { newWindow: false },
   );
 };
 // timeout to get the URL params

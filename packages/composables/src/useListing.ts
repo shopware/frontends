@@ -55,7 +55,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @returns
    */
   setInitialListing(
-    initialListing: Partial<ListingResult<ELEMENTS_TYPE>>
+    initialListing: Partial<ListingResult<ELEMENTS_TYPE>>,
   ): Promise<void>;
   /**
    * @deprecated - use `search` instead
@@ -64,7 +64,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @returns
    */
   initSearch(
-    criteria: Partial<ShopwareSearchParams>
+    criteria: Partial<ShopwareSearchParams>,
   ): Promise<ListingResult<ELEMENTS_TYPE>>;
   /**
    * Searches for the listing based on the criteria
@@ -76,7 +76,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
     criteria: Partial<ShopwareSearchParams>,
     options?: {
       preventRouteChange?: boolean;
-    }
+    },
   ): Promise<void>;
   /**
    * Loads more (next page) elements to the listing
@@ -105,7 +105,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    */
   changeCurrentSortingOrder(
     order: string,
-    query?: Partial<ShopwareSearchParams>
+    query?: Partial<ShopwareSearchParams>,
   ): Promise<void>;
   /**
    * Current page number
@@ -118,7 +118,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    */
   changeCurrentPage(
     page: number,
-    query?: Partial<ShopwareSearchParams>
+    query?: Partial<ShopwareSearchParams>,
   ): Promise<void>;
   /**
    * Total number of elements found for the current search criteria
@@ -203,7 +203,7 @@ export function useListing(params?: {
     searchMethod = async (searchCriteria: Partial<ShopwareSearchParams>) => {
       if (!resourceId) {
         throw new Error(
-          "[useListing][search] Search category id does not exist."
+          "[useListing][search] Search category id does not exist.",
         );
       }
       return getCategoryProducts(resourceId, searchCriteria, apiInstance);
@@ -231,7 +231,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
   listingKey,
 }: {
   searchMethod(
-    searchParams: Partial<ShopwareSearchParams>
+    searchParams: Partial<ShopwareSearchParams>,
   ): Promise<ListingResult<ELEMENTS_TYPE>>;
   searchDefaults: ShopwareSearchParams;
   listingKey: string;
@@ -265,14 +265,14 @@ export function createListingComposable<ELEMENTS_TYPE>({
 
   const getInitialListing = computed(() => _storeInitialListing.value);
   const setInitialListing = async (
-    initialListing: Partial<ListingResult<ELEMENTS_TYPE>>
+    initialListing: Partial<ListingResult<ELEMENTS_TYPE>>,
   ) => {
     _storeInitialListing.value = initialListing;
     _storeAppliedListing.value = null;
   };
 
   const initSearch = async (
-    criteria: Partial<ShopwareSearchParams>
+    criteria: Partial<ShopwareSearchParams>,
   ): Promise<ListingResult<ELEMENTS_TYPE>> => {
     loading.value = true;
     try {
@@ -290,7 +290,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
     criteria: Partial<ShopwareSearchParams>,
     options?: {
       preventRouteChange?: boolean;
-    }
+    },
   ) {
     loading.value = true;
     try {
@@ -345,7 +345,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
   });
 
   const getTotalPagesCount = computed(() =>
-    Math.ceil(getTotal.value / getLimit.value)
+    Math.ceil(getTotal.value / getLimit.value),
   );
 
   const getSortingOrders = computed(() => {
@@ -354,19 +354,19 @@ export function createListingComposable<ELEMENTS_TYPE>({
   });
 
   const getCurrentSortingOrder = computed(
-    () => getCurrentListing.value?.sorting
+    () => getCurrentListing.value?.sorting,
   );
   async function changeCurrentSortingOrder(
     order: string,
-    query?: Partial<ShopwareSearchParams>
+    query?: Partial<ShopwareSearchParams>,
   ) {
     await search(
       Object.assign(
         {
           order,
         },
-        query || {}
-      )
+        query || {},
+      ),
     );
   }
 
@@ -374,15 +374,15 @@ export function createListingComposable<ELEMENTS_TYPE>({
 
   const changeCurrentPage = async (
     page: number,
-    query?: Partial<ShopwareSearchParams>
+    query?: Partial<ShopwareSearchParams>,
   ) => {
     await search(
       Object.assign(
         {
           p: page,
         },
-        query || {}
-      )
+        query || {},
+      ),
     );
   };
 
@@ -393,7 +393,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
   const getAvailableFilters = computed(() => {
     return getListingFilters(
       _storeAppliedListing.value?.aggregations ||
-        getCurrentListing.value?.aggregations
+        getCurrentListing.value?.aggregations,
     );
   });
 
@@ -437,7 +437,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
         price: { min: 0, max: 0 },
         search: getCurrentFilters.value.search,
       },
-      searchDefaults
+      searchDefaults,
     );
 
     _storeAppliedListing.value.currentFilters = defaultFilters;

@@ -18,7 +18,7 @@ export class HomePage extends AbstractPage {
     this.signInButton = page.getByTestId("header-sign-in-link");
     this.linkToCartPage = page.locator("text='YORK 3'");
     this.linkToVariantPage = page.locator(
-      "text='Pepper white, ground, Muntok pearl'"
+      "text='Pepper white, ground, Muntok pearl'",
     );
     this.searchBar = page.getByTestId("layout-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");

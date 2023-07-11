@@ -34,7 +34,7 @@ const { data: seoResult } = await useAsyncData(
     }
     const seoUrl = await resolvePath(routePath);
     return seoUrl;
-  }
+  },
 );
 
 onBeforeRouteLeave(() => {
@@ -42,7 +42,7 @@ onBeforeRouteLeave(() => {
 });
 
 const { routeName, foreignKey } = useNavigationContext(
-  seoResult as Ref<SeoUrl>
+  seoResult as Ref<SeoUrl>,
 );
 
 function render() {

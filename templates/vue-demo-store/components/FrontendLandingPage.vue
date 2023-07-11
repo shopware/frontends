@@ -15,7 +15,7 @@ const { data: landingResponse } = await useAsyncData(
       withCmsAssociations: true,
     });
     return landingPage;
-  }
+  },
 );
 
 if (typeof landingResponse?.value !== null) {

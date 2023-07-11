@@ -18,20 +18,20 @@ onMounted(async () => {
   const reviewsResponse = await getProductReviews(
     props.product.id,
     undefined,
-    apiInstance
+    apiInstance,
   );
   reviews.value = reviewsResponse?.elements || [];
 });
 
 const productName = computed(() =>
-  getTranslatedProperty(props.product, "name")
+  getTranslatedProperty(props.product, "name"),
 );
 const manufacturerName = computed(() =>
-  getTranslatedProperty(props.product.manufacturer, "name")
+  getTranslatedProperty(props.product.manufacturer, "name"),
 );
 
 const description = computed(() =>
-  getTranslatedProperty(props.product, "description")
+  getTranslatedProperty(props.product, "description"),
 );
 const properties = computed(() => props.product?.properties || []);
 

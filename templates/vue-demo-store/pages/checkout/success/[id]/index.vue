@@ -56,7 +56,7 @@ watchDebounced(
       console.error("err, redirect", error);
     }
   },
-  { debounce: 5000 }
+  { debounce: 5000 },
 );
 
 const isExpand = ref(false);
@@ -65,7 +65,7 @@ const toggleView = () => (isExpand.value = !isExpand.value);
 
 const formatDate = (date: Date) =>
   new Date(date).toLocaleDateString(
-    (typeof navigator !== "undefined" && navigator.language) || "en-US"
+    (typeof navigator !== "undefined" && navigator.language) || "en-US",
   );
 </script>
 

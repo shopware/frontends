@@ -22,7 +22,7 @@ describe("ProductService - getProduct", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       "/store-api/product/044a190a54ab4f06803909c3ee8063ef",
-      null
+      null,
     );
     expect(result.product?.id).toEqual(productId);
   });
