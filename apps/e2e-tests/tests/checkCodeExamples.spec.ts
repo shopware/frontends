@@ -5,6 +5,7 @@ import path from "path";
 const directoryPath = path.join(__dirname, "/../../../examples/");
 
 fs.readdirSync(directoryPath).forEach((file) => {
+  test.setTimeout(90000);
   test(`Verify ${file}`, async ({ page }) => {
     const response = await page.goto(
       `https://stackblitz.com/github/shopware/frontends/tree/main/examples/${file}?embed=1&theme=light&ctl=1&initialPath=%2F&view=preview`
