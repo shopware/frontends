@@ -5,6 +5,7 @@ const {
   setDefaultCustomerShippingAddress,
   setDefaultCustomerBillingAddress,
   deleteCustomerAddress,
+  loadCustomerAddresses,
 } = useAddress();
 const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
 const { refreshSessionContext } = useSessionContext();
@@ -58,6 +59,8 @@ const removeAddress = async (addressId: string) => {
     pushSuccess(t("account.messages.addressDeletedSuccess"));
   } catch (error) {
     pushError(t("account.messages.addressDeletedError"));
+  } finally {
+    loadCustomerAddresses();
   }
 };
 

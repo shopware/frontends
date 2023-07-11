@@ -2,4 +2,4 @@
 "@shopware-pwa/composables-next": patch
 ---
 
-Fixed initial listing suring search
+Remove implicit refresh action on address edit
