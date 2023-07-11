@@ -1,5 +1,11 @@
 # @shopware-pwa/types
 
+## 0.5.5
+
+### Patch Changes
+
+- [#263](https://github.com/shopware/frontends/pull/263) [`8a94e37`](https://github.com/shopware/frontends/commit/8a94e3739a24e5d748ba807852c5e5c2dfbe6cb4) Thanks [@mkucmus](https://github.com/mkucmus)! - improved CustomerGroup typing
+
 ## 0.5.4
 
 ### Patch Changes

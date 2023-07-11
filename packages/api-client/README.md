@@ -12,15 +12,11 @@ Documentation specific for this package: [api-client](https://frontends.shopware
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 0.5.0
-
-### Minor Changes
-
-- [#230](https://github.com/shopware/frontends/pull/230) [`d1e07d6`](https://github.com/shopware/frontends/commit/d1e07d6f73135cb742807aba78f1271943d47beb) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add redirectUrl to the contextService
+### Latest changes: 0.5.1
 
 ### Patch Changes
 
-- [#243](https://github.com/shopware/frontends/pull/243) [`d5f0bcc`](https://github.com/shopware/frontends/commit/d5f0bcc18cb581a48185cb8622d0e0d9b7fea23f) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+- [#270](https://github.com/shopware/frontends/pull/270) [`14d97c5`](https://github.com/shopware/frontends/commit/14d97c5942adf5a49163625b2740d95bc5772689) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Change getContextCountryEndpoint request type to POST
 
-- Updated dependencies [[`e359aa2`](https://github.com/shopware/frontends/commit/e359aa28c9c9c7fb2521be3ebd5b847c855e4d24), [`5bb88e9`](https://github.com/shopware/frontends/commit/5bb88e9f4422141de916b704f13e9ecce9b8f2f2)]:
-  - @shopware-pwa/types@0.5.4
+- Updated dependencies [[`8a94e37`](https://github.com/shopware/frontends/commit/8a94e3739a24e5d748ba807852c5e5c2dfbe6cb4)]:
+  - @shopware-pwa/types@0.5.5

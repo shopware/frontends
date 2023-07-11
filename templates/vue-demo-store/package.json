@@ -1,21 +1,22 @@
 {
   "name": "vue-demo-store",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "private": true,
   "scripts": {
-    "dev": "nuxi dev",
-    "build": "nuxi build",
-    "start": "nuxi start",
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "start": "nuxt start",
     "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
-    "typecheck": "vue-tsc --noEmit",
+    "typecheck": "nuxt prepare && vue-tsc --noEmit",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "analyze": "nuxi analyze"
+    "analyze": "nuxt analyze"
   },
   "dependencies": {
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/cms-base": "canary",
     "@shopware-pwa/helpers-next": "canary",
+    "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
     "@unocss/nuxt": "^0.53.4",

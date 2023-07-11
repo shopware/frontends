@@ -1,5 +1,11 @@
 # eslint-config-shopware
 
+## 0.0.3
+
+### Patch Changes
+
+- [#295](https://github.com/shopware/frontends/pull/295) [`23a0a53`](https://github.com/shopware/frontends/commit/23a0a532410990c0075ea7fff622949ccdecfd49) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+
 ## 0.0.2
 
 ### Patch Changes
