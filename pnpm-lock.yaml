@@ -843,6 +843,9 @@ importers:
       '@shopware-pwa/cms-base':
         specifier: canary
         version: link:../../packages/cms-base
+      '@shopware-pwa/composables-next':
+        specifier: canary
+        version: link:../../packages/composables
       '@shopware-pwa/helpers-next':
         specifier: canary
         version: link:../../packages/helpers

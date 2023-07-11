@@ -28,7 +28,7 @@ loadCustomerAddresses();
 
 ```vue{4}
 <script setup lang="ts">
-const { createCustomerAddress } = useAddress();
+const { createCustomerAddress, updateCustomerAddress } = useAddress();
 
 const newAddress: CustomerAddress = await createCustomerAddress({
   city: "Berlin",
@@ -39,6 +39,9 @@ const newAddress: CustomerAddress = await createCustomerAddress({
   street: "Karl-Marx-Allee 1",
   zipcode: "10178",
 });
+
+// refresh store with customer addresses (optionally if you want to see updated list of addresses)
+updateCustomerAddress();
 </script>
 ```
 
@@ -53,6 +56,9 @@ const updatedAddress = await updateCustomerAddress(
         { firstName: "Johnny" } // change the firstName value
     )
 );
+
+// refresh store with customer addresses (optionally if you want to see updated list of addresses)
+updateCustomerAddress();
 ```
 
 ### Delete an address
