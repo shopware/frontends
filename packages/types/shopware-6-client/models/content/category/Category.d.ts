@@ -18,7 +18,7 @@ export type CategoryType = "page" | "link" | "folder";
  */
 export type Category = Entity & {
   parentId: string | null;
-  autoIncrement: number;
+  autoIncrement?: number;
   mediaId: string | null;
   name: string | null;
   breadcrumb: string[];
@@ -30,23 +30,23 @@ export type Category = Entity & {
   children: Category[] | null;
   translations: CategoryTranslation[] | null;
   media: Media | null;
-  products: Product[] | null;
-  nestedProducts: Product[] | null;
+  products?: Product[] | null;
+  nestedProducts?: Product[] | null;
   afterCategoryId: string | null;
   customFields: CustomFields | null;
-  tags: Tag[] | null;
+  tags?: Tag[] | null;
   cmsPageId: string | null;
   cmsPage: CmsPage | null;
-  slotConfig: [] | null;
+  slotConfig?: [] | null;
   externalLink: string | null;
   linkNewTab: boolean | null;
   visible: boolean;
   type: CategoryType;
   description: string | null;
   id: string;
-  parentVersionId: string;
-  childrenCount: number;
-  afterCategoryVersionId: string;
+  parentVersionId?: string;
+  childrenCount?: number;
+  afterCategoryVersionId?: string;
   path?: string;
   route?: {
     path?: string;
