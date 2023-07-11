@@ -8,7 +8,7 @@ async function getJsonFileBaseVersion(
   filename: string,
   cwd: string,
 ): Promise<PackageJSON> {
-  const { stdout, code } = await spawn("git", ["show", `HEAD:./${filename}`], {
+  const { stdout, code } = await spawn("git", ["show", `main:./${filename}`], {
     cwd,
   });
 
