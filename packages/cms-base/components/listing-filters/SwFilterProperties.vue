@@ -61,6 +61,7 @@ const toggle = () => {
 
             <div v-if="option.media?.url">
               <img
+                loading="lazy"
                 class="ml-2 h-4 w-4"
                 :src="option.media.url"
                 :alt="option.media.translated?.alt || ''"

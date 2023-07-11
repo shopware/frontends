@@ -149,7 +149,6 @@ function next() {
     >
       <button
         v-if="mediaGallery.length > slidesToShow"
-        :disabled="currentThumb <= 0"
         class="disabled:opacity-10 p-1"
         @click="previous"
       >
@@ -191,6 +190,7 @@ function next() {
               @click="() => changeCover(i)"
             >
               <img
+                loading="lazy"
                 :src="image.media.url"
                 class="w-full h-full object-center object-cover"
                 alt="Product image"
@@ -201,7 +201,6 @@ function next() {
       </div>
       <button
         v-if="mediaGallery.length > slidesToShow"
-        :disabled="currentThumb + slidesToShow >= mediaGallery.length"
         class="disabled:opacity-10 p-1"
         @click="next"
       >

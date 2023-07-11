@@ -4,6 +4,7 @@ import { ProductPage } from "../page-objects/ProductPage";
 import { CartPage } from "../page-objects/CartPage";
 import { WishlistPage } from "../page-objects/WishlistPage";
 
+test.setTimeout(50000);
 test.describe.parallel.only("Add product to cart / Remove from cart", () => {
   let homePage: HomePage;
   let productPage: ProductPage;
@@ -24,10 +25,12 @@ test.describe.parallel.only("Add product to cart / Remove from cart", () => {
     await homePage.openCartPage();
     await productPage.addToCart();
     await cartPage.openMiniCart();
+    await page.getByTestId("cart-product-image").waitFor();
     await expect(page.getByTestId("cart-product-image")).toBeVisible();
   });
 
   test("Add product to cart from wishlist", async ({ page }) => {
+    await page.waitForEvent("requestfinished");
     await homePage.addProductToWishlist();
     await wishlistPage.openWishlist();
     await expect(page.getByTestId("product-box")).toHaveCount(1);

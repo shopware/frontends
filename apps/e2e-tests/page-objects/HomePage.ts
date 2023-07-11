@@ -16,13 +16,15 @@ export class HomePage extends AbstractPage {
   constructor(page: Page) {
     super(page);
     this.signInButton = page.getByTestId("header-sign-in-link");
-    this.linkToCartPage = page.locator("text='Smoking Board Cedar Wood'");
+    this.linkToCartPage = page.locator("text='YORK 3'");
     this.linkToVariantPage = page.locator(
       "text='Pepper white, ground, Muntok pearl'"
     );
     this.searchBar = page.getByTestId("layout-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-link");
-    this.addToWishlist = page.getByTestId("product-box-wishlist-icon-not-in");
+    this.addToWishlist = page
+      .getByTestId("product-box-wishlist-icon-not-in")
+      .last();
     this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
     this.myAccountLink = page.getByTestId("header-my-account-link");
   }
@@ -32,26 +34,28 @@ export class HomePage extends AbstractPage {
   }
 
   async clickOnSignIn() {
-    await expect(this.page.getByTestId("header-sign-in-link")).toBeVisible();
     await this.signInButton.waitFor();
     await this.signInButton.click({ delay: 500 });
   }
 
   async openCartPage() {
+    await this.page.waitForTimeout(500);
     await this.linkToCartPage.waitFor();
     await this.linkToCartPage.click();
-    await this.page.waitForSelector("[data-testid='product-quantity']");
-    await this.page.waitForLoadState("load");
+    await this.page.waitForSelector("[data-testid='product-quantity']", {
+      state: "visible",
+    });
   }
 
   async openVariantsCartPage() {
-    await this.page.waitForLoadState("load");
+    await this.page.waitForLoadState("networkidle");
     await this.linkToVariantPage.click();
     await this.page.waitForSelector("[data-testid='product-quantity']");
   }
 
   async openRegistrationPage() {
-    await this.linkToRegistrationPage.click({ delay: 500 });
+    await this.linkToRegistrationPage.click();
+    await this.page.waitForURL("**/register");
   }
 
   async typeSearchPhrase(phrase: string) {
@@ -61,10 +65,8 @@ export class HomePage extends AbstractPage {
   }
 
   async addProductToWishlist() {
-    await Promise.all([
-      this.page.waitForLoadState("load"),
-      await this.addToWishlist.nth(13).dispatchEvent("click"),
-    ]);
+    await this.page.waitForLoadState("networkidle");
+    await this.addToWishlist.dispatchEvent("click");
   }
 
   async openMyAccount() {
@@ -72,5 +74,6 @@ export class HomePage extends AbstractPage {
     await this.accountMenuHelloButton.dispatchEvent("click");
     await this.myAccountLink.waitFor();
     await this.myAccountLink.dispatchEvent("click");
+    await this.page.waitForURL("**/account");
   }
 }

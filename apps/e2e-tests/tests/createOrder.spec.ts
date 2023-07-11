@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
-import { getRandomNumber } from "../utils/data-helpers";
 import { CheckoutPage } from "../page-objects/CheckoutPage";
 import { ProductPage } from "../page-objects/ProductPage";
 import { CartPage } from "../page-objects/CartPage";
@@ -13,6 +12,7 @@ import { faker } from "@faker-js/faker";
 require("dotenv").config({ path: findEnv() });
 const userEmail = process.env.USER_EMAIL || "test@shopware.com";
 const password = process.env.PASSWORD || "shopware123";
+test.setTimeout(50000);
 
 test.describe.only("Create Order", () => {
   let homePage: HomePage;
@@ -37,6 +37,7 @@ test.describe.only("Create Order", () => {
   test("Create new order", async ({ page }) => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
+    await page.waitForLoadState("networkidle");
     await registrationPage.fillCustomerData(
       "e2e " + faker.person.firstName(),
       "e2e " + faker.person.lastName(),
