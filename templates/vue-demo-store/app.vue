@@ -19,6 +19,8 @@ useHead({
 const { apiInstance } = useShopwareContext();
 const sessionContextData = ref();
 sessionContextData.value = await getSessionContext(apiInstance);
+
+// If you enable runtimeConfig.shopware.useUserContextInSSR, then you can use this code to share session between server and client.
 // const { data: sessionContextData } = await useAsyncData(
 //   "sessionContext",
 //   async () => {
