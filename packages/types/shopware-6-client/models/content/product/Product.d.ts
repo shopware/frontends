@@ -59,7 +59,7 @@ export type Product = {
   available: boolean;
   availableStock: number | null;
   calculatedCheapestPrice: CalculatedPrice;
-  calculatedListingPrice: ListingPrice;
+  calculatedListingPrice: ListingPrice | null;
   calculatedMaxPurchase: number;
   calculatedPrice: CalculatedPrice;
   calculatedPrices: CalculatedPrice[];
@@ -69,7 +69,7 @@ export type Product = {
   categoriesRo: Category[] | null;
   categoryIds: string[];
   categoryTree: string[] | null;
-  cheapestPrice: ProductCheapestPrice;
+  cheapestPrice: ProductCheapestPrice | null;
   childCount: number | null;
   children: Product[] | null;
   cmsPage: null | CmsPage;
@@ -112,10 +112,10 @@ export type Product = {
   packUnitPlural: string | null;
   parent: Product | null;
   parentId: string | null;
-  parentVersionId: string;
+  parentVersionId: string | null;
   price: Price[] | null;
-  prices: ProductPrice[];
-  productManufacturerVersionId: string;
+  prices: ProductPrice[] | null;
+  productManufacturerVersionId: string | null;
   productNumber: string;
   productReviews: ProductReview[] | null;
   properties: PropertyGroupOption[] | null;
@@ -128,7 +128,7 @@ export type Product = {
   releaseDate: Date | string | null;
   restockTime: number;
   sales: number;
-  seoCategory: Category;
+  seoCategory: Category | null;
   seoUrls: SeoUrl[] | null;
   shippingFree: boolean | null;
   sortedProperties: PropertyGroup[] | null;
@@ -137,7 +137,7 @@ export type Product = {
   streamIds: string[] | null;
   streams: ProductStreams | null;
   tagIds: [] | null;
-  tags: Tag[];
+  tags: Tag[] | null;
   tax: Tax;
   taxId: string | null;
   translated: ProductTranslated;

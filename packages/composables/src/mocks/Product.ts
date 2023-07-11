@@ -2,6 +2,20 @@ import { Product } from "@shopware-pwa/types";
 
 const product: Product = {
   versionId: "0fa91ce3e96a4bc2be4bd9ce752c3425",
+  apiAlias: "product",
+  autoIncrement: 1,
+  calculatedListingPrice: null,
+  cheapestPrice: null,
+  listingPrices: null,
+  extensions: [],
+  productManufacturerVersionId: null,
+  purchasePrice: null,
+  seoCategory: null,
+  parentVersionId: null,
+  price: null,
+  prices: null,
+  tagIds: null,
+  tags: null,
   translated: {
     metaDescription: null,
     name: "Cigar Special 40%",
