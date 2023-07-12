@@ -16,13 +16,13 @@ type DocumentDownloadParams = {
  */
 export async function getDocumentDownload(
   params: DocumentDownloadParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Blob> {
   const resp = await contextInstance.invoke.get(
     getDocumentDownloadEndpoint(params.documentId, params.deepLinkCode),
     {
       responseType: "blob",
-    }
+    },
   );
   return resp.data;
 }

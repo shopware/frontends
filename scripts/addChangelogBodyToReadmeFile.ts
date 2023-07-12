@@ -26,16 +26,16 @@ export async function addChangelogBodyToReadmeFile(packageName: string) {
     await fs.access(path.join(packagePath, CHANGELOG_FILENAME));
 
     const parsed = await parseChangelog(
-      path.join(packagePath, CHANGELOG_FILENAME)
+      path.join(packagePath, CHANGELOG_FILENAME),
     );
 
     const lastPackageReadmeFile = await fs.readFile(
       path.join(packagePath, "README.md"),
-      "utf-8"
+      "utf-8",
     );
 
     const contentWithoutChangelog = lastPackageReadmeFile.split(
-      CHANGELOG_SEPARATOR_LINE
+      CHANGELOG_SEPARATOR_LINE,
     )[0];
 
     const toAdd = [

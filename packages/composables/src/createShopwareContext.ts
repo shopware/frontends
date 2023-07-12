@@ -16,7 +16,7 @@ export function createShopwareContext(
     apiInstance: ShopwareApiInstance;
     devStorefrontUrl?: string | null;
     enableDevtools?: boolean;
-  }
+  },
 ) {
   const scope: EffectScope = effectScope(true);
   const state = scope.run(() => {
@@ -32,7 +32,7 @@ export function createShopwareContext(
       app: App,
       options?: {
         enableDevtools: boolean;
-      }
+      },
     ) {
       shopwarePlugin._a = app;
       (app as any).config.globalProperties.$shopware = shopwarePlugin;

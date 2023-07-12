@@ -40,7 +40,7 @@ describe("CustomerService - register", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       getCustomerRegisterEndpoint(),
-      customerData
+      customerData,
     );
     expect(result).toBe(customerId);
   });
@@ -57,7 +57,7 @@ describe("CustomerService - register", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       getCustomerRegisterEndpoint(),
-      customerDataNew
+      customerDataNew,
     );
   });
 });

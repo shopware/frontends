@@ -27,7 +27,7 @@ export function renderHtml(
   html: string,
   config: Partial<DefaultConfig>,
   createElement: any,
-  context: any
+  context: any,
 ) {
   const mergedConfig = Object.assign(defaultConfig, config);
   const _ast = generateAST(html);

@@ -14,7 +14,7 @@ const tableHeader = `
 
 export function getFunctionReturnTypeSignature(
   returnType: string,
-  metadata: TsDoxFile
+  metadata: TsDoxFile,
 ) {
   return metadata?.types?.[returnType]?.signature;
 }
@@ -40,7 +40,7 @@ export async function getTypesTable(
   metadata: Metadata,
   accessor: "properties" | "methods",
   allowedList: string[] = [],
-  transformRow?: (propertyData: Property) => Promise<PropertyMdTableRow>
+  transformRow?: (propertyData: Property) => Promise<PropertyMdTableRow>,
 ) {
   if (!metadata[accessor]) {
     return "";
@@ -78,7 +78,7 @@ export async function getTypesTable(
 
 export function getFunctionData(
   metadata: TsDoxFile | TsDoxFunction,
-  functionName: keyof TsDoxDict<TsDoxFunction> | undefined
+  functionName: keyof TsDoxDict<TsDoxFunction> | undefined,
 ): TsDoxFunction | undefined {
   if (metadata.hasOwnProperty("functions") && functionName) {
     return (metadata as TsDoxFile)?.functions?.[functionName];
@@ -88,14 +88,14 @@ export function getFunctionData(
 
 export function getFunctionDescription(
   metadata: TsDoxFile | TsDoxFunction,
-  functionName: string | undefined
+  functionName: string | undefined,
 ): string | undefined {
   return getFunctionData(metadata, functionName)?.summary;
 }
 
 export function getFunctionSignature(
   metadata: TsDoxFile | TsDoxFunction,
-  functionName: string | undefined
+  functionName: string | undefined,
 ): string | undefined {
   return getFunctionData(metadata, functionName)?.signature;
 }

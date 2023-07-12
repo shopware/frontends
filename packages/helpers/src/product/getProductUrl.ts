@@ -13,7 +13,7 @@ export function getProductUrl<
   T extends {
     id: string;
     seoUrls: SeoUrl[] | null;
-  }
+  },
 >(product?: T): string {
   if (!product) return "/";
   const seoUrl = product.seoUrls?.[0]?.seoPathInfo;

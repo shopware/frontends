@@ -35,7 +35,7 @@ onMounted(async () => {
   loadingReviews.value = false;
 });
 const reviewsList = computed<ProductReview[]>(
-  () => reviews?.value || productReviews.value || []
+  () => reviews?.value || productReviews.value || [],
 );
 
 const format: Intl.DateTimeFormatOptions = {

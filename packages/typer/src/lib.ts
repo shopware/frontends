@@ -67,7 +67,7 @@ export async function SourceResolver({
         const definitionFound = await find(
           `function\ ${filename}`,
           resolve(sourcePath.functions),
-          ".ts$"
+          ".ts$",
         );
 
         if (!Object.keys(definitionFound)?.length) {
@@ -99,7 +99,7 @@ export async function SourceResolver({
       const typePath = await find(
         `export type ${type} =`,
         resolve(activeConfig.types),
-        ".d.ts$"
+        ".d.ts$",
       );
 
       const relativeTypePath = Object.keys(typePath)[0];
@@ -130,7 +130,7 @@ export async function SourceResolver({
             project: "shopware/frontends",
             path: removeRelativePath(filePath?.path),
             line: typeDef?.location?.line + 1,
-          })
+          }),
         );
       }
     }
@@ -159,7 +159,7 @@ export type TypesParserReturn = {
   getFunctionDescription(functionName: string): string | undefined;
   getTypesTable(
     accessor: "properties" | "methods",
-    transformRow?: (propertyData: Property) => Promise<PropertyMdTableRow>
+    transformRow?: (propertyData: Property) => Promise<PropertyMdTableRow>,
   ): Promise<string>;
   hasProperties(): boolean;
   hasMethods(): boolean;
@@ -208,14 +208,14 @@ export function TypesParser({
 
     const breakLine = exportedApiList.length > 2;
     const parametersList = getFunctionParameters(functionName)?.map(
-      ({ name }) => name
+      ({ name }) => name,
     );
 
     return `\`\`\`ts
 const { ${breakLine ? "\n" : ""} ${
       breakLine ? exportedApiList.join(",\n ") : exportedApiList.join(", ")
     } ${breakLine ? "\n" : ""}} = ${functionName}(${parametersList?.join(
-      ", "
+      ", ",
     )});
 \`\`\``;
   }
@@ -224,13 +224,13 @@ const { ${breakLine ? "\n" : ""} ${
     const functionName = basename(metadata.name, ".ts");
 
     const returnTypeSignature = getFunctionReturnTypeSignature(
-      getFunctionReturnType(functionName) || ""
+      getFunctionReturnType(functionName) || "",
     );
     // filter out properties that are not present in the return signature (BUG)
     const exportedApiList = getExportedAPIs(metadata as TsDoxClass)?.filter(
       (property) =>
         returnTypeSignature?.includes(` ${property}:`) ||
-        returnTypeSignature?.includes(` ${property}(`)
+        returnTypeSignature?.includes(` ${property}(`),
     );
 
     return exportedApiList;
@@ -238,13 +238,13 @@ const { ${breakLine ? "\n" : ""} ${
 
   async function getTypesTable(
     accessor: "properties" | "methods",
-    transformRow?: (propertyData: Property) => Promise<PropertyMdTableRow>
+    transformRow?: (propertyData: Property) => Promise<PropertyMdTableRow>,
   ): Promise<string> {
     return _getTypesTable(
       metadata as TsDoxClass,
       accessor,
       getExportedApiList(),
-      transformRow
+      transformRow,
     );
   }
 
@@ -265,16 +265,16 @@ const { ${breakLine ? "\n" : ""} ${
   }
 
   function getFunctionReturnTypeSignature(
-    returnType: string
+    returnType: string,
   ): string | undefined {
     return _getFunctionReturnTypeSignature(
       returnType,
-      metadata as unknown as TsDoxFile
+      metadata as unknown as TsDoxFile,
     );
   }
 
   function getFunctionParameters(
-    functionName: string
+    functionName: string,
   ): TsDoxParameter[] | undefined {
     const functionData = _getFunctionData(metadata as TsDoxFile, functionName);
     return functionData?.parameters;
@@ -305,7 +305,7 @@ export function extractType(returnType?: string | null) {
     return;
   }
   return returnType.match(
-    /(?!(Id|Partial|Array|Promise|Computed|ComputedRef|Ref))([A-Z][a-zA-Z0-9]+)/gm
+    /(?!(Id|Partial|Array|Promise|Computed|ComputedRef|Ref))([A-Z][a-zA-Z0-9]+)/gm,
   );
 }
 
@@ -342,13 +342,13 @@ export function removeRedundantItems(arrayToClean?: string[] | null): string[] {
 }
 
 export function isFunctionDefinition(
-  metadata: TsDoxFile | TsDoxClass | TsDoxFunction
+  metadata: TsDoxFile | TsDoxClass | TsDoxFunction,
 ): metadata is TsDoxFunction {
   return metadata.hasOwnProperty("parameters");
 }
 
 export function isFileDefinition(
-  metadata: TsDoxFile | TsDoxClass | TsDoxFunction
+  metadata: TsDoxFile | TsDoxClass | TsDoxFunction,
 ): metadata is TsDoxFile {
   return metadata.hasOwnProperty("types");
 }

@@ -35,7 +35,7 @@ describe("CustomerService - updateCustomerAddress", () => {
     expect(mockedPatch).toBeCalledTimes(1);
     expect(mockedPatch).toBeCalledWith(
       "/store-api/account/address/some-address-id",
-      newAddressData
+      newAddressData,
     );
   });
 });

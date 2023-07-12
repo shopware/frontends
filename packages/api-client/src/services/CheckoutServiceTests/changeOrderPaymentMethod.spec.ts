@@ -19,7 +19,7 @@ describe("CheckoutService", () => {
 
       const result = await changeOrderPaymentMethod(
         "some-order-id",
-        "some-payment-id"
+        "some-payment-id",
       );
       expect(mockedPost).toBeCalledTimes(1);
       expect(mockedPost).toBeCalledWith("/store-api/order/payment", {

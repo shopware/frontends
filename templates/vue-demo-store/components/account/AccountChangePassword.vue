@@ -9,8 +9,8 @@ const emits = defineEmits<{
 const { updatePassword, errors } = useCustomerPassword();
 const { user, refreshUser } = useUser();
 
-const userErrorMessages = computed(() =>
-  errors.updatePassword?.map(({ detail }) => detail).toString()
+const userErrorMessages = computed(
+  () => errors.updatePassword?.map(({ detail }) => detail).toString(),
 );
 
 const isSuccess = ref(false);
@@ -192,7 +192,6 @@ const invokeChange = async (): Promise<void> => {
           class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
           type="submit"
           data-testid="account-change-current-submit-button"
-          :disabled="loadingData"
         >
           {{ $t("changePassword.form.changePassword") }}
         </button>

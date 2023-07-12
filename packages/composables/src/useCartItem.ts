@@ -88,13 +88,13 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   const itemRegularPrice = computed(
     () =>
       cartItem.value?.price?.listPrice?.price ||
-      cartItem.value?.price?.unitPrice
+      cartItem.value?.price?.unitPrice,
   );
 
   const itemSpecialPrice = computed(
     () =>
       cartItem.value?.price?.listPrice?.price &&
-      cartItem.value?.price?.unitPrice
+      cartItem.value?.price?.unitPrice,
   );
 
   const itemTotalPrice = computed(() => cartItem.value.price?.totalPrice);
@@ -103,7 +103,7 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
     () =>
       (cartItem.value.type === "product" &&
         (cartItem.value.payload as CartProductItem)?.options) ||
-      []
+      [],
   );
 
   const itemStock = computed(() => cartItem.value.deliveryInformation?.stock);
@@ -144,13 +144,13 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
           // associations: (getDefaults() as any).getProductItemsSeoUrlsData
           //   .associations,
         },
-        apiInstance
+        apiInstance,
       );
       return result.product as unknown as ProductResponse;
     } catch (error) {
       console.error(
         "[useCart][getProductItemsSeoUrlsData]",
-        (error as ClientApiError).messages
+        (error as ClientApiError).messages,
       );
     }
 

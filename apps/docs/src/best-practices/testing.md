@@ -127,7 +127,7 @@ test("failed login", async ({ page }) => {
   await Promise.all([await page.click("[data-testid='login-submit-button']")]);
 
   await expect(
-    page.locator("data-testid='login-errors-container']")
+    page.locator("data-testid='login-errors-container']"),
   ).toBeVisible();
 });
 ```

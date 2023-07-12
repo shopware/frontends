@@ -9,7 +9,7 @@ export type UseCmsElementProductBox = {
 };
 
 export function useCmsElementProductBox(
-  element: CmsElementProductBox
+  element: CmsElementProductBox,
 ): UseCmsElementProductBox {
   const product = inject("product", element.data.product);
 

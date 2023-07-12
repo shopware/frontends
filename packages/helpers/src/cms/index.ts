@@ -13,7 +13,7 @@ export * from "./getCmsLayoutConfiguration";
  * @category CMS (Shopping Experiences)
  */
 export function getCmsEntityObject(
-  response: CmsPageResponse
+  response: CmsPageResponse,
 ): Product | Category | LandingPage {
   switch (response.resourceType) {
     case "frontend.detail.page":
@@ -31,19 +31,19 @@ export function getCmsEntityObject(
  * @category CMS (Shopping Experiences)
  */
 export function isProduct<T extends { apiAlias: string }>(
-  entity: T | Product
+  entity: T | Product,
 ): entity is Product {
   return entity.apiAlias === "product";
 }
 
 export function isCategory<T extends { apiAlias: string }>(
-  entity: T | Category
+  entity: T | Category,
 ): entity is Category {
   return entity.apiAlias === "category";
 }
 
 export function isLandingPage<T extends { apiAlias: string }>(
-  entity: T | LandingPage
+  entity: T | LandingPage,
 ): entity is LandingPage {
   return entity.apiAlias === "landing_page";
 }

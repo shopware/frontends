@@ -33,7 +33,7 @@ export type UseBreadcrumbsReturn = {
  * @category CMS (Shopping Experiences)
  */
 export function useBreadcrumbs(
-  newBreadcrumbs?: Breadcrumb[]
+  newBreadcrumbs?: Breadcrumb[],
 ): UseBreadcrumbsReturn {
   // Store for breadcrumbs
   const _breadcrumbs = _useContext<Breadcrumb[]>("swBreadcrumb", {

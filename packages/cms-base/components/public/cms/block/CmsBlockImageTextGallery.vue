@@ -51,7 +51,9 @@ function onImageClick(slotContent: Omit<CmsSlot, "data"> & { data: any }) {
       <div class="cms-block-image-text-gallery__container__column">
         <CmsElementImage
           :content="centerImageContent"
-          :style="{ cursor: (centerImageContent.data as any)?.url && 'pointer' }"
+          :style="{
+            cursor: (centerImageContent.data as any)?.url && 'pointer',
+          }"
           @click.native="onImageClick(centerImageContent as any)"
         />
         <CmsElementText

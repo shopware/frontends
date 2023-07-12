@@ -17,13 +17,13 @@ type GetUserCountryParams = {
  */
 export async function getOrderDownloads(
   data: GetUserCountryParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Blob> {
   const resp = await contextInstance.invoke.get(
     getOrderDownloadsEndpoint(data.orderId, data.downloadId),
     {
       responseType: "blob",
-    }
+    },
   );
   return resp.data;
 }

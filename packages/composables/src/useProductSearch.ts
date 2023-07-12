@@ -17,7 +17,7 @@ export type UseProductSearchReturn = {
     options?: {
       withCmsAssociations?: boolean;
       criteria?: Partial<ShopwareSearchParams>;
-    }
+    },
   ) => Promise<ProductResponse>;
 };
 
@@ -32,7 +32,7 @@ export function useProductSearch(): {
     options?: {
       withCmsAssociations?: boolean;
       criteria?: Partial<ShopwareSearchParams>;
-    }
+    },
   ) => Promise<ProductResponse>;
 } {
   const { apiInstance } = useShopwareContext();
@@ -42,11 +42,11 @@ export function useProductSearch(): {
     options?: {
       withCmsAssociations?: boolean;
       criteria?: Partial<ShopwareSearchParams>;
-    }
+    },
   ) => {
     const associations = deepMerge(
       options?.withCmsAssociations ? cmsAssociations : {},
-      options?.criteria
+      options?.criteria,
     );
     const result = await getProduct(productId, associations, apiInstance);
     return result;

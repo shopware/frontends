@@ -39,7 +39,7 @@ export function useLocalWishlist(): UseLocalWishlistReturn {
   const updateStorage = (): void => {
     localStorage.setItem(
       "sw-wishlist-items",
-      JSON.stringify(_wishlistItems.value)
+      JSON.stringify(_wishlistItems.value),
     );
   };
   /* istanbul ignore next */
@@ -52,7 +52,7 @@ export function useLocalWishlist(): UseLocalWishlistReturn {
   // removes item from the list
   async function removeFromWishlist(id: string) {
     _wishlistItems.value = _wishlistItems.value?.filter(
-      (itemId: string) => itemId != id
+      (itemId: string) => itemId != id,
     );
 
     updateStorage();

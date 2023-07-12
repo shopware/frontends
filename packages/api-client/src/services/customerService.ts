@@ -49,11 +49,11 @@ export interface CustomerRegisterResponse {
  */
 export async function register(
   params: CustomerRegistrationParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Customer> {
   const resp = await contextInstance.invoke.post(
     getCustomerRegisterEndpoint(),
-    params
+    params,
   );
   return resp.data;
 }
@@ -70,11 +70,11 @@ export async function register(
  */
 export async function login(
   parameters: { username?: string; password?: string } = {},
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const resp = await contextInstance.invoke.post(
     getCustomerLoginEndpoint(),
-    parameters
+    parameters,
   );
   const contextToken =
     resp.data["sw-context-token"] || resp.data["contextToken"];
@@ -91,7 +91,7 @@ export async function login(
  * @public
  */
 export async function logout(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   await contextInstance.invoke.post(getCustomerLogoutEndpoint());
 }
@@ -107,12 +107,12 @@ export async function logout(
  */
 export async function getCustomer(
   parameters: ShopwareSearchParams = {},
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Customer | null> {
   try {
     const resp = await contextInstance.invoke.post(
       getCustomerEndpoint(),
-      parameters
+      parameters,
     );
     return resp.data;
   } catch (e) {
@@ -134,7 +134,7 @@ export async function getCustomer(
  */
 export async function getCustomerAddresses(
   parameters: ShopwareSearchParams = {},
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   const resp = await contextInstance.invoke.post<
     EntityResult<"customer_address", CustomerAddress>
@@ -159,11 +159,11 @@ type CustomerOrdersResponse = {
  */
 export async function getCustomerOrders(
   parameters: ShopwareSearchParams = {},
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   const resp = await contextInstance.invoke.post<CustomerOrdersResponse>(
     getCustomerOrderEndpoint(),
-    parameters
+    parameters,
   );
   return resp.data.orders;
 }
@@ -180,10 +180,10 @@ export async function getCustomerOrders(
  */
 export async function getCustomerAddress(
   addressId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<CustomerAddress> {
   const resp = await contextInstance.invoke.get(
-    getCustomerAddressEndpoint(addressId)
+    getCustomerAddressEndpoint(addressId),
   );
   return resp.data.data;
 }
@@ -200,11 +200,11 @@ export async function getCustomerAddress(
  */
 export async function createCustomerAddress(
   params: Partial<CustomerAddress>,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<CustomerAddress> {
   const resp = await contextInstance.invoke.post(
     getCustomerAddAddressEndpoint(),
-    params
+    params,
   );
   return resp.data;
 }
@@ -221,11 +221,11 @@ export async function createCustomerAddress(
  */
 export async function updateCustomerAddress(
   params: Partial<CustomerAddress>,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<CustomerAddress> {
   const resp = await contextInstance.invoke.patch(
     getCustomerAddressEndpoint(params.id),
-    params
+    params,
   );
   return resp.data;
 }
@@ -242,7 +242,7 @@ export async function updateCustomerAddress(
  */
 export async function deleteCustomerAddress(
   addressId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   await contextInstance.invoke.delete(getCustomerAddressEndpoint(addressId));
 }
@@ -259,10 +259,10 @@ export async function deleteCustomerAddress(
  */
 export async function setDefaultCustomerBillingAddress(
   addressId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<string> {
   const response = await contextInstance.invoke.patch(
-    getCustomerDefaultBillingAddressEndpoint(addressId)
+    getCustomerDefaultBillingAddressEndpoint(addressId),
   );
   return response.data;
 }
@@ -279,10 +279,10 @@ export async function setDefaultCustomerBillingAddress(
  */
 export async function setDefaultCustomerShippingAddress(
   addressId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<string> {
   const response = await contextInstance.invoke.patch(
-    getCustomerDefaultShippingAddressEndpoint(addressId)
+    getCustomerDefaultShippingAddressEndpoint(addressId),
   );
   return response.data;
 }
@@ -309,7 +309,7 @@ export interface CustomerUpdateEmailParam {
  */
 export async function updateEmail(
   params: CustomerUpdateEmailParam,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   await contextInstance.invoke.post(getCustomerUpdateEmailEndpoint(), params);
 }
@@ -336,11 +336,11 @@ export interface CustomerUpdatePasswordParam {
  */
 export async function updatePassword(
   params: CustomerUpdatePasswordParam,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   await contextInstance.invoke.post(
     getCustomerUpdatePasswordEndpoint(),
-    params
+    params,
   );
 }
 
@@ -365,7 +365,7 @@ export interface CustomerResetPasswordParam {
  */
 export async function resetPassword(
   params: CustomerResetPasswordParam,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   if (params && !params.storefrontUrl) {
     params.storefrontUrl = contextInstance.config.endpoint;
@@ -389,7 +389,7 @@ export async function confirmPasswordReset(
     hash: string;
     [key: string]: unknown; // additional params
   },
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   if (!params) return;
   await contextInstance.invoke.post(getConfirmPasswordResetEndpoint(), {
@@ -421,7 +421,7 @@ export interface CustomerUpdateProfileParam {
  */
 export async function updateProfile(
   params: CustomerUpdateProfileParam,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   await contextInstance.invoke.post(getCustomerDetailsUpdateEndpoint(), params);
 }
@@ -441,11 +441,11 @@ export async function confirmAccountRegistration(
     hash: string;
     em: string;
   },
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Customer> {
   const response = await contextInstance.invoke.post(
     getCustomerAccountConfirmEndpoint(),
-    params
+    params,
   );
   return response.data;
 }
@@ -462,12 +462,12 @@ export async function confirmAccountRegistration(
  */
 export async function setDefaultCustomerPaymentMethod(
   paymentMethodId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   success: boolean;
 }> {
   const response = await contextInstance.invoke.post(
-    getCustomerUpdatePaymentMethodEndpoint(paymentMethodId)
+    getCustomerUpdatePaymentMethodEndpoint(paymentMethodId),
   );
   return response.data;
 }
@@ -482,13 +482,13 @@ export async function setDefaultCustomerPaymentMethod(
  * @public
  */
 export async function isNewsletterSubscriber(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   status: string;
   apiAlias: string;
 }> {
   const response = await contextInstance.invoke.post(
-    getNewsletterRecipientEndpoint()
+    getNewsletterRecipientEndpoint(),
   );
   return response.data;
 }

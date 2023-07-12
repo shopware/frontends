@@ -12,8 +12,8 @@ const { currency } = useSessionContext();
 
 const orderDate = computed(() =>
   new Date(props?.order?.orderDate).toLocaleDateString(
-    (typeof navigator !== "undefined" && navigator.language) || "en-US"
-  )
+    (typeof navigator !== "undefined" && navigator.language) || "en-US",
+  ),
 );
 </script>
 

@@ -8,7 +8,7 @@ export function _useContext<T>(
   params?: {
     context?: Ref<T> | T;
     replace?: T;
-  }
+  },
 ) {
   const isNewContext = !!params?.context;
 

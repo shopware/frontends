@@ -9,7 +9,7 @@ const props = withDefaults(
   }>(),
   {
     maxQty: 100,
-  }
+  },
 );
 
 const { cartItem } = toRefs(props);
@@ -112,7 +112,6 @@ const removeCartItem = async () => {
         <button
           v-if="!isPromotion"
           type="button"
-          :disabled="isLoading"
           class="font-medium text-brand-dark bg-transparent"
           :class="{ 'text-gray-500': isLoading }"
           data-testid="product-remove-button"

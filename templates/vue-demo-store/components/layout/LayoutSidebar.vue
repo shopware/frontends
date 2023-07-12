@@ -6,7 +6,7 @@ const props = withDefaults(
   }>(),
   {
     side: "right",
-  }
+  },
 );
 
 const { controller } = toRefs(props);
@@ -52,6 +52,7 @@ onClickOutside(sidebarContentElement, () => close());
             <div
               v-if="isOpen"
               class="pointer-events-none fixed inset-y-0 flex max-w-full"
+              :data-testid="`sidebar-${side}`"
               :class="{
                 'left-0': side === 'left',
                 'right-0': side === 'right',

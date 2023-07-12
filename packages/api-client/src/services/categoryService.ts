@@ -18,7 +18,7 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
  */
 export async function getCategories(
   searchCriteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   const resp = await contextInstance.invoke.post<
     EntityResult<"category", Category>
@@ -39,10 +39,10 @@ export async function getCategories(
  */
 export async function getCategory(
   categoryId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Category> {
   const resp = await contextInstance.invoke.get(
-    getCategoryDetailsEndpoint(categoryId)
+    getCategoryDetailsEndpoint(categoryId),
   );
 
   return resp.data;

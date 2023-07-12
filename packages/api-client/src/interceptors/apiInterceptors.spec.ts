@@ -36,7 +36,7 @@ describe("apiInterceptors", () => {
         {
           contextToken: "044a190a54ab4f06803909c3ee8063ef",
         },
-        {}
+        {},
       );
     });
   });

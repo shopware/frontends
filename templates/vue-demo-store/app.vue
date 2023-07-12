@@ -17,12 +17,16 @@ useHead({
 });
 
 const { apiInstance } = useShopwareContext();
-const { data: sessionContextData } = await useAsyncData(
-  "sessionContext",
-  async () => {
-    return await getSessionContext(apiInstance);
-  }
-);
+const sessionContextData = ref();
+sessionContextData.value = await getSessionContext(apiInstance);
+
+// If you enable runtimeConfig.shopware.useUserContextInSSR, then you can use this code to share session between server and client.
+// const { data: sessionContextData } = await useAsyncData(
+//   "sessionContext",
+//   async () => {
+//     return await getSessionContext(apiInstance);
+//   }
+// );
 
 // read the locale from accept-language header (i.e. en-GB or de-DE)
 // and set configuration for price formatting globally
@@ -63,7 +67,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   // Prefix from url
   const prefix = getPrefix(
     availableLocales,
-    router.currentRoute.value.name as string
+    router.currentRoute.value.name as string,
   );
 
   // Language set on the backend side
@@ -72,7 +76,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   // If languages are not the same, set one from prefix
   if (sessionLanguage !== prefix && sessionLanguage !== getDefaultLocale()) {
     await changeLanguage(
-      getLanguageIdFromCode(prefix ? prefix : getDefaultLocale())
+      getLanguageIdFromCode(prefix ? prefix : getDefaultLocale()),
     );
     await refreshSessionContext();
   }

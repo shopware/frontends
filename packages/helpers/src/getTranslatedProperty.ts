@@ -7,7 +7,7 @@
  */
 export function getTranslatedProperty<T>(
   element: T | undefined | null | never,
-  property: keyof T
+  property: keyof T,
 ): string {
   return (element as any)?.translated?.[property] || element?.[property] || "";
 }

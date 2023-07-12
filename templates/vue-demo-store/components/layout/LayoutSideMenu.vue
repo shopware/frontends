@@ -18,7 +18,7 @@ function isCollapsed(navigationelement: Category): boolean {
 const toggleCollapse = (navigationElement: Category) => {
   if (!isCollapsed(navigationElement)) {
     expandedIds.value = expandedIds.value.filter(
-      (el) => el !== navigationElement.id
+      (el) => el !== navigationElement.id,
     );
   } else {
     expandedIds.value.push(navigationElement.id);

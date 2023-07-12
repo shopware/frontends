@@ -24,11 +24,11 @@ import {
  */
 export async function createOrder(
   params?: CreateOrderParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Order> {
   const resp = await contextInstance.invoke.post(
     getCheckoutOrderEndpoint(),
-    params
+    params,
   );
 
   return resp.data;
@@ -49,7 +49,7 @@ export async function handlePayment(
     errorUrl?: string;
     paymentDetails?: unknown;
   },
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   redirectUrl: string | null;
   apiAlias: string;
@@ -66,7 +66,7 @@ export async function handlePayment(
     if (typeof sessionStorage !== "undefined") {
       sessionStorage.setItem(
         "sw-context-token",
-        contextInstance.config.contextToken as string
+        contextInstance.config.contextToken as string,
       );
     }
   }
@@ -92,7 +92,7 @@ export async function handlePayment(
 export async function getOrderDetails(
   orderId: string,
   params?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Order | undefined> {
   const resp = await contextInstance.invoke.post(
     getCustomerOrderEndpoint(),
@@ -105,7 +105,7 @@ export async function getOrderDetails(
           value: orderId,
         },
       ],
-    })
+    }),
   );
   return resp.data?.orders?.elements?.[0];
 }
@@ -122,7 +122,7 @@ export async function getOrderDetails(
  */
 export async function cancelOrder(
   orderId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<OrderState> {
   const resp = await contextInstance.invoke.post(getCancelOrderEndpoint(), {
     orderId,
@@ -142,7 +142,7 @@ export async function cancelOrder(
 export async function changeOrderPaymentMethod(
   orderId: string,
   paymentMethodId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   apiAlias: string;
   success: boolean;
@@ -152,7 +152,7 @@ export async function changeOrderPaymentMethod(
     {
       orderId,
       paymentMethodId,
-    }
+    },
   );
   return resp.data;
 }
