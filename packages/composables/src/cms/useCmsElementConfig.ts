@@ -13,10 +13,10 @@ export function useCmsElementConfig<
     }
       ? { [key in X]: ElementConfig<T["config"][key]["value"]> }
       : never;
-  }
+  },
 >(element: T) {
   const getConfigValue = <ELEMENT_CONFIG extends keyof T["config"]>(
-    key: ELEMENT_CONFIG
+    key: ELEMENT_CONFIG,
   ): (typeof element.config)[ELEMENT_CONFIG]["value"] => {
     return (
       element.config[key]?.source !== "mapped" && element.config[key]?.value

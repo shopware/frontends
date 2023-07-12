@@ -33,7 +33,7 @@ const isEmailChanging = computed(() => state.email !== user.value?.email);
 const isNameChanging = computed(
   () =>
     state.firstName !== user.value?.firstName ||
-    state.lastName !== user.value?.lastName
+    state.lastName !== user.value?.lastName,
 );
 
 const refs = toRefs(state);
@@ -45,7 +45,7 @@ const emailConfirmationValidationRule = computed(() =>
         email,
         sameAsEmail: sameAs(refs.email),
       }
-    : {}
+    : {},
 );
 
 const rules = computed(() => ({

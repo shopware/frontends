@@ -17,9 +17,9 @@ if (!config.OPENAPI_JSON_URL || !config.OPENAPI_ACCESS_KEY) {
   console.error(
     c.red(
       `Missing ${c.bold("OPENAPI_JSON_URL")} or ${c.bold(
-        "OPENAPI_ACCESS_KEY"
-      )} env variables.\n\nCheck whether the .env file is created.\n`
-    )
+        "OPENAPI_ACCESS_KEY",
+      )} env variables.\n\nCheck whether the .env file is created.\n`,
+    ),
   );
   process.exit(1);
 }
@@ -43,9 +43,9 @@ export async function generate() {
       console.log(
         c.yellow(
           `Schema file ${c.bold(
-            SCHEMA_FILENAME(version)
-          )} already exist. Remove it or use --overwrite flag to overwrite it.`
-        )
+            SCHEMA_FILENAME(version),
+          )} already exist. Remove it or use --overwrite flag to overwrite it.`,
+        ),
       );
     } else {
       // load json and save to local file
@@ -56,10 +56,11 @@ export async function generate() {
         },
       }).then((res) => res.json());
 
-      const content = format(JSON.stringify(apiJSON), {
+      const formatted = await format(JSON.stringify(apiJSON), {
         semi: false,
         parser: "json",
-      }).trim();
+      });
+      const content = formatted.trim();
 
       version = apiJSON?.info?.version;
 
@@ -83,10 +84,12 @@ export async function generate() {
     });
     patchesToApply.length &&
       console.log("Applied", patchesToApply.length, "patches");
-    const content = format(JSON.stringify(schemaForPatching), {
+
+    const formatted = await format(JSON.stringify(schemaForPatching), {
       semi: false,
       parser: "json",
-    }).trim();
+    });
+    const content = formatted.trim();
     writeFileSync(SCHEMA_FILENAME(version), content, {
       encoding: "utf-8",
     });
@@ -141,17 +144,20 @@ export async function generate() {
                 return (
                   !!property && "type" in property && property.type === "string"
                 );
-              }
+              },
             );
 
             schemaObject.properties.translated = {
               type: "object",
-              properties: stringFields.reduce((acc, key) => {
-                acc[key] = {
-                  type: "string",
-                };
-                return acc;
-              }, {} as Record<string, { type: "string" }>),
+              properties: stringFields.reduce(
+                (acc, key) => {
+                  acc[key] = {
+                    type: "string",
+                  };
+                  return acc;
+                },
+                {} as Record<string, { type: "string" }>,
+              ),
             };
           }
 
@@ -174,7 +180,7 @@ export async function generate() {
           //   return "Date";
           // }
         },
-      }
+      },
     );
 
     type MethodObject = {
@@ -183,44 +189,47 @@ export async function generate() {
         {
           in: "query" | "header" | "path";
           name: string;
-        }
+        },
       ];
     };
 
     // create map of paths
-    const operationsMap = Object.keys(paths).reduce((acc, path) => {
-      const pathObject = paths[path];
-      const methods = Object.keys(pathObject);
-      methods.forEach((method) => {
-        const methodObject = pathObject[method] as MethodObject;
-        const { operationId } = methodObject;
-        const queryParamNames =
-          methodObject.parameters
-            ?.filter((param) => param.in === "query")
-            .map((param) => param.name) || [];
+    const operationsMap = Object.keys(paths).reduce(
+      (acc, path) => {
+        const pathObject = paths[path];
+        const methods = Object.keys(pathObject);
+        methods.forEach((method) => {
+          const methodObject = pathObject[method] as MethodObject;
+          const { operationId } = methodObject;
+          const queryParamNames =
+            methodObject.parameters
+              ?.filter((param) => param.in === "query")
+              .map((param) => param.name) || [];
 
-        const headerParamNames =
-          methodObject.parameters
-            ?.filter((param) => param.in === "header")
-            .map((param) => param.name) || [];
+          const headerParamNames =
+            methodObject.parameters
+              ?.filter((param) => param.in === "header")
+              .map((param) => param.name) || [];
 
-        let finalPath = `${operationId} ${method.toLocaleLowerCase()} ${path}`;
-        if (queryParamNames.length) {
-          finalPath += `?${queryParamNames.join(",")}`;
-        }
-        if (headerParamNames.length) {
-          finalPath += ` ${headerParamNames.join(",")}`;
-        }
+          let finalPath = `${operationId} ${method.toLocaleLowerCase()} ${path}`;
+          if (queryParamNames.length) {
+            finalPath += `?${queryParamNames.join(",")}`;
+          }
+          if (headerParamNames.length) {
+            finalPath += ` ${headerParamNames.join(",")}`;
+          }
 
-        acc[operationId] = {
-          path,
-          method,
-          queryParamNames,
-          finalPath,
-        };
-      });
-      return acc;
-    }, {} as Record<string, unknown>);
+          acc[operationId] = {
+            path,
+            method,
+            queryParamNames,
+            finalPath,
+          };
+        });
+        return acc;
+      },
+      {} as Record<string, unknown>,
+    );
 
     schema += `\n export type operationPaths = ${Object.values(operationsMap)
       .map((el) => `"${(el as { finalPath: string }).finalPath}"`)
@@ -230,11 +239,12 @@ export async function generate() {
     // remove `@description ` tags
     schema = schema.replace(/@description /g, "");
 
-    schema = format(schema, {
+    schema = await format(schema, {
       // semi: false,
       parser: "typescript",
       // plugins: [tsParser],
-    }).trim();
+    });
+    schema = schema.trim();
 
     if (typeof schema === "string") {
       writeFileSync(TYPES_FILENAME(originalSchema.info.version), schema, {
@@ -243,15 +253,15 @@ export async function generate() {
     }
     console.log(
       c.green(
-        `Types generated in ${TYPES_FILENAME(originalSchema.info.version)}`
-      )
+        `Types generated in ${TYPES_FILENAME(originalSchema.info.version)}`,
+      ),
     );
   } catch (error) {
     console.error(
       c.red(
-        "Error while generating types. Checkout the OpenAPI Schema and try again.\n"
+        "Error while generating types. Checkout the OpenAPI Schema and try again.\n",
       ),
-      error
+      error,
     );
     process.exit(1);
   }

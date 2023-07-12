@@ -27,7 +27,7 @@ const DynamicRender = () => {
   });
   return componentsMap.map((componentObject) => {
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
-      componentObject.section
+      componentObject.section,
     );
     if (typeof componentObject.component === "string")
       return h("div", {}, "There is no " + componentObject.component);

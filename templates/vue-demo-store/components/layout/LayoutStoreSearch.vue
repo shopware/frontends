@@ -7,7 +7,7 @@ withDefaults(
   defineProps<{
     displayTotal?: number;
   }>(),
-  { displayTotal: 10 }
+  { displayTotal: 10 },
 );
 
 defineEmits<{

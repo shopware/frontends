@@ -73,7 +73,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   // Prefix from url
   const prefix = getPrefix(
     availableLocales,
-    router.currentRoute.value.name as string
+    router.currentRoute.value.name as string,
   );
 
   // Language set on the backend side
@@ -82,7 +82,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   // If languages are not the same, set one from prefix
   if (sessionLanguage !== prefix && sessionLanguage !== getDefaultLocale()) {
     await changeLanguage(
-      getLanguageIdFromCode(prefix ? prefix : getDefaultLocale())
+      getLanguageIdFromCode(prefix ? prefix : getDefaultLocale()),
     );
     await refreshSessionContext();
   }

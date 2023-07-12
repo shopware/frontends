@@ -21,7 +21,7 @@ const props = withDefaults(
   {
     title: "Account address",
     address: undefined,
-  }
+  },
 );
 
 const { getSalutations } = useSalutations();

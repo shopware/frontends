@@ -16,14 +16,14 @@ describe("CustomerService - setDefaultCustomerShippingAddress", () => {
 
   it("rejects the promise if provided addressId does not exist", async () => {
     mockedPatch.mockRejectedValueOnce(
-      new Error("400 - address does not exist")
+      new Error("400 - address does not exist"),
     );
     expect(setDefaultCustomerShippingAddress("1234")).rejects.toThrow(
-      "400 - address does not exist"
+      "400 - address does not exist",
     );
     expect(mockedPatch).toBeCalledTimes(1);
     expect(mockedPatch).toBeCalledWith(
-      "/store-api/account/address/default-shipping/1234"
+      "/store-api/account/address/default-shipping/1234",
     );
   });
 
@@ -33,7 +33,7 @@ describe("CustomerService - setDefaultCustomerShippingAddress", () => {
     expect(result).toBe("12345");
     expect(mockedPatch).toBeCalledTimes(1);
     expect(mockedPatch).toBeCalledWith(
-      "/store-api/account/address/default-shipping/12345"
+      "/store-api/account/address/default-shipping/12345",
     );
   });
 });

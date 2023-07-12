@@ -5,7 +5,7 @@
  */
 export function _debounce<T extends (...args: any[]) => any>(
   fn: T,
-  delay: number = 300
+  delay: number = 300,
 ): T {
   let prevTimer: number | null = null;
   return ((...args: any[]) => {

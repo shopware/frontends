@@ -2,7 +2,7 @@ export function replacer(
   code: string,
   value: string,
   key: string,
-  insert: "head" | "tail" | "none" = "none"
+  insert: "head" | "tail" | "none" = "none",
 ) {
   const PLACEHOLDER = `<!-- ${key} -->`;
   const regex = new RegExp(`${PLACEHOLDER}[\\s\\S]`, "im");
@@ -31,7 +31,7 @@ export function normalizeString(word?: string) {
 
 export function getWrappedCodeBlock(
   code: string | undefined,
-  lang = "ts"
+  lang = "ts",
 ): string {
   if (!code) return "";
   return `
@@ -43,7 +43,7 @@ ${code}
 
 export function getToggleContainer(
   contents: string,
-  title = "Click to see the details"
+  title = "Click to see the details",
 ) {
   return `
 

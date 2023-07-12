@@ -46,7 +46,7 @@ const CmsTextRender = () => {
                 "underline text-base font-normal text-brand-primary hover:text-gray-900",
               ...getOptionsFromNode(node).attrs,
             },
-            [...children]
+            [...children],
           );
         },
       },
@@ -68,7 +68,7 @@ const CmsTextRender = () => {
               .replace("btn-secondary", `${btnClass} bg-brand-dark text-white`)
               .replace(
                 "btn-primary",
-                `${btnClass} bg-brand-primary text-white`
+                `${btnClass} bg-brand-primary text-white`,
               );
           }
 
@@ -78,7 +78,7 @@ const CmsTextRender = () => {
               class: _class,
               ...getOptionsFromNode(node).attrs,
             },
-            [...children]
+            [...children],
           );
         },
       },
@@ -102,7 +102,7 @@ const CmsTextRender = () => {
               style: newStyle,
               ...getOptionsFromNode(node).attrs,
             },
-            [...children]
+            [...children],
           );
         },
       },

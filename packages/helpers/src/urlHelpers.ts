@@ -18,7 +18,7 @@ export function _parseUrlQuery(query: any): SearchCriteria {
           : query[key];
     } catch (e) {
       console.error(
-        "[helpers][parseUrlQuery] Problem with resolving url param: " + key
+        "[helpers][parseUrlQuery] Problem with resolving url param: " + key,
       );
     }
   });

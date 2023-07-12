@@ -23,13 +23,13 @@ export async function generatePackageDocs(packageName: string) {
     "docs",
     "src",
     "packages",
-    packageName
+    packageName,
   );
 
   try {
     const distFile = await fs.readFile(
       path.join(packagePath, "dist/index.mjs"),
-      "utf-8"
+      "utf-8",
     );
     const exportedNames = findExports(distFile).flatMap((e) => e.names);
 
@@ -40,7 +40,7 @@ export async function generatePackageDocs(packageName: string) {
 
     // filter out names starting with uppercase or containing _
     const filteredNames = exportedNames.filter(
-      (name) => !name.startsWith("_") && name[0] === name[0].toLowerCase()
+      (name) => !name.startsWith("_") && name[0] === name[0].toLowerCase(),
     );
 
     filteredNames.forEach(async (name) => {
@@ -52,7 +52,7 @@ export async function generatePackageDocs(packageName: string) {
         console.log("-> Adding file:", name);
         await fs.writeFile(
           path.join(docsPackagePath, `${name}.md`),
-          getDocTemplate({ name, category: packageName })
+          getDocTemplate({ name, category: packageName }),
         );
       }
     });

@@ -12,7 +12,7 @@ import { getProductUrl } from "./getProductUrl";
  * @category Routing
  */
 export function getProductRoute<
-  T extends { id: string; seoUrls: SeoUrl[] | null }
+  T extends { id: string; seoUrls: SeoUrl[] | null },
 >(product?: T) {
   return {
     path: getProductUrl(product),

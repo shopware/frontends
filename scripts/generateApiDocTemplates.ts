@@ -12,7 +12,7 @@ async function run() {
   const packagedist = await fs.readFile(
     // path.join(packagePath, "dist", "index.mjs"),
     path.join(packagePath, "dist", "index.d.ts"),
-    "utf-8"
+    "utf-8",
   );
 
   // const exports = await getExportsStatic("vue");

@@ -46,7 +46,7 @@ export type UseOrderPaymentReturn = {
     /**
      * additional payment details to provide
      */
-    paymentDetails?: unknown
+    paymentDetails?: unknown,
   ): Promise<void | unknown>;
   /**
    * Change a payment method for the order
@@ -60,11 +60,12 @@ export type UseOrderPaymentReturn = {
  * @category Customer & Account
  */
 export function useOrderPayment(
-  order: ComputedRef<Order | null | undefined>
+  order: ComputedRef<Order | null | undefined>,
 ): UseOrderPaymentReturn {
   const { apiInstance } = useShopwareContext();
-  const activeTransaction = computed(() =>
-    order.value?.transactions?.find((t) => t.paymentMethod?.active === true)
+  const activeTransaction = computed(
+    () =>
+      order.value?.transactions?.find((t) => t.paymentMethod?.active === true),
   );
   const paymentMethod = computed(() => activeTransaction.value?.paymentMethod);
   const paymentUrl = ref();
@@ -72,13 +73,13 @@ export function useOrderPayment(
   const isAsynchronous = computed(
     () =>
       activeTransaction.value?.paymentMethod?.asynchronous &&
-      activeTransaction.value?.paymentMethod?.afterOrderEnabled
+      activeTransaction.value?.paymentMethod?.afterOrderEnabled,
   );
 
   async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
-    paymentDetails?: unknown
+    paymentDetails?: unknown,
   ): Promise<void | unknown> {
     if (!order.value) {
       return;
@@ -90,7 +91,7 @@ export function useOrderPayment(
         errorUrl,
         paymentDetails,
       },
-      apiInstance
+      apiInstance,
     );
 
     paymentUrl.value = resp?.redirectUrl;

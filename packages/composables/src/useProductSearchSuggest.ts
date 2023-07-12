@@ -45,7 +45,7 @@ export function useProductSearchSuggest(): UseProductSearchSuggestReturn {
   });
 
   const search = async (
-    additionalCriteria: Partial<ShopwareSearchParams> = {}
+    additionalCriteria: Partial<ShopwareSearchParams> = {},
   ) => {
     const searchCriteria = {
       query: searchTerm.value,

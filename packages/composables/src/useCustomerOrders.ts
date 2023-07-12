@@ -31,7 +31,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
   const orders: Ref<Order[]> = ref([]);
 
   const loadOrders = async (
-    parameters: ShopwareSearchParams = {}
+    parameters: ShopwareSearchParams = {},
   ): Promise<void> => {
     const fetchedOrders = await getCustomerOrders(parameters, apiInstance);
     orders.value = fetchedOrders?.elements;

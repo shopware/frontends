@@ -156,7 +156,7 @@ const currentSortingOrder = computed({
 
     changeCurrentSortingOrder(
       order,
-      <Partial<ShopwareSearchParams>>route.query
+      <Partial<ShopwareSearchParams>>route.query,
     );
   },
 });

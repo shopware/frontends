@@ -17,13 +17,13 @@ import {
  */
 export async function searchProducts(
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ProductListingResult> {
   const resp = await contextInstance.invoke.post(
     `${getSearchEndpoint()}?search=${encodeURIComponent(
-      criteria?.query || ""
+      criteria?.query || "",
     )}`,
-    criteria
+    criteria,
   );
 
   return resp.data;
@@ -41,13 +41,13 @@ export async function searchProducts(
  */
 export async function searchSuggestedProducts(
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ProductListingResult> {
   const resp = await contextInstance.invoke.post(
     `${getSuggestSearchEndpoint()}?search=${encodeURIComponent(
-      criteria?.query || ""
+      criteria?.query || "",
     )}`,
-    criteria
+    criteria,
   );
 
   return resp.data;

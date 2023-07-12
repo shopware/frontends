@@ -26,13 +26,13 @@ import {
  */
 export async function addWishlistProduct(
   productId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   apiAlias: string;
   success: boolean;
 }> {
   const resp = await contextInstance.invoke.post(
-    getAddWishlistProductEndpoint(productId)
+    getAddWishlistProductEndpoint(productId),
   );
 
   return resp.data;
@@ -51,11 +51,11 @@ export async function addWishlistProduct(
  */
 export async function getWishlistProducts(
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<CustomerWishlistResponse> {
   const resp = await contextInstance.invoke.post(
     getGetWishlistProductsEndpoint(),
-    criteria
+    criteria,
   );
 
   return resp.data;
@@ -74,13 +74,13 @@ export async function getWishlistProducts(
  */
 export async function removeWishlistProduct(
   productId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   apiAlias: string;
   success: boolean;
 }> {
   const resp = await contextInstance.invoke.delete(
-    getRemoveWishlistProductEndpoint(productId)
+    getRemoveWishlistProductEndpoint(productId),
   );
 
   return resp.data;
@@ -99,14 +99,14 @@ export async function removeWishlistProduct(
  */
 export async function mergeWishlistProducts(
   productIds: string[],
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   apiAlias: string;
   success: boolean;
 }> {
   const resp = await contextInstance.invoke.post(
     getMergeWishlistProductsEndpoint(),
-    { productIds }
+    { productIds },
   );
 
   return resp.data;

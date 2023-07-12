@@ -23,16 +23,16 @@ describe("CustomerService - getCustomerAddress", () => {
     expect(result.id).toEqual("2bbb89dfa4664bc681e80b37eaa80fb7");
     expect(mockedGet).toBeCalledTimes(1);
     expect(mockedGet).toBeCalledWith(
-      getCustomerAddressEndpoint("2bbb89dfa4664bc681e80b37eaa80fb7")
+      getCustomerAddressEndpoint("2bbb89dfa4664bc681e80b37eaa80fb7"),
     );
   });
 
   it("rejects the promise if the customerId is incorrect", async () => {
     mockedGet.mockRejectedValueOnce(
-      new Error("400 - such addressId does not exist")
+      new Error("400 - such addressId does not exist"),
     );
     expect(getCustomerAddress("wrong-id")).rejects.toThrow(
-      "400 - such addressId does not exist"
+      "400 - such addressId does not exist",
     );
     expect(mockedGet).toBeCalledTimes(1);
     expect(mockedGet).toBeCalledWith(getCustomerAddressEndpoint("wrong-id"));

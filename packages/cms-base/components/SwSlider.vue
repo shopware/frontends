@@ -19,7 +19,7 @@ const props = withDefaults(
     gap: "0px",
     autoplay: false,
     autoplaySpeed: 3000,
-  }
+  },
 );
 
 const { getConfigValue } = useCmsElementConfig({
@@ -30,17 +30,17 @@ const { getConfigValue } = useCmsElementConfig({
 
 const slots = useSlots();
 const childrenRaw = computed(
-  () => (slots?.default?.()[0].children as VNodeArrayChildren) ?? []
+  () => (slots?.default?.()[0].children as VNodeArrayChildren) ?? [],
 );
 const slidesToScroll = computed(() =>
   props.slidesToScroll >= props.slidesToShow
     ? props.slidesToShow
-    : props.slidesToScroll
+    : props.slidesToScroll,
 );
 const slidesToShow = computed(() =>
   props.slidesToShow >= childrenRaw.value.length
     ? childrenRaw.value.length
-    : props.slidesToShow
+    : props.slidesToShow,
 );
 const children = computed<string[]>(() => {
   if (childrenRaw.value.length === 0) return [];
@@ -96,7 +96,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 );
 
 const imageSliderStyle = computed(() => {
@@ -113,17 +113,17 @@ const imageSliderStyle = computed(() => {
 });
 
 const verticalAlignValue = computed(
-  () => getConfigValue("verticalAlign") || "flex-start"
+  () => getConfigValue("verticalAlign") || "flex-start",
 );
 const displayModeValue = computed(
-  () => getConfigValue("displayMode") || "standard"
+  () => getConfigValue("displayMode") || "standard",
 );
 
 const navigationArrowsValue = computed(
-  () => props.config?.navigationArrows?.value || "none"
+  () => props.config?.navigationArrows?.value || "none",
 );
 const navigationDotsValue = computed(
-  () => props.config?.navigationDots?.value || "none"
+  () => props.config?.navigationDots?.value || "none",
 );
 
 function initSlider() {
@@ -138,7 +138,7 @@ function initSlider() {
 function buildImageSliderTrackStyle(
   transformIndex: number,
   moving: boolean = false,
-  callback = () => {}
+  callback = () => {},
 ) {
   let styleObj: { [K: string]: string } = {
     transform: `translate3d(-${

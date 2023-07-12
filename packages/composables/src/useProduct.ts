@@ -26,7 +26,7 @@ export type UseProductReturn = {
  */
 export function useProduct(
   product?: Ref<Product> | Product,
-  configurator?: Ref<PropertyGroup[]> | PropertyGroup[]
+  configurator?: Ref<PropertyGroup[]> | PropertyGroup[],
 ): UseProductReturn {
   const _product = _useContext("product", { context: product });
   if (!_product.value) {

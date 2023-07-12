@@ -16,7 +16,7 @@ describe("getCategoryRoute", () => {
         type: "link",
         linkType: "category",
         internalLink: "123",
-      } as any)
+      } as any),
     ).toEqual({
       path: "/navigation/123",
       state: {
@@ -32,7 +32,7 @@ describe("getCategoryRoute", () => {
         type: "link",
         linkType: "product",
         internalLink: "123",
-      } as any)
+      } as any),
     ).toEqual({
       path: "/detail/123",
       state: {
@@ -48,7 +48,7 @@ describe("getCategoryRoute", () => {
         type: "link",
         linkType: "landing_page",
         internalLink: "123",
-      } as any)
+      } as any),
     ).toEqual({
       path: "/landingPage/123",
       state: {
@@ -63,7 +63,7 @@ describe("getCategoryRoute", () => {
       getCategoryRoute({
         type: "link",
         externalLink: "https://shopware.com",
-      } as any)
+      } as any),
     ).toEqual("https://shopware.com");
   });
 
@@ -72,7 +72,7 @@ describe("getCategoryRoute", () => {
       getCategoryRoute({
         type: "link",
         seoUrls: [{ seoPathInfo: "/test" }],
-      } as any)
+      } as any),
     ).toEqual("/test");
   });
 
@@ -81,7 +81,7 @@ describe("getCategoryRoute", () => {
       getCategoryRoute({
         type: "page",
         seoUrls: [{ seoPathInfo: "summer-trends" }],
-      } as any)
+      } as any),
     ).toEqual({
       path: "/summer-trends",
       state: {
@@ -96,7 +96,7 @@ describe("getCategoryRoute", () => {
       getCategoryRoute({
         type: "unknown",
         seoUrls: [{ seoPathInfo: "test" }],
-      } as any)
+      } as any),
     ).toBe("/test");
   });
   it("should try to return technical URL for unknown type", () => {
@@ -105,7 +105,7 @@ describe("getCategoryRoute", () => {
         type: "unknown",
         id: "123",
         linkType: "category",
-      } as any)
+      } as any),
     ).toBe("/navigation/123");
   });
 });

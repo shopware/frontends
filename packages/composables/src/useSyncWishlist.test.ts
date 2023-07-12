@@ -89,7 +89,7 @@ describe("useSyncWishlist", () => {
     describe("addToWishlist", () => {
       it("wishlist add product", () => {
         expect(wrapper.vm.addToWishlistSync(product.id)).resolves.toBe(
-          undefined
+          undefined,
         );
       });
     });
@@ -106,7 +106,7 @@ describe("useSyncWishlist", () => {
     describe("mergeWishlistProducts", () => {
       it("wishlist remove", () => {
         expect(
-          wrapper.vm.mergeWishlistProducts(["test1", "test2"])
+          wrapper.vm.mergeWishlistProducts(["test1", "test2"]),
         ).resolves.toEqual(undefined);
       });
     });

@@ -11,7 +11,7 @@ category: CMS
 ```ts
 const { loadAssociations, productAssociations } = useProductAssociations(
   product,
-  { associationContext: "cross-selling" }
+  { associationContext: "cross-selling" },
 );
 if (!productAssociations.value) {
   await loadAssociations();

@@ -30,8 +30,8 @@ export function getStackBlitzProjectConfig({
     <br/>
     <br/>
     const result = ${isAsync ? "await" : ""} ${
-    functionToRunAfterImport ?? functionName
-  }()</p>
+      functionToRunAfterImport ?? functionName
+    }()</p>
 </blockquote>
   <div>
     <h2 class="text-md mb-4 mt-4">result:</h2>
@@ -70,8 +70,8 @@ async function runTest() {
     // run function
     // check params if needed
     const ${!multiImport ? "result" : destructureImports()} = ${
-    isAsync ? "await " : ""
-  }${getFunctionToRun()}(${paramsConfig ? JSON.stringify(paramsConfig) : ""});
+      isAsync ? "await " : ""
+    }${getFunctionToRun()}(${paramsConfig ? JSON.stringify(paramsConfig) : ""});
   
     // display result in predefined container
     outputContainer.innerText = JSON.stringify(result, null, 2);

@@ -60,7 +60,7 @@ export function useAddToCart(product: Ref<Product>) {
 
   const getQuantityInCart = computed(() => {
     return cartItems.value.find(
-      (item: LineItem) => item.referencedId === product.value?.id
+      (item: LineItem) => item.referencedId === product.value?.id,
     )?.quantity;
   });
 

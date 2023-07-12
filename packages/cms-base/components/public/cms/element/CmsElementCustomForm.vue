@@ -11,7 +11,7 @@ const FormComponent = computed(() => {
   switch (getConfigValue("type")) {
     case "newsletter":
       return defineAsyncComponent(
-        () => import("../../../SwNewsletterForm.vue")
+        () => import("../../../SwNewsletterForm.vue"),
       );
     case "contact":
     default:

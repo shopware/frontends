@@ -57,8 +57,8 @@ export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
 
   const isInCart = computed(() =>
     cartItems.value.some(
-      (item: LineItem) => item.referencedId === _product.value?.id
-    )
+      (item: LineItem) => item.referencedId === _product.value?.id,
+    ),
   );
 
   return {
@@ -70,8 +70,8 @@ export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
     count: computed(
       () =>
         cartItems.value.find(
-          (item: LineItem) => item.referencedId === _product.value?.id
-        )?.quantity || 0
+          (item: LineItem) => item.referencedId === _product.value?.id,
+        )?.quantity || 0,
     ),
   };
 }

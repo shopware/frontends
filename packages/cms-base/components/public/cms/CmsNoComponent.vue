@@ -10,7 +10,7 @@ const elementType = computed(() =>
     ? "Block"
     : props.content.apiAlias === "cms_section"
     ? "Section"
-    : "Element"
+    : "Element",
 );
 
 const componentName = computed(() => props.content.type);

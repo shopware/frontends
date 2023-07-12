@@ -7,7 +7,7 @@ describe("getShippingMethodDeliveryTime", () => {
     const deliveryTimeMocked =
       mockedShippingMethods[0].deliveryTime?.translated.name;
     const deliveryTime = getShippingMethodDeliveryTime(
-      mockedShippingMethods[0]
+      mockedShippingMethods[0],
     );
     expect(deliveryTime).toBe(deliveryTimeMocked);
   });

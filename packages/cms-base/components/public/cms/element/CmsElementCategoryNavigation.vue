@@ -26,7 +26,7 @@ const { category: activeCategory } = useCategory();
 const { loadNavigationElements, navigationElements } = useNavigation();
 const navigations = computed(() => {
   const navigation: Category[] = JSON.parse(
-    JSON.stringify(navigationElements.value)
+    JSON.stringify(navigationElements.value),
   );
   return navigation?.map((navigationElement) => {
     navigationElement.children =

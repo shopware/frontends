@@ -39,7 +39,7 @@ export function renderer(ast, config, createElement, context) {
             node,
             children,
             h,
-            context
+            context,
           );
         }
         // else, create normal html element

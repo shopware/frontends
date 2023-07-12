@@ -11,7 +11,7 @@ export type UseProductConfiguratorReturn = {
   handleChange(
     attribute: string,
     option: string,
-    onChangeHandled: () => void
+    onChangeHandled: () => void,
   ): Promise<void>;
 
   findVariantForSelectedOptions(options?: {
@@ -46,7 +46,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   if (!product.value) {
     // TODO link docs with composables context usage
     throw new Error(
-      "Product configurator cannot be used without the product context."
+      "Product configurator cannot be used without the product context.",
     );
   }
 
@@ -60,7 +60,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   const findGroupCodeForOption = (optionId: string) => {
     const group = getOptionGroups.value.find((optionGroup) => {
       const optionFound = optionGroup.options?.find(
-        (option: any) => option.id === optionId
+        (option: any) => option.id === optionId,
       );
       return !!optionFound;
     });
@@ -111,7 +111,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
             },
           },
         },
-        apiInstance
+        apiInstance,
       );
       return (response as { data?: { elements?: Array<Product> } })?.data
         ?.elements?.[0]; // return first matching product
@@ -123,7 +123,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   const handleChange = async (
     group: string,
     option: string,
-    onChangeHandled?: () => void
+    onChangeHandled?: () => void,
   ): Promise<void> => {
     selected.value = Object.assign({}, selected.value, {
       [group]: option,

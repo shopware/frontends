@@ -37,20 +37,20 @@ export type UseProductReviewsReturn = {
  * @category Product
  */
 export function useProductReviews(
-  product: Ref<Product>
+  product: Ref<Product>,
 ): UseProductReviewsReturn {
   const { apiInstance } = useShopwareContext();
 
   const productReviews: Ref<ProductReview[]> = ref([]);
 
   const loadProductReviews = async (
-    parameters: ShopwareSearchParams = {}
+    parameters: ShopwareSearchParams = {},
   ): Promise<void> => {
     const fetchedReviews = await getProductReviews(
       product.value.id,
       undefined,
       // Object.assign({}, getDefaults(), parameters),
-      apiInstance
+      apiInstance,
     );
     productReviews.value = fetchedReviews.elements ?? [];
   };

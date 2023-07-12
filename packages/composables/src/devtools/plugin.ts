@@ -10,7 +10,7 @@ export const shopwareSymbol = Symbol("shopware") as InjectionKey<string>;
 /* istanbul ignore next */
 export function registerShopwareDevtools(
   app: App,
-  shopwarePluginInstance: any
+  shopwarePluginInstance: any,
 ) {
   let devtoolsApi: DevtoolsPluginApi<any>;
   let trackId = 0;
@@ -105,7 +105,7 @@ export function registerShopwareDevtools(
           }
         }
       });
-    }
+    },
   );
 
   const devtools = {

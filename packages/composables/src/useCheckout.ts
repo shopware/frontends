@@ -105,12 +105,12 @@ export function useCheckout(): UseCheckoutReturn {
 
   async function getShippingMethods(
     { forceReload } = { forceReload: false },
-    associations: ShopwareSearchParams = {}
+    associations: ShopwareSearchParams = {},
   ) {
     if (shippingMethods.value.length && !forceReload) return shippingMethods;
     const mergedAssociations: ShopwareSearchParams = deepMerge(
       shippingMethodsAssociations,
-      associations
+      associations,
     );
     const response = await getAvailableShippingMethods(apiInstance, {
       ...mergedAssociations,
@@ -118,7 +118,7 @@ export function useCheckout(): UseCheckoutReturn {
     storeShippingMethods.value =
       response?.elements.sort(
         (a: ShippingMethod, b: ShippingMethod) =>
-          (a.position ?? 0) - (b.position ?? 0)
+          (a.position ?? 0) - (b.position ?? 0),
       ) || [];
     return shippingMethods;
   }
@@ -143,10 +143,10 @@ export function useCheckout(): UseCheckoutReturn {
   }
 
   const shippingAddress = computed(
-    () => sessionContext.value?.shippingLocation?.address
+    () => sessionContext.value?.shippingLocation?.address,
   );
   const billingAddress = computed(
-    () => sessionContext.value?.customer?.activeBillingAddress
+    () => sessionContext.value?.customer?.activeBillingAddress,
   );
 
   return {
