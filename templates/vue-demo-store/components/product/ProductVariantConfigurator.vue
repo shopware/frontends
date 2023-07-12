@@ -8,7 +8,7 @@ const props = withDefaults(
   }>(),
   {
     allowRedirect: true,
-  }
+  },
 );
 
 const emit = defineEmits<{
@@ -30,7 +30,7 @@ const isOptionSelected = (optionId: string) =>
 const onHandleChange = async () => {
   isLoading.value = true;
   const variantFound = await findVariantForSelectedOptions(
-    getSelectedOptions.value
+    getSelectedOptions.value,
   );
   const selectedOptionsVariantPath = getProductRoute(variantFound);
   if (props.allowRedirect && selectedOptionsVariantPath) {

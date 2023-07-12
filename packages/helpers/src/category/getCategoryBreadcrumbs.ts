@@ -13,7 +13,7 @@ export function getCategoryBreadcrumbs(
      * contains root names which should not be visible.
      */
     startIndex?: number;
-  }
+  },
 ) {
   const breadcrumbs =
     category?.translated?.breadcrumb || category?.breadcrumb || [];

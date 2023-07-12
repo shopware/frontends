@@ -42,7 +42,7 @@ describe("CustomerService - getCustomer", () => {
       },
     });
     await expect(getCustomer()).rejects.toThrowError(
-      "Unexpected getCustomerResponse."
+      "Unexpected getCustomerResponse.",
     );
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith("/store-api/account/customer", {});

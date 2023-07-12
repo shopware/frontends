@@ -26,7 +26,7 @@ const props = defineProps<{
 const isHoverActive = ref(false);
 const hoveredIndex = ref(0);
 const displayedScore = computed(() =>
-  isHoverActive.value ? hoveredIndex.value : props.selectedFilters?.rating || 0
+  isHoverActive.value ? hoveredIndex.value : props.selectedFilters?.rating || 0,
 );
 
 const hoverRating = (key: number) => {

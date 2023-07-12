@@ -31,7 +31,7 @@ describe("CustomerService - updateProfile", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       getCustomerDetailsUpdateEndpoint(),
-      customerData
+      customerData,
     );
   });
 });

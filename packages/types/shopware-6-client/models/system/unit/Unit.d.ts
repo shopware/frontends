@@ -8,5 +8,9 @@ export type Unit = {
   shortCode: string | null;
   name: string | null;
   translated: UnitTranslation | null;
-  customFields: CustomFields;
+  customFields: CustomFields | null;
+  createdAt: Date | string;
+  updatedAt: Date | string | null;
+  id: string;
+  apiAlias: string;
 };

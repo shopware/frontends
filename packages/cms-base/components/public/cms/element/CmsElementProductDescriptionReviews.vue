@@ -32,7 +32,7 @@ const currentTab = ref<number>(1);
 const { product } = useProduct(props.content.data?.product);
 
 const description = computed(() =>
-  getTranslatedProperty(product.value, "description")
+  getTranslatedProperty(product.value, "description"),
 );
 
 const toggleTabs = (tabNumber: number) => {

@@ -79,7 +79,7 @@ const { getConfigValue } = useCmsElementConfig(props.content);
 const getConfirmationText = computed(
   () =>
     getConfigValue("confirmationText") ??
-    translations.form.messages.contactFormSuccess
+    translations.form.messages.contactFormSuccess,
 );
 const getFormTitle = computed(() => getConfigValue("title") || "Contact");
 const state = reactive({
@@ -139,7 +139,7 @@ const invokeSubmit = async () => {
           ...state,
           navigationId: foreignKey.value,
         },
-        apiInstance
+        apiInstance,
       );
       formSent.value = true;
     } catch (e) {

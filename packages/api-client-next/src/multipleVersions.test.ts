@@ -31,7 +31,7 @@ describe("Multiple versions test", () => {
         "readCart get /checkout/cart?name",
         {
           name: "myCartName",
-        }
+        },
       );
       expect(result.name).toEqual(undefined);
       // expect(result.name).toEqual("myCartName");
@@ -42,7 +42,7 @@ describe("Multiple versions test", () => {
         "readCart get /checkout/cart?name",
         {
           name: "myCartName",
-        }
+        },
       );
       expect(result.name).toEqual(undefined);
       // expect(result.name).toEqual("myCartName");

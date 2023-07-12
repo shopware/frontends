@@ -24,7 +24,7 @@ export type UseNavigationContextReturn = {
  * @category Navigation & Routing
  */
 export function useNavigationContext(
-  context?: Ref<SeoUrl | null>
+  context?: Ref<SeoUrl | null>,
 ): UseNavigationContextReturn {
   const _context = _useContext("navigation", { context: context });
 

@@ -32,7 +32,7 @@ const props = withDefaults(
     layoutType: "standard",
     displayMode: "standard",
     isProductListing: false,
-  }
+  },
 );
 
 type Translations = {
@@ -72,7 +72,7 @@ const toggleWishlistProduct = async () => {
     try {
       await addToWishlist();
       return pushSuccess(
-        `${props.product?.translated?.name} ${translations.product.addedToWishlist}`
+        `${props.product?.translated?.name} ${translations.product.addedToWishlist}`,
       );
     } catch (error) {
       const e = error as ClientApiError;
@@ -83,7 +83,7 @@ const toggleWishlistProduct = async () => {
         `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
         {
           timeout: 5000,
-        }
+        },
       );
     }
   }
@@ -93,14 +93,14 @@ const toggleWishlistProduct = async () => {
 const addToCartProxy = async () => {
   await addToCart();
   pushSuccess(
-    `${props.product?.translated?.name} ${translations.product.addedToCart}`
+    `${props.product?.translated?.name} ${translations.product.addedToCart}`,
   );
 };
 
 const fromPrice = getProductFromPrice(props.product);
 const urlPrefix = getUrlPrefix();
 const ratingAverage: Ref<number> = computed(() =>
-  props.product.ratingAverage ? Math.round(props.product.ratingAverage) : 0
+  props.product.ratingAverage ? Math.round(props.product.ratingAverage) : 0,
 );
 
 const imageElement = ref(null);
@@ -113,7 +113,7 @@ function roundUp(num: number) {
 
 const srcPath = computed(() => {
   return `${getProductThumbnailUrl(product.value)}?&height=${roundUp(
-    height.value
+    height.value,
   )}&fit=crop`;
 });
 </script>

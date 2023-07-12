@@ -6,7 +6,7 @@ const props = withDefaults(
   }>(),
   {
     side: "right",
-  }
+  },
 );
 
 const { controller } = toRefs(props);

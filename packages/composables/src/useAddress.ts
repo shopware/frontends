@@ -31,13 +31,13 @@ export type UseAddressReturn = {
    * Allows to create new address for a current customer
    */
   createCustomerAddress(
-    customerAddress: CustomerAddress
+    customerAddress: CustomerAddress,
   ): Promise<CustomerAddress>;
   /**
    * Allows to update existing address for a current customer
    */
   updateCustomerAddress(
-    customerAddress: CustomerAddress
+    customerAddress: CustomerAddress,
   ): Promise<CustomerAddress>;
   /**
    * Allows to delete existing address for a current customer
@@ -71,7 +71,7 @@ export function useAddress(): UseAddressReturn {
 
   const _storeCustomerAddresses: Ref<CustomerAddress[]> = inject(
     "swCustomerAddresses",
-    ref([])
+    ref([]),
   );
   provide("swCustomerAddresses", _storeCustomerAddresses);
 
@@ -79,7 +79,7 @@ export function useAddress(): UseAddressReturn {
    * Get customer address list
    */
   async function loadCustomerAddresses(
-    parameters: ShopwareSearchParams = {}
+    parameters: ShopwareSearchParams = {},
   ): Promise<void> {
     try {
       const { elements } = await getCustomerAddresses(parameters, apiInstance);
@@ -96,7 +96,7 @@ export function useAddress(): UseAddressReturn {
    * Add new customer address
    */
   async function createCustomerAddress(
-    customerAddress: Omit<CustomerAddress, "id" | "salutation">
+    customerAddress: Omit<CustomerAddress, "id" | "salutation">,
   ): Promise<CustomerAddress> {
     const result = await apiCreateCustomerAddress(customerAddress, apiInstance);
     return result;
@@ -106,7 +106,7 @@ export function useAddress(): UseAddressReturn {
    * Update customer address
    */
   async function updateCustomerAddress(
-    customerAddress: CustomerAddress
+    customerAddress: CustomerAddress,
   ): Promise<CustomerAddress> {
     const result = await apiUpdateCustomerAddress(customerAddress, apiInstance);
     return result;
@@ -124,7 +124,7 @@ export function useAddress(): UseAddressReturn {
    * Set default customer billing address
    */
   async function setDefaultCustomerBillingAddress(
-    addressId: string
+    addressId: string,
   ): Promise<string> {
     return await apiSetDefaultCustomerBillingAddress(addressId, apiInstance);
   }
@@ -133,7 +133,7 @@ export function useAddress(): UseAddressReturn {
    * Set default customer shipping address
    */
   async function setDefaultCustomerShippingAddress(
-    addressId: string
+    addressId: string,
   ): Promise<string> {
     return await apiSetDefaultCustomerShippingAddress(addressId, apiInstance);
   }

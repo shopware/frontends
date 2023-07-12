@@ -64,7 +64,7 @@ export type UseNotificationsReturn = {
 export function useNotifications(): UseNotificationsReturn {
   const _notifications: Ref<Notification[]> = inject(
     "swNotifications",
-    ref([])
+    ref([]),
   );
   provide("swNotifications", _notifications);
 
@@ -83,7 +83,7 @@ export function useNotifications(): UseNotificationsReturn {
 
   async function pushNotification(
     message: string,
-    options: NotificationOptions
+    options: NotificationOptions,
   ) {
     const timeout = options.timeout || 2500;
     const persistent = !!options.persistent;

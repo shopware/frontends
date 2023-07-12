@@ -31,7 +31,7 @@ export interface ContactFormData {
  */
 export async function sendContactForm(
   params: ContactFormData,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   await contextInstance.invoke.post(getContactFormEndpoint(), params);
 }
@@ -62,11 +62,11 @@ export interface NewsletterSubscribeData {
  */
 export async function newsletterSubscribe(
   params: NewsletterSubscribeData,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   await contextInstance.invoke.post(
     getStoreNewsletterSubscribeEndpoint(),
-    Object.assign({}, { option: "subscribe" }, params)
+    Object.assign({}, { option: "subscribe" }, params),
   );
 }
 
@@ -82,10 +82,10 @@ export async function newsletterUnsubscribe(
   params: {
     email: string;
   },
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   await contextInstance.invoke.post(
     getStoreNewsletterUnsubscribeEndpoint(),
-    params
+    params,
   );
 }

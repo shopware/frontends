@@ -21,7 +21,7 @@ export type UseCmsBlockReturn = {
  * @category CMS (Shopping Experiences)
  */
 export function useCmsBlock<BLOCK_TYPE extends CmsBlock>(
-  content: BLOCK_TYPE
+  content: BLOCK_TYPE,
 ): UseCmsBlockReturn {
   function getSlotContent(slotName: ArrayElement<BLOCK_TYPE["slots"]>["slot"]) {
     return content.slots.find((slot) => slot.slot === slotName) as ArrayElement<

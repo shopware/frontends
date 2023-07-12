@@ -42,12 +42,12 @@ test.describe.only("Create Order", () => {
       "e2e " + faker.person.firstName(),
       "e2e " + faker.person.lastName(),
       faker.internet.exampleEmail(),
-      faker.internet.password()
+      faker.internet.password(),
     );
     await registrationPage.fillAddressData(
       faker.location.street(),
       faker.location.zipCode(),
-      faker.location.city()
+      faker.location.city(),
     );
     await registrationPage.submitRegistraionForm();
     await homePage.openCartPage();
@@ -86,7 +86,7 @@ test.describe.only("Create Order", () => {
       faker.internet.exampleEmail(),
       faker.location.street(),
       faker.location.zipCode(),
-      faker.location.city()
+      faker.location.city(),
     );
     await checkoutPage.markTerms();
     await checkoutPage.placeOrder();

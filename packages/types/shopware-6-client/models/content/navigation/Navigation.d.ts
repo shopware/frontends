@@ -33,19 +33,19 @@ export type SeoUrl = {
    * @deprecated removed from 6.5.0
    */
   isValid: null | boolean;
-  language: null | boolean;
+  language?: null | boolean;
   url: null | string;
   customFields: CustomFields | null;
   /**
    * @deprecated removed from 6.5.0
    */
-  error: null | any;
-  _uniqueIdentifier: string;
-  versionId: null | string;
+  error?: null | any;
+  _uniqueIdentifier?: string;
+  versionId?: null | string;
   translated: [];
-  createdAt: Date;
+  createdAt: Date | string;
   updatedAt: Date | string | null;
-  extensions: unknown;
+  extensions?: unknown;
   id: string;
   apiAlias: string;
 };

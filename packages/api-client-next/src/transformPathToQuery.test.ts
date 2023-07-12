@@ -7,7 +7,7 @@ describe("transform path to query request", () => {
       "readCart get /checkout/cart?name",
       {
         name: "myId123",
-      }
+      },
     );
     expect(path).toEqual("/checkout/cart");
     expect(params).toMatchInlineSnapshot(`
@@ -26,7 +26,7 @@ describe("transform path to query request", () => {
       "readProductCrossSellings post /product/{productId}/cross-selling",
       {
         productId: "someId1234",
-      }
+      },
     );
     expect(path).toEqual("/product/someId1234/cross-selling");
     expect(params).toMatchInlineSnapshot(`
@@ -45,7 +45,7 @@ describe("transform path to query request", () => {
         city: "Berlin",
         firstName: "John",
         lastName: "Doe",
-      }
+      },
     );
 
     expect(path).toEqual("/account/address");
@@ -71,7 +71,7 @@ describe("transform path to query request", () => {
         firstName: "John",
         someHeader: true,
         bodyParamName: "Doe",
-      }
+      },
     );
 
     expect(path).toEqual("/account/address/Berlin");
@@ -98,7 +98,7 @@ describe("transform path to query request", () => {
         activeId: "act123",
         rootId: "root123",
         "sw-include-seo-urls": true,
-      }
+      },
     );
     expect(path).toEqual("/navigation/act123/root123");
     expect(params).toMatchInlineSnapshot(`

@@ -58,7 +58,7 @@ const { taxState, currency } = useSessionContext();
 
 const { product, changeVariant } = useProduct(
   props.content.data.product,
-  props.content.data.configuratorSettings || []
+  props.content.data.configuratorSettings || [],
 );
 
 const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(product);
@@ -66,7 +66,7 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
 const { getFormattedPrice } = usePrice();
 
 const referencePrice = computed(
-  () => product.value?.calculatedPrice?.referencePrice
+  () => product.value?.calculatedPrice?.referencePrice,
 );
 const productNumber = computed(() => product.value?.productNumber);
 const purchaseUnit = computed(() => product.value?.purchaseUnit);

@@ -112,7 +112,7 @@ export type UseOrderDetailsReturn = {
   handlePayment(
     successUrl?: string,
     errorUrl?: string,
-    paymentDetails?: unknown
+    paymentDetails?: unknown,
   ): void;
   /**
    * Cancel an order.
@@ -157,7 +157,7 @@ export type UseOrderDetailsReturn = {
  */
 export function useOrderDetails(
   orderId: string,
-  associations?: ShopwareAssociation
+  associations?: ShopwareAssociation,
 ): UseOrderDetailsReturn {
   const { apiInstance } = useShopwareContext();
 
@@ -165,10 +165,10 @@ export function useOrderDetails(
   provide("swOrderDetails", _sharedOrder);
 
   const paymentMethod = computed(
-    () => _sharedOrder.value?.transactions?.[0]?.paymentMethod
+    () => _sharedOrder.value?.transactions?.[0]?.paymentMethod,
   );
   const shippingMethod = computed(
-    () => _sharedOrder.value?.deliveries?.[0]?.shippingMethod
+    () => _sharedOrder.value?.deliveries?.[0]?.shippingMethod,
   );
   const paymentUrl = ref();
 
@@ -177,14 +177,15 @@ export function useOrderDetails(
     firstName: _sharedOrder.value?.orderCustomer?.firstName,
     lastName: _sharedOrder.value?.orderCustomer?.lastName,
   }));
-  const billingAddress = computed(() =>
-    _sharedOrder.value?.addresses?.find(
-      ({ id }: { id: string }) =>
-        id === (_sharedOrder.value as Order).billingAddressId
-    )
+  const billingAddress = computed(
+    () =>
+      _sharedOrder.value?.addresses?.find(
+        ({ id }: { id: string }) =>
+          id === (_sharedOrder.value as Order).billingAddressId,
+      ),
   );
   const shippingAddress = computed(
-    () => _sharedOrder.value?.deliveries?.[0]?.shippingOrderAddress
+    () => _sharedOrder.value?.deliveries?.[0]?.shippingOrderAddress,
   );
 
   const shippingCosts = computed(() => _sharedOrder.value?.shippingTotal);
@@ -196,7 +197,7 @@ export function useOrderDetails(
     const orderDetailsResponse = await getOrderDetails(
       orderId,
       deepMerge(orderAssociations, associations ? associations : {}),
-      apiInstance
+      apiInstance,
     );
     _sharedOrder.value = orderDetailsResponse ?? null;
   }
@@ -204,7 +205,7 @@ export function useOrderDetails(
   async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
-    paymentDetails?: unknown
+    paymentDetails?: unknown,
   ) {
     const resp = await apiHandlePayment(
       {
@@ -213,7 +214,7 @@ export function useOrderDetails(
         errorUrl,
         paymentDetails,
       },
-      apiInstance
+      apiInstance,
     );
 
     paymentUrl.value = resp?.redirectUrl;
@@ -235,7 +236,7 @@ export function useOrderDetails(
         orderId,
         downloadId,
       },
-      apiInstance
+      apiInstance,
     );
 
     return response;
@@ -247,7 +248,7 @@ export function useOrderDetails(
         documentId,
         deepLinkCode,
       },
-      apiInstance
+      apiInstance,
     );
 
     return response;

@@ -45,7 +45,7 @@ function _usePrice(params?: {
       params.localeCode ||
         currencyLocale.value ||
         (typeof navigator !== "undefined" && navigator?.language) ||
-        "en-US"
+        "en-US",
     );
   }
 
@@ -89,7 +89,7 @@ function _usePrice(params?: {
     },
     {
       immediate: true,
-    }
+    },
   );
 
   return {

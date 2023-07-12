@@ -201,7 +201,7 @@ export const getCustomerAccountConfirmEndpoint = () =>
  * @public
  */
 export const getCustomerUpdatePaymentMethodEndpoint = (
-  paymentMethodId: string
+  paymentMethodId: string,
 ) => `/store-api/account/change-payment-method/${paymentMethodId}`;
 
 // checkout
@@ -341,7 +341,7 @@ export const getSeoUrlEndpoint = () => "/store-api/seo-url";
  */
 export const getStoreNavigationEndpoint = (
   requestActiveId: string,
-  requestRootId: string
+  requestRootId: string,
 ) => `/store-api/navigation/${requestActiveId}/${requestRootId}`;
 
 /**
@@ -417,7 +417,7 @@ export const getMergeWishlistProductsEndpoint = () =>
  */
 export const getDocumentDownloadEndpoint = (
   documentId: string,
-  deepLinkCode: string
+  deepLinkCode: string,
 ) => `/store-api/document/download/${documentId}/${deepLinkCode}`;
 /**
  * @nolink
@@ -426,7 +426,7 @@ export const getDocumentDownloadEndpoint = (
  */
 export const getOrderDownloadsEndpoint = (
   orderId: string,
-  downloadId: string
+  downloadId: string,
 ) => `/store-api/order/download/${orderId}/${downloadId}`;
 /**
  * @public

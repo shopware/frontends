@@ -21,7 +21,7 @@ import { Cart, ContextTokenResponse, LineItem } from "@shopware-pwa/types";
  * @category Cart
  */
 export async function clearCart(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const resp = await contextInstance.invoke.post(getCheckoutCartEndpoint());
   const contextToken = resp.data["sw-context-token"];
@@ -36,7 +36,7 @@ export async function clearCart(
  * @category Cart
  */
 export async function getCart(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Cart> {
   const resp = await contextInstance.invoke.get(getCheckoutCartEndpoint());
 
@@ -60,7 +60,7 @@ export async function getCart(
 export async function addProductToCart(
   productId: string,
   quantity?: number,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Cart> {
   const qty = quantity || 1;
   const item: Partial<LineItem> = {
@@ -73,7 +73,7 @@ export async function addProductToCart(
     getCheckoutCartLineItemEndpoint(),
     {
       items: [item],
-    }
+    },
   );
 
   return resp.data;
@@ -96,7 +96,7 @@ export async function addProductToCart(
 export async function changeCartItemQuantity(
   itemId: string,
   newQuantity = 1,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Cart> {
   const params = {
     items: [
@@ -108,7 +108,7 @@ export async function changeCartItemQuantity(
   };
   const resp = await contextInstance.invoke.patch(
     getCheckoutCartLineItemEndpoint(),
-    params
+    params,
   );
 
   return resp.data;
@@ -128,10 +128,10 @@ export async function changeCartItemQuantity(
  */
 export async function removeCartItem(
   itemId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Cart> {
   const resp = await contextInstance.invoke.delete(
-    `${getCheckoutCartLineItemEndpoint()}?ids[]=${itemId}`
+    `${getCheckoutCartLineItemEndpoint()}?ids[]=${itemId}`,
   );
 
   return resp.data;
@@ -151,7 +151,7 @@ export async function removeCartItem(
  */
 export async function addPromotionCode(
   promotionCode: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<Cart> {
   const item: Partial<LineItem> = {
     type: "promotion",
@@ -161,7 +161,7 @@ export async function addPromotionCode(
     getCheckoutCartLineItemEndpoint(),
     {
       items: [item],
-    }
+    },
   );
 
   return resp.data;
@@ -180,13 +180,13 @@ export async function addPromotionCode(
  */
 export async function addCartItems(
   items: Partial<LineItem>[],
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   const resp = await contextInstance.invoke.post(
     getCheckoutCartLineItemEndpoint(),
     {
       items,
-    }
+    },
   );
 
   return resp.data;

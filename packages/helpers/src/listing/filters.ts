@@ -10,7 +10,7 @@ import { getTranslatedProperty } from "..";
 
 const getFilter = <T extends { name: string; id: string }>(
   code: string,
-  aggregation: T
+  aggregation: T,
 ): ListingFilter => {
   return {
     label: getTranslatedProperty(aggregation, "name") || code,
@@ -23,7 +23,7 @@ function isEntitiesAggregation(
   aggregation:
     | EntitiesAggregation<AggregationFilterEntity>
     | PriceAggregation
-    | MaxAggregation
+    | MaxAggregation,
 ): aggregation is EntitiesAggregation<AggregationFilterEntity> {
   return (
     (aggregation as EntitiesAggregation<AggregationFilterEntity>).entities !==
@@ -35,7 +35,7 @@ function isEntitiesAggregation(
  * @beta
  */
 export function getListingFilters(
-  aggregations: Aggregations | undefined | null
+  aggregations: Aggregations | undefined | null,
 ): ListingFilter[] {
   if (!aggregations) {
     return [];

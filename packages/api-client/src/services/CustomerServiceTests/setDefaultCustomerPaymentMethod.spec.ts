@@ -16,14 +16,14 @@ describe("CustomerService - setDefaultCustomerPaymentMethod", () => {
 
   it("rejects the promise if provided payment method ID does not exist", async () => {
     mockedPost.mockRejectedValueOnce(
-      new Error("400 - payment method does not exist")
+      new Error("400 - payment method does not exist"),
     );
     expect(setDefaultCustomerPaymentMethod("1234")).rejects.toThrow(
-      "400 - payment method does not exist"
+      "400 - payment method does not exist",
     );
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
-      "/store-api/account/change-payment-method/1234"
+      "/store-api/account/change-payment-method/1234",
     );
   });
 
@@ -33,7 +33,7 @@ describe("CustomerService - setDefaultCustomerPaymentMethod", () => {
     expect(result).toStrictEqual({});
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
-      "/store-api/account/change-payment-method/12345"
+      "/store-api/account/change-payment-method/12345",
     );
   });
 });

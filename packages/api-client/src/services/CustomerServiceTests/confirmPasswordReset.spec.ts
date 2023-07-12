@@ -26,7 +26,7 @@ describe("CustomerService - confirmPasswordReset", () => {
         hash: exampleHash,
         newPassword: examplePassword,
         newPasswordConfirm: examplePassword,
-      })
+      }),
     ).rejects.toThrow("400 - invalid email");
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(getConfirmPasswordResetEndpoint(), {

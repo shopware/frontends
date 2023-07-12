@@ -9,7 +9,7 @@ const props = withDefaults(
   }>(),
   {
     maxQty: 100,
-  }
+  },
 );
 
 const { cartItem } = toRefs(props);

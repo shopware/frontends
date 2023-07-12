@@ -20,7 +20,7 @@ export function invokePost<T>(
     address: string;
     payload?: unknown;
   },
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<AxiosResponse<T>> {
   return contextInstance.invoke.post(address, payload);
 }
@@ -37,7 +37,7 @@ export function invokePost<T>(
  */
 export function invokeGet<T>(
   { address }: { address: string },
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<AxiosResponse<T>> {
   return contextInstance.invoke.get(address);
 }

@@ -45,26 +45,26 @@ export type UseProductPriceReturn = {
  */
 export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
   const _cheapest: ComputedRef<CalculatedPrice | undefined> = computed(
-    () => product.value?.calculatedCheapestPrice
+    () => product.value?.calculatedCheapestPrice,
   );
   const _real: ComputedRef<CalculatedPrice | undefined> = computed(() =>
     product.value?.calculatedPrices?.length > 0
       ? product.value?.calculatedPrices[0]
-      : product.value?.calculatedPrice
+      : product.value?.calculatedPrice,
   );
   const referencePrice: ComputedRef<ReferencePrice | undefined> = computed(
-    () => _real?.value?.referencePrice
+    () => _real?.value?.referencePrice,
   );
 
   const _displayParent: ComputedRef<boolean> = computed(
     () =>
       (product.value as any)?.variantListingConfig?.displayParent &&
-      product.value?.parentId === null
+      product.value?.parentId === null,
   );
   const displayFrom: ComputedRef<boolean> = computed(
     () =>
       product.value?.calculatedPrices?.length > 1 ||
-      !!(_displayParent.value && displayFromVariants.value)
+      !!(_displayParent.value && displayFromVariants.value),
   );
   const displayFromVariants: ComputedRef<number | false | undefined> = computed(
     () =>
@@ -72,7 +72,7 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
       product.value?.cheapestPrice?.hasRange &&
       !!product.value?.cheapestPrice?.parentId &&
       _real?.value?.unitPrice !== _cheapest?.value?.unitPrice &&
-      _cheapest?.value?.unitPrice
+      _cheapest?.value?.unitPrice,
   );
 
   const _price: ComputedRef<CalculatedPrice | undefined> = computed(() => {
@@ -80,7 +80,7 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
       const lowest = product.value?.calculatedPrices.reduce(
         (previous, current) => {
           return current.unitPrice < previous.unitPrice ? current : previous;
-        }
+        },
       );
       return lowest || _cheapest.value;
     }
@@ -88,17 +88,17 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
   });
 
   const unitPrice: ComputedRef<number | undefined> = computed(
-    () => _price.value?.unitPrice
+    () => _price.value?.unitPrice,
   );
   const totalPrice: ComputedRef<number | undefined> = computed(
-    () => _price.value?.totalPrice
+    () => _price.value?.totalPrice,
   );
   const price: ComputedRef<CalculatedPrice | undefined> = computed(
-    () => _price.value
+    () => _price.value,
   );
 
   const isListPrice: ComputedRef<boolean> = computed(
-    () => !!_price.value?.listPrice?.percentage
+    () => !!_price.value?.listPrice?.percentage,
   );
 
   const tierPrices = computed(() => getProductTierPrices(product.value));

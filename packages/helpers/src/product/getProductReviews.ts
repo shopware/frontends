@@ -24,6 +24,6 @@ export function getProductReviews({
       date: createdAt,
       message: content,
       rating: points,
-    })
+    }),
   );
 }

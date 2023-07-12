@@ -14,7 +14,7 @@ const removeItemHandler = (appliedPromotionCode: LineItem) => {
 };
 
 const showPromotionCodes = computed(
-  () => appliedPromotionCodes.value.length > 0
+  () => appliedPromotionCodes.value.length > 0,
 );
 
 const promoCode = ref("");

@@ -8,19 +8,19 @@ const props = withDefaults(
   }>(),
   {
     showContent: true,
-  }
+  },
 );
 
 const purchaseUnit = computed(() => props.product?.purchaseUnit);
 const unitName = computed(() => props.product?.unit?.translated?.name);
 const referencePrice = computed(
-  () => props.product?.calculatedPrice?.referencePrice?.price
+  () => props.product?.calculatedPrice?.referencePrice?.price,
 );
 const referenceUnit = computed(
-  () => props.product?.calculatedPrice?.referencePrice?.referenceUnit
+  () => props.product?.calculatedPrice?.referencePrice?.referenceUnit,
 );
 const referenceUnitName = computed(
-  () => props.product?.calculatedPrice?.referencePrice?.unitName
+  () => props.product?.calculatedPrice?.referencePrice?.unitName,
 );
 </script>
 
