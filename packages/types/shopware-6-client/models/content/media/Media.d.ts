@@ -26,12 +26,12 @@ export type Media = {
   fileSize: number;
   title: null | string;
   metaData: {
-    hash: string;
+    hash?: string;
     type: number;
     width: number;
     height: number;
   };
-  uploadedAt: string;
+  uploadedAt: Date | string | null;
   alt: null | string;
   url: string;
   fileName: string;
@@ -39,17 +39,17 @@ export type Media = {
   thumbnails: MediaThumbnail[];
   hasFile: boolean;
   private: boolean;
-  _uniqueIdentifier: string;
-  versionId: null | string;
+  _uniqueIdentifier?: string;
+  versionId?: null | string;
   translated: {
     alt: null | string;
     title: null | string;
-    customFields: CustomFields;
+    customFields: CustomFields | null;
   };
   createdAt: string;
   updatedAt: Date | string | null;
-  extensions: unknown;
+  extensions?: unknown;
   id: string;
-  customFields: CustomFields;
+  customFields: CustomFields | null;
   apiAlias: "media";
 };

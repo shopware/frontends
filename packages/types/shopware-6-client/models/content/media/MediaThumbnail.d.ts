@@ -5,13 +5,13 @@ export type MediaThumbnail = {
   height: number;
   url: string;
   mediaId: string;
-  _uniqueIdentifier: string;
-  versionId: null | string;
+  _uniqueIdentifier?: string;
+  versionId?: null | string;
   translated: unknown;
   createdAt: string;
   updatedAt: Date | string | null;
-  extensions: unknown;
+  extensions?: unknown;
   id: string;
-  customFields: CustomFields;
+  customFields: CustomFields | null;
   apiAlias: "media_thumbnail";
 };

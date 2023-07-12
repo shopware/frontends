@@ -5,6 +5,7 @@ import ContextError from "./helpers/ContextError";
 
 export type UseProductReturn = {
   /**
+   * Returns product object
    * {@link Product} object
    */
   product: ComputedRef<Product>;

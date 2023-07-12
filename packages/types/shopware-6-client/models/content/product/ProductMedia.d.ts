@@ -11,12 +11,12 @@ export type ProductMedia = {
   position: number;
   media: Media;
   customFields: null | CustomFields;
-  _uniqueIdentifier: string;
+  _uniqueIdentifier?: string;
   versionId: string;
   translated: [];
   createdAt: string;
   updatedAt: Date | string | null;
-  extensions: unknown;
+  extensions?: unknown;
   id: string;
   apiAlias: "product_media";
 };
