@@ -33,7 +33,7 @@ const apiInstance = createAPIClient<extendedOperations, extendedPaths>({
 async function testing() {
   const myResponse = await apiInstance.invoke(
     "readCart get /checkout/cart?name",
-    {}
+    {},
   );
 }
 

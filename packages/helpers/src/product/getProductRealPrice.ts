@@ -5,7 +5,7 @@ import { CalculatedPrice, Product } from "@shopware-pwa/types";
  *
  */
 export function getProductRealPrice(
-  product: Product
+  product: Product,
 ): CalculatedPrice | undefined {
   if (!product) {
     return;

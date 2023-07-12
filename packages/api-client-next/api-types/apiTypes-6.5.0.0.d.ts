@@ -1875,7 +1875,7 @@ export type components = {
            */
           href: string;
           meta?: components["schemas"]["meta"];
-        }
+        },
       ]
     >;
     /** The "type" and "id" to non-empty members. */

@@ -18,7 +18,7 @@ export type UseCategorySearchReturn = {
     options?: {
       withCmsAssociations?: boolean;
       query?: Partial<ShopwareSearchParams>;
-    }
+    },
   ): Promise<Category>;
 };
 
@@ -35,7 +35,7 @@ export function useCategorySearch(): UseCategorySearchReturn {
     options?: {
       withCmsAssociations?: boolean;
       query?: Partial<ShopwareSearchParams>;
-    }
+    },
   ) {
     const associations = options?.withCmsAssociations ? cmsAssociations : {};
     const result = await invokePost<Category>(
@@ -43,7 +43,7 @@ export function useCategorySearch(): UseCategorySearchReturn {
         address: getCategoryDetailsEndpoint(categoryId),
         payload: { associations, ...options?.query },
       },
-      apiInstance
+      apiInstance,
     );
     return result.data;
   }

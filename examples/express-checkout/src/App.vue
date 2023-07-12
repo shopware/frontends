@@ -40,12 +40,12 @@ const { addToCart } = useAddToCart(productFound);
 const { refreshCart } = useCart();
 
 const productName = computed(() =>
-  getTranslatedProperty(productFound.value, "name")
+  getTranslatedProperty(productFound.value, "name"),
 );
 
 const paypalMethod = computed(() => {
   return paymentMethods.value?.find(
-    (method) => method.shortName === "pay_pal_payment_handler"
+    (method) => method.shortName === "pay_pal_payment_handler",
   );
 });
 
@@ -70,7 +70,7 @@ const renderPaypalButtons = async () => {
 
       createOrder: async (
         data: CreateOrderData,
-        actions: CreateOrderActions
+        actions: CreateOrderActions,
       ) => {
         if (!paypalMethod.value) {
           return "";
@@ -82,7 +82,7 @@ const renderPaypalButtons = async () => {
         await addToCart();
 
         const response = await apiInstance.invoke.post<{ token: string }>(
-          "/store-api/paypal/express/create-order?isPayPalExpressCheckout=1"
+          "/store-api/paypal/express/create-order?isPayPalExpressCheckout=1",
         );
         return response?.data?.token;
       },
@@ -94,7 +94,7 @@ const renderPaypalButtons = async () => {
           "/store-api/paypal/express/prepare-checkout?isPayPalExpressCheckout=1",
           {
             token: data.orderID,
-          }
+          },
         );
         orderCreated.value = await createOrder();
         refreshCart();
@@ -103,7 +103,7 @@ const renderPaypalButtons = async () => {
           {
             orderId: orderCreated.value.id,
             successUrl: `${window.location.origin}/ExpressCheckout?order=${orderCreated.value.id}&success=true`,
-          }
+          },
         );
         redirectPaymentUrl.value = handlePaymentResponse?.data?.redirectUrl;
         //
@@ -121,7 +121,7 @@ watch(
     if (!isLoading && !orderId) {
       renderPaypalButtons();
     }
-  }
+  },
 );
 
 onMounted(async () => {
@@ -141,7 +141,7 @@ onMounted(async () => {
         addresses: {},
       },
     },
-    apiInstance
+    apiInstance,
   );
   if (orderResponse?.elements?.length) {
     orderCreated.value = orderResponse.elements[0];

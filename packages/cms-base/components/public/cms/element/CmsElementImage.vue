@@ -44,6 +44,7 @@ const srcPath = computed(() => {
   >
     <img
       ref="imageElement"
+      loading="lazy"
       :class="{
         'h-full w-full': true,
         'absolute inset-0': ['cover', 'stretch'].includes(displayMode),

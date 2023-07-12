@@ -14,7 +14,7 @@ const Component = {
       useProductWishlist(
         ref({
           id: "test1",
-        }) as any
+        }) as any,
       );
 
     return {

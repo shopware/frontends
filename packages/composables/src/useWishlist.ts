@@ -37,7 +37,7 @@ export type UseWishlistReturn = {
 export function useWishlist(): UseWishlistReturn {
   const { isLoggedIn, isGuestSession } = useUser();
   const canSyncWishlist = computed(
-    () => isLoggedIn.value && !isGuestSession.value
+    () => isLoggedIn.value && !isGuestSession.value,
   );
 
   const {
@@ -79,7 +79,7 @@ export function useWishlist(): UseWishlistReturn {
   };
 
   const items = computed(() =>
-    canSyncWishlist.value ? itemsSync.value : itemsLocal.value
+    canSyncWishlist.value ? itemsSync.value : itemsLocal.value,
   );
   const count = computed(() => items.value.length);
 

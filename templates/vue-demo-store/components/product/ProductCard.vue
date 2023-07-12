@@ -26,7 +26,7 @@ const props = withDefaults(
   {
     layoutType: "standard",
     displayMode: "standard",
-  }
+  },
 );
 const { product } = toRefs(props);
 const { addToCart, isInCart, count } = useAddToCart(product);
@@ -41,7 +41,7 @@ const toggleWishlistProduct = async () => {
       return pushSuccess(
         t(`product.messages.addedToWishlist`, {
           p: props.product?.translated?.name,
-        })
+        }),
       );
     } catch (error) {
       const e = error as ClientApiError;
@@ -52,7 +52,7 @@ const toggleWishlistProduct = async () => {
         `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
         {
           timeout: 5000,
-        }
+        },
       );
     }
   }
@@ -63,7 +63,7 @@ const addToCartProxy = async () => {
   await addToCart();
   codeErrorsNotification();
   pushSuccess(
-    t(`cart.messages.addedToCart`, { p: props.product?.translated?.name })
+    t(`cart.messages.addedToCart`, { p: props.product?.translated?.name }),
   );
 };
 
@@ -79,7 +79,7 @@ function roundUp(num: number) {
 
 const srcPath = computed(() => {
   return `${getProductThumbnailUrl(product.value)}?&height=${roundUp(
-    height.value
+    height.value,
   )}&fit=crop`;
 });
 </script>
@@ -101,6 +101,7 @@ const srcPath = computed(() => {
       >
         <img
           ref="imageElement"
+          loading="lazy"
           :src="srcPath"
           :alt="getProductName({ product }) || ''"
           class="transform transition duration-400 hover:scale-120"

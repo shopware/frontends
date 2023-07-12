@@ -17,7 +17,12 @@ const items = computed(() => props.content.data.sliderItems);
       <CmsElementImage
         v-for="image of items"
         :key="image.media.url"
-        :content="({ data: image, config: props.content.config } as unknown as CmsElementImage)"
+        :content="
+          {
+            data: image,
+            config: props.content.config,
+          } as unknown as CmsElementImage
+        "
       />
     </SwSlider>
   </div>

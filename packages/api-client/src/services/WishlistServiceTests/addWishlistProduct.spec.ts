@@ -21,7 +21,7 @@ describe("WishlistService - addWishlistProduct", () => {
     const result = await addWishlistProduct("some-product-uuid");
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
-      getAddWishlistProductEndpoint("some-product-uuid")
+      getAddWishlistProductEndpoint("some-product-uuid"),
     );
     expect(result).toHaveProperty("apiAlias");
   });

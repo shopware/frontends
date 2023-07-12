@@ -14,14 +14,14 @@ const feedbackChosen = ref(false);
 const sendFeedbackHandler = async (
   isCorrectAnswer,
   isCorrectDocument,
-  document
+  document,
 ) => {
   try {
     await sendFeedback(
       props.query,
       isCorrectAnswer,
       isCorrectDocument,
-      document
+      document,
     );
     feedbackChosen.value = true;
   } catch (error) {

@@ -12,8 +12,8 @@ const formData = ref({
   storefrontUrl: apiInstance.config.endpoint,
 });
 
-const recoverPasswordErrors = computed(() =>
-  errors.resetPassword?.map(({ detail }) => detail).toString()
+const recoverPasswordErrors = computed(
+  () => errors.resetPassword?.map(({ detail }) => detail).toString(),
 );
 
 const invokeRecover = async (): Promise<void> => {

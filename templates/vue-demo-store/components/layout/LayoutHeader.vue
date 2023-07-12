@@ -31,7 +31,7 @@ const sidebarController = useModal();
         <LayoutTopNavigation />
         <div class="flex flex-1"></div>
 
-        <div class="hidden md:flex md:min-w-1/4">
+        <div class="md:flex md:min-w-1/4">
           <LayoutStoreSearch />
         </div>
 

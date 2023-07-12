@@ -21,7 +21,7 @@ describe("PageService - getLandingPage", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       "/store-api/landing-page/b218f861361042f3a58a2a9d1b3575b5",
-      undefined
+      undefined,
     );
     expect(result).toHaveProperty("id");
   });

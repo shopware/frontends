@@ -9,7 +9,7 @@ import { Media } from "@shopware-pwa/types";
  * @category Media
  */
 export function getSmallestThumbnailUrl(
-  media: Media | undefined | null
+  media: Media | undefined | null,
 ): string | undefined {
   if (!media || !media?.thumbnails?.length) {
     return;

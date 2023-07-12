@@ -64,8 +64,8 @@ export default {
 
         <NuxtLink
           class="flex items-center justify-center rounded-md px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
-          :to="localePath(`/checkout`)"
           data-testid="cart-checkout-link"
+          :to="localePath(`/checkout`)"
         >
           {{ $t("cart.checkout") }}
         </NuxtLink>

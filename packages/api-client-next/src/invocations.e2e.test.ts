@@ -16,9 +16,12 @@ describe("Test real API invocations", () => {
     await expect(() =>
       apiInstance.invoke("readCart get /checkout/cart?name", {
         name: "qwe",
-      })
+      }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      '" (401 Unauthorized (https://demo-frontends.shopware.store/store-api/checkout/cart?name=qwe))"'
+      `
+      "Failed request
+       - [Unauthorized] Header \\"sw-access-key\\" is required."
+    `,
     );
   });
 

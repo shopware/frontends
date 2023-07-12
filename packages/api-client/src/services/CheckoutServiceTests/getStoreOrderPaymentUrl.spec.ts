@@ -35,7 +35,7 @@ describe("CheckoutService - handlePayment", () => {
   it("should throw an error when data is incorrect", async () => {
     mockedGet.mockRejectedValueOnce(new Error("404"));
     expect(handlePayment(null as any)).rejects.toThrowError(
-      "handlePayment method requires orderId"
+      "handlePayment method requires orderId",
     );
     expect(mockedGet).not.toBeCalled();
   });
@@ -43,7 +43,7 @@ describe("CheckoutService - handlePayment", () => {
   it("should throw an error when data has missing orderId", async () => {
     mockedGet.mockRejectedValueOnce(new Error("404"));
     expect(handlePayment({} as any)).rejects.toThrowError(
-      "handlePayment method requires orderId"
+      "handlePayment method requires orderId",
     );
     expect(mockedGet).not.toBeCalled();
   });
@@ -98,7 +98,7 @@ describe("CheckoutService - handlePayment", () => {
       });
       expect(sessionStorage.setItem).toBeCalledWith(
         "sw-context-token",
-        "mockedContextToken"
+        "mockedContextToken",
       );
     });
     it("should not fail when sessionStorage does not exist", async () => {

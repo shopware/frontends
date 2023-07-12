@@ -22,7 +22,7 @@ import { invokePost } from "./pluginService";
 export async function getCmsPage(
   path: string,
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<CmsPageResponse> {
   const resp = await contextInstance.invoke.post(getPageResolverEndpoint(), {
     path: path,
@@ -46,7 +46,7 @@ export async function getCmsPage(
 export async function getLandingPage(
   landingPageId: string,
   params?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<LandingPage> {
   const endpoint = getLandingPageDetailsEndpoint(landingPageId);
   const response = await contextInstance.invoke.post(endpoint, params);
@@ -67,7 +67,7 @@ export async function getLandingPage(
 export async function getSeoUrls(
   entityId: string,
   languageId?: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   if (languageId) {
     contextInstance.defaults.headers.common["sw-language-id"] = languageId;
@@ -102,14 +102,14 @@ export async function getSeoUrls(
  */
 export async function getSeoUrl(
   params: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   const seoUrlResponse = await invokePost<EntityResult<"seo_url", SeoUrl>>(
     {
       address: getSeoUrlEndpoint(),
       payload: params,
     },
-    contextInstance
+    contextInstance,
   );
 
   return seoUrlResponse.data;

@@ -5,8 +5,8 @@ import { ClientSettings } from "../settings";
 export function createResponseInterceptor(
   update: (
     settings: Partial<ClientSettings>,
-    responseConfig: AxiosResponse<AxiosRequestConfig>["config"]
-  ) => void
+    responseConfig: AxiosResponse<AxiosRequestConfig>["config"],
+  ) => void,
 ) {
   return function (response: AxiosResponse) {
     const contextToken = extractContextToken(response);

@@ -34,7 +34,7 @@ yargs(hideBin(process.argv))
         })
         .help();
     },
-    async (args) => generate()
+    async (args) => generate(),
   )
   .showHelpOnFail(false)
   .alias("h", "help")

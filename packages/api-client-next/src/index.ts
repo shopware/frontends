@@ -3,6 +3,7 @@ import {
   operations as defaultOperations,
   paths as defaultPaths,
 } from "../api-types";
+import { errorInterceptor } from "./errorInterceptor";
 
 type Operations = Record<string, unknown>;
 
@@ -26,7 +27,7 @@ type GetInferKey<T, NAME extends string> = T extends { [key in NAME]: infer R }
 
 export type RequestParameters<
   OPERATION_NAME extends keyof OPERATIONS,
-  OPERATIONS = defaultOperations
+  OPERATIONS = defaultOperations,
 > = (OPERATIONS[OPERATION_NAME] extends {
   parameters?: { query?: infer R };
 }
@@ -50,7 +51,7 @@ export type RequestParameters<
 
 export type RequestReturnType<
   T extends keyof OPERATIONS,
-  OPERATIONS = defaultOperations
+  OPERATIONS = defaultOperations,
 > = GetInferKey<
   GetInferKey<
     GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
@@ -61,7 +62,7 @@ export type RequestReturnType<
 
 export function createAPIClient<
   OPERATIONS extends Operations = defaultOperations,
-  PATHS = defaultPaths
+  PATHS = defaultPaths,
 >(params: {
   baseURL: string;
   apiType: "store-api" | "admin-api";
@@ -89,7 +90,9 @@ export function createAPIClient<
         params.onContextChanged?.(newContextToken);
       }
     },
-    // async onResponseError({ request, response, options }) {},
+    async onResponseError({ request, response, options }) {
+      errorInterceptor(response);
+    },
   });
 
   /**
@@ -100,14 +103,14 @@ export function createAPIClient<
     OON = INVOKE_PATH extends `${infer R} ${string}` ? R : never,
     OPERATION_NAME extends keyof OPERATIONS = OON extends keyof OPERATIONS
       ? OON
-      : never
+      : never,
   >(
     pathParam: INVOKE_PATH extends string ? INVOKE_PATH : never,
-    params: RequestParameters<OPERATION_NAME, OPERATIONS>
+    params: RequestParameters<OPERATION_NAME, OPERATIONS>,
   ): Promise<RequestReturnType<OPERATION_NAME, OPERATIONS>> {
     const [requestPath, options] = transformPathToQuery(
       pathParam,
-      params as Record<string, string>
+      params as Record<string, string>,
     );
     // console.log("invoke with", requestPath, options);
     return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
@@ -118,7 +121,7 @@ export function createAPIClient<
           ...defaultHeaders,
           ...options.headers,
         } as HeadersInit,
-      }
+      },
     );
   }
 
@@ -129,7 +132,7 @@ export function createAPIClient<
 
 export function transformPathToQuery<T extends Record<string, unknown>>(
   path: string,
-  params: T
+  params: T,
 ): [
   string,
   {
@@ -137,7 +140,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
     query: Record<string, unknown>;
     headers: HeadersInit;
     body?: Partial<T>;
-  }
+  },
 ] {
   // first param is operationName, not used here though
   const [, method, pathDefinition, headerParams] = path.split(" ");
@@ -188,3 +191,5 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
 
   return [requestPathWithParams, returnOptions];
 }
+
+export { ApiClientError } from "./errorInterceptor";

@@ -16,7 +16,7 @@ const props = withDefaults(
   }>(),
   {
     level: 0,
-  }
+  },
 );
 
 function getHighlightCategory(navigationElement: Category) {

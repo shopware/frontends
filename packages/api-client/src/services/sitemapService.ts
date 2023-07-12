@@ -9,7 +9,7 @@ import { SitemapResult } from "@shopware-pwa/types";
  * @public
  */
 export async function getSitemap(
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<SitemapResult[]> {
   const resp = await contextInstance.invoke.get(`${getSitemapEndpoint()}`);
   return resp.data;

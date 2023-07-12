@@ -19,5 +19,5 @@ export default Object.assign(
   cart,
   listing,
   product,
-  newsletter
+  newsletter,
 );

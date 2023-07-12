@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 import { faker } from "@faker-js/faker";
@@ -22,12 +22,12 @@ test.describe.only("Registration new user", () => {
       "e2e " + faker.person.firstName(),
       "e2e " + faker.person.lastName(),
       faker.internet.exampleEmail(),
-      faker.internet.password()
+      faker.internet.password(),
     );
     await registrationPage.fillAddressData(
       faker.location.street(),
       faker.location.zipCode(),
-      faker.location.city()
+      faker.location.city(),
     );
     await registrationPage.submitRegistraionForm();
     await page.waitForLoadState("load");

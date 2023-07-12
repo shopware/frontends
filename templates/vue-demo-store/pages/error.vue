@@ -7,7 +7,7 @@ const props = withDefaults(
   {
     errorCode: 404,
     errorMessage: "",
-  }
+  },
 );
 const { t } = useI18n();
 const localePath = useLocalePath();

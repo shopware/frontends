@@ -15,11 +15,11 @@ type NewsletterConfirmationParams = {
  */
 export async function newsletterConfirmation(
   params: NewsletterConfirmationParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   const response = await contextInstance.invoke.post(
     getStoreNewsletterConfirmEndpoint(),
-    params
+    params,
   );
   return response.data;
 }

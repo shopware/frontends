@@ -16,7 +16,7 @@ export function useCmsHead(
   entity: Ref<CmsPageEntity> | ComputedRef<CmsPageEntity>,
   options?: {
     mainShopTitle?: string;
-  }
+  },
 ): UseCmsHeadReturn {
   const unrefEntity = unref(entity) as CmsPageEntity;
   // get title and meta tags available in the Shopware instance
@@ -38,7 +38,7 @@ export function useCmsHead(
       .map((meta: MetaEntry) => ({
         name: `og:${meta.name}`,
         content: meta.content,
-      }))
+      })),
   );
 
   // access to image varies depending on the type of the entity

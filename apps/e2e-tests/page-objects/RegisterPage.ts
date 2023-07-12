@@ -13,6 +13,7 @@ export class RegisterForm {
   readonly zipcode: Locator;
   readonly city: Locator;
   readonly country: Locator;
+  readonly countryState: Locator;
   readonly submitButton: Locator;
 
   // Init selectors using constructor
@@ -27,6 +28,7 @@ export class RegisterForm {
     this.zipcode = page.getByTestId("registration-zipcode-input");
     this.city = page.getByTestId("registration-city-input");
     this.country = page.getByTestId("country-select");
+    this.countryState = page.getByTestId("checkout-pi-state-input");
     this.submitButton = page.getByTestId("registration-submit-button");
   }
 
@@ -35,9 +37,8 @@ export class RegisterForm {
     firstName: string,
     lastName: string,
     email: string,
-    password: string
+    password: string,
   ) {
-    await this.page.waitForLoadState();
     await this.salutation.selectOption({ label: "Mr." });
     await this.firstName.type(firstName);
     await this.lastName.type(lastName);
@@ -50,16 +51,12 @@ export class RegisterForm {
     await this.zipcode.type(zipcode);
     await this.city.type(city);
     await this.country.selectOption({ label: "Germany" });
+    await this.countryState.selectOption({ label: "Bavaria" });
   }
 
   async submitRegistraionForm() {
-    await Promise.all([
-      this.page.waitForLoadState(),
-      await this.submitButton.click({ delay: 500 }),
-    ]);
-    await this.page.waitForSelector(
-      "[data-testid='product-box-wishlist-icon-not-in']"
-    );
+    await this.submitButton.click();
+    await this.page.waitForURL("/", { waitUntil: "networkidle" });
   }
 
   async createUser() {
@@ -72,9 +69,8 @@ export class RegisterForm {
     await this.zipcode.type(faker.location.zipCode());
     await this.city.type(faker.location.city());
     await this.country.selectOption({ label: "Germany" });
+    await this.countryState.selectOption({ label: "Bavaria" });
     await this.submitButton.click();
-    await this.page.waitForSelector(
-      "[data-testid='product-box-wishlist-icon-not-in']"
-    );
+    await this.page.waitForURL("/");
   }
 }

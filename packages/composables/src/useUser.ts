@@ -143,13 +143,13 @@ export function useUser(): UseUserReturn {
   const { refreshCart } = useCart();
 
   const userDefaultPaymentMethod = computed(
-    () => user.value?.defaultPaymentMethod?.translated || null
+    () => user.value?.defaultPaymentMethod?.translated || null,
   );
   const userDefaultBillingAddress = computed(
-    () => user.value?.defaultBillingAddress || null
+    () => user.value?.defaultBillingAddress || null,
   );
   const userDefaultShippingAddress = computed(
-    () => user.value?.defaultShippingAddress || null
+    () => user.value?.defaultShippingAddress || null,
   );
   const country: Ref<Country | null> = ref(null);
   const salutation: Ref<Salutation | null> = ref(null);
@@ -165,11 +165,11 @@ export function useUser(): UseUserReturn {
   }
 
   async function register(
-    params: CustomerRegistrationParams
+    params: CustomerRegistrationParams,
   ): Promise<Customer> {
     const customer = await apiRegister(
       { ...params, storefrontUrl: getStorefrontUrl() } as any,
-      apiInstance
+      apiInstance,
     );
     _user.value = customer;
     if (_user.value?.active) await refreshSessionContext();
@@ -188,9 +188,9 @@ export function useUser(): UseUserReturn {
         Object.assign(
           {},
           // getDefaults(),
-          params
+          params,
         ),
-        apiInstance
+        apiInstance,
       );
       _user.value = user as Customer;
     } catch (e) {
@@ -208,34 +208,34 @@ export function useUser(): UseUserReturn {
   }
 
   async function updatePersonalInfo(
-    personals: CustomerUpdateProfileParam
+    personals: CustomerUpdateProfileParam,
   ): Promise<void> {
     await updateProfile(personals, apiInstance);
   }
 
   async function updateEmail(
-    updateEmailData: CustomerUpdateEmailParam
+    updateEmailData: CustomerUpdateEmailParam,
   ): Promise<void> {
     await apiUpdateEmail(updateEmailData, apiInstance);
   }
 
   async function setDefaultPaymentMethod(
-    paymentMethodId: string
+    paymentMethodId: string,
   ): Promise<void> {
     await setDefaultCustomerPaymentMethod(paymentMethodId, apiInstance);
   }
   const defaultBillingAddressId = computed(
-    () => user.value?.defaultBillingAddressId || null
+    () => user.value?.defaultBillingAddressId || null,
   );
   const defaultShippingAddressId = computed(
-    () => user.value?.defaultShippingAddressId || null
+    () => user.value?.defaultShippingAddressId || null,
   );
   const isLoggedIn = computed(
-    () => !!user.value?.id && !!user.value.active && !user.value.guest
+    () => !!user.value?.id && !!user.value.active && !user.value.guest,
   );
 
   const isCustomerSession = computed(
-    () => !!user.value?.id && !user.value.guest
+    () => !!user.value?.id && !user.value.guest,
   );
   const isGuestSession = computed(() => !!user.value?.guest);
 

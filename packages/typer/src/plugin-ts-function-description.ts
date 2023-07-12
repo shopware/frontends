@@ -5,8 +5,9 @@ import { normalizeString, replacer } from ".";
 import { DeclarationReflection } from "typedoc";
 
 function isFunctionDeprecated(fn: DeclarationReflection): boolean {
-  return !!fn.signatures?.some((signature) =>
-    signature.comment?.blockTags?.some((tag) => tag.tag === "@deprecated")
+  return !!fn.signatures?.some(
+    (signature) =>
+      signature.comment?.blockTags?.some((tag) => tag.tag === "@deprecated"),
   );
 }
 
@@ -86,7 +87,7 @@ export function TableOfFunctions(): Plugin {
           if (functionFound) {
             hasNoLinkLabel =
               !!functionFound?.signatures?.[0]?.comment?.blockTags.find(
-                ({ tag }) => tag === "@nolink"
+                ({ tag }) => tag === "@nolink",
               );
 
             const summary =
@@ -98,7 +99,7 @@ export function TableOfFunctions(): Plugin {
             const description = isFunctionDeprecated(functionFound)
               ? getDeprecationMessage(functionFound)
               : normalizeString(
-                  summary.replace(/(\r\n|\n|\r|Returns|Options\ \-)/gm, "")
+                  summary.replace(/(\r\n|\n|\r|Returns|Options\ \-)/gm, ""),
                 );
             const functionName = hasNoLinkLabel
               ? functionFound.name

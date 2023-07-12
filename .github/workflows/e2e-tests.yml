@@ -1,7 +1,7 @@
 name: e2e
 
 on:
-  deployment_status:
+  deployment_status: 
 
 jobs:
   run-e2e:

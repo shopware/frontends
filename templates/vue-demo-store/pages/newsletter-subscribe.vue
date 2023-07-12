@@ -11,7 +11,7 @@ try {
       em: route.query.em as string,
       hash: route.query.hash as string,
     },
-    apiInstance
+    apiInstance,
   );
 } catch (e) {
   error.value = true;
