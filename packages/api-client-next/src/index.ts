@@ -3,6 +3,7 @@ import {
   operations as defaultOperations,
   paths as defaultPaths,
 } from "../api-types";
+import { errorInterceptor } from "./errorInterceptor";
 
 type Operations = Record<string, unknown>;
 
@@ -89,7 +90,9 @@ export function createAPIClient<
         params.onContextChanged?.(newContextToken);
       }
     },
-    // async onResponseError({ request, response, options }) {},
+    async onResponseError({ request, response, options }) {
+      errorInterceptor(response);
+    },
   });
 
   /**
@@ -188,3 +191,5 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
 
   return [requestPathWithParams, returnOptions];
 }
+
+export { ApiClientError } from "./errorInterceptor";

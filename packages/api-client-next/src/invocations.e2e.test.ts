@@ -18,7 +18,10 @@ describe("Test real API invocations", () => {
         name: "qwe",
       }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      '" (401 Unauthorized (https://demo-frontends.shopware.store/store-api/checkout/cart?name=qwe))"',
+      `
+      "Failed request
+       - [Unauthorized] Header \\"sw-access-key\\" is required."
+    `,
     );
   });
 
