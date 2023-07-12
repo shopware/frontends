@@ -36,7 +36,7 @@ const headers = useRequestHeaders();
 const localeFromHeader = headers?.["accept-language"]
   ?.split(",")
   ?.map(
-    (languageConfig) => languageConfig.match(/^([a-z]{2}(?:-[A-Z]{2})?)/)?.[0]
+    (languageConfig) => languageConfig.match(/^([a-z]{2}(?:-[A-Z]{2})?)/)?.[0],
   )
   .find(Boolean);
 
