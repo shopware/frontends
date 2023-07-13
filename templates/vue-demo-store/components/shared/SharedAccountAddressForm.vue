@@ -5,7 +5,9 @@ import {
   ShopwareError,
 } from "@shopware-pwa/types";
 import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, requiredIf } from "@vuelidate/validators";
+import { customValidators } from "@/i18n/utils/i18n-validators";
+
+const { required, minLength, requiredIf } = customValidators();
 
 const { createCustomerAddress, updateCustomerAddress, errorMessageBuilder } =
   useAddress();
@@ -24,7 +26,7 @@ const props = withDefaults(
   {
     title: "Account address",
     address: undefined,
-  }
+  },
 );
 
 const { getSalutations } = useSalutations();

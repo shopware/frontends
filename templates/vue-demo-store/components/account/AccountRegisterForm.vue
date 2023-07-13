@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
 import { ClientApiError } from "@shopware-pwa/types";
+import { customValidators } from "@/i18n/utils/i18n-validators";
 
+const { required, minLength, email } = customValidators();
 const props = defineProps<{
   customerGroupId?: string;
 }>();

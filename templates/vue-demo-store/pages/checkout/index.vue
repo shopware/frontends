@@ -5,9 +5,11 @@ export default {
 </script>
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength, requiredIf } from "@vuelidate/validators";
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
+import { customValidators } from "@/i18n/utils/i18n-validators";
+
+const { required, minLength, requiredIf, email } = customValidators();
 
 definePageMeta({
   layout: "checkout",
