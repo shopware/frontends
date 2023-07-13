@@ -25,6 +25,30 @@ describe("Test real API invocations", () => {
     );
   });
 
+  it("should not allow to pass an empty string as token", async () => {
+    const apiInstance = createAPIClient<operations, operationPaths>({
+      baseURL,
+      apiType,
+      accessToken,
+      contextToken: "",
+    });
+    const result = await apiInstance.invoke("readContext get /context", {});
+    expect(result).toHaveProperty("token");
+    expect(result.token).not.toBe("");
+  });
+
+  it("should not allow to pass undefined as context token", async () => {
+    const apiInstance = createAPIClient<operations, operationPaths>({
+      baseURL,
+      apiType,
+      accessToken,
+      contextToken: undefined,
+    });
+    const result = await apiInstance.invoke("readContext get /context", {});
+    expect(result).toHaveProperty("token");
+    expect(result.token).not.toBe("undefined");
+  });
+
   it("should fetch seo-url for page", async () => {
     const apiInstance = createAPIClient<operations, operationPaths>({
       baseURL,
