@@ -23,7 +23,7 @@ const gridColumns = computed<number>(() =>
         :class="`grid grid-cols-2 md:grid-cols-${gridColumns}`"
       >
         <div class="hidden md:block">
-          <NuxtLink :to="localePath(`/`)">
+          <NuxtLink :to="formatLink(`/`)">
             <span class="sr-only">Shopware</span>
             <img class="h-15 w-auto sm:h-15" src="/logo.svg" alt="Logo" />
           </NuxtLink>

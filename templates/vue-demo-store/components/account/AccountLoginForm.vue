@@ -12,6 +12,7 @@ const { refreshSessionContext } = useSessionContext();
 const { mergeWishlistProducts } = useWishlist();
 const { pushSuccess } = useNotifications();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 const loginErrors = ref<string[]>([]);
 
 const formData = ref({
@@ -22,7 +23,7 @@ const formData = ref({
 
 const goToRegister = () => {
   emits("close");
-  router.push(localePath("/register"));
+  router.push(formatLink("/register"));
 };
 
 const invokeLogin = async (): Promise<void> => {
