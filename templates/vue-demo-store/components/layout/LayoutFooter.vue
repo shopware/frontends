@@ -6,6 +6,7 @@ import {
 
 const { navigationElements } = useNavigation({ type: "footer-navigation" });
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 const gridColumns = computed<number>(() =>
   navigationElements.value
@@ -47,7 +48,7 @@ const gridColumns = computed<number>(() =>
                       ? '_blank'
                       : ''
                   "
-                  :to="localePath(getCategoryRoute(navigationChild))"
+                  :to="formatLink(getCategoryRoute(navigationChild))"
                   class="text-base font-normal text-gray-500 hover:text-gray-900"
                 >
                   {{ getTranslatedProperty(navigationChild, "name") }}
