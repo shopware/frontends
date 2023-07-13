@@ -70,7 +70,7 @@ export function createAPIClient<
   contextToken?: string;
   onContextChanged?: (newContextToken: string) => void;
 }) {
-  let defaultHeaders: Record<string, string | undefined> = {
+  const defaultHeaders: Record<string, string> = {
     "sw-access-key": params.accessToken,
   };
 
