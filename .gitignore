@@ -23,6 +23,7 @@ dist
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+.idea
 
 # debug
 npm-debug.log*

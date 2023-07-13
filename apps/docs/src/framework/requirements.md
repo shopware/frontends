@@ -23,7 +23,7 @@ Shopware Frontends does not differ between provisioning of the Shopware API. Bot
 
 Every development instance / setup template is pre-configured with a public demo API. That way you don't have to set up a Shopware instance yourself.
 
-<PageRef title="Install Shopware 6" sub="Set up Shopware 6 for development" page="https://developer.shopware.com/docs/guides/installation/overview" target="_blank" />
+<PageRef title="Install Shopware 6" sub="Set up Shopware 6 for development" page="https://developer.shopware.com/docs/guides/installation" target="_blank" />
 
 ## IDE
 
