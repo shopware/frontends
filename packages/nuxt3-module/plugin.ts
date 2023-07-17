@@ -41,8 +41,13 @@ const ShopwarePlugin = {
       );
     }
 
+    /**
+     * Server config has bigger prio than client
+     */
     const instance = createInstance({
-      endpoint: runtimeConfig.public.shopware.shopwareEndpoint,
+      endpoint:
+        runtimeConfig?.shopware?.shopwareEndpoint ||
+        runtimeConfig.public.shopware.shopwareEndpoint,
       accessToken: runtimeConfig.public.shopware.shopwareAccessToken,
       timeout: runtimeConfig.public.shopware.shopwareAccessToken || 10000,
       auth: {

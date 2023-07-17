@@ -3,6 +3,9 @@ import { VueDisableInputsBeforeMount } from "vite-vue-plugin-disable-inputs";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   runtimeConfig: {
+    shopware: {
+      shopwareEndpoint: "",
+    },
     public: {
       shopware: {
         shopwareEndpoint: "https://demo-frontends.shopware.store",
