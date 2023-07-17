@@ -11,11 +11,19 @@ test.describe.only("Check for seo-url requests", () => {
   });
 
   test("Check for seo-url requests", async ({ page }) => {
+    let SeoUrlRequest = false;
+    page.on("request", (request) => {
+      if (request.url().includes("seo-url")) SeoUrlRequest = true;
+    });
+
     await homePage.visitMainPage();
     await page.waitForLoadState("networkidle");
-    await expect(page.waitForRequest("**/store-api/seo-url")).toThrowError();
+    await expect(SeoUrlRequest).toBe(false);
     await homePage.openCartPage();
     await page.waitForLoadState("networkidle");
-    await expect(page.waitForRequest("**/store-api/seo-url")).toThrowError();
+    await expect(SeoUrlRequest).toBe(false);
+    await page.goto("/Summer-Trends/");
+    await page.waitForLoadState("networkidle");
+    await expect(SeoUrlRequest).toBe(false);
   });
 });
