@@ -20,6 +20,6 @@ const rightContent = getSlotContent("right");
 
 <style scoped>
 .cms-block-product-heading .cms-element-image {
-  @apply max-w-30 max-h-30;
+  @apply max-w-[7.5rem] max-h-[7.5rem];
 }
 </style>
