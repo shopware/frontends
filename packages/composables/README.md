@@ -137,18 +137,18 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.11.0
+### Latest changes: 0.12.0
 
 ### Minor Changes
 
-- [#284](https://github.com/shopware/frontends/pull/284) [`bb48e13`](https://github.com/shopware/frontends/commit/bb48e131570a2db4b7431c842e54ad67d9384cd5) Thanks [@mkucmus](https://github.com/mkucmus)! - Use function constructor instead of init method to set config for price displaying
+- [#322](https://github.com/shopware/frontends/pull/322) [`b9a2004`](https://github.com/shopware/frontends/commit/b9a20044d3df04370c62ab392b5144a62fbb57a9) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `formatLink` method to the `useInternationalization` composable
 
 ### Patch Changes
 
-- [#283](https://github.com/shopware/frontends/pull/283) [`e6a52ec`](https://github.com/shopware/frontends/commit/e6a52ec4b7c28627c55cbd8ca15b8458cedf53bd) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Fixed initial listing suring search
+- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
 
-- [#295](https://github.com/shopware/frontends/pull/295) [`23a0a53`](https://github.com/shopware/frontends/commit/23a0a532410990c0075ea7fff622949ccdecfd49) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+- [#297](https://github.com/shopware/frontends/pull/297) [`8c6ff0a`](https://github.com/shopware/frontends/commit/8c6ff0ac87143a014f609aedd22aac99888da337) Thanks [@mkucmus](https://github.com/mkucmus)! - Remove implicit refresh action on address edit
 
-- Updated dependencies [[`14d97c5`](https://github.com/shopware/frontends/commit/14d97c5942adf5a49163625b2740d95bc5772689)]:
-  - @shopware-pwa/api-client@0.5.1
-  - @shopware-pwa/helpers-next@0.3.1
+- Updated dependencies [[`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d)]:
+  - @shopware-pwa/api-client@0.5.2
+  - @shopware-pwa/helpers-next@0.3.2
