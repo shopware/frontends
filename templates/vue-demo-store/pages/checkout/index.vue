@@ -21,6 +21,7 @@ const { getSalutations } = useSalutations();
 const { pushInfo } = useNotifications();
 const { t } = useI18n();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 const {
   paymentMethods,
   shippingMethods,
@@ -946,7 +947,7 @@ const addAddressModalController = useModal();
       </h1>
       <NuxtLink
         class="inline-flex justify-center py-2 px-4 my-8 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
-        :to="localePath(`/`)"
+        :to="formatLink(`/`)"
         data-testid="checkout-go-home-link"
       >
         {{ $t("checkout.goToHomepage") }}
