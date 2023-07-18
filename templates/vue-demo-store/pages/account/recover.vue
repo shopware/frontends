@@ -6,6 +6,7 @@ export default {
 <script setup lang="ts">
 const { t } = useI18n();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 useBreadcrumbs([
   {
     name: t("breadcrumbs.accountOverview"),
@@ -27,13 +28,13 @@ useBreadcrumbs([
             {{ $t("recoveryPassword.label") }}
           </p>
           <NuxtLink
-            :to="localePath(`/register`)"
+            :to="formatLink(`/register`)"
             class="text-sm font-medium px-4 text-gray-600 focus:outline-none underline"
           >
             {{ $t("recoveryPassword.register") }}
           </NuxtLink>
           <NuxtLink
-            :to="localePath(`/login`)"
+            :to="formatLink(`/login`)"
             class="flex justify-center align-center text-sm font-medium text-gray-600 py-2 px-4 focus:outline-none underline"
           >
             {{ $t("recoveryPassword.orLogin") }}

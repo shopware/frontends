@@ -5,9 +5,11 @@ export default {
 </script>
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength, requiredIf } from "@vuelidate/validators";
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
+import { customValidators } from "@/i18n/utils/i18n-validators";
+
+const { required, minLength, requiredIf, email } = customValidators();
 
 definePageMeta({
   layout: "checkout",
@@ -19,6 +21,7 @@ const { getSalutations } = useSalutations();
 const { pushInfo } = useNotifications();
 const { t } = useI18n();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 const {
   paymentMethods,
   shippingMethods,
@@ -257,7 +260,7 @@ const addAddressModalController = useModal();
       />
     </SharedModal>
     <SharedModal :controller="addAddressModalController">
-      <AccountAddressForm @success="addAddressModalController.close" />
+      <SharedAccountAddressForm @success="addAddressModalController.close" />
     </SharedModal>
     <div
       v-if="isCheckoutAvailable || isCartLoading"
@@ -944,7 +947,7 @@ const addAddressModalController = useModal();
       </h1>
       <NuxtLink
         class="inline-flex justify-center py-2 px-4 my-8 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
-        :to="localePath(`/`)"
+        :to="formatLink(`/`)"
         data-testid="checkout-go-home-link"
       >
         {{ $t("checkout.goToHomepage") }}

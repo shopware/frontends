@@ -61,6 +61,16 @@ export type UseInternationalizationReturn = {
    * Current prefix from the context
    */
   currentPrefix: Ref<string>;
+  /**
+   * Add prefix to the Url
+   * @param {string | RouteObject} link
+   */
+  formatLink(link: string | RouteObject): string | RouteObject;
+};
+
+export type RouteObject = {
+  path: string;
+  [key: string]: any;
 };
 
 /**
@@ -68,7 +78,9 @@ export type UseInternationalizationReturn = {
  * @public
  * @category Context & Language
  */
-export function useInternationalization(): UseInternationalizationReturn {
+export function useInternationalization(
+  pathResolver?: Function,
+): UseInternationalizationReturn {
   const { devStorefrontUrl } = useShopwareContext();
   const { apiInstance } = useShopwareContext();
 
@@ -114,6 +126,21 @@ export function useInternationalization(): UseInternationalizationReturn {
       : url;
   }
 
+  function formatLink(link: string | RouteObject) {
+    if (!pathResolver) return link;
+
+    if (typeof link === "string") {
+      return pathResolver(link);
+    }
+
+    if (link.path) {
+      link.path = pathResolver(link.path);
+      return link;
+    }
+
+    return link;
+  }
+
   return {
     getAvailableLanguages,
     getStorefrontUrl,
@@ -121,6 +148,7 @@ export function useInternationalization(): UseInternationalizationReturn {
     getLanguageCodeFromId,
     getLanguageIdFromCode,
     replaceToDevStorefront,
+    formatLink,
     languages: _storeLanguages,
     currentLanguage: _storeCurrentLanguage,
     currentPrefix: _storeCurrentPrefix,

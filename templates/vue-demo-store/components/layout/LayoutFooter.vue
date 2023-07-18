@@ -6,6 +6,7 @@ import {
 
 const { navigationElements } = useNavigation({ type: "footer-navigation" });
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 const gridColumns = computed<number>(() =>
   navigationElements.value
@@ -22,7 +23,7 @@ const gridColumns = computed<number>(() =>
         :class="`grid grid-cols-2 md:grid-cols-${gridColumns}`"
       >
         <div class="hidden md:block">
-          <NuxtLink :to="localePath(`/`)">
+          <NuxtLink :to="formatLink(`/`)">
             <span class="sr-only">Shopware</span>
             <img class="h-15 w-auto sm:h-15" src="/logo.svg" alt="Logo" />
           </NuxtLink>
@@ -47,7 +48,7 @@ const gridColumns = computed<number>(() =>
                       ? '_blank'
                       : ''
                   "
-                  :to="localePath(getCategoryRoute(navigationChild))"
+                  :to="formatLink(getCategoryRoute(navigationChild))"
                   class="text-base font-normal text-gray-500 hover:text-gray-900"
                 >
                   {{ getTranslatedProperty(navigationChild, "name") }}

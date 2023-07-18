@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, sameAs } from "@vuelidate/validators";
 import { confirmPasswordReset } from "@shopware-pwa/api-client";
 import { ClientApiError } from "@shopware-pwa/types";
+import { customValidators } from "@/i18n/utils/i18n-validators";
 
+const { required, minLength, sameAs } = customValidators();
 const { apiInstance } = useShopwareContext();
 
 const state = reactive({
