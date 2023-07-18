@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 
 test("Verify stackblitz template", async ({ page }) => {
+  test.setTimeout(120000);
   let homePage: HomePage;
   const response = await page.goto("");
   homePage = new HomePage(page);
