@@ -20,22 +20,30 @@ export class ProductPage {
   }
 
   async addToCart() {
-    await this.addToCartButton.waitFor();
-    await expect(this.addToCartButton).toBeVisible();
-    await this.addToCartButton.dispatchEvent("click", null, {
-      timeout: 1000,
+    await expect(async () => {
+      await this.addToCartButton.waitFor();
+      await expect(this.addToCartButton).toBeVisible();
+      await this.addToCartButton.dispatchEvent("click");
+      await expect(
+        this.page.getByTestId("notification-element-message").last(),
+      ).toHaveText(/has been added to cart.$/);
+    }).toPass({
+      // Probe, wait 1s, probe, wait 2s, probe, wait 10s, probe, wait 10s, probe, .... Defaults to [100, 250, 500, 1000].
+      intervals: [1_000, 2_000, 10_000],
+      timeout: 60_000,
     });
-    // await this.page.waitForSelector(
-    //   "[data-testid=notification-element-message]",
-    // );
-    // await this.page
-    //   .getByTestId("notification-element-message")
-    //   .last()
-    //   .isVisible();
-    // await expect(
-    //   this.page.getByTestId("notification-element-message").last(),
-    // ).toHaveText(/has been added to cart.$/);
   }
+
+  // await this.page.waitForSelector(
+  //   "[data-testid=notification-element-message]",
+  // );
+  // await this.page
+  //   .getByTestId("notification-element-message")
+  //   .last()
+  //   .isVisible();
+  // await expect(
+  //   this.page.getByTestId("notification-element-message").last(),
+  // ).toHaveText(/has been added to cart.$/);
 
   async addVariantToCart() {
     for (const variant of await this.page
