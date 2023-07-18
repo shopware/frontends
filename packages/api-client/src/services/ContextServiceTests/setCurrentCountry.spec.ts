@@ -7,7 +7,7 @@ vi.mock("../../../src/apiService");
 const mockedApiInstance = defaultInstance;
 
 describe("ContextService - setCurrentCountry", () => {
-  const newLanguageId = "28bbf3f6e79145ba8ffc91c409690ab8";
+  const newCountryId = "28bbf3f6e79145ba8ffc91c409690ab8";
   const contextToken = "NWDdcRTTWoPk4Ngv13z5NDMMsDFRb9W6";
 
   const mockedPatch = vi.fn();
@@ -28,11 +28,11 @@ describe("ContextService - setCurrentCountry", () => {
         data: { "sw-context-token": contextToken },
       });
 
-      const result = await setCurrentCountry(newLanguageId);
+      const result = await setCurrentCountry(newCountryId);
 
       expect(mockedPatch).toBeCalledTimes(1);
       expect(mockedPatch).toBeCalledWith("/store-api/context", {
-        languageId: newLanguageId,
+        countryId: newCountryId,
       });
 
       expect(result.contextToken).toEqual(contextToken);
@@ -49,11 +49,11 @@ describe("ContextService - setCurrentCountry", () => {
         data: { "sw-context-token": contextToken },
       });
 
-      const result = await setCurrentCountry(newLanguageId);
+      const result = await setCurrentCountry(newCountryId);
 
       expect(mockedPatch).toBeCalledTimes(1);
       expect(mockedPatch).toBeCalledWith("/store-api/context", {
-        languageId: "28bbf3f6e79145ba8ffc91c409690ab8",
+        countryId: "28bbf3f6e79145ba8ffc91c409690ab8",
       });
 
       expect(result.contextToken).toEqual(contextToken);
