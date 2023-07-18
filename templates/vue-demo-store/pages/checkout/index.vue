@@ -5,9 +5,11 @@ export default {
 </script>
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength, requiredIf } from "@vuelidate/validators";
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
+import { customValidators } from "@/i18n/utils/i18n-validators";
+
+const { required, minLength, requiredIf, email } = customValidators();
 
 definePageMeta({
   layout: "checkout",
@@ -257,7 +259,7 @@ const addAddressModalController = useModal();
       />
     </SharedModal>
     <SharedModal :controller="addAddressModalController">
-      <AccountAddressForm @success="addAddressModalController.close" />
+      <SharedAccountAddressForm @success="addAddressModalController.close" />
     </SharedModal>
     <div
       v-if="isCheckoutAvailable || isCartLoading"

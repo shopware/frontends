@@ -1,0 +1,23 @@
+{
+  "validations": {
+    "alpha": "The value is not alphabetical",
+    "alphaNum": "The value must be alpha-numeric",
+    "between": "The value must be between {min} and {max}",
+    "decimal": "Value must be decimal",
+    "email": "Value is not a valid email address",
+    "integer": "Value is not an integer",
+    "ipAddress": "The value is not a valid IP address",
+    "macAddress": "The value is not a valid MAC Address",
+    "maxLength": "The maximum length allowed is {max}",
+    "minLength": "This minimum length should be at least {min}",
+    "minValue": "The minimum value allowed is {min}",
+    "not": "The value does not match the provided validator",
+    "numeric": "Value must be numeric",
+    "or": "The value does not match any of the provided validators",
+    "required": "Value is required",
+    "requiredIf": "The value is required",
+    "requiredUnless": "The value is required",
+    "sameAs": "The value must be equal to the {otherName} value",
+    "url": "The value is not a valid URL address"
+  }
+}
