@@ -17,7 +17,7 @@
     "@shopware-pwa/composables-next": "canary",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
-    "astro": "^2.8.0",
+    "astro": "^2.8.3",
     "js-cookie": "^3.0.5",
     "vue": "^3.3.4"
   },
