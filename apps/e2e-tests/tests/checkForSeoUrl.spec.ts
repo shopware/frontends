@@ -22,7 +22,9 @@ test.describe.only("Check for seo-url requests", () => {
     await homePage.openCartPage();
     await page.waitForLoadState("networkidle");
     await expect(SeoUrlRequest).toBe(false);
-    await page.goto("/Summer-Trends/");
+    await page
+      .locator("getByRole('link', { name: 'Summer Trends', exact: true })")
+      .click();
     await page.waitForLoadState("networkidle");
     await expect(SeoUrlRequest).toBe(false);
   });
