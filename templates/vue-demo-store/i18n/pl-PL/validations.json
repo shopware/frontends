@@ -1,0 +1,23 @@
+{
+  "validations": {
+    "alpha": "Wartość nie jest alfabetyczna",
+    "alphaNum": "Wartość musi być alfanumeryczna",
+    "between": "Wartość musi być między {min} a {max}",
+    "decimal": "Wartość musi być dziesiętna",
+    "email": "Wartość nie jest prawidłowym adresem e-mail",
+    "integer": "Wartość nie jest liczbą całkowitą",
+    "ipAddress": "Wartość nie jest prawidłowym adresem IP",
+    "macAddress": "Wartość nie jest prawidłowym adresem MAC",
+    "maxLength": "Maksymalna dozwolona długość to {max}",
+    "minLength": "Minimalna długość {min}",
+    "minValue": "Minimalna dozwolona wartość to {min}",
+    "not": "Wartość nie pasuje do podanego walidatora",
+    "numeric": "Wartość musi być numeryczna",
+    "or": "Wartość nie pasuje do żadnego z podanych walidatorów",
+    "required": "Wartość jest wymagana",
+    "requiredIf": "Wartość jest wymagana",
+    "requiredUnless": "Wartość jest wymagana",
+    "sameAs": "Wartość musi być równa wartości {otherName}",
+    "url": "Wartość nie jest prawidłowym adresem URL"
+  }
+}

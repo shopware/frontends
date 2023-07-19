@@ -80,7 +80,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
 
   // If languages are not the same, set one from prefix
-  if (sessionLanguage !== prefix && sessionLanguage !== getDefaultLocale()) {
+  if (sessionLanguage !== prefix) {
     await changeLanguage(
       getLanguageIdFromCode(prefix ? prefix : getDefaultLocale()),
     );

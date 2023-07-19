@@ -16,6 +16,7 @@ const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
 const { codeErrorsNotification } = useCartNotification();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 const props = withDefaults(
   defineProps<{
@@ -96,7 +97,7 @@ const srcPath = computed(() => {
       ]"
     >
       <RouterLink
-        :to="localePath(getProductRoute(product))"
+        :to="formatLink(getProductRoute(product))"
         class="overflow-hidden"
       >
         <img
@@ -154,7 +155,7 @@ const srcPath = computed(() => {
     <div class="px-4 pb-4">
       <RouterLink
         class="line-clamp-2"
-        :to="localePath(getProductRoute(product))"
+        :to="formatLink(getProductRoute(product))"
         data-testid="product-box-product-name-link"
       >
         <h5
@@ -191,7 +192,7 @@ const srcPath = computed(() => {
         </button>
         <RouterLink
           v-else
-          :to="localePath(getProductRoute(product))"
+          :to="formatLink(getProductRoute(product))"
           class="justify-center py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 hover:scale-120"
         >
           <span data-testid="product-box-product-show-details"> Details </span>
