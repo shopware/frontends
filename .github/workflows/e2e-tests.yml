@@ -20,7 +20,7 @@ jobs:
         
       - name: If target_url does not contains frontends-docs >> success
         if: ${{ !contains(github.event.deployment_status.target_url, 'frontends-docs') }}
-        run: echo "Condition for deployment_status.target_url"
+        run: echo "Condition for deployment_status.target_url 🎉"
 
   run-e2e:
     runs-on: ubuntu-latest
