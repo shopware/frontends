@@ -72,7 +72,7 @@ onBeforeMount(async () => {
       {{ $t("account.addressAddNew") }}
     </button>
     <SharedModal :controller="addAddressModalController">
-      <AccountAddressForm @success="addAddressModalController.close" />
+      <SharedAccountAddressForm @success="addAddressModalController.close" />
     </SharedModal>
   </div>
 </template>

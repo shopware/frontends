@@ -8,6 +8,7 @@ import cart from "../pl-PL/cart.json";
 import listing from "../pl-PL/listing.json";
 import product from "../pl-PL/product.json";
 import newsletter from "../pl-PL/newsletter.json";
+import validations from "../pl-PL/validations.json";
 
 export default Object.assign(
   account,
@@ -20,4 +21,5 @@ export default Object.assign(
   listing,
   product,
   newsletter,
+  validations,
 );

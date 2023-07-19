@@ -10,13 +10,13 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "^0.6.7",
-    "@nuxt/types": "^2.17.0",
+    "@nuxt/types": "^2.17.1",
     "@nuxt/typescript-build": "^3.0.1",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@unocss/nuxt": "^0.53.5",
     "@unocss/reset": "^0.53.5",
-    "eslint": "^8.44.0",
-    "nuxt": "^3.6.2",
+    "eslint": "^8.45.0",
+    "nuxt": "^3.6.3",
     "unocss": "^0.53.5"
   },
   "dependencies": {

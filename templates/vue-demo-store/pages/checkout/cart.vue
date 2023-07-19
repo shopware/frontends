@@ -3,6 +3,7 @@ definePageMeta({ layout: "checkout" });
 
 const { cartItems, subtotal, totalPrice, shippingTotal } = useCart();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 const hasItems = computed(() => cartItems.value.length > 0);
 </script>
 
@@ -65,7 +66,7 @@ export default {
         <NuxtLink
           class="flex items-center justify-center rounded-md px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
           data-testid="cart-checkout-link"
-          :to="localePath(`/checkout`)"
+          :to="formatLink(`/checkout`)"
         >
           {{ $t("cart.checkout") }}
         </NuxtLink>

@@ -34,17 +34,6 @@ export class ProductPage {
     });
   }
 
-  // await this.page.waitForSelector(
-  //   "[data-testid=notification-element-message]",
-  // );
-  // await this.page
-  //   .getByTestId("notification-element-message")
-  //   .last()
-  //   .isVisible();
-  // await expect(
-  //   this.page.getByTestId("notification-element-message").last(),
-  // ).toHaveText(/has been added to cart.$/);
-
   async addVariantToCart() {
     for (const variant of await this.page
       .getByTestId("product-variant-text")

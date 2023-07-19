@@ -24,6 +24,7 @@ const active = ref(false);
 const searchContainer = ref(null);
 const searchInput = ref();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 watch(active, (value) => {
   const { focused } = useFocus(searchInput);
@@ -101,7 +102,7 @@ watch(enter, (value) => {
       <NuxtLink
         v-for="product in getProducts.slice(0, displayTotal)"
         :key="product.id"
-        :to="localePath(getProductRoute(product))"
+        :to="formatLink(getProductRoute(product))"
         data-testid="layout-search-suggest-link"
         @click="[(active = false), $emit('link-clicked')]"
       >
@@ -121,7 +122,7 @@ watch(enter, (value) => {
           <NuxtLink
             v-if="getTotal > 0"
             data-testid="layout-search-result-box-more-link"
-            :to="localePath({ path: `/search`, query: { query: typingQuery } })"
+            :to="formatLink({ path: `/search`, query: { query: typingQuery } })"
             @click="[(active = false), $emit('link-clicked')]"
           >
             {{ $t("search.see") }}

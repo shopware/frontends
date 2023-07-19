@@ -56,14 +56,14 @@ const config: PlaywrightTestConfig = {
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "Desktop Chrome",
+      name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
       },
     },
 
     {
-      name: "Desktop Firefox",
+      name: "firefox",
       use: {
         ...devices["Desktop Firefox"],
       },

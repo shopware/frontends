@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { breadcrumbs } = useBreadcrumbs();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 </script>
 <template>
   <nav
@@ -10,7 +11,7 @@ const localePath = useLocalePath();
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
       <li class="inline-flex items-center">
         <NuxtLink
-          :to="localePath(`/`)"
+          :to="formatLink(`/`)"
           class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
         >
           <div class="w-5 h-5 i-carbon-home mr-2" />
@@ -25,7 +26,7 @@ const localePath = useLocalePath();
       >
         <NuxtLink
           v-if="breadcrumb.path"
-          :to="localePath(breadcrumb.path)"
+          :to="formatLink(breadcrumb.path)"
           class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
         >
           {{ breadcrumb.name }}
