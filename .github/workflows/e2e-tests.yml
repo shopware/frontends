@@ -1,16 +1,30 @@
 name: e2e
 
 on:
-  deployment_status: 
+  deployment_status:
 
 jobs:
-  run-e2e:
-    container:
-      image: mcr.microsoft.com/playwright:v1.36.1-jammy
-    name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
+  init_e2e_test:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "Initial e2e test run"
+
+  condition_target_url:
+    runs-on: ubuntu-latest
+    needs: init_e2e_test
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.target_url, 'shopware-frontends')
+    steps:
+      - run: echo "Condition for deployment_status.target_url"
+
+  run-e2e:
+    runs-on: ubuntu-latest
+    needs: condition_target_url
+    if: always()
+    steps:
+      - name: Fail if condition_target_url is failure
+        if: ${{ needs.condition_target_url.result == 'failure' }}
+        run: exit 1
+        
       - name: Check out code
         uses: actions/checkout@v3
 
@@ -28,6 +42,10 @@ jobs:
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Install dependencies with Playwright
+        run: |
+          pnpm playwright install --with-deps
 
       - name: Run tests
         run: pnpm run test:e2e
