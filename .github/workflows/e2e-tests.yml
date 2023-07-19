@@ -5,6 +5,8 @@ on:
 
 jobs:
   run-e2e:
+    container:
+      image: mcr.microsoft.com/playwright:v1.36.1-jammy
     name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
     runs-on: ubuntu-latest
@@ -26,24 +28,6 @@ jobs:
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
-
-      - name: Store Playwright's Version
-        run: |
-          PLAYWRIGHT_VERSION=$(pnpm playwright -V | sed 's/Version //')
-          echo "Playwright's Version: $PLAYWRIGHT_VERSION"
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
-
-      - name: Cache Playwright Browsers for Playwright's Version
-        id: cache-playwright-browsers
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
-
-      - name: Install dependencies with Playwright
-        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-        run: |
-          pnpm playwright install --with-deps
 
       - name: Run tests
         run: pnpm run test:e2e
