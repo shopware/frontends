@@ -21,6 +21,6 @@ const centerContent = getSlotContent("center");
 
 <style scoped>
 .cms-block-image-highlight-row .cms-element-image {
-  @apply border-12 border-white;
+  @apply border-[12px] border-white;
 }
 </style>

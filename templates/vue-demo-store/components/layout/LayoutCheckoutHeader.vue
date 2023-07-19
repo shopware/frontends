@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 </script>
 
 <template>
@@ -9,7 +10,7 @@ const localePath = useLocalePath();
         class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10"
       >
         <div class="flex justify-start lg:w-0 lg:flex-1 space-x-4 md:space-x-0">
-          <NuxtLink :to="localePath(`/`)">
+          <NuxtLink :to="formatLink(`/`)">
             <span class="sr-only">Shopware</span>
             <img
               class="h-8 w-auto sm:h-10"

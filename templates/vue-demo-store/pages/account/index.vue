@@ -29,6 +29,7 @@ const {
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 useBreadcrumbs([
   {
@@ -88,7 +89,7 @@ onBeforeMount(async () => {
           <NuxtLink
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
             data-testid="my-account-change-profile-button"
-            :to="localePath(`/account/profile`)"
+            :to="formatLink(`/account/profile`)"
           >
             {{ $t("account.change") }}
           </NuxtLink>
@@ -106,7 +107,7 @@ onBeforeMount(async () => {
           <NuxtLink
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
             data-testid="my-account-change-payment-method-button"
-            :to="localePath(`/account/payment`)"
+            :to="formatLink(`/account/payment`)"
           >
             {{ $t("account.change") }}
           </NuxtLink>
@@ -157,7 +158,7 @@ onBeforeMount(async () => {
           <NuxtLink
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
             data-testid="my-account-change-default-billing-address-button"
-            :to="localePath(`/account/address`)"
+            :to="formatLink(`/account/address`)"
           >
             {{ $t("account.change") }}
           </NuxtLink>
@@ -180,7 +181,7 @@ onBeforeMount(async () => {
           <NuxtLink
             class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
             data-testid="my-account-change-default-shipping-address-button"
-            :to="localePath(`/account/address`)"
+            :to="formatLink(`/account/address`)"
           >
             {{ $t("account.change") }}
           </NuxtLink>

@@ -104,15 +104,16 @@ www.example2.com     // DE site
 
 ## Routing
 
-When you are using _prefix_ domain languages, you have to use `useLocalePath()` composable for building URLs.
+When you are using _prefix_ domain languages, you have to use `formatLink()` method from `useInternationalization` composable for building URLs.
 The main task of this composable is to add a prefix to URL if needed.
 
 ```vue
 <script setup lang="ts">
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 </script>
 <template>
-  <NuxtLink :to="localePath('/account')"> Account</NuxtLink>
+  <NuxtLink :to="formatLink('/account')"> Account</NuxtLink>
 </template>
 ```
 

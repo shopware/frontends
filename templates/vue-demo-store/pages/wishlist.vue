@@ -14,6 +14,7 @@ const products = ref<Product[]>([]);
 const isLoading = ref(false);
 const { t } = useI18n();
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 useBreadcrumbs([
   {
     name: t("breadcrumbs.wishlist"),
@@ -116,7 +117,7 @@ watch(
         </h1>
         <p class="my-4">{{ $t("wishlist.emptyText") }}</p>
         <NuxtLink
-          :to="localePath(`/`)"
+          :to="formatLink(`/`)"
           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
           date-testid="wishlist-empty-continue-link"
         >

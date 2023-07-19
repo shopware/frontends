@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 </script>
 
 <template>
@@ -10,7 +11,7 @@ const localePath = useLocalePath();
     </p>
     <NuxtLink
       class="inline-flex justify-center items-center py-2 px-4 text-base font-medium text-center text-white bg-brand-primary rounded-lg hover:bg-gray-400"
-      :to="localePath(`/`)"
+      :to="formatLink(`/`)"
     >
       {{ $t("backToHomepage") }}
     </NuxtLink>
