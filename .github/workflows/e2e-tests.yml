@@ -15,7 +15,7 @@ jobs:
           echo "state - $${{ github.event.deployment_status.state }} | target_url - $${{ github.event.deployment_status.target_url }} | deployment_url - $${{ github.event.deployment_status.deployment_url}} | environment - $${{ github.event.deployment_status.environment }}"
 
   run-e2e:
-    name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
+    name: Playwright testing deployment $${{ github.event.deployment_status.target_url }}
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
     runs-on: ubuntu-latest
     steps:
