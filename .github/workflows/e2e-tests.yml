@@ -5,7 +5,7 @@ on:
 
 jobs:
   display-status:
-    name: display status - $${{ github.event.deployment_status.environment }}
+    name: display status - "$${{ github.event.deployment_status.environment }}"
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
