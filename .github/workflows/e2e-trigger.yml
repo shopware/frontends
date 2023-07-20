@@ -1,4 +1,4 @@
-name: e2e-trigger
+name: e2e trigger
 
 on:
   deployment_status:
