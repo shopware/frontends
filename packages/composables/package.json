@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/composables-next",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Shopware Frontends composables for Vue",
   "author": "Shopware",
   "repository": {
