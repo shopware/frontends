@@ -1,35 +1,37 @@
 name: e2e
 
 on:
-  deployment_status:
+  workflow_run:
+    workflows: ["e2e-trigger"]
+    types:
+      - completed
 
 jobs:
-  init_e2e_test:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Initial e2e test run"
-
-  condition_target_url:
-    runs-on: ubuntu-latest
-    needs: init_e2e_test
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
-    steps:
-      - name: If target_url contains frontends-docs >> fail
-        if: ${{ contains(github.event.deployment_status.target_url, 'frontends-docs') }}
-        run: exit 1
-        
-      - name: If target_url does not contains frontends-docs >> success
-        if: ${{ !contains(github.event.deployment_status.target_url, 'frontends-docs') }}
-        run: echo "Condition for deployment_status.target_url 🎉"
-
   run-e2e:
     runs-on: ubuntu-latest
-    needs: condition_target_url
-    if: always()
     steps:
-      - name: Fail if condition_target_url is failure
-        if: ${{ needs.condition_target_url.result == 'failure' }}
+      - name: Restore Cache Deployment Target URL file
+        uses: actions/cache@v3
+        id: cache-deployment-target
+        with:
+          path: |
+            ~/.cache/deployment_target
+          key: deployment-target-${{ github.sha }}
+          restore-keys: |
+            deployment-target-${{ github.sha }}
+            deployment-target
+            deployment-target-url
+
+      - name: Set Deployment Target URL as ENV
+        if: ${{ steps.cache-deployment-target.outputs.cache-hit == 'true' }}
+        run: echo "DEPLOYMENT_TARGET=$(head -1 ~/.cache/deployment_target/deployment_target.txt)" >> $GITHUB_ENV
+
+      - name: Stop if we do not get the depoloyment target_url from cache
+        if: ${{ steps.cache-deployment-target.outputs.cache-hit != 'true' }}
         run: exit 1
+
+      - name: Current Deployment Target is
+        run: echo $DEPLOYMENT_TARGET
 
       - name: Check out code
         uses: actions/checkout@v3
@@ -52,11 +54,11 @@ jobs:
       - name: Install dependencies with Playwright
         run: |
           pnpm playwright install --with-deps
-
+ 
       - name: Run tests
         run: pnpm run test:e2e
         env:
-          BASE_E2E_URL: ${{ github.event.deployment_status.target_url }}
+          BASE_E2E_URL: $DEPLOYMENT_TARGET
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

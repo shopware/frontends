@@ -1,0 +1,31 @@
+name: e2e-trigger
+
+on:
+  deployment_status:
+
+jobs:
+  trigger-e2e-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    steps:
+      - name: If target_url contains frontends-docs >> fail
+        if: ${{ contains(github.event.deployment_status.target_url, 'frontends-docs') }}
+        run: exit 1
+
+      - name: target_url does NOT contains frontends-docs >> success
+        run: echo "Condition for deployment_status.target_url 🎉"
+
+      - name: Write target_url to file for cache and reuse in different workflow
+        run: echo "${{ github.event.deployment_status.target_url }}" > ~/.cache/deployment_target/deployment_target.txt        
+
+      - name: Cache Deployment Target URL file
+        uses: actions/cache@v3
+        id: cache-deployment-target
+        with:
+          path: |
+            ~/.cache/deployment_target
+          key: deployment-target-${{ github.sha }}
+          restore-keys: |
+            deployment-target-${{ github.sha }}
+            deployment-target
+            deployment-target-url
