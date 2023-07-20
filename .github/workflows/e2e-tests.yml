@@ -2,7 +2,7 @@ name: e2e
 
 on:
   workflow_run:
-    workflows: ["e2e trigger"]
+    workflows: ["trigger-e2e-tests"]
     types:
       - completed
 
