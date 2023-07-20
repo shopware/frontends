@@ -70,10 +70,14 @@ export function createAPIClient<
   contextToken?: string;
   onContextChanged?: (newContextToken: string) => void;
 }) {
-  const defaultHeaders = {
+  const defaultHeaders: Record<string, string> = {
     "sw-access-key": params.accessToken,
-    "sw-context-token": params.contextToken,
   };
+
+  // protection from setting "null" or "undefined" as a token in API side
+  if (params.contextToken) {
+    defaultHeaders["sw-context-token"] = params.contextToken;
+  }
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
