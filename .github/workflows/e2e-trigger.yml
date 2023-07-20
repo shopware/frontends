@@ -4,7 +4,7 @@ on:
   deployment_status:
 
 jobs:
-  trigger-e2e-tests:
+  e2e-trigger:
     runs-on: ubuntu-latest
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     steps:
