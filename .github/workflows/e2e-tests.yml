@@ -1,4 +1,4 @@
-name: e2e - $${{ github.event.deployment_status.environment }}
+name: e2e
 
 on:
   deployment_status:
