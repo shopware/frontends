@@ -1,18 +1,18 @@
-name: e2e
+name: e2e - $${{ github.event.deployment_status.environment }}
 
 on:
   deployment_status:
 
 jobs:
   display-status:
-    name: display status
+    name: display status - $${{ github.event.deployment_status.environment }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Display status
         run: |
-          echo "state - $${{ github.event.deployment_status.state }} | target_url - $${{ github.event.deployment_status.target_url }} | deployment_url - $${{ github.event.deployment_status.deployment_url}}"
+          echo "state - $${{ github.event.deployment_status.state }} | target_url - $${{ github.event.deployment_status.target_url }} | deployment_url - $${{ github.event.deployment_status.deployment_url}} | environment - $${{ github.event.deployment_status.environment }}"
 
   run-e2e:
     name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
