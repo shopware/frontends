@@ -1,9 +1,19 @@
 name: e2e
 
 on:
-  deployment_status: 
+  deployment_status:
 
 jobs:
+  display-status:
+    name: display status
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Display status
+        run: |
+          echo ${{ github.event.deployment_status }}
+
   run-e2e:
     name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
