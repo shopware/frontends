@@ -1,4 +1,4 @@
-name: trigger-e2e-tests
+name: e2e-trigger
 
 on:
   deployment_status:

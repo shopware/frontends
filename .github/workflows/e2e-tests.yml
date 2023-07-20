@@ -1,8 +1,8 @@
-name: e2e
+name: e2e-tests
 
 on:
   workflow_run:
-    workflows: ["trigger-e2e-tests"]
+    workflows: ["e2e-trigger"]
     types:
       - completed
 
