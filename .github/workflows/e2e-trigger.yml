@@ -15,8 +15,11 @@ jobs:
       - name: target_url does NOT contains frontends-docs >> success
         run: echo "Condition for deployment_status.target_url 🎉"
 
+      - name: Create folder for target_url file
+        run: mkdir ~/.cache/deployment_target/
+
       - name: Write target_url to file for cache and reuse in different workflow
-        run: echo "${{ github.event.deployment_status.target_url }}" > ~/.cache/deployment_target/deployment_target.txt        
+        run: echo "${{ github.event.deployment_status.target_url }}" > ~/.cache/deployment_target/deployment_target.txt
 
       - name: Cache Deployment Target URL file
         uses: actions/cache@v3
