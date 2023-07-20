@@ -12,11 +12,11 @@ Documentation specific for this package: [api-client](https://frontends.shopware
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 0.5.1
+### Latest changes: 0.5.2
 
 ### Patch Changes
 
-- [#270](https://github.com/shopware/frontends/pull/270) [`14d97c5`](https://github.com/shopware/frontends/commit/14d97c5942adf5a49163625b2740d95bc5772689) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Change getContextCountryEndpoint request type to POST
+- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
 
-- Updated dependencies [[`8a94e37`](https://github.com/shopware/frontends/commit/8a94e3739a24e5d748ba807852c5e5c2dfbe6cb4)]:
-  - @shopware-pwa/types@0.5.5
+- Updated dependencies [[`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d)]:
+  - @shopware-pwa/types@0.5.6

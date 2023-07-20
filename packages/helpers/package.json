@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/helpers-next",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Shopware helpers for accessing API data",
   "author": "Shopware",
   "repository": {
