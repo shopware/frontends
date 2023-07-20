@@ -6,12 +6,8 @@ on:
 jobs:
   e2e-trigger:
     runs-on: ubuntu-latest
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && ${{ !contains(github.event.deployment_status.target_url, 'frontends-docs') }}
     steps:
-      - name: If target_url contains frontends-docs >> fail
-        if: ${{ contains(github.event.deployment_status.target_url, 'frontends-docs') }}
-        run: exit 1
-
       - name: target_url does NOT contains frontends-docs >> success
         run: echo "Condition for deployment_status.target_url 🎉"
 
