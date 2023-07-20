@@ -12,9 +12,11 @@ Documentation specific for this package: [helpers](https://frontends.shopware.co
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 0.3.1
+### Latest changes: 0.3.2
 
 ### Patch Changes
 
-- Updated dependencies [[`8a94e37`](https://github.com/shopware/frontends/commit/8a94e3739a24e5d748ba807852c5e5c2dfbe6cb4)]:
-  - @shopware-pwa/types@0.5.5
+- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
+
+- Updated dependencies [[`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d)]:
+  - @shopware-pwa/types@0.5.6

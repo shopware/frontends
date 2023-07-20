@@ -1,5 +1,21 @@
 # eslint-config-shopware
 
+## 0.0.4
+
+### Patch Changes
+
+- [#328](https://github.com/shopware/frontends/pull/328) [`a75617f`](https://github.com/shopware/frontends/commit/a75617f4104f7e66599aa5341e46759bb9d414c9) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@typescript-eslint/eslint-plugin_ from **^6.0.0** to **^6.1.0**
+  - Changed dependency _@typescript-eslint/parser_ from **^6.0.0** to **^6.1.0**
+  - Changed dependency _eslint_ from **^8.44.0** to **^8.45.0**
+
+- [#313](https://github.com/shopware/frontends/pull/313) [`0e82ab3`](https://github.com/shopware/frontends/commit/0e82ab395cc88e992d2d64853d27603548c36bb9) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@typescript-eslint/eslint-plugin_ from **^5.60.1** to **^6.0.0**
+  - Changed dependency _@typescript-eslint/parser_ from **^5.60.1** to **^6.0.0**
+  - Changed dependency _eslint_ from **^8.43.0** to **^8.44.0**
+
 ## 0.0.3
 
 ### Patch Changes

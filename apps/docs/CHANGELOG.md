@@ -1,5 +1,18 @@
 # docs
 
+## 1.5.6
+
+### Patch Changes
+
+- [#313](https://github.com/shopware/frontends/pull/313) [`0e82ab3`](https://github.com/shopware/frontends/commit/0e82ab395cc88e992d2d64853d27603548c36bb9) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _vitepress_ from **1.0.0-beta.3** to **1.0.0-beta.5**
+
+- Updated dependencies [[`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d), [`8c6ff0a`](https://github.com/shopware/frontends/commit/8c6ff0ac87143a014f609aedd22aac99888da337), [`b9a2004`](https://github.com/shopware/frontends/commit/b9a20044d3df04370c62ab392b5144a62fbb57a9)]:
+  - @shopware-pwa/composables-next@0.12.0
+  - @shopware-pwa/api-client@0.5.2
+  - @shopware-pwa/helpers-next@0.3.2
+
 ## 1.5.5
 
 ### Patch Changes

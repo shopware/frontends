@@ -1,5 +1,32 @@
 # @shopware/api-client
 
+## 0.2.0
+
+### Minor Changes
+
+- [#316](https://github.com/shopware/frontends/pull/316) [`589c09c`](https://github.com/shopware/frontends/commit/589c09cdd9dee0db172c371afc5ecd740bdb4723) Thanks [@patzick](https://github.com/patzick)! - Improved error handling. Api client now throws `ApiClientError` with detailed information about what went wrong with request.
+
+  example:
+
+  ```typescript
+  import { ApiClientError } from "@shopware/api-client";
+
+  try {
+    // ... your request
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      console.error(error); // This prints message summary
+      console.error("Details:", error.details); // Raw response from API
+    } else {
+      console.error("==>", error); // Another type of error, not recognized by API client
+    }
+  }
+  ```
+
+### Patch Changes
+
+- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
+
 ## 0.1.0
 
 ### Minor Changes
