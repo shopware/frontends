@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
+
 definePageMeta({
   layout: "account",
 });
@@ -24,7 +26,7 @@ const { pushSuccess } = useNotifications();
 
 useBreadcrumbs([
   {
-    name: "Account Overview",
+    name: "My Account",
     path: "/account",
   },
   {
@@ -41,72 +43,91 @@ const formData = reactive({
 
 const invokeSave = async (): Promise<void> => {
   try {
+    isLoading.value = true;
     await setPaymentMethod({ id: formData.paymentMethod });
     await setDefaultPaymentMethod(formData.paymentMethod);
     emits("success");
     pushSuccess("Set default payment method successfully");
   } catch (error) {
     console.error("error set default payment method", error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
 onMounted(async () => {
   await getPaymentMethods();
+  formData.paymentMethod = selectedPaymentMethod?.value?.id ?? "";
   isLoading.value = false;
 });
 </script>
 
 <template>
-  <div class="container mx-auto my-8">
-    <fieldset class="mt-6">
-      <legend class="contents text-2xl font-medium text-gray-900">
-        <h1 class="border-b pb-3">Payment method</h1>
-      </legend>
-      <p class="text-sm text-gray-500 mt-3">
-        Select your default payment method:
+  <div class="col-span-2 mb-24">
+    <div class="mb-10">
+      <h3 class="mb-4">
+        {{ $t("payment_methods") }}
+      </h3>
+      <p class="text-gray-900">
+        {{ $t("view_all_available_payment_methods") }}
       </p>
-      <form class="mt-4 space-y-6" @submit.prevent="invokeSave">
-        <div v-if="isLoading" class="w-60 h-24">
+    </div>
+    <div v-if="isLoading" class="w-60 h-24">
+      <div class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5">
+        <div class="w-4 bg-gray-300 h-4 rounded-full" />
+        <div class="flex flex-col space-y-3">
+          <div class="w-36 bg-gray-300 h-6 rounded-md" />
+          <div class="w-24 bg-gray-300 h-6 rounded-md" />
+        </div>
+      </div>
+    </div>
+    <form v-else @submit.prevent="invokeSave">
+      <RadioGroup
+        v-model="formData.paymentMethod"
+        class="border border-gray-200 mb-6"
+      >
+        <RadioGroupOption
+          v-for="paymentMethod in paymentMethods"
+          :key="paymentMethod.id"
+          :value="paymentMethod.id"
+          v-slot="{ checked }"
+        >
           <div
-            class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
+            :class="[checked ? 'bg-gray-50 text-white' : 'bg-white ']"
+            class="relative flex cursor-pointer rounded-lg p-4"
           >
-            <div class="w-4 bg-gray-300 h-4 rounded-full" />
-            <div class="flex flex-col space-y-3">
-              <div class="w-36 bg-gray-300 h-6 rounded-md" />
-              <div class="w-24 bg-gray-300 h-6 rounded-md" />
+            <div>
+              <span
+                :class="[
+                checked
+                  ? 'bg-gray-800 border-transparent'
+                  : 'bg-white border-gray-300',
+                ' h-4 w-4 mr-3 mt-0.25 rounded-full border flex items-center justify-center',
+              ]"
+                aria-hidden="true"
+              >
+              <span class="rounded-full bg-white w-1.5 h-1.5" />
+            </span>
+            </div>
+            <div>
+              <RadioGroupLabel class="block cursor-pointer">
+                <h6 class="block text-sm font-medium text-gray-900">{{ paymentMethod.translated?.name }}</h6>
+                <p class="text-gray-700 text-sm">
+                  {{ paymentMethod.translated?.description }}
+                </p>
+              </RadioGroupLabel>
             </div>
           </div>
-        </div>
-        <div v-else class="mt-4 space-y-4">
-          <div
-            v-for="paymentMethod in paymentMethods"
-            :key="paymentMethod.id"
-            class="flex items-center"
-          >
-            <input
-              :id="paymentMethod.id"
-              v-model="formData.paymentMethod"
-              :value="paymentMethod.id"
-              :checked="selectedPaymentMethod?.id === paymentMethod.id"
-              name="payment-method"
-              type="radio"
-              class="focus:ring-brand-light h-4 w-4 text-brand-primary border-gray-300"
-            />
-            <label
-              :for="paymentMethod.id"
-              class="ml-3 block text-sm font-medium text-gray-700"
-            >
-              {{ paymentMethod.name }}
-            </label>
-          </div>
-          <button
-            class="group relative justify-center py-2 px-4 my-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
-            type="submit"
-          >
-            Save
-          </button>
-        </div>
-      </form>
-    </fieldset>
+
+          <div class="w-full border-b border-b-gray-200" />
+        </RadioGroupOption>
+      </RadioGroup>
+      <button
+        class="text-white font-medium py-2 px-5 bg-gray-800 shadow-sm disabled:opacity-50"
+        type="submit"
+      >
+        {{ $t("change") }}
+      </button>
+    </form>
   </div>
 </template>

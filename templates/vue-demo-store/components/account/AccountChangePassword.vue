@@ -114,8 +114,7 @@ const invokeChange = async (): Promise<void> => {
             type="password"
             autocomplete="current-password"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="••••••••"
+            class="border border-gray-300 py-2 px-3 text-sm text-gray-900 w-full shadow-input"
           />
           <span
             v-if="$v.password.currentPassword.$error"
@@ -137,8 +136,7 @@ const invokeChange = async (): Promise<void> => {
             type="password"
             autocomplete="new-password"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="••••••••"
+            class="border border-gray-300 py-2 px-3 text-sm text-gray-900 w-full shadow-input"
           />
           <span
             v-if="$v.password.newPassword.$error"
@@ -160,8 +158,7 @@ const invokeChange = async (): Promise<void> => {
             type="password"
             autocomplete="repeat-password"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
-            placeholder="••••••••"
+            class="border border-gray-300 py-2 px-3 text-sm text-gray-900 w-full shadow-input"
           />
           <span
             v-if="$v.password.newPasswordConfirm.$error"

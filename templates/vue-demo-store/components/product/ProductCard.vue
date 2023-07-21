@@ -80,6 +80,7 @@ const ratingAverage: Ref<number> = computed(() =>
             displayMode === 'standard' && layoutType !== 'image',
         }"
         data-testid="product-box-img"
+        loading="lazy"
       />
     </div>
     <button
@@ -101,7 +102,7 @@ const ratingAverage: Ref<number> = computed(() =>
     </button>
     <div class="mt-4 flex flex-col justify-between flex-1">
       <div>
-        <h3 class="text-base font-bold text-gray-700">
+        <h3 class="text-base font-bold">
           <RouterLink
             class="line-clamp-2 h-12"
             :to="getProductUrl(product)"
@@ -155,7 +156,7 @@ const ratingAverage: Ref<number> = computed(() =>
         data-testid="add-to-cart-button"
         @click="addToCartProxy"
       >
-        Add to cart
+        {{ $t('add_to_cart') }}
       </button>
       <RouterLink v-else :to="getProductUrl(product)">
         <button

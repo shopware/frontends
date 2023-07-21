@@ -1,0 +1,13 @@
+/* inter-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./inter-v12-latin-regular.eot'); /* IE9 Compat Modes */
+  src: url('./inter-v12-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./inter-v12-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./inter-v12-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('./inter-v12-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./inter-v12-latin-regular.svg#Inter') format('svg'); /* Legacy iOS */
+}

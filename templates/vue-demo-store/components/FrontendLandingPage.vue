@@ -19,7 +19,7 @@ const { data: landingResponse } = await useAsyncData(
 );
 
 if (typeof landingResponse?.value !== null) {
-  const landingPage = landingResponse as Ref<LandingPage>
+  const landingPage: any = landingResponse as Ref<LandingPage>
   useCmsHead(landingPage, { mainShopTitle: "Shopware Frontends Demo Store" });
 }
 </script>

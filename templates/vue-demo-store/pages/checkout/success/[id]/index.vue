@@ -8,8 +8,13 @@ export default {
 import { watchDebounced } from "@vueuse/core";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
+definePageMeta({
+  layout: "checkout",
+});
+
 const { params } = useRoute();
 const router = useRouter();
+const { refreshCart } = useCart();
 const orderId = params.id as string;
 const { isLoggedIn, isGuestSession } = useUser();
 if (!isLoggedIn.value && !isGuestSession.value) {
@@ -34,7 +39,8 @@ onMounted(async () => {
   const FAILURE_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
 
   await loadOrderDetails();
-  handlePayment(SUCCESS_PAYMENT_URL, FAILURE_PAYMENT_URL);
+  await handlePayment(SUCCESS_PAYMENT_URL, FAILURE_PAYMENT_URL);
+  await refreshCart();
 });
 
 const goToUrl = (url: string | null) => {
@@ -67,173 +73,97 @@ const formatDate = (date: Date) =>
   new Date(date).toLocaleDateString(
     (typeof navigator !== "undefined" && navigator.language) || "en-US"
   );
+
+const sortLineItems = computed(() => {
+  return order.value?.lineItems?.sort((a: any, b: any) => a.position - b.position);
+})
 </script>
 
 <template>
   <ClientOnly>
-    <div
-      class="max-w-2xl mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-5xl lg:px-8"
-    >
-      <div class="space-y-1">
-        <div class="text-gray-800">
-          Your order #{{ order?.orderNumber }} has shipped and will be with you
-          soon
+    <div class="mt-16 mb-24 max-w-[700px] mx-auto">
+      <div class="flex flex-col gap-4 mb-10">
+        <!-- <p class="text-sm font-medium uppercase">
+          {{ $t('order_complete') }}
+        </p> -->
+        <h2 class="text-4xl md:text-5xl">
+          {{ $t('thanks_ordering') }}
+        </h2>
+        <p class="text-base text-gray-500">
+          {{ $t('your_order_will_with_you_soon', [order?.orderNumber]) }}
+        </p>
+      </div>
+      <div class="mt-6 border-b border-gray-200" />
+      <SharedProductOrders :line-items="sortLineItems || []" />
+      <div class="mt-6 border-b border-gray-200" />
+      <div class="my-6 flex justify-between text-base">
+        <p>{{ $t('subtotal') }}</p>
+        <SharedPrice
+          :value="subtotal"
+        />
+      </div>
+      <div class="mb-6 flex justify-between text-base">
+        <p>{{ $t('shipping_estimate') }}</p>
+        <SharedPrice
+          :value="shippingCosts"
+        />
+      </div>
+      <div class="border-b border-gray-200" />
+      <div class="my-6 flex justify-between text-lg text-dark-primary font-medium">
+        <p>{{ $t('order_total') }}</p>
+        <SharedPrice :value="total" />
+      </div>
+      <div class="border-b border-gray-200" />
+      <div class="grid grid-cols-2 my-6 md:my-10">
+        <div>
+          <h6 class="text-sm font-medium text-gray-900">
+            {{ $t('shipping_address') }}
+          </h6>
+          <p class="mt-2 text-sm text-gray-500">
+            {{ shippingAddress?.firstName }}{{ shippingAddress?.lastName }} <br>
+            {{ shippingAddress?.street }} <br>
+            {{ shippingAddress?.city }}, {{ shippingAddress?.zipcode }}
+          </p>
         </div>
-        <div
-          v-if="isAsynchronous && paymentUrl && state?.technicalName === 'open'"
-          class="mt-8 p-4 mb-8 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
-          role="alert"
-        >
-          <div class="text-center w-full">
-            <span class="font-medium">Finish payment process.</span> You will be
-            redirected to the payment gateway in 5 seconds.
-            <div>
-              <button
-                class="mt-4 rounded-md border border-transparent px-2 py-1 text-base font-small text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
-                @click="goToUrl(paymentUrl)"
-              >
-                Go to payment
-              </button>
-            </div>
-          </div>
+        <div>
+          <h6 class="text-sm font-medium text-gray-900">
+            {{ $t('billing_address') }}
+          </h6>
+          <p class="mt-2 text-sm text-gray-500">
+            {{ billingAddress?.firstName }}{{ billingAddress?.lastName }} <br>
+            {{ billingAddress?.street }} <br>
+            {{ billingAddress?.city }}, {{ billingAddress?.zipcode }}
+          </p>
         </div>
       </div>
-      <div v-if="billingAddress">
-        <div class="pt-8">
-          <div>
-            <AccountOrderSummary>
-              <div class="lg:col-span-2">
-                {{ order?.orderNumber }}
-              </div>
-              <div>
-                <SharedPrice
-                  v-if="order?.amountTotal"
-                  :value="order.amountTotal"
-                  class="text-gray-400 font-normal"
-                  data-testid="order-subtotal"
-                />
-              </div>
-              <div v-if="order?.orderDate">
-                {{ formatDate(order.orderDate) }}
-              </div>
-              <div>{{ getTranslatedProperty(state, "name") }}</div>
-              <div
-                class="hidden sm:block justify-self-end text-brand-dark cursor-pointer"
-                :aria-expanded="isExpand"
-                @click="toggleView"
-              >
-                {{ !isExpand ? "View" : "Hide" }}
-              </div>
-            </AccountOrderSummary>
-            <div>
-              <div
-                class="block sm:hidden text-center text-brand-dark cursor-pointer bg-gray-100 py-2"
-                :aria-expanded="isExpand"
-                @click="toggleView"
-              >
-                {{ !isExpand ? "View" : "Hide" }}
-              </div>
-            </div>
-            <template v-if="order?.id">
-              <transition>
-                <AccountOrderDetails v-show="isExpand" :order-id="order.id" />
-              </transition>
-            </template>
-          </div>
+      <div class="border-b border-gray-200" />
+      <div class="grid grid-cols-2 my-6 md:my-10">
+        <div>
+          <h6 class="text-sm font-medium text-gray-900">
+            {{ $t('payment_method') }}
+          </h6>
+          <p class="mt-2 text-sm text-gray-500">
+            {{ (paymentMethod?.translated as any)?.name }}
+          </p>
         </div>
-        <div class="border-t border-gray-200 flex">
-          <div class="flex-1 flex-col ml-4">
-            <div
-              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap py-6 md:py-10"
-            >
-              <div class="w-auto md:w-1/2">
-                <div class="font-medium">Shipping address</div>
-                <div class="pt-2 text-gray-600">
-                  <div>
-                    {{ shippingAddress?.firstName }}
-                    {{ shippingAddress?.lastName }}
-                  </div>
-                  <div>
-                    {{ shippingAddress?.street }}
-                  </div>
-                  <div>
-                    {{ shippingAddress?.city }}, {{ shippingAddress?.zipcode }}
-                  </div>
-                </div>
-              </div>
-              <div class="w-auto md:w-1/2">
-                <div class="font-medium">Billing address</div>
-                <div class="pt-2 text-gray-600">
-                  <div>
-                    {{ billingAddress.firstName }} {{ billingAddress.lastName }}
-                  </div>
-                  <div>
-                    {{ billingAddress.street }}
-                  </div>
-                  <div>
-                    {{ billingAddress.city }}, {{ billingAddress.zipcode }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="flex flex-col md:flex-row gap-5 md:gap-0 md:flex-wrap border-t border-gray-100 md:flex py-6 md:py-10"
-            >
-              <div class="w-auto md:w-1/2">
-                <div class="font-medium">Payment method</div>
-                <div class="pt-2 text-gray-600">
-                  <div>{{ paymentMethod?.name }}</div>
-                </div>
-              </div>
-              <div class="w-auto md:w-1/2">
-                <div class="font-medium">Shipping method</div>
-                <div class="pt-2 text-gray-600">
-                  <div>{{ shippingMethod?.name }}</div>
-                  <div v-if="shippingMethod?.deliveryTime">
-                    Takes up to {{ shippingMethod.deliveryTime?.name }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="border-t border-gray-100 py-6 md:py-10 space-y-4">
-              <div class="md:w-1/2 ml-auto flex flex-col gap-2">
-                <div
-                  v-if="subtotal"
-                  class="flex justify-between text-base font-medium"
-                >
-                  <p>Subtotal</p>
-                  <SharedPrice
-                    :value="subtotal"
-                    class="text-gray-600 font-normal"
-                    data-testid="order-subtotal"
-                  />
-                </div>
-                <div
-                  v-if="shippingCosts"
-                  class="flex justify-between text-base font-medium"
-                >
-                  <p>Shipping</p>
-                  <SharedPrice
-                    :value="shippingCosts"
-                    class="text-gray-600 font-normal"
-                    data-testid="order-shipping"
-                  />
-                </div>
-                <div
-                  v-if="total"
-                  class="flex justify-between text-base font-medium"
-                >
-                  <p>Total</p>
-                  <SharedPrice
-                    :value="total"
-                    class="text-gray-600 font-normal"
-                    data-testid="order-total"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+        <div>
+          <h6 class="text-sm font-medium text-gray-900">
+            {{ $t('shipping_method') }}
+          </h6>
+          <p class="mt-2 text-sm text-gray-500">
+            {{ shippingMethod?.translated?.name }} <br>
+            {{ (shippingMethod?.deliveryTime as any)?.translated?.name }}
+          </p>
         </div>
+      </div>
+      <div class="border-b border-gray-200" />
+      <div class="mt-10 flex items-center justify-center">
+        <RouterLink
+          to="/"
+          class="px-6 py-3 text-base font-medium text-white shadow-sm bg-gray-800 disabled:opacity-70"
+        >
+          {{ $t('continue_method') }}
+        </RouterLink>
       </div>
     </div>
     <template #placeholder>
@@ -244,7 +174,7 @@ const formatDate = (date: Date) =>
         <div class="space-y-1">
           <div class="text-gray-400">
             <div
-              class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
+              class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-1/2"
             />
           </div>
         </div>
@@ -252,34 +182,34 @@ const formatDate = (date: Date) =>
           <div class="pt-8">
             <div>
               <div
-                class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 px-2 py-6"
+                class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 px-2 py-6"
               />
               <div class="px-2 py-4">
                 <div class="grid grid-cols-5 gap-y-10 pb-4 text-gray-400">
                   <div
-                    class="col-span-2 h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
+                    class="col-span-2 h-4 bg-gray-300 rounded-full dark:bg-gray-700 w-1/2"
                   />
                   <div
-                    class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
+                    class="h-4 bg-gray-300 rounded-full dark:bg-gray-700 w-1/2"
                   />
                   <div
-                    class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"
+                    class="h-4 bg-gray-300 rounded-full dark:bg-gray-700 w-1/4"
                   />
                   <div
-                    class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-full"
+                    class="h-4 bg-gray-300 rounded-full dark:bg-gray-700 w-full"
                   />
                 </div>
                 <div
-                  class="grid grid-cols-5 gap-y-10 gap-x-6 py-4 border-t border-gray-200 text-gray-400 items-center"
+                  class="grid grid-cols-5 gap-y-10 gap-x-6 py-4 border-t border-gray-300 text-gray-400 items-center"
                 >
                   <div class="flex items-center col-span-2 text-gray-900">
-                    <div class="i-carbon-image bg-gray-200 h-18 w-18 mr-2" />
+                    <div class="i-carbon-image bg-gray-300 h-18 w-18 mr-2" />
                     <div
-                      class="h-4 ml-4 bg-gray-200 rounded-full dark:bg-gray-700 w-full"
+                      class="h-4 ml-4 bg-gray-300 rounded-full dark:bg-gray-700 w-full"
                     />
                   </div>
                   <div
-                    class="h-4 ml-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"
+                    class="h-4 ml-4 bg-gray-300 rounded-full dark:bg-gray-700 w-1/4"
                   />
                   <div>
                     <div
@@ -287,46 +217,46 @@ const formatDate = (date: Date) =>
                       data-testid="order-item-unitprice"
                     >
                       <div
-                        class="h-4 ml-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/4"
+                        class="h-4 ml-4 bg-gray-300 rounded-full dark:bg-gray-700 w-1/4"
                       />
                     </div>
                   </div>
                   <div
-                    class="h-4 ml-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
+                    class="h-4 ml-4 bg-gray-300 rounded-full dark:bg-gray-700 w-1/2"
                   />
                 </div>
               </div>
             </div>
           </div>
-          <div class="border-t border-gray-200 flex">
+          <div class="border-t border-gray-300 flex">
             <div class="flex-1 flex-col ml-4">
               <div class="md:flex md:flex-wrap py-6 md:py-10">
                 <div class="w-auto md:w-1/2 w-1/2 pr-4">
                   <div
-                    class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"
+                    class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-48 mb-4"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-32"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-32"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-8"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-8"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 w-48"
                   />
                 </div>
                 <div class="w-auto md:w-1/2">
                   <div
-                    class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"
+                    class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-48 mb-4"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-32"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-32"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-8"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-8"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 w-48"
                   />
                 </div>
               </div>
@@ -335,58 +265,58 @@ const formatDate = (date: Date) =>
               >
                 <div class="w-auto md:w-1/2">
                   <div
-                    class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"
+                    class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-48 mb-4"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-32"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-32"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-8"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-8"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 w-48"
                   />
                 </div>
                 <div class="w-auto md:w-1/2">
                   <div
-                    class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"
+                    class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-48 mb-4"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-32"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-32"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-8"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-8"
                   />
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 w-48"
                   />
                 </div>
               </div>
               <div class="border-t border-gray-100 py-6 md:py-10 space-y-4">
                 <div class="flex justify-between text-base font-medium">
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-12"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-12"
                   />
                   <div
                     class="flex gap-1 text-gray-600 font-normal"
                     data-testid="order-subtotal"
                   >
                     <div
-                      class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-16"
+                      class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-16"
                     />
                   </div>
                 </div>
                 <!--v-if-->
                 <div class="flex justify-between text-base font-medium">
                   <div
-                    class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-12"
+                    class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-12"
                   />
                   <div
                     class="flex gap-1 text-gray-600 font-normal"
                     data-testid="order-total"
                   >
                     <div
-                      class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 w-20"
+                      class="h-2 bg-gray-300 rounded-full dark:bg-gray-700 mb-2.5 w-20"
                     />
                   </div>
                 </div>

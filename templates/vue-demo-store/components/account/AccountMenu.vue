@@ -1,104 +1,177 @@
 <script setup lang="ts">
 import { SharedModal } from "~~/components/shared/SharedModal.vue";
-const { isLoggedIn, logout, user, refreshUser } = useUser();
-const isAccountMenuOpen = ref(false);
-const modal = inject<SharedModal>("modal") as SharedModal;
+import {
+  UserIcon,
+  ArrowRightOnRectangleIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline';
+import {
+  Dialog,
+  DialogPanel, TransitionChild, TransitionRoot,
+} from '@headlessui/vue';
 
-async function invokeLogout() {
-  await logout();
-  isAccountMenuOpen.value = false;
+const { isLoggedIn, logout } = useUser();
+const modal = inject<SharedModal>("modal") as SharedModal;
+const headerMode = useState<'default' | 'transparent'>('headerMode', () => 'default');
+const router = useRouter();
+const userMenuOpened = inject("userMenuOpened", ref(false));
+const close = () => {
+  userMenuOpened.value = false;
+}
+
+const openAccountOnDesktop = () => {
+  if (!isLoggedIn.value) {
+    modal.open('AccountLoginForm', {
+      position: 'side'
+    })
+  } else {
+    router.push('/account');
+  }
+}
+
+const openAccountOnMobile = () => {
+  if (!isLoggedIn.value) {
+    modal.open('AccountLoginForm', {
+      position: 'side'
+    })
+  } else {
+    userMenuOpened.value = true;
+  }
+}
+
+const invokeLogout = () => {
+  logout();
+  userMenuOpened.value = false;
 }
 </script>
 <template>
   <div class="md:w-auto">
     <div class="my-account-area">
-      <div v-show="!isLoggedIn">
-        <button
-          class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-          data-testid="header-sign-in-link"
-          @click="modal.open('AccountLoginForm')"
-        >
-          Sign in
-        </button>
-      </div>
-      <div v-if="isLoggedIn">
-        <div
-          class="inset-y-2 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0"
-        >
-          <div
-            class="w-7 h-7 i-carbon-user text-gray-600 hover:text-brand-primary sm:hidden hover:text-brand-primary"
-            @click="isAccountMenuOpen = !isAccountMenuOpen"
-          />
-          <button
-            type="button"
-            class="text-sm text-gray-700 focus:outline-none hidden sm:block"
-            data-testid="account-menu-hello-button"
-            @click="isAccountMenuOpen = !isAccountMenuOpen"
-          >
-            Hello, {{ user?.firstName }}!
-          </button>
-
-          <!-- Profile dropdown -->
-          <div class="relative">
-            <div>
-              <button
-                id="user-menu-button"
-                type="button"
-                class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                aria-expanded="false"
-                aria-haspopup="true"
-                @click="isAccountMenuOpen = !isAccountMenuOpen"
-              >
-                <span class="sr-only">Open user menu</span>
-              </button>
-            </div>
-            <Transition
-              enter-active-class="transition ease-out duration-100"
-              enter-from-class="transform opacity-0 scale-95"
-              enter-to-class="transform opacity-100 scale-100"
-              leave-active-class="transition ease-in duration-75"
-              leave-from-class="transform opacity-100 scale-100"
-              leave-to-class="transform opacity-0 scale-95"
-            >
-              <div
-                :class="[isAccountMenuOpen ? 'block' : 'hidden']"
-                class="z-20 origin-top-right absolute right-0 top-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="user-menu-button"
-                tabindex="-1"
-              >
-                <button
-                  id="user-menu-item-1"
-                  data-testid="header-my-account-link"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  role="menuitem"
-                  tabindex="-1"
-                  @click="$router.push('/account')"
-                >
-                  My Account
-                </button>
-                <button
-                  id="user-menu-item-2"
-                  data-testid="header-sing-out-link"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  role="menuitem"
-                  tabindex="-2"
-                  @click="invokeLogout"
-                >
-                  Sign out
-                </button>
-              </div>
-            </Transition>
-          </div>
-        </div>
-      </div>
+      <!-- UserIcon for desktop -->
+      <UserIcon
+        :class="[
+          'hidden md:block w-6 h-6 text-current cursor-pointer',
+          headerMode === 'transparent' ? 'hover:text-gray-300' : 'hover:text-gray-900'
+        ]"
+        @click="openAccountOnDesktop"
+      />
+      <!-- UserIcon for mobile -->
+      <UserIcon
+        :class="[
+          'block md:hidden w-6 h-6 text-current cursor-pointer',
+          headerMode === 'transparent' ? 'hover:text-gray-300' : 'hover:text-gray-900'
+        ]"
+        @click="openAccountOnMobile"
+      />
     </div>
-    <!-- <a
-    href="#"
-    class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-  >
-    Sign up
-  </a> -->
   </div>
+  <TransitionRoot
+    :show="userMenuOpened"
+    appear
+    as="template"
+  >
+    <Dialog
+      as="div"
+      class="lg:hidden"
+      @close="close"
+    >
+      <TransitionChild
+        as="template"
+        enter="duration-500 ease-in-out"
+        enter-from="translate-x-full"
+        enter-to="translate-x-0"
+        leave="duration-500 ease-out"
+        leave-from="translate-x-0"
+        leave-to="translate-x-full"
+      >
+        <div class="fixed inset-0 z-10 bg-gray-500 bg-opacity-60" />
+      </TransitionChild>
+      <TransitionChild
+        as="template"
+        enter="duration-500 ease-in-out"
+        enter-from="translate-x-full"
+        enter-to="translate-x-0"
+        leave="duration-500 ease-out"
+        leave-from="translate-x-0"
+        leave-to="translate-x-full"
+      >
+        <DialogPanel class="flex flex-col fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div class="container py-6 flex items-center justify-between">
+            <div>
+              <h4 class="font-medium text-lg">
+                Hello, Jonas Lindeborg
+              </h4>
+            </div>
+            <button
+              type="button"
+              class="-m-2.5 rounded-md p-2.5 text-gray-700 outline-none"
+              @click="close"
+            >
+              <span class="sr-only">Close menu</span>
+              <XMarkIcon
+                class="h-6 w-6"
+                aria-hidden="true"
+              />
+            </button>
+          </div>
+          <ul class="container space-y-1 mb-6">
+            <li>
+              <NuxtLink
+                to="/account"
+                class="flex items-center px-3 py-2 text-gray-600 text-base font-medium"
+                @click="close"
+              >
+                <span>Account Overview</span>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/account/profile"
+                class="flex items-center px-3 py-2 text-gray-600 text-base font-medium"
+                @click="close"
+              >
+                <span>My profile</span>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/account/address"
+                class="flex items-center px-3 py-2 text-gray-600 text-base font-medium"
+                @click="close"
+              >
+                <span>Addresses</span>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/account/payment"
+                class="flex items-center px-3 py-2 text-gray-600 text-base font-medium"
+                @click="close"
+              >
+                <span>Payment methods</span>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/account/order"
+                class="flex items-center px-3 py-2 text-gray-600 text-base font-medium"
+                @click="close"
+              >
+                <span>Orders</span>
+              </NuxtLink>
+            </li>
+          </ul>
+          <div class="container">
+            <button
+              class="flex items-center border border-gray-300 shadow-sm py-2 px-4 hover:bg-gray-50"
+              @click="invokeLogout()"
+            >
+              <ArrowRightOnRectangleIcon class="h-5 w-5 text-gray-500" />
+              <span class="ml-2 text-gray-700 text-sm font-medium">Logout</span>
+            </button>
+          </div>
+        </DialogPanel>
+      </TransitionChild>
+    </Dialog>
+  </TransitionRoot>
 </template>

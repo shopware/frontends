@@ -5,122 +5,91 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
+import DefaultLayout from './default.vue';
+import {
+  ArrowRightOnRectangleIcon
+} from '@heroicons/vue/24/outline';
 useAuthGuardRedirection();
 
-// Navigation for Account page
-const { loadNavigationElements } = useNavigation();
 const { logout } = useUser();
 const router = useRouter();
-
-const { data } = await useAsyncData("mainNavigation", () => {
-  return loadNavigationElements({ depth: 2 });
-});
-provide("swNavigation-main-navigation", data);
-
-const { loadNavigationElements: loadFooterNavigationElements } = useNavigation({
-  type: "footer-navigation",
-});
-const { data: footerData } = await useAsyncData("mainFooterNavigation", () => {
-  return loadFooterNavigationElements({ depth: 2 });
-});
 
 async function invokeLogout() {
   logout();
   router.push("/");
 }
 
-provide("swNavigation-footer-navigation", footerData);
 </script>
 
 <template>
-  <div>
-    <SharedModal />
-    <LayoutHeader />
-    <LayoutNotifications />
-    <LayoutBreadcrumbs />
-    <div class="max-w-screen-xl mx-auto min-h-full">
-      <div class="m-10">
-        <div class="account-inner">
-          <div class="md:grid md:grid-cols-3 md:gap-6">
-            <aside class="block lg:w-64 md:col-span-" aria-label="Sidebar">
-              <div
-                class="overflow-y-auto md:py-4 md:px-3 md:bg-gray-50 text-base font-normal text-gray-500 rounded"
-              >
-                <h1
-                  class="self-center text-xl px-0 md:px-2 py-2 mb-2 font-semibold whitespace-nowrap"
-                >
-                  My account
-                </h1>
-                <ul class="space-y-2">
-                  <li>
-                    <RouterLink
-                      to="/account"
-                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
-                    >
-                      <div i-carbon-dashboard text-xl inline-block />
-                      <span class="ml-3">Account Overview</span>
-                    </RouterLink>
-                  </li>
-                  <li>
-                    <RouterLink
-                      to="/account/profile"
-                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
-                    >
-                      <div i-carbon-user text-xl inline-block />
-                      <span class="ml-3">My profile</span>
-                    </RouterLink>
-                  </li>
-                  <li>
-                    <RouterLink
-                      to="/account/address"
-                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
-                    >
-                      <div i-carbon-home text-xl inline-block />
-                      <span class="ml-3">My address</span>
-                    </RouterLink>
-                  </li>
-                  <li>
-                    <RouterLink
-                      to="/account/payment"
-                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
-                    >
-                      <div i-carbon-wallet text-xl inline-block />
-                      <span class="ml-3">Payment</span>
-                    </RouterLink>
-                  </li>
-                </ul>
-                <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200">
-                  <li>
-                    <RouterLink
-                      to="/account/order"
-                      class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
-                    >
-                      <div i-carbon-order-details text-xl inline-block />
-                      <span class="ml-3">Order history</span>
-                    </RouterLink>
-                  </li>
-                  <li>
-                    <button
-                      class="flex items-center rounded-lg px-0 md:px-2 py-2 hover:text-brand-primary hover:bg-gray-100 w-full"
-                      @click="invokeLogout()"
-                    >
-                      <div i-carbon-logout text-xl inline-block />
-                      <span class="ml-3">Logout</span>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </aside>
-            <main class="md:col-span-2">
-              <slot />
-            </main>
-          </div>
+  <DefaultLayout>
+    <div class="container flex md:space-x-8 mt-6 justify-between">
+      <aside
+        :class="{
+          'w-70 hidden md:block': true,
+        }"
+      >
+        <h4 class="font-medium text-lg mb-8">Hello, Jonas Lindeborg</h4>
+        <ul class="space-y-1 mb-8">
+          <li>
+            <NuxtLink
+              to="/account"
+              class="flex items-center px-3 py-2 text-gray-700 text-sm font-medium"
+            >
+              <span>Account Overview</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/account/profile"
+              class="flex items-center px-3 py-2 text-gray-700 text-sm font-medium"
+            >
+              <span>My profile</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/account/address"
+              class="flex items-center px-3 py-2 text-gray-700 text-sm font-medium"
+            >
+              <span>Addresses</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/account/payment"
+              class="flex items-center px-3 py-2 text-gray-700 text-sm font-medium"
+            >
+              <span>Payment methods</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/account/order"
+              class="flex items-center px-3 py-2 text-gray-700 text-sm font-medium"
+            >
+              <span>Orders</span>
+            </NuxtLink>
+          </li>
+        </ul>
+        <div>
+          <button
+            class="flex items-center border border-gray-300 shadow-sm py-2 px-4 hover:bg-gray-50"
+            @click="invokeLogout()"
+          >
+            <ArrowRightOnRectangleIcon class="h-5 w-5 text-gray-500"/>
+            <span class="ml-2 text-gray-700 text-sm font-medium">Logout</span>
+          </button>
         </div>
-      </div>
+      </aside>
+      <main class="flex-1 w-full md:pl-26">
+        <slot />
+      </main>
     </div>
-
-    <CheckoutSideCart />
-    <LayoutFooter />
-  </div>
+  </DefaultLayout>
 </template>
+<style scoped>
+.router-link-active {
+  @apply bg-gray-100 text-gray-900;
+}
+</style>

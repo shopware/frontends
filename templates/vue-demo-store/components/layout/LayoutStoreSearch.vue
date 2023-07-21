@@ -3,6 +3,11 @@ import { RouterLink } from "vue-router";
 import { getProductUrl } from "@shopware-pwa/helpers-next";
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
+import {
+  MagnifyingGlassIcon,
+} from '@heroicons/vue/24/outline';
+
+const headerMode = useState<'default' | 'transparent'>('headerMode');
 
 withDefaults(
   defineProps<{
@@ -71,12 +76,15 @@ watch(enter, (value) => {
 <template>
   <div
     ref="searchContainer"
-    class="relative group p-3 pr-0 rounded-lg transition duration-300 hover:shadow-md inline-block"
-    :class="[active ? 'shadow-lg' : 'shadow']"
+    class="sw-search-input lg:min-w-[240px] relative group py-2.25 px-3 md:py-2 pr-0 transition duration-300 inline-block"
+    :class="[headerMode === 'transparent' ? 'bg-white bg-opacity-25 text-white' : 'bg-gray-100 text-gray-400']"
   >
     <div class="flex items-center">
-      <div
-        class="sw-search-input i-carbon-search flex-none h-6 w-6 text-gray-400 group-hover:text-brand-primary cursor-pointer"
+      <MagnifyingGlassIcon
+        :class="[
+          'sw-search-input-icon flex-none h-5 w-5 cursor-pointer',
+          headerMode === 'transparent' ? 'text-white' : 'text-gray-700'
+        ]"
       />
 
       <input
@@ -84,8 +92,11 @@ watch(enter, (value) => {
         v-model="typingQuery"
         data-testid="layout-search-input"
         type="text"
-        class="sw-search-input text-gray-400 placeholder:text-gray-400 focus:text-gray-700 p-2 ml-2 lg:ml-0 xl:ml-2 grow h-6 transition duration-200 focus:outline-none w-56 lg:w-10/12"
-        placeholder="Search products"
+        :class="[
+          'sw-search-input text-base md:text-sm placeholder:capitalize font-normal mx-2.5 md:ml-0 xl:ml-2 grow h-6 transition duration-200 focus:outline-none w-56 md:w-10/12',
+          headerMode === 'transparent' ? 'bg-transparent placeholder:text-white text-white' : 'bg-gray-100 placeholder:text-gray-500 text-gray-700'
+        ]"
+        :placeholder="$t('search')"
         @click="active = true"
       >
     </div>
@@ -130,3 +141,18 @@ watch(enter, (value) => {
     </div>
   </div>
 </template>
+<style>
+.scrolling-down .header-default .header-mobile .sw-search-input {
+  height: 0 !important;
+  overflow: hidden;
+  padding: 0;
+  opacity: 0;
+  margin: 0;
+}
+.header-mobile .sw-search-input {
+  height: 42px;
+  opacity: 1;
+  display: flex;
+  transition: height 0.3s;
+}
+</style>

@@ -1,4 +1,14 @@
 {
   // https://v3.nuxtjs.org/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  "overrides": [
+    {
+      "compilerOptions": {
+        "types": [
+          "@nuxt/types",
+          "@nuxtjs/i18n",
+        ]
+      }
+    },
+  ]
 }

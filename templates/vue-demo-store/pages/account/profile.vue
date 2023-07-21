@@ -1,19 +1,15 @@
-<script lang="ts">
-export default {
-  name: "ProfilePage",
-};
-</script>
-
 <script setup lang="ts">
+import {
+  ChevronDownIcon,
+} from '@heroicons/vue/20/solid';
+
 definePageMeta({
   layout: "account",
 });
 
-const currentTab = ref<number>(1);
-
 useBreadcrumbs([
   {
-    name: "Account Overview",
+    name: "My Account",
     path: "/account",
   },
   {
@@ -21,69 +17,79 @@ useBreadcrumbs([
     path: "/account/profile",
   },
 ]);
-const toggleTabs = (tabNumber: number) => {
-  currentTab.value = tabNumber;
+const { user } = useUser();
+
+</script>
+
+<script lang="ts">
+
+export default {
+  name: "ProfilePage",
 };
+
+const toggleTabs = (tabNumber: number) => {
+ currentTab.value = tabNumber;
+};
+
+const currentTab = ref<number>(1);
 </script>
 
 <template>
-  <div class="container mx-auto my-8">
-    <div class="mb-4 border-b border-gray-200">
-      <ul
-        id="myTab"
-        class="flex flex-wrap -mb-px font-medium md:text-2xl md:space-x-8"
-        data-tabs-toggle="#profileTabContent"
-        role="tablist"
+  <section class="flex flex-col space-y-10 mb-24">
+    <section>
+      <h3 class="mb-4">
+        {{ $t('my_profile') }}
+      </h3>
+      <p
+        v-if="currentTab === 1"
+        class="text-base"
       >
-        <li class="w-1/2 md:w-auto" role="presentation">
-          <a
-            class="inline-block pb-3 rounded-t-lg hover:text-brand-primary"
-            :class="[
-              currentTab !== 1
-                ? 'text-gray-900'
-                : 'text-brand-primary border-b-2 border-brand-primary',
-            ]"
-            @click="() => toggleTabs(1)"
-          >
-            Personal data
-          </a>
-        </li>
-        <li class="w-1/2 md:w-auto" role="presentation">
-          <a
-            class="inline-block pb-3 rounded-t-lg hover:text-brand-primary"
-            :class="[
-              currentTab !== 2
-                ? 'text-gray-900'
-                : 'text-brand-primary border-b-2 border-brand-primary',
-            ]"
-            @click="() => toggleTabs(2)"
-          >
-            Change password
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="relative flex flex-col min-w-0 break-words w-full mb-6">
-      <div class="py-5 flex-auto">
-        <div
-          :class="[
-            'cms-block-product-description-reviews__description',
-            currentTab !== 1 ? 'hidden' : 'block',
-          ]"
-        >
-          <AccountPersonalData />
-        </div>
-        <div
-          :class="[
-            'cms-block-product-description-reviews__reviews',
-            currentTab !== 2 ? 'hidden' : 'block',
-          ]"
-        >
-          <AccountChangePassword />
-        </div>
+        {{ $t('check_your_personal_data') }}
+      </p>
+      <p
+        v-if="currentTab === 2"
+        class="text-base"
+      >
+        {{ $t('change_password') }}
+      </p>
+    </section>
+    <section>
+      <AccountPersonalData v-if="currentTab === 1" />
+      <AccountChangePassword v-else />
+    </section>
+    <section v-if="currentTab === 1">
+      <h4 class="text-lg font-medium mb-4">
+        {{ $t('login_data') }}
+      </h4>
+      <p class="text-sm text-gray-900">
+        {{ user?.email }}
+      </p>
+      <div class="flex items-center mt-6">
+        <p class="mr-1 text-sm text-gray-700 font-medium">
+          {{ $t('change_email_address') }}
+        </p>
+        <ChevronDownIcon class="w-5 h-5" />
       </div>
-    </div>
-  </div>
+      <div
+        class="flex items-center mt-6 cursor-pointer"
+        @click="() => toggleTabs(2)"
+      >
+        <p class="mr-1 text-sm text-gray-700 font-medium">
+          {{ $t('change_password') }}
+        </p>
+        <ChevronDownIcon class="w-5 h-5" />
+      </div>
+    </section>
+    <section v-else>
+      <div
+        class="flex items-center mt-1 cursor-pointer"
+        @click="() => toggleTabs(1)"
+      >
+        <p class="mr-1 text-sm text-gray-700 font-medium">
+          {{ $t('check_your_personal_data') }}
+        </p>
+        <ChevronDownIcon class="w-5 h-5" />
+      </div>
+    </section>
+  </section>
 </template>
-
-<style scoped></style>

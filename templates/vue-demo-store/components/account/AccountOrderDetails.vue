@@ -30,7 +30,7 @@ export default {
       <div class="col-span-2">Product</div>
       <div>Quantity</div>
       <div>Price</div>
-      <div class="justify-self-end text-primary-dark">Subtotal</div>
+      <div class="justify-self-end text-primary-dark">{{ $t('subtotal') }}</div>
     </div>
 
     <AccountOrderLineItem

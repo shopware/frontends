@@ -39,12 +39,12 @@ export default {
         <p class="text-xl md:text-3xl font-semibold mt-4 mb-8">
           {{ errorMessage }}
         </p>
-        <nuxt-link
+        <NuxtLink
           to="/"
           class="w-full lg:w-auto justify-center py-3 px-8 border shadow-sm text-sm font-medium rounded-md text-white bg-brand-light hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
         >
           Go back home
-        </nuxt-link>
+        </NuxtLink>
       </div>
     </div>
     <div class="flex items-center justify-center">

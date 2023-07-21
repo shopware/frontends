@@ -63,7 +63,7 @@ export default {
       <span v-else>No products found</span>
     </h1>
 
-    <ListingFilters class="mb-4" />
+    <!-- <ListingFilters class="mb-4" /> -->
 
     <hr />
 

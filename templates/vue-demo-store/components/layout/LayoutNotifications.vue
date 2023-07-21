@@ -4,7 +4,7 @@ const { notifications, removeOne } = useNotifications();
 <template>
   <div
     data-testid="notification-container"
-    class="fixed right-5 bottom-10 sm:top-20 z-50 max-h-fit"
+    class="fixed right-5 bottom-10 sm:top-20 z-100 max-h-fit"
   >
     <LayoutNotification
       v-for="notification in notifications"

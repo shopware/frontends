@@ -11,7 +11,7 @@ defineEmits<{
 <template>
   <div
     v-if="total > 1"
-    class="bg-white justify-center px-4 py-3 flex border-t border-gray-200 sm:px-6"
+    class="bg-white justify-center px-4 py-3 flex border-t border-gray-300 sm:px-6"
   >
     <nav
       class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
@@ -36,7 +36,7 @@ defineEmits<{
       </button>
       <span
         v-if="current - 1 > 2"
-        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700"
+        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-900"
       >
         ...
       </span>
@@ -64,7 +64,7 @@ defineEmits<{
       </button>
       <span
         v-if="total - current > 2"
-        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700"
+        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-900"
       >
         ...
       </span>

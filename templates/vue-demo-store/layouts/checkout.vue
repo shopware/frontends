@@ -5,9 +5,10 @@
     <SharedModal />
     <LayoutCheckoutHeader />
     <LayoutNotifications />
-    <div class="max-w-screen-xl mx-auto">
+    <div class="container">
       <slot />
     </div>
     <CheckoutSideCart />
+    <LayoutCheckoutFooter />
   </div>
 </template>

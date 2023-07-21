@@ -1,121 +1,101 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 import { getTranslatedProperty, getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
+import {
+  Popover,
+  PopoverButton,
+  PopoverGroup,
+  PopoverPanel,
+} from '@headlessui/vue';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon
+} from '@heroicons/vue/20/solid';
+import { Category } from "@shopware-pwa/types";
+
 const { navigationElements } = useNavigation();
+const router = useRouter();
 
-const currentMenuPosition = ref<string | null>(null);
-
-const menuHtmlElement = ref(null);
-
-onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
+const test = (item: Category) => {
+  if (!item?.children?.length) {
+    router.push(`/${item?.seoUrls?.[0]?.seoPathInfo}`);
+  }
+}
 </script>
 
 <template>
-  <!-- eslint-disable vue/no-v-html -->
-  <nav class="hidden lg:flex space-x-4 items-center lg:w-7/12">
-    <div
+  <PopoverGroup class="hidden md:flex space-x-7 items-center">
+    <Popover
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
-      ref="menuHtmlElement"
-      class="relative"
-      @mouseover="currentMenuPosition = navigationElement.id"
     >
-      <RouterLink
-        :to="'/' + navigationElement.seoUrls?.[0]?.seoPathInfo"
-        class="text-base font-medium text-gray-500 hover:text-gray-900"
+      <PopoverButton
+        class="flex items-center gap-1 text-sm font-medium uppercase text-current outline-none"
+        v-slot="{ open }"
+        @click="test(navigationElement)"
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
-      </RouterLink>
+        <template v-if="navigationElement.children?.length">
+          <ChevronDownIcon v-if="!open" class="h-5 w-5 flex-none text-current" aria-hidden="true" />
+          <ChevronUpIcon v-if="open" class="h-5 w-5 flex-none text-current" aria-hidden="true" />
+        </template>
+      </PopoverButton>
 
-      <!--
-            Flyout menu, show/hide based on flyout menu state.
-
-            Entering: "transition ease-out duration-200"
-              From: "opacity-0 translate-y-1"
-              To: "opacity-100 translate-y-0"
-            Leaving: "transition ease-in duration-150"
-              From: "opacity-100 translate-y-0"
-              To: "opacity-0 translate-y-1"
-          -->
-      <client-only>
-        <div
-          v-if="
-            currentMenuPosition === navigationElement.id &&
-              navigationElement?.children?.length
-          "
-          class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/4"
-          @mouseleave="currentMenuPosition = null"
-        >
-          <div
-            class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden"
-          >
-            <template
-              v-for="(childElement, index) in navigationElement.children"
-              :key="childElement.id"
-            >
-              <div
-                :class="{
-                  'sm:pb-0': index !== navigationElement.children.length - 1,
-                }"
-                class="relative grid gap-6 bg-white px-3 py-2 sm:gap-6 sm:p-3"
-              >
-                <RouterLink
-                  v-if="
-                    typeof childElement?.seoUrls?.[0]?.seoPathInfo !==
-                      'undefined'
-                  "
-                  :to="'/' + childElement?.seoUrls?.[0]?.seoPathInfo"
-                  class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
-                >
-                  <div
-                    class="flex flex-col flex-grow pl-2"
-                    :class="{
-                      'max-w-200px md:max-w-300px': !!childElement.media,
-                    }"
-                  >
-                    <p class="text-base font-medium text-gray-900">
-                      {{ getTranslatedProperty(childElement, "name") }}
-                    </p>
-                    <p
-                      v-if="getTranslatedProperty(childElement, 'description')"
-                      class="mt-1 text-sm text-gray-500"
-                      v-html="
-                        getTranslatedProperty(childElement, 'description')
-                      "
-                    />
-                  </div>
-                  <div
-                    v-if="childElement.media"
-                    class="flex"
-                  >
-                    <img
-                      :src="getSmallestThumbnailUrl(childElement.media)"
-                      class="object-scale-down h-48 w-px-200 rounded-md"
-                      alt="Category image"
-                    >
-                  </div>
-                </RouterLink>
-                <div
-                  v-else
-                  class="px-4 py-2 sm:py-3"
-                >
-                  <p class="text-base font-medium text-gray-500">
+      <transition v-if="navigationElement.children?.length" enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+        <PopoverPanel class="absolute bottom-0 left-0 translate translate-y-full w-full z-10 overflow-hidden bg-white shadow-lg ring-1 ring-gray-900/5" v-slot="{ close }">
+          <div class="container flex justify-between gap-8 py-12">
+            <div class="flex gap-8">
+              <div v-for="(childElement, index) in navigationElement.children" :key="childElement.id" class="group min-w-[218px] relative flex text-sm leading-6">
+                <div class="flex-auto">
+                  <RouterLink :to="'/' + childElement?.seoUrls?.[0]?.seoPathInfo" @click="close" class="block font-medium text-gray-900 text-sm">
                     {{ getTranslatedProperty(childElement, "name") }}
-                  </p>
+                  </RouterLink>
+                  <ul
+                    class="flex flex-col gap-4 mt-4"
+                  >
+                    <template
+                      v-for="(subChildElement, ind) in childElement.children"
+                      :key="subChildElement.id"
+                    >
+                      <RouterLink
+                        v-if="
+                          typeof subChildElement?.seoUrls?.[0]?.seoPathInfo !==
+                            'undefined'
+                        "
+                        :to="'/' + subChildElement?.seoUrls?.[0]?.seoPathInfo"
+                        @click="close"
+                      >
+                        <div
+                          class="flex flex-col flex-grow"
+                          :class="{
+                            'max-w-200px md:max-w-300px': !!subChildElement.media,
+                          }"
+                        >
+                          <p class="text-sm font-normal text-gray-500">
+                            {{ getTranslatedProperty(subChildElement, "name") }}
+                          </p>
+                        </div>
+                      </RouterLink>
+                    </template>
+                  </ul>
                 </div>
               </div>
-            </template>
-            <div
-              class="px-5 py-5 bg-gray-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8"
-            >
-              <div
-                class="flow-root"
-                v-html="getTranslatedProperty(navigationElement, 'description')"
-              />
+            </div>
+            <div class="flex gap-8">
+              <template v-for="(childElement, index) in navigationElement.children" :key="childElement.id">
+                <div v-if="childElement.media" class="flex flex-col gap-4">
+                  <img
+                    :src="getSmallestThumbnailUrl(childElement.media)"
+                    class="object-cover w-[214px] aspect-square"
+                    alt="Category image"
+                  />
+                  <div v-html="childElement.description" />
+                </div>
+              </template>
             </div>
           </div>
-        </div>
-      </client-only>
-    </div>
-  </nav>
+        </PopoverPanel>
+      </transition>
+    </Popover>
+  </PopoverGroup>
 </template>

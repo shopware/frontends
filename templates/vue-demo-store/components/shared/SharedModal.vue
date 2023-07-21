@@ -1,7 +1,16 @@
 <script setup lang="ts">
+import {
+  Dialog,
+  DialogPanel,
+  TransitionRoot,
+  TransitionChild
+} from '@headlessui/vue';
+
 export type SharedModal = {
   modalContent: string;
-  modalProps: object | null;
+  modalProps: {
+    position?: string
+  } | null;
   open: (component: string, props?: object | null) => void;
   close: () => void;
 };
@@ -9,35 +18,69 @@ export type SharedModal = {
 const { close, modalContent, modalProps } = inject<SharedModal>(
   "modal"
 ) as SharedModal;
+
+const animation = computed(() => {
+  if (unref(modalProps)?.position === 'side') {
+    return {
+      'enter': 'duration-300 ease-out',
+      'enter-from': 'translate-x-full',
+      'enter-to': 'translate-x-0',
+      'leave': 'duration-200 ease-in',
+      'leave-from': 'translate-x-0',
+      'leave-to': 'translate-x-full',
+    }
+  } else {
+    return {
+      'enter': 'duration-300 ease-out',
+      'enter-from': 'translate-y-full sm:opacity-0',
+      'enter-to': 'translate-y-0 sm:opacity-100',
+      'leave': 'duration-200 ease-in',
+      'leave-from': 'translate-y-0 sm:opacity-100',
+      'leave-to': 'translate-y-full sm:opacity-0',
+    }
+  }
+})
 </script>
 
 <template>
-  <div
-    v-if="modalContent.length"
-    class="fixed z-10 inset-0 overflow-y-auto"
-    aria-labelledby="modal-title"
-    role="dialog"
-    aria-modal="true"
+  <TransitionRoot
+    :show="!!modalContent.length"
+    appear
+    as="template"
   >
-    <div
-      class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    <Dialog
+      as="div" 
+      class="fixed z-50 inset-0 overflow-y-auto"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+      @close="close"
     >
-      <div
-        class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-        aria-hidden="true"
-        @click="close"
-      />
-      <span
-        class="hidden sm:inline-block sm:align-middle sm:h-screen"
-        aria-hidden="true"
+      <TransitionChild
+        as="template"
+        enter="duration-300 ease-out"
+        enter-from="opacity-0"
+        enter-to="opacity-100"
+        leave="duration-200 ease-in"
+        leave-from="opacity-100"
+        leave-to="opacity-0"
       >
-        &#8203;
-      </span>
-      <div
-        class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all duration-500 sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+        <div class="fixed inset-0 z-50 bg-gray-500 bg-opacity-60" />
+      </TransitionChild>
+      <TransitionChild
+        as="template"
+        v-bind="animation"
       >
-        <component :is="modalContent" v-bind="modalProps" @close="close" />
-      </div>
-    </div>
-  </div>
+        <DialogPanel 
+          class="flex flex-col z-60 fixed overflow-y-auto bg-white sm:ring-1 sm:ring-gray-900/10"
+          :class="{
+            'w-full sm:max-w-lg bottom-0 sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 h-max max-h-100vh sm:max-h-90vh': modalProps?.position !== 'side',
+            'w-full sm:max-w-[448px] top-0 right-0 bottom-0': modalProps?.position === 'side',
+          }"
+        >
+          <component :is="modalContent" v-bind="modalProps" @close="close" />
+        </DialogPanel>
+      </TransitionChild>
+    </Dialog>
+  </TransitionRoot>
 </template>
