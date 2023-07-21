@@ -3,13 +3,9 @@ const props = defineProps<{
   orderId: string;
 }>();
 
-const {
-  loadOrderDetails,
-  personalDetails,
-  billingAddress,
-  shippingAddress,
-  order,
-} = useOrderDetails(props.orderId);
+const { loadOrderDetails, order, hasDocuments, documents } = useOrderDetails(
+  props.orderId,
+);
 
 onMounted(() => {
   loadOrderDetails();
@@ -38,5 +34,6 @@ export default {
       :key="lineItem.identifier"
       :line-item="lineItem"
     />
+    <AccountOrderDownloads v-if="hasDocuments" :documents="documents" />
   </div>
 </template>

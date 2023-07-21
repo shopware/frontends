@@ -16,7 +16,7 @@ nav:
 
 # Setup Templates
 
-Shopware Frontends offers two shortcuts to getting started with your custom frontend. These so-called templates offer different levels of "completeness" of a project.
+Shopware Frontends offers shortcuts to getting started with your custom frontend. These so-called templates offer different levels of "completeness" of a project.
 
 :::tip HINT 💡
 You can also integrate Shopware Frontends as an **npm package** into your existing [custom Javascript project](./templates/custom-project).
@@ -24,7 +24,7 @@ You can also integrate Shopware Frontends as an **npm package** into your existi
 
 ## Demo Store Template
 
-<img src="../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
+<a href="https://frontends-demo.vercel.app/" target="_blank"><img src="../.assets/demo-store-template.jpg" alt="Demo Store Template Screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" /></a>
 
 :::info
 The **Demo Store Template** is not production-ready. It is only a reference implementation that contains most of the features which you can use as a starting point. It is not possible to update it automatically or install Shopware extensions on it.
@@ -61,7 +61,7 @@ This can be applicable if you have an existing frontend application and you want
 
 ## Framework supporting Vue
 
-In theory, every place where the Vue instance is available, is supported by Shopware Frontends too. 
+In theory, every place where the Vue instance is available, is supported by Shopware Frontends too.
 
 The only requirement is to have a possibility to register a Vue 3 plugin, and that's what can be done in [Astro.js](https://astro.build/) as well.
 

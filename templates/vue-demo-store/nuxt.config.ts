@@ -49,8 +49,47 @@ export default defineNuxtConfig({
      */
     useMeta: "~/composables/useMeta",
   },
+  routeRules: {
+    "/": {
+      isr: 60 * 60 * 24,
+    },
+    "/checkout": {
+      ssr: false,
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    },
+    "/checkout/**": {
+      ssr: false,
+    },
+    "/login": {
+      ssr: false,
+    },
+    "/register": {
+      ssr: false,
+    },
+    "/reset-password": {
+      ssr: false,
+    },
+    "/wishlist": {
+      ssr: false,
+    },
+    "/account": {
+      ssr: false,
+    },
+    "/account/**": {
+      ssr: false,
+    },
+    "/**": {
+      isr: 60 * 60 * 24,
+    },
+  },
+  /**
+   * Commented because of the StackBlitz error
+   * Issue: https://github.com/shopware/frontends/issues/88
+   */
   typescript: {
-    typeCheck: true,
+    // typeCheck: true,
     strict: true,
   },
   modules: [
@@ -98,10 +137,6 @@ export default defineNuxtConfig({
   },
   vueuse: {
     ssrHandlers: true,
-  },
-  // Unocss bug fix https://github.com/nuxt/framework/issues/7623
-  experimental: {
-    inlineSSRStyles: false,
   },
   nitro: {
     compressPublicAssets: true,
@@ -198,6 +233,9 @@ export default defineNuxtConfig({
       },
     },
   },
+  css: [
+    "@unocss/reset/tailwind-compat.css", // needed to reset styles see https://unocss.dev/guide/style-reset (@unocss/reset)
+  ],
   router: {
     options: {
       linkExactActiveClass: "text-brand-primary",

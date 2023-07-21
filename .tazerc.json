@@ -1,0 +1,10 @@
+{
+  "exclude": [],
+  "write": true,
+  "install": true,
+  "recursive": true,
+  "packageMode": {
+    "axios": "ignore",
+    "@types/node": "ignore"
+  }
+}

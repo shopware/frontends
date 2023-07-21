@@ -1,8 +1,9 @@
 /**
  * Guard for checking if the user is authenticated.
- * By default it redirects to homepage, but you can pass destination as an argument or edit this composable to suit your needs.
+ * The check is done on the client side only. If the user is not logged in, the user is redirected to the homepage.
+ * If the user is not logged in and a destination is provided, the user is redirected to the destination.
  */
-export function useAuthGuardRedirection(params?: { to: "string" }) {
+export function useAuthGuardRedirection(params?: { to: string }) {
   const { isLoggedIn } = useUser();
   const router = useRouter();
   const { pushInfo } = useNotifications();
@@ -10,13 +11,21 @@ export function useAuthGuardRedirection(params?: { to: "string" }) {
   watch(
     isLoggedIn,
     (isLoggedIn) => {
-      if (!isLoggedIn) {
-        router.push(params?.to || "/");
-        pushInfo(`You're logged out.`);
+      if (process.client && !isLoggedIn) {
+        if (!params?.to) {
+          router.push({ path: "/" });
+          pushInfo(
+            `Login is required to access this page. You are redirected to the homepage.`,
+          );
+        }
+        if (params?.to) {
+          router.push({ path: params.to });
+          pushInfo(`You are redirected to ${params.to}.`);
+        }
       }
     },
     {
       immediate: true,
-    }
+    },
   );
 }

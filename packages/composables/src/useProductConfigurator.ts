@@ -1,6 +1,5 @@
 import { ref, Ref, computed, unref, ComputedRef, inject } from "vue";
 import { Product, PropertyGroup } from "@shopware-pwa/types";
-import { ProductResponse } from "./types";
 import { useProduct, useShopwareContext } from ".";
 import { invokePost, getProductEndpoint } from "@shopware-pwa/api-client";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
@@ -9,15 +8,16 @@ export type UseProductConfiguratorReturn = {
   /**
    * Handler for action when the selected option is changed
    */
-  handleChange: (
+  handleChange(
     attribute: string,
     option: string,
-    onChangeHandled?: () => void
-  ) => Promise<void>;
+    onChangeHandled: () => void,
+  ): Promise<void>;
 
-  findVariantForSelectedOptions: (options?: {
+  findVariantForSelectedOptions(options?: {
     [key: string]: string;
-  }) => Promise<Product | undefined>;
+  }): Promise<Product | undefined>;
+
   /**
    * Indicates if the options are being (re)loaded
    */
@@ -35,7 +35,9 @@ export type UseProductConfiguratorReturn = {
 };
 
 /**
- * Product options - {@link UseProductConfiguratorReturn}
+ * Composable to change product variant.
+ * @public
+ * @category Product
  */
 export function useProductConfigurator(): UseProductConfiguratorReturn {
   const { apiInstance } = useShopwareContext();
@@ -44,7 +46,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   if (!product.value) {
     // TODO link docs with composables context usage
     throw new Error(
-      "Product configurator cannot be used without the product context."
+      "Product configurator cannot be used without the product context.",
     );
   }
 
@@ -58,7 +60,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   const findGroupCodeForOption = (optionId: string) => {
     const group = getOptionGroups.value.find((optionGroup) => {
       const optionFound = optionGroup.options?.find(
-        (option: any) => option.id === optionId
+        (option: any) => option.id === optionId,
       );
       return !!optionFound;
     });
@@ -67,16 +69,16 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   };
 
   // create a group -> optionId map
-  product.value.optionIds?.forEach((optionId) => {
+  product.value.optionIds?.forEach((optionId: string) => {
     const optionGroupCode = findGroupCodeForOption(optionId);
     if (optionGroupCode) {
       selected.value[optionGroupCode] = optionId;
     }
   });
 
-  const findVariantForSelectedOptions = async (options?: {
+  async function findVariantForSelectedOptions(options?: {
     [code: string]: string;
-  }): Promise<Product | undefined> => {
+  }): Promise<Product | undefined> {
     const filter = [
       {
         type: "equals",
@@ -109,19 +111,19 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
             },
           },
         },
-        apiInstance
+        apiInstance,
       );
       return (response as { data?: { elements?: Array<Product> } })?.data
         ?.elements?.[0]; // return first matching product
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);
     }
-  };
+  }
 
   const handleChange = async (
     group: string,
     option: string,
-    onChangeHandled?: () => void
+    onChangeHandled?: () => void,
   ): Promise<void> => {
     selected.value = Object.assign({}, selected.value, {
       [group]: option,

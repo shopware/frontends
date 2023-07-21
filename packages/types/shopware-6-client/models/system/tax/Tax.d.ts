@@ -1,5 +1,5 @@
 import { Product } from "../../content/product/Product";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -7,6 +7,12 @@ import { CustomField } from "../../common/CustomField";
 export type Tax = {
   taxRate: number;
   name: string;
-  products: Product[] | null;
-  customFields: CustomField[];
+  products?: Product[] | null;
+  customFields: CustomFields | null;
+  translated: [];
+  createdAt: Date | string;
+  updatedAt: Date | string | null;
+  position: number;
+  id: string;
+  apiAlias: string;
 };

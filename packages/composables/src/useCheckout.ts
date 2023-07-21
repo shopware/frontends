@@ -7,6 +7,7 @@ import {
   CreateOrderParams,
   Order,
   BillingAddress,
+  ShopwareSearchParams,
 } from "@shopware-pwa/types";
 import {
   getAvailableShippingMethods,
@@ -14,14 +15,15 @@ import {
   createOrder as createApiOrder,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext, useCart, useSessionContext } from ".";
+import deepMerge from "./helpers/deepMerge";
 
 export type UseCheckoutReturn = {
   /**
    * Fetches all available shipping methods
    */
-  getShippingMethods: (options?: {
+  getShippingMethods(options?: {
     forceReload: boolean;
-  }) => Promise<ComputedRef<ShippingMethod[]>>;
+  }): Promise<ComputedRef<ShippingMethod[]>>;
   /**
    * List of available shipping methods
    */
@@ -29,9 +31,9 @@ export type UseCheckoutReturn = {
   /**
    * Fetches all available payment methods
    */
-  getPaymentMethods: (options?: {
+  getPaymentMethods(options?: {
     forceReload: boolean;
-  }) => Promise<ComputedRef<PaymentMethod[]>>;
+  }): Promise<ComputedRef<PaymentMethod[]>>;
   /**
    * List of available payment methods
    */
@@ -39,7 +41,7 @@ export type UseCheckoutReturn = {
   /**
    * Creates order based on the current cart
    */
-  createOrder: (params?: CreateOrderParams) => Promise<Order>;
+  createOrder(params?: CreateOrderParams): Promise<Order>;
   /**
    * Shipping address for the current session
    */
@@ -57,7 +59,7 @@ export type UseCheckoutReturn = {
    * Sets shipping method for the current session
    * Sugar for {@link useSessionContext.setShippingMethod}
    */
-  setShippingMethod: (shippingMethod: Partial<ShippingMethod>) => Promise<void>;
+  setShippingMethod(shippingMethod: Partial<ShippingMethod>): Promise<void>;
   /**
    * Selected payment method for the current session
    * Sugar for {@link useSessionContext.selectedPaymentMethod}
@@ -67,9 +69,20 @@ export type UseCheckoutReturn = {
    * Sets payment method for the current session
    * Sugar for {@link useSessionContext.setPaymentMethod}
    */
-  setPaymentMethod: (paymentMethod: Partial<PaymentMethod>) => Promise<void>;
+  setPaymentMethod(paymentMethod: Partial<PaymentMethod>): Promise<void>;
 };
 
+const shippingMethodsAssociations: ShopwareSearchParams = {
+  associations: {
+    prices: {},
+  },
+};
+
+/**
+ * Composable to manage checkout process
+ * @public
+ * @category Cart & Checkout
+ */
 export function useCheckout(): UseCheckoutReturn {
   const { apiInstance } = useShopwareContext();
   const { refreshCart } = useCart();
@@ -90,12 +103,23 @@ export function useCheckout(): UseCheckoutReturn {
   const shippingMethods = computed(() => storeShippingMethods.value || []);
   const paymentMethods = computed(() => storePaymentMethods.value || []);
 
-  async function getShippingMethods({ forceReload } = { forceReload: false }) {
+  async function getShippingMethods(
+    { forceReload } = { forceReload: false },
+    associations: ShopwareSearchParams = {},
+  ) {
     if (shippingMethods.value.length && !forceReload) return shippingMethods;
+    const mergedAssociations: ShopwareSearchParams = deepMerge(
+      shippingMethodsAssociations,
+      associations,
+    );
     const response = await getAvailableShippingMethods(apiInstance, {
-      onlyAvailable: true, // depending on the context, some of them can be hidden due to applied rules describing whether a method can be available
+      ...mergedAssociations,
     });
-    storeShippingMethods.value = response?.elements || [];
+    storeShippingMethods.value =
+      response?.elements.sort(
+        (a: ShippingMethod, b: ShippingMethod) =>
+          (a.position ?? 0) - (b.position ?? 0),
+      ) || [];
     return shippingMethods;
   }
 
@@ -115,16 +139,14 @@ export function useCheckout(): UseCheckoutReturn {
     } catch (e) {
       const err = e as ClientApiError;
       throw err;
-    } finally {
-      refreshCart();
     }
   }
 
   const shippingAddress = computed(
-    () => sessionContext.value?.shippingLocation?.address
+    () => sessionContext.value?.shippingLocation?.address,
   );
   const billingAddress = computed(
-    () => sessionContext.value?.customer?.activeBillingAddress
+    () => sessionContext.value?.customer?.activeBillingAddress,
   );
 
   return {

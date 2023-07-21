@@ -4,8 +4,4 @@ category: CMS
 
 # useSalutations
 
-Description
-
-## Usage
-
-// TODO: add example
+<!-- PLACEHOLDER_DESCRIPTION -->

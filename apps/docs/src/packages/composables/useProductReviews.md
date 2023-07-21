@@ -4,8 +4,4 @@ category: CMS
 
 # useProductReviews
 
-Description
-
-## Usage
-
-// TODO: add example
+<!-- PLACEHOLDER_DESCRIPTION -->

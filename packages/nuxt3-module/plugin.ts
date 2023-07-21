@@ -11,37 +11,78 @@ import Cookies from "js-cookie";
 
 const ShopwarePlugin = {
   install(app, options) {
+    const runtimeConfig = useRuntimeConfig();
+
+    const useUserCookieContext =
+      !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
+      !options.isServer;
+
+    const contextToken = useCookie("sw-context-token", {
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "Lax",
+      path: "/",
+    });
+    const languageId = useCookie("sw-language-id", {
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "Lax",
+      path: "/",
+    });
+
+    // workaround for SSG case, where cookies contains additional dot in name, related: https://github.com/shopware/frontends/commit/ee5b8a71e1e016c973a7852efa3b85a136e6ea14
     const cookieContextToken = Cookies.get("sw-context-token");
     const cookieLanguageId = Cookies.get("sw-language-id");
 
+    if (
+      !runtimeConfig.public?.shopware?.shopwareEndpoint ||
+      !runtimeConfig.public?.shopware?.shopwareAccessToken
+    ) {
+      throw new Error(
+        "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration",
+      );
+    }
+
+    /**
+     * Server config has bigger prio than client
+     */
     const instance = createInstance({
-      endpoint: "<%= options.shopwareEndpoint %>",
-      accessToken: "<%= options.shopwareAccessToken %>",
-      timeout: "<%= options.shopwareApiClient.timeout %>",
+      endpoint:
+        runtimeConfig?.shopware?.shopwareEndpoint ||
+        runtimeConfig.public.shopware.shopwareEndpoint,
+      accessToken: runtimeConfig.public.shopware.shopwareAccessToken,
+      timeout: runtimeConfig.public.shopware.shopwareAccessToken || 10000,
       auth: {
         username:
           "<%= options.shopwareApiClient.auth ? options.shopwareApiClient.auth.username : undefined %>",
         password:
           "<%=  options.shopwareApiClient.auth ? options.shopwareApiClient.auth.password : undefined %>",
       },
-      contextToken: cookieContextToken,
-      languageId: cookieLanguageId,
+      contextToken: useUserCookieContext
+        ? contextToken.value || cookieContextToken
+        : "",
+      languageId: useUserCookieContext
+        ? languageId.value || cookieLanguageId
+        : undefined,
     });
     /**
      * Save current contextToken when its change
      */
     instance.onConfigChange(({ config }) => {
       try {
-        Cookies.set("sw-context-token", config.contextToken || "", {
-          expires: 365, //days
-          sameSite: "Lax",
-          path: "/",
-        });
-        Cookies.set("sw-language-id", config.languageId || "", {
-          expires: 365, //days
-          sameSite: "Lax",
-          path: "/",
-        });
+        // only save cookies on client side render
+        if (useUserCookieContext) {
+          contextToken.value = config.contextToken;
+          languageId.value = config.languageId;
+          Cookies.set("sw-context-token", config.contextToken || "", {
+            expires: 365, //days
+            sameSite: "Lax",
+            path: "/",
+          });
+          Cookies.set("sw-language-id", config.languageId || "", {
+            expires: 365, //days
+            sameSite: "Lax",
+            path: "/",
+          });
+        }
       } catch (e) {
         // Sometimes cookie is set on server after request is send, it can fail silently
       }
@@ -50,6 +91,7 @@ const ShopwarePlugin = {
       apiInstance: instance,
       enableDevtools: true,
       shopwareDefaults: options.apiDefaults,
+      devStorefrontUrl: runtimeConfig.public.shopware?.devStorefrontUrl || null,
     });
     app.provide("shopware", shopwareContext);
     const sessionContextData = ref();
@@ -60,15 +102,8 @@ const ShopwarePlugin = {
 };
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const newConfig = getDefaultApiParams();
-  // newConfig.add("useOrderDetails.associations",{
-  //   "lineItems": {
-  //     "associations": {
-  //         "cover": {}
-  //     }
-  // }
-  // });
   nuxtApp.vueApp.use(ShopwarePlugin, {
-    apiDefaults: newConfig,
+    apiDefaults: getDefaultApiParams(),
+    isServer: !!nuxtApp.ssrContext,
   });
 });

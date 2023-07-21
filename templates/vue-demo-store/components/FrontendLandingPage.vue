@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useLandingSearch } from "@shopware-pwa/composables-next";
-import { LandingPage } from "~~/../../packages/types";
+import { LandingPage } from "@shopware-pwa/types";
 
 const props = defineProps<{
   navigationId: string;
@@ -15,7 +15,7 @@ const { data: landingResponse } = await useAsyncData(
       withCmsAssociations: true,
     });
     return landingPage;
-  }
+  },
 );
 
 if (typeof landingResponse?.value !== null) {

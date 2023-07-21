@@ -34,35 +34,38 @@ export type UseOrderPaymentReturn = {
   /**
    * Invokes the payment process for the order in the backend
    */
-  handlePayment: (
+  handlePayment(
     /**
-    * URL to redirect after successful payment
-    */
+     * URL to redirect after successful payment
+     */
     successUrl?: string,
     /**
-    * URL to redirect after failed payment
-    */
+     * URL to redirect after failed payment
+     */
     errorUrl?: string,
     /**
-    * additional payment details to provide
-    */
-    paymentDetails?: unknown
-  ) => Promise<void | unknown>;
+     * additional payment details to provide
+     */
+    paymentDetails?: unknown,
+  ): Promise<void | unknown>;
   /**
    * Change a payment method for the order
    */
-  changePaymentMethod: (paymentMethodId: string) => Promise<void>;
+  changePaymentMethod(paymentMethodId: string): Promise<void>;
 };
 
 /**
  * Composable for managing an existing order.
+ * @public
+ * @category Customer & Account
  */
 export function useOrderPayment(
-  order: ComputedRef<Order | null | undefined>
+  order: ComputedRef<Order | null | undefined>,
 ): UseOrderPaymentReturn {
   const { apiInstance } = useShopwareContext();
-  const activeTransaction = computed(() =>
-    order.value?.transactions?.find((t) => t.paymentMethod?.active === true)
+  const activeTransaction = computed(
+    () =>
+      order.value?.transactions?.find((t) => t.paymentMethod?.active === true),
   );
   const paymentMethod = computed(() => activeTransaction.value?.paymentMethod);
   const paymentUrl = ref();
@@ -70,13 +73,13 @@ export function useOrderPayment(
   const isAsynchronous = computed(
     () =>
       activeTransaction.value?.paymentMethod?.asynchronous &&
-      activeTransaction.value?.paymentMethod?.afterOrderEnabled
+      activeTransaction.value?.paymentMethod?.afterOrderEnabled,
   );
 
   async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
-    paymentDetails?: unknown
+    paymentDetails?: unknown,
   ): Promise<void | unknown> {
     if (!order.value) {
       return;
@@ -88,7 +91,7 @@ export function useOrderPayment(
         errorUrl,
         paymentDetails,
       },
-      apiInstance
+      apiInstance,
     );
 
     paymentUrl.value = resp?.redirectUrl;

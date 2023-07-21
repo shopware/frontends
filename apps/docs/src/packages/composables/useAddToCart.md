@@ -8,10 +8,6 @@ import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 
 # useAddToCart
 
-Add product to cart.
-
-[[toc]]
-
 ## Usage
 
 Provided `product` object in the argument should be in a `Ref<Product>` type.
@@ -22,7 +18,8 @@ const { isInCart, quantity, addToCart, getStock } = useAddToCart({ product });
 </script>
 ```
 
+<!-- PLACEHOLDER_DESCRIPTION -->
+
 ## Live example
 
 <StackBlitzLiveExample projectPath="shopware/frontends/tree/main/examples/use-add-to-cart" openPath="/" />
-

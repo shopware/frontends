@@ -4,7 +4,11 @@ import { UiProductReview } from "../ui-interfaces";
 /**
  * Format product reviews to ui-interfaces
  *
+ * @param {Product} product product entity
+ *
  * @public
+ *
+ * @category Product
  */
 export function getProductReviews({
   product,
@@ -20,6 +24,6 @@ export function getProductReviews({
       date: createdAt,
       message: content,
       rating: points,
-    })
+    }),
   );
 }

@@ -12,11 +12,16 @@ export type CalculatedPrice = {
   calculatedTaxes: CalculatedTax[];
   taxRules: TaxRule[];
   referencePrice: ReferencePrice;
-  hasRange: boolean;
+  hasRange?: boolean;
   listPrice: {
     price: number;
     discount: number;
     percentage: number;
     apiAlias: string;
+  } | null;
+  regulationPrice: null | {
+    price: number;
   };
+  apiAlias: string;
+  variantId?: string;
 };

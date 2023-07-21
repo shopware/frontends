@@ -3,9 +3,17 @@ import { inject } from "vue";
 import ContextError from "./helpers/ContextError";
 
 export type ShopwareContext = {
+  /**
+   * Shopware API instance
+   */
   apiInstance: ShopwareApiInstance;
+  devStorefrontUrl: string | null;
 };
 
+/**
+ * @public
+ * @category Context & Language
+ */
 export function useShopwareContext(): ShopwareContext {
   const shopwareContext = inject<ShopwareContext | null>("shopware", null);
 
@@ -13,5 +21,6 @@ export function useShopwareContext(): ShopwareContext {
 
   return {
     apiInstance: shopwareContext.apiInstance,
+    devStorefrontUrl: shopwareContext.devStorefrontUrl,
   };
 }

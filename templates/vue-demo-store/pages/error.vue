@@ -7,15 +7,18 @@ const props = withDefaults(
   {
     errorCode: 404,
     errorMessage: "",
-  }
+  },
 );
+const { t } = useI18n();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 const errorMessageMap: { [key: number]: string } = {
-  404: "We can't find what you are looking for. Are you lost?",
-  408: "The API is taking to long to respond",
-  500: "Oops, something went terribly wrong",
-  502: "Server couldn't complete your request. Please try again in few seconds.",
-  503: "Server is really busy right now",
+  404: t("errorPages.404"),
+  408: t("errorPages.408"),
+  500: t("errorPages.500"),
+  502: t("errorPages.502"),
+  503: t("errorPages.503"),
 };
 
 const errorMessage = props.errorMessage || errorMessageMap[props.errorCode];
@@ -34,7 +37,8 @@ export default {
     <div class="flex flex-col items-center justify-center my-8">
       <div class="max-w-md text-center">
         <h1 class="mb-8 font-extrabold text-9xl">
-          <span class="sr-only">Error</span>{{ errorCode }}
+          <span class="sr-only">{{ $t("error") }}</span
+          >{{ errorCode }}
         </h1>
         <p class="text-xl md:text-3xl font-semibold mt-4 mb-8">
           {{ errorMessage }}

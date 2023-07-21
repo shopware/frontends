@@ -1,0 +1,31 @@
+{
+  "form": {
+    "salutation": "Forma grzecznościowa",
+    "chooseSalutation": "Wybierz formę grzecznościową...",
+    "firstName": "Imię",
+    "firstNamePlaceholder": "Wpisz imię...",
+    "lastName": "Nazwisko",
+    "lastNamePlaceholder": "Wpisz nazwisko...",
+    "country": "Kraj",
+    "chooseCountry": "Wybierz kraj...",
+    "streetAddress": "Adres ulicy",
+    "streetPlaceholder": "Wpisz ulicę...",
+    "password": "Hasło",
+    "passwordPlaceholder": "Wpisz hasło...",
+    "newPasswordPlaceholder": "Nowe hasło",
+    "repeatPasswordPlaceholder": "Powtórz hasło",
+    "email": "Adres e-mail",
+    "emailPlaceholder": "Wpisz adres e-mail...",
+    "confirmEmail": "Potwierdź e-mail",
+    "city": "Miasto",
+    "cityPlaceholder": "Wpisz miasto...",
+    "postalCode": "Kod pocztowy",
+    "postalCodePlaceholder": "Wpisz kod pocztowy...",
+    "save": "Zapisz",
+    "submit": "Zatwierdź",
+    "promoCodePlaceholder": "Wpisz kod promocyjny",
+    "searchPlaceholder": "Szukaj produktów",
+    "chooseState": "Wybierz stan",
+    "state": "Stan"
+  }
+}

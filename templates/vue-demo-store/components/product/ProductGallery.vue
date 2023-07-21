@@ -14,7 +14,7 @@ watch(
     content.value = {
       config: {
         minHeight: {
-          value: "300px",
+          value: "600px",
           source: "static",
         },
         navigationArrows: {
@@ -25,11 +25,11 @@ watch(
       data: {
         sliderItems: media,
       },
-    } as any;
+    } as CmsElementImageGallery;
   },
   {
     immediate: true,
-  }
+  },
 );
 </script>
 

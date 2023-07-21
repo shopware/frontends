@@ -16,19 +16,21 @@ export type UseCustomerPasswordReturn = {
   /**
    * Change customer's current password
    */
-  updatePassword: (
-    updatePasswordData: CustomerUpdatePasswordParam
-  ) => Promise<boolean>;
+  updatePassword(
+    updatePasswordData: CustomerUpdatePasswordParam,
+  ): Promise<boolean>;
   /**
    * Reset customer's password
    */
-  resetPassword: (
-    resetPasswordData: CustomerResetPasswordParam
-  ) => Promise<boolean>;
+  resetPassword(
+    resetPasswordData: CustomerResetPasswordParam,
+  ): Promise<boolean>;
 };
 
 /**
- * Composable for customer password management. Options - {@link UseCustomerPasswordReturn}
+ * Composable for customer password management.
+ * @public
+ * @category Customer & Account
  */
 export function useCustomerPassword(): UseCustomerPasswordReturn {
   const { apiInstance } = useShopwareContext();
@@ -42,7 +44,7 @@ export function useCustomerPassword(): UseCustomerPasswordReturn {
   });
 
   async function updatePassword(
-    updatePasswordData: CustomerUpdatePasswordParam
+    updatePasswordData: CustomerUpdatePasswordParam,
   ) {
     try {
       errors.updatePassword = [];

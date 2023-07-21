@@ -2,7 +2,6 @@
 
 <template>
   <div>
-    <SharedModal />
     <LayoutCheckoutHeader />
     <LayoutNotifications />
     <div class="container">

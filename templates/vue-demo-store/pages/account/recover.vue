@@ -2,14 +2,18 @@
 export default {
   name: "RecoverPassword",
 };
-
+</script>
+<script setup lang="ts">
+const { t } = useI18n();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 useBreadcrumbs([
   {
     name: "My Account",
     path: "/account",
   },
   {
-    name: "Recover password",
+    name: t("breadcrumbs.recoverPassword"),
     path: "/account/recover",
   },
 ]);

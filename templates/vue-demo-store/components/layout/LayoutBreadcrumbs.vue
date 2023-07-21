@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const { breadcrumbs } = useBreadcrumbs();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 </script>
 <template>
   <nav
@@ -17,11 +19,11 @@ const { breadcrumbs } = useBreadcrumbs();
         <span class="font-medium ml-2 w-5 h-5 text-center text-sm text-gray-300">/</span>
       </li>
       <li
-        class="inline-flex items-center"
         v-for="(breadcrumb, index) in breadcrumbs"
         :key="breadcrumb.path"
+        class="inline-flex items-center"
       >
-        <nuxt-link
+        <NuxtLink
           v-if="breadcrumb.path"
           :to="breadcrumb.path"
           :class="[
@@ -30,7 +32,7 @@ const { breadcrumbs } = useBreadcrumbs();
           ]"
         >
           {{ breadcrumb.name }}
-        </nuxt-link>
+        </NuxtLink>
         <span
           v-else
           :class="[

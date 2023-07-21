@@ -1,0 +1,24 @@
+{
+  "product": {
+    "addToCart": "Add to cart",
+    "details": "Details",
+    "amount": "Amount",
+    "description": "Description",
+    "properties": "Properties",
+    "reviews": "Reviews",
+    "content": "Content",
+    "choose": "Choose a",
+    "variantsFrom": "variants from",
+    "price": {
+      "label": "Price",
+      "to": "To",
+      "from": "From"
+    },
+
+    "messages": {
+      "addedToWishlist": "{p} has been added to wishlist.",
+      "removedFromWishlist": "{p} has been removed from wishlist.",
+      "addedToCart": "{p} has been added to cart."
+    }
+  }
+}

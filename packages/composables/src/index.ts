@@ -2,6 +2,18 @@ import { CmsBlock, CmsSection, CmsSlot } from "@shopware-pwa/types";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 
+/**
+ * A composables library compatible with Vue 3 and Shopware 6.
+ *
+ * Some more info...
+ *
+ * @remarks
+ * The `widget-lib` defines the {@link IWidget} interface and {@link Widget} class,
+ * which are used to build widgets.
+ *
+ * @packageDocumentation
+ */
+
 export * from "./types";
 export * from "./cms";
 export * from "./useShopwareContext";
@@ -33,7 +45,7 @@ export * from "./useSyncWishlist";
 export * from "./useProductSearchSuggest";
 export * from "./useCustomerPassword";
 export * from "./usePrice";
-export * from "./userCustomerOrders";
+export * from "./useCustomerOrders";
 export * from "./createShopwareContext";
 export * from "./useAddress";
 export * from "./useProductPrice";

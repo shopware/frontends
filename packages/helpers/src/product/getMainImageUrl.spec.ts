@@ -6,7 +6,6 @@ describe("Helpers - getMainImageUrl", () => {
   const mediaUrl =
     "https://shopware.test/media/8a/fd/cb/1572351035/msh06-gray_main_2.jpg";
 
-
   it("should contain url from first media gallery as a fallback if cover does not exist", () => {
     const product: Product = {
       media: [

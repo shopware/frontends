@@ -2,50 +2,69 @@ import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
 
 type NotificationType = "info" | "warning" | "success" | "danger";
 
+/**
+ * @private
+ */
 export type Notification = {
   type: NotificationType;
   message: string;
   id: number;
 };
 
+/**
+ * @private
+ */
 export type NotificationOptions = {
+  /**
+   * @private
+   */
   type?: NotificationType;
   timeout?: number;
   persistent?: boolean;
 };
 
+/**
+ * @public
+ */
 export type UseNotificationsReturn = {
+  /**
+   * List of active notifications
+   */
   notifications: ComputedRef<Notification[]>;
   /**
    * Removes a specific notification by its ID
    */
-  removeOne: (id: number) => void;
+  removeOne(id: number): void;
   /**
    * Resets the notification list - clear all notifications
    */
-  removeAll: () => void;
+  removeAll(): void;
   /**
    * Push an info notification to the current list
    */
-  pushInfo: (message: string, options?: NotificationOptions) => void;
+  pushInfo(message: string, options?: NotificationOptions): void;
   /**
    * Pushes a warning notification to the current list
    */
-  pushWarning: (message: string, options?: NotificationOptions) => void;
+  pushWarning(message: string, options?: NotificationOptions): void;
   /**
    * Pushes an error notification to the current list
    */
-  pushError: (message: string, options?: NotificationOptions) => void;
+  pushError(message: string, options?: NotificationOptions): void;
   /**
    * Pushes a success notification to the current list
    */
-  pushSuccess: (message: string, options?: NotificationOptions) => void;
+  pushSuccess(message: string, options?: NotificationOptions): void;
 };
 
+/**
+ * Composable for managing notifications (flash messages) on frontend.
+ * @public
+ */
 export function useNotifications(): UseNotificationsReturn {
   const _notifications: Ref<Notification[]> = inject(
     "swNotifications",
-    ref([])
+    ref([]),
   );
   provide("swNotifications", _notifications);
 
@@ -64,7 +83,7 @@ export function useNotifications(): UseNotificationsReturn {
 
   async function pushNotification(
     message: string,
-    options: NotificationOptions
+    options: NotificationOptions,
   ) {
     const timeout = options.timeout || 2500;
     const persistent = !!options.persistent;

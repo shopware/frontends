@@ -70,7 +70,9 @@ const extractNotApiErrorMessage = (error: AxiosError): ShopwareError[] => [
     code: "",
     title: "",
     meta: {},
-    source: {},
+    source: {
+      pointer: "",
+    },
   },
 ];
 
@@ -84,7 +86,7 @@ const extractNotApiErrorMessage = (error: AxiosError): ShopwareError[] => [
  * @returns {Promise<ClientApiError>}
  */
 export async function errorInterceptor(
-  error: ShopwareApiError
+  error: ShopwareApiError,
 ): Promise<ClientApiError> {
   // Any status codes that falls outside the range of 2xx cause this function to trigger
   // Do something with response error

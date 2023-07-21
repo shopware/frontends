@@ -50,7 +50,7 @@ describe("useNewsletter", () => {
 
   it("newsletter subscribe", () => {
     expect(wrapper.vm.newsletterSubscribe(newsletterMockData)).resolves.toEqual(
-      undefined
+      undefined,
     );
   });
 

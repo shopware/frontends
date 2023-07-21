@@ -1,3 +1,5 @@
+import { CustomFields } from "../../common/CustomField";
+
 export type OrderState = {
   name: string;
   technicalName: string;
@@ -5,8 +7,8 @@ export type OrderState = {
   versionId: string | null;
   translated: unknown;
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   extensions: unknown;
-  customFields: null | unknown;
+  customFields: CustomFields;
   apiAlias: string;
 };

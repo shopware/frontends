@@ -1,4 +1,4 @@
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { Category } from "../category/Category";
 import { Product } from "../product/Product";
 import { Aggregation } from "../../../search/Aggregation";
@@ -72,10 +72,7 @@ export type CmsPageResponse =
 /**
  * @public
  */
-export type CmsPageEntity =
-  | Category
-  | LandingPage
-  | Product;
+export type CmsPageEntity = Category | LandingPage | Product;
 
 /**
  * @public
@@ -124,13 +121,13 @@ export type CmsPage = {
   category: Category;
   type: CmsPageType;
   name: string;
-  customFields: CustomField[] | null;
+  customFields: CustomFields | null;
   locked: boolean;
   _uniqueIdentifier: string;
   versionId: string | null;
   translated: unknown;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | string | null;
   extensions: [any];
   id: string;
   entity: any | null;
@@ -177,13 +174,13 @@ export type CmsFieldConfig = {
  */
 export type OldSlot = {
   type: CmsSlotType;
-  customFields: CustomField[] | null;
+  customFields: CustomFields | null;
   locked: boolean;
   _uniqueIdentifier: string;
   versionId: string;
   translated: unknown;
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   extensions: [any];
   id: string;
   translations: any | null;
@@ -217,6 +214,8 @@ export type MobileBehavior = "boxed" | "wrap" | "hidden";
  */
 export type BackgroundMediaMode = "cover";
 
+export type CmsVisibility = "mobile" | "tablet" | "desktop" | string;
+
 /**
  * @public
  */
@@ -233,15 +232,18 @@ export type CmsSection = {
   backgroundMedia: null;
   backgroundMediaMode: BackgroundMediaMode;
   cssClass: string | null;
-  customFields: CustomField[] | null;
+  customFields: CustomFields | null;
   locked: false;
   _uniqueIdentifier: string;
   versionId: string | null;
   translated: any;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | string | null;
   extensions: [any];
   id: string;
   blocks: CmsBlock[];
+  visibility: {
+    [key in CmsVisibility]: boolean;
+  };
   apiAlias: "cms_section";
 };

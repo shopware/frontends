@@ -11,7 +11,7 @@ const isPromotion = computed(() => isProduct(props.orderItem.payload));
 const itemRegularPrice = computed(() => props.orderItem?.unitPrice);
 const itemQuantity = computed(() => props.orderItem?.quantity);
 const productOptions = computed(() =>
-  isProduct(props.orderItem.payload) ? props.orderItem.payload.options : []
+  isProduct(props.orderItem.payload) ? props.orderItem.payload.options : [],
 );
 </script>
 
@@ -37,12 +37,8 @@ const productOptions = computed(() =>
         <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
       <p class="mt-1 text-sm text-gray-500">
-        <span
-          v-for="option in productOptions"
-          :key="(option as PropertyGroupOptionCart).group"
-          class="mr-2"
-        >
-          {{ option.group }}: {{ (option as PropertyGroupOptionCart).option }}
+        <span v-for="option in productOptions" :key="option.group" class="mr-2">
+          {{ option.group }}: {{ option.option }}
         </span>
       </p>
     </div>

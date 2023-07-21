@@ -16,19 +16,23 @@ import {
 /**
  * Add a product with a specific ID to the wishlist
  *
+ * @param {string} productId ID of the product to add to the wishlist
+ * @param {ShopwareApiInstance}contextInstance instance of the api client (by default it's an Axios instance)
+ *
  * @remarks Only for logged-in users
  * @throws ClientApiError
+ * @category Wishlist
  * @public
  */
 export async function addWishlistProduct(
   productId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   apiAlias: string;
   success: boolean;
 }> {
   const resp = await contextInstance.invoke.post(
-    getAddWishlistProductEndpoint(productId)
+    getAddWishlistProductEndpoint(productId),
   );
 
   return resp.data;
@@ -37,17 +41,21 @@ export async function addWishlistProduct(
 /**
  * Fetch a current Wishlist with added products
  *
+ * @param {ShopwareSearchParams} criteria search criteria for products
+ * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
+ *
  * @remarks Only for logged-in users
  * @throws ClientApiError
+ * @category Wishlist
  * @public
  */
 export async function getWishlistProducts(
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<CustomerWishlistResponse> {
   const resp = await contextInstance.invoke.post(
     getGetWishlistProductsEndpoint(),
-    criteria
+    criteria,
   );
 
   return resp.data;
@@ -56,19 +64,23 @@ export async function getWishlistProducts(
 /**
  * Delete a product with a specific ID from the wishlist
  *
+ * @param {string} productId ID of the product to remove from the wishlist
+ * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
+ *
  * @remarks Only for logged-in users
  * @throws ClientApiError
+ * @category Wishlist
  * @public
  */
 export async function removeWishlistProduct(
   productId: string,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   apiAlias: string;
   success: boolean;
 }> {
   const resp = await contextInstance.invoke.delete(
-    getRemoveWishlistProductEndpoint(productId)
+    getRemoveWishlistProductEndpoint(productId),
   );
 
   return resp.data;
@@ -77,20 +89,24 @@ export async function removeWishlistProduct(
 /**
  * Merge the current Wishlist with a products with provided IDs
  *
+ * @param {string[]} productIds IDs of the products to merge with the wishlist
+ * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
+ *
  * @remarks Only for logged-in users
  * @throws ClientApiError
+ * @category Wishlist
  * @public
  */
 export async function mergeWishlistProducts(
   productIds: string[],
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   apiAlias: string;
   success: boolean;
 }> {
   const resp = await contextInstance.invoke.post(
     getMergeWishlistProductsEndpoint(),
-    { productIds }
+    { productIds },
   );
 
   return resp.data;

@@ -9,15 +9,24 @@ import { cmsAssociations } from "./cms/cmsAssociations";
 import { _useContext } from "./internal/_useContext";
 
 export type UseCategorySearchReturn = {
-  search: (
+  /**
+   * Search for category by ID
+   * Accepts optional query params and associations
+   */
+  search(
     categoryId: string,
     options?: {
       withCmsAssociations?: boolean;
       query?: Partial<ShopwareSearchParams>;
-    }
-  ) => Promise<Category>;
+    },
+  ): Promise<Category>;
 };
 
+/**
+ * Composable for category search.
+ * @public
+ * @category Navigation & Routing
+ */
 export function useCategorySearch(): UseCategorySearchReturn {
   const { apiInstance } = useShopwareContext();
 
@@ -26,7 +35,7 @@ export function useCategorySearch(): UseCategorySearchReturn {
     options?: {
       withCmsAssociations?: boolean;
       query?: Partial<ShopwareSearchParams>;
-    }
+    },
   ) {
     const associations = options?.withCmsAssociations ? cmsAssociations : {};
     const result = await invokePost<Category>(
@@ -34,7 +43,7 @@ export function useCategorySearch(): UseCategorySearchReturn {
         address: getCategoryDetailsEndpoint(categoryId),
         payload: { associations, ...options?.query },
       },
-      apiInstance
+      apiInstance,
     );
     return result.data;
   }

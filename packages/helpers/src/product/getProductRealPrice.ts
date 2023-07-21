@@ -2,9 +2,10 @@ import { CalculatedPrice, Product } from "@shopware-pwa/types";
 
 /**
  * @beta
+ *
  */
 export function getProductRealPrice(
-  product: Product
+  product: Product,
 ): CalculatedPrice | undefined {
   if (!product) {
     return;

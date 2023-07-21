@@ -1,5 +1,7 @@
 export type ReferencePrice = {
   price: number;
-  referenceUnit: string;
+  purchaseUnit: number;
+  referenceUnit: number | string;
   unitName: string;
+  apiAlias?: string;
 };

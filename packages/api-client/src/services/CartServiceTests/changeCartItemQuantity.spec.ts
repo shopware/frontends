@@ -18,15 +18,15 @@ describe("CartService - changeCartItemQuantity", () => {
   it("should call valid endpoint and return cart with no items", async () => {
     mockedPatch.mockResolvedValueOnce({
       data: {
-        name: faker.datatype.uuid(),
-        token: faker.datatype.uuid(),
+        name: faker.string.uuid(),
+        token: faker.string.uuid(),
         lineItems: [
           {
             id: "geawq90a5dab4206843d0vc3sa8wefdf",
             label: faker.commerce.productName(),
             quantity: 3,
             payload: {
-              productNumber: faker.datatype.uuid,
+              productNumber: faker.string.uuid,
             },
           },
         ],
@@ -45,13 +45,13 @@ describe("CartService - changeCartItemQuantity", () => {
 
   it("should throw unhandled 400 error when non-existing lineItemId given", async () => {
     mockedPatch.mockRejectedValueOnce(
-      new Error("400: CHECKOUT__CART_LINEITEM_NOT_FOUND")
+      new Error("400: CHECKOUT__CART_LINEITEM_NOT_FOUND"),
     );
 
     let lineItemId = "someNonExistingLineItemId";
 
     expect(changeCartItemQuantity(lineItemId, 1)).rejects.toThrow(
-      "400: CHECKOUT__CART_LINEITEM_NOT_FOUND"
+      "400: CHECKOUT__CART_LINEITEM_NOT_FOUND",
     );
     expect(mockedPatch).toBeCalledTimes(1);
     expect(mockedPatch).toBeCalledWith("/store-api/checkout/cart/line-item", {
@@ -66,13 +66,13 @@ describe("CartService - changeCartItemQuantity", () => {
 
   it("should throw unhandled 400 error when negative quantity given", async () => {
     mockedPatch.mockRejectedValueOnce(
-      new Error("400: CHECKOUT__CART_INVALID_LINEITEM_QUANTITY")
+      new Error("400: CHECKOUT__CART_INVALID_LINEITEM_QUANTITY"),
     );
 
     let lineItemId = "geawq90a5dab4206843d0vc3sa8wefdf";
 
     expect(changeCartItemQuantity(lineItemId, -2)).rejects.toThrow(
-      "400: CHECKOUT__CART_INVALID_LINEITEM_QUANTITY"
+      "400: CHECKOUT__CART_INVALID_LINEITEM_QUANTITY",
     );
     expect(mockedPatch).toBeCalledTimes(1);
     expect(mockedPatch).toBeCalledWith("/store-api/checkout/cart/line-item", {

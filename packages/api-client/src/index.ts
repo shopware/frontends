@@ -16,6 +16,10 @@ export * from "./services/pluginService";
 export * from "./services/searchService";
 export * from "./services/formsService";
 export * from "./services/wishlistService";
+export * from "./services/documentService";
+export * from "./services/orderService";
+export * from "./services/sitemapService";
+export * from "./services/newsletterService";
 export * from "./endpoints";
 
 /**
@@ -39,5 +43,5 @@ export const update: (config?: ClientSettings) => void = defaultInstance.update;
  * @public
  */
 export const onConfigChange: (
-  fn: (context: ConfigChangedArgs) => void
+  fn: (context: ConfigChangedArgs) => void,
 ) => void = defaultInstance.onConfigChange;

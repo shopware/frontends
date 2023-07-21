@@ -6,14 +6,14 @@ const props = defineProps<{
 }>();
 
 const isExpand = ref(false);
-
+const { t } = useI18n();
 const toggleView = () => (isExpand.value = !isExpand.value);
 const { currency } = useSessionContext();
 
 const orderDate = computed(() =>
   new Date(props?.order?.orderDate).toLocaleDateString(
-    (typeof navigator !== "undefined" && navigator.language) || "en-US"
-  )
+    (typeof navigator !== "undefined" && navigator.language) || "en-US",
+  ),
 );
 </script>
 
@@ -37,7 +37,7 @@ export default {
         :aria-expanded="isExpand"
         @click="toggleView"
       >
-        {{ !isExpand ? "View" : "Hide" }}
+        {{ !isExpand ? t("account.view") : t("account.hide") }}
       </div>
     </AccountOrderSummary>
     <div>
@@ -46,7 +46,7 @@ export default {
         :aria-expanded="isExpand"
         @click="toggleView"
       >
-        {{ !isExpand ? "View" : "Hide" }}
+        {{ !isExpand ? t("account.view") : t("account.hide") }}
       </div>
     </div>
     <AccountOrderDetails v-if="isExpand" :order-id="order.id" />

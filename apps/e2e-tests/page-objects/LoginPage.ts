@@ -10,15 +10,17 @@ export class LoginForm {
   // Init selectors using constructor
   constructor(page: Page) {
     this.page = page;
-    this.usernameInput = page.locator("[data-testid='login-email-input']");
-    this.passwordInput = page.locator("[data-testid='login-password-input']");
-    this.submitButton = page.locator("[data-testid='login-submit-button']");
+    this.usernameInput = page.getByTestId("login-email-input");
+    this.passwordInput = page.getByTestId("login-password-input");
+    this.submitButton = page.getByTestId("login-submit-button");
   }
 
   // Define login page methods
   async login(username: string, password: string) {
+    await this.usernameInput.isVisible();
     await this.usernameInput.type(username);
     await this.passwordInput.type(password);
+    await this.page.waitForLoadState();
     await this.submitButton.click();
   }
 }

@@ -19,14 +19,12 @@ const emits = defineEmits<{
 const props = withDefaults(
   defineProps<{
     address?: CustomerAddress;
-    countries: Array<Country>;
-    salutations: Array<Salutation>;
     title?: string;
   }>(),
   {
     title: "new_address",
     address: undefined,
-  }
+  },
 );
 
 const countriesOptions = computed(() => {
@@ -83,6 +81,7 @@ const invokeSave = async (): Promise<void> => {
       ? updateCustomerAddress
       : createCustomerAddress;
     await saveAddress(formData);
+    loadCustomerAddresses();
     emits("success");
     close();
   } catch (error) {
@@ -91,6 +90,9 @@ const invokeSave = async (): Promise<void> => {
     loading.value = false;
   }
 };
+
+const firstNameInputElement = ref();
+useFocus(firstNameInputElement, { initialValue: true });
 </script>
 
 <template>

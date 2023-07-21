@@ -1,10 +1,4 @@
----
-category: CMS
----
-
 # useCmsBlock
-
-Composable to extract CMS block's slot content.
 
 ## Usage
 
@@ -21,3 +15,5 @@ const { getSlotContent } = useCmsBlock(props.content);
 const leftContent = getSlotContent("left");
 const centerContent = getSlotContent("center");
 ```
+
+<!-- PLACEHOLDER_DESCRIPTION -->

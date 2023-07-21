@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
-import { getProductUrl } from "@shopware-pwa/helpers-next";
+import { getProductRoute } from "@shopware-pwa/helpers-next";
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
 import {
@@ -13,8 +12,12 @@ withDefaults(
   defineProps<{
     displayTotal?: number;
   }>(),
-  { displayTotal: 10 }
+  { displayTotal: 10 },
 );
+
+defineEmits<{
+  (e: "link-clicked"): void;
+}>();
 
 const { searchTerm, search, getProducts, getTotal, loading } =
   useProductSearchSuggest();
@@ -25,6 +28,8 @@ const active = ref(false);
 // Reference to the search container
 const searchContainer = ref(null);
 const searchInput = ref();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 watch(active, (value) => {
   const { focused } = useFocus(searchInput);
@@ -61,12 +66,12 @@ if (process.client) {
 const { enter } = useMagicKeys({ target: searchInput });
 const { push } = useRouter();
 
-const isSideMenuOpened = inject("isSideMenuOpened", ref(false));
+const sideMenuModal = useSideMenuModal();
 
 watch(enter, (value) => {
   if (!value) return;
 
-  isSideMenuOpened.value = false;
+  sideMenuModal.close();
 
   active.value = false;
   push("/search?query=" + typingQuery.value);
@@ -98,21 +103,22 @@ watch(enter, (value) => {
         ]"
         :placeholder="$t('search')"
         @click="active = true"
-      >
+      />
     </div>
     <div
       v-if="showSuggest"
+      data-testid="layout-search-result-box"
       class="absolute border-gray-100 border-t-1 duration-300 left-0 mt-2 overflow-hidden right-0 rounded-b-md shadow-md transition-height w-auto z-1"
     >
-      <RouterLink
+      <NuxtLink
         v-for="product in getProducts.slice(0, displayTotal)"
         :key="product.id"
-        :to="getProductUrl(product)"
+        :to="formatLink(getProductRoute(product))"
         data-testid="layout-search-suggest-link"
-        @click="[(active = false), (isSideMenuOpened = false)]"
+        @click="[(active = false), $emit('link-clicked')]"
       >
         <ProductSuggestSearch :product="product" />
-      </RouterLink>
+      </NuxtLink>
 
       <div
         class="h-11 text-sm rounded-b-md p-3 text-center transition"
@@ -124,17 +130,19 @@ watch(enter, (value) => {
           class="w-80 h-40 bg-brand-light blur-2xl fixed animate-spin"
         />
         <div v-else>
-          <RouterLink
+          <NuxtLink
             v-if="getTotal > 0"
-            :to="`/search?query=${typingQuery}`"
-            @click="[(active = false), (isSideMenuOpened = false)]"
+            data-testid="layout-search-result-box-more-link"
+            :to="formatLink({ path: `/search`, query: { query: typingQuery } })"
+            @click="[(active = false), $emit('link-clicked')]"
           >
-            See <span v-if="getTotal !== 1">all</span> {{ getTotal }}
-            <span v-if="getTotal !== 1">results</span>
-            <span v-if="getTotal == 1">result</span>
-          </RouterLink>
-          <div v-else>
-            No results :(
+            {{ $t("search.see") }}
+            <span v-if="getTotal !== 1">{{ $t("search.all") }}</span>
+            {{ getTotal }}
+            <span>{{ $t("search.result", getTotal) }}</span>
+          </NuxtLink>
+          <div v-else data-testid="layout-search-result-box-no-result">
+            {{ $t("search.noResults") }}
           </div>
         </div>
       </div>

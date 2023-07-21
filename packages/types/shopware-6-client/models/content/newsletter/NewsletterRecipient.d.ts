@@ -2,7 +2,7 @@ import { Language } from "../../framework/language/Language";
 import { SalesChannel } from "../../system/sales-channel/SalesChannel";
 import { Tag } from "../../system/tag/Tag";
 import { Salutation } from "../../system/salutation/Salutation";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -23,9 +23,9 @@ export type NewsletterRecipient = {
   language: Language | null;
   salesChannelId: string;
   salesChannel: SalesChannel | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   confirmedAt: Date | null;
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   tags: Tag[] | null;
 };

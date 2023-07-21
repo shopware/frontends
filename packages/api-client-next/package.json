@@ -1,0 +1,53 @@
+{
+  "name": "@shopware/api-client",
+  "version": "0.2.0",
+  "description": "Shopware client for API connection.",
+  "author": "Shopware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "homepage": "https://frontends.shopware.com/packages/api-client.html",
+  "keywords": [
+    "shopware",
+    "api",
+    "client"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "api-types"
+  ],
+  "exports": {
+    "import": "./dist/index.mjs"
+  },
+  "scripts": {
+    "build": "export NODE_ENV=production && unbuild && pnpm build:types",
+    "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
+    "dev": "export NODE_ENV=development && unbuild --stub",
+    "generate": "esno ../api-gen/src/cli.ts generate",
+    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run && pnpm run test:types",
+    "test:types": "vitest typecheck --run",
+    "test:bench": "vitest bench",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@shopware/api-gen": "workspace:*",
+    "@types/prettier": "^2.7.3",
+    "@vitest/coverage-c8": "^0.33.0",
+    "eslint-config-shopware": "workspace:*",
+    "prettier": "^3.0.0",
+    "tsconfig": "workspace:*",
+    "vitest": "^0.33.0"
+  },
+  "dependencies": {
+    "ofetch": "^1.1.1"
+  }
+}

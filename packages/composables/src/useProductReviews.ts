@@ -18,38 +18,39 @@ export type UseProductReviewsReturn = {
    * @param data `title` - review title, `content` - review content, `points` - review points (range of 1-5)
    * @returns
    */
-  addReview: (data: {
+  addReview(data: {
     title: string;
     content: string;
     points: number;
-  }) => Promise<void>;
+  }): Promise<void>;
   /**
    * Fetches the reviews list and assigns the result to the `productReviews` property
    * @param parameters {@link ShopwareSearchParams}
    * @returns
    */
-  loadProductReviews: (parameters?: ShopwareSearchParams) => Promise<void>;
+  loadProductReviews(parameters?: ShopwareSearchParams): Promise<void>;
 };
 
 /**
- * Composable for listing customer orders. Options - {@link UseProductReviewsReturn}
- *
+ * Composable for listing customer orders.
+ * @public
+ * @category Product
  */
 export function useProductReviews(
-  product: Ref<Product>
+  product: Ref<Product>,
 ): UseProductReviewsReturn {
   const { apiInstance } = useShopwareContext();
 
   const productReviews: Ref<ProductReview[]> = ref([]);
 
   const loadProductReviews = async (
-    parameters: ShopwareSearchParams = {}
+    parameters: ShopwareSearchParams = {},
   ): Promise<void> => {
     const fetchedReviews = await getProductReviews(
       product.value.id,
       undefined,
       // Object.assign({}, getDefaults(), parameters),
-      apiInstance
+      apiInstance,
     );
     productReviews.value = fetchedReviews.elements ?? [];
   };

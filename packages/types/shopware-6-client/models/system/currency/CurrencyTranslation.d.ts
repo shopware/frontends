@@ -1,5 +1,5 @@
 import { Currency } from "./Currency";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -9,5 +9,5 @@ export type CurrencyTranslation = {
   shortName: string | null;
   name: string | null;
   currency: Currency | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

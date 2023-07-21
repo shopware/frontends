@@ -71,7 +71,7 @@ describe("CustomerService - login", () => {
       login({
         username: credentials.username,
         password: "wrong-password-123456",
-      })
+      }),
     ).rejects.toThrow();
 
     expect(mockedPost).toBeCalledTimes(1);

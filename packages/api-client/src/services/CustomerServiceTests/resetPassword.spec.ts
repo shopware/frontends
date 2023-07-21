@@ -30,7 +30,7 @@ describe("CustomerService - resetPassword", () => {
       resetPassword({
         email: credentials.email,
         storefrontUrl: credentials.storefrontUrl,
-      })
+      }),
     ).rejects.toThrow("400 - invalid email");
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(getCustomerResetPasswordEndpoint(), {
@@ -80,7 +80,7 @@ describe("CustomerService - resetPassword", () => {
     await resetPassword(null as any);
     expect(mockedPost).toBeCalledWith(
       "/store-api/account/recovery-password",
-      null
+      null,
     );
   });
 });

@@ -1,13 +1,13 @@
 {
   "name": "@shopware-pwa/types",
-  "version": "0.4.0",
+  "version": "0.5.6",
   "description": "Showare Store API Types",
   "author": "Shopware",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/packages/types.html",
+  "homepage": "https://frontends.shopware.com/packages/types.html",
   "keywords": [
     "shopware",
     "api",
@@ -32,9 +32,11 @@
     "**/*.d.ts"
   ],
   "scripts": {
-    "lint": "eslint shopware-6-client/**/*.ts* --fix --max-warnings=0"
+    "lint": "eslint shopware-6-client/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "eslint-config-shopware": "workspace:*"
+    "eslint-config-shopware": "workspace:*",
+    "tsconfig": "workspace:*"
   }
 }

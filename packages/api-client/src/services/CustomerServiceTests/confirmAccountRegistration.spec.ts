@@ -25,7 +25,7 @@ describe("CustomerService - confirmAccountRegistration", () => {
       confirmAccountRegistration({
         hash: exampleHash,
         em: exampleEm,
-      })
+      }),
     ).rejects.toThrow("400 - invalid hash or em");
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(getCustomerAccountConfirmEndpoint(), {

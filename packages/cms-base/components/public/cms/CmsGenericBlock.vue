@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const DynamicRender = () => {
   const { resolvedComponent, componentName, isResolved } = resolveCmsComponent(
-    props.content
+    props.content,
   );
 
   if (resolvedComponent) {
@@ -16,7 +16,7 @@ const DynamicRender = () => {
       return h("div", {}, "Problem resolving component: " + componentName);
 
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
-      props.content
+      props.content,
     );
 
     const containerStyles = {
@@ -26,7 +26,6 @@ const DynamicRender = () => {
 
     layoutStyles.backgroundColor = null;
     layoutStyles.backgroundImage = null;
-
     return h(
       "div",
       {
@@ -36,7 +35,7 @@ const DynamicRender = () => {
         content: props.content,
         style: layoutStyles,
         class: cssClasses,
-      })
+      }),
     );
   }
   return h("div", {}, "Loading...");

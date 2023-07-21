@@ -1,5 +1,5 @@
 import { Plugin } from "./Plugin";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -12,5 +12,5 @@ export type PluginTranslation = {
   supportLink: string | null;
   changelog: [] | null;
   plugin: Plugin | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
 };

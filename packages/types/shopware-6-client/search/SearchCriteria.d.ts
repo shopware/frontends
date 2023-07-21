@@ -30,7 +30,7 @@ export type Includes = {
 /**
  * configutarion.displayParents: true - if you want to show all the products
  * @beta
- * 
+ *
  * @deprecated use ShopwareSearchParams instead
  */
 export type SearchCriteria = {

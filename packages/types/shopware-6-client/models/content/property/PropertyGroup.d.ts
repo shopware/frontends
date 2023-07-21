@@ -1,5 +1,5 @@
 import { PropertyGroupOption } from "./PropertyGroupOption";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { PropertyGroupOptionTranslation } from "./PropertyGroupOptionTranslation";
 
 /**
@@ -13,9 +13,9 @@ export type PropertyGroup = {
   description: string | null;
   options: PropertyGroupOption[] | null;
   translations: PropertyGroupOptionTranslation[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   translated: {
-    [key: string]: unknown;
+    [key: string]: string;
   };
   apiAlias: "property_group";
 };

@@ -10,20 +10,20 @@ const props = withDefaults(
   }>(),
   {
     maxQty: 100,
-  }
+  },
 );
 
 const { cartItem } = toRefs(props);
 
 const isLoading = ref(false);
+const { codeErrorsNotification } = useCartNotification();
 
 const {
   itemOptions,
   removeItem,
-  itemRegularPrice,
+  itemTotalPrice,
   itemQuantity,
   isPromotion,
-  itemStock,
   changeItemQuantity,
 } = useCartItem(cartItem);
 
@@ -36,6 +36,7 @@ const updateQuantity = async (quantity: number | undefined) => {
   isLoading.value = true;
 
   await changeItemQuantity(Number(quantity));
+  codeErrorsNotification();
 
   isLoading.value = false;
 };
@@ -71,10 +72,15 @@ const removeCartItem = async () => {
       >
         <h3 class="text-base" data-testid="cart-product-name">
           {{ cartItem.label }}
+          <span
+            v-if="isPromotion"
+            class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
+            >Promotion</span
+          >
         </h3>
         <SharedPrice
-          v-if="itemRegularPrice"
-          :value="itemRegularPrice"
+          v-if="itemTotalPrice"
+          :value="itemTotalPrice"
           data-testid="cart-product-price"
         />
       </div>
@@ -84,12 +90,8 @@ const removeCartItem = async () => {
         class="mt-1 text-sm text-gray-500"
         data-testid="cart-product-options"
       >
-        <span
-          v-for="option in itemOptions"
-          :key="(option as PropertyGroupOptionCart).group"
-          class="mr-2"
-        >
-          {{ option.group }}: {{ (option as PropertyGroupOptionCart).option }}
+        <span v-for="option in itemOptions" :key="option.group" class="mr-2">
+          {{ option.group }}: {{ option.option }}
         </span>
       </p>
     </div>
@@ -97,7 +99,6 @@ const removeCartItem = async () => {
       v-if="!isPromotion"
       class="flex flex-1 items-end justify-between text-sm"
     >
-      <!-- v-if="itemStock && itemStock > 0" - example of using it on item when you want to block editing quantity -->
       <input
         v-model="quantity"
         type="number"
@@ -109,15 +110,6 @@ const removeCartItem = async () => {
         name="quantity"
         class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       />
-      <!-- disabled quantity edition -->
-      <!-- <div v-else>
-        <div
-          data-testid="cart-product-qty"
-          class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white opacity-50 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        >
-          {{ quantity }}
-        </div>
-      </div> -->
       <div class="flex">
         <button
           v-if="!isPromotion"
@@ -128,7 +120,7 @@ const removeCartItem = async () => {
           data-testid="product-remove-button"
           @click="removeCartItem"
         >
-          Remove
+          {{ $t("checkout.items.removeButton") }}
         </button>
       </div>
     </div>

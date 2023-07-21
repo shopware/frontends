@@ -22,8 +22,13 @@ export type UseCmsElementImage = {
   displayMode: ComputedRef<DisplayMode>;
 };
 
+/**
+ * Composable to get cms element image
+ *
+ * @category CMS (Shopping Experiences)
+ */
 export function useCmsElementImage(
-  element: CmsElementImage | CmsElementManufacturerLogo
+  element: CmsElementImage | CmsElementManufacturerLogo,
 ): UseCmsElementImage {
   const { getConfigValue } = useCmsElementConfig(element);
 
@@ -60,7 +65,7 @@ export function useCmsElementImage(
   }));
 
   const displayMode = computed(
-    () => getConfigValue("displayMode") || "initial"
+    () => getConfigValue("displayMode") || "initial",
   );
 
   return {

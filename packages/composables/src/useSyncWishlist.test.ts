@@ -57,37 +57,29 @@ describe("useSyncWishlist", () => {
     },
   };
 
-  vi.spyOn(apiExports, "addWishlistProduct").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve(mockedResolve);
-      });
-    }
-  );
+  vi.spyOn(apiExports, "addWishlistProduct").mockImplementation(() => {
+    return new Promise((resolve) => {
+      resolve(mockedResolve);
+    });
+  });
 
-  vi.spyOn(apiExports, "getWishlistProducts").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve(mockedResponse as any);
-      });
-    }
-  );
+  vi.spyOn(apiExports, "getWishlistProducts").mockImplementation(() => {
+    return new Promise((resolve) => {
+      resolve(mockedResponse as any);
+    });
+  });
 
-  vi.spyOn(apiExports, "removeWishlistProduct").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve(mockedResolve);
-      });
-    }
-  );
+  vi.spyOn(apiExports, "removeWishlistProduct").mockImplementation(() => {
+    return new Promise((resolve) => {
+      resolve(mockedResolve);
+    });
+  });
 
-  vi.spyOn(apiExports, "mergeWishlistProducts").mockImplementation(
-    (params, context) => {
-      return new Promise((resolve) => {
-        resolve(mockedResolve);
-      });
-    }
-  );
+  vi.spyOn(apiExports, "mergeWishlistProducts").mockImplementation(() => {
+    return new Promise((resolve) => {
+      resolve(mockedResolve);
+    });
+  });
 
   describe("methods", () => {
     const product: any = {
@@ -97,7 +89,7 @@ describe("useSyncWishlist", () => {
     describe("addToWishlist", () => {
       it("wishlist add product", () => {
         expect(wrapper.vm.addToWishlistSync(product.id)).resolves.toBe(
-          undefined
+          undefined,
         );
       });
     });
@@ -114,7 +106,7 @@ describe("useSyncWishlist", () => {
     describe("mergeWishlistProducts", () => {
       it("wishlist remove", () => {
         expect(
-          wrapper.vm.mergeWishlistProducts(["test1", "test2"])
+          wrapper.vm.mergeWishlistProducts(["test1", "test2"]),
         ).resolves.toEqual(undefined);
       });
     });

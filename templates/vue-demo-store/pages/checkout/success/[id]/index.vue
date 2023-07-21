@@ -35,8 +35,8 @@ const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
   useOrderPayment(order);
 
 onMounted(async () => {
-  const SUCCESS_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
-  const FAILURE_PAYMENT_URL: string = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
+  const SUCCESS_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
+  const FAILURE_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
 
   await loadOrderDetails();
   await handlePayment(SUCCESS_PAYMENT_URL, FAILURE_PAYMENT_URL);
@@ -62,7 +62,7 @@ watchDebounced(
       console.error("err, redirect", error);
     }
   },
-  { debounce: 5000 }
+  { debounce: 5000 },
 );
 
 const isExpand = ref(false);
@@ -71,7 +71,7 @@ const toggleView = () => (isExpand.value = !isExpand.value);
 
 const formatDate = (date: Date) =>
   new Date(date).toLocaleDateString(
-    (typeof navigator !== "undefined" && navigator.language) || "en-US"
+    (typeof navigator !== "undefined" && navigator.language) || "en-US",
   );
 
 const sortLineItems = computed(() => {

@@ -1,4 +1,4 @@
-import { ref, computed, ComputedRef, Ref, unref } from "vue";
+import { ref, computed, ComputedRef } from "vue";
 import {
   Product,
   CrossSelling,
@@ -14,30 +14,37 @@ import { useShopwareContext } from "./useShopwareContext";
 
 export type UseProductAssociationsReturn = {
   /**
-   * Start loading resources
+   * Start loading resources. Search Parameters and HTTP method can be passed.
+   *
    */
-  loadAssociations: (params: {
+  loadAssociations(params: {
     method?: "post" | "get";
     searchParams: ShopwareSearchParams;
-  }) => Promise<void>;
+  }): Promise<void>;
   /**
    * If it's loading - indicator
    */
   isLoading: ComputedRef<boolean>;
-
+  /**
+   * Product associations, like CrossSelling[]
+   */
   productAssociations: ComputedRef<CrossSelling[]>;
 };
 
 /**
- * Get product association entity. Options - {@link UseProductAssociationsReturn}
- *
+ * Get product association entity.
+ * @public
+ * @category Product
  */
 export function useProductAssociations(
   product: ComputedRef<Product>,
   options: {
     associationContext: "cross-selling" | "reviews";
-  }
+  },
 ): UseProductAssociationsReturn {
+  if (!product.value)
+    throw new Error("[useProductAssociations]: Product is not provided.");
+
   const association = options.associationContext;
 
   const { apiInstance } = useShopwareContext();
@@ -55,10 +62,10 @@ export function useProductAssociations(
         const response = await invokeGet(
           {
             address: `${getProductDetailsEndpoint(
-              product.value.id
+              product.value.id,
             )}/${association}${params.searchParams || ""}`,
           },
-          apiInstance
+          apiInstance,
         );
 
         associations.value = response?.data as [];
@@ -68,18 +75,18 @@ export function useProductAssociations(
       const response = await invokePost(
         {
           address: `${getProductDetailsEndpoint(
-            product.value.id
+            product.value.id,
           )}/${association}`,
-          payload: params,
+          payload: params?.searchParams || {},
         },
-        apiInstance
+        apiInstance,
       );
 
       associations.value = response?.data as [];
     } catch (error) {
       console.error(
         "[useProductAssociations][loadAssociations][error]:",
-        error
+        error,
       );
     } finally {
       isLoading.value = false;

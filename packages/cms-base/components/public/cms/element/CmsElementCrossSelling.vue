@@ -36,7 +36,7 @@ const config = computed<SliderElementConfig>(() => ({
 const crossSellCollections = computed(() => {
   return (
     props.content?.data?.crossSellings?.filter(
-      (collection) => !!collection?.products?.length
+      (collection) => !!collection?.products?.length,
     ) || []
   );
 });
@@ -80,7 +80,7 @@ const toggleTab = (index: number) => {
       >
         <SwProductCard
           v-for="product of crossSellCollections[currentTabIndex].products"
-          class="h-[600px]"
+          class="w-[300px]"
           :key="product.id"
           :product="product"
           :layoutType="getConfigValue('boxLayout')"

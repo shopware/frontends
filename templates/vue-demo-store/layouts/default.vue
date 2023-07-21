@@ -22,14 +22,12 @@ useHead({
 </script>
 <template>
   <div>
-    <SharedModal />
     <LayoutHeader />
     <LayoutNotifications />
     <div class="min-h-[100vh] mx-auto">
       <LayoutBreadcrumbs v-if="showBreadCrumb" />
       <slot />
     </div>
-    <CheckoutSideCart />
     <LayoutFooter />
   </div>
 </template>

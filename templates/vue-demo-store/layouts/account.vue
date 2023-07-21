@@ -13,6 +13,8 @@ useAuthGuardRedirection();
 
 const { logout } = useUser();
 const router = useRouter();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 async function invokeLogout() {
   logout();

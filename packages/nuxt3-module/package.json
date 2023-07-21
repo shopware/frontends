@@ -1,13 +1,13 @@
 {
   "name": "@shopware-pwa/nuxt3-module",
-  "version": "0.2.1",
+  "version": "0.4.0",
   "description": "Nuxt 3 module for Shopware Frontends",
   "author": "Shopware",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/framework/internal-structure.html#nuxt3-module",
+  "homepage": "https://frontends.shopware.com/framework/internal-structure.html#nuxt3-module",
   "keywords": [
     "Nuxt",
     "Shopware",
@@ -35,21 +35,22 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "lint": "eslint plugin.ts src/**/*.ts* --fix --max-warnings=0",
+    "lint": "eslint plugin.ts src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "typecheck": "tsc --noEmit",
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.2.2",
+    "@nuxt/kit": "^3.6.3",
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
-    "js-cookie": "^3.0.1"
+    "js-cookie": "^3.0.5"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.2.3",
-    "@nuxt/schema": "^3.2.2",
+    "@nuxt/devtools": "^0.6.7",
+    "@nuxt/schema": "^3.6.3",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
-    "typescript": "^4.9.5",
-    "unbuild": "^1.1.2"
+    "typescript": "^5.1.6",
+    "unbuild": "^1.2.1"
   }
 }

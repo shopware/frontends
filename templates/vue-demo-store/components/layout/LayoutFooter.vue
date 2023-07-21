@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import {
+  getTranslatedProperty,
+  getCategoryRoute,
+} from "@shopware-pwa/helpers-next";
 
 const { navigationElements } = useNavigation({ type: "footer-navigation" });
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+
 const gridColumns = computed<number>(() =>
   navigationElements.value
     ? Object.keys(navigationElements.value).length + 2
-    : 2
+    : 2,
 );
 </script>
 
@@ -36,7 +41,7 @@ const gridColumns = computed<number>(() =>
                   class="text-base font-normal text-gray-300"
                 >
                   {{ getTranslatedProperty(navigationChild, "name") }}
-                </RouterLink>
+                </NuxtLink>
               </li>
             </ul>
           </template>

@@ -13,7 +13,7 @@ head:
 
 # Work with routing
 
-In the [building a navigation](./navigation.md) chapter you have already learned how to create a menu structure for your frontend. In this chapter you will learn how to resolve the paths of each menu item, so that users can navigate the store. Specifically, you will learn how to
+In the [building a navigation](./page-elements/navigation.md) chapter you have already learned how to create a menu structure for your frontend. In this chapter you will learn how to resolve the paths of each menu item, so that users can navigate the store. Specifically, you will learn how to
 
 - Resolve a path string to a route configuration
 - Resolve a route configuration to its page or entity
@@ -127,7 +127,60 @@ If you use the `@shopware-pwa/nuxt3-module`, all composables will be automatical
 
 You are done at this point if you choose to build/design custom pages or integrate an external CMS system for the page content.
 
+## Omitting store API calls for seoURLs
+
+Having pretty URLs is important for SEO and user experience. To display the proper page for that URL, it must be resolved first. This often requires two API calls.
+
+- seoURL lookup, which returns the kind of page we should display and the id of the entity
+- API call to fetch the entity data
+
+Thankfully, we do not need to do that in every case. Only the first request (handled on the server side) is required to resolve the URL. After we render the page, every link information contains not only SEOUrl for redirection but also metadata information containing redirection data. Thanks to this, we can load page data directly without first resolving the URL.
+
+To create speaking links for products or categories, you must know the `seoPathInfo` from the `seoURLs` object. In some situations, you only have the ID of the product or category and then you may need to make an additional call to get the speaking link. This call costs time and can be omitted.
+
+We have created two new helper functions that can be used to avoid these extra calls. Just use [getCategoryRoute](../packages/helpers/getCategoryRoute) and [getProductRoute](../packages/helpers/getProductRoute) from helpers package. Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
+
+##### Example getCategoryRoute with NuxtLink
+
+```vue
+<script setup lang="ts">
+import { getCategoryRoute } from "@shopware-pwa/helpers-next";
+</script>
+
+<template>
+  <NuxtLink :to="getCategoryRoute(navigationChild)">
+    {{ getTranslatedProperty(navigationChild, "name") }}
+  </NuxtLink>
+</template>
+```
+
+##### Example getProductRoute with RouterLink
+
+```vue
+<script setup lang="ts">
+import { getProductRoute } from "@shopware-pwa/helpers-next";
+</script>
+
+<template>
+  <RouterLink :to="getProductRoute(product)">
+    {{ getTranslatedProperty(product, "name") }}
+  </RouterLink>
+</template>
+```
+
+##### How does "Omitting store API calls for seoURLs" work in detail?
+
+Several things happen during a request. It should be noted that some operations take place on the server side and some on the client side. Also, data can be passed from the server side to the client side and reused there without the need for a new request. Check the documentation about [useAsyncData](https://nuxt.com/docs/api/composables/use-async-data) in a Nuxt environment.
+
+> Simplified process
+>
+> 1. The user loads an arbitrary page (we don't know which one it is)
+> 2. The server-side rendering (SSR) always happens first and that's where we need to resolve the page, as you learned [above](#resolve-a-route-to-a-page). You will see in the developer tools (network tab) that we load the CMS data (seoURL is included in the response) from the store API.
+> 3. After the initial loading (as described in 1 and 2), we already show pretty links to the user. From now on, we don't need to call the store API endpoint for seo-urls, because we already have the data we need. So we simply return it to the user via the [History State API](https://developer.mozilla.org/en-US/docs/Web/API/History/state). This is why we use helpers always in our demo-store template.
+
+To check it out on a code level have a look at the `[...all].vue` file in the demo-store template.
+
 ## Next steps
 
-<PageRef page="content-pages" title="Create content pages" sub="Integrate routing and Shopping Experiences" />
-<PageRef page="product-listing" title="Create a product listing" sub="Display a list of products" />
+<PageRef page="cms/content-pages" title="Create content pages" sub="Integrate routing and Shopping Experiences" />
+<PageRef page="e-commerce/product-listing" title="Create a product listing" sub="Display a list of products" />

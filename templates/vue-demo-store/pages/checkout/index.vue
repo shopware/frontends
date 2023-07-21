@@ -7,7 +7,6 @@ export default {
 import { SharedModal } from "~~/components/shared/SharedModal.vue";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue';
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength, requiredIf } from "@vuelidate/validators";
 import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import {
   CheckCircleIcon,
@@ -28,6 +27,10 @@ const { push } = useRouter();
 const { currency } = useSessionContext();
 const { getCountries } = useCountries();
 const { getSalutations } = useSalutations();
+const { pushInfo } = useNotifications();
+const { t } = useI18n();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 const {
   paymentMethods,
   shippingMethods,
@@ -52,6 +55,12 @@ const { customerAddresses, loadCustomerAddresses } = useAddress();
 
 const modal = inject<SharedModal>("modal") as SharedModal;
 const isLoading = reactive<{ [key: string]: boolean }>({});
+
+watch([isLoggedIn, isGuestSession], ([isLogged, isLoggedGuest]) => {
+  if (isLogged || isLoggedGuest) {
+    loadCustomerAddresses();
+  }
+});
 
 const selectedShippingMethod = computed({
   get(): string {
@@ -135,10 +144,18 @@ const state = reactive<any>({
     zipcode: "",
     city: "",
     countryId: "",
+    countryStateId: "",
   },
   customShipping: false,
   agree: false,
 });
+
+const terms = reactive({
+  tos: false,
+  revocation: false,
+});
+
+const termsBox = ref();
 
 const rules = computed(() => ({
   firstName: {
@@ -199,21 +216,26 @@ const rules = computed(() => ({
     countryId: {
       required,
     },
+    countryStateId: {
+      required: requiredIf(() => {
+        return !!getStatesForCountry(state.billingAddress.countryId)?.length;
+      }),
+    },
   },
 }));
 
 const $v = useVuelidate(rules, state);
 
 onMounted(async () => {
-  refreshSessionContext();
+  await refreshSessionContext();
 
   isLoading["shippingAddress"] = true;
   isLoading["shippingMethods"] = true;
   isLoading["paymentMethods"] = true;
 
   Promise.any([
-    isLoggedIn.value ? loadCustomerAddresses() : null,
-    getShippingMethods(),
+    loadCustomerAddresses(),
+    !isVirtualCart.value ? getShippingMethods() : null,
     getPaymentMethods(),
   ]).finally(() => {
     isLoading["shippingAddress"] = false;

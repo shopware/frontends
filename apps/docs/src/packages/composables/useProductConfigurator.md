@@ -4,8 +4,4 @@ category: CMS
 
 # useProductConfigurator
 
-Description
-
-## Usage
-
-// TODO: add example
+<!-- PLACEHOLDER_DESCRIPTION -->

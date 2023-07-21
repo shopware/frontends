@@ -8,7 +8,7 @@ describe("apiInterceptors", () => {
   });
   describe("createResponseInterceptor", () => {
     it("should update contextToken after any request", async () => {
-      const contextToken = faker.datatype.uuid();
+      const contextToken = faker.string.uuid();
       const updateMethod = vi.fn();
       const responseInterceptor = createResponseInterceptor(updateMethod);
       responseInterceptor({
@@ -22,7 +22,7 @@ describe("apiInterceptors", () => {
     });
 
     it("should get contextToken from response, not header, if there is one", () => {
-      const contextToken = faker.datatype.uuid();
+      const contextToken = faker.string.uuid();
       const updateMethod = vi.fn();
       const responseInterceptor = createResponseInterceptor(updateMethod);
       responseInterceptor({
@@ -36,7 +36,7 @@ describe("apiInterceptors", () => {
         {
           contextToken: "044a190a54ab4f06803909c3ee8063ef",
         },
-        {}
+        {},
       );
     });
   });
@@ -198,7 +198,9 @@ describe("apiInterceptors", () => {
             code: "",
             detail: "timeout of 5ms",
             meta: {},
-            source: {},
+            source: {
+              pointer: "",
+            },
             status: "",
             title: "",
           },
@@ -217,7 +219,9 @@ describe("apiInterceptors", () => {
             code: "",
             detail: "Network Error",
             meta: {},
-            source: {},
+            source: {
+              pointer: "",
+            },
             status: "",
             title: "",
           },
@@ -255,7 +259,9 @@ describe("apiInterceptors", () => {
               code: "",
               title: "",
               meta: {},
-              source: {},
+              source: {
+                pointer: "",
+              },
             },
           ],
           statusCode: 408,

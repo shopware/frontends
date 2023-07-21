@@ -1,5 +1,5 @@
 import { SalutationTranslation } from "./SalutationTranslation";
-
+import { CustomFields } from "../models/common/CustomField";
 /**
  * @public
  */
@@ -9,8 +9,10 @@ export type Salutation = {
   displayName: string | null;
   letterName: string | null;
   createdAt: string;
-  translations: SalutationTranslation[] | null;
+  translations?: SalutationTranslation[] | null;
   translated: object;
-  updatedAt: string | null;
-  extenstions: object;
+  updatedAt: Date | string | null;
+  extensions?: object;
+  customFields: CustomFields;
+  apiAlias: string;
 };

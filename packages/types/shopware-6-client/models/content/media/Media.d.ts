@@ -14,7 +14,7 @@ import { CmsBlock } from "../cms/CmsBlock";
 import { Document } from "../../checkout/document/Document";
 import { ProductManufacturer } from "../product/ProductManufacturer";
 import { OrderLineItem } from "../../checkout/order/OrderLineItem";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 import { Customer } from "../../checkout/customer/Customer";
 
 /**
@@ -26,12 +26,12 @@ export type Media = {
   fileSize: number;
   title: null | string;
   metaData: {
-    hash: string;
+    hash?: string;
     type: number;
     width: number;
     height: number;
   };
-  uploadedAt: string;
+  uploadedAt: Date | string | null;
   alt: null | string;
   url: string;
   fileName: string;
@@ -39,17 +39,17 @@ export type Media = {
   thumbnails: MediaThumbnail[];
   hasFile: boolean;
   private: boolean;
-  _uniqueIdentifier: string;
-  versionId: null | string;
+  _uniqueIdentifier?: string;
+  versionId?: null | string;
   translated: {
     alt: null | string;
     title: null | string;
-    customFields: unknown;
+    customFields: CustomFields | null;
   };
   createdAt: string;
-  updatedAt: null | string;
-  extensions: unknown;
+  updatedAt: Date | string | null;
+  extensions?: unknown;
   id: string;
-  customFields: null | unknown;
+  customFields: CustomFields | null;
   apiAlias: "media";
 };

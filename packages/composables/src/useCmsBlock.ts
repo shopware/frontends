@@ -12,14 +12,16 @@ export type UseCmsBlockReturn = {
    * Get slot content by slot name (identifier)
    * @example getSlotContent("main")
    */
-  getSlotContent: (slotName: string) => ArrayElement<CmsBlock["slots"]>;
+  getSlotContent(slotName: string): ArrayElement<CmsBlock["slots"]>;
 };
 
 /**
  * Composable to get cms block content
+ * @public
+ * @category CMS (Shopping Experiences)
  */
 export function useCmsBlock<BLOCK_TYPE extends CmsBlock>(
-  content: BLOCK_TYPE
+  content: BLOCK_TYPE,
 ): UseCmsBlockReturn {
   function getSlotContent(slotName: ArrayElement<BLOCK_TYPE["slots"]>["slot"]) {
     return content.slots.find((slot) => slot.slot === slotName) as ArrayElement<

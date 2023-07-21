@@ -7,10 +7,10 @@
  * @beta
  */
 export type Entity = {
-  _uniqueIdentifier: string;
+  _uniqueIdentifier?: string;
   versionId: string;
   translated: unknown;
-  createdAt: Date | null;
-  updatedAt: Date | null;
+  createdAt: Date | string | null;
+  updatedAt: Date | string | null;
   apiAlias: string;
 };

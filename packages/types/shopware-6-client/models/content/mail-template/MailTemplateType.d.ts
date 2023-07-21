@@ -1,6 +1,6 @@
 import { MailTemplateSalesChannel } from "./MailTemplateSalesChannel";
 import { MailTemplateTypeTranslation } from "./MailTemplateTypeTranslation";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -11,8 +11,8 @@ export type MailTemplateType = {
   availableEntities: [] | null;
   translations: MailTemplateTypeTranslation[] | null;
   mailTemplates: MailTemplateType[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   salesChannels: MailTemplateSalesChannel[] | null;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | string | null;
 };

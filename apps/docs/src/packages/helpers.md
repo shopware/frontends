@@ -1,5 +1,3 @@
 # Helpers Reference
 
-::: warning Work in progress
-This page is currently work in progress and will be updated soon.
-:::
+List of all public methods exported within [@shopware-pwa/helpers-next](https://npmjs.com/package/@shopware-pwa/helpers-next) package.

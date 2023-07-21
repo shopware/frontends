@@ -1,0 +1,69 @@
+{
+  "checkout": {
+    "orderSummary": "Podsumowanie zamówienia",
+    "orderSummaryLabel": "Szczegóły zamówienia oraz kwoty do zapłaty.",
+    "signIn": "Zaloguj się",
+    "signInToOrder": "Aby złożyć zamówienie.",
+    "register": "Zarejestruj się",
+    "header": "Koszyk",
+    "empty": "Twój koszyk jest pusty",
+    "close": "Zamknij panel",
+    "logOut": "Możesz się wylogować",
+    "orderTotal": "Łącznie do zapłaty",
+    "loginRequired": "Musisz być zalogowany, aby złożyć zamówienie.",
+    "goToHomepage": "Przejdź do strony głównej",
+    "here": "tutaj",
+    "shippingEstimate": "Szacowana wysyłka",
+    "selectPaymentMethod": "Wybierz metodę płatności",
+    "notCreateAccount": "Nie twórz konta klienta.",
+    "takesUpTo": "Czas realizacji do",
+    "subtotal": "Suma częściowa",
+    "taxesLabel": "Koszty wysyłki i podatki są naliczane podczas realizacji zamówienia.",
+    "linkCheckout": "Do kasy",
+    "guest": "gość",
+    "placeOrder": "Złóż zamówienie",
+    "linkShippingCart": "Przejdź do koszyka",
+    "checkStatus": "Możesz teraz sprawdzić status zamówienia w swoim koncie. Dziękujemy!",
+    "unpaidStatus": "Niestety, Twoje zamówienie nie zostało opłacone. Możesz spróbować ponownie lub skontaktować się z nami.",
+    "checkOrderDetails": "Sprawdź szczegóły zamówienia",
+    "loggedInAs": "Jesteś zalogowany jako",
+    "or": "lub",
+    "yourOrder": "Twoje zamówienie",
+    "backToHomepage": "Wróć do strony głównej",
+    "orderPaid": "zostało opłacone",
+    "orderUnpaid": "nie zostało opłacone",
+    "continueShopping": "Kontynuuj zakupy",
+    "goToPayment": "Przejdź do płatności",
+    "shippingAddressLabel": "Adres wysyłki",
+    "billingAddressLabel": "Adres do faktury",
+    "selectBillingAddress": "Wybierz adres do faktury",
+    "addNewBillingAddress": "Dodaj nowy adres do faktury",
+    "addNewShippingAddress": "Dodaj nowy adres wysyłki",
+    "differentBillingAddress": "Inny adres do faktury",
+    "paymentMethodLabel": "Metoda płatności",
+    "shippingMethodLabel": "Metoda wysyłki",
+    "shippingPriceLabel": "Koszt wysyłki",
+    "personalInformationLabel": "Dane osobowe",
+    "personalInformationInfo": "Podaj stały adres, na który możesz otrzymywać korespondencję.",
+    "totalLabel": "Suma",
+    "termsAdnConditions": "Regulamin",
+    "termsAdnConditionsLabel": "Przeczytałem/am i akceptuję ogólne warunki handlowe.",
+
+    "digitalTerms": "Chcę mieć natychmiastowy dostęp do treści cyfrowych i świadomie zrzekam się prawa do odstąpienia od umowy.",
+    "promoCode": {
+      "label": "Zastosowane kody promocyjne",
+      "remove": "Usuń"
+    },
+    "items": {
+      "removeButton": "Usuń"
+    },
+    "success": {
+      "header": "Otrzymaliśmy zamówienie #{0} i przetworzymy je tak szybko, jak to możliwe.",
+      "paymentProcessLabel": "Zakończ proces płatności.",
+      "paymentProcessInfo": "Zostaniesz przekierowany do bramy płatności za 5 sekund."
+    },
+    "messages": {
+      "checkoutSignInSuccess": "Dziękujemy za rejestrację! Wkrótce otrzymasz e-mail z potwierdzeniem. Kliknij w link w e-mailu, aby ukończyć rejestrację."
+    }
+  }
+}

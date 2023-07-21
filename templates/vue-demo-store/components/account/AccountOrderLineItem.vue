@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import { OrderLineItem } from "@shopware-pwa/types";
-import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-
-defineProps<{
+import {
+  getSmallestThumbnailUrl,
+  getMedia,
+  downloadFile,
+} from "@shopware-pwa/helpers-next";
+const props = defineProps<{
   lineItem: OrderLineItem;
 }>();
+
+const { getMediaFile } = useOrderDetails(props.lineItem.orderId);
+
+const getMediaFileHandler = async (mediaId: string, fileName: string) => {
+  const response = await getMediaFile(mediaId);
+  downloadFile(response, fileName);
+};
 </script>
 
 <script lang="ts">
@@ -30,14 +40,16 @@ export default {
         />
       </div>
       <div v-else class="w-24" />
-      <div class="my-5 text-center">{{ lineItem.label }}</div>
+      <div class="my-5 text-center">
+        {{ lineItem.label }}
+      </div>
     </div>
     <div class="flex justify-between">
-      <div class="sm:hidden">Quantity</div>
+      <div class="sm:hidden">{{ $t("account.order.quantity") }}</div>
       <div>{{ lineItem.quantity }}</div>
     </div>
     <div v-if="lineItem.unitPrice" class="flex justify-between">
-      <div class="sm:hidden">Price</div>
+      <div class="sm:hidden">{{ $t("account.order.price") }}</div>
       <SharedPrice
         :value="lineItem.unitPrice"
         class="text-gray-600 font-normal"
@@ -54,6 +66,19 @@ export default {
         class="text-gray-600 font-normal"
         data-testid="order-item-totalprice"
       />
+    </div>
+  </div>
+  <div class="pl-5 pb-3">
+    <div
+      v-for="media in getMedia(lineItem)"
+      :key="media.id"
+      class="cursor-pointer"
+      @click="getMediaFileHandler(media.id, media.fileName)"
+    >
+      <div class="flex gap-2">
+        <div class="w-5 h-5 i-carbon-result" />
+        {{ media.fileName }}
+      </div>
     </div>
   </div>
 </template>

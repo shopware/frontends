@@ -17,11 +17,11 @@ export type UseProductSearchSuggestReturn = {
    * @param additionalCriteria - additional search criteria of type {@link ShopwareSearchParams}
    * @returns
    */
-  search: (additionalCriteria?: Partial<ShopwareSearchParams>) => Promise<void>;
+  search(additionalCriteria?: Partial<ShopwareSearchParams>): Promise<void>;
   /**
    * Loads more products for current search criteria
    */
-  loadMore: () => Promise<void>;
+  loadMore(): Promise<void>;
   /**
    * Returns the product list found by the search
    */
@@ -32,6 +32,11 @@ export type UseProductSearchSuggestReturn = {
   getTotal: ComputedRef<number>;
 };
 
+/**
+ * Composable for product suggest search.
+ * @public
+ * @category Product
+ */
 export function useProductSearchSuggest(): UseProductSearchSuggestReturn {
   const searchTerm = ref("");
 
@@ -40,7 +45,7 @@ export function useProductSearchSuggest(): UseProductSearchSuggestReturn {
   });
 
   const search = async (
-    additionalCriteria: Partial<ShopwareSearchParams> = {}
+    additionalCriteria: Partial<ShopwareSearchParams> = {},
   ) => {
     const searchCriteria = {
       query: searchTerm.value,

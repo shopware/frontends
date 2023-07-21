@@ -19,7 +19,7 @@ const props = withDefaults(
     gap: "0px",
     autoplay: false,
     autoplaySpeed: 3000,
-  }
+  },
 );
 
 const { getConfigValue } = useCmsElementConfig({
@@ -30,25 +30,25 @@ const { getConfigValue } = useCmsElementConfig({
 
 const slots = useSlots();
 const childrenRaw = computed(
-  () => (slots?.default?.()[0].children as VNodeArrayChildren) ?? []
+  () => (slots?.default?.()[0].children as VNodeArrayChildren) ?? [],
 );
 const slidesToScroll = computed(() =>
   props.slidesToScroll >= props.slidesToShow
     ? props.slidesToShow
-    : props.slidesToScroll
+    : props.slidesToScroll,
 );
 const slidesToShow = computed(() =>
   props.slidesToShow >= childrenRaw.value.length
     ? childrenRaw.value.length
-    : props.slidesToShow
+    : props.slidesToShow,
 );
-const children = computed(() => {
+const children = computed<string[]>(() => {
   if (childrenRaw.value.length === 0) return [];
   return [
     ...childrenRaw.value.slice(-slidesToShow.value),
     ...childrenRaw.value,
     ...childrenRaw.value.slice(0, slidesToShow.value),
-  ];
+  ] as string[];
 });
 const emit = defineEmits<{
   (e: "changeSlide", index: number): void;
@@ -96,7 +96,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 );
 
 const imageSliderStyle = computed(() => {
@@ -113,17 +113,17 @@ const imageSliderStyle = computed(() => {
 });
 
 const verticalAlignValue = computed(
-  () => getConfigValue("verticalAlign") || "flex-start"
+  () => getConfigValue("verticalAlign") || "flex-start",
 );
 const displayModeValue = computed(
-  () => getConfigValue("displayMode") || "standard"
+  () => getConfigValue("displayMode") || "standard",
 );
 
 const navigationArrowsValue = computed(
-  () => props.config?.navigationArrows?.value || "none"
+  () => props.config?.navigationArrows?.value || "none",
 );
 const navigationDotsValue = computed(
-  () => props.config?.navigationDots?.value || "none"
+  () => props.config?.navigationDots?.value || "none",
 );
 
 function initSlider() {
@@ -138,7 +138,7 @@ function initSlider() {
 function buildImageSliderTrackStyle(
   transformIndex: number,
   moving: boolean = false,
-  callback = () => {}
+  callback = () => {},
 ) {
   let styleObj: { [K: string]: string } = {
     transform: `translate3d(-${
@@ -236,13 +236,17 @@ defineExpose({
   <div
     ref="slider"
     :class="{
-      'relative overflow-hidden': true,
+      'relative overflow-hidden h-full': true,
       'px-10': navigationArrowsValue === 'outside',
       'pb-15': navigationDotsValue === 'outside',
       'opacity-0': !isReady,
     }"
   >
-    <div class="overflow-hidden" ref="imageSlider" :style="imageSliderStyle">
+    <div
+      class="overflow-hidden h-full"
+      ref="imageSlider"
+      :style="imageSliderStyle"
+    >
       <div
         ref="imageSliderTrack"
         :class="{
@@ -269,7 +273,7 @@ defineExpose({
             height: displayModeValue === 'standard' ? 'min-content' : '100%',
           }"
         >
-          <component :is="child" />
+          <component :is="child as any" />
         </div>
       </div>
     </div>
@@ -277,7 +281,7 @@ defineExpose({
       <button
         aria-label="Chevron left"
         :class="{
-          'absolute top-1/2 left-0 transform -translate-y-1/2 py-4': true,
+          'absolute bg-transparent top-1/2 left-0 transform -translate-y-1/2 py-4': true,
           'transition bg-white/20 hover:bg-white/50':
             navigationArrowsValue === 'inside',
         }"
@@ -288,7 +292,7 @@ defineExpose({
       <button
         aria-label="Chevron right"
         :class="{
-          'absolute top-1/2 right-0 transform -translate-y-1/2 py-4': true,
+          'absolute bg-transparent top-1/2 right-0 transform -translate-y-1/2 py-4': true,
           'transition bg-white/20 hover:bg-white/50':
             navigationArrowsValue === 'inside',
         }"

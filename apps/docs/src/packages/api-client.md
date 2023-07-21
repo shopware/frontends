@@ -1,36 +1,17 @@
-# Api Client packages
+# API Client packages
 
-## Cart & Checkout
+Documentation related to the [API Client package](https://github.com/shopware/frontends/tree/main/packages/api-client).
 
-- [cartService](./api-client/cartService.md)
-- [checkoutService](./api-client/checkoutService.md)
+:::info
+A new version of the API Client is currently in development ([see GitHub](https://github.com/shopware/frontends/tree/feat/api-client-next/packages/api-client-next)).  
+Features are TypeScript autocompletion and generated types based on the envoirment.
+:::
 
-## CMS
+## Additional docs about the API Client
 
-- [pageService](./api-client/pageService.md)
+<PageRef page="./api-client/docs/associations" title="Associations" sub="Not all of the associations are added to the response by default. Some of them have to be added manually." />
+<PageRef page="./api-client/docs/storefront-url" title="Storefront URL" sub="Storefront URL is a parameter that is included in some API requests to specify which language, domain, etc., should be used when the backend sends emails." />
 
-## Languages & Context
+## List of all public methods
 
-- [contextService](./api-client/contextService.md)
-
-## Navigation & Routing
-
-- [navigationService](./api-client/navigationService.md)
-
-## Product
-
-- [productService](./api-client/productService.md)
-- [categoryService](./api-client/categoryService.md)
-- [searchService](./api-client/searchService.md)
-
-## User & Account
-
-- [customerService](./api-client/customerService.md)
-
-## Wishlist
-
-- [wishlistService](./api-client/wishlistService.md)
-
-## Other
-
-- [formsService](./api-client/formsService.md)
+Exported within [@shopware-pwa/api-client](https://npmjs.com/package/@shopware-pwa/api-client) package

@@ -1,0 +1,11 @@
+{
+  "include": ["src/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "compilerOptions": {
+    "declaration": true,
+    "allowJs": true,
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true,
+    "outDir": "./temp"
+  }
+}

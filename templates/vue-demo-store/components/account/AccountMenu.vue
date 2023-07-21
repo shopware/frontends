@@ -45,7 +45,7 @@ const invokeLogout = () => {
 }
 </script>
 <template>
-  <div class="md:w-auto">
+  <div class="md:w-auto min-w-140px flex justify-end">
     <div class="my-account-area">
       <!-- UserIcon for desktop -->
       <UserIcon

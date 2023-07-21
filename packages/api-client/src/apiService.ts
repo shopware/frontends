@@ -81,7 +81,7 @@ export function _createInstance(initialConfig: ClientSettings = {}) {
 
   const update = function (
     config: ClientSettings,
-    responseConfig?: AxiosResponse<AxiosRequestConfig>["config"]
+    responseConfig?: AxiosResponse<AxiosRequestConfig>["config"],
   ): void {
     clientConfig = Object.assign(clientConfig, config);
     if (
@@ -90,7 +90,7 @@ export function _createInstance(initialConfig: ClientSettings = {}) {
       responseConfig
     ) {
       console.warn(
-        `[shopware-6-api] After calling API method ${responseConfig.url} there is no "onConfigChange" listener. See https://shopware-pwa-docs.vuestorefront.io/landing/fundamentals/security.html#context-awareness`
+        `[shopware-6-api] After calling API method ${responseConfig.url} there is no "onConfigChange" listener. See https://shopware-pwa-docs.vuestorefront.io/landing/fundamentals/security.html#context-awareness`,
       );
     }
     callbackMethods.forEach((fn) => fn({ config: clientConfig }));
@@ -107,7 +107,7 @@ export function _createInstance(initialConfig: ClientSettings = {}) {
 
   apiService.interceptors.response.use(
     createResponseInterceptor(update),
-    errorInterceptor
+    errorInterceptor,
   );
 
   return {
@@ -126,7 +126,7 @@ export function _createInstance(initialConfig: ClientSettings = {}) {
  * @public
  */
 export function createInstance(
-  initialConfig: ClientSettings = {}
+  initialConfig: ClientSettings = {},
 ): ShopwareApiInstance {
   const {
     onConfigChange,

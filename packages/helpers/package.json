@@ -1,13 +1,13 @@
 {
   "name": "@shopware-pwa/helpers-next",
-  "version": "0.1.24",
+  "version": "0.3.2",
   "description": "Shopware helpers for accessing API data",
   "author": "Shopware",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
   },
-  "homepage": "https://shopware-frontends-docs.vercel.app/packages/helpers.html",
+  "homepage": "https://frontends.shopware.com/packages/helpers.html",
   "keywords": [
     "shopware",
     "api",
@@ -29,15 +29,16 @@
     "build": "unbuild && pnpm build:types",
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "unbuild --stub",
-    "lint": "eslint src/**/*.ts* --fix --max-warnings=0",
+    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
   "devDependencies": {
-    "@vitest/coverage-c8": "^0.28.5",
+    "@vitest/coverage-v8": "^0.33.0",
     "eslint-config-shopware": "workspace:*",
-    "jsdom": "^21.1.0",
+    "happy-dom": "^10.5.1",
     "tsconfig": "workspace:*",
-    "vitest": "^0.28.5"
+    "vitest": "^0.33.0"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*"

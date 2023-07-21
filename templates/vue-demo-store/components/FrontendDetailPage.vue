@@ -16,7 +16,7 @@ const { data: productResponse } = await useAsyncData(
       withCmsAssociations: true,
     });
     return productResponse;
-  }
+  },
 );
 
 const getCategoryBreadcrumbs = (
@@ -49,7 +49,7 @@ const breadcrumbs = getCategoryBreadcrumbs(
   productResponse.value?.product.seoCategory,
   {
     startIndex: 2,
-  }
+  },
 );
 
 breadcrumbs.push({
@@ -60,7 +60,7 @@ useBreadcrumbs(breadcrumbs);
 
 const { product } = useProduct(
   productResponse.value?.product,
-  productResponse.value?.configurator
+  productResponse.value?.configurator,
 );
 
 useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });

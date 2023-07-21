@@ -2,6 +2,8 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { ClientApiError } from "@shopware-pwa/types";
+import { customValidators } from "@/i18n/utils/i18n-validators";
+const { required, minLength, requiredIf, email, sameAs } = customValidators();
 
 const { user, refreshUser, updatePersonalInfo } = useUser();
 const { pushSuccess, pushError } = useNotifications();
@@ -61,6 +63,7 @@ const invokeUpdate = async (): Promise<void> => {
   errorMessages.value = [];
   isSuccess.value = false;
   try {
+    loadingData.value = true;
     updated.value = false;
     $v.value.$touch();
     if ($v.value.$invalid) {
@@ -101,6 +104,8 @@ const invokeUpdate = async (): Promise<void> => {
   } catch (err) {
     const e = err as ClientApiError;
     errorMessages.value = e.messages.map((m) => m.detail);
+  } finally {
+    loadingData.value = false;
   }
 };
 

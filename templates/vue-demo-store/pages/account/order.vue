@@ -14,7 +14,7 @@ useBreadcrumbs([
     path: "/account",
   },
   {
-    name: "Order",
+    name: t("breadcrumbs.order"),
     path: "/account/order",
   },
 ]);

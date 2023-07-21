@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { ShopwareSearchParams } from "@shopware-pwa/types";
+import {
+  ListingResult,
+  Product,
+  ShopwareSearchParams,
+} from "@shopware-pwa/types";
 const route = useRoute();
 const router = useRouter();
 
@@ -15,10 +19,10 @@ const {
 } = useListing({
   listingType: "productSearchListing",
 });
-
+const { t } = useI18n();
 useBreadcrumbs([
   {
-    name: "Search",
+    name: t("breadcrumbs.search"),
     path: "/search",
   },
 ]);
@@ -31,7 +35,7 @@ const { data: productSearch } = await useAsyncData(
   },
   {
     watch: [route],
-  }
+  },
 );
 const changePage = async (page: number) => {
   await router.push({
@@ -42,7 +46,7 @@ const changePage = async (page: number) => {
   });
   changeCurrentPage(page, route.query as Partial<ShopwareSearchParams>);
 };
-setInitialListing(productSearch.value as any);
+setInitialListing(productSearch.value as Partial<ListingResult<Product>>);
 </script>
 
 <script lang="ts">
@@ -56,11 +60,20 @@ export default {
     class="container mb-8 mx-4 md:mx-auto"
     data-testid="search-results-container"
   >
-    <IconsLoadingCircle v-if="loading" />
+    <div v-if="loading" class="flex justify-center">
+      <div
+        class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+      />
+    </div>
 
-    <h1 class="mb-8 text-3xl font-extrabold text-center">
-      <span v-if="products.length">Search Result</span>
-      <span v-else>No products found</span>
+    <h1 class="mb-8 mt-8 md:mt-0 text-3xl text-center">
+      <span v-if="products.length"
+        >{{ $t("search.resultsHeader") }} "<strong>{{
+          route.query.query
+        }}</strong
+        >"</span
+      >
+      <span v-else>{{ $t("search.noResults") }}</span>
     </h1>
 
     <!-- <ListingFilters class="mb-4" /> -->

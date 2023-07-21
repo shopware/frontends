@@ -1,13 +1,14 @@
 import { ShippingMethod } from "./ShippingMethod";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
  */
 export type ShippingMethodTranslation = {
-  shippingMethodId: string;
+  shippingMethodId?: string | null;
   name: string | null;
   description: string | null;
-  shippingMethod: ShippingMethod | null;
-  customFields: CustomField[];
+  shippingMethod?: ShippingMethod | null;
+  customFields: CustomFields;
+  trackingUrl: string | null;
 };

@@ -18,12 +18,16 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
 /**
  * Get default amount of products
  *
+ * @param {ShopwareSearchParams} criteria search criteria for products
+ * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
+ *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function getProducts(
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   const resp = await contextInstance.invoke.post<
     EntityResult<"product", Product>
@@ -37,16 +41,17 @@ export async function getProducts(
  * Get default amount of products and listing configuration for given category
  *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function getCategoryProducts(
   categoryId: string,
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ProductListingResult> {
   const resp = await contextInstance.invoke.post(
     `${getProductListingEndpoint(categoryId)}`,
-    criteria
+    criteria,
   );
   return resp.data;
 }
@@ -55,16 +60,17 @@ export async function getCategoryProducts(
  * Get the product with passed productId
  *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function getProduct(
   productId: string,
   params: unknown = null,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ProductResponse> {
   const resp = await contextInstance.invoke.post(
     getProductDetailsEndpoint(productId),
-    params
+    params,
   );
   return resp.data;
 }
@@ -73,6 +79,7 @@ export async function getProduct(
  * Add a review to specific product by its ID
  *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function addProductReview(
@@ -82,11 +89,11 @@ export async function addProductReview(
     content: string;
     points: number;
   },
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<void> {
   await contextInstance.invoke.post(
     `${getProductDetailsEndpoint(productId)}/review`,
-    productReviewData
+    productReviewData,
   );
 }
 
@@ -94,12 +101,13 @@ export async function addProductReview(
  * Get product reviews
  *
  * @throws ClientApiError
+ * @category Product
  * @public
  */
 export async function getProductReviews(
   productId: string,
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ) {
   const resp = await contextInstance.invoke.post<
     EntityResult<"product_review", ProductReview>
@@ -109,10 +117,9 @@ export async function getProductReviews(
   return resp.data;
 }
 
-
 /**
  * Get matching product variant for given options
- * 
+ *
  * @category Product
  */
 export async function getProductVariantForOptions(
@@ -121,7 +128,7 @@ export async function getProductVariantForOptions(
     optionIds,
     switchedGroup,
   }: { productId?: string; optionIds?: string[]; switchedGroup?: string },
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<{
   variantId: string;
   options: string[];

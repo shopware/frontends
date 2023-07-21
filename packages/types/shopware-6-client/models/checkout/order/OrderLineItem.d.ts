@@ -3,35 +3,47 @@ import { PriceDefinitionInterface } from "../cart/price/PriceDefinitionInterface
 import { Order } from "./Order";
 import { OrderDeliveryPosition } from "./OrderDeliveryPosition";
 import { Media } from "../../content/media/Media";
-import { CustomField } from "../../common/CustomField";
-import { Product } from "../../content/product/Product";
+import { CustomFields } from "../../common/CustomField";
+import { CartProductItem, Product } from "../../content/product/Product";
 import { Promotion } from "../promotion/Promotion";
-
+import { Downloads } from "./OrderDownloads";
 /**
  * @public
  */
 export type OrderLineItem = {
+  versionId: string;
+  translated: string[];
+  createdAt: string;
+  updatedAt: null | string;
   orderId: string;
   identifier: string;
-  referenceId: string | null;
+  referencedId: string;
+  productId: string;
   quantity: number;
   unitPrice: number;
   totalPrice: number;
   label: string;
-  description: string | null;
-  good: boolean;
-  removable: boolean;
-  coverId: string | null;
+  description: null | string;
+  good: string;
+  removable: string;
+  coverId: string;
   stackable: boolean;
-  price: CalculatedPrice | null;
+  position: number;
   priceDefinition: PriceDefinitionInterface | null;
-  payload: Product | Promotion;
+  payload: CartProductItem | Promotion;
   parentId: string | null;
   type: string | null;
   order: Order | null;
   orderDeliveryPosition: OrderDeliveryPosition[] | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   cover: (Media & { url: string }) | null;
   children: OrderLineItem[] | null;
-  apiAlias: "order_item";
+  downloads: Downloads[] | null;
+  states: string[];
+  orderVersionId: string;
+  productVersionId: string;
+  parentVersionId: string;
+  customFields: unknown;
+  id: string;
+  apiAlias: "order_line_item";
 };

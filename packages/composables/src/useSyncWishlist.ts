@@ -8,27 +8,48 @@ import {
 import { useShopwareContext } from "./useShopwareContext";
 
 export type UseSyncWishlistReturn = {
-  getWishlistProducts: () => void;
-  mergeWishlistProducts: (itemsToMerge: string[]) => void;
-  addToWishlistSync: (id: string) => void;
-  removeFromWishlistSync: (id: string) => void;
+  /**
+   * Get products from wishlist
+   */
+  getWishlistProducts(): void;
+  /**
+   * Merge products with wishlist already existing in API wishlist
+   */
+  mergeWishlistProducts(itemsToMerge: string[]): void;
+  /**
+   * Add product to wishlist
+   */
+  addToWishlistSync(id: string): void;
+  /**
+   * Remove product from wishlist
+   */
+  removeFromWishlistSync(id: string): void;
+  /**
+   * Wishlist items (Product IDs)
+   */
   items: ComputedRef<string[]>;
+  /**
+   * Wishlist items count
+   */
   count: ComputedRef<number>;
 };
 
 const _wishlistItems: Ref<string[]> = ref([]);
 
+/**
+ * Composable to manage wishlist via API
+ * @public
+ * @category Wishlist
+ */
 export function useSyncWishlist(): UseSyncWishlistReturn {
   const { apiInstance } = useShopwareContext();
 
   async function addToWishlistSync(id: string) {
     await addWishlistProduct(id, apiInstance);
-    getWishlistProducts();
   }
 
   async function removeFromWishlistSync(id: string) {
     await removeWishlistProduct(id, apiInstance);
-    getWishlistProducts();
   }
 
   /**

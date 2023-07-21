@@ -5,9 +5,9 @@ import { getCustomerDetailsUpdateEndpoint } from "../../endpoints";
 import { describe, expect, it, beforeEach, vi } from "vitest";
 
 const customerData = {
-  salutationId: faker.datatype.uuid(),
-  firstName: faker.name.firstName(),
-  lastName: faker.name.lastName(),
+  salutationId: faker.string.uuid(),
+  firstName: faker.person.firstName(),
+  lastName: faker.person.lastName(),
   title: "d",
 };
 
@@ -31,7 +31,7 @@ describe("CustomerService - updateProfile", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       getCustomerDetailsUpdateEndpoint(),
-      customerData
+      customerData,
     );
   });
 });

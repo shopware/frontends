@@ -1,4 +1,5 @@
 import { Product } from "../product/Product";
+import { CustomFields } from "../../common/CustomField";
 
 export type CustomerWishlist = {
   customerId: string;
@@ -6,10 +7,10 @@ export type CustomerWishlist = {
   versionId: null | string;
   translated: string[];
   createdAt: string;
-  updatedAt: null | string;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
-  customFields: null | unknown;
+  customFields: CustomFields;
   apiAlias: string;
 };
 

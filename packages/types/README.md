@@ -2,9 +2,9 @@
 
 Welcome to `@shopware-pwa/types` package.
 
-For getting started documentation visit [https://shopware-frontends-docs.vercel.app/](https://shopware-frontends-docs.vercel.app/)
+For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
 
-Documentation specific for this package: [types](https://shopware-frontends-docs.vercel.app/packages/types.html)
+Documentation specific for this package: [types](https://frontends.shopware.com/packages/types.html)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
@@ -12,8 +12,8 @@ Documentation specific for this package: [types](https://shopware-frontends-docs
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/types/CHANGELOG.md)
 
-### Latest changes: 0.2.0
+### Latest changes: 0.5.6
 
-### Minor Changes
+### Patch Changes
 
-- [`e21d67b`](https://github.com/shopware/frontends/commit/e21d67bc142076e93630139232ea39a07b51ebfb) Thanks [@patzick](https://github.com/patzick)! - removed wrong `User` type and replaces with proper `Customer`
+- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable

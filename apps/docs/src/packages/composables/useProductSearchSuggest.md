@@ -4,8 +4,4 @@ category: CMS
 
 # useProductSearchSuggest
 
-Description
-
-## Usage
-
-// TODO: add example
+<!-- PLACEHOLDER_DESCRIPTION -->

@@ -97,6 +97,7 @@ const openWishlist = () => {
               </div>
             </div>
           </div>
+          <CheckoutSideCart :controller="sidebarController" />
         </div>
       </div>
       <!-- For Mobile -->

@@ -1,5 +1,5 @@
 import { Media } from "../models/content/media/Media";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../models/common/CustomField";
 
 /**
  * @beta
@@ -29,16 +29,16 @@ export type AggregationFilterEntityOption = {
   productProperties: unknown | null;
   productOptions: unknown | null;
   media: Media | null;
-  customFields: unknown | null;
+  customFields: CustomFields;
   _uniqueIdentifier: string;
   versionId: null;
   translated: {
     name: string;
     position: number;
-    customFields: CustomField[] | null;
+    customFields: CustomFields | null;
   };
   createdAt: Date;
-  updatedAt: null;
+  updatedAt: Date | string | null;
   extensions: {
     foreignKeys: {
       apiAlias: string;
@@ -53,14 +53,14 @@ export type AggregationProductListingEntities = {
   name?: string;
   colorHexCode?: string;
   createdAt: Date;
-  customFields: CustomField[];
+  customFields: CustomFields;
   description: string;
   extensions: unknown;
   id: string;
   link: string | null;
   media: Media | null;
   translated: {
-    customFields: CustomField[];
+    customFields: CustomFields;
     description: string;
     name: string;
   };

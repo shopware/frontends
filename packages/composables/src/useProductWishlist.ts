@@ -5,16 +5,27 @@ import { useLocalWishlist } from "./useLocalWishlist";
 import { useSyncWishlist } from "./useSyncWishlist";
 
 export type UseProductWishlistReturn = {
-  removeFromWishlist: () => Promise<void>;
-  addToWishlist: () => Promise<void>;
+  /**
+   * Removes product from wishlist
+   */
+  removeFromWishlist(): Promise<void>;
+  /**
+   * Adds product to wishlist
+   */
+  addToWishlist(): Promise<void>;
+  /**
+   * Indicates whether a product is in wishlist
+   */
   isInWishlist: Ref<boolean>;
 };
 
 /**
- * Manage wishlist for a single product. Options - {@link UseProductWishlistReturn}
+ * Manage wishlist for a single product.
+ * @public
+ * @category Product
  */
 export function useProductWishlist(
-  product: Ref<Product>
+  product: Ref<Product>,
 ): UseProductWishlistReturn {
   const { isLoggedIn } = useUser();
   const {
@@ -27,12 +38,14 @@ export function useProductWishlist(
     addToWishlistSync: addItemSync,
     removeFromWishlistSync: removeItemSync,
     items: itemsSync,
+    getWishlistProducts,
   } = useSyncWishlist();
 
   // removes item from the list
   async function removeFromWishlist() {
     if (isLoggedIn.value) {
       await removeItemSync(product.value.id);
+      await getWishlistProducts();
     } else {
       await removeItem(product.value.id);
     }
@@ -41,6 +54,7 @@ export function useProductWishlist(
   async function addToWishlist() {
     if (isLoggedIn.value) {
       await addItemSync(product.value.id);
+      await getWishlistProducts();
     } else {
       await addItem(product.value.id);
     }
@@ -50,7 +64,7 @@ export function useProductWishlist(
   const isInWishlist = computed(() =>
     isLoggedIn.value
       ? itemsSync.value?.includes(product.value.id)
-      : items.value?.includes(product.value.id)
+      : items.value?.includes(product.value.id),
   );
 
   return {

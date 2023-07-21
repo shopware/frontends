@@ -8,25 +8,7 @@ import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
 
 # useCheckout
 
-Checkout management
-
-## Usage
-
-```js
-const {
-  getPaymentMethods,
-  paymentMethods,
-  getShippingMethods,
-  shippingMethods,
-  createOrder,
-  shippingAddress,
-  billingAddress,
-  selectedShippingMethod,
-  setShippingMethod,
-  selectedPaymentMethod,
-  setPaymentMethod,
-} = useCheckout();
-```
+<!-- PLACEHOLDER_DESCRIPTION -->
 
 ## Live example
 

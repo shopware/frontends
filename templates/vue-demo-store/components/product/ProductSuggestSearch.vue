@@ -8,8 +8,25 @@ import {
 const props = defineProps<{ product: Product }>();
 
 const { product } = toRefs(props);
-const { unitPrice, displayFrom } =
-  useProductPrice(product);
+const { unitPrice, displayFrom } = useProductPrice(product);
+
+const DEFAULT_THUMBNAIL_SIZE = 10;
+const imageElement = ref(null);
+const { width, height } = useElementSize(imageElement);
+
+function roundUp(num: number) {
+  return num ? Math.ceil(num / 100) * 100 : DEFAULT_THUMBNAIL_SIZE;
+}
+
+const srcPath = computed(() => {
+  const biggestParam =
+    width.value > height.value
+      ? `width=${roundUp(width.value)}`
+      : `height=${roundUp(height.value)}`;
+  return `${getSmallestThumbnailUrl(
+    product.value.cover?.media,
+  )}?${biggestParam}&fit=crop,smart`;
+});
 </script>
 <template>
   <div
@@ -17,8 +34,10 @@ const { unitPrice, displayFrom } =
   >
     <div class="rounded-md border-1 border-gray-300 overflow-hidden flex-none">
       <img
+        ref="imageElement"
+        loading="lazy"
         data-testid="layout-search-suggest-image"
-        :src="getSmallestThumbnailUrl(product.cover.media)"
+        :src="srcPath"
         class="h-8 w-8 object-cover"
         alt="Product image"
         loading="lazy"
@@ -39,7 +58,7 @@ const { unitPrice, displayFrom } =
           :value="unitPrice"
         >
           <template #beforePrice>
-            <span v-if="displayFrom">from</span>
+            <span v-if="displayFrom">{{ $t("product.price.from") }}</span>
           </template>
         </SharedPrice>
         <ProductUnits

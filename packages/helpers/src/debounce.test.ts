@@ -1,8 +1,5 @@
 import { _debounce } from "./_debounce";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-/**
- * @jest-environment jsdom
- */
 describe("Shopware helpers - debounce", () => {
   beforeEach(() => {
     // tell vitest we use mocked time

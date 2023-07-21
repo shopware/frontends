@@ -1,6 +1,7 @@
 import { ShippingMethod } from "../shipping/ShippingMethod";
 import { StateMachineState } from "../../system/state-machine/StateMachineState";
 import { ShippingAddress } from "../customer/ShippingAddress";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -8,7 +9,7 @@ import { ShippingAddress } from "../customer/ShippingAddress";
 export type Delivery = {
   apiAlias: string;
   createdAt: string;
-  customFields: unknown | null;
+  customFields: CustomFields;
   extensions: unknown;
   id: string;
   orderId: string;
@@ -31,7 +32,7 @@ export type Delivery = {
   stateMachineState: StateMachineState;
   trackingCodes: unknown[];
   translated: unknown[];
-  updatedAt: string | null;
+  updatedAt: Date | string | null;
   versionId: string;
   _uniqueIdentifier: string;
 };

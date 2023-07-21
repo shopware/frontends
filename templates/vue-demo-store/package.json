@@ -1,6 +1,6 @@
 {
   "name": "vue-demo-store",
-  "version": "0.5.0",
+  "version": "0.12.0",
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
@@ -8,7 +8,7 @@
     "lint": "eslint './**/*.{js,ts,vue}' --fix --max-warnings=0",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "analyze": "nuxi analyze"
+    "analyze": "nuxt analyze"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.12",

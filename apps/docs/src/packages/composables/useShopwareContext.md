@@ -4,8 +4,4 @@ category: CMS
 
 # useShopwareContext
 
-Description
-
-## Usage
-
-// TODO: add example
+<!-- PLACEHOLDER_DESCRIPTION -->

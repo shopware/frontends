@@ -13,21 +13,22 @@ require("dotenv").config({ path: findEnv() });
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const newLocal = "https://frontends-demo.vercel.app/";
+const newLocal = "http://localhost:3000";
 const baseURL = process.env.BASE_E2E_URL || newLocal;
 
 console.log("Running tests for: ", baseURL);
 
 const config: PlaywrightTestConfig = {
   testDir: "./tests",
+  outputDir: "./reports",
   /* Maximum time one test can run for. */
-  timeout: 90 * 1000,
+  timeout: 30 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 30000,
+    timeout: process.env.CI ? 30000 : 5000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -47,7 +48,8 @@ const config: PlaywrightTestConfig = {
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
+    testIdAttribute: "data-testid",
     baseURL,
   },
 
@@ -67,64 +69,20 @@ const config: PlaywrightTestConfig = {
       },
     },
 
-    {
-      name: "webkit",
-      use: {
-        ...devices["Desktop Safari"],
-      },
-    },
-
-    // {
-    //   name: "Mobile Safari",
-    //   use: {
-    //     ...devices["iPhone 12"],
-    //   },
-    // },
-
-    {
-      name: "Tablet Chrome",
-      use: {
-        ...devices["iPad Mini"],
-      },
-    },
-
     /* Test against mobile viewports. */
     // {
-    //   name: 'Mobile Chrome',
+    //   name: "Pixel 9",
     //   use: {
-    //     ...devices['Pixel 5'],
+    //     ...devices["Pixel 9"],
     //   },
     // },
     // {
-    //   name: 'Mobile Safari',
+    //   name: "Galaxy S9+ landscape",
     //   use: {
-    //     ...devices['iPhone 12'],
-    //   },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: {
-    //     channel: 'chrome',
+    //     ...devices["Galaxy S9+ landscape"],
     //   },
     // },
   ],
-
-  /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   port: 3000,
-  // },
 };
 
 export default config;

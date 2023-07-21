@@ -4,7 +4,11 @@ export default {
   name: "CheckoutSuccessUnpaidPage",
 };
 </script>
-
+<script setup lang="ts">
+const { params } = useRoute();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+</script>
 <template>
   <div class="container mx-auto w-1/2 mb-24 mt-24 text-center">
     <h1

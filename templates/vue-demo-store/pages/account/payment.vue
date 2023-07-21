@@ -23,6 +23,7 @@ const {
 } = useCheckout();
 const { setDefaultPaymentMethod } = useUser();
 const { pushSuccess } = useNotifications();
+const { t } = useI18n();
 
 useBreadcrumbs([
   {
@@ -30,7 +31,7 @@ useBreadcrumbs([
     path: "/account",
   },
   {
-    name: "Payment",
+    name: t("breadcrumbs.payment"),
     path: "/account/payment",
   },
 ]);
@@ -47,7 +48,7 @@ const invokeSave = async (): Promise<void> => {
     await setPaymentMethod({ id: formData.paymentMethod });
     await setDefaultPaymentMethod(formData.paymentMethod);
     emits("success");
-    pushSuccess("Set default payment method successfully");
+    pushSuccess(t("account.messages.paymentSetSuccessfully"));
   } catch (error) {
     console.error("error set default payment method", error);
   } finally {

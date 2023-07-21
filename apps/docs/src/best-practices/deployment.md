@@ -61,7 +61,6 @@ Drawbacks are that it requires API access at runtime for all operations. These c
 - [Vercel](https://vercel.com/)
 - [Heroku](https://www.heroku.com/)
 
-
 ## Prepare you application
 
 The final goal is always deployment, no less equal than development itself.
@@ -74,14 +73,13 @@ The great example is [Nitro](https://github.com/unjs/nitro), which is used by de
 
 Moreover, besides the frameworks or libraries that you can work with using Nitro, there are many ready-to-use platforms providers (called _presets_) which help you to build & deploy (docs included) your app with almost zero config:
 
-* azure
-* cloudflare_pages
-* netlify
-* stormkit
-* vercel
+- azure
+- cloudflare_pages
+- netlify
+- stormkit
+- vercel
 
 Nitro provides also really great examples for other well known platforms (full static, or those serving SSR) and the list you can find [here](https://nitro.unjs.io/deploy).
-
 
 ## Good Practices
 
@@ -97,9 +95,8 @@ Always test your application. Test the build, do the static analyze, and whateve
 
 ### Use multiple environments
 
-Test several configurations at the same time, like different nodejs version, or the upcoming release branch with upgraded dependencies. That concerns also the API your application relies on. 
+Test several configurations at the same time, like different nodejs version, or the upcoming release branch with upgraded dependencies. That concerns also the API your application relies on.
 
 ### Prepare a checklist
 
 Be prepared, be organized before every roll-out. Deployment checklist shouldn't be to way complicated, but should describe the flow of the work in order to get the deployment done.
-

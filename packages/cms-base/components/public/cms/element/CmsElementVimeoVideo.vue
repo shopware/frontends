@@ -27,12 +27,12 @@ const vimeoConfigMapping: {
 };
 
 const videoUrl: Ref = ref(
-  `https://player.vimeo.com/video/${getConfigValue("videoID")}?`
+  `https://player.vimeo.com/video/${getConfigValue("videoID")}?`,
 );
 
 const convertAttr = function (
   value: string,
-  configKey: CmsElementVimeoVideoConfigKey
+  configKey: CmsElementVimeoVideoConfigKey,
 ) {
   if (configKey == "color")
     return value
@@ -47,7 +47,7 @@ for (const key in props.content.config) {
     videoUrl.value += convertAttr(
       props.content.config[key as CmsElementVimeoVideoConfigKey]
         .value as string,
-      key as CmsElementVimeoVideoConfigKey
+      key as CmsElementVimeoVideoConfigKey,
     );
   }
 }

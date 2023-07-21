@@ -14,6 +14,9 @@ type Error = {
   detail: string;
   meta: unknown;
   trace?: ErrorTrace[];
+  source?: {
+    pointer: string;
+  };
 };
 
 /**

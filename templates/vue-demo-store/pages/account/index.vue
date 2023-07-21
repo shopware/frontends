@@ -64,7 +64,7 @@ const updateNewsletterStatus = async (value: any) => {
         email: user.value?.email || "",
         option: "subscribe",
       });
-      pushSuccess("Newsletter subscribed");
+      pushSuccess(t("newsletter.messages.newsletterSubscribed"));
     } else {
       await newsletterUnsubscribe(user.value?.email || "");
       pushSuccess("Newsletter unsubscribe");
@@ -72,11 +72,18 @@ const updateNewsletterStatus = async (value: any) => {
   } catch (error) {
     newsletter.value = !value;
     console.log("error", error);
-    pushError("Something goes wrong please try again later");
+    pushError(t("messages.error"));
+  } finally {
+    getNewsletterStatus().then(() => {
+      newsletter.value = isNewsletterSubscriber.value;
+    });
   }
 };
 
 onBeforeMount(async () => {
+  getNewsletterStatus().then(() => {
+    newsletter.value = isNewsletterSubscriber.value;
+  });
   if (user?.value?.salutationId) {
     await loadSalutation(user.value.salutationId);
   }

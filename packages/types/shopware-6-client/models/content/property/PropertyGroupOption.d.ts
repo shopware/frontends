@@ -3,7 +3,7 @@ import { PropertyGroup } from "./PropertyGroup";
 import { PropertyGroupOptionTranslation } from "./PropertyGroupOptionTranslation";
 import { ProductConfiguratorSetting } from "../product/ProductConfiguratorSetting";
 import { Product } from "../product/Product";
-import { CustomField } from "../../common/CustomField";
+import { CustomFields } from "../../common/CustomField";
 
 /**
  * @public
@@ -21,9 +21,9 @@ export type PropertyGroupOption = {
   productProperties: Product[] | null;
   productOptions: Product[] | null;
   media: Media | null;
-  customFields: CustomField[];
+  customFields: CustomFields;
   translated: {
-    [key: string]: unknown;
+    [key: string]: string;
   };
   apiAlias: "property_group_option";
 };

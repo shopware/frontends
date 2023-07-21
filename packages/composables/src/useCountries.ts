@@ -8,15 +8,21 @@ import {
   provide,
 } from "vue";
 import { getAvailableCountries } from "@shopware-pwa/api-client";
-import { Country } from "@shopware-pwa/types";
+import { Country, CountryState } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 
 export type UseCountriesReturn = {
-  mountedCallback: () => Promise<void>;
+  mountedCallback(): Promise<void>;
   getCountries: ComputedRef<Country[]>;
-  fetchCountries: () => Promise<void>;
+  fetchCountries(): Promise<void>;
+  getStatesForCountry(countryId: string): CountryState[] | null;
 };
 
+/**
+ * Composable to manage countries
+ * @public
+ * @category Context & Language
+ */
 export function useCountries(): UseCountriesReturn {
   const { apiInstance } = useShopwareContext();
 
@@ -38,11 +44,20 @@ export function useCountries(): UseCountriesReturn {
     }
   };
 
+  const getStatesForCountry = (countryId: string) => {
+    return (
+      getCountries.value.find((element: Country) => {
+        return element.id === countryId;
+      })?.states || null
+    );
+  };
+
   onMounted(mountedCallback);
 
   return {
     mountedCallback,
     fetchCountries,
+    getStatesForCountry,
     getCountries,
   };
 }

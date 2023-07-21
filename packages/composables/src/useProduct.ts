@@ -5,6 +5,7 @@ import ContextError from "./helpers/ContextError";
 
 export type UseProductReturn = {
   /**
+   * Returns product object
    * {@link Product} object
    */
   product: ComputedRef<Product>;
@@ -16,12 +17,17 @@ export type UseProductReturn = {
    * Merges the current product with the new variant data
    * @param variant - {@link Product} object with the new variant data
    */
-  changeVariant: (variant: Partial<Product>) => void;
+  changeVariant(variant: Partial<Product>): void;
 };
 
+/**
+ * Composable for product management.
+ * @public
+ * @category Product
+ */
 export function useProduct(
   product?: Ref<Product> | Product,
-  configurator?: Ref<PropertyGroup[]> | PropertyGroup[]
+  configurator?: Ref<PropertyGroup[]> | PropertyGroup[],
 ): UseProductReturn {
   const _product = _useContext("product", { context: product });
   if (!_product.value) {

@@ -11,18 +11,20 @@ import { getStoreNavigation } from "@shopware-pwa/api-client";
  * Provides state for navigation trees depending on navigation type.
  */
 export type UseNavigationReturn = {
+  /**
+   * List of navigation elements
+   */
   navigationElements: ComputedRef<StoreNavigationElement[] | null>;
-
   /**
    * Load navigation elements
    */
-  loadNavigationElements: (params: {
+  loadNavigationElements(params: {
     depth: number;
-  }) => Promise<StoreNavigationElement[]>;
+  }): Promise<StoreNavigationElement[]>;
 };
 
 /**
- * Composable for navigation. Options - {@link UseNavigationReturn}
+ * Composable for navigation.
  * Provides state for navigation trees depending on navigation type.
  *
  * @example
@@ -32,6 +34,8 @@ export type UseNavigationReturn = {
  * // get footer navigation
  * useNavigation({ type: "footer-navigation" } )
  * ```
+ * @public
+ * @category Navigation & Routing
  */
 export function useNavigation(params?: {
   type?: StoreNavigationType;
@@ -42,7 +46,7 @@ export function useNavigation(params?: {
 
   const sharedElements: Ref<StoreNavigationElement[]> = inject(
     `swNavigation-${type}`,
-    ref([])
+    ref([]),
   );
   provide(`swNavigation-${type}`, sharedElements);
 
@@ -60,7 +64,7 @@ export function useNavigation(params?: {
           },
           depth,
         },
-        apiInstance
+        apiInstance,
       );
 
       sharedElements.value = navigationResponse || [];

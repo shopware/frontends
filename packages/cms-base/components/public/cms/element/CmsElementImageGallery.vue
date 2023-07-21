@@ -11,7 +11,7 @@ const props = withDefaults(
   {
     slidesToShow: 5,
     slidesToScroll: 4,
-  }
+  },
 );
 
 const { getConfigValue } = useCmsElementConfig(props.content);
@@ -27,7 +27,7 @@ const imageThumbs = ref();
 const imageThumbsStyle = ref({});
 const mediaGallery = computed(() => props.content.data?.sliderItems ?? []);
 const galleryPosition = computed<string>(
-  () => getConfigValue("galleryPosition") ?? "left"
+  () => getConfigValue("galleryPosition") ?? "left",
 );
 const scrollPx = ref(0);
 
@@ -149,7 +149,6 @@ function next() {
     >
       <button
         v-if="mediaGallery.length > slidesToShow"
-        :disabled="currentThumb <= 0"
         class="disabled:opacity-10 p-1"
         @click="previous"
       >
@@ -183,7 +182,7 @@ function next() {
             :key="image.media.url"
           >
             <div
-              class="h-20 overflow-hidden cursor-pointer p-1 border-gray-200 rounded transition duration-150 ease-in-out"
+              class="w-14 h-20 overflow-hidden cursor-pointer p-1 border-gray-200 rounded transition duration-150 ease-in-out"
               :class="{
                 border: i !== currentIndex,
                 'border-indigo-500 border-3': i === currentIndex,
@@ -191,6 +190,7 @@ function next() {
               @click="() => changeCover(i)"
             >
               <img
+                loading="lazy"
                 :src="image.media.url"
                 class="w-full h-full object-center object-cover"
                 alt="Product image"
@@ -201,7 +201,6 @@ function next() {
       </div>
       <button
         v-if="mediaGallery.length > slidesToShow"
-        :disabled="currentThumb + slidesToShow >= mediaGallery.length"
         class="disabled:opacity-10 p-1"
         @click="next"
       >

@@ -4,8 +4,8 @@ import { Product } from "../product/Product";
 import { Entity } from "../../common/Entity";
 import { Tag } from "../../system/tag/Tag";
 import { CategoryTranslation } from "./CategoryTranslation";
-import { CustomField } from "../../common/CustomField";
-
+import { CustomFields } from "../../common/CustomField";
+import { SeoUrl } from "../navigation/Navigation";
 /**
  * Source: https://github.com/shopware/platform/blob/master/src/Core/Content/Category/CategoryDefinition.php#L50
  *
@@ -18,7 +18,7 @@ export type CategoryType = "page" | "link" | "folder";
  */
 export type Category = Entity & {
   parentId: string | null;
-  autoIncrement: number;
+  autoIncrement?: number;
   mediaId: string | null;
   name: string | null;
   breadcrumb: string[];
@@ -30,42 +30,49 @@ export type Category = Entity & {
   children: Category[] | null;
   translations: CategoryTranslation[] | null;
   media: Media | null;
-  products: Product[] | null;
-  nestedProducts: Product[] | null;
+  products?: Product[] | null;
+  nestedProducts?: Product[] | null;
   afterCategoryId: string | null;
-  customFields: CustomField[];
-  tags: Tag[] | null;
+  customFields: CustomFields | null;
+  tags?: Tag[] | null;
   cmsPageId: string | null;
   cmsPage: CmsPage | null;
-  slotConfig: [] | null;
+  slotConfig?: [] | null;
   externalLink: string | null;
-  linkNewTab: boolean;
+  linkNewTab: boolean | null;
   visible: boolean;
   type: CategoryType;
-  description: string;
+  description: string | null;
   id: string;
-  parentVersionId: string;
-  childrenCount: number;
-  afterCategoryVersionId: string;
+  parentVersionId?: string;
+  childrenCount?: number;
+  afterCategoryVersionId?: string;
   path?: string;
   route?: {
     path?: string;
   };
-  seoUrls: {
-    apiAlias: string;
-    pathInfo: string;
-    seoPathInfo: string;
-  }[];
+  seoUrls: SeoUrl[] | null;
   metaTitle: string | null;
   metaDescription: string | null;
   keywords: string | null;
   translated: {
     name: string;
     breadcrumb: string[];
-    description: string;
-    externalLink: string;
+    description: string | null;
+    externalLink: string | null;
     metaTitle: string | null;
     metaDescription: string | null;
     keywords: string | null;
+    customFields: CustomFields | null;
+    linkType: string | null;
+    internalLink: string | null;
+    linkNewTab: string | null;
   };
+  linkType: "product" | "category" | "landing_page" | string | null;
+  internalLink: string | null;
+  extensions?: unknown;
+  visibleChildCount?: number | null;
+  cmsPageIdSwitched?: boolean;
+  productAssignmentType?: string;
+  customEntityTypeId?: string | null;
 };

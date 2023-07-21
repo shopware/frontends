@@ -2,9 +2,12 @@
 import type { CmsElementText } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import { h } from "vue";
-import { CSSProperties } from "vue";
 import { decodeHTML } from "entities";
-import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";
+import { CSSProperties } from "vue";
+import {
+  getOptionsFromNode,
+  NodeObject,
+} from "../../../../helpers/html-to-vue/getOptionsFromNode";
 import { renderHtml } from "../../../../helpers/html-to-vue/renderToHtml";
 
 const props = defineProps<{
@@ -28,7 +31,7 @@ const CmsTextRender = () => {
     textTransformer: (text: string) => decodeHTML(text),
     extraComponentsMap: {
       link: {
-        conditions(node: any) {
+        conditions(node: NodeObject) {
           return (
             node.type === "tag" &&
             node.name === "a" &&
@@ -43,24 +46,31 @@ const CmsTextRender = () => {
                 "underline text-base font-normal text-brand-primary hover:text-gray-900",
               ...getOptionsFromNode(node).attrs,
             },
-            [...children]
+            [...children],
           );
         },
       },
       button: {
-        conditions(node: any) {
+        conditions(node: NodeObject) {
           return (
             node.type === "tag" &&
             node.name === "a" &&
             node.attrs?.class?.match(/btn\s?/)
           );
         },
-        renderer(node: any, children: any, createElement: any) {
-          const btnClass =
-            "rounded-md py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
-          const _class = node?.attrs?.class
-            .replace("btn-secondary", `${btnClass} bg-brand-dark text-white`)
-            .replace("btn-primary", `${btnClass} bg-brand-primary text-white`);
+        renderer(node: NodeObject, children: any, createElement: any) {
+          let _class = "";
+          if (node?.attrs?.class) {
+            const btnClass =
+              "rounded-md inline-block my-2 py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
+
+            _class = node.attrs.class
+              .replace("btn-secondary", `${btnClass} bg-brand-dark text-white`)
+              .replace(
+                "btn-primary",
+                `${btnClass} bg-brand-primary text-white`,
+              );
+          }
 
           return createElement(
             "a",
@@ -68,13 +78,38 @@ const CmsTextRender = () => {
               class: _class,
               ...getOptionsFromNode(node).attrs,
             },
-            [...children]
+            [...children],
+          );
+        },
+      },
+      font: {
+        conditions(node: NodeObject) {
+          return node.type === "tag" && node.name === "font";
+        },
+        renderer(node: NodeObject, children: any, createElement: any) {
+          // convert from <font color="#ce0000">Headline 1</font> to <span style="color:#ce0000">Headline 1</span>
+          let newStyle = null;
+          const styleColor = node?.attrs?.color;
+          if (styleColor) {
+            const currentStyle = node.attrs?.style ?? "";
+            newStyle = `color:${styleColor};${currentStyle}`;
+            delete node.attrs?.color;
+          }
+
+          return createElement(
+            "span",
+            {
+              style: newStyle,
+              ...getOptionsFromNode(node).attrs,
+            },
+            [...children],
           );
         },
       },
     },
   };
-  const rawHtml = mappedContent.value?.length > 0 ? mappedContent.value : "<div></div>";
+  const rawHtml =
+    mappedContent.value?.length > 0 ? mappedContent.value : "<div></div>";
   return renderHtml(rawHtml, config, h, context);
 };
 </script>

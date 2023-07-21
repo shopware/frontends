@@ -10,7 +10,12 @@ import {
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 
-import { CustomerAddress, ShopwareSearchParams } from "@shopware-pwa/types";
+import {
+  ClientApiError,
+  CustomerAddress,
+  ShopwareSearchParams,
+  ShopwareError,
+} from "@shopware-pwa/types";
 import { useUser } from "./useUser";
 
 export type UseAddressReturn = {
@@ -21,66 +26,79 @@ export type UseAddressReturn = {
   /**
    * Loads the addresses that are available under `customerAddresses` property
    */
-  loadCustomerAddresses: () => Promise<void>;
+  loadCustomerAddresses(): Promise<void>;
   /**
    * Allows to create new address for a current customer
    */
-  createCustomerAddress: (
-    customerAddress: CustomerAddress
-  ) => Promise<CustomerAddress>;
+  createCustomerAddress(
+    customerAddress: CustomerAddress,
+  ): Promise<CustomerAddress>;
   /**
    * Allows to update existing address for a current customer
    */
-  updateCustomerAddress: (
-    customerAddress: CustomerAddress
-  ) => Promise<CustomerAddress>;
+  updateCustomerAddress(
+    customerAddress: CustomerAddress,
+  ): Promise<CustomerAddress>;
   /**
    * Allows to delete existing address for a current customer
    */
-  deleteCustomerAddress: (addressId: string) => Promise<void>;
+  deleteCustomerAddress(addressId: string): Promise<void>;
   /**
    * Sets the address for given ID as default billing address
    */
-  setDefaultCustomerBillingAddress: (addressId: string) => Promise<string>;
+  setDefaultCustomerBillingAddress(addressId: string): Promise<string>;
   /**
    * Sets the address for given ID as default shipping address
    */
-  setDefaultCustomerShippingAddress: (addressId: string) => Promise<string>;
+  setDefaultCustomerShippingAddress(addressId: string): Promise<string>;
+  /**
+   * Returns formatted error message
+   *
+   * @param {ShopwareError} error
+   */
+  errorMessageBuilder(error: ShopwareError): string | null;
 };
 
+/**
+ * Composable to manage customer addresses
+ *
+ * @public
+ *
+ * @category Cart & Checkout
+ */
 export function useAddress(): UseAddressReturn {
   const { apiInstance } = useShopwareContext();
-  const { isLoggedIn, isGuestSession } = useUser();
 
   const _storeCustomerAddresses: Ref<CustomerAddress[]> = inject(
     "swCustomerAddresses",
-    ref([])
+    ref([]),
   );
   provide("swCustomerAddresses", _storeCustomerAddresses);
-
-  watch(isLoggedIn, () => {
-    _storeCustomerAddresses.value = [];
-    loadCustomerAddresses();
-  });
 
   /**
    * Get customer address list
    */
   async function loadCustomerAddresses(
-    parameters: ShopwareSearchParams = {}
+    parameters: ShopwareSearchParams = {},
   ): Promise<void> {
-    const { elements } = await getCustomerAddresses(parameters, apiInstance);
-    _storeCustomerAddresses.value = elements;
+    try {
+      const { elements } = await getCustomerAddresses(parameters, apiInstance);
+      _storeCustomerAddresses.value = elements;
+    } catch (error) {
+      const apiError = error as ClientApiError;
+      if (apiError?.statusCode === 403) {
+        _storeCustomerAddresses.value = [];
+      }
+    }
   }
 
   /**
    * Add new customer address
    */
   async function createCustomerAddress(
-    customerAddress: Omit<CustomerAddress, "id" | "salutation">
+    customerAddress: Omit<CustomerAddress, "id" | "salutation">,
   ): Promise<CustomerAddress> {
     const result = await apiCreateCustomerAddress(customerAddress, apiInstance);
-    await loadCustomerAddresses();
     return result;
   }
 
@@ -88,10 +106,9 @@ export function useAddress(): UseAddressReturn {
    * Update customer address
    */
   async function updateCustomerAddress(
-    customerAddress: CustomerAddress
+    customerAddress: CustomerAddress,
   ): Promise<CustomerAddress> {
     const result = await apiUpdateCustomerAddress(customerAddress, apiInstance);
-    await loadCustomerAddresses();
     return result;
   }
 
@@ -100,7 +117,6 @@ export function useAddress(): UseAddressReturn {
    */
   async function deleteCustomerAddress(addressId: string): Promise<void> {
     const result = apiDeleteCustomerAddress(addressId, apiInstance);
-    await loadCustomerAddresses();
     return result;
   }
 
@@ -108,7 +124,7 @@ export function useAddress(): UseAddressReturn {
    * Set default customer billing address
    */
   async function setDefaultCustomerBillingAddress(
-    addressId: string
+    addressId: string,
   ): Promise<string> {
     return await apiSetDefaultCustomerBillingAddress(addressId, apiInstance);
   }
@@ -117,9 +133,24 @@ export function useAddress(): UseAddressReturn {
    * Set default customer shipping address
    */
   async function setDefaultCustomerShippingAddress(
-    addressId: string
+    addressId: string,
   ): Promise<string> {
     return await apiSetDefaultCustomerShippingAddress(addressId, apiInstance);
+  }
+
+  /**
+   * Returns formatted error message
+   *
+   * @param {error} error
+   * @returns {string | null}
+   */
+  function errorMessageBuilder(error: ShopwareError): string | null {
+    switch (error.code) {
+      case "VIOLATION::IS_BLANK_ERROR":
+        return `${error?.source?.pointer.slice(1)} - ${error.detail}`;
+      default:
+        return null;
+    }
   }
 
   return {
@@ -130,5 +161,6 @@ export function useAddress(): UseAddressReturn {
     deleteCustomerAddress,
     setDefaultCustomerBillingAddress,
     setDefaultCustomerShippingAddress,
+    errorMessageBuilder,
   };
 }

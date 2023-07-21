@@ -1,30 +1,47 @@
 import { Category } from "@shopware-pwa/types";
-import { getTranslatedProperty } from "../getTranslatedProperty";
+
+type LinkedCategory = Pick<
+  Category,
+  "type" | "externalLink" | "seoUrls" | "internalLink" | "id" | "linkType"
+>;
+
+/**
+ * Extract prefix for technical URL
+ */
+function getEntityPrefix(category: LinkedCategory) {
+  switch (category.linkType) {
+    case "category":
+      return "navigation";
+    case "product":
+      return "detail";
+    case "landing_page":
+      return "landingPage";
+  }
+}
 
 /**
  * Get URL for category.
+ * Some link {@link isLinkCategory}
  *
- * @beta
+ * @param {Category} category category entity
+ *
+ * @public
  */
-export const getCategoryUrl = (category: Partial<Category>): string => {
+export function getCategoryUrl(category: LinkedCategory): string {
   if (!category) return "/";
+
   switch (category.type) {
-    case "link":
-      return getTranslatedProperty(category, "externalLink") || "/";
-    case "folder":
+    case undefined:
       return "/";
+    case "link":
+      return (
+        category.externalLink ||
+        category?.seoUrls?.[0]?.seoPathInfo ||
+        `/${getEntityPrefix(category)}/${category.internalLink}`
+      );
     default:
       return category.seoUrls?.[0]?.seoPathInfo
         ? `/${category.seoUrls[0].seoPathInfo}`
-        : category.id
-        ? `/navigation/${category.id}`
-        : "/";
+        : `/${getEntityPrefix(category)}/${category.id}`;
   }
-};
-
-/**
- *
- * @beta
- */
-export const isLinkCategory = (category: Partial<Category>): boolean =>
-  category?.type === "link";
+}

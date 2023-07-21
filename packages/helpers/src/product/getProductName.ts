@@ -3,6 +3,10 @@ import { getTranslatedProperty } from "../getTranslatedProperty";
 
 /**
  * @beta
+ *
+ * @param {Product} product product entity
+ *
+ * @category Product
  */
 export function getProductName({ product }: { product?: Product } = {}):
   | string

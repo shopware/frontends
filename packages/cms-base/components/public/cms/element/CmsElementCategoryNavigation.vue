@@ -2,11 +2,31 @@
 import { ClientApiError } from "@shopware-pwa/types";
 import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
 import { Category } from "@shopware-pwa/types";
+import deepMerge from "../../../../helpers/deepMerge";
+import getTranslations from "../../../../helpers/getTranslations";
+
+type Translations = {
+  listing: {
+    category: string;
+    categories: string;
+  };
+};
+
+let translations: Translations = {
+  listing: {
+    category: "Category",
+    categories: "Categories",
+  },
+};
+
+const globalTranslations = getTranslations();
+translations = deepMerge(translations, globalTranslations) as Translations;
+
 const { category: activeCategory } = useCategory();
 const { loadNavigationElements, navigationElements } = useNavigation();
 const navigations = computed(() => {
   const navigation: Category[] = JSON.parse(
-    JSON.stringify(navigationElements.value)
+    JSON.stringify(navigationElements.value),
   );
   return navigation?.map((navigationElement) => {
     navigationElement.children =
@@ -35,7 +55,11 @@ onMounted(async () => {
       v-if="navigations.length > 0"
       class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
     >
-      {{ navigations.length > 1 ? "Categories" : "Category" }}
+      {{
+        navigations.length > 1
+          ? translations.listing.categories
+          : translations.listing.category
+      }}
     </h2>
     <SwCategoryNavigation
       :level="0"

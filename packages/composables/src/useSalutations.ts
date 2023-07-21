@@ -12,11 +12,22 @@ import { ClientApiError, Salutation } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 
 export type UseSalutationsReturn = {
-  mountedCallback: () => Promise<void>;
+  mountedCallback(): Promise<void>;
+  /**
+   * All available salutations
+   */
   getSalutations: ComputedRef<Salutation[]>;
-  fetchSalutations: () => Promise<void>;
+  /**
+   * Fetches the salutations list and assigns the result to the `salutations` property
+   */
+  fetchSalutations(): Promise<void>;
 };
 
+/**
+ * Composable for fetching the salutations list.
+ * @public
+ * @category Context & Language
+ */
 export function useSalutations(): UseSalutationsReturn {
   const { apiInstance } = useShopwareContext();
 

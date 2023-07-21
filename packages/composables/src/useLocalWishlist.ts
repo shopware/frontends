@@ -1,25 +1,45 @@
 import { ref, Ref, computed, ComputedRef } from "vue";
 
 export type UseLocalWishlistReturn = {
-  getWishlistProducts: () => void;
-  addToWishlist: (id: string) => Promise<void>;
-  removeFromWishlist: (id: string) => Promise<void>;
-  clearWishlist: () => Promise<void>;
+  /**
+   * Get wishlist products from localstorage
+   */
+  getWishlistProducts(): void;
+  /**
+   * Add product to wishlist by its id
+   */
+  addToWishlist(id: string): Promise<void>;
+  /**
+   * Remove product from wishlist by its id
+   */
+  removeFromWishlist(id: string): Promise<void>;
+  /**
+   * Remove all products from wishlist
+   */
+  clearWishlist(): Promise<void>;
+  /**
+   * List of wishlist items
+   */
   items: ComputedRef<string[]>;
+  /**
+   * Count of wishlist items
+   */
   count: ComputedRef<number>;
 };
 
 const _wishlistItems: Ref<string[]> = ref([]);
 
 /**
- * Composable for wishlist management. Options - {@link UseWishlistReturn}
+ * Composable for wishlist management.
+ * @public
+ * @category Wishlist
  */
 export function useLocalWishlist(): UseLocalWishlistReturn {
   // update wishlist in localstorage
   const updateStorage = (): void => {
     localStorage.setItem(
       "sw-wishlist-items",
-      JSON.stringify(_wishlistItems.value)
+      JSON.stringify(_wishlistItems.value),
     );
   };
   /* istanbul ignore next */
@@ -32,7 +52,7 @@ export function useLocalWishlist(): UseLocalWishlistReturn {
   // removes item from the list
   async function removeFromWishlist(id: string) {
     _wishlistItems.value = _wishlistItems.value?.filter(
-      (itemId: string) => itemId != id
+      (itemId: string) => itemId != id,
     );
 
     updateStorage();

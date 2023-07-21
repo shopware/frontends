@@ -2,7 +2,7 @@ import { CmsBlock, CmsSection, SectionType } from "@shopware-pwa/types";
 
 export type CmsSectionBlock<
   TYPE extends SectionType,
-  SECTION_POSITIONS
+  SECTION_POSITIONS,
 > = CmsSection & {
   type: TYPE;
   blocks: Array<CmsBlock & { sectionPosition: SECTION_POSITIONS }>;

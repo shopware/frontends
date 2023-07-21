@@ -13,7 +13,7 @@ useBreadcrumbs([
     path: "/account",
   },
   {
-    name: "My profile",
+    name: t("breadcrumbs.myAccount"),
     path: "/account/profile",
   },
 ]);

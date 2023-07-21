@@ -8,13 +8,13 @@ const mockedApiInstance = defaultInstance;
 
 describe("CustomerService - createCustomerAddress", () => {
   const newAddressData = {
-    countryId: faker.datatype.uuid(),
-    salutationId: faker.datatype.uuid(),
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    zipcode: faker.address.zipCode(),
-    city: faker.address.city(),
-    street: faker.address.streetName(),
+    countryId: faker.string.uuid(),
+    salutationId: faker.string.uuid(),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    zipcode: faker.location.zipCode(),
+    city: faker.location.city(),
+    street: faker.location.street(),
   };
   const mockedPost = vi.fn();
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe("CustomerService - createCustomerAddress", () => {
     expect(mockedPost).toBeCalledTimes(1);
     expect(mockedPost).toBeCalledWith(
       "/store-api/account/address",
-      newAddressData
+      newAddressData,
     );
   });
 });

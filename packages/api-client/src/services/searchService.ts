@@ -9,17 +9,21 @@ import {
  * Search for products based on criteria.
  * From: Shopware 6.4
  *
+ * @param {ShopwareSearchParams} criteria search criteria for products
+ * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
+ *
+ * @category Search
  * @public
  */
 export async function searchProducts(
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ProductListingResult> {
   const resp = await contextInstance.invoke.post(
     `${getSearchEndpoint()}?search=${encodeURIComponent(
-      criteria?.query || ""
+      criteria?.query || "",
     )}`,
-    criteria
+    criteria,
   );
 
   return resp.data;
@@ -29,17 +33,21 @@ export async function searchProducts(
  * Search for suggested products based on criteria.
  * From: Shopware 6.4
  *
+ * @param {ShopwareSearchParams} criteria search criteria for products
+ * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
+ *
+ * @category Search
  * @public
  */
 export async function searchSuggestedProducts(
   criteria?: ShopwareSearchParams,
-  contextInstance: ShopwareApiInstance = defaultInstance
+  contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ProductListingResult> {
   const resp = await contextInstance.invoke.post(
     `${getSuggestSearchEndpoint()}?search=${encodeURIComponent(
-      criteria?.query || ""
+      criteria?.query || "",
     )}`,
-    criteria
+    criteria,
   );
 
   return resp.data;

@@ -1,11 +1,11 @@
-<script lang="ts">
-export default {
-  name: "ResetPassword",
-};
+<script setup lang="ts">
+const { t } = useI18n();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 useBreadcrumbs([
   {
-    name: "Password reset",
+    name: t("breadcrumbs.passwordReset"),
     path: "/reset-password",
   },
 ]);

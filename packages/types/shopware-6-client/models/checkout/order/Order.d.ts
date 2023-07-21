@@ -8,7 +8,7 @@ import { Language } from "../../framework/language/Language";
 import { SalesChannel } from "../../system/sales-channel/SalesChannel";
 import { CustomFields } from "../../common/CustomField";
 import { Delivery } from "../delivery/Delivery";
-
+import { OrderDocument } from "./OrderDocument";
 interface CalculatedTax {
   tax: number;
   taxRate: number;
@@ -53,13 +53,13 @@ interface OrderCustomer {
   customer: null;
   salutation: null;
   order: null;
-  customFields: null;
+  customFields: CustomFields;
   remoteAddress: string;
   _uniqueIdentifier: string;
   versionId: string;
   translated: [];
   createdAt: Date;
-  updatedAt: null;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   orderVersionId: string;
@@ -93,7 +93,7 @@ export type Order = {
   stateMachineState: StateMachineState;
   stateId: string;
   customFields: CustomFields;
-  documents: null;
+  documents: OrderDocument[];
   tags: Tag[] | null;
   affiliateCode: string | null;
   campaignCode: string | null;
@@ -101,7 +101,7 @@ export type Order = {
   versionId: string;
   translated: any[];
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt: Date | string | null;
   extensions: unknown;
   id: string;
   billingAddressVersionId: string;
