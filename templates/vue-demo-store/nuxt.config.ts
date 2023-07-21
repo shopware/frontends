@@ -4,6 +4,10 @@ import { VueDisableInputsBeforeMount } from "vite-vue-plugin-disable-inputs";
 export default defineNuxtConfig({
   runtimeConfig: {
     shopware: {
+      /**
+       * SSR Shopware Endpoint
+       * More here: https://frontends.shopware.com/getting-started/templates/custom-project.html#shopware-endpoint-on-the-ssr-mode
+       */
       shopwareEndpoint: "",
     },
     public: {
