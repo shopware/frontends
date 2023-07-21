@@ -6,7 +6,6 @@ import {
 } from "@shopware-pwa/composables-next";
 import buildUrlPrefix from "../../../../helpers/buildUrlPrefix";
 import getUrlPrefix from "../../../../helpers/getUrlPrefix";
-
 const props = defineProps<{
   content: CmsElementImage | CmsElementManufacturerLogo;
 }>();

@@ -12,6 +12,7 @@ import {
   ImgHTMLAttributes,
 } from "vue";
 import { getSrcSetForMedia } from "@shopware-pwa/helpers-next";
+import urlIsAbsolute from "../helpers/urlIsAbsolute";
 
 export type UseCmsElementImage = {
   containerStyle: ComputedRef<CSSProperties>;
@@ -49,7 +50,9 @@ export function useCmsElementImage(
   const imageContainerAttrs = computed(() => {
     const attr: { [k: string]: string } = {};
     if (imageLink.value.url) {
-      attr.href = `/${imageLink.value.url}`;
+      attr.href = urlIsAbsolute(imageLink.value.url)
+        ? imageLink.value.url
+        : `/${imageLink.value.url}`;
     }
     if (imageLink.value.newTab) {
       attr.target = "blank";
