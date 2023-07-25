@@ -49,6 +49,12 @@ export default defineNuxtConfig({
     "/account/**": {
       ssr: false,
     },
+    "/search": {
+      ssr: false,
+    },
+    "/search/**": {
+      ssr: false,
+    },
     "/**": {
       isr: 60 * 60 * 24,
     },
