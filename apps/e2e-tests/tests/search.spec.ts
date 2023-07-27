@@ -18,4 +18,9 @@ test.describe.only("Search phrase", () => {
     await homePage.typeSearchPhrase("bag");
     await resultPage.searchResultBox.isVisible();
   });
+
+  test("Search phrase by suggest and verify result page", async ({ page }) => {
+    await homePage.searchBySuggest("bag");
+    await resultPage.searchResultBox.isVisible();
+  });
 });
