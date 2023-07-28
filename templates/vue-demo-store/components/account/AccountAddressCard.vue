@@ -11,6 +11,10 @@ const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
 const { refreshSessionContext } = useSessionContext();
 const { t } = useI18n();
 
+const emits = defineEmits<{
+  (e: "success"): void;
+}>();
+
 const props = withDefaults(
   defineProps<{
     address: CustomerAddress;
@@ -65,6 +69,10 @@ const removeAddress = async (addressId: string) => {
 };
 
 const addAddressModalController = useModal();
+const addressSaved = () => {
+  addAddressModalController.close;
+  emits("success");
+};
 </script>
 
 <template>
@@ -86,7 +94,7 @@ const addAddressModalController = useModal();
         <SharedAccountAddressForm
           :address="address"
           :title="$t('account.editAddress')"
-          @success="addAddressModalController.close"
+          @success="addressSaved"
         />
       </SharedModal>
       <div
