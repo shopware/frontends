@@ -44,7 +44,9 @@ function VueDisableInputsBeforeMount(): PluginOption {
         );
 
         const foundSelectElements =
-          component.match(/<(select|input|button)(.*\s?)([\s\S]*?)?\>/gm) || [];
+          component.match(
+            /<(select|input|button)[^>]*>(.*?)<\/(select|input|button)>/gm,
+          ) || [];
 
         for (const selectBlock of foundSelectElements) {
           if (hasDisabled(selectBlock)) {
