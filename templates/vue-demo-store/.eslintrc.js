@@ -22,5 +22,6 @@ module.exports = {
         ignores: ["checkout"],
       },
     ],
+    "vue/no-setup-props-destructure": "off",
   },
 };
