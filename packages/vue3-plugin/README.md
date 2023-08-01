@@ -2,4 +2,4 @@
 
 ## ⚠️ DEPRECATED
 
-The plugin can be created by using `creatingInstance` method of `@shopware-pwa/composables-next` package. [See the details](https://www.npmjs.com/package/@shopware-pwa/composables-next).
+The plugin can be created by using `createInstance` method of `@shopware-pwa/composables-next` package. [See the details](https://www.npmjs.com/package/@shopware-pwa/composables-next).
