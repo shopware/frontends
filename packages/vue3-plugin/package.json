@@ -1,7 +1,7 @@
 {
   "name": "@shopware-pwa/vue3-plugin",
   "version": "0.1.36",
-  "description": "Shopware Fromends Vue3 plugin",
+  "description": "Shopware Frontends plugin for Vue 3. DEPRECATED.",
   "author": "Shopware",
   "repository": {
     "type": "git",
