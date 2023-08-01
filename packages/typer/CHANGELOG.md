@@ -1,5 +1,13 @@
 # @shopware-pwa/typer
 
+## 0.1.8
+
+### Patch Changes
+
+- [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _vite_ from **^4.4.4** to **^4.4.7**
+
 ## 0.1.7
 
 ### Patch Changes
