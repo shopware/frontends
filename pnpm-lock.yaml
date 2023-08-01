@@ -932,9 +932,6 @@ importers:
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
-      '@shopware-pwa/vue3-plugin':
-        specifier: canary
-        version: link:../../packages/vue3-plugin
       vue:
         specifier: ^3.3.4
         version: 3.3.4
