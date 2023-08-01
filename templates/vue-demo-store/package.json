@@ -36,7 +36,6 @@
     "eslint-plugin-vue": "^9.15.1",
     "nuxt": "^3.6.3",
     "typescript": "^5.1.6",
-    "vite-vue-plugin-disable-inputs": "canary",
     "vue-eslint-parser": "^9.3.1",
     "vue-tsc": "^1.8.5"
   },
