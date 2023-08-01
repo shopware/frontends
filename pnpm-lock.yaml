@@ -929,6 +929,9 @@ importers:
 
   templates/vue-vite-blank:
     dependencies:
+      '@shopware-pwa/api-client':
+        specifier: canary
+        version: link:../../packages/api-client
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
