@@ -1,5 +1,17 @@
 # @shopware-pwa/composables-next
 
+## 0.12.1
+
+### Patch Changes
+
+- [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@vueuse/core_ from **^10.2.1** to **^10.3.0**
+
+- Updated dependencies []:
+  - @shopware-pwa/api-client@0.5.2
+  - @shopware-pwa/helpers-next@0.3.2
+
 ## 0.12.0
 
 ### Minor Changes

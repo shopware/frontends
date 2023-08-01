@@ -1,6 +1,6 @@
 {
   "name": "vite-vue-plugin-disable-inputs",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Disable input elements before mount. DEPRECATED.",
   "author": "Shopware",
   "repository": {

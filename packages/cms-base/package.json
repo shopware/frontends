@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/cms-base",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Vue CMS support for Shopware",
   "author": "Shopware",
   "repository": {
