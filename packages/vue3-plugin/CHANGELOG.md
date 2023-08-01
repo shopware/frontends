@@ -1,5 +1,11 @@
 # @shopware-pwa/vue3-plugin
 
+## 0.1.37
+
+### Patch Changes
+
+- [#351](https://github.com/shopware/frontends/pull/351) [`f10cab7`](https://github.com/shopware/frontends/commit/f10cab7e303b79cf8bbd758859d05723b586a1ec) Thanks [@mkucmus](https://github.com/mkucmus)! - Mark package as deprecated
+
 ## 0.1.36
 
 ### Patch Changes
