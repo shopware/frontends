@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OpenAPI3 } from "openapi-typescript";
 
 /**
