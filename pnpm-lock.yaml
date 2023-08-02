@@ -756,50 +756,6 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
 
-  packages/vite-vue-plugin-disable-inputs:
-    dependencies:
-      vite:
-        specifier: ^4.4.7
-        version: 4.4.7(@types/node@14.18.33)
-    devDependencies:
-      eslint-config-shopware:
-        specifier: workspace:*
-        version: link:../eslint-config-shopware
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
-      typescript:
-        specifier: ^5.1.6
-        version: 5.1.6
-      unbuild:
-        specifier: ^1.2.1
-        version: 1.2.1
-
-  packages/vue3-plugin:
-    dependencies:
-      '@shopware-pwa/api-client':
-        specifier: workspace:*
-        version: link:../api-client
-      '@shopware-pwa/composables-next':
-        specifier: workspace:*
-        version: link:../composables
-      js-cookie:
-        specifier: ^3.0.5
-        version: 3.0.5
-      vue:
-        specifier: ^3.3.4
-        version: 3.3.4
-    devDependencies:
-      eslint-config-shopware:
-        specifier: workspace:*
-        version: link:../eslint-config-shopware
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
-      typescript:
-        specifier: ^5.1.6
-        version: 5.1.6
-
   templates/astro:
     dependencies:
       '@astrojs/node':
