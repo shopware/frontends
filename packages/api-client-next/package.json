@@ -1,6 +1,6 @@
 {
   "name": "@shopware/api-client",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Shopware client for API connection.",
   "author": "Shopware",
   "repository": {
@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@shopware/api-gen": "workspace:*",
-    "@types/prettier": "^2.7.3",
+    "@types/prettier": "^3.0.0",
     "@vitest/coverage-c8": "^0.33.0",
     "eslint-config-shopware": "workspace:*",
     "prettier": "^3.0.0",
