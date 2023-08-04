@@ -224,6 +224,18 @@ onMounted(async () => {
   });
 });
 
+const refreshAddresses = async (addressId?: string) => {
+  if (addressId) {
+    isLoading[`shipping-${addressId}`] = true;
+    isLoading[`billing-${addressId}`] = true;
+  }
+  await loadCustomerAddresses();
+  if (addressId) {
+    isLoading[`shipping-${addressId}`] = false;
+    isLoading[`billing-${addressId}`] = false;
+  }
+};
+
 const registerErrors = ref<ShopwareError[]>([]);
 const invokeSubmit = async () => {
   $v.value.$touch();
@@ -260,7 +272,12 @@ const addAddressModalController = useModal();
       />
     </SharedModal>
     <SharedModal :controller="addAddressModalController">
-      <SharedAccountAddressForm @success="addAddressModalController.close" />
+      <SharedAccountAddressForm
+        @success="
+          refreshAddresses();
+          addAddressModalController.close();
+        "
+      />
     </SharedModal>
     <div
       v-if="isCheckoutAvailable || isCartLoading"
@@ -751,6 +768,7 @@ const addAddressModalController = useModal();
                   :countries="getCountries"
                   :salutations="getSalutations"
                   :can-set-default="false"
+                  @success="refreshAddresses(address.id)"
                 />
               </label>
             </div>
@@ -802,6 +820,7 @@ const addAddressModalController = useModal();
                       :countries="getCountries"
                       :salutations="getSalutations"
                       :can-set-default="false"
+                      @success="refreshAddresses(address.id)"
                     />
                   </label>
                 </div>
