@@ -28,14 +28,18 @@ const toggleCollapse = (navigationElement: Category) => {
 </script>
 
 <template>
-  <button class="lg:hidden" aria-label="menu" @click="sideMenuController.open">
+  <button
+    class="lg:hidden bg-transparent"
+    aria-label="menu"
+    @click="sideMenuController.open"
+  >
     <div class="i-carbon-menu w-8 h-8" />
   </button>
   <LayoutSidebar :controller="sideMenuController" side="left">
     <div class="flex px-4 py-5">
       <button
         type="button"
-        class="inline-flex items-center justify-center p-2 -m-2 text-gray-400 rounded-md"
+        class="inline-flex items-center justify-center p-2 -m-2 text-gray-400 rounded-md bg-transparent"
         @click="sideMenuController.close"
       >
         <span class="sr-only">Close menu</span>
@@ -44,7 +48,7 @@ const toggleCollapse = (navigationElement: Category) => {
     </div>
     <div class="max-w-2xl">
       <aside aria-label="Sidebar" class="flex flex-col">
-        <div class="w-full">
+        <div class="w-full px-4 pb-4">
           <LayoutStoreSearch @link-clicked="sideMenuController.close" />
         </div>
         <div class="overflow-y-auto">
@@ -65,7 +69,7 @@ const toggleCollapse = (navigationElement: Category) => {
                 <div class="flex flex-1" />
                 <button
                   v-if="navigationElement?.children?.length"
-                  class="flex items-center w-12 p-4 h-2"
+                  class="flex items-center w-12 p-4 h-2 bg-transparent"
                   @click.stop.prevent="toggleCollapse(navigationElement)"
                 >
                   <span

@@ -10,7 +10,9 @@ test.describe.only("Check for seo-url requests", () => {
     await homePage.visitMainPage();
   });
 
-  test("should not show any seo-url requests during internal navigation", async ({ page }) => {
+  test("should not show any seo-url requests during internal navigation", async ({
+    page,
+  }) => {
     let SeoUrlRequest = false;
     page.on("request", (request) => {
       if (request.url().includes("seo-url")) SeoUrlRequest = true;
