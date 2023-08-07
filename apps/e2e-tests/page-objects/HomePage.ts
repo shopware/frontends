@@ -63,27 +63,21 @@ export class HomePage extends AbstractPage {
   }
 
   async typeSearchPhrase(phrase: string) {
+    await this.page.waitForLoadState("networkidle");
     await this.searchBar.click();
     await this.searchBar.type(phrase);
+    await this.page.waitForLoadState();
+    await this.page.waitForSelector("[data-testid='layout-search-result-box']");
     await this.page.keyboard.press("Enter");
   }
 
   async searchBySuggest(phrase: string) {
+    await this.page.waitForLoadState("networkidle");
     await this.searchBar.click();
     await this.searchBar.type(phrase);
-    await expect(async () => {
-      await this.page.waitForSelector(
-        "div[data-testid='layout-search-result-box']",
-      );
-      expect(
-        this.page.getByTestId("layout-search-result-box-more-link").isVisible(),
-      );
-      await this.suggestResultLink.click();
-    }).toPass({
-      // Probe, wait 1s, probe, wait 2s, probe, wait 10s, probe, wait 10s, probe, .... Defaults to [100, 250, 500, 1000].
-      intervals: [1_000, 2_000, 10_000],
-      timeout: 60_000,
-    });
+    await this.page.waitForLoadState();
+    await this.page.waitForSelector("[data-testid='layout-search-result-box']");
+    await this.suggestResultLink.click();
   }
 
   async addProductToWishlist() {
