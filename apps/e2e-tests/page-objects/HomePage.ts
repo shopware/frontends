@@ -66,8 +66,11 @@ export class HomePage extends AbstractPage {
   }
 
   async typeSearchPhrase(phrase: string) {
+    await this.page.waitForLoadState("networkidle");
     await this.searchBar.click();
     await this.searchBar.type(phrase);
+    await this.page.waitForLoadState();
+    await this.page.waitForSelector("[data-testid='layout-search-result-box']");
     await this.page.keyboard.press("Enter");
   }
 
