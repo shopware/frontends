@@ -151,7 +151,7 @@ export async function getAvailableLanguages(
 }
 
 /**
- * Set the current session's language to correspoding to id
+ * Set the current session's language to corresponding to id
  *
  * @param {string} newLanguageId id of the language
  * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
@@ -165,6 +165,27 @@ export async function setCurrentLanguage(
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { languageId: newLanguageId };
+  const resp = await updateContext(params, contextInstance);
+
+  return resp;
+}
+
+/**
+ * Set the current session's country
+ *
+ * @param {string} newCountryId id of the country
+ * @param {ShopwareApiInstance} contextInstance instance of the api client (by default it's an Axios instance)
+ *
+ * @throws ClientApiError
+ * @category Context
+ * @public
+ */
+
+export async function setCurrentCountry(
+  newCountryId: string,
+  contextInstance: ShopwareApiInstance = defaultInstance,
+): Promise<ContextTokenResponse> {
+  const params = { countryId: newCountryId };
   const resp = await updateContext(params, contextInstance);
 
   return resp;
