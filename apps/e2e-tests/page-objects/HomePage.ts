@@ -12,6 +12,7 @@ export class HomePage extends AbstractPage {
   readonly wishlistButton: Locator;
   readonly accountMenuHelloButton: Locator;
   readonly myAccountLink: Locator;
+  readonly suggestResultLink: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -27,6 +28,9 @@ export class HomePage extends AbstractPage {
       .last();
     this.accountMenuHelloButton = page.getByTestId("account-menu-hello-button");
     this.myAccountLink = page.getByTestId("header-my-account-link");
+    this.suggestResultLink = page.getByTestId(
+      "layout-search-result-box-more-link",
+    );
   }
 
   async visitMainPage() {
@@ -59,9 +63,21 @@ export class HomePage extends AbstractPage {
   }
 
   async typeSearchPhrase(phrase: string) {
+    await this.page.waitForLoadState("networkidle");
     await this.searchBar.click();
     await this.searchBar.type(phrase);
+    await this.page.waitForLoadState();
+    await this.page.waitForSelector("[data-testid='layout-search-result-box']");
     await this.page.keyboard.press("Enter");
+  }
+
+  async searchBySuggest(phrase: string) {
+    await this.page.waitForLoadState("networkidle");
+    await this.searchBar.click();
+    await this.searchBar.type(phrase);
+    await this.page.waitForLoadState();
+    await this.page.waitForSelector("[data-testid='layout-search-result-box']");
+    await this.suggestResultLink.click();
   }
 
   async addProductToWishlist() {
