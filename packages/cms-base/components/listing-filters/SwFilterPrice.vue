@@ -28,8 +28,13 @@ const globalTranslations = getTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const prices = reactive<{ min: number; max: number }>({
-  min: props.filter?.min || 0,
-  max: props.filter?.max || 0,
+  min: 0,
+  max: 0,
+});
+
+onMounted(() => {
+  prices.min = Math.floor(props.filter?.min || 0);
+  prices.max = Math.floor(props.filter?.max || 0);
 });
 
 const isFilterVisible = ref<boolean>(false);
@@ -96,6 +101,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
             <input
               id="min-price"
               v-model="prices.min"
+              step="1"
               type="number"
               name="min-price"
               class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-gray-300"

@@ -1,5 +1,13 @@
 # @shopware/api-gen
 
+## 0.0.6
+
+### Patch Changes
+
+- [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _openapi-typescript_ from **^6.3.4** to **^6.4.0**
+
 ## 0.0.5
 
 ### Patch Changes
