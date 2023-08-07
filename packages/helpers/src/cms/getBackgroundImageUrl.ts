@@ -8,10 +8,8 @@ function roundUp(num: number) {
 const getUrlFromBackgroundImage = (url: string) => {
   const regex = /(?:\(['"]?)(.*?)(?:['"]?\))/;
   const match = url.match(regex);
-  if (!match) {
-    return url;
-  }
-  return match[1];
+
+  return !match ? url : match[1];
 };
 
 export function getBackgroundImageUrl(
