@@ -146,17 +146,11 @@ try {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client-next/CHANGELOG.md)
 
-### Latest changes: 0.1.0
-
-### Minor Changes
-
-- [#300](https://github.com/shopware/frontends/pull/300) [`da347b5`](https://github.com/shopware/frontends/commit/da347b548aea93afaab1cc9ebab63f732ecdb964) Thanks [@patzick](https://github.com/patzick)! - Predefining methods: exported `RequestReturnType ` and `RequestParameters` types. You can now create predefined methods:
-
-  ```typescript
-  const readCart = (params: RequestParameters<"readCart", operations>) =>
-    apiInstance.invoke("readCart get /checkout/cart?name", params);
-  ```
+### Latest changes: 0.2.1
 
 ### Patch Changes
 
-- [#295](https://github.com/shopware/frontends/pull/295) [`23a0a53`](https://github.com/shopware/frontends/commit/23a0a532410990c0075ea7fff622949ccdecfd49) Thanks [@patzick](https://github.com/patzick)! - bump dependencies
+- [#339](https://github.com/shopware/frontends/pull/339) [`b2fe2bc`](https://github.com/shopware/frontends/commit/b2fe2bc84bc4f3381bc16b9216a935f3c317b0d4) Thanks [@patzick](https://github.com/patzick)! - Query param arrays. This fixes the way how query params are serialized. Previously, array query params were serialized as `?ids=1&ids=2`, now they are serialized as `?ids[]=1&ids[]=2`. This is the proper way of serialization in the Shopware API.
+  The definition of the endpoints hasn't changed, so you don't need to change anything in your code.
+
+- [#320](https://github.com/shopware/frontends/pull/320) [`8e499e3`](https://github.com/shopware/frontends/commit/8e499e35b3a1a7dc4d1382f8f99b8fc3426e4ac9) Thanks [@mkucmus](https://github.com/mkucmus)! - Prevent setting "null" or "undefined" as token on session init

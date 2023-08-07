@@ -18,6 +18,7 @@ import {
   setCurrentShippingAddress,
   setCurrentBillingAddress,
   setCurrentLanguage,
+  setCurrentCountry,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 import { _useContext } from "./internal/_useContext";
@@ -27,6 +28,12 @@ export type UseSessionContextReturn = {
    * Patches the context in order to use new language
    */
   setLanguage(language: Partial<Language>): Promise<void>;
+  /**
+   * Patches the context in order to use new countryId
+   *
+   * @param {string} countryId
+   */
+  setCountry(countryId: string): Promise<void>;
   /**
    * current context's language
    */
@@ -173,6 +180,11 @@ export function useSessionContext(
     await refreshSessionContext();
   };
 
+  const setCountry = async (countryId: string) => {
+    await setCurrentCountry(countryId, apiInstance);
+    await refreshSessionContext();
+  };
+
   const activeShippingAddress = computed(
     () => sessionContext.value?.shippingLocation?.address || null,
   );
@@ -234,5 +246,6 @@ export function useSessionContext(
     setLanguage,
     languageId,
     languageIdChain,
+    setCountry,
   };
 }

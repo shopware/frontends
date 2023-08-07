@@ -257,6 +257,34 @@ export default {
 };
 ```
 
+## Shopware Endpoint on the SSR mode
+
+It may happen that for SSR and CSR, you need two different shopware endpoints. One of the most common situations is when you are using an internal network for communication between apps.
+
+```
+Server URL to the backend: http://shopware (not exposed)
+Client URL to the backend  https://demo-frontends.shopware.store (exposed)
+```
+
+If you are using the Nuxt plugin, you can set private and public envs:
+
+```
+NUXT_SHOPWARE_SHOPWARE_ENDPOINT=http://shopware
+NUXT_PUBLIC_SHOPWARE_SHOPWARE_ENDPOINT=https://demo-frontends.shopware.store
+```
+
+Otherwise, make sure that you are setting different values on the create instance phase
+
+```ts
+const instance = createInstance({
+  endpoint: ssrValue || clientValue,
+  accessToken: options.shopwareAccessToken,
+  timeout: options.shopwareApiClient?.timeout || 5000,
+  contextToken: contextToken.value,
+  languageId: languageId.value,
+});
+```
+
 ## Next steps
 
 After your setup, you can follow our building guides to get started with Shopware Frontends

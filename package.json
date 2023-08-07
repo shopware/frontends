@@ -28,8 +28,8 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
-    "@microsoft/api-documenter": "^7.22.28",
-    "@microsoft/api-extractor": "^7.36.2",
+    "@microsoft/api-documenter": "^7.22.32",
+    "@microsoft/api-extractor": "^7.36.3",
     "@microsoft/tsdoc": "^0.14.2",
     "@types/changelog-parser": "^2.8.1",
     "changelog-parser": "^3.0.1",
@@ -39,9 +39,9 @@
     "lint-staged": "^13.2.3",
     "prettier": "^3.0.0",
     "taze": "^0.11.2",
-    "turbo": "^1.10.8",
+    "turbo": "^1.10.12",
     "typedoc": "^0.24.8",
-    "vercel": "^31.0.3"
+    "vercel": "^31.2.1"
   },
   "engines": {
     "node": "^16.x || ^18.x"
@@ -51,7 +51,7 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.6.8",
+  "packageManager": "pnpm@8.6.11",
   "pnpm": {
     "overrides": {
       "yaml@2": "^2.2.2",

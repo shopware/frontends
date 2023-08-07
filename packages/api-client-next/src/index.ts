@@ -70,10 +70,14 @@ export function createAPIClient<
   contextToken?: string;
   onContextChanged?: (newContextToken: string) => void;
 }) {
-  const defaultHeaders = {
+  const defaultHeaders: Record<string, string> = {
     "sw-access-key": params.accessToken,
-    "sw-context-token": params.contextToken,
   };
+
+  // protection from setting "null" or "undefined" as a token in API side
+  if (params.contextToken) {
+    defaultHeaders["sw-context-token"] = params.contextToken;
+  }
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
@@ -165,7 +169,13 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
   });
   const query: Record<string, unknown> = {};
   queryParamNames.forEach((paramName) => {
-    query[paramName] = params[paramName];
+    // API takes array params as `paramName[]`, so multiple params have shape ?paramName[]=1&paramName[]=2
+    // to improve DX we do not require user to add [] to param name, we do it here
+    let queryParamName = paramName;
+    if (Array.isArray(params[paramName]) && !queryParamName.includes("[]")) {
+      queryParamName += "[]";
+    }
+    query[queryParamName] = params[paramName];
   });
 
   const returnOptions = {

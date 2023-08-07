@@ -1,5 +1,62 @@
 # vue-demo-store
 
+## 0.13.0
+
+### Minor Changes
+
+- [#325](https://github.com/shopware/frontends/pull/325) [`faf28ca`](https://github.com/shopware/frontends/commit/faf28ca3f150b22d567b1f9e94b75e156c5d0aaa) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add private `shopwareEndpoint`
+
+### Patch Changes
+
+- [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@unocss/nuxt_ from **^0.53.5** to **^0.54.1**
+  - Changed dependency _@vueuse/nuxt_ from **^10.2.1** to **^10.3.0**
+
+- Updated dependencies [[`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b), [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b), [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b), [`faf28ca`](https://github.com/shopware/frontends/commit/faf28ca3f150b22d567b1f9e94b75e156c5d0aaa)]:
+  - @shopware-pwa/composables-next@0.12.1
+  - @shopware-pwa/nuxt3-module@0.5.0
+  - @shopware-pwa/cms-base@0.8.1
+  - @shopware-pwa/api-client@0.5.2
+  - @shopware-pwa/helpers-next@0.3.2
+  - @shopware-pwa/types@0.5.6
+
+## 0.12.0
+
+### Minor Changes
+
+- [#309](https://github.com/shopware/frontends/pull/309) [`84a7fe6`](https://github.com/shopware/frontends/commit/84a7fe6468041a4b12841fdf4844f3b38dfa387d) Thanks [@patzick](https://github.com/patzick)! - Session data are no longer rendered on server. Improved edge caching to achieve better performence.
+
+- [#309](https://github.com/shopware/frontends/pull/309) [`84a7fe6`](https://github.com/shopware/frontends/commit/84a7fe6468041a4b12841fdf4844f3b38dfa387d) Thanks [@patzick](https://github.com/patzick)! - Images are now lazy loaded, saves data on initial page load
+
+- [#301](https://github.com/shopware/frontends/pull/301) [`8d44bbd`](https://github.com/shopware/frontends/commit/8d44bbd20df9a7c63221022d1c53461db2e2b639) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Move AccountAddressForm to the shareable components folder
+
+- [#322](https://github.com/shopware/frontends/pull/322) [`b9a2004`](https://github.com/shopware/frontends/commit/b9a20044d3df04370c62ab392b5144a62fbb57a9) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Replace `localePath` with `formatLink`
+
+### Patch Changes
+
+- [#297](https://github.com/shopware/frontends/pull/297) [`8c6ff0a`](https://github.com/shopware/frontends/commit/8c6ff0ac87143a014f609aedd22aac99888da337) Thanks [@mkucmus](https://github.com/mkucmus)! - Refresh addresses on address save/edit
+
+- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
+
+- [#331](https://github.com/shopware/frontends/pull/331) [`14b0e9a`](https://github.com/shopware/frontends/commit/14b0e9af19faf4970235476744d9034f464bc0f2) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Revert `SharedCountryStateInput` component on registration page
+
+- [#307](https://github.com/shopware/frontends/pull/307) [`b3d391b`](https://github.com/shopware/frontends/commit/b3d391b3c00230ff07c088253d8465746757c945) Thanks [@mkucmus](https://github.com/mkucmus)! - Extract lang code from accept-language header in SSR for Intl.NumberFormat purposes
+
+- [#313](https://github.com/shopware/frontends/pull/313) [`0e82ab3`](https://github.com/shopware/frontends/commit/0e82ab395cc88e992d2d64853d27603548c36bb9) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@unocss/nuxt_ from **^0.53.4** to **^0.53.5**
+  - Changed dependency _@vuelidate/core_ from **^2.0.2** to **^2.0.3**
+  - Changed dependency _@vuelidate/validators_ from **^2.0.2** to **^2.0.3**
+
+- Updated dependencies [[`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d), [`f6f4d5c`](https://github.com/shopware/frontends/commit/f6f4d5c85e800c6d2067c6acd594a8711f43eea1), [`84a7fe6`](https://github.com/shopware/frontends/commit/84a7fe6468041a4b12841fdf4844f3b38dfa387d), [`0e82ab3`](https://github.com/shopware/frontends/commit/0e82ab395cc88e992d2d64853d27603548c36bb9), [`a75617f`](https://github.com/shopware/frontends/commit/a75617f4104f7e66599aa5341e46759bb9d414c9), [`84a7fe6`](https://github.com/shopware/frontends/commit/84a7fe6468041a4b12841fdf4844f3b38dfa387d), [`8c6ff0a`](https://github.com/shopware/frontends/commit/8c6ff0ac87143a014f609aedd22aac99888da337), [`0e82ab3`](https://github.com/shopware/frontends/commit/0e82ab395cc88e992d2d64853d27603548c36bb9), [`b9a2004`](https://github.com/shopware/frontends/commit/b9a20044d3df04370c62ab392b5144a62fbb57a9), [`a75617f`](https://github.com/shopware/frontends/commit/a75617f4104f7e66599aa5341e46759bb9d414c9)]:
+  - @shopware-pwa/nuxt3-module@0.4.0
+  - @shopware-pwa/composables-next@0.12.0
+  - @shopware-pwa/api-client@0.5.2
+  - @shopware-pwa/cms-base@0.8.0
+  - @shopware-pwa/helpers-next@0.3.2
+  - @shopware-pwa/types@0.5.6
+
 ## 0.11.0
 
 ### Minor Changes

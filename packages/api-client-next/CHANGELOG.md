@@ -1,5 +1,41 @@
 # @shopware/api-client
 
+## 0.2.1
+
+### Patch Changes
+
+- [#339](https://github.com/shopware/frontends/pull/339) [`b2fe2bc`](https://github.com/shopware/frontends/commit/b2fe2bc84bc4f3381bc16b9216a935f3c317b0d4) Thanks [@patzick](https://github.com/patzick)! - Query param arrays. This fixes the way how query params are serialized. Previously, array query params were serialized as `?ids=1&ids=2`, now they are serialized as `?ids[]=1&ids[]=2`. This is the proper way of serialization in the Shopware API.
+  The definition of the endpoints hasn't changed, so you don't need to change anything in your code.
+
+- [#320](https://github.com/shopware/frontends/pull/320) [`8e499e3`](https://github.com/shopware/frontends/commit/8e499e35b3a1a7dc4d1382f8f99b8fc3426e4ac9) Thanks [@mkucmus](https://github.com/mkucmus)! - Prevent setting "null" or "undefined" as token on session init
+
+## 0.2.0
+
+### Minor Changes
+
+- [#316](https://github.com/shopware/frontends/pull/316) [`589c09c`](https://github.com/shopware/frontends/commit/589c09cdd9dee0db172c371afc5ecd740bdb4723) Thanks [@patzick](https://github.com/patzick)! - Improved error handling. Api client now throws `ApiClientError` with detailed information about what went wrong with request.
+
+  example:
+
+  ```typescript
+  import { ApiClientError } from "@shopware/api-client";
+
+  try {
+    // ... your request
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      console.error(error); // This prints message summary
+      console.error("Details:", error.details); // Raw response from API
+    } else {
+      console.error("==>", error); // Another type of error, not recognized by API client
+    }
+  }
+  ```
+
+### Patch Changes
+
+- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
+
 ## 0.1.0
 
 ### Minor Changes

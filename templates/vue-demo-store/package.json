@@ -1,6 +1,6 @@
 {
   "name": "vue-demo-store",
-  "version": "0.11.0",
+  "version": "0.13.0",
   "private": true,
   "scripts": {
     "dev": "nuxt dev",
@@ -19,26 +19,25 @@
     "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
-    "@unocss/nuxt": "^0.53.5",
+    "@unocss/nuxt": "^0.54.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.3",
-    "@vueuse/nuxt": "^10.2.1",
+    "@vueuse/nuxt": "^10.3.0",
     "requrl": "^3.0.2",
     "sitemap": "^7.1.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.1.18",
-    "@nuxt/devtools": "^0.6.7",
+    "@nuxt/devtools": "^0.7.2",
     "@nuxtjs/i18n": "8.0.0-beta.10",
     "@vue/eslint-config-typescript": "^11.0.3",
     "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-vue": "^9.15.1",
-    "nuxt": "^3.6.3",
+    "eslint-plugin-vue": "^9.16.1",
+    "nuxt": "^3.6.5",
     "typescript": "^5.1.6",
-    "vite-vue-plugin-disable-inputs": "canary",
     "vue-eslint-parser": "^9.3.1",
-    "vue-tsc": "^1.8.5"
+    "vue-tsc": "^1.8.8"
   },
   "engines": {
     "node": "^16.x || ^18.x"

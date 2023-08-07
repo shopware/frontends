@@ -2,15 +2,16 @@ import { describe, expect, it } from "vitest";
 import { transformPathToQuery } from ".";
 
 describe("transform path to query request", () => {
-  it("should transform query to request", async () => {
-    const [path, params] = transformPathToQuery(
-      "readCart get /checkout/cart?name",
-      {
-        name: "myId123",
-      },
-    );
-    expect(path).toEqual("/checkout/cart");
-    expect(params).toMatchInlineSnapshot(`
+  describe("transforming query parameters", () => {
+    it("should transform query to request", async () => {
+      const [path, params] = transformPathToQuery(
+        "readCart get /checkout/cart?name",
+        {
+          name: "myId123",
+        },
+      );
+      expect(path).toEqual("/checkout/cart");
+      expect(params).toMatchInlineSnapshot(`
       {
         "headers": {},
         "method": "GET",
@@ -19,6 +20,51 @@ describe("transform path to query request", () => {
         },
       }
     `);
+    });
+
+    it("should add [] to query name if it's an array", () => {
+      const [path, params] = transformPathToQuery(
+        "removeLineItem delete /checkout/cart/line-item?ids",
+        {
+          ids: ["myId123", "myId456"],
+        },
+      );
+      expect(path).toEqual("/checkout/cart/line-item");
+      expect(params).toMatchInlineSnapshot(`
+        {
+          "headers": {},
+          "method": "DELETE",
+          "query": {
+            "ids[]": [
+              "myId123",
+              "myId456",
+            ],
+          },
+        }
+      `);
+    });
+
+    it("should accept query param names if there is already '[]' in the name", () => {
+      const [path, params] = transformPathToQuery(
+        "removeLineItem delete /checkout/cart/line-item?ids[]",
+        {
+          "ids[]": ["myId123", "myId456"],
+        },
+      );
+      expect(path).toEqual("/checkout/cart/line-item");
+      expect(params).toMatchInlineSnapshot(`
+        {
+          "headers": {},
+          "method": "DELETE",
+          "query": {
+            "ids[]": [
+              "myId123",
+              "myId456",
+            ],
+          },
+        }
+      `);
+    });
   });
 
   it("should transform path param", async () => {
