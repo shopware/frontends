@@ -12,7 +12,7 @@ import {
   ImgHTMLAttributes,
 } from "vue";
 import { getSrcSetForMedia } from "@shopware-pwa/helpers-next";
-import urlIsAbsolute from "../helpers/urlIsAbsolute";
+import { urlIsAbsolute } from "../helpers/urlIsAbsolute";
 
 export type UseCmsElementImage = {
   containerStyle: ComputedRef<CSSProperties>;
