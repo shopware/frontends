@@ -27,7 +27,7 @@ If we want to create our own product listing **component** in **demo-store** the
 `templates/vue-demo-store/components/cms/block/CmsBlockProductListing.vue`
 
 :::tip HINT 💡
-You can only override components that start with Cms. For example, you cannot override SwProductCart (this is an internal component). If you want to have your own SwProductCart, you need to overwrite the Cms component that is using the SwProductCard and then replace it with your e.g. CustomProductCard.
+You can only override components that start with Cms. For example, you cannot override SwProductCard (this is an internal component). If you want to have your own SwProductCard, you need to overwrite the Cms component that is using the SwProductCard and then replace it with your e.g. CustomProductCard.
 :::
 
 ### Resolving folder structure
