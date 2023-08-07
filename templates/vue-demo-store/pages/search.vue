@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  ListingResult,
-  Product,
-  ShopwareSearchParams,
-} from "@shopware-pwa/types";
+import { ListingResult, Product } from "@shopware-pwa/types";
 const route = useRoute();
 const router = useRouter();
 
@@ -12,7 +8,6 @@ const {
   getElements: products,
   getTotalPagesCount,
   getCurrentPage,
-  changeCurrentPage,
   loading,
   setInitialListing,
   getCurrentListing,
@@ -27,16 +22,22 @@ useBreadcrumbs([
   },
 ]);
 
-const { data: productSearch } = await useAsyncData(
-  "productSearch",
-  async () => {
+const cacheKey = computed(() => `productSearch-${JSON.stringify(route.query)}`);
+const loadProducts = async (cacheKey: string) => {
+  const { data: productSearch } = await useAsyncData(cacheKey, async () => {
     await search(route.query);
     return getCurrentListing.value;
-  },
-  {
-    watch: [route],
-  },
-);
+  });
+
+  return productSearch;
+};
+let productSearch = await loadProducts(cacheKey.value);
+
+watch(cacheKey, async (newCacheKey) => {
+  productSearch = await loadProducts(newCacheKey);
+  setInitialListing(productSearch.value as Partial<ListingResult<Product>>);
+});
+
 const changePage = async (page: number) => {
   await router.push({
     query: {
@@ -44,7 +45,6 @@ const changePage = async (page: number) => {
       p: page,
     },
   });
-  changeCurrentPage(page, route.query as Partial<ShopwareSearchParams>);
 };
 setInitialListing(productSearch.value as Partial<ListingResult<Product>>);
 </script>
