@@ -18,13 +18,17 @@ Because of auto importing, CMS component import will be overwritten by the new f
 
 More about auto imports can be found [here](https://nuxt.com/docs/guide/concepts/auto-imports)
 
-## Example how to overwrite the product card
+## Example how to overwrite the cms block product listing
 
-We have this cms product card **component** from **cms-base package**:  
-`packages/cms-base/components/SwProductCard.vue`
+We have this cms element **component** from **cms-base package**:  
+`packages/cms-base/components/public/cms/block/CmsBlockProductListing.vue`
 
-If we want to create our own product card **component** in **demo-store** the correct place would be:
-`templates/vue-demo-store/components/cms/SwProductCard.vue`
+If we want to create our own product listing **component** in **demo-store** the correct place would be:
+`templates/vue-demo-store/components/cms/block/CmsBlockProductListing.vue`
+
+:::tip HINT 💡
+You can only override components that start with Cms. For example, you cannot override SwProductCard (this is an internal component). If you want to have your own SwProductCard, you need to overwrite the Cms component that is using the SwProductCard and then replace it with your e.g. CustomProductCard.
+:::
 
 ### Resolving folder structure
 
