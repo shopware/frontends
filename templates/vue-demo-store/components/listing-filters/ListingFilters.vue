@@ -133,6 +133,19 @@ const selectedOptionIds = computed(() => [
   ...searchSelectedFilters.properties,
   ...searchSelectedFilters.manufacturer,
 ]);
+const showResetFiltersButton = computed<boolean>(() => {
+  if (
+    selectedOptionIds.value.length !== 0 ||
+    searchSelectedFilters["max-price"] ||
+    searchSelectedFilters["min-price"] ||
+    searchSelectedFilters["rating"] ||
+    searchSelectedFilters["shipping-free"]
+  ) {
+    return true;
+  }
+
+  return false;
+});
 provide("selectedOptionIds", selectedOptionIds);
 </script>
 
@@ -151,7 +164,7 @@ provide("selectedOptionIds", selectedOptionIds);
           @select-filter-value="onOptionSelectToggle"
         />
       </div>
-      <div v-if="selectedOptionIds.length !== 0" class="mx-auto mt-4 mb-2">
+      <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2">
         <button
           class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           type="button"
