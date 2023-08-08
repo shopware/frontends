@@ -35,11 +35,11 @@ const srcPath = computed(() => {
 });
 const urlPrefix = getUrlPrefix();
 const imageComputedContainerAttrs = computed(() => {
-  const imageAttrs = Object.assign({}, imageContainerAttrs.value);
-  if (imageAttrs.href) {
-    imageAttrs.href = buildUrlPrefix(imageAttrs.href, urlPrefix);
+  const imageAttrsCopy = Object.assign({}, imageContainerAttrs.value);
+  if (imageAttrsCopy?.href) {
+    imageAttrsCopy.href = buildUrlPrefix(imageAttrsCopy.href, urlPrefix);
   }
-  return imageAttrs;
+  return imageAttrsCopy;
 });
 </script>
 <template>

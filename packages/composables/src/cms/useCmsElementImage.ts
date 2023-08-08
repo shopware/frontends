@@ -18,7 +18,7 @@ export type UseCmsElementImage = {
   containerStyle: ComputedRef<CSSProperties>;
   anchorAttrs: ComputedRef<AnchorHTMLAttributes>;
   imageAttrs: ComputedRef<ImgHTMLAttributes>;
-  imageContainerAttrs: ComputedRef<CSSProperties | ImgHTMLAttributes>;
+  imageContainerAttrs: ComputedRef<{ [k: string]: string }>;
   imageLink: ComputedRef<{ newTab: boolean; url: string }>;
   displayMode: ComputedRef<DisplayMode>;
 };
