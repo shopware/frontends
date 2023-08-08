@@ -4,7 +4,8 @@ import {
   CmsElementManufacturerLogo,
   useCmsElementImage,
 } from "@shopware-pwa/composables-next";
-
+import buildUrlPrefix from "../../../../helpers/buildUrlPrefix";
+import getUrlPrefix from "../../../../helpers/getUrlPrefix";
 const props = defineProps<{
   content: CmsElementImage | CmsElementManufacturerLogo;
 }>();
@@ -32,6 +33,14 @@ const srcPath = computed(() => {
       : `height=${roundUp(height.value)}`;
   return `${imageAttrs.value.src}?${biggestParam}&fit=crop,smart`;
 });
+const urlPrefix = getUrlPrefix();
+const imageComputedContainerAttrs = computed(() => {
+  const imageAttrs = Object.assign({}, imageContainerAttrs.value);
+  if (imageAttrs.href) {
+    imageAttrs.href = buildUrlPrefix(imageAttrs.href, urlPrefix);
+  }
+  return imageAttrs;
+});
 </script>
 <template>
   <!-- TODO: using a tag only works with externalLink, need to improve this element to deal with both internalLink & externalLink -->
@@ -40,7 +49,7 @@ const srcPath = computed(() => {
     class="cms-element-image relative h-full w-full"
     :is="imageLink.url ? 'a' : 'div'"
     :style="containerStyle"
-    v-bind="imageContainerAttrs"
+    v-bind="imageComputedContainerAttrs"
   >
     <img
       ref="imageElement"
