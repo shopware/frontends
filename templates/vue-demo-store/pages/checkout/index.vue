@@ -223,9 +223,9 @@ onMounted(async () => {
 });
 
 const refreshAddresses = async () => {
-  isLoading["shipping-address"], (isLoading["billing-address"] = true);
+  isLoading["addresses"] = true;
   await loadCustomerAddresses();
-  isLoading["shipping-address"], (isLoading["billing-address"] = false);
+  isLoading["addresses"] = false;
 };
 
 const registerErrors = ref<ShopwareError[]>([]);
@@ -735,7 +735,7 @@ const addAddressModalController = useModal();
                 </div>
               </div>
             </div>
-            <div v-if="isLoading['billing-address']" class="w-60 h-24">
+            <div v-if="isLoading['addresses']" class="w-60 h-24">
               <div
                 class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
               >
@@ -746,7 +746,7 @@ const addAddressModalController = useModal();
                 </div>
               </div>
             </div>
-            <template v-if="!isLoading['billing-address']">
+            <template v-if="!isLoading['addresses']">
               <div
                 v-for="address in customerAddresses"
                 :key="address.id"
@@ -781,7 +781,7 @@ const addAddressModalController = useModal();
             >
               {{ $t("checkout.addNewBillingAddress") }}
             </button>
-            <template v-if="!isVirtualCart && isLoading['shipping-address']">
+            <template v-if="!isVirtualCart && isLoading['addresses']">
               <div class="w-60 h-24">
                 <div
                   class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
@@ -794,7 +794,7 @@ const addAddressModalController = useModal();
                 </div>
               </div>
             </template>
-            <template v-if="!isVirtualCart && !isLoading['shipping-address']">
+            <template v-if="!isVirtualCart && !isLoading['addresses']">
               <label for="customShipping" class="field-label">
                 <input
                   id="customShipping"
