@@ -24,7 +24,6 @@ provide("swNavigation-footer-navigation", footerData);
     <LayoutHeader />
     <LayoutNotifications />
     <div class="mx-auto">
-      <LayoutBreadcrumbs />
       <slot />
     </div>
     <LayoutFooter />

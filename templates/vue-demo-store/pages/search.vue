@@ -56,6 +56,7 @@ export default {
 </script>
 
 <template>
+  <LayoutBreadcrumbs />
   <div
     class="container mb-8 mx-4 md:mx-auto"
     data-testid="search-results-container"

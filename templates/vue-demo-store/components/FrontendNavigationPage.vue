@@ -35,5 +35,6 @@ useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
 
 <template>
+  <LayoutBreadcrumbs />
   <CmsPage v-if="category?.cmsPage" :content="category.cmsPage" />
 </template>
