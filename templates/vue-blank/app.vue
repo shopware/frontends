@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Frontends from "./components/Frontends.vue";
 const { refreshSessionContext } = useSessionContext();
 
 onMounted(() => {
@@ -8,9 +7,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="app">
-    <Frontends template="Blank Vue 3 template (Nuxt)" />
-  </div>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 <style>
 @import "./style.css";
