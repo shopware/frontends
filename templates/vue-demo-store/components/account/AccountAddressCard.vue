@@ -11,6 +11,10 @@ const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
 const { refreshSessionContext } = useSessionContext();
 const { t } = useI18n();
 
+const emits = defineEmits<{
+  (e: "success"): void;
+}>();
+
 const props = withDefaults(
   defineProps<{
     address: CustomerAddress;
@@ -65,6 +69,10 @@ const removeAddress = async (addressId: string) => {
 };
 
 const addAddressModalController = useModal();
+const addressSaved = () => {
+  addAddressModalController.close();
+  emits("success");
+};
 </script>
 
 <template>
@@ -86,7 +94,7 @@ const addAddressModalController = useModal();
         <SharedAccountAddressForm
           :address="address"
           :title="$t('account.editAddress')"
-          @success="addAddressModalController.close"
+          @success="addressSaved"
         />
       </SharedModal>
       <div
@@ -100,12 +108,17 @@ const addAddressModalController = useModal();
       <span class="block" data-testid="address-box-street">{{
         address.street
       }}</span>
-      <span class="block" data-testid="address-box-zipcode">{{
-        address.zipcode
-      }}</span>
-      <span class="block" data-testid="address-box-city">{{
-        address.city
-      }}</span>
+      <p>
+        <span data-testid="address-box-zipcode">{{ address.zipcode }}</span
+        >&nbsp;
+        <span data-testid="address-box-city">{{ address.city }}</span>
+      </p>
+      <p v-if="address.country" class="text-sm">
+        <span>({{ address.country.translated.name }}</span>
+        <span v-if="address.countryState"
+          >, {{ address.countryState.translated.name }}</span
+        >)
+      </p>
     </div>
     <div v-if="canSetDefault">
       <a

@@ -209,7 +209,6 @@ const placeOrderTriggered = ref(false);
 onMounted(async () => {
   await refreshSessionContext();
 
-  isLoading["shippingAddress"] = true;
   isLoading["shippingMethods"] = true;
   isLoading["paymentMethods"] = true;
 
@@ -218,11 +217,16 @@ onMounted(async () => {
     !isVirtualCart.value ? getShippingMethods() : null,
     getPaymentMethods(),
   ]).finally(() => {
-    isLoading["shippingAddress"] = false;
     isLoading["shippingMethods"] = false;
     isLoading["paymentMethods"] = false;
   });
 });
+
+const refreshAddresses = async () => {
+  isLoading["addresses"] = true;
+  await loadCustomerAddresses();
+  isLoading["addresses"] = false;
+};
 
 const registerErrors = ref<ShopwareError[]>([]);
 const invokeSubmit = async () => {
@@ -260,7 +264,12 @@ const addAddressModalController = useModal();
       />
     </SharedModal>
     <SharedModal :controller="addAddressModalController">
-      <SharedAccountAddressForm @success="addAddressModalController.close" />
+      <SharedAccountAddressForm
+        @success="
+          refreshAddresses();
+          addAddressModalController.close();
+        "
+      />
     </SharedModal>
     <div
       v-if="isCheckoutAvailable || isCartLoading"
@@ -726,34 +735,44 @@ const addAddressModalController = useModal();
                 </div>
               </div>
             </div>
-            <div
-              v-for="address in customerAddresses"
-              :key="address.id"
-              class="flex mb-3"
-            >
-              <input
-                :id="`billing-${address.id}`"
-                v-model="selectedBillingAddress"
-                :value="address.id"
-                name="billing-address"
-                type="radio"
-                class="focus:ring-brand-primary h-4 w-4 border-gray-300"
-                :data-testid="`checkout-billing-address-${address.id}`"
-              />
-              <label
-                :for="`billing-${address.id}`"
-                :class="{ 'animate-pulse': isLoading[`billing-${address.id}`] }"
-                class="ml-2 field-label"
+            <div v-if="isLoading['addresses']" class="w-60 h-24">
+              <div
+                class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
               >
-                <AccountAddressCard
-                  :key="address.id"
-                  :address="address"
-                  :countries="getCountries"
-                  :salutations="getSalutations"
-                  :can-set-default="false"
-                />
-              </label>
+                <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
+                <div class="flex flex-col space-y-3">
+                  <div class="w-36 bg-gray-300 h-6 rounded-md" />
+                  <div class="w-24 bg-gray-300 h-6 rounded-md" />
+                </div>
+              </div>
             </div>
+            <template v-if="!isLoading['addresses']">
+              <div
+                v-for="address in customerAddresses"
+                :key="address.id"
+                class="flex mb-3"
+              >
+                <input
+                  :id="`billing-${address.id}`"
+                  v-model="selectedBillingAddress"
+                  :value="address.id"
+                  name="billing-address"
+                  type="radio"
+                  class="focus:ring-brand-primary h-4 w-4 border-gray-300"
+                  :data-testid="`checkout-billing-address-${address.id}`"
+                />
+                <label :for="`billing-${address.id}`" class="ml-2 field-label">
+                  <AccountAddressCard
+                    :key="address.id"
+                    :address="address"
+                    :countries="getCountries"
+                    :salutations="getSalutations"
+                    :can-set-default="false"
+                    @success="refreshAddresses()"
+                  />
+                </label>
+              </div>
+            </template>
             <button
               type="button"
               data-testid="checkout-add-new-billing-address-button"
@@ -762,7 +781,20 @@ const addAddressModalController = useModal();
             >
               {{ $t("checkout.addNewBillingAddress") }}
             </button>
-            <template v-if="!isVirtualCart">
+            <template v-if="!isVirtualCart && isLoading['addresses']">
+              <div class="w-60 h-24">
+                <div
+                  class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
+                >
+                  <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
+                  <div class="flex flex-col space-y-3">
+                    <div class="w-36 bg-gray-300 h-6 rounded-md" />
+                    <div class="w-24 bg-gray-300 h-6 rounded-md" />
+                  </div>
+                </div>
+              </div>
+            </template>
+            <template v-if="!isVirtualCart && !isLoading['addresses']">
               <label for="customShipping" class="field-label">
                 <input
                   id="customShipping"
@@ -802,6 +834,7 @@ const addAddressModalController = useModal();
                       :countries="getCountries"
                       :salutations="getSalutations"
                       :can-set-default="false"
+                      @success="refreshAddresses()"
                     />
                   </label>
                 </div>
