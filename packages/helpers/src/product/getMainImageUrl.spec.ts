@@ -1,6 +1,6 @@
 import { getMainImageUrl } from "./getMainImageUrl";
 import { describe, expect, it } from "vitest";
-import { Product } from "@shopware-pwa/types";
+import { Product, LineItem } from "@shopware-pwa/types";
 
 describe("Helpers - getMainImageUrl", () => {
   const mediaUrl =
@@ -31,6 +31,16 @@ describe("Helpers - getMainImageUrl", () => {
       apiAlias: "product",
     } as any;
     const coverUrl = getMainImageUrl(product);
+    expect(coverUrl).toEqual(mediaUrl);
+  });
+
+  it("should contain url in nested cover object when lineItem", () => {
+    const lineItem: LineItem = {
+      cover: {
+        url: mediaUrl,
+      },
+    } as any;
+    const coverUrl = getMainImageUrl(lineItem);
     expect(coverUrl).toEqual(mediaUrl);
   });
 
