@@ -3,7 +3,7 @@
 Documentation related to the [API Client package](https://github.com/shopware/frontends/tree/main/packages/api-client).
 
 :::info
-A new version of the API Client is currently in development ([see GitHub](https://github.com/shopware/frontends/tree/feat/api-client-next/packages/api-client-next)).  
+A new version of the API Client is currently in development ([see NPM](https://www.npmjs.com/package/@shopware/api-client)).  
 Features are TypeScript autocompletion and generated types based on the envoirment.
 :::
 
