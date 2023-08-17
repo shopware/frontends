@@ -6,6 +6,7 @@ import type {
 } from "@shopware-pwa/types";
 
 export * from "./getCmsLayoutConfiguration";
+export * from "./getBackgroundImageUrl";
 
 /**
  * Returns the main page object depending of the type of the CMS page.

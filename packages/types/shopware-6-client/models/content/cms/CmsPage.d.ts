@@ -216,34 +216,49 @@ export type BackgroundMediaMode = "cover";
 
 export type CmsVisibility = "mobile" | "tablet" | "desktop" | string;
 
+export type BackgroundMedia = {
+  alt?: string;
+  apiAlias: string;
+  createdAt: string;
+  fileExtension: string;
+  mimeType: string;
+  title?: string;
+  url: string;
+  metaData: {
+    width: number;
+    height: number;
+    type: number;
+  };
+};
+
 /**
  * @public
  */
 export type CmsSection = {
-  type: SectionType;
-  pageId: string;
-  page: null;
-  position: number;
-  name: string | null;
-  sizingMode: SizingMode;
-  mobileBehavior: MobileBehavior;
+  _uniqueIdentifier: string;
+  apiAlias: "cms_section";
   backgroundColor: string | null;
+  backgroundMedia?: BackgroundMedia;
   backgroundMediaId: string | null;
-  backgroundMedia: null;
   backgroundMediaMode: BackgroundMediaMode;
+  blocks: CmsBlock[];
+  createdAt: Date;
   cssClass: string | null;
   customFields: CustomFields | null;
-  locked: false;
-  _uniqueIdentifier: string;
-  versionId: string | null;
-  translated: any;
-  createdAt: Date;
-  updatedAt: Date | string | null;
   extensions: [any];
   id: string;
-  blocks: CmsBlock[];
+  locked: false;
+  mobileBehavior: MobileBehavior;
+  name: string | null;
+  page: null;
+  pageId: string;
+  position: number;
+  sizingMode: SizingMode;
+  translated: any;
+  type: SectionType;
+  updatedAt: Date | string | null;
+  versionId: string | null;
   visibility: {
     [key in CmsVisibility]: boolean;
   };
-  apiAlias: "cms_section";
 };
