@@ -1,6 +1,6 @@
 import { getMainImageUrl } from "./getMainImageUrl";
 import { describe, expect, it } from "vitest";
-import { Product } from "@shopware-pwa/types";
+import { Product, LineItem } from "@shopware-pwa/types";
 
 describe("Helpers - getMainImageUrl", () => {
   const mediaUrl =
@@ -22,28 +22,38 @@ describe("Helpers - getMainImageUrl", () => {
   });
 
   it("should contain url in nested media object", () => {
-    const product: Product = {
+    const product = {
       cover: {
         media: {
           url: mediaUrl,
         },
       },
       apiAlias: "product",
-    } as any;
-    const coverUrl = getMainImageUrl(product);
+    };
+    const coverUrl = getMainImageUrl(product as Product);
+    expect(coverUrl).toEqual(mediaUrl);
+  });
+
+  it("should contain url in nested cover object when lineItem", () => {
+    const lineItem = {
+      cover: {
+        url: mediaUrl,
+      },
+    };
+    const coverUrl = getMainImageUrl(lineItem as LineItem);
     expect(coverUrl).toEqual(mediaUrl);
   });
 
   it("should contain empty string when there is no media gallery or cover", () => {
-    const product: Product = {
+    const product = {
       apiAlias: "product",
-    } as any;
-    const coverUrl = getMainImageUrl(product);
+    };
+    const coverUrl = getMainImageUrl(product as Product);
     expect(coverUrl).toEqual("");
   });
 
   it("Should take the url from the media object first", () => {
-    const product: any = {
+    const product = {
       cover: {
         url: "https://shopware.test/media/8a/fd/cb/1572351035/msh06-gray_main_1.jpg",
         media: {
@@ -52,13 +62,13 @@ describe("Helpers - getMainImageUrl", () => {
       },
       apiAlias: "product",
     };
-    const coverUrl = getMainImageUrl(product);
+    const coverUrl = getMainImageUrl(product as any);
     expect(coverUrl).toEqual(mediaUrl);
   });
 
   it("should return null for product without cover media and cover url", () => {
-    const emptyProduct: any = {};
-    const coverUrl = getMainImageUrl(emptyProduct);
+    const emptyProduct = {};
+    const coverUrl = getMainImageUrl(emptyProduct as Product);
     expect(coverUrl).toEqual("");
   });
 

@@ -8,3 +8,12 @@ describe("getLanguageName", () => {
     expect(getLanguageName(language)).toBe(languageName);
   });
 });
+
+describe("getLanguageName with wrong object", () => {
+  it("should return an empty string", () => {
+    const languageMock = language;
+    languageMock.translationCode = null;
+
+    expect(getLanguageName(languageMock)).toBe("");
+  });
+});
