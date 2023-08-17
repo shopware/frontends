@@ -25,5 +25,6 @@ if (typeof landingResponse?.value !== null) {
 </script>
 
 <template>
+  <LayoutBreadcrumbs />
   <CmsPage v-if="landingResponse?.cmsPage" :content="landingResponse.cmsPage" />
 </template>

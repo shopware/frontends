@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { CmsBlock } from "@shopware-pwa/types";
-import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
+import {
+  getCmsLayoutConfiguration,
+  getBackgroundImageUrl,
+} from "@shopware-pwa/helpers-next";
 import { resolveCmsComponent } from "@shopware-pwa/composables-next";
 const props = defineProps<{
   content: CmsBlock;
@@ -18,6 +21,13 @@ const DynamicRender = () => {
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
       props.content,
     );
+
+    if (layoutStyles.backgroundImage) {
+      layoutStyles.backgroundImage = getBackgroundImageUrl(
+        layoutStyles.backgroundImage,
+        props.content,
+      );
+    }
 
     const containerStyles = {
       backgroundColor: layoutStyles.backgroundColor,
