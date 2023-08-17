@@ -18,7 +18,7 @@ describe("getTranslatedProperty function", () => {
 describe("getTranslatedProperty function with wrong property key", () => {
   it("should return '' when the property is wrong", () => {
     const mockObject = {};
-    // @ts-ignore
+    // @ts-expect-error
     const result = getTranslatedProperty(mockObject, "wrongProperty");
     expect(result).toBe("");
   });
