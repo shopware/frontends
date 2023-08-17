@@ -28,7 +28,7 @@ export type CustomerAddress = {
   additionalAddressLine1?: string;
   additionalAddressLine2?: string;
   country?: Country;
-  countryState?: string;
+  countryState?: CountryState;
   salutation?: Salutation | null;
   customer?: string;
   customFields?: CustomFields;

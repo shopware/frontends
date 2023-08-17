@@ -27,6 +27,12 @@ useBreadcrumbs([
   },
 ]);
 
+const refreshAddresses = async () => {
+  loadingData.value = true;
+  await loadCustomerAddresses();
+  loadingData.value = false;
+};
+
 onBeforeMount(async () => {
   await loadCustomerAddresses();
   loadingData.value = false;
@@ -60,6 +66,7 @@ onBeforeMount(async () => {
           :address="address"
           :countries="getCountries"
           :salutations="getSalutations"
+          @success="refreshAddresses"
         />
       </template>
     </div>
@@ -72,7 +79,12 @@ onBeforeMount(async () => {
       {{ $t("account.addressAddNew") }}
     </button>
     <SharedModal :controller="addAddressModalController">
-      <SharedAccountAddressForm @success="addAddressModalController.close" />
+      <SharedAccountAddressForm
+        @success="
+          async () =>
+            await refreshAddresses().then(addAddressModalController.close)
+        "
+      />
     </SharedModal>
   </div>
 </template>
