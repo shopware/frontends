@@ -137,14 +137,12 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.12.1
+### Latest changes: 0.13.0
+
+### Minor Changes
+
+- [#330](https://github.com/shopware/frontends/pull/330) [`3683116`](https://github.com/shopware/frontends/commit/3683116588a7ef75e750fc33deee119f038c88e8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `setCountry` method for `useSessionContext` composable
 
 ### Patch Changes
 
-- [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
-  - Changed dependency _@vueuse/core_ from **^10.2.1** to **^10.3.0**
-
-- Updated dependencies []:
-  - @shopware-pwa/api-client@0.5.2
-  - @shopware-pwa/helpers-next@0.3.2
+- [#336](https://github.com/shopware/frontends/pull/336) [`d03228a`](https://github.com/shopware/frontends/commit/d03228a51058ec376b003e80dd0395237a12bfb6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix link building for a cms image element
