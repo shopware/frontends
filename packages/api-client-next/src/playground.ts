@@ -7,7 +7,6 @@ import { operationPaths, operations } from "../api-types/apiTypes-6.4.19.0";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
-const apiType = "store-api";
 
 type extendedPaths = "qweqwe post /some/{addressId}/pathh" | operationPaths;
 type extendedOperations = {
@@ -27,7 +26,6 @@ type extendedOperations = {
 const apiInstance = createAPIClient<extendedOperations, extendedPaths>({
   baseURL,
   accessToken,
-  apiType,
 });
 
 async function testing() {

@@ -11,17 +11,14 @@ import {
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
-const apiType = "store-api";
 
 const client6419 = createAPIClient<operations6419, paths6419>({
   baseURL,
   accessToken,
-  apiType,
 });
 const client6420 = createAPIClient<operations6420, paths6420>({
   baseURL,
   accessToken,
-  apiType,
 });
 
 describe("Multiple versions test", () => {

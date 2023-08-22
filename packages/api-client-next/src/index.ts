@@ -68,7 +68,10 @@ export function createAPIClient<
   PATHS = defaultPaths,
 >(params: {
   baseURL: string;
-  apiType: "store-api" | "admin-api";
+  /**
+   * @deprecated this method is only for store-api, for admin API use `createAdminAPIClient`. Remove this param
+   */
+  apiType?: "store-api" | "admin-api";
   accessToken: string;
   contextToken?: string;
   onContextChanged?: (newContextToken: string) => void;

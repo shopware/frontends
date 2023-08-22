@@ -3,14 +3,12 @@ import { createAPIClient } from ".";
 import { operationPaths, operations } from "../api-types/apiTypes-6.4.19.0";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
-const apiType = "store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
 describe("Test real API invocations", () => {
   it("should fail on unprovided access token", async () => {
     const apiInstance = createAPIClient<operations, operationPaths>({
       baseURL,
-      apiType,
       accessToken: "",
     });
     await expect(() =>
@@ -28,7 +26,6 @@ describe("Test real API invocations", () => {
   it("should not allow to pass an empty string as token", async () => {
     const apiInstance = createAPIClient<operations, operationPaths>({
       baseURL,
-      apiType,
       accessToken,
       contextToken: "",
     });
@@ -40,7 +37,6 @@ describe("Test real API invocations", () => {
   it("should not allow to pass undefined as context token", async () => {
     const apiInstance = createAPIClient<operations, operationPaths>({
       baseURL,
-      apiType,
       accessToken,
       contextToken: undefined,
     });
@@ -52,7 +48,6 @@ describe("Test real API invocations", () => {
   it("should fetch seo-url for page", async () => {
     const apiInstance = createAPIClient<operations, operationPaths>({
       baseURL,
-      apiType,
       accessToken,
     });
     const result = await apiInstance.invoke("readSeoUrl post /seo-url", {
