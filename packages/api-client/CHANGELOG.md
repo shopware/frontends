@@ -1,5 +1,11 @@
 # @shopware-pwa/api-client
 
+## 0.6.0
+
+### Minor Changes
+
+- [`4532b60d`](https://github.com/shopware/frontends/commit/4532b60d449e1b5a45506fafa16eb7d156dc2359) Thanks [@patzick](https://github.com/patzick)! - Add `setCurrentCountry` for changing context countryId
+
 ## 0.5.2
 
 ### Patch Changes
