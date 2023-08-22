@@ -74,7 +74,7 @@ export async function generate() {
       encoding: "utf-8",
     });
     let schemaForPatching = JSON.parse(schemaFile) as OpenAPI3;
-    const allPatches = Object.keys(patches) as Array<keyof typeof patches>;
+    const allPatches: Array<keyof typeof patches> = []; // Object.keys(patches) as Array<keyof typeof patches>;
     const semverVersion = version.slice(2);
     const patchesToApply = allPatches.filter((patch) => {
       return semver.satisfies(semverVersion, patch);
@@ -114,6 +114,7 @@ export async function generate() {
         // rawSchema: false,
         additionalProperties: false,
         alphabetize: true,
+        supportArrayLength: true,
         /**
          * GenericRecord is used for types like associations
          */
