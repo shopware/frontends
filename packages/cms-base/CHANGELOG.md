@@ -1,5 +1,13 @@
 # @shopware-pwa/cms-base
 
+## 0.8.4
+
+### Patch Changes
+
+- Updated dependencies [[`034e032`](https://github.com/shopware/frontends/commit/034e032270134cb51bb3da940d4b766d5866b1dd)]:
+  - @shopware-pwa/helpers-next@0.4.0
+  - @shopware-pwa/composables-next@0.13.2
+
 ## 0.8.3
 
 ### Patch Changes

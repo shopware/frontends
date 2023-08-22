@@ -1,5 +1,11 @@
 # @shopware-pwa/helpers-next
 
+## 0.4.0
+
+### Minor Changes
+
+- [`034e032`](https://github.com/shopware/frontends/commit/034e032270134cb51bb3da940d4b766d5866b1dd) Thanks [@patzick](https://github.com/patzick)! - reduce background images size by adding `getBackgroundImageUrl` helper
+
 ## 0.3.2
 
 ### Patch Changes
