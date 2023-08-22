@@ -55,7 +55,7 @@
     "@shopware-pwa/types": "workspace:*",
     "@vue/eslint-config-typescript": "^11.0.3",
     "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "^9.16.1",
+    "eslint-plugin-vue": "^9.17.0",
     "tsconfig": "workspace:*",
     "typescript": "^5.1.6",
     "unbuild": "^1.2.1",
