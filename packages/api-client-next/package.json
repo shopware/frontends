@@ -43,9 +43,9 @@
     "@types/prettier": "^3.0.0",
     "@vitest/coverage-c8": "^0.33.0",
     "eslint-config-shopware": "workspace:*",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.2",
     "tsconfig": "workspace:*",
-    "vitest": "^0.33.0"
+    "vitest": "^0.34.2"
   },
   "dependencies": {
     "ofetch": "^1.1.1"
