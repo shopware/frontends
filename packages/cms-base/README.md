@@ -81,15 +81,11 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base/CHANGELOG.md)
 
-### Latest changes: 0.8.1
+### Latest changes: 0.8.2
 
 ### Patch Changes
 
-- [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+- [#336](https://github.com/shopware/frontends/pull/336) [`d03228a`](https://github.com/shopware/frontends/commit/d03228a51058ec376b003e80dd0395237a12bfb6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add prefix to the media link
 
-  - Changed dependency _@nuxt/kit_ from **^3.6.3** to **^3.6.5**
-
-- Updated dependencies [[`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b)]:
-  - @shopware-pwa/composables-next@0.12.1
-  - @shopware-pwa/api-client@0.5.2
-  - @shopware-pwa/helpers-next@0.3.2
+- Updated dependencies [[`d03228a`](https://github.com/shopware/frontends/commit/d03228a51058ec376b003e80dd0395237a12bfb6), [`3683116`](https://github.com/shopware/frontends/commit/3683116588a7ef75e750fc33deee119f038c88e8)]:
+  - @shopware-pwa/composables-next@0.13.0

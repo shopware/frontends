@@ -1,5 +1,14 @@
 # @shopware-pwa/cms-base
 
+## 0.8.2
+
+### Patch Changes
+
+- [#336](https://github.com/shopware/frontends/pull/336) [`d03228a`](https://github.com/shopware/frontends/commit/d03228a51058ec376b003e80dd0395237a12bfb6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add prefix to the media link
+
+- Updated dependencies [[`d03228a`](https://github.com/shopware/frontends/commit/d03228a51058ec376b003e80dd0395237a12bfb6), [`3683116`](https://github.com/shopware/frontends/commit/3683116588a7ef75e750fc33deee119f038c88e8)]:
+  - @shopware-pwa/composables-next@0.13.0
+
 ## 0.8.1
 
 ### Patch Changes
