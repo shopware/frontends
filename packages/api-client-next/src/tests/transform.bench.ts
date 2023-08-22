@@ -1,5 +1,5 @@
 import { describe, bench } from "vitest";
-import { transformPathToQuery } from "..";
+import { transformPathToQuery } from "../transformPathToQuery";
 
 describe("transforming requests", () => {
   bench("transform without any params", () => {

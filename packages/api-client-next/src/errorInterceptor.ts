@@ -48,7 +48,7 @@ export class ApiClientError<
       if (error.source?.pointer) {
         pointer = `[${error.source.pointer}]`;
       }
-      return `${message}\n - [${error.title}]${pointer} ${error.detail}`;
+      return `${message}\n - [${error.title}]${pointer} ${error.detail ?? ""}`;
     }, "");
     super(message);
 

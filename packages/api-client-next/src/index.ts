@@ -3,7 +3,12 @@ import {
   operations as defaultOperations,
   paths as defaultPaths,
 } from "../api-types";
+import {
+  operations as defaultAdminOperations,
+  paths as defaultAdminPaths,
+} from "../admin-api-types";
 import { errorInterceptor } from "./errorInterceptor";
+import { transformPathToQuery } from "./transformPathToQuery";
 
 type Operations = Record<string, unknown>;
 
@@ -12,8 +17,6 @@ type Operations = Record<string, unknown>;
 //     [method: string]: unknown;
 //   };
 // };
-
-type HttpMethod = "post" | "get" | "put" | "delete" | "patch";
 
 // type PathDefinition<
 //   OPERATION_NAME extends string,
@@ -32,22 +35,22 @@ export type RequestParameters<
   parameters?: { query?: infer R };
 }
   ? R
-  : Record<string, unknown>) &
+  : {}) &
   (OPERATIONS[OPERATION_NAME] extends {
     parameters?: { path?: infer R };
   }
     ? R
-    : Record<string, unknown>) &
+    : {}) &
   (OPERATIONS[OPERATION_NAME] extends {
     requestBody?: { content?: { "application/json"?: infer R } };
   }
     ? R
-    : Record<string, unknown>) &
+    : {}) &
   (OPERATIONS[OPERATION_NAME] extends {
     parameters?: { header?: infer R };
   }
     ? R
-    : Record<string, unknown>);
+    : {});
 
 export type RequestReturnType<
   T extends keyof OPERATIONS,
@@ -65,7 +68,10 @@ export function createAPIClient<
   PATHS = defaultPaths,
 >(params: {
   baseURL: string;
-  apiType: "store-api" | "admin-api";
+  /**
+   * @deprecated this method is only for store-api, for admin API use `createAdminAPIClient`. Remove this param
+   */
+  apiType?: "store-api" | "admin-api";
   accessToken: string;
   contextToken?: string;
   onContextChanged?: (newContextToken: string) => void;
@@ -134,72 +140,125 @@ export function createAPIClient<
   };
 }
 
-export function transformPathToQuery<T extends Record<string, unknown>>(
-  path: string,
-  params: T,
-): [
-  string,
-  {
-    method: HttpMethod;
-    query: Record<string, unknown>;
-    headers: HeadersInit;
-    body?: Partial<T>;
-  },
-] {
-  // first param is operationName, not used here though
-  const [, method, pathDefinition, headerParams] = path.split(" ");
-  const [requestPath, queryParams] = pathDefinition.split("?");
+/**
+ * Session data entity for admin API client.
+ */
+export type AdminSessionData = {
+  accessToken: string;
+  refreshToken: string;
+  expirationTime: number;
+};
 
-  // get names in brackets
-  const pathParams: string[] =
-    requestPath
-      .match(/{[^}]+}/g)
-      //remove brackets
-      ?.map((param) => param.substring(1, param.length - 1)) || [];
-  const requestPathWithParams = pathParams.reduce((acc, paramName) => {
-    return acc.replace(`{${paramName}}`, params[paramName] as string);
-  }, requestPath);
+function createAuthorizationHeader(token: string) {
+  if (!token) return null;
+  if (token.startsWith("Bearer ")) return token;
+  return `Bearer ${token}`;
+}
 
-  const queryParamNames = queryParams?.split(",") || [];
-
-  const headerParamnames = headerParams?.split(",") || [];
-  const headers: HeadersInit = {};
-  headerParamnames.forEach((paramName) => {
-    headers[paramName] = params[paramName] as string;
-  });
-  const query: Record<string, unknown> = {};
-  queryParamNames.forEach((paramName) => {
-    // API takes array params as `paramName[]`, so multiple params have shape ?paramName[]=1&paramName[]=2
-    // to improve DX we do not require user to add [] to param name, we do it here
-    let queryParamName = paramName;
-    if (Array.isArray(params[paramName]) && !queryParamName.includes("[]")) {
-      queryParamName += "[]";
-    }
-    query[queryParamName] = params[paramName];
-  });
-
-  const returnOptions = {
-    method: method.toUpperCase() as HttpMethod,
-    headers,
-    query,
-  } as {
-    method: HttpMethod;
-    headers: HeadersInit;
-    query: Record<string, unknown>;
-    body?: Partial<T>;
+export function createAdminAPIClient<
+  OPERATIONS extends Operations = defaultAdminOperations,
+  PATHS = defaultAdminPaths,
+>(params: {
+  baseURL: string;
+  sessionData?: AdminSessionData;
+  onAuthChange?: (params: AdminSessionData) => void;
+}) {
+  const sessionData: AdminSessionData = {
+    accessToken: params.sessionData?.accessToken || "",
+    refreshToken: params.sessionData?.refreshToken || "",
+    expirationTime: Number(params.sessionData?.expirationTime || 0),
   };
-  Object.keys(params).forEach((key) => {
-    if (
-      !pathParams.includes(key) &&
-      !queryParamNames.includes(key) &&
-      !headerParamnames.includes(key)
-    ) {
-      returnOptions.body ??= {} as T;
-      Reflect.set(returnOptions.body, key, params[key]);
+
+  function updateSessionData(responseData: {
+    access_token?: string;
+    refresh_token: string;
+    expires_in: number;
+  }) {
+    if (responseData?.access_token) {
+      defaultHeaders.Authorization = createAuthorizationHeader(
+        responseData.access_token,
+      );
+
+      sessionData.accessToken = responseData.access_token;
+      sessionData.refreshToken = responseData.refresh_token;
+      sessionData.expirationTime = Date.now() + responseData.expires_in * 1000;
+      params.onAuthChange?.({
+        ...sessionData,
+      });
     }
+  }
+
+  const defaultHeaders = {
+    Authorization: createAuthorizationHeader(sessionData.accessToken),
+  };
+
+  const apiFetch = ofetch.create({
+    baseURL: params.baseURL,
+    async onRequest({ request, options }) {
+      const isExpired = sessionData.expirationTime <= Date.now();
+
+      if (isExpired && !request.toString().includes("/oauth/token")) {
+        // Access session expired, first we need to refresh it with refresh token
+        await ofetch("/oauth/token", {
+          baseURL: params.baseURL,
+          method: "POST",
+          body: {
+            grant_type: "refresh_token",
+            client_id: "administration",
+            refresh_token: sessionData.refreshToken || "",
+          },
+          headers: defaultHeaders as HeadersInit,
+          onResponseError({ response }) {
+            // if resfesh is expired we get 401 and we're throwing it without invoking the original request
+            errorInterceptor(response);
+          },
+          onResponse(context) {
+            updateSessionData(context.response._data);
+          },
+        });
+      }
+    },
+    async onResponse(context) {
+      updateSessionData(context.response._data);
+    },
+    async onResponseError({ request, response, options }) {
+      errorInterceptor(response);
+    },
   });
 
-  return [requestPathWithParams, returnOptions];
+  /**
+   * Invoke API request based on provided path definition.
+   */
+  async function invoke<
+    INVOKE_PATH extends PATHS,
+    OON = INVOKE_PATH extends `${infer R} ${string}` ? R : never,
+    OPERATION_NAME extends keyof OPERATIONS = OON extends keyof OPERATIONS
+      ? OON
+      : never,
+  >(
+    pathParam: INVOKE_PATH extends string ? INVOKE_PATH : never,
+    params: RequestParameters<OPERATION_NAME, OPERATIONS>,
+  ): Promise<RequestReturnType<OPERATION_NAME, OPERATIONS>> {
+    const [requestPath, options] = transformPathToQuery(
+      pathParam,
+      params as Record<string, string>,
+    );
+    // console.log("invoke with", requestPath, options);
+    return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
+      requestPath,
+      {
+        ...options,
+        headers: {
+          ...defaultHeaders,
+          ...options.headers,
+        } as HeadersInit,
+      },
+    );
+  }
+
+  return {
+    invoke,
+  };
 }
 
 export { ApiClientError } from "./errorInterceptor";

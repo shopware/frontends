@@ -50,7 +50,6 @@ export const apiClient = createAPIClient<operations, operationPaths>({
   baseURL: "https://demo-frontends.shopware.store/store-api",
   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   contextToken: Cookies.get("sw-context-token"),
-  apiType: "store-api",
   onContextChanged(newContextToken) {
     Cookies.set("sw-context-token", newContextToken, {
       expires: 365, // days
@@ -69,6 +68,47 @@ export type ApiRequestParams<OPERATION_NAME extends keyof operations> =
 export type ApiReturnType<OPERATION_NAME extends keyof operations> =
   RequestReturnType<OPERATION_NAME, operations>;
 ```
+
+## Admin API client setup
+
+The setup works the same way as `creteAPIClient` function, with few differences:
+
+```typescript
+// example adminApiClient.ts file
+import { createAdminAPIClient } from "@shopware/api-client"; // we use different function to create admin api client
+
+import {
+  RequestParameters,
+  RequestReturnType,
+  createAdminAPIClient,
+} from "@shopware/api-client";
+import {
+  operationPaths,
+  operations,
+  components,
+} from "@shopware/api-client/admin-api-types"; // we take default admin api types from different directory than store-api
+import Cookies from "js-cookie";
+
+export const adminApiClient = createAdminAPIClient<operations, operationPaths>({
+  baseURL: "https://demo-frontends.shopware.store/api",
+  sessionData: JSON.parse(Cookies.get("sw-admin-session-data") || "{}"),
+  onAuthChange(sessionData) {
+    Cookies.set("sw-admin-session-data", JSON.stringify(sessionData), {
+      expires: 1, // days
+      path: "/",
+      sameSite: "lax",
+    });
+  },
+});
+
+export type AdminApiSchemas = components["schemas"];
+export type AdminApiRequestParams<OPERATION_NAME extends keyof operations> =
+  RequestParameters<OPERATION_NAME, operations>;
+export type AdminApiReturnType<OPERATION_NAME extends keyof operations> =
+  RequestReturnType<OPERATION_NAME, operations>;
+```
+
+the rest works the same as store-api client.
 
 ## Basic usage
 
