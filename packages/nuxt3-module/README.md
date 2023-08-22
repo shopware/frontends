@@ -93,10 +93,9 @@ Internally, the module uses [API Client](https://npmjs.com/package/@shopware-pwa
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt3-module/CHANGELOG.md)
 
-### Latest changes: 0.5.2
+### Latest changes: 0.5.3
 
 ### Patch Changes
 
-- Updated dependencies [[`4532b60d`](https://github.com/shopware/frontends/commit/4532b60d449e1b5a45506fafa16eb7d156dc2359)]:
-  - @shopware-pwa/api-client@0.6.0
-  - @shopware-pwa/composables-next@0.13.1
+- Updated dependencies []:
+  - @shopware-pwa/composables-next@0.13.2
