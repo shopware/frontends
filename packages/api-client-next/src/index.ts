@@ -188,6 +188,18 @@ export function createAdminAPIClient<
     }
   }
 
+  function setSessionData(data: AdminSessionData): AdminSessionData {
+    sessionData.accessToken = data.accessToken;
+    sessionData.refreshToken = data.refreshToken;
+    sessionData.expirationTime = data.expirationTime;
+
+    return getSessionData();
+  }
+
+  function getSessionData() {
+    return { ...sessionData };
+  }
+
   const defaultHeaders = {
     Authorization: createAuthorizationHeader(sessionData.accessToken),
   };
@@ -257,7 +269,19 @@ export function createAdminAPIClient<
   }
 
   return {
+    /**
+     * Invoke API request based on provided path definition.
+     */
     invoke,
+    /**
+     * Enables to change session data in runtime. Useful for testing purposes.
+     * Setting session data with this methis will **not** fire `onAuthChange` hook.
+     */
+    setSessionData,
+    /**
+     * Returns current session data. Useful for testing purposes, as in most cases you'll want to use `onAuthChange` hook for that.
+     */
+    getSessionData,
   };
 }
 
