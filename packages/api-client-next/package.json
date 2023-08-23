@@ -21,7 +21,8 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "api-types"
+    "api-types",
+    "admin-api-types"
   ],
   "exports": {
     "import": "./dist/index.mjs"
