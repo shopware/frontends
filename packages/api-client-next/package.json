@@ -25,7 +25,10 @@
     "admin-api-types"
   ],
   "exports": {
-    "import": "./dist/index.mjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
   },
   "scripts": {
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
