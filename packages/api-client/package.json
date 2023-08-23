@@ -23,7 +23,12 @@
     "dist"
   ],
   "exports": {
-    "import": "./dist/index.mjs"
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    }
   },
   "scripts": {
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
@@ -37,8 +42,9 @@
     "@faker-js/faker": "^8.0.2",
     "@vitest/coverage-v8": "^0.34.2",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^10.10.4",
+    "happy-dom": "^10.11.0",
     "tsconfig": "workspace:*",
+    "unbuild": "^2.0.0",
     "vitest": "^0.34.2"
   },
   "dependencies": {

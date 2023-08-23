@@ -41,11 +41,12 @@
     "eslint-config-shopware": "workspace:*",
     "picocolors": "^1.0.0",
     "tsconfig": "workspace:*",
+    "unbuild": "^2.0.0",
     "vitest": "^0.34.2"
   },
   "dependencies": {
-    "ofetch": "^1.1.1",
-    "openapi-typescript": "^6.5.2",
+    "ofetch": "^1.2.1",
+    "openapi-typescript": "^6.5.3",
     "prettier": "^3.0.2",
     "semver": "^7.5.4",
     "yargs": "^17.7.2"

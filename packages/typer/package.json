@@ -50,6 +50,7 @@
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^5.1.6",
+    "unbuild": "^2.0.0",
     "vitest": "^0.34.2"
   }
 }
