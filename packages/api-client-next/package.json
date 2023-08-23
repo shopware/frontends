@@ -27,7 +27,6 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "require": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.cjs"
