@@ -28,11 +28,11 @@
   "exports": {
     ".": {
       "require": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       },
       "import": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/index.d.mts",
         "default": "./dist/index.mjs"
       }
     }
@@ -56,9 +56,10 @@
     "eslint-config-shopware": "workspace:*",
     "prettier": "^3.0.2",
     "tsconfig": "workspace:*",
+    "unbuild": "^2.0.0",
     "vitest": "^0.34.2"
   },
   "dependencies": {
-    "ofetch": "^1.1.1"
+    "ofetch": "^1.2.1"
   }
 }
