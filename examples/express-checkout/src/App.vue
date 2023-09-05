@@ -18,17 +18,18 @@ import {
   useCart,
 } from "@shopware-pwa/composables-next";
 import {
-  getProductThumbnailUrl,
+  getSmallestThumbnailUrl,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import { useRoute } from "vue-router";
 import { getCustomerOrders } from "@shopware-pwa/api-client";
+import type { Product } from "@shopware-pwa/types";
 
 const route = useRoute();
 
 const orderCreated = ref();
 const redirectPaymentUrl = ref();
-const productFound = ref();
+const productFound = ref<Product>();
 const isLoading = ref(true);
 const { unitPrice } = useProductPrice(productFound);
 const { search } = useProductSearch();
@@ -51,8 +52,8 @@ const paypalMethod = computed(() => {
 
 const renderPaypalButtons = async () => {
   const paypal = await loadScript({
-    "client-id":
-      "AUAcLFoadrmy9JiW2cHgriy1mTy0MCqQOP_1SSeQEUArz_zPeF1VcNY2CCxcFBQpf_N4g1k5wFVNJ1Bk",
+    clientId:
+      "AfHYkB-D2otC9Ct7ohQJbhVqvq9IeMA5_sQ5p7aJVyd0lz3oEYn0K7v9ujnjaEBOpXUZhuBuR22R953z",
     currency: "EUR",
     locale: "en_US",
   });
@@ -65,9 +66,9 @@ const renderPaypalButtons = async () => {
       style: {
         label: "buynow",
       },
-      // Sets up the transaction when a payment button is clicked
-      // Will be called if the express button is clicked
-
+      onError(err) {
+        console.warn("[PayPal > App.vue][onError]", err);
+      },
       createOrder: async (
         data: CreateOrderData,
         actions: CreateOrderActions,
@@ -90,6 +91,7 @@ const renderPaypalButtons = async () => {
       // Finalize the transaction after payer approval
       // Will be called if the payment process is approved by paypal
       onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
+        console.warn("onApprove", data);
         const response = await apiInstance.invoke.post(
           "/store-api/paypal/express/prepare-checkout?isPayPalExpressCheckout=1",
           {
@@ -155,8 +157,13 @@ onMounted(async () => {
       class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800"
       role="alert"
     >
-      <span class="font-medium">Sandbox mode!</span> You can use a sandbox
-      PayPal account to test the payment flow.
+      <span class="font-medium">Sandbox mode!</span>Please use your own sandbox
+      PayPal account to test the payment flow.<br /><br />⚠️Then Edit
+      <strong>App.vue</strong> > <strong>clientId</strong> in
+      <strong>renderPaypalButtons()</strong> function in order to have
+      configured client for corresponding sandbox account.<br />
+      It's better to test the example on your own API instance due to
+      credentials problems in our demo store.
       <hr class="mt-4 mb-4" />
       Note that Pop-ups can be blocked by StackBlitz, so it's better to run this
       example locally.
@@ -168,7 +175,7 @@ onMounted(async () => {
       <a href="#">
         <img
           class="p-8 rounded-t-lg"
-          :src="getProductThumbnailUrl(productFound)"
+          :src="getSmallestThumbnailUrl(productFound.cover.media)"
           alt="product image"
         />
       </a>
