@@ -202,6 +202,7 @@ export const sidebar = [
         ],
       },
       { text: "Community Modules", link: "/resources/community-modules/" },
+      { text: "Troubleshooting", link: "/resources/troubleshooting" },
     ],
   },
 ];
