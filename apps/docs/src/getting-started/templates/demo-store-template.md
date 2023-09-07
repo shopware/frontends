@@ -16,7 +16,7 @@ The **Demo Store Template** is not suitable for production stores. It is under c
 
 <PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" sub="Open the Demo Store Template with our browser IDE in a new window" :icon="stackblitzIcon" />
 
-Alternatively, set up the blank template manually by running the following commands in a new directory:
+Alternatively, set up the vue-demo-store template manually by running the following commands in a new directory:
 
 ```bash
 npx tiged shopware/frontends/templates/vue-demo-store demo-store && cd demo-store
@@ -52,7 +52,7 @@ The `components` directory contains components that have been extracted from the
 
 ## Customizing the template
 
-There is no concept of overriding components in the demo store template. Instead, all components are modified directly. When creating a new project, we recommend adding your custom git repository as a remote and keeping the original demo store template as a fork, so you can always pull changes manually.
+There is no concept of overwriting components in the demo store template. Instead, all components are modified directly. When you create a new project, we recommend adding your custom Git repository as a remote repository and keeping the original demo store template as a second repository so that you can always pull changes manually (see als Git Docu [Working with Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)).
 
 :::warning Updates & Breaking Changes
 The demo store template is a boilerplate, so it will constantly be updated, as we will continously add new features and make improvements. These updates include breaking changes. If you want to stay up to date with the latest changes, you need to keep your project in sync manually.
