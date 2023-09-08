@@ -43,7 +43,7 @@ export function TableOfFunctions(): Plugin {
         return code;
       }
 
-      const app = await TypeDoc.Application.bootstrapWithPlugins(
+      const app = await TypeDoc.Application.bootstrap(
         {
           basePath: "../../",
           entryPoints: [
@@ -72,9 +72,7 @@ export function TableOfFunctions(): Plugin {
       const description = "\n";
       // get functions from the project only with "isPublic" flag (@public)
       const functions = project.children?.filter((fn) => fn.flags?.isPublic);
-      const categories =
-        project.groups?.find((group) => group.title == "Functions")
-          ?.categories || [];
+      const categories = project?.categories || [];
 
       let table = "";
       for (const category of categories) {
