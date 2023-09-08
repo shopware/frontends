@@ -4,6 +4,11 @@ import { getChangedFilesSince } from "@changesets/git";
 import spawn from "spawndamnit";
 import writeChangeset from "@changesets/write";
 
+const IGNORED_PACKAGE_PATTERNS = [
+  // all in examples directory regex
+  /examples\/.*/,
+];
+
 async function getJsonFileBaseVersion(
   filename: string,
   cwd: string,
@@ -36,14 +41,18 @@ async function run() {
   const rootDir = repoInfo.root.dir;
   let dependenciesChanged = false;
 
-  const packages = repoInfo.packages.map((pkg) => {
-    const relativeDir = pkg.dir.replace(rootDir + "/", "") + "/package.json";
+  const packages = repoInfo.packages
+    .filter((pkg) => {
+      return !IGNORED_PACKAGE_PATTERNS.some((pattern) => pattern.test(pkg.dir));
+    })
+    .map((pkg) => {
+      const relativeDir = pkg.dir.replace(rootDir + "/", "") + "/package.json";
 
-    return {
-      ...pkg,
-      relativeDir,
-    };
-  });
+      return {
+        ...pkg,
+        relativeDir,
+      };
+    });
 
   const changedFiles = await getChangedFilesSince({
     cwd: rootDir,

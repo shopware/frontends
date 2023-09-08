@@ -42,25 +42,28 @@ export function TableOfFunctions(): Plugin {
       if (!TypeDoc) {
         return code;
       }
-      const app = new TypeDoc.Application();
-      app.options.addReader(new TypeDoc.TSConfigReader());
 
-      app.bootstrap({
-        basePath: "../../",
-        entryPoints: [resolve(`../../packages/${composableName}/src/index.ts`)],
-        tsconfig: resolve(`../../packages/${composableName}/tsconfig.json`),
-        categoryOrder: ["*", "Endpoints", "Other"],
-        exclude: [
-          "**/*+(.test|.spec|.e2e).ts",
-          "**/node_modules/**",
-          "**/types/**",
-          "**/cms/**",
-          "**/internal/**",
-        ],
-        blockTags: ["@public", "@deprecated"],
-      });
+      const app = await TypeDoc.Application.bootstrapWithPlugins(
+        {
+          basePath: "../../",
+          entryPoints: [
+            resolve(`../../packages/${composableName}/src/index.ts`),
+          ],
+          tsconfig: resolve(`../../packages/${composableName}/tsconfig.json`),
+          categoryOrder: ["*", "Endpoints", "Other"],
+          exclude: [
+            "**/*+(.test|.spec|.e2e).ts",
+            "**/node_modules/**",
+            "**/types/**",
+            "**/cms/**",
+            "**/internal/**",
+          ],
+          blockTags: ["@public", "@deprecated"],
+        },
+        [new TypeDoc.TSConfigReader()],
+      );
 
-      const project = app.convert();
+      const project = await app.convert();
 
       if (!project) {
         return code;
