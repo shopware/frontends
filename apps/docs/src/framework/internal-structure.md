@@ -62,7 +62,7 @@ Helpers are functions that can be used for formatting, data manipulation and oth
     <img src="../.assets/framework-icons/vue.png" alt="This package depends on Vue.js 3" title="This package depends on Vue.js 3" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware-pwa/composables-next" target="_blank">@shopware-pwa/composables-next</a>
 </div>
 
-The composables are a set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](../getting-started/page-elements/navigation.md).
+The composables are a set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](../getting-started/).
 
 <PageRef page="../packages/composables" title="Composables Reference" sub="Package API reference with all composables" />
 
