@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import { defineNuxtPlugin } from "#app";
+import { defineNuxtPlugin, useRuntimeConfig, useCookie, useState } from "#app";
 import {
   createShopwareContext,
   getDefaultApiParams,
@@ -37,7 +37,7 @@ const ShopwarePlugin = {
       !runtimeConfig.public?.shopware?.shopwareAccessToken
     ) {
       throw new Error(
-        "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration",
+        "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration"
       );
     }
 
