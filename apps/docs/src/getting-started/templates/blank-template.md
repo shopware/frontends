@@ -12,7 +12,7 @@ The blank template contains no UI or markup - it's just a blank Nuxt3 applicatio
 
 <PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-blank" sub="Open the Blank Template with our browser IDE in a new window" :icon="stackblitzIcon" />
 
-Alternatively, set up the blank template manually by running the following commands in a new directory:
+Alternatively, set up the vue-blank template manually by running the following commands in a new directory:
 
 ```bash
 npx tiged shopware/frontends/templates/vue-blank vue-blank && cd vue-blank

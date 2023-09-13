@@ -26,6 +26,7 @@ useBreadcrumbs([
 </script>
 
 <template>
+  <LayoutBreadcrumbs />
   <div class="flex justify-center">
     <img
       class="md:w-11/12"

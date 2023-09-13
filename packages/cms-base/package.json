@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/cms-base",
-  "version": "0.8.0",
+  "version": "0.8.4",
   "description": "Vue CMS support for Shopware",
   "author": "Shopware",
   "repository": {
@@ -22,8 +22,10 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
     }
   },
   "files": [
@@ -41,25 +43,25 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.6.3",
+    "@nuxt/kit": "^3.7.1",
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@vuelidate/core": "^2.0.3",
-    "@vuelidate/validators": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
     "entities": "^4.5.0",
     "html-to-ast": "^0.0.6"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.6.3",
+    "@nuxt/schema": "^3.7.1",
     "@shopware-pwa/types": "workspace:*",
     "@vue/eslint-config-typescript": "^11.0.3",
     "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "^9.15.1",
+    "eslint-plugin-vue": "^9.17.0",
     "tsconfig": "workspace:*",
-    "typescript": "^5.1.6",
-    "unbuild": "^1.2.1",
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0",
     "vue-eslint-parser": "^9.3.1",
-    "vue-tsc": "^1.8.5"
+    "vue-tsc": "^1.8.10"
   }
 }

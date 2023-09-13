@@ -12,6 +12,7 @@ useBreadcrumbs([
 </script>
 
 <template>
+  <LayoutBreadcrumbs />
   <div class="reset-password-wrapper">
     <AccountResetPasswordForm>
       <template #action>

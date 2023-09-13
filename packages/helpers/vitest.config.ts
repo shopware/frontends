@@ -5,7 +5,7 @@ export default defineConfig({
     environment: "happy-dom",
     coverage: {
       enabled: true,
-      // "100": true, // TODO: our goal ;)
+      "100": true,
     },
   },
 });

@@ -34,6 +34,7 @@ const { product } = useProduct(
 useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
 <template>
+  <LayoutBreadcrumbs />
   <div class="container mx-auto bg-white flex flex-col">
     <template v-if="!product?.cmsPage">
       <ProductStatic :product="product" />

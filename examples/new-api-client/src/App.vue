@@ -3,6 +3,9 @@ import { onMounted, ref } from "vue";
 import { apiClient, ApiReturnType } from "./apiClient";
 import HelloWorld from "./components/HelloWorld.vue";
 import LoginForm from "./components/LoginForm.vue";
+import AdminLoginForm from "./components/AdminLoginForm.vue";
+import { adminApiClient } from "./adminApiClient";
+import { ApiClientError } from "@shopware/api-client";
 
 const productsResponse = ref<ApiReturnType<"readProduct">>();
 
@@ -12,7 +15,24 @@ onMounted(async () => {
     limit: 2,
   });
   console.log(productsResponse.value);
+
+  await getProducts();
 });
+
+async function getProducts() {
+  try {
+    const resp = await adminApiClient.invoke(
+      "getProductList get /product?limit,page,query",
+      {
+        limit: 2,
+      },
+    );
+  } catch (e) {
+    if (e instanceof ApiClientError) {
+      console.error("Problem with fetching ADMIN products", e);
+    }
+  }
+}
 </script>
 
 <template>
@@ -25,6 +45,7 @@ onMounted(async () => {
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
+  <button @click="getProducts">Remove line item</button>
   <div>
     <div
       v-for="product in productsResponse?.elements"
@@ -35,7 +56,10 @@ onMounted(async () => {
       <div>{{ product.calculatedPrice?.unitPrice }}</div>
     </div>
   </div>
+  <h2>Client login test form:</h2>
   <LoginForm />
+  <h2>Admin login test form:</h2>
+  <AdminLoginForm />
 </template>
 
 <style scoped>

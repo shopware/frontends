@@ -30,6 +30,7 @@ export default {
 </script>
 
 <template>
+  <LayoutBreadcrumbs />
   <div class="login-wrapper">
     <AccountLoginForm @success="redirectAfterLogin('/account')">
       <div class="flex items-center justify-end">

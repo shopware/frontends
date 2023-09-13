@@ -14,7 +14,7 @@ The blank Astro bootstrap application with pre-installed dependencies, so you ca
 
 <PageRef target="blank" title="Run on Stackblitz" page="https://stackblitz.com/github/shopware/frontends/tree/main/templates/astro" sub="Open the Blank Template with our browser IDE in a new window" :icon="stackblitzIcon" />
 
-Alternatively, set up the blank template manually by running the following commands in a new directory:
+Alternatively, set up the astro-blank template manually by running the following commands in a new directory:
 
 ```bash
 npx tiged shopware/frontends/templates/astro astro-blank && cd astro-blank

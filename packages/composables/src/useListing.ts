@@ -81,7 +81,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
   /**
    * Loads more (next page) elements to the listing
    */
-  loadMore(): Promise<void>;
+  loadMore(query?: Partial<ShopwareSearchParams>): Promise<void>;
   /**
    * Listing that is currently set
    */
@@ -305,15 +305,19 @@ export function createListingComposable<ELEMENTS_TYPE>({
     }
   }
 
-  const loadMore = async (): Promise<void> => {
+  const loadMore = async (
+    query?: Partial<ShopwareSearchParams>,
+  ): Promise<void> => {
     loadingMore.value = true;
     try {
-      const query = {
-        // ...router.currentRoute.query,
-        p: getCurrentPage.value + 1,
-      };
+      const q = query
+        ? query
+        : {
+            // ...router.currentRoute.query,
+            p: getCurrentPage.value + 1,
+          };
 
-      const searchCriteria = merge({}, searchDefaults, query);
+      const searchCriteria = merge({}, searchDefaults, q);
       const result = await searchMethod(searchCriteria);
       _storeAppliedListing.value = {
         ...getCurrentListing.value,

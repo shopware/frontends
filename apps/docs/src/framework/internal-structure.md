@@ -62,7 +62,7 @@ Helpers are functions that can be used for formatting, data manipulation and oth
     <img src="../.assets/framework-icons/vue.png" alt="This package depends on Vue.js 3" title="This package depends on Vue.js 3" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware-pwa/composables-next" target="_blank">@shopware-pwa/composables-next</a>
 </div>
 
-The composables are a set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](../getting-started/page-elements/navigation.md).
+The composables are a set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](../getting-started/).
 
 <PageRef page="../packages/composables" title="Composables Reference" sub="Package API reference with all composables" />
 
@@ -76,7 +76,7 @@ The composables are a set of Vue.js composition functions that can be used in an
 
 The Nuxt 3 module allows you to set up a Nuxt 3 project with Shopware Frontends. It provides the [composables](#composables) and [api-client](#api-client) packages.
 
-If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Frontends in a [custom project](../getting-started/templates/custom-project.md) or use the [vue3-plugin](#vue3-plugin).
+If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Frontends in a [custom project](../getting-started/templates/custom-project.md).
 
 ## cms-base
 

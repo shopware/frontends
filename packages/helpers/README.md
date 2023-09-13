@@ -12,11 +12,8 @@ Documentation specific for this package: [helpers](https://frontends.shopware.co
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 0.3.2
+### Latest changes: 0.4.0
 
-### Patch Changes
+### Minor Changes
 
-- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
-
-- Updated dependencies [[`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d)]:
-  - @shopware-pwa/types@0.5.6
+- [`034e032`](https://github.com/shopware/frontends/commit/034e032270134cb51bb3da940d4b766d5866b1dd) Thanks [@patzick](https://github.com/patzick)! - reduce background images size by adding `getBackgroundImageUrl` helper

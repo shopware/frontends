@@ -1,6 +1,6 @@
 {
   "name": "@shopware/api-gen",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Shopware CLI for API client generation.",
   "author": "Shopware",
   "repository": {
@@ -35,18 +35,19 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "@types/prettier": "^2.7.3",
+    "@types/prettier": "^3.0.0",
     "@types/yargs": "^17.0.24",
     "@vitest/coverage-c8": "^0.33.0",
     "eslint-config-shopware": "workspace:*",
     "picocolors": "^1.0.0",
     "tsconfig": "workspace:*",
-    "vitest": "^0.33.0"
+    "unbuild": "^2.0.0",
+    "vitest": "^0.34.3"
   },
   "dependencies": {
-    "ofetch": "^1.1.1",
-    "openapi-typescript": "^6.3.4",
-    "prettier": "^3.0.0",
+    "ofetch": "^1.3.3",
+    "openapi-typescript": "^6.5.5",
+    "prettier": "^3.0.3",
     "semver": "^7.5.4",
     "yargs": "^17.7.2"
   }

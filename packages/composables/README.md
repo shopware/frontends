@@ -137,18 +137,9 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.12.0
-
-### Minor Changes
-
-- [#322](https://github.com/shopware/frontends/pull/322) [`b9a2004`](https://github.com/shopware/frontends/commit/b9a20044d3df04370c62ab392b5144a62fbb57a9) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `formatLink` method to the `useInternationalization` composable
+### Latest changes: 0.13.2
 
 ### Patch Changes
 
-- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
-
-- [#297](https://github.com/shopware/frontends/pull/297) [`8c6ff0a`](https://github.com/shopware/frontends/commit/8c6ff0ac87143a014f609aedd22aac99888da337) Thanks [@mkucmus](https://github.com/mkucmus)! - Remove implicit refresh action on address edit
-
-- Updated dependencies [[`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d)]:
-  - @shopware-pwa/api-client@0.5.2
-  - @shopware-pwa/helpers-next@0.3.2
+- Updated dependencies [[`034e032`](https://github.com/shopware/frontends/commit/034e032270134cb51bb3da940d4b766d5866b1dd)]:
+  - @shopware-pwa/helpers-next@0.4.0

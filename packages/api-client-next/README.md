@@ -50,7 +50,6 @@ export const apiClient = createAPIClient<operations, operationPaths>({
   baseURL: "https://demo-frontends.shopware.store/store-api",
   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   contextToken: Cookies.get("sw-context-token"),
-  apiType: "store-api",
   onContextChanged(newContextToken) {
     Cookies.set("sw-context-token", newContextToken, {
       expires: 365, // days
@@ -69,6 +68,47 @@ export type ApiRequestParams<OPERATION_NAME extends keyof operations> =
 export type ApiReturnType<OPERATION_NAME extends keyof operations> =
   RequestReturnType<OPERATION_NAME, operations>;
 ```
+
+## Admin API client setup
+
+The setup works the same way as `creteAPIClient` function, with few differences:
+
+```typescript
+// example adminApiClient.ts file
+import { createAdminAPIClient } from "@shopware/api-client"; // we use different function to create admin api client
+
+import {
+  RequestParameters,
+  RequestReturnType,
+  createAdminAPIClient,
+} from "@shopware/api-client";
+import {
+  operationPaths,
+  operations,
+  components,
+} from "@shopware/api-client/admin-api-types"; // we take default admin api types from different directory than store-api
+import Cookies from "js-cookie";
+
+export const adminApiClient = createAdminAPIClient<operations, operationPaths>({
+  baseURL: "https://demo-frontends.shopware.store/api",
+  sessionData: JSON.parse(Cookies.get("sw-admin-session-data") || "{}"),
+  onAuthChange(sessionData) {
+    Cookies.set("sw-admin-session-data", JSON.stringify(sessionData), {
+      expires: 1, // days
+      path: "/",
+      sameSite: "lax",
+    });
+  },
+});
+
+export type AdminApiSchemas = components["schemas"];
+export type AdminApiRequestParams<OPERATION_NAME extends keyof operations> =
+  RequestParameters<OPERATION_NAME, operations>;
+export type AdminApiReturnType<OPERATION_NAME extends keyof operations> =
+  RequestReturnType<OPERATION_NAME, operations>;
+```
+
+the rest works the same as store-api client.
 
 ## Basic usage
 
@@ -146,29 +186,8 @@ try {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client-next/CHANGELOG.md)
 
-### Latest changes: 0.2.0
+### Latest changes: 0.3.0
 
 ### Minor Changes
 
-- [#316](https://github.com/shopware/frontends/pull/316) [`589c09c`](https://github.com/shopware/frontends/commit/589c09cdd9dee0db172c371afc5ecd740bdb4723) Thanks [@patzick](https://github.com/patzick)! - Improved error handling. Api client now throws `ApiClientError` with detailed information about what went wrong with request.
-
-  example:
-
-  ```typescript
-  import { ApiClientError } from "@shopware/api-client";
-
-  try {
-    // ... your request
-  } catch (error) {
-    if (error instanceof ApiClientError) {
-      console.error(error); // This prints message summary
-      console.error("Details:", error.details); // Raw response from API
-    } else {
-      console.error("==>", error); // Another type of error, not recognized by API client
-    }
-  }
-  ```
-
-### Patch Changes
-
-- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
+- [#330](https://github.com/shopware/frontends/pull/330) [`3683116`](https://github.com/shopware/frontends/commit/3683116588a7ef75e750fc33deee119f038c88e8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `setCurrentCountry` for changing context countryId

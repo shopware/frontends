@@ -42,25 +42,28 @@ export function TableOfFunctions(): Plugin {
       if (!TypeDoc) {
         return code;
       }
-      const app = new TypeDoc.Application();
-      app.options.addReader(new TypeDoc.TSConfigReader());
 
-      app.bootstrap({
-        basePath: "../../",
-        entryPoints: [resolve(`../../packages/${composableName}/src/index.ts`)],
-        tsconfig: resolve(`../../packages/${composableName}/tsconfig.json`),
-        categoryOrder: ["*", "Endpoints", "Other"],
-        exclude: [
-          "**/*+(.test|.spec|.e2e).ts",
-          "**/node_modules/**",
-          "**/types/**",
-          "**/cms/**",
-          "**/internal/**",
-        ],
-        blockTags: ["@public", "@deprecated"],
-      });
+      const app = await TypeDoc.Application.bootstrap(
+        {
+          basePath: "../../",
+          entryPoints: [
+            resolve(`../../packages/${composableName}/src/index.ts`),
+          ],
+          tsconfig: resolve(`../../packages/${composableName}/tsconfig.json`),
+          categoryOrder: ["*", "Endpoints", "Other"],
+          exclude: [
+            "**/*+(.test|.spec|.e2e).ts",
+            "**/node_modules/**",
+            "**/types/**",
+            "**/cms/**",
+            "**/internal/**",
+          ],
+          blockTags: ["@public", "@deprecated"],
+        },
+        [new TypeDoc.TSConfigReader()],
+      );
 
-      const project = app.convert();
+      const project = await app.convert();
 
       if (!project) {
         return code;
@@ -69,9 +72,7 @@ export function TableOfFunctions(): Plugin {
       const description = "\n";
       // get functions from the project only with "isPublic" flag (@public)
       const functions = project.children?.filter((fn) => fn.flags?.isPublic);
-      const categories =
-        project.groups?.find((group) => group.title == "Functions")
-          ?.categories || [];
+      const categories = project?.categories || [];
 
       let table = "";
       for (const category of categories) {

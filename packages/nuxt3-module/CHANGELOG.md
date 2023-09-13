@@ -1,5 +1,43 @@
 # @shopware-pwa/nuxt3-module
 
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @shopware-pwa/composables-next@0.13.2
+
+## 0.5.2
+
+### Patch Changes
+
+- Updated dependencies [[`4532b60d`](https://github.com/shopware/frontends/commit/4532b60d449e1b5a45506fafa16eb7d156dc2359)]:
+  - @shopware-pwa/api-client@0.6.0
+  - @shopware-pwa/composables-next@0.13.1
+
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies [[`d03228a`](https://github.com/shopware/frontends/commit/d03228a51058ec376b003e80dd0395237a12bfb6), [`3683116`](https://github.com/shopware/frontends/commit/3683116588a7ef75e750fc33deee119f038c88e8)]:
+  - @shopware-pwa/composables-next@0.13.0
+
+## 0.5.0
+
+### Minor Changes
+
+- [#325](https://github.com/shopware/frontends/pull/325) [`faf28ca`](https://github.com/shopware/frontends/commit/faf28ca3f150b22d567b1f9e94b75e156c5d0aaa) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add private `shopwareEndpoint` config for SSR instance creation
+
+### Patch Changes
+
+- [#349](https://github.com/shopware/frontends/pull/349) [`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.6.3** to **^3.6.5**
+
+- Updated dependencies [[`5d14bb5`](https://github.com/shopware/frontends/commit/5d14bb5df65fb14d630a8c4ab2b474fde04c477b)]:
+  - @shopware-pwa/composables-next@0.12.1
+  - @shopware-pwa/api-client@0.5.2
+
 ## 0.4.0
 
 ### Minor Changes

@@ -103,7 +103,7 @@ export type UseOrderDetailsReturn = {
    * Get order object including additional associations.
    * useDefaults describes what order object should look like.
    */
-  loadOrderDetails(): void;
+  loadOrderDetails(): Promise<void>;
   /**
    * Handle payment for existing error.
    *
