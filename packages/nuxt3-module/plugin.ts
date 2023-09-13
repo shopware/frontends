@@ -37,7 +37,7 @@ const ShopwarePlugin = {
       !runtimeConfig.public?.shopware?.shopwareAccessToken
     ) {
       throw new Error(
-        "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration"
+        "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration",
       );
     }
 
