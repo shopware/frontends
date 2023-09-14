@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import { defineNuxtPlugin } from "#app";
+import { defineNuxtPlugin, useRuntimeConfig, useCookie, useState } from "#app";
 import {
   createShopwareContext,
   getDefaultApiParams,
