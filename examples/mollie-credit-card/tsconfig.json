@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "module": "ESNext"
+  },
+  "extends": "./playground/.nuxt/tsconfig.json"
+}
