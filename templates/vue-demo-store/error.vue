@@ -1,14 +1,12 @@
 <script setup lang="ts">
-const props = withDefaults(
-  defineProps<{
-    errorCode?: number;
-    errorMessage?: string;
-  }>(),
-  {
-    errorCode: 404,
-    errorMessage: "",
-  },
-);
+const props = defineProps<{
+  error: {
+    statusCode: number;
+    statusMessage: string;
+    message: string;
+  };
+}>();
+
 const { t } = useI18n();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
@@ -21,7 +19,9 @@ const errorMessageMap: { [key: number]: string } = {
   503: t("errorPages.503"),
 };
 
-const errorMessage = props.errorMessage || errorMessageMap[props.errorCode];
+const errorMessage =
+  props.error.statusMessage ||
+  errorMessageMap[props.error.statusCode as keyof typeof errorMessageMap];
 </script>
 
 <script lang="ts">
@@ -38,7 +38,7 @@ export default {
       <div class="max-w-md text-center">
         <h1 class="mb-8 font-extrabold text-9xl">
           <span class="sr-only">{{ $t("error") }}</span
-          >{{ errorCode }}
+          >{{ props.error.statusCode }}
         </h1>
         <p class="text-xl md:text-3xl font-semibold mt-4 mb-8">
           {{ errorMessage }}
