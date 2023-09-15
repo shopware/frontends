@@ -278,39 +278,21 @@ importers:
         specifier: ^3.7.1
         version: 3.7.1(rollup@3.28.1)
     devDependencies:
-      '@nuxt/devtools':
-        specifier: latest
-        version: 0.8.3(nuxt@3.7.1)(rollup@3.28.1)
-      '@nuxt/eslint-config':
-        specifier: ^0.2.0
-        version: 0.2.0(eslint@8.48.0)
       '@nuxt/module-builder':
         specifier: ^0.5.1
         version: 0.5.1(@nuxt/kit@3.7.1)(nuxi@3.7.3)(typescript@5.2.2)
       '@nuxt/schema':
         specifier: ^3.7.1
         version: 3.7.1(rollup@3.28.1)
-      '@nuxt/test-utils':
-        specifier: ^3.7.1
-        version: 3.7.1(rollup@3.28.1)(vitest@0.34.3)(vue@3.3.4)
       '@shopware-pwa/composables-next':
         specifier: ^0.13.2
         version: link:../../packages/composables
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.15
-      changelogen:
-        specifier: ^0.5.5
-        version: 0.5.5
-      eslint:
-        specifier: ^8.48.0
-        version: 8.48.0
       nuxt:
         specifier: ^3.7.1
-        version: 3.7.1(@types/node@18.17.15)(eslint@8.48.0)(rollup@3.28.1)(typescript@5.2.2)
-      vitest:
-        specifier: ^0.34.3
-        version: 0.34.3
+        version: 3.7.1(@types/node@18.17.15)(rollup@3.28.1)(typescript@5.2.2)
 
   examples/new-api-client:
     dependencies:
