@@ -48,10 +48,23 @@ mollie: {
 
 ## Use Credit Card components
 
-1. For Shopware Frontends aware projects
+1. For Shopware Frontends aware projects (with `shopware-pwa/nuxt3-module` enabled)
 
 ```html
-<ShopwareFrontendsCreditCard />
+<script setup lang="ts">
+  import { useCheckout } from "@shopware-pwa/composables-next";
+  const { selectedPaymentMethod } = useCheckout();
+  // the name may vary, so first, please check what comes from API
+  const showMollieCreditCardComponent = computed(
+    () =>
+      selectedPaymentMethod.value?.shortName ===
+      "mollie_payments_app_mollie_creditcard",
+  );
+</script>
+<template>
+  <!-- show credit card component conditionally -->
+  <ShopwareFrontendsCreditCard :v-if="showMollieCreditCardComponent" />
+</template>
 ```
 
 In this case, by clicking a submit / save button under the credit card form, there will be an additional request made to the mollie's endpoint in your Shopware 6 instance.
