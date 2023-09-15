@@ -312,7 +312,6 @@ importers:
         specifier: ^0.34.3
         version: 0.34.3
 
-
   examples/new-api-client:
     dependencies:
       '@shopware/api-client':
