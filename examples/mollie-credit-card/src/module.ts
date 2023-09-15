@@ -68,7 +68,7 @@ export default defineNuxtModule<MollieOptions>({
   },
 });
 
-declare module "nuxt/schema" {
+declare module "@nuxt/schema" {
   interface NuxtConfig {
     mollie?: MollieOptions;
   }
