@@ -17,18 +17,15 @@
     "dist"
   ],
   "scripts": {
-    "dev": "nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground"
+    "dev": "nuxi dev playground"
   },
   "dependencies": {
     "@nuxt/kit": "^3.7.1"
   },
   "devDependencies": {
-    "@nuxt/module-builder": "^0.5.1",
     "@nuxt/schema": "^3.7.1",
     "@shopware-pwa/composables-next": "^0.13.2",
-    "@types/node": "^18.17.14",
+    "@types/node": "^20.3.2",
     "nuxt": "^3.7.1"
   }
 }
