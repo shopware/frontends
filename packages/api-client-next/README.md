@@ -186,8 +186,24 @@ try {
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client-next/CHANGELOG.md)
 
-### Latest changes: 0.3.0
+### Latest changes: 0.4.0
 
 ### Minor Changes
 
-- [#330](https://github.com/shopware/frontends/pull/330) [`3683116`](https://github.com/shopware/frontends/commit/3683116588a7ef75e750fc33deee119f038c88e8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `setCurrentCountry` for changing context countryId
+- [#371](https://github.com/shopware/frontends/pull/371) [`83c94e9b`](https://github.com/shopware/frontends/commit/83c94e9bb609533c4a1275cbf3822b0fc2ea1dd5) Thanks [@patzick](https://github.com/patzick)! - New method `createAdminAPIClient` supporting Admin API 🅰🅿🅸
+
+- [#373](https://github.com/shopware/frontends/pull/373) [`5510bb02`](https://github.com/shopware/frontends/commit/5510bb028b1fea4c63d677850f50bb7b5a1cf01a) Thanks [@patzick](https://github.com/patzick)! - Added `getSessionData` and `setSessionData` methods in admin API client for test purposes.
+
+### Patch Changes
+
+- [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _ofetch_ from **^1.2.1** to **^1.3.3**
+
+- [#375](https://github.com/shopware/frontends/pull/375) [`bd88d6fa`](https://github.com/shopware/frontends/commit/bd88d6fa95de2b90f8a1e08e34159b46c5932b3b) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _ofetch_ from **^1.1.1** to **^1.2.1**
+
+- [`15d6e696`](https://github.com/shopware/frontends/commit/15d6e69616bd9bc5ad32f2a5f697e00c45a94784) Thanks [@patzick](https://github.com/patzick)! - Emit cjs bundle
+
+- [#371](https://github.com/shopware/frontends/pull/371) [`83c94e9b`](https://github.com/shopware/frontends/commit/83c94e9bb609533c4a1275cbf3822b0fc2ea1dd5) Thanks [@patzick](https://github.com/patzick)! - Deprecated `apiType` param in `createAPIClient`, for Admin API client use `createAdminAPIClient` instead.
