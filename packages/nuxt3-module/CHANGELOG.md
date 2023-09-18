@@ -1,5 +1,19 @@
 # @shopware-pwa/nuxt3-module
 
+## 0.5.4
+
+### Patch Changes
+
+- [#387](https://github.com/shopware/frontends/pull/387) [`3520c261`](https://github.com/shopware/frontends/commit/3520c261129a6a785802aa14107b8b39cdd8baf4) Thanks [@mkucmus](https://github.com/mkucmus)! - Load composables explicitly within the shopware plugin
+
+- [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.6.5** to **^3.7.1**
+
+- Updated dependencies [[`211ccbb2`](https://github.com/shopware/frontends/commit/211ccbb2e4d9d6009847e6ff53099deb97d569de), [`b2b6905b`](https://github.com/shopware/frontends/commit/b2b6905beb8f28b79c0989ff9340c757e60001c9), [`61de0366`](https://github.com/shopware/frontends/commit/61de03662869e9ad8b69e2d8a868313a61a7a741), [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a)]:
+  - @shopware-pwa/composables-next@0.13.3
+  - @shopware-pwa/api-client@0.6.0
+
 ## 0.5.3
 
 ### Patch Changes

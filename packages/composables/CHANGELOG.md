@@ -1,5 +1,23 @@
 # @shopware-pwa/composables-next
 
+## 0.13.3
+
+### Patch Changes
+
+- [#372](https://github.com/shopware/frontends/pull/372) [`211ccbb2`](https://github.com/shopware/frontends/commit/211ccbb2e4d9d6009847e6ff53099deb97d569de) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix `loadOrderDetails` return type
+
+- [#380](https://github.com/shopware/frontends/pull/380) [`b2b6905b`](https://github.com/shopware/frontends/commit/b2b6905beb8f28b79c0989ff9340c757e60001c9) Thanks [@SuddenDev](https://github.com/SuddenDev)! - Adds the ability to specify a query for the loadMore function in the useListing composable.
+
+- [#390](https://github.com/shopware/frontends/pull/390) [`61de0366`](https://github.com/shopware/frontends/commit/61de03662869e9ad8b69e2d8a868313a61a7a741) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Catch 404 api error - `getWishlistProducts``
+
+- [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@vueuse/core_ from **^10.3.0** to **^10.4.1**
+
+- Updated dependencies []:
+  - @shopware-pwa/api-client@0.6.0
+  - @shopware-pwa/helpers-next@0.4.0
+
 ## 0.13.2
 
 ### Patch Changes
