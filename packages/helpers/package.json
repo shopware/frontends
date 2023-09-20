@@ -39,12 +39,12 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^0.34.3",
+    "@vitest/coverage-v8": "^0.34.4",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^11.0.2",
+    "happy-dom": "^12.1.2",
     "tsconfig": "workspace:*",
     "unbuild": "^2.0.0",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.4"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*"
