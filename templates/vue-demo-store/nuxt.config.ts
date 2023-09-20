@@ -1,4 +1,3 @@
-import i18nConfig from "./i18n/src/config";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -97,12 +96,29 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
-    vueI18n: {
-      fallbackLocale: "en-GB",
-    },
     strategy: "prefix_except_default",
-    defaultLocale: i18nConfig.defaultLocale,
-    langDir: "i18n/src/",
-    locales: i18nConfig.locales,
+    defaultLocale: "en-GB",
+    langDir: "./i18n/src/langs/",
+    vueI18n: "./i18n/config",
+    locales: [
+      {
+        code: "en-GB",
+        iso: "en-GB",
+        file: "en-GB.ts",
+      },
+      {
+        code: "pl-PL",
+        iso: "pl-PL",
+        file: "pl-PL.ts",
+      },
+      {
+        code: "de-DE",
+        iso: "de-DE",
+        file: "de-DE.ts",
+      },
+    ],
+    experimental: {
+      jsTsFormatResource: true,
+    },
   },
 });

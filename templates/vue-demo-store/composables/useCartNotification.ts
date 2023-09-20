@@ -2,7 +2,7 @@ import { CartErrors } from "@shopware-pwa/types";
 
 const successCodes = ["promotion-discount-added"];
 
-export type UseCmsHeadReturn = {
+export type UseCartNotificationReturn = {
   codeErrorsNotification(): void;
 };
 
@@ -11,7 +11,7 @@ export type UseCmsHeadReturn = {
  *
  * @returns
  */
-export function useCartNotification() {
+export function useCartNotification(): UseCartNotificationReturn {
   const { pushError, pushSuccess } = useNotifications();
   const { consumeCartErrors } = useCart();
 

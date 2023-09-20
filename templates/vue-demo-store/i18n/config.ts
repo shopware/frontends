@@ -1,7 +1,8 @@
 /**
  * i18n configuration
  */
-export default {
+export default defineI18nConfig(() => ({
+  legacy: false,
   defaultLocale: "en-GB",
   locales: [
     {
@@ -20,4 +21,4 @@ export default {
       file: "de-DE.ts",
     },
   ],
-};
+}));

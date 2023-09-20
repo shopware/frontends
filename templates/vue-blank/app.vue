@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Frontends from "./components/Frontends.vue";
-const { refreshSessionContext } = useSessionContext();
+const { refreshSessionContext, selectedPaymentMethod } = useSessionContext();
 
 onMounted(() => {
   refreshSessionContext();
