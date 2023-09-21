@@ -76,7 +76,12 @@ export default defineNuxtConfig({
   ],
   // components: true,
   components: {
-    dirs: ["~/components"],
+    dirs: [
+      {
+        path: "~/components",
+        priority: 2,
+      },
+    ],
     global: true,
   },
   vueuse: {
