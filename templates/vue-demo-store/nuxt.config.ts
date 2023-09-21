@@ -100,6 +100,9 @@ export default defineNuxtConfig({
     defaultLocale: "en-GB",
     langDir: "./i18n/src/langs/",
     vueI18n: "./i18n/config",
+    compilation: {
+      jit: false,
+    },
     locales: [
       {
         code: "en-GB",

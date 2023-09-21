@@ -4,6 +4,7 @@
 export default defineI18nConfig(() => ({
   legacy: false,
   defaultLocale: "en-GB",
+  globalInjection: true,
   locales: [
     {
       code: "en-GB",
