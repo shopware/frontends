@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     shopware: {
       /**
        * SSR Shopware Endpoint
-       * More here: https://frontends.shopware.com/getting-started/templates/custom-project.html#shopware-endpoint-on-the-ssr-mode
+       * More here: https://frontends.shopware.com/getting-started/templates/custom-vue-project.html#shopware-endpoint-on-the-ssr-mode
        */
       shopwareEndpoint: "",
     },

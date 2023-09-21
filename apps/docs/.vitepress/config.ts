@@ -58,8 +58,12 @@ export const sidebar = [
             link: "/getting-started/templates/blank-template",
           },
           {
-            text: "Custom Project",
-            link: "/getting-started/templates/custom-project",
+            text: "Custom Vue Project",
+            link: "/getting-started/templates/custom-vue-project",
+          },
+          {
+            text: "Custom React Project",
+            link: "/getting-started/templates/custom-react-project",
           },
           {
             text: "Astro Template",
