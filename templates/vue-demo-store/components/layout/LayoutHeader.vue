@@ -8,7 +8,7 @@ const sidebarController = useModal();
 </script>
 
 <template>
-  <div class="relative bg-white">
+  <header class="relative bg-white" aria-label="top-navigation">
     <div class="mx-auto px-4 sm:px-6">
       <div class="flex items-center border-b-2 border-gray-100 py-6 space-x-4">
         <div class="flex justify-start items-center min-w-10 lg:min-w-12">
@@ -83,5 +83,5 @@ const sidebarController = useModal();
         </div>
       </div>
     </div>
-  </div>
+  </header>
 </template>

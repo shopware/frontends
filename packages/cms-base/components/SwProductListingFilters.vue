@@ -176,98 +176,154 @@ const dropdownElement = ref(null);
 onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
 </script>
 <template>
-  <div class="bg-white">
-    <main class="mx-auto m-0 px-5">
-      <div
-        class="relative lg:flex lg:items-baseline lg:justify-between pt-6 pb-6 border-b border-gray-200"
-      >
-        <div>
-          <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
-            {{ getTranslatedProperty(category, "name") }}
-          </h1>
-        </div>
+  <ClientOnly>
+    <div class="bg-white">
+      <main class="mx-auto m-0 px-5">
+        <div
+          class="relative lg:flex lg:items-baseline lg:justify-between pt-6 pb-6 border-b border-gray-200"
+        >
+          <div>
+            <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
+              {{ getTranslatedProperty(category, "name") }}
+            </h1>
+          </div>
 
-        <div class="flex items-center" ref="dropdownElement">
-          <div class="relative inline-block text-left">
-            <div>
-              <button
-                type="button"
-                @click="isSortMenuOpen = !isSortMenuOpen"
-                class="group inline-flex justify-center bg-transparent text-base font-medium text-gray-700 hover:text-gray-900"
-                id="menu-button"
-                aria-expanded="false"
-                aria-haspopup="true"
-              >
-                {{ translations.listing.sort }}
-                <div
-                  class="i-carbon-chevron-down h-5 w-5 ml-1"
-                  :class="{ hidden: isSortMenuOpen }"
-                ></div>
-                <div
-                  class="i-carbon-chevron-up h-5 w-5 ml-1"
-                  :class="{ hidden: !isSortMenuOpen }"
-                ></div>
-              </button>
-            </div>
-            <div
-              :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
-              class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-1000"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="menu-button"
-              tabindex="-1"
-            >
-              <div class="py-1" role="none">
+          <div class="flex items-center" ref="dropdownElement">
+            <div class="relative inline-block text-left">
+              <div>
                 <button
-                  v-for="sorting in getSortingOrders"
-                  :key="sorting.key"
-                  @click="
-                    currentSortingOrder = sorting.key;
-                    isSortMenuOpen = false;
-                  "
-                  :class="[
-                    sorting.key === getCurrentSortingOrder
-                      ? 'font-medium text-gray-900'
-                      : 'text-gray-500',
-                  ]"
-                  class="block px-4 py-2 text-sm"
-                  role="menuitem"
-                  tabindex="-1"
+                  type="button"
+                  @click="isSortMenuOpen = !isSortMenuOpen"
+                  class="group inline-flex justify-center bg-transparent text-base font-medium text-gray-700 hover:text-gray-900"
+                  id="menu-button"
+                  aria-expanded="false"
+                  aria-haspopup="true"
                 >
-                  {{ sorting.label }}
+                  {{ translations.listing.sort }}
+                  <div
+                    class="i-carbon-chevron-down h-5 w-5 ml-1"
+                    :class="{ hidden: isSortMenuOpen }"
+                  ></div>
+                  <div
+                    class="i-carbon-chevron-up h-5 w-5 ml-1"
+                    :class="{ hidden: !isSortMenuOpen }"
+                  ></div>
                 </button>
+              </div>
+              <div
+                :class="[isSortMenuOpen ? 'absolute' : 'hidden']"
+                class="origin-top-left left-0 lg:origin-top-right lg:right-0 lg:left-auto mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-1000"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabindex="-1"
+              >
+                <div class="py-1" role="none">
+                  <button
+                    v-for="sorting in getSortingOrders"
+                    :key="sorting.key"
+                    @click="
+                      currentSortingOrder = sorting.key;
+                      isSortMenuOpen = false;
+                    "
+                    :class="[
+                      sorting.key === getCurrentSortingOrder
+                        ? 'font-medium text-gray-900'
+                        : 'text-gray-500',
+                    ]"
+                    class="block px-4 py-2 text-sm"
+                    role="menuitem"
+                    tabindex="-1"
+                  >
+                    {{ sorting.label }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="flex flex-wrap" v-if="getInitialFilters.length">
-        <div
-          v-for="filter in getInitialFilters"
-          :key="`${filter?.id || filter?.code}`"
-          class="mb-2 w-full"
-        >
-          <SwProductListingFilter
-            @selectFilterValue="onOptionSelectToggle"
-            :selectedFilters="getCurrentFilters"
-            :filter="filter"
-            class="relative"
-          />
-        </div>
-        <div class="mx-auto mt-4 mb-2">
-          <button
-            class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-            @click="invokeCleanFilters"
-            type="button"
+        <div class="flex flex-wrap" v-if="getInitialFilters.length">
+          <div
+            v-for="filter in getInitialFilters"
+            :key="`${filter?.id || filter?.code}`"
+            class="mb-2 w-full"
           >
-            {{ translations.listing.resetFilters
-            }}<span
-              class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"
-            ></span>
-          </button>
+            <SwProductListingFilter
+              @selectFilterValue="onOptionSelectToggle"
+              :selectedFilters="getCurrentFilters"
+              :filter="filter"
+              class="relative"
+            />
+          </div>
+          <div class="mx-auto mt-4 mb-2">
+            <button
+              class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              @click="invokeCleanFilters"
+              type="button"
+            >
+              {{ translations.listing.resetFilters
+              }}<span
+                class="w-6 h-6 i-carbon-close-filled inline-block align-middle ml-2"
+              ></span>
+            </button>
+          </div>
         </div>
+      </main>
+    </div>
+    <template #placeholder>
+      <div class="bg-white">
+        <main class="mx-auto">
+          <div
+            class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
+          >
+            <div>
+              <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
+                {{ getTranslatedProperty(category, "name") }}
+              </h1>
+            </div>
+
+            <div class="text-sm font-medium text-gray-700 hover:text-gray-900">
+              {{ translations.listing.sort }}
+            </div>
+            <div class="i-carbon-chevron-down h-5 w-5 ml-1"></div>
+          </div>
+          <div class="flex flex-wrap" v-show="!getInitialFilters.length">
+            <div class="flex pl-2 flex-wrap">
+              <div class="py-3 mb-2 mr-4 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-25 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 ml-4 mb-2 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-25 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 mb-2 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 mb-2 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+              <div class="py-3 mb-2 max-w-sm animate-pulse">
+                <div
+                  class="border-1 bg-gray-200 dark:bg-gray-700px-2 py-3 w-42 h-12 text-gray-400 hover:text-gray-500 rounded"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
-    </main>
-  </div>
+    </template>
+  </ClientOnly>
 </template>

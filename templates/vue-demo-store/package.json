@@ -32,10 +32,12 @@
     "@nuxt/devtools": "^0.8.4",
     "@nuxtjs/i18n": "8.0.0-beta.10",
     "@vue/eslint-config-typescript": "^12.0.0",
+    "axe-core": "^4.8.2",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-vue": "^9.17.0",
     "nuxt": "^3.7.3",
     "typescript": "^5.2.2",
+    "vue-axe": "^3.1.2",
     "vue-eslint-parser": "^9.3.1",
     "vue-tsc": "^1.8.11"
   },

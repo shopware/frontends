@@ -16,7 +16,11 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
 
 <template>
   <!-- eslint-disable vue/no-v-html -->
-  <nav class="hidden lg:flex space-x-4 items-center">
+  <nav
+    class="hidden lg:flex space-x-4 items-center"
+    aria-label="top-navigation"
+    role="menu"
+  >
     <!--  
        ref="menuHtmlElement" was removed because of nuxt/vue bug
        https://github.com/nuxt/nuxt/issues/13309
@@ -29,6 +33,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       @mouseover="currentMenuPosition = navigationElement.id"
     >
       <NuxtLink
+        role="menuitem"
         :target="
           navigationElement.externalLink || navigationElement.linkNewTab
             ? '_blank'

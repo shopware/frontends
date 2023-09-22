@@ -1,6 +1,16 @@
 import i18nConfig from "./i18n/src/config";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
+  build: {
+    transpile: ["vue-axe"],
+  },
+  vite: {
+    optimizeDeps: {
+      include: [
+        ...(process.env.NODE_ENV === "development" ? ["axe-core"] : []),
+      ],
+    },
+  },
   runtimeConfig: {
     shopware: {
       /**
@@ -10,6 +20,7 @@ export default defineNuxtConfig({
       shopwareEndpoint: "",
     },
     public: {
+      env: process.env.NODE_ENV || "development",
       shopware: {
         shopwareEndpoint: "https://demo-frontends.shopware.store",
         shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
@@ -101,6 +112,12 @@ export default defineNuxtConfig({
       linkExactActiveClass: "text-brand-primary",
     },
   },
+  plugins: [
+    {
+      src: "./plugins/VueAxe.client.ts",
+      mode: "client",
+    },
+  ],
   i18n: {
     vueI18n: {
       fallbackLocale: "en-GB",
