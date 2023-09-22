@@ -76,7 +76,7 @@ The composables are a set of Vue.js composition functions that can be used in an
 
 The Nuxt 3 module allows you to set up a Nuxt 3 project with Shopware Frontends. It provides the [composables](#composables) and [api-client](#api-client) packages.
 
-If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Frontends in a [custom project](../getting-started/templates/custom-project.md).
+If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Frontends in a [custom project](../getting-started/templates/custom-vue-project.md).
 
 ## cms-base
 

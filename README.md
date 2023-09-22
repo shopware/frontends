@@ -65,7 +65,7 @@ Our demo store template is a non-production-ready reference implementation of an
 
 ![Shopware Frontends Techstack](.readme/shopware-frontends-techstack.png)
 
-See the [templates](templates/) section for other project templates and how to use them.
+See the [templates](https://frontends.shopware.com/getting-started/templates.html) section for other project templates and how to use them.
 
 ## Key Features
 
