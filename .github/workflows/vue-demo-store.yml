@@ -4,7 +4,7 @@ run-name: Playwright is testing vue demo store 🚀
 on: 
   workflow_dispatch:
   schedule:
-    - cron: '52 23 * * *'
+    - cron: '49 23 * * *'
 jobs:
   run-code_examples-tests:
     runs-on: ubuntu-latest
