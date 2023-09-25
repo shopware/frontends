@@ -1,7 +1,7 @@
 {
   "name": "@shopware-pwa/typer",
   "private": true,
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Generate documentation from types",
   "author": "Shopware",
   "repository": {
@@ -46,11 +46,11 @@
   "devDependencies": {
     "@shopware-pwa/types": "workspace:*",
     "@types/find-in-files": "^0.5.1",
-    "@types/fs-extra": "^11.0.1",
+    "@types/fs-extra": "^11.0.2",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^5.2.2",
     "unbuild": "^2.0.0",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.4"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/nuxt3-module",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Nuxt 3 module for Shopware Frontends",
   "author": "Shopware",
   "repository": {
@@ -40,14 +40,14 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.7.1",
+    "@nuxt/kit": "^3.7.3",
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "js-cookie": "^3.0.5"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.8.3",
-    "@nuxt/schema": "^3.7.1",
+    "@nuxt/devtools": "^0.8.4",
+    "@nuxt/schema": "^3.7.3",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^5.2.2",

@@ -2,7 +2,7 @@
   "name": "shopware-astro",
   "private": true,
   "type": "module",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -17,7 +17,7 @@
     "@shopware-pwa/composables-next": "canary",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
-    "astro": "^3.0.10",
+    "astro": "^3.1.1",
     "js-cookie": "^3.0.5",
     "vue": "^3.3.4"
   },
