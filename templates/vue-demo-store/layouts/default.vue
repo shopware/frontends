@@ -4,6 +4,11 @@ export default {
 };
 </script>
 <script setup lang="ts">
+// in development mode we test if your API connection is working
+if (process.env.NODE_ENV == "development") {
+  useConnectionTest();
+}
+
 // Navigation for default theme
 const { loadNavigationElements } = useNavigation();
 const { data } = useAsyncData("mainNavigation", () => {

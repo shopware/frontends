@@ -36,16 +36,33 @@ export default {
   >
     <div class="flex flex-col items-center justify-center my-8">
       <div class="max-w-md text-center">
-        <h1 class="mb-8 font-extrabold text-9xl">
+        <h1 class="mb-4 font-extrabold text-9xl">
           <span class="sr-only">{{ $t("error") }}</span
           >{{ props.error.statusCode }}
         </h1>
-        <p class="text-xl md:text-3xl font-semibold mt-4 mb-8">
+        <p
+          v-if="errorMessage"
+          class="text-xl md:text-3xl font-semibold mt-4 mb-8"
+        >
           {{ errorMessage }}
         </p>
+        <DevOnly>
+          <div class="block m-4">
+            <p>{{ $t("setup.problems") }}</p>
+            <p>
+              {{ $t("setup.support_start") }}
+              <a
+                class="text-brand-primary"
+                href="https://frontends.shopware.com/resources/troubleshooting.html"
+                target="_blank"
+                >{{ $t("setup.support_page") }}</a
+              >. {{ $t("setup.support_end") }}
+            </p>
+          </div>
+        </DevOnly>
         <NuxtLink
           :to="formatLink(`/`)"
-          class="w-full lg:w-auto justify-center py-3 px-8 border shadow-sm text-sm font-medium rounded-md text-white bg-brand-light hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+          class="block w-full lg:w-auto justify-center py-3 px-8 border shadow-sm text-sm font-medium rounded-md text-white bg-brand-light hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
         >
           {{ $t("goBackHome") }}
         </NuxtLink>

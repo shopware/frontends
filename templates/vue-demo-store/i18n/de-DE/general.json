@@ -36,6 +36,12 @@
     "502": "Der Server konnte Ihre Anfrage nicht abschließen. Bitte versuchen Sie es in wenigen Sekunden erneut.",
     "503": "Der Server ist derzeit sehr beschäftigt"
   },
+  "setup": {
+    "problems": "Probleme beim aufsetzen? 😬",
+    "support_start": "Schau mal auf die",
+    "support_page": "Troubleshooting-Seite",
+    "support_end": "Viel Erfolg!"
+  },
   "breadcrumbs": {
     "accountOverview": "Kontoübersicht",
     "address": "Adresse",
