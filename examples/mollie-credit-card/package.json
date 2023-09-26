@@ -1,0 +1,31 @@
+{
+  "name": "nuxt-mollie-frontends",
+  "version": "1.0.0",
+  "description": "Nuxt module for Mollie Payments",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "nuxi dev playground"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.7.1"
+  },
+  "devDependencies": {
+    "@nuxt/schema": "^3.7.1",
+    "@shopware-pwa/composables-next": "^0.13.2",
+    "@types/node": "^20.3.2",
+    "nuxt": "^3.7.1"
+  }
+}
