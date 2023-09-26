@@ -11,9 +11,6 @@ export function getPrefix(
   name: string,
   fallbackLocale: string,
 ): string {
-  console.warn("locales", locales);
-  console.warn("name", name);
-  console.warn("fallbackLocale", fallbackLocale);
   if (name.includes(fallbackLocale)) return "";
   const index = locales.findIndex((element) => name.includes(element));
   return index >= 0 ? locales[index] : "";

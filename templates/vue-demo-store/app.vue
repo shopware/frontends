@@ -78,11 +78,8 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     defaultLocale,
   );
 
-  console.warn("prefix locale", prefix);
-
   // Language set on the backend side
   const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
-  console.warn("session lang", sessionLanguage);
   // If languages are not the same, set one from prefix
   if (sessionLanguage !== prefix) {
     await changeLanguage(
