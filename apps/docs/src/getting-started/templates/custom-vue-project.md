@@ -1,4 +1,4 @@
-# Custom project
+# Custom Vue.js project
 
 Follow these steps to integrate Shopware Frontends into an existing, custom Vue.js project
 
@@ -120,7 +120,7 @@ const instance = createInstance({
 ## Handle client state
 
 :::tip Code example
-Complete code example can be found [HERE](./custom-project.html#plugin-code) you can find a full example of the plugin
+Complete code example can be found [HERE](./custom-vue-project.html#plugin-code) you can find a full example of the plugin
 :::
 
 Now, we need to ensure that the context token, which identifies a user session, is properly stored and updated. The context token may change after operations like login or logout.

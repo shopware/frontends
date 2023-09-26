@@ -118,7 +118,12 @@ async function run() {
         },
         rootDir,
       );
-      console.log("Saved dependency changeset: ", id);
+      console.log(
+        "Saved dependency changeset: ",
+        id,
+        "for package",
+        pkg.packageJson.name,
+      );
     }
   }
 
