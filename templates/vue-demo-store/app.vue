@@ -53,7 +53,7 @@ const { refreshCart } = useCart();
 useNotifications();
 useAddress();
 
-const { locale, availableLocales } = useI18n();
+const { locale, availableLocales, defaultLocale } = useI18n();
 const router = useRouter();
 const {
   getAvailableLanguages,
@@ -74,7 +74,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   const prefix = getPrefix(
     availableLocales,
     router.currentRoute.value.name as string,
-    locale.value,
+    defaultLocale,
   );
 
   // Language set on the backend side
@@ -82,12 +82,12 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   // If languages are not the same, set one from prefix
   if (sessionLanguage !== prefix) {
     await changeLanguage(
-      getLanguageIdFromCode(prefix ? prefix : locale.value),
+      getLanguageIdFromCode(prefix ? prefix : defaultLocale),
     );
     await refreshSessionContext();
   }
 
-  locale.value = prefix ? prefix : locale.value;
+  locale.value = prefix ? prefix : defaultLocale;
   // Set prefix from CMS components
   provide("urlPrefix", prefix);
 }
