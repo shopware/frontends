@@ -1,14 +1,12 @@
 import i18nConfig from "./i18n/src/config";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-  build: {
-    transpile: ["vue-axe"],
-  },
+  // build: {
+  //   transpile: ["vue-axe"],
+  // },
   vite: {
     optimizeDeps: {
-      include: [
-        ...(process.env.NODE_ENV === "development" ? ["axe-core"] : []),
-      ],
+      include: ["axe-core"],
     },
   },
   runtimeConfig: {

@@ -10,7 +10,7 @@ const { formatLink } = useInternationalization(localePath);
 
 <template>
   <LayoutSidebar :controller="props.controller" side="right">
-    <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+    <aside class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
       <div class="flex items-start justify-between">
         <h2
           id="slide-over-title"
@@ -51,9 +51,9 @@ const { formatLink } = useInternationalization(localePath);
           </div>
         </div>
       </div>
-    </div>
+    </aside>
 
-    <div class="border-t border-gray-200 py-6 px-4 sm:px-6">
+    <aside aria-label="Side Cart Links" class="border-t border-gray-200 py-6 px-4 sm:px-6">
       <div class="flex justify-between text-base font-medium text-gray-900">
         <p>Subtotal</p>
         <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
@@ -96,6 +96,6 @@ const { formatLink } = useInternationalization(localePath);
           </button>
         </p>
       </div>
-    </div>
+    </aside>
   </LayoutSidebar>
 </template>

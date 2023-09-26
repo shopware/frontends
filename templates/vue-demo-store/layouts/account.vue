@@ -112,7 +112,7 @@ provide("swNavigation-footer-navigation", footerData);
                       @click="invokeLogout()"
                     >
                       <div i-carbon-logout text-xl inline-block />
-                      <span class="ml-3">Logout</span>
+                      <span class="ml-3 text-gray-700">Logout</span>
                     </button>
                   </li>
                 </ul>

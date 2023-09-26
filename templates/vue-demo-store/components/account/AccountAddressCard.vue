@@ -89,6 +89,7 @@ const addressSaved = () => {
         class="cursor-pointer i-carbon-edit text-xl inline-block"
         data-testid="address-edit"
         @click.prevent="addAddressModalController.open"
+        title="Open address editor"
       />
       <SharedModal :controller="addAddressModalController">
         <SharedAccountAddressForm

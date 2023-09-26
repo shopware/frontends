@@ -103,28 +103,28 @@ const formatDate = (date: Date) =>
         <div class="pt-8">
           <div>
             <AccountOrderSummary>
-              <div class="lg:col-span-2">
+              <div class="lg:col-span-2 text-gray-600">
                 {{ order?.orderNumber }}
               </div>
               <div>
                 <SharedPrice
                   v-if="order?.amountTotal"
                   :value="order.amountTotal"
-                  class="text-gray-400 font-normal"
+                  class="text-gray-600 font-normal"
                   data-testid="order-subtotal"
                 />
               </div>
-              <div v-if="order?.orderDate">
+              <div class="text-gray-600" v-if="order?.orderDate">
                 {{ formatDate(order.orderDate) }}
               </div>
-              <div>{{ getTranslatedProperty(state, "name") }}</div>
-              <div
+              <div class="text-gray-600">{{ getTranslatedProperty(state, "name") }}</div>
+              <button
                 class="hidden sm:block justify-self-end text-brand-dark cursor-pointer"
                 :aria-expanded="isExpand"
                 @click="toggleView"
               >
                 {{ !isExpand ? "View" : "Hide" }}
-              </div>
+              </button>
             </AccountOrderSummary>
             <div>
               <div
@@ -252,7 +252,7 @@ const formatDate = (date: Date) =>
         class="animate-pulse max-w-2xl mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-5xl lg:px-8"
       >
         <div class="space-y-1">
-          <div class="text-gray-400">
+          <div class="text-gray-800">
             <div
               class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
             />
@@ -265,7 +265,7 @@ const formatDate = (date: Date) =>
                 class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 px-2 py-6"
               />
               <div class="px-2 py-4">
-                <div class="grid grid-cols-5 gap-y-10 pb-4 text-gray-400">
+                <div class="grid grid-cols-5 gap-y-10 pb-4 text-gray-800">
                   <div
                     class="col-span-2 h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-1/2"
                   />

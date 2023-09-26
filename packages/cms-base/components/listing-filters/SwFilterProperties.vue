@@ -55,6 +55,7 @@ const toggle = () => {
               :checked="selectedOptionIds?.includes(option.id)"
               :name="filter.name"
               :value="option.name"
+              :aria-label="`${option.name} filter`"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
             />

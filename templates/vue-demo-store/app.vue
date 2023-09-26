@@ -101,7 +101,7 @@ onMounted(() => {
 <template>
   <NuxtLayout>
     <NuxtPage />
-    <vue-axe-popup />
+    <ClientOnly><vue-axe-popup /></ClientOnly>
   </NuxtLayout>
 </template>
 

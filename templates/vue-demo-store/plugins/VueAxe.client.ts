@@ -1,13 +1,13 @@
-import vueAxe from "vue-axe";
+import plugin, { VueAxePopup } from "vue-axe";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig();
   if (config.public.env === "development") {
-    nuxtApp.vueApp.component("VueAxePopup", vueAxe.VueAxePopup);
-    nuxtApp.vueApp.use(vueAxe.default, {
-      auto: false,
+    nuxtApp.vueApp.component("VueAxePopup", VueAxePopup);
+    nuxtApp.vueApp.use(plugin, {
+      auto: true,
     });
   } else {
-    nuxtApp.vueApp.component("VueAxePopup", h("div"));
+    nuxtApp.vueApp.component("vue-axe-popup", h("div"));
   }
 });

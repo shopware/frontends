@@ -47,6 +47,10 @@ useFocus(emailImputElement, { initialValue: true });
 </script>
 <template>
   <div
+    role="form"
+    id="modal-headline"
+    title="Login form"
+    aria-label="Login form"
     class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
   >
     <div v-if="!isLoggedIn" class="max-w-md w-full space-y-8">

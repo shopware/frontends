@@ -4,8 +4,8 @@
   <div>
     <LayoutCheckoutHeader />
     <LayoutNotifications />
-    <div class="max-w-screen-xl mx-auto">
+    <main class="max-w-screen-xl mx-auto">
       <slot />
-    </div>
+    </main>
   </div>
 </template>
