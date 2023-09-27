@@ -32,9 +32,9 @@ const gridColumns = computed<number>(() =>
           v-for="navigationElement in navigationElements"
           :key="navigationElement.id"
         >
-          <h4 class="mb-5">
+          <h3 class="mb-5">
             {{ getTranslatedProperty(navigationElement, "name") }}
-          </h4>
+          </h3>
           <template v-if="navigationElement.childCount > 0">
             <ul class="list-none p-0 mb-5">
               <li

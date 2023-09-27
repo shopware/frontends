@@ -114,10 +114,12 @@ const formatDate = (date: Date) =>
                   data-testid="order-subtotal"
                 />
               </div>
-              <div class="text-gray-600" v-if="order?.orderDate">
+              <div v-if="order?.orderDate" class="text-gray-600">
                 {{ formatDate(order.orderDate) }}
               </div>
-              <div class="text-gray-600">{{ getTranslatedProperty(state, "name") }}</div>
+              <div class="text-gray-600">
+                {{ getTranslatedProperty(state, "name") }}
+              </div>
               <button
                 class="hidden sm:block justify-self-end text-brand-dark cursor-pointer"
                 :aria-expanded="isExpand"

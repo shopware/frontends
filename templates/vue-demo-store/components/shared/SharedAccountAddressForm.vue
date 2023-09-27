@@ -103,7 +103,11 @@ const $v = useVuelidate(rules, formData);
 </script>
 
 <template>
-  <div id="modal-headline" aria-label="Edit Address" class="mt-5 md:mt-0 md:col-span-2">
+  <div
+    id="modal-headline"
+    aria-label="Edit Address"
+    class="mt-5 md:mt-0 md:col-span-2"
+  >
     <div class="shadow overflow-hidden sm:rounded-md">
       <form
         id="account-address"

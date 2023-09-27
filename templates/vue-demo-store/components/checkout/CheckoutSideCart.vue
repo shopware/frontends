@@ -53,7 +53,10 @@ const { formatLink } = useInternationalization(localePath);
       </div>
     </aside>
 
-    <aside aria-label="Side Cart Links" class="border-t border-gray-200 py-6 px-4 sm:px-6">
+    <aside
+      aria-label="Side Cart Links"
+      class="border-t border-gray-200 py-6 px-4 sm:px-6"
+    >
       <div class="flex justify-between text-base font-medium text-gray-900">
         <p>Subtotal</p>
         <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />

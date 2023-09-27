@@ -18,7 +18,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
   <!-- eslint-disable vue/no-v-html -->
   <nav
     class="hidden lg:flex space-x-4 items-center"
-    aria-label="top-navigation"
+    aria-label="Top navigation"
     role="menu"
   >
     <!--  

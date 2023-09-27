@@ -60,7 +60,7 @@ const sidebarController = useModal();
           <div class="flex ml-4 flow-root lg:ml-6">
             <button
               class="group bg-transparent -m-2 p-2 flex items-center relative"
-              aria-label="cart"
+              aria-label="Mini cart"
               data-testid="cart-button"
               @click="sidebarController.open"
             >

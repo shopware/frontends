@@ -47,8 +47,8 @@ useFocus(emailImputElement, { initialValue: true });
 </script>
 <template>
   <div
-    role="form"
     id="modal-headline"
+    role="form"
     title="Login form"
     aria-label="Login form"
     class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"

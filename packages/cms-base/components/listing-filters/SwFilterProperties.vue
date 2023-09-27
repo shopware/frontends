@@ -19,7 +19,7 @@ const toggle = () => {
 
 <template>
   <div class="border-b border-gray-200 py-6 px-5">
-    <h3 class="-my-3 flow-root">
+    <h2 class="-my-3 flow-root">
       <button
         type="button"
         class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
@@ -38,7 +38,7 @@ const toggle = () => {
           />
         </span>
       </button>
-    </h3>
+    </h2>
     <transition name="fade" mode="out-in">
       <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
         <div class="space-y-4">

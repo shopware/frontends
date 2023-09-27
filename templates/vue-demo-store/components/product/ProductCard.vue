@@ -158,11 +158,11 @@ const srcPath = computed(() => {
         :to="formatLink(getProductRoute(product))"
         data-testid="product-box-product-name-link"
       >
-        <h5
+        <h2
           class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white min-h-60px"
         >
           {{ getProductName({ product }) }}
-        </h5>
+        </h2>
       </RouterLink>
       <div class="flex items-center justify-between">
         <div class="">

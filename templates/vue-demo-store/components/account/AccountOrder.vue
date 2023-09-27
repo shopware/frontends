@@ -29,7 +29,9 @@ export default {
       <div class="lg:col-span-2 text-gray-600">
         {{ order.orderNumber }}
       </div>
-      <div class="text-gray-600">{{ order.amountTotal }} {{ currency?.symbol }}</div>
+      <div class="text-gray-600">
+        {{ order.amountTotal }} {{ currency?.symbol }}
+      </div>
       <div class="text-gray-600">{{ orderDate }}</div>
       <div class="text-gray-600">{{ order.stateMachineState.name }}</div>
       <div
