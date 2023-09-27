@@ -89,6 +89,7 @@ watch(enter, (value) => {
         v-model="typingQuery"
         data-testid="layout-search-input"
         type="text"
+        aria-label="Search for products"
         class="sw-search-input text-gray-600 placeholder:text-gray-600 focus:text-gray-700 p-2 ml-2 lg:ml-0 xl:ml-2 grow h-6 transition duration-200 focus:outline-none w-56 lg:w-10/12"
         :placeholder="$t('form.searchPlaceholder')"
         @click="active = true"

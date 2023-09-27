@@ -102,7 +102,6 @@ const srcPath = computed(() => {
       >
         <img
           ref="imageElement"
-          loading="lazy"
           :src="srcPath"
           :alt="getProductName({ product }) || ''"
           class="transform transition duration-400 hover:scale-120"
@@ -178,8 +177,8 @@ const srcPath = computed(() => {
           type="button"
           class="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 md:hover:scale-120 flex"
           :class="{
-            'text-white bg-blue-500 hover:bg-blue-600': !isInCart,
-            'text-gray-500 bg-gray-100': isInCart,
+            'text-white bg-blue-600 hover:bg-blue-700': !isInCart,
+            'text-gray-600 bg-gray-100': isInCart,
           }"
           data-testid="add-to-cart-button"
           @click="addToCartProxy"

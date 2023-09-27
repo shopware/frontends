@@ -18,7 +18,7 @@ const sidebarController = useModal();
               <img
                 class="h-10 w-10 lg:h-12 lg:w-12"
                 src="/logo.svg"
-                alt="Logo"
+                alt="logo of the shop"
                 width="40px"
                 height="40px"
               />
@@ -50,7 +50,7 @@ const sidebarController = useModal();
               />
               <span
                 v-if="wishlistCount > 0"
-                class="text-3 font-sm text-white absolute bg-red-500 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
+                class="text-3 font-sm text-white absolute bg-red-600 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
               >
                 {{ wishlistCount }}
               </span>
@@ -70,7 +70,7 @@ const sidebarController = useModal();
               />
               <span
                 v-if="count > 0"
-                class="text-3 font-sm text-white absolute bg-blue rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
+                class="text-3 font-sm text-white absolute bg-blue-600 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
               >
                 {{ count || "" }}
               </span>

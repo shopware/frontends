@@ -57,7 +57,7 @@ const removeCartItem = async () => {
   >
     <img
       :src="getSmallestThumbnailUrl(cartItem.cover)"
-      alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+      :alt="`${cartItem.label || cartItem.payload.name || ''} cart item`"
       class="h-full w-full object-cover object-center"
       data-testid="cart-product-image"
     />

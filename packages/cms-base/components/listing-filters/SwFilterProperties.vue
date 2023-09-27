@@ -40,8 +40,9 @@ const toggle = () => {
       </button>
     </h2>
     <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
-        <div class="space-y-4">
+      <div v-show="isFilterVisible" :id="filter.code" class="pt-6">
+        <fieldset class="space-y-4">
+          <legend class="sr-only">{{ filter.name }}</legend>
           <div
             v-for="option in filter.options || filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
@@ -81,11 +82,14 @@ const toggle = () => {
                 'border-blue border-2': selectedOptionIds?.includes(option.id),
               }"
             />
-            <label for="filter-color-0" class="ml-3 text-gray-600">
+            <label
+              :for="`filter-mobile-${filter.code}-${option.id}`"
+              class="ml-3 text-gray-600"
+            >
               {{ getTranslatedProperty(option, "name") }}
             </label>
           </div>
-        </div>
+        </fieldset>
       </div>
     </transition>
   </div>

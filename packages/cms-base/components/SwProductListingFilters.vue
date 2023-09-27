@@ -230,7 +230,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
                       ? 'font-medium text-gray-900'
                       : 'text-gray-500',
                   ]"
-                  class="block px-4 py-2 text-sm"
+                  class="block px-4 py-2 text-sm bg-transparent"
                   role="menuitem"
                   tabindex="-1"
                 >
