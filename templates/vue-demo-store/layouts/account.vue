@@ -54,7 +54,7 @@ provide("swNavigation-footer-navigation", footerData);
                 <h1
                   class="self-center text-xl px-0 md:px-2 py-2 mb-2 font-semibold whitespace-nowrap"
                 >
-                  My account
+                  {{ $t("account.menu.myAccount") }}
                 </h1>
                 <ul class="space-y-2 list-none pl-0">
                   <li>
@@ -63,7 +63,9 @@ provide("swNavigation-footer-navigation", footerData);
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
                       <div i-carbon-dashboard text-xl inline-block />
-                      <span class="ml-3">Account Overview</span>
+                      <span class="ml-3">
+                        {{ $t("account.menu.accountOverviewHeader") }}</span
+                      >
                     </NuxtLink>
                   </li>
                   <li>
@@ -72,7 +74,7 @@ provide("swNavigation-footer-navigation", footerData);
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100 is-active"
                     >
                       <div i-carbon-user text-xl inline-block />
-                      <span class="ml-3">My profile</span>
+                      <span class="ml-3">{{ $t("account.yourProfile") }}</span>
                     </NuxtLink>
                   </li>
                   <li>
@@ -81,7 +83,7 @@ provide("swNavigation-footer-navigation", footerData);
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-home text-xl inline-block />
-                      <span class="ml-3">My address</span>
+                      <span class="ml-3">{{ $t("account.yourAddress") }}</span>
                     </NuxtLink>
                   </li>
                   <li>
@@ -90,7 +92,9 @@ provide("swNavigation-footer-navigation", footerData);
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-wallet text-xl inline-block />
-                      <span class="ml-3">Payment</span>
+                      <span class="ml-3">{{
+                        $t("account.myPaymentsHeader")
+                      }}</span>
                     </NuxtLink>
                   </li>
                 </ul>
@@ -103,7 +107,9 @@ provide("swNavigation-footer-navigation", footerData);
                       class="flex items-center px-0 md:px-2 py-2 rounded-lg hover:text-brand-primary hover:bg-gray-100"
                     >
                       <div i-carbon-order-details text-xl inline-block />
-                      <span class="ml-3">Order history</span>
+                      <span class="ml-3">{{
+                        $t("account.orderHistoryHeader")
+                      }}</span>
                     </NuxtLink>
                   </li>
                   <li>
@@ -112,7 +118,9 @@ provide("swNavigation-footer-navigation", footerData);
                       @click="invokeLogout()"
                     >
                       <div i-carbon-logout text-xl inline-block />
-                      <span class="ml-3 text-gray-700">Logout</span>
+                      <span class="ml-3 text-gray-700">{{
+                        $t("account.logout")
+                      }}</span>
                     </button>
                   </li>
                 </ul>

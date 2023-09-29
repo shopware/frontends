@@ -10,7 +10,6 @@ export default defineNuxtConfig({
       shopwareEndpoint: "",
     },
     public: {
-      env: process.env.NODE_ENV || "development",
       shopware: {
         shopwareEndpoint: "https://demo-frontends.shopware.store",
         shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
