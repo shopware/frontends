@@ -19,7 +19,10 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url);
 
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
-    addPlugin(resolver.resolve("./runtime/plugin"));
+    addPlugin({
+      src: resolver.resolve("./runtime/AdyenCheckout.client"),
+      mode: "client",
+    });
 
     addComponent({
       name: "AdyenCreditCard",
