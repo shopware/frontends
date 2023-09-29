@@ -4,21 +4,20 @@ import {
   addComponent,
   createResolver,
 } from "@nuxt/kit";
+import AdyenCheckout from "@adyen/adyen-web";
+export type AdyenCheckoutOptions = Parameters<typeof AdyenCheckout>[0];
 
-// Module options TypeScript interface definition
-export interface ModuleOptions {}
-
-export default defineNuxtModule<ModuleOptions>({
+export default defineNuxtModule<AdyenCheckoutOptions>({
   meta: {
-    name: "my-module",
-    configKey: "myModule",
+    name: "adyen-checkout",
+    configKey: "adyenCheckout",
   },
-  // Default configuration options of the Nuxt module
   defaults: {},
-  setup() {
+  setup(options, nuxtApp) {
     const resolver = createResolver(import.meta.url);
 
-    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
+    nuxtApp.options.runtimeConfig.public.adyenCheckout ||= options;
+
     addPlugin({
       src: resolver.resolve("./runtime/AdyenCheckout.client"),
       mode: "client",
@@ -30,3 +29,25 @@ export default defineNuxtModule<ModuleOptions>({
     });
   },
 });
+
+declare module "#app" {
+  interface NuxtApp {
+    $adyenCheckout: Awaited<ReturnType<typeof AdyenCheckout>>;
+  }
+}
+
+declare module "@nuxt/schema" {
+  interface NuxtConfig {
+    adyenCheckout?: AdyenCheckoutOptions;
+  }
+
+  interface PublicRuntimeConfig {
+    adyenCheckout: AdyenCheckoutOptions;
+  }
+
+  interface NuxtOptions {
+    adyenCheckout: AdyenCheckoutOptions;
+  }
+}
+
+export {};
