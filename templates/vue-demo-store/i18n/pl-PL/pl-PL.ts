@@ -10,16 +10,16 @@ import product from "../pl-PL/product.json";
 import newsletter from "../pl-PL/newsletter.json";
 import validations from "../pl-PL/validations.json";
 
-export default Object.assign(
-  account,
-  form,
-  changePassword,
-  recoveryPassword,
-  checkout,
-  general,
-  cart,
-  listing,
-  product,
-  newsletter,
-  validations,
-);
+export default {
+  ...account,
+  ...form,
+  ...changePassword,
+  ...recoveryPassword,
+  ...checkout,
+  ...general,
+  ...cart,
+  ...listing,
+  ...product,
+  ...newsletter,
+  ...validations,
+};

@@ -1,8 +1,12 @@
 /**
  * i18n configuration
  */
-export default {
+export default defineI18nConfig(() => ({
+  legacy: false,
   defaultLocale: "en-GB",
+  fallbackLocale: "en-GB",
+  allowComposition: true,
+  globalInjection: true,
   locales: [
     {
       code: "en-GB",
@@ -20,4 +24,4 @@ export default {
       file: "de-DE.ts",
     },
   ],
-};
+}));
