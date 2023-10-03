@@ -4,7 +4,7 @@ run-name: Playwright is testing vue vite blank 🚀
 on: 
   workflow_dispatch:
   schedule:
-    - cron: '50 23 * * *'
+    - cron: '46 23 * * *'
 jobs:
   run-code_examples-tests:
     runs-on: ubuntu-latest
