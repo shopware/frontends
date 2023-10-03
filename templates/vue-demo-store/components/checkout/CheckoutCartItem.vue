@@ -57,7 +57,7 @@ const removeCartItem = async () => {
   >
     <img
       :src="getSmallestThumbnailUrl(cartItem.cover)"
-      alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+      :alt="`${cartItem.label || cartItem.payload.name || ''} cart item`"
       class="h-full w-full object-cover object-center"
       data-testid="cart-product-image"
     />
@@ -106,6 +106,7 @@ const removeCartItem = async () => {
         :step="cartItem.quantityInformation?.purchaseSteps || 1"
         data-testid="cart-product-qty-select"
         name="quantity"
+        aria-label="Cart item quantity"
         class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       />
       <div class="flex">

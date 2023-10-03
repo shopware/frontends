@@ -86,6 +86,7 @@ const addressSaved = () => {
       </h5>
       <button
         v-if="canEdit"
+        title="Open address editor"
         class="cursor-pointer i-carbon-edit text-xl inline-block"
         data-testid="address-edit"
         @click.prevent="addAddressModalController.open"

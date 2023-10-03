@@ -151,6 +151,7 @@ function next() {
         v-if="mediaGallery.length > slidesToShow"
         class="disabled:opacity-10 p-1"
         @click="previous"
+        aria-label="Previous image"
       >
         <div
           class="h-7 w-7"
@@ -160,6 +161,7 @@ function next() {
           }"
         />
       </button>
+      <span class="sr-only">Previous image</span>
       <div
         class="overflow-hidden -my-2.5"
         ref="imageThumbs"
@@ -203,7 +205,9 @@ function next() {
         v-if="mediaGallery.length > slidesToShow"
         class="disabled:opacity-10 p-1"
         @click="next"
+        aria-label="Next image"
       >
+        <span class="sr-only">Next image</span>
         <div
           class="h-7 w-7"
           :class="{

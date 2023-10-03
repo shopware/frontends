@@ -177,7 +177,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
 </script>
 <template>
   <div class="bg-white">
-    <main class="mx-auto m-0 px-5">
+    <div class="mx-auto m-0 px-5">
       <div
         class="relative lg:flex lg:items-baseline lg:justify-between pt-6 pb-6 border-b border-gray-200"
       >
@@ -230,7 +230,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
                       ? 'font-medium text-gray-900'
                       : 'text-gray-500',
                   ]"
-                  class="block px-4 py-2 text-sm"
+                  class="block px-4 py-2 text-sm bg-transparent"
                   role="menuitem"
                   tabindex="-1"
                 >
@@ -268,6 +268,6 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
           </button>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </template>

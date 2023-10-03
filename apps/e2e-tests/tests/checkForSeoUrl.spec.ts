@@ -25,7 +25,7 @@ test.describe.only("Check for seo-url requests", () => {
     await page.waitForLoadState("networkidle");
     await expect(SeoUrlRequest).toBe(false);
     await page
-      .getByRole("link", { name: "Summer Trends", exact: true })
+      .getByRole("menuitem", { name: "Summer Trends", exact: true })
       .click();
     await page.waitForLoadState("networkidle");
     await expect(SeoUrlRequest).toBe(false);
