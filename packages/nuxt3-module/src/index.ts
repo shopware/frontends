@@ -77,7 +77,6 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useCmsElementConfig",
           "useCmsMeta",
           "useCmsSection",
-          "useConnectionTest",
           "useCountries",
           "useCustomerOrders",
           "useCustomerPassword",

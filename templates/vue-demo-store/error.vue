@@ -22,6 +22,18 @@ const errorMessageMap: { [key: number]: string } = {
 const errorMessage =
   props.error.statusMessage ||
   errorMessageMap[props.error.statusCode as keyof typeof errorMessageMap];
+
+if (props.error.statusCode === 412) {
+  // setting a timeout here to ensure we are the last error message in terminal
+  setTimeout(() => {
+    console.error(
+      "Looks like your API connection is not working. Check your nuxt configuration (shopwareEndpoint and shopwareAccessToken). 🤞",
+    );
+    console.error(
+      "For more help ➡️  https://frontends.shopware.com/resources/troubleshooting.html",
+    );
+  }, 2.0 * 1000);
+}
 </script>
 
 <script lang="ts">
