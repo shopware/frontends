@@ -279,7 +279,7 @@ defineExpose({
     </div>
     <div :class="{ hidden: navigationArrowsValue === 'none' }">
       <button
-        aria-label="Chevron left"
+        aria-label="Previous slide"
         :class="{
           'absolute bg-transparent top-1/2 left-0 transform -translate-y-1/2 py-4': true,
           'transition bg-white/20 hover:bg-white/50':
@@ -290,7 +290,7 @@ defineExpose({
         <div class="w-15 h-15 i-carbon-chevron-left"></div>
       </button>
       <button
-        aria-label="Chevron right"
+        aria-label="Next slide"
         :class="{
           'absolute bg-transparent top-1/2 right-0 transform -translate-y-1/2 py-4': true,
           'transition bg-white/20 hover:bg-white/50':

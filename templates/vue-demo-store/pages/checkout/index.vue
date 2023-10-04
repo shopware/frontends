@@ -333,7 +333,7 @@ const addAddressModalController = useModal();
                     v-model="state.salutationId"
                     required
                     name="salutation"
-                    autocomplete="salutation-name"
+                    autocomplete="on"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-salutation-select"
                     @blur="$v.salutationId.$touch()"
@@ -567,18 +567,19 @@ const addAddressModalController = useModal();
               </button>
             </form>
             <div v-else>
-              {{ $t("checkout.loggedInAs") }} {{ user?.firstName }}
+              {{ $t("checkout.loggedInAs") }} {{ user?.firstName }}.
               <span
                 v-if="isGuestSession"
                 class="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
-                >{{ $t("checkout.guest") }}</span
-              >! {{ $t("checkout.logOut") }}
+                >{{ $t("checkout.guest") }}.</span
+              >
               <a
                 href="#"
-                class="text-brand-primary hover:text-brand-dark"
+                class="text-brand-primary font-bold hover:text-brand-dark"
                 data-testid="checkout-logout"
+                aria-label="click here to log out"
                 @click="invokeLogout"
-                >{{ $t("checkout.here") }}</a
+                >{{ $t("checkout.logOut") }}</a
               >.
             </div>
           </div>
@@ -708,7 +709,7 @@ const addAddressModalController = useModal();
                     <img
                       loading="lazy"
                       :src="singlePaymentMethod.media.url"
-                      alt="payment-image"
+                      :alt="`Logo of ${singlePaymentMethod.shortName}`"
                     />
                   </div>
                 </div>

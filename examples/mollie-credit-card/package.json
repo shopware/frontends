@@ -4,6 +4,7 @@
   "description": "Nuxt module for Mollie Payments",
   "license": "MIT",
   "type": "module",
+  "private": true,
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",

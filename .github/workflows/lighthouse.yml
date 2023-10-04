@@ -3,7 +3,7 @@ run-name: run Lighthouse CI 🚀
 on: 
   workflow_dispatch:
   schedule:
-    - cron: '59 23 * * *'
+    - cron: '55 23 * * *'
 jobs:
   lighthouseci:
     runs-on: ubuntu-latest

@@ -25,16 +25,20 @@ const gridColumns = computed<number>(() =>
         <div class="hidden md:block">
           <NuxtLink :to="formatLink(`/`)">
             <span class="sr-only">Shopware</span>
-            <img class="h-15 w-auto sm:h-15" src="/logo.svg" alt="Logo" />
+            <img
+              class="h-15 w-auto sm:h-15"
+              src="/logo.svg"
+              alt="logo of the shop"
+            />
           </NuxtLink>
         </div>
         <div
           v-for="navigationElement in navigationElements"
           :key="navigationElement.id"
         >
-          <h4 class="mb-5">
+          <h3 class="mb-5">
             {{ getTranslatedProperty(navigationElement, "name") }}
-          </h4>
+          </h3>
           <template v-if="navigationElement.childCount > 0">
             <ul class="list-none p-0 mb-5">
               <li

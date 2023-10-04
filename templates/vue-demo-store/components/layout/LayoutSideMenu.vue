@@ -30,7 +30,7 @@ const toggleCollapse = (navigationElement: Category) => {
 <template>
   <button
     class="lg:hidden bg-transparent"
-    aria-label="menu"
+    aria-label="Show side menu"
     @click="sideMenuController.open"
   >
     <div class="i-carbon-menu w-8 h-8" />

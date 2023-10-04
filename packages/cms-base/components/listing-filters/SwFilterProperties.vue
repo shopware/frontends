@@ -19,7 +19,7 @@ const toggle = () => {
 
 <template>
   <div class="border-b border-gray-200 py-6 px-5">
-    <h3 class="-my-3 flow-root">
+    <h2 class="-my-3 flow-root">
       <button
         type="button"
         class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
@@ -38,10 +38,11 @@ const toggle = () => {
           />
         </span>
       </button>
-    </h3>
+    </h2>
     <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
-        <div class="space-y-4">
+      <div v-show="isFilterVisible" :id="filter.code" class="pt-6">
+        <fieldset class="space-y-4">
+          <legend class="sr-only">{{ filter.name }}</legend>
           <div
             v-for="option in filter.options || filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
@@ -55,6 +56,7 @@ const toggle = () => {
               :checked="selectedOptionIds?.includes(option.id)"
               :name="filter.name"
               :value="option.name"
+              :aria-label="`${option.name} filter`"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
             />
@@ -80,11 +82,14 @@ const toggle = () => {
                 'border-blue border-2': selectedOptionIds?.includes(option.id),
               }"
             />
-            <label for="filter-color-0" class="ml-3 text-gray-600">
+            <label
+              :for="`filter-mobile-${filter.code}-${option.id}`"
+              class="ml-3 text-gray-600"
+            >
               {{ getTranslatedProperty(option, "name") }}
             </label>
           </div>
-        </div>
+        </fieldset>
       </div>
     </transition>
   </div>
