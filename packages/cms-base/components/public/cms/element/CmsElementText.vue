@@ -106,10 +106,24 @@ const CmsTextRender = () => {
           );
         },
       },
+      img: {
+        conditions(node: NodeObject) {
+          return (
+            node.type === "tag" &&
+            node.name === "img"
+          );
+        },
+        renderer(node: any, children: any, createElement: any) {
+          return createElement(
+            "img",
+            getOptionsFromNode(node)?.attrs
+          );
+        },
+      },
     },
   };
   const rawHtml =
-    mappedContent.value?.length > 0 ? mappedContent.value : "<div></div>";
+    mappedContent.value?.length > 0 ? mappedContent.value : "<div class='cms-element-text missing-content-element'></div>";
   return renderHtml(rawHtml, config, h, context);
 };
 </script>
