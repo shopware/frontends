@@ -1,9 +1,9 @@
 import { defineConfigWithTheme } from "vitepress";
 import type { Config as ThemeConfig } from "vitepress-shopware-docs";
 import baseConfig from "vitepress-shopware-docs/config";
-import { TsFunctionDescription, TsFunctionsList } from "@shopware-pwa/typer";
+//import { TsFunctionDescription, TsFunctionsList } from "@shopware-pwa/typer";
 import nav from "./navigation";
-import { resolve } from "node:path";
+// import { resolve } from "node:path";
 
 export const sidebar = [
   {
@@ -288,6 +288,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
   ],
 
   themeConfig: {
+    swag: {},
     nav,
     sidebar,
     algolia: {
@@ -330,37 +331,37 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       stringify: true,
     },
     plugins: [
-      TsFunctionsList(),
-      TsFunctionDescription({
-        rootDir: resolve(__dirname, "../../../"),
-        dirs: [
-          {
-            autogenExampleAlias: "api-client",
-            functions: resolve(
-              __dirname,
-              "../../../packages/api-client/src/services",
-            ),
-            types: resolve(
-              __dirname,
-              "../../../packages/types/shopware-6-client/",
-            ),
-          },
-          {
-            functions: resolve(__dirname, "../../../packages/composables/src/"),
-            types: resolve(
-              __dirname,
-              "../../../packages/types/shopware-6-client/",
-            ),
-          },
-          {
-            functions: resolve(__dirname, "../../../packages/helpers/src/"),
-            types: resolve(
-              __dirname,
-              "../../../packages/types/shopware-6-client/",
-            ),
-          },
-        ],
-      }),
+      // TsFunctionsList(),
+      // TsFunctionDescription({
+      //   rootDir: resolve(__dirname, "../../../"),
+      //   dirs: [
+      //     {
+      //       autogenExampleAlias: "api-client",
+      //       functions: resolve(
+      //         __dirname,
+      //         "../../../packages/api-client/src/services",
+      //       ),
+      //       types: resolve(
+      //         __dirname,
+      //         "../../../packages/types/shopware-6-client/",
+      //       ),
+      //     },
+      //     {
+      //       functions: resolve(__dirname, "../../../packages/composables/src/"),
+      //       types: resolve(
+      //         __dirname,
+      //         "../../../packages/types/shopware-6-client/",
+      //       ),
+      //     },
+      //     {
+      //       functions: resolve(__dirname, "../../../packages/helpers/src/"),
+      //       types: resolve(
+      //         __dirname,
+      //         "../../../packages/types/shopware-6-client/",
+      //       ),
+      //     },
+      //   ],
+      // }),
     ],
   },
   vue: {
