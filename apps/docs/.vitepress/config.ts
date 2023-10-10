@@ -4,6 +4,7 @@ import baseConfig from "vitepress-shopware-docs/config";
 import { TsFunctionDescription, TsFunctionsList } from "@shopware-pwa/typer";
 import nav from "./navigation";
 import { resolve } from "node:path";
+import { SearchPlugin } from "vitepress-plugin-search";
 
 export const sidebar = [
   {
@@ -310,12 +311,6 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       __VUE_OPTIONS_API__: false,
     },
     server: {
-      headers: {
-        "Strict-Transport-Security": "max-age=86400; includeSubDomains", // Adds HSTS options to your website, with a expiry time of 1 day
-        "X-Content-Type-Options": "nosniff", // Protects from improper scripts runnings
-        "X-Frame-Options": "DENY", // Stops your site being used as an iframe
-        "X-XSS-Protection": "1; mode=block", // Gives XSS protection to legacy browsers
-      },
       host: true,
       fs: {
         // for when developing with locally linked theme
@@ -330,6 +325,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       stringify: true,
     },
     plugins: [
+      SearchPlugin(),
       TsFunctionsList(),
       TsFunctionDescription({
         rootDir: resolve(__dirname, "../../../"),
