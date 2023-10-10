@@ -91,6 +91,10 @@ export const sidebar = [
             text: "Overwriting CMS",
             link: "/getting-started/cms/overwriting-cms",
           },
+          {
+            text: "Strapi integration",
+            link: "/getting-started/cms/strapi",
+          },
         ],
       },
       {
@@ -204,6 +208,11 @@ export const sidebar = [
             link: "/resources/examples/footer-navigation/",
           },
         ],
+      },
+      {
+        text: "Integrations",
+        link: "/resources/integrations/",
+        items: [{ text: "Strapi", link: "/resources/integrations/strapi/" }],
       },
       { text: "Community Modules", link: "/resources/community-modules/" },
       { text: "Troubleshooting", link: "/resources/troubleshooting" },
