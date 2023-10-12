@@ -18,4 +18,7 @@ Explore the following sub-pages to find detailed instructions on integrating dif
 ensuring a harmonious and efficient synergy between your Shopware store and diverse external services.
 Streamline your operations and enhance your user experience with these comprehensive integration guide.
 
+## CMS
+
+<PageRef title="Multi CMS instance" sub="How to integrate 3rd CMS systems" page="multi-cms" />
 <PageRef title="Strapi" sub="How to integrate Strapi CMS with the Shopware Frontends" page="strapi/index" />

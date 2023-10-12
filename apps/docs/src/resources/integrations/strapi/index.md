@@ -13,7 +13,7 @@ nav:
   position: 60
 ---
 
-# Stapi integration
+# Strapi integration
 
 [Strapi](https://strapi.io/) is a headless CMS that can be integrated with the Composable Frontends.
 This example requires Nuxt 3 instance
@@ -41,11 +41,14 @@ More about installation can be found [HERE](https://strapi.nuxtjs.org/setup)
 ## Fetching and displaying single element
 
 As a example we will add a global banner to our demo shop.
-At the begining we created a single type on the Strapi collection, with fallowing fields
+At the beginning we created a single type on the Strapi collection, with fallowing fields
 
-```
-text: short input field - this will represent a text that we want to display in the banner
-color: short input field - this will represent a color of the banner (this can be done also with color picker filed, but for this example we will use input text)
+```ts
+interface {
+  text: string; // short input field - this will represent a text that we want to display in the banner
+  color: string; // short input field - this will represent a color of the banner (this can be done also with color picker filed, but for this example we will use input text)
+}
+
 ```
 
 The next step is to create a banner component
@@ -88,4 +91,54 @@ Now we can add our component to the layout.
 </template>
 ```
 
-<!--- Add image HERE!! -->
+## Fetching and displaying pages
+
+:::warning
+This example is written for the vue-demo-store template and assuming that you [implemented multi CMS middleware](/resources/integrations/multi-cms.md)
+:::
+
+Create new collection type `Page` on the Stripe admin site with fields:
+
+```ts
+interface {
+  text: string; // Content page
+  seoUrl: string; // Page slug
+}
+```
+
+Composable for resolving components
+
+```ts
+interface StripePage {
+  text: string;
+  seoUrl: string;
+}
+export function useSWStrapi() {
+  const getPage = async (route: string) => {
+    const { findOne } = useStrapi();
+    const response = await findOne<StripePage>("pages", undefined, {
+      filters: {
+        seoUrl: route,
+      },
+    });
+    return response;
+  };
+
+  const resolveComponent = async (route: string) => {
+    const page = await getPage(route);
+    if (!page.data[0]) return null;
+    return h("div", {}, page.data[0].attributes.text);
+  };
+
+  return {
+    resolveComponent,
+  };
+}
+```
+
+Provide Strapi resolver to the `pageRenderMiddlewares`
+
+```ts
+const { resolveComponent } = useSWStrapi();
+provide("pageRenderMiddlewares", resolveComponent);
+```
