@@ -2,10 +2,6 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import { sendContactForm } from "@shopware-pwa/api-client";
-import {
-  CmsElementForm,
-  useNavigationContext,
-} from "@shopware-pwa/composables-next";
 import { ClientApiError } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";

@@ -16,6 +16,7 @@ export default defineNuxtConfig({
       },
     },
   },
+  extends: ["@shopware-pwa/composables-next", "@shopware-pwa/cms-base"],
   routeRules: {
     "/": {
       isr: 60 * 60 * 24,
@@ -65,14 +66,7 @@ export default defineNuxtConfig({
     // typeCheck: true,
     strict: true,
   },
-  modules: [
-    "@vueuse/nuxt",
-    "@unocss/nuxt",
-    "@shopware-pwa/nuxt3-module",
-    "@shopware-pwa/cms-base",
-    "@nuxt/devtools",
-    "@nuxtjs/i18n",
-  ],
+  modules: ["@vueuse/nuxt", "@unocss/nuxt", "@nuxt/devtools", "@nuxtjs/i18n"],
   // components: true,
   components: {
     dirs: [

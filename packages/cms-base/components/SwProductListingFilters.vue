@@ -12,7 +12,6 @@ import SwProductListingFilter from "./SwProductListingFilter.vue";
 import {
   CmsElementProductListing,
   CmsElementSidebarFilter,
-  useListing,
 } from "@shopware-pwa/composables-next";
 import { ShopwareSearchParams } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";

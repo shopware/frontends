@@ -5,7 +5,6 @@ import {
   getCmsLayoutConfiguration,
   getBackgroundImageUrl,
 } from "@shopware-pwa/helpers-next";
-import { useNavigationContext } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsPage;
