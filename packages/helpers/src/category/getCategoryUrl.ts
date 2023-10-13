@@ -36,7 +36,8 @@ export function getCategoryUrl(category: LinkedCategory): string {
     case "link":
       return (
         category.externalLink ||
-        category?.seoUrls?.[0]?.seoPathInfo ||
+        (category?.seoUrls?.[0]?.seoPathInfo &&
+          `/${category?.seoUrls?.[0]?.seoPathInfo.replace(/^\/+/, "")}`) ||
         `/${getEntityPrefix(category)}/${category.internalLink}`
       );
     default:
