@@ -37,7 +37,8 @@ describe("Admin client session data", () => {
     });
   });
 
-  test("fresh test should have empty session data", async ({
+  // TODO: skipped until https://github.com/vitest-dev/vitest/pull/4250 is released in >= 0.34.7
+  test.skip("fresh test should have empty session data", async ({
     adminApiClient,
   }) => {
     expect(adminApiClient.getSessionData()).toEqual({

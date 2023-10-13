@@ -28,8 +28,8 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
-    "@microsoft/api-documenter": "^7.23.1",
-    "@microsoft/api-extractor": "^7.37.0",
+    "@microsoft/api-documenter": "^7.23.9",
+    "@microsoft/api-extractor": "^7.38.0",
     "@microsoft/tsdoc": "^0.14.2",
     "@types/changelog-parser": "^2.8.2",
     "changelog-parser": "^3.0.1",
@@ -38,10 +38,10 @@
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
-    "taze": "^0.11.2",
-    "turbo": "^1.10.14",
-    "typedoc": "^0.25.1",
-    "vercel": "^32.2.5"
+    "taze": "^0.11.3",
+    "turbo": "^1.10.15",
+    "typedoc": "^0.25.2",
+    "vercel": "^32.4.1"
   },
   "engines": {
     "node": "^16.x || ^18.x"
@@ -51,12 +51,15 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.7.6",
+  "packageManager": "pnpm@8.9.0",
   "pnpm": {
     "overrides": {
       "yaml@2": "^2.2.2",
       "@antfu/utils": "^0.7.4",
-      "semver": "^7.5.2"
+      "semver": "^7.5.2",
+      "debug": "^4.3.1",
+      "postcss": "^8.4.31",
+      "zod": "^3.22.3"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
