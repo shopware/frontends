@@ -21,12 +21,12 @@
     "dev": "nuxi dev playground"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.7.1"
+    "@nuxt/kit": "^3.7.4"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.7.1",
-    "@shopware-pwa/composables-next": "^0.13.2",
+    "@nuxt/schema": "^3.7.4",
+    "@shopware-pwa/composables-next": "canary",
     "@types/node": "^20.3.2",
-    "nuxt": "^3.7.1"
+    "nuxt": "^3.7.4"
   }
 }
