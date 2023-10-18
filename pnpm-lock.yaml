@@ -134,6 +134,9 @@ importers:
       '@shopware-pwa/nuxt3-module':
         specifier: canary
         version: link:../../packages/nuxt3-module
+      '@shopware-pwa/types':
+        specifier: workspace:^
+        version: link:../../packages/types
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
@@ -279,7 +282,7 @@ importers:
         version: 12.1.0(eslint@8.49.0)(typescript@5.2.2)
       '@unocss/nuxt':
         specifier: ^0.56.0
-        version: 0.56.2(postcss@8.4.30)
+        version: 0.56.2(postcss@8.4.31)
       '@unocss/reset':
         specifier: ^0.56.0
         version: 0.56.2
@@ -291,7 +294,7 @@ importers:
         version: 3.7.3(@types/node@14.18.33)(eslint@8.49.0)(typescript@5.2.2)
       unocss:
         specifier: ^0.56.0
-        version: 0.56.2(@unocss/webpack@0.56.2)(postcss@8.4.30)
+        version: 0.56.2(@unocss/webpack@0.56.2)(postcss@8.4.31)
 
   examples/mollie-credit-card:
     dependencies:
@@ -887,7 +890,7 @@ importers:
         version: link:../../packages/types
       '@unocss/nuxt':
         specifier: ^0.56.0
-        version: 0.56.2(postcss@8.4.30)
+        version: 0.56.2(postcss@8.4.31)
       '@vuelidate/core':
         specifier: ^2.0.3
         version: 2.0.3(vue@3.3.4)
@@ -6642,7 +6645,7 @@ packages:
       gzip-size: 6.0.0
       sirv: 2.0.3
 
-  /@unocss/nuxt@0.56.2(postcss@8.4.30):
+  /@unocss/nuxt@0.56.2(postcss@8.4.31):
     resolution: {integrity: sha512-0wVr4bX8QjFvyvnv7Fo1N32s8XvL4G6iZpo14dkU9ZCTfjK/tyvNG3XvL+5uV2UKKlUte+T/syc1Blm/dKB+4g==}
     dependencies:
       '@nuxt/kit': 3.7.4(rollup@3.28.1)
@@ -6658,7 +6661,7 @@ packages:
       '@unocss/reset': 0.56.2
       '@unocss/vite': 0.56.2
       '@unocss/webpack': 0.56.2
-      unocss: 0.56.2(@unocss/webpack@0.56.2)(postcss@8.4.30)
+      unocss: 0.56.2(@unocss/webpack@0.56.2)(postcss@8.4.31)
     transitivePeerDependencies:
       - postcss
       - rollup
@@ -6666,7 +6669,7 @@ packages:
       - vite
       - webpack
 
-  /@unocss/postcss@0.56.2(postcss@8.4.30):
+  /@unocss/postcss@0.56.2(postcss@8.4.31):
     resolution: {integrity: sha512-mqNEQflEGxaYeqEJuMlFrlnzj1I9O5yvUEhux4EDy0hkqojCldwtjAosJ9jeBU/Sutr/YjWDOQ2+SU0Ei58Rxg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -6678,7 +6681,7 @@ packages:
       css-tree: 2.3.1
       fast-glob: 3.3.1
       magic-string: 0.30.3
-      postcss: 8.4.30
+      postcss: 8.4.31
 
   /@unocss/preset-attributify@0.49.8:
     resolution: {integrity: sha512-h++9yJoCXoAWQfvDV65huc3SU+0NhKu63JwcXygZciOpGWGXK89ZH5b/hd29VVk8AZN50c53YRaoIn7GSply1w==}
@@ -18371,7 +18374,7 @@ packages:
       - vite
     dev: false
 
-  /unocss@0.56.2(@unocss/webpack@0.56.2)(postcss@8.4.30):
+  /unocss@0.56.2(@unocss/webpack@0.56.2)(postcss@8.4.31):
     resolution: {integrity: sha512-ZEj8/9OVv6zyuwSVWRGDULHeUdFgTnUAN3Hn8prysfbCI4x06xzsu46xLV9SoHE4eOJ1eSUs7YaJHGKFOocsQQ==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -18387,7 +18390,7 @@ packages:
       '@unocss/cli': 0.56.2
       '@unocss/core': 0.56.2
       '@unocss/extractor-arbitrary-variants': 0.56.2
-      '@unocss/postcss': 0.56.2(postcss@8.4.30)
+      '@unocss/postcss': 0.56.2(postcss@8.4.31)
       '@unocss/preset-attributify': 0.56.2
       '@unocss/preset-icons': 0.56.2
       '@unocss/preset-mini': 0.56.2
@@ -19138,7 +19141,7 @@ packages:
     dependencies:
       '@types/node': 18.16.18
       esbuild: 0.18.11
-      postcss: 8.4.31
+      postcss: 8.4.30
       rollup: 3.28.0
     optionalDependencies:
       fsevents: 2.3.3
@@ -19174,7 +19177,7 @@ packages:
     dependencies:
       '@types/node': 20.3.2
       esbuild: 0.18.11
-      postcss: 8.4.31
+      postcss: 8.4.30
       rollup: 3.28.0
     optionalDependencies:
       fsevents: 2.3.3
@@ -19210,7 +19213,7 @@ packages:
     dependencies:
       '@types/node': 20.5.1
       esbuild: 0.18.11
-      postcss: 8.4.31
+      postcss: 8.4.30
       rollup: 3.28.0
     optionalDependencies:
       fsevents: 2.3.3
