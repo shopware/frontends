@@ -43,12 +43,6 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   const { apiInstance } = useShopwareContext();
 
   const { configurator, product } = useProduct();
-  if (!product.value) {
-    // TODO link docs with composables context usage
-    throw new Error(
-      "Product configurator cannot be used without the product context.",
-    );
-  }
 
   const selected = ref({} as any);
   const isLoadingOptions = ref(!!product.value.options?.length);
@@ -59,9 +53,9 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
 
   const findGroupCodeForOption = (optionId: string) => {
     const group = getOptionGroups.value.find((optionGroup) => {
-      const optionFound = optionGroup.options?.find(
-        (option: any) => option.id === optionId,
-      );
+      const optionFound = optionGroup.options?.find((option: any) => {
+        return option.id === optionId;
+      });
       return !!optionFound;
     });
 

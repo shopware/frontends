@@ -95,7 +95,7 @@ export function useProductAssociations(
 
   return {
     isLoading: computed(() => isLoading.value),
-    productAssociations: computed(() => associations.value || []),
+    productAssociations: computed(() => associations.value),
     loadAssociations,
   };
 }

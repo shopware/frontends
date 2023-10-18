@@ -84,7 +84,7 @@ const product: Product = {
     "1318833f46df457981763b94179d9ef0",
     "5675448d6b3a4dd2a659d31a3dde74da",
   ],
-  optionIds: ["c3979c6ac5844104afa113c4fbde87f8"],
+  optionIds: ["cc02c6cf39ad43d5856a25f8928490bf"],
   propertyIds: null,
   name: "Cigar Special 40%",
   keywords: null,
