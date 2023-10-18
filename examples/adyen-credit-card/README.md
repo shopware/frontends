@@ -1,3 +1,0 @@
-## AdyenCheckout
-
-TODO
