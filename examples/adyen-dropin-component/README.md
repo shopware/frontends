@@ -89,6 +89,9 @@ pnpm dev
 
   In this case, please visit again _2. Setup nuxt project_ section and re-run a project.
 
+- If you are getting HTTP 401 error, you are probably using incorrect `loginData` in your _nuxt.config.ts_ public runtime settings. 
+  
+  In this case, please visit again _2. Setup nuxt project_ section and re-run a project.
 
 ## Resources
 
