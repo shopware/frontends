@@ -10,7 +10,7 @@ import {
 import { useNuxtApp } from "#app";
 
 const emits = defineEmits<{
-  checkoutInitialized: [];
+  // to inform the upper levels of an app that payButton was clicked (that means it was validated by Adyen and we can proceed)
   payButtonClicked: [state: any];
 }>();
 
@@ -22,16 +22,18 @@ const {
 
 const nuxtApp = useNuxtApp();
 
+// get the clientKey and environment settings from backend (will overwrite the corresponding settings from nuxt.config.ts)
 const adyenConfigResponse = await apiInstance.invoke.get(
   "/store-api/adyen/payment-methods",
 );
 
+// adjust a SessionContext type to reflect actual one enhanced by Adyen add-on
 type AdyenEnhancedSessionContext = SessionContext & {
   extensions: {
     adyenData: unknown;
   };
 };
-
+// init the AdyenCheckout instance
 const checkout = await nuxtApp.$adyenCheckout({
   ...((sessionContext.value as AdyenEnhancedSessionContext)?.extensions
     ?.adyenData || adyenCheckout),
@@ -44,6 +46,7 @@ const checkout = await nuxtApp.$adyenCheckout({
     },
   },
   async onSubmit(state, element) {
+    // emit the payButtonClicked event with a current state coming from Adyen checkout instance
     emits("payButtonClicked", state);
   },
 });

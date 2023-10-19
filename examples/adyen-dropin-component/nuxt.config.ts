@@ -2,10 +2,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       loginData: {
+        // for demo purposes, the customer is logged in automatically, so please adjust the loginData to some of yours customer account
         username: "maciejkucmus@gmail.com",
         password: "test12345",
       },
       shopware: {
+        // your Shopware 6 instance endpoint and access key
         shopwareEndpoint: "http://localhost:8000",
         shopwareAccessToken: "SWSCCMR1DEXDTK0XRJVSD3DHMW",
       },
