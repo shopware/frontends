@@ -1,6 +1,12 @@
-import { getProductTierPrices, TierPrice } from "@shopware-pwa/helpers-next";
-import { CalculatedPrice, Product, ReferencePrice } from "@shopware-pwa/types";
-import { computed, ComputedRef, Ref } from "vue";
+import { getProductTierPrices } from "@shopware-pwa/helpers-next";
+import type { TierPrice } from "@shopware-pwa/helpers-next";
+import type {
+  CalculatedPrice,
+  Product,
+  ReferencePrice,
+} from "@shopware-pwa/types";
+import { computed } from "vue";
+import type { ComputedRef, Ref } from "vue";
 
 export type UseProductPriceReturn = {
   /**

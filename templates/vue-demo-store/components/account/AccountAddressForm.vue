@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ClientApiError, CustomerAddress } from "@shopware-pwa/types";
+import type { ClientApiError, CustomerAddress } from "@shopware-pwa/types";
 
 const {
   createCustomerAddress,
@@ -45,7 +45,7 @@ const invokeSave = async (): Promise<void> => {
     const saveAddress = formData.id
       ? updateCustomerAddress
       : createCustomerAddress;
-    await saveAddress(formData);
+    await saveAddress(formData as CustomerAddress);
     loadCustomerAddresses();
     emits("success");
   } catch (e) {

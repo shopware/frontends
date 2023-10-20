@@ -5,7 +5,7 @@ import {
   useCheckout,
   useSessionContext,
 } from "@shopware-pwa/composables-next";
-import { Error } from "@shopware-pwa/types";
+import type { Error } from "@shopware-pwa/types";
 
 const {
   paymentMethods,

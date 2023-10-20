@@ -3,7 +3,7 @@ import {
   getCategoryRoute,
   getCategoryImageUrl,
 } from "@shopware-pwa/helpers-next";
-import { Category } from "@shopware-pwa/types";
+import type { Category } from "@shopware-pwa/types";
 
 const { navigationElements } = useNavigation();
 

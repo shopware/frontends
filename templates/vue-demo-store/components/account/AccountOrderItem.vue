@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getMainImageUrl, isProduct } from "@shopware-pwa/helpers-next";
-import { OrderLineItem } from "@shopware-pwa/types";
+import type { OrderLineItem } from "@shopware-pwa/types";
 
 const props = defineProps<{
   orderItem: OrderLineItem;

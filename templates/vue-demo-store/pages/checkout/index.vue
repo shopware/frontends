@@ -5,7 +5,7 @@ export default {
 </script>
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
+import type { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlock } from "@shopware-pwa/types";
+import type { CmsBlock } from "@shopware-pwa/types";
 
 const props = defineProps<{
   content: CmsBlock;

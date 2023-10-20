@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockForm } from "@shopware-pwa/composables-next";
+import type { CmsBlockForm } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockForm;

@@ -3,7 +3,7 @@ import {
   RequestReturnType,
   createAPIClient,
 } from "@shopware/api-client";
-import {
+import type {
   operationPaths,
   operations,
   components,

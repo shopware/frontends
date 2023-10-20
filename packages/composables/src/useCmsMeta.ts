@@ -1,4 +1,5 @@
-import { computed, ComputedRef } from "vue";
+import { computed } from "vue";
+import type { ComputedRef } from "vue";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import type { CmsPageEntity } from "@shopware-pwa/types";
 

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
-import {
+import type {
   ClientApiError,
   Product,
   PropertyGroupOption,

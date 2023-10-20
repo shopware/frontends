@@ -1,4 +1,4 @@
-import { CmsSection } from "@shopware-pwa/types";
+import type { CmsSection } from "@shopware-pwa/types";
 
 export const urlsTestCaseOne: { [key: string]: string } = {
   "url(https://cdn.shopware.store/a/B/m/pPkDE/media/78/5f/f9/tyler-nix-573049-unsplash.jpg)":

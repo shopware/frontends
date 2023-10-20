@@ -1,5 +1,5 @@
 import { getLandingPage } from "@shopware-pwa/api-client";
-import { LandingPage } from "@shopware-pwa/types";
+import type { LandingPage } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 import { cmsAssociations } from "./cms/cmsAssociations";
 import { _useContext } from "./internal/_useContext";
