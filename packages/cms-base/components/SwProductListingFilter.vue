@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ListingFilter } from "@shopware-pwa/types";
+import type { ListingFilter } from "@shopware-pwa/types";
 import SwFilterPropertiesVue from "./listing-filters/SwFilterProperties.vue";
 import SwFilterPriceVue from "./listing-filters/SwFilterPrice.vue";
 import SwFilterRatingVue from "./listing-filters/SwFilterRating.vue";

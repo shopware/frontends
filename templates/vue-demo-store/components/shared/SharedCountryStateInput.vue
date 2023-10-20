@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { BaseValidation } from "@vuelidate/core";
+import type { BaseValidation } from "@vuelidate/core";
 
 const emit = defineEmits<{
   (e: "update:countryId", value: string): void;

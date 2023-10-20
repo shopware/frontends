@@ -1,13 +1,14 @@
 import { getCategoryProducts, searchProducts } from "@shopware-pwa/api-client";
 
-import {
+import type {
   ShopwareSearchParams,
   Product,
   ListingResult,
   Sort,
   ListingFilter,
 } from "@shopware-pwa/types";
-import { inject, computed, ComputedRef, ref, provide } from "vue";
+import { inject, computed, ref, provide } from "vue";
+import type { ComputedRef } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from ".";
 import ContextError from "./helpers/ContextError";

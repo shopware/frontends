@@ -1,5 +1,6 @@
-import { ref, computed, ComputedRef } from "vue";
-import {
+import { ref, computed } from "vue";
+import type { ComputedRef } from "vue";
+import type {
   Product,
   CrossSelling,
   ShopwareSearchParams,

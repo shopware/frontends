@@ -1,5 +1,6 @@
-import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
-import {
+import { computed, ref, inject, provide } from "vue";
+import type { ComputedRef, Ref } from "vue";
+import type {
   StoreNavigationElement,
   StoreNavigationType,
 } from "@shopware-pwa/types";

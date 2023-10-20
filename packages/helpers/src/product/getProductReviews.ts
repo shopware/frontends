@@ -1,5 +1,5 @@
-import { Product } from "@shopware-pwa/types";
-import { UiProductReview } from "../ui-interfaces";
+import type { Product } from "@shopware-pwa/types";
+import type { UiProductReview } from "../ui-interfaces";
 
 /**
  * Format product reviews to ui-interfaces

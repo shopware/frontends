@@ -1,4 +1,4 @@
-import { LineItem, Product, OrderLineItem } from "@shopware-pwa/types";
+import type { LineItem, Product, OrderLineItem } from "@shopware-pwa/types";
 
 function isProduct(
   object: Product | LineItem | OrderLineItem,

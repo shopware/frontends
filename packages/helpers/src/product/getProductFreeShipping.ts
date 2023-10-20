@@ -1,4 +1,4 @@
-import { Product } from "@shopware-pwa/types";
+import type { Product } from "@shopware-pwa/types";
 
 /**
  * Get product free shipping property

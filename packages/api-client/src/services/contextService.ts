@@ -1,4 +1,4 @@
-import { Currency } from "@shopware-pwa/types";
+import type { Currency } from "@shopware-pwa/types";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
 import {
   getContextCurrencyEndpoint,
@@ -9,7 +9,7 @@ import {
   getContextSalutationEndpoint,
   getContextEndpoint,
 } from "../endpoints";
-import {
+import type {
   Country,
   ShippingMethod,
   PaymentMethod,

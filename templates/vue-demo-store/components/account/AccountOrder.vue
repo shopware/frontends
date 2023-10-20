@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Order } from "@shopware-pwa/types";
+import type { Order } from "@shopware-pwa/types";
 
 const props = defineProps<{
   order: Order;

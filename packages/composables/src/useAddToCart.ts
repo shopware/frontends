@@ -1,5 +1,6 @@
-import { ref, Ref, computed, unref, ComputedRef, watch } from "vue";
-import { Product, Cart, LineItem, EntityError } from "@shopware-pwa/types";
+import { ref, computed, unref, watch } from "vue";
+import type { Ref, ComputedRef } from "vue";
+import type { Product, Cart, LineItem, EntityError } from "@shopware-pwa/types";
 import { useCart } from "./useCart";
 // prettier-ignore
 export type UseAddToCartReturn = {

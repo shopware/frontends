@@ -1,4 +1,5 @@
-import { ref, Ref, computed, inject, provide, ComputedRef, watch } from "vue";
+import { ref, computed, inject, provide, watch } from "vue";
+import type { Ref, ComputedRef } from "vue";
 
 import {
   getCustomerAddresses,
@@ -10,7 +11,7 @@ import {
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
 
-import {
+import type {
   ClientApiError,
   CustomerAddress,
   ShopwareSearchParams,

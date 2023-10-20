@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { SliderElementConfig } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "@shopware-pwa/composables-next";
-import { CmsSlot } from "@shopware-pwa/types";
-import { VNodeArrayChildren } from "vue";
+import type { CmsSlot } from "@shopware-pwa/types";
+import type { VNodeArrayChildren } from "vue";
 
 const props = withDefaults(
   defineProps<{

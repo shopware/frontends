@@ -1,4 +1,4 @@
-import { SeoUrl } from "@shopware-pwa/types";
+import type { SeoUrl } from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { useShopwareContext } from "./useShopwareContext";
 import { getSeoUrl } from "@shopware-pwa/api-client";

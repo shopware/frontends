@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-import { LineItem } from "@shopware-pwa/types";
+import type { LineItem } from "@shopware-pwa/types";
 
 const props = withDefaults(
   defineProps<{

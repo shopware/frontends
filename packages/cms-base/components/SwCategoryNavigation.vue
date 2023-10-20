@@ -4,7 +4,7 @@ import {
   getCategoryRoute,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
-import { Category, StoreNavigationElement } from "@shopware-pwa/types";
+import type { Category, StoreNavigationElement } from "@shopware-pwa/types";
 import getUrlPrefix from "../helpers/getUrlPrefix";
 import buildUrlPrefix from "../helpers/buildUrlPrefix";
 

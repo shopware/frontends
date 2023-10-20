@@ -1,7 +1,8 @@
-import { ref, Ref, ComputedRef, computed } from "vue";
+import { ref, computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
 import { getProductReviews, addProductReview } from "@shopware-pwa/api-client";
 // import { useDefaults, getApplicationContext } from "@shopware-pwa/composables";
-import {
+import type {
   Product,
   ProductReview,
   ShopwareSearchParams,

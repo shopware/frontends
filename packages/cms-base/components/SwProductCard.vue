@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
-import {
+import type {
   ClientApiError,
   Product,
   PropertyGroupOption,
 } from "@shopware-pwa/types";
-import { Ref } from "vue";
+import type { Ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUser } from "@shopware-pwa/composables-next";
-import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
+import type { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { reactive, ref } from "vue";
 const { logout, login, isLoggedIn, user } = useUser();
 const loginCredentials = reactive({

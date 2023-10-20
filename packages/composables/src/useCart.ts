@@ -1,4 +1,5 @@
-import { computed, ComputedRef } from "vue";
+import { computed } from "vue";
+import type { ComputedRef } from "vue";
 import {
   getCart,
   addProductToCart,
@@ -7,7 +8,7 @@ import {
   changeCartItemQuantity,
   getProducts,
 } from "@shopware-pwa/api-client";
-import { Cart, Product, LineItem, CartErrors } from "@shopware-pwa/types";
+import type { Cart, Product, LineItem, CartErrors } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 import { _useContext } from "./internal/_useContext";
 import { createSharedComposable } from "@vueuse/core";

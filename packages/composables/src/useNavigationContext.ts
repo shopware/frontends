@@ -1,5 +1,6 @@
-import { Ref, computed, ComputedRef } from "vue";
-import { RouteName, SeoUrl } from "@shopware-pwa/types";
+import { computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
+import type { RouteName, SeoUrl } from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { _useContext } from "./internal/_useContext";
 

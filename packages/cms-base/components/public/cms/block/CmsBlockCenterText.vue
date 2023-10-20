@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockCenterText } from "@shopware-pwa/composables-next";
+import type { CmsBlockCenterText } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockCenterText;

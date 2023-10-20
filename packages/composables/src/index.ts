@@ -1,4 +1,4 @@
-import { CmsBlock, CmsSection, CmsSlot } from "@shopware-pwa/types";
+import type { CmsBlock, CmsSection, CmsSlot } from "@shopware-pwa/types";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 

@@ -1,4 +1,4 @@
-import {
+import type {
   CmsSlot,
   CrossSelling,
   EntityResult,
@@ -10,7 +10,7 @@ import {
   PropertyGroup,
   Salutation,
 } from "@shopware-pwa/types";
-import { CSSProperties } from "vue";
+import type { CSSProperties } from "vue";
 
 export type SourceType = "static" | "mapped";
 
