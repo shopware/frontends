@@ -15,7 +15,10 @@ const props = withDefaults(
 const { cartItem } = toRefs(props);
 
 const isLoading = ref(false);
-const { codeErrorsNotification } = useCartNotification();
+const { getErrorsCodes } = useCartNotification();
+const { refreshCart } = useCart();
+const { pushError } = useNotifications();
+const { t } = useI18n();
 
 const {
   itemOptions,
@@ -29,13 +32,21 @@ const {
 const quantity = ref();
 syncRefs(itemQuantity, quantity);
 
-const updateQuantity = async (quantity: number | undefined) => {
-  if (quantity === itemQuantity.value) return;
+const updateQuantity = async (quantityInput: number | undefined) => {
+  if (quantityInput === itemQuantity.value) return;
 
   isLoading.value = true;
 
-  await changeItemQuantity(Number(quantity));
-  codeErrorsNotification();
+  const response = await changeItemQuantity(Number(quantityInput));
+  // Refresh cart after qty update
+  await refreshCart(response);
+
+  // Make sure that qty is the same as it is in the response
+  quantity.value = itemQuantity.value;
+
+  getErrorsCodes()?.forEach((element) => {
+    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  });
 
   isLoading.value = false;
 };

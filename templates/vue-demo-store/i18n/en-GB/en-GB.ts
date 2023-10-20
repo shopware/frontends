@@ -9,6 +9,7 @@ import listing from "./listing.json";
 import product from "./product.json";
 import newsletter from "./newsletter.json";
 import validations from "./validations.json";
+import errors from "./errors.json";
 
 export default {
   ...form,
@@ -22,4 +23,5 @@ export default {
   ...product,
   ...newsletter,
   ...validations,
+  ...errors,
 };
