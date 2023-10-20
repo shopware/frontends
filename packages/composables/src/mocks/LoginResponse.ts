@@ -1,4 +1,4 @@
-import { ContextUpdateResult } from "@shopware-pwa/types";
+import type { ContextUpdateResult } from "@shopware-pwa/types";
 
 const LoginResponse: ContextUpdateResult = {
   apiAlias: "array_struct",

@@ -1,6 +1,6 @@
 import { getSitemapEndpoint } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
-import { SitemapResult } from "@shopware-pwa/types";
+import type { SitemapResult } from "@shopware-pwa/types";
 
 /**
  * Get sitemap

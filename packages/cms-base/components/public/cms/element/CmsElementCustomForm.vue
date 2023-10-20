@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsElementForm } from "@shopware-pwa/composables-next";
+import type { CmsElementForm } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsElementForm;

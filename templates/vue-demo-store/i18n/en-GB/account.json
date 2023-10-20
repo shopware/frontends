@@ -29,6 +29,7 @@
     "view": "View",
     "hide": "Hide",
     "menu": {
+      "accountOverviewHeader": "Account Overview",
       "signIn": "Sign in",
       "hello": "Hello",
       "openMenu": "Open user menu",

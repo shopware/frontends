@@ -1,4 +1,4 @@
-import { CartErrors, CartError } from "@shopware-pwa/types";
+import type { CartErrors, CartError } from "@shopware-pwa/types";
 
 const successCodes = ["promotion-discount-added"];
 

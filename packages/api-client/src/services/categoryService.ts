@@ -1,5 +1,5 @@
 import { getCategoryEndpoint, getCategoryDetailsEndpoint } from "../endpoints";
-import {
+import type {
   Category,
   EntityResult,
   ShopwareSearchParams,

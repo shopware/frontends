@@ -18,7 +18,7 @@ import {
   getNewsletterRecipientEndpoint,
 } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
-import {
+import type {
   Customer,
   CustomerAddress,
   CustomerRegistrationParams,

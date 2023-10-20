@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ListingFilter } from "@shopware-pwa/types";
+import type { ListingFilter } from "@shopware-pwa/types";
 import { inject, ref } from "vue";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 

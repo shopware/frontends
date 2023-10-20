@@ -1,6 +1,6 @@
 import { describe, expect, test as baseTest } from "vitest";
 import { createAdminAPIClient } from ".";
-import { operations, operationPaths } from "../admin-api-types";
+import type { operations, operationPaths } from "../admin-api-types";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 

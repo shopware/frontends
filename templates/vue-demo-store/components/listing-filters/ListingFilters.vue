@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import ListingFilter from "./ListingFilter.vue";
-import {
-  ComputedRef,
-  UnwrapNestedRefs,
-  computed,
-  provide,
-  reactive,
-} from "vue";
+import { computed, provide, reactive } from "vue";
+import type { ComputedRef, UnwrapNestedRefs } from "vue";
 
 const {
   filtersToQuery,

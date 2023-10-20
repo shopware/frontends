@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockTextTeaserSection } from "@shopware-pwa/composables-next";
+import type { CmsBlockTextTeaserSection } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockTextTeaserSection;

@@ -1,5 +1,5 @@
 import { describe, expectTypeOf, it, assertType } from "vitest";
-import { components } from "../../api-types";
+import type { components } from "../../api-types";
 
 type Criteria = components["schemas"]["Criteria"];
 

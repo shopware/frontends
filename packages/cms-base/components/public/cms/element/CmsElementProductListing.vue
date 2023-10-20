@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { CmsElementProductListing } from "@shopware-pwa/composables-next";
+import type { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
-import { ShopwareSearchParams } from "@shopware-pwa/types";
+import type { ShopwareSearchParams } from "@shopware-pwa/types";
 import deepMerge from "../../../../helpers/deepMerge";
 import getTranslations from "../../../../helpers/getTranslations";
 const props = defineProps<{

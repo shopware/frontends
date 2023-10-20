@@ -1,4 +1,4 @@
-import { Language } from "@shopware-pwa/types";
+import type { Language } from "@shopware-pwa/types";
 
 const language: Language = {
   translated: [],
