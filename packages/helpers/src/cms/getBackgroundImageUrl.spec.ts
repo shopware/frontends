@@ -16,7 +16,7 @@ import {
   cmsSectionTestCaseSeven,
   urlsTestCaseSeven,
 } from "./mocks/backgroundImage";
-import { CmsSection } from "@shopware-pwa/types";
+import type { CmsSection } from "@shopware-pwa/types";
 
 describe("getBackgroundImageUrl, round up max height 1900", () => {
   const element = cmsSectionTestCaseOne as CmsSection;

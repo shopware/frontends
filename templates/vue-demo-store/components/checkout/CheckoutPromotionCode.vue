@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LineItem } from "@shopware-pwa/types";
+import type { LineItem } from "@shopware-pwa/types";
 const { appliedPromotionCodes, addPromotionCode, removeItem } = useCart();
 const { codeErrorsNotification } = useCartNotification();
 const addPromotionCodeHandler = async (code: string) => {

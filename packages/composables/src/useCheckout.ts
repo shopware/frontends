@@ -1,5 +1,6 @@
-import { computed, ComputedRef, ref, inject, provide } from "vue";
-import {
+import { computed, ref, inject, provide } from "vue";
+import type { ComputedRef } from "vue";
+import type {
   ShippingAddress,
   ShippingMethod,
   PaymentMethod,

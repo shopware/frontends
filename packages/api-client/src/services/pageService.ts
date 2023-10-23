@@ -4,7 +4,7 @@ import {
   getSeoUrlEndpoint,
 } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
-import {
+import type {
   ShopwareSearchParams,
   CmsPageResponse,
   EntityResult,

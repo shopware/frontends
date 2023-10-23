@@ -59,7 +59,7 @@ npm install -D @shopware-pwa/types
 and use
 
 ```ts
-import { SeoUrl } from "@shopware-pwa/types";
+import type { SeoUrl } from "@shopware-pwa/types";
 ```
 
 in your components or composables.
@@ -77,7 +77,7 @@ Depending on which type of route you have, the way of fetching the page data is 
 Possibly, the easiest approach is to set up a catch-all component, that resolves the route and then renders the correct page component. This is how it could look like:
 
 ```ts
-import { SeoUrl } from "@shopware-pwa/types";
+import type { SeoUrl } from "@shopware-pwa/types";
 
 import {
   useNavigation,

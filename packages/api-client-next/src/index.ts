@@ -1,9 +1,9 @@
 import { ofetch } from "ofetch";
-import {
+import type {
   operations as defaultOperations,
   paths as defaultPaths,
 } from "../api-types";
-import {
+import type {
   operations as defaultAdminOperations,
   paths as defaultAdminPaths,
 } from "../admin-api-types";

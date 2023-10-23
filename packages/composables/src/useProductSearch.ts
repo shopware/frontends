@@ -1,5 +1,8 @@
 import { getProduct } from "@shopware-pwa/api-client";
-import { ProductResponse, ShopwareSearchParams } from "@shopware-pwa/types";
+import type {
+  ProductResponse,
+  ShopwareSearchParams,
+} from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 import { cmsAssociations } from "./cms/cmsAssociations";
 import { _useContext } from "./internal/_useContext";

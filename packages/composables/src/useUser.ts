@@ -1,4 +1,5 @@
-import { ref, Ref, UnwrapRef, computed, ComputedRef, reactive } from "vue";
+import { ref, computed, reactive } from "vue";
+import type { Ref, UnwrapRef, ComputedRef } from "vue";
 import {
   login as apiLogin,
   logout as apiLogout,
@@ -12,7 +13,7 @@ import {
   CustomerUpdateEmailParam,
   setDefaultCustomerPaymentMethod,
 } from "@shopware-pwa/api-client";
-import {
+import type {
   Customer,
   CustomerRegistrationParams,
   Country,

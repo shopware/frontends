@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import {
-  CmsSectionSidebar,
-  useCmsSection,
-} from "@shopware-pwa/composables-next";
+import { useCmsSection } from "@shopware-pwa/composables-next";
+import type { CmsSectionSidebar } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsSectionSidebar;

@@ -1,14 +1,7 @@
-import {
-  Ref,
-  ref,
-  computed,
-  onMounted,
-  ComputedRef,
-  inject,
-  provide,
-} from "vue";
+import { ref, computed, onMounted, inject, provide } from "vue";
+import type { Ref, ComputedRef } from "vue";
 import { getAvailableSalutations } from "@shopware-pwa/api-client";
-import { ClientApiError, Salutation } from "@shopware-pwa/types";
+import type { ClientApiError, Salutation } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 
 export type UseSalutationsReturn = {

@@ -3,7 +3,10 @@
  */
 
 import { RequestParameters, createAPIClient } from ".";
-import { operationPaths, operations } from "../api-types/apiTypes-6.4.19.0";
+import type {
+  operationPaths,
+  operations,
+} from "../api-types/apiTypes-6.4.19.0";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";

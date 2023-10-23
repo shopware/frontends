@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockImageHighlightRow } from "@shopware-pwa/composables-next";
+import type { CmsBlockImageHighlightRow } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockImageHighlightRow;

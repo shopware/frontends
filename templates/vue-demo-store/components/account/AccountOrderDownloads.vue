@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OrderDocument } from "@shopware-pwa/types";
+import type { OrderDocument } from "@shopware-pwa/types";
 import { downloadFile } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{

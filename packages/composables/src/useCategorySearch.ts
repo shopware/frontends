@@ -1,9 +1,8 @@
-import { computed, ComputedRef, inject, provide, ref, Ref, unref } from "vue";
 import {
   invokePost,
   getCategoryDetailsEndpoint,
 } from "@shopware-pwa/api-client";
-import { Category, ShopwareSearchParams } from "@shopware-pwa/types";
+import type { Category, ShopwareSearchParams } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 import { cmsAssociations } from "./cms/cmsAssociations";
 import { _useContext } from "./internal/_useContext";

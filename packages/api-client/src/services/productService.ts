@@ -4,7 +4,7 @@ import {
   getProductListingEndpoint,
   getProductReviewsEndpoint,
 } from "../endpoints";
-import {
+import type {
   ProductListingResult,
   Product,
   ShopwareSearchParams,

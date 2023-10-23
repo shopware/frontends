@@ -9,7 +9,7 @@ import {
   useProductPrice,
   usePrice,
 } from "@shopware-pwa/composables-next";
-import { Product } from "@shopware-pwa/types";
+import type { Product } from "@shopware-pwa/types";
 
 const props = defineProps<{
   product: Product;

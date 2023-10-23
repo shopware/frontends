@@ -1,4 +1,4 @@
-import { CmsSlot } from "@shopware-pwa/types";
+import type { CmsSlot } from "@shopware-pwa/types";
 import { ElementConfig } from "../types";
 
 /**

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { OpenAPI3 } from "openapi-typescript";
+import type { OpenAPI3 } from "openapi-typescript";
 
 /**
  * To add new patch define version (using semver) and patch function which modifies JSON schema and saves it back to file.

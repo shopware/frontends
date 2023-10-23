@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockTextThreeColumn } from "@shopware-pwa/composables-next";
+import type { CmsBlockTextThreeColumn } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockTextThreeColumn;

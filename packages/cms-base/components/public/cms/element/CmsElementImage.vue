@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {
+import { useCmsElementImage } from "@shopware-pwa/composables-next";
+import type {
   CmsElementImage,
   CmsElementManufacturerLogo,
-  useCmsElementImage,
 } from "@shopware-pwa/composables-next";
 import buildUrlPrefix from "../../../../helpers/buildUrlPrefix";
 import getUrlPrefix from "../../../../helpers/getUrlPrefix";

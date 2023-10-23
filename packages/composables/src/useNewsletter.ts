@@ -3,9 +3,10 @@ import {
   newsletterUnsubscribe as newsletterUnsubscribeAPI,
   isNewsletterSubscriber as isNewsletterSubscriberAPI,
 } from "@shopware-pwa/api-client";
-import { NewsletterInput } from "@shopware-pwa/types";
+import type { NewsletterInput } from "@shopware-pwa/types";
 import { useShopwareContext, useInternationalization } from ".";
-import { ref, computed, ComputedRef, Ref } from "vue";
+import { ref, computed } from "vue";
+import type { ComputedRef, Ref } from "vue";
 
 export type UseNewsletterReturn = {
   /**

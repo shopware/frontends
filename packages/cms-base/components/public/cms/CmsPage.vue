@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsPage, CmsSection } from "@shopware-pwa/types";
+import type { CmsPage, CmsSection } from "@shopware-pwa/types";
 import { pascalCase } from "scule";
 import {
   getCmsLayoutConfiguration,
