@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OrderLineItem } from "@shopware-pwa/types";
+import type { OrderLineItem } from "@shopware-pwa/types";
 import {
   getSmallestThumbnailUrl,
   getMedia,

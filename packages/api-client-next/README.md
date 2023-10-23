@@ -29,13 +29,13 @@ Recommended practice is to create separate module file. For example `src/apiClie
 import { createAPIClient } from "@shopware/api-client";
 
 // You can pick types of your current API version, the default one:
-import {
+import type {
   operationPaths,
   operations,
   components,
 } from "@shopware/api-client/api-types";
 // or (specific version):
-import {
+import type {
   operationPaths,
   operations,
   components,
@@ -82,7 +82,7 @@ import {
   RequestReturnType,
   createAdminAPIClient,
 } from "@shopware/api-client";
-import {
+import type {
   operationPaths,
   operations,
   components,

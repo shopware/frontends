@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useProductPrice } from "@shopware-pwa/composables-next";
-import { Product } from "@shopware-pwa/types";
+import type { Product } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 import SwSharedPrice from "./SwSharedPrice.vue";

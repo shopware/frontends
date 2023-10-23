@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
+import type { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
 const { pushSuccess, pushError } = useNotifications();
 const {
   setDefaultCustomerShippingAddress,
@@ -86,6 +86,7 @@ const addressSaved = () => {
       </h5>
       <button
         v-if="canEdit"
+        title="Open address editor"
         class="cursor-pointer i-carbon-edit text-xl inline-block"
         data-testid="address-edit"
         @click.prevent="addAddressModalController.open"

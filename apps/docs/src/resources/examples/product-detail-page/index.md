@@ -16,7 +16,7 @@ Path: `templates/vue-demo-store/components/product/ProductStatic.vue`
 
 ```vue
 <script setup lang="ts">
-import { Product, ProductReview } from "@shopware-pwa/types";
+import type { Product, ProductReview } from "@shopware-pwa/types";
 import {
   getProductRoute,
   getTranslatedProperty,

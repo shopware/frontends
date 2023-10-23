@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ListingResult, Product } from "@shopware-pwa/types";
+import type { ListingResult, Product } from "@shopware-pwa/types";
 const route = useRoute();
 const router = useRouter();
 

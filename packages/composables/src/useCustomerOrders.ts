@@ -1,7 +1,8 @@
-import { ref, Ref } from "vue";
+import { ref } from "vue";
+import type { Ref } from "vue";
 import { getCustomerOrders } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
-import { Order, ShopwareSearchParams } from "@shopware-pwa/types";
+import type { Order, ShopwareSearchParams } from "@shopware-pwa/types";
 
 export type UseCustomerOrdersReturn = {
   /**

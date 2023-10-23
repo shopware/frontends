@@ -1,4 +1,4 @@
-import { CmsBlock, CmsSection } from "@shopware-pwa/types";
+import type { CmsBlock, CmsSection } from "@shopware-pwa/types";
 
 const DEFAULT_BG_IMAGE_SIZE = 800;
 function roundUp(num: number) {

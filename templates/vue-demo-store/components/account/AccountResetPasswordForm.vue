@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { confirmPasswordReset } from "@shopware-pwa/api-client";
-import { ClientApiError } from "@shopware-pwa/types";
+import type { ClientApiError } from "@shopware-pwa/types";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 
 const { required, minLength, sameAs } = customValidators();
@@ -104,7 +104,7 @@ const invokeReset = async (): Promise<void> => {
               v-model="state.password.newPasswordConfirm"
               name="confirm-password"
               type="password"
-              autocomplete="repeat-password"
+              autocomplete="off"
               required
               class="appearance-none rounded-none shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
               :placeholder="$t('form.repeatPasswordPlaceholder')"

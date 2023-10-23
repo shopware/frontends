@@ -15,9 +15,9 @@ export default defineConfig({
     },
     colors: {
       brand: {
-        primary: "#189eff",
+        primary: "#0d588f",
         light: "#5ebbff",
-        dark: "#0081df",
+        dark: "#026ebd",
       },
     },
   },

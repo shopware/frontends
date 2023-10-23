@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getSessionContext } from "@shopware-pwa/api-client";
-import { SessionContext } from "@shopware-pwa/types";
-import { getPrefix, getDefaultLocale } from "./i18n/src/helpers/prefix";
+import type { SessionContext } from "@shopware-pwa/types";
+import { getPrefix } from "./i18n/src/helpers/prefix";
 
 /**
  * Init breadcrumbs context
@@ -53,7 +53,7 @@ const { refreshCart } = useCart();
 useNotifications();
 useAddress();
 
-const { locale, availableLocales } = useI18n();
+const { locale, availableLocales, defaultLocale } = useI18n();
 const router = useRouter();
 const {
   getAvailableLanguages,
@@ -74,20 +74,20 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   const prefix = getPrefix(
     availableLocales,
     router.currentRoute.value.name as string,
+    defaultLocale,
   );
 
   // Language set on the backend side
   const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
-
   // If languages are not the same, set one from prefix
   if (sessionLanguage !== prefix) {
     await changeLanguage(
-      getLanguageIdFromCode(prefix ? prefix : getDefaultLocale()),
+      getLanguageIdFromCode(prefix ? prefix : defaultLocale),
     );
     await refreshSessionContext();
   }
 
-  locale.value = prefix ? prefix : getDefaultLocale();
+  locale.value = prefix ? prefix : defaultLocale;
   // Set prefix from CMS components
   provide("urlPrefix", prefix);
 }

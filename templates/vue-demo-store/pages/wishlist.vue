@@ -6,7 +6,7 @@ export default {
 
 <script setup lang="ts">
 import { getProducts } from "@shopware-pwa/api-client";
-import { ClientApiError, Product } from "@shopware-pwa/types";
+import type { ClientApiError, Product } from "@shopware-pwa/types";
 
 const { items, clearWishlist } = useWishlist();
 const { apiInstance } = useShopwareContext();

@@ -7,6 +7,7 @@ import type {
   PropertyGroupOptionCart,
   ProductResponse,
   CartProductItem,
+  Cart,
 } from "@shopware-pwa/types";
 
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
@@ -56,7 +57,7 @@ export type UseCartItemReturn = {
   /**
    * Changes the current item quantity in the cart
    */
-  changeItemQuantity(quantity: number): Promise<void>;
+  changeItemQuantity(quantity: number): Promise<Cart>;
   /**
    * Removes the current item from the cart
    */
@@ -119,11 +120,13 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
     await refreshCart(newCart);
   }
 
-  async function changeItemQuantity(quantity: number): Promise<void> {
-    await changeProductQuantity({
+  async function changeItemQuantity(quantity: number): Promise<Cart> {
+    const result = await changeProductQuantity({
       id: cartItem.value.id,
       quantity: quantity,
     });
+
+    return result;
   }
 
   /**

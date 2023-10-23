@@ -1,4 +1,4 @@
-import { StoreNavigationElement } from "@shopware-pwa/types";
+import type { StoreNavigationElement } from "@shopware-pwa/types";
 
 const Menu: StoreNavigationElement[] = [
   {

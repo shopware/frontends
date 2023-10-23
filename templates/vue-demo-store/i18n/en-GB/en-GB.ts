@@ -9,17 +9,19 @@ import listing from "./listing.json";
 import product from "./product.json";
 import newsletter from "./newsletter.json";
 import validations from "./validations.json";
+import errors from "./errors.json";
 
-export default Object.assign(
-  account,
-  form,
-  changePassword,
-  recoveryPassword,
-  checkout,
-  general,
-  cart,
-  listing,
-  product,
-  newsletter,
-  validations,
-);
+export default {
+  ...form,
+  ...general,
+  ...account,
+  ...changePassword,
+  ...recoveryPassword,
+  ...checkout,
+  ...cart,
+  ...listing,
+  ...product,
+  ...newsletter,
+  ...validations,
+  ...errors,
+};

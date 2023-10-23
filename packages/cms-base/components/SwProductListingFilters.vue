@@ -1,20 +1,14 @@
 <script setup lang="ts">
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
-import {
-  computed,
-  ComputedRef,
-  provide,
-  reactive,
-  ref,
-  UnwrapNestedRefs,
-} from "vue";
+import { computed, provide, reactive, ref } from "vue";
+import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import SwProductListingFilter from "./SwProductListingFilter.vue";
-import {
+import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
-  useListing,
 } from "@shopware-pwa/composables-next";
-import { ShopwareSearchParams } from "@shopware-pwa/types";
+import { useListing } from "@shopware-pwa/composables-next";
+import type { ShopwareSearchParams } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 
@@ -177,7 +171,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
 </script>
 <template>
   <div class="bg-white">
-    <main class="mx-auto m-0 px-5">
+    <div class="mx-auto m-0 px-5">
       <div
         class="relative lg:flex lg:items-baseline lg:justify-between pt-6 pb-6 border-b border-gray-200"
       >
@@ -230,7 +224,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
                       ? 'font-medium text-gray-900'
                       : 'text-gray-500',
                   ]"
-                  class="block px-4 py-2 text-sm"
+                  class="block px-4 py-2 text-sm bg-transparent"
                   role="menuitem"
                   tabindex="-1"
                 >
@@ -268,6 +262,6 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
           </button>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </template>

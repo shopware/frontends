@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockImageBubbleRow } from "@shopware-pwa/composables-next";
+import type { CmsBlockImageBubbleRow } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockImageBubbleRow;

@@ -1,10 +1,10 @@
 import { describe, expect, it, assertType } from "vitest";
 import { createAPIClient } from ".";
-import {
+import type {
   operationPaths as paths6419,
   operations as operations6419,
 } from "../api-types/apiTypes-6.4.19.0";
-import {
+import type {
   operationPaths as paths6420,
   operations as operations6420,
 } from "../api-types/apiTypes-6.4.20.0";

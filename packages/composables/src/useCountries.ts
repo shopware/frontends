@@ -1,14 +1,7 @@
-import {
-  computed,
-  Ref,
-  ref,
-  onMounted,
-  ComputedRef,
-  inject,
-  provide,
-} from "vue";
+import { computed, ref, onMounted, inject, provide } from "vue";
+import type { Ref, ComputedRef } from "vue";
 import { getAvailableCountries } from "@shopware-pwa/api-client";
-import { Country, CountryState } from "@shopware-pwa/types";
+import type { Country, CountryState } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 
 export type UseCountriesReturn = {

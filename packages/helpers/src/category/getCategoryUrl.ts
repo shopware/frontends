@@ -1,4 +1,4 @@
-import { Category } from "@shopware-pwa/types";
+import type { Category } from "@shopware-pwa/types";
 
 type LinkedCategory = Pick<
   Category,
@@ -36,7 +36,8 @@ export function getCategoryUrl(category: LinkedCategory): string {
     case "link":
       return (
         category.externalLink ||
-        category?.seoUrls?.[0]?.seoPathInfo ||
+        (category?.seoUrls?.[0]?.seoPathInfo &&
+          `/${category?.seoUrls?.[0]?.seoPathInfo.replace(/^\/+/, "")}`) ||
         `/${getEntityPrefix(category)}/${category.internalLink}`
       );
     default:

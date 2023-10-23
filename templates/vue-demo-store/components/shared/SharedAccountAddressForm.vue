@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {
+import type {
   CustomerAddress,
   ClientApiError,
   ShopwareError,
@@ -54,7 +54,7 @@ const invokeSave = async (): Promise<void> => {
     $v.value.$touch();
     const valid = await $v.value.$validate();
     if (valid) {
-      await saveAddress(formData);
+      await saveAddress(formData as CustomerAddress);
       emits("success");
     }
   } catch (errors) {
@@ -103,7 +103,11 @@ const $v = useVuelidate(rules, formData);
 </script>
 
 <template>
-  <div class="mt-5 md:mt-0 md:col-span-2">
+  <div
+    id="modal-headline"
+    aria-label="Edit Address"
+    class="mt-5 md:mt-0 md:col-span-2"
+  >
     <div class="shadow overflow-hidden sm:rounded-md">
       <form
         id="account-address"
@@ -128,7 +132,8 @@ const $v = useVuelidate(rules, formData);
                 v-model="formData.salutationId"
                 required
                 name="salutation"
-                autocomplete="salutation-name"
+                aria-label="Customer salutation"
+                autocomplete="off"
                 class="mt-1 block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-light focus:border-brand-light sm:text-sm"
                 data-testid="account-address-form-salutation-select"
               >

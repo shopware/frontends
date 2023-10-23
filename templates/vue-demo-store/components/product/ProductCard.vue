@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
-import {
+import type {
   ClientApiError,
   Product,
   PropertyGroupOption,
@@ -14,7 +14,7 @@ import {
 
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
-const { codeErrorsNotification } = useCartNotification();
+const { getErrorsCodes } = useCartNotification();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
@@ -62,7 +62,9 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
-  codeErrorsNotification();
+  getErrorsCodes()?.forEach((element) => {
+    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  });
   pushSuccess(
     t(`cart.messages.addedToCart`, { p: props.product?.translated?.name }),
   );
@@ -102,7 +104,6 @@ const srcPath = computed(() => {
       >
         <img
           ref="imageElement"
-          loading="lazy"
           :src="srcPath"
           :alt="getProductName({ product }) || ''"
           class="transform transition duration-400 hover:scale-120"
@@ -158,11 +159,11 @@ const srcPath = computed(() => {
         :to="formatLink(getProductRoute(product))"
         data-testid="product-box-product-name-link"
       >
-        <h5
+        <h2
           class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white min-h-60px"
         >
           {{ getProductName({ product }) }}
-        </h5>
+        </h2>
       </RouterLink>
       <div class="flex items-center justify-between">
         <div class="">
@@ -178,8 +179,8 @@ const srcPath = computed(() => {
           type="button"
           class="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 md:hover:scale-120 flex"
           :class="{
-            'text-white bg-blue-500 hover:bg-blue-600': !isInCart,
-            'text-gray-500 bg-gray-100': isInCart,
+            'text-white bg-blue-600 hover:bg-blue-700': !isInCart,
+            'text-gray-600 bg-gray-100': isInCart,
           }"
           data-testid="add-to-cart-button"
           @click="addToCartProxy"

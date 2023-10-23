@@ -1,5 +1,6 @@
-import { computed, ComputedRef } from "vue";
-import {
+import { computed } from "vue";
+import type { ComputedRef } from "vue";
+import type {
   ShippingMethod,
   PaymentMethod,
   Currency,
@@ -186,7 +187,10 @@ export function useSessionContext(
   };
 
   const activeShippingAddress = computed(
-    () => sessionContext.value?.shippingLocation?.address || null,
+    () =>
+      sessionContext.value?.customer?.activeShippingAddress ||
+      sessionContext.value?.shippingLocation?.address ||
+      null,
   );
   const setActiveShippingAddress = async (
     address: Partial<ShippingAddress>,
@@ -202,7 +206,7 @@ export function useSessionContext(
 
   // TODO: replace the source from defaultBillingAddress by new value once NEXT-28627 is solved
   const activeBillingAddress = computed(
-    () => sessionContext.value?.customer?.defaultBillingAddress || null,
+    () => sessionContext.value?.customer?.activeBillingAddress || null,
   );
   const setActiveBillingAddress = async (address: Partial<BillingAddress>) => {
     if (!address?.id) {
