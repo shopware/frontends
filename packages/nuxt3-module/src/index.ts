@@ -11,17 +11,19 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     configKey: "shopware",
   },
   async setup(moduleConfig, nuxt) {
+    const shopwareEndpoint =
+      moduleConfig.shopwareEndpoint ?? "https://demo-frontends.shopware.store";
+    const accessToken =
+      moduleConfig.shopwareAccessToken ?? "SWSCBHFSNTVMAWNZDNFKSHLAYW";
+
     addPluginTemplate({
       filename: "runtime/shopware.plugin.mjs",
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       src: resolve(__dirname, "../plugin.ts"),
       options: {
-        shopwareEndpoint:
-          moduleConfig.shopwareEndpoint ??
-          "https://demo-frontends.shopware.store",
-        shopwareAccessToken:
-          moduleConfig.shopwareAccessToken ?? "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        shopwareEndpoint: shopwareEndpoint,
+        shopwareAccessToken: accessToken,
         shopwareApiClient: {
           timeout: moduleConfig.apiClientConfig?.timeout ?? "10000",
         },
@@ -29,7 +31,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     });
 
     // TODO: remove it once nitro server build contains all external packages of nuxt3-module (composables-next)
-    nuxt.options.build.transpile.push("@shopware-pwa/composables-next");
+    //nuxt.options.build.transpile.push("@shopware-pwa/composables-next");
 
     // use a module's dependency in order to not install it again within an end-project to keep compatibility
     const apiClientDependencyPath = await resolveOwnDependency(
@@ -62,26 +64,33 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       dirs.push({
         from: "@shopware-pwa/composables-next",
         imports: [
+          "useAddress",
           "useAddToCart",
-          "useCheckout",
-          "useCountries",
-          "useCustomerPassword",
-          "useCmsElementConfig",
-          "useShopwareContext",
-          "useSessionContext",
+          "useBreadcrumbs",
           "useCart",
           "useCartItem",
           "useCategory",
           "useCategorySearch",
+          "useCheckout",
+          "useCms",
+          "useCmsBlock",
+          "useCmsElementConfig",
+          "useCmsMeta",
+          "useCmsSection",
+          "useCountries",
+          "useCustomerOrders",
+          "useCustomerPassword",
+          "useInternationalization",
+          "useLandingSearch",
+          "useListing",
           "useNavigation",
           "useNavigationContext",
           "useNavigationSearch",
+          "useNewsletter",
           "useNotifications",
-          "useLandingSearch",
-          "useListing",
-          "useCms",
-          "useCmsBlock",
           "useOrderDetails",
+          "useOrderPayment",
+          "usePrice",
           "useProduct",
           "useProductAssociations",
           "useProductConfigurator",
@@ -91,17 +100,10 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
           "useProductSearchSuggest",
           "useProductWishlist",
           "useSalutations",
+          "useSessionContext",
+          "useShopwareContext",
           "useUser",
           "useWishlist",
-          "usePrice",
-          "useCustomerOrders",
-          "useAddress",
-          "useCmsMeta",
-          "useNewsletter",
-          "useNavigationContext",
-          "useOrderPayment",
-          "useBreadcrumbs",
-          "useInternationalization",
         ],
       });
     });

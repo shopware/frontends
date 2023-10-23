@@ -13,27 +13,19 @@ const ShopwarePlugin = {
   install(app, options) {
     const runtimeConfig = useRuntimeConfig();
 
-    const useUserCookieContext =
+    const isUserCookieContext =
       !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
       !options.isServer;
 
-    const contextToken = useCookie("sw-context-token", {
-      maxAge: 60 * 60 * 24 * 365,
-      sameSite: "Lax",
-      path: "/",
-    });
-    const languageId = useCookie("sw-language-id", {
-      maxAge: 60 * 60 * 24 * 365,
-      sameSite: "Lax",
-      path: "/",
-    });
+    const contextToken = getCookieContextToken();
+    const languageId = getCookieLanguageId();
 
-    // workaround for SSG case, where cookies contains additional dot in name, related: https://github.com/shopware/frontends/commit/ee5b8a71e1e016c973a7852efa3b85a136e6ea14
-    const cookieContextToken = Cookies.get("sw-context-token");
-    const cookieLanguageId = Cookies.get("sw-language-id");
+    const shopwareEndpoint =
+      runtimeConfig?.shopware?.shopwareEndpoint ||
+      runtimeConfig.public.shopware.shopwareEndpoint;
 
     if (
-      !runtimeConfig.public?.shopware?.shopwareEndpoint ||
+      !shopwareEndpoint ||
       !runtimeConfig.public?.shopware?.shopwareAccessToken
     ) {
       throw new Error(
@@ -41,47 +33,24 @@ const ShopwarePlugin = {
       );
     }
 
-    /**
-     * Server config has bigger prio than client
-     */
-    const instance = createInstance({
-      endpoint:
-        runtimeConfig?.shopware?.shopwareEndpoint ||
-        runtimeConfig.public.shopware.shopwareEndpoint,
-      accessToken: runtimeConfig.public.shopware.shopwareAccessToken,
-      timeout: runtimeConfig.public.shopware.shopwareAccessToken || 10000,
-      auth: {
-        username:
-          "<%= options.shopwareApiClient.auth ? options.shopwareApiClient.auth.username : undefined %>",
-        password:
-          "<%=  options.shopwareApiClient.auth ? options.shopwareApiClient.auth.password : undefined %>",
-      },
-      contextToken: useUserCookieContext
-        ? contextToken.value || cookieContextToken
-        : "",
-      languageId: useUserCookieContext
-        ? languageId.value || cookieLanguageId
-        : undefined,
-    });
+    const instance = createApiClientInstance(
+      shopwareEndpoint,
+      runtimeConfig.public.shopware.shopwareAccessToken,
+      getContextToken(isUserCookieContext),
+      getLanguageId(isUserCookieContext),
+    );
+
     /**
      * Save current contextToken when its change
      */
     instance.onConfigChange(({ config }) => {
       try {
         // only save cookies on client side render
-        if (useUserCookieContext) {
+        if (isUserCookieContext) {
           contextToken.value = config.contextToken;
           languageId.value = config.languageId;
-          Cookies.set("sw-context-token", config.contextToken || "", {
-            expires: 365, //days
-            sameSite: "Lax",
-            path: "/",
-          });
-          Cookies.set("sw-language-id", config.languageId || "", {
-            expires: 365, //days
-            sameSite: "Lax",
-            path: "/",
-          });
+          setCookieContextToken(config.contextToken);
+          setCookieLanguageId(config.languageId);
         }
       } catch (e) {
         // Sometimes cookie is set on server after request is send, it can fail silently
@@ -100,6 +69,78 @@ const ShopwarePlugin = {
     useState("swSessionContext", () => sessionContextData);
   },
 };
+
+function getCookieContextToken() {
+  return useCookie("sw-context-token", {
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: "Lax",
+    path: "/",
+  });
+}
+
+function setCookieContextToken(contextToken) {
+  Cookies.set("sw-context-token", contextToken || "", {
+    expires: 365, //days
+    sameSite: "Lax",
+    path: "/",
+  });
+}
+
+function getContextToken(isUserCookieContext) {
+  const contextToken = getCookieContextToken();
+  // workaround for SSG case, where cookies contains additional dot in name, related: https://github.com/shopware/frontends/commit/ee5b8a71e1e016c973a7852efa3b85a136e6ea14
+  const cookieContextToken = Cookies.get("sw-context-token");
+
+  return isUserCookieContext ? contextToken.value || cookieContextToken : "";
+}
+
+function getCookieLanguageId() {
+  return useCookie("sw-language-id", {
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: "Lax",
+    path: "/",
+  });
+}
+
+function setCookieLanguageId(languageId) {
+  Cookies.set("sw-language-id", languageId || "", {
+    expires: 365, //days
+    sameSite: "Lax",
+    path: "/",
+  });
+}
+
+function getLanguageId(isUserCookieContext) {
+  const languageId = getCookieLanguageId();
+  // workaround for SSG case, where cookies contains additional dot in name, related: https://github.com/shopware/frontends/commit/ee5b8a71e1e016c973a7852efa3b85a136e6ea14
+  const cookieLanguageId = Cookies.get("sw-language-id");
+
+  return isUserCookieContext ? languageId.value || cookieLanguageId : undefined;
+}
+
+/**
+ * Server config has bigger prio than client
+ */
+function createApiClientInstance(
+  shopwareEndpoint,
+  shopwareAccessToken,
+  contextToken,
+  languageId,
+) {
+  return createInstance({
+    endpoint: shopwareEndpoint,
+    accessToken: shopwareAccessToken,
+    timeout: shopwareAccessToken || 10000,
+    auth: {
+      username:
+        "<%= options.shopwareApiClient.auth ? options.shopwareApiClient.auth.username : undefined %>",
+      password:
+        "<%=  options.shopwareApiClient.auth ? options.shopwareApiClient.auth.password : undefined %>",
+    },
+    contextToken: contextToken,
+    languageId: languageId,
+  });
+}
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   nuxtApp.vueApp.use(ShopwarePlugin, {
