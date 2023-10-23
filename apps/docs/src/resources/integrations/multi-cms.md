@@ -27,13 +27,14 @@ Add middleware injection to the main routing resolver file.
 `templates/vue-demo-store/pages/[...all].vue`
 
 ```ts{16-23,46-54,61-66}
-import { Ref, resolveComponent } from "vue";
+import { resolveComponent } from "vue";
+import type { Ref } from "vue";
 import { pascalCase } from "scule";
 import {
   useNavigationContext,
   useNavigationSearch,
 } from "@shopware-pwa/composables-next";
-import { SeoUrl } from "@shopware-pwa/types";
+import type { SeoUrl } from "@shopware-pwa/types";
 const { clearBreadcrumbs } = useBreadcrumbs();
 
 const NOT_FOUND_COMPONENT = "errors/RoutingNotFound";
