@@ -43,7 +43,10 @@ export type UseCartReturn = {
   /**
    * Changes the quantity of a product in the cart
    */
-  changeProductQuantity(params: { id: string; quantity: number }): void;
+  changeProductQuantity(params: {
+    id: string;
+    quantity: number;
+  }): Promise<Cart>;
   /**
    * The number of items in the cart
    */
@@ -141,6 +144,8 @@ export function useCartFunction(): UseCartReturn {
     );
     _storeCart.value = result;
     setCartErrors(result);
+
+    return result;
   }
 
   async function submitPromotionCode(promotionCode: string) {

@@ -8,13 +8,15 @@ import { EntityError } from "../../common/EntityError";
  * @beta
  */
 export type CartErrors = {
-  [key: string]: {
-    code: number;
-    key: string;
-    level: number;
-    message: string;
-    messageKey: string;
-  };
+  [key: string]: CartError;
+};
+
+export type CartError = {
+  code: number;
+  key: string;
+  level: number;
+  message: string;
+  messageKey: string;
 };
 
 /**

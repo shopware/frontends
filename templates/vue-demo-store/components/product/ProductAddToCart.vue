@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import type { Product } from "@shopware-pwa/types";
 
-const { pushSuccess } = useNotifications();
+const { pushSuccess, pushError } = useNotifications();
 const props = defineProps<{
   product: Product;
 }>();
 const { product } = toRefs(props);
-const { codeErrorsNotification } = useCartNotification();
+const { getErrorsCodes } = useCartNotification();
+const { t } = useI18n();
 const { addToCart, quantity } = useAddToCart(product);
 
 const addToCartProxy = async () => {
   await addToCart();
-  codeErrorsNotification();
+  getErrorsCodes()?.forEach((element) => {
+    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  });
   pushSuccess(`${props.product?.translated?.name} has been added to cart.`);
 };
 

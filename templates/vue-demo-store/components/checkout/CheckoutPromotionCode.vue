@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import type { LineItem } from "@shopware-pwa/types";
 const { appliedPromotionCodes, addPromotionCode, removeItem } = useCart();
-const { codeErrorsNotification } = useCartNotification();
+const { getErrorsCodes } = useCartNotification();
+const { pushError } = useNotifications();
+const { t } = useI18n();
+
 const addPromotionCodeHandler = async (code: string) => {
   await addPromotionCode(code);
-  codeErrorsNotification();
+  getErrorsCodes()?.forEach((element) => {
+    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  });
   promoCode.value = "";
 };
 
 const removeItemHandler = (appliedPromotionCode: LineItem) => {
   removeItem(appliedPromotionCode);
-  codeErrorsNotification();
+  getErrorsCodes()?.forEach((element) => {
+    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  });
 };
 
 const showPromotionCodes = computed(
