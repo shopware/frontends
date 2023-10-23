@@ -22,10 +22,17 @@ const {
 
 const nuxtApp = useNuxtApp();
 
+let adyenConfigResponse;
 // get the clientKey and environment settings from backend (will overwrite the corresponding settings from nuxt.config.ts)
-const adyenConfigResponse = await apiInstance.invoke.get(
-  "/store-api/adyen/payment-methods",
-);
+try {
+  adyenConfigResponse = await apiInstance.invoke.get(
+    "/store-api/adyen/payment-methods",
+  );
+} catch (error) {
+  alert(
+    "The project or API instance isn't configured properly. Please check the README.md to have it working correctly.",
+  );
+}
 
 // adjust a SessionContext type to reflect actual one enhanced by Adyen add-on
 type AdyenEnhancedSessionContext = SessionContext & {
@@ -37,7 +44,7 @@ type AdyenEnhancedSessionContext = SessionContext & {
 const checkout = await nuxtApp.$adyenCheckout({
   ...((sessionContext.value as AdyenEnhancedSessionContext)?.extensions
     ?.adyenData || adyenCheckout),
-  paymentMethodsResponse: adyenConfigResponse.data,
+  paymentMethodsResponse: adyenConfigResponse?.data,
   paymentMethodsConfiguration: {
     card: {
       hasHolderName: true,

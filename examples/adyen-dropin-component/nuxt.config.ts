@@ -8,8 +8,8 @@ export default defineNuxtConfig({
       },
       shopware: {
         // your Shopware 6 instance endpoint and access key
-        shopwareEndpoint: "http://localhost:8000",
-        shopwareAccessToken: "SWSCCMR1DEXDTK0XRJVSD3DHMW",
+        shopwareEndpoint: "https://demo-frontends.shopware.store",
+        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
       },
       adyenCheckout: {
         environment: "test", // Change to 'live' for the live environment.
@@ -20,13 +20,9 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@shopware-pwa/nuxt3-module"],
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
-  css: ["~/assets/css/main.css"],
+  css: [
+    "@unocss/reset/tailwind-compat.css", // needed to reset styles see https://unocss.dev/guide/style-reset (@unocss/reset)
+  ],
+  modules: ["@shopware-pwa/nuxt3-module", "@unocss/nuxt"],
   devtools: { enabled: true },
 });
