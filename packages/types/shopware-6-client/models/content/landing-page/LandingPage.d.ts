@@ -24,6 +24,7 @@ export type LandingPage = {
     metaTitle: string | null;
     metaDescription: string | null;
     keywords: string | null;
+    url: string;
   };
   createdAt: string;
   updatedAt: Date | string | null;
