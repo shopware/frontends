@@ -38,16 +38,17 @@ const { data: seoResult } = await useAsyncData(
   },
 );
 
-onBeforeRouteLeave(() => {
-  clearBreadcrumbs();
-});
-
 const { routeName, foreignKey } = useNavigationContext(
   seoResult as Ref<SeoUrl>,
 );
 
+const componentName = routeName.value;
+
+onBeforeRouteLeave(() => {
+  clearBreadcrumbs();
+});
+
 function render() {
-  const componentName = routeName.value;
   if (!componentName)
     return h("div", h(resolveComponent(pascalCase(NOT_FOUND_COMPONENT))));
 
