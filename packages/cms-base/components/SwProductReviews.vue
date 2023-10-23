@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Product, ProductReview } from "@shopware-pwa/types";
+import type { Product, ProductReview } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 

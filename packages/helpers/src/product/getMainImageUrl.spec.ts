@@ -1,6 +1,6 @@
 import { getMainImageUrl } from "./getMainImageUrl";
 import { describe, expect, it } from "vitest";
-import { Product, LineItem } from "@shopware-pwa/types";
+import type { Product, LineItem } from "@shopware-pwa/types";
 
 describe("Helpers - getMainImageUrl", () => {
   const mediaUrl =

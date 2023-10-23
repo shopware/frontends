@@ -1,6 +1,6 @@
 import { getStoreNavigationEndpoint } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
-import {
+import type {
   StoreNavigationElement,
   StoreNavigationType,
   ShopwareSearchParams,

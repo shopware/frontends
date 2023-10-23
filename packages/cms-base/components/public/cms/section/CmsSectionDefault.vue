@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsSectionDefault } from "@shopware-pwa/composables-next";
+import type { CmsSectionDefault } from "@shopware-pwa/composables-next";
 
 defineProps<{
   content: CmsSectionDefault;

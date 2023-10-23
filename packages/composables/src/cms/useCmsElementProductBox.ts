@@ -1,7 +1,9 @@
 import { inject } from "vue";
-import { CmsElementProductBox, BoxLayout, useCmsElementConfig } from "../index";
-import { computed, ComputedRef } from "vue";
-import { Product } from "@shopware-pwa/types";
+import { useCmsElementConfig } from "../index";
+import type { CmsElementProductBox, BoxLayout } from "../index";
+import { computed } from "vue";
+import type { ComputedRef } from "vue";
+import type { Product } from "@shopware-pwa/types";
 
 export type UseCmsElementProductBox = {
   product: Product;

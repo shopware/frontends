@@ -1,7 +1,7 @@
 import { describe, it, assertType } from "vitest";
 import { RequestParameters } from "..";
 
-import { operations } from "../../admin-api-types";
+import type { operations } from "../../admin-api-types";
 
 describe("requestParameters type", () => {
   describe("/token request", () => {

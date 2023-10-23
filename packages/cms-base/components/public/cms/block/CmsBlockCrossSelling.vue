@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockCrossSelling } from "@shopware-pwa/composables-next";
+import type { CmsBlockCrossSelling } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockCrossSelling;

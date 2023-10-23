@@ -268,7 +268,7 @@ You can then iterate the filter objects available in the array. The filter objec
 
 ```vue{15,17}
 <script setup lang="ts">
-import { ListingFilter } from "@shopware-pwa/types";
+import type { ListingFilter } from "@shopware-pwa/types";
 const { getAvailableFilters, getCurrentFilters, setCurrentFilters } = useListing(/** parameters omitted */)
 
 const selectManufacturerAndSearch = (manufacturerId: string) => {

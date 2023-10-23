@@ -1,4 +1,4 @@
-import { ShippingMethod } from "@shopware-pwa/types";
+import type { ShippingMethod } from "@shopware-pwa/types";
 
 /**
  *  Get shipping delivery time

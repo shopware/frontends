@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsSlot } from "@shopware-pwa/types";
+import type { CmsSlot } from "@shopware-pwa/types";
 import type {
   CmsBlockImageTextGallery,
   CmsElementImage,

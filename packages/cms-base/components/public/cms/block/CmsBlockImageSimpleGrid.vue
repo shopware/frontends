@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockImageSimpleGrid } from "@shopware-pwa/composables-next";
+import type { CmsBlockImageSimpleGrid } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockImageSimpleGrid;

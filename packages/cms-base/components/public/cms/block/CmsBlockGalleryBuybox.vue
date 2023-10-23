@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockGalleryBuybox } from "@shopware-pwa/composables-next";
+import type { CmsBlockGalleryBuybox } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockGalleryBuybox;

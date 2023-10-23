@@ -1,20 +1,14 @@
 <script setup lang="ts">
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
-import {
-  computed,
-  ComputedRef,
-  provide,
-  reactive,
-  ref,
-  UnwrapNestedRefs,
-} from "vue";
+import { computed, provide, reactive, ref } from "vue";
+import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import SwProductListingFilter from "./SwProductListingFilter.vue";
-import {
+import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
-  useListing,
 } from "@shopware-pwa/composables-next";
-import { ShopwareSearchParams } from "@shopware-pwa/types";
+import { useListing } from "@shopware-pwa/composables-next";
+import type { ShopwareSearchParams } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 
