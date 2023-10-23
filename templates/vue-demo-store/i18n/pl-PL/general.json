@@ -38,6 +38,12 @@
     "502": "Serwer nie mógł zrealizować Twojego żądania. Spróbuj ponownie za kilka sekund.",
     "503": "Serwer jest teraz bardzo zajęty"
   },
+  "setup": {
+    "problems": "Problemy podczas konfiguracji? 😬",
+    "support_start": "Sprawdź",
+    "support_page": "strona rozwiązywania problemów",
+    "support_end": "Powodzenia!"
+  },
   "breadcrumbs": {
     "accountOverview": "Przegląd konta",
     "address": "Adres",
