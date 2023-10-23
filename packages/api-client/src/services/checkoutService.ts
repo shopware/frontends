@@ -6,7 +6,7 @@ import {
   getCancelOrderEndpoint,
   getChangeOrderPaymentMethodEndpoint,
 } from "../endpoints";
-import {
+import type {
   CreateOrderParams,
   Order,
   OrderState,

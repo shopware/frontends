@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {
+import type {
   EntitiesAggregation,
   AggregationFilterEntity,
   PriceAggregation,

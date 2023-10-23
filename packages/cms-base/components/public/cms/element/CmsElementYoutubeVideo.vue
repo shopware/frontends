@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsElementYoutubeVideo } from "@shopware-pwa/composables-next";
+import type { CmsElementYoutubeVideo } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsElementYoutubeVideo;

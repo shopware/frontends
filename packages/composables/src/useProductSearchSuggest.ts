@@ -1,6 +1,7 @@
-import { ComputedRef, Ref, ref } from "vue";
+import { ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 
-import { ShopwareSearchParams, Product } from "@shopware-pwa/types";
+import type { ShopwareSearchParams, Product } from "@shopware-pwa/types";
 import { useListing } from "./useListing";
 
 export type UseProductSearchSuggestReturn = {

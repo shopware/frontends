@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {
+import type {
   CustomerAddress,
   ClientApiError,
   ShopwareError,
@@ -54,7 +54,7 @@ const invokeSave = async (): Promise<void> => {
     $v.value.$touch();
     const valid = await $v.value.$validate();
     if (valid) {
-      await saveAddress(formData);
+      await saveAddress(formData as CustomerAddress);
       emits("success");
     }
   } catch (errors) {

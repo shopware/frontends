@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ListingFilter } from "@shopware-pwa/types";
+import type { ListingFilter } from "@shopware-pwa/types";
 import { reactive, ref, watch } from "vue";
 import deepMerge from "../../helpers/deepMerge";
 import getTranslations from "../../helpers/getTranslations";

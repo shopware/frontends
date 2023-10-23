@@ -1,4 +1,5 @@
-import { ref, Ref, computed, ComputedRef } from "vue";
+import { ref, computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
 import {
   addWishlistProduct,
   getWishlistProducts as getWishlistProductsAPI,
@@ -6,7 +7,7 @@ import {
   mergeWishlistProducts as mergeWishlistProductsAPI,
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "./useShopwareContext";
-import { ClientApiError } from "@shopware-pwa/types";
+import type { ClientApiError } from "@shopware-pwa/types";
 
 export type UseSyncWishlistReturn = {
   /**

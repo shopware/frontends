@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import {
+import type {
   ShopwareError,
   ShopwareApiError,
   ClientApiError,

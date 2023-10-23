@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
 } from "@shopware-pwa/helpers-next";
-import {
+import type {
   ClientApiError,
   Product,
   PropertyGroupOption,
@@ -14,7 +14,7 @@ import {
 
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
-const { codeErrorsNotification } = useCartNotification();
+const { getErrorsCodes } = useCartNotification();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
@@ -62,7 +62,9 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
-  codeErrorsNotification();
+  getErrorsCodes()?.forEach((element) => {
+    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  });
   pushSuccess(
     t(`cart.messages.addedToCart`, { p: props.product?.translated?.name }),
   );

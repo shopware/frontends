@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test:e2e": "playwright test e2e"
+    "test:e2e": "playwright test e2e",
+    "test:examples": "playwright test -c examples.config.ts checkCodeExamples.spec.ts"
   },
   "devDependencies": {
-    "@playwright/test": "^1.38.0"
+    "@playwright/test": "^1.39.0"
   },
   "dependencies": {
     "dotenv": "^16.3.1"

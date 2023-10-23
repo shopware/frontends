@@ -39,7 +39,7 @@ You can use the `useWishlist` composable to get the wishlist products.
 ```vue
 <script>
 import { getProducts } from "@shopware-pwa/api-client";
-import { ClientApiError, Product } from "@shopware-pwa/types";
+import type { ClientApiError, Product } from "@shopware-pwa/types";
 
 // Contains a list of products ids in the wishlist
 const { getWishlistProducts, items } = useWishlist();

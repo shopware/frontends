@@ -206,6 +206,17 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "Integrations",
+        link: "/resources/integrations/",
+        items: [
+          {
+            text: "Multi CMS instance",
+            link: "/resources/integrations/multi-cms",
+          },
+          { text: "Strapi", link: "/resources/integrations/strapi/" },
+        ],
+      },
       { text: "Community Modules", link: "/resources/community-modules/" },
       { text: "Troubleshooting", link: "/resources/troubleshooting" },
     ],

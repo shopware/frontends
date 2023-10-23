@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Product, ProductReview } from "@shopware-pwa/types";
+import type { Product, ProductReview } from "@shopware-pwa/types";
 import {
   getProductRoute,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import { getProductReviews } from "@shopware-pwa/api-client";
-import { Ref } from "vue";
+import type { Ref } from "vue";
 
 const props = defineProps<{
   product: Product;
