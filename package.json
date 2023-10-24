@@ -45,7 +45,7 @@
     "vercel": "^32.4.1"
   },
   "engines": {
-    "node": "^16.x || ^18.x"
+    "node": "^18.x || ^20.x"
   },
   "lint-staged": {
     "*.{ts,tsx,md,mdx,js,jsx,vue}": [
