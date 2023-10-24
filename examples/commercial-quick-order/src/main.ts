@@ -14,7 +14,7 @@ const languageId = ref(cookieLanguageId);
 const app = createApp(App);
 
 const apiInstance = createInstance({
-  endpoint: "https://",
+  endpoint: "https://201023-quick-order.swstage.store/",
   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   contextToken: contextToken.value,
   languageId: languageId.value,

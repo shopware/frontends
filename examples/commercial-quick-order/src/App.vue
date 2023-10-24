@@ -4,9 +4,26 @@ import {
   useSessionContext,
   useShopwareContext,
 } from "@shopware-pwa/composables-next";
+import { addCartItems } from "@shopware-pwa/api-client";
+import { onClickOutside } from "@vueuse/core";
 
+const outsideContext = ref();
 const { apiInstance } = useShopwareContext();
 const { currency, refreshSessionContext } = useSessionContext();
+
+onClickOutside(outsideContext, () => {
+  forceCloseSuggest.value = true;
+});
+const showSuccessToast = ref(false);
+const successToastMessage = ref("");
+
+const showToastMessage = (message: string) => {
+  successToastMessage.value = message;
+  showSuccessToast.value = true;
+  setTimeout(() => {
+    showSuccessToast.value = false;
+  }, 3000);
+};
 
 const ITEMS_CACHE = ref(new Map());
 const chosenItems = ref(new Map());
@@ -23,6 +40,11 @@ const search = async (phrase: string) => {
 const query = ref();
 const forceCloseSuggest = ref(false);
 
+const onClearListClick = () => {
+  chosenItems.value = new Map();
+  showToastMessage("List has been cleared.");
+};
+
 const onItemClick = (item) => {
   //console.warn('adding item', item);
   if (chosenItems.value.has(item.id)) {
@@ -31,17 +53,81 @@ const onItemClick = (item) => {
     ITEMS_CACHE.value.set(item.id, item);
     chosenItems.value.set(item.id, 1);
   }
+  forceCloseSuggest.value = true;
+  query.value = "";
+  showToastMessage("Product has been added to list.");
+};
 
-  console.warn("addedItems", chosenItems.value);
+const onAddToCartClick = async () => {
+  const lineItemsPayload = Array.from(chosenItems.value.entries()).map(
+    ([productId, quantity]) => ({
+      referencedId: productId,
+      quantity,
+      type: "product",
+    }),
+  );
+
+  await addCartItems(lineItemsPayload as any, apiInstance);
+  chosenItems.value = new Map();
+  showToastMessage("The items have been moved to the cart.");
+};
+
+const onItemQtyChange = (event, itemId: string) => {
+  const value = event.target.value;
+  chosenItems.value.set(itemId, +value);
+  showToastMessage("The quantity has been changed.");
 };
 
 watch(query, (value) => {
+  if (value?.length <= 1) {
+    forceCloseSuggest.value = true;
+    return;
+  }
   search(value);
   forceCloseSuggest.value = false;
 });
 </script>
 <template>
   <div>
+    <div class="w-full mb-2">
+      <button
+        type="button"
+        @click="onClearListClick"
+        :disabled="!chosenItems.size"
+        :class="[
+          !chosenItems.size
+            ? 'cursor-not-allowed bg-gray-300 dark:bg-gray-400 '
+            : 'bg-blue-500 dark:bg-blue-600 hover:bg-blue-700',
+        ]"
+        class="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      >
+        Clear list
+      </button>
+      <button
+        type="button"
+        @click="onAddToCartClick"
+        :disabled="!chosenItems.size"
+        :class="[
+          !chosenItems.size
+            ? 'cursor-not-allowed bg-gray-300 dark:bg-gray-400 '
+            : 'bg-blue-500 dark:bg-blue-600 hover:bg-blue-700',
+        ]"
+        class="ml-2 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex"
+      >
+        <svg
+          class="w-3.5 h-3.5 mr-2"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 18 21"
+        >
+          <path
+            d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z"
+          />
+        </svg>
+        Add selected items to shopping cart
+      </button>
+    </div>
     <div class="relative">
       <form>
         <label
@@ -80,6 +166,7 @@ watch(query, (value) => {
         </div>
       </form>
       <div
+        ref="outsideContext"
         :class="{ hidden: !hasItemsFound || forceCloseSuggest }"
         class="absolute w-full z-10 suggest mt-0 p-0 overflow shadow"
       >
@@ -104,9 +191,10 @@ watch(query, (value) => {
                 :key="item.id"
                 :class="[
                   index % 2 == 1
-                    ? 'bg-gray-50 dark:bg-gray-800'
-                    : 'border-b dark:bg-gray-900 dark:border-gray-700',
+                    ? 'bg-gray-50 dark:bg-gray-800 hover:bg-gray-600'
+                    : 'border-b bg-gray-100 dark:bg-gray-900 dark:border-gray-700 hover:bg-gray-600',
                 ]"
+                class="hover:cursor-pointer"
               >
                 <th
                   scope="row"
@@ -129,35 +217,15 @@ watch(query, (value) => {
                   {{ item.calculatedPrice.totalPrice }} {{ currency?.symbol }}
                 </td>
               </tr>
-              <button
-                @click="forceCloseSuggest=true"
-                type="button"
-                class="absolute right-2 bottom-2 ml-auto -mx-1 -my-1 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-6 w-6 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                data-dismiss-target="#toast-warning"
-                aria-label="Close"
-              >
-                <span class="sr-only">Close</span>
-                <svg
-                  class="w-2 h-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 14 14"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                  />
-                </svg>
-              </button>
             </tbody>
           </table>
         </div>
       </div>
-      <div v-if="chosenItems.size" class="result mt-2" :class="{ 'blur-md': !!hasItemsFound && !forceCloseSuggest }">
+      <div
+        v-if="chosenItems.size"
+        class="result mt-2"
+        :class="{ 'blur-md': !!hasItemsFound && !forceCloseSuggest }"
+      >
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table
             class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
@@ -207,13 +275,71 @@ watch(query, (value) => {
                   {{ currency?.symbol }}
                 </td>
                 <td class="px-6 py-4 text-center">
-                  {{ quantity }}
+                  <div>
+                    <input
+                      min="1"
+                      :value="quantity"
+                      @change="onItemQtyChange($event, item)"
+                      type="number"
+                      id="first_product"
+                      class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="1"
+                      required
+                    />
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+    </div>
+    <div
+      v-show="showSuccessToast"
+      id="toast-success"
+      class="absolute bottom-0 right-4 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+      role="alert"
+    >
+      <div
+        class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200"
+      >
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
+          />
+        </svg>
+        <span class="sr-only">Check icon</span>
+      </div>
+      <div class="ml-3 text-sm font-normal">{{ successToastMessage }}</div>
+      <button
+        type="button"
+        class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+        data-dismiss-target="#toast-success"
+        aria-label="Close"
+      >
+        <span class="sr-only">Close</span>
+        <svg
+          class="w-3 h-3"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 14 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+          />
+        </svg>
+      </button>
     </div>
   </div>
 </template>
