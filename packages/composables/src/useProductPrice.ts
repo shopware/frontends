@@ -53,6 +53,10 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
   const _cheapest: ComputedRef<CalculatedPrice | undefined> = computed(
     () => product.value?.calculatedCheapestPrice,
   );
+
+  /**
+   * calculatedPrices are used for product with tier prices
+   */
   const _real: ComputedRef<CalculatedPrice | undefined> = computed(() =>
     product.value?.calculatedPrices?.length > 0
       ? product.value?.calculatedPrices[0]

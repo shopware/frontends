@@ -46,7 +46,7 @@ const Component = () => ({
 describe("useProductPrice", () => {
   const wrapper = shallowMount(Component(), getMockProvide());
 
-  it("product price", () => {
+  it("product price are displayed - standard product", () => {
     expect(wrapper.vm.price).toStrictEqual(mockedProduct.calculatedPrice);
     expect(wrapper.vm.totalPrice).toBe(14.45);
     expect(wrapper.vm.unitPrice).toBe(14.45);
@@ -56,5 +56,6 @@ describe("useProductPrice", () => {
     expect(wrapper.vm.referencePrice).toStrictEqual(
       mockedProduct.calculatedPrice.referencePrice,
     );
+    expect(wrapper.vm.isListPrice).toBe(false);
   });
 });
