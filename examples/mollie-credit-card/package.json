@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-mollie-frontends",
+  "name": "example-nuxt-mollie-frontends",
   "version": "1.0.0",
   "description": "Nuxt module for Mollie Payments",
   "license": "MIT",

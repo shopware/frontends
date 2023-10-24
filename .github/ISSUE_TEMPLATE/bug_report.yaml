@@ -39,8 +39,8 @@ body:
     description: |
       examples:
         - **OS**: Manjaro Linux 22.1.0
-        - **Node**: 18.14.2
-        - **pnpm**: 8.2.0
+        - **Node**: 20.8.1
+        - **pnpm**: 8.9.2
     value: |
         - OS:
         - Node:
