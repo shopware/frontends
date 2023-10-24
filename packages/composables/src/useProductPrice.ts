@@ -71,16 +71,17 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
       (product.value as any)?.variantListingConfig?.displayParent &&
       product.value?.parentId === null,
   );
+
   const displayFrom: ComputedRef<boolean> = computed(
     () =>
       product.value?.calculatedPrices?.length > 1 ||
       !!(_displayParent.value && displayFromVariants.value),
   );
+
   const displayFromVariants: ComputedRef<number | false | undefined> = computed(
     () =>
       !!product.value.parentId &&
-      product.value?.cheapestPrice?.hasRange &&
-      !!product.value?.cheapestPrice?.parentId &&
+      product.value?.calculatedCheapestPrice?.hasRange &&
       _real?.value?.unitPrice !== _cheapest?.value?.unitPrice &&
       _cheapest?.value?.unitPrice,
   );
