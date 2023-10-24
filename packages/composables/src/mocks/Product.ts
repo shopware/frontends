@@ -1,4 +1,4 @@
-import { Product } from "@shopware-pwa/types";
+import type { Product } from "@shopware-pwa/types";
 
 const product: Product = {
   versionId: "0fa91ce3e96a4bc2be4bd9ce752c3425",

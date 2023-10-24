@@ -34,4 +34,4 @@ jobs:
       - name: Run tests
         run: |
           cd apps/e2e-tests
-          npx playwright test checkCodeExamples.spec.ts --project=chromium
+          pnpm test:examples

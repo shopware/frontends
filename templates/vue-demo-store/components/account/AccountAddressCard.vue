@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
+import type { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
 const { pushSuccess, pushError } = useNotifications();
 const {
   setDefaultCustomerShippingAddress,

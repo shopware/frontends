@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { confirmPasswordReset } from "@shopware-pwa/api-client";
-import { ClientApiError } from "@shopware-pwa/types";
+import type { ClientApiError } from "@shopware-pwa/types";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 
 const { required, minLength, sameAs } = customValidators();

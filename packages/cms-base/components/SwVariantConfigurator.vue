@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getProductRoute } from "@shopware-pwa/helpers-next";
-import { ComputedRef } from "vue";
+import type { ComputedRef } from "vue";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 

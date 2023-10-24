@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Product } from "@shopware-pwa/types";
+import type { Product } from "@shopware-pwa/types";
 
 const props = withDefaults(
   defineProps<{

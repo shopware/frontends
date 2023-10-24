@@ -8,7 +8,7 @@ import {
   getRemoveWishlistProductEndpoint,
 } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
-import {
+import type {
   ShopwareSearchParams,
   CustomerWishlistResponse,
 } from "@shopware-pwa/types";

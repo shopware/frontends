@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsSlot } from "@shopware-pwa/types";
+import type { CmsSlot } from "@shopware-pwa/types";
 import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 import { resolveCmsComponent } from "@shopware-pwa/composables-next";
 

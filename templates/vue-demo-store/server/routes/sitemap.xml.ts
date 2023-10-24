@@ -1,7 +1,7 @@
 import { getSitemap } from "@shopware-pwa/api-client";
 import { streamToPromise, SitemapIndexStream } from "sitemap";
 import { Readable } from "stream";
-import { SitemapResult } from "@shopware-pwa/types";
+import type { SitemapResult } from "@shopware-pwa/types";
 import apiContext from "../apiBuilder";
 import getURL from "requrl";
 

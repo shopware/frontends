@@ -1,13 +1,13 @@
 import { useShopwareContext } from "./useShopwareContext";
 import { getAvailableLanguages as getAvailableLanguagesAPI } from "@shopware-pwa/api-client";
 import { _useContext } from "./internal/_useContext";
-import {
+import type {
   Language,
   ContextTokenResponse,
   EntityResult,
 } from "@shopware-pwa/types";
 import { setCurrentLanguage } from "@shopware-pwa/api-client";
-import { Ref } from "vue";
+import type { Ref } from "vue";
 export type UseInternationalizationReturn = {
   /**
    * StorefrontUrl is needed to specify language of emails

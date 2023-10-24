@@ -1,4 +1,4 @@
-import { Salutation } from "@shopware-pwa/types";
+import type { Salutation } from "@shopware-pwa/types";
 
 const salutations: Salutation[] = [
   {

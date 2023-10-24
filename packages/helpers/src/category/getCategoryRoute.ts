@@ -1,4 +1,4 @@
-import { Category } from "@shopware-pwa/types";
+import type { Category } from "@shopware-pwa/types";
 import { getCategoryUrl } from "./getCategoryUrl";
 type LinkedCategory = Pick<
   Category,

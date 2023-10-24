@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockTextHero } from "@shopware-pwa/composables-next";
+import type { CmsBlockTextHero } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockTextHero;

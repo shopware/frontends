@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ComputedRef } from "vue";
-import { Notification } from "@shopware-pwa/composables-next";
+import type { ComputedRef } from "vue";
+import type { Notification } from "@shopware-pwa/composables-next";
 
 defineEmits<{
   (e: "click:close", id: number): void;

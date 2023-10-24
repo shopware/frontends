@@ -1,4 +1,4 @@
-import { OrderLineItem, Downloads } from "@shopware-pwa/types";
+import type { OrderLineItem, Downloads } from "@shopware-pwa/types";
 
 type ProductMedia = {
   id: string;

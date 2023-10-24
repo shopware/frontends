@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ClientApiError } from "@shopware-pwa/types";
+import type { ClientApiError } from "@shopware-pwa/types";
 
 const emits = defineEmits<{
   (e: "success"): void;

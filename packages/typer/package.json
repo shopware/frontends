@@ -41,12 +41,12 @@
     "ts-dox": "^0.1.0",
     "typedoc": "^0.25.2",
     "vinyl": "^3.0.0",
-    "vite": "^4.4.11"
+    "vite": "^4.5.0"
   },
   "devDependencies": {
     "@shopware-pwa/types": "workspace:*",
-    "@types/find-in-files": "^0.5.1",
-    "@types/fs-extra": "^11.0.2",
+    "@types/find-in-files": "^0.5.2",
+    "@types/fs-extra": "^11.0.3",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^5.2.2",

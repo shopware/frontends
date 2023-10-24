@@ -1,3 +1,5 @@
+import resolveUrl from "../resolveUrl";
+
 export type NodeObject = {
   type: string;
   name: string;
@@ -34,8 +36,12 @@ export function getOptionsFromNode(node: any): Options {
     align = node.attrs.align;
     delete node.attrs.align;
   }
-
   const attrs = Object.keys(node.attrs).length === 0 ? null : { ...node.attrs };
+
+  // Resolve URL if exist
+  if (attrs?.href) {
+    attrs.href = `${resolveUrl(attrs.href)}`;
+  }
 
   return {
     align: align,

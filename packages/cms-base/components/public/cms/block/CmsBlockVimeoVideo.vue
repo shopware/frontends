@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CmsBlockVimeoVideo } from "@shopware-pwa/composables-next";
+import type { CmsBlockVimeoVideo } from "@shopware-pwa/composables-next";
 
 const props = defineProps<{
   content: CmsBlockVimeoVideo;

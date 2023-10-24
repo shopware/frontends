@@ -1,11 +1,12 @@
-import { UnwrapRef, reactive } from "vue";
+import { reactive } from "vue";
+import type { UnwrapRef } from "vue";
 import {
   updatePassword as apiUpdatePassword,
   resetPassword as apiResetPassword,
   CustomerUpdatePasswordParam,
   CustomerResetPasswordParam,
 } from "@shopware-pwa/api-client";
-import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
+import type { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { useShopwareContext } from "./useShopwareContext";
 
 export type UseCustomerPasswordReturn = {

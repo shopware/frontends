@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { invokeGet } from "@shopware-pwa/api-client";
-import { CustomerGroup } from "@shopware-pwa/types";
+import type { CustomerGroup } from "@shopware-pwa/types";
 
 const props = defineProps<{
   navigationId: string;

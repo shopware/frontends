@@ -1,5 +1,6 @@
-import { computed, ComputedRef, Ref } from "vue";
-import { Product, PropertyGroup } from "@shopware-pwa/types";
+import { computed } from "vue";
+import type { ComputedRef, Ref } from "vue";
+import type { Product, PropertyGroup } from "@shopware-pwa/types";
 import { _useContext } from "./internal/_useContext";
 import ContextError from "./helpers/ContextError";
 

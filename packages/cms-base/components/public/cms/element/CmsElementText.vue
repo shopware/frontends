@@ -3,11 +3,9 @@ import type { CmsElementText } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "@shopware-pwa/composables-next";
 import { h } from "vue";
 import { decodeHTML } from "entities";
-import { CSSProperties } from "vue";
-import {
-  getOptionsFromNode,
-  NodeObject,
-} from "../../../../helpers/html-to-vue/getOptionsFromNode";
+import type { CSSProperties } from "vue";
+import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";
+import type { NodeObject } from "../../../../helpers/html-to-vue/getOptionsFromNode";
 import { renderHtml } from "../../../../helpers/html-to-vue/renderToHtml";
 
 const props = defineProps<{
@@ -108,22 +106,18 @@ const CmsTextRender = () => {
       },
       img: {
         conditions(node: NodeObject) {
-          return (
-            node.type === "tag" &&
-            node.name === "img"
-          );
+          return node.type === "tag" && node.name === "img";
         },
         renderer(node: any, children: any, createElement: any) {
-          return createElement(
-            "img",
-            getOptionsFromNode(node)?.attrs
-          );
+          return createElement("img", getOptionsFromNode(node)?.attrs);
         },
       },
     },
   };
   const rawHtml =
-    mappedContent.value?.length > 0 ? mappedContent.value : "<div class='cms-element-text missing-content-element'></div>";
+    mappedContent.value?.length > 0
+      ? mappedContent.value
+      : "<div class='cms-element-text missing-content-element'></div>";
   return renderHtml(rawHtml, config, h, context);
 };
 </script>

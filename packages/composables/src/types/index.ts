@@ -1,4 +1,4 @@
-import {
+import type {
   ProductResponse as LegacyProductResponse,
   LandingPage,
   Category,

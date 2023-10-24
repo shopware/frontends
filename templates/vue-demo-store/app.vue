@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getSessionContext } from "@shopware-pwa/api-client";
-import { SessionContext } from "@shopware-pwa/types";
+import type { SessionContext } from "@shopware-pwa/types";
 import { getPrefix } from "./i18n/src/helpers/prefix";
 
 /**
