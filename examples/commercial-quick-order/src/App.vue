@@ -11,6 +11,8 @@ const outsideContext = ref();
 const { apiInstance } = useShopwareContext();
 const { currency, refreshSessionContext } = useSessionContext();
 
+const csvFile = ref();
+
 onClickOutside(outsideContext, () => {
   forceCloseSuggest.value = true;
 });
@@ -46,12 +48,11 @@ const onClearListClick = () => {
 };
 
 const onItemClick = (item) => {
-  //console.warn('adding item', item);
   if (chosenItems.value.has(item.id)) {
-    chosenItems.value.set(item.id, chosenItems.value.get(item.id) + 1);
+    chosenItems.value.set(item.id, chosenItems.value.get(item.id) + (item.quantity || 1));
   } else {
     ITEMS_CACHE.value.set(item.id, item);
-    chosenItems.value.set(item.id, 1);
+    chosenItems.value.set(item.id, item.quantity || 1);
   }
   forceCloseSuggest.value = true;
   query.value = "";
@@ -78,6 +79,22 @@ const onItemQtyChange = (event, itemId: string) => {
   showToastMessage("The quantity has been changed.");
 };
 
+const onCsvFileChange = async (event) => {
+  const file = event.target.files[0];
+  const formData = new FormData();
+  formData.append("file", file);
+  const headers = { "Content-Type": "multipart/form-data" };
+  const foundProductsResponse = await apiInstance.invoke.post(`/store-api/quick-order/load-file`, formData, {
+    headers,
+  });
+
+  for(const item of foundProductsResponse.data?.products) {
+    onItemClick(item);
+  }
+
+  csvFile.value.value = null;
+};
+
 watch(query, (value) => {
   if (value?.length <= 1) {
     forceCloseSuggest.value = true;
@@ -89,6 +106,7 @@ watch(query, (value) => {
 </script>
 <template>
   <div>
+    {{ csvFile?.file?.files }}
     <div class="w-full mb-2">
       <button
         type="button"
@@ -103,6 +121,19 @@ watch(query, (value) => {
       >
         Clear list
       </button>
+      <div
+        class="inline-block text-white font-medium rounded-lg text-sm ml-2 text-center"
+      >
+        <input
+          ref="csvFile"
+          @change="onCsvFileChange"
+          class="block p-1.5 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          aria-describedby="file_input_help"
+          id="file_input"
+          type="file"
+          accept=".csv"
+        />
+      </div>
       <button
         type="button"
         @click="onAddToCartClick"
@@ -200,7 +231,7 @@ watch(query, (value) => {
                   scope="row"
                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {{ item.translated?.name }}
+                  {{ item.translated?.name || item.name }}
                 </th>
                 <td class="px-6 py-4">{{ item.productNumber }}</td>
                 <td class="px-6 py-4">
@@ -214,7 +245,7 @@ watch(query, (value) => {
                 </td>
 
                 <td class="px-6 py-4">
-                  {{ item.calculatedPrice.totalPrice }} {{ currency?.symbol }}
+                  {{ item?.calculatedPrice?.totalPrice }} {{ currency?.symbol }}
                 </td>
               </tr>
             </tbody>
@@ -255,7 +286,7 @@ watch(query, (value) => {
                   scope="row"
                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {{ ITEMS_CACHE.get(item)?.translated?.name }}
+                  {{ ITEMS_CACHE.get(item)?.translated?.name || ITEMS_CACHE.get(item)?.name }}
                 </th>
                 <td class="px-6 py-4">
                   {{ ITEMS_CACHE.get(item)?.productNumber }}
@@ -271,7 +302,7 @@ watch(query, (value) => {
                 </td>
 
                 <td class="px-6 py-4">
-                  {{ ITEMS_CACHE.get(item)?.calculatedPrice.totalPrice }}
+                  {{ ITEMS_CACHE.get(item)?.calculatedPrice?.totalPrice }}
                   {{ currency?.symbol }}
                 </td>
                 <td class="px-6 py-4 text-center">
