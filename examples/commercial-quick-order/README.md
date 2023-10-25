@@ -46,3 +46,15 @@ or...
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/examples/commercial-quick-order?file=README.md)
 
 ⚠️ Remember to prepare your app first, see __Configuration__ chapter above.
+
+## 📁 Import file feature
+
+
+file upload can be tested in that format:
+```
+product_number,quantity
+SW10096.3,2
+SW10079,5
+```
+
+You can use [products.csv](./products.csv)
