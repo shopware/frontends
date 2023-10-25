@@ -16,7 +16,7 @@ const app = createApp(App);
 const apiInstance = createInstance({
   endpoint: import.meta.env.VITE_SHOPWARE_API,
   accessToken: import.meta.env.VITE_SHOPWARE_ACCESS_KEY,
-  contextToken: contextToken.value,
+  contextToken: contextToken.value || new Date().toISOString(), // || fix missing context token issue causing HTTP 400
   languageId: languageId.value,
 });
 
