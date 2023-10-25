@@ -3,30 +3,54 @@ import { ref, watch, computed } from "vue";
 import {
   useSessionContext,
   useShopwareContext,
-  useUser
+  useUser,
 } from "@shopware-pwa/composables-next";
 import { addCartItems } from "@shopware-pwa/api-client";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 
-const outsideContext = ref();
+// used later on for unusual API calls (like endpoints added by some extension - in this case, commercial features)
 const { apiInstance } = useShopwareContext();
+// for initialize the session and get the current currency
 const { currency, refreshSessionContext } = useSessionContext();
-
-const csvFile = ref();
-
+// to log in a customer, because the Quick Order feature is enabled for specifically selected users (in admin panel)
 const { login } = useUser();
 
+// init a session
+refreshSessionContext();
+
+// reference for file input in DOM
+const csvFile = ref();
+// reference to suggest search results
+const outsideContext = ref();
+// indicates whether show notification toast
+const showSuccessToast = ref(false);
+// content of the success message
+const successToastMessage = ref("");
+// store for received items (from API via search or file-upload action)
+const ITEMS_CACHE = ref(new Map());
+// store for locally selected items (to be added to the shopping cart later on)
+const chosenItems = ref(new Map());
+// container for product search response
+const items = ref([]);
+// indicates whether there are any items found in API
+const hasItemsFound = computed(() => !!items.value.length);
+// search query for suggest search parameter
+const query = ref();
+// indicated whether suggest results should be hidden
+const forceCloseSuggest = ref(false);
+
+// log in an user pointed in .env file (should be renamed from .env.template)
 login({
   username: import.meta.env.VITE_TEST_LOGIN_EMAIL,
-  password: import.meta.env.VITE_TEST_LOGIN_PASSWORD
-})
+  password: import.meta.env.VITE_TEST_LOGIN_PASSWORD,
+});
 
+// close the suggest search results on click outside
 onClickOutside(outsideContext, () => {
   forceCloseSuggest.value = true;
 });
-const showSuccessToast = ref(false);
-const successToastMessage = ref("");
 
+// show a message and then close it in 3 seconds
 const showToastMessage = (message: string) => {
   successToastMessage.value = message;
   showSuccessToast.value = true;
@@ -35,11 +59,7 @@ const showToastMessage = (message: string) => {
   }, 3000);
 };
 
-const ITEMS_CACHE = ref(new Map());
-const chosenItems = ref(new Map());
-const items = ref([]);
-const hasItemsFound = computed(() => !!items.value.length);
-refreshSessionContext();
+// used in suggest search bar
 const search = async (phrase: string) => {
   const response = await apiInstance.invoke.get(
     `/store-api/quick-order/product?search=${phrase}`,
@@ -48,14 +68,15 @@ const search = async (phrase: string) => {
   forceCloseSuggest.value = false;
 };
 
-const query = ref();
-const forceCloseSuggest = ref(false);
-
+// clear the list and show the message
 const onClearListClick = () => {
   chosenItems.value = new Map();
   showToastMessage("List has been cleared.");
 };
 
+// add item to the chosenItems list
+// or increment a quantity if already exists
+// if the item comes from a file upload, assign quantity value from csv
 const onItemClick = (item) => {
   if (chosenItems.value.has(item.id)) {
     chosenItems.value.set(
@@ -71,6 +92,7 @@ const onItemClick = (item) => {
   showToastMessage("Product has been added to list.");
 };
 
+// add all items to the shopping cart using addCartItems method from @shopware-pwa/api-client package
 const onAddToCartClick = async () => {
   const lineItemsPayload = Array.from(chosenItems.value.entries()).map(
     ([productId, quantity]) => ({
@@ -85,12 +107,16 @@ const onAddToCartClick = async () => {
   showToastMessage("The items have been moved to the cart.");
 };
 
+// set the new quantity value for a given item
 const onItemQtyChange = (event, itemId: string) => {
   const value = event.target.value;
   chosenItems.value.set(itemId, +value);
   showToastMessage("The quantity has been changed.");
 };
 
+// detects if someone uploads a file
+// then send it to the quick-order endpoint (from commercial b2b extension)
+// iterate over items found (products from API) and add them to the store (chosenItems Map)
 const onCsvFileChange = async (event) => {
   const file = event.target.files[0];
   const formData = new FormData();
@@ -111,8 +137,10 @@ const onCsvFileChange = async (event) => {
   csvFile.value.value = null;
 };
 
-const debounceSearch = useDebounceFn(search, 1000);
+// search in 500ms delay wrapper
+const debounceSearch = useDebounceFn(search, 500);
 
+// watch for search query changes
 watch(query, (value) => {
   if (value?.length <= 1) {
     forceCloseSuggest.value = true;
