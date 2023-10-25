@@ -3,6 +3,7 @@ import { ref, watch, computed } from "vue";
 import {
   useSessionContext,
   useShopwareContext,
+  useUser
 } from "@shopware-pwa/composables-next";
 import { addCartItems } from "@shopware-pwa/api-client";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
@@ -12,6 +13,13 @@ const { apiInstance } = useShopwareContext();
 const { currency, refreshSessionContext } = useSessionContext();
 
 const csvFile = ref();
+
+const { login } = useUser();
+
+login({
+  username: import.meta.env.VITE_TEST_LOGIN_EMAIL,
+  password: import.meta.env.VITE_TEST_LOGIN_PASSWORD
+})
 
 onClickOutside(outsideContext, () => {
   forceCloseSuggest.value = true;
@@ -200,7 +208,7 @@ watch(query, (value) => {
             type="search"
             id="default-search"
             class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search Mockups, Logos..."
+            placeholder="Search products..."
             required
           />
         </div>

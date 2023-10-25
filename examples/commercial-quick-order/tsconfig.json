@@ -9,12 +9,15 @@
       ]
     },
     "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "lib": [
       "esnext",
       "DOM"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
+      "./env.d.ts"
     ]
   }
 }

@@ -14,8 +14,8 @@ const languageId = ref(cookieLanguageId);
 const app = createApp(App);
 
 const apiInstance = createInstance({
-  endpoint: "https://201023-quick-order.swstage.store/",
-  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  endpoint: import.meta.env.VITE_SHOPWARE_API,
+  accessToken: import.meta.env.VITE_SHOPWARE_ACCESS_KEY,
   contextToken: contextToken.value,
   languageId: languageId.value,
 });
