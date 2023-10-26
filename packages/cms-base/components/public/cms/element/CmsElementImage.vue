@@ -59,8 +59,9 @@ const imageComputedContainerAttrs = computed(() => {
         'absolute inset-0': ['cover', 'stretch'].includes(displayMode),
         'object-cover': displayMode === 'cover',
       }"
-      alt="Image link"
+      :alt="imageAttrs.alt"
       :src="srcPath"
+      :srcset="imageAttrs.srcset"
     />
   </component>
 </template>
