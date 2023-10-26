@@ -38,7 +38,8 @@
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "vitest:watch": "vitest"
   },
   "dependencies": {
     "@shopware-pwa/api-client": "workspace:*",
