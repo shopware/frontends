@@ -16,7 +16,7 @@ describe("Test real API invocations", () => {
     });
     await expect(() =>
       apiInstance.invoke("readCart get /checkout/cart?name", {
-        name: "qwe",
+        name: "myCartName",
       }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `
@@ -94,5 +94,15 @@ describe("Test real API invocations", () => {
         "total": 1,
       }
     `);
+  });
+
+  it("should not require request parameters when operation does not have any", async () => {
+    const apiInstance = createAPIClient<operations, operationPaths>({
+      baseURL,
+      accessToken,
+    });
+    const result = await apiInstance.invoke("readContext get /context", {});
+    expect(result).toHaveProperty("token");
+    expect(result.token).not.toBe("undefined");
   });
 });
