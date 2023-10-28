@@ -13,6 +13,7 @@ import {
 } from "vue";
 import { getSrcSetForMedia } from "@shopware-pwa/helpers-next";
 import { urlIsAbsolute } from "../helpers/urlIsAbsolute";
+import { relativeUrlSlash } from "../helpers/relativeUrlSlash";
 
 export type ImageContainerAttrs = {
   href?: string;
@@ -58,7 +59,7 @@ export function useCmsElementImage(
     if (imageLink.value.url) {
       attr.href = urlIsAbsolute(imageLink.value.url)
         ? imageLink.value.url
-        : `/${imageLink.value.url}`;
+        : relativeUrlSlash(imageLink.value.url);
     }
     if (imageLink.value.newTab) {
       attr.target = "blank";
