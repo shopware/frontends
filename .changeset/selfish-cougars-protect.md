@@ -2,4 +2,4 @@
 "@shopware-pwa/composables-next": minor
 ---
 
-Add relative path toggle helper
+Use `relativeUrlSlash` toggle helper for element img url attribute

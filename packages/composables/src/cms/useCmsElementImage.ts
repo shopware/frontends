@@ -11,9 +11,11 @@ import {
   AnchorHTMLAttributes,
   ImgHTMLAttributes,
 } from "vue";
-import { getSrcSetForMedia } from "@shopware-pwa/helpers-next";
-import { urlIsAbsolute } from "../helpers/urlIsAbsolute";
-import { relativeUrlSlash } from "../helpers/relativeUrlSlash";
+import {
+  getSrcSetForMedia,
+  urlIsAbsolute,
+  relativeUrlSlash,
+} from "@shopware-pwa/helpers-next";
 
 export type ImageContainerAttrs = {
   href?: string;
