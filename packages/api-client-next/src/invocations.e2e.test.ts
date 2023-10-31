@@ -32,7 +32,7 @@ describe("Test real API invocations", () => {
       accessToken,
       contextToken: "",
     });
-    const result = await apiInstance.invoke("readContext get /context", {});
+    const result = await apiInstance.invoke("readContext get /context");
     expect(result).toHaveProperty("token");
     expect(result.token).not.toBe("");
   });
@@ -101,7 +101,7 @@ describe("Test real API invocations", () => {
       baseURL,
       accessToken,
     });
-    const result = await apiInstance.invoke("readContext get /context", {});
+    const result = await apiInstance.invoke("readContext get /context");
     expect(result).toHaveProperty("token");
     expect(result.token).not.toBe("undefined");
   });
