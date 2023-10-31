@@ -43,7 +43,7 @@ describe("Test real API invocations", () => {
       accessToken,
       contextToken: undefined,
     });
-    const result = await apiInstance.invoke("readContext get /context", {});
+    const result = await apiInstance.invoke("readContext get /context");
     expect(result).toHaveProperty("token");
     expect(result.token).not.toBe("undefined");
   });
