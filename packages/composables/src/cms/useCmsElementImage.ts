@@ -11,8 +11,11 @@ import {
   AnchorHTMLAttributes,
   ImgHTMLAttributes,
 } from "vue";
-import { getSrcSetForMedia } from "@shopware-pwa/helpers-next";
-import { urlIsAbsolute } from "../helpers/urlIsAbsolute";
+import {
+  getSrcSetForMedia,
+  urlIsAbsolute,
+  relativeUrlSlash,
+} from "@shopware-pwa/helpers-next";
 
 export type ImageContainerAttrs = {
   href?: string;
@@ -60,7 +63,7 @@ export function useCmsElementImage(
     if (imageLink.value.url) {
       attr.href = urlIsAbsolute(imageLink.value.url)
         ? imageLink.value.url
-        : `/${imageLink.value.url}`;
+        : relativeUrlSlash(imageLink.value.url);
     }
     if (imageLink.value.newTab) {
       attr.target = "blank";
