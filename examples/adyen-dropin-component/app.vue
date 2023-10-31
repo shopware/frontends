@@ -42,8 +42,9 @@ try {
   activeStep.value = 2;
 } catch (error) {
   console.error(
-    "Your configuration isn't correct. Please check the README.md and try again.",
+    "Your configuration isn't correct. Please check the README.md and try again."
   );
+  console.error("Error details: ", error);
 }
 
 // handler for @payButtonClicked event from <AdyenCreditCard /> component located a template
@@ -66,7 +67,7 @@ const onPayButton = async (state: any) => {
     "/store-api/adyen/payment-status",
     {
       orderId: order.id,
-    },
+    }
   );
 
   paymentState.value = paymentStateResponse.data;
