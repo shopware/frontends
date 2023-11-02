@@ -116,11 +116,13 @@ export function createAPIClient<
       : never,
   >(
     pathParam: INVOKE_PATH extends string ? INVOKE_PATH : never,
-    params: RequestParameters<OPERATION_NAME, OPERATIONS>,
+    ...params: keyof RequestParameters<OPERATION_NAME, OPERATIONS> extends never
+      ? [Record<PropertyKey, never>?]
+      : [RequestParameters<OPERATION_NAME, OPERATIONS>]
   ): Promise<RequestReturnType<OPERATION_NAME, OPERATIONS>> {
     const [requestPath, options] = transformPathToQuery(
       pathParam,
-      params as Record<string, string>,
+      params?.[0] as Record<string, string>,
     );
     // console.log("invoke with", requestPath, options);
     return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
