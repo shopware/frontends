@@ -4,14 +4,92 @@ import {
   getTranslatedProperty,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
+import type { Category } from "@shopware-pwa/types";
 const { navigationElements } = useNavigation();
 const currentMenuPosition = ref<string | null>(null);
 
-const menuHtmlElement = ref(null);
+const route = useRoute();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
-onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
+onMounted(() => {
+  const currentNaviagtionElement = findNavigationElement(route.path.slice(1));
+  if (currentNaviagtionElement) {
+    updateActiceClass(
+      currentNaviagtionElement.id,
+      currentNaviagtionElement.parentId,
+    );
+  }
+});
+// only works with 2 level navigation
+const findNavigationElement = (routePath: string): Category | undefined => {
+  let navigationElement;
+  const navigation = navigationElements.value;
+  if (navigation) {
+    // we do not loop through the top level
+    for (let ni = 0; ni < navigation.length; ++ni) {
+      const children = navigation[ni].children;
+      if (children) {
+        for (let ci = 0; ci < children.length; ++ci) {
+          const seoUrls = children[ci].seoUrls;
+          if (seoUrls) {
+            for (let si = 0; si < seoUrls.length; ++si) {
+              if (seoUrls[si].seoPathInfo == routePath) {
+                navigationElement = children[ci];
+                break;
+              }
+            }
+          }
+          if (navigationElement) {
+            break;
+          }
+        }
+      }
+      if (navigationElement) {
+        break;
+      }
+    }
+  }
+
+  return navigationElement;
+};
+// only works with 2 level navigation, timeout needed to be executed after watch
+const updateActiceClass = (
+  navigationId: string,
+  parentId: string | null,
+  timeout?: number,
+) => {
+  setTimeout(() => {
+    const navigation = navigationElements.value;
+    if (navigation) {
+      for (let ni = 0; ni < navigation.length; ++ni) {
+        navigation[ni].activeClass = false;
+        if (
+          (parentId && navigation[ni].id == parentId) ||
+          navigation[ni].id == navigationId
+        ) {
+          navigation[ni].activeClass = true;
+        }
+        const children = navigation[ni].children;
+        if (children) {
+          for (let ci = 0; ci < children.length; ++ci) {
+            children[ci].activeClass = false;
+            if (children[ci].id == navigationId) {
+              children[ci].activeClass = true;
+            }
+          }
+        }
+      }
+    }
+  }, timeout ?? 0);
+};
+// reset when route.path changes
+watch(
+  () => route.path,
+  () => {
+    updateActiceClass("", "");
+  },
+);
 </script>
 
 <template>
@@ -21,15 +99,10 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
     aria-label="Top navigation"
     role="menu"
   >
-    <!--  
-       ref="menuHtmlElement" was removed because of nuxt/vue bug
-       https://github.com/nuxt/nuxt/issues/13309
-
-    -->
     <div
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
-      class="relative hover:bg-gray-50 hover:rounded-lg"
+      class="relative hover:bg-gray-50 rounded-lg"
       @mouseover="currentMenuPosition = navigationElement.id"
     >
       <NuxtLink
@@ -40,7 +113,17 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
             : ''
         "
         :to="formatLink(getCategoryRoute(navigationElement))"
+        :class="{
+          'link-active': navigationElement.activeClass,
+        }"
         class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
+        @click="
+          updateActiceClass(
+            navigationElement.id,
+            navigationElement.parentId,
+            100,
+          )
+        "
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
       </NuxtLink>
@@ -84,7 +167,17 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
                       ? '_blank'
                       : ''
                   "
+                  :class="{
+                    'link-active': childElement.activeClass,
+                  }"
                   class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
+                  @click="
+                    updateActiceClass(
+                      childElement.id,
+                      childElement.parentId,
+                      100,
+                    )
+                  "
                 >
                   <div
                     class="flex flex-col flex-grow pl-2"
@@ -127,3 +220,9 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
     </div>
   </nav>
 </template>
+
+<style scoped>
+nav .link-active {
+  @apply text-gray-900 bg-brand-primary bg-opacity-10 rounded-lg;
+}
+</style>
