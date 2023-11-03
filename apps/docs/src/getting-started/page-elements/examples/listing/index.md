@@ -1,5 +1,9 @@
 # Product Listing
 
+::: tip 🙋‍♀️ How to use these example?
+Just copy the code snippet and paste it into your project. Sometimes it's useful to create a new component and use it in a higher level component like a page or a layout.
+:::
+
 ## Condensed product listing
 
 This listing shows the product name and price with soft hover effects and a fade-in animation.

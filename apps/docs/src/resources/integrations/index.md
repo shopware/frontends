@@ -22,3 +22,7 @@ Streamline your operations and enhance your user experience with these comprehen
 
 <PageRef title="Multi CMS instance" sub="How to integrate 3rd CMS systems" page="multi-cms" />
 <PageRef title="Strapi" sub="How to integrate Strapi CMS with the Shopware Frontends" page="strapi/index" />
+
+## Payments
+
+<PageRef title="Paypal Express" sub="Custom payment flow based on PayPal Express Checkout " page="../../getting-started/e-commerce/custom-payment.html" />
