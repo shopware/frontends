@@ -72,7 +72,7 @@ runtimeConfig: {
 
 ## Use Credit Card components
 
-[Open app.vue](./app.vue) file to see how it's working. 
+[Open app.vue](./app.vue) file to see how it's working.
 
 ## Development
 
@@ -85,12 +85,12 @@ pnpm dev
 
 ## Troubleshooting
 
-- If you are getting HTTP 500 error and `[UseSessionContext][refreshSessionContext] { messages: [], statusCode: 500 }` in the console, then you probably didn't configured your API instance correctly, thus the API client cannot connect to your Shopware 6 instance. 
+- If you are getting HTTP 500 error and `[UseSessionContext][refreshSessionContext] { messages: [], statusCode: 500 }` in the console, then you probably didn't configured your API instance correctly, thus the API client cannot connect to your Shopware 6 instance.
 
   In this case, please visit again _2. Setup nuxt project_ section and re-run a project.
 
-- If you are getting HTTP 401 error, you are probably using incorrect `loginData` in your _nuxt.config.ts_ public runtime settings. 
-  
+- If you are getting HTTP 401 error, you are probably using incorrect `loginData` in your _nuxt.config.ts_ public runtime settings.
+
   In this case, please visit again _2. Setup nuxt project_ section and re-run a project.
 
 ## Resources
