@@ -46,6 +46,7 @@ export * from "./usePrice";
 export * from "./useProduct";
 export * from "./useProductAssociations";
 export * from "./useProductConfigurator";
+export * from "./useProductCustomizedProductConfigurator";
 export * from "./useProductPrice";
 export * from "./useProductReviews";
 export * from "./useProductSearch";

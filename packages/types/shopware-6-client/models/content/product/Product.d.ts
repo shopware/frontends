@@ -87,7 +87,7 @@ export type Product = {
   displayGroup: string;
   downloads: any;
   ean: string | null;
-  extensions: [];
+  extensions: unknown;
   height: number | null;
   id: string;
   isCloseout: boolean | null;
