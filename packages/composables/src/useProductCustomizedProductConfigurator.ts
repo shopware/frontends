@@ -1,15 +1,17 @@
-import { ref, computed, reactive } from "vue";
-import type { Ref, ComputedRef, UnwrapNestedRefs } from "vue";
+import { ref, computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
 import type { Media, Product } from "@shopware-pwa/types";
 import type { Price } from "@shopware-pwa/types/shopware-6-client/models/framework/pricing/Price";
-import { useAddToCart, useCart, useProduct, useShopwareContext } from ".";
+import { useCart, useProduct, useShopwareContext } from ".";
 
 export type UseProductCustomizedProductConfiguratorReturn = {
   customizedProduct: ComputedRef<SwagCustomizedProductsTemplate>;
   state: Ref<{
     [key: string]: string | { media: { filename: string; id: string } };
   }>;
+  isActive: ComputedRef<boolean>;
   addToCart: () => void;
+  handleFileUpload: (event: Event, optionId: string) => Promise<void>;
 };
 
 export type CustomizedProductOptionValue = {
@@ -111,6 +113,12 @@ export type ProductExtensionsExtended = Product & {
   };
 };
 
+const productsState = ref<{
+  [productId: string]: {
+    [key: string]: string | { media: { filename: string; id: string } };
+  };
+}>({});
+
 /**
  * Composable to change product variant.
  * @public
@@ -118,18 +126,19 @@ export type ProductExtensionsExtended = Product & {
  */
 export function useProductCustomizedProductConfigurator(): UseProductCustomizedProductConfiguratorReturn {
   const { apiInstance } = useShopwareContext();
-  const { configurator, product } = useProduct();
+  const { product } = useProduct();
   const { refreshCart } = useCart();
-
-  const state = ref<{
-    [key: string]: string | { media: { filename: string; id: string } };
-  }>({});
-
+  if (!productsState.value[product.value.id]) {
+    productsState.value[product.value.id] = {};
+  }
   const customizedProduct = computed<SwagCustomizedProductsTemplate>(
     () =>
       (product.value as ProductExtensionsExtended).extensions
         ?.swagCustomizedProductsTemplate,
   );
+
+  const isActive = computed<boolean>(() => customizedProduct.value?.active);
+  const state = computed(() => productsState.value[product.value.id]);
 
   const addToCart = async () => {
     const payload = {
@@ -166,9 +175,32 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     refreshCart();
   };
 
+  const handleFileUpload = async (event: Event, optionId: string) => {
+    const file = (event.target as EventTarget & { files: FileList }).files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("optionId", optionId);
+    const headers = { "Content-Type": "multipart/form-data" };
+    const addedMediaResponse = await apiInstance.invoke.post<{
+      mediaId: string;
+      fileName: string;
+    }>(`/store-api/customized-products/upload`, formData, {
+      headers,
+    });
+
+    state.value[optionId] = {
+      media: {
+        id: addedMediaResponse?.data?.mediaId,
+        filename: addedMediaResponse?.data?.fileName,
+      },
+    };
+  };
+
   return {
+    isActive,
     customizedProduct,
     state,
     addToCart,
+    handleFileUpload,
   };
 }

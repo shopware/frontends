@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Product } from "@shopware-pwa/types";
+import { useProductCustomizedProductConfigurator } from "@shopware-pwa/composables-next";
 
 const { pushSuccess, pushError } = useNotifications();
 const props = defineProps<{
@@ -9,9 +10,18 @@ const { product } = toRefs(props);
 const { getErrorsCodes } = useCartNotification();
 const { t } = useI18n();
 const { addToCart, quantity } = useAddToCart(product);
+const {
+  addToCart: customizedProductAddToCart,
+  isActive: isCustomizedProductActive,
+  state,
+} = useProductCustomizedProductConfigurator();
 
 const addToCartProxy = async () => {
-  await addToCart();
+  if (isCustomizedProductActive.value) {
+    await customizedProductAddToCart();
+  } else {
+    await addToCart();
+  }
   getErrorsCodes()?.forEach((element) => {
     pushError(t(`errors.${element.messageKey}`, { ...element }));
   });
@@ -26,6 +36,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-row mt-10">
+    {{ state }}
     <div class="basis-1/4 relative -top-6">
       <label for="qty" class="text-sm">Qty</label>
       <input
