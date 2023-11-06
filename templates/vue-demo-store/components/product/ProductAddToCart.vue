@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Product } from "@shopware-pwa/types";
-import { useProductCustomizedProductConfigurator } from "@shopware-pwa/composables-next";
 
 const { pushSuccess, pushError } = useNotifications();
 const props = defineProps<{
@@ -13,7 +12,6 @@ const { addToCart, quantity } = useAddToCart(product);
 const {
   addToCart: customizedProductAddToCart,
   isActive: isCustomizedProductActive,
-  state,
 } = useProductCustomizedProductConfigurator();
 
 const addToCartProxy = async () => {
@@ -36,7 +34,6 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-row mt-10">
-    {{ state }}
     <div class="basis-1/4 relative -top-6">
       <label for="qty" class="text-sm">Qty</label>
       <input

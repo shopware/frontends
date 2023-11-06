@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useProductCustomizedProductConfigurator } from "@shopware-pwa/composables-next";
 const { customizedProduct, state, handleFileUpload } =
   useProductCustomizedProductConfigurator();
 const { currency } = useSessionContext();
@@ -7,6 +6,7 @@ const { currency } = useSessionContext();
 const customizedProductOptions = computed(() => {
   const options = customizedProduct.value.options.map((option) => ({
     ...option,
+    // prepend options by "No selection"
     values: [
       {
         id: undefined,

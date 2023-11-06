@@ -2,15 +2,37 @@ import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import type { Media, Product } from "@shopware-pwa/types";
 import type { Price } from "@shopware-pwa/types/shopware-6-client/models/framework/pricing/Price";
-import { useCart, useProduct, useShopwareContext } from ".";
+import {
+  useCart,
+  useProduct,
+  useShopwareContext,
+} from "@shopware-pwa/composables-next";
+
+type MediaOption = { media: { filename: string; id: string } };
 
 export type UseProductCustomizedProductConfiguratorReturn = {
+  /**
+   * Assigned template of the product
+   */
   customizedProduct: ComputedRef<SwagCustomizedProductsTemplate>;
+  /**
+   * State of the product selected options
+   */
   state: Ref<{
-    [key: string]: string | { media: { filename: string; id: string } };
+    [key: string]: string | MediaOption;
   }>;
+  /**
+   * Is product customizable
+   */
   isActive: ComputedRef<boolean>;
+  /**
+   * Add product to cart
+   */
   addToCart: () => void;
+  /**
+   * Handle file upload
+   * Gets mediaId from API and assigns it to the state
+   */
   handleFileUpload: (event: Event, optionId: string) => Promise<void>;
 };
 
@@ -113,6 +135,9 @@ export type ProductExtensionsExtended = Product & {
   };
 };
 
+/**
+ * Global state for selected options
+ */
 const productsState = ref<{
   [productId: string]: {
     [key: string]: string | { media: { filename: string; id: string } };
@@ -141,16 +166,21 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
   const state = computed(() => productsState.value[product.value.id]);
 
   const addToCart = async () => {
+    /**
+     * Payload for adding product to cart
+     */
     const payload = {
       "customized-products-template": {
         id: customizedProduct.value.id,
         options: Object.assign(
           {},
           ...Object.entries(state.value).map(([id, value]) => ({
-            [id]: (value as any).media
+            [id]: (value as MediaOption).media
               ? {
                   media: {
-                    [(value as any).media.filename]: (value as any).media,
+                    [(value as MediaOption).media.filename]: (
+                      value as MediaOption
+                    ).media,
                   },
                 }
               : { value },

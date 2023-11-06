@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-  useProductCustomizedProductConfigurator,
   type BoxLayout,
   type DisplayMode,
 } from "@shopware-pwa/composables-next";
