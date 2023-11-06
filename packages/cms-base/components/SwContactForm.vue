@@ -2,11 +2,17 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import { sendContactForm } from "@shopware-pwa/api-client";
-import type { CmsElementForm } from "@shopware-pwa/composables-next";
-import { useNavigationContext } from "@shopware-pwa/composables-next";
+import type { CmsElementForm } from "@shopware-pwa/composables-next/composables";
+import {
+  useCmsElementConfig,
+  useNavigationContext,
+  useSalutations,
+  useShopwareContext,
+} from "#imports";
 import type { ClientApiError } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import { computed, reactive, ref } from "vue";
 
 const props = defineProps<{
   content: CmsElementForm;

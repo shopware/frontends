@@ -1,5 +1,5 @@
-import { ref, computed, reactive } from "vue";
-import type { Ref, UnwrapRef, ComputedRef } from "vue";
+import { ref, computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
 import {
   login as apiLogin,
   logout as apiLogout,
@@ -9,9 +9,11 @@ import {
   getUserCountry,
   getUserSalutation,
   updateProfile,
+  setDefaultCustomerPaymentMethod,
+} from "@shopware-pwa/api-client";
+import type {
   CustomerUpdateProfileParam,
   CustomerUpdateEmailParam,
-  setDefaultCustomerPaymentMethod,
 } from "@shopware-pwa/api-client";
 import type {
   Customer,
@@ -28,7 +30,7 @@ import {
   useCart,
   useInternationalization,
   useSessionContext,
-} from ".";
+} from "#imports";
 import { _useContext } from "./internal/_useContext";
 import { syncRefs } from "@vueuse/core";
 

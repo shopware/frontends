@@ -4,7 +4,7 @@ import {
   isNewsletterSubscriber as isNewsletterSubscriberAPI,
 } from "@shopware-pwa/api-client";
 import type { NewsletterInput } from "@shopware-pwa/types";
-import { useShopwareContext, useInternationalization } from ".";
+import { useShopwareContext, useInternationalization } from "#imports";
 import { ref, computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
 

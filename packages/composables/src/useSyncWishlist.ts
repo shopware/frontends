@@ -6,7 +6,7 @@ import {
   removeWishlistProduct,
   mergeWishlistProducts as mergeWishlistProductsAPI,
 } from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 import type { ClientApiError } from "@shopware-pwa/types";
 
 export type UseSyncWishlistReturn = {

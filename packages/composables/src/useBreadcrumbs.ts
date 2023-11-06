@@ -1,4 +1,5 @@
-import { ComputedRef, computed } from "vue";
+import { computed } from "vue";
+import type { ComputedRef } from "vue";
 import { _useContext } from "./internal/_useContext";
 
 /**

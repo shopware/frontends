@@ -21,7 +21,7 @@ import {
   setCurrentLanguage,
   setCurrentCountry,
 } from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 import { _useContext } from "./internal/_useContext";
 
 export type UseSessionContextReturn = {

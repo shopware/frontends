@@ -6,11 +6,13 @@ import SwProductListingFilter from "./SwProductListingFilter.vue";
 import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
-} from "@shopware-pwa/composables-next";
-import { useListing } from "@shopware-pwa/composables-next";
+} from "@shopware-pwa/composables-next/composables";
+import { useCategory, useListing } from "#imports";
 import type { ShopwareSearchParams } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import { onClickOutside } from "@vueuse/core";
+import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps<{
   content: CmsElementProductListing | CmsElementSidebarFilter;

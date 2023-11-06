@@ -5,7 +5,8 @@ import {
   getCmsLayoutConfiguration,
   getBackgroundImageUrl,
 } from "@shopware-pwa/helpers-next";
-import { useNavigationContext } from "@shopware-pwa/composables-next";
+import { useListing, useNavigationContext } from "#imports";
+import { computed, h, resolveComponent } from "vue";
 
 const props = defineProps<{
   content: CmsPage;

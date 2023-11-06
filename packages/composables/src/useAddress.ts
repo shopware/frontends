@@ -1,4 +1,4 @@
-import { ref, computed, inject, provide, watch } from "vue";
+import { ref, computed, inject, provide } from "vue";
 import type { Ref, ComputedRef } from "vue";
 
 import {
@@ -9,7 +9,7 @@ import {
   setDefaultCustomerShippingAddress as apiSetDefaultCustomerShippingAddress,
   setDefaultCustomerBillingAddress as apiSetDefaultCustomerBillingAddress,
 } from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 
 import type {
   ClientApiError,
@@ -17,7 +17,6 @@ import type {
   ShopwareSearchParams,
   ShopwareError,
 } from "@shopware-pwa/types";
-import { useUser } from "./useUser";
 
 export type UseAddressReturn = {
   /**

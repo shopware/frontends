@@ -7,5 +7,8 @@ export default defineConfig({
       enabled: true,
       // "100": true, // TODO: our goal ;)
     },
+    alias: {
+      "#imports": "./src/index.ts",
+    },
   },
 });

@@ -78,7 +78,7 @@ export async function login(
   );
   const contextToken =
     resp.data["sw-context-token"] || resp.data["contextToken"];
-  return { contextToken };
+  return { contextToken, apiAlias: "array_struct" };
 }
 
 /**

@@ -18,7 +18,7 @@ import {
   getOrderDownloads,
   getDocumentDownload,
 } from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 import deepMerge from "./helpers/deepMerge";
 
 /**

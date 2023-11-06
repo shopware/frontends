@@ -174,7 +174,7 @@ export type CmsFieldConfig = {
  */
 export type OldSlot = {
   type: CmsSlotType;
-  customFields: CustomFields | null;
+  customFields: CustomFields | null | [];
   locked: boolean;
   _uniqueIdentifier: string;
   versionId: string;

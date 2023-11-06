@@ -2,14 +2,14 @@ import { describe, expect, it } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useProduct } from "./useProduct";
 import mockedProduct from "./mocks/Product";
-const Component = {
+import { defineComponent } from "vue";
+const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const { product, configurator, changeVariant } = useProduct(mockedProduct);
     return { product, configurator, changeVariant };
   },
-};
+});
 
 describe("useProduct", () => {
   const wrapper = shallowMount(Component);

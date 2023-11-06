@@ -3,11 +3,13 @@ import type { UnwrapRef } from "vue";
 import {
   updatePassword as apiUpdatePassword,
   resetPassword as apiResetPassword,
+} from "@shopware-pwa/api-client";
+import type {
   CustomerUpdatePasswordParam,
   CustomerResetPasswordParam,
 } from "@shopware-pwa/api-client";
 import type { ClientApiError, ShopwareError } from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 
 export type UseCustomerPasswordReturn = {
   errors: UnwrapRef<{

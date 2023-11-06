@@ -1,7 +1,7 @@
-import { ref, computed, unref, inject } from "vue";
+import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import type { Product, PropertyGroup } from "@shopware-pwa/types";
-import { useProduct, useShopwareContext } from ".";
+import { useProduct, useShopwareContext } from "#imports";
 import { invokePost, getProductEndpoint } from "@shopware-pwa/api-client";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 

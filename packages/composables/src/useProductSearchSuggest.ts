@@ -2,7 +2,7 @@ import { ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 
 import type { ShopwareSearchParams, Product } from "@shopware-pwa/types";
-import { useListing } from "./useListing";
+import { useListing } from "#imports";
 
 export type UseProductSearchSuggestReturn = {
   /**

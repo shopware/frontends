@@ -1,8 +1,7 @@
-import { ref, computed, unref, watch } from "vue";
+import { ref, computed, unref } from "vue";
 import type { Ref, ComputedRef } from "vue";
-import type { Product, Cart, LineItem, EntityError } from "@shopware-pwa/types";
-import { useCart } from "./useCart";
-// prettier-ignore
+import type { Product, Cart, LineItem } from "@shopware-pwa/types";
+import { useCart } from "#imports";
 export type UseAddToCartReturn = {
   /**
    * Add to cart method
@@ -16,7 +15,7 @@ export type UseAddToCartReturn = {
   /**
    * Returns product count in stock
    */
-  getStock: ComputedRef<number|undefined>;
+  getStock: ComputedRef<number | undefined>;
   /**
    * Returns product count in available stock
    */

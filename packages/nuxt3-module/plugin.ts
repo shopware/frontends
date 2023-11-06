@@ -4,7 +4,7 @@ import { defineNuxtPlugin, useRuntimeConfig, useCookie, useState } from "#app";
 import {
   createShopwareContext,
   getDefaultApiParams,
-} from "@shopware-pwa/composables-next";
+} from "@shopware-pwa/composables-next/dist";
 import { createInstance } from "@shopware-pwa/api-client";
 import { ref } from "vue";
 import Cookies from "js-cookie";

@@ -1,9 +1,7 @@
 import { computed } from "vue";
 import type { Ref } from "vue";
 import type { Product } from "@shopware-pwa/types";
-import { useUser } from "./useUser";
-import { useLocalWishlist } from "./useLocalWishlist";
-import { useSyncWishlist } from "./useSyncWishlist";
+import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
 
 export type UseProductWishlistReturn = {
   /**

@@ -1,4 +1,5 @@
-import { ref, Ref, computed, ComputedRef } from "vue";
+import { ref, computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
 
 export type UseLocalWishlistReturn = {
   /**

@@ -4,6 +4,8 @@ import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
 import type { Category } from "@shopware-pwa/types";
 import deepMerge from "../../../../helpers/deepMerge";
 import getTranslations from "../../../../helpers/getTranslations";
+import { useCategory, useNavigation } from "#imports";
+import { onMounted, computed } from "vue";
 
 type Translations = {
   listing: {

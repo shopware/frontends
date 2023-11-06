@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { useSessionContext, useUser } from "@shopware-pwa/composables-next";
+import {
+  useSessionContext,
+  useUser,
+} from "@shopware-pwa/composables-next/dist";
 
 const { currency, selectedPaymentMethod, refreshSessionContext } =
   useSessionContext();

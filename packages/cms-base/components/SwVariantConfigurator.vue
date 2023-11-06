@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { getProductRoute } from "@shopware-pwa/helpers-next";
-import type { ComputedRef } from "vue";
+import { ref, type ComputedRef, computed, unref } from "vue";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import { useProductConfigurator } from "#imports";
+import { useRouter } from "vue-router";
 
 const props = withDefaults(
   defineProps<{

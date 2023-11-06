@@ -9,6 +9,7 @@ import { Customer } from "../models/checkout/customer/Customer";
 import { CustomFields } from "../models/common/CustomField";
 
 export type ContextTokenResponse = {
+  apiAlias: "array_struct";
   contextToken: string;
   redirectUrl?: string;
 };

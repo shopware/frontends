@@ -4,7 +4,8 @@ import type {
   CmsBlockImageTextGallery,
   CmsElementImage,
   CmsElementText,
-} from "@shopware-pwa/composables-next";
+} from "@shopware-pwa/composables-next/composables";
+import { useCmsBlock } from "#imports";
 
 const props = defineProps<{
   content: CmsBlockImageTextGallery;

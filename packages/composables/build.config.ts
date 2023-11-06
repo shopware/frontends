@@ -12,4 +12,8 @@ export default defineBuildConfig({
     "@shopware-pwa/types",
     "@vueuse/core",
   ],
+  alias: {
+    "#imports": "./src/index.ts",
+  },
+  failOnWarn: false,
 });

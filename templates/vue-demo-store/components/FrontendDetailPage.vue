@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useProductSearch } from "@shopware-pwa/composables-next";
+import { useProductSearch } from "#imports";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{

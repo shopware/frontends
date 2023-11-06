@@ -2,7 +2,7 @@ import { ref, computed, onMounted, inject, provide } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { getAvailableSalutations } from "@shopware-pwa/api-client";
 import type { ClientApiError, Salutation } from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 
 export type UseSalutationsReturn = {
   mountedCallback(): Promise<void>;

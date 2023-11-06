@@ -1,4 +1,5 @@
-import { computed, ComputedRef, Ref } from "vue";
+import { computed } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { removeCartItem, getProduct } from "@shopware-pwa/api-client";
 import type {
   LineItem,
@@ -11,7 +12,7 @@ import type {
 } from "@shopware-pwa/types";
 
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
-import { useShopwareContext, useCart } from ".";
+import { useShopwareContext, useCart } from "#imports";
 
 export type UseCartItemReturn = {
   /**

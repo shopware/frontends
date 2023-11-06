@@ -1,4 +1,4 @@
-import { ShopwareApiInstance } from "@shopware-pwa/api-client";
+import type { ShopwareApiInstance } from "@shopware-pwa/api-client";
 import { inject } from "vue";
 import ContextError from "./helpers/ContextError";
 

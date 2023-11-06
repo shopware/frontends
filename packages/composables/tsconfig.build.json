@@ -6,6 +6,9 @@
     "allowJs": true,
     "emitDeclarationOnly": true,
     "skipLibCheck": true,
-    "outDir": "./temp"
+    "outDir": "./temp",
+    "paths": {
+      "#imports": ["./src"]
+    }
   }
 }

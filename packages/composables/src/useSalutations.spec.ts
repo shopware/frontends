@@ -3,10 +3,10 @@ import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import Salutations from "./mocks/Salutations";
 import * as apiExports from "@shopware-pwa/api-client";
+import { defineComponent } from "vue";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const { mountedCallback, fetchSalutations, getSalutations } =
       useSalutations();
@@ -17,7 +17,7 @@ const Component = {
       getSalutations,
     };
   },
-};
+});
 
 const getMockProvide = () => ({
   global: {
@@ -32,11 +32,11 @@ const getMockProvide = () => ({
 });
 
 describe("useSalutations", () => {
-  vi.spyOn(apiExports, "getAvailableSalutations").mockImplementation(() => {
-    return new Promise((resolve) => {
-      resolve({ elements: Salutations });
-    });
-  });
+  vi.spyOn(apiExports, "getAvailableSalutations").mockImplementation(
+    async () => {
+      return { elements: Salutations } as any; // TODO: mock entity result
+    },
+  );
 
   const wrapper = shallowMount(Component, getMockProvide());
 

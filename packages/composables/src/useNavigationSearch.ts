@@ -1,9 +1,8 @@
 import type { SeoUrl } from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext, useSessionContext } from "#imports";
 import { getSeoUrl } from "@shopware-pwa/api-client";
 import { _useContext } from "./internal/_useContext";
-import { useSessionContext } from "./useSessionContext";
 
 export type UseNavigationSearchReturn = {
   /**

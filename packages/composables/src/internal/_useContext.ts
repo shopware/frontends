@@ -1,4 +1,5 @@
-import { inject, provide, ref, Ref, unref } from "vue";
+import { inject, provide, ref, unref } from "vue";
+import type { Ref } from "vue";
 
 /**
  * Internal context helper

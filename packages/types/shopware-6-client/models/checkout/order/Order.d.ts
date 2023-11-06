@@ -96,7 +96,7 @@ export type Order = {
   documents: OrderDocument[];
   tags: Tag[] | null;
   affiliateCode: string | null;
-  campaignCode: string | null;
+  campaignCode?: string;
   _uniqueIdentifier: string;
   versionId: string;
   translated: any[];

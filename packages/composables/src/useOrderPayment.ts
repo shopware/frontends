@@ -1,4 +1,4 @@
-import { computed, ref, inject, provide } from "vue";
+import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 
 import type {
@@ -11,7 +11,7 @@ import {
   changeOrderPaymentMethod,
   handlePayment as apiHandlePayment,
 } from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 
 export type UseOrderPaymentReturn = {
   /**

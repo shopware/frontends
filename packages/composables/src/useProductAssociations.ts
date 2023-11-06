@@ -11,7 +11,7 @@ import {
   invokePost,
   getProductDetailsEndpoint,
 } from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 
 export type UseProductAssociationsReturn = {
   /**

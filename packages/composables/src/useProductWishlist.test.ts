@@ -1,14 +1,13 @@
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
-import { ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { useProductWishlist } from "./useProductWishlist";
 
 import * as useLocalWishlist from "./useLocalWishlist";
 import * as useSyncWishlist from "./useSyncWishlist";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const { addToWishlist, removeFromWishlist, isInWishlist } =
       useProductWishlist(
@@ -23,7 +22,7 @@ const Component = {
       isInWishlist,
     };
   },
-};
+});
 
 const getMockProvide = () => ({
   global: {

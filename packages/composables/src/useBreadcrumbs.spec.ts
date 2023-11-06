@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useBreadcrumbs } from "./useBreadcrumbs";
+import { defineComponent } from "vue";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const { clearBreadcrumbs, breadcrumbs } = useBreadcrumbs([
       {
@@ -18,7 +18,7 @@ const Component = {
       breadcrumbs,
     };
   },
-};
+});
 
 const getMockProvide = () => ({
   global: {
@@ -34,7 +34,6 @@ const getMockProvide = () => ({
 
 describe("useBreadcrumbs", () => {
   const wrapper = shallowMount(Component, getMockProvide());
-
   it("should add breadcrumbs", async () => {
     expect(wrapper.vm.breadcrumbs.length).toBe(1);
   });

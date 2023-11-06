@@ -4,7 +4,7 @@ import type {
   StoreNavigationElement,
   StoreNavigationType,
 } from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 import { getStoreNavigation } from "@shopware-pwa/api-client";
 
 /**

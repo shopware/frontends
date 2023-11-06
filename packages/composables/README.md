@@ -62,7 +62,7 @@ Now you can use any composable function in your setup function:
 
 ```html
 <script setup>
-    import { useUser, useSessionContext } from "@shopware-pwa/composables-next";
+    import { useUser, useSessionContext } from "@shopware-pwa/composables-next/dist";
 
     const { login } = useUser();
     const { refreshSessionContext, sessionContext } = useSessionContext();

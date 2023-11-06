@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Category } from "@shopware-pwa/types";
-import { useCategorySearch } from "@shopware-pwa/composables-next";
+import { useCategorySearch } from "#imports";
 import type { Ref } from "vue";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 import { useCmsHead } from "@/composables/useCmsHead";

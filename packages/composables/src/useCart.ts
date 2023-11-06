@@ -9,7 +9,7 @@ import {
   getProducts,
 } from "@shopware-pwa/api-client";
 import type { Cart, Product, LineItem, CartErrors } from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 import { _useContext } from "./internal/_useContext";
 import { createSharedComposable } from "@vueuse/core";
 

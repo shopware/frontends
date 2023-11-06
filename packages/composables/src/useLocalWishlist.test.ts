@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useLocalWishlist } from "./useLocalWishlist";
+import { defineComponent } from "vue";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
   props: {},
   setup() {
@@ -24,7 +25,7 @@ const Component = {
       count,
     };
   },
-};
+});
 
 describe("useLocalWishlist", () => {
   const wrapper = shallowMount(Component);

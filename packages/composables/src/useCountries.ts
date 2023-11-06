@@ -1,8 +1,8 @@
 import { computed, ref, onMounted, inject, provide } from "vue";
-import type { Ref, ComputedRef } from "vue";
+import type { ComputedRef } from "vue";
 import { getAvailableCountries } from "@shopware-pwa/api-client";
 import type { Country, CountryState } from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 
 export type UseCountriesReturn = {
   mountedCallback(): Promise<void>;

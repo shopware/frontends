@@ -8,10 +8,7 @@ export default {
 import { resolveComponent } from "vue";
 import type { Ref } from "vue";
 import { pascalCase } from "scule";
-import {
-  useNavigationContext,
-  useNavigationSearch,
-} from "@shopware-pwa/composables-next";
+import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { SeoUrl } from "@shopware-pwa/types";
 const { clearBreadcrumbs } = useBreadcrumbs();
 

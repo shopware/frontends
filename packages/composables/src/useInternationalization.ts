@@ -1,4 +1,4 @@
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 import { getAvailableLanguages as getAvailableLanguagesAPI } from "@shopware-pwa/api-client";
 import { _useContext } from "./internal/_useContext";
 import type {

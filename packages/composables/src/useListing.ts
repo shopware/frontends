@@ -10,7 +10,7 @@ import type {
 import { inject, computed, ref, provide } from "vue";
 import type { ComputedRef } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
-import { useShopwareContext, useCategory } from ".";
+import { useShopwareContext, useCategory } from "#imports";
 import ContextError from "./helpers/ContextError";
 
 function isObject<T>(item: T): boolean {

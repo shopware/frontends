@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import type {
+  BoxLayout,
+  DisplayMode,
+} from "@shopware-pwa/composables-next/composables";
 import {
   getProductName,
   getProductThumbnailUrl,
@@ -12,12 +15,14 @@ import type {
   Product,
   PropertyGroupOption,
 } from "@shopware-pwa/types";
-import type { Ref } from "vue";
+import { toRefs, type Ref, computed, ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 import getUrlPrefix from "../helpers/getUrlPrefix";
 import buildUrlPrefix from "../helpers/buildUrlPrefix";
+import { useAddToCart, useNotifications, useProductWishlist } from "#imports";
+import { useElementSize } from "@vueuse/core";
 
 const { pushSuccess, pushError } = useNotifications();
 

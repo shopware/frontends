@@ -2,6 +2,8 @@
 import type { Product } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import { useAddToCart, useNotifications } from "#imports";
+import { toRefs } from "vue";
 
 const { pushSuccess } = useNotifications();
 const props = defineProps<{

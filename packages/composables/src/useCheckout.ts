@@ -15,7 +15,7 @@ import {
   getAvailablePaymentMethods,
   createOrder as createApiOrder,
 } from "@shopware-pwa/api-client";
-import { useShopwareContext, useCart, useSessionContext } from ".";
+import { useShopwareContext, useCart, useSessionContext } from "#imports";
 import deepMerge from "./helpers/deepMerge";
 
 export type UseCheckoutReturn = {
