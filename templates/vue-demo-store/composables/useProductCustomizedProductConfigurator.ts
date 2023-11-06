@@ -140,7 +140,7 @@ export type ProductExtensionsExtended = Product & {
  */
 const productsState = ref<{
   [productId: string]: {
-    [key: string]: string | { media: { filename: string; id: string } };
+    [key: string]: string | MediaOption;
   };
 }>({});
 
