@@ -137,20 +137,30 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.13.3
+### Latest changes: 0.14.0
+
+### Minor Changes
+
+- [#453](https://github.com/shopware/frontends/pull/453) [`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add category advanced search method
+
+- [#445](https://github.com/shopware/frontends/pull/445) [`c264bf5d`](https://github.com/shopware/frontends/commit/c264bf5d41638c6013ebf14e7cd9615e5b5ef9bf) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Adding the missing srcset attribute to the image tag in the CmsElementImage component. as well as adding support for HTML video elements as in Shopware management, it is possible for users to associate videos to any Cms image element.
+
+- [#444](https://github.com/shopware/frontends/pull/444) [`85628cc6`](https://github.com/shopware/frontends/commit/85628cc65216417a887398f0838714fc03544303) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Use `relativeUrlSlash` toggle helper for element img url attribute
+
+- [#431](https://github.com/shopware/frontends/pull/431) [`87213fb0`](https://github.com/shopware/frontends/commit/87213fb02b292b11f45b7fb5956fb8bc1ae33800) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add tests for `useProductAssociations`, `useProductConfigurator`, `useProductPrice`
+
+- [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Changed types imports to `import type {...} from "..."`
 
 ### Patch Changes
 
-- [#372](https://github.com/shopware/frontends/pull/372) [`211ccbb2`](https://github.com/shopware/frontends/commit/211ccbb2e4d9d6009847e6ff53099deb97d569de) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix `loadOrderDetails` return type
+- [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
 
-- [#380](https://github.com/shopware/frontends/pull/380) [`b2b6905b`](https://github.com/shopware/frontends/commit/b2b6905beb8f28b79c0989ff9340c757e60001c9) Thanks [@SuddenDev](https://github.com/SuddenDev)! - Adds the ability to specify a query for the loadMore function in the useListing composable.
+  - Changed dependency _@vueuse/core_ from **^10.4.1** to **^10.5.0**
 
-- [#390](https://github.com/shopware/frontends/pull/390) [`61de0366`](https://github.com/shopware/frontends/commit/61de03662869e9ad8b69e2d8a868313a61a7a741) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Catch 404 api error - `getWishlistProducts``
+- [#409](https://github.com/shopware/frontends/pull/409) [`12ed75ff`](https://github.com/shopware/frontends/commit/12ed75ffd3d98bf2623161e44f63c40dfc1ef0e3) Thanks [@mkucmus](https://github.com/mkucmus)! - Correct active addresses location for current context
 
-- [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+- [#433](https://github.com/shopware/frontends/pull/433) [`43510a10`](https://github.com/shopware/frontends/commit/43510a108d351aca361e460844b2cddd29f889b5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `changeProductQuantity` returns whole cart response
 
-  - Changed dependency _@vueuse/core_ from **^10.3.0** to **^10.4.1**
-
-- Updated dependencies []:
-  - @shopware-pwa/api-client@0.6.0
-  - @shopware-pwa/helpers-next@0.4.0
+- Updated dependencies [[`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5), [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0), [`29f849d2`](https://github.com/shopware/frontends/commit/29f849d28c0d0ff8fc34f0d5e921ac2828c93f2b), [`85628cc6`](https://github.com/shopware/frontends/commit/85628cc65216417a887398f0838714fc03544303)]:
+  - @shopware-pwa/api-client@0.7.0
+  - @shopware-pwa/helpers-next@0.5.0

@@ -1,6 +1,6 @@
 {
   "name": "vue-demo-store",
-  "version": "0.14.1",
+  "version": "0.15.0",
   "private": true,
   "scripts": {
     "dev": "nuxt dev",
@@ -20,13 +20,13 @@
     "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
-    "@unocss/nuxt": "^0.56.5",
+    "@unocss/nuxt": "^0.57.2",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/nuxt": "^10.5.0",
     "requrl": "^3.0.2",
     "sitemap": "^7.1.1",
-    "vue": "^3.3.5"
+    "vue": "^3.3.8"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.1.21",
@@ -34,11 +34,11 @@
     "@nuxtjs/i18n": "8.0.0-rc.4",
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-vue": "^9.17.0",
-    "nuxt": "^3.8.0",
+    "eslint-plugin-vue": "^9.18.1",
+    "nuxt": "^3.8.1",
     "typescript": "^5.2.2",
     "vue-eslint-parser": "^9.3.2",
-    "vue-tsc": "^1.8.19"
+    "vue-tsc": "^1.8.22"
   },
   "engines": {
     "node": "^18.x || ^20.x"
