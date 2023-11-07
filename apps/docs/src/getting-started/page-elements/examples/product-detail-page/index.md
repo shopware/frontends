@@ -26,18 +26,31 @@ import {
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import { getProductReviews } from "@shopware-pwa/api-client";
-import { Ref } from "vue";
+import type { Ref } from "vue";
 
-const props = defineProps<{
-  product: Product;
-}>();
 const reviews: Ref<ProductReview[]> = ref([]);
 const router = useRouter();
+
+const { search } = useProductSearch();
+const { data: productResponse } = await useAsyncData(
+  "productExample",
+  async () => {
+    const productResponse = await search("4fd7aa46370147d4963784e4e8821f8c", {
+      withCmsAssociations: true,
+    });
+    return productResponse;
+  },
+);
+
+const { product } = useProduct(
+  productResponse.value?.product,
+  productResponse.value?.configurator,
+);
 
 const { apiInstance } = useShopwareContext();
 onMounted(async () => {
   const reviewsResponse = await getProductReviews(
-    props.product.id,
+    product.value.id,
     undefined,
     apiInstance,
   );
@@ -45,16 +58,16 @@ onMounted(async () => {
 });
 
 const productName = computed(() =>
-  getTranslatedProperty(props.product, "name"),
+  getTranslatedProperty(product.value, "name"),
 );
 const manufacturerName = computed(() =>
-  getTranslatedProperty(props.product.manufacturer, "name"),
+  getTranslatedProperty(product.value.manufacturer, "name"),
 );
 
 const description = computed(() =>
-  getTranslatedProperty(props.product, "description"),
+  getTranslatedProperty(product.value, "description"),
 );
-const properties = computed(() => props.product?.properties || []);
+const properties = computed(() => product.value?.properties || []);
 
 const handleVariantChange = (val: Product) => {
   const newRoute = getProductRoute(val);
@@ -63,7 +76,7 @@ const handleVariantChange = (val: Product) => {
 </script>
 
 <template>
-  <div class="flex flex-row flex-wrap justify-start">
+  <div class="m-5 flex flex-row flex-wrap justify-start">
     <!-- Product name for mobile view -->
     <div class="basis-12/12 display lg:hidden">
       <h1
