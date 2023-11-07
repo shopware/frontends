@@ -32,12 +32,12 @@ onMounted(() => {
     <span class="text-sm">{{ count }} items</span>
     <div v-for="item in cartItems" :key="item.id" class="flex gap-3 my-5">
       <div
-        class="w-20 h-20 bg-gray-200 overflow-hidden object-cover border border-gray-300 rounded-md"
+        class="mr-4 h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
       >
         <img
           v-if="item.type == 'product'"
           :src="item.cover?.url"
-          class="w-20 h-20 object-cover"
+          class="h-full w-full object-cover object-center"
         />
       </div>
       <div class="flex justify-between grow">
