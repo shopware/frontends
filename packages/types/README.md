@@ -12,8 +12,12 @@ Documentation specific for this package: [types](https://frontends.shopware.com/
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/types/CHANGELOG.md)
 
-### Latest changes: 0.5.6
+### Latest changes: 0.6.0
+
+### Minor Changes
+
+- [#433](https://github.com/shopware/frontends/pull/433) [`43510a10`](https://github.com/shopware/frontends/commit/43510a108d351aca361e460844b2cddd29f889b5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add CartError type
 
 ### Patch Changes
 
-- [#303](https://github.com/shopware/frontends/pull/303) [`aeb639a`](https://github.com/shopware/frontends/commit/aeb639a3244f812c275145345618e5bc0045be0d) Thanks [@patzick](https://github.com/patzick)! - Improved linting in packages. Types should be more reliable
+- [#417](https://github.com/shopware/frontends/pull/417) [`2e80139c`](https://github.com/shopware/frontends/commit/2e80139c6fa0bace77d385cfaffa30c4811f8831) Thanks [@annaostermann](https://github.com/annaostermann)! - Add missing translated.url property for LandingPage.d.ts
