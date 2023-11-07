@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "example-adyen-dropin-playground",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "generate": "nuxi generate"
+  },
+  "devDependencies": {
+    "@adyen/adyen-web": "^5.51.0",
+    "@shopware-pwa/api-client": "canary",
+    "@shopware-pwa/composables-next": "canary",
+    "@shopware-pwa/types": "canary",
+    "@unocss/nuxt": "^0.56.5",
+    "nuxt": "latest"
+  }
+}

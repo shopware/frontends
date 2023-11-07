@@ -11,8 +11,11 @@ import type {
   AnchorHTMLAttributes,
   ImgHTMLAttributes,
 } from "vue";
-import { getSrcSetForMedia } from "@shopware-pwa/helpers-next";
-import { urlIsAbsolute } from "../helpers/urlIsAbsolute";
+import {
+  getSrcSetForMedia,
+  urlIsAbsolute,
+  relativeUrlSlash,
+} from "@shopware-pwa/helpers-next";
 
 export type ImageContainerAttrs = {
   href?: string;
@@ -27,6 +30,8 @@ export type UseCmsElementImage = {
   imageContainerAttrs: ComputedRef<ImageContainerAttrs>;
   imageLink: ComputedRef<{ newTab: boolean; url: string }>;
   displayMode: ComputedRef<DisplayMode>;
+  isVideoElement: ComputedRef<boolean>;
+  mimeType: ComputedRef<string>;
 };
 
 /**
@@ -58,7 +63,7 @@ export function useCmsElementImage(
     if (imageLink.value.url) {
       attr.href = urlIsAbsolute(imageLink.value.url)
         ? imageLink.value.url
-        : `/${imageLink.value.url}`;
+        : relativeUrlSlash(imageLink.value.url);
     }
     if (imageLink.value.newTab) {
       attr.target = "blank";
@@ -77,6 +82,14 @@ export function useCmsElementImage(
     () => getConfigValue("displayMode") || "initial",
   );
 
+  const isVideoElement = computed(() => {
+    return !!element.data?.media?.mimeType?.includes("video");
+  });
+
+  const mimeType = computed(() => {
+    return element.data?.media?.mimeType;
+  });
+
   return {
     containerStyle,
     anchorAttrs,
@@ -84,5 +97,7 @@ export function useCmsElementImage(
     imageContainerAttrs,
     imageLink,
     displayMode,
+    isVideoElement,
+    mimeType,
   };
 }

@@ -19,6 +19,8 @@ const {
   imageContainerAttrs,
   imageAttrs,
   imageLink,
+  isVideoElement,
+  mimeType,
 } = useCmsElementImage(props.content);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
@@ -54,7 +56,20 @@ const imageComputedContainerAttrs = computed(() => {
     :style="containerStyle"
     v-bind="imageComputedContainerAttrs"
   >
+    <video
+      v-if="isVideoElement"
+      controls
+      :class="{
+        'h-full w-full': true,
+        'absolute inset-0': ['cover', 'stretch'].includes(displayMode),
+        'object-cover': displayMode === 'cover',
+      }"
+    >
+      <source :src="imageAttrs.src" :type="mimeType" />
+      Your browser does not support the video tag.
+    </video>
     <img
+      v-else
       ref="imageElement"
       loading="lazy"
       :class="{
@@ -62,8 +77,9 @@ const imageComputedContainerAttrs = computed(() => {
         'absolute inset-0': ['cover', 'stretch'].includes(displayMode),
         'object-cover': displayMode === 'cover',
       }"
-      alt="Image link"
+      :alt="imageAttrs.alt"
       :src="srcPath"
+      :srcset="imageAttrs.srcset"
     />
   </component>
 </template>

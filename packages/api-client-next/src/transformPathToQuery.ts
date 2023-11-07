@@ -54,6 +54,11 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
     query: Record<string, unknown>;
     body?: Partial<T>;
   };
+
+  if (!params) {
+    return [requestPathWithParams, returnOptions];
+  }
+
   Object.keys(params).forEach((key) => {
     if (
       !pathParams.includes(key) &&
