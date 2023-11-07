@@ -7,6 +7,7 @@ import {
 import type { Category } from "@shopware-pwa/types";
 const { navigationElements } = useNavigation();
 const currentMenuPosition = ref<string | null>(null);
+const resetActiveClass = ref<boolean>(true);
 
 const route = useRoute();
 const localePath = useLocalePath();
@@ -54,40 +55,38 @@ const findNavigationElement = (routePath: string): Category | undefined => {
   return navigationElement;
 };
 // only works with 2 level navigation, timeout needed to be executed after watch
-const updateActiceClass = (
-  navigationId: string,
-  parentId: string | null,
-  timeout?: number,
-) => {
-  setTimeout(() => {
-    const navigation = navigationElements.value;
-    if (navigation) {
-      for (let ni = 0; ni < navigation.length; ++ni) {
-        navigation[ni].activeClass = false;
-        if (
-          (parentId && navigation[ni].id == parentId) ||
-          navigation[ni].id == navigationId
-        ) {
-          navigation[ni].activeClass = true;
-        }
-        const children = navigation[ni].children;
-        if (children) {
-          for (let ci = 0; ci < children.length; ++ci) {
-            children[ci].activeClass = false;
-            if (children[ci].id == navigationId) {
-              children[ci].activeClass = true;
-            }
+const updateActiceClass = (navigationId: string, parentId: string | null) => {
+  resetActiveClass.value = false;
+  const navigation = navigationElements.value;
+  if (navigation) {
+    for (let ni = 0; ni < navigation.length; ++ni) {
+      navigation[ni].activeClass = false;
+      if (
+        (parentId && navigation[ni].id == parentId) ||
+        navigation[ni].id == navigationId
+      ) {
+        navigation[ni].activeClass = true;
+      }
+      const children = navigation[ni].children;
+      if (children) {
+        for (let ci = 0; ci < children.length; ++ci) {
+          children[ci].activeClass = false;
+          if (children[ci].id == navigationId) {
+            children[ci].activeClass = true;
           }
         }
       }
     }
-  }, timeout ?? 0);
+  }
 };
 // reset when route.path changes
 watch(
   () => route.path,
   () => {
-    updateActiceClass("", "");
+    if (resetActiveClass.value == true) {
+      updateActiceClass("", "");
+    }
+    resetActiveClass.value = true;
   },
 );
 </script>
@@ -118,11 +117,7 @@ watch(
         }"
         class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
         @click="
-          updateActiceClass(
-            navigationElement.id,
-            navigationElement.parentId,
-            100,
-          )
+          updateActiceClass(navigationElement.id, navigationElement.parentId)
         "
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
@@ -172,11 +167,7 @@ watch(
                   }"
                   class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
                   @click="
-                    updateActiceClass(
-                      childElement.id,
-                      childElement.parentId,
-                      100,
-                    )
+                    updateActiceClass(childElement.id, childElement.parentId)
                   "
                 >
                   <div
