@@ -28,10 +28,10 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
-    "@microsoft/api-documenter": "^7.23.9",
-    "@microsoft/api-extractor": "^7.38.0",
+    "@microsoft/api-documenter": "^7.23.11",
+    "@microsoft/api-extractor": "^7.38.2",
     "@microsoft/tsdoc": "^0.14.2",
-    "@types/changelog-parser": "^2.8.3",
+    "@types/changelog-parser": "^2.8.4",
     "changelog-parser": "^3.0.1",
     "dotenv-cli": "^7.3.0",
     "esno": "^0.17.0",
@@ -39,10 +39,10 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
-    "taze": "^0.11.4",
+    "taze": "^0.12.0",
     "turbo": "^1.10.16",
-    "typedoc": "^0.25.2",
-    "vercel": "^32.4.1"
+    "typedoc": "^0.25.3",
+    "vercel": "^32.5.0"
   },
   "engines": {
     "node": "^18.x || ^20.x"
@@ -52,7 +52,7 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.9.2",
+  "packageManager": "pnpm@8.10.2",
   "pnpm": {
     "overrides": {
       "yaml@2": "^2.2.2",

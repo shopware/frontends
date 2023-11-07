@@ -1,5 +1,11 @@
 # vue-blank
 
+## 0.1.0
+
+### Minor Changes
+
+- [#437](https://github.com/shopware/frontends/pull/437) [`81574458`](https://github.com/shopware/frontends/commit/815744583235509d947300aafc7bb4c7193d8dc2) Thanks [@patzick](https://github.com/patzick)! - Switched default version of NodeJS to 20
+
 ## 0.0.9
 
 ### Patch Changes

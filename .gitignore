@@ -10,6 +10,7 @@ coverage
 
 # nuxt.js
 .nuxt
+.output
 out/
 build
 dist

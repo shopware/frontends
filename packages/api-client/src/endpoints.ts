@@ -432,3 +432,12 @@ export const getOrderDownloadsEndpoint = (
  * @public
  */
 export const getSitemapEndpoint = () => `/store-api/sitemap`;
+
+/**
+ * @nolink
+ * @category Endpoints
+ * @public
+ * @param {string} pageId
+ * @returns {string}
+ */
+export const getCmsEndpoint = (pageId: string) => `/store-api/cms/${pageId}`;
