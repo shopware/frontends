@@ -16,7 +16,7 @@ const { formatLink } = useInternationalization(localePath);
 onMounted(() => {
   const currentNaviagtionElement = findNavigationElement(route.path.slice(1));
   if (currentNaviagtionElement) {
-    updateActiceClass(
+    updateActiveClass(
       currentNaviagtionElement.id,
       currentNaviagtionElement.parentId,
     );
@@ -55,7 +55,7 @@ const findNavigationElement = (routePath: string): Category | undefined => {
   return navigationElement;
 };
 // only works with 2 level navigation, timeout needed to be executed after watch
-const updateActiceClass = (navigationId: string, parentId: string | null) => {
+const updateActiveClass = (navigationId: string, parentId: string | null) => {
   resetActiveClass.value = false;
   const navigation = navigationElements.value;
   if (navigation) {
@@ -84,7 +84,7 @@ watch(
   () => route.path,
   () => {
     if (resetActiveClass.value == true) {
-      updateActiceClass("", "");
+      updateActiveClass("", "");
     }
     resetActiveClass.value = true;
   },
@@ -117,7 +117,7 @@ watch(
         }"
         class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
         @click="
-          updateActiceClass(navigationElement.id, navigationElement.parentId)
+          updateActiveClass(navigationElement.id, navigationElement.parentId)
         "
       >
         {{ getTranslatedProperty(navigationElement, "name") }}
@@ -167,7 +167,7 @@ watch(
                   }"
                   class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
                   @click="
-                    updateActiceClass(childElement.id, childElement.parentId)
+                    updateActiveClass(childElement.id, childElement.parentId)
                   "
                 >
                   <div
