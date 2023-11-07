@@ -20,6 +20,7 @@ export type UseCategorySearchReturn = {
       query?: Partial<ShopwareSearchParams>;
     },
   ): Promise<Category>;
+
   /**
    * Search based on the query
    */
