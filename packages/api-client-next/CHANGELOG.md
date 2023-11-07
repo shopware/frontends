@@ -1,5 +1,27 @@
 # @shopware/api-client
 
+## 0.5.0
+
+### Minor Changes
+
+- [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Changed types imports to `import type {...} from "..."`
+
+### Patch Changes
+
+- [#443](https://github.com/shopware/frontends/pull/443) [`33d54db1`](https://github.com/shopware/frontends/commit/33d54db1bd66146a14781c45b1124547f4276866) Thanks [@patzick](https://github.com/patzick)! - `invoke` method parameters are no longer mandatory when no parameters are defined inside route.
+
+  Now instead of:
+
+  ```ts
+  const result = await apiInstance.invoke("readContext get /context", {});
+  ```
+
+  you can do:
+
+  ```ts
+  const result = await apiInstance.invoke("readContext get /context");
+  ```
+
 ## 0.4.0
 
 ### Minor Changes

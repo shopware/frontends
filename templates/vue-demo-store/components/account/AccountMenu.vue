@@ -70,6 +70,7 @@ async function invokeLogout() {
                 leave-to-class="transform opacity-0 scale-95"
               >
                 <div
+                  v-if="isAccountMenuOpen"
                   :class="[isAccountMenuOpen ? 'block' : 'hidden']"
                   class="z-20 origin-top-right absolute right-0 top-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                   role="menu"

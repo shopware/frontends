@@ -1,6 +1,6 @@
 {
   "name": "vue-blank",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -12,10 +12,10 @@
     "@shopware-pwa/nuxt3-module": "canary",
     "@types/node": "^20.3.2",
     "@vueuse/nuxt": "^10.5.0",
-    "nuxt": "^3.8.0",
+    "nuxt": "^3.8.1",
     "typescript": "^5.2.2",
-    "vue": "^3.3.5",
-    "vue-tsc": "^1.8.19"
+    "vue": "^3.3.8",
+    "vue-tsc": "^1.8.22"
   },
   "engines": {
     "node": "^18.x || ^20.x"
