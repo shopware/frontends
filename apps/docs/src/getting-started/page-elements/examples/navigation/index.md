@@ -1,5 +1,9 @@
 # Navigation
 
+::: tip 🙋‍♀️ How to use these example?
+Just copy the code snippet and paste it into your project. Sometimes it's useful to create a new component and use it in a higher level component like a page or a layout.
+:::
+
 ## Simple navigation
 
 <div class="flex flex-col items-center">

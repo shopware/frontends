@@ -1,5 +1,9 @@
 # Cart
 
+::: tip 🙋‍♀️ How to use these example?
+Just copy the code snippet and paste it into your project. Sometimes it's useful to create a new component and use it in a higher level component like a page or a layout.
+:::
+
 ## Simple cart
 
 This cart is position in a sticky position on the right side of your screen and contains a basic overview of all products, including their price, quantities and the total price.

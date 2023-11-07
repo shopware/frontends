@@ -3,9 +3,9 @@ nav:
   position: 300
 ---
 
-# Examples
+# Examples (Copy & Paste)
 
-Have a look at our examples and cookbook recipes to kickstart your frontends project.
+Take a look at our cookbook recipe examples to get your front-end project started.
 
 ::: tip 🙋‍♀️ How to use examples?
 Just copy the code snippet and paste it into your project. Sometimes it's useful to create a new component and use it in a higher level component like a page or a layout.

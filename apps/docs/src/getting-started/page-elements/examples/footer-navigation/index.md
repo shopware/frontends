@@ -1,5 +1,9 @@
 # Footer navigation
 
+::: tip 🙋‍♀️ How to use these example?
+Just copy the code snippet and paste it into your project. Sometimes it's useful to create a new component and use it in a higher level component like a page or a layout.
+:::
+
 <img src="./footer-navigation-md.png" alt="Preview for medium screen size" class="hidden sm:block border-1 border-gray-200 rounded-md shadow-md hover:shadow-xl hover:scale-105 transform duration-300" />
 
 ## Explanation
