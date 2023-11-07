@@ -4,7 +4,7 @@ const { customizedProduct, state, handleFileUpload } =
 const { currency } = useSessionContext();
 
 const customizedProductOptions = computed(() => {
-  const options = customizedProduct.value.options.map((option) => ({
+  const options = customizedProduct.value?.options.map((option) => ({
     ...option,
     // prepend options by "No selection"
     values: [
@@ -27,9 +27,9 @@ const removeUploadedImage = (optionId: string) => {
 </script>
 <template>
   <div class="flex flex-col">
-    <h3>{{ customizedProduct.translated.displayName }}</h3>
+    <h3>{{ customizedProduct?.translated.displayName }}</h3>
     <p class="mb-3 text-gray-500 dark:text-gray-400">
-      {{ customizedProduct.translated.description }}
+      {{ customizedProduct?.translated.description }}
     </p>
     <hr />
     <div class="flex flex-col">

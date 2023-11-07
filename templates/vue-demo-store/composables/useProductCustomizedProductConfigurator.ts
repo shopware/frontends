@@ -14,7 +14,7 @@ export type UseProductCustomizedProductConfiguratorReturn = {
   /**
    * Assigned template of the product
    */
-  customizedProduct: ComputedRef<SwagCustomizedProductsTemplate>;
+  customizedProduct: ComputedRef<SwagCustomizedProductsTemplate | undefined>;
   /**
    * State of the product selected options
    */
@@ -131,7 +131,7 @@ export type SwagCustomizedProductsTemplate = {
 
 export type ProductExtensionsExtended = Product & {
   extensions: {
-    swagCustomizedProductsTemplate: SwagCustomizedProductsTemplate;
+    swagCustomizedProductsTemplate?: SwagCustomizedProductsTemplate;
   };
 };
 
@@ -156,13 +156,15 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
   if (!productsState.value[product.value.id]) {
     productsState.value[product.value.id] = {};
   }
-  const customizedProduct = computed<SwagCustomizedProductsTemplate>(
+  const customizedProduct = computed<
+    SwagCustomizedProductsTemplate | undefined
+  >(
     () =>
       (product.value as ProductExtensionsExtended).extensions
         ?.swagCustomizedProductsTemplate,
   );
 
-  const isActive = computed<boolean>(() => customizedProduct.value?.active);
+  const isActive = computed<boolean>(() => !!customizedProduct.value?.active);
   const state = computed(() => productsState.value[product.value.id]);
 
   const addToCart = async () => {
@@ -171,7 +173,7 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
      */
     const payload = {
       "customized-products-template": {
-        id: customizedProduct.value.id,
+        id: customizedProduct.value?.id,
         options: Object.assign(
           {},
           ...Object.entries(state.value).map(([id, value]) => ({
