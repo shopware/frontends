@@ -13,7 +13,7 @@
 		"@shopware-pwa/composables-next": "canary",
 		"@shopware-pwa/helpers-next": "canary",
 		"js-cookie": "^3.0.5",
-		"vue": "^3.3.5",
+		"vue": "^3.3.8",
 		"vue-router": "^4.2.5"
 	},
 	"devDependencies": {
