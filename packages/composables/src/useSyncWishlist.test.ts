@@ -1,9 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useSyncWishlist } from "./useSyncWishlist";
+import { defineComponent } from "vue";
 import * as apiExports from "@shopware-pwa/api-client";
 const url = "http://frontend.test";
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
   props: {},
   setup() {
@@ -25,7 +26,7 @@ const Component = {
       count,
     };
   },
-};
+});
 
 const getMockProvide = (mockedUrl: string | undefined) => ({
   global: {

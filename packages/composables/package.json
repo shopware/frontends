@@ -39,7 +39,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
-    "vitest:watch": "vitest"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@shopware-pwa/api-client": "workspace:*",

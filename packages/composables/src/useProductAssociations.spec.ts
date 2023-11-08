@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useProductAssociations } from "./useProductAssociations";
-import { computed } from "vue";
+import { computed, defineComponent } from "vue";
 import * as apiExports from "@shopware-pwa/api-client";
 import mockedProduct from "./mocks/Product";
 import mockedCrossSelling from "./mocks/CrossSellingResponse";
@@ -25,20 +25,21 @@ const getLoadAssociationsParams = (method?: string, searchParams?: any) => {
   };
 };
 
-const Component = (mockedProductData) => ({
-  template: "<div/>",
-  props: {},
-  setup() {
-    const { isLoading, productAssociations, loadAssociations } =
-      useProductAssociations(
-        computed(() => mockedProductData),
-        {
-          associationContext: "cross-selling",
-        },
-      );
-    return { isLoading, productAssociations, loadAssociations };
-  },
-});
+const Component = (mockedProductData) =>
+  defineComponent({
+    template: "<div/>",
+    props: {},
+    setup() {
+      const { isLoading, productAssociations, loadAssociations } =
+        useProductAssociations(
+          computed(() => mockedProductData),
+          {
+            associationContext: "cross-selling",
+          },
+        );
+      return { isLoading, productAssociations, loadAssociations };
+    },
+  });
 
 describe("useProductAssociations", () => {
   vi.spyOn(apiExports, "invokePost").mockImplementation(() => {

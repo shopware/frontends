@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { useNavigationSearch } from "./useNavigationSearch";
 import { shallowMount } from "@vue/test-utils";
+import { defineComponent } from "vue";
 import * as apiExports from "@shopware-pwa/api-client";
 
 const mockedResponse = {
@@ -22,14 +23,14 @@ const mockedResponse = {
   id: "59d47f52be96461193a3d6fcf2fe46e6",
   apiAlias: "seo_url",
 };
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
   props: {},
   setup() {
     const { resolvePath } = useNavigationSearch();
     return { resolvePath };
   },
-};
+});
 
 const getMockProvide = () => ({
   global: {

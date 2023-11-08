@@ -1,10 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
+import { defineComponent } from "vue";
 import { useLandingSearch } from "./useLandingSearch";
 import { shallowMount } from "@vue/test-utils";
 import * as apiExports from "@shopware-pwa/api-client";
 import LandingPageMock from "./mocks/LandingPage";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
   props: {},
   setup() {
@@ -13,7 +14,7 @@ const Component = {
       search,
     };
   },
-};
+});
 
 const getMockProvide = () => ({
   global: {
@@ -37,8 +38,6 @@ describe("useLandingSearch", () => {
   });
 
   it("mergeWishlistProducts", async () => {
-    expect(await wrapper.vm.search({ navigationId: "test" })).toStrictEqual(
-      LandingPageMock,
-    );
+    expect(await wrapper.vm.search("test")).toStrictEqual(LandingPageMock);
   });
 });

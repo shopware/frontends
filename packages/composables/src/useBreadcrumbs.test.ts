@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useBreadcrumbs } from "./useBreadcrumbs";
+import { defineComponent } from "vue";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
   props: {},
   setup() {
@@ -18,7 +19,7 @@ const Component = {
       breadcrumbs,
     };
   },
-};
+});
 
 const getMockProvide = () => ({
   global: {

@@ -1,12 +1,13 @@
 import { useUser } from "./useUser";
-import * as useSessionContext from "./useSessionContext";
-import * as useCart from "./useCart";
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
+import { defineComponent } from "vue";
+import * as useSessionContext from "./useSessionContext";
+import * as useCart from "./useCart";
 import * as apiExports from "@shopware-pwa/api-client";
 import LoginResponse from "./mocks/LoginResponse";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
   props: {},
   setup() {
@@ -56,7 +57,7 @@ const Component = {
       userDefaultShippingAddress,
     };
   },
-};
+});
 
 const getMockProvide = () => ({
   global: {
@@ -94,7 +95,7 @@ describe("useUser", () => {
 
   const wrapper = shallowMount(Component, getMockProvide());
   it("login function", async () => {
-    await wrapper.vm.login("test@test.zzz", "test");
+    await wrapper.vm.login({ username: "test@test.zzz", password: "test" });
 
     expect(useSessionContextSpy).toHaveBeenCalled();
     expect(useCartSpy).toHaveBeenCalled();

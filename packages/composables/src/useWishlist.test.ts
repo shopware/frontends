@@ -2,8 +2,9 @@ import { describe, expect, it, vi } from "vitest";
 import { useWishlist } from "./useWishlist";
 import { shallowMount } from "@vue/test-utils";
 import { useUser } from "./useUser";
+import { defineComponent } from "vue";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
   props: {},
   setup() {
@@ -22,7 +23,7 @@ const Component = {
       count,
     };
   },
-};
+});
 
 const getMockProvide = () => ({
   global: {

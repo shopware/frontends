@@ -1,18 +1,19 @@
 import { describe, expect, it, vi } from "vitest";
 import { useNewsletter } from "./useNewsletter";
 import { shallowMount } from "@vue/test-utils";
+import { defineComponent } from "vue";
 import * as apiExports from "@shopware-pwa/api-client";
 
 const url = "http://frontend.test";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
   props: {},
   setup() {
     const { newsletterSubscribe, newsletterUnsubscribe } = useNewsletter();
     return { newsletterSubscribe, newsletterUnsubscribe };
   },
-};
+});
 
 const getMockProvide = (mockedUrl: string | undefined) => ({
   global: {

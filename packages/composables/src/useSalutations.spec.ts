@@ -1,10 +1,11 @@
 import { useSalutations } from "./useSalutations";
 import { describe, expect, it, vi } from "vitest";
+import { defineComponent } from "vue";
 import { shallowMount } from "@vue/test-utils";
 import Salutations from "./mocks/Salutations";
 import * as apiExports from "@shopware-pwa/api-client";
 
-const Component = {
+const Component = defineComponent({
   template: "<div/>",
   props: {},
   setup() {
@@ -17,7 +18,7 @@ const Component = {
       getSalutations,
     };
   },
-};
+});
 
 const getMockProvide = () => ({
   global: {
