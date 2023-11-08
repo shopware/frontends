@@ -104,3 +104,9 @@ There was a condition added to use a different method to add to cart a product i
 
 - if the product has a Custom Product template, then use `customizedProductAddToCart()` method.
 - otherwise, don't change the adding to cart behavior and use the default one
+
+## Known issues
+
+- Missing images for "Image select" option type (reported in the extension repository)
+- Missing cover image (aka thumbnail) for Custom Product in the Cart (reported in the extension repository)
+- Display selected option for Cart Item ([Issue](https://github.com/shopware/frontends/issues/456) reported)
