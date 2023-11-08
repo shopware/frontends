@@ -1,5 +1,4 @@
-import { defineNuxtPlugin } from "#imports";
-import { useServerHead } from "#imports";
+import { defineNuxtPlugin, useServerHead } from "#imports";
 
 export default defineNuxtPlugin({
   name: "mollie-register",

@@ -1,5 +1,4 @@
-import { defineNuxtPlugin } from "#imports";
-import { useRuntimeConfig } from "#imports";
+import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 import AdyenCheckout from "@adyen/adyen-web";
 import { defu } from "defu";
 
