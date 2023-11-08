@@ -217,10 +217,6 @@ export const sidebar = [
             link: "/resources/integrations/multi-cms",
           },
           { text: "Strapi", link: "/resources/integrations/strapi/" },
-          {
-            text: "Custom Products extension",
-            link: "/resources/integrations/custom-products",
-          },
         ],
       },
     ],
