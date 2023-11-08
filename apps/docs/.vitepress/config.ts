@@ -130,7 +130,7 @@ export const sidebar = [
           },
           {
             text: "Custom Products extension",
-            link: "/resources/integrations/custom-products",
+            link: "/getting-started/features/custom-products",
           },
         ],
       },
