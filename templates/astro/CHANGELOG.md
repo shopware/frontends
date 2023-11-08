@@ -1,5 +1,39 @@
 # shopware-astro
 
+## 0.1.0
+
+### Minor Changes
+
+- [#437](https://github.com/shopware/frontends/pull/437) [`81574458`](https://github.com/shopware/frontends/commit/815744583235509d947300aafc7bb4c7193d8dc2) Thanks [@patzick](https://github.com/patzick)! - Switched default version of NodeJS to 20
+
+### Patch Changes
+
+- [#396](https://github.com/shopware/frontends/pull/396) [`dfc49b80`](https://github.com/shopware/frontends/commit/dfc49b80bcaa8e00b71e0dff6e35b413383274f5) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _astro_ from **^3.0.10** to **^3.1.1**
+
+- [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@astrojs/node_ from **^6.0.0** to **^6.0.3**
+  - Changed dependency _@astrojs/vue_ from **^3.0.0** to **^3.0.1**
+  - Changed dependency _@vitejs/plugin-vue_ from **^4.3.4** to **^4.4.0**
+  - Changed dependency _astro_ from **^3.1.1** to **^3.3.0**
+
+- [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _astro_ from **^3.3.0** to **^3.3.2**
+  - Changed dependency _vue_ from **^3.3.4** to **^3.3.5**
+
+- [#454](https://github.com/shopware/frontends/pull/454) [`07ef770d`](https://github.com/shopware/frontends/commit/07ef770d31b9331536ab9c846f4a8ce46e49ed84) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@astrojs/vue_ from **^3.0.1** to **^3.0.3**
+  - Changed dependency _astro_ from **^3.3.2** to **^3.4.3**
+  - Changed dependency _vue_ from **^3.3.5** to **^3.3.8**
+
+- Updated dependencies [[`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5), [`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5), [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720), [`c264bf5d`](https://github.com/shopware/frontends/commit/c264bf5d41638c6013ebf14e7cd9615e5b5ef9bf), [`85628cc6`](https://github.com/shopware/frontends/commit/85628cc65216417a887398f0838714fc03544303), [`87213fb0`](https://github.com/shopware/frontends/commit/87213fb02b292b11f45b7fb5956fb8bc1ae33800), [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0), [`12ed75ff`](https://github.com/shopware/frontends/commit/12ed75ffd3d98bf2623161e44f63c40dfc1ef0e3), [`43510a10`](https://github.com/shopware/frontends/commit/43510a108d351aca361e460844b2cddd29f889b5)]:
+  - @shopware-pwa/composables-next@0.14.0
+  - @shopware-pwa/api-client@0.7.0
+
 ## 0.0.6
 
 ### Patch Changes

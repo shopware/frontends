@@ -4,6 +4,7 @@ import baseConfig from "vitepress-shopware-docs/config";
 import { TsFunctionDescription, TsFunctionsList } from "@shopware-pwa/typer";
 import nav from "./navigation";
 import { resolve } from "node:path";
+import { SearchPlugin } from "vitepress-plugin-search";
 
 export const sidebar = [
   {
@@ -116,6 +117,20 @@ export const sidebar = [
         ],
       },
       {
+        text: "Features",
+        link: "/getting-started/features/",
+        items: [
+          {
+            text: "Sitemap",
+            link: "/getting-started/features/sitemap",
+          },
+          {
+            text: "Wishlist",
+            link: "/getting-started/features/wishlist",
+          },
+        ],
+      },
+      {
         text: "Page elements",
         link: "/getting-started/page-elements/",
         items: [
@@ -132,13 +147,34 @@ export const sidebar = [
             text: "Navigation",
             link: "/getting-started/page-elements/navigation",
           },
+          {
+            text: "Examples",
+            link: "/getting-started/page-elements/examples/",
+            items: [
+              {
+                text: "Cart",
+                link: "/getting-started/page-elements/examples/cart/",
+              },
+              {
+                text: "Product listing",
+                link: "/getting-started/page-elements/examples/listing/",
+              },
+              {
+                text: "Product Detail Page",
+                link: "/getting-started/page-elements/examples/product-detail-page/",
+              },
+              {
+                text: "Footer Navigation",
+                link: "/getting-started/page-elements/examples/footer-navigation/",
+              },
+              {
+                text: "Navigation",
+                link: "/getting-started/page-elements/examples/navigation/",
+              },
+            ],
+          },
         ],
       },
-      {
-        text: "Sitemap",
-        link: "/getting-started/sitemap",
-      },
-      { text: "Wishlist", link: "/getting-started/wishlist" },
     ],
   },
   {
@@ -162,6 +198,26 @@ export const sidebar = [
     ],
   },
   {
+    text: "RESOURCES",
+    link: "/resources/",
+    items: [
+      { text: "🚀 Links", link: "/resources/links" },
+      { text: "🤗 Community Modules", link: "/resources/community-modules/" },
+      { text: "😱 Troubleshooting", link: "/resources/troubleshooting" },
+      {
+        text: "Integrations",
+        link: "/resources/integrations/",
+        items: [
+          {
+            text: "Multi CMS instance",
+            link: "/resources/integrations/multi-cms",
+          },
+          { text: "Strapi", link: "/resources/integrations/strapi/" },
+        ],
+      },
+    ],
+  },
+  {
     text: "PACKAGE REFERENCE",
     link: "/packages/",
     items: [
@@ -182,42 +238,6 @@ export const sidebar = [
       },
       { text: "Types", link: "/packages/types" },
       { text: "Helpers", link: "/packages/helpers" },
-    ],
-  },
-  {
-    text: "RESOURCES",
-    link: "/resources/",
-    items: [
-      {
-        text: "Examples",
-        link: "/resources/examples/",
-        items: [
-          { text: "Navigation", link: "/resources/examples/navigation/" },
-          { text: "Cart", link: "/resources/examples/cart/" },
-          { text: "Product listing", link: "/resources/examples/listing/" },
-          {
-            text: "Product Detail Page",
-            link: "/resources/examples/product-detail-page/",
-          },
-          {
-            text: "Footer Navigation",
-            link: "/resources/examples/footer-navigation/",
-          },
-        ],
-      },
-      {
-        text: "Integrations",
-        link: "/resources/integrations/",
-        items: [
-          {
-            text: "Multi CMS instance",
-            link: "/resources/integrations/multi-cms",
-          },
-          { text: "Strapi", link: "/resources/integrations/strapi/" },
-        ],
-      },
-      { text: "Community Modules", link: "/resources/community-modules/" },
-      { text: "Troubleshooting", link: "/resources/troubleshooting" },
     ],
   },
 ];
@@ -335,6 +355,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       stringify: true,
     },
     plugins: [
+      SearchPlugin(),
       TsFunctionsList(),
       TsFunctionDescription({
         rootDir: resolve(__dirname, "../../../"),

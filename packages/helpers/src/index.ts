@@ -12,3 +12,5 @@ export * from "./media/getMedia";
 export * from "./media/downloadFile";
 export * from "./checkout";
 export * from "./languages";
+export * from "./relativeUrlSlash";
+export * from "./urlIsAbsolute";

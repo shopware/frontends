@@ -2,6 +2,7 @@ import {
   getLandingPageDetailsEndpoint,
   getPageResolverEndpoint,
   getSeoUrlEndpoint,
+  getCmsEndpoint,
 } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
 import type {
@@ -113,4 +114,19 @@ export async function getSeoUrl(
   );
 
   return seoUrlResponse.data;
+}
+
+/**
+ * Returns Shopware CMS page data
+ *
+ * @param {string} pageId
+ * @param {ShopwareApiInstance} contextInstance
+ * @returns
+ */
+export async function getSwCmsPage(
+  pageId: string,
+  contextInstance: ShopwareApiInstance = defaultInstance,
+) {
+  const resp = await contextInstance.invoke.post(getCmsEndpoint(pageId));
+  return resp.data;
 }
