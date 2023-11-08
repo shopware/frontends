@@ -26,7 +26,3 @@ Streamline your operations and enhance your user experience with these comprehen
 ## Payments
 
 <PageRef title="Paypal Express" sub="Custom payment flow based on PayPal Express Checkout " page="../../getting-started/e-commerce/custom-payment.html" />
-
-## Shopware Extensions
-
-<PageRef title="Custom Products" sub="Example of integration with Custom Products extension" page="./custom-products" />
