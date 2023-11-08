@@ -7,7 +7,7 @@ import {
   useShopwareContext,
   useRuntimeConfig,
 } from "#imports";
-import { useNuxtApp } from "#app";
+import { useNuxtApp } from "#imports";
 
 const emits = defineEmits<{
   // to inform the upper levels of an app that payButton was clicked (that means it was validated by Adyen and we can proceed)
