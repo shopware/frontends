@@ -45,7 +45,7 @@ const DynamicRender = () => {
       return h(componentObject.component, {
         content: componentObject.section,
         class: {
-          [cssClasses ?? ""]: true,
+          ...cssClasses,
           "max-w-screen-2xl mx-auto": layoutStyles?.sizingMode === "boxed",
         },
         style: {
