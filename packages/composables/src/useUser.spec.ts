@@ -72,7 +72,7 @@ const getMockProvide = () => ({
 });
 
 describe("useUser", () => {
-  vi.spyOn(apiExports, "login").mockImplementation(() => {
+  vi.spyOn(apiExports, "login").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve(LoginResponse);
     });

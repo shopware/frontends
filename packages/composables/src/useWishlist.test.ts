@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { useWishlist } from "./useWishlist";
 import { shallowMount } from "@vue/test-utils";
-import { useUser } from "./useUser";
+import * as useUser from "./useUser";
 import { defineComponent } from "vue";
 
 const Component = defineComponent({
@@ -58,13 +58,13 @@ vi.mock("./useSyncWishlist.ts", () => ({
   },
 }));
 
-vi.mock("./useUser.ts");
-
 describe("useWishlist - not logged in user", () => {
-  useUser.mockImplementation(() => ({
-    isLoggedIn: { value: false },
-    isGuestSession: { value: false },
-  }));
+  vi.spyOn(useUser, "useUser").mockImplementation((): any => {
+    return {
+      isLoggedIn: { value: false },
+      isGuestSession: { value: false },
+    };
+  });
 
   const wrapper = shallowMount(Component, getMockProvide());
 
@@ -78,10 +78,12 @@ describe("useWishlist - not logged in user", () => {
 });
 
 describe("useWishlist - logged in user", () => {
-  useUser.mockImplementation(() => ({
-    isLoggedIn: { value: true },
-    isGuestSession: { value: false },
-  }));
+  vi.spyOn(useUser, "useUser").mockImplementation((): any => {
+    return {
+      isLoggedIn: { value: true },
+      isGuestSession: { value: false },
+    };
+  });
 
   const wrapper = shallowMount(Component, getMockProvide());
 

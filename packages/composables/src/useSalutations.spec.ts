@@ -33,11 +33,13 @@ const getMockProvide = () => ({
 });
 
 describe("useSalutations", () => {
-  vi.spyOn(apiExports, "getAvailableSalutations").mockImplementation(() => {
-    return new Promise((resolve) => {
-      resolve({ elements: Salutations });
-    });
-  });
+  vi.spyOn(apiExports, "getAvailableSalutations").mockImplementation(
+    (): any => {
+      return new Promise((resolve) => {
+        resolve({ elements: Salutations });
+      });
+    },
+  );
 
   const wrapper = shallowMount(Component, getMockProvide());
 

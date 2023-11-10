@@ -48,7 +48,7 @@ const Component = () =>
 describe("useProductConfigurator", () => {
   const wrapper = shallowMount(Component(), getMockProvide());
 
-  vi.spyOn(apiExports, "invokePost").mockImplementation(() => {
+  vi.spyOn(apiExports, "invokePost").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve({ data: { elements: [mockedProduct] } });
     });

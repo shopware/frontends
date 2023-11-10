@@ -29,7 +29,7 @@ const Component = defineComponent({
 describe("useNavigation", () => {
   const wrapper = shallowMount(Component, getMockProvide());
 
-  vi.spyOn(apiExports, "getStoreNavigation").mockImplementation(() => {
+  vi.spyOn(apiExports, "getStoreNavigation").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve(Menu);
     });

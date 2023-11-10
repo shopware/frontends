@@ -58,25 +58,25 @@ describe("useSyncWishlist", () => {
     },
   };
 
-  vi.spyOn(apiExports, "addWishlistProduct").mockImplementation(() => {
+  vi.spyOn(apiExports, "addWishlistProduct").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve(mockedResolve);
     });
   });
 
-  vi.spyOn(apiExports, "getWishlistProducts").mockImplementation(() => {
+  vi.spyOn(apiExports, "getWishlistProducts").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve(mockedResponse as any);
     });
   });
 
-  vi.spyOn(apiExports, "removeWishlistProduct").mockImplementation(() => {
+  vi.spyOn(apiExports, "removeWishlistProduct").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve(mockedResolve);
     });
   });
 
-  vi.spyOn(apiExports, "mergeWishlistProducts").mockImplementation(() => {
+  vi.spyOn(apiExports, "mergeWishlistProducts").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve(mockedResolve);
     });

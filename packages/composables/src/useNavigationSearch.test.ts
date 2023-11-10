@@ -47,7 +47,7 @@ const getMockProvide = () => ({
 describe("useNavigationSearch", () => {
   const wrapper = shallowMount(Component, getMockProvide());
 
-  vi.spyOn(apiExports, "getSeoUrl").mockImplementation(() => {
+  vi.spyOn(apiExports, "getSeoUrl").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve({
         elements: [mockedResponse],

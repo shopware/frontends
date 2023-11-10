@@ -31,7 +31,7 @@ const getMockProvide = () => ({
 describe("useLandingSearch", () => {
   const wrapper = shallowMount(Component, getMockProvide());
 
-  vi.spyOn(apiExports, "getLandingPage").mockImplementation(() => {
+  vi.spyOn(apiExports, "getLandingPage").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve(LandingPageMock);
     });

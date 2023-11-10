@@ -18,9 +18,12 @@ const getMockProvide = () => ({
   },
 });
 
-const getLoadAssociationsParams = (method?: string, searchParams?: any) => {
+const getLoadAssociationsParams = (
+  method: "get" | "post" | undefined,
+  searchParams?: any,
+) => {
   return {
-    method: method ?? null,
+    method: method,
     searchParams: searchParams ?? null,
   };
 };
@@ -42,7 +45,7 @@ const Component = (mockedProductData) =>
   });
 
 describe("useProductAssociations", () => {
-  vi.spyOn(apiExports, "invokePost").mockImplementation(() => {
+  vi.spyOn(apiExports, "invokePost").mockImplementation((): any => {
     return new Promise((resolve) => {
       resolve({ data: mockedCrossSelling });
     });
@@ -58,7 +61,7 @@ describe("useProductAssociations", () => {
     vi.spyOn(apiExports, "invokeGet").mockImplementation(() => {
       throw new Error();
     });
-    wrapper.vm.loadAssociations(getLoadAssociationsParams());
+    wrapper.vm.loadAssociations(getLoadAssociationsParams(undefined));
     expect(wrapper.vm.productAssociations).toStrictEqual([]);
   });
 
@@ -86,7 +89,7 @@ describe("useProductAssociations", () => {
   });
 
   it("load productAssociations - GET", async () => {
-    vi.spyOn(apiExports, "invokeGet").mockImplementation(() => {
+    vi.spyOn(apiExports, "invokeGet").mockImplementation((): any => {
       return new Promise((resolve) => {
         resolve({ data: mockedCrossSelling });
       });
