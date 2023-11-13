@@ -46,7 +46,7 @@
   "devDependencies": {
     "@shopware-pwa/types": "workspace:*",
     "@types/find-in-files": "^0.5.3",
-    "@types/fs-extra": "^11.0.3",
+    "@types/fs-extra": "^11.0.4",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^5.2.2",

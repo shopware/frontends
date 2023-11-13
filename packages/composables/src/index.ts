@@ -64,8 +64,8 @@ export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
     content.apiAlias === "cms_block"
       ? "Block"
       : content.apiAlias === "cms_section"
-      ? "Section"
-      : "Element";
+        ? "Section"
+        : "Element";
 
   const componentNameToResolve = pascalCase(`Cms-${type}-${componentName}`);
   try {

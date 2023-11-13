@@ -12,7 +12,7 @@
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@types/node": "^20.3.2",
-    "@vueuse/nuxt": "^10.5.0",
+    "@vueuse/nuxt": "^10.6.1",
     "nuxt": "^3.8.1",
     "typescript": "^5.2.2",
     "vue": "^3.3.8",

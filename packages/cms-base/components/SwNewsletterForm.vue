@@ -154,8 +154,8 @@ const invokeSubmit = async () => {
         getFormTitle
           ? getFormTitle
           : state.option === "subscribe"
-          ? translations.form.subscribeLabel
-          : translations.form.unsubscribeLabel
+            ? translations.form.subscribeLabel
+            : translations.form.unsubscribeLabel
       }}
     </h3>
     <template v-if="!formSent">
