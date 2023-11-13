@@ -1,5 +1,4 @@
-import { defineNuxtPlugin } from "#app";
-import { useRuntimeConfig } from "#imports";
+import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 import { CreateLocaleInstanceArgs, MolliePlugin } from "../../types";
 
 export default defineNuxtPlugin({
