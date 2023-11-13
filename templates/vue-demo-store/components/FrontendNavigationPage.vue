@@ -4,6 +4,7 @@ import { useCategorySearch } from "#imports";
 import type { Ref } from "vue";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 import { useCmsHead } from "@/composables/useCmsHead";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   navigationId: string;
@@ -25,9 +26,12 @@ const { data: categoryResponse } = await useAsyncData(
   },
 );
 
-const breadcrumbs = getCategoryBreadcrumbs(categoryResponse.value, {
-  startIndex: 2,
-});
+const breadcrumbs = getCategoryBreadcrumbs(
+  categoryResponse.value as unknown as Schemas["Category"], // TODO: [OpenAPI][Category] - category needs to be defined properly
+  {
+    startIndex: 2,
+  },
+);
 useBreadcrumbs(breadcrumbs);
 
 const { category } = useCategory(categoryResponse as Ref<Category>);

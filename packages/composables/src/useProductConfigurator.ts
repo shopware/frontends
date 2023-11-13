@@ -1,9 +1,10 @@
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
-import type { Product, PropertyGroup } from "@shopware-pwa/types";
+import type { Product } from "@shopware-pwa/types";
 import { useProduct, useShopwareContext } from "#imports";
 import { invokePost, getProductEndpoint } from "@shopware-pwa/api-client";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import type { Schemas } from "#shopware";
 
 export type UseProductConfiguratorReturn = {
   /**
@@ -32,7 +33,7 @@ export type UseProductConfiguratorReturn = {
   /**
    * All assigned properties which the variant can be made of
    */
-  getOptionGroups: ComputedRef<PropertyGroup[]>;
+  getOptionGroups: ComputedRef<Schemas["PropertyGroup"][]>;
 };
 
 /**
@@ -48,7 +49,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   const selected = ref({} as any);
   const isLoadingOptions = ref(!!product.value.options?.length);
   const parentProductId = computed(() => product.value?.parentId);
-  const getOptionGroups = computed<PropertyGroup[]>(() => {
+  const getOptionGroups = computed<Schemas["PropertyGroup"][]>(() => {
     return configurator.value || [];
   });
 

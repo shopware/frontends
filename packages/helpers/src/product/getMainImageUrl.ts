@@ -1,11 +1,3 @@
-import type { LineItem, Product, OrderLineItem } from "@shopware-pwa/types";
-
-function isProduct(
-  object: Product | LineItem | OrderLineItem,
-): object is Product {
-  return object?.apiAlias === "product";
-}
-
 /**
  * gets the cover image
  *
@@ -15,12 +7,42 @@ function isProduct(
  *
  * @category Product
  */
-export function getMainImageUrl(
-  object: Product | LineItem | OrderLineItem,
-): string {
-  if (isProduct(object)) {
-    return object?.cover?.media?.url || object?.media?.[0]?.media.url || "";
+export function getMainImageUrl<
+  T extends
+    | {
+        cover?: {
+          media?: {
+            url: string;
+          };
+        };
+      }
+    | {
+        media?: Array<{
+          media?: {
+            url?: string;
+          };
+        }>;
+      }
+    | {
+        cover?: {
+          url: string;
+        };
+      },
+>(object: T): string {
+  if ("cover" in object && object.cover) {
+    if ("media" in object.cover) {
+      return object?.cover?.media?.url || "";
+    }
+    if (
+      "media" in object &&
+      Array.isArray(object.media) &&
+      object.media.length > 0
+    ) {
+      return object?.media?.[0]?.media?.url || "";
+    }
+    if ("url" in object.cover) {
+      return object?.cover?.url || "";
+    }
   }
-
-  return object?.cover?.url || "";
+  return "";
 }

@@ -1,19 +1,16 @@
-import { getProduct } from "@shopware-pwa/api-client";
-import type {
-  ProductResponse,
-  ShopwareSearchParams,
-} from "@shopware-pwa/types";
+import type { ShopwareSearchParams } from "@shopware-pwa/types";
 import { useShopwareContext } from "#imports";
 import { cmsAssociations } from "./cms/cmsAssociations";
 import { _useContext } from "./internal/_useContext";
 import deepMerge from "./helpers/deepMerge";
+import type { Schemas } from "#shopware";
 
 export type UseProductSearchReturn = {
   /**
    * Searches for a product by its id
    * @param productId
    * @param options - optional parameters accepts `withCmsAssociations` flag to fetch cms-related associations and criteria
-   * @returns {Promise<ProductResponse>}
+   * @returns {Promise<Schemas['ProductDetailResponse']>}
    */
   search: (
     productId: string,
@@ -21,7 +18,7 @@ export type UseProductSearchReturn = {
       withCmsAssociations?: boolean;
       criteria?: Partial<ShopwareSearchParams>;
     },
-  ) => Promise<ProductResponse>;
+  ) => Promise<Schemas["ProductDetailResponse"]>;
 };
 
 /**
@@ -36,9 +33,9 @@ export function useProductSearch(): {
       withCmsAssociations?: boolean;
       criteria?: Partial<ShopwareSearchParams>;
     },
-  ) => Promise<ProductResponse>;
+  ) => Promise<Schemas["ProductDetailResponse"]>;
 } {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   const search = async (
     productId: string,
@@ -51,7 +48,13 @@ export function useProductSearch(): {
       options?.withCmsAssociations ? cmsAssociations : {},
       options?.criteria,
     );
-    const result = await getProduct(productId, associations, apiInstance);
+    const result = await apiClient.invoke(
+      "readProductDetail post /product/{productId}",
+      {
+        productId,
+        ...associations,
+      },
+    );
     return result;
   };
 

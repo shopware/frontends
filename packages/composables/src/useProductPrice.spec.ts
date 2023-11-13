@@ -4,7 +4,7 @@ import { useProductPrice } from "./useProductPrice";
 import { ref } from "vue";
 import mockedProduct from "./mocks/Product";
 import mockerProductTierPrices from "./mocks/ProductTierPrices";
-import type { Product } from "@shopware-pwa/types";
+import type { CalculatedPrice, Product } from "@shopware-pwa/types";
 
 const mockerProductTierPricesObj: Product =
   mockerProductTierPrices.product as unknown as Product; // TODO: proper type of mocked product
@@ -58,7 +58,8 @@ describe("useProductPrice", () => {
     expect(wrapper.vm.displayFrom).toBe(false);
     expect(wrapper.vm.tierPrices).toStrictEqual([]);
     expect(wrapper.vm.referencePrice).toStrictEqual(
-      mockedProduct.calculatedPrice.referencePrice,
+      (mockedProduct.calculatedPrice as unknown as CalculatedPrice)
+        .referencePrice, // TODO: [OpenAPI][Product] - `calculatedPrice` should be properly defined as `CalculatedPrice` schema
     );
     expect(wrapper.vm.isListPrice).toBe(false);
   });
@@ -70,10 +71,14 @@ describe("useProductPrice", () => {
     );
 
     expect(wrapper.vm.price).toStrictEqual(
-      mockerProductTierPricesObj.calculatedPrices[2],
+      (
+        mockerProductTierPricesObj.calculatedPrices as unknown as CalculatedPrice[]
+      )[2], // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined as `CalculatedPrice[]` schema
     );
     expect(wrapper.vm.referencePrice).toStrictEqual(
-      mockerProductTierPricesObj.calculatedPrices[0].referencePrice,
+      (
+        mockerProductTierPricesObj.calculatedPrices as unknown as CalculatedPrice[]
+      )[0].referencePrice, // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined as `CalculatedPrice[]` schema
     );
     expect(wrapper.vm.displayFrom).toBe(true);
     expect(wrapper.vm.displayFromVariants).toBe(20);

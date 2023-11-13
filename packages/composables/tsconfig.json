@@ -3,7 +3,8 @@
   "exclude": ["dist", "node_modules"],
   "compilerOptions": {
     "paths": {
-      "#imports": ["./src"]
+      "#imports": ["./src"],
+      "#shopware": ["./types/api-types.ts"]
     }
   }
 }

@@ -47,7 +47,7 @@ export function useProductReviews(
     parameters: ShopwareSearchParams = {},
   ): Promise<void> => {
     const fetchedReviews = await getProductReviews(
-      product.value.id,
+      product.value.id as string, // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
       undefined,
       // Object.assign({}, getDefaults(), parameters),
       apiInstance,
@@ -60,7 +60,7 @@ export function useProductReviews(
     content: string;
     points: number;
   }) => {
-    await addProductReview(product.value.id, data, apiInstance);
+    await addProductReview(product.value.id as string, data, apiInstance); // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
   };
 
   return {

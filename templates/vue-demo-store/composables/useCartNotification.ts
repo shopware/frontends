@@ -1,10 +1,11 @@
-import type { CartErrors, CartError } from "@shopware-pwa/types";
+import type { Cart } from "#shopware";
+import type { CartError } from "@shopware-pwa/types";
 
 const successCodes = ["promotion-discount-added"];
 
 export type useCartNotificationReturn = {
   codeErrorsNotification(): void;
-  getErrorsCodes(): CartError[] | undefined;
+  getErrorsCodes(): CartError[];
 };
 
 /**
@@ -22,8 +23,8 @@ export function useCartNotification(): useCartNotificationReturn {
    * @returns {void}
    */
   const codeErrorsNotification = () => {
-    const errors: CartErrors | null = consumeCartErrors();
-    if (!errors) return;
+    const errors: Cart["errors"] = consumeCartErrors();
+    if (!errors || Array.isArray(errors)) return; // TODO: [OpenAPI][Cart] - Cart errors should be object, not array, for now, when empty - returns array
 
     Object.keys(errors).forEach((element) => {
       if (successCodes.includes(errors[element].messageKey)) {
@@ -40,8 +41,8 @@ export function useCartNotification(): useCartNotificationReturn {
    * @returns CartError[] | undefined
    */
   const getErrorsCodes = () => {
-    const errors: CartErrors | null = consumeCartErrors();
-    if (!errors) return;
+    const errors: Cart["errors"] = consumeCartErrors();
+    if (!errors || Array.isArray(errors)) return []; // TODO: [OpenAPI][Cart] - Cart errors should be object, not array, for now, when empty - returns array
 
     return Object.keys(errors).reduce((acc, element) => {
       if (!successCodes.includes(errors[element].messageKey))

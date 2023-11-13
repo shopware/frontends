@@ -644,11 +644,25 @@ export type components = {
       /** A comment that can be added to the cart. */
       customerComment?: string;
       /** A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers. */
-      errors?: {
-        key?: string;
-        level?: string;
-        message?: string;
-      }[];
+      errors: // TODO: [OpenAPI][Cart] - define errors properly, `key` and `message` should be required fields. `Errors` should be required field as well. Problem is that sometimes it's an array, and sometimes map object
+      | []
+        // | {
+        //     key: string;
+        //     code: string;
+        //     details: string;
+        //     level?: string;
+        //     message: string;
+        //   }[]
+        | Record<
+            string,
+            {
+              code: number;
+              key: string;
+              level: number;
+              message: string;
+              messageKey: string;
+            }
+          >;
       /** All items within the cart */
       lineItems?: components["schemas"]["LineItem"][];
       modified?: boolean;
@@ -688,7 +702,7 @@ export type components = {
       active?: boolean;
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
-      breadcrumb?: readonly unknown[];
+      breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
       /** Format: int64 */
       childCount?: number;
       children?: components["schemas"]["Category"];
@@ -725,6 +739,7 @@ export type components = {
       translated?: {
         afterCategoryId?: string;
         afterCategoryVersionId?: string;
+        breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
         cmsPageId?: string;
         cmsPageVersionId?: string;
         customEntityTypeId?: string;
@@ -2158,8 +2173,8 @@ export type components = {
           };
         };
       };
-      fileExtension?: string;
-      fileName?: string;
+      fileExtension: string; // TODO: [OpenAPI][Media] fileExtension field should be defined as required
+      fileName: string; // TODO: [OpenAPI][Media] fileName field should be defined as required
       /** Format: int64 */
       fileSize?: number;
       /** Runtime field, cannot be used as part of the criteria. */
@@ -2168,7 +2183,7 @@ export type components = {
       metaData?: GenericRecord;
       mimeType?: string;
       private?: boolean;
-      thumbnails?: components["schemas"]["MediaThumbnail"];
+      thumbnails?: Array<components["schemas"]["MediaThumbnail"]>; // TODO: [OpenAPI][Media] thumbnails field should be defined as an array
       title?: string;
       translated?: {
         alt?: string;
@@ -2184,7 +2199,7 @@ export type components = {
       /** Format: date-time */
       uploadedAt?: string;
       /** Runtime field, cannot be used as part of the criteria. */
-      url?: string;
+      url: string; // TODO: [OpenAPI][Media] url field should be defined as required
     };
     /** Added since version: */
     MediaAiTag: {
@@ -2241,7 +2256,7 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
       /** Runtime field, cannot be used as part of the criteria. */
-      url?: string;
+      url: string; // TODO: [OpenAPI][MediaThumbnail] url should be defined as required
       /** Format: int64 */
       width: number;
     };
@@ -2565,7 +2580,7 @@ export type components = {
       createdAt: string;
       customFields?: GenericRecord;
       description?: string;
-      downloads?: components["schemas"]["OrderLineItemDownload"];
+      downloads?: Array<components["schemas"]["OrderLineItemDownload"]>; // TODO: [OpenAPI][OrderLineItem] downloads field should be defined as an array
       extensions?: {
         returns?: {
           data?: {
@@ -2608,7 +2623,7 @@ export type components = {
       parent?: components["schemas"]["OrderLineItem"];
       parentId?: string;
       parentVersionId?: string;
-      payload?: GenericRecord;
+      payload: components["schemas"]["Product"]; // TODO: [OpenAPI][OrderLineItem] define possible payloads for order line items
       /** Format: int64 */
       position: number;
       priceDefinition?: GenericRecord;
@@ -2635,8 +2650,8 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
-      media?: components["schemas"]["Media"];
+      id: string; // TODO: [OpenAPI][OrderLineItemDownload] id should be defined as required
+      media: components["schemas"]["Media"]; // TODO: [OpenAPI][OrderLineItemDownload] media should be defined as required
       mediaId: string;
       orderLineItem?: components["schemas"]["OrderLineItem"];
       orderLineItemId: string;
@@ -3052,6 +3067,7 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     Product: {
+      apiAlias: "product"; // TODO: [OpenAPI][Product] apiAlias field should be defined in schema as string literal
       active?: boolean;
       available?: boolean;
       /** Format: int64 */
@@ -3123,7 +3139,7 @@ export type components = {
       };
       /** Format: float */
       height?: number;
-      id?: string;
+      id: string; // TODO: [OpenAPI][Product] id field should be required in schema
       isCloseout?: boolean;
       /** Runtime field, cannot be used as part of the criteria. */
       isNew?: boolean;
@@ -3144,7 +3160,7 @@ export type components = {
       minPurchase?: number;
       name: string;
       optionIds?: readonly string[];
-      options?: components["schemas"]["PropertyGroupOption"];
+      options?: Array<components["schemas"]["PropertyGroupOption"]>; // TODO: [OpenAPI][Product] options field should be defined as array
       packUnit?: string;
       packUnitPlural?: string;
       parent?: components["schemas"]["Product"];
@@ -3154,7 +3170,7 @@ export type components = {
       productMediaVersionId?: string;
       productNumber: string;
       productReviews?: components["schemas"]["ProductReview"];
-      properties?: components["schemas"]["PropertyGroupOption"];
+      properties?: Array<components["schemas"]["PropertyGroupOption"]>; // TODO: [OpenAPI][Product] properties field should be defined as array
       propertyIds?: readonly string[];
       /** Format: int64 */
       purchaseSteps?: number;
@@ -3170,8 +3186,8 @@ export type components = {
       restockTime?: number;
       /** Format: int64 */
       sales?: number;
-      seoCategory?: components["schemas"]["Category"];
-      seoUrls?: components["schemas"]["SeoUrl"];
+      seoCategory: components["schemas"]["Category"]; // TODO: [OpenAPI][Product] seoCategory field should be defined as required
+      seoUrls?: Array<components["schemas"]["SeoUrl"]>; // TODO: [OpenAPI][Product] seoUrls field should be defined as array
       shippingFree?: boolean;
       sortedProperties?: GenericRecord;
       states?: readonly string[];
@@ -3271,7 +3287,7 @@ export type components = {
     ProductDetailResponse: {
       /** List of property groups with their corresponding options and information on how to display them. */
       configurator?: components["schemas"]["PropertyGroup"][];
-      product?: components["schemas"]["Product"];
+      product: components["schemas"]["Product"]; // TODO: [OpenAPI][ProductDetailResponse] product field should be defined as required
     };
     /** Added since version: 6.4.19.0 */
     ProductDownload: {
@@ -3914,6 +3930,7 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
+      thumbnails?: Array<components["schemas"]["MediaThumbnail"]>; // TODO: [OpenAPI][Product] thumbnails field should be defined in ProductMedia
     };
     /** Added since version: 6.0.0.0 */
     ProductPrice: {
@@ -4100,7 +4117,7 @@ export type components = {
       filterable?: boolean;
       id?: string;
       name: string;
-      options?: components["schemas"]["PropertyGroupOption"];
+      options?: Array<components["schemas"]["PropertyGroupOption"]>; // TODO: [OpenAPI][PropertyGroup] options field should be defined as array
       /** Format: int64 */
       position?: number;
       sortingType: string;
@@ -4120,12 +4137,16 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      group?: components["schemas"]["PropertyGroup"];
+      group: {
+        // components["schemas"]["PropertyGroup"]; // TODO: [OpenAPI][PropertyGroupOption] group field should be defined and required
+        name: string;
+      };
       groupId: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][PropertyGroupOption] id field should be required in schema
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
+      option: string; // TODO: [OpenAPI][PropertyGroupOption] option field should be defined; defined as string (?)
       /** Format: int64 */
       position?: number;
       translated?: {
@@ -5987,7 +6008,8 @@ export type components = {
 
 export type external = Record<string, never>;
 
-export type operations = {
+// TODO: [api-gen]: issue for generator to create operations with generic parameters
+export type operations<components = components> = {
   /**
    * Create a new address for a customer
    * Creates a new address for a customer.
@@ -7394,7 +7416,7 @@ export type operations = {
     parameters: {
       path: {
         /** Product ID */
-        productId: string;
+        productId: string; // TODO: [OpenAPI][readProductDetails]: add cmsAssociations to product detail parameters
       };
     };
     responses: {

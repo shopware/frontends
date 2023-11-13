@@ -1,4 +1,3 @@
-import type { SeoUrl } from "@shopware-pwa/types";
 import { getProductUrl } from "./getProductUrl";
 
 /**
@@ -12,7 +11,12 @@ import { getProductUrl } from "./getProductUrl";
  * @category Routing
  */
 export function getProductRoute<
-  T extends { id: string; seoUrls: SeoUrl[] | null },
+  T extends {
+    id: string;
+    seoUrls?: Array<{
+      seoPathInfo?: string;
+    }>;
+  }, // TODO: [OpenAPI][Product] - seoUrls should be an array
 >(product?: T) {
   return {
     path: getProductUrl(product),

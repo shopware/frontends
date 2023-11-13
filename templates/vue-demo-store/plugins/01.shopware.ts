@@ -1,8 +1,5 @@
+import type { operationPaths, operations } from "#shopware";
 import { createAPIClient } from "@shopware/api-client";
-import type {
-  operationPaths,
-  operations,
-} from "@shopware/api-client/api-types";
 import Cookies from "js-cookie";
 
 /**

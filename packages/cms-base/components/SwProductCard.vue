@@ -6,15 +6,11 @@ import type {
 } from "@shopware-pwa/composables-next/composables";
 import {
   getProductName,
-  getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
+  getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import type {
-  ClientApiError,
-  Product,
-  PropertyGroupOption,
-} from "@shopware-pwa/types";
+import type { ClientApiError, Product } from "@shopware-pwa/types";
 import { toRefs, type Ref, computed, ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from "../helpers/deepMerge";
@@ -117,9 +113,9 @@ function roundUp(num: number) {
 }
 
 const srcPath = computed(() => {
-  return `${getProductThumbnailUrl(product.value)}?&height=${roundUp(
-    height.value,
-  )}&fit=crop`;
+  return `${getSmallestThumbnailUrl(
+    product.value?.media as any, // TODO: [OpenAPI][ProductMedia] - add thumbnails definition to schema
+  )}?&height=${roundUp(height.value)}&fit=crop`;
 });
 </script>
 
@@ -186,8 +182,8 @@ const srcPath = computed(() => {
         :key="option.id"
         class="items-center px-1 py-0 line-clamp-2 rounded-md bg-gray-50 ring-1 ring-inset ring-gray-500/10 text-xs font-medium text-gray-600"
       >
-        {{ (option as PropertyGroupOption).group.name }}:
-        {{ (option as PropertyGroupOption).name }}
+        {{ option.group.name }}:
+        {{ option.name }}
       </p>
     </div>
     <div class="px-4 pb-4 h-52 md:h-32">

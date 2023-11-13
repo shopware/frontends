@@ -1,6 +1,5 @@
-import { useCart as swUseCart } from "@shopware-pwa/composables-next/composables";
-import type { Cart } from "@shopware-pwa/types";
-// import type { RequestReturnType } from "@shopware/api-client";
+import type { Cart } from "#shopware";
+import { useCartFunction as swUseCart } from "@shopware-pwa/composables-next/composables";
 
 // TODO: copied temporarly from composables package, make it public
 function _useContext<T>(
@@ -27,17 +26,12 @@ function _useContext<T>(
   return _context;
 }
 
-// TODO: this type should be used
-// type ShopwareCart = RequestReturnType<"readCart">;
-// temporary to avoid lint error
-type ShopwareCart = Cart;
-
-const _useCart = () => {
-  const useCartData = swUseCart();
-  const _storeCart = _useContext<undefined | ShopwareCart>("swCart");
+const _useCart = (): UseCartReturn => {
+  const useCartData: UseCartReturn = swUseCart();
+  const _storeCart = _useContext<undefined | Cart>("swCart");
   const { apiClient } = useShopwareContext();
 
-  async function refreshCart(newCart?: ShopwareCart): Promise<ShopwareCart> {
+  async function refreshCart(newCart?: Cart): Promise<Cart> {
     if (newCart) {
       _storeCart.value = newCart;
       return newCart;
@@ -47,10 +41,9 @@ const _useCart = () => {
       "readCart get /checkout/cart?name",
       {},
     );
-    _storeCart.value = result as unknown as ShopwareCart;
-    // TODO: `deliveries` definition missing
-    useCartData.refreshCart(_storeCart.value as unknown as Cart);
-    return result as unknown as ShopwareCart;
+    _storeCart.value = result;
+    useCartData.refreshCart(_storeCart.value);
+    return result;
   }
 
   return {

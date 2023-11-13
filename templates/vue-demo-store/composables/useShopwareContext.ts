@@ -1,35 +1,20 @@
+import type { ApiClient } from "#shopware";
 import type { ShopwareContext } from "@shopware-pwa/composables-next/composables";
-import { createAPIClient } from "@shopware/api-client";
-import type {
-  operationPaths,
-  operations,
-} from "@shopware/api-client/api-types";
-// import Cookies from "js-cookie";
 
-export function useShopwareContext(): ShopwareContext & {
-  apiClient: ReturnType<typeof createAPIClient<operations, operationPaths>>;
-} {
+export function useShopwareContext() {
   const shopwareContext = inject<ShopwareContext | null>("shopware", null);
 
-  // TODO create more user-friendly type for apiClient
-  const apiClient =
-    inject<ReturnType<typeof createAPIClient<operations, operationPaths>>>(
-      "apiClient",
-    );
+  const apiClient = inject<ApiClient>("apiClient");
 
   if (!shopwareContext || !apiClient)
     throw new Error("Critical error. Shopware context is not provided.");
 
-  // TODO: show how we can provide different api clients for different sales channels
-
   return {
-    // old api client
+    /**
+     * @deprecated use `apiClient` instead
+     */
     apiInstance: shopwareContext.apiInstance,
-    // expose new api client
     apiClient,
     devStorefrontUrl: shopwareContext.devStorefrontUrl,
   };
 }
-
-// TODO: experiment with the possibility of single context component
-// export const useShopwareContext = createSharedComposable(_useShopwareContext);

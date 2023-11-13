@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { Schemas } from "#shopware";
 import { getMainImageUrl, isProduct } from "@shopware-pwa/helpers-next";
-import type { OrderLineItem } from "@shopware-pwa/types";
 
 const props = defineProps<{
-  orderItem: OrderLineItem;
+  orderItem: Schemas["OrderLineItem"];
 }>();
 
 const isPromotion = computed(() => isProduct(props.orderItem.payload));
@@ -35,8 +35,12 @@ const productOptions = computed(() =>
         <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
       <p class="mt-1 text-sm text-gray-500">
-        <span v-for="option in productOptions" :key="option.group" class="mr-2">
-          {{ option.group }}: {{ option.option }}
+        <span
+          v-for="option in productOptions"
+          :key="option.group.name"
+          class="mr-2"
+        >
+          {{ option.group.name }}: {{ option.option }}
         </span>
       </p>
     </div>

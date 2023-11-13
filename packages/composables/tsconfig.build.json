@@ -1,5 +1,5 @@
 {
-  "include": ["src/*.ts"],
+  "include": ["src/*.ts", "types/*.ts"],
   "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
   "compilerOptions": {
     "declaration": true,
@@ -8,7 +8,8 @@
     "skipLibCheck": true,
     "outDir": "./temp",
     "paths": {
-      "#imports": ["./src"]
+      "#imports": ["./src"],
+      "#shopware": ["./types/api-types.ts"]
     }
   }
 }
