@@ -15,8 +15,8 @@
   },
   "devDependencies": {
     "@shopware-pwa/types": "canary",
-    "@vitejs/plugin-vue": "^4.4.0",
-    "@vueuse/core": "^10.5.0",
+    "@vitejs/plugin-vue": "^4.4.1",
+    "@vueuse/core": "^10.6.1",
     "vite": "^4.5.0"
   }
 }
