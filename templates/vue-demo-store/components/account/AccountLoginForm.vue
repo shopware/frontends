@@ -38,7 +38,7 @@ const invokeLogin = async (): Promise<void> => {
     mergeWishlistProducts();
   } catch (error) {
     const e = error as ClientApiError;
-    const { errors } = useApiErrorsResolver(e.messages);
+    const { errors } = useApiErrorsResolver(e.messages, "account_login");
     loginErrors.value = errors;
   }
 };

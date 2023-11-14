@@ -18,6 +18,8 @@
     "billing-address-invalid": "Die gewählte Rechnungsadresse ist nicht gültig oder unvollständig. Bitte prüfen Sie Ihre Angaben.",
     "cart-merged-hint": "Der aktuelle Warenkorb enthält u.U. zusätzliche Produkte, die noch von einem früheren Besuch gespeichert waren.",
     "product-not-found": "Das Produkt wurde nicht gefunden.",
-    "salutation-missing": "Es wurde keine Anrede konfiguriert, bitte wählen Sie beim Abschluss Ihrer Bestellung eine Anrede aus."
+    "salutation-missing": "Es wurde keine Anrede konfiguriert, bitte wählen Sie beim Abschluss Ihrer Bestellung eine Anrede aus.",
+    "login_no_matching_customer_internal": "Es wurde kein passender Kunde gefunden.",
+    "CHECKOUT__CART_INVALID_LINE_ITEM_QUANTITY": "Die Menge muss eine positive ganze Zahl sein. Gegeben: {quantity}"
   }
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-import type { LineItem } from "@shopware-pwa/types";
+import type { LineItem, ClientApiError } from "@shopware-pwa/types";
 
 const props = withDefaults(
   defineProps<{
@@ -37,9 +37,15 @@ const updateQuantity = async (quantityInput: number | undefined) => {
 
   isLoading.value = true;
 
-  const response = await changeItemQuantity(Number(quantityInput));
-  // Refresh cart after qty update
-  await refreshCart(response);
+  try {
+    const response = await changeItemQuantity(Number(quantityInput));
+    // Refresh cart after qty update
+    await refreshCart(response);
+  } catch (error) {
+    const e = error as ClientApiError;
+    const { errors } = useApiErrorsResolver(e.messages);
+    errors.forEach((error) => pushError(error));
+  }
 
   // Make sure that qty is the same as it is in the response
   quantity.value = itemQuantity.value;

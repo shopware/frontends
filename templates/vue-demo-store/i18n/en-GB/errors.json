@@ -18,6 +18,8 @@
     "billing-address-invalid": "The selected billing address is not valid or incomplete. Please check your entries.",
     "cart-merged-hint": "The current shopping cart might contain additional products that have been added and saved during a previous visit.",
     "product-not-found": "The product could not be found.",
-    "salutation-missing": "A salutation is missing from your profile, please choose one during checkout."
+    "salutation-missing": "A salutation is missing from your profile, please choose one during checkout.",
+    "login_no_matching_customer_internal": "No matching customer was found.",
+    "CHECKOUT__CART_INVALID_LINE_ITEM_QUANTITY": "The quantity must be a positive integer. Given: {quantity}"
   }
 }
