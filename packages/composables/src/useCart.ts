@@ -1,7 +1,6 @@
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import { useShopwareContext } from "#imports";
-import { _useContext } from "./internal/_useContext";
+import { useContext, useShopwareContext } from "#imports";
 import { createSharedComposable } from "@vueuse/core";
 import type { Cart, Product, Schemas } from "#shopware";
 
@@ -90,8 +89,8 @@ export type UseCartReturn = {
 export function useCartFunction(): UseCartReturn {
   const { apiClient } = useShopwareContext();
 
-  const _storeCart = _useContext<Cart>("swCart");
-  const _storeCartErrors = _useContext<Cart["errors"] | null>("swCartErrors");
+  const _storeCart = useContext<Cart>("swCart");
+  const _storeCartErrors = useContext<Cart["errors"] | null>("swCartErrors");
 
   async function refreshCart(newCart?: Cart): Promise<Cart> {
     if (newCart) {

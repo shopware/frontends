@@ -2,7 +2,7 @@ import { computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import type { RouteName, SeoUrl } from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
-import { _useContext } from "./internal/_useContext";
+import { useContext } from "#imports";
 
 export type UseNavigationContextReturn = {
   /**
@@ -27,7 +27,7 @@ export type UseNavigationContextReturn = {
 export function useNavigationContext(
   context?: Ref<SeoUrl | null>,
 ): UseNavigationContextReturn {
-  const _context = _useContext("navigation", { context: context });
+  const _context = useContext("navigation", { context: context });
 
   const routeName = computed(() => _context.value?.routeName);
   const foreignKey = computed(() => _context.value?.foreignKey || "");

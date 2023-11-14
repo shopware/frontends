@@ -1,6 +1,5 @@
-import { useShopwareContext } from "#imports";
+import { useContext, useShopwareContext } from "#imports";
 import { getAvailableLanguages as getAvailableLanguagesAPI } from "@shopware-pwa/api-client";
-import { _useContext } from "./internal/_useContext";
 import type {
   Language,
   ContextTokenResponse,
@@ -84,11 +83,11 @@ export function useInternationalization(
   const { devStorefrontUrl } = useShopwareContext();
   const { apiInstance } = useShopwareContext();
 
-  const _storeLanguages = _useContext<Language[]>("swLanguages");
-  const _storeCurrentLanguage = _useContext<string>(
+  const _storeLanguages = useContext<Language[]>("swLanguages");
+  const _storeCurrentLanguage = useContext<string>(
     "swLanguagesCurrentLanguage",
   );
-  const _storeCurrentPrefix = _useContext<string>("swLanguagesCurrentPrefix");
+  const _storeCurrentPrefix = useContext<string>("swLanguagesCurrentPrefix");
 
   function getStorefrontUrl() {
     return devStorefrontUrl ?? window.location.origin ?? "";

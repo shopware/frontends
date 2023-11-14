@@ -1,8 +1,8 @@
 import { computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { _useContext } from "./internal/_useContext";
 import ContextError from "./helpers/ContextError";
 import type { Schemas } from "#shopware";
+import { useContext } from "#imports";
 
 export type UseProductReturn = {
   /**
@@ -30,12 +30,12 @@ export function useProduct(
   product?: Ref<Schemas["Product"]> | Schemas["Product"],
   configurator?: Ref<Schemas["PropertyGroup"][]> | Schemas["PropertyGroup"][],
 ): UseProductReturn {
-  const _product = _useContext("product", { context: product });
+  const _product = useContext("product", { context: product });
   if (!_product.value) {
     // TODO link docs with composables context usage
     throw new ContextError("Product");
   }
-  const _configurator = _useContext("configurator", {
+  const _configurator = useContext("configurator", {
     context: product && configurator,
   });
 

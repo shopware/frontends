@@ -21,8 +21,7 @@ import {
   setCurrentLanguage,
   setCurrentCountry,
 } from "@shopware-pwa/api-client";
-import { useShopwareContext } from "#imports";
-import { _useContext } from "./internal/_useContext";
+import { useContext, useShopwareContext } from "#imports";
 
 export type UseSessionContextReturn = {
   /**
@@ -116,7 +115,7 @@ export function useSessionContext(
 ): UseSessionContextReturn {
   const { apiInstance } = useShopwareContext();
 
-  const _sessionContext = _useContext("swSessionContext", {
+  const _sessionContext = useContext("swSessionContext", {
     replace: newContext,
   });
 

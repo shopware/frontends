@@ -9,8 +9,8 @@ import {
   ref,
   useSlots,
   watch,
-  type VNodeArrayChildren,
 } from "vue";
+import type { VNodeArrayChildren } from "vue";
 import { useElementSize, useResizeObserver } from "@vueuse/core";
 
 const props = withDefaults(

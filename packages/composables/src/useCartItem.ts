@@ -132,17 +132,10 @@ export function useCartItem(
   }
 
   async function changeItemQuantity(quantity: number): Promise<Cart> {
-    const result = await apiClient.invoke(
-      "updateLineItem patch /checkout/cart/line-item",
-      {
-        items: [
-          {
-            id: cartItem.value.id, // TODO: [OpenAPI][updateLIneItem] - change id field to mandatory
-            quantity: +quantity,
-          },
-        ],
-      },
-    );
+    const result = changeProductQuantity({
+      id: cartItem.value.id as string, // TODO: [OpenAPI][updateLIneItem] - change id field to mandatory
+      quantity: +quantity,
+    });
 
     return result;
   }

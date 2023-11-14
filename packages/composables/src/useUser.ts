@@ -30,8 +30,8 @@ import {
   useCart,
   useInternationalization,
   useSessionContext,
+  useContext,
 } from "#imports";
-import { _useContext } from "./internal/_useContext";
 import { syncRefs } from "@vueuse/core";
 
 export type UseUserReturn = {
@@ -137,7 +137,7 @@ export function useUser(): UseUserReturn {
   const { apiInstance } = useShopwareContext();
   const { userFromContext, refreshSessionContext } = useSessionContext();
 
-  const _user = _useContext<Customer | undefined>("customer");
+  const _user = useContext<Customer | undefined>("customer");
   syncRefs(userFromContext, _user, {
     immediate: true,
   });

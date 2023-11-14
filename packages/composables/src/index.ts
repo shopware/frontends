@@ -28,6 +28,7 @@ export * from "./useCheckout";
 export * from "./useCmsBlock";
 export * from "./useCmsMeta";
 export * from "./useCmsSection";
+export * from "./useContext";
 export * from "./useCountries";
 export * from "./useCustomerOrders";
 export * from "./useCustomerPassword";

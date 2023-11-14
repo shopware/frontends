@@ -1,7 +1,6 @@
 import type { ShopwareSearchParams } from "@shopware-pwa/types";
 import { useShopwareContext } from "#imports";
 import { cmsAssociations } from "./cms/cmsAssociations";
-import { _useContext } from "./internal/_useContext";
 import deepMerge from "./helpers/deepMerge";
 import type { Schemas } from "#shopware";
 

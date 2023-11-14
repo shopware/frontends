@@ -6,7 +6,6 @@ import {
 import type { Category, ShopwareSearchParams } from "@shopware-pwa/types";
 import { useShopwareContext } from "#imports";
 import { cmsAssociations } from "./cms/cmsAssociations";
-import { _useContext } from "./internal/_useContext";
 
 export type UseCategorySearchReturn = {
   /**

@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import { _useContext } from "./internal/_useContext";
+import { useContext } from "#imports";
 
 /**
  * @internal
@@ -37,7 +37,7 @@ export function useBreadcrumbs(
   newBreadcrumbs?: Breadcrumb[],
 ): UseBreadcrumbsReturn {
   // Store for breadcrumbs
-  const _breadcrumbs = _useContext<Breadcrumb[]>("swBreadcrumb", {
+  const _breadcrumbs = useContext<Breadcrumb[]>("swBreadcrumb", {
     replace: newBreadcrumbs,
   });
 
