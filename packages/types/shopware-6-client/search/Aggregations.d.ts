@@ -1,5 +1,6 @@
 import { Media } from "../models/content/media/Media";
 import { CustomFields } from "../models/common/CustomField";
+import { Schemas } from "#shopware";
 
 /**
  * @beta
@@ -95,11 +96,13 @@ export type PriceAggregation = {
 
 /**
  * @public
+ * @deprecated use Schemas['ProductListingResult']['currentFilters'] from "#shopware" import instead
  */
-export type Aggregations = {
-  manufacturer: EntitiesAggregation<AggregationFilterEntity>;
-  price: PriceAggregation;
-  "shipping-free": MaxAggregation;
-  rating: MaxAggregation;
-  properties: EntitiesAggregation<AggregationFilterEntity>;
-};
+export type Aggregations = Schemas["ProductListingResult"]["aggregations"];
+// export type Aggregations = {
+//   manufacturer: EntitiesAggregation<AggregationFilterEntity>;
+//   price: PriceAggregation;
+//   "shipping-free": MaxAggregation;
+//   rating: MaxAggregation;
+//   properties: EntitiesAggregation<AggregationFilterEntity>;
+// };

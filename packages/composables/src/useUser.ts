@@ -33,6 +33,7 @@ import {
   useContext,
 } from "#imports";
 import { syncRefs } from "@vueuse/core";
+import type { Schemas } from "#shopware";
 
 export type UseUserReturn = {
   /**
@@ -117,7 +118,9 @@ export type UseUserReturn = {
   /**
    * Default payment method for the user
    */
-  userDefaultPaymentMethod: ComputedRef<PaymentMethodTranslation | null>;
+  userDefaultPaymentMethod: ComputedRef<
+    Schemas["PaymentMethod"]["translated"] | null
+  >;
   /**
    * Default billing address for the user
    */

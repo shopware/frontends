@@ -9,6 +9,8 @@ import { SalesChannel } from "../../system/sales-channel/SalesChannel";
 import { CustomFields } from "../../common/CustomField";
 import { Delivery } from "../delivery/Delivery";
 import { OrderDocument } from "./OrderDocument";
+import { Schemas } from "#shopware";
+
 interface CalculatedTax {
   tax: number;
   taxRate: number;
@@ -65,44 +67,49 @@ interface OrderCustomer {
   orderVersionId: string;
 }
 
-export type Order = {
-  orderNumber: number;
-  currencyId: string;
-  currencyFactor: number;
-  salesChannelId: string;
-  billingAddressId: string;
-  orderDateTime: Date;
-  orderDate: Date;
-  price: Price;
-  amountTotal: number;
-  amountNet: number;
-  positionPrice: number;
-  taxStatus: string;
-  shippingCosts: ShippingCost;
-  shippingTotal: number;
-  orderCustomer: OrderCustomer;
-  currency: Currency | null;
-  languageId: string;
-  language: Language | null;
-  salesChannel: SalesChannel | null;
-  addresses: CustomerAddress[];
-  deliveries: Delivery[];
-  lineItems: OrderLineItem[] | null;
-  transactions: OrderTransaction[] | null;
-  deepLinkCode: string;
-  stateMachineState: StateMachineState;
-  stateId: string;
-  customFields: CustomFields;
-  documents: OrderDocument[];
-  tags: Tag[] | null;
-  affiliateCode: string | null;
-  campaignCode?: string;
-  _uniqueIdentifier: string;
-  versionId: string;
-  translated: any[];
-  createdAt: Date;
-  updatedAt: Date | string | null;
-  extensions: unknown;
-  id: string;
-  billingAddressVersionId: string;
-};
+/**
+ * @deprecated use Schemas['Order'] from "#shopware" import instead
+ */
+export type Order = Schemas["Order"];
+
+// {
+//   orderNumber: number;
+//   currencyId: string;
+//   currencyFactor: number;
+//   salesChannelId: string;
+//   billingAddressId: string;
+//   orderDateTime: Date;
+//   orderDate: Date;
+//   price: Price;
+//   amountTotal: number;
+//   amountNet: number;
+//   positionPrice: number;
+//   taxStatus: string;
+//   shippingCosts: ShippingCost;
+//   shippingTotal: number;
+//   orderCustomer: OrderCustomer;
+//   currency: Currency | null;
+//   languageId: string;
+//   language: Language | null;
+//   salesChannel: SalesChannel | null;
+//   addresses: CustomerAddress[];
+//   deliveries: Delivery[];
+//   lineItems: OrderLineItem[] | null;
+//   transactions: OrderTransaction[] | null;
+//   deepLinkCode: string;
+//   stateMachineState: StateMachineState;
+//   stateId: string;
+//   customFields: CustomFields;
+//   documents: OrderDocument[];
+//   tags: Tag[] | null;
+//   affiliateCode: string | null;
+//   campaignCode?: string;
+//   _uniqueIdentifier: string;
+//   versionId: string;
+//   translated: any[];
+//   createdAt: Date;
+//   updatedAt: Date | string | null;
+//   extensions: unknown;
+//   id: string;
+//   billingAddressVersionId: string;
+// };

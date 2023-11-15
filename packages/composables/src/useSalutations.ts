@@ -1,7 +1,7 @@
 import { ref, computed, onMounted, inject, provide } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 
 export type UseSalutationsReturn = {

@@ -87,7 +87,7 @@ export function useOrderPayment(
     }
     const resp = await apiHandlePayment(
       {
-        orderId: order.value?.id,
+        orderId: order.value?.id as string,
         finishUrl,
         errorUrl,
         paymentDetails,
@@ -104,7 +104,11 @@ export function useOrderPayment(
     if (!order.value) {
       return;
     }
-    changeOrderPaymentMethod(order.value?.id, paymentMethodId, apiInstance);
+    changeOrderPaymentMethod(
+      order.value?.id as string,
+      paymentMethodId,
+      apiInstance,
+    );
   }
 
   return {

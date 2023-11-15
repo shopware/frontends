@@ -14,7 +14,7 @@ type OneOf<T extends any[]> = T extends [infer Only]
     ? OneOf<[XOR<A, B>, ...Rest]>
     : never;
 
-type GenericRecord = never | { [key: string]: GenericRecord };
+type GenericRecord = never | string | { [key: string]: GenericRecord }; // TODO: [OpenAPI] - define GenericRecord properly
 
 export type paths = {
   "/account/address": {
@@ -2428,7 +2428,7 @@ export type components = {
       stateMachineState?: components["schemas"]["StateMachineState"];
       tags?: components["schemas"]["Tag"];
       taxStatus?: string;
-      transactions?: components["schemas"]["OrderTransaction"];
+      transactions?: Array<components["schemas"]["OrderTransaction"]>; // TODO: [OpenAPI][Order] transactions field should be defined as an array
       /** Format: date-time */
       updatedAt?: string;
       updatedById?: string;
@@ -3072,7 +3072,7 @@ export type components = {
       available?: boolean;
       /** Format: int64 */
       availableStock?: number;
-      calculatedCheapestPrice?: GenericRecord;
+      calculatedCheapestPrice?: GenericRecord & { hasRange: boolean }; // TODO: [OpenAPI][Product] calculatedCheapestPrice field should be defined exactly what it is
       /**
        * Format: int64
        * Runtime field, cannot be used as part of the criteria.
@@ -3877,18 +3877,29 @@ export type components = {
     };
     ProductListingResult: components["schemas"]["EntitySearchResult"] & {
       /** Contains the available sorting. These can be used to show a sorting select-box in the product listing. */
-      availableSortings?: GenericRecord[];
+      availableSortings?: Array<{
+        // TODO: [OpenAPI][ProductListingResult] availableSortings field should be defined properly
+        label: string;
+        translated: {
+          label: string;
+        };
+        key: string;
+        priority: number;
+        apiAlias: "product_sorting";
+      }>;
       /** Contains the state of the filters. These can be used to create listing filters. */
-      currentFilters?: {
-        manufacturer?: GenericRecord[];
+      currentFilters: {
+        // TODO: [OpenAPI][ProductListingResult] currentFilters field should be required
+        manufacturer?: string[]; // TODO: [OpenAPI][ProductListingResult] currentFilters.manufacturer field should be defined properly
         navigationId?: string;
         price?: {
           max?: number;
           min?: number;
         };
-        properties?: GenericRecord[];
+        properties?: string[]; // TODO: [OpenAPI][ProductListingResult] currentFilters.properties field should be defined properly
         rating?: number;
         "shipping-free"?: boolean;
+        search: string; // TODO: [OpenAPI][ProductListingResult] search field should be defined properly
       };
       elements?: components["schemas"]["Product"][];
       sorting?: string;
@@ -7664,7 +7675,7 @@ export type operations<components = components> = {
           "application/json": {
             /** aggregation result */
             aggregations?: GenericRecord;
-            elements?: components["schemas"]["ShippingMethod"][];
+            elements: components["schemas"]["ShippingMethod"][]; // TODO: [OpenAPI][readShippingMethod]: response should be `EntitySearchResult` and elements should be required
             /** Total amount */
             total?: number;
           };
