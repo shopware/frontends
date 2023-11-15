@@ -1,0 +1,164 @@
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="border-double border-4 border-sky-500" id="app">
+      <section
+          class="nes-container p-0 h-full bg-no-repeat bg-right-top bg-[url('https://th.bing.com/th/id/OIG.P7Gj4gDJ.qN0NPa.unAe?pid=ImgGn')]"
+          :class="['bg-[url(https://th.bing.com/th/id/OIG.P7Gj4gDJ.qN0NPa.unAe?pid=ImgGn)]'"
+        >
+        <div class="p-4">
+          <div class="nes-container is-rounded is-dark">
+            <p class="mb-2">Welcome to RETRO GAME STORE!</p>
+            <p>
+              This simple and ugly example shows how to build a store with
+              #no-build approach using Composable Frontends 😊
+            </p>
+          </div>
+        </div>
+
+      <router-view> </router-view>
+      </section>
+       <div
+        class="opacity-5 hover:opacity-100 fixed top-0 right-0 w-sm bg-[url('https://th.bing.com/th/id/OIG.mGhMm3fpOvBZX34Toxf2?pid=ImgGn')] w-[250px] h-[250px] bg-right-top bg-contain"
+      >
+        <p class="pt-10 pl-12">0 items</p>
+      </div>
+    </div>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@vueuse/shared": "https://unpkg.com/@vueuse/shared@10.5.0/index.mjs",
+          "scule": "https://unpkg.com/scule@1.0.0/dist/index.mjs",
+          "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js",
+          "@shopware-pwa/composables-next": "https://unpkg.com/@shopware-pwa/composables-next@0.0.0-canary-20231024141318/dist/index.mjs",
+          "@shopware-pwa/helpers-next": "https://unpkg.com/@shopware-pwa/helpers-next@0.4.0/dist/index.mjs",
+          "@shopware-pwa/api-client": "https://unpkg.com/@shopware-pwa/api-client@0.6.0/dist/index.mjs",
+          "@vueuse/core": "https://unpkg.com/@vueuse/core@10.5.0/index.mjs",
+          "axios": "https://unpkg.com/axios@1.5.1/dist/esm/axios.min.js",
+          "query-string": "https://unpkg.com/query-string@8.1.0/index.js",
+          "decode-uri-component": "https://unpkg.com/decode-uri-component@0.4.1/index.js",
+          "split-on-first": "https://unpkg.com/split-on-first@3.0.0/index.js",
+          "filter-obj": "https://unpkg.com/filter-obj@5.1.0/index.js",
+          "vue-demi": "https://unpkg.com/vue-demi@0.14.6/lib/index.mjs",
+          "vue-router": "https://unpkg.com/vue-router@4.2.5/dist/vue-router.esm-browser.js",
+          "@vue/devtools-api": "https://unpkg.com/@vue/devtools-api@6.5.1/lib/esm/index.js"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import { createApp, ref, onMounted, provide, watch } from "vue";
+      import { createWebHashHistory, createRouter, useRoute } from "vue-router";
+      import {
+        createShopwareContext,
+        useSessionContext,
+      } from "@shopware-pwa/composables-next";
+      import { createInstance } from "@shopware-pwa/api-client";
+
+      const test = ref("var");
+      const Home = {
+        template: `
+        <section
+          class="message-list ml-0 pb-8 pl-4 pt-4 w-full fixed bottom-0 backdrop-blur-sm bg-black/70"
+        >
+          <div class="w-full">
+            <section class="message -left">
+              <i class="nes-bcrikko align-bottom"></i>
+              <!-- Balloon -->
+              <div class="nes-balloon from-left">
+                <p></p>
+                <p class="welcome-text">Hello! How can I help you?</p>
+              </div>
+            </section>
+            <section class="message -right mt-4">
+              <!-- Balloon -->
+              <div class="nes-balloon from-right">
+                <p class="flex flex-col">
+                <router-link class="nes-btn is-primary" :to="{ path: '/store' }">Let's look inside! 🕹️</router-link>
+                 
+                  <button
+                    type="button"
+                    class="nes-btn is-success"
+                    onclick="window.location.href = 'https://frontends.shopware.com';"
+                  >
+                    Get me to the docs 📄
+                  </button>
+                </p>
+              </div>
+              <i class="nes-bcrikko align-bottom"></i>
+            </section>
+          </div>
+        </section>
+     `,
+      };
+      const Store = { template: `<div>foo</div>` };
+      const Checkout = {
+        setup() {
+          return {
+            test,
+          };
+        },
+        template: `<div>{{ test }}</div>`,
+      };
+
+      const routes = [
+        { path: "/", name: "home", component: Home },
+        { path: "/store", name:"store", component: Store },
+        { path: "/checkout", name: "checkout", component: Checkout },
+      ];
+
+      const app = createApp({
+        setup() {
+          const loaded = ref(false);
+          const { refreshSessionContext } = useSessionContext();
+          refreshSessionContext();
+
+          const route = useRoute();
+          watch(route, (newValue, oldValue) => {
+            console.warn(newValue.name);
+          });
+
+          onMounted(() => {
+            loaded.value = true;
+          });
+
+          return {
+            loaded,
+            test,
+          };
+        },
+      });
+
+      const router = createRouter({
+        history: createWebHashHistory(),
+        routes,
+      });
+      app.use(router);
+
+      const apiInstance = createInstance({
+        endpoint: "https://demo-frontends.shopware.store",
+        accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+      });
+
+      // setup shopware plugin
+      const shopwareContext = createShopwareContext(app, {
+        apiInstance,
+        // devStorefrontUrl: "https://your-sales-channel-configured-domain.com",
+      });
+      app.use(shopwareContext);
+      app.mount("#app");
+    </script>
+  </body>
+</html>
