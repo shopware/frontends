@@ -29,20 +29,21 @@ export function getMainImageUrl<
         };
       },
 >(object: T): string {
+  if (!object) return "";
   if ("cover" in object && object.cover) {
     if ("media" in object.cover) {
       return object?.cover?.media?.url || "";
     }
-    if (
-      "media" in object &&
-      Array.isArray(object.media) &&
-      object.media.length > 0
-    ) {
-      return object?.media?.[0]?.media?.url || "";
-    }
     if ("url" in object.cover) {
       return object?.cover?.url || "";
     }
+  }
+  if (
+    "media" in object &&
+    Array.isArray(object.media) &&
+    object.media.length > 0
+  ) {
+    return object?.media?.[0]?.media?.url || "";
   }
   return "";
 }
