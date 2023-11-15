@@ -1,9 +1,8 @@
 import { computed, ref, inject, provide } from "vue";
 import type { ComputedRef } from "vue";
-import type { Schemas } from "#shopware";
+import type { Schemas, RequestParameters } from "#shopware";
 import { useShopwareContext, useCart, useSessionContext } from "#imports";
 import deepMerge from "./helpers/deepMerge";
-import type { RequestParameters } from "@shopware/api-client";
 
 export type UseCheckoutReturn = {
   /**

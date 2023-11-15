@@ -11,8 +11,7 @@ import type { ComputedRef, Ref } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from "#imports";
 import ContextError from "./helpers/ContextError";
-import type { Schemas } from "#shopware";
-import { RequestParameters } from "@shopware/api-client";
+import type { Schemas, RequestParameters } from "#shopware";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
