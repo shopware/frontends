@@ -1505,7 +1505,7 @@ export type components = {
       customFields?: GenericRecord;
       department?: string;
       firstName: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][CustomerAddress] - make `id` required
       lastName: string;
       phoneNumber?: string;
       salutation?: components["schemas"]["Salutation"];
@@ -2378,9 +2378,9 @@ export type components = {
       id?: string;
       language?: components["schemas"]["Language"];
       languageId: string;
-      lineItems?: components["schemas"]["OrderLineItem"];
+      lineItems?: Array<components["schemas"]["OrderLineItem"]>; // TODO: [OpenAPI][Order] lineItems field should be defined as an array
       orderCustomer?: components["schemas"]["OrderCustomer"];
-      orderDate?: string;
+      orderDate: string; // TODO: [OpenAPI][Order] orderDate field should be defined as required
       /** Format: date-time */
       orderDateTime: string;
       orderNumber?: string;
@@ -2425,7 +2425,7 @@ export type components = {
       };
       /** Format: float */
       shippingTotal?: number;
-      stateMachineState?: components["schemas"]["StateMachineState"];
+      stateMachineState: components["schemas"]["StateMachineState"]; // TODO: [OpenAPI][Order] stateMachineState field should be defined as required
       tags?: components["schemas"]["Tag"];
       taxStatus?: string;
       transactions?: Array<components["schemas"]["OrderTransaction"]>; // TODO: [OpenAPI][Order] transactions field should be defined as an array
@@ -2981,7 +2981,7 @@ export type components = {
       customFields?: GenericRecord;
       description?: string;
       distinguishableName?: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][PaymentMethod] id should be defined as required
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
@@ -3078,7 +3078,14 @@ export type components = {
        * Runtime field, cannot be used as part of the criteria.
        */
       calculatedMaxPurchase?: number;
-      calculatedPrice?: GenericRecord;
+      calculatedPrice?: {
+        // TODO: [OpenAPI][Product] calculatedPrice field should be defined properly
+        referencePrice: {
+          price: number;
+          referenceUnit: number;
+          unitName: string;
+        };
+      };
       calculatedPrices?: unknown[];
       canonicalProduct?: components["schemas"]["Product"];
       canonicalProductId?: string;
@@ -4605,7 +4612,7 @@ export type components = {
       deliveryTime?: components["schemas"]["DeliveryTime"];
       deliveryTimeId: string;
       description?: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][ShippingMethod] id field should be required in schema
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
@@ -7365,7 +7372,9 @@ export type operations<components = components> = {
   readProduct: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": components["schemas"]["Criteria"] & {
+          ids?: string[]; // TODO: [OpenAPI][readProduct]: add `ids` as field to criteria - (is required?)
+        };
       };
     };
     responses: {

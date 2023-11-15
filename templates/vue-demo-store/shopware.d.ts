@@ -5,6 +5,10 @@ declare module "#shopware" {
     operations,
     components,
   } from "@shopware/api-client/api-types";
+  import type {
+    RequestParameters as DefaultRequestParameters,
+    RequestReturnType as DefaultRequestReturnType,
+  } from "@shopware/api-client";
 
   type changedComponents = components;
   // example how to extend Cart schema:
@@ -28,4 +32,9 @@ declare module "#shopware" {
   export type ApiClient = ReturnType<
     typeof createAPIClient<operations<changedComponents>, operationPaths>
   >;
+  export type RequestParameters<T extends keyof operations> =
+    DefaultRequestParameters<T, operations>;
+
+  export type RequestReturnType<T extends keyof operations> =
+    DefaultRequestReturnType<T, operations>;
 }

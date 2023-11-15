@@ -1,6 +1,6 @@
 import { SalutationTranslation } from "./SalutationTranslation";
 import { CustomFields } from "../models/common/CustomField";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 /**
  * @deprecated use {Schemas['Salutation']} instead from "#shopware" import
  */

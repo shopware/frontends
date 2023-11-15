@@ -1,6 +1,6 @@
 import { Media } from "../models/content/media/Media";
 import { CustomFields } from "../models/common/CustomField";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * @beta

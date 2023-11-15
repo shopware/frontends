@@ -9,7 +9,7 @@ import { SalesChannel } from "../../system/sales-channel/SalesChannel";
 import { CustomFields } from "../../common/CustomField";
 import { Delivery } from "../delivery/Delivery";
 import { OrderDocument } from "./OrderDocument";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 interface CalculatedTax {
   tax: number;

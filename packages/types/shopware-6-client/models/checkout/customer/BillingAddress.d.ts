@@ -1,4 +1,4 @@
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 import { CustomerAddress } from "./CustomerAddress";
 
 /**

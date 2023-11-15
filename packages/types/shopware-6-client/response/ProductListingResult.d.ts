@@ -1,7 +1,7 @@
 // import { Product } from "../models/content/product/Product";
 // import { Sort } from "../search/SearchCriteria";
 // import { Aggregations } from "../search/Aggregations";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * @deprecated use Schemas['ProductListingResult'] from "#shopware" import instead

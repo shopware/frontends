@@ -8,7 +8,7 @@ import { Tag } from "../../system/tag/Tag";
 import { ShippingMethodTranslation } from "./ShippingMethodTranslation";
 import { CustomFields } from "../../common/CustomField";
 import { Tax } from "../../system/tax/Tax";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * @public

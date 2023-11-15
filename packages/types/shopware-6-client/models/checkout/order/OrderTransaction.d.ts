@@ -3,7 +3,7 @@ import { PaymentMethod } from "../payment/PaymentMethod";
 import { StateMachineState } from "../../system/state-machine/StateMachineState";
 import { CalculatedPrice } from "../cart/price/CalculatedPrice";
 import { CustomFields } from "../../common/CustomField";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * @public

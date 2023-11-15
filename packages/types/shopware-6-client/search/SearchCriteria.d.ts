@@ -10,7 +10,7 @@ import { TotalCountMode } from "./TotalCountMode";
 import { ShopwareAssociation } from "./Association";
 import { Grouping } from "./Grouping";
 // import { StoreSort } from "./StoreSort";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * @deprecated use Schemas['ProductSorting'] from "#shopware" import instead

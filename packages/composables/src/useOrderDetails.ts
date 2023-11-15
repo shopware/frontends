@@ -20,7 +20,7 @@ import {
 } from "@shopware-pwa/api-client";
 import { useShopwareContext } from "#imports";
 import deepMerge from "./helpers/deepMerge";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * Data for api requests to fetch all necessary data

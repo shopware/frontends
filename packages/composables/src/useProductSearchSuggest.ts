@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useListing } from "#imports";
-import { Schemas, RequestParameters } from "#shopware";
+import type { Schemas, RequestParameters } from "#shopware";
 
 export type UseProductSearchSuggestReturn = {
   /**

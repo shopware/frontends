@@ -5,7 +5,7 @@
 //   AggregationProductListingEntities,
 // } from "../search/Aggregations";
 // import { CustomFields } from "../models/common/CustomField";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * @public

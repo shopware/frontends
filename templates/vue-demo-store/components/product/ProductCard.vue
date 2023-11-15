@@ -80,9 +80,9 @@ function roundUp(num: number) {
 }
 
 const srcPath = computed(() => {
-  return `${getSmallestThumbnailUrl(product.value.media)}?&height=${roundUp(
-    height.value,
-  )}&fit=crop`;
+  return `${getSmallestThumbnailUrl(
+    product.value.cover?.media,
+  )}?&height=${roundUp(height.value)}&fit=crop`;
 });
 </script>
 

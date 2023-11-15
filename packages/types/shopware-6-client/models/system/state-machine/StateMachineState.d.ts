@@ -6,7 +6,7 @@ import { StateMachineTransition } from "./StateMachineTransition";
 import { StateMachineHistory } from "./StateMachineHistory";
 import { StateMachineStateTranslation } from "./StateMachineStateTranslation";
 import { CustomFields } from "../../common/CustomField";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * @public

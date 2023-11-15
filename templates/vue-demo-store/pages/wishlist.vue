@@ -5,12 +5,11 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { getProducts } from "@shopware-pwa/api-client";
-import type { ClientApiError, Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 const { items, clearWishlist } = useWishlist();
-const { apiInstance } = useShopwareContext();
-const products = ref<Product[]>([]);
+const { apiClient } = useShopwareContext();
+const products = ref<Schemas["Product"][]>([]);
 const isLoading = ref(false);
 const { t } = useI18n();
 const localePath = useLocalePath();
@@ -33,21 +32,15 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   isLoading.value = true;
 
   try {
-    const result = await getProducts(
-      {
-        ids: itemIds || items.value,
-      },
-      apiInstance,
-    );
+    const result = await apiClient.invoke("readProduct post /product", {
+      ids: itemIds || items.value,
+    });
 
-    if (result) {
+    if (result?.elements) {
       products.value = result.elements;
     }
   } catch (error) {
-    console.error(
-      "[wishlist][loadProductsByItemIds]",
-      (error as ClientApiError).messages,
-    );
+    console.error("[wishlist][loadProductsByItemIds]", error);
   }
 
   isLoading.value = false;

@@ -6,7 +6,7 @@ import { Rule } from "../../content/rule/Rule";
 import { PaymentMethodTranslation } from "./PaymentMethodTranslation";
 import { OrderTransaction } from "../order/OrderTransaction";
 import { CustomFields } from "../../common/CustomField";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * @deprecated use Schemas['PaymentMethod'] from "#shopware" import instead
