@@ -114,7 +114,7 @@ function roundUp(num: number) {
 
 const srcPath = computed(() => {
   return `${getSmallestThumbnailUrl(
-    product.value?.media as any, // TODO: [OpenAPI][ProductMedia] - add thumbnails definition to schema
+    product.value?.cover?.media as any, // TODO: [OpenAPI][ProductMedia] - add thumbnails definition to schema
   )}?&height=${roundUp(height.value)}&fit=crop`;
 });
 </script>
