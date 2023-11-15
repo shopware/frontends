@@ -50,7 +50,7 @@ export type CrossSelling = {
 };
 
 /**
- * @public
+ * @deprecated - use Schema["Product"] instead from import "#shopware"
  */
 export type Product = Schemas["Product"];
 // export type Product = {
