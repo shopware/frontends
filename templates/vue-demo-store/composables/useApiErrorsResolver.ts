@@ -23,6 +23,26 @@ export function useApiErrorsResolver(
   const { t, te } = $i18n;
 
   const errorsTable = errors.map(({ detail, code, meta }) => {
+    /**
+     * In some cases, parameters errors
+     * comes with additional special characters.
+     * We have to remove them
+     *
+     * Example:
+     *   "meta": {
+     *          "parameters": {
+     *             "{{ email }}": "<value>>"
+     *        }
+     *   }
+     */
+    if (meta?.parameters) {
+      const pureMeta: { [key: string]: string } = {};
+      for (const [key, value] of Object.entries(meta?.parameters)) {
+        pureMeta[key.replace(/[^a-zA-Z0-9 ]/g, "")] = value;
+      }
+      meta.parameters = pureMeta;
+    }
+
     if (te(`errors.${code}`)) {
       return t(`errors.${code}`, { ...meta?.parameters });
     }

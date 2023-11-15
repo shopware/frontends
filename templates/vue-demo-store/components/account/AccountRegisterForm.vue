@@ -107,9 +107,9 @@ const invokeSubmit = async () => {
         $v.value.$reset();
       }
     } catch (error) {
-      let message =
-        (error as ClientApiError)?.messages?.[0]?.detail || t("messages.error");
-      pushError(message);
+      const e = error as ClientApiError;
+      const { errors } = useApiErrorsResolver(e.messages);
+      errors.forEach((error) => pushError(error));
     } finally {
       loading.value = false;
     }
