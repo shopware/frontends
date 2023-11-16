@@ -13,23 +13,41 @@
   <body>
     <div class="border-double border-4 border-sky-500" id="app">
       <section
-          class="nes-container p-0 h-full bg-no-repeat bg-right-top bg-[url('https://th.bing.com/th/id/OIG.P7Gj4gDJ.qN0NPa.unAe?pid=ImgGn')]"
-          :class="['bg-[url(https://th.bing.com/th/id/OIG.P7Gj4gDJ.qN0NPa.unAe?pid=ImgGn)]'"
-        >
+        class="transition-all delay-150 duration-300 nes-container p-0 h-full bg-no-repeat bg-center bg-top"
+        :class="[`bg-[url(${backgroundImage})]`]"
+      >
         <div class="p-4">
           <div class="nes-container is-rounded is-dark">
-            <p class="mb-2">Welcome to RETRO GAME STORE!</p>
-            <p>
-              This simple and ugly example shows how to build a store with
-              #no-build approach using Composable Frontends 😊
+            <p class="mb-2">
+              Welcome to
+              <span class="bg-gradient-to-r from-fuchsia-500 to-cyan-500"
+                >RETRO GAME STORE!</span
+              >
             </p>
+            <p>{{ subtitle }}</p>
           </div>
         </div>
-
-      <router-view> </router-view>
+        <router-view></router-view>
+        <div class="backdrop-blur-sm bg-black/70 fixed bottom-0 right-0">
+          <div class="nes-container with-title is-centered p-4">
+            <p class="title">Menu</p>
+            <router-link
+              class="nes-btn is-primary text-center block"
+              :class="{'is-disabled': $route.name==='home'}"
+              :to="{ path: '/' }"
+              ><span class="hidden md:inline-block">Back home</span>🏠</router-link
+            >
+            <router-link
+              class="nes-btn is-primary text-center block"
+              :class="{'is-disabled': $route.name==='store'}"
+              :to="{ path: '/store' }"
+              ><span class="hidden md:inline-block">Store</span> 🛍️</router-link
+            >
+          </div>
+        </div>
       </section>
-       <div
-        class="opacity-5 hover:opacity-100 fixed top-0 right-0 w-sm bg-[url('https://th.bing.com/th/id/OIG.mGhMm3fpOvBZX34Toxf2?pid=ImgGn')] w-[250px] h-[250px] bg-right-top bg-contain"
+      <div
+        class="opacity-5 hover:opacity-100 fixed top-0 right-0 w-sm bg-[url('https://th.bing.com/th/id/OIG.mGhMm3fpOvBZX34Toxf2?pid=ImgGn')] w-[250px] h-[250px] bg-center-top bg-contain"
       >
         <p class="pt-10 pl-12">0 items</p>
       </div>
@@ -59,19 +77,60 @@
     </script>
 
     <script type="module">
-      import { createApp, ref, onMounted, provide, watch } from "vue";
+      import { createApp, ref, onMounted, provide, watch, defineProps } from "vue";
       import { createWebHashHistory, createRouter, useRoute } from "vue-router";
       import {
         createShopwareContext,
         useSessionContext,
+        useCart
       } from "@shopware-pwa/composables-next";
       import { createInstance } from "@shopware-pwa/api-client";
 
-      const test = ref("var");
+      const subtitle =
+        ref(`This simple and ugly example shows how to build a store with
+              #no-build approach using Composable Frontends 😊`);
+      const backgroundImage = ref(
+        "https://th.bing.com/th/id/OIG.P7Gj4gDJ.qN0NPa.unAe?pid=ImgGn",
+      );
+
+      const ProductCard = {
+        name: "ProductCard",
+        props: ['thumbnail'],
+        setup() {
+          const { addProduct } = useCart();
+          return {
+            addProduct
+            }
+        },
+        template: `<div class="drop-shadow-2xl ">
+          <div class="border-double border-4 border-sky-500 mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg">
+            <img class="h-72 w-full object-cover object-center" :src="thumbnail" alt="Product Image" />
+            <div class="p-4">
+              <h2 class="mb-2 text-lg font-medium dark:text-white text-gray-900">Product Name</h2>
+              <p class="mb-2 text-base dark:text-gray-300 text-gray-700">Product description goes here.</p>
+              <div class="flex items-center">
+                <p class="mr-2 text-lg font-semibold text-gray-900 dark:text-white">$20.00</p>
+                <button
+                  type="button"
+                  @click="addProduct"
+                  class="nes-btn is-warning">Buy now!</button>
+              </div>
+            </div>
+          </div>
+        </div>`,
+      };
+
       const Home = {
+        setup() {
+          subtitle.value = `This simple and ugly example shows how to build a store with
+              #no-build approach using Composable Frontends 😊`;
+          return {
+            backgroundImage,
+          };
+        },
         template: `
         <section
-          class="message-list ml-0 pb-8 pl-4 pt-4 w-full fixed bottom-0 backdrop-blur-sm bg-black/70"
+          class="message-list ml-0 pb-2 pl-4 pt-4 w-full fixed bottom-0 left-0 backdrop-blur-sm bg-black/70"
         >
           <div class="w-full">
             <section class="message -left">
@@ -87,7 +146,6 @@
               <div class="nes-balloon from-right">
                 <p class="flex flex-col">
                 <router-link class="nes-btn is-primary" :to="{ path: '/store' }">Let's look inside! 🕹️</router-link>
-                 
                   <button
                     type="button"
                     class="nes-btn is-success"
@@ -103,19 +161,26 @@
         </section>
      `,
       };
-      const Store = { template: `<div>foo</div>` };
+      const Store = {
+        setup() {
+          subtitle.value = "Pick your game! 🕹️";
+        },
+        template: `
+        <ProductCard thumbnail="https://th.bing.com/th/id/OIG.RqBrIOpPei1s2anKavgl?pid=ImgGn"/>
+        `,
+      };
       const Checkout = {
         setup() {
           return {
             test,
           };
         },
-        template: `<div>{{ test }}</div>`,
+        template: `<div>checkout</div>`,
       };
 
       const routes = [
         { path: "/", name: "home", component: Home },
-        { path: "/store", name:"store", component: Store },
+        { path: "/store", name: "store", component: Store },
         { path: "/checkout", name: "checkout", component: Checkout },
       ];
 
@@ -126,8 +191,14 @@
           refreshSessionContext();
 
           const route = useRoute();
+          const BACKGROUND_MAP = {
+            store:
+              "https://th.bing.com/th/id/OIG.6RjBq7vW3zalQWxWWL_p?pid=ImgGn",
+            home: "https://th.bing.com/th/id/OIG.P7Gj4gDJ.qN0NPa.unAe?pid=ImgGn",
+            checkout: "",
+          };
           watch(route, (newValue, oldValue) => {
-            console.warn(newValue.name);
+            backgroundImage.value = BACKGROUND_MAP[newValue.name];
           });
 
           onMounted(() => {
@@ -136,7 +207,9 @@
 
           return {
             loaded,
-            test,
+            backgroundImage,
+            subtitle,
+            ProductCard
           };
         },
       });
@@ -147,6 +220,8 @@
       });
       app.use(router);
 
+      app.component('ProductCard', ProductCard);
+
       const apiInstance = createInstance({
         endpoint: "https://demo-frontends.shopware.store",
         accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
@@ -155,7 +230,7 @@
       // setup shopware plugin
       const shopwareContext = createShopwareContext(app, {
         apiInstance,
-        // devStorefrontUrl: "https://your-sales-channel-configured-domain.com",
+        devStorefrontUrl: "https://demo-frontends.shopware.store",
       });
       app.use(shopwareContext);
       app.mount("#app");
