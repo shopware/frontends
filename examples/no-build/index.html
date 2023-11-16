@@ -35,7 +35,8 @@
               class="nes-btn is-primary text-center block"
               :class="{'is-disabled': $route.name==='home'}"
               :to="{ path: '/' }"
-              ><span class="hidden md:inline-block">Back home</span>🏠</router-link
+              ><span class="hidden md:inline-block">Back home</span>
+              🏠</router-link
             >
             <router-link
               class="nes-btn is-primary text-center block"
@@ -47,9 +48,12 @@
         </div>
       </section>
       <div
-        class="opacity-5 hover:opacity-100 fixed top-0 right-0 w-sm bg-[url('https://th.bing.com/th/id/OIG.mGhMm3fpOvBZX34Toxf2?pid=ImgGn')] w-[250px] h-[250px] bg-center-top bg-contain"
+        class="opacity-85 hover:opacity-100 fixed pt-4 top-4 right-4 w-sm bg-[url('')] bg-center-top bg-contain"
       >
-        <p class="pt-10 pl-12">0 items</p>
+        <a href="#" class="nes-badge is-icon">
+          <span class="is-dark">{{cartCount}}</span>
+          <span class="is-warning">Cart</span>
+        </a>
       </div>
     </div>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -77,13 +81,26 @@
     </script>
 
     <script type="module">
-      import { createApp, ref, onMounted, provide, watch, defineProps } from "vue";
+      import {
+        createApp,
+        ref,
+        onMounted,
+        provide,
+        watch,
+        defineProps,
+        computed,
+      } from "vue";
       import { createWebHashHistory, createRouter, useRoute } from "vue-router";
       import {
         createShopwareContext,
         useSessionContext,
-        useCart
+        useCart,
+        useProductSearch,
       } from "@shopware-pwa/composables-next";
+      import {
+        getSmallestThumbnailUrl,
+        getSrcSetForMedia,
+      } from "@shopware-pwa/helpers-next";
       import { createInstance } from "@shopware-pwa/api-client";
 
       const subtitle =
@@ -95,16 +112,31 @@
 
       const ProductCard = {
         name: "ProductCard",
-        props: ['thumbnail'],
-        setup() {
+        props: ["thumbnail", "product"],
+        setup(props) {
           const { addProduct } = useCart();
+          const thumbnail = computed(() =>
+            getSmallestThumbnailUrl(props.product.cover.media),
+          );
+          console.warn("props.product", props.product);
+          const srcSet = computed(() =>
+            getSrcSetForMedia(props.product.cover.media),
+          );
+
+          const addToCartProxy = () => {
+            addProduct({ id: props.product.id, quantity: 1 });
+          };
           return {
-            addProduct
-            }
+            addProduct,
+            thumbnail,
+            srcSet,
+            addToCartProxy,
+          };
         },
-        template: `<div class="drop-shadow-2xl ">
+        template: `
+        <div class="drop-shadow-2xl ">
           <div class="border-double border-4 border-sky-500 mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg">
-            <img class="h-72 w-full object-cover object-center" :src="thumbnail" alt="Product Image" />
+            <img class="h-72 w-full object-cover object-center" :srcset="srcSet" :src="thumbnail" alt="Product Image" />
             <div class="p-4">
               <h2 class="mb-2 text-lg font-medium dark:text-white text-gray-900">Product Name</h2>
               <p class="mb-2 text-base dark:text-gray-300 text-gray-700">Product description goes here.</p>
@@ -112,7 +144,7 @@
                 <p class="mr-2 text-lg font-semibold text-gray-900 dark:text-white">$20.00</p>
                 <button
                   type="button"
-                  @click="addProduct"
+                  @click="addToCartProxy"
                   class="nes-btn is-warning">Buy now!</button>
               </div>
             </div>
@@ -164,9 +196,24 @@
       const Store = {
         setup() {
           subtitle.value = "Pick your game! 🕹️";
+          const { search } = useProductSearch();
+          const product = ref();
+          onMounted(async () => {
+            const productResponse = await search(
+              "018bd828d69f72dba59567a17c432eae",
+              {
+                withCmsAssociations: true,
+              },
+            );
+            product.value = productResponse.product;
+          });
+
+          return {
+            product,
+          };
         },
         template: `
-        <ProductCard thumbnail="https://th.bing.com/th/id/OIG.RqBrIOpPei1s2anKavgl?pid=ImgGn"/>
+        <ProductCard v-if="product" :product="product"/>
         `,
       };
       const Checkout = {
@@ -190,6 +237,8 @@
           const { refreshSessionContext } = useSessionContext();
           refreshSessionContext();
 
+          const { count: cartCount } = useCart();
+
           const route = useRoute();
           const BACKGROUND_MAP = {
             store:
@@ -201,15 +250,13 @@
             backgroundImage.value = BACKGROUND_MAP[newValue.name];
           });
 
-          onMounted(() => {
-            loaded.value = true;
-          });
 
           return {
             loaded,
             backgroundImage,
             subtitle,
-            ProductCard
+            ProductCard,
+            cartCount,
           };
         },
       });
@@ -220,11 +267,11 @@
       });
       app.use(router);
 
-      app.component('ProductCard', ProductCard);
+      app.component("ProductCard", ProductCard);
 
       const apiInstance = createInstance({
         endpoint: "https://demo-frontends.shopware.store",
-        accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        accessToken: "SWSCB3BTDJVSMFUXSET2EG9WEQ",
       });
 
       // setup shopware plugin
