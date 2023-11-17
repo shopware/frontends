@@ -27,7 +27,9 @@
             <p>{{ subtitle }}</p>
           </div>
         </div>
-        <router-view></router-view>
+        <div class="p-4 container">
+          <router-view></router-view>
+        </div>
         <div class="backdrop-blur-sm bg-black/70 fixed bottom-0 right-0">
           <div class="nes-container with-title is-centered p-4">
             <p class="title">Menu</p>
@@ -48,14 +50,25 @@
         </div>
       </section>
       <div
-        class="opacity-85 hover:opacity-100 fixed pt-4 top-4 right-4 w-sm bg-[url('')] bg-center-top bg-contain"
+        class=" fixed pt-4 top-4 right-4 w-sm bg-[url('')] bg-center-top bg-contain"
       >
-        <a href="#" class="nes-badge is-icon">
-          <span class="is-dark">{{cartCount}}</span>
-          <span class="is-warning">Cart</span>
-        </a>
+        <div class="block nes-badge is-icon" >
+          <span class="is-primary"  :class="{'animate-ping animate-twice animate-ease-in':animateCart}" >{{cartCount}}</span>
+          <span class="is-warning nes-pointer" onclick="document.getElementById('dialog-default').showModal()">Cart</span>
       </div>
     </div>
+    <section>
+      <dialog class="nes-dialog" id="dialog-default">
+        <form method="dialog">
+          <p class="title">Ready to checkout?</p>
+          <p>Next step will lead you to the Checkout page</p>
+          <menu class="dialog-menu">
+            <button class="nes-btn">Cancel</button>
+            <button class="nes-btn is-primary" @click="$router.push({'name':'checkout'})">Confirm</button>
+          </menu>
+        </form>
+      </dialog>
+    </section>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script type="importmap">
@@ -75,7 +88,8 @@
           "filter-obj": "https://unpkg.com/filter-obj@5.1.0/index.js",
           "vue-demi": "https://unpkg.com/vue-demi@0.14.6/lib/index.mjs",
           "vue-router": "https://unpkg.com/vue-router@4.2.5/dist/vue-router.esm-browser.js",
-          "@vue/devtools-api": "https://unpkg.com/@vue/devtools-api@6.5.1/lib/esm/index.js"
+          "@vue/devtools-api": "https://unpkg.com/@vue/devtools-api@6.5.1/lib/esm/index.js",
+          "js-cookie": "https://unpkg.com/js-cookie@3.0.5/dist/js.cookie.min.mjs"
         }
       }
     </script>
@@ -89,20 +103,25 @@
         watch,
         defineProps,
         computed,
+        reactive,
       } from "vue";
-      import { createWebHashHistory, createRouter, useRoute } from "vue-router";
+      import { createWebHashHistory, createRouter, useRoute, useRouter } from "vue-router";
       import {
         createShopwareContext,
         useSessionContext,
         useCart,
         useProductSearch,
+        usePrice,
+        useCountries,
+        useCheckout,
+        useUser,
       } from "@shopware-pwa/composables-next";
       import {
         getSmallestThumbnailUrl,
         getSrcSetForMedia,
       } from "@shopware-pwa/helpers-next";
       import { createInstance } from "@shopware-pwa/api-client";
-
+      import Cookies from "js-cookie";
       const subtitle =
         ref(`This simple and ugly example shows how to build a store with
               #no-build approach using Composable Frontends 😊`);
@@ -110,15 +129,20 @@
         "https://th.bing.com/th/id/OIG.P7Gj4gDJ.qN0NPa.unAe?pid=ImgGn",
       );
 
+      const animateCart = ref(false);
+      const showCheckoutDialog = ref(false);
+
+
       const ProductCard = {
         name: "ProductCard",
         props: ["thumbnail", "product"],
         setup(props) {
           const { addProduct } = useCart();
+          const { getFormattedPrice } = usePrice();
+
           const thumbnail = computed(() =>
             getSmallestThumbnailUrl(props.product.cover.media),
           );
-          console.warn("props.product", props.product);
           const srcSet = computed(() =>
             getSrcSetForMedia(props.product.cover.media),
           );
@@ -126,11 +150,23 @@
           const addToCartProxy = () => {
             addProduct({ id: props.product.id, quantity: 1 });
           };
+
+          const displayPrice = computed(() => {
+            return getFormattedPrice(props.product.calculatedPrice.unitPrice);
+          })
+
+          const productName = computed(() => props.product.translated.name)
+
+          const productDescription = computed(()=> props.product.translated.description)
+
           return {
             addProduct,
             thumbnail,
             srcSet,
             addToCartProxy,
+            displayPrice,
+            productName,
+            productDescription
           };
         },
         template: `
@@ -138,10 +174,10 @@
           <div class="border-double border-4 border-sky-500 mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg">
             <img class="h-72 w-full object-cover object-center" :srcset="srcSet" :src="thumbnail" alt="Product Image" />
             <div class="p-4">
-              <h2 class="mb-2 text-lg font-medium dark:text-white text-gray-900">Product Name</h2>
-              <p class="mb-2 text-base dark:text-gray-300 text-gray-700">Product description goes here.</p>
+              <h2 class="mb-2 text-lg font-medium dark:text-white text-gray-900">{{productName}}</h2>
+              <p class="mb-2 text-base dark:text-gray-300 text-gray-700">{{productDescription}}</p>
               <div class="flex items-center">
-                <p class="mr-2 text-lg font-semibold text-gray-900 dark:text-white">$20.00</p>
+                <p class="mr-2 text-lg font-semibold text-gray-900 dark:text-white">{{displayPrice}}</p>
                 <button
                   type="button"
                   @click="addToCartProxy"
@@ -218,17 +254,147 @@
       };
       const Checkout = {
         setup() {
+          const { getCountries } = useCountries();
+          const { cartItems, count, refreshCart, subtotal, totalPrice, shippingTotal } = useCart();
+          const { createOrder } = useCheckout();
+          const { register } = useUser();
+
+          const state = reactive({
+            guest: true,
+            firstName: "",
+            lastName: "",
+            street: "",
+            city: "",
+            zipcode: "",
+            countryId: "",
+            salutationId: "",
+            email: ""
+          })
+          subtitle.value = `Let's finish your journey. Fill up the form and place your order! 🛍️`;
+
+          watch(getCountries, (newValue, oldValue) => {
+            state.countryId = newValue?.[0]?.id || ""
+          });
+
+          async function onCreateOrderClick() {
+            if(!cartItems.value.length) return;
+
+            await register(Object.assign({}, state, {
+              billingAddress: {
+                street: state.street,
+                zipcode: state.zipcode,
+                city: state.city,
+                countryId: state.countryId,
+              },
+            }));
+
+            await createOrder();
+            await refreshCart();
+          } 
+
           return {
-            test,
+            getCountries,
+            state,
+            cartItems,
+            onCreateOrderClick,
+            subtotal, totalPrice, shippingTotal
           };
         },
-        template: `<div>checkout</div>`,
+        template: `
+        
+        <div class="p-4 backdrop-blur-sm bg-white/30">
+          <div v-if="!cartItems.length" class="mb-8">
+            <div class="note nes-text is-error text-center">
+              Your cart is empty. Please add some items to your cart.
+            </div>
+          </div>
+          <div v-else>
+          <div class="flex flex-row">
+            <div class="nes-table-responsive mb-8 flex-1 w-full">
+              Your cart:
+              <table class="nes-table is-bordered ">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in cartItems" :key="item.id">
+                    <td>{{item.label}}</td>
+                    <td>{{ item.quantity}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="nes-table-responsive mb-8 flex-1 w-full">
+              Totals:
+              <table class="nes-table is-bordered ">
+                <tbody>
+                  <tr>
+                    <td>subtotal</td>
+                    <td>{{subtotal}}</td>
+                  </tr>
+                  <tr>
+                    <td>shipping</td>
+                    <td>{{shippingTotal}}</td>
+                  </tr>
+                  <tr>
+                    <td>total price</td>
+                    <td>{{totalPrice}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            </div>
+            <div class="nes-field">
+              <label for="email">email</label>
+              <input v-model="state.email" type="email" id="email" class="nes-input">
+            </div>
+            <div class="nes-field">
+              <label for="firstName">First name</label>
+              <input v-model="state.firstName" type="text" id="firstName" class="nes-input">
+            </div>
+            <div class="nes-field">
+              <label for="lastName">Last name</label>
+              <input v-model="state.lastName" type="text" id="lastName" class="nes-input">
+            </div>
+            <div class="nes-field">
+              <label for="Address">Address</label>
+              <input v-model="state.street" type="text" id="street" class="nes-input">
+            </div>
+            <div class="nes-field">
+              <label for="zipCode">zip-code</label>
+              <input v-model="state.zipcode" type="text" id="zipcode" class="nes-input">
+            </div>
+            <div class="nes-field">
+              <label for="city">city</label>
+              <input v-model="state.city" type="text" id="city" class="nes-input">
+            </div>
+            <label for="default_select">Country</label>
+            <div class="nes-select">
+              <select required id="default_select" v-model="state.countryId">
+                <option v-for="country in getCountries" :key="country.id" :value="country.id">{{country.name}}</option>
+                
+              </select>
+            </div>
+          <button type="button" @click="onCreateOrderClick" :class="{'is-disabled': !cartItems.length}" class="mt-8 nes-btn is-success">Place an order</button>
+          </div>
+        </div>`,
       };
+
+      const Success = {
+        template: `
+        
+        
+        `
+      }
 
       const routes = [
         { path: "/", name: "home", component: Home },
         { path: "/store", name: "store", component: Store },
         { path: "/checkout", name: "checkout", component: Checkout },
+        { path: "/success", name: "success", component: Success}
       ];
 
       const app = createApp({
@@ -237,17 +403,26 @@
           const { refreshSessionContext } = useSessionContext();
           refreshSessionContext();
 
-          const { count: cartCount } = useCart();
-
+          const { count: cartCount, refreshCart } = useCart();
+          refreshCart();
           const route = useRoute();
           const BACKGROUND_MAP = {
             store:
               "https://th.bing.com/th/id/OIG.6RjBq7vW3zalQWxWWL_p?pid=ImgGn",
             home: "https://th.bing.com/th/id/OIG.P7Gj4gDJ.qN0NPa.unAe?pid=ImgGn",
-            checkout: "",
+            checkout: "https://th.bing.com/th/id/OIG.NdjjFbTgcURmM_TSV7is?pid=ImgGn",
           };
           watch(route, (newValue, oldValue) => {
             backgroundImage.value = BACKGROUND_MAP[newValue.name];
+          });
+
+          watch(cartCount, (newValue, oldValue) => {
+            if (newValue > oldValue) {
+              animateCart.value = true;
+              setTimeout(() => {
+                animateCart.value = false;
+              }, 1000);
+            }
           });
 
 
@@ -257,6 +432,7 @@
             subtitle,
             ProductCard,
             cartCount,
+            animateCart,
           };
         },
       });
@@ -272,12 +448,25 @@
       const apiInstance = createInstance({
         endpoint: "https://demo-frontends.shopware.store",
         accessToken: "SWSCB3BTDJVSMFUXSET2EG9WEQ",
+        contextToken: Cookies.get("sw-context-token")
       });
+
+      apiInstance.onConfigChange(({ config }) => {
+      try {
+        Cookies.set("sw-context-token", config.contextToken || "", {
+          expires: 365,
+          sameSite: "Lax",
+          path: "/",
+        });
+      } catch (e) {
+        // Sometimes cookie is set on server after request is send, it can fail silently
+      }
+    });
 
       // setup shopware plugin
       const shopwareContext = createShopwareContext(app, {
         apiInstance,
-        devStorefrontUrl: "https://demo-frontends.shopware.store",
+        devStorefrontUrl: "https://demo-frontends.shopware.store/retro",
       });
       app.use(shopwareContext);
       app.mount("#app");
