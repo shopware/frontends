@@ -5,5 +5,11 @@
   "private": true,
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "http-server ."
+  },
+  "dependencies": {
+    "http-server": "latest"
+  }
 }
