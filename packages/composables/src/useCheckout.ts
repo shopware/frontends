@@ -38,7 +38,7 @@ export type UseCheckoutReturn = {
   /**
    * Billing address for the current session
    */
-  billingAddress: ComputedRef<Partial<Schemas["CustomerAddress"]> | undefined>;
+  billingAddress: ComputedRef<Schemas["CustomerAddress"] | undefined>;
   /**
    * Selected shipping method for the current session
    * Sugar for {@link useSessionContext.selectedShippingMethod}
@@ -48,9 +48,7 @@ export type UseCheckoutReturn = {
    * Sets shipping method for the current session
    * Sugar for {@link useSessionContext.setShippingMethod}
    */
-  setShippingMethod(
-    shippingMethod: Partial<Schemas["ShippingMethod"]>,
-  ): Promise<void>;
+  setShippingMethod(shippingMethod: Schemas["ShippingMethod"]): Promise<void>;
   /**
    * Selected payment method for the current session
    * Sugar for {@link useSessionContext.selectedPaymentMethod}
@@ -60,9 +58,7 @@ export type UseCheckoutReturn = {
    * Sets payment method for the current session
    * Sugar for {@link useSessionContext.setPaymentMethod}
    */
-  setPaymentMethod(
-    paymentMethod: Partial<Schemas["PaymentMethod"]>,
-  ): Promise<void>;
+  setPaymentMethod(paymentMethod: Schemas["PaymentMethod"]): Promise<void>;
 };
 
 const shippingMethodsAssociations: Schemas["Criteria"] = {

@@ -1434,6 +1434,8 @@ export type components = {
     Customer: {
       accountType: string;
       active?: boolean;
+      activeBillingAddress: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][Customer] - add `activeBillingAddress` definition to schema
+      activeShippingAddress: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][Customer] - add `activeShippingAddress` definition to schema
       addresses?: components["schemas"]["CustomerAddress"];
       affiliateCode?: string;
       birthday?: string;
