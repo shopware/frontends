@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useBreadcrumbs } from "./useBreadcrumbs";
 import { defineComponent } from "vue";
@@ -28,6 +28,7 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });

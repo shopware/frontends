@@ -13,6 +13,7 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });

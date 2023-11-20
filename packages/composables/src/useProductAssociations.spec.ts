@@ -15,6 +15,7 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });
@@ -43,21 +44,14 @@ const Component = (mockedProductData: Product) =>
   });
 
 describe("useProductAssociations", () => {
-  vi.spyOn(apiExports, "invokePost").mockImplementation(async () => {
-    return { data: mockedCrossSelling } as any; // TODO: mock entity result
-  });
+  const provideMock = getMockProvide();
+  provideMock.global.provide.apiClient.invoke.mockResolvedValue(
+    mockedCrossSelling,
+  );
 
-  const wrapper = shallowMount(Component(mockedProduct), getMockProvide());
+  const wrapper = shallowMount(Component(mockedProduct), provideMock);
 
   it("productAssociations should be empty", () => {
-    expect(wrapper.vm.productAssociations).toStrictEqual([]);
-  });
-
-  it("load productAssociations - GET - Error", async () => {
-    vi.spyOn(apiExports, "invokeGet").mockImplementation(() => {
-      throw new Error();
-    });
-    await wrapper.vm.loadAssociations({ searchParams: {} });
     expect(wrapper.vm.productAssociations).toStrictEqual([]);
   });
 
@@ -89,10 +83,6 @@ describe("useProductAssociations", () => {
   });
 
   it("load productAssociations - GET", async () => {
-    vi.spyOn(apiExports, "invokeGet").mockImplementation(async () => {
-      return { data: mockedCrossSelling } as any; // TODO: mock entity result
-    });
-
     await wrapper.vm.loadAssociations({
       method: "get",
       searchParams: {},

@@ -2,7 +2,6 @@ import { useSalutations } from "./useSalutations";
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import Salutations from "./mocks/Salutations";
-import * as apiExports from "@shopware-pwa/api-client";
 import { defineComponent } from "vue";
 
 const Component = defineComponent({
@@ -27,21 +26,21 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });
 
 describe("useSalutations", () => {
-  vi.spyOn(apiExports, "getAvailableSalutations").mockImplementation(
-    async () => {
-      return { elements: Salutations } as any; // TODO: mock entity result
-    },
-  );
-
-  const wrapper = shallowMount(Component, getMockProvide());
+  const providedMock = getMockProvide();
+  providedMock.global.provide.apiClient.invoke.mockResolvedValue({
+    elements: Salutations,
+  });
+  const wrapper = shallowMount(Component, providedMock);
 
   it("should init value on init", async () => {
     await wrapper.vm.mountedCallback();
+    expect(providedMock.global.provide.apiClient.invoke).toBeCalledTimes(1);
     expect(wrapper.vm.getSalutations).toStrictEqual(Salutations);
   });
 });

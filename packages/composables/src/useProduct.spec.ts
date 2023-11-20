@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useProduct } from "./useProduct";
 import mockedProduct from "./mocks/Product";
@@ -11,8 +11,21 @@ const Component = defineComponent({
   },
 });
 
+const getMockProvide = () => ({
+  global: {
+    provide: {
+      shopware: {
+        apiInstance: {
+          config: {},
+        },
+      },
+      apiClient: { invoke: vi.fn() },
+    },
+  },
+});
+
 describe("useProduct", () => {
-  const wrapper = shallowMount(Component);
+  const wrapper = shallowMount(Component, getMockProvide());
 
   it("should return product object", () => {
     expect(wrapper.vm.product).toStrictEqual(mockedProduct);

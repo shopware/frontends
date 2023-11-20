@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { useInternationalization } from "./useInternationalization";
 import { shallowMount } from "@vue/test-utils";
 import { defineComponent } from "vue";
@@ -23,6 +23,7 @@ const getMockProvide = (mockedUrl: string | undefined) => ({
           },
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });

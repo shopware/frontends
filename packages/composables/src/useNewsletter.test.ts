@@ -25,6 +25,7 @@ const getMockProvide = (mockedUrl: string | undefined) => ({
           },
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });

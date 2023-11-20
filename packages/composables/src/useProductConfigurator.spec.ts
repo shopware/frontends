@@ -19,6 +19,7 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });
@@ -46,10 +47,11 @@ const Component = () =>
   });
 
 describe("useProductConfigurator", () => {
-  const wrapper = shallowMount(Component(), getMockProvide());
+  const providedOptions = getMockProvide();
+  const wrapper = shallowMount(Component(), providedOptions);
 
-  vi.spyOn(apiExports, "invokePost").mockImplementation(async () => {
-    return { data: { elements: [mockedProduct] } } as any; // TODO: mock entity result
+  providedOptions.global.provide.apiClient.invoke.mockResolvedValue({
+    elements: [mockedProduct],
   });
 
   vi.mock("./useProduct.ts", () => ({
