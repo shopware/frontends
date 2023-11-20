@@ -1,5 +1,16 @@
 # @shopware-pwa/cms-base
 
+## 0.9.1
+
+### Patch Changes
+
+- [#460](https://github.com/shopware/frontends/pull/460) [`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831) Thanks [@mkucmus](https://github.com/mkucmus)! - Apply visibility and css classes for CMS layout
+
+- Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831), [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550), [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0)]:
+  - @shopware-pwa/helpers-next@0.5.1
+  - @shopware-pwa/composables-next@0.14.1
+  - @shopware-pwa/api-client@0.7.0
+
 ## 0.9.0
 
 ### Minor Changes
