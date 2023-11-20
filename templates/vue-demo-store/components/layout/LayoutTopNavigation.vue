@@ -2,9 +2,12 @@
 import {
   getCategoryRoute,
   getTranslatedProperty,
-  getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
 import type { Category } from "@shopware-pwa/types";
+type NavigationElement = Category & {
+  activeClass?: boolean;
+};
+
 const { navigationElements } = useNavigation();
 const currentMenuPosition = ref<string | null>(null);
 const resetActiveClass = ref<boolean>(true);
@@ -14,7 +17,13 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
 onMounted(() => {
-  const currentNaviagtionElement = findNavigationElement(route.path.slice(1));
+  let currentNaviagtionElement: NavigationElement | undefined;
+  if (navigationElements.value) {
+    currentNaviagtionElement = findNavigationElement(
+      route.path.slice(1),
+      navigationElements.value,
+    );
+  }
   if (currentNaviagtionElement) {
     updateActiveClass(
       currentNaviagtionElement.id,
@@ -22,69 +31,85 @@ onMounted(() => {
     );
   }
 });
-// only works with 2 level navigation
-const findNavigationElement = (routePath: string): Category | undefined => {
-  let navigationElement;
-  const navigation = navigationElements.value;
-  if (navigation) {
-    // we do not loop through the top level
-    for (let ni = 0; ni < navigation.length; ++ni) {
-      const children = navigation[ni].children;
-      if (children) {
-        for (let ci = 0; ci < children.length; ++ci) {
-          const seoUrls = children[ci].seoUrls;
-          if (seoUrls) {
-            for (let si = 0; si < seoUrls.length; ++si) {
-              if (seoUrls[si].seoPathInfo == routePath) {
-                navigationElement = children[ci];
-                break;
-              }
-            }
-          }
-          if (navigationElement) {
-            break;
-          }
+
+const findNavigationElement = (
+  routePath: string,
+  navigation: NavigationElement[],
+): NavigationElement | undefined => {
+  for (let i = 0; i < navigation.length; i++) {
+    const navigationElement = navigation[i];
+    const seoUrls = navigationElement.seoUrls;
+    if (seoUrls) {
+      for (let j = 0; j < seoUrls.length; j++) {
+        if (seoUrls[j].seoPathInfo === routePath) {
+          return navigationElement;
         }
       }
-      if (navigationElement) {
-        break;
+    }
+    const children = navigationElement.children;
+    if (children) {
+      const foundElement = findNavigationElement(routePath, children);
+      if (foundElement) {
+        return foundElement;
       }
     }
   }
-
-  return navigationElement;
+  return undefined;
 };
-// only works with 2 level navigation, timeout needed to be executed after watch
+
+const onUpdateActiveClass = (navigationId: string, parentId: string | null) => {
+  updateActiveClass(navigationId, parentId);
+};
+
+const resetNavigationActiveClass = (navigation: NavigationElement[]) => {
+  for (let ni = 0; ni < navigation.length; ++ni) {
+    navigation[ni].activeClass = false;
+    const children = navigation[ni].children;
+    if (children) {
+      resetNavigationActiveClass(children);
+    }
+  }
+};
+
 const updateActiveClass = (navigationId: string, parentId: string | null) => {
-  resetActiveClass.value = false;
-  const navigation = navigationElements.value;
-  if (navigation) {
+  const setNavigationActiveClass = (
+    navigation: NavigationElement[],
+    navigationId: string,
+    parentId: string | null,
+  ) => {
     for (let ni = 0; ni < navigation.length; ++ni) {
-      navigation[ni].activeClass = false;
-      if (
-        (parentId && navigation[ni].id == parentId) ||
-        navigation[ni].id == navigationId
-      ) {
+      if (navigation[ni].id === navigationId) {
         navigation[ni].activeClass = true;
+      }
+      if (navigation[ni].id == parentId) {
+        navigation[ni].activeClass = true;
+        if (navigationElements.value) {
+          setNavigationActiveClass(
+            navigationElements.value,
+            navigationId,
+            navigation[ni].parentId,
+          );
+        }
       }
       const children = navigation[ni].children;
       if (children) {
-        for (let ci = 0; ci < children.length; ++ci) {
-          children[ci].activeClass = false;
-          if (children[ci].id == navigationId) {
-            children[ci].activeClass = true;
-          }
-        }
+        setNavigationActiveClass(children, navigationId, parentId);
       }
     }
+  };
+
+  if (navigationElements.value) {
+    resetNavigationActiveClass(navigationElements.value);
+    setNavigationActiveClass(navigationElements.value, navigationId, parentId);
+    resetActiveClass.value = false;
   }
 };
 // reset when route.path changes
 watch(
   () => route.path,
   () => {
-    if (resetActiveClass.value == true) {
-      updateActiveClass("", "");
+    if (resetActiveClass.value == true && navigationElements.value) {
+      resetNavigationActiveClass(navigationElements.value);
     }
     resetActiveClass.value = true;
   },
@@ -113,7 +138,7 @@ watch(
         "
         :to="formatLink(getCategoryRoute(navigationElement))"
         :class="{
-          'link-active': navigationElement.activeClass,
+          'link-active': (navigationElement as NavigationElement).activeClass,
         }"
         class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
         @click="
@@ -145,57 +170,11 @@ watch(
           <div
             class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden"
           >
-            <template
-              v-for="(childElement, index) in navigationElement.children"
-              :key="childElement.id"
-            >
-              <div
-                :class="{
-                  'sm:pb-0': index !== navigationElement.children.length - 1,
-                }"
-                class="relative grid gap-6 bg-white px-3 py-2 sm:gap-6 sm:p-3"
-              >
-                <NuxtLink
-                  :to="formatLink(getCategoryRoute(childElement))"
-                  :target="
-                    childElement.externalLink || childElement.linkNewTab
-                      ? '_blank'
-                      : ''
-                  "
-                  :class="{
-                    'link-active': childElement.activeClass,
-                  }"
-                  class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
-                  @click="
-                    updateActiveClass(childElement.id, childElement.parentId)
-                  "
-                >
-                  <div
-                    class="flex flex-col flex-grow pl-2"
-                    :class="{
-                      'max-w-200px md:max-w-300px': !!childElement.media,
-                    }"
-                  >
-                    <p class="text-base font-medium text-gray-900">
-                      {{ getTranslatedProperty(childElement, "name") }}
-                    </p>
-                    <p
-                      v-if="getTranslatedProperty(childElement, 'description')"
-                      class="mt-1 text-sm text-gray-500"
-                      v-html="
-                        getTranslatedProperty(childElement, 'description')
-                      "
-                    />
-                  </div>
-                  <div v-if="childElement.media" class="flex">
-                    <img
-                      :src="getSmallestThumbnailUrl(childElement.media)"
-                      class="object-scale-down h-48 w-px-200 rounded-md"
-                      alt="Category image"
-                    />
-                  </div>
-                </NuxtLink>
-              </div>
+            <template v-if="navigationElement.children.length > 0">
+              <LayoutTopNavigationRecursive
+                :navigation-element-children="navigationElement.children"
+                @update-active-class="onUpdateActiveClass"
+              />
             </template>
             <div
               class="px-5 py-5 bg-gray-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8"

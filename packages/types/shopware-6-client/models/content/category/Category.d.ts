@@ -24,7 +24,6 @@ export type Category = Entity & {
   breadcrumb: string[];
   level: number;
   active: boolean;
-  activeClass: boolean;
   childCount: number;
   displayNestedProducts: boolean;
   parent: Category | null;
