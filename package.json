@@ -42,7 +42,7 @@
     "taze": "^0.12.0",
     "turbo": "^1.10.16",
     "typedoc": "^0.25.3",
-    "vercel": "^32.5.3"
+    "vercel": "^32.5.5"
   },
   "engines": {
     "node": "^18.x || ^20.x"
@@ -52,7 +52,7 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.10.3",
+  "packageManager": "pnpm@8.10.5",
   "pnpm": {
     "overrides": {
       "yaml@2": "^2.2.2",
@@ -61,6 +61,7 @@
       "semver": "^7.5.2",
       "debug": "^4.3.1",
       "postcss": "^8.4.31",
+      "sharp": "^0.32.6",
       "undici": "^5.26.2",
       "zod": "^3.22.3"
     },
