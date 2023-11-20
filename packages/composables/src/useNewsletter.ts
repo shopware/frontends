@@ -1,19 +1,16 @@
-import {
-  newsletterSubscribe as newsletterSubscribeAPI,
-  newsletterUnsubscribe as newsletterUnsubscribeAPI,
-  isNewsletterSubscriber as isNewsletterSubscriberAPI,
-} from "@shopware-pwa/api-client";
-import type { NewsletterInput } from "@shopware-pwa/types";
 import { useShopwareContext, useInternationalization } from "#imports";
 import { ref, computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
+import { RequestParameters, Schemas } from "#shopware";
 
 export type UseNewsletterReturn = {
   /**
    * Subscribes the user to the newsletter
-   * @param params {@link NewsletterInput}
+   * @param params {@link RequestParameters<"subscribeToNewsletter">}
    */
-  newsletterSubscribe(params: NewsletterInput): Promise<void>;
+  newsletterSubscribe(
+    params: Omit<RequestParameters<"subscribeToNewsletter">, "storefrontUrl">,
+  ): Promise<void>;
   /**
    * Removes the email from the newsletter
    * @param email
@@ -32,20 +29,12 @@ export type UseNewsletterReturn = {
   /**
    * Newsletter status
    */
-  newsletterStatus: Ref<NewsletterStatus>;
+  newsletterStatus: Ref<Schemas["NewsletterStatus"]["status"]>;
   /**
    * Inform about newsletter confirmation
    */
   confirmationNeeded: ComputedRef<boolean>;
 };
-
-const enum NewsletterStatus {
-  NOT_SET = "notSet",
-  DIRECT = "direct",
-  UNDEFINED = "undefined",
-  OPT_OUT = "optOut",
-  OPT_IN = "optIn",
-}
 
 /**
  * Composable for newsletter subscription.
@@ -53,35 +42,39 @@ const enum NewsletterStatus {
  * @category Customer & Account
  */
 export function useNewsletter(): UseNewsletterReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
   const { getStorefrontUrl } = useInternationalization();
-  const newsletterStatus: Ref<NewsletterStatus> = ref(
-    NewsletterStatus.UNDEFINED,
-  );
+  const newsletterStatus =
+    ref<Schemas["NewsletterStatus"]["status"]>("undefined");
 
-  async function newsletterSubscribe(params: NewsletterInput) {
-    return await newsletterSubscribeAPI(
+  async function newsletterSubscribe(
+    params: Omit<RequestParameters<"subscribeToNewsletter">, "storefrontUrl">,
+  ) {
+    return await apiClient.invoke(
+      "subscribeToNewsletter post /newsletter/subscribe",
       {
         ...params,
         storefrontUrl: getStorefrontUrl(),
       },
-      apiInstance,
     );
   }
 
   async function newsletterUnsubscribe(email: string) {
-    return await newsletterUnsubscribeAPI(
+    return await apiClient.invoke(
+      "unsubscribeToNewsletter post /newsletter/unsubscribe",
       {
         email,
       },
-      apiInstance,
     );
   }
 
   async function getNewsletterStatus() {
     try {
-      const response = await isNewsletterSubscriberAPI(apiInstance);
-      newsletterStatus.value = response.status as NewsletterStatus;
+      const response = await apiClient.invoke(
+        "readNewsletterRecipient post /account/newsletter-recipient",
+        {},
+      );
+      newsletterStatus.value = response.status;
     } catch (error) {
       console.error(error);
     }
@@ -89,13 +82,13 @@ export function useNewsletter(): UseNewsletterReturn {
 
   const isNewsletterSubscriber = computed(
     () =>
-      ![NewsletterStatus.OPT_OUT, NewsletterStatus.UNDEFINED].includes(
-        newsletterStatus.value,
-      ),
+      !(
+        ["optOut", "undefined"] as Array<Schemas["NewsletterStatus"]["status"]>
+      ).includes(newsletterStatus.value),
   );
 
   const confirmationNeeded = computed(
-    () => newsletterStatus.value === NewsletterStatus.NOT_SET,
+    () => newsletterStatus.value === "notSet",
   );
 
   return {

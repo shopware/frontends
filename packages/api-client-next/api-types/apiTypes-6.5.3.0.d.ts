@@ -2294,6 +2294,11 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
+    NewsletterStatus: {
+      // TODO: [OpenAPI][NewsletterStatus] - add `NewsletterStatus` definition to schema
+      apiAlias: "account_newsletter_recipient";
+      status: "undefined" | "notSet" | "direct" | "optIn" | "optOut";
+    };
     /** Added since version: 6.4.7.0 */
     Notification: {
       /** Format: date-time */
@@ -6394,7 +6399,8 @@ export type operations<components = components> = {
     responses: {
       200: {
         content: {
-          "application/json": unknown;
+          // TODO: [OpenAPI][readNewsletterRecipient] add proper response type
+          "application/json": components["schemas"]["NewsletterStatus"];
         };
       };
     };
