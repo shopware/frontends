@@ -19,7 +19,9 @@ export type LayoutConfiguration = {
     marginRight?: string | null | undefined;
     marginTop?: string | null | undefined;
   };
-  cssClasses: string | null;
+  cssClasses: {
+    [cssClass: string]: boolean;
+  } | null;
 };
 
 // predicate types
@@ -94,11 +96,21 @@ export function getCmsLayoutConfiguration(
       layoutStyles: {},
     } as LayoutConfiguration;
   }
-
   const visibilityCssClasses = getVisibilityClasses(content);
+  // convert css classes string into object in format { "css-class-name": true }
+  const mappedCssClasses =
+    typeof content.cssClass === "string"
+      ? {
+          ...content.cssClass.split(" ").reduce((accumulator, cssClass) => {
+            return { ...accumulator, [cssClass]: true };
+          }, {}),
+        }
+      : {};
+
+  // append visibility classes to the css classes object
   const cssClasses = Object.keys(visibilityCssClasses).length
-    ? Object.assign({}, content.cssClass, visibilityCssClasses)
-    : content.cssClass;
+    ? Object.assign({}, mappedCssClasses, visibilityCssClasses)
+    : mappedCssClasses;
 
   return {
     cssClasses,

@@ -24,7 +24,7 @@
     "@shopware-pwa/typer": "workspace:*",
     "@types/markdown-it": "^13.0.6",
     "@types/node": "^20.8.1",
-    "@vitejs/plugin-vue": "^4.4.1",
+    "@vitejs/plugin-vue": "^4.5.0",
     "typescript": "^5.2.2"
   },
   "pnpm": {

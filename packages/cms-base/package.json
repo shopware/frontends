@@ -35,15 +35,15 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.8.1",
-    "@vueuse/core": "^10.5.0",
     "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
+    "@vueuse/core": "^10.6.1",
     "entities": "^4.5.0",
     "html-to-ast": "^0.0.6",
-    "vue": "^3.3.4"
+    "vue": "^3.3.8"
   },
   "devDependencies": {
     "@nuxt/schema": "^3.8.1",

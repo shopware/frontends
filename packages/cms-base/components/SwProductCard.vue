@@ -180,13 +180,13 @@ const srcPath = computed(() => {
       <p
         v-for="option in product?.options"
         :key="option.id"
-        class="items-center px-1 py-0 line-clamp-2 rounded-md bg-gray-50 ring-1 ring-inset ring-gray-500/10 text-xs font-medium text-gray-600"
+        class="items-center line-clamp-2 rounded-md text-xs font-medium text-gray-600 mt-3"
       >
         {{ option.group.name }}:
-        {{ option.name }}
+        <span class="font-bold">{{ option.name }} </span>
       </p>
     </div>
-    <div class="px-4 pb-4 h-52 md:h-32">
+    <div class="px-4 pb-4">
       <RouterLink
         class="line-clamp-2"
         :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
@@ -198,20 +198,19 @@ const srcPath = computed(() => {
           {{ getProductName({ product }) }}
         </h5>
       </RouterLink>
-      <div class="md:flex items-center justify-between">
-        <div class="">
-          <SwListingProductPrice
-            :product="product"
-            class="ml-auto"
-            data-testid="product-box-product-price"
-          />
-        </div>
 
+      <SwListingProductPrice
+        :product="product"
+        class="ml-auto"
+        data-testid="product-box-product-price"
+      />
+
+      <div>
         <button
           v-if="!fromPrice"
           type="button"
           @click="addToCartProxy"
-          class="justify-center w-full md:w-auto my-8 md-m-0 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 md:hover:scale-120 flex"
+          class="w-full justify-center my-8 md-m-0 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 flex"
           :class="{
             'text-white bg-blue-600 hover:bg-blue-700': !isInCart,
             'text-gray-600 bg-gray-100': isInCart,
@@ -230,7 +229,7 @@ const srcPath = computed(() => {
           class=""
         >
           <div
-            class="justify-center w-full md:w-auto my-8 md-m-0 py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 hover:scale-120"
+            class="text-center justify-center w-full md:w-auto my-8 md-m-0 py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400"
           >
             <span data-testid="product-box-product-show-details">Details</span>
           </div>

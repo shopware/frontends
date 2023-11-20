@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import type { CmsSectionDefault } from "@shopware-pwa/composables-next/composables";
+import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 
-defineProps<{
+const props = defineProps<{
   content: CmsSectionDefault;
 }>();
+
+const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(props.content);
 </script>
 
 <template>
-  <div class="cms-section-default">
+  <div class="cms-section-default" :class="cssClasses" :styles="layoutStyles">
     <CmsGenericBlock
       v-for="cmsBlock in content.blocks"
       class="overflow-auto"
