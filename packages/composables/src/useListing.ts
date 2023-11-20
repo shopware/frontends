@@ -190,7 +190,6 @@ export function useListing(params?: {
       return apiClient.invoke("searchPage post /search", {
         ...searchCriteria,
       });
-      //return searchProducts(searchCriteria, apiInstance);
     };
   } else {
     let resourceId: undefined | string;

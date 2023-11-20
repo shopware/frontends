@@ -2780,7 +2780,10 @@ export type components = {
       updatedAt?: string;
     };
     OrderRouteResponse: {
-      orders?: Record<string, never>;
+      orders: {
+        // TODO: [OpenAPI][OrderRouteResponse] orders field should be defined properly
+        elements: components["schemas"]["Order"][];
+      } & components["schemas"]["EntitySearchResult"];
       /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
       paymentChangeable?: GenericRecord;
     };
@@ -6058,7 +6061,11 @@ export type operations<components = components> = {
   createCustomerAddress: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["CustomerAddress"];
+        "application/json": Omit<
+          // TODO: [OpenAPI][createCustomerAddress] - omit id while creating address
+          components["schemas"]["CustomerAddress"],
+          "id"
+        >;
       };
     };
     responses: {
@@ -6341,7 +6348,10 @@ export type operations<components = components> = {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["CustomerAddress"][];
+          "application/json": {
+            // TODO: [OpenAPI][listAddress] add proper response type as EntitySearchResult
+            elements: components["schemas"]["CustomerAddress"][];
+          } & components["schemas"]["EntitySearchResult"];
         };
       };
     };

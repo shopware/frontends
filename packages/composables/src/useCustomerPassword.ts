@@ -1,15 +1,9 @@
 import { reactive } from "vue";
 import type { UnwrapRef } from "vue";
-import {
-  updatePassword as apiUpdatePassword,
-  resetPassword as apiResetPassword,
-} from "@shopware-pwa/api-client";
-import type {
-  CustomerUpdatePasswordParam,
-  CustomerResetPasswordParam,
-} from "@shopware-pwa/api-client";
-import type { ClientApiError, ShopwareError } from "@shopware-pwa/types";
+import type { ShopwareError } from "@shopware-pwa/types";
 import { useShopwareContext } from "#imports";
+import { RequestParameters } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
 
 export type UseCustomerPasswordReturn = {
   errors: UnwrapRef<{
@@ -20,13 +14,13 @@ export type UseCustomerPasswordReturn = {
    * Change customer's current password
    */
   updatePassword(
-    updatePasswordData: CustomerUpdatePasswordParam,
+    updatePasswordData: RequestParameters<"changePassword">,
   ): Promise<boolean>;
   /**
    * Reset customer's password
    */
   resetPassword(
-    resetPasswordData: CustomerResetPasswordParam,
+    resetPasswordData: RequestParameters<"recoveryPassword">,
   ): Promise<boolean>;
 };
 
@@ -36,7 +30,7 @@ export type UseCustomerPasswordReturn = {
  * @category Customer & Account
  */
 export function useCustomerPassword(): UseCustomerPasswordReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   const errors: UnwrapRef<{
     resetPassword: ShopwareError[];
@@ -47,23 +41,35 @@ export function useCustomerPassword(): UseCustomerPasswordReturn {
   });
 
   async function updatePassword(
-    updatePasswordData: CustomerUpdatePasswordParam,
+    updatePasswordData: RequestParameters<"changePassword">,
   ) {
     try {
       errors.updatePassword = [];
-      await apiUpdatePassword(updatePasswordData, apiInstance);
+      await apiClient.invoke(
+        "changePassword post /account/change-password",
+        updatePasswordData,
+      );
     } catch (e) {
-      errors.updatePassword = (e as ClientApiError).messages;
+      if (e instanceof ApiClientError) {
+        errors.updatePassword = e.details;
+      }
       return false;
     }
     return true;
   }
 
-  async function resetPassword(resetPasswordData: CustomerResetPasswordParam) {
+  async function resetPassword(
+    resetPasswordData: RequestParameters<"recoveryPassword">,
+  ) {
     try {
-      await apiResetPassword(resetPasswordData, apiInstance);
+      await apiClient.invoke(
+        "recoveryPassword post /account/recovery-password-confirm",
+        resetPasswordData,
+      );
     } catch (e) {
-      errors.resetPassword = (e as ClientApiError).messages;
+      if (e instanceof ApiClientError) {
+        errors.resetPassword = e.details;
+      }
       return false;
     }
     return true;
