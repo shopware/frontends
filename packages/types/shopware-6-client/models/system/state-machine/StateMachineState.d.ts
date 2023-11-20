@@ -9,7 +9,7 @@ import { CustomFields } from "../../common/CustomField";
 import type { Schemas } from "#shopware";
 
 /**
- * @public
+ * @deprecated - use Schema["StateMachineState"] instead from import "#shopware"
  */
 export type StateMachineState = Schemas["StateMachineState"];
 // export type StateMachineState = {

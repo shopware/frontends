@@ -19,35 +19,39 @@ import { PropertyGroupOptionCart } from "../property/PropertyGroupOptionCart";
 import { PropertyGroupOption } from "../property/PropertyGroupOption";
 import type { Schemas } from "#shopware";
 
-export type CrossSelling = {
-  apiAlias: "cross_selling_element";
-  crossSelling: {
-    name: string;
-    position: number;
-    sortBy: string;
-    sortDirection: string;
-    limit: number;
-    active: boolean;
-    productId: string;
-    product: null | Product;
-    productStreamId: null | string;
-    type: string;
-    assignedProducts: Product[];
-    translations: unknown;
-    _uniqueIdentifier: string;
-    versionId: null | string;
-    translated: unknown;
-    createdAt: Date;
-    updatedAt: Date | string | null;
-    extensions: unknown;
-    id: string;
-    productVersionId: string;
-    apiAlias: string;
-  };
-  products: Product[];
-  streamId: string;
-  total: number;
-};
+/**
+ * @deprecated - use Schema["CrossSellingElementCollection"] instead from import "#shopware"
+ */
+export type CrossSelling = Schemas["CrossSellingElementCollection"];
+// export type CrossSelling = {
+//   apiAlias: "cross_selling_element";
+//   crossSelling: {
+//     name: string;
+//     position: number;
+//     sortBy: string;
+//     sortDirection: string;
+//     limit: number;
+//     active: boolean;
+//     productId: string;
+//     product: null | Product;
+//     productStreamId: null | string;
+//     type: string;
+//     assignedProducts: Product[];
+//     translations: unknown;
+//     _uniqueIdentifier: string;
+//     versionId: null | string;
+//     translated: unknown;
+//     createdAt: Date;
+//     updatedAt: Date | string | null;
+//     extensions: unknown;
+//     id: string;
+//     productVersionId: string;
+//     apiAlias: string;
+//   };
+//   products: Product[];
+//   streamId: string;
+//   total: number;
+// };
 
 /**
  * @deprecated - use Schema["Product"] instead from import "#shopware"

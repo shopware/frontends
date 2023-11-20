@@ -1,8 +1,6 @@
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
-import type { Product } from "@shopware-pwa/types";
 import { useProduct, useShopwareContext } from "#imports";
-import { invokePost, getProductEndpoint } from "@shopware-pwa/api-client";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
 
@@ -18,7 +16,7 @@ export type UseProductConfiguratorReturn = {
 
   findVariantForSelectedOptions(options?: {
     [key: string]: string;
-  }): Promise<Product | undefined>;
+  }): Promise<Schemas["Product"] | undefined>;
 
   /**
    * Indicates if the options are being (re)loaded
@@ -42,7 +40,7 @@ export type UseProductConfiguratorReturn = {
  * @category Product
  */
 export function useProductConfigurator(): UseProductConfiguratorReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   const { configurator, product } = useProduct();
 
@@ -74,43 +72,32 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
 
   async function findVariantForSelectedOptions(options?: {
     [code: string]: string;
-  }): Promise<Product | undefined> {
+  }): Promise<Schemas["Product"] | undefined> {
     const filter = [
       {
         type: "equals",
         field: "parentId",
-        value: parentProductId.value,
+        value: parentProductId.value as string,
       },
       ...Object.values(options || selected.value).map((id) => ({
         type: "equals",
         field: "optionIds",
-        value: id,
+        value: id as string,
       })),
     ];
     try {
-      /* istanbul ignore next */
-      if (apiInstance) {
-        apiInstance.defaults.headers.common["sw-include-seo-urls"] = "true";
-      }
-      const response = await invokePost(
-        {
-          address: getProductEndpoint(),
-          payload: {
-            limit: 1,
-            filter,
-            includes: {
-              product: ["id", "translated", "productNumber", "seoUrls"],
-              seo_url: ["seoPathInfo"],
-            },
-            associations: {
-              seoUrls: {},
-            },
-          },
+      const response = await apiClient.invoke("readProduct post /product", {
+        filter,
+        limit: 1,
+        includes: {
+          product: ["id", "translated", "productNumber", "seoUrls"],
+          seo_url: ["seoPathInfo"],
         },
-        apiInstance,
-      );
-      return (response as { data?: { elements?: Array<Product> } })?.data
-        ?.elements?.[0]; // return first matching product
+        associations: {
+          seoUrls: {},
+        },
+      });
+      return response?.elements?.[0]; // return first matching product
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);
     }

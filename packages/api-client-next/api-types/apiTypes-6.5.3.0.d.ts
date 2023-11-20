@@ -14,7 +14,11 @@ type OneOf<T extends any[]> = T extends [infer Only]
     ? OneOf<[XOR<A, B>, ...Rest]>
     : never;
 
-type GenericRecord = never | string | { [key: string]: GenericRecord }; // TODO: [OpenAPI] - define GenericRecord properly
+type GenericRecord =
+  | never
+  | string
+  | string[]
+  | { [key: string]: GenericRecord }; // TODO: [OpenAPI] - define GenericRecord properly
 
 export type paths = {
   "/account/address": {
@@ -1279,6 +1283,7 @@ export type components = {
         /** The type of aggregation */
         type: string;
       }[];
+      includes?: GenericRecord; // TODO: [OpenAPI][Criteria] - define includes properly
       /** Used to fetch associations which are not fetched by default. */
       associations?: GenericRecord;
       /** Fields which should be returned in the search result. */
@@ -2382,7 +2387,7 @@ export type components = {
           };
         };
       };
-      id?: string;
+      id: string; // TODO: [OpenAPI][Order] id field should be defined as required
       language?: components["schemas"]["Language"];
       languageId: string;
       lineItems?: Array<components["schemas"]["OrderLineItem"]>; // TODO: [OpenAPI][Order] lineItems field should be defined as an array
@@ -7078,12 +7083,19 @@ export type operations<components = components> = {
           finishUrl?: string;
           /** Identifier of an order */
           orderId: string;
+          // paymentDetails -> TODO: [OpenAPI][handlePaymentMethod] check if `paymentDetails` property exist and what's for
         };
       };
     };
     responses: {
       /** Redirect to external payment provider */
-      200: never;
+      200: {
+        content: {
+          "application/json": {
+            redirectUrl: string; // TODO: [OpenAPI][handlePaymentMethod] add proper response type
+          };
+        };
+      };
     };
   };
   /**
