@@ -65,7 +65,6 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
    */
   async function getWishlistProducts() {
     try {
-      // const response = await getWishlistProductsAPI(undefined, apiInstance);
       const response = await apiClient.invoke(
         "readCustomerWishlist post /customer/wishlist",
         {},

@@ -1,7 +1,7 @@
 import { computed, ref, inject, provide } from "vue";
 import type { ComputedRef } from "vue";
 import type { Schemas, RequestParameters } from "#shopware";
-import { useShopwareContext, useCart, useSessionContext } from "#imports";
+import { useShopwareContext, useSessionContext } from "#imports";
 import deepMerge from "./helpers/deepMerge";
 
 export type UseCheckoutReturn = {
@@ -74,7 +74,6 @@ const shippingMethodsAssociations: Schemas["Criteria"] = {
  */
 export function useCheckout(): UseCheckoutReturn {
   const { apiClient } = useShopwareContext();
-  const { refreshCart } = useCart();
   const {
     sessionContext,
     selectedPaymentMethod,

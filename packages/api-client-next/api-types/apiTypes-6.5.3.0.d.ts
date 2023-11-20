@@ -4342,6 +4342,7 @@ export type components = {
         currencyId?: string;
         /** Format: int32 */
         currencyPrecision?: number;
+        languageIdChain?: string[]; // TODO: [OpenAPI][SalesChannelContext] languageIdChain field should be defined properly in context
         scope?: string;
         source?: string;
         taxState?: string;
@@ -4349,85 +4350,88 @@ export type components = {
         versionId?: string;
       };
       /** Currency associated with the current user */
-      currency?: {
-        /** Format: int32 */
-        decimalPrecision?: number;
-        factor?: number;
-        isoCode?: string;
-        isSystemDefault?: boolean;
-        name?: string;
-        /** Format: int32 */
-        position?: number;
-        shortName?: string;
-        symbol?: string;
-      };
+      currency?: components["schemas"]["Currency"]; // TODO: [OpenAPI][SalesChannelContext] currency field should be defined reusing Currency schema
+      // currency?: {
+      //   /** Format: int32 */
+      //   decimalPrecision?: number;
+      //   factor?: number;
+      //   isoCode?: string;
+      //   isSystemDefault?: boolean;
+      //   name?: string;
+      //   /** Format: int32 */
+      //   position?: number;
+      //   shortName?: string;
+      //   symbol?: string;
+      // };
       /** Customer group of the current user */
       currentCustomerGroup?: {
         displayGross?: boolean;
         name?: string;
       };
       /** Information about the current customer - `null` if the customer is not logged in */
-      customer?: {
-        active?: boolean;
-        affiliateCode?: string;
-        /** Format: int32 */
-        autoIncrement?: number;
-        /** Format: date-time */
-        birthday?: string;
-        campaignCode?: string;
-        company?: string;
-        customerNumber?: string;
-        defaultBillingAddressId?: string;
-        defaultPaymentMethodId?: string;
-        defaultShippingAddressId?: string;
-        /** Format: date-time */
-        doubleOptInConfirmDate?: string;
-        /** Format: date-time */
-        doubleOptInEmailSentDate?: string;
-        doubleOptInRegistration?: boolean;
-        email?: string;
-        /** Format: date-time */
-        firstLogin?: string;
-        firstName?: string;
-        groupId?: string;
-        guest?: boolean;
-        hash?: string;
-        languageId?: string;
-        /** Format: date-time */
-        lastLogin?: string;
-        lastName?: string;
-        /** Format: date-time */
-        lastOrderDate?: string;
-        lastPaymentMethodId?: string;
-        legacyEncoder?: string;
-        legacyPassword?: string;
-        newsletter?: boolean;
-        /** Format: int32 */
-        orderCount?: number;
-        password?: string;
-        remoteAddress?: string;
-        salesChannelId?: string;
-        salutationId?: string;
-        title?: string;
-      };
+      customer?: components["schemas"]["Customer"]; // TODO: [OpenAPI][SalesChannelContext] customer field should be defined reusing Customer schema
+      // customer?: {
+      //   active?: boolean;
+      //   affiliateCode?: string;
+      //   /** Format: int32 */
+      //   autoIncrement?: number;
+      //   /** Format: date-time */
+      //   birthday?: string;
+      //   campaignCode?: string;
+      //   company?: string;
+      //   customerNumber?: string;
+      //   defaultBillingAddressId?: string;
+      //   defaultPaymentMethodId?: string;
+      //   defaultShippingAddressId?: string;
+      //   /** Format: date-time */
+      //   doubleOptInConfirmDate?: string;
+      //   /** Format: date-time */
+      //   doubleOptInEmailSentDate?: string;
+      //   doubleOptInRegistration?: boolean;
+      //   email?: string;
+      //   /** Format: date-time */
+      //   firstLogin?: string;
+      //   firstName?: string;
+      //   groupId?: string;
+      //   guest?: boolean;
+      //   hash?: string;
+      //   languageId?: string;
+      //   /** Format: date-time */
+      //   lastLogin?: string;
+      //   lastName?: string;
+      //   /** Format: date-time */
+      //   lastOrderDate?: string;
+      //   lastPaymentMethodId?: string;
+      //   legacyEncoder?: string;
+      //   legacyPassword?: string;
+      //   newsletter?: boolean;
+      //   /** Format: int32 */
+      //   orderCount?: number;
+      //   password?: string;
+      //   remoteAddress?: string;
+      //   salesChannelId?: string;
+      //   salutationId?: string;
+      //   title?: string;
+      // };
       /** Fallback group if the default customer group is not applicable */
       fallbackCustomerGroup?: {
         displayGross?: boolean;
         name?: string;
       };
       /** Selected payment method */
-      paymentMethod?: {
-        active?: boolean;
-        availabilityRuleId?: string;
-        description?: string;
-        formattedHandlerIdentifier?: string;
-        handlerIdentifier?: string;
-        mediaId?: string;
-        name?: string;
-        pluginId?: string;
-        /** Format: int32 */
-        position?: number;
-      };
+      paymentMethod?: components["schemas"]["PaymentMethod"]; // TODO: [OpenAPI][SalesChannelContext] paymentMethod field should be defined properly reusing PaymentMethod schema
+      // paymentMethod?: {
+      //   active?: boolean;
+      //   availabilityRuleId?: string;
+      //   description?: string;
+      //   formattedHandlerIdentifier?: string;
+      //   handlerIdentifier?: string;
+      //   mediaId?: string;
+      //   name?: string;
+      //   pluginId?: string;
+      //   /** Format: int32 */
+      //   position?: number;
+      // };
       /** Information about the current sales channel */
       salesChannel?: {
         accessKey?: string;
@@ -4453,16 +4457,23 @@ export type components = {
         shortName?: string;
         typeId?: string;
       };
-      /** Selected shipping method */
-      shippingMethod?: {
-        active?: boolean;
-        availabilityRuleId?: string;
-        deliveryTimeId?: string;
-        description?: string;
-        mediaId?: string;
-        name?: string;
-        trackingUrl?: string;
+      shippingLocation?: {
+        // TODO: [OpenAPI][SalesChannelContext] shippingLocation field should be defined properly
+        apiAlias: "cart_delivery_shipping_location";
+        country: components["schemas"]["Country"];
+        address: components["schemas"]["Address"];
       };
+      /** Selected shipping method */
+      shippingMethod?: components["schemas"]["ShippingMethod"]; // TODO: [OpenAPI][SalesChannelContext] shippingMethod field should be defined properly reusing ShippingMethod schema
+      // shippingMethod?: {
+      //   active?: boolean;
+      //   availabilityRuleId?: string;
+      //   deliveryTimeId?: string;
+      //   description?: string;
+      //   mediaId?: string;
+      //   name?: string;
+      //   trackingUrl?: string;
+      // };
       /** Currently active tax rules and/or rates */
       taxRules?: {
         name?: string;
