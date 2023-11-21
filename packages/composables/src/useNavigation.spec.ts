@@ -27,13 +27,11 @@ const Component = defineComponent({
 });
 
 describe("useNavigation", () => {
-  const wrapper = shallowMount(Component, getMockProvide());
-
-  vi.spyOn(apiExports, "getStoreNavigation").mockImplementation(async () => {
-    return Menu;
-  });
-
   it("should set the menu", async () => {
+    const mockedProvide = getMockProvide();
+    mockedProvide.global.provide.apiClient.invoke.mockResolvedValue(Menu);
+    const wrapper = shallowMount(Component, mockedProvide);
+
     await wrapper.vm.loadNavigationElements({
       depth: 3,
     });
@@ -42,9 +40,10 @@ describe("useNavigation", () => {
   });
 
   it("menu is empty because of the error", async () => {
-    vi.spyOn(apiExports, "getStoreNavigation").mockImplementation(() => {
-      throw new Error("Test error");
-    });
+    const mockedProvide = getMockProvide();
+    mockedProvide.global.provide.apiClient.invoke.mockRejectedValue(null);
+    const wrapper = shallowMount(Component, mockedProvide);
+
     await wrapper.vm.loadNavigationElements({
       depth: 3,
     });

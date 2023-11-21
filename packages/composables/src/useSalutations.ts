@@ -5,7 +5,6 @@ import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 
 export type UseSalutationsReturn = {
-  mountedCallback(): Promise<void>;
   /**
    * All available salutations
    */
@@ -57,7 +56,6 @@ export function useSalutations(): UseSalutationsReturn {
   onMounted(mountedCallback);
 
   return {
-    mountedCallback,
     fetchSalutations,
     getSalutations,
   };

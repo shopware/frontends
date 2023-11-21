@@ -1,17 +1,15 @@
 import { useSalutations } from "./useSalutations";
 import { describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import Salutations from "./mocks/Salutations";
 import { defineComponent } from "vue";
 
 const Component = defineComponent({
   template: "<div/>",
   setup() {
-    const { mountedCallback, fetchSalutations, getSalutations } =
-      useSalutations();
+    const { fetchSalutations, getSalutations } = useSalutations();
 
     return {
-      mountedCallback,
       fetchSalutations,
       getSalutations,
     };
@@ -38,8 +36,8 @@ describe("useSalutations", () => {
       elements: Salutations,
     });
     const wrapper = shallowMount(Component, providedMock);
+    await flushPromises();
 
-    await wrapper.vm.mountedCallback();
     expect(providedMock.global.provide.apiClient.invoke).toBeCalledTimes(1);
     expect(wrapper.vm.getSalutations).toStrictEqual(Salutations);
   });
