@@ -156,6 +156,9 @@ export type Product = Schemas["Product"];
 //   width: number | null;
 // };
 
+/**
+ * @deprecated - use Schema["LineItem"] instead from import "#shopware"
+ */
 export type CartProductItem = Product & {
   options: PropertyGroupOptionCart[];
 };

@@ -84,7 +84,7 @@ function _usePrice(params?: {
       if (!!newCurrency)
         update({
           // locale code is read only once on SSR because it's unavailable in the context
-          currencyCode: newCurrency?.isoCode as string,
+          currencyCode: newCurrency?.isoCode,
         });
     },
     {

@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import type { Ref } from "vue";
-import type { Product } from "@shopware-pwa/types";
 import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
+import type { Schemas } from "#shopware";
 
 export type UseProductWishlistReturn = {
   /**
@@ -24,7 +24,7 @@ export type UseProductWishlistReturn = {
  * @category Product
  */
 export function useProductWishlist(
-  product: Ref<Product>,
+  product: Ref<Schemas["Product"]>,
 ): UseProductWishlistReturn {
   const { isLoggedIn } = useUser();
   const {
@@ -43,28 +43,27 @@ export function useProductWishlist(
   // removes item from the list
   async function removeFromWishlist() {
     if (isLoggedIn.value) {
-      await removeItemSync(product.value.id as string); // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+      await removeItemSync(product.value.id);
       await getWishlistProducts();
     } else {
-      await removeItem(product.value.id as string); // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+      await removeItem(product.value.id);
     }
   }
 
   async function addToWishlist() {
     if (isLoggedIn.value) {
-      await addItemSync(product.value.id as string); // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+      await addItemSync(product.value.id);
       await getWishlistProducts();
     } else {
-      await addItem(product.value.id as string); // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+      await addItem(product.value.id);
     }
   }
 
   // return true or false if product id is in wishlist array
-  const isInWishlist = computed(
-    () =>
-      isLoggedIn.value
-        ? itemsSync.value?.includes(product.value.id as string) // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
-        : items.value?.includes(product.value.id as string), // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+  const isInWishlist = computed(() =>
+    isLoggedIn.value
+      ? itemsSync.value?.includes(product.value.id)
+      : items.value?.includes(product.value.id),
   );
 
   return {

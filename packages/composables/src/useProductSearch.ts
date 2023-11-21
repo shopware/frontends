@@ -1,4 +1,3 @@
-import type { ShopwareSearchParams } from "@shopware-pwa/types";
 import { useShopwareContext } from "#imports";
 import { cmsAssociations } from "./cms/cmsAssociations";
 import deepMerge from "./helpers/deepMerge";
@@ -15,7 +14,7 @@ export type UseProductSearchReturn = {
     productId: string,
     options?: {
       withCmsAssociations?: boolean;
-      criteria?: Partial<ShopwareSearchParams>;
+      criteria?: Partial<Schemas["Criteria"]>;
     },
   ) => Promise<Schemas["ProductDetailResponse"]>;
 };
@@ -30,7 +29,7 @@ export function useProductSearch(): {
     productId: string,
     options?: {
       withCmsAssociations?: boolean;
-      criteria?: Partial<ShopwareSearchParams>;
+      criteria?: Partial<Schemas["Criteria"]>;
     },
   ) => Promise<Schemas["ProductDetailResponse"]>;
 } {
@@ -40,7 +39,7 @@ export function useProductSearch(): {
     productId: string,
     options?: {
       withCmsAssociations?: boolean;
-      criteria?: Partial<ShopwareSearchParams>;
+      criteria?: Partial<Schemas["Criteria"]>;
     },
   ) => {
     const associations = deepMerge(

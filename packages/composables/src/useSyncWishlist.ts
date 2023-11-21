@@ -1,8 +1,7 @@
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
-import type { ClientApiError } from "@shopware-pwa/types";
-import type { Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
 
 export type UseSyncWishlistReturn = {
   /**
@@ -70,16 +69,14 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
         {},
       );
       _wishlistItems.value = [
-        // TODO [OpenAPI][WishlistLoadRouteResponse] - products should be `ProductListingResult` not `ProductListingResult[]` and (probably) required field
-        ...(response.products as unknown as Schemas["ProductListingResult"])!.elements!.map(
-          (element: Schemas["Product"]) => element.id as string,
-        ), // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+        ...response.products.elements.map((element) => element.id),
       ];
     } catch (e) {
-      const error = e as ClientApiError;
-      // If 404 ignore printing error and reset wishlist
-      if (error?.statusCode !== 404) console.error(error);
-      _wishlistItems.value = [];
+      if (e instanceof ApiClientError) {
+        // If 404 ignore printing error and reset wishlist
+        if (e.status !== 404) console.error(e);
+        _wishlistItems.value = [];
+      }
     }
   }
 

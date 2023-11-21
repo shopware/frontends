@@ -640,6 +640,27 @@ export type components = {
     ArrayStruct: components["schemas"]["Struct"];
     /** Members of the attributes object ("attributes") represent information about the resource object in which it's defined. */
     attributes: GenericRecord;
+    // TODO: [OpenAPI][CalculatedPrice] - define CalculatedPrice with proper fields + define calculated_cheapest_price entity as well
+    CalculatedPrice: {
+      apiAlias: "calculated_price";
+      unitPrice: number;
+      quantity: number;
+      totalPrice: number;
+      calculatedTaxes: CalculatedTax[];
+      taxRules: TaxRule[];
+      referencePrice: ReferencePrice;
+      hasRange?: boolean;
+      listPrice: {
+        price: number;
+        discount: number;
+        percentage: number;
+        apiAlias: string;
+      } | null;
+      regulationPrice: null | {
+        price: number;
+      };
+      variantId?: string;
+    };
     Cart: components["schemas"]["ArrayStruct"] & {
       /** An affiliate tracking code */
       affiliateCode?: string;
@@ -647,6 +668,7 @@ export type components = {
       campaignCode?: string;
       /** A comment that can be added to the cart. */
       customerComment?: string;
+      deliveries?: Array<components["schemas"]["OrderDelivery"]>; // TODO: [OpenAPI][Cart] - `deliveries` is missing in schema
       /** A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers. */
       errors: // TODO: [OpenAPI][Cart] - define errors properly, `key` and `message` should be required fields. `Errors` should be required field as well. Problem is that sometimes it's an array, and sometimes map object
       | []
@@ -2012,15 +2034,54 @@ export type components = {
     LineItem: {
       description?: string;
       good?: boolean;
-      id?: string;
+      id: string; // TODO: [OpenAPI][LineItem] - make `id` required
+      cover?: components["schemas"]["ProductMedia"]; // TODO: [OpenAPI][LineItem] - add `cover` definition to schema
+      deliveryInformation: {
+        // TODO: [OpenAPI][LineItem] - define `deliveryInformation` object and find out what's inside (`cart_delivery_information` entity)
+        stock: number;
+      };
       label?: string;
       modified?: boolean;
       /** Format: int32 */
-      quantity?: number;
+      quantity: number; // TODO: [OpenAPI][LineItem] - make `quantity` required
+      payload: {
+        // TODO: [OpenAPI][LineItem] - add `payload` definition to schema (find out what's inside)
+        options: Array<{
+          group: string;
+          option: string;
+          translated: {
+            [key: string]: string;
+          };
+        }>;
+      };
+      price: {
+        // TODO: [OpenAPI][LineItem] - define price object, also UNIFY price objects across responses
+        listPrice?: {
+          /** Format: float */
+          discount?: number;
+          /** Format: float */
+          percentage?: number;
+          /** Format: float */
+          price?: number;
+        };
+        /** Format: int64 */
+        quantity: number;
+        referencePrice?: GenericRecord;
+        regulationPrice?: {
+          /** Format: float */
+          price?: number;
+        };
+        taxRules?: GenericRecord;
+        /** Format: float */
+        totalPrice: number;
+        /** Format: float */
+        unitPrice: number;
+      };
       referencedId?: string;
       removable?: boolean;
       stackable?: boolean;
-      type?: string;
+      states: string[]; // TODO: [OpenAPI][LineItem] - add definition of `states` array, also union type of possible states
+      type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][LineItem] - define type as required and string union type -> see also #456
     };
     /** A link **MUST** be represented as either: a string containing the link's URL or a link object. */
     link: OneOf<
@@ -2355,7 +2416,7 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     Order: {
-      addresses?: components["schemas"]["OrderAddress"];
+      addresses?: Array<components["schemas"]["OrderAddress"]>; // TODO: [OpenAPI][Order] addresses field should be defined as an array
       affiliateCode?: string;
       /** Format: float */
       amountNet?: number;
@@ -2375,8 +2436,8 @@ export type components = {
       customerComment?: string;
       customFields?: GenericRecord;
       deepLinkCode?: string;
-      deliveries?: components["schemas"]["OrderDelivery"];
-      documents?: components["schemas"]["Document"];
+      deliveries?: Array<components["schemas"]["OrderDelivery"]>; // TODO: [OpenAPI][Order] deliveries field should be defined as an array
+      documents: Array<components["schemas"]["Document"]>; // TODO: [OpenAPI][Order] documents field should be defined as an array and required field
       extensions?: {
         returns?: {
           data?: {
@@ -2468,7 +2529,7 @@ export type components = {
       customFields?: GenericRecord;
       department?: string;
       firstName: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][OrderAddress] id field should be defined as required
       lastName: string;
       phoneNumber?: string;
       salutation?: components["schemas"]["Salutation"];
@@ -3094,21 +3155,15 @@ export type components = {
       available?: boolean;
       /** Format: int64 */
       availableStock?: number;
-      calculatedCheapestPrice?: GenericRecord & { hasRange: boolean }; // TODO: [OpenAPI][Product] calculatedCheapestPrice field should be defined exactly what it is
+      calculatedCheapestPrice?: components["schemas"]["CalculatedPrice"]; // TODO: [OpenAPI][Product] calculatedCheapestPrice field should be defined exactly what it is
       /**
        * Format: int64
        * Runtime field, cannot be used as part of the criteria.
        */
       calculatedMaxPurchase?: number;
-      calculatedPrice?: {
-        // TODO: [OpenAPI][Product] calculatedPrice field should be defined properly
-        referencePrice: {
-          price: number;
-          referenceUnit: number;
-          unitName: string;
-        };
-      };
-      calculatedPrices?: unknown[];
+      // TODO: [OpenAPI][Product] calculatedPrice field should be defined properly
+      calculatedPrice?: components["schemas"]["CalculatedPrice"];
+      calculatedPrices?: components["schemas"]["CalculatedPrice"][]; // TODO: [OpenAPI][Product] calculatedPrices field should be defined as an array and required!
       canonicalProduct?: components["schemas"]["Product"];
       canonicalProductId?: string;
       categories?: components["schemas"]["Category"];
@@ -3257,6 +3312,10 @@ export type components = {
       unitId?: string;
       /** Format: date-time */
       updatedAt?: string;
+      // TODO: [OpenAPI][Product] variantListingConfig field should be defined in schema
+      variantListingConfig?: {
+        displayParent: boolean;
+      };
       versionId?: string;
       /** Format: float */
       weight?: number;
@@ -3930,7 +3989,7 @@ export type components = {
         "shipping-free"?: boolean;
         search: string; // TODO: [OpenAPI][ProductListingResult] search field should be defined properly
       };
-      elements?: components["schemas"]["Product"][];
+      elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][ProductListingResult] elements field should be defined as required
       sorting?: string;
     };
     /** Added since version: 6.0.0.0 */
@@ -6010,7 +6069,7 @@ export type components = {
       updatedAt?: string;
     };
     WishlistLoadRouteResponse: {
-      products?: components["schemas"]["ProductListingResult"][];
+      products: components["schemas"]["ProductListingResult"]; // TODO: [OpenAPI][WishlistLoadRouteResponse] - products is listing result, not array
       wishlist?: {
         customerId?: string;
         salesChannelId?: string;
@@ -6662,7 +6721,15 @@ export type operations<components = components> = {
   addLineItem: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["CartItems"];
+        "application/json": {
+          // TODO: [OpenAPI][addLineItem] - add proper request body type with required fields
+          items: Array<{
+            id?: string; // TODO: check if this is used at all?
+            referencedId: string;
+            quantity?: number;
+            type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][addLineItem] - add proper type -> see also #456
+          }>;
+        };
       };
     };
     responses: {
@@ -6705,7 +6772,13 @@ export type operations<components = components> = {
   updateLineItem: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["CartItems"];
+        "application/json": {
+          // TODO: [OpenAPI][updateLineItem] - add proper request body type with required fields
+          items: Array<{
+            id: string;
+            quantity: number;
+          }>;
+        };
       };
     };
     responses: {
@@ -7377,7 +7450,7 @@ export type operations<components = components> = {
       content: {
         "application/json": {
           /** The identifier of the order to be canceled. */
-          orderId?: string;
+          orderId: string; // TODO: [OpenAPI][cancelOrder] add orderId as required field
         };
       };
     };

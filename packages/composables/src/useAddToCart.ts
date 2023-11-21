@@ -44,7 +44,7 @@ export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
   async function addToCart(): Promise<Cart> {
     if (!quantity.value) quantity.value = 1;
     const addToCartResponse = await addProduct({
-      id: _product.value.id as string, // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+      id: _product.value.id,
       quantity: quantity.value,
     });
     quantity.value = 1;
