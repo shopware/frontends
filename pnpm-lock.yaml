@@ -967,9 +967,6 @@ importers:
 
   templates/vue-demo-store:
     dependencies:
-      '@shopware-pwa/api-client':
-        specifier: canary
-        version: link:../../packages/api-client
       '@shopware-pwa/cms-base':
         specifier: canary
         version: link:../../packages/cms-base

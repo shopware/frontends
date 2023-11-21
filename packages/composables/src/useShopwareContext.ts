@@ -1,4 +1,3 @@
-import type { ShopwareApiInstance } from "@shopware-pwa/api-client";
 import { inject } from "vue";
 import ContextError from "./helpers/ContextError";
 import type { ApiClient } from "#shopware";
@@ -8,7 +7,7 @@ export type ShopwareContext = {
    * Shopware API instance
    * @deprecated use `apiClient` instead
    */
-  apiInstance: ShopwareApiInstance;
+  apiInstance: any;
   devStorefrontUrl: string | null;
   /**
    * Shopware API client

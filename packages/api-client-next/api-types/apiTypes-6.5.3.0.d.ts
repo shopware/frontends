@@ -1562,7 +1562,8 @@ export type components = {
       registrationOnlyCompanyRegistration?: boolean;
       registrationSeoMetaDescription?: string;
       registrationTitle?: string;
-      translated?: {
+      // TODO: [OpenAPI][CustomerGroup] - make `translated` required
+      translated: {
         name?: string;
         registrationIntroduction?: string;
         registrationSeoMetaDescription?: string;
@@ -4992,8 +4993,8 @@ export type components = {
     };
     Sitemap: components["schemas"]["ArrayStruct"] & {
       /** Format: date-time */
-      created?: string;
-      filename?: string;
+      created: string; // TODO: [OpenAPI][Sitemap] created field should be defined as required
+      filename: string; // TODO: [OpenAPI][Sitemap] filename field should be defined as required
     };
     /** Added since version: 6.0.0.0 */
     Snippet: {

@@ -4,7 +4,6 @@
  * - we don't need them for now as we do not show any significant info for now
  */
 
-import type { ShopwareApiInstance } from "@shopware-pwa/api-client";
 import { effectScope, markRaw, reactive } from "vue";
 import type { App, EffectScope } from "vue";
 // import { registerShopwareDevtools } from "./devtools/plugin";
@@ -14,7 +13,7 @@ export function createShopwareContext(
   options: {
     // initialStore?: any;
     // shopwareDefaults: ApiDefaults;
-    apiInstance: ShopwareApiInstance;
+    apiInstance: any;
     devStorefrontUrl?: string | null;
     enableDevtools?: boolean;
   },
