@@ -1,12 +1,7 @@
 import { useContext, useShopwareContext } from "#imports";
-import { getAvailableLanguages as getAvailableLanguagesAPI } from "@shopware-pwa/api-client";
-import type {
-  Language,
-  ContextTokenResponse,
-  EntityResult,
-} from "@shopware-pwa/types";
-import { setCurrentLanguage } from "@shopware-pwa/api-client";
+import type { RequestReturnType, Schemas } from "#shopware";
 import type { Ref } from "vue";
+
 export type UseInternationalizationReturn = {
   /**
    * StorefrontUrl is needed to specify language of emails
@@ -17,16 +12,16 @@ export type UseInternationalizationReturn = {
   /**
    * Get available languages from backend
    *
-   * @returns {Promise<EntityResult<"language", Language>>} list of languages
+   * @returns {Promise<RequestReturnType<"readLanguages">>} list of languages
    */
-  getAvailableLanguages(): Promise<EntityResult<"language", Language>>;
+  getAvailableLanguages(): Promise<RequestReturnType<"readLanguages">>;
   /**
    * Change current language
    *
    * @param {string} languageId
-   * @returns {Promise<ContextTokenResponse>} context object
+   * @returns {Promise<Schemas['ContextTokenResponse']>} context object
    */
-  changeLanguage(languageId: string): Promise<ContextTokenResponse>;
+  changeLanguage(languageId: string): Promise<Schemas["ContextTokenResponse"]>;
   /**
    * Get language code from backend language id
    *
@@ -51,7 +46,7 @@ export type UseInternationalizationReturn = {
   /**
    * List of available languages
    */
-  languages: Ref<Language[]>;
+  languages: Ref<Schemas["Language"][]>;
   /**
    * Currently used language
    */
@@ -81,9 +76,9 @@ export function useInternationalization(
   pathResolver?: Function,
 ): UseInternationalizationReturn {
   const { devStorefrontUrl } = useShopwareContext();
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
-  const _storeLanguages = useContext<Language[]>("swLanguages");
+  const _storeLanguages = useContext<Schemas["Language"][]>("swLanguages");
   const _storeCurrentLanguage = useContext<string>(
     "swLanguagesCurrentLanguage",
   );
@@ -94,13 +89,15 @@ export function useInternationalization(
   }
 
   async function getAvailableLanguages() {
-    const data = await getAvailableLanguagesAPI(apiInstance);
+    const data = await apiClient.invoke("readLanguages post /language", {});
     _storeLanguages.value = data.elements;
     return data;
   }
 
   function changeLanguage(languageId: string) {
-    return setCurrentLanguage(languageId, apiInstance);
+    return apiClient.invoke("updateContext patch /context", {
+      languageId,
+    });
   }
 
   function getLanguageCodeFromId(languageId: string) {

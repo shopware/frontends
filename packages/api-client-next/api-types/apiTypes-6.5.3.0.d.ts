@@ -703,13 +703,14 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     Category: {
+      apiAlias: "category"; // TODO: [OpenAPI][Category] - define apiAlias properly
       active?: boolean;
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
       breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
       /** Format: int64 */
-      childCount?: number;
-      children?: components["schemas"]["Category"];
+      childCount: number; // TODO: [OpenAPI][Category] childCount field should be defined as required
+      children: Array<components["schemas"]["Category"]>; // TODO: [OpenAPI][Category] - define children as required array
       cmsPage?: components["schemas"]["CmsPage"];
       cmsPageId?: string;
       /** Runtime field, cannot be used as part of the criteria. */
@@ -722,7 +723,7 @@ export type components = {
       description?: string;
       displayNestedProducts: boolean;
       externalLink?: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][Category] - define id as required field
       internalLink?: string;
       keywords?: string;
       /** Format: int64 */
@@ -1118,7 +1119,8 @@ export type components = {
     };
     ContextTokenResponse: {
       /** Context token identifying the current user session. */
-      contextToken?: string;
+      contextToken: string; // TODO: [OpenAPI][ContextTokenResponse] - define contextToken as required
+      redirectUrl?: string; // TODO: [OpenAPI][ContextTokenResponse] - define redirectUrl
     };
     /** Added since version: 6.0.0.0 */
     Country: {
@@ -1320,7 +1322,9 @@ export type components = {
       "total-count-mode"?: 0 | 1 | 2;
     };
     CrossSellingElementCollection: {
-      crossSelling?: {
+      // TODO: [OpenAPI][CrossSellingElementCollection] - define CrossSellingElement instead of collection
+      crossSelling: {
+        // TODO [OpenAPI][CrossSellingElementCollection] - define crossSelling as required
         active?: boolean;
         /** Format: int32 */
         limit?: number;
@@ -1333,7 +1337,7 @@ export type components = {
         sortDirection?: string;
         type?: string;
       };
-      products?: components["schemas"]["Product"][];
+      products: components["schemas"]["Product"][]; // TODO: [OpenAPI][CrossSellingElementCollection] - define products array as required
       /** Format: int32 */
       total?: number;
     }[];
@@ -1822,6 +1826,7 @@ export type components = {
     };
     /** Added since version: 6.4.0.0 */
     LandingPage: {
+      apiAlias: "landing_page"; // TODO: [OpenAPI][LandingPage] - add `apiAlias` definition to schema
       active?: boolean;
       cmsPage?: components["schemas"]["CmsPage"];
       cmsPageId?: string;
@@ -2283,6 +2288,8 @@ export type components = {
     /** Non-standard meta-information that can not be represented as an attribute or relationship. */
     meta: GenericRecord;
     NavigationRouteResponse: components["schemas"]["Category"][];
+    NavigationType: // TODO: [OpenAPI][NavigationType] - add `NavigationType` definition to schema
+    "main-navigation" | "footer-navigation" | "service-navigation";
     /** Added since version: 6.0.0.0 */
     NewsletterRecipient: {
       /** Format: date-time */
@@ -4587,7 +4594,10 @@ export type components = {
       isValid?: boolean;
       languageId: string;
       pathInfo: string;
-      routeName: string;
+      routeName: // TODO: [OpenAPI][SeoUrl] routeName field should be defined as union type
+      | "frontend.navigation.page"
+        | "frontend.landing.page"
+        | "frontend.detail.page";
       salesChannelId?: string;
       seoPathInfo: string;
       /** Format: date-time */
@@ -7153,11 +7163,11 @@ export type operations<components = components> = {
       };
     };
     responses: {
-      /** Entity search result containing languages. */
+      /** Entity search result containing languages. */ FrouteName;
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Language"][];
+            elements: components["schemas"]["Language"][]; // TODO: [OpenAPI][readLanguages] add elements property as required
           } & components["schemas"]["EntitySearchResult"];
         };
       };
@@ -7181,9 +7191,11 @@ export type operations<components = components> = {
       };
       path: {
         /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
-        activeId: string;
+        activeId: // TODO: [OpenAPI][readNavigation] add union type in definition
+        components["schemas"]["NavigationType"] | string;
         /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
-        rootId: string;
+        rootId: // TODO: [OpenAPI][readNavigation] add union type in definition
+        components["schemas"]["NavigationType"] | string;
       };
     };
     requestBody: {
@@ -7696,7 +7708,7 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["SeoUrl"][];
+            elements: components["schemas"]["SeoUrl"][]; // TODO: [OpenAPI][readSeoUrl]: response should be `EntitySearchResult` and elements should be required
           } & components["schemas"]["EntitySearchResult"];
         };
       };

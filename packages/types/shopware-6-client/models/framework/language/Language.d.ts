@@ -35,7 +35,7 @@ import { SalesChannelDomain } from "../../system/sales-channel/SalesChannelDomai
 import { NumberRangeTypeTranslation } from "../../system/number-range/NumberRangeTypeTranslation";
 import { CustomFields } from "../../common/CustomField";
 import { Collection } from "../../common/Collection";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * @deprecated use {@link Schemas['Language']} from "#shopware" import instead

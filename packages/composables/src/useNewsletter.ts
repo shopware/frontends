@@ -1,7 +1,7 @@
 import { useShopwareContext, useInternationalization } from "#imports";
 import { ref, computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { RequestParameters, Schemas } from "#shopware";
+import type { RequestParameters, Schemas } from "#shopware";
 
 export type UseNewsletterReturn = {
   /**

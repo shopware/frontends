@@ -1,7 +1,7 @@
 import { computed, ref, onMounted, inject, provide } from "vue";
 import type { ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 export type UseCountriesReturn = {
   mountedCallback(): Promise<void>;

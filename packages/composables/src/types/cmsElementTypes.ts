@@ -331,7 +331,7 @@ export type CmsElementCrossSelling = CmsSlot & {
   config: CrossSellingElementConfig;
   data: {
     apiAlias: "cms_cross_selling";
-    crossSellings: CrossSelling[];
+    crossSellings: CrossSelling;
   };
 };
 

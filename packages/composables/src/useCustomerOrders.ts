@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import type { Ref } from "vue";
 import { useShopwareContext } from "#imports";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 export type UseCustomerOrdersReturn = {
   /**

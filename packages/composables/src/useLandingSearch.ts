@@ -1,7 +1,6 @@
-import { getLandingPage } from "@shopware-pwa/api-client";
-import type { LandingPage } from "@shopware-pwa/types";
 import { useShopwareContext } from "#imports";
 import { cmsAssociations } from "./cms/cmsAssociations";
+import type { Schemas } from "#shopware";
 
 export type UseLandingSearchReturn = {
   /**
@@ -13,7 +12,7 @@ export type UseLandingSearchReturn = {
     options?: {
       withCmsAssociations?: boolean;
     },
-  ): Promise<LandingPage>;
+  ): Promise<Schemas["LandingPage"]>;
 };
 
 /**
@@ -27,9 +26,9 @@ export function useLandingSearch(): {
     options?: {
       withCmsAssociations?: boolean;
     },
-  ) => Promise<LandingPage>;
+  ) => Promise<Schemas["LandingPage"]>;
 } {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   const search = async (
     navigationId: string,
@@ -38,10 +37,12 @@ export function useLandingSearch(): {
     },
   ) => {
     const associations = options?.withCmsAssociations && cmsAssociations;
-    const result = await getLandingPage(
-      navigationId,
-      associations || {},
-      apiInstance,
+    const result = await apiClient.invoke(
+      "readLandingPage post /landing-page/{landingPageId}",
+      {
+        landingPageId: navigationId,
+        ...associations,
+      },
     );
     return result;
   };

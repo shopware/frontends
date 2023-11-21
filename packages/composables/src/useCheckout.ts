@@ -48,7 +48,7 @@ export type UseCheckoutReturn = {
    * Sets shipping method for the current session
    * Sugar for {@link useSessionContext.setShippingMethod}
    */
-  setShippingMethod(shippingMethod: Schemas["ShippingMethod"]): Promise<void>;
+  setShippingMethod(shippingMethod: { id: string }): Promise<void>;
   /**
    * Selected payment method for the current session
    * Sugar for {@link useSessionContext.selectedPaymentMethod}
@@ -58,7 +58,7 @@ export type UseCheckoutReturn = {
    * Sets payment method for the current session
    * Sugar for {@link useSessionContext.setPaymentMethod}
    */
-  setPaymentMethod(paymentMethod: Schemas["PaymentMethod"]): Promise<void>;
+  setPaymentMethod(paymentMethod: { id: string }): Promise<void>;
 };
 
 const shippingMethodsAssociations: Schemas["Criteria"] = {

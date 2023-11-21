@@ -6,7 +6,7 @@ import { Tag } from "../../system/tag/Tag";
 import { CategoryTranslation } from "./CategoryTranslation";
 import { CustomFields } from "../../common/CustomField";
 import { SeoUrl } from "../navigation/Navigation";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 /**
  * Source: https://github.com/shopware/platform/blob/master/src/Core/Content/Category/CategoryDefinition.php#L50
  *

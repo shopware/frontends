@@ -7,12 +7,17 @@ import { Language } from "../models/framework/language/Language";
 import { Category } from "../models/content/category/Category";
 // import { Customer } from "../models/checkout/customer/Customer";
 import { CustomFields } from "../models/common/CustomField";
+import type { Schemas } from "#shopware";
 
-export type ContextTokenResponse = {
-  apiAlias: "array_struct";
-  contextToken: string;
-  redirectUrl?: string;
-};
+// export type ContextTokenResponse = {
+//   apiAlias: "array_struct";
+//   contextToken: string;
+//   redirectUrl?: string;
+// };
+/**
+ * @deprecated use {@link Schemas['ContextTokenResponse']} from "#shopware" import instead
+ */
+export type ContextTokenResponse = Schemas["ContextTokenResponse"];
 
 export type SalesChannelDomain = {
   extensions: unknown;

@@ -1,18 +1,18 @@
 import { computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
-import type { RouteName, SeoUrl } from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { useContext } from "#imports";
+import type { Schemas } from "#shopware";
 
 export type UseNavigationContextReturn = {
   /**
    * SEO URL from the navigation context
    */
-  navigationContext: ComputedRef<SeoUrl | null>;
+  navigationContext: ComputedRef<Schemas["SeoUrl"] | null>;
   /**
    * Route name from the navigation context
    */
-  routeName: ComputedRef<RouteName | undefined>;
+  routeName: ComputedRef<Schemas["SeoUrl"]["routeName"] | undefined>;
   /**
    * Foreign key (ID) for current navigation context
    */
@@ -25,7 +25,7 @@ export type UseNavigationContextReturn = {
  * @category Navigation & Routing
  */
 export function useNavigationContext(
-  context?: Ref<SeoUrl | null>,
+  context?: Ref<Schemas["SeoUrl"] | null>,
 ): UseNavigationContextReturn {
   const _context = useContext("navigation", { context: context });
 

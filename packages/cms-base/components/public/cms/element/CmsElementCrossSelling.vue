@@ -38,7 +38,7 @@ const config = computed<SliderElementConfig>(() => ({
 const crossSellCollections = computed(() => {
   return (
     props.content?.data?.crossSellings?.filter(
-      (collection) => !!collection?.products?.length,
+      (collection) => !!collection.products.length,
     ) || []
   );
 });

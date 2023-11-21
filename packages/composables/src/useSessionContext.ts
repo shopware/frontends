@@ -40,9 +40,7 @@ export type UseSessionContextReturn = {
   /**
    * Patches the context in order to use new payment method
    */
-  setPaymentMethod(
-    paymentMethod: Partial<Schemas["PaymentMethod"]>,
-  ): Promise<void>;
+  setPaymentMethod(paymentMethod: { id: string }): Promise<void>;
   /**
    * current context's currency
    */
@@ -86,7 +84,7 @@ export type UseSessionContextReturn = {
   /**
    * current language id chain
    */
-  languageIdChain: ComputedRef<string | undefined>;
+  languageIdChain: ComputedRef<string>;
   /**
    * current context's customer object
    */
@@ -121,9 +119,7 @@ export function useSessionContext(
   const selectedShippingMethod = computed(
     () => sessionContext.value?.shippingMethod || null,
   );
-  const setShippingMethod = async (
-    shippingMethod: Schemas["ShippingMethod"],
-  ) => {
+  const setShippingMethod = async (shippingMethod: { id: string }) => {
     if (!shippingMethod?.id) {
       throw new Error(
         "You need to provide shipping method id in order to set shipping method.",
@@ -138,7 +134,7 @@ export function useSessionContext(
   const selectedPaymentMethod = computed(
     () => sessionContext.value?.paymentMethod || null,
   );
-  const setPaymentMethod = async (paymentMethod: Schemas["PaymentMethod"]) => {
+  const setPaymentMethod = async (paymentMethod: { id: string }) => {
     if (!paymentMethod?.id) {
       throw new Error(
         "You need to provide payment method id in order to set payment method.",
@@ -228,7 +224,7 @@ export function useSessionContext(
     () => sessionContext.value?.salesChannel?.languageId,
   );
   const languageIdChain = computed(
-    () => sessionContext.value?.context?.languageIdChain?.[0],
+    () => sessionContext.value?.context?.languageIdChain?.[0] || "",
   );
   const taxState = computed(() => sessionContext.value?.context?.taxState);
   const userFromContext = computed(() => sessionContext.value?.customer);

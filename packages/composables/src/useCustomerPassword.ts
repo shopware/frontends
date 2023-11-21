@@ -2,7 +2,7 @@ import { reactive } from "vue";
 import type { UnwrapRef } from "vue";
 import type { ShopwareError } from "@shopware-pwa/types";
 import { useShopwareContext } from "#imports";
-import { RequestParameters } from "#shopware";
+import type { RequestParameters } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 
 export type UseCustomerPasswordReturn = {
@@ -20,7 +20,7 @@ export type UseCustomerPasswordReturn = {
    * Reset customer's password
    */
   resetPassword(
-    resetPasswordData: RequestParameters<"recoveryPassword">,
+    resetPasswordData: RequestParameters<"sendRecoveryMail">,
   ): Promise<boolean>;
 };
 
@@ -59,11 +59,11 @@ export function useCustomerPassword(): UseCustomerPasswordReturn {
   }
 
   async function resetPassword(
-    resetPasswordData: RequestParameters<"recoveryPassword">,
+    resetPasswordData: RequestParameters<"sendRecoveryMail">,
   ) {
     try {
       await apiClient.invoke(
-        "recoveryPassword post /account/recovery-password-confirm",
+        "sendRecoveryMail post /account/recovery-password",
         resetPasswordData,
       );
     } catch (e) {
