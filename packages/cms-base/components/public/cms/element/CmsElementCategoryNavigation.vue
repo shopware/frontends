@@ -38,8 +38,11 @@ const navigations = computed(() => {
 });
 
 onMounted(async () => {
+  if (navigationElements.value?.length) return;
+  // I leave the code above here as a fallback if this is ever used as a standalone component.
+  // Currently the navigation is loaded two times when this cms component is used, with the return we skip the second call
   try {
-    await loadNavigationElements({ depth: 2 });
+    await loadNavigationElements({ depth: 1 });
   } catch (e) {
     const err = e as ClientApiError;
     console.error("[SwBottomMenu]", err.messages);
