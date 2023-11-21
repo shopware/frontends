@@ -11,7 +11,7 @@
     "@adyen/adyen-web": "^5.53.2",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
-    "@unocss/nuxt": "^0.57.3",
+    "@unocss/nuxt": "^0.57.6",
     "nuxt": "^3.8.1"
   }
 }
