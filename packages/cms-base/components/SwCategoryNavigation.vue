@@ -4,14 +4,14 @@ import {
   getCategoryRoute,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
-import type { Category, StoreNavigationElement } from "@shopware-pwa/types";
 import getUrlPrefix from "../helpers/getUrlPrefix";
 import buildUrlPrefix from "../helpers/buildUrlPrefix";
+import type { Schemas } from "#shopware";
 
 const props = withDefaults(
   defineProps<{
-    activeCategory: Category;
-    elements: StoreNavigationElement[];
+    activeCategory: Schemas["Category"];
+    elements: Schemas["Category"][];
     level: number;
   }>(),
   {
@@ -19,7 +19,7 @@ const props = withDefaults(
   },
 );
 
-function getHighlightCategory(navigationElement: Category) {
+function getHighlightCategory(navigationElement: Schemas["Category"]) {
   return (
     (props.activeCategory?.path || "").includes(navigationElement.id) ||
     navigationElement.id === props.activeCategory?.id

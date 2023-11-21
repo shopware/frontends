@@ -18,13 +18,14 @@ import {
   getOrderDownloads,
   getDocumentDownload,
 } from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 import deepMerge from "./helpers/deepMerge";
+import type { Schemas } from "#shopware";
 
 /**
  * Data for api requests to fetch all necessary data
  */
-const orderAssociations: ShopwareSearchParams = {
+const orderAssociations: Schemas["Criteria"] = {
   associations: {
     lineItems: {
       associations: {

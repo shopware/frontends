@@ -51,16 +51,18 @@ export type UseProductPriceReturn = {
  */
 export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
   const _cheapest: ComputedRef<CalculatedPrice | undefined> = computed(
-    () => product.value?.calculatedCheapestPrice,
+    () => product.value?.calculatedCheapestPrice as unknown as CalculatedPrice, // TODO: [OpenAPI][Product] - `calculatedCheapestPrice` should be properly defined as `CalculatedPrice` schema
   );
 
   /**
    * calculatedPrices are used for product with tier prices
    */
-  const _real: ComputedRef<CalculatedPrice | undefined> = computed(() =>
-    product.value?.calculatedPrices?.length > 0
-      ? product.value?.calculatedPrices[0]
-      : product.value?.calculatedPrice,
+  const _real: ComputedRef<CalculatedPrice | undefined> = computed(
+    () =>
+      (product.value?.calculatedPrices as unknown as CalculatedPrice[])
+        ?.length > 0 // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined as `CalculatedPrice[]` schema
+        ? (product.value?.calculatedPrices as unknown as CalculatedPrice[])[0] // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined as `CalculatedPrice[]` schema
+        : (product.value?.calculatedPrice as unknown as CalculatedPrice), // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined as `CalculatedPrice[]` schema
   );
   const referencePrice: ComputedRef<ReferencePrice | undefined> = computed(
     () => _real?.value?.referencePrice,
@@ -74,7 +76,8 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
 
   const displayFrom: ComputedRef<boolean> = computed(
     () =>
-      product.value?.calculatedPrices?.length > 1 ||
+      (product.value?.calculatedPrices as unknown as CalculatedPrice[])
+        ?.length > 1 || // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined as `CalculatedPrice[]` schema
       !!(_displayParent.value && displayFromVariants.value),
   );
 
@@ -87,8 +90,15 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
   );
 
   const _price: ComputedRef<CalculatedPrice | undefined> = computed(() => {
-    if (displayFrom.value && getProductTierPrices(product.value).length > 1) {
-      const lowest = product.value?.calculatedPrices.reduce(
+    if (
+      displayFrom.value &&
+      getProductTierPrices(product.value as any).length > 1
+    ) {
+      // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined in schema
+      const lowest = (
+        product.value?.calculatedPrices as unknown as CalculatedPrice[]
+      ).reduce(
+        // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined as `CalculatedPrice[]` schema
         (previous, current) => {
           return current.unitPrice < previous.unitPrice ? current : previous;
         },
@@ -112,7 +122,7 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
     () => !!_price.value?.listPrice?.percentage,
   );
 
-  const tierPrices = computed(() => getProductTierPrices(product.value));
+  const tierPrices = computed(() => getProductTierPrices(product.value as any)); // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined in schema
 
   return {
     price,

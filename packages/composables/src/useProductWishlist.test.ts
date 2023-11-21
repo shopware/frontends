@@ -8,7 +8,6 @@ import * as useSyncWishlist from "./useSyncWishlist";
 
 const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const { addToWishlist, removeFromWishlist, isInWishlist } =
       useProductWishlist(
@@ -33,6 +32,7 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });

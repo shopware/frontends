@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import type { CmsElementImageGallery } from "@shopware-pwa/composables-next";
+import type { CmsElementImageGallery } from "@shopware-pwa/composables-next/composables";
+import { useCmsElementConfig } from "#imports";
 import SwSlider from "../../../SwSlider.vue";
+import { computed, onMounted, ref } from "vue";
 
 const props = withDefaults(
   defineProps<{

@@ -1,12 +1,6 @@
-import {
-  invokePost,
-  getCategoryEndpoint,
-  getCategoryDetailsEndpoint,
-} from "@shopware-pwa/api-client";
-import type { Category, ShopwareSearchParams } from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 import { cmsAssociations } from "./cms/cmsAssociations";
-import { _useContext } from "./internal/_useContext";
+import type { Schemas } from "#shopware";
 
 export type UseCategorySearchReturn = {
   /**
@@ -17,17 +11,17 @@ export type UseCategorySearchReturn = {
     categoryId: string,
     options?: {
       withCmsAssociations?: boolean;
-      query?: Partial<ShopwareSearchParams>;
+      query?: Schemas["Criteria"];
     },
-  ): Promise<Category>;
+  ): Promise<Schemas["Category"]>;
 
   /**
    * Search based on the query
    */
   advancedSearch(options: {
     withCmsAssociations?: boolean;
-    query: Partial<ShopwareSearchParams>;
-  }): Promise<Category[]>;
+    query: Schemas["Criteria"];
+  }): Promise<Schemas["Category"][]>;
 };
 
 /**
@@ -36,44 +30,39 @@ export type UseCategorySearchReturn = {
  * @category Navigation & Routing
  */
 export function useCategorySearch(): UseCategorySearchReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   async function search(
     categoryId: string,
     options?: {
       withCmsAssociations?: boolean;
-      query?: Partial<ShopwareSearchParams>;
+      query?: Schemas["Criteria"];
     },
   ) {
     const associations = options?.withCmsAssociations ? cmsAssociations : {};
-    const result = await invokePost<Category>(
+    const result = apiClient.invoke(
+      "readCategory post /category/{navigationId}?slots",
       {
-        address: getCategoryDetailsEndpoint(categoryId),
-        payload: { associations, ...options?.query },
+        navigationId: categoryId,
+        associations,
+        ...options?.query,
       },
-      apiInstance,
     );
-    return result.data;
+    return result;
   }
 
   async function advancedSearch(options: {
     withCmsAssociations?: boolean;
-    query: Partial<ShopwareSearchParams>;
+    query: Schemas["Criteria"];
   }) {
     const associations = options?.withCmsAssociations
       ? cmsAssociations.associations
       : {};
-    const result = await invokePost<Category[]>(
-      {
-        address: getCategoryEndpoint(),
-        payload: {
-          associations,
-          ...options?.query,
-        },
-      },
-      apiInstance,
-    );
-    return result.data;
+    const result = await apiClient.invoke("readCategoryList post /category", {
+      associations,
+      ...options?.query,
+    });
+    return result.elements ?? [];
   }
 
   return {

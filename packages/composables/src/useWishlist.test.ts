@@ -52,7 +52,7 @@ vi.mock("./useSyncWishlist.ts", () => ({
     return {
       getWishlistProducts: () => undefined,
       items: { value: ["sync-testId333"] },
-      mergeWishlistProducts: (items) => undefined,
+      mergeWishlistProducts: (items: any) => undefined,
       removeFromWishlistSync: () => undefined,
     };
   },

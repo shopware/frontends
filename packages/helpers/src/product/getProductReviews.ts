@@ -1,4 +1,3 @@
-import type { Product } from "@shopware-pwa/types";
 import type { UiProductReview } from "../ui-interfaces";
 
 /**
@@ -10,12 +9,25 @@ import type { UiProductReview } from "../ui-interfaces";
  *
  * @category Product
  */
-export function getProductReviews({
-  product,
-}: { product?: Product } = {}): UiProductReview[] {
+export function getProductReviews<
+  T extends {
+    id: string;
+    productReviews?: Array<{
+      id: string;
+      externalUser?: string;
+      customerId?: string;
+      createdAt: string;
+      content: string;
+      points?: number;
+    }>;
+  },
+>({ product }: { product?: T } = {}): UiProductReview[] {
+  // TODO: [OpenAPI][Product] - `ProductReview` should be an array in Product schema
   if (!product || !product.productReviews) {
     return [];
   }
+
+  // TODO: [OpenAPI][ProductReview] - changes: id -> required; externalUser -> missing, add definition; customerId -> missing, add definition; points -> reqiored(?)
 
   return product.productReviews.map(
     ({ id, externalUser, customerId, createdAt, content, points }) => ({

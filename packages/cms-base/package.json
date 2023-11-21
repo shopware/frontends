@@ -17,17 +17,8 @@
     "url": "https://github.com/shopware/frontends/issues"
   },
   "license": "MIT",
-  "main": "./index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      }
-    }
-  },
+  "type": "module",
+  "main": "./nuxt.config.ts",
   "files": [
     "dist",
     "components",
@@ -49,8 +40,10 @@
     "@shopware-pwa/helpers-next": "workspace:*",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
+    "@vueuse/core": "^10.6.1",
     "entities": "^4.5.0",
-    "html-to-ast": "^0.0.6"
+    "html-to-ast": "^0.0.6",
+    "vue": "^3.3.8"
   },
   "devDependencies": {
     "@nuxt/schema": "^3.8.1",
@@ -58,10 +51,12 @@
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint-config-shopware": "workspace:*",
     "eslint-plugin-vue": "^9.18.1",
+    "nuxt": "^3.8.1",
     "tsconfig": "workspace:*",
     "typescript": "^5.2.2",
     "unbuild": "^2.0.0",
     "vue-eslint-parser": "^9.3.2",
+    "vue-router": "^4.2.5",
     "vue-tsc": "^1.8.22"
   }
 }

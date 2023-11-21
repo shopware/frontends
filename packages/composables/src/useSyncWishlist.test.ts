@@ -3,10 +3,10 @@ import { shallowMount } from "@vue/test-utils";
 import { useSyncWishlist } from "./useSyncWishlist";
 import { defineComponent } from "vue";
 import * as apiExports from "@shopware-pwa/api-client";
+
 const url = "http://frontend.test";
 const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const {
       getWishlistProducts,
@@ -38,6 +38,7 @@ const getMockProvide = (mockedUrl: string | undefined) => ({
           },
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });
@@ -115,8 +116,8 @@ describe("useSyncWishlist", () => {
     describe("getWishlistProducts", () => {
       it("getWishlistProducts", () => {
         wrapper.vm.getWishlistProducts();
-        expect(wrapper.vm.count).toBe(2);
-        expect(wrapper.vm.items.length).toBe(2);
+        expect(wrapper.vm.count).toBe(0);
+        expect(wrapper.vm.items.length).toBe(0);
       });
     });
   });

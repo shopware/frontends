@@ -466,6 +466,6 @@ const product: Product = {
   },
   isNew: false,
   calculatedMaxPurchase: 100,
-};
+} as unknown as Product; // TODO: [OpenAPI][Product] - null shouls be undefined by default to decrease payload size
 
 export default product;

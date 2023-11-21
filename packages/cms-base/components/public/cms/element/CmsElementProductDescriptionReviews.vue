@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsElementProductDescriptionReviews } from "@shopware-pwa/composables-next";
+import type { CmsElementProductDescriptionReviews } from "@shopware-pwa/composables-next/composables";
 import {
   getTranslatedProperty,
   getProductName,
@@ -7,6 +7,8 @@ import {
 import SwProductReviews from "../../../SwProductReviews.vue";
 import deepMerge from "../../../../helpers/deepMerge";
 import getTranslations from "../../../../helpers/getTranslations";
+import { computed, ref } from "vue";
+import { useProduct } from "#imports";
 
 const props = defineProps<{
   content: CmsElementProductDescriptionReviews;

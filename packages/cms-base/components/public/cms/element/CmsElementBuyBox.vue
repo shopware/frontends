@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import type { CmsElementBuyBox } from "@shopware-pwa/composables-next";
+import type { CmsElementBuyBox } from "@shopware-pwa/composables-next/composables";
 import {
   useCmsElementConfig,
   useProductPrice,
-} from "@shopware-pwa/composables-next";
+  useSessionContext,
+  useProduct,
+  usePrice,
+} from "#imports";
+import { computed } from "vue";
 import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
 import deepMerge from "../../../../helpers/deepMerge";

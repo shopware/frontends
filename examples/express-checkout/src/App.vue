@@ -16,7 +16,7 @@ import {
   useShopwareContext,
   useAddToCart,
   useCart,
-} from "@shopware-pwa/composables-next";
+} from "@shopware-pwa/composables-next/dist";
 import {
   getSmallestThumbnailUrl,
   getTranslatedProperty,

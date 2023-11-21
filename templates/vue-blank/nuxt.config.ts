@@ -1,5 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  extends: ["@shopware-pwa/composables-next", "@shopware-pwa/cms-base"],
   runtimeConfig: {
     public: {
       shopware: {
@@ -8,7 +9,6 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@vueuse/nuxt", "@shopware-pwa/nuxt3-module"],
   /**
    * Commented because of the StackBlitz error
    * Issue: https://github.com/shopware/frontends/issues/88

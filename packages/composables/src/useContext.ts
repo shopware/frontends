@@ -1,9 +1,15 @@
-import { inject, provide, ref, Ref, unref } from "vue";
+import { inject, provide, ref, unref } from "vue";
+import type { Ref } from "vue";
 
 /**
- * Internal context helper
+ * Context helper composable to provide and inject data.
+ * It takes `injectionName` to inject the context. If no context is provided, it will create a new one and provide it.
+ * If `context` is provided in params, it will create new context, use param as value and provide it.
+ * If `replace` is provided, it will replace the existing context with the new value.
+ *
+ * @public
  */
-export function _useContext<T>(
+export function useContext<T>(
   injectionName: string,
   params?: {
     context?: Ref<T> | T;

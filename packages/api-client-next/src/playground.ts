@@ -2,7 +2,8 @@
  * This file is just a temporary for playground and testing IDE support, it has no connections and will be removed, fell free to experiment here with the API
  */
 
-import { RequestParameters, createAPIClient } from ".";
+import { createAPIClient } from ".";
+import type { RequestParameters } from ".";
 import type {
   operationPaths,
   operations,

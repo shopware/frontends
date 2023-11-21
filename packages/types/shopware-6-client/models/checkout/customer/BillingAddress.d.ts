@@ -1,6 +1,7 @@
+import type { Schemas } from "#shopware";
 import { CustomerAddress } from "./CustomerAddress";
 
 /**
- * @public
+ * @deprecated use Schemas['CustomerAddress'] from "#shopware" import instead
  */
-export type BillingAddress = CustomerAddress;
+export type BillingAddress = Schemas["CustomerAddress"];

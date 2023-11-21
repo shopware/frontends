@@ -1,6 +1,4 @@
 import { useCmsMeta } from "./useCmsMeta";
-import { CmsPageEntity } from "@shopware-pwa/types";
-import { computed } from "vue";
 import { describe, expect, it } from "vitest";
 import LandingPageMock from "./mocks/LandingPage";
 

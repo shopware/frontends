@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { useInternationalization } from "./useInternationalization";
 import { shallowMount } from "@vue/test-utils";
 import { defineComponent } from "vue";
@@ -7,7 +7,6 @@ const url = "http://frontend.test";
 
 const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const { getStorefrontUrl } = useInternationalization();
     return { getStorefrontUrl };
@@ -24,6 +23,7 @@ const getMockProvide = (mockedUrl: string | undefined) => ({
           },
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });

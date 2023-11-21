@@ -1,13 +1,8 @@
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
-import {
-  addWishlistProduct,
-  getWishlistProducts as getWishlistProductsAPI,
-  removeWishlistProduct,
-  mergeWishlistProducts as mergeWishlistProductsAPI,
-} from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
+import { useShopwareContext } from "#imports";
 import type { ClientApiError } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 export type UseSyncWishlistReturn = {
   /**
@@ -44,14 +39,24 @@ const _wishlistItems: Ref<string[]> = ref([]);
  * @category Wishlist
  */
 export function useSyncWishlist(): UseSyncWishlistReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   async function addToWishlistSync(id: string) {
-    await addWishlistProduct(id, apiInstance);
+    await apiClient.invoke(
+      "addProductOnWishlist post /customer/wishlist/add/{productId}",
+      {
+        productId: id,
+      },
+    );
   }
 
   async function removeFromWishlistSync(id: string) {
-    await removeWishlistProduct(id, apiInstance);
+    await apiClient.invoke(
+      "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}",
+      {
+        productId: id,
+      },
+    );
   }
 
   /**
@@ -60,9 +65,15 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
    */
   async function getWishlistProducts() {
     try {
-      const response = await getWishlistProductsAPI(undefined, apiInstance);
+      const response = await apiClient.invoke(
+        "readCustomerWishlist post /customer/wishlist",
+        {},
+      );
       _wishlistItems.value = [
-        ...response.products.elements.map((element) => element.id),
+        // TODO [OpenAPI][WishlistLoadRouteResponse] - products should be `ProductListingResult` not `ProductListingResult[]` and (probably) required field
+        ...(response.products as unknown as Schemas["ProductListingResult"])!.elements!.map(
+          (element: Schemas["Product"]) => element.id as string,
+        ), // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
       ];
     } catch (e) {
       const error = e as ClientApiError;
@@ -72,8 +83,13 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     }
   }
 
-  async function mergeWishlistProducts(itemsToMerge: string[]) {
-    await mergeWishlistProductsAPI(itemsToMerge, apiInstance);
+  async function mergeWishlistProducts(productIds: string[]) {
+    await apiClient.invoke(
+      "mergeProductOnWishlist post /customer/wishlist/merge",
+      {
+        productIds,
+      },
+    );
   }
 
   const items = computed(() => _wishlistItems.value);

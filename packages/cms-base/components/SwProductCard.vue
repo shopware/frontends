@@ -1,23 +1,24 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import type {
+  BoxLayout,
+  DisplayMode,
+} from "@shopware-pwa/composables-next/composables";
 import {
   getProductName,
-  getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
+  getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import type {
-  ClientApiError,
-  Product,
-  PropertyGroupOption,
-} from "@shopware-pwa/types";
-import type { Ref } from "vue";
+import type { ClientApiError, Product } from "@shopware-pwa/types";
+import { toRefs, type Ref, computed, ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 import getUrlPrefix from "../helpers/getUrlPrefix";
 import buildUrlPrefix from "../helpers/buildUrlPrefix";
+import { useAddToCart, useNotifications, useProductWishlist } from "#imports";
+import { useElementSize } from "@vueuse/core";
 
 const { pushSuccess, pushError } = useNotifications();
 
@@ -112,9 +113,9 @@ function roundUp(num: number) {
 }
 
 const srcPath = computed(() => {
-  return `${getProductThumbnailUrl(product.value)}?&height=${roundUp(
-    height.value,
-  )}&fit=crop`;
+  return `${getSmallestThumbnailUrl(
+    product.value?.cover?.media as any, // TODO: [OpenAPI][ProductMedia] - add thumbnails definition to schema
+  )}?&height=${roundUp(height.value)}&fit=crop`;
 });
 </script>
 
@@ -181,10 +182,8 @@ const srcPath = computed(() => {
         :key="option.id"
         class="items-center line-clamp-2 rounded-md text-xs font-medium text-gray-600 mt-3"
       >
-        {{ (option as PropertyGroupOption).group.name }}:
-        <span class="font-bold"
-          >{{ (option as PropertyGroupOption).name }}
-        </span>
+        {{ option.group.name }}:
+        <span class="font-bold">{{ option.name }} </span>
       </p>
     </div>
     <div class="px-4 pb-4">

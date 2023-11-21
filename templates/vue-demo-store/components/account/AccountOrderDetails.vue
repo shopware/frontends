@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Schemas } from "#shopware";
+
 const props = defineProps<{
   orderId: string;
 }>();
@@ -11,7 +13,9 @@ onMounted(() => {
   loadOrderDetails();
 });
 
-const lineItems = computed(() => order.value?.lineItems || []);
+const lineItems = computed<Array<Schemas["OrderLineItem"]>>(
+  () => order.value?.lineItems || [],
+);
 </script>
 
 <script lang="ts">

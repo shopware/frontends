@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { useShopwareContext, useUser } from "@shopware-pwa/composables-next";
+import {
+  useShopwareContext,
+  useUser,
+} from "@shopware-pwa/composables-next/dist";
 const { apiInstance } = useShopwareContext();
 const { user } = useUser();
 import type { MollieLocale } from "../../types";

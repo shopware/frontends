@@ -3,6 +3,7 @@ import type { Product } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 import SwSharedPrice from "./SwSharedPrice.vue";
+import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -32,7 +33,8 @@ translations = deepMerge(translations, globalTranslations) as Translations;
 const purchaseUnit = computed(() => props.product?.purchaseUnit);
 const unitName = computed(() => props.product?.unit?.translated?.name);
 const referencePrice = computed(
-  () => props.product?.calculatedPrice?.referencePrice?.price,
+  () =>
+    props.product?.calculatedPrice?.referencePrice?.price as unknown as number, // TODO: [OpenAPI][Prodict] - calculatedPrice needs to be defined properly
 );
 const referenceUnit = computed(
   () => props.product?.calculatedPrice?.referencePrice?.referenceUnit,

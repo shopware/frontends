@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import type {
+  BoxLayout,
+  DisplayMode,
+} from "@shopware-pwa/composables-next/composables";
 import {
   getProductName,
-  getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
+  getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import type {
-  ClientApiError,
-  Product,
-  PropertyGroupOption,
-} from "@shopware-pwa/types";
+import type { ClientApiError, Product } from "@shopware-pwa/types";
 
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
@@ -81,9 +80,9 @@ function roundUp(num: number) {
 }
 
 const srcPath = computed(() => {
-  return `${getProductThumbnailUrl(product.value)}?&height=${roundUp(
-    height.value,
-  )}&fit=crop`;
+  return `${getSmallestThumbnailUrl(
+    product.value.cover?.media,
+  )}?&height=${roundUp(height.value)}&fit=crop`;
 });
 </script>
 
@@ -149,8 +148,8 @@ const srcPath = computed(() => {
         :key="option.id"
         class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
       >
-        {{ (option as PropertyGroupOption).group.name }}:
-        {{ (option as PropertyGroupOption).name }}
+        {{ option.group.name }}:
+        {{ option.name }}
       </span>
     </div>
     <div class="px-4 pb-4">

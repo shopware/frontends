@@ -13,13 +13,13 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });
 
 const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const { navigationElements, loadNavigationElements } = useNavigation();
     return { navigationElements, loadNavigationElements };
@@ -36,16 +36,22 @@ describe("useNavigation", () => {
   });
 
   it("should set the menu", async () => {
+    const mockedProvide = getMockProvide();
+    mockedProvide.global.provide.apiClient.invoke.mockResolvedValue(Menu);
+    const wrapper = shallowMount(Component, mockedProvide);
+
     await wrapper.vm.loadNavigationElements({
       depth: 3,
     });
-    expect(wrapper.vm.navigationElements?.length).toBe(Menu.length);
+    expect(wrapper.vm.navigationElements).not.toBeNull();
+    expect(wrapper.vm.navigationElements!.length).toBe(Menu.length);
   });
 
   it("menu is empty because of the error", async () => {
-    vi.spyOn(apiExports, "getStoreNavigation").mockImplementation(() => {
-      throw new Error("Test error");
-    });
+    const mockedProvide = getMockProvide();
+    mockedProvide.global.provide.apiClient.invoke.mockRejectedValue(null);
+    const wrapper = shallowMount(Component, mockedProvide);
+
     await wrapper.vm.loadNavigationElements({
       depth: 3,
     });

@@ -38,7 +38,7 @@ const formData = reactive<CustomerAddress>({
   city: props.address?.city ?? "",
   street: props.address?.street ?? "",
   id: props.address?.id ?? "",
-});
+} as CustomerAddress);
 
 const invokeSave = async (): Promise<void> => {
   try {

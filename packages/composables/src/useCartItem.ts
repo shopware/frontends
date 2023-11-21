@@ -1,17 +1,13 @@
-import { computed, ComputedRef, Ref } from "vue";
-import { removeCartItem, getProduct } from "@shopware-pwa/api-client";
+import { computed } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import type {
-  LineItem,
-  LineItemType,
-  ClientApiError,
   PropertyGroupOptionCart,
-  ProductResponse,
   CartProductItem,
-  Cart,
 } from "@shopware-pwa/types";
 
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
-import { useShopwareContext, useCart } from ".";
+import { useShopwareContext, useCart } from "#imports";
+import type { Cart, Schemas } from "#shopware";
 
 export type UseCartItemReturn = {
   /**
@@ -37,7 +33,7 @@ export type UseCartItemReturn = {
   /**
    * Type of the current item: "product" or "promotion"
    */
-  itemType: ComputedRef<LineItemType | undefined>;
+  itemType: ComputedRef<Schemas["LineItem"]["type"] | undefined>; // TODO: [OpenAPI][LineItem] - LineItem type should be required, temporal regression to `string` istead of union type
   /**
    * Determines if the current item is a product
    */
@@ -67,7 +63,9 @@ export type UseCartItemReturn = {
    *
    * @deprecated
    */
-  getProductItemSeoUrlData(): Promise<ProductResponse | undefined>;
+  getProductItemSeoUrlData(): Promise<
+    Schemas["ProductDetailResponse"]["product"] | undefined
+  >;
 };
 
 /**
@@ -75,39 +73,47 @@ export type UseCartItemReturn = {
  * @public
  * @category Cart & Checkout
  */
-export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
+export function useCartItem(
+  cartItem: Ref<Schemas["LineItem"]>,
+): UseCartItemReturn {
   if (!cartItem) {
     throw new Error("[useCartItem] mandatory cartItem argument is missing.");
   }
 
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
   const { refreshCart, changeProductQuantity } = useCart();
 
   const itemQuantity = computed(() => cartItem.value.quantity);
-  const itemImageThumbnailUrl = computed(() => getMainImageUrl(cartItem.value));
+  const itemImageThumbnailUrl = computed(() =>
+    getMainImageUrl(cartItem.value as any),
+  ); // TODO: [OpenAPI][LineItem] - `cover` should be defined in LineItem schema
 
-  const itemRegularPrice = computed(
+  const itemRegularPrice = computed<number | undefined>(
     () =>
-      cartItem.value?.price?.listPrice?.price ||
-      cartItem.value?.price?.unitPrice,
+      (cartItem.value as any)?.price?.listPrice?.price || // TODO: [OpenAPI][LineItem] - LineItem price should be required and defined
+      (cartItem.value as any)?.price?.unitPrice,
   );
 
   const itemSpecialPrice = computed(
     () =>
-      cartItem.value?.price?.listPrice?.price &&
-      cartItem.value?.price?.unitPrice,
+      (cartItem.value as any)?.price?.listPrice?.price && // TODO: [OpenAPI][LineItem] - LineItem price should be required and defined
+      (cartItem.value as any)?.price?.unitPrice,
   );
 
-  const itemTotalPrice = computed(() => cartItem.value.price?.totalPrice);
+  const itemTotalPrice = computed(
+    () => (cartItem.value as any).price?.totalPrice, // TODO: [OpenAPI][LineItem] - LineItem price should be required and defined
+  );
 
   const itemOptions = computed(
     () =>
       (cartItem.value.type === "product" &&
-        (cartItem.value.payload as CartProductItem)?.options) ||
+        ((cartItem.value as any).payload as CartProductItem)?.options) || // TODO: [OpenAPI][LineItem] - LineItem payload should be required and defined in type `product`
       [],
   );
 
-  const itemStock = computed(() => cartItem.value.deliveryInformation?.stock);
+  const itemStock = computed<number>(
+    () => (cartItem.value as any).deliveryInformation?.stock,
+  ); // TODO: [OpenAPI][LineItem] - LineItem deliveryInformation should be required and defined
 
   const itemType = computed(() => cartItem.value.type);
 
@@ -116,14 +122,19 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   const isPromotion = computed(() => cartItem.value.type === "promotion");
 
   async function removeItem() {
-    const newCart = await removeCartItem(cartItem.value.id, apiInstance);
+    const newCart = await apiClient.invoke(
+      "removeLineItem delete /checkout/cart/line-item?ids",
+      {
+        ids: [cartItem.value.id as string], // TODO: [OpenAPI][LineItem] - change lineitem id to mandatory
+      },
+    );
     await refreshCart(newCart);
   }
 
   async function changeItemQuantity(quantity: number): Promise<Cart> {
-    const result = await changeProductQuantity({
-      id: cartItem.value.id,
-      quantity: quantity,
+    const result = changeProductQuantity({
+      id: cartItem.value.id as string, // TODO: [OpenAPI][updateLIneItem] - change id field to mandatory
+      quantity: +quantity,
     });
 
     return result;
@@ -132,29 +143,22 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   /**
    * @deprecated Method is not used anymore and the case should be solved on project level instead due to performance reasons.
    */
-  async function getProductItemSeoUrlData(): Promise<
-    ProductResponse | undefined
-  > {
+  async function getProductItemSeoUrlData() {
     if (!cartItem.value.referencedId) {
       return;
     }
 
     try {
-      const result = await getProduct(
-        cartItem.value.referencedId,
+      const result = await apiClient.invoke(
+        "readProductDetail post /product/{productId}",
         {
-          // includes: (getDefaults() as any).getProductItemsSeoUrlsData.includes,
-          // associations: (getDefaults() as any).getProductItemsSeoUrlsData
-          //   .associations,
+          productId: cartItem.value.referencedId,
         },
-        apiInstance,
       );
-      return result.product as unknown as ProductResponse;
+
+      return result.product;
     } catch (error) {
-      console.error(
-        "[useCart][getProductItemsSeoUrlsData]",
-        (error as ClientApiError).messages,
-      );
+      console.error("[useCart][getProductItemsSeoUrlsData]", error);
     }
 
     return;

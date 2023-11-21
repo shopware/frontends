@@ -9,7 +9,6 @@ import LoginResponse from "./mocks/LoginResponse";
 
 const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const {
       login,
@@ -67,6 +66,7 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });

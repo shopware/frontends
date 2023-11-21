@@ -1,10 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import { defineNuxtPlugin, useRuntimeConfig, useCookie, useState } from "#imports";
+import {
+  defineNuxtPlugin,
+  useRuntimeConfig,
+  useCookie,
+  useState,
+} from "#imports";
 import {
   createShopwareContext,
   getDefaultApiParams,
-} from "@shopware-pwa/composables-next";
+} from "@shopware-pwa/composables-next/dist";
 import { createInstance } from "@shopware-pwa/api-client";
 import { ref } from "vue";
 import Cookies from "js-cookie";

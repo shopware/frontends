@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import type { CmsElementForm } from "@shopware-pwa/composables-next";
+import type { CmsElementForm } from "@shopware-pwa/composables-next/composables";
 import type { ClientApiError } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import { useCmsElementConfig, useNewsletter, useSalutations } from "#imports";
+import { computed, reactive, ref } from "vue";
 
 const props = defineProps<{
   content: CmsElementForm;
@@ -152,8 +154,8 @@ const invokeSubmit = async () => {
         getFormTitle
           ? getFormTitle
           : state.option === "subscribe"
-          ? translations.form.subscribeLabel
-          : translations.form.unsubscribeLabel
+            ? translations.form.subscribeLabel
+            : translations.form.unsubscribeLabel
       }}
     </h3>
     <template v-if="!formSent">

@@ -1,11 +1,14 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useProductPrice } from "./useProductPrice";
 import { ref, defineComponent } from "vue";
 import mockedProduct from "./mocks/Product";
 import mockerProductTierPrices from "./mocks/ProductTierPrices";
+import type { CalculatedPrice, Product } from "@shopware-pwa/types";
 
-const mockerProductTierPricesObj = mockerProductTierPrices.product;
+const mockerProductTierPricesObj: Product =
+  mockerProductTierPrices.product as unknown as Product; // TODO: proper type of mocked product
+
 const getMockProvide = () => ({
   global: {
     provide: {
@@ -14,11 +17,12 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });
 
-const Component = (mockedProductData) =>
+const Component = (mockedProductData: any) =>
   defineComponent({
     template: "<div/>",
     props: {},
@@ -56,22 +60,27 @@ describe("useProductPrice", () => {
     expect(wrapper.vm.displayFrom).toBe(false);
     expect(wrapper.vm.tierPrices).toStrictEqual([]);
     expect(wrapper.vm.referencePrice).toStrictEqual(
-      mockedProduct.calculatedPrice.referencePrice,
+      (mockedProduct.calculatedPrice as unknown as CalculatedPrice)
+        .referencePrice, // TODO: [OpenAPI][Product] - `calculatedPrice` should be properly defined as `CalculatedPrice` schema
     );
     expect(wrapper.vm.isListPrice).toBe(false);
   });
 
   it("product price are displayed - product with tier prices", () => {
     const wrapper = shallowMount(
-      Component(mockerProductTierPricesObj),
+      Component(mockerProductTierPricesObj as unknown as Product), // TODO: proper type of mocked product
       getMockProvide(),
     );
 
     expect(wrapper.vm.price).toStrictEqual(
-      mockerProductTierPricesObj.calculatedPrices[2],
+      (
+        mockerProductTierPricesObj.calculatedPrices as unknown as CalculatedPrice[]
+      )[2], // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined as `CalculatedPrice[]` schema
     );
     expect(wrapper.vm.referencePrice).toStrictEqual(
-      mockerProductTierPricesObj.calculatedPrices[0].referencePrice,
+      (
+        mockerProductTierPricesObj.calculatedPrices as unknown as CalculatedPrice[]
+      )[0].referencePrice, // TODO: [OpenAPI][Product] - `calculatedPrices` should be properly defined as `CalculatedPrice[]` schema
     );
     expect(wrapper.vm.displayFrom).toBe(true);
     expect(wrapper.vm.displayFromVariants).toBe(20);

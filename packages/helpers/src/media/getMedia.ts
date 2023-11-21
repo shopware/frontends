@@ -1,5 +1,3 @@
-import type { OrderLineItem, Downloads } from "@shopware-pwa/types";
-
 type ProductMedia = {
   id: string;
   fileName: string;
@@ -13,9 +11,19 @@ type ProductMedia = {
  * @public
  * @category Media
  */
-export function getMedia(lineItem: OrderLineItem) {
+export function getMedia<
+  T extends {
+    downloads?: Array<{
+      id: string;
+      media: {
+        fileName: string;
+        fileExtension: string;
+      };
+    }>;
+  },
+>(lineItem: T) {
   return (
-    lineItem.downloads?.reduce((acc: ProductMedia[], current: Downloads) => {
+    lineItem.downloads?.reduce((acc: ProductMedia[], current) => {
       acc.push({
         id: current.id,
         fileName: `${current.media.fileName}.${current.media.fileExtension}`,

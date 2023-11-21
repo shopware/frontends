@@ -3,12 +3,12 @@ import { useNewsletter } from "./useNewsletter";
 import { shallowMount } from "@vue/test-utils";
 import { defineComponent } from "vue";
 import * as apiExports from "@shopware-pwa/api-client";
+import type { RequestParameters } from "#shopware";
 
 const url = "http://frontend.test";
 
 const Component = defineComponent({
   template: "<div/>",
-  props: {},
   setup() {
     const { newsletterSubscribe, newsletterUnsubscribe } = useNewsletter();
     return { newsletterSubscribe, newsletterUnsubscribe };
@@ -25,6 +25,7 @@ const getMockProvide = (mockedUrl: string | undefined) => ({
           },
         },
       },
+      apiClient: { invoke: vi.fn() },
     },
   },
 });
@@ -32,9 +33,12 @@ const getMockProvide = (mockedUrl: string | undefined) => ({
 describe("useNewsletter", () => {
   const wrapper = shallowMount(Component, getMockProvide(url));
   const email = "test@testemail.test";
-  const newsletterMockData = {
+  const newsletterMockData: Omit<
+    RequestParameters<"subscribeToNewsletter">,
+    "storefrontUrl"
+  > = {
     email: email,
-    option: "subscribe" as const,
+    option: "subscribe",
   };
 
   vi.spyOn(apiExports, "newsletterSubscribe").mockImplementation(() => {

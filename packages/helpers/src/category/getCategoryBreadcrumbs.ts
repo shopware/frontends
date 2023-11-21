@@ -1,12 +1,18 @@
-import type { Category } from "@shopware-pwa/types";
-
 /**
  * Gather breadcrumbs from category
  *
  * @param {Category} category category entity
  */
-export function getCategoryBreadcrumbs(
-  category: Category | null | undefined,
+export function getCategoryBreadcrumbs<
+  T extends {
+    // TODO: [OpenAPI][Category] - breadcrumb is not properly defined in schema
+    translated?: {
+      breadcrumb?: string[];
+    };
+    breadcrumb?: string[];
+  },
+>(
+  category: T,
   options?: {
     /**
      * Start at specific index if your navigation

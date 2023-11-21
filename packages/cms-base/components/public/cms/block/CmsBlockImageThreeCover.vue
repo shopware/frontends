@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { CmsBlockImageThreeCover } from "@shopware-pwa/composables-next";
+import type { CmsBlockImageThreeCover } from "@shopware-pwa/composables-next/composables";
+import { useCmsBlock } from "#imports";
 
 const props = defineProps<{
   content: CmsBlockImageThreeCover;

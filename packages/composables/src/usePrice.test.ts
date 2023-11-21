@@ -13,6 +13,7 @@ export function withSetup(composable: any) {
             isoCode: "EUR",
           },
         },
+        apiClient: { invoke: vi.fn() },
       };
     },
   }));

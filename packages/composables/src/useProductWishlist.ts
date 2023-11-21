@@ -1,9 +1,7 @@
 import { computed } from "vue";
 import type { Ref } from "vue";
 import type { Product } from "@shopware-pwa/types";
-import { useUser } from "./useUser";
-import { useLocalWishlist } from "./useLocalWishlist";
-import { useSyncWishlist } from "./useSyncWishlist";
+import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
 
 export type UseProductWishlistReturn = {
   /**
@@ -45,27 +43,28 @@ export function useProductWishlist(
   // removes item from the list
   async function removeFromWishlist() {
     if (isLoggedIn.value) {
-      await removeItemSync(product.value.id);
+      await removeItemSync(product.value.id as string); // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
       await getWishlistProducts();
     } else {
-      await removeItem(product.value.id);
+      await removeItem(product.value.id as string); // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
     }
   }
 
   async function addToWishlist() {
     if (isLoggedIn.value) {
-      await addItemSync(product.value.id);
+      await addItemSync(product.value.id as string); // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
       await getWishlistProducts();
     } else {
-      await addItem(product.value.id);
+      await addItem(product.value.id as string); // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
     }
   }
 
   // return true or false if product id is in wishlist array
-  const isInWishlist = computed(() =>
-    isLoggedIn.value
-      ? itemsSync.value?.includes(product.value.id)
-      : items.value?.includes(product.value.id),
+  const isInWishlist = computed(
+    () =>
+      isLoggedIn.value
+        ? itemsSync.value?.includes(product.value.id as string) // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+        : items.value?.includes(product.value.id as string), // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
   );
 
   return {

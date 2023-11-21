@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useProductSearch } from "@shopware-pwa/composables-next";
+import { useProductSearch } from "#imports";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{
@@ -18,20 +18,22 @@ const { data: productResponse } = await useAsyncData(
   },
 );
 
-const breadcrumbs = getCategoryBreadcrumbs(
-  productResponse.value?.product.seoCategory,
-  {
-    startIndex: 2,
-  },
-);
-useBreadcrumbs(breadcrumbs);
+if (!!productResponse.value) {
+  const breadcrumbs = getCategoryBreadcrumbs(
+    productResponse.value.product.seoCategory, // TODO: [OpenAPI][Product] - seoCategory needs to be defined properly
+    {
+      startIndex: 2,
+    },
+  );
+  useBreadcrumbs(breadcrumbs);
 
-const { product } = useProduct(
-  productResponse.value?.product,
-  productResponse.value?.configurator,
-);
+  const { product } = useProduct(
+    productResponse.value.product,
+    productResponse.value.configurator,
+  );
 
-useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });
+  useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });
+}
 </script>
 <template>
   <LayoutBreadcrumbs />

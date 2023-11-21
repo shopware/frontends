@@ -1,17 +1,8 @@
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import {
-  getCart,
-  addProductToCart,
-  addPromotionCode,
-  removeCartItem,
-  changeCartItemQuantity,
-  getProducts,
-} from "@shopware-pwa/api-client";
-import type { Cart, Product, LineItem, CartErrors } from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
-import { _useContext } from "./internal/_useContext";
+import { useContext, useShopwareContext } from "#imports";
 import { createSharedComposable } from "@vueuse/core";
+import type { Cart, Product, Schemas } from "#shopware";
 
 /**
  * Composable to manage cart
@@ -31,7 +22,7 @@ export type UseCartReturn = {
   /**
    * Lists all applied and active promotion codes
    */
-  appliedPromotionCodes: ComputedRef<LineItem[]>;
+  appliedPromotionCodes: ComputedRef<Schemas["LineItem"][]>;
   /**
    * Current Cart object
    */
@@ -39,7 +30,7 @@ export type UseCartReturn = {
   /**
    * All items in the cart
    */
-  cartItems: ComputedRef<LineItem[]>;
+  cartItems: ComputedRef<Schemas["LineItem"][]>;
   /**
    * Changes the quantity of a product in the cart
    */
@@ -59,7 +50,7 @@ export type UseCartReturn = {
   /**
    * Removes the provided LineItem from the cart
    */
-  removeItem(lineItem: LineItem): Promise<void>;
+  removeItem(lineItem: Schemas["LineItem"]): Promise<void>;
   /**
    * The total price of the cart (including calculated costs like shipping)
    */
@@ -87,7 +78,7 @@ export type UseCartReturn = {
   /**
    * Get cart errors
    */
-  consumeCartErrors(): CartErrors;
+  consumeCartErrors(): Cart["errors"];
 };
 
 /**
@@ -96,10 +87,10 @@ export type UseCartReturn = {
  * Used as [Shared](https://frontends.shopware.com/framework/shared-composables.html) Composable `useCart`
  */
 export function useCartFunction(): UseCartReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
-  const _storeCart = _useContext<Cart | undefined>("swCart");
-  const _storeCartErrors = _useContext<CartErrors | null>("swCartErrors");
+  const _storeCart = useContext<Cart>("swCart");
+  const _storeCartErrors = useContext<Cart["errors"] | null>("swCartErrors");
 
   async function refreshCart(newCart?: Cart): Promise<Cart> {
     if (newCart) {
@@ -107,7 +98,10 @@ export function useCartFunction(): UseCartReturn {
       return newCart;
     }
 
-    const result = await getCart(apiInstance);
+    const result = await apiClient.invoke(
+      "readCart get /checkout/cart?name",
+      {},
+    );
     _storeCart.value = result;
     setCartErrors(result);
     return result;
@@ -117,18 +111,31 @@ export function useCartFunction(): UseCartReturn {
     id: string;
     quantity?: number;
   }): Promise<Cart> {
-    const addToCartResult = await addProductToCart(
-      params.id,
-      params.quantity,
-      apiInstance,
+    const addToCartResult = await apiClient.invoke(
+      "addLineItem post /checkout/cart/line-item",
+      {
+        items: [
+          {
+            id: params.id,
+            referencedId: params.id,
+            quantity: params.quantity,
+            type: "product",
+          },
+        ],
+      },
     );
     _storeCart.value = addToCartResult;
     setCartErrors(addToCartResult);
     return addToCartResult;
   }
 
-  async function removeItem(lineItem: LineItem) {
-    const result = await removeCartItem(lineItem.id, apiInstance);
+  async function removeItem(lineItem: Schemas["LineItem"]) {
+    const result = await apiClient.invoke(
+      "removeLineItem delete /checkout/cart/line-item?ids",
+      {
+        ids: [lineItem.id as string], // TODO: [OpenAPI] - change lineitem id to mandatory
+      },
+    );
     _storeCart.value = result;
     setCartErrors(result);
   }
@@ -137,10 +144,16 @@ export function useCartFunction(): UseCartReturn {
     id: string;
     quantity: number;
   }) {
-    const result = await changeCartItemQuantity(
-      params.id,
-      params.quantity,
-      apiInstance,
+    const result = await apiClient.invoke(
+      "updateLineItem patch /checkout/cart/line-item",
+      {
+        items: [
+          {
+            id: params.id,
+            quantity: +params.quantity,
+          },
+        ],
+      },
     );
     _storeCart.value = result;
     setCartErrors(result);
@@ -149,48 +162,55 @@ export function useCartFunction(): UseCartReturn {
   }
 
   async function submitPromotionCode(promotionCode: string) {
-    const result = await addPromotionCode(promotionCode, apiInstance);
+    const result = await apiClient.invoke(
+      "addLineItem post /checkout/cart/line-item",
+      {
+        items: [
+          {
+            referencedId: promotionCode,
+            type: "promotion",
+          },
+        ],
+      },
+    );
     _storeCart.value = result;
     setCartErrors(result);
     return result;
   }
 
-  async function getProductItemsSeoUrlsData(): Promise<Partial<Product>[]> {
+  async function getProductItemsSeoUrlsData() {
     if (!cartItems.value.length) {
       return [];
     }
 
-    const result = await getProducts(
+    const result = await apiClient.invoke(
+      "readProduct post /product",
       {
         ids: cartItems.value
           .map(({ referencedId }) => referencedId)
           .filter(String) as string[],
-        // includes: (getDefaults() as any).getProductItemsSeoUrlsData.includes,
-        // associations: (getDefaults() as any).getProductItemsSeoUrlsData
-        //   .associations,
-      },
-      apiInstance,
+      } as any, // TODO: [OpenAPI] - `ids` is missing in schema
     );
     return result?.elements || [];
   }
 
   const appliedPromotionCodes = computed(() => {
     return cartItems.value.filter(
-      (cartItem: LineItem) => cartItem.type === "promotion",
+      (cartItem: Schemas["LineItem"]) => cartItem.type === "promotion",
     );
   });
 
   const cart: ComputedRef<Cart | undefined> = computed(() => _storeCart.value);
 
-  const cartItems = computed(() => {
-    return cart.value ? cart.value.lineItems || [] : [];
+  const cartItems = computed<Schemas["LineItem"][]>(() => {
+    return cart.value?.lineItems || [];
   });
 
   const count = computed(() => {
     return cartItems.value.reduce(
-      (accumulator: number, lineItem: LineItem) =>
-        lineItem.type === "product"
-          ? lineItem.quantity + accumulator
+      (accumulator: number, lineItem: Schemas["LineItem"]) =>
+        lineItem.type === "product" // TODO: [OpenAPI][Cart] - LineItem `type` should be defined as union type not string -> "product" | "promotion" | "custom" | "credit";
+          ? (lineItem.quantity as number) + accumulator // TODO: [OpenAPI][Cart] - LineItem `quantity` should be defined
           : accumulator,
       0,
     );
@@ -205,8 +225,9 @@ export function useCartFunction(): UseCartReturn {
   });
 
   const shippingTotal = computed(() => {
-    const shippingTotal =
-      cart.value?.deliveries?.[0]?.shippingCosts?.totalPrice;
+    // TODO: [OpenAPI][Cart] - `deliveries` is missing in schema
+    const shippingTotal = (cart.value as any)?.deliveries?.[0]?.shippingCosts
+      ?.totalPrice as number;
     return shippingTotal || 0;
   });
 
@@ -220,7 +241,7 @@ export function useCartFunction(): UseCartReturn {
       cartItems.value.length > 0 &&
       cartItems.value
         .filter((element) => element.type !== "promotion")
-        .every((item) => item.states.includes("is-download"))
+        .every((item) => (item as any).states.includes("is-download")) // TODO: [OpenAPI][Cart] - LineItem `states` should be defined
     );
   });
 
@@ -230,7 +251,7 @@ export function useCartFunction(): UseCartReturn {
    * @param {Cart} cart
    */
   const setCartErrors = (cart: Cart) => {
-    if (Object.keys(cart.errors).length) {
+    if (Object.keys(cart.errors || {}).length) {
       _storeCartErrors.value = Object.assign(
         _storeCartErrors.value ? _storeCartErrors.value : {},
         cart.errors,

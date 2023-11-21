@@ -1,8 +1,7 @@
-import { ref, computed, unref, watch } from "vue";
+import { ref, computed, unref } from "vue";
 import type { Ref, ComputedRef } from "vue";
-import type { Product, Cart, LineItem, EntityError } from "@shopware-pwa/types";
-import { useCart } from "./useCart";
-// prettier-ignore
+import { useCart } from "#imports";
+import type { Cart, Product, Schemas } from "#shopware";
 export type UseAddToCartReturn = {
   /**
    * Add to cart method
@@ -16,11 +15,11 @@ export type UseAddToCartReturn = {
   /**
    * Returns product count in stock
    */
-  getStock: ComputedRef<number|undefined>;
+  getStock: ComputedRef<number | undefined>;
   /**
    * Returns product count in available stock
    */
-  getAvailableStock: ComputedRef<number | null>;
+  getAvailableStock: ComputedRef<number | undefined>;
   /**
    * Flag if product is already in cart
    */
@@ -45,7 +44,7 @@ export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
   async function addToCart(): Promise<Cart> {
     if (!quantity.value) quantity.value = 1;
     const addToCartResponse = await addProduct({
-      id: _product.value.id,
+      id: _product.value.id as string, // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
       quantity: quantity.value,
     });
     quantity.value = 1;
@@ -58,7 +57,7 @@ export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
 
   const isInCart = computed(() =>
     cartItems.value.some(
-      (item: LineItem) => item.referencedId === _product.value?.id,
+      (item: Schemas["LineItem"]) => item.referencedId === _product.value?.id,
     ),
   );
 
@@ -71,7 +70,8 @@ export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
     count: computed(
       () =>
         cartItems.value.find(
-          (item: LineItem) => item.referencedId === _product.value?.id,
+          (item: Schemas["LineItem"]) =>
+            item.referencedId === _product.value?.id,
         )?.quantity || 0,
     ),
   };
