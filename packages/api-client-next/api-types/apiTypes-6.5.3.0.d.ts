@@ -2081,7 +2081,7 @@ export type components = {
       removable?: boolean;
       stackable?: boolean;
       states: string[]; // TODO: [OpenAPI][LineItem] - add definition of `states` array, also union type of possible states
-      type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][LineItem] - define type as required and string union type
+      type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][LineItem] - define type as required and string union type -> see also #456
     };
     /** A link **MUST** be represented as either: a string containing the link's URL or a link object. */
     link: OneOf<
@@ -6727,7 +6727,7 @@ export type operations<components = components> = {
             id?: string; // TODO: check if this is used at all?
             referencedId: string;
             quantity?: number;
-            type: "product" | "promotion" | "custom" | "credit";
+            type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][addLineItem] - add proper type -> see also #456
           }>;
         };
       };
