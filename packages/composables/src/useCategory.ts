@@ -1,14 +1,14 @@
 import { computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import type { Category } from "@shopware-pwa/types";
 import ContextError from "./helpers/ContextError";
 import { useContext } from "#imports";
+import { Schemas } from "#shopware";
 
 export type UseCategoryReturn = {
   /**
    * Current category entity
    */
-  category: ComputedRef<Category>;
+  category: ComputedRef<Schemas["Category"]>;
 };
 
 /**
@@ -16,7 +16,9 @@ export type UseCategoryReturn = {
  *
  * @public
  */
-export function useCategory(category?: Ref<Category>): UseCategoryReturn {
+export function useCategory(
+  category?: Ref<Schemas["Category"]>,
+): UseCategoryReturn {
   const _category = useContext("category", { context: category });
   if (!_category.value) {
     // TODO link docs with composables context usage

@@ -44,7 +44,9 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
 
   const { configurator, product } = useProduct();
 
-  const selected = ref({} as any);
+  const selected = ref<{
+    [key: string]: string;
+  }>({});
   const isLoadingOptions = ref(!!product.value.options?.length);
   const parentProductId = computed(() => product.value?.parentId);
   const getOptionGroups = computed<Schemas["PropertyGroup"][]>(() => {
@@ -53,7 +55,7 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
 
   const findGroupCodeForOption = (optionId: string) => {
     const group = getOptionGroups.value.find((optionGroup) => {
-      const optionFound = optionGroup.options?.find((option: any) => {
+      const optionFound = optionGroup.options?.find((option) => {
         return option.id === optionId;
       });
       return !!optionFound;
@@ -122,6 +124,6 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
     findVariantForSelectedOptions,
     isLoadingOptions,
     getOptionGroups,
-    getSelectedOptions: selected,
+    getSelectedOptions: computed(() => selected.value),
   };
 }

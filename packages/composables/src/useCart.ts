@@ -133,7 +133,7 @@ export function useCartFunction(): UseCartReturn {
     const result = await apiClient.invoke(
       "removeLineItem delete /checkout/cart/line-item?ids",
       {
-        ids: [lineItem.id as string], // TODO: [OpenAPI] - change lineitem id to mandatory
+        ids: [lineItem.id],
       },
     );
     _storeCart.value = result;
@@ -183,14 +183,11 @@ export function useCartFunction(): UseCartReturn {
       return [];
     }
 
-    const result = await apiClient.invoke(
-      "readProduct post /product",
-      {
-        ids: cartItems.value
-          .map(({ referencedId }) => referencedId)
-          .filter(String) as string[],
-      } as any, // TODO: [OpenAPI] - `ids` is missing in schema
-    );
+    const result = await apiClient.invoke("readProduct post /product", {
+      ids: cartItems.value
+        .map(({ referencedId }) => referencedId)
+        .filter(String) as string[],
+    });
     return result?.elements || [];
   }
 
@@ -209,8 +206,8 @@ export function useCartFunction(): UseCartReturn {
   const count = computed(() => {
     return cartItems.value.reduce(
       (accumulator: number, lineItem: Schemas["LineItem"]) =>
-        lineItem.type === "product" // TODO: [OpenAPI][Cart] - LineItem `type` should be defined as union type not string -> "product" | "promotion" | "custom" | "credit";
-          ? (lineItem.quantity as number) + accumulator // TODO: [OpenAPI][Cart] - LineItem `quantity` should be defined
+        lineItem.type === "product"
+          ? lineItem.quantity + accumulator
           : accumulator,
       0,
     );
@@ -225,9 +222,8 @@ export function useCartFunction(): UseCartReturn {
   });
 
   const shippingTotal = computed(() => {
-    // TODO: [OpenAPI][Cart] - `deliveries` is missing in schema
-    const shippingTotal = (cart.value as any)?.deliveries?.[0]?.shippingCosts
-      ?.totalPrice as number;
+    const shippingTotal =
+      cart.value?.deliveries?.[0]?.shippingCosts?.totalPrice;
     return shippingTotal || 0;
   });
 
@@ -241,7 +237,7 @@ export function useCartFunction(): UseCartReturn {
       cartItems.value.length > 0 &&
       cartItems.value
         .filter((element) => element.type !== "promotion")
-        .every((item) => (item as any).states.includes("is-download")) // TODO: [OpenAPI][Cart] - LineItem `states` should be defined
+        .every((item) => item.states.includes("is-download"))
     );
   });
 

@@ -54,7 +54,7 @@ export function useProductAssociations(
       //   // const response = await invokeGet(
       //   //   {
       //   //     address: `${getProductDetailsEndpoint(
-      //   //       product.value.id as string, // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+      //   //       product.value.id as string,
       //   //     )}/${association}${params.searchParams || ""}`,
       //   //   },
       //   //   apiInstance,
@@ -73,7 +73,7 @@ export function useProductAssociations(
       // const response = await invokePost(
       //   {
       //     address: `${getProductDetailsEndpoint(
-      //       product.value.id as string, // TODO: [OpenAPI][Product] - `id` should be required field in Product schema
+      //       product.value.id as string,
       //     )}/${association}`,
       //     payload: params?.searchParams || {},
       //   },

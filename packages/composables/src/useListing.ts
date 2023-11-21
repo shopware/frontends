@@ -1,11 +1,3 @@
-// import { getCategoryProducts, searchProducts } from "@shopware-pwa/api-client";
-
-// import type {
-//   Product,
-//   ListingResult,
-//   Sort,
-//   ListingFilter,
-// } from "@shopware-pwa/types";
 import { inject, computed, ref, provide } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";

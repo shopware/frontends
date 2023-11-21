@@ -1,10 +1,5 @@
 import { computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import type {
-  PropertyGroupOptionCart,
-  CartProductItem,
-} from "@shopware-pwa/types";
-
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCart } from "#imports";
 import type { Cart, Schemas } from "#shopware";
@@ -29,11 +24,11 @@ export type UseCartItemReturn = {
   /**
    * Options (of variation) for the current item
    */
-  itemOptions: ComputedRef<PropertyGroupOptionCart[]>;
+  itemOptions: ComputedRef<Schemas["LineItem"]["payload"]["options"]>;
   /**
    * Type of the current item: "product" or "promotion"
    */
-  itemType: ComputedRef<Schemas["LineItem"]["type"] | undefined>; // TODO: [OpenAPI][LineItem] - LineItem type should be required, temporal regression to `string` istead of union type
+  itemType: ComputedRef<Schemas["LineItem"]["type"] | undefined>;
   /**
    * Determines if the current item is a product
    */
@@ -84,36 +79,31 @@ export function useCartItem(
   const { refreshCart, changeProductQuantity } = useCart();
 
   const itemQuantity = computed(() => cartItem.value.quantity);
-  const itemImageThumbnailUrl = computed(() =>
-    getMainImageUrl(cartItem.value as any),
-  ); // TODO: [OpenAPI][LineItem] - `cover` should be defined in LineItem schema
+  const itemImageThumbnailUrl = computed(() => getMainImageUrl(cartItem.value));
 
   const itemRegularPrice = computed<number | undefined>(
     () =>
-      (cartItem.value as any)?.price?.listPrice?.price || // TODO: [OpenAPI][LineItem] - LineItem price should be required and defined
-      (cartItem.value as any)?.price?.unitPrice,
+      cartItem.value?.price?.listPrice?.price ||
+      cartItem.value?.price?.unitPrice,
   );
 
   const itemSpecialPrice = computed(
     () =>
-      (cartItem.value as any)?.price?.listPrice?.price && // TODO: [OpenAPI][LineItem] - LineItem price should be required and defined
-      (cartItem.value as any)?.price?.unitPrice,
+      cartItem.value?.price?.listPrice?.price &&
+      cartItem.value?.price?.unitPrice,
   );
 
-  const itemTotalPrice = computed(
-    () => (cartItem.value as any).price?.totalPrice, // TODO: [OpenAPI][LineItem] - LineItem price should be required and defined
-  );
+  const itemTotalPrice = computed(() => cartItem.value.price?.totalPrice);
 
   const itemOptions = computed(
     () =>
-      (cartItem.value.type === "product" &&
-        ((cartItem.value as any).payload as CartProductItem)?.options) || // TODO: [OpenAPI][LineItem] - LineItem payload should be required and defined in type `product`
+      (cartItem.value.type === "product" && cartItem.value.payload?.options) ||
       [],
   );
 
   const itemStock = computed<number>(
-    () => (cartItem.value as any).deliveryInformation?.stock,
-  ); // TODO: [OpenAPI][LineItem] - LineItem deliveryInformation should be required and defined
+    () => cartItem.value.deliveryInformation.stock,
+  );
 
   const itemType = computed(() => cartItem.value.type);
 
@@ -125,7 +115,7 @@ export function useCartItem(
     const newCart = await apiClient.invoke(
       "removeLineItem delete /checkout/cart/line-item?ids",
       {
-        ids: [cartItem.value.id as string], // TODO: [OpenAPI][LineItem] - change lineitem id to mandatory
+        ids: [cartItem.value.id],
       },
     );
     await refreshCart(newCart);
@@ -133,7 +123,7 @@ export function useCartItem(
 
   async function changeItemQuantity(quantity: number): Promise<Cart> {
     const result = changeProductQuantity({
-      id: cartItem.value.id as string, // TODO: [OpenAPI][updateLIneItem] - change id field to mandatory
+      id: cartItem.value.id,
       quantity: +quantity,
     });
 
