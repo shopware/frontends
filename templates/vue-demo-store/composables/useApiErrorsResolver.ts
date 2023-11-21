@@ -6,6 +6,10 @@ type ContextErrors = {
   };
 };
 
+export type UseApiErrorsResolver = {
+  resolveApiErrors(errors: ShopwareError[]): string[];
+};
+
 /**
  *  List of the unsupported/broken backend errors
  */
@@ -15,45 +19,46 @@ const contextErrors: ContextErrors = {
   },
 };
 
-export function useApiErrorsResolver(
-  errors: ShopwareError[],
-  context?: string,
-) {
+export function useApiErrorsResolver(context?: string): UseApiErrorsResolver {
   const { $i18n } = useNuxtApp();
   const { t, te } = $i18n;
 
-  const errorsTable = errors.map(({ detail, code, meta }) => {
-    /**
-     * In some cases, parameters errors
-     * comes with additional special characters.
-     * We have to remove them
-     *
-     * Example:
-     *   "meta": {
-     *          "parameters": {
-     *             "{{ email }}": "<value>>"
-     *        }
-     *   }
-     */
-    if (meta?.parameters) {
-      const pureMeta: { [key: string]: string } = {};
-      for (const [key, value] of Object.entries(meta?.parameters)) {
-        pureMeta[key.replace(/[^a-zA-Z0-9 ]/g, "")] = value;
+  const resolveApiErrors = (errors: ShopwareError[]) => {
+    const errorsTable = errors.map(({ detail, code, meta }) => {
+      /**
+       * In some cases, parameters errors
+       * comes with additional special characters.
+       * We have to remove them
+       *
+       * Example:
+       *   "meta": {
+       *          "parameters": {
+       *             "{{ email }}": "<value>>"
+       *        }
+       *   }
+       */
+      if (meta?.parameters) {
+        const pureMeta: { [key: string]: string } = {};
+        for (const [key, value] of Object.entries(meta?.parameters)) {
+          pureMeta[key.replace(/[^a-zA-Z0-9 ]/g, "")] = value;
+        }
+        meta.parameters = pureMeta;
       }
-      meta.parameters = pureMeta;
-    }
 
-    if (te(`errors.${code}`)) {
-      return t(`errors.${code}`, { ...meta?.parameters });
-    }
-    if (context && contextErrors[context][code]) {
-      return t(`errors.${contextErrors[context][code]}`);
-    }
+      if (te(`errors.${code}`)) {
+        return t(`errors.${code}`, { ...meta?.parameters });
+      }
+      if (context && contextErrors[context][code]) {
+        return t(`errors.${contextErrors[context][code]}`);
+      }
 
-    return detail;
-  });
+      return detail;
+    });
+
+    return errorsTable;
+  };
 
   return {
-    errors: errorsTable,
+    resolveApiErrors,
   };
 }

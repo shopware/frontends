@@ -43,7 +43,8 @@ const updateQuantity = async (quantityInput: number | undefined) => {
     await refreshCart(response);
   } catch (error) {
     const e = error as ClientApiError;
-    const { errors } = useApiErrorsResolver(e.messages);
+    const { resolveApiErrors } = useApiErrorsResolver("account_login");
+    const errors = resolveApiErrors(e.messages);
     errors.forEach((error) => pushError(error));
   }
 
