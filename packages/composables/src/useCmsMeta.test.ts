@@ -7,7 +7,7 @@ describe("composables - useCmsMeta", () => {
   it("should return title and meta tags", () => {
     // @ts-ignore - mock
     const { title, meta } = useCmsMeta(entity);
-    console.log("meta", meta.value);
+
     expect(title.value).toEqual("Summer Giveaway");
     expect(meta.value).toEqual([
       { name: "keywords", content: "Landing page keywords" },

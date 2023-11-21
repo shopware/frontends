@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from "vitest";
 import { useNavigationSearch } from "./useNavigationSearch";
 import { shallowMount } from "@vue/test-utils";
 import { defineComponent } from "vue";
-import * as apiExports from "@shopware-pwa/api-client";
 
 const mockedResponse = {
   translated: [],
@@ -40,20 +39,21 @@ const getMockProvide = () => ({
           config: {},
         },
       },
+      apiClient: {
+        invoke: () => {
+          return new Promise((resolve) => {
+            resolve({
+              elements: [mockedResponse],
+            });
+          });
+        },
+      },
     },
   },
 });
 
 describe("useNavigationSearch", () => {
   const wrapper = shallowMount(Component, getMockProvide());
-
-  vi.spyOn(apiExports, "getSeoUrl").mockImplementation((): any => {
-    return new Promise((resolve) => {
-      resolve({
-        elements: [mockedResponse],
-      });
-    });
-  });
 
   it("resolvePath", async () => {
     expect(await wrapper.vm.resolvePath("/test")).toStrictEqual(mockedResponse);
