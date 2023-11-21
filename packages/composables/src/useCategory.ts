@@ -2,7 +2,7 @@ import { computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import ContextError from "./helpers/ContextError";
 import { useContext } from "#imports";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 export type UseCategoryReturn = {
   /**

@@ -5,10 +5,10 @@ export default {
 </script>
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import type { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 import type { RequestParameters } from "#shopware";
+import { ApiClientError, type ApiError } from "@shopware/api-client";
 
 const { required, minLength, requiredIf, email } = customValidators();
 
@@ -232,7 +232,7 @@ const refreshAddresses = async () => {
   isLoading["addresses"] = false;
 };
 
-const registerErrors = ref<ShopwareError[]>([]);
+const registerErrors = ref<ApiError[]>([]);
 const invokeSubmit = async () => {
   $v.value.$touch();
   registerErrors.value = [];
@@ -245,8 +245,9 @@ const invokeSubmit = async () => {
         await push("/");
       }
     } catch (error) {
-      const e = error as ClientApiError;
-      registerErrors.value = e.messages;
+      if (error instanceof ApiClientError) {
+        registerErrors.value = error.details.errors;
+      }
     }
   }
 };

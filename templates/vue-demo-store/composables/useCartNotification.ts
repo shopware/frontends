@@ -1,4 +1,4 @@
-import type { Cart } from "#shopware";
+import type { Schemas } from "#shopware";
 import type { CartError } from "@shopware-pwa/types";
 
 const successCodes = ["promotion-discount-added"];
@@ -23,7 +23,7 @@ export function useCartNotification(): useCartNotificationReturn {
    * @returns {void}
    */
   const codeErrorsNotification = () => {
-    const errors: Cart["errors"] = consumeCartErrors();
+    const errors: Schemas["Cart"]["errors"] = consumeCartErrors();
     if (!errors || Array.isArray(errors)) return; // TODO: [OpenAPI][Cart] - Cart errors should be object, not array, for now, when empty - returns array
 
     Object.keys(errors).forEach((element) => {
@@ -41,7 +41,7 @@ export function useCartNotification(): useCartNotificationReturn {
    * @returns CartError[] | undefined
    */
   const getErrorsCodes = () => {
-    const errors: Cart["errors"] = consumeCartErrors();
+    const errors: Schemas["Cart"]["errors"] = consumeCartErrors();
     if (!errors || Array.isArray(errors)) return []; // TODO: [OpenAPI][Cart] - Cart errors should be object, not array, for now, when empty - returns array
 
     return Object.keys(errors).reduce((acc, element) => {

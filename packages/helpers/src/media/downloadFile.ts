@@ -1,12 +1,10 @@
 /**
  * Download file
  *
- * @param {Blob} file
- * @param {string} name
  */
-export function downloadFile(file: Blob, name: string) {
+export function downloadFile<T>(file: T, name: string) {
   const media = document.createElement("a");
-  media.href = URL.createObjectURL(file);
+  media.href = URL.createObjectURL(file as Blob);
   media.download = name;
 
   document.body.appendChild(media);

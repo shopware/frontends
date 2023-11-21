@@ -24,10 +24,6 @@ declare module "#shopware" {
   export type operationPaths = operationPaths;
   export type Schemas = changedComponents["schemas"];
 
-  export type Cart = changedComponents["schemas"]["Cart"];
-
-  export type Product = changedComponents["schemas"]["Product"];
-
   // we're exporting our own Api Client definition as it depends on our own instance
   export type ApiClient = ReturnType<
     typeof createAPIClient<operations<changedComponents>, operationPaths>

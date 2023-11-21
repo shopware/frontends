@@ -1,4 +1,4 @@
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 import { getProductTierPrices } from "@shopware-pwa/helpers-next";
 import type { TierPrice } from "@shopware-pwa/helpers-next";
 import { computed } from "vue";

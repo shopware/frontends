@@ -10,7 +10,6 @@ import {
   getProductFromPrice,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import type { ClientApiError, Product } from "@shopware-pwa/types";
 import { toRefs, type Ref, computed, ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from "../helpers/deepMerge";
@@ -19,12 +18,14 @@ import getUrlPrefix from "../helpers/getUrlPrefix";
 import buildUrlPrefix from "../helpers/buildUrlPrefix";
 import { useAddToCart, useNotifications, useProductWishlist } from "#imports";
 import { useElementSize } from "@vueuse/core";
+import type { Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
 
 const { pushSuccess, pushError } = useNotifications();
 
 const props = withDefaults(
   defineProps<{
-    product: Product;
+    product: Schemas["Product"];
     layoutType?: BoxLayout;
     isProductListing?: boolean;
     displayMode?: DisplayMode;
@@ -76,16 +77,17 @@ const toggleWishlistProduct = async () => {
         `${props.product?.translated?.name} ${translations.product.addedToWishlist}`,
       );
     } catch (error) {
-      const e = error as ClientApiError;
-      const reason = e?.messages?.[0]?.detail
-        ? `${translations.product.reason}: ${e?.messages?.[0]?.detail}`
-        : "";
-      return pushError(
-        `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
-        {
-          timeout: 5000,
-        },
-      );
+      if (error instanceof ApiClientError) {
+        const reason = error.details.errors?.[0]?.detail
+          ? `${translations.product.reason}: ${error.details.errors?.[0]?.detail}`
+          : "";
+        return pushError(
+          `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
+          {
+            timeout: 5000,
+          },
+        );
+      }
     }
   }
   removeFromWishlist();

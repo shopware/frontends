@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ClientApiError } from "@shopware-pwa/types";
+import { ApiClientError, type ApiError } from "@shopware/api-client";
 
 const emits = defineEmits<{
   (e: "success"): void;
@@ -37,8 +37,11 @@ const invokeLogin = async (): Promise<void> => {
     emits("close");
     mergeWishlistProducts();
   } catch (error) {
-    const e = error as ClientApiError;
-    loginErrors.value = e.messages.map(({ detail }) => detail);
+    if (error instanceof ApiClientError) {
+      loginErrors.value = error.details.errors.map(
+        ({ detail }: ApiError) => detail,
+      );
+    }
   }
 };
 

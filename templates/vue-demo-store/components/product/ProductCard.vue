@@ -9,7 +9,8 @@ import {
   getProductFromPrice,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import type { ClientApiError, Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
 
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
@@ -19,7 +20,7 @@ const { formatLink } = useInternationalization(localePath);
 
 const props = withDefaults(
   defineProps<{
-    product: Product;
+    product: Schemas["Product"];
     layoutType?: BoxLayout;
     displayMode?: DisplayMode;
   }>(),
@@ -44,16 +45,17 @@ const toggleWishlistProduct = async () => {
         }),
       );
     } catch (error) {
-      const e = error as ClientApiError;
-      const reason = e?.messages?.[0]?.detail
-        ? `Reason: ${e?.messages?.[0]?.detail}`
-        : "";
-      return pushError(
-        `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
-        {
-          timeout: 5000,
-        },
-      );
+      if (error instanceof ApiClientError) {
+        const reason = error.details.errors?.[0]?.detail
+          ? `Reason: ${error.details.errors?.[0]?.detail}`
+          : "";
+        return pushError(
+          `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
+          {
+            timeout: 5000,
+          },
+        );
+      }
     }
   }
   removeFromWishlist();

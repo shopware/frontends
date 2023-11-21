@@ -1,9 +1,9 @@
 import { ref, computed, inject, provide } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
-import type { ShopwareError } from "@shopware-pwa/types";
 import type { RequestParameters, Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
 
 export type UseAddressReturn = {
   /**
@@ -43,7 +43,7 @@ export type UseAddressReturn = {
    *
    * @param {ShopwareError} error
    */
-  errorMessageBuilder(error: ShopwareError): string | null;
+  errorMessageBuilder(error: ApiError): string | null;
 };
 
 /**
@@ -153,10 +153,10 @@ export function useAddress(): UseAddressReturn {
    * @param {error} error
    * @returns {string | null}
    */
-  function errorMessageBuilder(error: ShopwareError): string | null {
+  function errorMessageBuilder(error: ApiError): string | null {
     switch (error.code) {
       case "VIOLATION::IS_BLANK_ERROR":
-        return `${error?.source?.pointer.slice(1)} - ${error.detail}`;
+        return `${error?.source?.pointer?.slice(1)} - ${error.detail}`;
       default:
         return null;
     }

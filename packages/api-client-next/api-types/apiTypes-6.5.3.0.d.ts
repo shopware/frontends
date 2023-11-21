@@ -1671,7 +1671,11 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     Document: {
-      config: GenericRecord;
+      // TODO: [OpenAPI][Document] - define config properly
+      config: {
+        name: string;
+        title: string;
+      };
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
@@ -1682,7 +1686,7 @@ export type components = {
       documentType?: components["schemas"]["DocumentType"];
       documentTypeId: string;
       fileType: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][Document] - make `id` required
       order?: components["schemas"]["Order"];
       orderId: string;
       orderVersionId?: string;
@@ -2053,6 +2057,7 @@ export type components = {
             [key: string]: string;
           };
         }>;
+        name?: string;
       };
       price: {
         // TODO: [OpenAPI][LineItem] - define price object, also UNIFY price objects across responses
@@ -6133,7 +6138,7 @@ export type operations<components = components> = {
         "application/json": Omit<
           // TODO: [OpenAPI][createCustomerAddress] - omit id while creating address
           components["schemas"]["CustomerAddress"],
-          "id"
+          "id" | "createdAt"
         >;
       };
     };

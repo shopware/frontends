@@ -1,14 +1,14 @@
 import { reactive } from "vue";
 import type { UnwrapRef } from "vue";
-import type { ShopwareError } from "@shopware-pwa/types";
 import { useShopwareContext } from "#imports";
 import type { RequestParameters } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
 
 export type UseCustomerPasswordReturn = {
   errors: UnwrapRef<{
-    resetPassword: ShopwareError[];
-    updatePassword: ShopwareError[];
+    resetPassword: ApiError[];
+    updatePassword: ApiError[];
   }>;
   /**
    * Change customer's current password
@@ -33,8 +33,8 @@ export function useCustomerPassword(): UseCustomerPasswordReturn {
   const { apiClient } = useShopwareContext();
 
   const errors: UnwrapRef<{
-    resetPassword: ShopwareError[];
-    updatePassword: ShopwareError[];
+    resetPassword: ApiError[];
+    updatePassword: ApiError[];
   }> = reactive({
     resetPassword: [],
     updatePassword: [],

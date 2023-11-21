@@ -2,7 +2,7 @@ import { computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCart } from "#imports";
-import type { Cart, Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 export type UseCartItemReturn = {
   /**
@@ -48,7 +48,7 @@ export type UseCartItemReturn = {
   /**
    * Changes the current item quantity in the cart
    */
-  changeItemQuantity(quantity: number): Promise<Cart>;
+  changeItemQuantity(quantity: number): Promise<Schemas["Cart"]>;
   /**
    * Removes the current item from the cart
    */
@@ -121,7 +121,9 @@ export function useCartItem(
     await refreshCart(newCart);
   }
 
-  async function changeItemQuantity(quantity: number): Promise<Cart> {
+  async function changeItemQuantity(
+    quantity: number,
+  ): Promise<Schemas["Cart"]> {
     const result = changeProductQuantity({
       id: cartItem.value.id,
       quantity: +quantity,

@@ -1,13 +1,13 @@
 import { ref, computed, unref } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useCart } from "#imports";
-import type { Cart, Product, Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 export type UseAddToCartReturn = {
   /**
    * Add to cart method
    * @type {function}
    */
-  addToCart(): Promise<Cart>;
+  addToCart(): Promise<Schemas["Cart"]>;
   /**
    * If you want to add more that 1 product set quantity before invoking `addToCart`
    */
@@ -35,13 +35,15 @@ export type UseAddToCartReturn = {
  * @public
  * @category Cart & Checkout
  */
-export function useAddToCart(product: Ref<Product>): UseAddToCartReturn {
+export function useAddToCart(
+  product: Ref<Schemas["Product"]>,
+): UseAddToCartReturn {
   const _product = computed(() => unref(product));
 
   const { addProduct, cartItems } = useCart();
   const quantity: Ref<number> = ref(1);
 
-  async function addToCart(): Promise<Cart> {
+  async function addToCart(): Promise<Schemas["Cart"]> {
     if (!quantity.value) quantity.value = 1;
     const addToCartResponse = await addProduct({
       id: _product.value.id,

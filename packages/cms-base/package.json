@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.8.1",
-    "@shopware-pwa/api-client": "workspace:*",
+    "@shopware/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@vuelidate/core": "^2.0.3",

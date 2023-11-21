@@ -2,7 +2,7 @@ import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { useContext, useShopwareContext } from "#imports";
 import { createSharedComposable } from "@vueuse/core";
-import type { Cart, Product, Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 /**
  * Composable to manage cart
@@ -14,11 +14,14 @@ export type UseCartReturn = {
   /**
    * Add product by id and quantity
    */
-  addProduct(params: { id: string; quantity?: number }): Promise<Cart>;
+  addProduct(params: {
+    id: string;
+    quantity?: number;
+  }): Promise<Schemas["Cart"]>;
   /**
    * Adds a promotion code to the cart
    */
-  addPromotionCode(promotionCode: string): Promise<Cart>;
+  addPromotionCode(promotionCode: string): Promise<Schemas["Cart"]>;
   /**
    * Lists all applied and active promotion codes
    */
@@ -26,7 +29,7 @@ export type UseCartReturn = {
   /**
    * Current Cart object
    */
-  cart: ComputedRef<Cart | undefined>;
+  cart: ComputedRef<Schemas["Cart"] | undefined>;
   /**
    * All items in the cart
    */
@@ -37,7 +40,7 @@ export type UseCartReturn = {
   changeProductQuantity(params: {
     id: string;
     quantity: number;
-  }): Promise<Cart>;
+  }): Promise<Schemas["Cart"]>;
   /**
    * The number of items in the cart
    */
@@ -46,7 +49,7 @@ export type UseCartReturn = {
    * Refreshes the cart object and related data
    * If @param newCart is provided, it will be used as a new cart object
    */
-  refreshCart(newCart?: Cart): Promise<Cart>;
+  refreshCart(newCart?: Schemas["Cart"]): Promise<Schemas["Cart"]>;
   /**
    * Removes the provided LineItem from the cart
    */
@@ -66,7 +69,7 @@ export type UseCartReturn = {
   /**
    * @deprecated - use product related methods to fetch an item's URL instead
    */
-  getProductItemsSeoUrlsData(): Promise<Partial<Product>[]>;
+  getProductItemsSeoUrlsData(): Promise<Partial<Schemas["Product"]>[]>;
   /**
    * `true` if the cart contains no items
    */
@@ -78,7 +81,7 @@ export type UseCartReturn = {
   /**
    * Get cart errors
    */
-  consumeCartErrors(): Cart["errors"];
+  consumeCartErrors(): Schemas["Cart"]["errors"];
 };
 
 /**
@@ -89,10 +92,14 @@ export type UseCartReturn = {
 export function useCartFunction(): UseCartReturn {
   const { apiClient } = useShopwareContext();
 
-  const _storeCart = useContext<Cart>("swCart");
-  const _storeCartErrors = useContext<Cart["errors"] | null>("swCartErrors");
+  const _storeCart = useContext<Schemas["Cart"]>("swCart");
+  const _storeCartErrors = useContext<Schemas["Cart"]["errors"] | null>(
+    "swCartErrors",
+  );
 
-  async function refreshCart(newCart?: Cart): Promise<Cart> {
+  async function refreshCart(
+    newCart?: Schemas["Cart"],
+  ): Promise<Schemas["Cart"]> {
     if (newCart) {
       _storeCart.value = newCart;
       return newCart;
@@ -110,7 +117,7 @@ export function useCartFunction(): UseCartReturn {
   async function addProduct(params: {
     id: string;
     quantity?: number;
-  }): Promise<Cart> {
+  }): Promise<Schemas["Cart"]> {
     const addToCartResult = await apiClient.invoke(
       "addLineItem post /checkout/cart/line-item",
       {
@@ -197,7 +204,9 @@ export function useCartFunction(): UseCartReturn {
     );
   });
 
-  const cart: ComputedRef<Cart | undefined> = computed(() => _storeCart.value);
+  const cart: ComputedRef<Schemas["Cart"] | undefined> = computed(
+    () => _storeCart.value,
+  );
 
   const cartItems = computed<Schemas["LineItem"][]>(() => {
     return cart.value?.lineItems || [];
@@ -246,7 +255,7 @@ export function useCartFunction(): UseCartReturn {
    *
    * @param {Cart} cart
    */
-  const setCartErrors = (cart: Cart) => {
+  const setCartErrors = (cart: Schemas["Cart"]) => {
     if (Object.keys(cart.errors || {}).length) {
       _storeCartErrors.value = Object.assign(
         _storeCartErrors.value ? _storeCartErrors.value : {},

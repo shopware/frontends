@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Category } from "@shopware-pwa/types";
 import { useCategorySearch } from "#imports";
 import type { Ref } from "vue";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
@@ -25,16 +24,14 @@ const { data: categoryResponse } = await useAsyncData(
     return category;
   },
 );
-
-const breadcrumbs = getCategoryBreadcrumbs(
-  categoryResponse.value as unknown as Schemas["Category"], // TODO: [OpenAPI][Category] - category needs to be defined properly
-  {
+if (categoryResponse.value) {
+  const breadcrumbs = getCategoryBreadcrumbs(categoryResponse.value, {
     startIndex: 2,
-  },
-);
-useBreadcrumbs(breadcrumbs);
+  });
+  useBreadcrumbs(breadcrumbs);
+}
 
-const { category } = useCategory(categoryResponse as Ref<Category>);
+const { category } = useCategory(categoryResponse as Ref<Schemas["Category"]>);
 useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
 

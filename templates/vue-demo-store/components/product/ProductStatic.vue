@@ -4,10 +4,10 @@ import {
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import type { Ref } from "vue";
-import type { Schemas, Product } from "#shopware";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  product: Product;
+  product: Schemas["Product"];
 }>();
 const reviews: Ref<Schemas["ProductReview"][]> = ref([]);
 const router = useRouter();
@@ -35,7 +35,7 @@ const description = computed(() =>
 );
 const properties = computed(() => props.product?.properties || []);
 
-const handleVariantChange = (val: Product) => {
+const handleVariantChange = (val: Schemas["Product"]) => {
   const newRoute = getProductRoute(val);
   router.push(newRoute);
 };

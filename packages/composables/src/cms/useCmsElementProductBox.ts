@@ -3,10 +3,10 @@ import { useCmsElementConfig } from "../index";
 import type { CmsElementProductBox, BoxLayout } from "../index";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import type { Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 export type UseCmsElementProductBox = {
-  product: Product;
+  product: Schemas["Product"];
   boxLayout: ComputedRef<BoxLayout>;
 };
 

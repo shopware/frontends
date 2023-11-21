@@ -2,11 +2,11 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import type { CmsElementForm } from "@shopware-pwa/composables-next/composables";
-import type { ClientApiError } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 import { useCmsElementConfig, useNewsletter, useSalutations } from "#imports";
 import { computed, reactive, ref } from "vue";
+import { ApiClientError, type ApiError } from "@shopware/api-client";
 
 const props = defineProps<{
   content: CmsElementForm;
@@ -58,7 +58,7 @@ translations = deepMerge(translations, globalTranslations) as Translations;
 
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);
-const errorMessages = ref<any[]>([]);
+const errorMessages = ref<ApiError[]>([]);
 const subscriptionOptions: {
   label: string;
   value: "subscribe" | "unsubscribe";
@@ -132,7 +132,9 @@ const invokeSubmit = async () => {
       }
       formSent.value = true;
     } catch (e) {
-      errorMessages.value = (e as ClientApiError).messages;
+      if (e instanceof ApiClientError) {
+        errorMessages.value = e.details.errors;
+      }
     } finally {
       loading.value = false;
     }

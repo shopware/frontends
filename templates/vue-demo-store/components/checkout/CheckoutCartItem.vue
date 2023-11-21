@@ -4,7 +4,7 @@ import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
 
 const props = withDefaults(
   defineProps<{
-    cartItem: Schemas["OrderLineItem"];
+    cartItem: Schemas["LineItem"];
     maxQty?: number;
   }>(),
   {
@@ -67,9 +67,7 @@ const removeCartItem = async () => {
     class="mr-4 h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
   >
     <img
-      :src="
-        getSmallestThumbnailUrl(cartItem.cover) // TODO: [OpenAPI][LineItem] - add `cover`, `payload` and `quantityInformation` definition to schema
-      "
+      :src="getSmallestThumbnailUrl(cartItem.cover)"
       :alt="`${cartItem.label || cartItem.payload.name || ''} cart item`"
       class="h-full w-full object-cover object-center"
       data-testid="cart-product-image"

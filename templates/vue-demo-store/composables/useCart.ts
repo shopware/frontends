@@ -1,12 +1,14 @@
-import type { Cart } from "#shopware";
+import type { Schemas } from "#shopware";
 import { useCartFunction as swUseCart } from "@shopware-pwa/composables-next/composables";
 
 const _useCart = (): UseCartReturn => {
   const useCartData: UseCartReturn = swUseCart();
-  const _storeCart = useContext<undefined | Cart>("swCart");
+  const _storeCart = useContext<undefined | Schemas["Cart"]>("swCart");
   const { apiClient } = useShopwareContext();
 
-  async function refreshCart(newCart?: Cart): Promise<Cart> {
+  async function refreshCart(
+    newCart?: Schemas["Cart"],
+  ): Promise<Schemas["Cart"]> {
     if (newCart) {
       _storeCart.value = newCart;
       return newCart;
