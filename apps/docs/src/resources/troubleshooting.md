@@ -19,7 +19,7 @@ Collection of common issues you may run into while working with Shopware Composa
 
 Currently you should use the default **Storefront SalesChannel type**. This sounds wrong, but if you using the Headless SalesChannel type you will not have nice speaking seo urls at the moment. Because the generation of seo urls will only be executed for SalesChannels with the type Storefront. We working on a more flexible solution with the core team to not have this confusion in the future.
 
-## How to us https for your localhost with Composable Frontends?
+## How to use https for your localhost with Composable Frontends?
 
 - Make sure you have `mkcert` installed on your system. Otherwise, follow [here](https://github.com/FiloSottile/mkcert) to set it up.
 - Create a valid certificate in your project folder by running `mkcert localhost`.
