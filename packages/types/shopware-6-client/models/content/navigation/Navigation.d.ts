@@ -14,7 +14,8 @@ import { CustomFields } from "../../common/CustomField";
 export type StoreNavigationType =
   | "main-navigation"
   | "footer-navigation"
-  | "service-navigation";
+  | "service-navigation"
+  | string;
 
 /**
  * @public
