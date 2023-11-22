@@ -35,23 +35,20 @@ translations = deepMerge(translations, globalTranslations) as Translations;
 const { category: activeCategory } = useCategory();
 const loading: Ref<boolean> = ref(true);
 const useSubCategories: Ref<boolean> = ref(true); // could be passed maybe as a prop in the future
-const categorySubNavigation: Ref<Category[] | null> = ref([]);
+const categoryNavigation: Ref<Category[] | null> = ref([]);
+
+const currentCategoryId = activeCategory.value?.id ?? "main-navigation";
+const type = useSubCategories.value ? currentCategoryId : "main-navigation";
+const { loadNavigationElements: loadMainNavigationElements } = useNavigation({
+  type: type,
+});
+const cmsCategoryNavigation = async (depth: number) => {
+  return loadMainNavigationElements({ depth: depth });
+};
 
 const loadCategories = async (depth: number) => {
   try {
-    const currentCategoryId = activeCategory.value?.id ?? "main-navigation";
-    const type = useSubCategories.value ? currentCategoryId : "main-navigation";
-    const { loadNavigationElements: loadMainNavigationElements } =
-      useNavigation({
-        type: type,
-      });
-    const { data: cmsSubNavigation } = await useAsyncData(
-      "cmsNavigation" + type,
-      () => {
-        return loadMainNavigationElements({ depth: depth });
-      },
-    );
-    categorySubNavigation.value = cmsSubNavigation.value ?? [];
+    categoryNavigation.value = (await cmsCategoryNavigation(depth)) ?? [];
   } catch (e) {
     const err = e as ClientApiError;
     console.error("[CmsElementCategoryNavigation]", err.messages);
@@ -60,7 +57,7 @@ const loadCategories = async (depth: number) => {
 
 const removeChildrenIfNotActiveCategory = () => {
   const navigation: Category[] = JSON.parse(
-    JSON.stringify(categorySubNavigation.value),
+    JSON.stringify(categoryNavigation.value),
   );
   return navigation?.map((navigationElement) => {
     navigationElement.children =
@@ -76,32 +73,32 @@ onMounted(async () => {
   const depth = useSubCategories.value ? 0 : 1;
   await loadCategories(depth);
   if (!useSubCategories.value) {
-    categorySubNavigation.value = removeChildrenIfNotActiveCategory();
+    categoryNavigation.value = removeChildrenIfNotActiveCategory();
   }
   loading.value = false;
 });
 </script>
 <template>
   <div
-    v-if="categorySubNavigation && categorySubNavigation.length"
+    v-if="categoryNavigation && categoryNavigation.length"
     class="cms-element-category-navigation max-w-screen-xl mx-auto"
   >
     <h2
-      v-if="categorySubNavigation.length > 0 && !useSubCategories"
+      v-if="categoryNavigation.length > 0 && !useSubCategories"
       class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
     >
       {{
-        categorySubNavigation.length > 1
+        categoryNavigation.length > 1
           ? translations.listing.categories
           : translations.listing.category
       }}
     </h2>
     <h2
-      v-if="categorySubNavigation.length > 0 && useSubCategories"
+      v-if="categoryNavigation.length > 0 && useSubCategories"
       class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
     >
       {{
-        categorySubNavigation.length > 1
+        categoryNavigation.length > 1
           ? translations.listing.subCategories
           : translations.listing.subCategory
       }}
@@ -110,7 +107,7 @@ onMounted(async () => {
     </h2>
     <SwCategoryNavigation
       :level="0"
-      :elements="categorySubNavigation"
+      :elements="categoryNavigation"
       :activeCategory="activeCategory"
     />
   </div>
