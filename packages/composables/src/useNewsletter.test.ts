@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { useNewsletter } from "./useNewsletter";
 import { shallowMount } from "@vue/test-utils";
-import * as apiExports from "@shopware-pwa/api-client";
 import { defineComponent } from "vue";
+import * as apiExports from "@shopware-pwa/api-client";
 import type { RequestParameters } from "#shopware";
 
 const url = "http://frontend.test";

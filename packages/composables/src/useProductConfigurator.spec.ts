@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useProductConfigurator } from "./useProductConfigurator";
-import { defineComponent, ref } from "vue";
+import { ref, defineComponent } from "vue";
 import mockedProduct from "./mocks/Product";
 import mockedConfigurator from "./mocks/Configurator";
 import * as apiExports from "@shopware-pwa/api-client";
@@ -49,6 +49,12 @@ const Component = () =>
 describe("useProductConfigurator", () => {
   const providedOptions = getMockProvide();
   const wrapper = shallowMount(Component(), providedOptions);
+
+  vi.spyOn(apiExports, "invokePost").mockImplementation((): any => {
+    return new Promise((resolve) => {
+      resolve({ data: { elements: [mockedProduct] } });
+    });
+  });
 
   providedOptions.global.provide.apiClient.invoke.mockResolvedValue({
     elements: [mockedProduct],

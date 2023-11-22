@@ -1,8 +1,9 @@
 import { useSalutations } from "./useSalutations";
 import { describe, expect, it, vi } from "vitest";
-import { flushPromises, shallowMount } from "@vue/test-utils";
-import Salutations from "./mocks/Salutations";
 import { defineComponent } from "vue";
+import { shallowMount, flushPromises } from "@vue/test-utils";
+import Salutations from "./mocks/Salutations";
+import * as apiExports from "@shopware-pwa/api-client";
 
 const Component = defineComponent({
   template: "<div/>",
@@ -30,6 +31,16 @@ const getMockProvide = () => ({
 });
 
 describe("useSalutations", () => {
+  vi.spyOn(apiExports, "getAvailableSalutations").mockImplementation(
+    (): any => {
+      return new Promise((resolve) => {
+        resolve({ elements: Salutations });
+      });
+    },
+  );
+
+  const wrapper = shallowMount(Component, getMockProvide());
+
   it("should init value on init", async () => {
     const providedMock = getMockProvide();
     providedMock.global.provide.apiClient.invoke.mockResolvedValue({

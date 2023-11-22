@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useNavigation } from "./useNavigation";
+import { defineComponent } from "vue";
 import * as apiExports from "@shopware-pwa/api-client";
 import Menu from "./mocks/Menu";
-import { defineComponent } from "vue";
 
 const getMockProvide = () => ({
   global: {
@@ -27,6 +27,14 @@ const Component = defineComponent({
 });
 
 describe("useNavigation", () => {
+  const wrapper = shallowMount(Component, getMockProvide());
+
+  vi.spyOn(apiExports, "getStoreNavigation").mockImplementation((): any => {
+    return new Promise((resolve) => {
+      resolve(Menu);
+    });
+  });
+
   it("should set the menu", async () => {
     const mockedProvide = getMockProvide();
     mockedProvide.global.provide.apiClient.invoke.mockResolvedValue(Menu);

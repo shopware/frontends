@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
-import { defineComponent, ref } from "vue";
+import { ref, defineComponent } from "vue";
 import { useProductWishlist } from "./useProductWishlist";
 
 import * as useLocalWishlist from "./useLocalWishlist";

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useProductPrice } from "./useProductPrice";
-import { ref } from "vue";
+import { ref, defineComponent } from "vue";
 import mockedProduct from "./mocks/Product";
 import mockerProductTierPrices from "./mocks/ProductTierPrices";
 import type { CalculatedPrice, Product } from "@shopware-pwa/types";
@@ -22,32 +22,33 @@ const getMockProvide = () => ({
   },
 });
 
-const Component = (mockedProductData: any) => ({
-  template: "<div/>",
-  props: {},
-  setup() {
-    const {
-      price,
-      totalPrice,
-      unitPrice,
-      displayFromVariants,
-      displayFrom,
-      tierPrices,
-      referencePrice,
-      isListPrice,
-    } = useProductPrice(ref(mockedProductData));
-    return {
-      price,
-      totalPrice,
-      unitPrice,
-      displayFromVariants,
-      displayFrom,
-      tierPrices,
-      referencePrice,
-      isListPrice,
-    };
-  },
-});
+const Component = (mockedProductData: any) =>
+  defineComponent({
+    template: "<div/>",
+    props: {},
+    setup() {
+      const {
+        price,
+        totalPrice,
+        unitPrice,
+        displayFromVariants,
+        displayFrom,
+        tierPrices,
+        referencePrice,
+        isListPrice,
+      } = useProductPrice(ref(mockedProductData));
+      return {
+        price,
+        totalPrice,
+        unitPrice,
+        displayFromVariants,
+        displayFrom,
+        tierPrices,
+        referencePrice,
+        isListPrice,
+      };
+    },
+  });
 
 describe("useProductPrice", () => {
   it("product price are displayed - standard product", () => {

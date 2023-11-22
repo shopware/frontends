@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { useSyncWishlist } from "./useSyncWishlist";
-import * as apiExports from "@shopware-pwa/api-client";
 import { defineComponent } from "vue";
+import * as apiExports from "@shopware-pwa/api-client";
 
 const url = "http://frontend.test";
 const Component = defineComponent({
@@ -59,20 +59,28 @@ describe("useSyncWishlist", () => {
     },
   };
 
-  vi.spyOn(apiExports, "addWishlistProduct").mockImplementation(async () => {
-    return mockedResolve;
+  vi.spyOn(apiExports, "addWishlistProduct").mockImplementation((): any => {
+    return new Promise((resolve) => {
+      resolve(mockedResolve);
+    });
   });
 
-  vi.spyOn(apiExports, "getWishlistProducts").mockImplementation(async () => {
-    return mockedResponse as any;
+  vi.spyOn(apiExports, "getWishlistProducts").mockImplementation((): any => {
+    return new Promise((resolve) => {
+      resolve(mockedResponse as any);
+    });
   });
 
-  vi.spyOn(apiExports, "removeWishlistProduct").mockImplementation(async () => {
-    return mockedResolve;
+  vi.spyOn(apiExports, "removeWishlistProduct").mockImplementation((): any => {
+    return new Promise((resolve) => {
+      resolve(mockedResolve);
+    });
   });
 
-  vi.spyOn(apiExports, "mergeWishlistProducts").mockImplementation(async () => {
-    return mockedResolve;
+  vi.spyOn(apiExports, "mergeWishlistProducts").mockImplementation((): any => {
+    return new Promise((resolve) => {
+      resolve(mockedResolve);
+    });
   });
 
   describe("methods", () => {

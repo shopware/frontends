@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
+import { defineComponent } from "vue";
 import { shallowMount } from "@vue/test-utils";
 import { useProduct } from "./useProduct";
 import mockedProduct from "./mocks/Product";
-import { defineComponent } from "vue";
+
 const Component = defineComponent({
   template: "<div/>",
   setup() {

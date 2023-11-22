@@ -20,12 +20,15 @@ const getMockProvide = () => ({
   },
 });
 
-// const getLoadAssociationsParams = (method?: 'get' | 'post', searchParams?: ShopwareSearchParams) => {
-//   return {
-//     method: method,
-//     searchParams: searchParams ,
-//   };
-// };
+const getLoadAssociationsParams = (
+  method: "get" | "post" | undefined,
+  searchParams?: any,
+) => {
+  return {
+    method: method,
+    searchParams: searchParams ?? null,
+  };
+};
 
 const Component = (mockedProductData: Product) =>
   defineComponent({
@@ -52,6 +55,14 @@ describe("useProductAssociations", () => {
   const wrapper = shallowMount(Component(mockedProduct), provideMock);
 
   it("productAssociations should be empty", () => {
+    expect(wrapper.vm.productAssociations).toStrictEqual([]);
+  });
+
+  it("load productAssociations - GET - Error", async () => {
+    vi.spyOn(apiExports, "invokeGet").mockImplementation(() => {
+      throw new Error();
+    });
+    wrapper.vm.loadAssociations(getLoadAssociationsParams(undefined));
     expect(wrapper.vm.productAssociations).toStrictEqual([]);
   });
 
@@ -83,9 +94,10 @@ describe("useProductAssociations", () => {
   });
 
   it("load productAssociations - GET", async () => {
-    await wrapper.vm.loadAssociations({
-      method: "get",
-      searchParams: {},
+    vi.spyOn(apiExports, "invokeGet").mockImplementation((): any => {
+      return new Promise((resolve) => {
+        resolve({ data: mockedCrossSelling });
+      });
     });
 
     expect(wrapper.vm.productAssociations).toStrictEqual(mockedCrossSelling);
