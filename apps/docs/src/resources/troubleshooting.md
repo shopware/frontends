@@ -2,7 +2,7 @@
 head:
   - - meta
     - name: og:title
-      content: Troubleshooting - Shopware Frontends
+      content: Troubleshooting - Shopware Composable Frontends
   - - meta
     - name: og:description
       content: "Collection of common issues you may run into while working with Shopware Composable Frontends."
@@ -15,9 +15,18 @@ head:
 
 Collection of common issues you may run into while working with Shopware Composable Frontends. If you need help or have other questions, feel free to join the [frontends slack channel](https://shopwarecommunity.slack.com/archives/C050L6NCMGQ).
 
-## Which SalesChannel type to use for Frontends?
+## Which SalesChannel type to use for Composable Frontends?
 
 Currently you should use the default **Storefront SalesChannel type**. This sounds wrong, but if you using the Headless SalesChannel type you will not have nice speaking seo urls at the moment. Because the generation of seo urls will only be executed for SalesChannels with the type Storefront. We working on a more flexible solution with the core team to not have this confusion in the future.
+
+## How to us https for your localhost with Composable Frontends?
+
+- Make sure you have `mkcert` installed on your system. Otherwise, follow [here](https://github.com/FiloSottile/mkcert) to set it up.
+- Create a valid certificate in your project folder by running `mkcert localhost`.
+- Update the `nuxt dev` command in your `package.json`.  
+  It should look like this: `NODE_TLS_REJECT_UNAUTHORIZED=0 nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem`
+- Now run your project with `npm run dev` or `pnpm run dev` from your project root.
+- Your browser may ask you to accept the risk when you visit https://localhost:3000. This is because it is a self-signed certificate.
 
 ## SSR throws error in local environment with DDEV?
 
