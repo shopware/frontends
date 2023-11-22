@@ -720,9 +720,6 @@ importers:
 
   packages/composables:
     dependencies:
-      '@shopware-pwa/api-client':
-        specifier: workspace:*
-        version: link:../api-client
       '@shopware-pwa/helpers-next':
         specifier: workspace:*
         version: link:../helpers

@@ -1,36 +1,19 @@
-import { describe, expect, it, vi } from "vitest";
-import { defineComponent } from "vue";
+import { describe, expect, it } from "vitest";
 import { useLandingSearch } from "./useLandingSearch";
-import { shallowMount } from "@vue/test-utils";
 import LandingPageMock from "./mocks/LandingPage";
-
-const Component = defineComponent({
-  template: "<div/>",
-  props: {},
-  setup() {
-    const { search } = useLandingSearch();
-    return {
-      search,
-    };
-  },
-});
-
-const getMockProvide = () => ({
-  global: {
-    provide: {
-      shopware: {
-        apiInstance: {
-          config: {},
-        },
-      },
-      apiClient: { invoke: () => LandingPageMock },
-    },
-  },
-});
+import { useSetup } from "./_test";
 
 describe("useLandingSearch", () => {
-  const wrapper = shallowMount(Component, getMockProvide());
   it("mergeWishlistProducts", async () => {
-    expect(await wrapper.vm.search("test")).toStrictEqual(LandingPageMock);
+    const { vm, injections } = useSetup(useLandingSearch);
+    injections.apiClient.invoke.mockResolvedValue(LandingPageMock);
+
+    const result = vm.search("test");
+
+    expect(injections.apiClient.invoke).toBeCalledWith(
+      expect.stringContaining("readLandingPage"),
+      expect.objectContaining({ landingPageId: "test" }),
+    );
+    expect(result).resolves.toStrictEqual(LandingPageMock);
   });
 });

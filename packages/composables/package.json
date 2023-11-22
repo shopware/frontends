@@ -36,7 +36,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
     "@vueuse/core": "^10.6.1",
