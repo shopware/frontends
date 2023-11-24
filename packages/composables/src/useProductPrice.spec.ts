@@ -4,7 +4,7 @@ import { ref } from "vue";
 import mockedProduct from "./mocks/Product";
 import { useSetup } from "./_test";
 import productTierPrices from "./mocks/ProductTierPrices";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 describe("useProductPrice", () => {
   it("product price are displayed - standard product", () => {

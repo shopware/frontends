@@ -943,6 +943,7 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     CmsBlock: {
+      apiAlias: "cms_block"; // TODO: [OpenAPI][CmsBlock] - define apiAlias properly
       backgroundColor?: string;
       backgroundMedia?: components["schemas"]["Media"];
       backgroundMediaId?: string;
@@ -1037,7 +1038,7 @@ export type components = {
       name?: string;
       previewMedia?: components["schemas"]["Media"];
       previewMediaId?: string;
-      sections?: components["schemas"]["CmsSection"];
+      sections?: Array<components["schemas"]["CmsSection"]>; // TODO: [OpenAPI][CmsPage] - define sections as required array
       translated?: {
         cssClass?: string;
         entity?: string;
@@ -1069,6 +1070,7 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     CmsSection: {
+      apiAlias: "cms_section"; // TODO: [OpenAPI][CmsSection] - define apiAlias properly
       backgroundColor?: string;
       backgroundMedia?: components["schemas"]["Media"];
       backgroundMediaId?: string;
@@ -7514,7 +7516,7 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Product"][];
+            elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
           } & components["schemas"]["EntitySearchResult"];
         };
       };

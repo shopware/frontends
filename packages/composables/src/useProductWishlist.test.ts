@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { ref } from "vue";
 import { useProductWishlist } from "./useProductWishlist";
 import { useSetup } from "./_test";
-import { Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 describe("useProductWishlist", () => {
   describe("methods not logged in", () => {

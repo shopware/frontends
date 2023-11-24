@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     },
     public: {
       shopware: {
-        shopwareEndpoint: "https://demo-frontends.shopware.store",
+        shopwareEndpoint: "https://demo-frontends.shopware.store/store-api/",
         shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
         devStorefrontUrl: "",
       },
@@ -66,7 +66,13 @@ export default defineNuxtConfig({
     // typeCheck: true,
     strict: true,
   },
-  modules: ["@vueuse/nuxt", "@unocss/nuxt", "@nuxt/devtools", "@nuxtjs/i18n"],
+  modules: [
+    "@vueuse/nuxt",
+    "@unocss/nuxt",
+    "@shopware-pwa/nuxt3-module",
+    "@nuxt/devtools",
+    "@nuxtjs/i18n",
+  ],
   // components: true,
   components: {
     dirs: [
