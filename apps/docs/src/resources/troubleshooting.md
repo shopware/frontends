@@ -21,11 +21,35 @@ Currently you should use the default **Storefront SalesChannel type**. This soun
 
 ## How to use https for your localhost with Composable Frontends?
 
+### Option 1: Manual with mkcert
+
 - Make sure you have `mkcert` installed on your system. Otherwise, follow [here](https://github.com/FiloSottile/mkcert) to set it up.
 - Create a valid certificate in your project folder by running `mkcert localhost`.
 - Update the `nuxt dev` command in your `package.json`.  
   It should look like this: `NODE_TLS_REJECT_UNAUTHORIZED=0 nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem`
 - Now run your project with `npm run dev` or `pnpm run dev` from your project root.
+- Your browser may ask you to accept the risk when you visit https://localhost:3000. This is because it is a self-signed certificate.
+
+### Option 2: Vite plugin
+
+- Execute `npm add -D @vitejs/plugin-basic-ssl` in your project folder
+- Edit your `nuxt.config.ts` file and add:
+  ```ts
+  import basicSsl from '@vitejs/plugin-basic-ssl'
+  // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
+  export default defineNuxtConfig({
+  // ...
+  devServer: {
+    https: true,
+  },
+  vite: {
+    plugins: [
+      basicSsl(),
+    ],
+  },
+  // ...
+  ```
+- Start your dev server with `npm run dev`
 - Your browser may ask you to accept the risk when you visit https://localhost:3000. This is because it is a self-signed certificate.
 
 ## SSR throws error in local environment with DDEV?
