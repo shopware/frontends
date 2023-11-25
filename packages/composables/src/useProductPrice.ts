@@ -20,7 +20,9 @@ export type UseProductPriceReturn = {
   /**
    * Can be used if isListPrice is set to true
    */
-  referencePrice: ComputedRef<Schemas["CalculatedPrice"] | undefined>;
+  referencePrice: ComputedRef<
+    Schemas["CalculatedPrice"]["referencePrice"] | undefined
+  >;
   /**
    * determines if `price` contains the minimum tier price
    */
@@ -60,8 +62,9 @@ export function useProductPrice(
         ? product.value?.calculatedPrices?.[0]
         : product.value?.calculatedPrice,
   );
-  const referencePrice: ComputedRef<Schemas["CalculatedPrice"] | undefined> =
-    computed(() => _real?.value?.referencePrice);
+  const referencePrice: ComputedRef<
+    Schemas["CalculatedPrice"]["referencePrice"] | undefined
+  > = computed(() => _real?.value?.referencePrice);
 
   const _displayParent: ComputedRef<boolean> = computed(
     () =>
