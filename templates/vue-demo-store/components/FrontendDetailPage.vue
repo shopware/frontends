@@ -23,7 +23,7 @@ if (!productResponse.value) {
   throw new Error("No product found for navigationId: " + props.navigationId);
 }
 const breadcrumbs = getCategoryBreadcrumbs(
-  productResponse.value.product.seoCategory, // TODO: [OpenAPI][Product] - seoCategory needs to be defined properly
+  productResponse.value.product.seoCategory,
   {
     startIndex: 2,
   },

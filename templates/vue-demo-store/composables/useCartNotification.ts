@@ -24,7 +24,7 @@ export function useCartNotification(): useCartNotificationReturn {
    */
   const codeErrorsNotification = () => {
     const errors: Schemas["Cart"]["errors"] = consumeCartErrors();
-    if (!errors || Array.isArray(errors)) return; // TODO: [OpenAPI][Cart] - Cart errors should be object, not array, for now, when empty - returns array
+    if (!errors || Array.isArray(errors)) return;
 
     Object.keys(errors).forEach((element) => {
       if (successCodes.includes(errors[element].messageKey)) {
@@ -42,7 +42,7 @@ export function useCartNotification(): useCartNotificationReturn {
    */
   const getErrorsCodes = () => {
     const errors: Schemas["Cart"]["errors"] = consumeCartErrors();
-    if (!errors || Array.isArray(errors)) return []; // TODO: [OpenAPI][Cart] - Cart errors should be object, not array, for now, when empty - returns array
+    if (!errors || Array.isArray(errors)) return [];
 
     return Object.keys(errors).reduce((acc, element) => {
       if (!successCodes.includes(errors[element].messageKey))

@@ -646,9 +646,13 @@ export type components = {
       unitPrice: number;
       quantity: number;
       totalPrice: number;
-      calculatedTaxes: CalculatedTax[];
-      taxRules: TaxRule[];
-      referencePrice: ReferencePrice;
+      calculatedTaxes: GenericRecord[];
+      taxRules: GenericRecord[];
+      referencePrice?: {
+        price: number;
+        referenceUnit: number;
+        unitName: string;
+      };
       hasRange?: boolean;
       listPrice: {
         price: number;
@@ -3156,6 +3160,7 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
+    // TODO: [OpenAPI][Product] - null shouls be undefined by default to decrease payload size
     /** Added since version: 6.0.0.0 */
     Product: {
       apiAlias: "product"; // TODO: [OpenAPI][Product] apiAlias field should be defined in schema as string literal
@@ -3261,7 +3266,7 @@ export type components = {
       productManufacturerVersionId?: string;
       productMediaVersionId?: string;
       productNumber: string;
-      productReviews?: components["schemas"]["ProductReview"];
+      productReviews?: Array<components["schemas"]["ProductReview"]>; // TODO: [OpenAPI][Product] productReviews field should be defined as array
       properties?: Array<components["schemas"]["PropertyGroupOption"]>; // TODO: [OpenAPI][Product] properties field should be defined as array
       propertyIds?: readonly string[];
       /** Format: int64 */
@@ -4054,10 +4059,12 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      customerId?: string; // TODO: [OpenAPI][ProductReview] customerId field should be defined
+      externalUser?: string; // TODO: [OpenAPI][ProductReview] externalUser field should be defined
+      id: string; // TODO: [OpenAPI][ProductReview] id field should be defined as required
       languageId: string;
       /** Format: float */
-      points?: number;
+      points: number; // TODO: [OpenAPI][ProductReview] points field should be defined as required
       productId: string;
       productVersionId?: string;
       salesChannelId: string;

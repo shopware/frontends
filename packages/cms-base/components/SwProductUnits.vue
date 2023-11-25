@@ -33,8 +33,7 @@ translations = deepMerge(translations, globalTranslations) as Translations;
 const purchaseUnit = computed(() => props.product?.purchaseUnit);
 const unitName = computed(() => props.product?.unit?.translated?.name);
 const referencePrice = computed(
-  () =>
-    props.product?.calculatedPrice?.referencePrice?.price as unknown as number, // TODO: [OpenAPI][Prodict] - calculatedPrice needs to be defined properly
+  () => props.product?.calculatedPrice?.referencePrice?.price,
 );
 const referenceUnit = computed(
   () => props.product?.calculatedPrice?.referencePrice?.referenceUnit,
