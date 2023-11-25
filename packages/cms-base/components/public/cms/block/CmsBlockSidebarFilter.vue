@@ -2,7 +2,7 @@
 import type {
   CmsBlockSidebarFilter,
   CmsElementSidebarFilter,
-} from "@shopware-pwa/composables-next/composables";
+} from "@shopware-pwa/composables-next";
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{

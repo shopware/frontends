@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsElementProductListing } from "@shopware-pwa/composables-next/composables";
+import type { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
 import deepMerge from "../../../../helpers/deepMerge";

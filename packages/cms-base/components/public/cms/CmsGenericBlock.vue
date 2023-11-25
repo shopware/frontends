@@ -4,7 +4,7 @@ import {
   getCmsLayoutConfiguration,
   getBackgroundImageUrl,
 } from "@shopware-pwa/helpers-next";
-import { resolveCmsComponent } from "@shopware-pwa/composables-next/composables";
+import { resolveCmsComponent } from "@shopware-pwa/composables-next";
 import { h } from "vue";
 
 const props = defineProps<{

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import type {
-  BoxLayout,
-  DisplayMode,
-} from "@shopware-pwa/composables-next/composables";
+import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductRoute,

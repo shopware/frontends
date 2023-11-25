@@ -1,5 +1,5 @@
 import type { ApiClient } from "#shopware";
-import type { ShopwareContext } from "@shopware-pwa/composables-next/composables";
+import type { ShopwareContext } from "@shopware-pwa/composables-next";
 
 export function useShopwareContext() {
   const shopwareContext = inject<ShopwareContext | null>("shopware", null);

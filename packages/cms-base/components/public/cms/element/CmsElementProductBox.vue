@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsElementProductBox } from "@shopware-pwa/composables-next/composables";
+import type { CmsElementProductBox } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import { computed } from "vue";
 

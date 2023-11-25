@@ -2,7 +2,7 @@
 import type {
   CmsElementImageSlider,
   CmsElementImage,
-} from "@shopware-pwa/composables-next/composables";
+} from "@shopware-pwa/composables-next";
 import SwSlider from "../../../SwSlider.vue";
 import { computed } from "vue";
 

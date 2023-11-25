@@ -1,6 +1,9 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-  extends: ["@shopware-pwa/composables-next", "@shopware-pwa/cms-base"],
+  extends: [
+    "@shopware-pwa/composables-next/nuxt-layer",
+    "@shopware-pwa/cms-base",
+  ],
   runtimeConfig: {
     shopware: {
       /**

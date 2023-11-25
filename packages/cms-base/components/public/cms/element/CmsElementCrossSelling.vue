@@ -2,7 +2,7 @@
 import type {
   CmsElementCrossSelling,
   SliderElementConfig,
-} from "@shopware-pwa/composables-next/composables";
+} from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwSlider from "../../../SwSlider.vue";

@@ -18,7 +18,23 @@
   },
   "license": "MIT",
   "type": "module",
-  "main": "./nuxt.config.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./nuxt-layer": {
+      "import": "./nuxt.config.ts"
+    },
+    "./composables": {
+      "import": "./composables/index.ts"
+    },
+    "./lib": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
   "files": [
     "dist",
     "metadata",
