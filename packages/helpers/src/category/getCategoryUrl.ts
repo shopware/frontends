@@ -1,10 +1,11 @@
-import type { Category } from "@shopware-pwa/types";
-
-type LinkedCategory = Pick<
-  Category,
-  "type" | "externalLink" | "seoUrls" | "internalLink" | "id" | "linkType"
->;
-
+type LinkedCategory<T = unknown> = T & {
+  type: string;
+  externalLink: string;
+  seoUrls: string;
+  internalLink: string;
+  id: string;
+  linkType: string;
+};
 /**
  * Extract prefix for technical URL
  */

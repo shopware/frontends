@@ -1,9 +1,22 @@
-import type {
-  CmsBlock,
-  CmsSection,
-  CmsSlot,
-  CmsVisibility,
-} from "@shopware-pwa/types";
+// CmsBlock make as a generic type
+type GenericCms = {
+  visibility: {
+    [key in CmsVisibility]: boolean;
+  };
+  cssClass: string | null;
+  backgroundColor: string | null;
+  backgroundMedia: { url: string } | null;
+  backgroundMediaMode: string | null;
+  sizingMode: string | null;
+  marginBottom: string | null;
+  marginLeft: string | null;
+  marginRight: string | null;
+  marginTop: string | null;
+};
+type CmsBlock = GenericCms & { apiAlias: "cms_block" };
+type CmsSection = GenericCms & { apiAlias: "cms_section" };
+type CmsSlot = GenericCms & { apiAlias: "cms_slot" };
+type CmsVisibility = "mobile" | "tablet" | "desktop" | string;
 
 /**
  * @beta

@@ -1,4 +1,6 @@
-import type { CmsBlock, CmsSection } from "@shopware-pwa/types";
+type CmsElement<T = unknown> = T & {
+  backgroundMedia: { metaData: { width: number; height: number } };
+};
 
 const DEFAULT_BG_IMAGE_SIZE = 800;
 function roundUp(num: number) {
@@ -14,7 +16,7 @@ const getUrlFromBackgroundImage = (url: string) => {
 
 export function getBackgroundImageUrl(
   url: string,
-  element: CmsBlock | CmsSection,
+  element: CmsElement,
 ): string {
   const backgroundImage = getUrlFromBackgroundImage(url);
   const width = element.backgroundMedia?.metaData.width ?? 0;

@@ -1,4 +1,6 @@
-import type { Language } from "@shopware-pwa/types";
+type Language<T = unknown> = T & {
+  translationCode: { translated: { name: string } };
+};
 
 /**
  * Get translated language name

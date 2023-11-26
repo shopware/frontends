@@ -1,4 +1,9 @@
-import type { Category } from "@shopware-pwa/types";
+type Category<T = unknown> = T & {
+  name: string;
+  translated: { name: string };
+  media: { url: string };
+  type: string;
+};
 
 const isCategory = (category: Partial<Category>): boolean => {
   return (
