@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
+import { ApiClientError } from "@shopware/api-client";
 
 const props = withDefaults(
   defineProps<{
@@ -32,14 +33,23 @@ const {
 const quantity = ref();
 syncRefs(itemQuantity, quantity);
 
+const { resolveApiErrors } = useApiErrorsResolver("account_login");
+
 const updateQuantity = async (quantityInput: number | undefined) => {
   if (quantityInput === itemQuantity.value) return;
 
   isLoading.value = true;
 
-  const response = await changeItemQuantity(Number(quantityInput));
-  // Refresh cart after qty update
-  await refreshCart(response);
+  try {
+    const response = await changeItemQuantity(Number(quantityInput));
+    // Refresh cart after qty update
+    await refreshCart(response);
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      const errors = resolveApiErrors(error.details.errors);
+      errors.forEach((error) => pushError(error));
+    }
+  }
 
   // Make sure that qty is the same as it is in the response
   quantity.value = itemQuantity.value;

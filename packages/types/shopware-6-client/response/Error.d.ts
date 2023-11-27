@@ -12,7 +12,11 @@ type Error = {
   code: string;
   title: string;
   detail: string;
-  meta: unknown;
+  meta?: {
+    parameters?: {
+      [key: string]: string;
+    };
+  };
   trace?: ErrorTrace[];
   source?: {
     pointer: string;
