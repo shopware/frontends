@@ -143,15 +143,18 @@ importers:
       '@adyen/adyen-web':
         specifier: ^5.53.3
         version: 5.53.3
-      '@shopware-pwa/api-client':
-        specifier: canary
-        version: link:../../packages/api-client
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
+      '@shopware-pwa/nuxt3-module':
+        specifier: canary
+        version: link:../../packages/nuxt3-module
       '@shopware-pwa/types':
         specifier: canary
         version: link:../../packages/types
+      '@shopware/api-client':
+        specifier: canary
+        version: link:../../packages/api-client-next
       '@unocss/nuxt':
         specifier: ^0.57.6
         version: 0.57.6(postcss@8.4.31)

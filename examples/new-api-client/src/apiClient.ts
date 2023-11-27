@@ -1,8 +1,4 @@
-import {
-  RequestParameters,
-  RequestReturnType,
-  createAPIClient,
-} from "@shopware/api-client";
+import { RequestParameters, createAPIClient } from "@shopware/api-client";
 import type { operationPaths, operations } from "#shopware";
 import Cookies from "js-cookie";
 

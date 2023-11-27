@@ -1,5 +1,8 @@
 export default defineNuxtConfig({
-  extends: ["@shopware-pwa/composables-next", "@shopware-pwa/cms-base"],
+  extends: [
+    "@shopware-pwa/composables-next/nuxt-layer",
+    "@shopware-pwa/cms-base",
+  ],
   runtimeConfig: {
     public: {
       loginData: {
@@ -24,6 +27,6 @@ export default defineNuxtConfig({
   css: [
     "@unocss/reset/tailwind-compat.css", // needed to reset styles see https://unocss.dev/guide/style-reset (@unocss/reset)
   ],
-  modules: ["@unocss/nuxt"],
+  modules: ["@unocss/nuxt", "@shopware-pwa/nuxt3-module"],
   devtools: { enabled: true },
 });
