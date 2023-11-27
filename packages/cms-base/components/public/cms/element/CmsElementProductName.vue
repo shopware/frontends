@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { CmsElementProductName } from "@shopware-pwa/composables-next";
-import CmsElementText from "./CmsElementText.vue";
 
 const props = defineProps<{
   content: CmsElementProductName;

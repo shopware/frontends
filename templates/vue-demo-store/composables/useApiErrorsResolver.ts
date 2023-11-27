@@ -1,4 +1,4 @@
-import type { ShopwareError } from "@shopware-pwa/types";
+import type { ApiError } from "@shopware/api-client";
 
 type ContextErrors = {
   [key: string]: {
@@ -7,7 +7,7 @@ type ContextErrors = {
 };
 
 export type UseApiErrorsResolver = {
-  resolveApiErrors(errors: ShopwareError[]): string[];
+  resolveApiErrors(errors: ApiError[]): string[];
 };
 
 /**
@@ -23,7 +23,7 @@ export function useApiErrorsResolver(context?: string): UseApiErrorsResolver {
   const { $i18n } = useNuxtApp();
   const { t, te } = $i18n;
 
-  const resolveApiErrors = (errors: ShopwareError[]) => {
+  const resolveApiErrors = (errors: ApiError[]) => {
     const errorsTable = errors.map(({ detail, code, meta }) => {
       /**
        * In some cases, parameters errors
@@ -45,14 +45,14 @@ export function useApiErrorsResolver(context?: string): UseApiErrorsResolver {
         meta.parameters = pureMeta;
       }
 
-      if (te(`errors.${code}`)) {
+      if (code && te(`errors.${code}`)) {
         return t(`errors.${code}`, { ...meta?.parameters });
       }
-      if (context && contextErrors[context][code]) {
+      if (context && code && contextErrors[context][code]) {
         return t(`errors.${contextErrors[context][code]}`);
       }
 
-      return detail;
+      return detail || "No details provided";
     });
 
     return errorsTable;

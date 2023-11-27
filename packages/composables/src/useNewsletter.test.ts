@@ -1,60 +1,32 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { useNewsletter } from "./useNewsletter";
-import { shallowMount } from "@vue/test-utils";
-import * as apiExports from "@shopware-pwa/api-client";
-
-const url = "http://frontend.test";
-
-const Component = {
-  template: "<div/>",
-  props: {},
-  setup() {
-    const { newsletterSubscribe, newsletterUnsubscribe } = useNewsletter();
-    return { newsletterSubscribe, newsletterUnsubscribe };
-  },
-};
-
-const getMockProvide = (mockedUrl: string | undefined) => ({
-  global: {
-    provide: {
-      shopware: {
-        apiInstance: {
-          config: {
-            endpoint: mockedUrl,
-          },
-        },
-      },
-    },
-  },
-});
+import { useSetup } from "./_test";
 
 describe("useNewsletter", () => {
-  const wrapper = shallowMount(Component, getMockProvide(url));
-  const email = "test@testemail.test";
-  const newsletterMockData = {
-    email: email,
-    option: "subscribe" as const,
-  };
+  it("newsletter subscribe", async () => {
+    const { vm, injections } = useSetup(useNewsletter);
 
-  vi.spyOn(apiExports, "newsletterSubscribe").mockImplementation(() => {
-    return new Promise<void>((resolve) => {
-      resolve();
+    await vm.newsletterSubscribe({
+      email: "test@shopware.com",
+      option: "subscribe",
     });
-  });
 
-  vi.spyOn(apiExports, "newsletterUnsubscribe").mockImplementation(() => {
-    return new Promise<void>((resolve) => {
-      resolve();
-    });
-  });
-
-  it("newsletter subscribe", () => {
-    expect(wrapper.vm.newsletterSubscribe(newsletterMockData)).resolves.toEqual(
-      undefined,
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("subscribeToNewsletter"),
+      expect.anything(),
     );
   });
 
-  it("newsletter unsubscribe", () => {
-    expect(wrapper.vm.newsletterUnsubscribe(email)).resolves.toEqual(undefined);
+  it("newsletter unsubscribe", async () => {
+    const { vm, injections } = useSetup(useNewsletter);
+
+    await vm.newsletterUnsubscribe("sometestemail@shopware.com");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("unsubscribeToNewsletter"),
+      {
+        email: "sometestemail@shopware.com",
+      },
+    );
   });
 });

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import type { ClientApiError } from "@shopware-pwa/types";
 import { customValidators } from "@/i18n/utils/i18n-validators";
+import { ApiClientError } from "@shopware/api-client";
 
 const { required, minLength, email, requiredIf } = customValidators();
 const props = defineProps<{
@@ -90,6 +90,7 @@ const rules = computed(() => ({
 }));
 
 const $v = useVuelidate(rules, state);
+const { resolveApiErrors } = useApiErrorsResolver("account_login");
 
 const invokeSubmit = async () => {
   $v.value.$touch();
@@ -107,10 +108,10 @@ const invokeSubmit = async () => {
         $v.value.$reset();
       }
     } catch (error) {
-      const e = error as ClientApiError;
-      const { resolveApiErrors } = useApiErrorsResolver("account_login");
-      const errors = resolveApiErrors(e.messages);
-      errors.forEach((error) => pushError(error));
+      if (error instanceof ApiClientError) {
+        const errors = resolveApiErrors(error.details.errors);
+        errors.forEach((error) => pushError(error));
+      }
     } finally {
       loading.value = false;
     }

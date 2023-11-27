@@ -2,15 +2,12 @@
 import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
-  getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
+  getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import type {
-  ClientApiError,
-  Product,
-  PropertyGroupOption,
-} from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
 
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
@@ -20,7 +17,7 @@ const { formatLink } = useInternationalization(localePath);
 
 const props = withDefaults(
   defineProps<{
-    product: Product;
+    product: Schemas["Product"];
     layoutType?: BoxLayout;
     displayMode?: DisplayMode;
   }>(),
@@ -45,16 +42,17 @@ const toggleWishlistProduct = async () => {
         }),
       );
     } catch (error) {
-      const e = error as ClientApiError;
-      const reason = e?.messages?.[0]?.detail
-        ? `Reason: ${e?.messages?.[0]?.detail}`
-        : "";
-      return pushError(
-        `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
-        {
-          timeout: 5000,
-        },
-      );
+      if (error instanceof ApiClientError) {
+        const reason = error.details.errors?.[0]?.detail
+          ? `Reason: ${error.details.errors?.[0]?.detail}`
+          : "";
+        return pushError(
+          `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
+          {
+            timeout: 5000,
+          },
+        );
+      }
     }
   }
   removeFromWishlist();
@@ -81,9 +79,9 @@ function roundUp(num: number) {
 }
 
 const srcPath = computed(() => {
-  return `${getProductThumbnailUrl(product.value)}?&height=${roundUp(
-    height.value,
-  )}&fit=crop`;
+  return `${getSmallestThumbnailUrl(
+    product.value.cover?.media,
+  )}?&height=${roundUp(height.value)}&fit=crop`;
 });
 </script>
 
@@ -149,8 +147,8 @@ const srcPath = computed(() => {
         :key="option.id"
         class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
       >
-        {{ (option as PropertyGroupOption).group.name }}:
-        {{ (option as PropertyGroupOption).name }}
+        {{ option.group.name }}:
+        {{ option.name }}
       </span>
     </div>
     <div class="px-4 pb-4">

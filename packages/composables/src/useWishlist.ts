@@ -1,10 +1,9 @@
 /**
  * Template composable
  */
-import { computed, ComputedRef } from "vue";
-import { useUser } from "./useUser";
-import { useLocalWishlist } from "./useLocalWishlist";
-import { useSyncWishlist } from "./useSyncWishlist";
+import { computed } from "vue";
+import type { ComputedRef } from "vue";
+import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
 
 export type UseWishlistReturn = {
   /**

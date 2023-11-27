@@ -1,5 +1,3 @@
-import type { Media } from "@shopware-pwa/types";
-
 /**
  * Returns the smallest thumbnail url from the media object
  *
@@ -8,9 +6,14 @@ import type { Media } from "@shopware-pwa/types";
  * @public
  * @category Media
  */
-export function getSmallestThumbnailUrl(
-  media: Media | undefined | null,
-): string | undefined {
+export function getSmallestThumbnailUrl<
+  T extends {
+    thumbnails?: Array<{
+      width: number;
+      url: string;
+    }>;
+  },
+>(media?: T): string | undefined {
   if (!media || !media?.thumbnails?.length) {
     return;
   }
@@ -30,7 +33,14 @@ export function getSmallestThumbnailUrl(
  * @public
  * @category Media
  */
-export function getBiggestThumbnailUrl(media: Media): string | undefined {
+export function getBiggestThumbnailUrl<
+  T extends {
+    thumbnails?: Array<{
+      width: number;
+      url: string;
+    }>;
+  },
+>(media?: T): string | undefined {
   if (!media?.thumbnails?.length) {
     return;
   }
@@ -50,7 +60,14 @@ export function getBiggestThumbnailUrl(media: Media): string | undefined {
  * @public
  * @category Media
  */
-export function getSrcSetForMedia(media: Media): string {
+export function getSrcSetForMedia<
+  T extends {
+    thumbnails?: Array<{
+      width: number;
+      url: string;
+    }>;
+  },
+>(media?: T): string {
   if (!media?.thumbnails?.length) {
     return "";
   }

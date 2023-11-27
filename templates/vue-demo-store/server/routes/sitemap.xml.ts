@@ -1,8 +1,6 @@
-import { getSitemap } from "@shopware-pwa/api-client";
 import { streamToPromise, SitemapIndexStream } from "sitemap";
 import { Readable } from "stream";
-import type { SitemapResult } from "@shopware-pwa/types";
-import apiContext from "../apiBuilder";
+import apiClient from "../apiBuilder";
 import getURL from "requrl";
 
 type Sitemap = {
@@ -11,10 +9,10 @@ type Sitemap = {
 
 export default defineEventHandler(async (event) => {
   const sitemaps: Sitemap[] = [];
-  const response = await getSitemap(apiContext);
+  const response = await apiClient.invoke("readSitemap get /sitemap");
   const smis = new SitemapIndexStream();
 
-  response.forEach((element: SitemapResult) => {
+  response.forEach((element) => {
     sitemaps.push({
       url: element.filename,
     });

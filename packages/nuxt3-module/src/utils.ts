@@ -3,7 +3,7 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from "node:url";
 import { promises as fs, constants as FS_CONSTANTS } from "node:fs";
 
-type DEPENDENCY = "@shopware-pwa/api-client" | "@shopware-pwa/composables-next";
+type DEPENDENCY = "@shopware-pwa/composables-next";
 
 const distDir = dirname(fileURLToPath(import.meta.url));
 const pkgDir = resolve(distDir, "..");

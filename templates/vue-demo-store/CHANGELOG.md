@@ -1,5 +1,28 @@
 # vue-demo-store
 
+## 0.15.1
+
+### Patch Changes
+
+- [#466](https://github.com/shopware/frontends/pull/466) [`543d18d5`](https://github.com/shopware/frontends/commit/543d18d5f8523162dacb364c8e8e6adcff41c0ff) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Adjust product listing page styles
+
+- [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@unocss/nuxt_ from **^0.57.2** to **^0.57.3**
+  - Changed dependency _@vueuse/nuxt_ from **^10.5.0** to **^10.6.1**
+
+- [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@unocss/nuxt_ from **^0.57.3** to **^0.57.6**
+
+- Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831), [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550), [`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831), [`135ca37d`](https://github.com/shopware/frontends/commit/135ca37d9c911cf47d75705006af2879ab7800a8), [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0)]:
+  - @shopware-pwa/helpers-next@0.5.1
+  - @shopware-pwa/composables-next@0.14.1
+  - @shopware-pwa/cms-base@0.9.1
+  - @shopware-pwa/nuxt3-module@0.5.6
+  - @shopware-pwa/api-client@0.7.0
+  - @shopware-pwa/types@0.6.0
+
 ## 0.15.0
 
 ### Minor Changes

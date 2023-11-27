@@ -288,3 +288,4 @@ export function createAdminAPIClient<
 }
 
 export { ApiClientError } from "./errorInterceptor";
+export type { ApiError } from "./errorInterceptor";

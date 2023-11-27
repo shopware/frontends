@@ -101,7 +101,7 @@ watch(enter, (value) => {
       class="absolute border-gray-100 border-t-1 duration-300 left-0 mt-2 overflow-hidden right-0 rounded-b-md shadow-md transition-height w-auto z-1"
     >
       <NuxtLink
-        v-for="product in getProducts.slice(0, displayTotal)"
+        v-for="product in getProducts?.slice(0, displayTotal)"
         :key="product.id"
         :to="formatLink(getProductRoute(product))"
         data-testid="layout-search-suggest-link"

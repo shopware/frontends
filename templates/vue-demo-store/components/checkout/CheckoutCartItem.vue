@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type { Schemas } from "#shopware";
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-import type { LineItem, ClientApiError } from "@shopware-pwa/types";
+import { ApiClientError } from "@shopware/api-client";
 
 const props = withDefaults(
   defineProps<{
-    cartItem: LineItem;
+    cartItem: Schemas["LineItem"];
     maxQty?: number;
   }>(),
   {
@@ -32,6 +33,8 @@ const {
 const quantity = ref();
 syncRefs(itemQuantity, quantity);
 
+const { resolveApiErrors } = useApiErrorsResolver("account_login");
+
 const updateQuantity = async (quantityInput: number | undefined) => {
   if (quantityInput === itemQuantity.value) return;
 
@@ -42,10 +45,10 @@ const updateQuantity = async (quantityInput: number | undefined) => {
     // Refresh cart after qty update
     await refreshCart(response);
   } catch (error) {
-    const e = error as ClientApiError;
-    const { resolveApiErrors } = useApiErrorsResolver("account_login");
-    const errors = resolveApiErrors(e.messages);
-    errors.forEach((error) => pushError(error));
+    if (error instanceof ApiClientError) {
+      const errors = resolveApiErrors(error.details.errors);
+      errors.forEach((error) => pushError(error));
+    }
   }
 
   // Make sure that qty is the same as it is in the response
@@ -119,9 +122,9 @@ const removeCartItem = async () => {
         v-model="quantity"
         type="number"
         :disabled="isLoading"
-        :min="cartItem.quantityInformation?.minPurchase || 1"
-        :max="cartItem.quantityInformation?.maxPurchase || maxQty"
-        :step="cartItem.quantityInformation?.purchaseSteps || 1"
+        :min="(cartItem as any).quantityInformation?.minPurchase || 1"
+        :max="(cartItem as any).quantityInformation?.maxPurchase || maxQty"
+        :step="(cartItem as any).quantityInformation?.purchaseSteps || 1"
         data-testid="cart-product-qty-select"
         name="quantity"
         aria-label="Cart item quantity"

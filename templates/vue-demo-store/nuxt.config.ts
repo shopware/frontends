@@ -1,5 +1,9 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
+  extends: [
+    "@shopware-pwa/composables-next/nuxt-layer",
+    "@shopware-pwa/cms-base",
+  ],
   runtimeConfig: {
     shopware: {
       /**
@@ -10,7 +14,7 @@ export default defineNuxtConfig({
     },
     public: {
       shopware: {
-        shopwareEndpoint: "https://demo-frontends.shopware.store",
+        shopwareEndpoint: "https://demo-frontends.shopware.store/store-api/",
         shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
         devStorefrontUrl: "",
       },
@@ -69,7 +73,6 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
-    "@shopware-pwa/cms-base",
     "@nuxt/devtools",
     "@nuxtjs/i18n",
   ],

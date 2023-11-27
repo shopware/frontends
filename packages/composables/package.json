@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/composables-next",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "Shopware Frontends composables for Vue",
   "author": "Shopware",
   "repository": {
@@ -17,20 +17,34 @@
     "url": "https://github.com/shopware/frontends/issues"
   },
   "license": "MIT",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "metadata"
-  ],
+  "type": "module",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      }
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./nuxt-layer": {
+      "import": "./nuxt.config.ts"
+    },
+    "./composables": {
+      "import": "./composables/index.ts"
+    },
+    "./lib": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./dist": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     }
   },
+  "files": [
+    "dist",
+    "metadata",
+    "src",
+    "composables"
+  ],
   "scripts": {
     "build": "unbuild && pnpm build:types",
     "build:types": "npx -p typescript tsc --project tsconfig.build.json",
@@ -38,15 +52,17 @@
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
+    "@shopware/api-client": "workspace:*",
     "@vueuse/core": "^10.6.1",
     "scule": "^1.1.0"
   },
   "devDependencies": {
+    "@nuxt/kit": "^3.8.1",
     "@shopware-pwa/types": "workspace:*",
     "@vitest/coverage-v8": "^0.34.6",
     "@vue/test-utils": "^2.4.2",

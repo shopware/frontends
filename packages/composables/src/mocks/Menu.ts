@@ -593,6 +593,6 @@ const Menu: StoreNavigationElement[] = [
     id: "162cd978ddaa498790e70be6dc75d089",
     apiAlias: "category",
   },
-];
+] as unknown as StoreNavigationElement[];
 
 export default Menu;

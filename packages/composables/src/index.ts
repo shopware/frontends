@@ -28,6 +28,7 @@ export * from "./useCheckout";
 export * from "./useCmsBlock";
 export * from "./useCmsMeta";
 export * from "./useCmsSection";
+export * from "./useContext";
 export * from "./useCountries";
 export * from "./useCustomerOrders";
 export * from "./useCustomerPassword";
@@ -64,8 +65,8 @@ export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
     content.apiAlias === "cms_block"
       ? "Block"
       : content.apiAlias === "cms_section"
-      ? "Section"
-      : "Element";
+        ? "Section"
+        : "Element";
 
   const componentNameToResolve = pascalCase(`Cms-${type}-${componentName}`);
   try {

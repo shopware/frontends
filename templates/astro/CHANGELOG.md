@@ -1,5 +1,26 @@
 # shopware-astro
 
+## 0.1.1
+
+### Patch Changes
+
+- [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@astrojs/node_ from **^6.0.3** to **^6.0.4**
+  - Changed dependency _@vitejs/plugin-vue_ from **^4.4.1** to **^4.5.0**
+  - Changed dependency _@vitejs/plugin-vue-jsx_ from **^3.0.2** to **^3.1.0**
+  - Changed dependency _astro_ from **^3.5.3** to **^3.5.5**
+
+- [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@astrojs/vue_ from **^3.0.3** to **^3.0.4**
+  - Changed dependency _@vitejs/plugin-vue_ from **^4.4.0** to **^4.4.1**
+  - Changed dependency _astro_ from **^3.4.3** to **^3.5.3**
+
+- Updated dependencies [[`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550), [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0)]:
+  - @shopware-pwa/composables-next@0.14.1
+  - @shopware-pwa/api-client@0.7.0
+
 ## 0.1.0
 
 ### Minor Changes

@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import { newsletterConfirmation } from "@shopware-pwa/api-client";
-
 const route = useRoute();
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 const error = ref(false);
 
 try {
-  await newsletterConfirmation(
-    {
-      em: route.query.em as string,
-      hash: route.query.hash as string,
-    },
-    apiInstance,
-  );
+  await apiClient.invoke("confirmNewsletter post /newsletter/confirm", {
+    em: route.query.em as string,
+    hash: route.query.hash as string,
+  });
 } catch (e) {
   error.value = true;
 }

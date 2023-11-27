@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementText } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig } from "@shopware-pwa/composables-next";
-import { h } from "vue";
+import { useCmsElementConfig } from "#imports";
+import { computed, getCurrentInstance, h } from "vue";
 import { decodeHTML } from "entities";
 import type { CSSProperties } from "vue";
 import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";

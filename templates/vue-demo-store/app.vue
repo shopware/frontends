@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { getSessionContext } from "@shopware-pwa/api-client";
-import type { SessionContext } from "@shopware-pwa/types";
 import { getPrefix } from "./i18n/src/helpers/prefix";
+import type { Schemas } from "#shopware";
 
 /**
  * Init breadcrumbs context
@@ -16,9 +15,9 @@ useHead({
   },
 });
 
-const { apiInstance } = useShopwareContext();
-const sessionContextData = ref();
-sessionContextData.value = await getSessionContext(apiInstance);
+const { apiClient } = useShopwareContext();
+const sessionContextData = ref<Schemas["SalesChannelContext"]>();
+sessionContextData.value = await apiClient.invoke("readContext get /context");
 
 // If you enable runtimeConfig.shopware.useUserContextInSSR, then you can use this code to share session between server and client.
 // const { data: sessionContextData } = await useAsyncData(
@@ -45,7 +44,7 @@ usePrice({
   localeCode: localeFromHeader,
 });
 
-useSessionContext(sessionContextData.value as SessionContext);
+useSessionContext(sessionContextData.value);
 
 const { getWishlistProducts } = useWishlist();
 const { refreshCart } = useCart();

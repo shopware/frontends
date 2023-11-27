@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useProductPrice } from "@shopware-pwa/composables-next";
 import type { Product } from "@shopware-pwa/types";
 
 const props = defineProps<{

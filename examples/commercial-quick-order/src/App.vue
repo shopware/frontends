@@ -4,7 +4,7 @@ import {
   useSessionContext,
   useShopwareContext,
   useUser,
-} from "@shopware-pwa/composables-next";
+} from "@shopware-pwa/composables-next/dist";
 import { addCartItems } from "@shopware-pwa/api-client";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 

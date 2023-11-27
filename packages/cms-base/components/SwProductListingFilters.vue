@@ -7,10 +7,12 @@ import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
 } from "@shopware-pwa/composables-next";
-import { useListing } from "@shopware-pwa/composables-next";
-import type { ShopwareSearchParams } from "@shopware-pwa/types";
+import { useCategory, useListing } from "#imports";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import { onClickOutside } from "@vueuse/core";
+import { useRoute, useRouter } from "vue-router";
+import type { RequestParameters } from "#shopware";
 
 const props = defineProps<{
   content: CmsElementProductListing | CmsElementSidebarFilter;
@@ -67,19 +69,19 @@ const sidebarSelectedFilters: UnwrapNestedRefs<{
   "shipping-free": undefined,
 });
 
-const searchCriteriaForRequest: ComputedRef<{
-  [code: string]: string | string[] | number | number[] | boolean | undefined;
-}> = computed(() => ({
-  // turn Set to array and then into string with | separator
-  manufacturer: [...sidebarSelectedFilters.manufacturer]?.join("|"),
-  // turn Set to array and then into string with | separator
-  properties: [...sidebarSelectedFilters.properties]?.join("|"),
-  "min-price": sidebarSelectedFilters["min-price"],
-  "max-price": sidebarSelectedFilters["max-price"],
-  order: getCurrentSortingOrder.value,
-  "shipping-free": sidebarSelectedFilters["shipping-free"],
-  rating: sidebarSelectedFilters["rating"],
-}));
+const searchCriteriaForRequest: ComputedRef<RequestParameters<"searchPage">> =
+  computed(() => ({
+    // turn Set to array and then into string with | separator
+    manufacturer: [...sidebarSelectedFilters.manufacturer]?.join("|"),
+    // turn Set to array and then into string with | separator
+    properties: [...sidebarSelectedFilters.properties]?.join("|"),
+    "min-price": sidebarSelectedFilters["min-price"],
+    "max-price": sidebarSelectedFilters["max-price"],
+    order: getCurrentSortingOrder.value,
+    "shipping-free": sidebarSelectedFilters["shipping-free"],
+    rating: sidebarSelectedFilters["rating"],
+    search: "",
+  }));
 
 for (const param in route.query) {
   if (sidebarSelectedFilters.hasOwnProperty(param)) {
@@ -150,7 +152,7 @@ const currentSortingOrder = computed({
 
     changeCurrentSortingOrder(
       order,
-      <Partial<ShopwareSearchParams>>route.query,
+      route.query as unknown as RequestParameters<"searchPage">,
     );
   },
 });
@@ -162,7 +164,7 @@ const selectedOptionIds = computed(() => [
 provide("selectedOptionIds", selectedOptionIds);
 
 async function invokeCleanFilters() {
-  await search({});
+  await search({ search: "" });
   clearFilters();
 }
 

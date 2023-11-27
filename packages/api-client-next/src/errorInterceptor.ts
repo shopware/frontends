@@ -43,13 +43,17 @@ export class ApiClientError<
 
   constructor(response: FetchResponse<T>) {
     let message = "Failed request";
-    message += response._data?.errors.reduce((message, error) => {
-      let pointer = "";
-      if (error.source?.pointer) {
-        pointer = `[${error.source.pointer}]`;
-      }
-      return `${message}\n - [${error.title}]${pointer} ${error.detail ?? ""}`;
-    }, "");
+
+    message +=
+      response._data?.errors?.reduce((message, error) => {
+        let pointer = "";
+        if (error.source?.pointer) {
+          pointer = `[${error.source.pointer}]`;
+        }
+        return `${message}\n - [${error.title}]${pointer} ${
+          error.detail ?? ""
+        }`;
+      }, "") ?? "";
     super(message);
 
     this.name = "ApiClientError";

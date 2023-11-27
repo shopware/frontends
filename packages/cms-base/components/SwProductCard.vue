@@ -3,27 +3,26 @@ import { RouterLink } from "vue-router";
 import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
-  getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
+  getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import type {
-  ClientApiError,
-  Product,
-  PropertyGroupOption,
-} from "@shopware-pwa/types";
-import type { Ref } from "vue";
+import { toRefs, type Ref, computed, ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 import getUrlPrefix from "../helpers/getUrlPrefix";
 import buildUrlPrefix from "../helpers/buildUrlPrefix";
+import { useAddToCart, useNotifications, useProductWishlist } from "#imports";
+import { useElementSize } from "@vueuse/core";
+import type { Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
 
 const { pushSuccess, pushError } = useNotifications();
 
 const props = withDefaults(
   defineProps<{
-    product: Product;
+    product: Schemas["Product"];
     layoutType?: BoxLayout;
     isProductListing?: boolean;
     displayMode?: DisplayMode;
@@ -75,16 +74,17 @@ const toggleWishlistProduct = async () => {
         `${props.product?.translated?.name} ${translations.product.addedToWishlist}`,
       );
     } catch (error) {
-      const e = error as ClientApiError;
-      const reason = e?.messages?.[0]?.detail
-        ? `${translations.product.reason}: ${e?.messages?.[0]?.detail}`
-        : "";
-      return pushError(
-        `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
-        {
-          timeout: 5000,
-        },
-      );
+      if (error instanceof ApiClientError) {
+        const reason = error.details.errors?.[0]?.detail
+          ? `${translations.product.reason}: ${error.details.errors?.[0]?.detail}`
+          : "";
+        return pushError(
+          `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
+          {
+            timeout: 5000,
+          },
+        );
+      }
     }
   }
   removeFromWishlist();
@@ -112,9 +112,9 @@ function roundUp(num: number) {
 }
 
 const srcPath = computed(() => {
-  return `${getProductThumbnailUrl(product.value)}?&height=${roundUp(
-    height.value,
-  )}&fit=crop`;
+  return `${getSmallestThumbnailUrl(
+    product.value?.cover?.media,
+  )}?&height=${roundUp(height.value)}&fit=crop`;
 });
 </script>
 
@@ -181,10 +181,8 @@ const srcPath = computed(() => {
         :key="option.id"
         class="items-center line-clamp-2 rounded-md text-xs font-medium text-gray-600 mt-3"
       >
-        {{ (option as PropertyGroupOption).group.name }}:
-        <span class="font-bold"
-          >{{ (option as PropertyGroupOption).name }}
-        </span>
+        {{ option.group.name }}:
+        <span class="font-bold">{{ option.name }} </span>
       </p>
     </div>
     <div class="px-4 pb-4">

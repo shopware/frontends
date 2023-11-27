@@ -1,16 +1,13 @@
-import type { SeoUrl } from "@shopware-pwa/types";
 import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
-import { useShopwareContext } from "./useShopwareContext";
-import { getSeoUrl } from "@shopware-pwa/api-client";
-import { _useContext } from "./internal/_useContext";
-import { useSessionContext } from "./useSessionContext";
+import { useShopwareContext, useSessionContext } from "#imports";
+import type { Schemas } from "#shopware";
 
 export type UseNavigationSearchReturn = {
   /**
    * Get {@link SeoUrl} entity for given path
    * @example resolvePath("/my-category/my-product") or resolvePath("/") for home page
    */
-  resolvePath(path: string): Promise<SeoUrl | null>;
+  resolvePath(path: string): Promise<Schemas["SeoUrl"] | null>;
 };
 
 /**
@@ -19,7 +16,7 @@ export type UseNavigationSearchReturn = {
  * @category Navigation & Routing
  */
 export function useNavigationSearch(): UseNavigationSearchReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
   const { sessionContext } = useSessionContext();
 
   async function resolvePath(path: string) {
@@ -31,7 +28,7 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
       return {
         routeName: "frontend.navigation.page",
         foreignKey: categoryId,
-      } as SeoUrl;
+      } as Schemas["SeoUrl"];
     }
 
     const isTechnicalUrl =
@@ -43,18 +40,15 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
     const normalizedPath = isTechnicalUrl ? path : path.substring(1);
     // console.error("looking for path", normalizedPath);
 
-    const seoResult = await getSeoUrl(
-      {
-        filter: [
-          {
-            type: "equals",
-            field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
-            value: normalizedPath,
-          },
-        ],
-      },
-      apiInstance,
-    );
+    const seoResult = await apiClient.invoke("readSeoUrl post /seo-url", {
+      filter: [
+        {
+          type: "equals",
+          field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
+          value: normalizedPath,
+        },
+      ],
+    });
 
     return seoResult.elements?.[0];
   }
