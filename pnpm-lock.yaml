@@ -514,12 +514,12 @@ importers:
 
   examples/use-checkout:
     dependencies:
-      '@shopware-pwa/api-client':
-        specifier: canary
-        version: link:../../packages/api-client
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
+      '@shopware/api-client':
+        specifier: canary
+        version: link:../../packages/api-client-next
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5

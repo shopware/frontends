@@ -6575,7 +6575,10 @@ export type operations<components = components> = {
           accountType?: string;
           /** Field can be used to store an affiliate tracking code */
           affiliateCode?: string;
-          billingAddress: components["schemas"]["CustomerAddress"];
+          billingAddress: Omit<
+            components["schemas"]["CustomerAddress"],
+            "createdAt" | "id" | "customerId" | "firstName" | "lastName"
+          >; // TODO: [OpenAPI][register] - omit id, createdAt, customerId, firstName, lastName while creating address (or better to reverse and pick required fields)
           /** Birthday day */
           birthdayDay?: number;
           /** Birthday month */

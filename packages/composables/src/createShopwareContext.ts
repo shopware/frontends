@@ -13,7 +13,7 @@ export function createShopwareContext(
   options: {
     // initialStore?: any;
     // shopwareDefaults: ApiDefaults;
-    apiInstance: any;
+    apiInstance?: any;
     devStorefrontUrl?: string | null;
     enableDevtools?: boolean;
   },

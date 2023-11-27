@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RequestParameters } from "#shopware";
 import type { Schemas } from "#shopware";
 const route = useRoute();
 const router = useRouter();
@@ -25,7 +26,7 @@ useBreadcrumbs([
 const cacheKey = computed(() => `productSearch-${JSON.stringify(route.query)}`);
 const loadProducts = async (cacheKey: string) => {
   const { data: productSearch } = await useAsyncData(cacheKey, async () => {
-    await search(route.query);
+    await search(route.query as unknown as RequestParameters<"searchPage">);
     return getCurrentListing.value;
   });
 
