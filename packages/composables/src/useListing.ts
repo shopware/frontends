@@ -1,17 +1,9 @@
-import { getCategoryProducts, searchProducts } from "@shopware-pwa/api-client";
-
-import type {
-  ShopwareSearchParams,
-  Product,
-  ListingResult,
-  Sort,
-  ListingFilter,
-} from "@shopware-pwa/types";
 import { inject, computed, ref, provide } from "vue";
-import type { ComputedRef } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
-import { useShopwareContext, useCategory } from ".";
+import { useShopwareContext, useCategory } from "#imports";
 import ContextError from "./helpers/ContextError";
+import type { Schemas, RequestParameters } from "#shopware";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -44,29 +36,29 @@ function merge<T extends { [key in keyof T]: unknown }>(
 
 export type ListingType = "productSearchListing" | "categoryListing";
 
-export type UseListingReturn<ELEMENTS_TYPE> = {
+export type UseListingReturn = {
   /**
    * Listing that is currently set
    * {@link ListingResult} object
    */
-  getInitialListing: ComputedRef<ListingResult<ELEMENTS_TYPE> | null>;
+  getInitialListing: ComputedRef<Schemas["ProductListingResult"] | null>;
   /**
    * Sets the initial listing - available synchronously
    * @param {@link initialListing} - initial listing to set
    * @returns
    */
   setInitialListing(
-    initialListing: Partial<ListingResult<ELEMENTS_TYPE>>,
+    initialListing: Schemas["ProductListingResult"],
   ): Promise<void>;
   /**
    * @deprecated - use `search` instead
    * Searches for the listing based on the criteria
-   * @param criteria {@link ShopwareSearchParams}
+   * @param criteria {@link Schemas['Criteria']}
    * @returns
    */
   initSearch(
-    criteria: Partial<ShopwareSearchParams>,
-  ): Promise<ListingResult<ELEMENTS_TYPE>>;
+    criteria: RequestParameters<"searchPage">,
+  ): Promise<Schemas["ProductListingResult"]>;
   /**
    * Searches for the listing based on the criteria
    * @param criteria
@@ -74,7 +66,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    * @returns
    */
   search(
-    criteria: Partial<ShopwareSearchParams>,
+    criteria: RequestParameters<"searchPage">,
     options?: {
       preventRouteChange?: boolean;
     },
@@ -82,19 +74,21 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
   /**
    * Loads more (next page) elements to the listing
    */
-  loadMore(query?: Partial<ShopwareSearchParams>): Promise<void>;
+  loadMore(criteria: RequestParameters<"searchPage">): Promise<void>;
   /**
    * Listing that is currently set
    */
-  getCurrentListing: ComputedRef<Partial<ListingResult<ELEMENTS_TYPE>> | null>;
+  getCurrentListing: ComputedRef<Schemas["ProductListingResult"] | null>;
   /**
    * Listing elements ({@link Product}) that are currently set
    */
-  getElements: ComputedRef<ELEMENTS_TYPE[]>;
+  getElements: ComputedRef<Schemas["ProductListingResult"]["elements"]>;
   /**
    * Available sorting orders
    */
-  getSortingOrders: ComputedRef<Sort[] | { key: string; label: string }[]>;
+  getSortingOrders: ComputedRef<
+    Schemas["ProductSorting"][] | { key: string; label: string }[] | undefined
+  >;
   /**
    * Current sorting order
    */
@@ -106,7 +100,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    */
   changeCurrentSortingOrder(
     order: string,
-    query?: Partial<ShopwareSearchParams>,
+    query?: RequestParameters<"searchPage">,
   ): Promise<void>;
   /**
    * Current page number
@@ -119,7 +113,7 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
    */
   changeCurrentPage(
     page: number,
-    query?: Partial<ShopwareSearchParams>,
+    query?: RequestParameters<"searchPage">,
   ): Promise<void>;
   /**
    * Total number of elements found for the current search criteria
@@ -136,11 +130,11 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
   /**
    * Initial filters
    */
-  getInitialFilters: ComputedRef<ListingFilter[]>;
+  getInitialFilters: ComputedRef<ReturnType<typeof getListingFilters>>;
   /**
    * All available filters
    */
-  getAvailableFilters: ComputedRef<ListingFilter[]>;
+  getAvailableFilters: ComputedRef<ReturnType<typeof getListingFilters>>;
   /**
    * Filters that are currently set
    */
@@ -175,17 +169,19 @@ export type UseListingReturn<ELEMENTS_TYPE> = {
 export function useListing(params?: {
   listingType: ListingType;
   categoryId?: string;
-  defaultSearchCriteria?: Partial<ShopwareSearchParams>;
-}): UseListingReturn<Product> {
+  defaultSearchCriteria?: RequestParameters<"searchPage">;
+}): UseListingReturn {
   const listingType = params?.listingType || "categoryListing";
 
   // const { getDefaults } = useDefaults({ defaultsKey: contextName });
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   let searchMethod;
   if (listingType === "productSearchListing") {
-    searchMethod = async (searchCriteria: Partial<ShopwareSearchParams>) => {
-      return searchProducts(searchCriteria, apiInstance);
+    searchMethod = async (searchCriteria: RequestParameters<"searchPage">) => {
+      return apiClient.invoke("searchPage post /search", {
+        ...searchCriteria,
+      });
     };
   } else {
     let resourceId: undefined | string;
@@ -201,20 +197,27 @@ export function useListing(params?: {
       }
     }
 
-    searchMethod = async (searchCriteria: Partial<ShopwareSearchParams>) => {
+    searchMethod = async (searchCriteria: RequestParameters<"searchPage">) => {
       if (!resourceId) {
         throw new Error(
           "[useListing][search] Search category id does not exist.",
         );
       }
-      return getCategoryProducts(resourceId, searchCriteria, apiInstance);
+      return apiClient.invoke(
+        "readProductListing post /product-listing/{categoryId}",
+        {
+          categoryId: resourceId,
+          ...searchCriteria,
+        },
+      );
     };
   }
 
-  return createListingComposable<Product>({
+  return createListingComposable({
     listingKey: listingType,
     searchMethod,
-    searchDefaults: params?.defaultSearchCriteria || {}, //getDefaults(),
+    searchDefaults:
+      params?.defaultSearchCriteria || ({} as RequestParameters<"searchPage">), //getDefaults(),
   });
 }
 
@@ -226,17 +229,17 @@ export function useListing(params?: {
  *
  * @public
  */
-export function createListingComposable<ELEMENTS_TYPE>({
+export function createListingComposable({
   searchMethod,
   searchDefaults,
   listingKey,
 }: {
   searchMethod(
-    searchParams: Partial<ShopwareSearchParams>,
-  ): Promise<ListingResult<ELEMENTS_TYPE>>;
-  searchDefaults: ShopwareSearchParams;
+    searchParams: RequestParameters<"searchPage">,
+  ): Promise<Schemas["ProductListingResult"]>;
+  searchDefaults: RequestParameters<"searchPage">;
   listingKey: string;
-}): UseListingReturn<ELEMENTS_TYPE> {
+}): UseListingReturn {
   const COMPOSABLE_NAME = "createListingComposable";
   const contextName = COMPOSABLE_NAME;
 
@@ -253,31 +256,39 @@ export function createListingComposable<ELEMENTS_TYPE>({
   const loadingMore = ref(false);
 
   // const { sharedRef } = useSharedState();
-  const _storeInitialListing = inject(`useListingInitial-${listingKey}`, ref());
+  const _storeInitialListing = inject<
+    Ref<Schemas["ProductListingResult"] | null>
+  >(`useListingInitial-${listingKey}`, ref(null));
   provide(`useListingInitial-${listingKey}`, _storeInitialListing);
-  // const _storeInitialListing = sharedRef<ListingResult<ELEMENTS_TYPE>>(
+  // const _storeInitialListing = sharedRef<Schemas["ProductListingResult"]>(
   //   `${cacheKey}-initialListing-${listingKey}`
   // );
-  // const _storeAppliedListing = sharedRef<Partial<ListingResult<ELEMENTS_TYPE>>>(
+  // const _storeAppliedListing = sharedRef<Partial<Schemas["ProductListingResult"]>>(
   //   `${cacheKey}-appliedListing-${listingKey}`
   // );
-  const _storeAppliedListing = inject(`useListingApplied-${listingKey}`, ref());
+  const _storeAppliedListing = inject<
+    Ref<Schemas["ProductListingResult"] | null>
+  >(`useListingApplied-${listingKey}`, ref(null));
   provide(`useListingApplied-${listingKey}`, _storeAppliedListing);
 
   const getInitialListing = computed(() => _storeInitialListing.value);
   const setInitialListing = async (
-    initialListing: Partial<ListingResult<ELEMENTS_TYPE>>,
+    initialListing: Schemas["ProductListingResult"],
   ) => {
     _storeInitialListing.value = initialListing;
     _storeAppliedListing.value = null;
   };
 
   const initSearch = async (
-    criteria: Partial<ShopwareSearchParams>,
-  ): Promise<ListingResult<ELEMENTS_TYPE>> => {
+    criteria: RequestParameters<"searchPage">,
+  ): Promise<Schemas["ProductListingResult"]> => {
     loading.value = true;
     try {
-      const searchCriteria = merge({}, searchDefaults, criteria);
+      const searchCriteria = merge(
+        {} as RequestParameters<"searchPage">,
+        searchDefaults,
+        criteria,
+      );
       const result = await searchMethod(searchCriteria);
       return result;
     } catch (e) {
@@ -288,14 +299,18 @@ export function createListingComposable<ELEMENTS_TYPE>({
   };
 
   async function search(
-    criteria: Partial<ShopwareSearchParams>,
+    criteria: RequestParameters<"searchPage">,
     options?: {
       preventRouteChange?: boolean;
     },
   ) {
     loading.value = true;
     try {
-      const searchCriteria = merge({}, searchDefaults, criteria);
+      const searchCriteria = merge(
+        {} as RequestParameters<"searchPage">,
+        searchDefaults,
+        criteria,
+      );
       const result = await searchMethod(searchCriteria);
 
       _storeAppliedListing.value = result;
@@ -307,27 +322,31 @@ export function createListingComposable<ELEMENTS_TYPE>({
   }
 
   const loadMore = async (
-    query?: Partial<ShopwareSearchParams>,
+    criteria?: RequestParameters<"searchPage">,
   ): Promise<void> => {
     loadingMore.value = true;
     try {
-      const q = query
-        ? query
+      const q = criteria
+        ? criteria
         : {
             // ...router.currentRoute.query,
             p: getCurrentPage.value + 1,
           };
 
-      const searchCriteria = merge({}, searchDefaults, q);
+      const searchCriteria = merge(
+        {} as RequestParameters<"searchPage">,
+        searchDefaults,
+        q,
+      ) as RequestParameters<"searchPage">;
       const result = await searchMethod(searchCriteria);
       _storeAppliedListing.value = {
-        ...getCurrentListing.value,
+        ...(getCurrentListing.value || {}),
         page: result.page,
         elements: [
           ...(getCurrentListing.value?.elements || []),
-          ...result.elements,
+          ...(result.elements ?? []),
         ],
-      };
+      } as Schemas["ProductListingResult"];
     } catch (e) {
       throw e;
     } finally {
@@ -354,8 +373,7 @@ export function createListingComposable<ELEMENTS_TYPE>({
   );
 
   const getSortingOrders = computed(() => {
-    const oldSortings = Object.values(getCurrentListing.value?.sortings || {}); // before Shopware 6.4
-    return getCurrentListing.value?.availableSortings || oldSortings;
+    return getCurrentListing.value?.availableSortings;
   });
 
   const getCurrentSortingOrder = computed(
@@ -363,14 +381,14 @@ export function createListingComposable<ELEMENTS_TYPE>({
   );
   async function changeCurrentSortingOrder(
     order: string,
-    query?: Partial<ShopwareSearchParams>,
+    query?: RequestParameters<"searchPage">,
   ) {
     await search(
       Object.assign(
         {
           order,
         },
-        query || {},
+        query,
       ),
     );
   }
@@ -379,14 +397,14 @@ export function createListingComposable<ELEMENTS_TYPE>({
 
   const changeCurrentPage = async (
     page: number,
-    query?: Partial<ShopwareSearchParams>,
+    query?: RequestParameters<"searchPage">,
   ) => {
     await search(
       Object.assign(
         {
-          p: page,
+          page,
         },
-        query || {},
+        query,
       ),
     );
   };
@@ -403,33 +421,47 @@ export function createListingComposable<ELEMENTS_TYPE>({
   });
 
   const getCurrentFilters = computed(() => {
-    const currentFiltersResult: any = [];
-    const currentFilters = {
-      ...getCurrentListing.value?.currentFilters,
-      // ...router.currentRoute.query,
-    };
-    Object.keys(currentFilters).forEach((objectKey) => {
-      if (!currentFilters[objectKey]) return;
-      if (objectKey === "navigationId") return;
-      if (objectKey === "price") {
-        if (currentFilters[objectKey].min)
-          currentFiltersResult["min-price"] = currentFilters[objectKey].min;
-        if (currentFilters[objectKey].max)
-          currentFiltersResult["max-price"] = currentFilters[objectKey].max;
-        return;
-      }
-      if (objectKey === "p") return;
-      currentFiltersResult[objectKey] = currentFilters[objectKey];
-    });
-    return currentFiltersResult;
+    // const currentFiltersResult: Schemas["ProductListingResult"]["currentFilters"] =
+    //   {};
+    // const currentFilters = {
+    //   ...getCurrentListing.value?.currentFilters,
+    //   // ...router.currentRoute.query,
+    // };
+    // Object.keys(currentFilters).forEach(
+    //   (objectKey: keyof Schemas["ProductListingResult"]["currentFilters"]) => {
+    //     if (!currentFilters[objectKey]) return;
+    //     if (objectKey === "navigationId") return;
+    //     if (objectKey === "price") {
+    //       if (currentFilters.price?.min)
+    //         currentFiltersResult.price.min = currentFilters[objectKey].min;
+    //       if (currentFilters[objectKey].max)
+    //         currentFiltersResult["max-price"] = currentFilters[objectKey].max;
+    //       return;
+    //     }
+    //     if (objectKey === "p") return;
+    //     currentFiltersResult[objectKey] = currentFilters[objectKey];
+    //   },
+    // );
+    return getCurrentListing.value?.currentFilters;
   });
 
   const setCurrentFilters = (filter: { code: string; value: any }) => {
-    const appliedFilters = Object.assign({}, getCurrentFilters.value, filter, {
-      query: getCurrentFilters.value.search,
-    });
+    const appliedFilters: RequestParameters<"searchPage"> = Object.assign(
+      {},
+      getCurrentFilters.value,
+      filter,
+      {
+        query: getCurrentFilters.value?.search,
+        manufacturer: getCurrentFilters.value?.manufacturer?.join("|"),
+        properties: getCurrentFilters.value?.properties?.join("|"),
+      },
+    );
     if (_storeAppliedListing.value) {
-      _storeAppliedListing.value.currentFilters = appliedFilters;
+      _storeAppliedListing.value.currentFilters = {
+        ...appliedFilters,
+        manufacturer: appliedFilters.manufacturer?.split("|"),
+        properties: appliedFilters.properties?.split("|"),
+      };
     }
     return search(appliedFilters);
   };
@@ -437,16 +469,18 @@ export function createListingComposable<ELEMENTS_TYPE>({
   const resetFilters = () => {
     const defaultFilters = Object.assign(
       {
-        manufacturer: "",
-        properties: "",
+        manufacturer: [],
+        properties: [],
         price: { min: 0, max: 0 },
-        search: getCurrentFilters.value.search,
+        search: getCurrentFilters.value?.search,
       },
       searchDefaults,
     );
 
-    _storeAppliedListing.value.currentFilters = defaultFilters;
-    return search({ query: getCurrentFilters.value.search });
+    if (_storeAppliedListing.value) {
+      _storeAppliedListing.value.currentFilters = defaultFilters;
+    }
+    return search({ search: getCurrentFilters.value?.search || "" });
   };
 
   const filtersToQuery = (filters: any) => {

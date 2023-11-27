@@ -1,6 +1,6 @@
-import type { Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
-const product: Product = {
+const product: Schemas["Product"] = {
   versionId: "0fa91ce3e96a4bc2be4bd9ce752c3425",
   apiAlias: "product",
   autoIncrement: 1,
@@ -466,6 +466,6 @@ const product: Product = {
   },
   isNew: false,
   calculatedMaxPurchase: 100,
-};
+} as unknown as Schemas["Product"];
 
 export default product;

@@ -10,7 +10,7 @@ Example:
 ## How do I know which one is shared and what should I do with that?
 
 We're adding information that the composable is shared into the description with a link to this documentation page.
-There is no need to do anything with this information. The only difference is in [overwriting](#overwrite-extend-shared-composable)
+There is no need to do anything with this information. The only difference is in [overwriting](./overwriting-composables.md)
 
 ## Overwrite/extend shared composable
 

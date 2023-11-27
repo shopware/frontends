@@ -4,6 +4,7 @@ import type {
   CmsElementImage,
 } from "@shopware-pwa/composables-next";
 import SwSlider from "../../../SwSlider.vue";
+import { computed } from "vue";
 
 const props = defineProps<{
   content: CmsElementImageSlider;

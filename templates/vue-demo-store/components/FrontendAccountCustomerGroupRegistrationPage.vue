@@ -1,23 +1,20 @@
 <script setup lang="ts">
-import { invokeGet } from "@shopware-pwa/api-client";
-import type { CustomerGroup } from "@shopware-pwa/types";
-
 const props = defineProps<{
   navigationId: string;
 }>();
 
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 
 const { data: registrationResponse } = await useAsyncData(
   "cmsNavigation" + props.navigationId,
   async () => {
-    const response = await invokeGet<CustomerGroup>(
+    const response = await apiClient.invoke(
+      "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}",
       {
-        address: `/store-api/customer-group-registration/config/${props.navigationId}`,
+        customerGroupId: props.navigationId,
       },
-      apiInstance,
     );
-    return response?.data || {};
+    return response || {};
   },
 );
 </script>

@@ -10,7 +10,7 @@ import {
   useProductPrice,
   usePrice,
   useProductAssociations,
-} from "@shopware-pwa/composables-next";
+} from "@shopware-pwa/composables-next/dist";
 import ProductCard from "./ProductCard.vue";
 
 const props = defineProps<{

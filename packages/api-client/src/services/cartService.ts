@@ -25,7 +25,7 @@ export async function clearCart(
 ): Promise<ContextTokenResponse> {
   const resp = await contextInstance.invoke.post(getCheckoutCartEndpoint());
   const contextToken = resp.data["sw-context-token"];
-  return { contextToken };
+  return { contextToken, apiAlias: "array_struct" };
 }
 
 /**

@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "description": "Shopware CLI for API client generation.",
   "author": "Shopware",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"

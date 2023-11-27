@@ -6,21 +6,23 @@ import { StateMachineTransition } from "./StateMachineTransition";
 import { StateMachineHistory } from "./StateMachineHistory";
 import { StateMachineStateTranslation } from "./StateMachineStateTranslation";
 import { CustomFields } from "../../common/CustomField";
+import type { Schemas } from "#shopware";
 
 /**
- * @public
+ * @deprecated - use Schema["StateMachineState"] instead from import "#shopware"
  */
-export type StateMachineState = {
-  name: string;
-  technicalName: string;
-  stateMachine: StateMachine | null;
-  fromStateMachineTransitions: StateMachineTransition[] | null;
-  toStateMachineTransitions: StateMachineTransition[] | null;
-  translations: StateMachineStateTranslation[];
-  orders: Order[] | null;
-  orderTransactions: OrderTransaction[] | null;
-  orderDeliveries: OrderDelivery[] | null;
-  fromStateMachineHistoryEntries: StateMachineHistory[] | null;
-  toStateMachineHistoryEntries: StateMachineHistory[] | null;
-  customFields: CustomFields;
-};
+export type StateMachineState = Schemas["StateMachineState"];
+// export type StateMachineState = {
+//   name: string;
+//   technicalName: string;
+//   stateMachine: StateMachine | null;
+//   fromStateMachineTransitions: StateMachineTransition[] | null;
+//   toStateMachineTransitions: StateMachineTransition[] | null;
+//   translations: StateMachineStateTranslation[];
+//   orders: Order[] | null;
+//   orderTransactions: OrderTransaction[] | null;
+//   orderDeliveries: OrderDelivery[] | null;
+//   fromStateMachineHistoryEntries: StateMachineHistory[] | null;
+//   toStateMachineHistoryEntries: StateMachineHistory[] | null;
+//   customFields: CustomFields;
+// };

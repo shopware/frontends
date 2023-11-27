@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { useCmsElementImage } from "@shopware-pwa/composables-next";
 import type {
   CmsElementImage,
   CmsElementManufacturerLogo,
 } from "@shopware-pwa/composables-next";
+import { useCmsElementImage } from "#imports";
 import buildUrlPrefix from "../../../../helpers/buildUrlPrefix";
 import getUrlPrefix from "../../../../helpers/getUrlPrefix";
+import { useElementSize } from "@vueuse/core";
+import { computed, ref } from "vue";
+
 const props = defineProps<{
   content: CmsElementImage | CmsElementManufacturerLogo;
 }>();

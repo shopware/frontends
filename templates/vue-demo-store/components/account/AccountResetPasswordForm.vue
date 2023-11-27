@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { confirmPasswordReset } from "@shopware-pwa/api-client";
-import type { ClientApiError } from "@shopware-pwa/types";
 import { customValidators } from "@/i18n/utils/i18n-validators";
+import { ApiClientError } from "@shopware/api-client";
 
 const { required, minLength, sameAs } = customValidators();
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 
 const state = reactive({
   password: {
@@ -40,17 +39,19 @@ const invokeReset = async (): Promise<void> => {
     if (!isFormCorrect) {
       return;
     } else {
-      await confirmPasswordReset(
+      await apiClient.invoke(
+        "recoveryPassword post /account/recovery-password-confirm",
         {
-          newPassword: state.password.newPasswordConfirm,
           hash: hashQuery,
+          newPassword: state.password.newPasswordConfirm,
+          newPasswordConfirm: state.password.newPasswordConfirm,
         },
-        apiInstance,
       );
     }
   } catch (err) {
-    const error = err as ClientApiError;
-    state.error = error.messages[0].detail;
+    if (err instanceof ApiClientError) {
+      state.error = err.details.errors?.[0]?.detail;
+    }
   }
 };
 </script>

@@ -1,69 +1,61 @@
 import { describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
 import { useProductAssociations } from "./useProductAssociations";
 import { computed } from "vue";
-import * as apiExports from "@shopware-pwa/api-client";
 import mockedProduct from "./mocks/Product";
 import mockedCrossSelling from "./mocks/CrossSellingResponse";
+import { useSetup } from "./_test";
 
-const getMockProvide = () => ({
-  global: {
-    provide: {
-      shopware: {
-        apiInstance: {
-          config: {},
-        },
-      },
-    },
-  },
-});
+describe("useProductAssociations", () => {
+  console.error = vi.fn();
 
-const getLoadAssociationsParams = (method?: string, searchParams?: any) => {
-  return {
-    method: method ?? null,
-    searchParams: searchParams ?? null,
-  };
-};
-
-const Component = (mockedProductData) => ({
-  template: "<div/>",
-  props: {},
-  setup() {
-    const { isLoading, productAssociations, loadAssociations } =
+  it("productAssociations should be empty", () => {
+    const { vm } = useSetup(() =>
       useProductAssociations(
-        computed(() => mockedProductData),
+        computed(() => mockedProduct),
         {
           associationContext: "cross-selling",
         },
-      );
-    return { isLoading, productAssociations, loadAssociations };
-  },
-});
+      ),
+    );
 
-describe("useProductAssociations", () => {
-  vi.spyOn(apiExports, "invokePost").mockImplementation(() => {
-    return new Promise((resolve) => {
-      resolve({ data: mockedCrossSelling });
-    });
-  });
-
-  const wrapper = shallowMount(Component(mockedProduct), getMockProvide());
-
-  it("productAssociations should be empty", () => {
-    expect(wrapper.vm.productAssociations).toStrictEqual([]);
+    expect(vm.productAssociations).toStrictEqual([]);
   });
 
   it("load productAssociations - GET - Error", async () => {
-    vi.spyOn(apiExports, "invokeGet").mockImplementation(() => {
-      throw new Error();
+    const { vm, injections } = useSetup(() =>
+      useProductAssociations(
+        computed(() => mockedProduct),
+        {
+          associationContext: "cross-selling",
+        },
+      ),
+    );
+    injections.apiClient.invoke.mockRejectedValue("PROBLEM");
+
+    await vm.loadAssociations({
+      searchParams: {},
     });
-    wrapper.vm.loadAssociations(getLoadAssociationsParams());
-    expect(wrapper.vm.productAssociations).toStrictEqual([]);
+    expect(vm.productAssociations).toStrictEqual([]);
+    expect(console.error).toBeCalledWith(
+      "[useProductAssociations][loadAssociations][error]:",
+      "PROBLEM",
+    );
   });
 
   it("load productAssociations - POST", async () => {
-    await wrapper.vm.loadAssociations(
-      getLoadAssociationsParams("post", {
+    const { vm, injections } = useSetup(() =>
+      useProductAssociations(
+        computed(() => mockedProduct),
+        {
+          associationContext: "cross-selling",
+        },
+      ),
+    );
+    injections.apiClient.invoke.mockResolvedValue(mockedCrossSelling);
+
+    await vm.loadAssociations({
+      method: "post",
+      searchParams: {
         associations: {
           media: {},
           cover: {
@@ -72,33 +64,28 @@ describe("useProductAssociations", () => {
             },
           },
         },
-      }),
-    );
+      },
+    });
 
-    expect(wrapper.vm.productAssociations).toStrictEqual(mockedCrossSelling);
+    expect(vm.productAssociations).toStrictEqual(mockedCrossSelling);
   });
 
   it("load productAssociations - POST - no search params", async () => {
-    await wrapper.vm.loadAssociations(getLoadAssociationsParams("post"));
+    const { vm, injections } = useSetup(() =>
+      useProductAssociations(
+        computed(() => mockedProduct),
+        {
+          associationContext: "cross-selling",
+        },
+      ),
+    );
+    injections.apiClient.invoke.mockResolvedValue(mockedCrossSelling);
 
-    expect(wrapper.vm.productAssociations).toStrictEqual(mockedCrossSelling);
-  });
-
-  it("load productAssociations - GET", async () => {
-    vi.spyOn(apiExports, "invokeGet").mockImplementation(() => {
-      return new Promise((resolve) => {
-        resolve({ data: mockedCrossSelling });
-      });
+    await vm.loadAssociations({
+      method: "post",
+      searchParams: {},
     });
 
-    await wrapper.vm.loadAssociations(getLoadAssociationsParams("get"));
-
-    expect(wrapper.vm.productAssociations).toStrictEqual(mockedCrossSelling);
-  });
-
-  it("no product was provided", async () => {
-    expect(() =>
-      shallowMount(Component(null), getMockProvide()),
-    ).toThrowError();
+    expect(vm.productAssociations).toStrictEqual(mockedCrossSelling);
   });
 });

@@ -24,7 +24,7 @@ In order to use the example, you need to:
   ```
   VITE_SHOPWARE_API="https://201023-quick-order.swstage.store/"
   VITE_SHOPWARE_ACCESS_KEY="SWSCBHFSNTVMAWNZDNFKSHLAYW"
-  ``` 
+  ```
 
 - Have a customer account with B2B Quick Order feature activated.
 
@@ -45,12 +45,12 @@ or...
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/examples/commercial-quick-order?file=README.md)
 
-⚠️ Remember to prepare your app first, see __Configuration__ chapter above.
+⚠️ Remember to prepare your app first, see **Configuration** chapter above.
 
 ## 📁 Import file feature
 
-
 file upload can be tested in that format:
+
 ```
 product_number,quantity
 SW10096.3,2

@@ -1,33 +1,28 @@
-import { CurrencyTranslation } from "./CurrencyTranslation";
-import { Order } from "../../checkout/order/Order";
-import { ShippingMethodPrice } from "../../checkout/shipping/ShippingMethodPrice";
-import { PromotionDiscountPrice } from "../../checkout/promotion/PromotionDiscountPrice";
-import { SalesChannel } from "../sales-channel/SalesChannel";
-import { SalesChannelDomain } from "../sales-channel/SalesChannelDomain";
-import { CustomFields } from "../../common/CustomField";
+import type { Schemas } from "#shopware";
 
 /**
- * @public
+ * @deprecated use `Schemas["Currency"]` from "#shopware" import instead
  */
-export type Currency = {
-  id: string;
-  isoCode: string;
-  factor: number;
-  symbol: string;
-  shortName: string | null;
-  name: string | null;
-  position: number;
-  decimalPrecision: number;
-  translations: CurrencyTranslation[] | null;
-  orders: Order[] | null;
-  salesChannels: SalesChannel[] | null;
-  salesChannelDefaultAssignments: SalesChannel[] | null;
-  salesChannelDomains: SalesChannelDomain[] | null;
-  customFields: CustomFields;
-  /**
-   * @deprecated removed from 6.5.0
-   */
-  shippingMethodPrices: ShippingMethodPrice[] | null;
-  promotionDiscountPrices: PromotionDiscountPrice[];
-  isSystemDefault: boolean | null;
-};
+export type Currency = Schemas["Currency"];
+// export type Currency = {
+//   id: string;
+//   isoCode: string;
+//   factor: number;
+//   symbol: string;
+//   shortName: string | null;
+//   name: string | null;
+//   position: number;
+//   decimalPrecision: number;
+//   translations: CurrencyTranslation[] | null;
+//   orders: Order[] | null;
+//   salesChannels: SalesChannel[] | null;
+//   salesChannelDefaultAssignments: SalesChannel[] | null;
+//   salesChannelDomains: SalesChannelDomain[] | null;
+//   customFields: CustomFields;
+//   /**
+//    * @deprecated removed from 6.5.0
+//    */
+//   shippingMethodPrices: ShippingMethodPrice[] | null;
+//   promotionDiscountPrices: PromotionDiscountPrice[];
+//   isSystemDefault: boolean | null;
+// };

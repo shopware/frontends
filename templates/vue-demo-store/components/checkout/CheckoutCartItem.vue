@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { Schemas } from "#shopware";
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-import type { LineItem } from "@shopware-pwa/types";
 
 const props = withDefaults(
   defineProps<{
-    cartItem: LineItem;
+    cartItem: Schemas["LineItem"];
     maxQty?: number;
   }>(),
   {
@@ -112,9 +112,9 @@ const removeCartItem = async () => {
         v-model="quantity"
         type="number"
         :disabled="isLoading"
-        :min="cartItem.quantityInformation?.minPurchase || 1"
-        :max="cartItem.quantityInformation?.maxPurchase || maxQty"
-        :step="cartItem.quantityInformation?.purchaseSteps || 1"
+        :min="(cartItem as any).quantityInformation?.minPurchase || 1"
+        :max="(cartItem as any).quantityInformation?.maxPurchase || maxQty"
+        :step="(cartItem as any).quantityInformation?.purchaseSteps || 1"
         data-testid="cart-product-qty-select"
         name="quantity"
         aria-label="Cart item quantity"

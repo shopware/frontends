@@ -1,29 +1,15 @@
-import { ref, computed, inject, provide, watch } from "vue";
+import { ref, computed, inject, provide } from "vue";
 import type { Ref, ComputedRef } from "vue";
-
-import {
-  getCustomerAddresses,
-  createCustomerAddress as apiCreateCustomerAddress,
-  updateCustomerAddress as apiUpdateCustomerAddress,
-  deleteCustomerAddress as apiDeleteCustomerAddress,
-  setDefaultCustomerShippingAddress as apiSetDefaultCustomerShippingAddress,
-  setDefaultCustomerBillingAddress as apiSetDefaultCustomerBillingAddress,
-} from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
-
-import type {
-  ClientApiError,
-  CustomerAddress,
-  ShopwareSearchParams,
-  ShopwareError,
-} from "@shopware-pwa/types";
-import { useUser } from "./useUser";
+import { useShopwareContext } from "#imports";
+import type { RequestParameters, Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
 
 export type UseAddressReturn = {
   /**
    * List of customer addresses
    */
-  customerAddresses: ComputedRef<CustomerAddress[]>;
+  customerAddresses: ComputedRef<Schemas["CustomerAddress"][]>;
   /**
    * Loads the addresses that are available under `customerAddresses` property
    */
@@ -32,14 +18,14 @@ export type UseAddressReturn = {
    * Allows to create new address for a current customer
    */
   createCustomerAddress(
-    customerAddress: CustomerAddress,
-  ): Promise<CustomerAddress>;
+    customerAddress: Schemas["CustomerAddress"],
+  ): Promise<Schemas["CustomerAddress"]>;
   /**
    * Allows to update existing address for a current customer
    */
   updateCustomerAddress(
-    customerAddress: CustomerAddress,
-  ): Promise<CustomerAddress>;
+    customerAddress: Schemas["CustomerAddress"],
+  ): Promise<Schemas["CustomerAddress"]>;
   /**
    * Allows to delete existing address for a current customer
    */
@@ -57,7 +43,7 @@ export type UseAddressReturn = {
    *
    * @param {ShopwareError} error
    */
-  errorMessageBuilder(error: ShopwareError): string | null;
+  errorMessageBuilder(error: ApiError): string | null;
 };
 
 /**
@@ -68,9 +54,9 @@ export type UseAddressReturn = {
  * @category Cart & Checkout
  */
 export function useAddress(): UseAddressReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
-  const _storeCustomerAddresses: Ref<CustomerAddress[]> = inject(
+  const _storeCustomerAddresses: Ref<Schemas["CustomerAddress"][]> = inject(
     "swCustomerAddresses",
     ref([]),
   );
@@ -80,15 +66,19 @@ export function useAddress(): UseAddressReturn {
    * Get customer address list
    */
   async function loadCustomerAddresses(
-    parameters: ShopwareSearchParams = {},
+    parameters: Schemas["Criteria"] = {},
   ): Promise<void> {
     try {
-      const { elements } = await getCustomerAddresses(parameters, apiInstance);
-      _storeCustomerAddresses.value = elements;
+      const result = await apiClient.invoke(
+        "listAddress post /account/list-address",
+        parameters,
+      );
+      _storeCustomerAddresses.value = result.elements;
     } catch (error) {
-      const apiError = error as ClientApiError;
-      if (apiError?.statusCode === 403) {
-        _storeCustomerAddresses.value = [];
+      if (error instanceof ApiClientError) {
+        if (error.status === 403) {
+          _storeCustomerAddresses.value = [];
+        }
       }
     }
   }
@@ -97,9 +87,12 @@ export function useAddress(): UseAddressReturn {
    * Add new customer address
    */
   async function createCustomerAddress(
-    customerAddress: Omit<CustomerAddress, "id" | "salutation">,
-  ): Promise<CustomerAddress> {
-    const result = await apiCreateCustomerAddress(customerAddress, apiInstance);
+    customerAddress: RequestParameters<"createCustomerAddress">,
+  ): Promise<Schemas["CustomerAddress"]> {
+    const result = await apiClient.invoke(
+      "createCustomerAddress post /account/address",
+      customerAddress,
+    );
     return result;
   }
 
@@ -107,9 +100,12 @@ export function useAddress(): UseAddressReturn {
    * Update customer address
    */
   async function updateCustomerAddress(
-    customerAddress: CustomerAddress,
-  ): Promise<CustomerAddress> {
-    const result = await apiUpdateCustomerAddress(customerAddress, apiInstance);
+    customerAddress: RequestParameters<"updateCustomerAddress">,
+  ): Promise<Schemas["CustomerAddress"]> {
+    const result = await apiClient.invoke(
+      "updateCustomerAddress patch /account/address/{addressId}",
+      customerAddress,
+    );
     return result;
   }
 
@@ -117,8 +113,10 @@ export function useAddress(): UseAddressReturn {
    * Delete customer address
    */
   async function deleteCustomerAddress(addressId: string): Promise<void> {
-    const result = apiDeleteCustomerAddress(addressId, apiInstance);
-    return result;
+    await apiClient.invoke(
+      "deleteCustomerAddress delete /account/address/{addressId}",
+      { addressId },
+    );
   }
 
   /**
@@ -127,7 +125,12 @@ export function useAddress(): UseAddressReturn {
   async function setDefaultCustomerBillingAddress(
     addressId: string,
   ): Promise<string> {
-    return await apiSetDefaultCustomerBillingAddress(addressId, apiInstance);
+    return await apiClient.invoke(
+      "defaultBillingAddress patch /account/address/default-billing/{addressId}",
+      {
+        addressId,
+      },
+    );
   }
 
   /**
@@ -136,7 +139,12 @@ export function useAddress(): UseAddressReturn {
   async function setDefaultCustomerShippingAddress(
     addressId: string,
   ): Promise<string> {
-    return await apiSetDefaultCustomerShippingAddress(addressId, apiInstance);
+    return await apiClient.invoke(
+      "defaultShippingAddress patch /account/address/default-shipping/{addressId}",
+      {
+        addressId,
+      },
+    );
   }
 
   /**
@@ -145,10 +153,10 @@ export function useAddress(): UseAddressReturn {
    * @param {error} error
    * @returns {string | null}
    */
-  function errorMessageBuilder(error: ShopwareError): string | null {
+  function errorMessageBuilder(error: ApiError): string | null {
     switch (error.code) {
       case "VIOLATION::IS_BLANK_ERROR":
-        return `${error?.source?.pointer.slice(1)} - ${error.detail}`;
+        return `${error?.source?.pointer?.slice(1)} - ${error.detail}`;
       default:
         return null;
     }

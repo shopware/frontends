@@ -1,47 +1,21 @@
 import { useSalutations } from "./useSalutations";
 import { describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { flushPromises } from "@vue/test-utils";
 import Salutations from "./mocks/Salutations";
-import * as apiExports from "@shopware-pwa/api-client";
-
-const Component = {
-  template: "<div/>",
-  props: {},
-  setup() {
-    const { mountedCallback, fetchSalutations, getSalutations } =
-      useSalutations();
-
-    return {
-      mountedCallback,
-      fetchSalutations,
-      getSalutations,
-    };
-  },
-};
-
-const getMockProvide = () => ({
-  global: {
-    provide: {
-      shopware: {
-        apiInstance: {
-          config: {},
-        },
-      },
-    },
-  },
-});
+import { useSetup } from "./_test";
 
 describe("useSalutations", () => {
-  vi.spyOn(apiExports, "getAvailableSalutations").mockImplementation(() => {
-    return new Promise((resolve) => {
-      resolve({ elements: Salutations });
-    });
-  });
-
-  const wrapper = shallowMount(Component, getMockProvide());
-
   it("should init value on init", async () => {
-    await wrapper.vm.mountedCallback();
-    expect(wrapper.vm.getSalutations).toStrictEqual(Salutations);
+    const { vm, injections } = useSetup(useSalutations, {
+      apiClient: {
+        invoke: vi.fn().mockResolvedValue({
+          elements: Salutations,
+        }),
+      },
+    });
+    await flushPromises();
+
+    expect(injections.apiClient.invoke).toBeCalledTimes(1);
+    expect(vm.getSalutations).toStrictEqual(Salutations);
   });
 });

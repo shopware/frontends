@@ -1,10 +1,12 @@
 {
   "include": ["src/**/*"],
-    "compilerOptions": {
-      "esModuleInterop": true,
-      "lib": ["esnext"],
-      "types": [
-        "vite/client"
-      ]
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "lib": ["esnext"],
+    "types": ["vite/client"],
+    "paths": {
+      "#imports": ["./imports.d.ts"],
+      "#shopware": ["./shopware.d.ts"]
     }
   }
+}

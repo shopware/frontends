@@ -63,7 +63,7 @@ const isExpand = ref(false);
 
 const toggleView = () => (isExpand.value = !isExpand.value);
 
-const formatDate = (date: Date) =>
+const formatDate = (date: Date | string) =>
   new Date(date).toLocaleDateString(
     (typeof navigator !== "undefined" && navigator.language) || "en-US",
   );

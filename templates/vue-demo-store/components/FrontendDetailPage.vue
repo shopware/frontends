@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useProductSearch } from "@shopware-pwa/composables-next";
+import { useProductSearch } from "#imports";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{
@@ -18,8 +18,12 @@ const { data: productResponse } = await useAsyncData(
   },
 );
 
+if (!productResponse.value) {
+  console.error("No product found for navigationId: " + props.navigationId);
+  throw new Error("No product found for navigationId: " + props.navigationId);
+}
 const breadcrumbs = getCategoryBreadcrumbs(
-  productResponse.value?.product.seoCategory,
+  productResponse.value.product.seoCategory,
   {
     startIndex: 2,
   },
@@ -27,8 +31,8 @@ const breadcrumbs = getCategoryBreadcrumbs(
 useBreadcrumbs(breadcrumbs);
 
 const { product } = useProduct(
-  productResponse.value?.product,
-  productResponse.value?.configurator,
+  productResponse.value.product,
+  productResponse.value.configurator,
 );
 
 useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });

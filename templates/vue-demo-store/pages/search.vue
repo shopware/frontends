@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { ListingResult, Product } from "@shopware-pwa/types";
+import type { RequestParameters } from "#shopware";
+import type { Schemas } from "#shopware";
 const route = useRoute();
 const router = useRouter();
 
@@ -25,7 +26,7 @@ useBreadcrumbs([
 const cacheKey = computed(() => `productSearch-${JSON.stringify(route.query)}`);
 const loadProducts = async (cacheKey: string) => {
   const { data: productSearch } = await useAsyncData(cacheKey, async () => {
-    await search(route.query);
+    await search(route.query as unknown as RequestParameters<"searchPage">);
     return getCurrentListing.value;
   });
 
@@ -35,7 +36,7 @@ let productSearch = await loadProducts(cacheKey.value);
 
 watch(cacheKey, async (newCacheKey) => {
   productSearch = await loadProducts(newCacheKey);
-  setInitialListing(productSearch.value as Partial<ListingResult<Product>>);
+  setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
 });
 
 const changePage = async (page: number) => {
@@ -46,7 +47,7 @@ const changePage = async (page: number) => {
     },
   });
 };
-setInitialListing(productSearch.value as Partial<ListingResult<Product>>);
+setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
 </script>
 
 <script lang="ts">
@@ -68,7 +69,7 @@ export default {
     </div>
 
     <h1 class="mb-8 mt-8 md:mt-0 text-3xl text-center">
-      <span v-if="products.length"
+      <span v-if="products?.length"
         >{{ $t("search.resultsHeader") }} "<strong>{{
           route.query.query
         }}</strong

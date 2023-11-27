@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import type {
-  CustomerAddress,
-  ClientApiError,
-  ShopwareError,
-} from "@shopware-pwa/types";
 import { useVuelidate } from "@vuelidate/core";
 import { customValidators } from "@/i18n/utils/i18n-validators";
+import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
+import type { Schemas } from "#shopware";
 
 const { required, minLength, requiredIf } = customValidators();
 
@@ -20,7 +18,7 @@ const emits = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    address?: CustomerAddress;
+    address?: Schemas["CustomerAddress"];
     title?: string;
   }>(),
   {
@@ -54,13 +52,15 @@ const invokeSave = async (): Promise<void> => {
     $v.value.$touch();
     const valid = await $v.value.$validate();
     if (valid) {
-      await saveAddress(formData as CustomerAddress);
+      await saveAddress(formData as Schemas["CustomerAddress"]);
       emits("success");
     }
   } catch (errors) {
-    (errors as ClientApiError).messages.forEach((element: ShopwareError) => {
-      pushError(errorMessageBuilder(element) || t("messages.error"));
-    });
+    if (errors instanceof ApiClientError) {
+      errors.details.errors.forEach((element: ApiError) => {
+        pushError(errorMessageBuilder(element) || t("messages.error"));
+      });
+    }
   }
 };
 

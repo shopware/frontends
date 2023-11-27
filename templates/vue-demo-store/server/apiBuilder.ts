@@ -1,9 +1,11 @@
-import { createInstance } from "@shopware-pwa/api-client";
+import { createAPIClient } from "@shopware/api-client";
+import type { operationPaths, operations } from "#shopware";
+
 const runtimeConfig = useRuntimeConfig();
 
-const apiContext = createInstance({
-  endpoint: runtimeConfig.public.shopware.shopwareEndpoint,
+const apiClient = createAPIClient<operations, operationPaths>({
   accessToken: runtimeConfig.public.shopware.shopwareAccessToken,
+  baseURL: runtimeConfig.public.shopware.shopwareEndpoint,
 });
 
-export default apiContext;
+export default apiClient;

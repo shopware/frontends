@@ -1,11 +1,11 @@
-import {
+import { useCmsElementConfig } from "#imports";
+import type {
   CmsElementImage,
   DisplayMode,
   CmsElementManufacturerLogo,
-  useCmsElementConfig,
 } from "../index";
-import {
-  computed,
+import { computed } from "vue";
+import type {
   ComputedRef,
   CSSProperties,
   AnchorHTMLAttributes,
