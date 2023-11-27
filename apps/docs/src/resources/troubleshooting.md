@@ -32,7 +32,7 @@ Currently you should use the default **Storefront SalesChannel type**. This soun
 
 ### Option 2: Vite plugin
 
-- Execute `npm add -D @vitejs/plugin-basic-ssl` in your project folder
+- Execute `pnpm add -D @vitejs/plugin-basic-ssl` in your project folder
 - Edit your `nuxt.config.ts` file and add:
   ```ts
   import basicSsl from '@vitejs/plugin-basic-ssl'
