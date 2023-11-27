@@ -49,7 +49,7 @@ Currently you should use the default **Storefront SalesChannel type**. This soun
   },
   // ...
   ```
-- Start your dev server with `npm run dev`
+- Start your dev server with `pnpm run dev`
 - Your browser may ask you to accept the risk when you visit https://localhost:3000. This is because it is a self-signed certificate.
 
 ## SSR throws error in local environment with DDEV?
