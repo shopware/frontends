@@ -43,7 +43,8 @@
     "dist",
     "metadata",
     "src",
-    "composables"
+    "composables",
+    "nuxt.config.ts"
   ],
   "scripts": {
     "build": "unbuild && pnpm build:types",

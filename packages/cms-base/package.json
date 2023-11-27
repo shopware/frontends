@@ -23,7 +23,8 @@
     "dist",
     "components",
     "helpers",
-    "index.cjs"
+    "index.cjs",
+    "nuxt.config.ts"
   ],
   "scripts": {
     "build": "unbuild",
