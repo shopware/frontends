@@ -1,17 +1,17 @@
 // CmsBlock make as a generic type
 type GenericCms = {
-  visibility: {
-    [key in CmsVisibility]: boolean;
+  visibility?: {
+    [key in CmsVisibility]?: boolean;
   };
-  cssClass: string | null;
-  backgroundColor: string | null;
-  backgroundMedia: { url: string } | null;
-  backgroundMediaMode: string | null;
-  sizingMode: string | null;
-  marginBottom: string | null;
-  marginLeft: string | null;
-  marginRight: string | null;
-  marginTop: string | null;
+  cssClass?: string | null;
+  backgroundColor?: string | null;
+  backgroundMedia?: { url: string } | null;
+  backgroundMediaMode?: string | null;
+  sizingMode?: string | null;
+  marginBottom?: string | null;
+  marginLeft?: string | null;
+  marginRight?: string | null;
+  marginTop?: string | null;
 };
 type CmsBlock = GenericCms & { apiAlias: "cms_block" };
 type CmsSection = GenericCms & { apiAlias: "cms_section" };
@@ -23,8 +23,8 @@ type CmsVisibility = "mobile" | "tablet" | "desktop" | string;
  */
 export type LayoutConfiguration = {
   layoutStyles: {
-    backgroundColor: string | null;
-    backgroundImage: string | null;
+    backgroundColor?: string | null;
+    backgroundImage?: string | null;
     backgroundSize?: string | null;
     sizingMode?: string | null;
     marginBottom?: string | null | undefined;
@@ -96,13 +96,13 @@ function getVisibilityClasses(content: CmsBlock | CmsSection | CmsSlot) {
 /**
  * Get layout configuration for CMS content
  *
- * @param {CmsBlock | CmsSection | CmsSlot} content CMS content
+ * @param content CMS content
  *
  * @category CMS (Shopping Experiences)
  */
-export function getCmsLayoutConfiguration(
-  content: CmsBlock | CmsSection | CmsSlot,
-): LayoutConfiguration {
+export function getCmsLayoutConfiguration<
+  T extends CmsBlock | CmsSection | CmsSlot,
+>(content: T): LayoutConfiguration {
   if (!content || isCmsSlot(content)) {
     return {
       cssClasses: null,

@@ -1,10 +1,10 @@
 type LinkedCategory<T = unknown> = T & {
   type: string;
-  externalLink: string;
-  seoUrls: string;
-  internalLink: string;
+  externalLink?: string;
+  seoUrls?: { seoPathInfo: string }[];
+  internalLink?: string;
   id: string;
-  linkType: string;
+  linkType?: string;
 };
 /**
  * Extract prefix for technical URL

@@ -1,11 +1,4 @@
-type Category<T = unknown> = T & {
-  name: string;
-  translated: { name: string };
-  media: { url: string };
-  type: string;
-};
-
-const isCategory = (category: Partial<Category>): boolean => {
+const isCategory = <T extends { type: string }>(category: T): boolean => {
   return (
     category?.type === "page" ||
     category?.type === "link" ||
@@ -20,6 +13,11 @@ const isCategory = (category: Partial<Category>): boolean => {
  *
  * @public
  */
-export function getCategoryImageUrl(category: Partial<Category>): string {
+export function getCategoryImageUrl<
+  T extends {
+    media?: { url: string };
+    type: string;
+  },
+>(category: T): string {
   return isCategory(category) ? category?.media?.url || "" : "";
 }

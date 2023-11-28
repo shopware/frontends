@@ -37,7 +37,7 @@ export type CmsBlock = {
   mobileBehavior: MobileBehavior;
   backgroundColor: string | null;
   backgroundMediaId: string | null;
-  backgroundMedia: Media | null;
+  backgroundMedia?: Media | null;
   backgroundMediaMode: BackgroundMediaMode;
   cssClass: string | null;
   visibility: {

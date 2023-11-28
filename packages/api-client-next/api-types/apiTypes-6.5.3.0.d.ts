@@ -18,6 +18,7 @@ type GenericRecord =
   | never
   | string
   | string[]
+  | number
   | { [key: string]: GenericRecord }; // TODO: [OpenAPI] - define GenericRecord properly
 
 export type paths = {
@@ -762,7 +763,7 @@ export type components = {
       parentVersionId?: string;
       path?: string;
       productAssignmentType: string;
-      seoUrls?: components["schemas"]["SeoUrl"];
+      seoUrls?: components["schemas"]["SeoUrl"][]; // TODO: [OpenAPI][Category] - should be an array
       translated?: {
         afterCategoryId?: string;
         afterCategoryVersionId?: string;

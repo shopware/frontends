@@ -47,8 +47,5 @@
     "tsconfig": "workspace:*",
     "unbuild": "^2.0.0",
     "vitest": "^0.34.6"
-  },
-  "dependencies": {
-    "@shopware-pwa/types": "workspace:*"
   }
 }

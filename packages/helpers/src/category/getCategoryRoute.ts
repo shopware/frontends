@@ -1,14 +1,4 @@
 import { getCategoryUrl } from "./getCategoryUrl";
-
-type LinkedCategory<T = unknown> = T & {
-  type: string;
-  externalLink: string;
-  seoUrls: string;
-  internalLink: string;
-  id: string;
-  linkType: string;
-};
-
 /**
  * Get category/navigation route information for Vue Router.
  *
@@ -24,7 +14,16 @@ type LinkedCategory<T = unknown> = T & {
  * @category Category
  * @category Routing
  */
-export function getCategoryRoute(category: LinkedCategory) {
+export function getCategoryRoute<
+  T extends {
+    type: string;
+    externalLink?: string;
+    seoUrls?: { seoPathInfo: string }[];
+    internalLink?: string;
+    id: string;
+    linkType?: string;
+  },
+>(category: T) {
   if (!category) return "/";
   if (
     category.type === "page" ||

@@ -1,7 +1,3 @@
-type CmsElement<T = unknown> = T & {
-  backgroundMedia: { metaData: { width: number; height: number } };
-};
-
 const DEFAULT_BG_IMAGE_SIZE = 800;
 function roundUp(num: number) {
   return num ? Math.ceil(num / 100) * 100 : DEFAULT_BG_IMAGE_SIZE;
@@ -13,14 +9,15 @@ const getUrlFromBackgroundImage = (url: string) => {
 
   return !match ? url : match[1];
 };
-
-export function getBackgroundImageUrl(
-  url: string,
-  element: CmsElement,
-): string {
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+export function getBackgroundImageUrl<
+  T extends {
+    backgroundMedia?: any;
+  },
+>(url: string, element: T): string {
   const backgroundImage = getUrlFromBackgroundImage(url);
-  const width = element.backgroundMedia?.metaData.width ?? 0;
-  const height = element.backgroundMedia?.metaData.height ?? 0;
+  const width = element.backgroundMedia?.metaData?.width ?? 0;
+  const height = element.backgroundMedia?.metaData?.height ?? 0;
   const biggestParam =
     width > height
       ? `width=${roundUp(width > 1920 ? 1900 : width)}`

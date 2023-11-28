@@ -2,11 +2,8 @@ import { getProductRealPrice } from "./getProductRealPrice";
 
 type CalculatedPrice =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  { unitPrice: number; total: number; [key: string]: any };
-type ProductWithCalculatedPrice<T = unknown> = T & {
-  calculatedPrice: CalculatedPrice;
-  calculatedPrices?: CalculatedPrice[];
-};
+  { unitPrice: number };
+
 /**
  *
  * @param {ProductWithCalculatedPrice} product product entity
@@ -14,9 +11,12 @@ type ProductWithCalculatedPrice<T = unknown> = T & {
  * @returns {number | undefined} product fromPrice
  * @category Product
  */
-export function getProductFromPrice(
-  product: ProductWithCalculatedPrice,
-): number | undefined {
+export function getProductFromPrice<
+  T extends {
+    calculatedPrice?: CalculatedPrice;
+    calculatedPrices?: CalculatedPrice[];
+  },
+>(product: T): number | undefined {
   if (!product) {
     return;
   }

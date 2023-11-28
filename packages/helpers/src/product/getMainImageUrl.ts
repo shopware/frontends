@@ -12,7 +12,7 @@ export function getMainImageUrl<
     | {
         cover?: {
           media?: {
-            url: string;
+            url?: string;
           };
         };
       }
@@ -25,8 +25,11 @@ export function getMainImageUrl<
       }
     | {
         cover?: {
-          url: string;
+          url?: string;
         };
+      }
+    | {
+        apiAlias?: string;
       },
 >(object: T): string {
   if (!object) return "";

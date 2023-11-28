@@ -1,7 +1,7 @@
 type CalculatedPrice = { unitPrice: number };
 
 type ProductWithCalculatedPrice<T = unknown> = T & {
-  calculatedPrice: CalculatedPrice;
+  calculatedPrice?: CalculatedPrice;
   calculatedPrices?: CalculatedPrice[];
 };
 

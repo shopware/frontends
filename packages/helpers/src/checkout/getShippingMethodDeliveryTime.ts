@@ -1,17 +1,17 @@
-type ShippingMethod<T = unknown> = T & {
-  deliveryTime?: {
-    translated: {
-      name: string;
-    };
-  };
-};
-
 /**
  *  Get shipping delivery time
  *
  * @param {ShippingMethod} shippingMethod
  * @returns {string}
  */
-export function getShippingMethodDeliveryTime(shippingMethod: ShippingMethod) {
+export function getShippingMethodDeliveryTime<
+  T extends {
+    deliveryTime?: {
+      translated?: {
+        name?: string;
+      };
+    };
+  },
+>(shippingMethod: T) {
   return shippingMethod.deliveryTime?.translated?.name;
 }
