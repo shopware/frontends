@@ -5,4 +5,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ["src"],
   },
+  build: {
+    transpile: ["@shopware-pwa/composables-next"],
+  },
 });

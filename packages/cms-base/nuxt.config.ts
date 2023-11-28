@@ -9,4 +9,7 @@ export default defineNuxtConfig({
       // global: true,
     },
   ],
+  build: {
+    transpile: ["@shopware-pwa/cms-base"],
+  },
 });
