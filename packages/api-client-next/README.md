@@ -5,7 +5,7 @@
 ![](https://img.shields.io/github/license/shopware/frontends?color=blue)
 [![](https://img.shields.io/github/issues/shopware/frontends/api-client?label=package%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Aapi-client)
 
-Dynamic and fully typed API Client for Shopware 6. Usable in any JavaScript an TypeScript project.
+Dynamic and fully typed API Client for Shopware 6. Usable in any JavaScript and TypeScript project.
 You can use types generated from your custom API instance to have autocompletion and type safety.
 
 ## Setup
@@ -23,7 +23,7 @@ yarn add @shopware/api-client
 npm i @shopware/api-client
 ```
 
-Recommended practice is to create separate module file. For example `src/apiClient.ts`, and import it whenever you need to use API Client.
+Recommended practice is to create a separate module file. For example `src/apiClient.ts`, and import it whenever you need to use API Client.
 
 ```typescript
 import { createAPIClient } from "@shopware/api-client";
