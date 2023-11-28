@@ -9,7 +9,9 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@shopware-pwa/api-client": "canary",
+    "@shopware/api-client": "canary",
+    "@shopware-pwa/cms-base": "canary",
+    "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@types/node": "^20.3.2",
     "@vueuse/nuxt": "^10.6.1",
