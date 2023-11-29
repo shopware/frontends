@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { RouteObject } from "@shopware-pwa/composables-next";
+
 const props = defineProps<{
   error: {
     statusCode: number;
@@ -9,11 +11,13 @@ const props = defineProps<{
 
 let isFormattedError = true;
 let errMessage = "";
+let linkFormatter = (path: string | RouteObject) => path;
 
 try {
   const { t } = useI18n();
   const localePath = useLocalePath();
   const { formatLink } = useInternationalization(localePath);
+  linkFormatter = formatLink;
 
   const errorMessageMap: { [key: number]: string } = {
     404: t("errorPages.404"),
@@ -84,7 +88,7 @@ export default {
           </div>
         </DevOnly>
         <NuxtLink
-          :to="isFormattedError ? formatLink(`/`) : `/`"
+          :to="isFormattedError ? linkFormatter(`/`) : `/`"
           class="block w-full lg:w-auto justify-center py-3 px-8 border shadow-sm text-sm font-medium rounded-md text-white bg-brand-light hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
         >
           {{ $t("goBackHome") }}
