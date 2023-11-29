@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/cms-base",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Vue CMS support for Shopware",
   "author": "Shopware",
   "repository": {
@@ -23,7 +23,8 @@
     "dist",
     "components",
     "helpers",
-    "index.cjs"
+    "index.cjs",
+    "nuxt.config.ts"
   ],
   "scripts": {
     "build": "unbuild",

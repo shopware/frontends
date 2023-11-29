@@ -2,7 +2,7 @@
 import type {
   CmsElementImage,
   CmsElementManufacturerLogo,
-} from "@shopware-pwa/composables-next/composables";
+} from "@shopware-pwa/composables-next";
 import { useCmsElementImage } from "#imports";
 import buildUrlPrefix from "../../../../helpers/buildUrlPrefix";
 import getUrlPrefix from "../../../../helpers/getUrlPrefix";

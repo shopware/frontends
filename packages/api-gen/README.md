@@ -12,18 +12,11 @@ Documentation specific for this package: [api-gen](https://frontends.shopware.co
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 0.1.0
-
-### Minor Changes
-
-- [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Changed types imports to `import type {...} from "..."`
+### Latest changes: 0.1.1
 
 ### Patch Changes
 
-- [#396](https://github.com/shopware/frontends/pull/396) [`dfc49b80`](https://github.com/shopware/frontends/commit/dfc49b80bcaa8e00b71e0dff6e35b413383274f5) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+- [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
 
-  - Changed dependency _openapi-typescript_ from **^6.5.5** to **^6.6.1**
-
-- [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
-  - Changed dependency _openapi-typescript_ from **^6.6.1** to **^6.7.0**
+  - Changed dependency _openapi-typescript_ from **^6.7.0** to **^6.7.1**
+  - Changed dependency _prettier_ from **^3.0.3** to **^3.1.0**

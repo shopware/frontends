@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ApiClientError, type ApiError } from "@shopware/api-client";
+import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
 
 const emits = defineEmits<{
   (e: "success"): void;
@@ -26,6 +27,8 @@ const goToRegister = () => {
   router.push(formatLink("/register"));
 };
 
+const { resolveApiErrors } = useApiErrorsResolver("account_login");
+
 const invokeLogin = async (): Promise<void> => {
   loginErrors.value = [];
   try {
@@ -38,9 +41,7 @@ const invokeLogin = async (): Promise<void> => {
     mergeWishlistProducts();
   } catch (error) {
     if (error instanceof ApiClientError) {
-      loginErrors.value = error.details.errors.map(
-        ({ detail }: ApiError) => detail,
-      );
+      loginErrors.value = resolveApiErrors(error.details.errors as ApiError[]);
     }
   }
 };

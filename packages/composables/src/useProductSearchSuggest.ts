@@ -49,9 +49,9 @@ export function useProductSearchSuggest(): UseProductSearchSuggestReturn {
   const search = async (
     additionalCriteria = {} as RequestParameters<"searchPage">,
   ) => {
-    const searchCriteria = {
-      query: searchTerm.value,
+    const searchCriteria: RequestParameters<"searchPage"> = {
       ...additionalCriteria,
+      search: searchTerm.value,
     };
     return listingComposable.search(searchCriteria, {
       preventRouteChange: true,

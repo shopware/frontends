@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SliderElementConfig } from "@shopware-pwa/composables-next/composables";
+import type { SliderElementConfig } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
 import type { CmsSlot } from "@shopware-pwa/types";
 import {

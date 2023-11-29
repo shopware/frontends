@@ -6,7 +6,7 @@ import SwProductListingFilter from "./SwProductListingFilter.vue";
 import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
-} from "@shopware-pwa/composables-next/composables";
+} from "@shopware-pwa/composables-next";
 import { useCategory, useListing } from "#imports";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";

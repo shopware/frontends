@@ -1,4 +1,4 @@
-import { useUser as swUseUser } from "@shopware-pwa/composables-next/composables";
+import { useUser as swUseUser } from "@shopware-pwa/composables-next";
 
 export const useUser = () => {
   const useUserData = swUseUser();

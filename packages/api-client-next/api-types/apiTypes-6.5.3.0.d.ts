@@ -647,9 +647,13 @@ export type components = {
       unitPrice: number;
       quantity: number;
       totalPrice: number;
-      calculatedTaxes: CalculatedTax[];
-      taxRules: TaxRule[];
-      referencePrice: ReferencePrice;
+      calculatedTaxes: GenericRecord[];
+      taxRules: GenericRecord[];
+      referencePrice?: {
+        price: number;
+        referenceUnit: number;
+        unitName: string;
+      };
       hasRange?: boolean;
       listPrice: {
         price: number;
@@ -944,6 +948,7 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     CmsBlock: {
+      apiAlias: "cms_block"; // TODO: [OpenAPI][CmsBlock] - define apiAlias properly
       backgroundColor?: string;
       backgroundMedia?: components["schemas"]["Media"];
       backgroundMediaId?: string;
@@ -1009,13 +1014,13 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     CmsPage: {
       config?: {
-        backgroundColor?: string;
-      };
+        backgroundColor?: string | null; // TODO: [OpenAPI][CmsPage] - define sections as required array
+      } | null; // TODO: [OpenAPI][CmsBlock] - can be null
       /** Format: date-time */
       createdAt: string;
-      cssClass?: string;
-      customFields?: GenericRecord;
-      entity?: string;
+      cssClass?: string | null; // TODO: [OpenAPI][CmsBlock] - can be null
+      customFields?: GenericRecord | null; // TODO: [OpenAPI][CmsBlock] - can be null
+      entity?: string | null; // TODO: [OpenAPI][CmsBlock] - can be null
       extensions?: {
         swagCmsExtensionsScrollNavigationPageSettings?: {
           data?: {
@@ -1034,11 +1039,11 @@ export type components = {
         };
       };
       id?: string;
-      landingPages?: components["schemas"]["LandingPage"];
+      landingPages?: components["schemas"]["LandingPage"] | null; // TODO: [OpenAPI][CmsPage] - define sections as required array
       name?: string;
-      previewMedia?: components["schemas"]["Media"];
+      previewMedia?: components["schemas"]["Media"] | null; // TODO: [OpenAPI][CmsPage] - define sections as required array
       previewMediaId?: string;
-      sections?: components["schemas"]["CmsSection"];
+      sections?: Array<components["schemas"]["CmsSection"]>; // TODO: [OpenAPI][CmsPage] - define sections as required array
       translated?: {
         cssClass?: string;
         entity?: string;
@@ -1070,9 +1075,10 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     CmsSection: {
-      backgroundColor?: string;
-      backgroundMedia?: components["schemas"]["Media"];
-      backgroundMediaId?: string;
+      apiAlias: "cms_section"; // TODO: [OpenAPI][CmsSection] - define apiAlias properly
+      backgroundColor?: string | null; // TODO: [OpenAPI][CmsSection] - can be null
+      backgroundMedia?: components["schemas"]["Media"] | null; // TODO: [OpenAPI][CmsSection] - can be null
+      backgroundMediaId?: string | null; // TODO: [OpenAPI][CmsSection] - can be null
       backgroundMediaMode?: string;
       blocks?: components["schemas"]["CmsBlock"];
       cmsPageVersionId?: string;
@@ -3155,6 +3161,7 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
+    // TODO: [OpenAPI][Product] - null shouls be undefined by default to decrease payload size
     /** Added since version: 6.0.0.0 */
     Product: {
       apiAlias: "product"; // TODO: [OpenAPI][Product] apiAlias field should be defined in schema as string literal
@@ -3260,7 +3267,7 @@ export type components = {
       productManufacturerVersionId?: string;
       productMediaVersionId?: string;
       productNumber: string;
-      productReviews?: components["schemas"]["ProductReview"];
+      productReviews?: Array<components["schemas"]["ProductReview"]>; // TODO: [OpenAPI][Product] productReviews field should be defined as array
       properties?: Array<components["schemas"]["PropertyGroupOption"]>; // TODO: [OpenAPI][Product] properties field should be defined as array
       propertyIds?: readonly string[];
       /** Format: int64 */
@@ -4053,10 +4060,12 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      customerId?: string; // TODO: [OpenAPI][ProductReview] customerId field should be defined
+      externalUser?: string; // TODO: [OpenAPI][ProductReview] externalUser field should be defined
+      id: string; // TODO: [OpenAPI][ProductReview] id field should be defined as required
       languageId: string;
       /** Format: float */
-      points?: number;
+      points: number; // TODO: [OpenAPI][ProductReview] points field should be defined as required
       productId: string;
       productVersionId?: string;
       salesChannelId: string;
@@ -6567,7 +6576,10 @@ export type operations<components = components> = {
           accountType?: string;
           /** Field can be used to store an affiliate tracking code */
           affiliateCode?: string;
-          billingAddress: components["schemas"]["CustomerAddress"];
+          billingAddress: Omit<
+            components["schemas"]["CustomerAddress"],
+            "createdAt" | "id" | "customerId" | "firstName" | "lastName"
+          >; // TODO: [OpenAPI][register] - omit id, createdAt, customerId, firstName, lastName while creating address (or better to reverse and pick required fields)
           /** Birthday day */
           birthdayDay?: number;
           /** Birthday month */
@@ -7515,7 +7527,7 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Product"][];
+            elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
           } & components["schemas"]["EntitySearchResult"];
         };
       };

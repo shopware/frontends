@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/composables-next",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "Shopware Frontends composables for Vue",
   "author": "Shopware",
   "repository": {
@@ -18,12 +18,33 @@
   },
   "license": "MIT",
   "type": "module",
-  "main": "./nuxt.config.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./nuxt-layer": {
+      "import": "./nuxt.config.ts"
+    },
+    "./composables": {
+      "import": "./composables/index.ts"
+    },
+    "./lib": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./dist": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
   "files": [
     "dist",
     "metadata",
     "src",
-    "composables"
+    "composables",
+    "nuxt.config.ts"
   ],
   "scripts": {
     "build": "unbuild && pnpm build:types",
@@ -36,13 +57,13 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@shopware-pwa/api-client": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
     "@vueuse/core": "^10.6.1",
     "scule": "^1.1.0"
   },
   "devDependencies": {
+    "@nuxt/kit": "^3.8.1",
     "@shopware-pwa/types": "workspace:*",
     "@vitest/coverage-v8": "^0.34.6",
     "@vue/test-utils": "^2.4.2",

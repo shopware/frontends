@@ -1,5 +1,4 @@
 import { defineNuxtConfig } from "nuxt/config";
-import type { NuxtConfig } from "nuxt/config";
 
 export default defineNuxtConfig({
   components: [
@@ -9,4 +8,7 @@ export default defineNuxtConfig({
       // global: true,
     },
   ],
+  build: {
+    transpile: ["@shopware-pwa/cms-base"],
+  },
 });

@@ -1,5 +1,15 @@
 # @shopware-pwa/nuxt3-module
 
+## 0.5.6
+
+### Patch Changes
+
+- [#458](https://github.com/shopware/frontends/pull/458) [`135ca37d`](https://github.com/shopware/frontends/commit/135ca37d9c911cf47d75705006af2879ab7800a8) Thanks [@danielroe](https://github.com/danielroe)! - This improves performance slightly when developing; we can avoid loading the entire barrel file at `#app` by using the new granular imports merged in https://github.com/nuxt/nuxt/pull/23951.
+
+- Updated dependencies [[`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550), [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0)]:
+  - @shopware-pwa/composables-next@0.14.1
+  - @shopware-pwa/api-client@0.7.0
+
 ## 0.5.5
 
 ### Patch Changes

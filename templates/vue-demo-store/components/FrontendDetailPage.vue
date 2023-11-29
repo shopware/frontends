@@ -18,22 +18,24 @@ const { data: productResponse } = await useAsyncData(
   },
 );
 
-if (!!productResponse.value) {
-  const breadcrumbs = getCategoryBreadcrumbs(
-    productResponse.value.product.seoCategory, // TODO: [OpenAPI][Product] - seoCategory needs to be defined properly
-    {
-      startIndex: 2,
-    },
-  );
-  useBreadcrumbs(breadcrumbs);
-
-  const { product } = useProduct(
-    productResponse.value.product,
-    productResponse.value.configurator,
-  );
-
-  useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });
+if (!productResponse.value) {
+  console.error("No product found for navigationId: " + props.navigationId);
+  throw new Error("No product found for navigationId: " + props.navigationId);
 }
+const breadcrumbs = getCategoryBreadcrumbs(
+  productResponse.value.product.seoCategory,
+  {
+    startIndex: 2,
+  },
+);
+useBreadcrumbs(breadcrumbs);
+
+const { product } = useProduct(
+  productResponse.value.product,
+  productResponse.value.configurator,
+);
+
+useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
 <template>
   <LayoutBreadcrumbs />

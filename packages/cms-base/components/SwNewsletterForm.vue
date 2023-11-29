@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import type { CmsElementForm } from "@shopware-pwa/composables-next/composables";
+import type { CmsElementForm } from "@shopware-pwa/composables-next";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
 import { useCmsElementConfig, useNewsletter, useSalutations } from "#imports";

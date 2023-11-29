@@ -24,8 +24,10 @@ export function useShopwareContext() {
 
   const apiClient = inject<ApiClient>("apiClient");
 
-  if (!shopwareContext || !apiClient)
+  if (!shopwareContext || !apiClient) {
+    console.error("[Error][Shopware] API Client is not provided.");
     throw new ContextError("Shopware or apiClient");
+  }
 
   return {
     /**

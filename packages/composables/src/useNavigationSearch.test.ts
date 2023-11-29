@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { useNavigationSearch } from "./useNavigationSearch";
-import { shallowMount } from "@vue/test-utils";
-import { defineComponent } from "vue";
+import { useSetup } from "./_test";
 
 const mockedResponse = {
   translated: [],
@@ -22,47 +21,60 @@ const mockedResponse = {
   id: "59d47f52be96461193a3d6fcf2fe46e6",
   apiAlias: "seo_url",
 };
-const Component = defineComponent({
-  template: "<div/>",
-  props: {},
-  setup() {
-    const { resolvePath } = useNavigationSearch();
-    return { resolvePath };
-  },
-});
-
-const getMockProvide = () => ({
-  global: {
-    provide: {
-      shopware: {
-        apiInstance: {
-          config: {},
-        },
-      },
-      apiClient: {
-        invoke: () => {
-          return new Promise((resolve) => {
-            resolve({
-              elements: [mockedResponse],
-            });
-          });
-        },
-      },
-    },
-  },
-});
 
 describe("useNavigationSearch", () => {
-  const wrapper = shallowMount(Component, getMockProvide());
-
-  it("resolvePath", async () => {
-    expect(await wrapper.vm.resolvePath("/test")).toStrictEqual(mockedResponse);
-    expect(await wrapper.vm.resolvePath("/landingPage/test")).toStrictEqual(
-      mockedResponse,
-    );
-    expect(await wrapper.vm.resolvePath("/")).toStrictEqual({
-      routeName: "frontend.navigation.page",
-      foreignKey: undefined,
+  it("should resolve path from api response", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({
+      elements: [mockedResponse],
     });
+
+    expect(await vm.resolvePath("/test")).toStrictEqual(mockedResponse);
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readSeoUrl"),
+      expect.objectContaining({
+        filter: [
+          {
+            type: "equals",
+            field: "seoPathInfo",
+            value: "test",
+          },
+        ],
+      }),
+    );
+  });
+  it("should resolve technical url", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({ elements: [] });
+
+    await vm.resolvePath("/landingPage/test");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readSeoUrl"),
+      expect.objectContaining({
+        filter: [
+          {
+            type: "equals",
+            field: "pathInfo",
+            value: "/landingPage/test",
+          },
+        ],
+      }),
+    );
+  });
+  it("should not invoke api call for / search ", async () => {
+    const { vm, injections } = useSetup(useNavigationSearch);
+    injections.apiClient.invoke.mockResolvedValue({
+      elements: [mockedResponse],
+    });
+
+    const result = await vm.resolvePath("/");
+    expect(result).toMatchInlineSnapshot(`
+      {
+        "foreignKey": undefined,
+        "routeName": "frontend.navigation.page",
+      }
+    `);
+    expect(injections.apiClient.invoke).not.toHaveBeenCalled();
   });
 });
