@@ -26,8 +26,8 @@
     "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.4.8",
-    "@changesets/cli": "^2.26.2",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.1",
     "@microsoft/api-documenter": "^7.23.12",
     "@microsoft/api-extractor": "^7.38.3",
     "@microsoft/tsdoc": "^0.14.2",
@@ -39,10 +39,10 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.1.0",
     "prettier": "^3.1.0",
-    "taze": "^0.12.0",
+    "taze": "^0.12.3",
     "turbo": "^1.10.16",
-    "typedoc": "^0.25.3",
-    "vercel": "^32.5.5"
+    "typedoc": "^0.25.4",
+    "vercel": "^32.5.6"
   },
   "engines": {
     "node": "^18.x || ^20.x"
@@ -52,18 +52,18 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.10.5",
+  "packageManager": "pnpm@8.11.0",
   "pnpm": {
     "overrides": {
-      "yaml@2": "^2.2.2",
-      "@antfu/utils": "^0.7.4",
-      "@babel/traverse": "^7.23.2",
-      "semver": "^7.5.2",
-      "debug": "^4.3.1",
+      "@antfu/utils": "^0.7.6",
+      "@babel/traverse": "^7.23.5",
+      "debug": "^4.3.4",
       "postcss": "^8.4.31",
-      "sharp": "^0.32.6",
-      "undici": "^5.26.2",
-      "zod": "^3.22.3"
+      "semver": "^7.5.4",
+      "sharp": "^0.33.0",
+      "undici": "^5.28.1",
+      "yaml@2": "^2.3.4",
+      "zod": "^3.22.4"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
