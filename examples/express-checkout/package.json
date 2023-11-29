@@ -9,18 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@paypal/paypal-js": "^7.1.0",
+    "@paypal/paypal-js": "^7.1.1",
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/helpers-next": "canary",
     "js-cookie": "^3.0.5",
-    "vue": "^3.3.8",
+    "vue": "^3.3.9",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@shopware-pwa/types": "canary",
     "@types/node": "^20.0.0",
     "@vitejs/plugin-vue": "^4.5.0",
-    "vite": "^5.0.0"
+    "vite": "^5.0.4"
   }
 }

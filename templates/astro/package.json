@@ -11,15 +11,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^6.0.4",
+    "@astrojs/node": "^6.1.0",
     "@astrojs/vue": "^3.0.4",
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
     "@vitejs/plugin-vue": "^4.5.0",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
-    "astro": "^3.5.5",
+    "astro": "^3.6.3",
     "js-cookie": "^3.0.5",
-    "vue": "^3.3.8"
+    "vue": "^3.3.9"
   },
   "engines": {
     "node": "^18.x || ^20.x"
