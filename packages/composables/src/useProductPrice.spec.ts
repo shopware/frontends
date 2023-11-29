@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { useProductPrice } from "./useProductPrice";
-import { ref, defineComponent } from "vue";
+import { ref } from "vue";
 import mockedProduct from "./mocks/Product";
 import { useSetup } from "./_test";
 import productTierPrices from "./mocks/ProductTierPrices";

@@ -1,8 +1,6 @@
 import { getProductRealPrice } from "./getProductRealPrice";
 
-type CalculatedPrice =
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  { unitPrice: number };
+type CalculatedPrice = { unitPrice: number };
 
 /**
  *

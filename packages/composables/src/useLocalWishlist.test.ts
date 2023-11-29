@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { useSetup } from "./_test";
 import { useLocalWishlist } from "./useLocalWishlist";
-import { defineComponent } from "vue";
 
 describe("useLocalWishlist", () => {
   describe("methods", () => {
