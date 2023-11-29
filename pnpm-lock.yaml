@@ -942,12 +942,18 @@ importers:
 
   templates/vue-blank:
     devDependencies:
-      '@shopware-pwa/api-client':
+      '@shopware-pwa/cms-base':
         specifier: canary
-        version: link:../../packages/api-client
+        version: link:../../packages/cms-base
+      '@shopware-pwa/composables-next':
+        specifier: canary
+        version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
         specifier: canary
         version: link:../../packages/nuxt3-module
+      '@shopware/api-client':
+        specifier: canary
+        version: link:../../packages/api-client-next
       '@types/node':
         specifier: ^20.3.2
         version: 20.3.2
