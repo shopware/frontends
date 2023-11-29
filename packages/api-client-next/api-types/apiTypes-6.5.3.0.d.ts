@@ -1015,12 +1015,12 @@ export type components = {
     CmsPage: {
       config?: {
         backgroundColor?: string | null; // TODO: [OpenAPI][CmsPage] - define sections as required array
-      } | null; // TODO: [OpenAPI][CmsBlock] - can be null
+      };
       /** Format: date-time */
       createdAt: string;
-      cssClass?: string | null; // TODO: [OpenAPI][CmsBlock] - can be null
-      customFields?: GenericRecord | null; // TODO: [OpenAPI][CmsBlock] - can be null
-      entity?: string | null; // TODO: [OpenAPI][CmsBlock] - can be null
+      cssClass?: string;
+      customFields?: GenericRecord;
+      entity?: string;
       extensions?: {
         swagCmsExtensionsScrollNavigationPageSettings?: {
           data?: {
@@ -1076,9 +1076,9 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     CmsSection: {
       apiAlias: "cms_section"; // TODO: [OpenAPI][CmsSection] - define apiAlias properly
-      backgroundColor?: string | null; // TODO: [OpenAPI][CmsSection] - can be null
-      backgroundMedia?: components["schemas"]["Media"] | null; // TODO: [OpenAPI][CmsSection] - can be null
-      backgroundMediaId?: string | null; // TODO: [OpenAPI][CmsSection] - can be null
+      backgroundColor?: string;
+      backgroundMedia?: components["schemas"]["Media"];
+      backgroundMediaId?: string;
       backgroundMediaMode?: string;
       blocks?: components["schemas"]["CmsBlock"];
       cmsPageVersionId?: string;
