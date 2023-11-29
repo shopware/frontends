@@ -11,13 +11,13 @@
   "dependencies": {
     "@shopware/api-client": "canary",
     "js-cookie": "^3.0.5",
-    "vue": "^3.3.8"
+    "vue": "^3.3.9"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@vitejs/plugin-vue": "^4.5.0",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.0",
-    "vue-tsc": "^1.8.22"
+    "typescript": "^5.3.2",
+    "vite": "^5.0.4",
+    "vue-tsc": "^1.8.24"
   }
 }
