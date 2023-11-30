@@ -15,6 +15,7 @@ import {
   urlsTestCaseSix,
   cmsSectionTestCaseSeven,
   urlsTestCaseSeven,
+  urlsTestCaseEight,
 } from "./mocks/backgroundImage";
 
 describe("getBackgroundImageUrl, round up max height 1900", () => {
@@ -79,6 +80,15 @@ describe("getBackgroundImageUrl, regex does not match", () => {
   for (const [key, value] of Object.entries(urlsTestCaseSeven)) {
     it("should return url with parameters", () => {
       expect(getBackgroundImageUrl(key, element)).toBe(value);
+    });
+  }
+});
+
+describe("getBackgroundImageUrl, url too long", () => {
+  const element = cmsSectionTestCaseSeven;
+  for (const [key] of Object.entries(urlsTestCaseEight)) {
+    it("should return url with parameters", () => {
+      expect(() => getBackgroundImageUrl(key, element)).toThrow();
     });
   }
 });

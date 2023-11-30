@@ -62,6 +62,12 @@ export const urlsTestCaseSeven: { [key: string]: string } = {
   haha: 'url("haha?width=2000&fit=crop,smart")',
 };
 
+const urlKey = "a".repeat(1001);
+const urlsDynamicCaseEight: { [key: string]: string } = {};
+urlsDynamicCaseEight[urlKey] = `url("blabla?width=1900&fit=crop,smart")`;
+
+export const urlsTestCaseEight = urlsDynamicCaseEight;
+
 export const cmsSectionTestCaseOne = {
   backgroundMedia: {
     url: "",
