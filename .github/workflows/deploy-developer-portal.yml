@@ -1,0 +1,24 @@
+# This workflow is triggered whenever the main branch is updated
+name: Deploy to DevHub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger-deployment:
+    name: Trigger deployment
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: octokit/request-action@v2.x
+        name: Trigger deployment
+        with:
+          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+          owner: shopware
+          repo: developer-portal
+          ref: main
+          workflow_id: checkout-test-build-deploy.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEV_HUB_PERSONAL_ACCESS_TOKEN }}

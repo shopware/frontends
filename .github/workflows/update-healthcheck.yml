@@ -1,0 +1,39 @@
+# This workflow is triggered from developer-portal
+name: Update healthcheck
+
+on:
+  workflow_dispatch:
+    inputs:
+      owner:
+        description: "Owner to checkout"
+        required: true
+        type: string
+      repo:
+        description: "Repo to checkout"
+        required: true
+        type: string
+      check:
+        description: "Check ID"
+        required: true
+        type: string
+      conclusion:
+        description: "Healthcheck conclusion"
+        required: true
+        type: string
+      run_id:
+        description: "Workflow run ID"
+        required: true
+        type: string
+
+jobs:
+
+  update-healthcheck:
+    uses: shopware/developer-portal/.github/workflows/update-healthcheck.yml@main
+    with:
+      owner: ${{ inputs.owner }}
+      repo: ${{ inputs.repo }}
+      check: ${{ inputs.check }}
+      conclusion: ${{ inputs.conclusion }}
+      run_id: ${{ inputs.run_id }}
+    secrets:
+      TOKEN: ${{ secrets.GITHUB_TOKEN }}

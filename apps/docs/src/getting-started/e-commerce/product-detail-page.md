@@ -19,7 +19,7 @@ In order to display information of a product there is a `Product` object needed,
 - Images
 - ...
 
-To achieve that, you can utilize methods available within `composables` package (or directly via API client package named `@shopware/api-client`). In this example we will use [useProductSearch](../../../packages/composables.html#useproductsearch).
+To achieve that, you can utilize methods available within `composables` package (or directly via API client package named `@shopware/api-client`). In this example we will use [useProductSearch](../../packages/composables.html#useproductsearch).
 
 :::info Associations
 Keep in mind that not every field, or inner object of the `Product` entity is available automatically.
