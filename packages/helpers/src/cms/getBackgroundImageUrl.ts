@@ -5,6 +5,9 @@ function roundUp(num: number) {
 
 const getUrlFromBackgroundImage = (url: string) => {
   const regex = /(?:\(['"]?)(.*?)(?:['"]?\))/;
+  if (url.length > 1000) {
+    throw new Error("Url is too long");
+  }
   const match = url.match(regex);
 
   return !match ? url : match[1];
