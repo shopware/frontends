@@ -22,6 +22,7 @@ Please tell us via [Community Slack](https://shopwarecommunity.slack.com/archive
 Sorted by date, newest first
 
 - [Gross and Net-Switch for B2B and B2C Shops built with Composable Frontends](https://dev.to/shopware/gross-and-net-switch-for-b2b-and-b2c-shops-built-with-composable-frontends-2b24)
+- [Komponentenbasierte Entwicklung mit dem Shopware Frontends Framework](https://sitegeist.de/blog/e-commerce/komponentenbasierte-entwicklung-mit-dem-shopware-frontends-framework.html)
 - [Frontend API with Nuxt + Nitro = Flexibility 🐙](https://www.brocksi.net/blog/frontend-api-with-nuxt-and-nitro-will-lead-to-flexibility/)
 - [Remixing the Shopware Checkout (Part 1)](https://elkmod.dev/blogs/remixing-shopware-checkout)
 - [Create a vue.js composable and call any API within Shopware Frontends](https://www.brocksi.net/blog/vue-js-composable-call-api-shopware-frontends/)
@@ -36,6 +37,9 @@ Sorted by date, newest first
 
 Sorted by date, newest first
 
+- [Going Headless - One Page Shop mit Shopware & Nuxt 🚀 | shopware x synaigy Meetup](https://www.youtube.com/watch?v=RXaNWRMuea8)
+- [Performance Improvements Headless Shopware Frontends - Niklas Wolf, Mothership GmbH](https://www.youtube.com/watch?v=GhniPTMtIt8)
+- [Ein Microstore mit Shopware Frontends | Shopware Meetup der Mothership GmbH in München](https://www.youtube.com/watch?v=Dal-z94WLCk)
 - [Shopware Composable Frontends in Action - A real-life example with Miriam Müller](https://www.youtube.com/watch?v=AClnII3-GhQ)
 - [Quick-Start Composable Frontends - Shopware Boostday 2023](https://www.youtube.com/watch?v=2AwLWvPOffw)
 - [Shopware Composable Frontends: An interview. What is it, when to use it?](https://www.youtube.com/watch?v=A_O2nke4yoo)
