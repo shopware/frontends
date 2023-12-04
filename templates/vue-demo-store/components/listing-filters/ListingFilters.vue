@@ -92,7 +92,7 @@ const onOptionSelectToggle = async ({
   });
   await router.push({
     query: {
-      query: route.query.query,
+      search: route.query.search,
       ...filtersToQuery(searchCriteriaForRequest.value),
     },
   });
@@ -112,7 +112,7 @@ const clearFilters = async () => {
 
   await router.push({
     query: {
-      query: route.query.query,
+      search: route.query.search,
       ...filtersToQuery(searchCriteriaForRequest.value),
     },
   });

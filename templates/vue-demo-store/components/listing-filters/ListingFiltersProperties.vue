@@ -1,21 +1,16 @@
-<script
-  setup
-  lang="ts"
-  generic="
-    ListingFilter extends {
-      code: string;
-      label: string;
-      name: string;
-      options: Array<Schemas['PropertyGroupOption']>;
-    }
-  "
->
+<script setup lang="ts">
 import { inject, ref } from "vue";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
 
 defineProps<{
-  filter: ListingFilter;
+  filter: {
+    code: string;
+    label: string;
+    name: string;
+    options: Array<Schemas["PropertyGroupOption"]>;
+    entities: Array<Schemas["ProductManufacturer"]>;
+  };
 }>();
 
 const emits = defineEmits<{
@@ -37,7 +32,7 @@ const toggle = () => {
         @click="toggle"
       >
         <span class="font-medium text-gray-900 text-left">{{
-          props.filter.label
+          filter.label
         }}</span>
         <span class="ml-6 flex items-center">
           <i
@@ -54,20 +49,20 @@ const toggle = () => {
       <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
         <div class="space-y-4">
           <div
-            v-for="option in props.filter.options || props.filter.entities"
+            v-for="option in filter.options || filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
             class="flex items-center"
             @click="
               emits('select-value', {
-                code: props.filter.code,
+                code: filter.code,
                 value: option.id,
               })
             "
           >
             <input
-              :id="`filter-mobile-${props.filter.code}-${option.id}`"
+              :id="`filter-mobile-${filter.code}-${option.id}`"
               :checked="selectedOptionIds?.includes(option.id)"
-              :name="props.filter.name"
+              :name="filter.name"
               :value="option.name"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
