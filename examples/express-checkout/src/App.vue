@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Schemas } from "#shopware";
 import {
   CreateOrderActions,
   CreateOrderData,
@@ -22,21 +23,19 @@ import {
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import { useRoute } from "vue-router";
-import { getCustomerOrders } from "@shopware-pwa/api-client";
-import type { Product } from "@shopware-pwa/types";
 
 const route = useRoute();
 
 const orderCreated = ref();
 const redirectPaymentUrl = ref();
-const productFound = ref<Product>();
+const productFound = ref<Schemas["Product"]>();
 const isLoading = ref(true);
 const { unitPrice } = useProductPrice(productFound);
 const { search } = useProductSearch();
 const { getFormattedPrice } = usePrice();
 const { paymentMethods, getPaymentMethods, createOrder } = useCheckout();
 const { setPaymentMethod } = useSessionContext();
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 const { addToCart } = useAddToCart(productFound);
 const { refreshCart } = useCart();
 
@@ -82,8 +81,8 @@ const renderPaypalButtons = async () => {
         await setPaymentMethod(paypalMethod.value);
         await addToCart();
 
-        const response = await apiInstance.invoke.post<{ token: string }>(
-          "/store-api/paypal/express/create-order?isPayPalExpressCheckout=1",
+        const response = await apiClient.invoke(
+          "payPalCreateOrder post /store-api/paypal/express/create-order?isPayPalExpressCheckout=1",
         );
         return response?.data?.token;
       },
@@ -92,16 +91,16 @@ const renderPaypalButtons = async () => {
       // Will be called if the payment process is approved by paypal
       onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
         console.warn("onApprove", data);
-        const response = await apiInstance.invoke.post(
-          "/store-api/paypal/express/prepare-checkout?isPayPalExpressCheckout=1",
+        const response = await apiClient.invoke(
+          "payPalPrepare post /store-api/paypal/express/prepare-checkout?isPayPalExpressCheckout=1",
           {
             token: data.orderID,
           },
         );
         orderCreated.value = await createOrder();
         refreshCart();
-        const handlePaymentResponse = await apiInstance.invoke.post(
-          "/store-api/handle-payment",
+        const handlePaymentResponse = await apiClient.invoke(
+          "handlePaymentMethod post /store-api/handle-payment",
           {
             orderId: orderCreated.value.id,
             successUrl: `${window.location.origin}/ExpressCheckout?order=${orderCreated.value.id}&success=true`,
@@ -134,17 +133,14 @@ onMounted(async () => {
     isLoading.value = false;
     return;
   }
-
-  const orderResponse = await getCustomerOrders(
-    {
-      filter: [{ type: "equals", field: "id", value: orderId }],
-      associations: {
-        transactions: { associations: { paymentMethod: {} } },
-        addresses: {},
-      },
+  const orderResponse = await apiClient.invoke("readOrder post /order", {
+    filter: [{ type: "equals", field: "id", value: orderId }],
+    associations: {
+      transactions: { associations: { paymentMethod: {} } },
+      addresses: {},
     },
-    apiInstance,
-  );
+  });
+
   if (orderResponse?.elements?.length) {
     orderCreated.value = orderResponse.elements[0];
   }
