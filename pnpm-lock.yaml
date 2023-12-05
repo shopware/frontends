@@ -22,6 +22,9 @@ patchedDependencies:
   '@changesets/apply-release-plan@6.1.4':
     hash: mwkf7n4kxou2fhv74zlqi5v6fu
     path: patches/@changesets__apply-release-plan@6.1.4.patch
+  '@changesets/apply-release-plan@7.0.0':
+    hash: nwtp2bepj7gpdyeyruo6sps5mi
+    path: patches/@changesets__apply-release-plan@7.0.0.patch
 
 importers:
 
@@ -1860,7 +1863,7 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@changesets/apply-release-plan@7.0.0:
+  /@changesets/apply-release-plan@7.0.0(patch_hash=nwtp2bepj7gpdyeyruo6sps5mi):
     resolution: {integrity: sha512-vfi69JR416qC9hWmFGSxj7N6wA5J222XNBmezSVATPWDVPIF7gkd4d8CpbEbXmRWbVrkoli3oerGS6dcL/BGsQ==}
     dependencies:
       '@babel/runtime': 7.23.1
@@ -1877,6 +1880,7 @@ packages:
       resolve-from: 5.0.0
       semver: 7.5.4
     dev: true
+    patched: true
 
   /@changesets/assemble-release-plan@6.0.0:
     resolution: {integrity: sha512-4QG7NuisAjisbW4hkLCmGW2lRYdPrKzro+fCtZaILX+3zdUELSvYjpL4GTv0E4aM9Mef3PuIQp89VmHJ4y2bfw==}
@@ -1910,7 +1914,7 @@ packages:
     hasBin: true
     dependencies:
       '@babel/runtime': 7.23.1
-      '@changesets/apply-release-plan': 7.0.0
+      '@changesets/apply-release-plan': 7.0.0(patch_hash=nwtp2bepj7gpdyeyruo6sps5mi)
       '@changesets/assemble-release-plan': 6.0.0
       '@changesets/changelog-git': 0.2.0
       '@changesets/config': 3.0.0
@@ -7342,7 +7346,7 @@ packages:
         optional: true
     dependencies:
       vite: 5.0.4(@types/node@20.8.6)
-      vue: 3.3.9(typescript@5.0.4)
+      vue: 3.3.9(typescript@5.3.2)
     dev: true
 
   /@vitest/coverage-c8@0.33.0(vitest@0.34.6):
