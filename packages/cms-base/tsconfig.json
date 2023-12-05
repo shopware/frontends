@@ -1,9 +1,13 @@
 {
   "extends": "tsconfig/vue-library.json",
-  "include": ["./components.d.ts", "./auto-imports.d.ts", "."],
+  "include": ["./components.d.ts", "."],
   "exclude": ["dist"],
   "compilerOptions": {
     "jsx": "preserve",
-    "lib": ["dom"]
+    "lib": ["dom"],
+    "paths": {
+      "#imports": ["./composables.d.ts"],
+      "#shopware": ["./types/api-types.ts"]
+    }
   }
 }

@@ -52,7 +52,7 @@ mollie: {
 
 ```html
 <script setup lang="ts">
-  import { useCheckout } from "@shopware-pwa/composables-next";
+  import { useCheckout } from "@shopware-pwa/composables-next/dist";
   const { selectedPaymentMethod } = useCheckout();
   // the name may vary, so first, please check what comes from API
   const showMollieCreditCardComponent = computed(

@@ -1,9 +1,9 @@
-import type { ContextUpdateResult } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
-const LoginResponse: ContextUpdateResult = {
+const LoginResponse: Schemas["ContextTokenResponse"] = {
   apiAlias: "array_struct",
   contextToken: "CK273DThPuUSoG6g76qBAncveqQ9h5I3",
-  redirectUrl: null,
-};
+  redirectUrl: "",
+} as Schemas["ContextTokenResponse"];
 
 export default LoginResponse;

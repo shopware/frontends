@@ -18,6 +18,26 @@
     "billing-address-invalid": "Die gewählte Rechnungsadresse ist nicht gültig oder unvollständig. Bitte prüfen Sie Ihre Angaben.",
     "cart-merged-hint": "Der aktuelle Warenkorb enthält u.U. zusätzliche Produkte, die noch von einem früheren Besuch gespeichert waren.",
     "product-not-found": "Das Produkt wurde nicht gefunden.",
-    "salutation-missing": "Es wurde keine Anrede konfiguriert, bitte wählen Sie beim Abschluss Ihrer Bestellung eine Anrede aus."
+    "salutation-missing": "Es wurde keine Anrede konfiguriert, bitte wählen Sie beim Abschluss Ihrer Bestellung eine Anrede aus.",
+    "login_no_matching_customer_internal": "Ungültiger Benutzername und/oder Passwort.",
+    "message-default": "Leider ist ein Fehler aufgetreten.",
+    "message-404": "Die angeforderte Seite konnte nicht gefunden werden.",
+    "addToCartError": "Beim Versuch, Artikel zum Warenkorb hinzuzufügen, ist ein Fehler aufgetreten.",
+    "productNotFound": "Produkt {number} nicht gefunden.",
+    "message-403-ajax": "Ihre Sitzung ist abgelaufen. Bitte laden Sie die Seite neu und versuchen Sie es erneut.",
+    "message-403": "Ihre Sitzung ist abgelaufen. Bitte kehren Sie zur letzten Seite zurück und versuchen Sie es erneut.",
+    "rateLimitExceeded": "Zu viele Anfragen. Bitte warten Sie %seconds% Sekunden, bevor Sie es erneut versuchen.",
+    "CHECKOUT__CART_INVALID_LINE_ITEM_QUANTITY": "Die Menge muss eine positive ganze Zahl sein. Gegeben: {quantity}",
+    "VIOLATION::IS_BLANK_ERROR": "{field} sollte nicht leer sein.",
+    "VIOLATION::TOO_LOW_ERROR": "{field} sollte nicht leer sein.",
+    "VIOLATION::STRICT_CHECK_FAILED_ERROR": "{field} ist ungültig.",
+    "VIOLATION::CUSTOMER_PASSWORD_NOT_CORRECT": "Passwort inkorrekt.",
+    "VIOLATION::VAT_ID_FORMAT_NOT_CORRECT": "Die eingegebene USt-IdNr. hat nicht das richtige Format.",
+    "VIOLATION::ZIP_CODE_INVALID": "Die eingegebene Postleitzahl hat nicht das richtige Format.",
+    "FRAMEWORK__INVALID_UUID": "Die ausgewählte Zahlungsmethode existiert nicht.",
+    "CHECKOUT__UNKNOWN_PAYMENT_METHOD": "Die ausgewählte Zahlungsmethode existiert nicht.",
+    "VIOLATION::TOO_SHORT_ERROR": "{field} ist zu kurz.",
+    "CHECKOUT__ORDER_ORDER_ALREADY_PAID": "Die Bestellung mit der Bestellnummer {orderNumber} wurde bereits bezahlt und kann nicht mehr bearbeitet werden.",
+    "CHECKOUT__ORDER_ORDER_NOT_FOUND": "Diese Bestellung konnte nicht gefunden werden."
   }
 }

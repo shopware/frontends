@@ -1,8 +1,19 @@
-<script setup lang="ts">
-import type { ListingFilter } from "@shopware-pwa/types";
-import { reactive, ref, watch } from "vue";
+<script
+  setup
+  lang="ts"
+  generic="
+    ListingFilter extends {
+      code: string;
+      min?: number;
+      max?: number;
+      label: string;
+    }
+  "
+>
+import { onMounted, reactive, ref, watch } from "vue";
 import deepMerge from "../../helpers/deepMerge";
 import getTranslations from "../../helpers/getTranslations";
+import { onClickOutside, useDebounceFn } from "@vueuse/core";
 
 const emits = defineEmits<{
   (e: "select-value", value: { code: string; value: unknown }): void;
@@ -75,7 +86,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
         @click="toggle"
       >
         <span class="font-medium text-gray-900 text-left">{{
-          filter.label
+          props.filter.label
         }}</span>
         <span class="ml-6 flex items-center">
           <i

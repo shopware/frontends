@@ -3,13 +3,13 @@ import {
   getCategoryRoute,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
-import type { Category } from "@shopware-pwa/types";
-type NavigationElement = Category & {
+import type { Schemas } from "#shopware";
+type NavigationElement = Schemas["Category"] & {
   activeClass?: boolean;
 };
 
 const { navigationElements } = useNavigation();
-const currentMenuPosition = ref<string | null>(null);
+const currentMenuPosition = ref<string | undefined>(undefined);
 const resetActiveClass = ref<boolean>(true);
 
 const route = useRoute();
@@ -38,10 +38,13 @@ const findNavigationElement = (
 ): NavigationElement | undefined => {
   for (let i = 0; i < navigation.length; i++) {
     const navigationElement = navigation[i];
-    const seoUrls = navigationElement.seoUrls;
+    const seoUrls = navigationElement.seoUrls as
+      | Schemas["SeoUrl"][]
+      | undefined;
     if (seoUrls) {
       for (let j = 0; j < seoUrls.length; j++) {
-        if (seoUrls[j].seoPathInfo === routePath) {
+        const currentSeoUrl = seoUrls[j];
+        if (currentSeoUrl && currentSeoUrl.seoPathInfo === routePath) {
           return navigationElement;
         }
       }
@@ -57,7 +60,10 @@ const findNavigationElement = (
   return undefined;
 };
 
-const onUpdateActiveClass = (navigationId: string, parentId: string | null) => {
+const onUpdateActiveClass = (
+  navigationId: string,
+  parentId: string | undefined,
+) => {
   updateActiveClass(navigationId, parentId);
 };
 
@@ -71,11 +77,14 @@ const resetNavigationActiveClass = (navigation: NavigationElement[]) => {
   }
 };
 
-const updateActiveClass = (navigationId: string, parentId: string | null) => {
+const updateActiveClass = (
+  navigationId: string,
+  parentId: string | undefined,
+) => {
   const setNavigationActiveClass = (
     navigation: NavigationElement[],
     navigationId: string,
-    parentId: string | null,
+    parentId: string | undefined,
   ) => {
     for (let ni = 0; ni < navigation.length; ++ni) {
       if (navigation[ni].id === navigationId) {
@@ -162,10 +171,10 @@ watch(
         <div
           v-if="
             currentMenuPosition === navigationElement.id &&
-            navigationElement?.children?.length
+            navigationElement?.children.length
           "
           class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/6"
-          @mouseleave="currentMenuPosition = null"
+          @mouseleave="currentMenuPosition = undefined"
         >
           <div
             class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden"

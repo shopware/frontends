@@ -2,7 +2,7 @@
  * @module @shopware/cms-base
  */
 import { defineNuxtModule } from "@nuxt/kit";
-import { NuxtModule } from "@nuxt/schema";
+import type { NuxtModule } from "@nuxt/schema";
 import { resolve } from "path";
 
 const nuxtModule: NuxtModule = defineNuxtModule({

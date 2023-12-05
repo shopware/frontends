@@ -16,7 +16,7 @@ describe("Helpers - getMainImageUrl", () => {
         },
       ],
       apiAlias: "product",
-    } as any;
+    } as Product;
     const coverUrl = getMainImageUrl(product);
     expect(coverUrl).toEqual("fallback-url");
   });
@@ -80,6 +80,42 @@ describe("Helpers - getMainImageUrl", () => {
   it("should return default value if product was null", () => {
     const argument: any = null;
     const coverUrl = getMainImageUrl(argument);
+    expect(coverUrl).toEqual("");
+  });
+
+  it("should return empty string if cover.media is defined but url is not", () => {
+    const product = {
+      cover: {
+        media: {
+          url: undefined,
+        },
+      },
+    };
+    const coverUrl = getMainImageUrl(product as Product);
+    expect(coverUrl).toEqual("");
+  });
+
+  it("should return empty string if cover is defined but url is not", () => {
+    const product = {
+      cover: {
+        url: undefined,
+      },
+    };
+    const coverUrl = getMainImageUrl(product as LineItem);
+    expect(coverUrl).toEqual("");
+  });
+
+  it("should return empty string if media is defined but url is not", () => {
+    const product = {
+      media: [
+        {
+          media: {
+            url: undefined,
+          },
+        },
+      ],
+    };
+    const coverUrl = getMainImageUrl(product as Product);
     expect(coverUrl).toEqual("");
   });
 });

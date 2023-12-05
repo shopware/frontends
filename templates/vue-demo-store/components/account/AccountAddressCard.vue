@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import type { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
 const { pushSuccess, pushError } = useNotifications();
 const {
@@ -115,9 +116,9 @@ const addressSaved = () => {
         <span data-testid="address-box-city">{{ address.city }}</span>
       </p>
       <p v-if="address.country" class="text-sm">
-        <span>({{ address.country.translated.name }}</span>
+        <span>({{ getTranslatedProperty(address.country, "name") }}</span>
         <span v-if="address.countryState"
-          >, {{ address.countryState.translated.name }}</span
+          >, {{ getTranslatedProperty(address.countryState, "name") }}</span
         >)
       </p>
     </div>

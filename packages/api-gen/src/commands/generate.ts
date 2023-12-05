@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import openapiTS from "openapi-typescript";
 import type { OpenAPI3 } from "openapi-typescript";
 import * as dotenv from "dotenv";
-import * as c from "picocolors";
+import c from "picocolors";
 import { format } from "prettier";
 import { patches } from "../patches";
 import semver from "semver";

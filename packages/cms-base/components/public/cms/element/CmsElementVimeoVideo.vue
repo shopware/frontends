@@ -2,6 +2,7 @@
 import type { CmsElementVimeoVideo } from "@shopware-pwa/composables-next";
 import { ref } from "vue";
 import type { Ref } from "vue";
+import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{
   content: CmsElementVimeoVideo;

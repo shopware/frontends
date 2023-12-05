@@ -1,34 +1,14 @@
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import type {
-  ShippingMethod,
-  PaymentMethod,
-  Currency,
-  ShippingAddress,
-  BillingAddress,
-  SessionContext,
-  Customer,
-  Language,
-} from "@shopware-pwa/types";
 
-import {
-  getSessionContext,
-  setCurrentShippingMethod,
-  setCurrentCurrency,
-  setCurrentPaymentMethod,
-  setCurrentShippingAddress,
-  setCurrentBillingAddress,
-  setCurrentLanguage,
-  setCurrentCountry,
-} from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
-import { _useContext } from "./internal/_useContext";
+import { useContext, useShopwareContext } from "#imports";
+import type { Schemas } from "#shopware";
 
 export type UseSessionContextReturn = {
   /**
    * Patches the context in order to use new language
    */
-  setLanguage(language: Partial<Language>): Promise<void>;
+  setLanguage(language: Partial<Schemas["Language"]>): Promise<void>;
   /**
    * Patches the context in order to use new countryId
    *
@@ -38,7 +18,7 @@ export type UseSessionContextReturn = {
   /**
    * current context's language
    */
-  sessionContext: ComputedRef<SessionContext | undefined>;
+  sessionContext: ComputedRef<Schemas["SalesChannelContext"] | undefined>;
   /**
    * Fetches the session context and assigns the result to the `sessionContext` property
    */
@@ -46,47 +26,53 @@ export type UseSessionContextReturn = {
   /**
    * current context's language
    */
-  selectedShippingMethod: ComputedRef<ShippingMethod | null>;
+  selectedShippingMethod: ComputedRef<Schemas["ShippingMethod"] | null>;
   /**
    * Patches the context in order to use new shipping method
    */
-  setShippingMethod(shippingMethod: Partial<ShippingMethod>): Promise<void>;
+  setShippingMethod(
+    shippingMethod: Partial<Schemas["ShippingMethod"]>,
+  ): Promise<void>;
   /**
    * current context's payment method
    */
-  selectedPaymentMethod: ComputedRef<PaymentMethod | null>;
+  selectedPaymentMethod: ComputedRef<Schemas["PaymentMethod"] | null>;
   /**
    * Patches the context in order to use new payment method
    */
-  setPaymentMethod(paymentMethod: Partial<PaymentMethod>): Promise<void>;
+  setPaymentMethod(paymentMethod: { id: string }): Promise<void>;
   /**
    * current context's currency
    */
-  currency: ComputedRef<Currency | null>;
+  currency: ComputedRef<Schemas["Currency"] | null>;
   /**
    * Patches the context in order to use new currency
    */
-  setCurrency(currency: Partial<Currency>): Promise<void>;
+  setCurrency(currency: Partial<Schemas["Currency"]>): Promise<void>;
   /**
    * current context's shipping address
    */
-  activeShippingAddress: ComputedRef<ShippingAddress | null>;
+  activeShippingAddress: ComputedRef<Schemas["CustomerAddress"] | null>;
   /**
    * Patches the context in order to use new shipping address
    */
-  setActiveShippingAddress(address: Partial<ShippingAddress>): Promise<void>;
+  setActiveShippingAddress(
+    address: Partial<Schemas["CustomerAddress"]>,
+  ): Promise<void>;
   /**
    * current context's billing address
    */
-  activeBillingAddress: ComputedRef<BillingAddress | null>;
+  activeBillingAddress: ComputedRef<Schemas["CustomerAddress"] | null>;
   /**
    * current context's tax state
    */
-  taxState: ComputedRef<string | null>;
+  taxState: ComputedRef<string | undefined>;
   /**
    * Patches the context in order to use new billing address
    */
-  setActiveBillingAddress(address: Partial<BillingAddress>): Promise<void>;
+  setActiveBillingAddress(
+    address: Partial<Schemas["CustomerAddress"]>,
+  ): Promise<void>;
   /**
    * current context's country id
    */
@@ -102,7 +88,7 @@ export type UseSessionContextReturn = {
   /**
    * current context's customer object
    */
-  userFromContext: ComputedRef<Customer | undefined>;
+  userFromContext: ComputedRef<Schemas["Customer"] | undefined>;
 };
 
 /**
@@ -112,18 +98,18 @@ export type UseSessionContextReturn = {
  * @category Context & Language
  */
 export function useSessionContext(
-  newContext?: SessionContext,
+  newContext?: Schemas["SalesChannelContext"],
 ): UseSessionContextReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
-  const _sessionContext = _useContext("swSessionContext", {
+  const _sessionContext = useContext("swSessionContext", {
     replace: newContext,
   });
 
   const sessionContext = computed(() => _sessionContext.value);
   const refreshSessionContext = async () => {
     try {
-      const context = await getSessionContext(apiInstance);
+      const context = await apiClient.invoke("readContext get /context");
       _sessionContext.value = context;
     } catch (e) {
       console.error("[UseSessionContext][refreshSessionContext]", e);
@@ -133,35 +119,35 @@ export function useSessionContext(
   const selectedShippingMethod = computed(
     () => sessionContext.value?.shippingMethod || null,
   );
-  const setShippingMethod = async (
-    shippingMethod: Partial<ShippingMethod> = {},
-  ) => {
+  const setShippingMethod = async (shippingMethod: { id: string }) => {
     if (!shippingMethod?.id) {
       throw new Error(
         "You need to provide shipping method id in order to set shipping method.",
       );
     }
-    await setCurrentShippingMethod(shippingMethod.id, apiInstance);
+    await apiClient.invoke("updateContext patch /context", {
+      shippingMethodId: shippingMethod.id,
+    });
     await refreshSessionContext();
   };
 
   const selectedPaymentMethod = computed(
     () => sessionContext.value?.paymentMethod || null,
   );
-  const setPaymentMethod = async (
-    paymentMethod: Partial<PaymentMethod> = {},
-  ) => {
+  const setPaymentMethod = async (paymentMethod: { id: string }) => {
     if (!paymentMethod?.id) {
       throw new Error(
         "You need to provide payment method id in order to set payment method.",
       );
     }
-    await setCurrentPaymentMethod(paymentMethod.id, apiInstance);
+    await apiClient.invoke("updateContext patch /context", {
+      paymentMethodId: paymentMethod.id,
+    });
     await refreshSessionContext();
   };
 
   const currency = computed(() => sessionContext.value?.currency || null);
-  const setCurrency = async (currency: Partial<Currency> = {}) => {
+  const setCurrency = async (currency: Partial<Schemas["Currency"]>) => {
     if (!currency.id) {
       console.error(
         "You need to provide currency id in order to set currency.",
@@ -169,20 +155,26 @@ export function useSessionContext(
       );
       return;
     }
-    await setCurrentCurrency(currency.id, apiInstance);
+    await apiClient.invoke("updateContext patch /context", {
+      currencyId: currency.id,
+    });
     await refreshSessionContext();
   };
 
-  const setLanguage = async (language: Partial<Language> = {}) => {
+  const setLanguage = async (language: Partial<Schemas["Language"]>) => {
     if (!language.id) {
       return;
     }
-    await setCurrentLanguage(language.id, apiInstance);
+    await apiClient.invoke("updateContext patch /context", {
+      languageId: language.id,
+    });
     await refreshSessionContext();
   };
 
   const setCountry = async (countryId: string) => {
-    await setCurrentCountry(countryId, apiInstance);
+    await apiClient.invoke("updateContext patch /context", {
+      countryId,
+    });
     await refreshSessionContext();
   };
 
@@ -193,14 +185,16 @@ export function useSessionContext(
       null,
   );
   const setActiveShippingAddress = async (
-    address: Partial<ShippingAddress>,
+    address: Partial<Schemas["CustomerAddress"]>,
   ) => {
     if (!address?.id) {
       throw new Error(
         "You need to provide address id in order to set the address.",
       );
     }
-    await setCurrentShippingAddress(address.id, apiInstance);
+    await apiClient.invoke("updateContext patch /context", {
+      shippingAddressId: address.id,
+    });
     refreshSessionContext();
   };
 
@@ -208,13 +202,17 @@ export function useSessionContext(
   const activeBillingAddress = computed(
     () => sessionContext.value?.customer?.activeBillingAddress || null,
   );
-  const setActiveBillingAddress = async (address: Partial<BillingAddress>) => {
+  const setActiveBillingAddress = async (
+    address: Partial<Schemas["CustomerAddress"]>,
+  ) => {
     if (!address?.id) {
       throw new Error(
         "You need to provide address id in order to set the address.",
       );
     }
-    await setCurrentBillingAddress(address.id, apiInstance);
+    await apiClient.invoke("updateContext patch /context", {
+      billingAddressId: address.id,
+    });
     refreshSessionContext();
   };
 
@@ -226,7 +224,7 @@ export function useSessionContext(
     () => sessionContext.value?.salesChannel?.languageId,
   );
   const languageIdChain = computed(
-    () => sessionContext.value?.context?.languageIdChain?.[0],
+    () => sessionContext.value?.context?.languageIdChain?.[0] || "",
   );
   const taxState = computed(() => sessionContext.value?.context?.taxState);
   const userFromContext = computed(() => sessionContext.value?.customer);

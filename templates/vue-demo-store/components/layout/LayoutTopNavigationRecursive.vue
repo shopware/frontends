@@ -4,8 +4,8 @@ import {
   getTranslatedProperty,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import type { Category } from "@shopware-pwa/types";
-type NavigationElement = Category & {
+import type { Schemas } from "#shopware";
+type NavigationElement = Schemas["Category"] & {
   activeClass?: boolean;
 };
 
@@ -17,12 +17,16 @@ defineProps<{
 }>();
 
 const emits = defineEmits<{
-  (e: "updateActiveClass", navigationId: string, parentId: string | null): void;
+  (
+    e: "updateActiveClass",
+    navigationId: string,
+    parentId: string | undefined,
+  ): void;
 }>();
 
 const emitUpdateActiveClass = (
   navigationId: string,
-  parentId: string | null,
+  parentId: string | undefined,
 ) => {
   emits("updateActiveClass", navigationId, parentId);
 };

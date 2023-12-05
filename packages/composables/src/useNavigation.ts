@@ -1,11 +1,7 @@
 import { computed, ref, inject, provide } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import type {
-  StoreNavigationElement,
-  StoreNavigationType,
-} from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
-import { getStoreNavigation } from "@shopware-pwa/api-client";
+import { useShopwareContext } from "#imports";
+import type { Schemas } from "#shopware";
 
 /**
  *
@@ -15,13 +11,13 @@ export type UseNavigationReturn = {
   /**
    * List of navigation elements
    */
-  navigationElements: ComputedRef<StoreNavigationElement[] | null>;
+  navigationElements: ComputedRef<Schemas["NavigationRouteResponse"] | null>;
   /**
    * Load navigation elements
    */
   loadNavigationElements(params: {
     depth: number;
-  }): Promise<StoreNavigationElement[]>;
+  }): Promise<Schemas["NavigationRouteResponse"]>;
 };
 
 /**
@@ -39,13 +35,13 @@ export type UseNavigationReturn = {
  * @category Navigation & Routing
  */
 export function useNavigation(params?: {
-  type?: StoreNavigationType;
+  type?: Schemas["NavigationType"] | string;
 }): UseNavigationReturn {
   const type = params?.type || "main-navigation";
 
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
-  const sharedElements: Ref<StoreNavigationElement[]> = inject(
+  const sharedElements: Ref<Schemas["NavigationRouteResponse"]> = inject(
     `swNavigation-${type}`,
     ref([]),
   );
@@ -55,17 +51,14 @@ export function useNavigation(params?: {
 
   async function loadNavigationElements({ depth }: { depth: number }) {
     try {
-      const navigationResponse = await getStoreNavigation(
+      const navigationResponse = await apiClient.invoke(
+        "readNavigation post /navigation/{activeId}/{rootId} sw-include-seo-urls",
         {
-          requestActiveId: type,
-          requestRootId: type,
-          searchCriteria: {
-            // includes: getIncludesConfig(),
-            // associations: getAssociationsConfig(),
-          },
+          activeId: type,
+          rootId: type,
           depth,
+          "sw-include-seo-urls": true,
         },
-        apiInstance,
       );
 
       sharedElements.value = navigationResponse || [];

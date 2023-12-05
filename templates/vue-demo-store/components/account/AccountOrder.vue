@@ -11,7 +11,7 @@ const toggleView = () => (isExpand.value = !isExpand.value);
 const { currency } = useSessionContext();
 
 const orderDate = computed(() =>
-  new Date(props?.order?.orderDate).toLocaleDateString(
+  new Date(props.order.orderDate).toLocaleDateString(
     (typeof navigator !== "undefined" && navigator.language) || "en-US",
   ),
 );

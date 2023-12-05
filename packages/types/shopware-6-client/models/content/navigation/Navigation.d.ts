@@ -3,56 +3,58 @@ import { Media } from "../media/Media";
 import { Category } from "../category/Category";
 import { RouteName } from "../cms/CmsPage";
 import { CustomFields } from "../../common/CustomField";
+import type { Schemas } from "#shopware";
 
 /**
  * Navigation type to display on page.
  *
  * Source: https://github.com/shopware/platform/blob/trunk/src/Core/Content/Category/SalesChannel/NavigationRoute.php#L285
  *
- * @public
+ * @deprecated - use Schema["NavigationType"] instead from import "#shopware"
  */
-export type StoreNavigationType =
-  | "main-navigation"
-  | "footer-navigation"
-  | "service-navigation"
-  | string;
+export type StoreNavigationType = Schemas["NavigationType"] & string;
+// export type StoreNavigationType =
+//   | "main-navigation"
+//   | "footer-navigation"
+//   | "service-navigation";
 
 /**
- * @public
+ * @deprecated - use Schema["NavigationElement"] instead from import "#shopware"
  */
-export type SeoUrl = {
-  salesChannelId: string;
-  languageId: string;
-  routeName: RouteName;
-  foreignKey: string;
-  pathInfo: string;
-  seoPathInfo: string;
-  isCanonical: boolean;
-  isModified: boolean;
-  isDeleted: boolean;
-  /**
-   * @deprecated removed from 6.5.0
-   */
-  isValid: null | boolean;
-  language?: null | boolean;
-  url: null | string;
-  customFields: CustomFields | null;
-  /**
-   * @deprecated removed from 6.5.0
-   */
-  error?: null | any;
-  _uniqueIdentifier?: string;
-  versionId?: null | string;
-  translated: [];
-  createdAt: Date | string;
-  updatedAt: Date | string | null;
-  extensions?: unknown;
-  id: string;
-  apiAlias: string;
-};
+export type SeoUrl = Schemas["SeoUrl"];
+// export type SeoUrl = {
+//   salesChannelId: string;
+//   languageId: string;
+//   routeName: RouteName;
+//   foreignKey: string;
+//   pathInfo: string;
+//   seoPathInfo: string;
+//   isCanonical: boolean;
+//   isModified: boolean;
+//   isDeleted: boolean;
+//   /**
+//    * @deprecated removed from 6.5.0
+//    */
+//   isValid: null | boolean;
+//   language?: null | boolean;
+//   url: null | string;
+//   customFields: CustomFields | null;
+//   /**
+//    * @deprecated removed from 6.5.0
+//    */
+//   error?: null | any;
+//   _uniqueIdentifier?: string;
+//   versionId?: null | string;
+//   translated: [];
+//   createdAt: Date | string;
+//   updatedAt: Date | string | null;
+//   extensions?: unknown;
+//   id: string;
+//   apiAlias: string;
+// };
 
 /**
- * @beta
+ * @deprecated use {@link Schemas['Category']} from "#shopware" import instead
  */
 export type StoreNavigationElement = Category;
 //   {

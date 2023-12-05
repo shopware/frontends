@@ -1,3 +1,4 @@
+import type { Schemas } from "#shopware";
 import type {
   CmsSlot,
   CrossSelling,
@@ -7,7 +8,6 @@ import type {
   ProductListingResult,
   ProductMedia,
   ProductReview,
-  PropertyGroup,
   Salutation,
 } from "@shopware-pwa/types";
 import type { CSSProperties } from "vue";
@@ -307,7 +307,7 @@ export type CmsElementBuyBox = CmsSlot & {
   type: "buy-box";
   config: BuyBoxElementConfig;
   data: {
-    configuratorSettings: PropertyGroup[] | null;
+    configuratorSettings: Schemas["PropertyGroup"][] | null;
     productId: null | string;
     ratingSuccess: boolean;
     product?: Product;
@@ -331,7 +331,7 @@ export type CmsElementCrossSelling = CmsSlot & {
   config: CrossSellingElementConfig;
   data: {
     apiAlias: "cms_cross_selling";
-    crossSellings: CrossSelling[];
+    crossSellings: CrossSelling;
   };
 };
 

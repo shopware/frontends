@@ -1,9 +1,20 @@
-<script setup lang="ts">
-import type { ListingFilter } from "@shopware-pwa/types";
+<script
+  setup
+  lang="ts"
+  generic="
+    ListingFilter extends {
+      code: string;
+      label: string;
+      name: string;
+      options: Array<Schemas['PropertyGroupOption']>;
+    }
+  "
+>
 import { inject, ref } from "vue";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import type { Schemas } from "#shopware";
 
-defineProps<{
+const props = defineProps<{
   filter: ListingFilter;
 }>();
 
@@ -26,7 +37,7 @@ const toggle = () => {
         @click="toggle"
       >
         <span class="font-medium text-gray-900 text-left">{{
-          filter.label
+          props.filter.label
         }}</span>
         <span class="ml-6 flex items-center">
           <i
@@ -40,21 +51,24 @@ const toggle = () => {
       </button>
     </h2>
     <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible" :id="filter.code" class="pt-6">
+      <div v-show="isFilterVisible" :id="props.filter.code" class="pt-6">
         <fieldset class="space-y-4">
-          <legend class="sr-only">{{ filter.name }}</legend>
+          <legend class="sr-only">{{ props.filter.name }}</legend>
           <div
-            v-for="option in filter.options || filter.entities"
+            v-for="option in props.filter.options"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
             class="flex items-center"
             @click="
-              emits('select-value', { code: filter.code, value: option.id })
+              emits('select-value', {
+                code: props.filter.code,
+                value: option.id,
+              })
             "
           >
             <input
-              :id="`filter-mobile-${filter.code}-${option.id}`"
+              :id="`filter-mobile-${props.filter.code}-${option.id}`"
               :checked="selectedOptionIds?.includes(option.id)"
-              :name="filter.name"
+              :name="props.filter.name"
               :value="option.name"
               :aria-label="`${option.name} filter`"
               type="checkbox"
@@ -83,7 +97,7 @@ const toggle = () => {
               }"
             />
             <label
-              :for="`filter-mobile-${filter.code}-${option.id}`"
+              :for="`filter-mobile-${props.filter.code}-${option.id}`"
               class="ml-3 text-gray-600"
             >
               {{ getTranslatedProperty(option, "name") }}

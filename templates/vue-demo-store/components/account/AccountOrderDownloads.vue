@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { OrderDocument } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { downloadFile } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{
-  documents: OrderDocument[];
+  documents: Schemas["Document"][];
 }>();
 
 const { getDocumentFile } = useOrderDetails(props.documents[0].orderId);
 
-const getMediaFileHandler = async (documentObject: OrderDocument) => {
+const getMediaFileHandler = async (documentObject: Schemas["Document"]) => {
   const response = await getDocumentFile(
     documentObject.id,
     documentObject.deepLinkCode,

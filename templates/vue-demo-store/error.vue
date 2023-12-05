@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { RouteObject } from "@shopware-pwa/composables-next";
+
 const props = defineProps<{
   error: {
     statusCode: number;
@@ -7,33 +9,46 @@ const props = defineProps<{
   };
 }>();
 
-const { t } = useI18n();
-const localePath = useLocalePath();
-const { formatLink } = useInternationalization(localePath);
+let isFormattedError = true;
+let errMessage = "";
+let linkFormatter = (path: string | RouteObject) => path;
 
-const errorMessageMap: { [key: number]: string } = {
-  404: t("errorPages.404"),
-  408: t("errorPages.408"),
-  500: t("errorPages.500"),
-  502: t("errorPages.502"),
-  503: t("errorPages.503"),
-};
+try {
+  const { t } = useI18n();
+  const localePath = useLocalePath();
+  const { formatLink } = useInternationalization(localePath);
+  linkFormatter = formatLink;
 
-const errorMessage =
-  props.error.statusMessage ||
-  errorMessageMap[props.error.statusCode as keyof typeof errorMessageMap];
+  const errorMessageMap: { [key: number]: string } = {
+    404: t("errorPages.404"),
+    408: t("errorPages.408"),
+    500: t("errorPages.500"),
+    502: t("errorPages.502"),
+    503: t("errorPages.503"),
+  };
 
-if (props.error.statusCode === 412) {
-  // setting a timeout here to ensure we are the last error message in terminal
-  setTimeout(() => {
-    console.error(
-      "Looks like your API connection is not working. Check your nuxt configuration (shopwareEndpoint and shopwareAccessToken). 🤞",
-    );
-    console.error(
-      "For more help ➡️  https://frontends.shopware.com/resources/troubleshooting.html",
-    );
-  }, 2.0 * 1000);
+  errMessage =
+    props.error.statusMessage ||
+    errorMessageMap[props.error.statusCode as keyof typeof errorMessageMap];
+
+  if (props.error.statusCode === 412) {
+    // setting a timeout here to ensure we are the last error message in terminal
+    setTimeout(() => {
+      console.error(
+        "Looks like your API connection is not working. Check your nuxt configuration (shopwareEndpoint and shopwareAccessToken). 🤞",
+      );
+      console.error(
+        "For more help ➡️  https://frontends.shopware.com/resources/troubleshooting.html",
+      );
+    }, 2.0 * 1000);
+  }
+} catch (e) {
+  console.error("Problem with loading error page", e);
+  isFormattedError = false;
 }
+
+const statusCode = isFormattedError ? props.error.statusCode : "Error";
+const errorMessage = isFormattedError ? errMessage : props.error.message;
 </script>
 
 <script lang="ts">
@@ -50,7 +65,7 @@ export default {
       <div class="max-w-md text-center">
         <h1 class="mb-4 font-extrabold text-9xl">
           <span class="sr-only">{{ $t("error") }}</span
-          >{{ props.error.statusCode }}
+          >{{ statusCode }}
         </h1>
         <p
           v-if="errorMessage"
@@ -73,7 +88,7 @@ export default {
           </div>
         </DevOnly>
         <NuxtLink
-          :to="formatLink(`/`)"
+          :to="isFormattedError ? linkFormatter(`/`) : `/`"
           class="block w-full lg:w-auto justify-center py-3 px-8 border shadow-sm text-sm font-medium rounded-md text-white bg-brand-light hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
         >
           {{ $t("goBackHome") }}

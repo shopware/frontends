@@ -1,20 +1,14 @@
 {
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "compilerOptions": {
+    "module": "esnext",
     "paths": {
       "@/*": [
         "./src/*" // set path `@/*` as alias of `src/*`
       ]
     },
     "esModuleInterop": true,
-    "lib": [
-      "esnext",
-      "DOM"
-    ],
-    "types": [
-      "vite/client"
-    ]
+    "lib": ["esnext", "DOM"],
+    "types": ["vite/client"]
   }
 }

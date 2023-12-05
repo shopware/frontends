@@ -45,6 +45,6 @@ export type Cart = {
   transactions: Transaction[];
   modified: boolean;
   customerComment: null | string;
-  affiliateCode: null | string;
-  campaignCode: null | string;
+  affiliateCode?: string;
+  campaignCode?: string;
 };

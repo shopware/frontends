@@ -1,8 +1,9 @@
 {
   "name": "@shopware/api-gen",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shopware CLI for API client generation.",
   "author": "Shopware",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
@@ -36,7 +37,7 @@
   },
   "devDependencies": {
     "@types/prettier": "^3.0.0",
-    "@types/yargs": "^17.0.31",
+    "@types/yargs": "^17.0.32",
     "@vitest/coverage-c8": "^0.33.0",
     "eslint-config-shopware": "workspace:*",
     "picocolors": "^1.0.0",

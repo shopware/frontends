@@ -9,16 +9,18 @@ import { Aggregation } from "./Aggregation";
 import { TotalCountMode } from "./TotalCountMode";
 import { ShopwareAssociation } from "./Association";
 import { Grouping } from "./Grouping";
-import { StoreSort } from "./StoreSort";
+// import { StoreSort } from "./StoreSort";
+import type { Schemas } from "#shopware";
 
 /**
- * @public
+ * @deprecated use Schemas['ProductSorting'] from "#shopware" import instead
  */
-export type Sort = {
-  key: string;
-  priority: number;
-  label: string;
-};
+export type Sort = Schemas["ProductSorting"];
+// export type Sort = {
+//   key: string;
+//   priority: number;
+//   label: string;
+// };
 
 /**
  * @beta
@@ -52,34 +54,35 @@ export type SearchCriteria = {
 };
 
 /**
- * @beta
+ * @deprecated use Schemas['Criteria'] from "#shopware" import instead
  */
-export type ShopwareSearchParams = {
-  /**
-   *  Not mentioned in the store-api docs
-   */
-  p?: number | undefined;
-  page?: number | undefined;
-  limit?: number | undefined;
-  filter?:
-    | Array<EqualsFilter | EqualsAnyFilter | RangeFilter | MultiFilter>
-    | undefined;
-  sort?: Array<StoreSort> | undefined;
-  postFilter?:
-    | Array<EqualsFilter | EqualsAnyFilter | RangeFilter | MultiFilter>
-    | undefined;
-  associations?: ShopwareAssociation;
-  aggregations?: Array<Aggregation> | undefined;
-  grouping?: Array<Grouping>;
+export type ShopwareSearchParams = Schemas["Criteria"];
+// export type ShopwareSearchParams = {
+//   /**
+//    *  Not mentioned in the store-api docs
+//    */
+//   p?: number | undefined;
+//   page?: number | undefined;
+//   limit?: number | undefined;
+//   filter?:
+//     | Array<EqualsFilter | EqualsAnyFilter | RangeFilter | MultiFilter>
+//     | undefined;
+//   sort?: Array<StoreSort> | undefined;
+//   postFilter?:
+//     | Array<EqualsFilter | EqualsAnyFilter | RangeFilter | MultiFilter>
+//     | undefined;
+//   associations?: ShopwareAssociation;
+//   aggregations?: Array<Aggregation> | undefined;
+//   grouping?: Array<Grouping>;
 
-  /**
-   *  Not mentioned in the store-api docs
-   */
-  order?: string | undefined;
-  term?: string | undefined;
-  ids?: string[];
-  properties?: string | undefined;
-  manufacturer?: string | undefined;
-  includes?: Includes;
-  query?: string;
-};
+//   /**
+//    *  Not mentioned in the store-api docs
+//    */
+//   order?: string | undefined;
+//   term?: string | undefined;
+//   ids?: string[];
+//   properties?: string | undefined;
+//   manufacturer?: string | undefined;
+//   includes?: Includes;
+//   query?: string;
+// };
