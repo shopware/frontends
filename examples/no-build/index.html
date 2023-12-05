@@ -13,7 +13,7 @@
   <body>
     <div class="border-double border-4 border-sky-500" id="app">
       <section
-        class="transition-all delay-150 duration-300 nes-container p-0 h-full bg-no-repeat bg-center bg-top"
+        class="transition-all delay-150 duration-300 nes-container p-0 h-full bg-no-repeat bg-center bg-cover	 bg-top"
         :class="[`bg-[url(${backgroundImage})]`]"
       >
         <div class="p-4">
@@ -309,14 +309,14 @@
             </div>
           </div>
           <div v-else>
-          <div class="flex flex-row">
+          <div class="flex flex-row" >
             <div class="nes-table-responsive mb-8 flex-1 w-full">
               Your cart:
               <table class="nes-table is-bordered ">
                 <thead>
                   <tr>
                     <th>Item</th>
-                    <th>Quantity</th>
+                    <th>Qty</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -327,7 +327,7 @@
                 </tbody>
               </table>
             </div>
-            <div class="nes-table-responsive mb-8 flex-1 w-full">
+            <div class="nes-table-responsive mb-8 ml-4 flex-1 w-full">
               Totals:
               <table class="nes-table is-bordered ">
                 <tbody>
