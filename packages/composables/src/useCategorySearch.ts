@@ -41,9 +41,10 @@ export function useCategorySearch(): UseCategorySearchReturn {
   ) {
     const associations = options?.withCmsAssociations ? cmsAssociations : {};
     const result = apiClient.invoke(
-      "readCategory post /category/{navigationId}?slots",
+      "readCategory post /category/{navigationId}?slots sw-include-seo-urls",
       {
         navigationId: categoryId,
+        "sw-include-seo-urls": true,
         associations,
         ...options?.query,
       },
