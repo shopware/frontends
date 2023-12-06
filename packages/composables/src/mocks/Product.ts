@@ -466,6 +466,6 @@ const product: Schemas["Product"] = {
   },
   isNew: false,
   calculatedMaxPurchase: 100,
-} as unknown as Schemas["Product"]; // TODO: [OpenAPI][Product] - null shouls be undefined by default to decrease payload size
+} as unknown as Schemas["Product"];
 
 export default product;

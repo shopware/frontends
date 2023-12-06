@@ -1014,7 +1014,7 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     CmsPage: {
       config?: {
-        backgroundColor?: string | null; // TODO: [OpenAPI][CmsPage] - define sections as required array
+        backgroundColor?: string;
       };
       /** Format: date-time */
       createdAt: string;
@@ -1039,9 +1039,9 @@ export type components = {
         };
       };
       id?: string;
-      landingPages?: components["schemas"]["LandingPage"] | null; // TODO: [OpenAPI][CmsPage] - define sections as required array
+      landingPages?: components["schemas"]["LandingPage"];
       name?: string;
-      previewMedia?: components["schemas"]["Media"] | null; // TODO: [OpenAPI][CmsPage] - define sections as required array
+      previewMedia?: components["schemas"]["Media"];
       previewMediaId?: string;
       sections?: Array<components["schemas"]["CmsSection"]>; // TODO: [OpenAPI][CmsPage] - define sections as required array
       translated?: {

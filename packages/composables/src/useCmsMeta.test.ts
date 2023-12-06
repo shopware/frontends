@@ -6,9 +6,7 @@ import type { Schemas } from "#shopware";
 
 describe("composables - useCmsMeta", () => {
   it("should return title and meta tags", () => {
-    const { vm } = useSetup(() =>
-      useCmsMeta(LandingPageMock as Schemas["LandingPage"]),
-    );
+    const { vm } = useSetup(() => useCmsMeta(LandingPageMock));
 
     expect(vm.title).toEqual("Summer Giveaway");
     expect(vm.meta).toEqual([

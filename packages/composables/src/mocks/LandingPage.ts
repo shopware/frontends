@@ -1,3 +1,5 @@
+import type { Schemas } from "#shopware";
+
 const LandingPage = {
   versionId: "0fa91ce3e96a4bc2be4bd9ce752c3425",
   translated: {
@@ -55,6 +57,6 @@ const LandingPage = {
   slotConfig: [],
   id: "f114465737fa445983d1f2fcc1743bf7",
   apiAlias: "landing_page",
-};
+} as unknown as Schemas["LandingPage"];
 
 export default LandingPage;
