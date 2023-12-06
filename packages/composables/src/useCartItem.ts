@@ -40,7 +40,7 @@ export type UseCartItemReturn = {
   /**
    * Determines if the current item can be removed from cart
    */
-  isRemovable: ComputedRef<boolean>;
+  isRemovable: ComputedRef<boolean | undefined>;
   /**
    * Stock information for the current item
    */
