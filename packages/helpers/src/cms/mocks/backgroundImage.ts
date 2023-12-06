@@ -119,10 +119,7 @@ export const cmsSectionTestCaseFour = {
     createdAt: "2020-08-06T06:25:57.072+00:00",
     mimeType: "image/jpeg",
     fileExtension: "jpg",
-    // @ts-ignore test when width and height are missing
-    metaData: {
-      type: 2,
-    },
+    metaData: {},
     apiAlias: "cms_media",
   },
 };

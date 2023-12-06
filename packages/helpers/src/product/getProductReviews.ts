@@ -22,12 +22,9 @@ export function getProductReviews<
     }>;
   },
 >({ product }: { product?: T } = {}): UiProductReview[] {
-  // TODO: [OpenAPI][Product] - `ProductReview` should be an array in Product schema
   if (!product || !product.productReviews) {
     return [];
   }
-
-  // TODO: [OpenAPI][ProductReview] - changes: id -> required; externalUser -> missing, add definition; customerId -> missing, add definition; points -> reqiored(?)
 
   return product.productReviews.map(
     ({ id, externalUser, customerId, createdAt, content, points }) => ({

@@ -12,10 +12,15 @@ const getUrlFromBackgroundImage = (url: string) => {
 
   return !match ? url : match[1];
 };
-/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 export function getBackgroundImageUrl<
   T extends {
-    backgroundMedia?: any;
+    backgroundMedia?: {
+      metaData?: {
+        width?: number;
+        height?: number;
+      };
+    };
   },
 >(url: string, element: T): string {
   const backgroundImage = getUrlFromBackgroundImage(url);

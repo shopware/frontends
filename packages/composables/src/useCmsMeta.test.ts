@@ -2,7 +2,6 @@ import { useCmsMeta } from "./useCmsMeta";
 import { describe, expect, it } from "vitest";
 import LandingPageMock from "./mocks/LandingPage";
 import { useSetup } from "./_test";
-import type { Schemas } from "#shopware";
 
 describe("composables - useCmsMeta", () => {
   it("should return title and meta tags", () => {

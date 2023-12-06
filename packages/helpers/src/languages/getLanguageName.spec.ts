@@ -12,7 +12,7 @@ describe("getLanguageName", () => {
 describe("getLanguageName with wrong object", () => {
   it("should return an empty string", () => {
     const languageMock = language;
-    (languageMock.translationCode as unknown as null) = null;
+    languageMock.translationCode = null as any;
 
     expect(getLanguageName(languageMock)).toBe("");
   });

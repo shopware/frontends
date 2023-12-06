@@ -44,9 +44,7 @@ describe("Helpers - getMainImageUrl", () => {
   });
 
   it("should contain empty string when there is no media gallery or cover", () => {
-    const product = {
-      apiAlias: "product",
-    };
+    const product = {};
     const coverUrl = getMainImageUrl(product);
     expect(coverUrl).toEqual("");
   });
@@ -90,6 +88,7 @@ describe("Helpers - getMainImageUrl", () => {
         },
       },
     };
+    // @ts-expect-error - url should be string
     const coverUrl = getMainImageUrl(product);
     expect(coverUrl).toEqual("");
   });
@@ -100,6 +99,7 @@ describe("Helpers - getMainImageUrl", () => {
         url: undefined,
       },
     };
+    // @ts-expect-error - url should be string
     const coverUrl = getMainImageUrl(product);
     expect(coverUrl).toEqual("");
   });

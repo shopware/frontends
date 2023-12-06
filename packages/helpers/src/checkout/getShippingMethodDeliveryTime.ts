@@ -1,8 +1,6 @@
 /**
  *  Get shipping delivery time
  *
- * @param {ShippingMethod} shippingMethod
- * @returns {string}
  */
 export function getShippingMethodDeliveryTime<
   T extends {

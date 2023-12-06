@@ -16,7 +16,7 @@ export function getProductRoute<
     seoUrls?: Array<{
       seoPathInfo?: string;
     }>;
-  }, // TODO: [OpenAPI][Product] - seoUrls should be an array
+  },
 >(product?: T) {
   return {
     path: getProductUrl(product),

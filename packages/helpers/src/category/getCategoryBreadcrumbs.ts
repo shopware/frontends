@@ -1,11 +1,9 @@
 /**
  * Gather breadcrumbs from category
  *
- * @param {Category} category category entity
  */
 export function getCategoryBreadcrumbs<
   T extends {
-    // TODO: [OpenAPI][Category] - breadcrumb is not properly defined in schema
     translated?: {
       breadcrumb?: string[];
     };
