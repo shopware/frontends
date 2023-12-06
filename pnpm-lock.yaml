@@ -1037,12 +1037,15 @@ importers:
 
   templates/vue-vite-blank:
     dependencies:
-      '@shopware-pwa/api-client':
-        specifier: canary
-        version: link:../../packages/api-client
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
+      '@shopware/api-client':
+        specifier: canary
+        version: link:../../packages/api-client-next
+      js-cookie:
+        specifier: ^3.0.5
+        version: 3.0.5
       vue:
         specifier: ^3.3.10
         version: 3.3.10(typescript@5.3.2)
@@ -7037,7 +7040,7 @@ packages:
       '@babel/plugin-syntax-jsx': 7.22.5(@babel/core@7.23.3)
       '@babel/template': 7.22.5
       '@babel/traverse': 7.23.5
-      '@babel/types': 7.23.5
+      '@babel/types': 7.23.3
       '@vue/babel-helper-vue-transform-on': 1.1.5
       camelcase: 6.3.0
       html-tags: 3.3.1
