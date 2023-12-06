@@ -1,9 +1,12 @@
-import type { Product } from "@shopware-pwa/types";
+type Product<T = unknown> = T & {
+  shippingFree: boolean;
+};
 
 /**
  * Get product free shipping property
  *
  * @param {Product} product product entity
+ * @returns {boolean} product free shipping
  *
  * @public
  *
