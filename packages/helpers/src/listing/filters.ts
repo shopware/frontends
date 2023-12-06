@@ -1,10 +1,20 @@
-import type {
-  AggregationFilterEntity,
-  EntitiesAggregation,
-  MaxAggregation,
-  PriceAggregation,
-} from "@shopware-pwa/types";
 import { getTranslatedProperty } from "..";
+
+type AggregationFilterEntity = {
+  name: string;
+  id: string;
+};
+
+type EntitiesAggregation<T> = {
+  entities: T[];
+};
+
+type PriceAggregation = {
+  min: number;
+  max: number;
+};
+
+type MaxAggregation = { max: number };
 
 type ListingFilter = {
   label: string;

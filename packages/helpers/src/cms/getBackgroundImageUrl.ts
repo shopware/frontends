@@ -1,5 +1,3 @@
-import type { CmsBlock, CmsSection } from "@shopware-pwa/types";
-
 const DEFAULT_BG_IMAGE_SIZE = 800;
 function roundUp(num: number) {
   return num ? Math.ceil(num / 100) * 100 : DEFAULT_BG_IMAGE_SIZE;
@@ -7,18 +5,27 @@ function roundUp(num: number) {
 
 const getUrlFromBackgroundImage = (url: string) => {
   const regex = /(?:\(['"]?)(.*?)(?:['"]?\))/;
+  if (url.length > 1000) {
+    throw new Error("Url is too long");
+  }
   const match = url.match(regex);
 
   return !match ? url : match[1];
 };
 
-export function getBackgroundImageUrl(
-  url: string,
-  element: CmsBlock | CmsSection,
-): string {
+export function getBackgroundImageUrl<
+  T extends {
+    backgroundMedia?: {
+      metaData?: {
+        width?: number;
+        height?: number;
+      };
+    };
+  },
+>(url: string, element: T): string {
   const backgroundImage = getUrlFromBackgroundImage(url);
-  const width = element.backgroundMedia?.metaData.width ?? 0;
-  const height = element.backgroundMedia?.metaData.height ?? 0;
+  const width = element.backgroundMedia?.metaData?.width ?? 0;
+  const height = element.backgroundMedia?.metaData?.height ?? 0;
   const biggestParam =
     width > height
       ? `width=${roundUp(width > 1920 ? 1900 : width)}`

@@ -1,6 +1,4 @@
-import type { Language } from "@shopware-pwa/types";
-
-const language: Language = {
+const language = {
   translated: [],
   createdAt: "2020-08-06T06:23:29.655+00:00",
   updatedAt: null,

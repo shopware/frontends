@@ -25,11 +25,11 @@ export type Media = {
   fileExtension: "jpg" | "png" | "gif" | "webp" | string;
   fileSize: number;
   title: null | string;
-  metaData: {
+  metaData?: {
     hash?: string;
-    type: number;
-    width: number;
-    height: number;
+    type?: number;
+    width?: number;
+    height?: number;
   };
   uploadedAt: Date | string | null;
   alt: null | string;
