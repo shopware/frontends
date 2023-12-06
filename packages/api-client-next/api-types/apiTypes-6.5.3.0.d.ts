@@ -11,8 +11,8 @@ type XOR<T, U> = T | U extends object
 type OneOf<T extends any[]> = T extends [infer Only]
   ? Only
   : T extends [infer A, infer B, ...infer Rest]
-  ? OneOf<[XOR<A, B>, ...Rest]>
-  : never;
+    ? OneOf<[XOR<A, B>, ...Rest]>
+    : never;
 
 type GenericRecord =
   | never
@@ -733,7 +733,7 @@ export type components = {
       active?: boolean;
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
-      breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
+      breadcrumb: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
       /** Format: int64 */
       childCount: number; // TODO: [OpenAPI][Category] childCount field should be defined as required
       children: Array<components["schemas"]["Category"]>; // TODO: [OpenAPI][Category] - define children as required array
@@ -1320,9 +1320,10 @@ export type components = {
       fields?: string[];
       /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
       filter?: {
+        // TODO: [OpenAPI][Criteria] - there can be different filters, for example `equalsAny` can have array as value
         field: string;
         type: string;
-        value: string;
+        value: string | string[];
       }[];
       /** Perform groupings over certain fields */
       grouping?: string[];
@@ -2106,7 +2107,7 @@ export type components = {
            */
           href: string;
           meta?: components["schemas"]["meta"];
-        }
+        },
       ]
     >;
     /** The "type" and "id" to non-empty members. */
