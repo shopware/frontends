@@ -12,14 +12,14 @@
     "@nuxt/types": "^2.17.2",
     "@nuxt/typescript-build": "^3.0.2",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
-    "@unocss/nuxt": "^0.57.7",
-    "@unocss/reset": "^0.57.7",
-    "eslint": "^8.54.0",
+    "@unocss/nuxt": "^0.58.0",
+    "@unocss/reset": "^0.58.0",
+    "eslint": "^8.55.0",
     "nuxt": "^3.8.2",
-    "unocss": "^0.57.7"
+    "unocss": "^0.58.0"
   },
   "dependencies": {
-    "@vueuse/nuxt": "^10.6.1",
-    "vue": "^3.3.9"
+    "@vueuse/nuxt": "^10.7.0",
+    "vue": "^3.3.10"
   }
 }
