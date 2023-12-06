@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsElementBuyBox } from "@shopware-pwa/composables-next/composables";
+import type { CmsElementBuyBox } from "@shopware-pwa/composables-next";
 import {
   useCmsElementConfig,
   useProductPrice,
