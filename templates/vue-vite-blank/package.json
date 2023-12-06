@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@shopware-pwa/api-client": "canary",
+    "@shopware/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
     "vue": "^3.3.10"
   },
