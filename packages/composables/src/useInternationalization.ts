@@ -1,6 +1,7 @@
 import { useContext, useShopwareContext } from "#imports";
 import type { RequestReturnType, Schemas } from "#shopware";
 import type { Ref } from "vue";
+import { urlIsAbsolute } from "@shopware-pwa/helpers-next";
 
 export type UseInternationalizationReturn = {
   /**
@@ -126,6 +127,7 @@ export function useInternationalization(
     if (!pathResolver) return link;
 
     if (typeof link === "string") {
+      if (urlIsAbsolute(link)) return link;
       return pathResolver(link);
     }
 
