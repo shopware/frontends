@@ -1,25 +1,15 @@
-import { createApp, ref } from "vue";
+import { createApp } from "vue";
 import { createShopwareContext } from "@shopware-pwa/composables-next";
-import { createInstance } from "@shopware-pwa/api-client";
-import Cookies from "js-cookie";
 
+// @ts-ignore import of the vue file
 import App from "./App.vue";
-
-const cookieContextToken = Cookies.get("sw-context-token");
-const cookieLanguageId = Cookies.get("sw-language-id");
-
-const contextToken = ref(cookieContextToken);
-const languageId = ref(cookieLanguageId);
+import { apiClient } from "./apiClient";
 
 const app = createApp(App);
 
-const shopwareContext = createShopwareContext(app, {
-  apiInstance: createInstance({
-    endpoint: "https://demo-frontends.shopware.store",
-    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-    contextToken: contextToken.value,
-    languageId: languageId.value,
-  }),
-});
+const shopwareContext = createShopwareContext(app, {});
 app.use(shopwareContext);
+
+app.provide("apiClient", apiClient);
+
 app.mount("#app");

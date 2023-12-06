@@ -2,7 +2,7 @@
   "name": "shopware-astro",
   "private": true,
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -11,15 +11,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^6.0.3",
-    "@astrojs/vue": "^3.0.3",
+    "@astrojs/node": "^7.0.0",
+    "@astrojs/vue": "^4.0.2",
     "@shopware-pwa/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
-    "@vitejs/plugin-vue": "^4.4.0",
-    "@vitejs/plugin-vue-jsx": "^3.0.2",
-    "astro": "^3.4.3",
+    "@vitejs/plugin-vue": "^4.5.1",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "astro": "^4.0.2",
     "js-cookie": "^3.0.5",
-    "vue": "^3.3.8"
+    "vue": "^3.3.10"
   },
   "engines": {
     "node": "^18.x || ^20.x"

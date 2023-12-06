@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { CmsElementBuyBox, CmsElementForm, CmsElementImage } from "../types";
+import type {
+  CmsElementBuyBox,
+  CmsElementForm,
+  CmsElementImage,
+} from "../types";
 import { useCmsElementConfig } from "./useCmsElementConfig";
 
 describe("useCmsElementConfig", () => {

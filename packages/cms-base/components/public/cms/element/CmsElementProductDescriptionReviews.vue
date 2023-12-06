@@ -7,6 +7,8 @@ import {
 import SwProductReviews from "../../../SwProductReviews.vue";
 import deepMerge from "../../../../helpers/deepMerge";
 import getTranslations from "../../../../helpers/getTranslations";
+import { computed, ref } from "vue";
+import { useProduct } from "#imports";
 
 const props = defineProps<{
   content: CmsElementProductDescriptionReviews;

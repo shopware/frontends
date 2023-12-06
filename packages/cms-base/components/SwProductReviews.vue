@@ -2,6 +2,8 @@
 import type { Product, ProductReview } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import { useProductReviews } from "#imports";
+import { computed, onMounted, ref, toRefs } from "vue";
 
 const props = defineProps<{
   product: Product;

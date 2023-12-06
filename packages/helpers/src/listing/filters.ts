@@ -1,12 +1,27 @@
-import type {
-  Aggregations,
-  ListingFilter,
-  AggregationFilterEntity,
-  EntitiesAggregation,
-  MaxAggregation,
-  PriceAggregation,
-} from "@shopware-pwa/types";
 import { getTranslatedProperty } from "..";
+
+type AggregationFilterEntity = {
+  name: string;
+  id: string;
+};
+
+type EntitiesAggregation<T> = {
+  entities: T[];
+};
+
+type PriceAggregation = {
+  min: number;
+  max: number;
+};
+
+type MaxAggregation = { max: number };
+
+type ListingFilter = {
+  label: string;
+  code: string;
+  id: string;
+  name: string;
+};
 
 const getFilter = <T extends { name: string; id: string }>(
   code: string,
@@ -34,8 +49,9 @@ function isEntitiesAggregation(
 /**
  * @beta
  */
-export function getListingFilters(
-  aggregations: Aggregations | undefined | null,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getListingFilters<T extends Record<string, any>>(
+  aggregations: T | undefined | null,
 ): ListingFilter[] {
   if (!aggregations) {
     return [];

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { usePrice } from "#imports";
+import { computed } from "vue";
+
 const { getFormattedPrice } = usePrice();
 const props = defineProps<{
   value: number | undefined;

@@ -3,6 +3,7 @@
   "version": "0.7.0",
   "description": "Shopware Store API client",
   "author": "Shopware",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopware/frontends.git"
@@ -39,7 +40,7 @@
     "test": "vitest run --segfault-retry=3"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.2.0",
+    "@faker-js/faker": "^8.3.1",
     "@vitest/coverage-v8": "^0.34.6",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "^12.10.3",

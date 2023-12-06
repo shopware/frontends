@@ -1,5 +1,5 @@
 /**
- * @beta
+ * @deprecated use {@link Schemas["Criteria"]} from "#shopware" import instead
  */
 export type ShopwareAssociation = {
   [name: string]: {

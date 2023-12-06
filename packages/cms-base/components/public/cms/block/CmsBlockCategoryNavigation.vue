@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockCategoryNavigation } from "@shopware-pwa/composables-next";
+import { useCmsBlock } from "#imports";
 
 const props = defineProps<{
   content: CmsBlockCategoryNavigation;

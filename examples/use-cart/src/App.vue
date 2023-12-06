@@ -5,7 +5,7 @@ import {
   useProductPrice,
   useProductSearch,
   useCart,
-} from "@shopware-pwa/composables-next";
+} from "@shopware-pwa/composables-next/dist";
 
 const product = ref();
 

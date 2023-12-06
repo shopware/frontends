@@ -1,5 +1,5 @@
 import { createApp, ref } from "vue";
-import { createShopwareContext } from "@shopware-pwa/composables-next";
+import { createShopwareContext } from "@shopware-pwa/composables-next/dist";
 import { createInstance } from "@shopware-pwa/api-client";
 import Cookies from "js-cookie";
 

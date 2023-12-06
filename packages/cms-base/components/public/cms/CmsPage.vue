@@ -5,7 +5,8 @@ import {
   getCmsLayoutConfiguration,
   getBackgroundImageUrl,
 } from "@shopware-pwa/helpers-next";
-import { useNavigationContext } from "@shopware-pwa/composables-next";
+import { useListing, useNavigationContext } from "#imports";
+import { computed, h, resolveComponent } from "vue";
 
 const props = defineProps<{
   content: CmsPage;
@@ -45,7 +46,7 @@ const DynamicRender = () => {
       return h(componentObject.component, {
         content: componentObject.section,
         class: {
-          [cssClasses ?? ""]: true,
+          ...cssClasses,
           "max-w-screen-2xl mx-auto": layoutStyles?.sizingMode === "boxed",
         },
         style: {

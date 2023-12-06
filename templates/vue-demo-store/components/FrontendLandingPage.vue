@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLandingSearch } from "@shopware-pwa/composables-next";
+import { useLandingSearch } from "#imports";
 import type { LandingPage } from "@shopware-pwa/types";
 
 const props = defineProps<{

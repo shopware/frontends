@@ -1,4 +1,5 @@
-import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
+import { computed, ref, inject, provide } from "vue";
+import type { ComputedRef, Ref } from "vue";
 
 type NotificationType = "info" | "warning" | "success" | "danger";
 
