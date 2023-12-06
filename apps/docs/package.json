@@ -18,13 +18,13 @@
     "vitepress": "1.0.0-beta.7",
     "vitepress-plugin-search": "1.0.4-alpha.20",
     "vitepress-shopware-docs": "0.3.0-beta.44",
-    "vue": "^3.3.9"
+    "vue": "^3.3.10"
   },
   "devDependencies": {
     "@shopware-pwa/typer": "workspace:*",
     "@types/markdown-it": "^13.0.7",
     "@types/node": "^20.8.1",
-    "@vitejs/plugin-vue": "^4.5.0",
+    "@vitejs/plugin-vue": "^4.5.1",
     "typescript": "^5.3.2"
   },
   "pnpm": {
