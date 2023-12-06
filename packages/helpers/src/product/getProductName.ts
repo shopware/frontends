@@ -1,5 +1,8 @@
-import type { Product } from "@shopware-pwa/types";
 import { getTranslatedProperty } from "../getTranslatedProperty";
+
+type Product<T = unknown> = T & {
+  name: string;
+};
 
 /**
  * @beta

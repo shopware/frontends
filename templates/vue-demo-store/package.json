@@ -19,24 +19,24 @@
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "^0.57.7",
+    "@unocss/nuxt": "^0.58.0",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "@vueuse/nuxt": "^10.6.1",
+    "@vueuse/nuxt": "^10.7.0",
     "requrl": "^3.0.2",
     "sitemap": "^7.1.1",
-    "vue": "^3.3.9"
+    "vue": "^3.3.10"
   },
   "devDependencies": {
-    "@iconify-json/carbon": "^1.1.23",
+    "@iconify-json/carbon": "^1.1.24",
     "@nuxtjs/i18n": "8.0.0-rc.4",
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-vue": "^9.18.1",
+    "eslint-plugin-vue": "^9.19.2",
     "nuxt": "^3.8.2",
     "typescript": "^5.3.2",
     "vue-eslint-parser": "^9.3.2",
-    "vue-tsc": "^1.8.24"
+    "vue-tsc": "^1.8.25"
   },
   "engines": {
     "node": "^18.x || ^20.x"
