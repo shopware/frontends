@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@paypal/paypal-js": "^7.1.1",
-    "@shopware-pwa/api-client": "canary",
+    "@shopware/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/helpers-next": "canary",
     "js-cookie": "^3.0.5",
