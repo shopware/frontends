@@ -180,7 +180,7 @@ export type paths = {
      */
     post: operations["readCategoryList"];
   };
-  "/category/{navigationId}": {
+  "/category/{navigationId} sw-include-seo-urls": {
     /**
      * Fetch a single category
      * This endpoint returns information about the category, as well as a fully resolved (hydrated with mapping values) CMS page, if one is assigned to the category. You can pass slots which should be resolved exclusively.
@@ -453,7 +453,7 @@ export type paths = {
     /** Export product export */
     get: operations["readProductExport"];
   };
-  "/product-listing/{categoryId}": {
+  "/product-listing/{categoryId} sw-include-seo-urls": {
     /**
      * Fetch a product listing by category
      * Fetches a product listing for a specific category. It also provides filters, sortings and property aggregations, analogous to the /search endpoint.
@@ -734,7 +734,7 @@ export type components = {
       active?: boolean;
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
-      breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
+      breadcrumb: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
       /** Format: int64 */
       childCount: number; // TODO: [OpenAPI][Category] childCount field should be defined as required
       children: Array<components["schemas"]["Category"]>; // TODO: [OpenAPI][Category] - define children as required array
@@ -1321,9 +1321,10 @@ export type components = {
       fields?: string[];
       /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
       filter?: {
+        // TODO: [OpenAPI][Criteria] - there can be different filters, for example `equalsAny` can have array as value
         field: string;
         type: string;
-        value: string;
+        value: string | string[];
       }[];
       /** Perform groupings over certain fields */
       grouping?: string[];
@@ -6673,6 +6674,10 @@ export type operations<components = components> = {
    */
   readCategory: {
     parameters: {
+      header?: {
+        /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+        "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
+      };
       query?: {
         /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
         slots?: string;
@@ -7553,6 +7558,9 @@ export type operations<components = components> = {
    */
   readProductListing: {
     parameters: {
+      header?: {
+        "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readProductListing] - add sw-include-seo-urls to header parameters
+      };
       path: {
         /** Identifier of a category. */
         categoryId: string;
@@ -7855,7 +7863,7 @@ export type operations<components = components> = {
 
 export type operationPaths =
   | "readCategoryList post /category"
-  | "readCategory post /category/{navigationId}?slots"
+  | "readCategory post /category/{navigationId}?slots sw-include-seo-urls"
   | "readSeoUrl post /seo-url"
   | "readContext get /context"
   | "updateContext patch /context"
@@ -7905,7 +7913,7 @@ export type operationPaths =
   | "searchProductVariantIds post /product/{productId}/find-variant"
   | "readSitemap get /sitemap"
   | "searchPage post /search"
-  | "readProductListing post /product-listing/{categoryId}"
+  | "readProductListing post /product-listing/{categoryId} sw-include-seo-urls"
   | "readShippingMethod post /shipping-method?onlyAvailable"
   | "addProductOnWishlist post /customer/wishlist/add/{productId}"
   | "readCustomerWishlist post /customer/wishlist"
