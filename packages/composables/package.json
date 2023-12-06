@@ -59,8 +59,8 @@
   "dependencies": {
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "@vueuse/core": "^10.6.1",
-    "scule": "^1.1.0"
+    "@vueuse/core": "^10.7.0",
+    "scule": "^1.1.1"
   },
   "devDependencies": {
     "@nuxt/kit": "^3.8.2",
@@ -73,6 +73,6 @@
     "typescript": "^5.3.2",
     "unbuild": "^2.0.0",
     "vitest": "^0.34.6",
-    "vue": "^3.3.9"
+    "vue": "^3.3.10"
   }
 }
