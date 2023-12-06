@@ -11,8 +11,8 @@ type XOR<T, U> = T | U extends object
 type OneOf<T extends any[]> = T extends [infer Only]
   ? Only
   : T extends [infer A, infer B, ...infer Rest]
-    ? OneOf<[XOR<A, B>, ...Rest]>
-    : never;
+  ? OneOf<[XOR<A, B>, ...Rest]>
+  : never;
 
 type GenericRecord =
   | never
@@ -179,7 +179,7 @@ export type paths = {
      */
     post: operations["readCategoryList"];
   };
-  "/category/{navigationId}": {
+  "/category/{navigationId} sw-include-seo-urls": {
     /**
      * Fetch a single category
      * This endpoint returns information about the category, as well as a fully resolved (hydrated with mapping values) CMS page, if one is assigned to the category. You can pass slots which should be resolved exclusively.
@@ -452,7 +452,7 @@ export type paths = {
     /** Export product export */
     get: operations["readProductExport"];
   };
-  "/product-listing/{categoryId}": {
+  "/product-listing/{categoryId} sw-include-seo-urls": {
     /**
      * Fetch a product listing by category
      * Fetches a product listing for a specific category. It also provides filters, sortings and property aggregations, analogous to the /search endpoint.
@@ -2106,7 +2106,7 @@ export type components = {
            */
           href: string;
           meta?: components["schemas"]["meta"];
-        },
+        }
       ]
     >;
     /** The "type" and "id" to non-empty members. */
@@ -6672,6 +6672,10 @@ export type operations<components = components> = {
    */
   readCategory: {
     parameters: {
+      header?: {
+        /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+        "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
+      };
       query?: {
         /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
         slots?: string;
@@ -7552,6 +7556,9 @@ export type operations<components = components> = {
    */
   readProductListing: {
     parameters: {
+      header?: {
+        "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readProductListing] - add sw-include-seo-urls to header parameters
+      };
       path: {
         /** Identifier of a category. */
         categoryId: string;
@@ -7854,7 +7861,7 @@ export type operations<components = components> = {
 
 export type operationPaths =
   | "readCategoryList post /category"
-  | "readCategory post /category/{navigationId}?slots"
+  | "readCategory post /category/{navigationId}?slots sw-include-seo-urls"
   | "readSeoUrl post /seo-url"
   | "readContext get /context"
   | "updateContext patch /context"
@@ -7904,7 +7911,7 @@ export type operationPaths =
   | "searchProductVariantIds post /product/{productId}/find-variant"
   | "readSitemap get /sitemap"
   | "searchPage post /search"
-  | "readProductListing post /product-listing/{categoryId}"
+  | "readProductListing post /product-listing/{categoryId} sw-include-seo-urls"
   | "readShippingMethod post /shipping-method?onlyAvailable"
   | "addProductOnWishlist post /customer/wishlist/add/{productId}"
   | "readCustomerWishlist post /customer/wishlist"
