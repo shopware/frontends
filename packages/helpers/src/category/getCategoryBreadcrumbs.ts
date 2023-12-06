@@ -1,7 +1,6 @@
 /**
  * Gather breadcrumbs from category
  *
- * @param {Category} category category entity
  */
 export function getCategoryBreadcrumbs<
   T extends {
