@@ -1,4 +1,4 @@
-import type { SearchCriteria } from "@shopware-pwa/types";
+type SearchCriteria<T = unknown> = T & { [key: string]: any };
 
 /**
  * @internal

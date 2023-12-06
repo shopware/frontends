@@ -1,5 +1,3 @@
-import type { CmsSection } from "@shopware-pwa/types";
-
 export const urlsTestCaseOne: { [key: string]: string } = {
   "url(https://cdn.shopware.store/a/B/m/pPkDE/media/78/5f/f9/tyler-nix-573049-unsplash.jpg)":
     'url("https://cdn.shopware.store/a/B/m/pPkDE/media/78/5f/f9/tyler-nix-573049-unsplash.jpg?height=1900&fit=crop,smart")',
@@ -64,7 +62,13 @@ export const urlsTestCaseSeven: { [key: string]: string } = {
   haha: 'url("haha?width=2000&fit=crop,smart")',
 };
 
-export const cmsSectionTestCaseOne: Partial<CmsSection> = {
+const urlKey = "a".repeat(1001);
+const urlsDynamicCaseEight: { [key: string]: string } = {};
+urlsDynamicCaseEight[urlKey] = `url("blabla?width=1900&fit=crop,smart")`;
+
+export const urlsTestCaseEight = urlsDynamicCaseEight;
+
+export const cmsSectionTestCaseOne = {
   backgroundMedia: {
     url: "",
     createdAt: "2020-08-06T06:25:57.072+00:00",
@@ -79,7 +83,7 @@ export const cmsSectionTestCaseOne: Partial<CmsSection> = {
   },
 };
 
-export const cmsSectionTestCaseTwo: Partial<CmsSection> = {
+export const cmsSectionTestCaseTwo = {
   backgroundMedia: {
     url: "",
     createdAt: "2020-08-06T06:25:57.072+00:00",
@@ -94,7 +98,7 @@ export const cmsSectionTestCaseTwo: Partial<CmsSection> = {
   },
 };
 
-export const cmsSectionTestCaseThree: Partial<CmsSection> = {
+export const cmsSectionTestCaseThree = {
   backgroundMedia: {
     url: "",
     createdAt: "2020-08-06T06:25:57.072+00:00",
@@ -109,21 +113,18 @@ export const cmsSectionTestCaseThree: Partial<CmsSection> = {
   },
 };
 
-export const cmsSectionTestCaseFour: Partial<CmsSection> = {
+export const cmsSectionTestCaseFour = {
   backgroundMedia: {
     url: "",
     createdAt: "2020-08-06T06:25:57.072+00:00",
     mimeType: "image/jpeg",
     fileExtension: "jpg",
-    // @ts-ignore test when width and height are missing
-    metaData: {
-      type: 2,
-    },
+    metaData: {},
     apiAlias: "cms_media",
   },
 };
 
-export const cmsSectionTestCaseFive: Partial<CmsSection> = {
+export const cmsSectionTestCaseFive = {
   backgroundMedia: {
     url: "",
     createdAt: "2020-08-06T06:25:57.072+00:00",
@@ -138,7 +139,7 @@ export const cmsSectionTestCaseFive: Partial<CmsSection> = {
   },
 };
 
-export const cmsSectionTestCaseSix: Partial<CmsSection> = {
+export const cmsSectionTestCaseSix = {
   backgroundMedia: {
     url: "",
     createdAt: "2020-08-06T06:25:57.072+00:00",
@@ -153,7 +154,7 @@ export const cmsSectionTestCaseSix: Partial<CmsSection> = {
   },
 };
 
-export const cmsSectionTestCaseSeven: Partial<CmsSection> = {
+export const cmsSectionTestCaseSeven = {
   backgroundMedia: {
     url: "",
     createdAt: "2020-08-06T06:25:57.072+00:00",

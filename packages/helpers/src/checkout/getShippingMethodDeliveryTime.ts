@@ -1,10 +1,15 @@
-import type { ShippingMethod } from "@shopware-pwa/types";
-
 /**
  *  Get shipping delivery time
  *
- * @param {ShippingMethod} shippingMethod
  */
-export function getShippingMethodDeliveryTime(shippingMethod: ShippingMethod) {
+export function getShippingMethodDeliveryTime<
+  T extends {
+    deliveryTime?: {
+      translated?: {
+        name?: string;
+      };
+    };
+  },
+>(shippingMethod: T) {
   return shippingMethod.deliveryTime?.translated?.name;
 }
