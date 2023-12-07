@@ -204,9 +204,10 @@ export function useListing(params?: {
         );
       }
       return apiClient.invoke(
-        "readProductListing post /product-listing/{categoryId}",
+        "readProductListing post /product-listing/{categoryId} sw-include-seo-urls",
         {
           categoryId: resourceId,
+          "sw-include-seo-urls": true,
           ...searchCriteria,
         },
       );

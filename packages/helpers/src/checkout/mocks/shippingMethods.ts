@@ -1,5 +1,4 @@
-import type { ShippingMethod } from "@shopware-pwa/types";
-const shippingMethods: ShippingMethod[] = [
+const shippingMethods = [
   {
     translated: {
       name: "Standard",

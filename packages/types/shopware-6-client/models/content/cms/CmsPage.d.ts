@@ -213,7 +213,7 @@ export type MobileBehavior = "boxed" | "wrap" | "hidden";
 /**
  * @public
  */
-export type BackgroundMediaMode = "cover";
+export type BackgroundMediaMode = "cover" | "contain";
 
 export type CmsVisibility = "mobile" | "tablet" | "desktop" | string;
 
