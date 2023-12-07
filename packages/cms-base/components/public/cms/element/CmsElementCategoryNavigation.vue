@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Ref } from "vue";
-import type { ClientApiError } from "@shopware-pwa/types";
 import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
 import deepMerge from "../../../../helpers/deepMerge";
 import getTranslations from "../../../../helpers/getTranslations";
@@ -36,25 +35,16 @@ translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { category: activeCategory } = useCategory();
 const loading: Ref<boolean> = ref(true);
-const useSubCategories: Ref<boolean> = ref(true); // could be passed maybe as a prop in the future
-const categoryNavigation: Ref<Schemas["Category"][] | null> = ref([]);
+const flagAllowSubcategories: boolean = true; // could be passed maybe as a prop in the future
+const categoryNavigation: Ref<Schemas["Category"][]> = ref([]);
 
 const currentCategoryId = activeCategory.value?.id ?? "main-navigation";
-const type = useSubCategories.value ? currentCategoryId : "main-navigation";
+const type = flagAllowSubcategories ? currentCategoryId : "main-navigation";
 const { loadNavigationElements: loadMainNavigationElements } = useNavigation({
   type: type,
 });
 const cmsCategoryNavigation = async (depth: number) => {
   return loadMainNavigationElements({ depth: depth });
-};
-
-const loadCategories = async (depth: number) => {
-  try {
-    categoryNavigation.value = (await cmsCategoryNavigation(depth)) ?? [];
-  } catch (e) {
-    const err = e as ClientApiError;
-    console.error("[CmsElementCategoryNavigation]", err.messages);
-  }
 };
 
 const removeChildrenIfNotActiveCategory = () => {
@@ -72,9 +62,9 @@ const removeChildrenIfNotActiveCategory = () => {
 
 onMounted(async () => {
   // depth 0 means, we load only first level of categories, depth 1 means we load first and second level of categories ...
-  const depth = useSubCategories.value ? 0 : 1;
-  await loadCategories(depth);
-  if (!useSubCategories.value) {
+  const depth = flagAllowSubcategories ? 0 : 1;
+  categoryNavigation.value = await cmsCategoryNavigation(depth);
+  if (!flagAllowSubcategories) {
     categoryNavigation.value = removeChildrenIfNotActiveCategory();
   }
   loading.value = false;
@@ -87,7 +77,7 @@ onMounted(async () => {
       class="cms-element-category-navigation max-w-screen-xl mx-auto"
     >
       <h2
-        v-if="categoryNavigation.length > 0 && !useSubCategories"
+        v-if="categoryNavigation.length > 0 && !flagAllowSubcategories"
         class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
       >
         {{
@@ -97,7 +87,7 @@ onMounted(async () => {
         }}
       </h2>
       <h2
-        v-if="categoryNavigation.length > 0 && useSubCategories"
+        v-if="categoryNavigation.length > 0 && flagAllowSubcategories"
         class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
       >
         {{
