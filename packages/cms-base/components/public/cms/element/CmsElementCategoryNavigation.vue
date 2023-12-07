@@ -40,13 +40,9 @@ const categoryNavigation: Ref<Schemas["Category"][]> = ref([]);
 
 const currentCategoryId = activeCategory.value?.id ?? "main-navigation";
 const type = flagAllowSubcategories ? currentCategoryId : "main-navigation";
-const { loadNavigationElements: loadMainNavigationElements } = useNavigation({
+const { loadNavigationElements } = useNavigation({
   type: type,
 });
-const cmsCategoryNavigation = async (depth: number) => {
-  return loadMainNavigationElements({ depth: depth });
-};
-
 const removeChildrenIfNotActiveCategory = () => {
   const navigation: Schemas["Category"][] = JSON.parse(
     JSON.stringify(categoryNavigation.value),
@@ -63,7 +59,7 @@ const removeChildrenIfNotActiveCategory = () => {
 onMounted(async () => {
   // depth 0 means, we load only first level of categories, depth 1 means we load first and second level of categories ...
   const depth = flagAllowSubcategories ? 0 : 1;
-  categoryNavigation.value = await cmsCategoryNavigation(depth);
+  categoryNavigation.value = await loadNavigationElements({depth});
   if (!flagAllowSubcategories) {
     categoryNavigation.value = removeChildrenIfNotActiveCategory();
   }
