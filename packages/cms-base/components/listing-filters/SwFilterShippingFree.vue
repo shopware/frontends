@@ -1,12 +1,23 @@
-<script setup lang="ts">
-import {
+<script
+  setup
+  lang="ts"
+  generic="
+    ListingFilter extends {
+      id: string;
+      code: string;
+      label: string;
+      name: string;
+    }
+  "
+>
+import type {
   AggregationFilterEntity,
   EntitiesAggregation,
-  ListingFilter,
   MaxAggregation,
   PriceAggregation,
 } from "@shopware-pwa/types";
-import { computed } from "vue";
+import { onClickOutside } from "@vueuse/core";
+import { computed, ref } from "vue";
 
 const props = defineProps<{
   filter: ListingFilter;
@@ -50,7 +61,7 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
         @click="toggle"
       >
         <span class="font-medium text-gray-900 text-left">{{
-          filter.label
+          props.filter.label
         }}</span>
         <span class="ml-6 flex items-center">
           <i
@@ -68,19 +79,19 @@ onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
         <div class="space-y-4">
           <div class="flex items-center" @click="onChangeOption()">
             <input
-              :id="`filter-mobile-${filter.id || filter.code}`"
+              :id="`filter-mobile-${props.filter.id || props.filter.code}`"
               :checked="currentFilterData"
-              :name="filter.name"
-              :value="filter.name"
+              :name="props.filter.name"
+              :value="props.filter.name"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
             />
 
             <label
-              :for="`filter-mobile-${filter.id || filter.code}`"
+              :for="`filter-mobile-${props.filter.id || props.filter.code}`"
               class="ml-3 text-gray-600"
             >
-              {{ filter.label }}
+              {{ props.filter.label }}
             </label>
           </div>
         </div>

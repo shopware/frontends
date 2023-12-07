@@ -1,13 +1,8 @@
-import { useShopwareContext } from "./useShopwareContext";
-import { getAvailableLanguages as getAvailableLanguagesAPI } from "@shopware-pwa/api-client";
-import { _useContext } from "./internal/_useContext";
-import {
-  Language,
-  ContextTokenResponse,
-  EntityResult,
-} from "@shopware-pwa/types";
-import { setCurrentLanguage } from "@shopware-pwa/api-client";
-import { Ref } from "vue";
+import { useContext, useShopwareContext } from "#imports";
+import type { RequestReturnType, Schemas } from "#shopware";
+import type { Ref } from "vue";
+import { urlIsAbsolute } from "@shopware-pwa/helpers-next";
+
 export type UseInternationalizationReturn = {
   /**
    * StorefrontUrl is needed to specify language of emails
@@ -18,16 +13,16 @@ export type UseInternationalizationReturn = {
   /**
    * Get available languages from backend
    *
-   * @returns {Promise<EntityResult<"language", Language>>} list of languages
+   * @returns {Promise<RequestReturnType<"readLanguages">>} list of languages
    */
-  getAvailableLanguages(): Promise<EntityResult<"language", Language>>;
+  getAvailableLanguages(): Promise<RequestReturnType<"readLanguages">>;
   /**
    * Change current language
    *
    * @param {string} languageId
-   * @returns {Promise<ContextTokenResponse>} context object
+   * @returns {Promise<Schemas['ContextTokenResponse']>} context object
    */
-  changeLanguage(languageId: string): Promise<ContextTokenResponse>;
+  changeLanguage(languageId: string): Promise<Schemas["ContextTokenResponse"]>;
   /**
    * Get language code from backend language id
    *
@@ -52,7 +47,7 @@ export type UseInternationalizationReturn = {
   /**
    * List of available languages
    */
-  languages: Ref<Language[]>;
+  languages: Ref<Schemas["Language"][]>;
   /**
    * Currently used language
    */
@@ -82,26 +77,28 @@ export function useInternationalization(
   pathResolver?: Function,
 ): UseInternationalizationReturn {
   const { devStorefrontUrl } = useShopwareContext();
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
-  const _storeLanguages = _useContext<Language[]>("swLanguages");
-  const _storeCurrentLanguage = _useContext<string>(
+  const _storeLanguages = useContext<Schemas["Language"][]>("swLanguages");
+  const _storeCurrentLanguage = useContext<string>(
     "swLanguagesCurrentLanguage",
   );
-  const _storeCurrentPrefix = _useContext<string>("swLanguagesCurrentPrefix");
+  const _storeCurrentPrefix = useContext<string>("swLanguagesCurrentPrefix");
 
   function getStorefrontUrl() {
     return devStorefrontUrl ?? window.location.origin ?? "";
   }
 
   async function getAvailableLanguages() {
-    const data = await getAvailableLanguagesAPI(apiInstance);
+    const data = await apiClient.invoke("readLanguages post /language", {});
     _storeLanguages.value = data.elements;
     return data;
   }
 
   function changeLanguage(languageId: string) {
-    return setCurrentLanguage(languageId, apiInstance);
+    return apiClient.invoke("updateContext patch /context", {
+      languageId,
+    });
   }
 
   function getLanguageCodeFromId(languageId: string) {
@@ -130,6 +127,7 @@ export function useInternationalization(
     if (!pathResolver) return link;
 
     if (typeof link === "string") {
+      if (urlIsAbsolute(link)) return link;
       return pathResolver(link);
     }
 

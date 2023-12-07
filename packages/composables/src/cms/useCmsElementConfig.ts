@@ -1,5 +1,5 @@
-import { CmsSlot } from "@shopware-pwa/types";
-import { ElementConfig } from "../types";
+import type { CmsSlot } from "@shopware-pwa/types";
+import type { ElementConfig } from "../types";
 
 /**
  * Composable to get cms element config

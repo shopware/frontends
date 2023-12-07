@@ -43,8 +43,8 @@ Shopware Frontends requires a Node.js runtime environment.
 
 Supported versions:
 
-- **v16.x** LTS
-- **v18.x** LTS
+- **v20.x** LTS
+- **v18.x** - maintenance
 
 :::tip
 Use [Node Version Manager](https://github.com/nvm-sh/nvm) to manage a Node.js version locally.
@@ -56,7 +56,7 @@ Use [Node Version Manager](https://github.com/nvm-sh/nvm) to manage a Node.js ve
 
 Supported managers:
 
-- pnpm
+- pnpm - recommended
 - npm
 - yarn
 

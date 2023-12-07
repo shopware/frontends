@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { register } from "../customerService";
 import { getCustomerRegisterEndpoint } from "../../endpoints";
 import { defaultInstance } from "../../apiService";
-import { CustomerRegistrationParams } from "@shopware-pwa/types";
+import type { CustomerRegistrationParams } from "@shopware-pwa/types";
 import { describe, expect, it, beforeEach, vi } from "vitest";
 
 vi.mock("../../../src/apiService");

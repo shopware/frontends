@@ -4,8 +4,8 @@ import {
   useCart,
   useCheckout,
   useSessionContext,
-} from "@shopware-pwa/composables-next";
-import { Error } from "@shopware-pwa/types";
+} from "@shopware-pwa/composables-next/dist";
+import type { Error } from "@shopware-pwa/types";
 
 const {
   paymentMethods,

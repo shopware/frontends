@@ -1,10 +1,4 @@
-import { Category } from "@shopware-pwa/types";
 import { getCategoryUrl } from "./getCategoryUrl";
-type LinkedCategory = Pick<
-  Category,
-  "type" | "externalLink" | "seoUrls" | "internalLink" | "id" | "linkType"
->;
-
 /**
  * Get category/navigation route information for Vue Router.
  *
@@ -20,7 +14,16 @@ type LinkedCategory = Pick<
  * @category Category
  * @category Routing
  */
-export function getCategoryRoute(category: LinkedCategory) {
+export function getCategoryRoute<
+  T extends {
+    type: string;
+    externalLink?: string;
+    seoUrls?: { seoPathInfo: string }[];
+    internalLink?: string;
+    id: string;
+    linkType?: string;
+  },
+>(category: T) {
   if (!category) return "/";
   if (
     category.type === "page" ||

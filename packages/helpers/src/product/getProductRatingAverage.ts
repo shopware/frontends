@@ -1,14 +1,16 @@
-import { Product } from "@shopware-pwa/types";
-
 /**
  * Get product rating average property
  *
- * @param {Product} product product entity
+ * @param product product entity
  *
  * @public
  *
  * @category Product
+ *
+ * @returns {number | null} product rating average
  */
-export function getProductRatingAverage(product: Product): number | null {
+export function getProductRatingAverage<T extends { ratingAverage: number }>(
+  product: T,
+): number | null {
   return product?.ratingAverage;
 }

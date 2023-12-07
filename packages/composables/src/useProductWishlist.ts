@@ -1,8 +1,7 @@
-import { Ref, computed } from "vue";
-import { Product } from "@shopware-pwa/types";
-import { useUser } from "./useUser";
-import { useLocalWishlist } from "./useLocalWishlist";
-import { useSyncWishlist } from "./useSyncWishlist";
+import { computed } from "vue";
+import type { Ref } from "vue";
+import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
+import type { Schemas } from "#shopware";
 
 export type UseProductWishlistReturn = {
   /**
@@ -25,7 +24,7 @@ export type UseProductWishlistReturn = {
  * @category Product
  */
 export function useProductWishlist(
-  product: Ref<Product>,
+  product: Ref<Schemas["Product"]>,
 ): UseProductWishlistReturn {
   const { isLoggedIn } = useUser();
   const {

@@ -1,16 +1,8 @@
-import { computed, ComputedRef, Ref } from "vue";
-import { removeCartItem, getProduct } from "@shopware-pwa/api-client";
-import type {
-  LineItem,
-  LineItemType,
-  ClientApiError,
-  PropertyGroupOptionCart,
-  ProductResponse,
-  CartProductItem,
-} from "@shopware-pwa/types";
-
+import { computed } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
-import { useShopwareContext, useCart } from ".";
+import { useShopwareContext, useCart } from "#imports";
+import type { Schemas } from "#shopware";
 
 export type UseCartItemReturn = {
   /**
@@ -32,11 +24,11 @@ export type UseCartItemReturn = {
   /**
    * Options (of variation) for the current item
    */
-  itemOptions: ComputedRef<PropertyGroupOptionCart[]>;
+  itemOptions: ComputedRef<Schemas["LineItem"]["payload"]["options"]>;
   /**
    * Type of the current item: "product" or "promotion"
    */
-  itemType: ComputedRef<LineItemType | undefined>;
+  itemType: ComputedRef<Schemas["LineItem"]["type"] | undefined>;
   /**
    * Determines if the current item is a product
    */
@@ -56,7 +48,7 @@ export type UseCartItemReturn = {
   /**
    * Changes the current item quantity in the cart
    */
-  changeItemQuantity(quantity: number): Promise<void>;
+  changeItemQuantity(quantity: number): Promise<Schemas["Cart"]>;
   /**
    * Removes the current item from the cart
    */
@@ -66,7 +58,9 @@ export type UseCartItemReturn = {
    *
    * @deprecated
    */
-  getProductItemSeoUrlData(): Promise<ProductResponse | undefined>;
+  getProductItemSeoUrlData(): Promise<
+    Schemas["ProductDetailResponse"]["product"] | undefined
+  >;
 };
 
 /**
@@ -74,18 +68,20 @@ export type UseCartItemReturn = {
  * @public
  * @category Cart & Checkout
  */
-export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
+export function useCartItem(
+  cartItem: Ref<Schemas["LineItem"]>,
+): UseCartItemReturn {
   if (!cartItem) {
     throw new Error("[useCartItem] mandatory cartItem argument is missing.");
   }
 
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
   const { refreshCart, changeProductQuantity } = useCart();
 
   const itemQuantity = computed(() => cartItem.value.quantity);
   const itemImageThumbnailUrl = computed(() => getMainImageUrl(cartItem.value));
 
-  const itemRegularPrice = computed(
+  const itemRegularPrice = computed<number | undefined>(
     () =>
       cartItem.value?.price?.listPrice?.price ||
       cartItem.value?.price?.unitPrice,
@@ -101,12 +97,13 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
 
   const itemOptions = computed(
     () =>
-      (cartItem.value.type === "product" &&
-        (cartItem.value.payload as CartProductItem)?.options) ||
+      (cartItem.value.type === "product" && cartItem.value.payload?.options) ||
       [],
   );
 
-  const itemStock = computed(() => cartItem.value.deliveryInformation?.stock);
+  const itemStock = computed<number>(
+    () => cartItem.value.deliveryInformation.stock,
+  );
 
   const itemType = computed(() => cartItem.value.type);
 
@@ -115,43 +112,45 @@ export function useCartItem(cartItem: Ref<LineItem>): UseCartItemReturn {
   const isPromotion = computed(() => cartItem.value.type === "promotion");
 
   async function removeItem() {
-    const newCart = await removeCartItem(cartItem.value.id, apiInstance);
+    const newCart = await apiClient.invoke(
+      "removeLineItem delete /checkout/cart/line-item?ids",
+      {
+        ids: [cartItem.value.id],
+      },
+    );
     await refreshCart(newCart);
   }
 
-  async function changeItemQuantity(quantity: number): Promise<void> {
-    await changeProductQuantity({
+  async function changeItemQuantity(
+    quantity: number,
+  ): Promise<Schemas["Cart"]> {
+    const result = changeProductQuantity({
       id: cartItem.value.id,
-      quantity: quantity,
+      quantity: +quantity,
     });
+
+    return result;
   }
 
   /**
    * @deprecated Method is not used anymore and the case should be solved on project level instead due to performance reasons.
    */
-  async function getProductItemSeoUrlData(): Promise<
-    ProductResponse | undefined
-  > {
+  async function getProductItemSeoUrlData() {
     if (!cartItem.value.referencedId) {
       return;
     }
 
     try {
-      const result = await getProduct(
-        cartItem.value.referencedId,
+      const result = await apiClient.invoke(
+        "readProductDetail post /product/{productId}",
         {
-          // includes: (getDefaults() as any).getProductItemsSeoUrlsData.includes,
-          // associations: (getDefaults() as any).getProductItemsSeoUrlsData
-          //   .associations,
+          productId: cartItem.value.referencedId,
         },
-        apiInstance,
       );
-      return result.product as unknown as ProductResponse;
+
+      return result.product;
     } catch (error) {
-      console.error(
-        "[useCart][getProductItemsSeoUrlsData]",
-        (error as ClientApiError).messages,
-      );
+      console.error("[useCart][getProductItemsSeoUrlsData]", error);
     }
 
     return;

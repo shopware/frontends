@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { CmsBlockImageText } from "@shopware-pwa/composables-next";
+import type { CmsBlockImageText } from "@shopware-pwa/composables-next";
+import { useCmsBlock } from "#imports";
 
 const props = defineProps<{
   content: CmsBlockImageText;

@@ -1,9 +1,15 @@
-import type {
-  Category,
-  CmsPageResponse,
-  LandingPage,
-  Product,
-} from "@shopware-pwa/types";
+type Category = { apiAlias: "category" };
+type LandingPage = { apiAlias: "landing_page" };
+type Product = { apiAlias: "product" };
+type CmsPageResponse = {
+  resourceType:
+    | "frontend.navigation.page"
+    | "frontend.detail.page"
+    | "frontend.landing.page";
+  product: Product;
+  category: Category;
+  landingPage: LandingPage;
+};
 
 export * from "./getCmsLayoutConfiguration";
 export * from "./getBackgroundImageUrl";

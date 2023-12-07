@@ -5,13 +5,12 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Ref, resolveComponent } from "vue";
+import { resolveComponent } from "vue";
+import type { Ref } from "vue";
 import { pascalCase } from "scule";
-import {
-  useNavigationContext,
-  useNavigationSearch,
-} from "@shopware-pwa/composables-next";
-import { SeoUrl } from "@shopware-pwa/types";
+import { useNavigationContext, useNavigationSearch } from "#imports";
+import type { Schemas } from "#shopware";
+
 const { clearBreadcrumbs } = useBreadcrumbs();
 
 const NOT_FOUND_COMPONENT = "errors/RoutingNotFound";
@@ -37,16 +36,17 @@ const { data: seoResult } = await useAsyncData(
   },
 );
 
+const { routeName, foreignKey } = useNavigationContext(
+  seoResult as Ref<Schemas["SeoUrl"]>,
+);
+
+const componentName = routeName.value;
+
 onBeforeRouteLeave(() => {
   clearBreadcrumbs();
 });
 
-const { routeName, foreignKey } = useNavigationContext(
-  seoResult as Ref<SeoUrl>,
-);
-
 function render() {
-  const componentName = routeName.value;
   if (!componentName)
     return h("div", h(resolveComponent(pascalCase(NOT_FOUND_COMPONENT))));
 

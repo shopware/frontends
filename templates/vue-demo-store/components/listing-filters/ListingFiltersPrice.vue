@@ -1,5 +1,15 @@
-<script setup lang="ts">
-import { ListingFilter } from "@shopware-pwa/types";
+<script
+  setup
+  lang="ts"
+  generic="
+    ListingFilter extends {
+      code: string;
+      min?: number;
+      max?: number;
+      label: string;
+    }
+  "
+>
 import { reactive, ref, watch } from "vue";
 
 const emits = defineEmits<{
@@ -66,7 +76,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
         @click="toggle"
       >
         <span class="font-medium text-gray-900 text-left">{{
-          filter.label
+          props.filter.label
         }}</span>
         <span class="ml-6 flex items-center">
           <i

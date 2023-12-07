@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import {
+import type {
   CmsElementCrossSelling,
   SliderElementConfig,
 } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig } from "@shopware-pwa/composables-next";
+import { useCmsElementConfig } from "#imports";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwSlider from "../../../SwSlider.vue";
+import { ref, computed } from "vue";
+import { useElementSize } from "@vueuse/core";
 
 const props = defineProps<{
   content: CmsElementCrossSelling;
@@ -36,7 +38,7 @@ const config = computed<SliderElementConfig>(() => ({
 const crossSellCollections = computed(() => {
   return (
     props.content?.data?.crossSellings?.filter(
-      (collection) => !!collection?.products?.length,
+      (collection) => !!collection.products.length,
     ) || []
   );
 });

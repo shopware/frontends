@@ -1,5 +1,55 @@
 # @shopware-pwa/cms-base
 
+## 0.9.1
+
+### Patch Changes
+
+- [#460](https://github.com/shopware/frontends/pull/460) [`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831) Thanks [@mkucmus](https://github.com/mkucmus)! - Apply visibility and css classes for CMS layout
+
+- Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831), [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550), [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0)]:
+  - @shopware-pwa/helpers-next@0.5.1
+  - @shopware-pwa/composables-next@0.14.1
+  - @shopware-pwa/api-client@0.7.0
+
+## 0.9.0
+
+### Minor Changes
+
+- [#445](https://github.com/shopware/frontends/pull/445) [`c264bf5d`](https://github.com/shopware/frontends/commit/c264bf5d41638c6013ebf14e7cd9615e5b5ef9bf) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Adding the missing srcset attribute to the image tag in the CmsElementImage component. as well as adding support for HTML video elements as in Shopware management, it is possible for users to associate videos to any Cms image element.
+
+- [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Changed types imports to `import type {...} from "..."`
+
+### Patch Changes
+
+- [#454](https://github.com/shopware/frontends/pull/454) [`07ef770d`](https://github.com/shopware/frontends/commit/07ef770d31b9331536ab9c846f4a8ce46e49ed84) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.8.0** to **^3.8.1**
+
+- [#402](https://github.com/shopware/frontends/pull/402) [`9a89f409`](https://github.com/shopware/frontends/commit/9a89f40915c08ded0aee6140b42a12a18e74627f) Thanks [@mkucmus](https://github.com/mkucmus)! - Alignment to a11y standards
+
+- [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.7.4** to **^3.8.0**
+
+- [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.7.3** to **^3.7.4**
+
+- [#413](https://github.com/shopware/frontends/pull/413) [`c6db572f`](https://github.com/shopware/frontends/commit/c6db572f0b041726d89c7e2e18eaed6864189f3a) Thanks [@mkucmus](https://github.com/mkucmus)! - Render <img> element in inner CMS content
+
+- [#438](https://github.com/shopware/frontends/pull/438) [`f636e5a6`](https://github.com/shopware/frontends/commit/f636e5a648d2d13b83589b34e377f1d3fccc1cf7) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix url prefix builder
+
+- [#420](https://github.com/shopware/frontends/pull/420) [`f3be470b`](https://github.com/shopware/frontends/commit/f3be470b42b536ba84a9ce968f440f9d6409bc19) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add category link resolver
+
+- [#396](https://github.com/shopware/frontends/pull/396) [`dfc49b80`](https://github.com/shopware/frontends/commit/dfc49b80bcaa8e00b71e0dff6e35b413383274f5) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.7.1** to **^3.7.3**
+
+- Updated dependencies [[`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5), [`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5), [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720), [`c264bf5d`](https://github.com/shopware/frontends/commit/c264bf5d41638c6013ebf14e7cd9615e5b5ef9bf), [`85628cc6`](https://github.com/shopware/frontends/commit/85628cc65216417a887398f0838714fc03544303), [`87213fb0`](https://github.com/shopware/frontends/commit/87213fb02b292b11f45b7fb5956fb8bc1ae33800), [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0), [`12ed75ff`](https://github.com/shopware/frontends/commit/12ed75ffd3d98bf2623161e44f63c40dfc1ef0e3), [`43510a10`](https://github.com/shopware/frontends/commit/43510a108d351aca361e460844b2cddd29f889b5), [`29f849d2`](https://github.com/shopware/frontends/commit/29f849d28c0d0ff8fc34f0d5e921ac2828c93f2b), [`85628cc6`](https://github.com/shopware/frontends/commit/85628cc65216417a887398f0838714fc03544303)]:
+  - @shopware-pwa/composables-next@0.14.0
+  - @shopware-pwa/api-client@0.7.0
+  - @shopware-pwa/helpers-next@0.5.0
+
 ## 0.8.5
 
 ### Patch Changes

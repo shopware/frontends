@@ -7,7 +7,7 @@
 
 Nuxt [module](https://nuxt.com/docs/guide/going-further/modules) that allows you to set up a Nuxt 3 project with Shopware Frontends. It provides the composables and api-client packages.
 
-If you want to use these packages with a different Vue.js framework, see [the guide](https://frontends.shopware.com/getting-started/templates/custom-project.html) for using Shopware Frontends in a custom project or use the [vue3-plugin](https://frontends.shopware.com/framework/internal-structure.html#vue3-plugin).
+If you want to use these packages with a different Vue.js framework, see [the guide](https://frontends.shopware.com/getting-started/templates/custom-vue-project.html) for using Shopware Frontends in a custom project or use the [vue3-plugin](https://frontends.shopware.com/framework/internal-structure.html#vue3-plugin).
 
 ## Features
 
@@ -93,16 +93,12 @@ Internally, the module uses [API Client](https://npmjs.com/package/@shopware-pwa
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt3-module/CHANGELOG.md)
 
-### Latest changes: 0.5.4
+### Latest changes: 0.5.6
 
 ### Patch Changes
 
-- [#387](https://github.com/shopware/frontends/pull/387) [`3520c261`](https://github.com/shopware/frontends/commit/3520c261129a6a785802aa14107b8b39cdd8baf4) Thanks [@mkucmus](https://github.com/mkucmus)! - Load composables explicitly within the shopware plugin
+- [#458](https://github.com/shopware/frontends/pull/458) [`135ca37d`](https://github.com/shopware/frontends/commit/135ca37d9c911cf47d75705006af2879ab7800a8) Thanks [@danielroe](https://github.com/danielroe)! - This improves performance slightly when developing; we can avoid loading the entire barrel file at `#app` by using the new granular imports merged in https://github.com/nuxt/nuxt/pull/23951.
 
-- [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
-  - Changed dependency _@nuxt/kit_ from **^3.6.5** to **^3.7.1**
-
-- Updated dependencies [[`211ccbb2`](https://github.com/shopware/frontends/commit/211ccbb2e4d9d6009847e6ff53099deb97d569de), [`b2b6905b`](https://github.com/shopware/frontends/commit/b2b6905beb8f28b79c0989ff9340c757e60001c9), [`61de0366`](https://github.com/shopware/frontends/commit/61de03662869e9ad8b69e2d8a868313a61a7a741), [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a)]:
-  - @shopware-pwa/composables-next@0.13.3
-  - @shopware-pwa/api-client@0.6.0
+- Updated dependencies [[`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550), [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0)]:
+  - @shopware-pwa/composables-next@0.14.1
+  - @shopware-pwa/api-client@0.7.0

@@ -1,17 +1,20 @@
-import i18nConfig from "./i18n/src/config";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
+  extends: [
+    "@shopware-pwa/composables-next/nuxt-layer",
+    "@shopware-pwa/cms-base",
+  ],
   runtimeConfig: {
     shopware: {
       /**
        * SSR Shopware Endpoint
-       * More here: https://frontends.shopware.com/getting-started/templates/custom-project.html#shopware-endpoint-on-the-ssr-mode
+       * More here: https://frontends.shopware.com/getting-started/templates/custom-vue-project.html#shopware-endpoint-on-the-ssr-mode
        */
       shopwareEndpoint: "",
     },
     public: {
       shopware: {
-        shopwareEndpoint: "https://demo-frontends.shopware.store",
+        shopwareEndpoint: "https://demo-frontends.shopware.store/store-api/",
         shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
         devStorefrontUrl: "",
       },
@@ -70,13 +73,16 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
-    "@shopware-pwa/cms-base",
-    "@nuxt/devtools",
     "@nuxtjs/i18n",
   ],
   // components: true,
   components: {
-    dirs: ["~/components"],
+    dirs: [
+      {
+        path: "~/components",
+        priority: 2,
+      },
+    ],
     global: true,
   },
   vueuse: {
@@ -97,12 +103,33 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
-    vueI18n: {
-      fallbackLocale: "en-GB",
-    },
     strategy: "prefix_except_default",
-    defaultLocale: i18nConfig.defaultLocale,
-    langDir: "i18n/src/",
-    locales: i18nConfig.locales,
+    defaultLocale: "en-GB",
+    detectBrowserLanguage: false,
+    langDir: "./i18n/src/langs/",
+    vueI18n: "./i18n/config",
+    compilation: {
+      jit: false,
+    },
+    locales: [
+      {
+        code: "en-GB",
+        iso: "en-GB",
+        file: "en-GB.ts",
+      },
+      {
+        code: "pl-PL",
+        iso: "pl-PL",
+        file: "pl-PL.ts",
+      },
+      {
+        code: "de-DE",
+        iso: "de-DE",
+        file: "de-DE.ts",
+      },
+    ],
+    experimental: {
+      jsTsFormatResource: true,
+    },
   },
 });

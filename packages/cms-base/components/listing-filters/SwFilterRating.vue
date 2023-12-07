@@ -1,10 +1,18 @@
-<script setup lang="ts">
-import {
+<script
+  setup
+  lang="ts"
+  generic="
+    ListingFilter extends {
+      code: string;
+      label: string;
+    }
+  "
+>
+import type {
   EntitiesAggregation,
   AggregationFilterEntity,
   PriceAggregation,
   MaxAggregation,
-  ListingFilter,
 } from "@shopware-pwa/types";
 import { computed, ref } from "vue";
 
@@ -56,7 +64,7 @@ const toggle = () => {
         @click="toggle"
       >
         <span class="font-medium text-gray-900 text-left">{{
-          filter.label
+          props.filter.label
         }}</span>
         <span class="ml-6 flex items-center">
           <i

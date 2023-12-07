@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { Product, ProductReview } from "@shopware-pwa/types";
 import {
   getProductRoute,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
-import { getProductReviews } from "@shopware-pwa/api-client";
-import { Ref } from "vue";
+import type { Ref } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  product: Product;
+  product: Schemas["Product"];
 }>();
-const reviews: Ref<ProductReview[]> = ref([]);
+const reviews: Ref<Schemas["ProductReview"][]> = ref([]);
 const router = useRouter();
 
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 onMounted(async () => {
-  const reviewsResponse = await getProductReviews(
-    props.product.id,
-    undefined,
-    apiInstance,
+  const reviewsResponse = await apiClient.invoke(
+    "readProductReviews post /product/{productId}/reviews",
+    {
+      productId: props.product.id,
+    },
   );
   reviews.value = reviewsResponse?.elements || [];
 });
@@ -35,7 +35,7 @@ const description = computed(() =>
 );
 const properties = computed(() => props.product?.properties || []);
 
-const handleVariantChange = (val: Product) => {
+const handleVariantChange = (val: Schemas["Product"]) => {
   const newRoute = getProductRoute(val);
   router.push(newRoute);
 };

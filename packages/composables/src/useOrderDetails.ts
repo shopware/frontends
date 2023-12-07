@@ -1,29 +1,13 @@
-import { computed, ComputedRef, Ref, ref, inject, provide } from "vue";
-import {
-  Order,
-  BillingAddress,
-  ShippingAddress,
-  ShippingMethod,
-  PaymentMethod,
-  ShopwareSearchParams,
-  OrderDocument,
-  ShopwareAssociation,
-} from "@shopware-pwa/types";
-import {
-  cancelOrder,
-  changeOrderPaymentMethod,
-  getOrderDetails,
-  handlePayment as apiHandlePayment,
-  getOrderDownloads,
-  getDocumentDownload,
-} from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
+import { computed, ref, inject, provide } from "vue";
+import type { ComputedRef, Ref } from "vue";
+import { useShopwareContext } from "#imports";
 import deepMerge from "./helpers/deepMerge";
+import type { Schemas } from "#shopware";
 
 /**
  * Data for api requests to fetch all necessary data
  */
-const orderAssociations: ShopwareSearchParams = {
+const orderAssociations: Schemas["Criteria"] = {
   associations: {
     lineItems: {
       associations: {
@@ -52,9 +36,9 @@ const orderAssociations: ShopwareSearchParams = {
 
 export type UseOrderDetailsReturn = {
   /**
-   * {@link Order} object
+   * {@link Schemas['Order']} object
    */
-  order: ComputedRef<Order | undefined | null>;
+  order: ComputedRef<Schemas["Order"] | undefined | null>;
   /**
    * Order status (e.g. 'open', 'cancelled')
    */
@@ -74,11 +58,11 @@ export type UseOrderDetailsReturn = {
   /**
    * Shipping address
    */
-  shippingAddress: ComputedRef<ShippingAddress | undefined>;
+  shippingAddress: ComputedRef<Schemas["OrderAddress"] | undefined>;
   /**
    * Billing address
    */
-  billingAddress: ComputedRef<BillingAddress | undefined>;
+  billingAddress: ComputedRef<Schemas["OrderAddress"] | undefined>;
   /**
    * Basic personal details
    */
@@ -94,11 +78,11 @@ export type UseOrderDetailsReturn = {
   /**
    * Selected shipping method
    */
-  shippingMethod: ComputedRef<ShippingMethod | undefined | null>;
+  shippingMethod: ComputedRef<Schemas["ShippingMethod"] | undefined | null>;
   /**
    * Selected payment method
    */
-  paymentMethod: ComputedRef<PaymentMethod | undefined | null>;
+  paymentMethod: ComputedRef<Schemas["PaymentMethod"] | undefined | null>;
   /**
    * Get order object including additional associations.
    * useDefaults describes what order object should look like.
@@ -139,7 +123,10 @@ export type UseOrderDetailsReturn = {
    * @param {string} deepLinkCode
    * @returns
    */
-  getDocumentFile: (documentId: string, deepLinkCode: string) => Promise<Blob>;
+  getDocumentFile: (
+    documentId: string,
+    deepLinkCode: string,
+  ) => Promise<Schemas["Document"]>;
   /**
    * Check if order has documents
    */
@@ -147,7 +134,7 @@ export type UseOrderDetailsReturn = {
   /**
    * Get order documents
    */
-  documents: ComputedRef<OrderDocument[]>;
+  documents: ComputedRef<Schemas["Document"][]>;
 };
 
 /**
@@ -157,11 +144,14 @@ export type UseOrderDetailsReturn = {
  */
 export function useOrderDetails(
   orderId: string,
-  associations?: ShopwareAssociation,
+  associations?: Schemas["Criteria"]["associations"],
 ): UseOrderDetailsReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
-  const _sharedOrder = inject("swOrderDetails", ref());
+  const _sharedOrder = inject<Ref<Schemas["Order"] | undefined>>(
+    "swOrderDetails",
+    ref(),
+  );
   provide("swOrderDetails", _sharedOrder);
 
   const paymentMethod = computed(
@@ -180,8 +170,7 @@ export function useOrderDetails(
   const billingAddress = computed(
     () =>
       _sharedOrder.value?.addresses?.find(
-        ({ id }: { id: string }) =>
-          id === (_sharedOrder.value as Order).billingAddressId,
+        ({ id }: { id: string }) => id === _sharedOrder.value?.billingAddressId,
       ),
   );
   const shippingAddress = computed(
@@ -194,12 +183,25 @@ export function useOrderDetails(
   const status = computed(() => _sharedOrder.value?.stateMachineState?.name);
 
   async function loadOrderDetails() {
-    const orderDetailsResponse = await getOrderDetails(
-      orderId,
-      deepMerge(orderAssociations, associations ? associations : {}),
-      apiInstance,
+    const mergedAssociations = deepMerge(
+      orderAssociations,
+      associations ? associations : {},
     );
-    _sharedOrder.value = orderDetailsResponse ?? null;
+    const params = deepMerge(mergedAssociations, {
+      filter: [
+        {
+          type: "equals",
+          field: "id",
+          value: orderId,
+        },
+      ],
+    });
+
+    const orderDetailsResponse = await apiClient.invoke(
+      "readOrder post /order",
+      params,
+    );
+    _sharedOrder.value = orderDetailsResponse.orders.elements?.[0] ?? null;
   }
 
   async function handlePayment(
@@ -207,55 +209,60 @@ export function useOrderDetails(
     errorUrl?: string,
     paymentDetails?: unknown,
   ) {
-    const resp = await apiHandlePayment(
+    const resp = await apiClient.invoke(
+      "handlePaymentMethod post /handle-payment",
       {
         orderId,
         finishUrl,
         errorUrl,
-        paymentDetails,
+        // paymentDetails?: unknown, TODO: is this necessary? If yes - add to schema, if no - remove
       },
-      apiInstance,
     );
 
-    paymentUrl.value = resp?.redirectUrl;
+    paymentUrl.value = resp.redirectUrl;
   }
 
   async function cancel() {
-    const response = await cancelOrder(orderId, apiInstance);
+    await apiClient.invoke("cancelOrder post /order/state/cancel", {
+      orderId: orderId,
+    });
     await loadOrderDetails();
   }
   async function changePaymentMethod(paymentMethodId: string) {
-    await changeOrderPaymentMethod(orderId, paymentMethodId, apiInstance);
+    await apiClient.invoke("orderSetPayment post /order/payment", {
+      orderId: orderId,
+      paymentMethodId: paymentMethodId,
+    });
 
     await loadOrderDetails();
   }
 
   async function getMediaFile(downloadId: string) {
-    const response = await getOrderDownloads(
+    const response = await apiClient.invoke(
+      "orderDownloadFile get /order/download/{orderId}/{downloadId}",
       {
         orderId,
         downloadId,
       },
-      apiInstance,
     );
 
     return response;
   }
 
   async function getDocumentFile(documentId: string, deepLinkCode: string) {
-    const response = await getDocumentDownload(
+    const response = await apiClient.invoke(
+      "download post /document/download/{documentId}/{deepLinkCode}",
       {
         documentId,
         deepLinkCode,
       },
-      apiInstance,
     );
 
     return response;
   }
 
-  const hasDocuments = computed(() => !!_sharedOrder.value.documents.length);
-  const documents = computed(() => _sharedOrder.value.documents);
+  const hasDocuments = computed(() => !!_sharedOrder.value?.documents.length);
+  const documents = computed(() => _sharedOrder.value?.documents || []);
 
   return {
     order: computed(() => _sharedOrder.value),

@@ -1,21 +1,13 @@
-import {
-  computed,
-  Ref,
-  ref,
-  onMounted,
-  ComputedRef,
-  inject,
-  provide,
-} from "vue";
-import { getAvailableCountries } from "@shopware-pwa/api-client";
-import { Country, CountryState } from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
+import { computed, ref, onMounted, inject, provide } from "vue";
+import type { ComputedRef } from "vue";
+import { useShopwareContext } from "#imports";
+import type { Schemas } from "#shopware";
 
 export type UseCountriesReturn = {
   mountedCallback(): Promise<void>;
-  getCountries: ComputedRef<Country[]>;
+  getCountries: ComputedRef<Schemas["Country"][]>;
   fetchCountries(): Promise<void>;
-  getStatesForCountry(countryId: string): CountryState[] | null;
+  getStatesForCountry(countryId: string): Schemas["CountryState"][] | null;
 };
 
 /**
@@ -24,14 +16,18 @@ export type UseCountriesReturn = {
  * @category Context & Language
  */
 export function useCountries(): UseCountriesReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   const _sharedCountried = inject("swCountries", ref());
   provide("swCountries", _sharedCountried);
 
   async function fetchCountries() {
-    const { elements } = await getAvailableCountries(apiInstance);
-    _sharedCountried.value = elements;
+    const result = await apiClient.invoke("readCountry post /country", {
+      associations: {
+        states: {},
+      },
+    });
+    _sharedCountried.value = result.elements;
   }
 
   const getCountries = computed(() => {
@@ -46,7 +42,7 @@ export function useCountries(): UseCountriesReturn {
 
   const getStatesForCountry = (countryId: string) => {
     return (
-      getCountries.value.find((element: Country) => {
+      getCountries.value.find((element: Schemas["Country"]) => {
         return element.id === countryId;
       })?.states || null
     );

@@ -15,6 +15,10 @@ nav:
 
 # Error Handling: API Client
 
+:::warning
+Deprecated. This doc is based on the old API client.
+:::
+
 ## Overview
 
 The api-client is a separate package located at `packages/api-client` and it uses [axios](https://axios-http.com/) internally.

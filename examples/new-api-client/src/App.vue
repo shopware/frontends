@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { apiClient, ApiReturnType } from "./apiClient";
+import { apiClient } from "./apiClient";
 import HelloWorld from "./components/HelloWorld.vue";
 import LoginForm from "./components/LoginForm.vue";
 import AdminLoginForm from "./components/AdminLoginForm.vue";
 import { adminApiClient } from "./adminApiClient";
 import { ApiClientError } from "@shopware/api-client";
+import type { RequestReturnType } from "#shopware";
 
-const productsResponse = ref<ApiReturnType<"readProduct">>();
+const productsResponse = ref<RequestReturnType<"readProduct">>();
 
 onMounted(async () => {
   await apiClient.invoke("readContext get /context", {});

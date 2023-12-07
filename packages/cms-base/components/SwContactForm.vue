@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
-import { sendContactForm } from "@shopware-pwa/api-client";
+import type { CmsElementForm } from "@shopware-pwa/composables-next";
 import {
-  CmsElementForm,
+  useCmsElementConfig,
   useNavigationContext,
-} from "@shopware-pwa/composables-next";
-import { ClientApiError } from "@shopware-pwa/types";
+  useSalutations,
+  useShopwareContext,
+} from "#imports";
 import deepMerge from "../helpers/deepMerge";
 import getTranslations from "../helpers/getTranslations";
+import { computed, reactive, ref } from "vue";
+import { ApiClientError } from "@shopware/api-client";
 
 const props = defineProps<{
   content: CmsElementForm;
@@ -73,7 +76,7 @@ const formSent = ref<boolean>(false);
 const errorMessages = ref<any[]>([]);
 const { getSalutations } = useSalutations();
 const { foreignKey } = useNavigationContext();
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 const { getConfigValue } = useCmsElementConfig(props.content);
 
 const getConfirmationText = computed(
@@ -134,16 +137,15 @@ const invokeSubmit = async () => {
   if (valid) {
     loading.value = true;
     try {
-      await sendContactForm(
-        {
-          ...state,
-          navigationId: foreignKey.value,
-        },
-        apiInstance,
-      );
+      await apiClient.invoke("sendContactMail post /contact-form", {
+        ...state,
+        navigationId: foreignKey.value,
+      });
       formSent.value = true;
     } catch (e) {
-      errorMessages.value = (e as ClientApiError).messages;
+      if (e instanceof ApiClientError) {
+        errorMessages.value = e.details.errors;
+      }
     } finally {
       loading.value = false;
     }

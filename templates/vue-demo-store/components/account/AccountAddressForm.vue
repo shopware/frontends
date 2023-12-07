@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ClientApiError, CustomerAddress } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
 
 const {
   createCustomerAddress,
@@ -15,7 +17,7 @@ const emits = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    address?: CustomerAddress;
+    address?: Schemas["CustomerAddress"];
     title?: string;
   }>(),
   {
@@ -28,7 +30,7 @@ const { getSalutations } = useSalutations();
 const { t } = useI18n();
 const { pushError } = useNotifications();
 
-const formData = reactive<CustomerAddress>({
+const formData = reactive<Schemas["CustomerAddress"]>({
   countryId: props.address?.countryId ?? "",
   countryStateId: props.address?.countryStateId ?? "",
   salutationId: props.address?.salutationId ?? "",
@@ -38,21 +40,22 @@ const formData = reactive<CustomerAddress>({
   city: props.address?.city ?? "",
   street: props.address?.street ?? "",
   id: props.address?.id ?? "",
-});
+} as Schemas["CustomerAddress"]);
 
 const invokeSave = async (): Promise<void> => {
   try {
     const saveAddress = formData.id
       ? updateCustomerAddress
       : createCustomerAddress;
-    await saveAddress(formData);
+    await saveAddress(formData as Schemas["CustomerAddress"]);
     loadCustomerAddresses();
     emits("success");
   } catch (e) {
-    const errors = e as ClientApiError;
-    errors?.messages?.forEach((element) => {
-      pushError(errorMessageBuilder(element) || t("messages.error"));
-    });
+    if (e instanceof ApiClientError) {
+      e.details.errors.forEach((element: ApiError) => {
+        pushError(errorMessageBuilder(element) || t("messages.error"));
+      });
+    }
   }
 };
 

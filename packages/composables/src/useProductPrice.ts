@@ -1,12 +1,14 @@
-import { getProductTierPrices, TierPrice } from "@shopware-pwa/helpers-next";
-import { CalculatedPrice, Product, ReferencePrice } from "@shopware-pwa/types";
-import { computed, ComputedRef, Ref } from "vue";
+import type { Schemas } from "#shopware";
+import { getProductTierPrices } from "@shopware-pwa/helpers-next";
+import type { TierPrice } from "@shopware-pwa/helpers-next";
+import { computed } from "vue";
+import type { ComputedRef, Ref } from "vue";
 
 export type UseProductPriceReturn = {
   /**
    * Whole calculated price object
    */
-  price: ComputedRef<CalculatedPrice | undefined>;
+  price: ComputedRef<Schemas["CalculatedPrice"] | undefined>;
   /**
    * Calculated price value for one selling unit
    */
@@ -18,7 +20,9 @@ export type UseProductPriceReturn = {
   /**
    * Can be used if isListPrice is set to true
    */
-  referencePrice: ComputedRef<ReferencePrice | undefined>;
+  referencePrice: ComputedRef<
+    Schemas["CalculatedPrice"]["referencePrice"] | undefined
+  >;
   /**
    * determines if `price` contains the minimum tier price
    */
@@ -43,49 +47,58 @@ export type UseProductPriceReturn = {
  * @public
  * @category Product
  */
-export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
-  const _cheapest: ComputedRef<CalculatedPrice | undefined> = computed(
-    () => product.value?.calculatedCheapestPrice,
+export function useProductPrice(
+  product: Ref<Schemas["Product"]>,
+): UseProductPriceReturn {
+  const _cheapest: ComputedRef<Schemas["CalculatedPrice"] | undefined> =
+    computed(() => product.value?.calculatedCheapestPrice);
+
+  /**
+   * calculatedPrices are used for product with tier prices
+   */
+  const _real: ComputedRef<Schemas["CalculatedPrice"] | undefined> = computed(
+    () =>
+      (product.value?.calculatedPrices?.length ?? 0) > 0
+        ? product.value?.calculatedPrices?.[0]
+        : product.value?.calculatedPrice,
   );
-  const _real: ComputedRef<CalculatedPrice | undefined> = computed(() =>
-    product.value?.calculatedPrices?.length > 0
-      ? product.value?.calculatedPrices[0]
-      : product.value?.calculatedPrice,
-  );
-  const referencePrice: ComputedRef<ReferencePrice | undefined> = computed(
-    () => _real?.value?.referencePrice,
-  );
+  const referencePrice: ComputedRef<
+    Schemas["CalculatedPrice"]["referencePrice"] | undefined
+  > = computed(() => _real?.value?.referencePrice);
 
   const _displayParent: ComputedRef<boolean> = computed(
     () =>
-      (product.value as any)?.variantListingConfig?.displayParent &&
+      !!product.value?.variantListingConfig?.displayParent &&
       product.value?.parentId === null,
   );
+
   const displayFrom: ComputedRef<boolean> = computed(
     () =>
-      product.value?.calculatedPrices?.length > 1 ||
+      (product.value?.calculatedPrices?.length ?? 0) > 1 ||
       !!(_displayParent.value && displayFromVariants.value),
   );
+
   const displayFromVariants: ComputedRef<number | false | undefined> = computed(
     () =>
       !!product.value.parentId &&
-      product.value?.cheapestPrice?.hasRange &&
-      !!product.value?.cheapestPrice?.parentId &&
+      product.value?.calculatedCheapestPrice?.hasRange &&
       _real?.value?.unitPrice !== _cheapest?.value?.unitPrice &&
       _cheapest?.value?.unitPrice,
   );
 
-  const _price: ComputedRef<CalculatedPrice | undefined> = computed(() => {
-    if (displayFrom.value && getProductTierPrices(product.value).length > 1) {
-      const lowest = product.value?.calculatedPrices.reduce(
-        (previous, current) => {
-          return current.unitPrice < previous.unitPrice ? current : previous;
-        },
-      );
-      return lowest || _cheapest.value;
-    }
-    return _real.value;
-  });
+  const _price: ComputedRef<Schemas["CalculatedPrice"] | undefined> = computed(
+    () => {
+      if (displayFrom.value && getProductTierPrices(product.value).length > 1) {
+        const lowest = product.value?.calculatedPrices?.reduce(
+          (previous, current) => {
+            return current.unitPrice < previous.unitPrice ? current : previous;
+          },
+        );
+        return lowest || _cheapest.value;
+      }
+      return _real.value;
+    },
+  );
 
   const unitPrice: ComputedRef<number | undefined> = computed(
     () => _price.value?.unitPrice,
@@ -93,7 +106,7 @@ export function useProductPrice(product: Ref<Product>): UseProductPriceReturn {
   const totalPrice: ComputedRef<number | undefined> = computed(
     () => _price.value?.totalPrice,
   );
-  const price: ComputedRef<CalculatedPrice | undefined> = computed(
+  const price: ComputedRef<Schemas["CalculatedPrice"] | undefined> = computed(
     () => _price.value,
   );
 

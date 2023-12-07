@@ -1,4 +1,4 @@
-import { Currency } from "@shopware-pwa/types";
+import type { Currency } from "@shopware-pwa/types";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
 import {
   getContextCurrencyEndpoint,
@@ -9,7 +9,7 @@ import {
   getContextSalutationEndpoint,
   getContextEndpoint,
 } from "../endpoints";
-import {
+import type {
   Country,
   ShippingMethod,
   PaymentMethod,
@@ -39,7 +39,11 @@ async function updateContext(
 ): Promise<ContextTokenResponse> {
   const resp = await contextInstance.invoke.patch(getContextEndpoint(), params);
   const contextToken = extractContextToken(resp);
-  return { contextToken, redirectUrl: resp.data.redirectUrl };
+  return {
+    contextToken,
+    redirectUrl: resp.data.redirectUrl,
+    apiAlias: "array_struct",
+  };
 }
 
 /**

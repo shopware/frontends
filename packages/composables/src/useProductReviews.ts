@@ -1,18 +1,13 @@
-import { ref, Ref, ComputedRef, computed } from "vue";
-import { getProductReviews, addProductReview } from "@shopware-pwa/api-client";
-// import { useDefaults, getApplicationContext } from "@shopware-pwa/composables";
-import {
-  Product,
-  ProductReview,
-  ShopwareSearchParams,
-} from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
+import { ref, computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
+import { useShopwareContext } from "#imports";
+import type { Schemas } from "#shopware";
 
 export type UseProductReviewsReturn = {
   /**
    * All reviews added to the product
    */
-  productReviews: ComputedRef<ProductReview[]>;
+  productReviews: ComputedRef<Schemas["ProductReview"][]>;
   /**
    * Adds a review to the product
    * @param data `title` - review title, `content` - review content, `points` - review points (range of 1-5)
@@ -25,10 +20,10 @@ export type UseProductReviewsReturn = {
   }): Promise<void>;
   /**
    * Fetches the reviews list and assigns the result to the `productReviews` property
-   * @param parameters {@link ShopwareSearchParams}
+   * @param parameters {@link Schemas["Criteria"]}
    * @returns
    */
-  loadProductReviews(parameters?: ShopwareSearchParams): Promise<void>;
+  loadProductReviews(parameters?: Schemas["Criteria"]): Promise<void>;
 };
 
 /**
@@ -37,20 +32,21 @@ export type UseProductReviewsReturn = {
  * @category Product
  */
 export function useProductReviews(
-  product: Ref<Product>,
+  product: Ref<Schemas["Product"]>,
 ): UseProductReviewsReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
-  const productReviews: Ref<ProductReview[]> = ref([]);
+  const productReviews: Ref<Schemas["ProductReview"][]> = ref([]);
 
   const loadProductReviews = async (
-    parameters: ShopwareSearchParams = {},
+    parameters: Schemas["Criteria"] = {},
   ): Promise<void> => {
-    const fetchedReviews = await getProductReviews(
-      product.value.id,
-      undefined,
-      // Object.assign({}, getDefaults(), parameters),
-      apiInstance,
+    const fetchedReviews = await apiClient.invoke(
+      "readProductReviews post /product/{productId}/reviews",
+      {
+        productId: product.value.id,
+        ...parameters,
+      },
     );
     productReviews.value = fetchedReviews.elements ?? [];
   };
@@ -60,7 +56,13 @@ export function useProductReviews(
     content: string;
     points: number;
   }) => {
-    await addProductReview(product.value.id, data, apiInstance);
+    await apiClient.invoke(
+      "saveProductReview post /product/{productId}/review",
+      {
+        productId: product.value.id,
+        ...data,
+      },
+    );
   };
 
   return {

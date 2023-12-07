@@ -5,18 +5,22 @@ import {
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
 const { navigationElements } = useNavigation();
-const currentMenuPosition = ref<string | null>(null);
+const currentMenuPosition = ref<string>();
 
 const menuHtmlElement = ref(null);
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
-onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
+onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = undefined));
 </script>
 
 <template>
   <!-- eslint-disable vue/no-v-html -->
-  <nav class="hidden lg:flex space-x-4 items-center">
+  <nav
+    class="hidden lg:flex space-x-4 items-center"
+    aria-label="Top navigation"
+    role="menu"
+  >
     <!--  
        ref="menuHtmlElement" was removed because of nuxt/vue bug
        https://github.com/nuxt/nuxt/issues/13309
@@ -29,6 +33,7 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
       @mouseover="currentMenuPosition = navigationElement.id"
     >
       <NuxtLink
+        role="menuitem"
         :target="
           navigationElement.externalLink || navigationElement.linkNewTab
             ? '_blank'
@@ -54,10 +59,10 @@ onClickOutside(menuHtmlElement, () => (currentMenuPosition.value = null));
         <div
           v-if="
             currentMenuPosition === navigationElement.id &&
-            navigationElement?.children?.length
+            navigationElement?.children.length
           "
           class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/6"
-          @mouseleave="currentMenuPosition = null"
+          @mouseleave="currentMenuPosition = undefined"
         >
           <div
             class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden"

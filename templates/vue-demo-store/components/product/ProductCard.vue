@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
-  getProductThumbnailUrl,
   getProductRoute,
   getProductFromPrice,
+  getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import {
-  ClientApiError,
-  Product,
-  PropertyGroupOption,
-} from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
 
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
-const { codeErrorsNotification } = useCartNotification();
+const { getErrorsCodes } = useCartNotification();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
 const props = withDefaults(
   defineProps<{
-    product: Product;
+    product: Schemas["Product"];
     layoutType?: BoxLayout;
     displayMode?: DisplayMode;
   }>(),
@@ -45,16 +42,17 @@ const toggleWishlistProduct = async () => {
         }),
       );
     } catch (error) {
-      const e = error as ClientApiError;
-      const reason = e?.messages?.[0]?.detail
-        ? `Reason: ${e?.messages?.[0]?.detail}`
-        : "";
-      return pushError(
-        `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
-        {
-          timeout: 5000,
-        },
-      );
+      if (error instanceof ApiClientError) {
+        const reason = error.details.errors?.[0]?.detail
+          ? `Reason: ${error.details.errors?.[0]?.detail}`
+          : "";
+        return pushError(
+          `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
+          {
+            timeout: 5000,
+          },
+        );
+      }
     }
   }
   removeFromWishlist();
@@ -62,7 +60,9 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
-  codeErrorsNotification();
+  getErrorsCodes()?.forEach((element) => {
+    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  });
   pushSuccess(
     t(`cart.messages.addedToCart`, { p: props.product?.translated?.name }),
   );
@@ -79,9 +79,9 @@ function roundUp(num: number) {
 }
 
 const srcPath = computed(() => {
-  return `${getProductThumbnailUrl(product.value)}?&height=${roundUp(
-    height.value,
-  )}&fit=crop`;
+  return `${getSmallestThumbnailUrl(
+    product.value.cover?.media,
+  )}?&height=${roundUp(height.value)}&fit=crop`;
 });
 </script>
 
@@ -102,7 +102,6 @@ const srcPath = computed(() => {
       >
         <img
           ref="imageElement"
-          loading="lazy"
           :src="srcPath"
           :alt="getProductName({ product }) || ''"
           class="transform transition duration-400 hover:scale-120"
@@ -148,8 +147,8 @@ const srcPath = computed(() => {
         :key="option.id"
         class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
       >
-        {{ (option as PropertyGroupOption).group.name }}:
-        {{ (option as PropertyGroupOption).name }}
+        {{ option.group.name }}:
+        {{ option.name }}
       </span>
     </div>
     <div class="px-4 pb-4">
@@ -158,11 +157,11 @@ const srcPath = computed(() => {
         :to="formatLink(getProductRoute(product))"
         data-testid="product-box-product-name-link"
       >
-        <h5
+        <h2
           class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white min-h-60px"
         >
           {{ getProductName({ product }) }}
-        </h5>
+        </h2>
       </RouterLink>
       <div class="flex items-center justify-between">
         <div class="">
@@ -178,8 +177,8 @@ const srcPath = computed(() => {
           type="button"
           class="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 md:hover:scale-120 flex"
           :class="{
-            'text-white bg-blue-500 hover:bg-blue-600': !isInCart,
-            'text-gray-500 bg-gray-100': isInCart,
+            'text-white bg-blue-600 hover:bg-blue-700': !isInCart,
+            'text-gray-600 bg-gray-100': isInCart,
           }"
           data-testid="add-to-cart-button"
           @click="addToCartProxy"

@@ -8,7 +8,7 @@ const sidebarController = useModal();
 </script>
 
 <template>
-  <div class="relative bg-white">
+  <header class="relative bg-white" aria-label="top-navigation">
     <div class="mx-auto px-4 sm:px-6">
       <div class="flex items-center border-b-2 border-gray-100 py-6 space-x-4">
         <div class="flex justify-start items-center min-w-10 lg:min-w-12">
@@ -18,7 +18,7 @@ const sidebarController = useModal();
               <img
                 class="h-10 w-10 lg:h-12 lg:w-12"
                 src="/logo.svg"
-                alt="Logo"
+                alt="logo of the shop"
                 width="40px"
                 height="40px"
               />
@@ -50,7 +50,7 @@ const sidebarController = useModal();
               />
               <span
                 v-if="wishlistCount > 0"
-                class="text-3 font-sm text-white absolute bg-red-500 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
+                class="text-3 font-sm text-white absolute bg-red-600 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
               >
                 {{ wishlistCount }}
               </span>
@@ -60,7 +60,7 @@ const sidebarController = useModal();
           <div class="flex ml-4 flow-root lg:ml-6">
             <button
               class="group bg-transparent -m-2 p-2 flex items-center relative"
-              aria-label="cart"
+              aria-label="Mini cart"
               data-testid="cart-button"
               @click="sidebarController.open"
             >
@@ -70,7 +70,7 @@ const sidebarController = useModal();
               />
               <span
                 v-if="count > 0"
-                class="text-3 font-sm text-white absolute bg-blue rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
+                class="text-3 font-sm text-white absolute bg-blue-600 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
               >
                 {{ count || "" }}
               </span>
@@ -83,5 +83,5 @@ const sidebarController = useModal();
         </div>
       </div>
     </div>
-  </div>
+  </header>
 </template>

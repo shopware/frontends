@@ -3,7 +3,7 @@ import {
   getCategoryRoute,
   getCategoryImageUrl,
 } from "@shopware-pwa/helpers-next";
-import { Category } from "@shopware-pwa/types";
+import type { Category } from "@shopware-pwa/types";
 
 const { navigationElements } = useNavigation();
 
@@ -30,7 +30,7 @@ const toggleCollapse = (navigationElement: Category) => {
 <template>
   <button
     class="lg:hidden bg-transparent"
-    aria-label="menu"
+    aria-label="Show side menu"
     @click="sideMenuController.open"
   >
     <div class="i-carbon-menu w-8 h-8" />

@@ -1,13 +1,13 @@
-import { ref, Ref } from "vue";
-import { getCustomerOrders } from "@shopware-pwa/api-client";
-import { useShopwareContext } from "./useShopwareContext";
-import { Order, ShopwareSearchParams } from "@shopware-pwa/types";
+import { ref } from "vue";
+import type { Ref } from "vue";
+import { useShopwareContext } from "#imports";
+import type { Schemas } from "#shopware";
 
 export type UseCustomerOrdersReturn = {
   /**
    * All placed orders belonging to the logged-in customer
    */
-  orders: Ref<Order[]>;
+  orders: Ref<Schemas["Order"][]>;
   /**
    * Changes the current page of the orders list
    *
@@ -17,7 +17,7 @@ export type UseCustomerOrdersReturn = {
   /**
    * Fetches the orders list and assigns the result to the `orders` property
    */
-  loadOrders(parameters?: ShopwareSearchParams): Promise<void>;
+  loadOrders(parameters?: Schemas["Criteria"]): Promise<void>;
 };
 
 /**
@@ -26,15 +26,18 @@ export type UseCustomerOrdersReturn = {
  * @category Customer & Account
  */
 export function useCustomerOrders(): UseCustomerOrdersReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
-  const orders: Ref<Order[]> = ref([]);
+  const orders: Ref<Schemas["Order"][]> = ref([]);
 
   const loadOrders = async (
-    parameters: ShopwareSearchParams = {},
+    parameters: Schemas["Criteria"] = {},
   ): Promise<void> => {
-    const fetchedOrders = await getCustomerOrders(parameters, apiInstance);
-    orders.value = fetchedOrders?.elements;
+    const fetchedOrders = await apiClient.invoke(
+      "readOrder post /order",
+      parameters,
+    );
+    orders.value = fetchedOrders.orders.elements;
   };
 
   const changeCurrentPage = async (pageNumber: number | string) =>

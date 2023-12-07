@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { CmsElementProductSlider } from "@shopware-pwa/composables-next";
-import {
+import type {
+  CmsElementProductSlider,
   SliderElementConfig,
-  useCmsElementConfig,
 } from "@shopware-pwa/composables-next";
-import { ComputedRef } from "vue";
+import { useCmsElementConfig } from "#imports";
+import { ref, computed, onMounted } from "vue";
+import type { ComputedRef } from "vue";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwSlider from "../../../SwSlider.vue";
 

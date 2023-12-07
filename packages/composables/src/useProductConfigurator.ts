@@ -1,8 +1,8 @@
-import { ref, Ref, computed, unref, ComputedRef, inject } from "vue";
-import { Product, PropertyGroup } from "@shopware-pwa/types";
-import { useProduct, useShopwareContext } from ".";
-import { invokePost, getProductEndpoint } from "@shopware-pwa/api-client";
+import { ref, computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
+import { useProduct, useShopwareContext } from "#imports";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import type { Schemas } from "#shopware";
 
 export type UseProductConfiguratorReturn = {
   /**
@@ -16,7 +16,7 @@ export type UseProductConfiguratorReturn = {
 
   findVariantForSelectedOptions(options?: {
     [key: string]: string;
-  }): Promise<Product | undefined>;
+  }): Promise<Schemas["Product"] | undefined>;
 
   /**
    * Indicates if the options are being (re)loaded
@@ -31,7 +31,7 @@ export type UseProductConfiguratorReturn = {
   /**
    * All assigned properties which the variant can be made of
    */
-  getOptionGroups: ComputedRef<PropertyGroup[]>;
+  getOptionGroups: ComputedRef<Schemas["PropertyGroup"][]>;
 };
 
 /**
@@ -40,28 +40,24 @@ export type UseProductConfiguratorReturn = {
  * @category Product
  */
 export function useProductConfigurator(): UseProductConfiguratorReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   const { configurator, product } = useProduct();
-  if (!product.value) {
-    // TODO link docs with composables context usage
-    throw new Error(
-      "Product configurator cannot be used without the product context.",
-    );
-  }
 
-  const selected = ref({} as any);
+  const selected = ref<{
+    [key: string]: string;
+  }>({});
   const isLoadingOptions = ref(!!product.value.options?.length);
   const parentProductId = computed(() => product.value?.parentId);
-  const getOptionGroups = computed<PropertyGroup[]>(() => {
+  const getOptionGroups = computed<Schemas["PropertyGroup"][]>(() => {
     return configurator.value || [];
   });
 
   const findGroupCodeForOption = (optionId: string) => {
     const group = getOptionGroups.value.find((optionGroup) => {
-      const optionFound = optionGroup.options?.find(
-        (option: any) => option.id === optionId,
-      );
+      const optionFound = optionGroup.options?.find((option) => {
+        return option.id === optionId;
+      });
       return !!optionFound;
     });
 
@@ -78,43 +74,32 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
 
   async function findVariantForSelectedOptions(options?: {
     [code: string]: string;
-  }): Promise<Product | undefined> {
+  }): Promise<Schemas["Product"] | undefined> {
     const filter = [
       {
         type: "equals",
         field: "parentId",
-        value: parentProductId.value,
+        value: parentProductId.value as string,
       },
       ...Object.values(options || selected.value).map((id) => ({
         type: "equals",
         field: "optionIds",
-        value: id,
+        value: id as string,
       })),
     ];
     try {
-      /* istanbul ignore next */
-      if (apiInstance) {
-        apiInstance.defaults.headers.common["sw-include-seo-urls"] = "true";
-      }
-      const response = await invokePost(
-        {
-          address: getProductEndpoint(),
-          payload: {
-            limit: 1,
-            filter,
-            includes: {
-              product: ["id", "translated", "productNumber", "seoUrls"],
-              seo_url: ["seoPathInfo"],
-            },
-            associations: {
-              seoUrls: {},
-            },
-          },
+      const response = await apiClient.invoke("readProduct post /product", {
+        filter,
+        limit: 1,
+        includes: {
+          product: ["id", "translated", "productNumber", "seoUrls"],
+          seo_url: ["seoPathInfo"],
         },
-        apiInstance,
-      );
-      return (response as { data?: { elements?: Array<Product> } })?.data
-        ?.elements?.[0]; // return first matching product
+        associations: {
+          seoUrls: {},
+        },
+      });
+      return response?.elements?.[0]; // return first matching product
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);
     }
@@ -139,6 +124,6 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
     findVariantForSelectedOptions,
     isLoadingOptions,
     getOptionGroups,
-    getSelectedOptions: selected,
+    getSelectedOptions: computed(() => selected.value),
   };
 }

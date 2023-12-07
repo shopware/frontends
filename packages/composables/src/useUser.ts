@@ -1,35 +1,14 @@
-import { ref, Ref, UnwrapRef, computed, ComputedRef, reactive } from "vue";
-import {
-  login as apiLogin,
-  logout as apiLogout,
-  register as apiRegister,
-  updateEmail as apiUpdateEmail,
-  getCustomer,
-  getUserCountry,
-  getUserSalutation,
-  updateProfile,
-  CustomerUpdateProfileParam,
-  CustomerUpdateEmailParam,
-  setDefaultCustomerPaymentMethod,
-} from "@shopware-pwa/api-client";
-import {
-  Customer,
-  CustomerRegistrationParams,
-  Country,
-  Salutation,
-  ShopwareSearchParams,
-  PaymentMethodTranslation,
-  BillingAddress,
-  ShippingAddress,
-} from "@shopware-pwa/types";
+import { ref, computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
 import {
   useShopwareContext,
   useCart,
   useInternationalization,
   useSessionContext,
-} from ".";
-import { _useContext } from "./internal/_useContext";
+  useContext,
+} from "#imports";
 import { syncRefs } from "@vueuse/core";
+import type { RequestParameters, Schemas } from "#shopware";
 
 export type UseUserReturn = {
   /**
@@ -44,11 +23,11 @@ export type UseUserReturn = {
    * @param params {@link CustomerRegistrationParams}
    * @returns {@link Customer} object on success
    */
-  register(params: CustomerRegistrationParams): Promise<Customer>;
+  register(params: RequestParameters<"register">): Promise<Schemas["Customer"]>;
   /**
    * Whole {@link Customer} object
    */
-  user: ComputedRef<Partial<Customer> | undefined>;
+  user: ComputedRef<Schemas["Customer"] | undefined>;
   /**
    * Indicates if the user is logged in
    */
@@ -64,11 +43,11 @@ export type UseUserReturn = {
   /**
    * {@link Country} of the user
    */
-  country: Ref<Country | null>;
+  country: Ref<Schemas["Country"] | null>;
   /**
    * {@link Salutation} of the user
    */
-  salutation: Ref<Salutation | null>;
+  salutation: Ref<Schemas["Salutation"] | null>;
   /**
    * Default billing address id
    */
@@ -95,16 +74,18 @@ export type UseUserReturn = {
   loadSalutation(salutationId: string): Promise<void>;
   /**
    * Updates the user profile data
-   * @param personals {@link CustomerUpdateProfileParam}
+   * @param personals {@link RequestParameters<'changeProfile'>}
    * @returns
    */
-  updatePersonalInfo(personals: CustomerUpdateProfileParam): Promise<void>;
+  updatePersonalInfo(
+    personals: RequestParameters<"changeProfile">,
+  ): Promise<void>;
   /**
    * Updates the user email
-   * @param updateEmailData - {@link CustomerUpdateEmailParam}
+   * @param updateEmailData - {@link RequestParameters<'changeEmail'>}
    * @returns
    */
-  updateEmail(updateEmailData: CustomerUpdateEmailParam): Promise<void>;
+  updateEmail(updateEmailData: RequestParameters<"changeEmail">): Promise<void>;
   /**
    * Sets the default payment method for given id
    * @param paymentMethodId
@@ -114,15 +95,17 @@ export type UseUserReturn = {
   /**
    * Default payment method for the user
    */
-  userDefaultPaymentMethod: ComputedRef<PaymentMethodTranslation | null>;
+  userDefaultPaymentMethod: ComputedRef<
+    Schemas["PaymentMethod"]["translated"] | null
+  >;
   /**
    * Default billing address for the user
    */
-  userDefaultBillingAddress: ComputedRef<BillingAddress | null>;
+  userDefaultBillingAddress: ComputedRef<Schemas["CustomerAddress"] | null>;
   /**
    * Default shipping address for the user
    */
-  userDefaultShippingAddress: ComputedRef<ShippingAddress | null>;
+  userDefaultShippingAddress: ComputedRef<Schemas["CustomerAddress"] | null>;
 };
 
 /**
@@ -131,10 +114,10 @@ export type UseUserReturn = {
  * @category Customer & Account
  */
 export function useUser(): UseUserReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
   const { userFromContext, refreshSessionContext } = useSessionContext();
 
-  const _user = _useContext<Customer | undefined>("customer");
+  const _user = useContext<Schemas["Customer"] | undefined>("customer");
   syncRefs(userFromContext, _user, {
     immediate: true,
   });
@@ -151,78 +134,113 @@ export function useUser(): UseUserReturn {
   const userDefaultShippingAddress = computed(
     () => user.value?.defaultShippingAddress || null,
   );
-  const country: Ref<Country | null> = ref(null);
-  const salutation: Ref<Salutation | null> = ref(null);
+  const country: Ref<Schemas["Country"] | null> = ref(null);
+  const salutation: Ref<Schemas["Salutation"] | null> = ref(null);
   const user = computed(() => _user.value);
 
   async function login({
     username,
     password,
-  }: { username?: string; password?: string } = {}): Promise<void> {
-    await apiLogin({ username, password }, apiInstance);
+  }: {
+    username: string;
+    password: string;
+  }): Promise<void> {
+    await apiClient.invoke("loginCustomer post /account/login", {
+      username,
+      password,
+    });
     await refreshSessionContext();
     refreshCart();
   }
 
   async function register(
-    params: CustomerRegistrationParams,
-  ): Promise<Customer> {
-    const customer = await apiRegister(
-      { ...params, storefrontUrl: getStorefrontUrl() } as any,
-      apiInstance,
-    );
+    params: RequestParameters<"register">,
+  ): Promise<Schemas["Customer"]> {
+    const customer = await apiClient.invoke("register post /account/register", {
+      ...params,
+      storefrontUrl: getStorefrontUrl(),
+    });
     _user.value = customer;
     if (_user.value?.active) await refreshSessionContext();
     return customer;
   }
 
   async function logout(): Promise<void> {
-    await apiLogout(apiInstance);
+    await apiClient.invoke("logoutCustomer post /account/logout");
     await refreshSessionContext();
     refreshCart();
   }
 
-  async function refreshUser(params: ShopwareSearchParams = {}): Promise<void> {
+  async function refreshUser(params: Schemas["Criteria"] = {}): Promise<void> {
     try {
-      const user = await getCustomer(
-        Object.assign(
-          {},
-          // getDefaults(),
-          params,
-        ),
-        apiInstance,
+      const user = await apiClient.invoke(
+        "readCustomer post /account/customer",
+        params,
       );
-      _user.value = user as Customer;
+      _user.value = user;
     } catch (e) {
       _user.value = undefined;
       console.error("[useUser][refreshUser]", e);
     }
   }
 
-  async function loadCountry(userId: string): Promise<void> {
-    country.value = await getUserCountry(userId, apiInstance);
+  async function loadCountry(countryId: string): Promise<void> {
+    const countries = await apiClient.invoke("readCountry post /country", {
+      filter: [
+        {
+          field: "id",
+          type: "equals",
+          value: countryId,
+        },
+      ],
+    });
+
+    country.value = countries.elements?.[0] ?? null;
   }
 
   async function loadSalutation(salutationId: string): Promise<void> {
-    salutation.value = await getUserSalutation(salutationId, apiInstance);
+    const salutations = await apiClient.invoke(
+      "readSalutation post /salutation",
+      {
+        filter: [
+          {
+            field: "id",
+            type: "equals",
+            value: salutationId,
+          },
+        ],
+      },
+    );
+    salutation.value = salutations.elements?.[0] ?? null;
   }
 
   async function updatePersonalInfo(
-    personals: CustomerUpdateProfileParam,
+    personals: RequestParameters<"changeProfile">,
   ): Promise<void> {
-    await updateProfile(personals, apiInstance);
+    await apiClient.invoke(
+      "changeProfile post /account/change-profile",
+      personals,
+    );
   }
 
   async function updateEmail(
-    updateEmailData: CustomerUpdateEmailParam,
+    updateEmailData: RequestParameters<"changeEmail">,
   ): Promise<void> {
-    await apiUpdateEmail(updateEmailData, apiInstance);
+    await apiClient.invoke(
+      "changeEmail post /account/change-email",
+      updateEmailData,
+    );
   }
 
   async function setDefaultPaymentMethod(
     paymentMethodId: string,
   ): Promise<void> {
-    await setDefaultCustomerPaymentMethod(paymentMethodId, apiInstance);
+    await apiClient.invoke(
+      "changePaymentMethod post /account/change-payment-method/{paymentMethodId}",
+      {
+        paymentMethodId,
+      },
+    );
   }
   const defaultBillingAddressId = computed(
     () => user.value?.defaultBillingAddressId || null,

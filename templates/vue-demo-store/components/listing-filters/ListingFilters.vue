@@ -1,12 +1,8 @@
 <script setup lang="ts">
+import type { RequestParameters } from "#shopware";
 import ListingFilter from "./ListingFilter.vue";
-import {
-  ComputedRef,
-  UnwrapNestedRefs,
-  computed,
-  provide,
-  reactive,
-} from "vue";
+import { computed, provide, reactive } from "vue";
+import type { ComputedRef, UnwrapNestedRefs } from "vue";
 
 const {
   filtersToQuery,
@@ -42,19 +38,19 @@ const searchSelectedFilters: UnwrapNestedRefs<{
 });
 /* eslint-enable */
 
-const searchCriteriaForRequest: ComputedRef<{
-  [code: string]: string | string[] | number | number[] | boolean | undefined;
-}> = computed(() => ({
-  // turn Set to array and then into string with | separator
-  manufacturer: [...searchSelectedFilters.manufacturer]?.join("|"),
-  // turn Set to array and then into string with | separator
-  properties: [...searchSelectedFilters.properties]?.join("|"),
-  "min-price": searchSelectedFilters["min-price"],
-  "max-price": searchSelectedFilters["max-price"],
-  order: getCurrentSortingOrder.value,
-  "shipping-free": searchSelectedFilters["shipping-free"],
-  rating: searchSelectedFilters["rating"],
-}));
+const searchCriteriaForRequest: ComputedRef<RequestParameters<"searchPage">> =
+  computed(() => ({
+    // turn Set to array and then into string with | separator
+    manufacturer: [...searchSelectedFilters.manufacturer]?.join("|"),
+    // turn Set to array and then into string with | separator
+    properties: [...searchSelectedFilters.properties]?.join("|"),
+    "min-price": searchSelectedFilters["min-price"],
+    "max-price": searchSelectedFilters["max-price"],
+    order: getCurrentSortingOrder.value,
+    "shipping-free": searchSelectedFilters["shipping-free"],
+    rating: searchSelectedFilters["rating"],
+    search: "",
+  }));
 
 for (const param in route.query) {
   if (searchSelectedFilters.hasOwnProperty(param)) {
@@ -112,7 +108,7 @@ const clearFilters = async () => {
   search({
     ...route.query,
     ...filtersToQuery(searchCriteriaForRequest.value),
-  });
+  } as RequestParameters<"searchPage">);
 
   await router.push({
     query: {
@@ -125,7 +121,7 @@ const clearFilters = async () => {
 async function invokeCleanFilters() {
   await search({
     ...route.query,
-  });
+  } as unknown as RequestParameters<"searchPage">);
   clearFilters();
 }
 

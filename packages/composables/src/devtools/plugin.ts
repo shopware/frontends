@@ -1,7 +1,9 @@
 /* eslint-disable */
 // TODO fix types in this plugin
-import { setupDevtoolsPlugin, DevtoolsPluginApi } from "@vue/devtools-api";
-import { App, InjectionKey, unref } from "vue";
+import { setupDevtoolsPlugin } from "@vue/devtools-api";
+import type { DevtoolsPluginApi } from "@vue/devtools-api";
+import { unref } from "vue";
+import type { App, InjectionKey } from "vue";
 
 const TIMELINE_EVENT_LAYER_ID = "shopware:events";
 const INSPECTOR_ID = "shopware";

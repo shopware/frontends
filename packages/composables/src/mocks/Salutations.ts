@@ -1,4 +1,4 @@
-import { Salutation } from "@shopware-pwa/types";
+import type { Salutation } from "@shopware-pwa/types";
 
 const salutations: Salutation[] = [
   {
@@ -46,6 +46,6 @@ const salutations: Salutation[] = [
     id: "b84038d62c3f4d66b3bc626df7fa949e",
     apiAlias: "salutation",
   },
-];
+] as unknown as Salutation[];
 
 export default salutations;

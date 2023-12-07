@@ -1,5 +1,4 @@
-<script setup lang="ts">
-import { ListingFilter } from "@shopware-pwa/types";
+<script setup lang="ts" generic="ListingFilter extends { code: string }">
 import ListingFiltersPrice from "./ListingFiltersPrice.vue";
 import ListingFiltersProperties from "./ListingFiltersProperties.vue";
 import ListingFiltersRating from "./ListingFiltersRating.vue";

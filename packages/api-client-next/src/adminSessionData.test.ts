@@ -1,6 +1,6 @@
 import { describe, expect, test as baseTest } from "vitest";
 import { createAdminAPIClient } from ".";
-import { operations, operationPaths } from "../admin-api-types";
+import type { operations, operationPaths } from "../admin-api-types";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 
@@ -37,7 +37,8 @@ describe("Admin client session data", () => {
     });
   });
 
-  test("fresh test should have empty session data", async ({
+  // TODO: skipped until https://github.com/vitest-dev/vitest/pull/4250 is released in >= 0.34.7
+  test.skip("fresh test should have empty session data", async ({
     adminApiClient,
   }) => {
     expect(adminApiClient.getSessionData()).toEqual({

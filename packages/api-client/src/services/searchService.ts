@@ -1,6 +1,6 @@
 import { getSuggestSearchEndpoint, getSearchEndpoint } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
-import {
+import type {
   ProductListingResult,
   ShopwareSearchParams,
 } from "@shopware-pwa/types";

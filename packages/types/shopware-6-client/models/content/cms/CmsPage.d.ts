@@ -4,6 +4,7 @@ import { Product } from "../product/Product";
 import { Aggregation } from "../../../search/Aggregation";
 import { CmsBlock } from "./CmsBlock";
 import { LandingPage } from "../landing-page/LandingPage";
+import type { Schemas } from "#shopware";
 
 /**
  * Cms page type
@@ -18,12 +19,12 @@ export type DetailRouteName = "frontend.detail.page";
 
 /**
  * Cms page route name responsible for the type of the page
- *
+ * @deprecated use {limk Schemas['SeoUrl']['routeName']} from "#shopware" import instead
  */
-export type RouteName =
-  | NavigationRouteName
-  | LandingRouteName
-  | DetailRouteName;
+export type RouteName = Schemas["SeoUrl"]["routeName"];
+// | NavigationRouteName
+// | LandingRouteName
+// | DetailRouteName;
 
 /**
  * @public
@@ -174,7 +175,7 @@ export type CmsFieldConfig = {
  */
 export type OldSlot = {
   type: CmsSlotType;
-  customFields: CustomFields | null;
+  customFields: CustomFields | null | [];
   locked: boolean;
   _uniqueIdentifier: string;
   versionId: string;
@@ -212,7 +213,7 @@ export type MobileBehavior = "boxed" | "wrap" | "hidden";
 /**
  * @public
  */
-export type BackgroundMediaMode = "cover";
+export type BackgroundMediaMode = "cover" | "contain";
 
 export type CmsVisibility = "mobile" | "tablet" | "desktop" | string;
 

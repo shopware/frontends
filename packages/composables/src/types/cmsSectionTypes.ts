@@ -1,4 +1,4 @@
-import { CmsBlock, CmsSection, SectionType } from "@shopware-pwa/types";
+import type { CmsBlock, CmsSection, SectionType } from "@shopware-pwa/types";
 
 export type CmsSectionBlock<
   TYPE extends SectionType,

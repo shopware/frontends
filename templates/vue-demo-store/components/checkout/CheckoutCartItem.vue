@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type { Schemas } from "#shopware";
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-import { LineItem } from "@shopware-pwa/types";
+import { ApiClientError } from "@shopware/api-client";
 
 const props = withDefaults(
   defineProps<{
-    cartItem: LineItem;
+    cartItem: Schemas["LineItem"];
     maxQty?: number;
   }>(),
   {
@@ -15,7 +16,10 @@ const props = withDefaults(
 const { cartItem } = toRefs(props);
 
 const isLoading = ref(false);
-const { codeErrorsNotification } = useCartNotification();
+const { getErrorsCodes } = useCartNotification();
+const { refreshCart } = useCart();
+const { pushError } = useNotifications();
+const { t } = useI18n();
 
 const {
   itemOptions,
@@ -29,13 +33,30 @@ const {
 const quantity = ref();
 syncRefs(itemQuantity, quantity);
 
-const updateQuantity = async (quantity: number | undefined) => {
-  if (quantity === itemQuantity.value) return;
+const { resolveApiErrors } = useApiErrorsResolver("account_login");
+
+const updateQuantity = async (quantityInput: number | undefined) => {
+  if (quantityInput === itemQuantity.value) return;
 
   isLoading.value = true;
 
-  await changeItemQuantity(Number(quantity));
-  codeErrorsNotification();
+  try {
+    const response = await changeItemQuantity(Number(quantityInput));
+    // Refresh cart after qty update
+    await refreshCart(response);
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      const errors = resolveApiErrors(error.details.errors);
+      errors.forEach((error) => pushError(error));
+    }
+  }
+
+  // Make sure that qty is the same as it is in the response
+  quantity.value = itemQuantity.value;
+
+  getErrorsCodes()?.forEach((element) => {
+    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  });
 
   isLoading.value = false;
 };
@@ -57,7 +78,7 @@ const removeCartItem = async () => {
   >
     <img
       :src="getSmallestThumbnailUrl(cartItem.cover)"
-      alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+      :alt="`${cartItem.label || cartItem.payload.name || ''} cart item`"
       class="h-full w-full object-cover object-center"
       data-testid="cart-product-image"
     />
@@ -101,11 +122,12 @@ const removeCartItem = async () => {
         v-model="quantity"
         type="number"
         :disabled="isLoading"
-        :min="cartItem.quantityInformation?.minPurchase || 1"
-        :max="cartItem.quantityInformation?.maxPurchase || maxQty"
-        :step="cartItem.quantityInformation?.purchaseSteps || 1"
+        :min="(cartItem as any).quantityInformation?.minPurchase || 1"
+        :max="(cartItem as any).quantityInformation?.maxPurchase || maxQty"
+        :step="(cartItem as any).quantityInformation?.purchaseSteps || 1"
         data-testid="cart-product-qty-select"
         name="quantity"
+        aria-label="Cart item quantity"
         class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       />
       <div class="flex">

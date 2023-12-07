@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ClientApiError } from "@shopware-pwa/types";
 import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
-import { Category } from "@shopware-pwa/types";
 import deepMerge from "../../../../helpers/deepMerge";
 import getTranslations from "../../../../helpers/getTranslations";
+import { useCategory, useNavigation } from "#imports";
+import { onMounted, computed } from "vue";
+import type { Schemas } from "#shopware";
 
 type Translations = {
   listing: {
@@ -25,7 +26,7 @@ translations = deepMerge(translations, globalTranslations) as Translations;
 const { category: activeCategory } = useCategory();
 const { loadNavigationElements, navigationElements } = useNavigation();
 const navigations = computed(() => {
-  const navigation: Category[] = JSON.parse(
+  const navigation: Schemas["Category"][] = JSON.parse(
     JSON.stringify(navigationElements.value),
   );
   return navigation?.map((navigationElement) => {
@@ -41,8 +42,7 @@ onMounted(async () => {
   try {
     await loadNavigationElements({ depth: 2 });
   } catch (e) {
-    const err = e as ClientApiError;
-    console.error("[SwBottomMenu]", err.messages);
+    console.error("[SwBottomMenu]", e);
   }
 });
 </script>

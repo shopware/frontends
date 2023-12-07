@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, unref, defineProps, ref } from "vue";
-import { Product } from "@shopware-pwa/types";
+import type { Product } from "@shopware-pwa/types";
 import {
   getSmallestThumbnailUrl,
   getSrcSetForMedia,
@@ -10,7 +10,7 @@ import {
   useProductPrice,
   usePrice,
   useProductAssociations,
-} from "@shopware-pwa/composables-next";
+} from "@shopware-pwa/composables-next/dist";
 import ProductCard from "./ProductCard.vue";
 
 const props = defineProps<{
@@ -59,8 +59,7 @@ const addToCartProxy = async () => {
 
 const { unitPrice, price } = useProductPrice(product);
 const regulationPrice = computed(() => price.value?.regulationPrice?.price);
-const { getFormattedPrice, init } = usePrice();
-init({
+const { getFormattedPrice } = usePrice({
   localeCode: "de-DE",
   currencyCode: "EUR",
 });

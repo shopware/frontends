@@ -62,7 +62,7 @@ Now you can use any composable function in your setup function:
 
 ```html
 <script setup>
-    import { useUser, useSessionContext } from "@shopware-pwa/composables-next";
+    import { useUser, useSessionContext } from "@shopware-pwa/composables-next/dist";
 
     const { login } = useUser();
     const { refreshSessionContext, sessionContext } = useSessionContext();
@@ -137,20 +137,18 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.13.3
+### Latest changes: 0.14.1
 
 ### Patch Changes
 
-- [#372](https://github.com/shopware/frontends/pull/372) [`211ccbb2`](https://github.com/shopware/frontends/commit/211ccbb2e4d9d6009847e6ff53099deb97d569de) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix `loadOrderDetails` return type
+- [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
 
-- [#380](https://github.com/shopware/frontends/pull/380) [`b2b6905b`](https://github.com/shopware/frontends/commit/b2b6905beb8f28b79c0989ff9340c757e60001c9) Thanks [@SuddenDev](https://github.com/SuddenDev)! - Adds the ability to specify a query for the loadMore function in the useListing composable.
+  - Changed dependency _@vueuse/core_ from **^10.5.0** to **^10.6.1**
 
-- [#390](https://github.com/shopware/frontends/pull/390) [`61de0366`](https://github.com/shopware/frontends/commit/61de03662869e9ad8b69e2d8a868313a61a7a741) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Catch 404 api error - `getWishlistProducts``
+- [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
 
-- [#385](https://github.com/shopware/frontends/pull/385) [`5d7e7973`](https://github.com/shopware/frontends/commit/5d7e7973437a4d74d19ec2fa0765c6d927bf8b2a) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+  - Changed dependency _scule_ from **^1.0.0** to **^1.1.0**
 
-  - Changed dependency _@vueuse/core_ from **^10.3.0** to **^10.4.1**
-
-- Updated dependencies []:
-  - @shopware-pwa/api-client@0.6.0
-  - @shopware-pwa/helpers-next@0.4.0
+- Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831)]:
+  - @shopware-pwa/helpers-next@0.5.1
+  - @shopware-pwa/api-client@0.7.0

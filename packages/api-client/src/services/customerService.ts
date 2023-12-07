@@ -18,7 +18,7 @@ import {
   getNewsletterRecipientEndpoint,
 } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
-import {
+import type {
   Customer,
   CustomerAddress,
   CustomerRegistrationParams,
@@ -78,7 +78,7 @@ export async function login(
   );
   const contextToken =
     resp.data["sw-context-token"] || resp.data["contextToken"];
-  return { contextToken };
+  return { contextToken, apiAlias: "array_struct" };
 }
 
 /**

@@ -1,5 +1,41 @@
 # @shopware-pwa/nuxt3-module
 
+## 0.5.6
+
+### Patch Changes
+
+- [#458](https://github.com/shopware/frontends/pull/458) [`135ca37d`](https://github.com/shopware/frontends/commit/135ca37d9c911cf47d75705006af2879ab7800a8) Thanks [@danielroe](https://github.com/danielroe)! - This improves performance slightly when developing; we can avoid loading the entire barrel file at `#app` by using the new granular imports merged in https://github.com/nuxt/nuxt/pull/23951.
+
+- Updated dependencies [[`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550), [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0)]:
+  - @shopware-pwa/composables-next@0.14.1
+  - @shopware-pwa/api-client@0.7.0
+
+## 0.5.5
+
+### Patch Changes
+
+- [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.7.3** to **^3.7.4**
+
+- [#404](https://github.com/shopware/frontends/pull/404) [`f3566759`](https://github.com/shopware/frontends/commit/f35667597b70eb719d0bcaf1c969f23216b66095) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Refactoring and sorting of used composables
+
+- [#396](https://github.com/shopware/frontends/pull/396) [`dfc49b80`](https://github.com/shopware/frontends/commit/dfc49b80bcaa8e00b71e0dff6e35b413383274f5) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.7.1** to **^3.7.3**
+
+- [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.7.4** to **^3.8.0**
+
+- [#454](https://github.com/shopware/frontends/pull/454) [`07ef770d`](https://github.com/shopware/frontends/commit/07ef770d31b9331536ab9c846f4a8ce46e49ed84) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@nuxt/kit_ from **^3.8.0** to **^3.8.1**
+
+- Updated dependencies [[`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5), [`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5), [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720), [`c264bf5d`](https://github.com/shopware/frontends/commit/c264bf5d41638c6013ebf14e7cd9615e5b5ef9bf), [`85628cc6`](https://github.com/shopware/frontends/commit/85628cc65216417a887398f0838714fc03544303), [`87213fb0`](https://github.com/shopware/frontends/commit/87213fb02b292b11f45b7fb5956fb8bc1ae33800), [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0), [`12ed75ff`](https://github.com/shopware/frontends/commit/12ed75ffd3d98bf2623161e44f63c40dfc1ef0e3), [`43510a10`](https://github.com/shopware/frontends/commit/43510a108d351aca361e460844b2cddd29f889b5)]:
+  - @shopware-pwa/composables-next@0.14.0
+  - @shopware-pwa/api-client@0.7.0
+
 ## 0.5.4
 
 ### Patch Changes

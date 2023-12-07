@@ -1,22 +1,14 @@
-import {
-  Ref,
-  ref,
-  computed,
-  onMounted,
-  ComputedRef,
-  inject,
-  provide,
-} from "vue";
-import { getAvailableSalutations } from "@shopware-pwa/api-client";
-import { ClientApiError, Salutation } from "@shopware-pwa/types";
-import { useShopwareContext } from "./useShopwareContext";
+import { ref, computed, onMounted, inject, provide } from "vue";
+import type { Ref, ComputedRef } from "vue";
+import { useShopwareContext } from "#imports";
+import type { Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
 
 export type UseSalutationsReturn = {
-  mountedCallback(): Promise<void>;
   /**
    * All available salutations
    */
-  getSalutations: ComputedRef<Salutation[]>;
+  getSalutations: ComputedRef<Schemas["Salutation"][]>;
   /**
    * Fetches the salutations list and assigns the result to the `salutations` property
    */
@@ -29,7 +21,7 @@ export type UseSalutationsReturn = {
  * @category Context & Language
  */
 export function useSalutations(): UseSalutationsReturn {
-  const { apiInstance } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
 
   const _salutations = inject("swSalutations", ref());
   provide("swSalutations", _salutations);
@@ -38,11 +30,15 @@ export function useSalutations(): UseSalutationsReturn {
 
   const fetchSalutations = async (): Promise<void> => {
     try {
-      const { elements } = await getAvailableSalutations(apiInstance);
+      const { elements } = await apiClient.invoke(
+        "readSalutation post /salutation",
+        {},
+      );
       _salutations.value = elements;
     } catch (e) {
-      const err = e as ClientApiError;
-      error.value = err.messages;
+      if (e instanceof ApiClientError) {
+        error.value = e.message;
+      }
     }
   };
 
@@ -60,7 +56,6 @@ export function useSalutations(): UseSalutationsReturn {
   onMounted(mountedCallback);
 
   return {
-    mountedCallback,
     fetchSalutations,
     getSalutations,
   };

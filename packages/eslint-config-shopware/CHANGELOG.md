@@ -1,5 +1,42 @@
 # eslint-config-shopware
 
+## 0.0.8
+
+### Patch Changes
+
+- [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@typescript-eslint/eslint-plugin_ from **^6.10.0** to **^6.11.0**
+  - Changed dependency _@typescript-eslint/parser_ from **^6.10.0** to **^6.11.0**
+  - Changed dependency _eslint_ from **^8.53.0** to **^8.54.0**
+
+## 0.0.7
+
+### Patch Changes
+
+- [#396](https://github.com/shopware/frontends/pull/396) [`dfc49b80`](https://github.com/shopware/frontends/commit/dfc49b80bcaa8e00b71e0dff6e35b413383274f5) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@typescript-eslint/eslint-plugin_ from **^6.6.0** to **^6.7.2**
+  - Changed dependency _@typescript-eslint/parser_ from **^6.6.0** to **^6.7.2**
+  - Changed dependency _eslint_ from **^8.48.0** to **^8.49.0**
+
+- [#454](https://github.com/shopware/frontends/pull/454) [`07ef770d`](https://github.com/shopware/frontends/commit/07ef770d31b9331536ab9c846f4a8ce46e49ed84) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@typescript-eslint/eslint-plugin_ from **^6.8.0** to **^6.10.0**
+  - Changed dependency _@typescript-eslint/parser_ from **^6.8.0** to **^6.10.0**
+  - Changed dependency _eslint_ from **^8.51.0** to **^8.53.0**
+
+- [#418](https://github.com/shopware/frontends/pull/418) [`67cf5650`](https://github.com/shopware/frontends/commit/67cf56506f58973bf3ab8bb8acef06758a6a6720) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@typescript-eslint/eslint-plugin_ from **^6.7.2** to **^6.7.5**
+  - Changed dependency _@typescript-eslint/parser_ from **^6.7.2** to **^6.7.5**
+  - Changed dependency _eslint_ from **^8.49.0** to **^8.51.0**
+
+- [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@typescript-eslint/eslint-plugin_ from **^6.7.5** to **^6.8.0**
+  - Changed dependency _@typescript-eslint/parser_ from **^6.7.5** to **^6.8.0**
+
 ## 0.0.6
 
 ### Patch Changes

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { CmsBlock } from "@shopware-pwa/types";
+import type { CmsBlock } from "@shopware-pwa/types";
 import {
   getCmsLayoutConfiguration,
   getBackgroundImageUrl,
 } from "@shopware-pwa/helpers-next";
 import { resolveCmsComponent } from "@shopware-pwa/composables-next";
+import { h } from "vue";
+
 const props = defineProps<{
   content: CmsBlock;
 }>();

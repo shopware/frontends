@@ -1,5 +1,5 @@
 /**
- * @beta
+ * @deprecated use {@link RequestReturnType} from "#shopware" import instead
  */
 export type EntityResult<ENTITY extends string, ELEMENTS_ENTITY_TYPE> = {
   entity: ENTITY;

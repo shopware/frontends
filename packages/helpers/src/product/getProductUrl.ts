@@ -1,5 +1,3 @@
-import { SeoUrl } from "@shopware-pwa/types";
-
 /**
  * Get product url. The priority is SEO url and then technical url.
  *
@@ -12,7 +10,9 @@ import { SeoUrl } from "@shopware-pwa/types";
 export function getProductUrl<
   T extends {
     id: string;
-    seoUrls: SeoUrl[] | null;
+    seoUrls?: Array<{
+      seoPathInfo?: string;
+    }>;
   },
 >(product?: T): string {
   if (!product) return "/";

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { CmsElementForm } from "@shopware-pwa/composables-next";
+import type { CmsElementForm } from "@shopware-pwa/composables-next";
+import { useCmsElementConfig } from "#imports";
+import { computed, defineAsyncComponent } from "vue";
 
 const props = defineProps<{
   content: CmsElementForm;

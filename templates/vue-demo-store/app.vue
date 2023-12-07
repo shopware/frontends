@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { getSessionContext } from "@shopware-pwa/api-client";
-import { SessionContext } from "@shopware-pwa/types";
-import { getPrefix, getDefaultLocale } from "./i18n/src/helpers/prefix";
+import { getPrefix } from "./i18n/src/helpers/prefix";
+import type { Schemas } from "#shopware";
 
 /**
  * Init breadcrumbs context
@@ -16,9 +15,9 @@ useHead({
   },
 });
 
-const { apiInstance } = useShopwareContext();
-const sessionContextData = ref();
-sessionContextData.value = await getSessionContext(apiInstance);
+const { apiClient } = useShopwareContext();
+const sessionContextData = ref<Schemas["SalesChannelContext"]>();
+sessionContextData.value = await apiClient.invoke("readContext get /context");
 
 // If you enable runtimeConfig.shopware.useUserContextInSSR, then you can use this code to share session between server and client.
 // const { data: sessionContextData } = await useAsyncData(
@@ -45,7 +44,7 @@ usePrice({
   localeCode: localeFromHeader,
 });
 
-useSessionContext(sessionContextData.value as SessionContext);
+useSessionContext(sessionContextData.value);
 
 const { getWishlistProducts } = useWishlist();
 const { refreshCart } = useCart();
@@ -53,7 +52,7 @@ const { refreshCart } = useCart();
 useNotifications();
 useAddress();
 
-const { locale, availableLocales } = useI18n();
+const { locale, availableLocales, defaultLocale } = useI18n();
 const router = useRouter();
 const {
   getAvailableLanguages,
@@ -74,20 +73,20 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   const prefix = getPrefix(
     availableLocales,
     router.currentRoute.value.name as string,
+    defaultLocale,
   );
 
   // Language set on the backend side
   const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
-
   // If languages are not the same, set one from prefix
   if (sessionLanguage !== prefix) {
     await changeLanguage(
-      getLanguageIdFromCode(prefix ? prefix : getDefaultLocale()),
+      getLanguageIdFromCode(prefix ? prefix : defaultLocale),
     );
     await refreshSessionContext();
   }
 
-  locale.value = prefix ? prefix : getDefaultLocale();
+  locale.value = prefix ? prefix : defaultLocale;
   // Set prefix from CMS components
   provide("urlPrefix", prefix);
 }

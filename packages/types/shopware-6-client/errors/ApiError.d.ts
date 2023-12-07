@@ -1,11 +1,11 @@
 import { AxiosResponse, AxiosError } from "axios";
-import { Error } from "../response/Error";
+import { ApiError } from "@shopware/api-client";
 /**
  * API error structure for incoming errors
  *
- * @public
+ * @deprecated use ApiError type from "@shopware/api-client" instead
  */
-export type ShopwareError = Error;
+export type ShopwareError = ApiError;
 /**
  * API Error response from Shopware backend
  *
@@ -20,7 +20,7 @@ export type ShopwareApiError = AxiosError & {
 /**
  * API client error structure
  *
- * @public
+ * @deprecated use ApiClientError type from "@shopware/api-client" instead
  */
 export type ClientApiError = {
   messages: ShopwareError[];

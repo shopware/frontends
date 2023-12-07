@@ -1,8 +1,11 @@
+import type { Schemas } from "#shopware";
+
 /**
- * @beta
+ * @deprecated use Schemas["Sitemap"] instead
  */
-export type SitemapResult = {
-  filename: string;
-  created: Date;
-  apiAlias: string;
-};
+export type SitemapResult = Schemas["Sitemap"][];
+// export type SitemapResult = {
+//   filename: string;
+//   created: Date;
+//   apiAlias: string;
+// };

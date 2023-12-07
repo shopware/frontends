@@ -5,9 +5,10 @@ export default {
 </script>
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { ClientApiError, ShopwareError } from "@shopware-pwa/types";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 import { customValidators } from "@/i18n/utils/i18n-validators";
+import type { RequestParameters } from "#shopware";
+import { ApiClientError, type ApiError } from "@shopware/api-client";
 
 const { required, minLength, requiredIf, email } = customValidators();
 
@@ -88,7 +89,7 @@ const selectedShippingAddress = computed({
     isLoading[`shipping-${shippingAddressId}`] = true;
     await setActiveShippingAddress({ id: shippingAddressId });
     if (shippingAddressId === selectedBillingAddress.value)
-      state.customShipping = false;
+      customShipping.value = false;
     isLoading[`shipping-${shippingAddressId}`] = false;
   },
 });
@@ -101,7 +102,7 @@ const selectedBillingAddress = computed({
     isLoading[`billing-${billingAddressId}`] = true;
     await setActiveBillingAddress({ id: billingAddressId });
     if (billingAddressId === selectedShippingAddress.value)
-      state.customShipping = false;
+      customShipping.value = false;
     isLoading[`billing-${billingAddressId}`] = false;
   },
 });
@@ -116,7 +117,7 @@ const isCheckoutAvailable = computed(() => {
 
 const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
 
-const state = reactive({
+const state = reactive<RequestParameters<"register">>({
   salutationId: "",
   firstName: "",
   lastName: "",
@@ -130,8 +131,11 @@ const state = reactive({
     countryId: "",
     countryStateId: "",
   },
-  customShipping: false,
+  acceptedDataProtection: true,
+  storefrontUrl: "",
 });
+
+const customShipping = ref(false);
 
 const terms = reactive({
   tos: false,
@@ -228,7 +232,7 @@ const refreshAddresses = async () => {
   isLoading["addresses"] = false;
 };
 
-const registerErrors = ref<ShopwareError[]>([]);
+const registerErrors = ref<ApiError[]>([]);
 const invokeSubmit = async () => {
   $v.value.$touch();
   registerErrors.value = [];
@@ -241,8 +245,9 @@ const invokeSubmit = async () => {
         await push("/");
       }
     } catch (error) {
-      const e = error as ClientApiError;
-      registerErrors.value = e.messages;
+      if (error instanceof ApiClientError) {
+        registerErrors.value = error.details.errors;
+      }
     }
   }
 };
@@ -333,7 +338,7 @@ const addAddressModalController = useModal();
                     v-model="state.salutationId"
                     required
                     name="salutation"
-                    autocomplete="salutation-name"
+                    autocomplete="on"
                     class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
                     data-testid="checkout-pi-salutation-select"
                     @blur="$v.salutationId.$touch()"
@@ -567,18 +572,19 @@ const addAddressModalController = useModal();
               </button>
             </form>
             <div v-else>
-              {{ $t("checkout.loggedInAs") }} {{ user?.firstName }}
+              {{ $t("checkout.loggedInAs") }} {{ user?.firstName }}.
               <span
                 v-if="isGuestSession"
                 class="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
-                >{{ $t("checkout.guest") }}</span
-              >! {{ $t("checkout.logOut") }}
+                >{{ $t("checkout.guest") }}.</span
+              >
               <a
                 href="#"
-                class="text-brand-primary hover:text-brand-dark"
+                class="text-brand-primary font-bold hover:text-brand-dark"
                 data-testid="checkout-logout"
+                aria-label="click here to log out"
                 @click="invokeLogout"
-                >{{ $t("checkout.here") }}</a
+                >{{ $t("checkout.logOut") }}</a
               >.
             </div>
           </div>
@@ -708,7 +714,7 @@ const addAddressModalController = useModal();
                     <img
                       loading="lazy"
                       :src="singlePaymentMethod.media.url"
-                      alt="payment-image"
+                      :alt="`Logo of ${singlePaymentMethod.shortName}`"
                     />
                   </div>
                 </div>
@@ -798,7 +804,7 @@ const addAddressModalController = useModal();
               <label for="customShipping" class="field-label">
                 <input
                   id="customShipping"
-                  v-model="state.customShipping"
+                  v-model="customShipping"
                   data-testid="checkout-custom-shipping-address-checkbox"
                   name="privacy"
                   type="checkbox"
@@ -806,7 +812,7 @@ const addAddressModalController = useModal();
                 />
                 {{ $t("checkout.differentBillingAddress") }}
               </label>
-              <div v-if="state.customShipping">
+              <div v-if="customShipping">
                 <div
                   v-for="address in customerAddresses"
                   :key="address.id"

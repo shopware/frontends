@@ -1,5 +1,4 @@
-import { Product } from "@shopware-pwa/types";
-import { UiProductReview } from "../ui-interfaces";
+import type { UiProductReview } from "../ui-interfaces";
 
 /**
  * Format product reviews to ui-interfaces
@@ -10,9 +9,19 @@ import { UiProductReview } from "../ui-interfaces";
  *
  * @category Product
  */
-export function getProductReviews({
-  product,
-}: { product?: Product } = {}): UiProductReview[] {
+export function getProductReviews<
+  T extends {
+    id: string;
+    productReviews?: Array<{
+      id: string;
+      externalUser?: string;
+      customerId?: string;
+      createdAt: string;
+      content: string;
+      points?: number;
+    }>;
+  },
+>({ product }: { product?: T } = {}): UiProductReview[] {
   if (!product || !product.productReviews) {
     return [];
   }

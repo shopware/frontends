@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ClientApiError } from "@shopware-pwa/types";
+import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
 
 const emits = defineEmits<{
   (e: "success"): void;
@@ -26,6 +27,8 @@ const goToRegister = () => {
   router.push(formatLink("/register"));
 };
 
+const { resolveApiErrors } = useApiErrorsResolver("account_login");
+
 const invokeLogin = async (): Promise<void> => {
   loginErrors.value = [];
   try {
@@ -37,8 +40,9 @@ const invokeLogin = async (): Promise<void> => {
     emits("close");
     mergeWishlistProducts();
   } catch (error) {
-    const e = error as ClientApiError;
-    loginErrors.value = e.messages.map(({ detail }) => detail);
+    if (error instanceof ApiClientError) {
+      loginErrors.value = resolveApiErrors(error.details.errors as ApiError[]);
+    }
   }
 };
 
@@ -47,11 +51,19 @@ useFocus(emailImputElement, { initialValue: true });
 </script>
 <template>
   <div
+    id="modal-headline"
+    role="form"
+    title="Login form"
+    aria-label="Login form"
     class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
   >
     <div v-if="!isLoggedIn" class="max-w-md w-full space-y-8">
       <div>
-        <img class="mx-auto h-12 w-auto" src="/logo.svg" alt="Logo" />
+        <img
+          class="mx-auto h-12 w-auto"
+          src="/logo.svg"
+          alt="logo of the shop"
+        />
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
           {{ $t("account.signInLabel") }}
         </h2>

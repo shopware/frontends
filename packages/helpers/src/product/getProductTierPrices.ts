@@ -1,5 +1,3 @@
-import { Product } from "@shopware-pwa/types";
-
 /**
  * @beta
  */
@@ -18,7 +16,14 @@ export type TierPrice = {
  * @returns TierPrice[]
  * @beta
  */
-export function getProductTierPrices(product?: Product): TierPrice[] {
+export function getProductTierPrices<
+  T extends {
+    calculatedPrices?: Array<{
+      unitPrice: number;
+      quantity: number;
+    }>;
+  },
+>(product?: T): TierPrice[] {
   if (!product || !product.calculatedPrices?.length) {
     return [];
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Order } from "@shopware-pwa/types";
+import type { Order } from "@shopware-pwa/types";
 
 const props = defineProps<{
   order: Order;
@@ -11,7 +11,7 @@ const toggleView = () => (isExpand.value = !isExpand.value);
 const { currency } = useSessionContext();
 
 const orderDate = computed(() =>
-  new Date(props?.order?.orderDate).toLocaleDateString(
+  new Date(props.order.orderDate).toLocaleDateString(
     (typeof navigator !== "undefined" && navigator.language) || "en-US",
   ),
 );
@@ -26,15 +26,16 @@ export default {
 <template>
   <div class="border border-gray-200 mb-8 rounded">
     <AccountOrderSummary>
-      <div class="lg:col-span-2">
+      <div class="lg:col-span-2 text-gray-600">
         {{ order.orderNumber }}
       </div>
-      <div>{{ order.amountTotal }} {{ currency?.symbol }}</div>
-      <div>{{ orderDate }}</div>
-      <div>{{ order.stateMachineState.name }}</div>
+      <div class="text-gray-600">
+        {{ order.amountTotal }} {{ currency?.symbol }}
+      </div>
+      <div class="text-gray-600">{{ orderDate }}</div>
+      <div class="text-gray-600">{{ order.stateMachineState.name }}</div>
       <div
         class="hidden sm:block justify-self-end text-brand-dark cursor-pointer"
-        :aria-expanded="isExpand"
         @click="toggleView"
       >
         {{ !isExpand ? t("account.view") : t("account.hide") }}
