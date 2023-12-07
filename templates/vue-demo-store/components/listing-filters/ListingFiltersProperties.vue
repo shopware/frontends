@@ -7,6 +7,7 @@
       label: string;
       name: string;
       options: Array<Schemas['PropertyGroupOption']>;
+      entities: Array<Schemas['ProductManufacturer']>;
     }
   "
 >
@@ -14,7 +15,7 @@ import { inject, ref } from "vue";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
 
-defineProps<{
+const props = defineProps<{
   filter: ListingFilter;
 }>();
 

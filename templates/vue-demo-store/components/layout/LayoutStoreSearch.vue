@@ -69,7 +69,7 @@ watch(enter, (value) => {
   sideMenuModal.close();
 
   active.value = false;
-  push("/search?query=" + typingQuery.value);
+  push("/search?search=" + typingQuery.value);
 });
 </script>
 
@@ -123,7 +123,9 @@ watch(enter, (value) => {
           <NuxtLink
             v-if="getTotal > 0"
             data-testid="layout-search-result-box-more-link"
-            :to="formatLink({ path: `/search`, query: { query: typingQuery } })"
+            :to="
+              formatLink({ path: `/search`, query: { search: typingQuery } })
+            "
             @click="[(active = false), $emit('link-clicked')]"
           >
             {{ $t("search.see") }}
