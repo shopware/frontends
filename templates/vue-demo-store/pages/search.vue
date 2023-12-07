@@ -71,7 +71,7 @@ export default {
     <h1 class="mb-8 mt-8 md:mt-0 text-3xl text-center">
       <span v-if="products?.length"
         >{{ $t("search.resultsHeader") }} "<strong>{{
-          route.query.query
+          route.query.search
         }}</strong
         >"</span
       >
