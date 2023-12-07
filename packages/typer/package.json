@@ -50,8 +50,8 @@
     "@types/node": "^20.0.0",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
-    "typescript": "^5.3.2",
+    "typescript": "^5.3.3",
     "unbuild": "^2.0.0",
-    "vitest": "^0.34.6"
+    "vitest": "^1.0.2"
   }
 }
