@@ -60,7 +60,7 @@ export class HomePage extends AbstractPage {
   async openCategoryPage() {
     await this.page.waitForLoadState("networkidle");
     await this.page
-      .getByRole("link", { name: "Products", exact: true })
+      .getByRole("menuitem", { name: "Products", exact: true })
       .click();
   }
 
