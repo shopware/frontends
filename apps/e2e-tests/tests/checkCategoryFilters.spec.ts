@@ -17,6 +17,12 @@ test.describe.only("Check filters", () => {
     await homePage.visitMainPage();
   });
 
+  test("Check random manufacturer filter", async ({ page }) => {
+    await homePage.openCategoryPage();
+    await categoryPage.selectRandomManufacturerCheckbox();
+    await expect(page).toHaveURL(new RegExp(".*manufacturer.*"));
+  });
+
   test("Check category filters", async ({ page }) => {
     await homePage.openCategoryPage();
     await categoryPage.selectFilter();
