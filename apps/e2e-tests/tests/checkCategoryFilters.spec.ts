@@ -17,21 +17,43 @@ test.describe.only("Check filters", () => {
     await homePage.visitMainPage();
   });
 
-  test("Check random manufacturer filter", async ({ page }) => {
+  test("Check category manufacturer filter", async ({ page }) => {
     await homePage.openCategoryPage();
     await categoryPage.selectRandomManufacturerCheckbox();
+
     await expect(page).toHaveURL(new RegExp(".*manufacturer.*"));
+    expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
+      0,
+    );
   });
 
-  test("Check category filters", async ({ page }) => {
+  test("Check category Colour filter", async ({ page }) => {
     await homePage.openCategoryPage();
-    await categoryPage.selectFilter();
-    await expect(page.getByTestId("product-box-img")).toHaveCount(1);
+    await categoryPage.selectRandomColorCheckbox();
+
+    await expect(page).toHaveURL(new RegExp(".*properties.*"));
+    expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
+      0,
+    );
   });
 
-  test("Check filters on search results", async ({ page }) => {
-    await homePage.typeSearchPhrase("bag");
-    await resultPage.selectSearchResultsFilter();
-    await expect(page.getByTestId("product-box-img")).toHaveCount(1);
+  test("Check search manufacturer filter", async ({ page }) => {
+    await homePage.typeSearchPhrase("sal");
+    await resultPage.selectRandomManufacturerCheckbox();
+
+    await expect(page).toHaveURL(new RegExp(".*manufacturer.*"));
+    expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
+      0,
+    );
+  });
+
+  test("Check search Selection filter", async ({ page }) => {
+    await homePage.typeSearchPhrase("sal");
+    await resultPage.selectRandomSelectionCheckbox();
+
+    await expect(page).toHaveURL(new RegExp(".*properties.*"));
+    expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
+      0,
+    );
   });
 });

@@ -1,11 +1,10 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 
 export class CategoryPage {
   readonly page: Page;
   readonly selectedColourFiltersCategory: Locator;
+  readonly colourCheckboxes: Locator;
   readonly selectedManufacturerFiltersCategory: Locator;
-  readonly filterCheckbox: Locator;
-  readonly productBox: Locator;
   readonly manufacturerCheckboxes: Locator;
 
   constructor(page: Page) {
@@ -14,12 +13,7 @@ export class CategoryPage {
       name: "Colour",
       exact: true,
     });
-    this.filterCheckbox = page
-      .locator("div")
-      .filter({ hasText: /^Clear White$/ })
-      .getByRole("checkbox");
-    this.productBox = page.getByTestId("product-box-img");
-
+    this.colourCheckboxes = page.locator("input[name='Colour']");
     this.selectedManufacturerFiltersCategory = page.getByRole("button", {
       name: "manufacturer",
       exact: true,
@@ -41,9 +35,15 @@ export class CategoryPage {
     await randomCheckbox.check();
   }
 
-  async selectFilter() {
+  async selectRandomColorCheckbox() {
     await this.page.waitForLoadState("networkidle");
     await this.selectedColourFiltersCategory.click();
-    await this.filterCheckbox.check();
+    const colourCheckboxes = await this.colourCheckboxes.all();
+    const countColourCheckboxes = (await this.colourCheckboxes.all()).length;
+    const randomCheckboxSelctor = Math.floor(
+      Math.random() * countColourCheckboxes,
+    );
+    const randomCheckbox = colourCheckboxes[randomCheckboxSelctor];
+    await randomCheckbox.check();
   }
 }
