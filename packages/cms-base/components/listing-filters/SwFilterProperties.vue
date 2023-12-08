@@ -7,6 +7,7 @@
       label: string;
       name: string;
       options: Array<Schemas['PropertyGroupOption']>;
+      entities: Array<Schemas['ProductManufacturer']>;
     }
   "
 >
@@ -55,7 +56,7 @@ const toggle = () => {
         <fieldset class="space-y-4">
           <legend class="sr-only">{{ props.filter.name }}</legend>
           <div
-            v-for="option in props.filter.options"
+            v-for="option in props.filter.options || props.filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
             class="flex items-center"
             @click="
@@ -98,6 +99,12 @@ const toggle = () => {
             />
             <label
               :for="`filter-mobile-${props.filter.code}-${option.id}`"
+              @click="
+                emits('select-value', {
+                  code: props.filter.code,
+                  value: option.id,
+                })
+              "
               class="ml-3 text-gray-600"
             >
               {{ getTranslatedProperty(option, "name") }}
