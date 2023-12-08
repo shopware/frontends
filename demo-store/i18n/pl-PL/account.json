@@ -1,0 +1,64 @@
+{
+  "account": {
+    "addresses": "Adresy",
+    "addressesLabel": "Wyświetl swoje aktualne domyślne adresy lub dodaj nowe.",
+    "addressAddNew": "Dodaj nowy adres",
+    "accountOverviewHeader": "Przegląd konta",
+    "signUpHeader": "Jestem tutaj nowy.",
+    "paymentMethodHeader": "Metoda płatności",
+    "newsletterSettingHeader": "Ustawienia newslettera",
+    "defaultBillingAddressHeader": "Domyślny adres rozliczeniowy",
+    "defaultShippingAddressHeader": "Domyślny adres wysyłki",
+    "yourAddress": "Twój adres",
+    "myPaymentsHeader": "Twoje metody płatności",
+    "orderHistoryHeader": "Historia zamówień",
+    "yourProfile": "Twój profil",
+    "documentsLabel": "Dokumenty",
+    "changePassword": "Zmień hasło",
+    "selectDefaultPaymentLabel": "Wybierz swoją domyślną metodę płatności",
+    "logout": "Wyloguj się",
+    "change": "zmień",
+    "save": "zapisz",
+    "setDefaultShippingAddress": "Ustaw jako domyślny adres wysyłki",
+    "setDefaultBillingAddress": "Ustaw jako domyślny adres rozliczeniowy",
+    "signInLabel": "Zaloguj się do swojego konta",
+    "signIn": "Zaloguj się",
+    "signUp": "Zarejestruj się",
+    "loggedInInfo": "jesteś zalogowany",
+    "view": "Wyświetl",
+    "hide": "Ukryj",
+    "menu": {
+      "signIn": "Zaloguj się",
+      "hello": "Witaj",
+      "openMenu": "Otwórz menu użytkownika",
+      "myAccount": "Moje konto",
+      "signOut": "Wyloguj się"
+    },
+    "order": {
+      "product": "Produkt",
+      "quantity": "Ilość",
+      "price": "Cena",
+      "subtotal": "Suma częściowa",
+      "orderNumber": "Numer zamówienia",
+      "totalAmount": "Całkowita kwota",
+      "orderDate": "Data zamówienia",
+      "orderStatus": "Status zamówienia"
+    },
+    "personalData": {
+      "infoBox": "Edytuj swoje dane poniżej, aby twoje konto zawsze było aktualne",
+      "label": "Dane osobowe"
+    },
+    "messages": {
+      "defaultShippingAddressSuccess": "Domyślny adres wysyłki został pomyślnie ustawiony",
+      "defaultShippingAddressError": "Wystąpił błąd podczas ustawiania domyślnego adresu wysyłki",
+      "defaultBillingAddressSuccess": "Domyślny adres rozliczeniowy został pomyślnie ustawiony",
+      "defaultBillingAddressError": "Wystąpił błąd podczas ustawiania domyślnego adresu rozliczeniowego",
+      "addressDeletedSuccess": "Adres został usunięty",
+      "addressDeletedError": "Wystąpił błąd podczas usuwania adresu",
+      "loggedInSuccess": "Jesteś zalogowany",
+      "personalDataUpdateSuccess": "Twoje informacje zostały zaktualizowane",
+      "paymentSetSuccessfully": "Ustawiono domyślną metodę płatności",
+      "signUpSuccess": "Dziękujemy za rejestrację! Wkrótce otrzymasz e-mail z potwierdzeniem. Kliknij w link w nim zawarty, aby ukończyć rejestrację."
+    }
+  }
+}

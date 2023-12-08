@@ -1,0 +1,59 @@
+{
+  "backToHomepage": "Powrót na stronę główną",
+  "home": "Strona główna",
+  "error": "Błąd",
+  "close": "Zamknij",
+  "goBackHome": "Wróć na stronę główną",
+  "returnToHomepage": "Powrót do strony głównej",
+  "pageNotFound": {
+    "header": "Nie znaleziono strony",
+    "text": "Przepraszamy, nie udało nam się znaleźć szukanej strony. Być może już jej nie ma lub została przeniesiona."
+  },
+  "sidebar": {
+    "closeMenu": "Zamknij menu"
+  },
+  "search": {
+    "all": "wszystkie",
+    "filters": "Filtr",
+    "noResults": "Nie znaleziono produktów",
+    "resetFilters": "Zresetuj filtry",
+    "result": "wynik | wyniki | wyników",
+    "resultsHeader": "Wynik wyszukiwania dla",
+    "see": "zobacz"
+  },
+  "messages": {
+    "error": "Coś poszło nie tak, spróbuj ponownie później"
+  },
+  "wishlist": {
+    "header": "Lista życzeń",
+    "emptyLabel": "Lista życzeń jest pusta",
+    "emptyText": "Nie dodano żadnych produktów do listy życzeń.",
+    "continueShopping": "Kontynuuj zakupy",
+    "clearWishlist": "Usuń wszystko"
+  },
+  "errorPages": {
+    "404": "Nie możemy znaleźć tego, czego szukasz. Zgubiłeś się?",
+    "408": "API nie odpowiada w odpowiednim czasie",
+    "500": "Ups, coś poszło strasznie nie tak",
+    "502": "Serwer nie mógł zrealizować Twojego żądania. Spróbuj ponownie za kilka sekund.",
+    "503": "Serwer jest teraz bardzo zajęty"
+  },
+  "setup": {
+    "problems": "Problemy podczas konfiguracji? 😬",
+    "support_start": "Sprawdź",
+    "support_page": "strona rozwiązywania problemów",
+    "support_end": "Powodzenia!"
+  },
+  "breadcrumbs": {
+    "accountOverview": "Przegląd konta",
+    "address": "Adres",
+    "order": "Zamówienie",
+    "payment": "Płatność",
+    "myAccount": "Moje konto",
+    "recoverPassword": "Przywróć hasło",
+    "register": "Rejestracja",
+    "passwordReset": "Resetowanie hasła",
+    "search": "Wyszukiwanie",
+    "wishlist": "Lista życzeń"
+  }
+}

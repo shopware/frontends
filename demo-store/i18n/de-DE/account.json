@@ -1,0 +1,64 @@
+{
+  "account": {
+    "addresses": "Adressen",
+    "addressesLabel": "Sehen Sie sich Ihre aktuellen Standardadressen an oder fügen Sie neue hinzu.",
+    "addressAddNew": "Neue Adresse hinzufügen",
+    "accountOverviewHeader": "Kontoübersicht",
+    "signUpHeader": "Ich bin neu hier.",
+    "paymentMethodHeader": "Zahlungsmethode",
+    "newsletterSettingHeader": "Newsletter-Einstellung",
+    "defaultBillingAddressHeader": "Standardrechnungsadresse",
+    "defaultShippingAddressHeader": "Standard-Lieferadresse",
+    "yourAddress": "Ihre Adresse",
+    "myPaymentsHeader": "meine Zahlungsmethoden",
+    "orderHistoryHeader": "Bestellverlauf",
+    "yourProfile": "Ihr Profil",
+    "documentsLabel": "Dokumente",
+    "changePassword": "Passwort ändern",
+    "selectDefaultPaymentLabel": "Wählen Sie Ihre Standardzahlungsmethode aus",
+    "logout": "ausloggen",
+    "change": "ändern",
+    "save": "speichern",
+    "setDefaultShippingAddress": "Als Standard-Lieferadresse festlegen",
+    "setDefaultBillingAddress": "Als Standardrechnungsadresse festlegen",
+    "signInLabel": "Melden Sie sich in Ihrem Konto an",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "loggedInInfo": "Sie sind angemeldet",
+    "view": "Anzeigen",
+    "hide": "Verbergen",
+    "menu": {
+      "signIn": "Anmelden",
+      "hello": "Hallo",
+      "openMenu": "Benutzermenü öffnen",
+      "myAccount": "Mein Konto",
+      "signOut": "Abmelden"
+    },
+    "order": {
+      "product": "Produkt",
+      "quantity": "Menge",
+      "price": "Preis",
+      "subtotal": "Zwischensumme",
+      "orderNumber": "Bestellnummer",
+      "totalAmount": "Gesamtbetrag",
+      "orderDate": "Bestelldatum",
+      "orderStatus": "Bestellstatus"
+    },
+    "personalData": {
+      "infoBox": "Bearbeiten Sie Ihre Daten unten, damit Ihr Konto immer auf dem neuesten Stand ist.",
+      "label": "Persönliche Daten"
+    },
+    "messages": {
+      "defaultShippingAddressSuccess": "Standard-Lieferadresse erfolgreich festgelegt",
+      "defaultShippingAddressError": "Fehler beim Festlegen der Standard-Lieferadresse",
+      "defaultBillingAddressSuccess": "Standardrechnungsadresse erfolgreich festgelegt",
+      "defaultBillingAddressError": "Fehler beim Festlegen der Standardrechnungsadresse",
+      "addressDeletedSuccess": "Adresse gelöscht",
+      "addressDeletedError": "Fehler beim Löschen der Adresse",
+      "loggedInSuccess": "Sie sind angemeldet",
+      "personalDataUpdateSuccess": "Ihre Informationen wurden aktualisiert.",
+      "paymentSetSuccessfully": "Standardzahlungsmethode erfolgreich festgelegt",
+      "signUpSuccess": "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Registrierung abzuschließen."
+    }
+  }
+}

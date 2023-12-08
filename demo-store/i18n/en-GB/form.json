@@ -1,0 +1,31 @@
+{
+  "form": {
+    "salutation": "Salutation",
+    "chooseSalutation": "Choose salutation...",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Enter first name...",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Enter last name...",
+    "country": "Country",
+    "chooseCountry": "Choose country...",
+    "streetAddress": "Street address",
+    "streetPlaceholder": "Enter street...",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password...",
+    "newPasswordPlaceholder": "New Password",
+    "repeatPasswordPlaceholder": "Repeat Password",
+    "email": "Email address",
+    "emailPlaceholder": "Enter the email...",
+    "confirmEmail": "Confirm e-mail",
+    "city": "City",
+    "cityPlaceholder": "Enter city...",
+    "postalCode": "ZIP / Postal code",
+    "postalCodePlaceholder": "Enter zip code...",
+    "save": "Save",
+    "submit": "Submit",
+    "promoCodePlaceholder": "Enter promo code",
+    "searchPlaceholder": "Search products",
+    "chooseState": "Choose state",
+    "state": "State"
+  }
+}

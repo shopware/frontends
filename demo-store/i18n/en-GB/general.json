@@ -1,0 +1,59 @@
+{
+  "backToHomepage": "Back to homepage",
+  "home": "Home",
+  "error": "Error",
+  "close": "Close",
+  "goBackHome": "Go back home",
+  "returnToHomepage": "Return to Homepage",
+  "pageNotFound": {
+    "header": "Page not found",
+    "text": " We are sorry, the page you're looking for could not be found. It may no longer exist or may have been moved."
+  },
+  "sidebar": {
+    "closeMenu": "Close menu"
+  },
+  "search": {
+    "all": "all",
+    "filters": "Filters",
+    "noResults": "No products found",
+    "resetFilters": "Reset Filters",
+    "result": "result | results",
+    "resultsHeader": "Search Result for",
+    "see": "see"
+  },
+  "messages": {
+    "error": "Something goes wrong please try again later"
+  },
+  "wishlist": {
+    "header": "Wishlist",
+    "emptyLabel": "Wishlist is empty",
+    "emptyText": "No products were added to the Wishlist.",
+    "continueShopping": "Continue Shopping",
+    "clearWishlist": "Clear wishlist"
+  },
+  "errorPages": {
+    "404": "We can't find what you are looking for. Are you lost?",
+    "408": "The API is taking to long to respond",
+    "500": "Oops, something went terribly wrong",
+    "502": "Server couldn't complete your request. Please try again in few seconds.",
+    "503": "Server is really busy right now"
+  },
+  "setup": {
+    "problems": "Problems during setup? 😬",
+    "support_start": "Checkout the",
+    "support_page": "troubleshooting page",
+    "support_end": "Good luck!"
+  },
+  "breadcrumbs": {
+    "accountOverview": "Account Overview",
+    "address": "Address",
+    "order": "Order",
+    "payment": "Payment",
+    "myAccount": "My account",
+    "recoverPassword": "Recover password",
+    "register": "Register",
+    "passwordReset": "Password reset",
+    "search": "Search",
+    "wishlist": "Wishlist"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "product": {
+    "addToCart": "In den Warenkorb",
+    "details": "Details",
+    "amount": "Menge",
+    "description": "Beschreibung",
+    "properties": "Eigenschaften",
+    "reviews": "Bewertungen",
+    "content": "Inhalt",
+    "choose": "Wähle eine",
+    "variantsFrom": "Varianten ab",
+    "price": {
+      "label": "Preis",
+      "to": "Bis",
+      "from": "Ab"
+    },
+    "messages": {
+      "addedToWishlist": "{p} wurde zur Wunschliste hinzugefügt.",
+      "removedFromWishlist": "{p} wurde aus der Wunschliste entfernt.",
+      "addedToCart": "{p} wurde dem Warenkorb hinzugefügt."
+    }
+  }
+}

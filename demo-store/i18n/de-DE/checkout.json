@@ -1,0 +1,68 @@
+{
+  "checkout": {
+    "orderSummary": "Bestellübersicht",
+    "orderSummaryLabel": "Bestelldetails und Gesamtsummen.",
+    "signIn": "Anmelden",
+    "signInToOrder": "Um eine Bestellung aufzugeben.",
+    "register": "Registrieren",
+    "header": "Warenkorb",
+    "empty": "Ihr Warenkorb ist leer",
+    "close": "Panel schließen",
+    "logOut": "Hier können Sie sich abmelden",
+    "orderTotal": "Gesamtbestellwert",
+    "loginRequired": "Sie müssen angemeldet sein, um eine Bestellung aufzugeben.",
+    "goToHomepage": "Zur Startseite gehen",
+    "here": "hier",
+    "shippingEstimate": "Versandkostenabschätzung",
+    "selectPaymentMethod": "Wählen Sie eine Zahlungsmethode aus",
+    "notCreateAccount": "Kein Kundenkonto erstellen.",
+    "takesUpTo": "Dauert bis zu",
+    "subtotal": "Zwischensumme",
+    "taxesLabel": "Versandkosten und Steuern werden beim Checkout berechnet.",
+    "linkCheckout": "Zur Kasse gehen",
+    "guest": "Gast",
+    "placeOrder": "Bestellung aufgeben",
+    "linkShippingCart": "Zum Warenkorb gehen",
+    "checkStatus": "Sie können nun den Bestellstatus in Ihrem Konto überprüfen. Vielen Dank!",
+    "unpaidStatus": "Leider konnte Ihre Bestellung nicht bezahlt werden. Sie können es erneut versuchen oder uns kontaktieren.",
+    "checkOrderDetails": "Bestelldetails überprüfen",
+    "loggedInAs": "Sie sind angemeldet als",
+    "or": "oder",
+    "yourOrder": "Ihre Bestellung",
+    "backToHomepage": "Zurück zur Startseite",
+    "orderPaid": "wurde bezahlt",
+    "orderUnpaid": "ist nicht bezahlt",
+    "continueShopping": "Mit dem Einkauf fortfahren",
+    "goToPayment": "Zur Zahlung gehen",
+    "shippingAddressLabel": "Lieferadresse",
+    "billingAddressLabel": "Rechnungsadresse",
+    "selectBillingAddress": "Wählen Sie eine Rechnungsadresse aus",
+    "addNewBillingAddress": "Neue Rechnungsadresse hinzufügen",
+    "addNewShippingAddress": "Neue Lieferadresse hinzufügen",
+    "differentBillingAddress": "Unterschiedliche Rechnungsadresse",
+    "paymentMethodLabel": "Zahlungsmethode",
+    "shippingMethodLabel": "Versandmethode",
+    "shippingPriceLabel": "Versandkosten",
+    "personalInformationLabel": "Persönliche Informationen",
+    "personalInformationInfo": "Geben Sie eine permanente Adresse an, an der Sie Post erhalten können.",
+    "totalLabel": "Gesamt",
+    "termsAdnConditions": "Allgemeine Geschäftsbedingungen",
+    "termsAdnConditionsLabel": "Ich habe die allgemeinen Geschäftsbedingungen gelesen und akzeptiert.",
+    "digitalTerms": "Ich möchte sofortigen Zugriff auf den digitalen Inhalt und ich erkenne an, dass ich damit mein Recht auf Widerruf verzichte.",
+    "promoCode": {
+      "label": "Angewendete Promo-Codes",
+      "remove": "Entfernen"
+    },
+    "items": {
+      "removeButton": "Entfernen"
+    },
+    "success": {
+      "header": "Wir haben Ihre Bestellung #{0} erhalten und werden diese schnellstmöglich bearbeiten.",
+      "paymentProcessLabel": "Zahlungsvorgang abschließen.",
+      "paymentProcessInfo": "Sie werden in 5 Sekunden zum Zahlungsgateway weitergeleitet."
+    },
+    "messages": {
+      "checkoutSignInSuccess": "Vielen Dank für Ihre Anmeldung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Anmeldung abzuschließen."
+    }
+  }
+}

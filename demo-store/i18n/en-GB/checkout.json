@@ -1,0 +1,68 @@
+{
+  "checkout": {
+    "orderSummary": "Order summary",
+    "orderSummaryLabel": "Order details and totals.",
+    "signIn": "Sign in",
+    "signInToOrder": "In order to place an order.",
+    "register": "Register",
+    "header": "Shopping cart",
+    "empty": "Your shopping cart is empty",
+    "close": "Close panel",
+    "logOut": "You can log out here",
+    "orderTotal": "Order total",
+    "loginRequired": "You must be logged-in before submitting an order.",
+    "goToHomepage": "Go to home page",
+    "here": "here",
+    "shippingEstimate": "Shipping estimate",
+    "selectPaymentMethod": "Select a payment method",
+    "notCreateAccount": "Do not create a customer account.",
+    "takesUpTo": "Takes up to",
+    "subtotal": "Subtotal",
+    "taxesLabel": "Shipping and taxes calculated at checkout.",
+    "linkCheckout": "Checkout",
+    "guest": "guest",
+    "placeOrder": "Place the order",
+    "linkShippingCart": "Go to shopping cart",
+    "checkStatus": "You can now check the status of the order in your account. Thank you!",
+    "unpaidStatus": "Unfortunately, your order couldn't be paid. You can try to pay it again or contact us.",
+    "checkOrderDetails": "Check the order details",
+    "loggedInAs": "You are logged-in as",
+    "or": "or",
+    "yourOrder": "Your order",
+    "backToHomepage": "Back to homepage",
+    "orderPaid": "has been paid",
+    "orderUnpaid": "is not paid",
+    "continueShopping": "Continue Shopping",
+    "goToPayment": "Go to payment",
+    "shippingAddressLabel": "Shipping address",
+    "billingAddressLabel": "Billing address",
+    "selectBillingAddress": "Select a billing address",
+    "addNewBillingAddress": "Add new billing address",
+    "addNewShippingAddress": "Add new shipping address",
+    "differentBillingAddress": "Different shipping address",
+    "paymentMethodLabel": "Payment method",
+    "shippingMethodLabel": "Shipping method",
+    "shippingPriceLabel": "Shipping",
+    "personalInformationLabel": "Personal Information",
+    "personalInformationInfo": "Use a permanent address where you can receive mail.",
+    "totalLabel": "Total",
+    "termsAdnConditions": "Terms and conditions",
+    "termsAdnConditionsLabel": "I have read and accepted the general terms and conditions.",
+    "digitalTerms": "I want immediate access to the digital content and I acknowledge that thereby I waive my right to cancel.",
+    "promoCode": {
+      "label": "Applied promo codes",
+      "remove": "Remove"
+    },
+    "items": {
+      "removeButton": "Remove"
+    },
+    "success": {
+      "header": "We have received your order #{0} and will process it as soon as possible.",
+      "paymentProcessLabel": "Finish payment process.",
+      "paymentProcessInfo": "You will be redirected to the payment gateway in 5 seconds."
+    },
+    "messages": {
+      "checkoutSignInSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up."
+    }
+  }
+}

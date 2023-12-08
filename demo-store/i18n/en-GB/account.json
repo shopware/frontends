@@ -1,0 +1,66 @@
+{
+  "account": {
+    "addresses": "Addresses",
+    "addressesLabel": "View your current default addresses or add new ones.",
+    "addressAddNew": "Add new address",
+    "accountOverviewHeader": "Account Overview",
+    "signUpHeader": "I am new here.",
+    "paymentMethodHeader": "Payment Method",
+    "newsletterSettingHeader": "Newsletter setting",
+    "defaultBillingAddressHeader": "Default billing address",
+    "defaultShippingAddressHeader": "Default shipping address",
+    "editAddress": "Edit address",
+    "yourAddress": "Your address",
+    "myPaymentsHeader": "My payments",
+    "orderHistoryHeader": "Order history",
+    "yourProfile": "Your profile",
+    "documentsLabel": "Documents",
+    "changePassword": "Change password",
+    "selectDefaultPaymentLabel": " Select your default payment method",
+    "logout": "Logout",
+    "change": "change",
+    "save": "save",
+    "setDefaultShippingAddress": "Set as default shipping address",
+    "setDefaultBillingAddress": "Set as default billing address",
+    "signInLabel": "Sign in to your account",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "loggedInInfo": "you are logged in",
+    "view": "View",
+    "hide": "Hide",
+    "menu": {
+      "accountOverviewHeader": "Account Overview",
+      "signIn": "Sign in",
+      "hello": "Hello",
+      "openMenu": "Open user menu",
+      "myAccount": "My account",
+      "signOut": "Sign out"
+    },
+    "order": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "price": "Price",
+      "subtotal": "Subtotal",
+      "orderNumber": "Order number",
+      "totalAmount": "Total amount",
+      "orderDate": "Order date",
+      "orderStatus": "Order status"
+    },
+    "personalData": {
+      "infoBox": "Feel free to edit any of your details below so your account is always up to date",
+      "label": "Personal data"
+    },
+    "messages": {
+      "defaultShippingAddressSuccess": "Set default shipping address successfully",
+      "defaultShippingAddressError": "Set default shipping address error",
+      "defaultBillingAddressSuccess": "Set default billing address successfully",
+      "defaultBillingAddressError": "Set default billing address error",
+      "addressDeletedSuccess": "Address deleted",
+      "addressDeletedError": "Address deleted error",
+      "loggedInSuccess": "You are logged in",
+      "personalDataUpdateSuccess": "Your information has been updated.",
+      "paymentSetSuccessfully": "Set default payment method successfully",
+      "signUpSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up."
+    }
+  }
+}

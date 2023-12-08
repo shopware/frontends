@@ -1,0 +1,11 @@
+{
+  "newsletter": {
+    "subscriptionHeader": "Newsletter-Anmeldung",
+    "subscriptionCheckbox": "Ja, ich möchte den kostenlosen Demostore-Newsletter abonnieren. (Ich kann mich jederzeit abmelden.)",
+    "subscriptionInfo": "Sie haben sich gerade für unseren Newsletter angemeldet. Um den Anmeldevorgang abzuschließen, suchen Sie in Ihrem Posteingang nach unserer Bestätigungs-E-Mail und klicken Sie auf den darin enthaltenen Link.",
+    "messages": {
+      "newsletterSubscribed": "Vielen Dank! Wir haben Ihre E-Mail-Adresse angemeldet.",
+      "newsletterUnsubscribed": "Newsletter abbestellt"
+    }
+  }
+}
