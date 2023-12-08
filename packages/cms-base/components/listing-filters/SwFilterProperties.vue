@@ -99,13 +99,13 @@ const toggle = () => {
             />
             <label
               :for="`filter-mobile-${props.filter.code}-${option.id}`"
+              class="ml-3 text-gray-600"
               @click="
                 emits('select-value', {
                   code: props.filter.code,
                   value: option.id,
                 })
               "
-              class="ml-3 text-gray-600"
             >
               {{ getTranslatedProperty(option, "name") }}
             </label>
