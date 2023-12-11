@@ -47,7 +47,7 @@ const dropdownElement = ref(null);
 onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
 
 function onMinPriceChange(newPrice: number, oldPrice: number) {
-  if (newPrice == oldPrice || oldPrice == 0) return;
+  if (newPrice === oldPrice || oldPrice === 0) return;
   emits("select-value", {
     code: "min-price",
     value: newPrice,
@@ -57,7 +57,7 @@ const debounceMinPriceUpdate = useDebounceFn(onMinPriceChange, 500);
 watch(() => prices.min, debounceMinPriceUpdate);
 
 function onMaxPriceChange(newPrice: number, oldPrice: number) {
-  if (newPrice == oldPrice || oldPrice == 0) return;
+  if (newPrice === oldPrice || oldPrice === 0) return;
   emits("select-value", {
     code: "max-price",
     value: newPrice,
