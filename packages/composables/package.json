@@ -65,14 +65,14 @@
   "devDependencies": {
     "@nuxt/kit": "^3.8.2",
     "@shopware-pwa/types": "workspace:*",
-    "@vitest/coverage-v8": "^1.0.2",
+    "@vitest/coverage-v8": "^1.0.4",
     "@vue/test-utils": "^2.4.3",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "^12.10.3",
     "tsconfig": "workspace:*",
     "typescript": "^5.3.3",
     "unbuild": "^2.0.0",
-    "vitest": "^1.0.2",
-    "vue": "^3.3.10"
+    "vitest": "^1.0.4",
+    "vue": "^3.3.11"
   }
 }

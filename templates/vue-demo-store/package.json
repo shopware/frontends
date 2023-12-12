@@ -25,10 +25,10 @@
     "@vueuse/nuxt": "^10.7.0",
     "requrl": "^3.0.2",
     "sitemap": "^7.1.1",
-    "vue": "^3.3.10"
+    "vue": "^3.3.11"
   },
   "devDependencies": {
-    "@iconify-json/carbon": "^1.1.24",
+    "@iconify-json/carbon": "^1.1.26",
     "@nuxtjs/i18n": "8.0.0-rc.4",
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint-plugin-prettier": "^5.0.1",

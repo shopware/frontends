@@ -38,11 +38,11 @@
     "globby": "^14.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
-    "prettier": "^3.1.0",
+    "prettier": "^3.1.1",
     "taze": "^0.13.0",
-    "turbo": "^1.11.0",
+    "turbo": "^1.11.1",
     "typedoc": "^0.25.4",
-    "vercel": "^32.6.1"
+    "vercel": "^32.7.0"
   },
   "engines": {
     "node": "^18.x || ^20.x"
@@ -52,17 +52,17 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.11.0",
+  "packageManager": "pnpm@8.12.0",
   "pnpm": {
     "overrides": {
-      "@antfu/utils": "^0.7.6",
-      "@babel/traverse": "^7.23.5",
+      "@antfu/utils": "^0.7.7",
+      "@babel/traverse": "^7.23.6",
       "debug": "^4.3.4",
       "postcss": "^8.4.32",
       "semver": "^7.5.4",
       "sharp": "^0.33.0",
       "undici": "^6.0.1",
-      "vite@4": "^5.0.6",
+      "vite@4": "^5.0.7",
       "yaml@2": "^2.3.4",
       "zod": "^3.22.4"
     },

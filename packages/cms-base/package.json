@@ -44,7 +44,7 @@
     "@vueuse/core": "^10.7.0",
     "entities": "^4.5.0",
     "html-to-ast": "^0.0.6",
-    "vue": "^3.3.10"
+    "vue": "^3.3.11"
   },
   "devDependencies": {
     "@nuxt/schema": "^3.8.2",
