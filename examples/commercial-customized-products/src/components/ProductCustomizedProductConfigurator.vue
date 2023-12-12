@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from "vue";
+import { useProductCustomizedProductConfigurator } from "@/composables/useProductCustomizedProductConfigurator";
+import { useSessionContext } from "@shopware-pwa/composables-next/dist";
 const { customizedProduct, state, handleFileUpload } =
   useProductCustomizedProductConfigurator();
 const { currency } = useSessionContext();
@@ -56,8 +59,9 @@ const removeUploadedImage = (optionId: string) => {
               :style="{ 'background-color': value.value?._value }"
             >
               {{ value.displayName }}
-              <span v-if="+value.price?.[0]?.gross > 0"
-                >+{{ value?.price?.[0]?.gross }} {{ currency?.symbol }}</span
+              <span v-if="+(value.price?.[0] as any)?.gross > 0"
+                >+{{ (value?.price?.[0] as any)?.gross }}
+                {{ currency?.symbol }}</span
               >
             </option>
           </select>

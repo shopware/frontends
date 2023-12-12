@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  type BoxLayout,
-  type DisplayMode,
-} from "@shopware-pwa/composables-next";
+import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
   getProductName,
   getProductRoute,
@@ -31,10 +28,10 @@ const props = withDefaults(
 );
 const { product } = toRefs(props);
 const { addToCart, isInCart, count } = useAddToCart(product);
-const {
-  addToCart: customizedProductAddToCart,
-  isActive: isCustomizedProductActive,
-} = useProductCustomizedProductConfigurator();
+// const {
+//   addToCart: customizedProductAddToCart,
+//   isActive: isCustomizedProductActive,
+// } = useProductCustomizedProductConfigurator();
 
 const { addToWishlist, removeFromWishlist, isInWishlist } =
   useProductWishlist(product);
@@ -66,11 +63,11 @@ const toggleWishlistProduct = async () => {
 };
 
 const addToCartProxy = async () => {
-  if (isCustomizedProductActive.value) {
-    await customizedProductAddToCart();
-  } else {
-    await addToCart();
-  }
+  // if (isCustomizedProductActive.value) {
+  //   await customizedProductAddToCart();
+  // } else {
+  await addToCart();
+  //}
 
   getErrorsCodes()?.forEach((element) => {
     pushError(t(`errors.${element.messageKey}`, { ...element }));

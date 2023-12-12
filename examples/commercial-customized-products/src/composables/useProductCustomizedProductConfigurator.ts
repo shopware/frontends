@@ -1,19 +1,22 @@
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
-import type { components } from "@shopware/api-client/api-types";
-import { useShopwareContext } from "@shopware-pwa/composables-next";
-import { useCart, useProduct } from "@shopware-pwa/composables-next";
+import type { Schemas } from "#shopware";
+import {
+  useCart,
+  useProduct,
+  useShopwareContext,
+} from "@shopware-pwa/composables-next";
 
-type Media = components["schemas"]["Media"];
-type Price = components["schemas"]["ProductPrice"];
-type Product = components["schemas"]["Product"];
 type MediaOption = { media: { filename: string; id: string } };
 
 export type UseProductCustomizedProductConfiguratorReturn = {
   /**
    * Assigned template of the product
    */
-  customizedProduct: ComputedRef<SwagCustomizedProductsTemplate | undefined>;
+  customizedProduct: ComputedRef<
+    | Schemas["Product"]["extensions"]["swagCustomizedProductsTemplate"]
+    | undefined
+  >;
   /**
    * State of the product selected options
    */
@@ -35,105 +38,6 @@ export type UseProductCustomizedProductConfiguratorReturn = {
   handleFileUpload: (event: Event, optionId: string) => Promise<void>;
 };
 
-export type CustomizedProductOptionValue = {
-  versionId: string;
-  translated: {
-    displayName: string;
-  };
-  createdAt: string;
-  updatedAt: null | string;
-  oneTimeSurcharge: boolean;
-  relativeSurcharge: boolean;
-  advancedSurcharge: boolean;
-  taxId: string;
-  tax: null | unknown;
-  price: Price[];
-  percentageSurcharge: number;
-  prices: [];
-  id: string;
-  templateOptionId: string;
-  value: {
-    _value: string;
-  };
-  displayName: string;
-  itemNumber: null | number;
-  default: boolean;
-  position: number;
-  templateOption: null | unknown;
-  translations: null | unknown;
-  templateExclusionConditions: null | unknown;
-  templateOptionVersionId: string;
-  apiAlias: "swag_customized_products_template_option_value";
-};
-
-export type CustomizedProductOption = {
-  translated: {
-    displayName: "Outer leather";
-    description: null;
-    placeholder: null;
-  };
-  createdAt: "2020-08-06T06:26:55.533+00:00";
-  updatedAt: null;
-  oneTimeSurcharge: false;
-  relativeSurcharge: false;
-  advancedSurcharge: false;
-  taxId: null;
-  tax: null;
-  calculatedPrice: null;
-  percentageSurcharge: 0;
-  price: Price[];
-  prices: [];
-  id: string;
-  type: "select" | "colorselect" | "imageupload" | "textfield" | "imageselect";
-  displayName: string;
-  description: null | string;
-  placeholder: null | string;
-  templateId: string;
-  typeProperties: {
-    isMultiSelect: boolean;
-  };
-  itemNumber: null | number;
-  required: boolean;
-  position: number;
-  translations: null | unknown;
-  template: null | unknown;
-  values: CustomizedProductOptionValue[];
-};
-
-export type SwagCustomizedProductsTemplate = {
-  versionId: string;
-  translated: {
-    displayName: string;
-    description: string;
-  };
-  createdAt: string;
-  updatedAt: null | string;
-  internalName: string;
-  displayName: string;
-  description: string;
-  mediaId: null | string;
-  active: boolean;
-  stepByStep: boolean;
-  confirmInput: boolean;
-  optionsAutoCollapse: boolean;
-  decisionTree: unknown[];
-  translations: null | unknown;
-  media: null | Media;
-  products: null | Product[];
-  exclusions: unknown[];
-  configurations: null | unknown;
-  id: string;
-  parentVersionId: string;
-  options: CustomizedProductOption[];
-  apiAlias: "swag_customized_products_template";
-};
-
-export type ProductExtensionsExtended = Product & {
-  extensions: {
-    swagCustomizedProductsTemplate?: SwagCustomizedProductsTemplate;
-  };
-};
-
 /**
  * Global state for selected options
  */
@@ -149,18 +53,14 @@ const productsState = ref<{
  * @category Product
  */
 export function useProductCustomizedProductConfigurator(): UseProductCustomizedProductConfiguratorReturn {
-  const { apiInstance, apiClient } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
   const { product } = useProduct();
   const { refreshCart } = useCart();
   if (!productsState.value[product.value.id]) {
     productsState.value[product.value.id] = {};
   }
-  const customizedProduct = computed<
-    SwagCustomizedProductsTemplate | undefined
-  >(
-    () =>
-      (product.value as ProductExtensionsExtended).extensions
-        ?.swagCustomizedProductsTemplate,
+  const customizedProduct = computed(
+    () => product.value?.extensions?.swagCustomizedProductsTemplate,
   );
 
   const isActive = computed<boolean>(() => !!customizedProduct.value?.active);
@@ -199,14 +99,10 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
         },
       },
     };
-    // await apiInstance.invoke.post(
-    //   "/store-api/customized-products/add-to-cart",
-    //   payload,
-    // );
 
     await apiClient.invoke(
       "addCustomizedProductToCart post /checkout/customized-products/add-to-cart",
-      payload, // TODO
+      payload,
     );
     refreshCart();
   };
@@ -216,15 +112,20 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     const formData = new FormData();
     formData.append("file", file);
     formData.append("optionId", optionId);
-    const headers = { "Content-Type": "multipart/form-data" };
-    const addedMediaResponse = { data: {} } as any;
+    // const headers = { "Content-Type": "multipart/form-data" };
     // const addedMediaResponse = await apiInstance.invoke.post<{
     //   mediaId: string;
     //   fileName: string;
     // }>(`/store-api/customized-products/upload`, formData, {
     //   headers,
     // });
-
+    const addedMediaResponse = await apiClient.invoke(
+      "uploadCustomizedProductImage post /customized-products/upload",
+      {
+        file,
+        optionId,
+      },
+    );
     state.value[optionId] = {
       media: {
         id: addedMediaResponse?.data?.mediaId,

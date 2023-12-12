@@ -1,6 +1,6 @@
 {
   "include": [
-    "src/**/*"
+    "src/**/*",
   ],
   "compilerOptions": {
     "esModuleInterop": true,
@@ -11,16 +11,20 @@
     "types": [
       "vite/client"
     ],
+    "baseUrl": "./src",
     "paths": {
-      "react": [
-        "./stub/types__react"
-      ],
       "#imports": [
-        "./imports.d.ts"
+        "../imports.d.ts"
       ],
       "#shopware": [
-        "./shopware.d.ts"
-      ]
+        "../shopware.d.ts"
+      ],
+      "@/*": [
+        "./*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
     }
   }
 }

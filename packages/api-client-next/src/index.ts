@@ -47,6 +47,11 @@ export type RequestParameters<
     ? R
     : {}) &
   (OPERATIONS[OPERATION_NAME] extends {
+    requestBody?: { content?: { "multipart/form-data"?: infer R } };
+  }
+    ? R
+    : {}) &
+  (OPERATIONS[OPERATION_NAME] extends {
     parameters?: { header?: infer R };
   }
     ? R
