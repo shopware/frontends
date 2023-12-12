@@ -21,17 +21,17 @@ declare module "#shopware" {
   // };
 
   type extendedPaths =
-    | "payPalCreateOrder post /store-api/paypal/express/create-order?isPayPalExpressCheckout=1"
-    | "payPalPrepare post /store-api/paypal/express/prepare-checkout?isPayPalExpressCheckout=1"
+    | "quickOrderProductSearch get /store-api/quick-order/product?search=${phrase}"
+    | "quickOrderLoadFile post /store-api/quick-order/load-file"
     | operationPaths;
   type extendedOperations = {
-    payPalCreateOrder: {
-      responses: {
-        204: never;
-        400: never;
+    quickOrderProductSearch: {
+      parameters: {
+        path: {
+          /** Product search string  */
+          phrase: string;
+        };
       };
-    };
-    payPalPrepare: {
       requestBody: {
         content: {
           "application/json": {
@@ -40,12 +40,21 @@ declare module "#shopware" {
         };
       };
       responses: {
-        /** Returns a success response indicating a successful update */
-        200: {
-          content: {
-            "application/json": changedComponents["schemas"]["SuccessResponse"];
+        204: never;
+        400: never;
+      };
+    };
+    quickOrderLoadFile: {
+      requestBody: {
+        content: {
+          "application/json": {
+            token: string;
           };
         };
+      };
+      responses: {
+        204: never;
+        400: never;
       };
     };
   } & operations;

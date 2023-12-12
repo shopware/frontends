@@ -1,6 +1,7 @@
 {
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "shopware.d.ts"
   ],
   "compilerOptions": {
     "paths": {

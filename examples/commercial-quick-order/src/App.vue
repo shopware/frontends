@@ -5,11 +5,9 @@ import {
   useShopwareContext,
   useUser,
 } from "@shopware-pwa/composables-next/dist";
-import { addCartItems } from "@shopware-pwa/api-client";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 
-// used later on for unusual API calls (like endpoints added by some extension - in this case, commercial features)
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 // for initialize the session and get the current currency
 const { currency, refreshSessionContext } = useSessionContext();
 // to log in a customer, because the Quick Order feature is enabled for specifically selected users (in admin panel)
@@ -61,8 +59,9 @@ const showToastMessage = (message: string) => {
 
 // used in suggest search bar
 const search = async (phrase: string) => {
-  const response = await apiInstance.invoke.get(
-    `/store-api/quick-order/product?search=${phrase}`,
+  const response = await apiClient.invoke(
+    `quickOrderProductSearch get /store-api/quick-order/product?search=${phrase}`,
+    {},
   );
   items.value = response?.data?.elements;
   forceCloseSuggest.value = false;
@@ -92,7 +91,6 @@ const onItemClick = (item) => {
   showToastMessage("Product has been added to list.");
 };
 
-// add all items to the shopping cart using addCartItems method from @shopware-pwa/api-client package
 const onAddToCartClick = async () => {
   const lineItemsPayload = Array.from(chosenItems.value.entries()).map(
     ([productId, quantity]) => ({
@@ -102,7 +100,10 @@ const onAddToCartClick = async () => {
     }),
   );
 
-  await addCartItems(lineItemsPayload as any, apiInstance);
+  await apiClient.invoke("addLineItem post /checkout/cart/line-item", {
+    items: lineItemsPayload,
+  });
+
   chosenItems.value = new Map();
   showToastMessage("The items have been moved to the cart.");
 };
@@ -122,13 +123,18 @@ const onCsvFileChange = async (event) => {
   const formData = new FormData();
   formData.append("file", file);
   const headers = { "Content-Type": "multipart/form-data" };
-  const foundProductsResponse = await apiInstance.invoke.post(
-    `/store-api/quick-order/load-file`,
-    formData,
-    {
-      headers,
-    },
+
+  const foundProductsResponse = await apiClient.invoke(
+    `quickOrderLoadFile post /store-api/quick-order/load-file`,
+    { formData },
   );
+
+  // const foundProductsResponse = await apiClient.invoke(
+  //   `quickOrderLoadFile post /store-api/quick-order/load-file`,
+  //   {
+  //     formData,
+  //   },
+  // );
 
   for (const item of foundProductsResponse.data?.products) {
     onItemClick(item);
