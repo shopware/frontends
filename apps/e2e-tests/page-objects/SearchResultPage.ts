@@ -2,25 +2,25 @@ import { Locator, Page } from "@playwright/test";
 
 export class SearchResultPage {
   readonly page: Page;
+  readonly searchResultBox: Locator;
   readonly selectedManufacturerFilterSearch: Locator;
   readonly manufacturerCheckboxes: Locator;
   readonly selectedSelectionFilterSearch: Locator;
   readonly selectionCheckboxes: Locator;
-  readonly searchResultBox: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.selectedSelectionFilterSearch = page.getByRole("button", {
-      name: "Selection",
-      exact: true,
-    });
     this.searchResultBox = page.getByTestId("search-results-container");
-    this.selectionCheckboxes = page.locator("input[name='Selection']");
     this.selectedManufacturerFilterSearch = page.getByRole("button", {
       name: "manufacturer",
       exact: true,
     });
     this.manufacturerCheckboxes = page.locator("input[name='manufacturer']");
+    this.selectedSelectionFilterSearch = page.getByRole("button", {
+      name: "Selection",
+      exact: true,
+    });
+    this.selectionCheckboxes = page.locator("input[name='Selection']");
   }
 
   async selectRandomManufacturerCheckbox() {
