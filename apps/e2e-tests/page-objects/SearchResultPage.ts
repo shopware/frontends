@@ -2,6 +2,7 @@ import { Locator, Page } from "@playwright/test";
 
 export class SearchResultPage {
   readonly page: Page;
+  readonly searchResultBox: Locator;
   readonly selectedManufacturerFilterSearch: Locator;
   readonly manufacturerCheckboxes: Locator;
   readonly selectedSelectionFilterSearch: Locator;
@@ -9,6 +10,7 @@ export class SearchResultPage {
 
   constructor(page: Page) {
     this.page = page;
+    this.searchResultBox = page.getByTestId("search-results-container");
     this.selectedSelectionFilterSearch = page.getByRole("button", {
       name: "Selection",
       exact: true,

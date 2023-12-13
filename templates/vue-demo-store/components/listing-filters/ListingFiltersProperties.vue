@@ -68,7 +68,7 @@ const toggle = () => {
               :aria-label="`${option.name} filter`"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-              @click="
+              @change="
                 emits('select-value', {
                   code: props.filter.code,
                   value: option.id,
