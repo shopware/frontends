@@ -1,13 +1,13 @@
 {
   "include": [
     "src/**/*",
-    "shopware.d.ts"
   ],
   "compilerOptions": {
     "paths": {
       "@/*": [
         "./src/*" // set path `@/*` as alias of `src/*`
-      ]
+      ],
+      "#shopware": ["./shopware.d.ts"]
     },
     "esModuleInterop": true,
     "module": "ESNext",
