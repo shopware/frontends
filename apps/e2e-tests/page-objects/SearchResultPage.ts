@@ -11,16 +11,16 @@ export class SearchResultPage {
   constructor(page: Page) {
     this.page = page;
     this.searchResultBox = page.getByTestId("search-results-container");
-    this.selectedSelectionFilterSearch = page.getByRole("button", {
-      name: "Selection",
-      exact: true,
-    });
-    this.selectionCheckboxes = page.locator("input[name='Selection']");
     this.selectedManufacturerFilterSearch = page.getByRole("button", {
       name: "manufacturer",
       exact: true,
     });
     this.manufacturerCheckboxes = page.locator("input[name='manufacturer']");
+    this.selectedSelectionFilterSearch = page.getByRole("button", {
+      name: "Selection",
+      exact: true,
+    });
+    this.selectionCheckboxes = page.locator("input[name='Selection']");
   }
 
   async selectRandomManufacturerCheckbox() {
