@@ -59,12 +59,6 @@ const toggle = () => {
             v-for="option in props.filter.options || props.filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
             class="flex items-center"
-            @click.once="
-              emits('select-value', {
-                code: props.filter.code,
-                value: option.id,
-              })
-            "
           >
             <input
               :id="`filter-mobile-${props.filter.code}-${option.id}`"
@@ -74,6 +68,12 @@ const toggle = () => {
               :aria-label="`${option.name} filter`"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+              @click="
+                emits('select-value', {
+                  code: props.filter.code,
+                  value: option.id,
+                })
+              "
             />
 
             <div v-if="option.media?.url">

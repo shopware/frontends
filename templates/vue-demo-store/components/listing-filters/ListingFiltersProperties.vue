@@ -52,33 +52,34 @@ const toggle = () => {
       </button>
     </h3>
     <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
+      <div v-show="isFilterVisible" :id="props.filter.code" class="pt-6">
         <fieldset class="space-y-4">
           <legend class="sr-only">{{ props.filter.name }}</legend>
           <div
             v-for="option in props.filter.options || props.filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
             class="flex items-center"
-            @click.once="
-              emits('select-value', {
-                code: props.filter.code,
-                value: option.id,
-              })
-            "
           >
             <input
               :id="`filter-mobile-${props.filter.code}-${option.id}`"
               :checked="selectedOptionIds?.includes(option.id)"
               :name="props.filter.name"
               :value="option.name"
+              :aria-label="`${option.name} filter`"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+              @click="
+                emits('select-value', {
+                  code: props.filter.code,
+                  value: option.id,
+                })
+              "
             />
 
             <div v-if="option.media?.url">
               <img
-                class="ml-2 h-4 w-4"
                 loading="lazy"
+                class="ml-2 h-4 w-4"
                 :src="option.media.url"
                 :alt="option.media.translated?.alt || ''"
                 :class="{
@@ -96,7 +97,10 @@ const toggle = () => {
                 'border-blue border-2': selectedOptionIds?.includes(option.id),
               }"
             />
-            <label for="filter-color-0" class="ml-3 text-gray-600">
+            <label
+              :for="`filter-mobile-${props.filter.code}-${option.id}`"
+              class="ml-3 text-gray-600"
+            >
               {{ getTranslatedProperty(option, "name") }}
             </label>
           </div>
