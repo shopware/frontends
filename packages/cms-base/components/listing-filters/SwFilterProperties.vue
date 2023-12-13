@@ -59,7 +59,7 @@ const toggle = () => {
             v-for="option in props.filter.options || props.filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
             class="flex items-center"
-            @click="
+            @click.once="
               emits('select-value', {
                 code: props.filter.code,
                 value: option.id,
@@ -100,12 +100,6 @@ const toggle = () => {
             <label
               :for="`filter-mobile-${props.filter.code}-${option.id}`"
               class="ml-3 text-gray-600"
-              @click="
-                emits('select-value', {
-                  code: props.filter.code,
-                  value: option.id,
-                })
-              "
             >
               {{ getTranslatedProperty(option, "name") }}
             </label>

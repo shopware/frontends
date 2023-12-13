@@ -53,12 +53,13 @@ const toggle = () => {
     </h3>
     <transition name="fade" mode="out-in">
       <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
-        <div class="space-y-4">
+        <fieldset class="space-y-4">
+          <legend class="sr-only">{{ props.filter.name }}</legend>
           <div
             v-for="option in props.filter.options || props.filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
             class="flex items-center"
-            @click="
+            @click.once="
               emits('select-value', {
                 code: props.filter.code,
                 value: option.id,
@@ -99,7 +100,7 @@ const toggle = () => {
               {{ getTranslatedProperty(option, "name") }}
             </label>
           </div>
-        </div>
+        </fieldset>
       </div>
     </transition>
   </div>
