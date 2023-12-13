@@ -6,6 +6,7 @@ export class SearchResultPage {
   readonly manufacturerCheckboxes: Locator;
   readonly selectedSelectionFilterSearch: Locator;
   readonly selectionCheckboxes: Locator;
+  readonly searchResultBox: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -13,6 +14,7 @@ export class SearchResultPage {
       name: "Selection",
       exact: true,
     });
+    this.searchResultBox = page.getByTestId("search-results-container");
     this.selectionCheckboxes = page.locator("input[name='Selection']");
     this.selectedManufacturerFilterSearch = page.getByRole("button", {
       name: "manufacturer",
