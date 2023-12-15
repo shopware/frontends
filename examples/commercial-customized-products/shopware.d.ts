@@ -164,10 +164,7 @@ declare module "#shopware" {
     uploadCustomizedProductImage: {
       requestBody?: {
         content: {
-          "multipart/form-data": {
-            file: File;
-            optionId: string;
-          };
+          "multipart/form-data": any;
         };
       };
       responses: {
@@ -188,7 +185,7 @@ declare module "#shopware" {
   export type operationPaths =
     | defaultOperationPaths
     | "addCustomizedProductToCart post /checkout/customized-products/add-to-cart"
-    | "uploadCustomizedProductImage post /customized-products/upload";
+    | "uploadCustomizedProductImage post /customized-products/upload multipart/form-data";
   export type Schemas = changedComponents["schemas"];
 
   //We're exporting our own Api Client definition as it depends on our own instance

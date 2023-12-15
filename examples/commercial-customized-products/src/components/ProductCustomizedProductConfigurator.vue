@@ -30,14 +30,16 @@ const removeUploadedImage = (optionId: string) => {
 </script>
 <template>
   <div class="flex flex-col">
-    <h3>{{ customizedProduct?.translated.displayName }}</h3>
+    <h3 class="dark:text-white">
+      {{ customizedProduct?.translated.displayName }}
+    </h3>
     <p class="mb-3 text-gray-500 dark:text-gray-400">
       {{ customizedProduct?.translated.description }}
     </p>
     <hr />
     <div class="flex flex-col">
       <div v-for="option in customizedProductOptions" :key="option.id">
-        {{ option.translated.displayName }}
+        <span class="dark:text-white">{{ option.translated.displayName }}</span>
         <div
           v-if="['select', 'colorselect', 'imageselect'].includes(option.type)"
           :id="option.id"

@@ -27820,7 +27820,9 @@ export type operations = {
           /** The url of the document that will be downloaded. */
           url: string;
         };
-        "application/octet-stream": string;
+        "application/octet-stream": {
+          file: string;
+        };
       };
     };
     responses: {

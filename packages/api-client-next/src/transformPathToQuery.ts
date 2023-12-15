@@ -16,6 +16,23 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
   const [, method, pathDefinition, headerParams] = path.split(" ");
   const [requestPath, queryParams] = pathDefinition.split("?");
 
+  console.warn(
+    "path",
+    path,
+    "params",
+    params,
+    "method",
+    method,
+    "pathDefinition",
+    pathDefinition,
+    "headerParams",
+    headerParams,
+    "requestPath",
+    requestPath,
+    "queryParams",
+    queryParams,
+  );
+
   // get names in brackets
   const pathParams: string[] =
     requestPath
@@ -30,8 +47,12 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
 
   const headerParamnames = headerParams?.split(",") || [];
   const headers: HeadersInit = {};
+
   headerParamnames.forEach((paramName) => {
     headers[paramName] = params[paramName] as string;
+    if (paramName === "multipart/form-data") {
+      headers["Content-Type"] = "multipart/form-data";
+    }
   });
   const query: Record<string, unknown> = {};
   queryParamNames.forEach((paramName) => {
@@ -43,7 +64,6 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
     }
     query[queryParamName] = params[paramName];
   });
-
   const returnOptions = {
     method: method.toUpperCase() as HttpMethod,
     headers,
@@ -69,6 +89,14 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
       Reflect.set(returnOptions.body, key, params[key]);
     }
   });
+
+  if (
+    !["head", "get"].includes(method) &&
+    (!Object.keys(params).length || typeof params === "object")
+  ) {
+    returnOptions.body ??= params as T;
+    console.warn("return options", returnOptions);
+  }
 
   return [requestPathWithParams, returnOptions];
 }

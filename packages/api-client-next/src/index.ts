@@ -47,6 +47,11 @@ export type RequestParameters<
     ? R
     : {}) &
   (OPERATIONS[OPERATION_NAME] extends {
+    requestBody?: { content?: { "application/octet-stream"?: infer R } };
+  }
+    ? R
+    : {}) &
+  (OPERATIONS[OPERATION_NAME] extends {
     requestBody?: { content?: { "multipart/form-data"?: infer R } };
   }
     ? R
@@ -127,9 +132,9 @@ export function createAPIClient<
   ): Promise<RequestReturnType<OPERATION_NAME, OPERATIONS>> {
     const [requestPath, options] = transformPathToQuery(
       pathParam,
-      params?.[0] as Record<string, string>,
+      Array.isArray(params) ? (params?.[0] as Record<string, string>) : params,
     );
-    // console.log("invoke with", requestPath, options);
+    console.log("invoke with", requestPath, options);
     return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
       requestPath,
       {
@@ -262,7 +267,7 @@ export function createAdminAPIClient<
       pathParam,
       params as Record<string, string>,
     );
-    // console.log("invoke with", requestPath, options);
+    console.log("invoke with", requestPath, options);
     return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
       requestPath,
       {

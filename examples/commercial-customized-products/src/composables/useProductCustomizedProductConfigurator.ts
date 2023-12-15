@@ -110,7 +110,7 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
   const handleFileUpload = async (event: Event, optionId: string) => {
     const file = (event.target as EventTarget & { files: FileList }).files[0];
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", file, "Screenshot");
     formData.append("optionId", optionId);
     // const headers = { "Content-Type": "multipart/form-data" };
     // const addedMediaResponse = await apiInstance.invoke.post<{
@@ -119,13 +119,15 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     // }>(`/store-api/customized-products/upload`, formData, {
     //   headers,
     // });
+    console.warn("----formData", formData.get("optionId"));
     const addedMediaResponse = await apiClient.invoke(
-      "uploadCustomizedProductImage post /customized-products/upload",
+      "uploadCustomizedProductImage post /customized-products/upload multipart/form-data",
       {
-        file,
-        optionId,
+        "Content-Type": "multipart/form-data",
+        body: formData,
       },
     );
+
     state.value[optionId] = {
       media: {
         id: addedMediaResponse?.data?.mediaId,
