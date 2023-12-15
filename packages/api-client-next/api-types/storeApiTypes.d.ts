@@ -1710,7 +1710,11 @@ export type components = {
         // TODO: [OpenAPI][Criteria] - there can be different filters, for example `equalsAny` can have array as value
         field: string;
         type: string;
-        value: string | string[];
+        value?: string | string[] | boolean;
+        parameters?: {
+          gte?: string;
+          lte?: string;
+        };
       }[];
       /** Perform groupings over certain fields */
       grouping?: string[];

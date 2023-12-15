@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { RequestParameters } from "#shopware";
 import type { Schemas } from "#shopware";
 const route = useRoute();
 const router = useRouter();
@@ -12,6 +11,7 @@ const {
   loading,
   setInitialListing,
   getCurrentListing,
+  getInitialFilters,
 } = useListing({
   listingType: "productSearchListing",
 });
@@ -23,10 +23,86 @@ useBreadcrumbs([
   },
 ]);
 
+const createFiltersFromRoute = () => {
+  const filters: {
+    field: string;
+    type: string;
+    value?: string | string[] | boolean;
+    parameters?: {
+      gte?: string;
+      lte?: string;
+    };
+  }[] = [];
+  for (const [key, value] of Object.entries(route.query)) {
+    const currentValue = value as string;
+    const allValues = currentValue.split("|");
+    for (const value of allValues) {
+      if (key === "manufacturer") {
+        filters.push({
+          type: "equals",
+          field: "manufacturerId",
+          value: value,
+        });
+      }
+      if (key === "properties") {
+        filters.push({
+          type: "equalsAny",
+          field: "optionIds",
+          value: value,
+        });
+      }
+      if (key === "price") {
+        const [min, max] = value.split("-");
+        filters.push({
+          type: "range",
+          field: "price",
+          parameters: {
+            gte: min,
+            lte: max,
+          },
+        });
+      }
+      if (key === "rating") {
+        filters.push({
+          type: "range",
+          field: "ratingAverage",
+          parameters: {
+            gte: value,
+          },
+        });
+      }
+      if (key === "shipping-free") {
+        filters.push({
+          type: "equals",
+          field: "shippingFree",
+          value: true,
+        });
+      }
+    }
+  }
+  return filters;
+};
+
 const cacheKey = computed(() => `productSearch-${JSON.stringify(route.query)}`);
 const loadProducts = async (cacheKey: string) => {
   const { data: productSearch } = await useAsyncData(cacheKey, async () => {
-    await search(route.query as unknown as RequestParameters<"searchPage">);
+    const filters = createFiltersFromRoute();
+    await search({
+      search: route.query.search as string,
+      filter: filters,
+      aggregations: [
+        {
+          name: "manufacturer_ids_counter",
+          type: "terms",
+          field: "manufacturerId",
+        },
+        {
+          name: "option_ids_counter",
+          type: "terms",
+          field: "optionIds",
+        },
+      ],
+    });
     return getCurrentListing.value;
   });
 
@@ -37,6 +113,7 @@ let productSearch = await loadProducts(cacheKey.value);
 watch(cacheKey, async (newCacheKey) => {
   productSearch = await loadProducts(newCacheKey);
   setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
+  addCountsToFilter();
 });
 
 const changePage = async (page: number) => {
@@ -48,6 +125,94 @@ const changePage = async (page: number) => {
   });
 };
 setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
+
+type FilterAndAggregations = {
+  code: string;
+  label: string;
+  name: string;
+  options: Array<Schemas["PropertyGroupOption"] & { count: number }>;
+  entities: Array<Schemas["ProductManufacturer"] & { count: number }>;
+  buckets?: Array<{
+    apiAlias: string;
+    key: string; // can be "", "5e698b809f75483196868427ec5abd8e" or "["5e698b809f75483196868427ec5abd8e"]"
+    count: number;
+  }>;
+  apiAlias: string;
+};
+
+const addCountToFilterOptions = (
+  filter: FilterAndAggregations,
+  aggregation: FilterAndAggregations,
+) => {
+  filter.options.forEach((option) => {
+    if (aggregation.buckets) {
+      const bucket = aggregation.buckets.find((bucket) =>
+        bucket.key.includes(option.id),
+      );
+      if (bucket) {
+        option.count = bucket.count + (option.count ?? 0);
+      }
+    }
+  });
+};
+
+const addCountToFilterEntities = (
+  filter: FilterAndAggregations,
+  aggregation: FilterAndAggregations,
+) => {
+  filter.entities.forEach((entity) => {
+    if (aggregation.buckets) {
+      const bucket = aggregation.buckets.find(
+        (bucket) => bucket.key === entity.id,
+      );
+      if (bucket) {
+        entity.count = bucket.count + (entity.count ?? 0);
+      }
+    }
+  });
+};
+
+const addCountsToFilter = () => {
+  if (getInitialFilters.value) {
+    getInitialFilters.value.forEach((initialFilter) => {
+      const filter = initialFilter as unknown as FilterAndAggregations;
+      if (productSearch.value && productSearch.value.aggregations) {
+        for (const value of Object.entries(productSearch.value.aggregations)) {
+          const aggregation = value[1] as unknown as FilterAndAggregations;
+          if (filter.name === "manufacturer") {
+            if (value[0] === "manufacturer_ids_counter") {
+              addCountToFilterEntities(filter, aggregation);
+            }
+          }
+          if (filter.code === "properties") {
+            if (value[0] === "option_ids_counter") {
+              addCountToFilterOptions(filter, aggregation);
+            }
+          }
+        }
+      }
+    });
+  }
+};
+
+addCountsToFilter();
+
+const openFilters = () => {
+  const query = router.currentRoute.value.query;
+  for (const [key, value] of Object.entries(query)) {
+    const currentValue = value as string;
+    const firstValue = currentValue.split("|")[0];
+    document
+      .getElementById(`filter-mobile-${key}-${firstValue}`)
+      ?.closest("[selected-filters]")
+      ?.querySelector("button")
+      ?.click();
+  }
+};
+
+onMounted(() => {
+  openFilters();
+});
 </script>
 
 <script lang="ts">
