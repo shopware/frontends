@@ -35,7 +35,7 @@ export type UseNavigationReturn = {
  * @category Navigation & Routing
  */
 export function useNavigation(params?: {
-  type?: Schemas["NavigationType"];
+  type?: Schemas["NavigationType"] | string;
 }): UseNavigationReturn {
   const type = params?.type || "main-navigation";
 

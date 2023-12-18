@@ -12,7 +12,7 @@ import type { Schemas } from "#shopware";
  *
  * @deprecated - use Schema["NavigationType"] instead from import "#shopware"
  */
-export type StoreNavigationType = Schemas["NavigationType"];
+export type StoreNavigationType = Schemas["NavigationType"] & string;
 // export type StoreNavigationType =
 //   | "main-navigation"
 //   | "footer-navigation"
