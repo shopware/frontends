@@ -40,7 +40,7 @@ export type UseCartItemReturn = {
   /**
    * Determines if the current item can be removed from cart
    */
-  isRemovable: ComputedRef<boolean | undefined>;
+  isRemovable: ComputedRef<boolean>;
   /**
    * Stock information for the current item
    */
@@ -115,7 +115,7 @@ export function useCartItem(
 
   const isPromotion = computed(() => cartItem.value.type === "promotion");
 
-  const isRemovable = computed(() => cartItem.value.removable);
+  const isRemovable = computed(() => !!cartItem.value.removable);
 
   async function removeItem() {
     const newCart = await apiClient.invoke(
