@@ -914,7 +914,7 @@ importers:
         specifier: canary
         version: link:../../packages/composables
       '@shopware/api-client':
-        specifier: workspace:^
+        specifier: canary
         version: link:../../packages/api-client-next
       '@vitejs/plugin-vue':
         specifier: ^4.5.1
