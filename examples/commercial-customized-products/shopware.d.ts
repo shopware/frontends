@@ -171,10 +171,8 @@ declare module "#shopware" {
         200: {
           content: {
             "application/json": {
-              data: {
-                mediaId: string;
-                fileName: string;
-              };
+              mediaId: string;
+              fileName: string;
             };
           };
         };

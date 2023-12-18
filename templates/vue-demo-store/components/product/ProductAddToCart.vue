@@ -9,17 +9,8 @@ const { product } = toRefs(props);
 const { getErrorsCodes } = useCartNotification();
 const { t } = useI18n();
 const { addToCart, quantity } = useAddToCart(product);
-// const {
-//   addToCart: customizedProductAddToCart,
-//   isActive: isCustomizedProductActive,
-// } = useProductCustomizedProductConfigurator();
-
 const addToCartProxy = async () => {
-  // if (isCustomizedProductActive.value) {
-  //   await customizedProductAddToCart();
-  // } else {
   await addToCart();
-  //}
   getErrorsCodes()?.forEach((element) => {
     pushError(t(`errors.${element.messageKey}`, { ...element }));
   });

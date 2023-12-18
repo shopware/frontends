@@ -16,23 +16,6 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
   const [, method, pathDefinition, headerParams] = path.split(" ");
   const [requestPath, queryParams] = pathDefinition.split("?");
 
-  console.warn(
-    "path",
-    path,
-    "params",
-    params,
-    "method",
-    method,
-    "pathDefinition",
-    pathDefinition,
-    "headerParams",
-    headerParams,
-    "requestPath",
-    requestPath,
-    "queryParams",
-    queryParams,
-  );
-
   // get names in brackets
   const pathParams: string[] =
     requestPath
@@ -45,14 +28,15 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
 
   const queryParamNames = queryParams?.split(",") || [];
 
-  const headerParamnames = headerParams?.split(",") || [];
+  const headerParamnames =
+    headerParams
+      ?.split(",")
+      .filter((header) => header !== "multipart/form-data") || []; // don't include it manually cause of boundary that is added by browser
+
   const headers: HeadersInit = {};
 
   headerParamnames.forEach((paramName) => {
     headers[paramName] = params[paramName] as string;
-    if (paramName === "multipart/form-data") {
-      headers["Content-Type"] = "multipart/form-data";
-    }
   });
   const query: Record<string, unknown> = {};
   queryParamNames.forEach((paramName) => {
@@ -95,7 +79,6 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
     (!Object.keys(params).length || typeof params === "object")
   ) {
     returnOptions.body ??= params as T;
-    console.warn("return options", returnOptions);
   }
 
   return [requestPathWithParams, returnOptions];

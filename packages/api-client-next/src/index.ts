@@ -132,9 +132,10 @@ export function createAPIClient<
   ): Promise<RequestReturnType<OPERATION_NAME, OPERATIONS>> {
     const [requestPath, options] = transformPathToQuery(
       pathParam,
-      Array.isArray(params) ? (params?.[0] as Record<string, string>) : params,
+      Array.isArray(params)
+        ? (params?.[0] as Record<string, string>)
+        : (params as Record<string, string>),
     );
-    console.log("invoke with", requestPath, options);
     return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
       requestPath,
       {
@@ -267,7 +268,6 @@ export function createAdminAPIClient<
       pathParam,
       params as Record<string, string>,
     );
-    console.log("invoke with", requestPath, options);
     return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
       requestPath,
       {
