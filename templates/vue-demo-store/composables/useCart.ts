@@ -11,6 +11,7 @@ const _useCart = (): UseCartReturn => {
   ): Promise<Schemas["Cart"]> {
     if (newCart) {
       _storeCart.value = newCart;
+      useCartData.refreshCart(_storeCart.value);
       return newCart;
     }
 
