@@ -60,8 +60,10 @@ const showToastMessage = (message: string) => {
 // used in suggest search bar
 const search = async (phrase: string) => {
   const response = await apiClient.invoke(
-    `quickOrderProductSearch get /store-api/quick-order/product?search=${phrase}`,
-    {},
+    `quickOrderProductSearch get /store-api/quick-ordewr/product?search`,
+    {
+      search: phrase,
+    },
   );
   items.value = response?.data?.elements;
   forceCloseSuggest.value = false;
@@ -123,18 +125,10 @@ const onCsvFileChange = async (event) => {
   const formData = new FormData();
   formData.append("file", file);
   const headers = { "Content-Type": "multipart/form-data" };
-
   const foundProductsResponse = await apiClient.invoke(
     `quickOrderLoadFile post /store-api/quick-order/load-file`,
     { formData },
   );
-
-  // const foundProductsResponse = await apiClient.invoke(
-  //   `quickOrderLoadFile post /store-api/quick-order/load-file`,
-  //   {
-  //     formData,
-  //   },
-  // );
 
   for (const item of foundProductsResponse.data?.products) {
     onItemClick(item);

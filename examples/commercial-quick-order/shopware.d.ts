@@ -21,13 +21,13 @@ declare module "#shopware" {
   // };
 
   type extendedPaths =
-    | "quickOrderProductSearch get /store-api/quick-order/product?search=${phrase}"
+    | "quickOrderProductSearch get /store-api/quick-order/product?search"
     | "quickOrderLoadFile post /store-api/quick-order/load-file"
-    | operationPaths;
+    | defaultOperationPaths;
   type extendedOperations = {
     quickOrderProductSearch: {
       parameters: {
-        path: {
+        query: {
           /** Product search string  */
           phrase: string;
         };
@@ -57,10 +57,10 @@ declare module "#shopware" {
         400: never;
       };
     };
-  } & operations;
+  } & defaultOperations<changedComponents>;
 
-  export type operations = defaultOperations<changedComponents>;
-  export type operationPaths = defaultOperationPaths;
+  export type operations = extendedOperations;
+  export type operationPaths = extendedPaths;
   export type Schemas = changedComponents["schemas"];
 
   // we're exporting our own Api Client definition as it depends on our own instance
