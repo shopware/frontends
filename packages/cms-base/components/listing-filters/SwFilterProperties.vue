@@ -7,6 +7,7 @@
       label: string;
       name: string;
       options: Array<Schemas['PropertyGroupOption']>;
+      entities: Array<Schemas['ProductManufacturer']>;
     }
   "
 >
@@ -55,15 +56,9 @@ const toggle = () => {
         <fieldset class="space-y-4">
           <legend class="sr-only">{{ props.filter.name }}</legend>
           <div
-            v-for="option in props.filter.options"
+            v-for="option in props.filter.options || props.filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
             class="flex items-center"
-            @click="
-              emits('select-value', {
-                code: props.filter.code,
-                value: option.id,
-              })
-            "
           >
             <input
               :id="`filter-mobile-${props.filter.code}-${option.id}`"
@@ -73,6 +68,12 @@ const toggle = () => {
               :aria-label="`${option.name} filter`"
               type="checkbox"
               class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+              @change="
+                emits('select-value', {
+                  code: props.filter.code,
+                  value: option.id,
+                })
+              "
             />
 
             <div v-if="option.media?.url">
