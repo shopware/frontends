@@ -57,6 +57,13 @@ export class HomePage extends AbstractPage {
     await this.page.waitForSelector("[data-testid='product-quantity']");
   }
 
+  async openCategoryPage() {
+    await this.page.waitForLoadState("networkidle");
+    await this.page
+      .getByRole("menuitem", { name: "Products", exact: true })
+      .click();
+  }
+
   async openRegistrationPage() {
     await this.linkToRegistrationPage.click();
     await this.page.waitForURL("**/register");

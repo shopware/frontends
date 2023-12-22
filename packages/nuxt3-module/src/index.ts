@@ -4,7 +4,7 @@
 import {
   defineNuxtModule,
   addPluginTemplate,
-  addTypeTemplate,
+  // addTypeTemplate,
 } from "@nuxt/kit";
 import { resolve } from "path";
 import { addCustomTab } from "@nuxt/devtools-kit";
@@ -33,10 +33,11 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       },
     });
 
-    addTypeTemplate({
-      filename: "shopware.d.ts",
-      src: resolve(__dirname, "../shopware.d.ts"),
-    });
+    // TODO: define template only when file is not present in root directory
+    // addTypeTemplate({
+    //   filename: "shopware.d.ts",
+    //   src: resolve(__dirname, "../shopware.d.ts"),
+    // });
 
     addCustomTab({
       name: "shopware-frontends",

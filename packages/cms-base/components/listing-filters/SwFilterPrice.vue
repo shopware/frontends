@@ -57,23 +57,23 @@ const dropdownElement = ref(null);
 onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
 
 function onMinPriceChange(newPrice: number, oldPrice: number) {
-  if (newPrice == oldPrice) return;
+  if (newPrice === oldPrice || oldPrice === 0) return;
   emits("select-value", {
     code: "min-price",
     value: newPrice,
   });
 }
-const debounceMinPriceUpdate = useDebounceFn(onMinPriceChange, 1000);
+const debounceMinPriceUpdate = useDebounceFn(onMinPriceChange, 500);
 watch(() => prices.min, debounceMinPriceUpdate);
 
 function onMaxPriceChange(newPrice: number, oldPrice: number) {
-  if (newPrice == oldPrice) return;
+  if (newPrice === oldPrice || oldPrice === 0) return;
   emits("select-value", {
     code: "max-price",
     value: newPrice,
   });
 }
-const debounceMaxPriceUpdate = useDebounceFn(onMaxPriceChange, 1000);
+const debounceMaxPriceUpdate = useDebounceFn(onMaxPriceChange, 500);
 watch(() => prices.max, debounceMaxPriceUpdate);
 </script>
 
