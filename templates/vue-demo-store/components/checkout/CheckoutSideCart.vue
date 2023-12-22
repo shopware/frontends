@@ -14,14 +14,14 @@ const { formatLink } = useInternationalization(localePath);
       <div class="flex items-start justify-between">
         <h2
           id="slide-over-title"
-          class="text-lg font-medium text-gray-900 py-0"
+          class="text-lg font-medium text-secondary-900 py-0"
         >
           Shopping cart
         </h2>
         <div class="ml-3 flex h-7 items-center">
           <button
             type="button"
-            class="-m-2 p-2 bg-transparent text-gray-400 hover:text-gray-500"
+            class="-m-2 p-2 bg-transparent text-secondary-400 hover:text-secondary-500"
             data-testid="cart-close-button"
             @click="props.controller.close"
           >
@@ -36,7 +36,7 @@ const { formatLink } = useInternationalization(localePath);
           <ul
             v-if="!isEmpty"
             role="list"
-            class="-my-6 px-0 divide-y divide-gray-200"
+            class="-my-6 px-0 divide-y divide-secondary-200"
           >
             <li
               v-for="cartItem in cartItems"
@@ -55,21 +55,23 @@ const { formatLink } = useInternationalization(localePath);
 
     <aside
       aria-label="Side Cart Links"
-      class="border-t border-gray-200 py-6 px-4 sm:px-6"
+      class="border-t border-secondary-200 py-6 px-4 sm:px-6"
     >
-      <div class="flex justify-between text-base font-medium text-gray-900">
+      <div
+        class="flex justify-between text-base font-medium text-secondary-900"
+      >
         <p>Subtotal</p>
         <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
       </div>
-      <p class="mt-0.5 text-sm text-gray-500">
+      <p class="mt-0.5 text-sm text-secondary-500">
         Shipping and taxes calculated at checkout.
       </p>
       <div class="mt-6">
         <NuxtLink
-          class="flex items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm bg-brand-primary hover:bg-brand-dark"
+          class="flex items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm bg-primary hover:bg-dark"
           :class="{
-            'bg-gray': isEmpty,
-            'hover:bg-gray': isEmpty,
+            'bg-secondary-400': isEmpty,
+            'hover:bg-secondary-400': isEmpty,
           }"
           :to="formatLink(isEmpty ? '' : '/checkout')"
           data-testid="cart-checkout-link"
@@ -78,7 +80,7 @@ const { formatLink } = useInternationalization(localePath);
         </NuxtLink>
 
         <NuxtLink
-          class="flex items-center justify-center py-3 text-sm font-medium text-brand-dark"
+          class="flex items-center justify-center py-3 text-sm font-medium text-dark"
           :to="formatLink(`/checkout/cart`)"
           data-testid="cart-checkout-shopping-cart"
           @click="props.controller.close"
@@ -86,7 +88,7 @@ const { formatLink } = useInternationalization(localePath);
           Go to shopping cart
         </NuxtLink>
       </div>
-      <div class="mt-6 flex justify-center text-center text-sm text-brand-dark">
+      <div class="mt-6 flex justify-center text-center text-sm text-dark">
         <p>
           or
           <button

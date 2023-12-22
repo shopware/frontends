@@ -15,12 +15,12 @@ const { getFormattedPrice } = usePrice();
     <div v-if="tierPrices.length <= 1">
       <SharedPrice
         v-if="isListPrice"
-        class="text-1xl text-gray-900 basis-2/6 justify-end line-through"
+        class="text-1xl text-secondary-900 basis-2/6 justify-end line-through"
         :value="price?.listPrice?.price"
       />
       <SharedPrice
         v-if="unitPrice"
-        class="text-3xl text-gray-900 basis-2/6 justify-end"
+        class="text-3xl text-secondary-900 basis-2/6 justify-end"
         :class="{
           'text-red': isListPrice,
         }"
@@ -44,7 +44,7 @@ const { getFormattedPrice } = usePrice();
             </th>
           </tr>
         </thead>
-        <tbody class="bg-white dark:bg-slate-800">
+        <tbody class="bg-white dark:bg-secondary-800">
           <tr v-for="(tierPrice, index) in tierPrices" :key="tierPrice.label">
             <td
               class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
