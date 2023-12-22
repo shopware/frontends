@@ -152,7 +152,7 @@ export type AdminSessionData = {
 };
 
 function createAuthorizationHeader(token: string) {
-  if (!token) return null;
+  if (!token) return "";
   if (token.startsWith("Bearer ")) return token;
   return `Bearer ${token}`;
 }
@@ -162,13 +162,25 @@ export function createAdminAPIClient<
   PATHS = defaultAdminPaths,
 >(params: {
   baseURL: string;
+  clientCredentials?: {
+    accessKeyId: string;
+    secretAccessKey: string;
+  };
   sessionData?: AdminSessionData;
   onAuthChange?: (params: AdminSessionData) => void;
 }) {
+  const isTokenBasedAuth =
+    !!params.clientCredentials?.accessKeyId &&
+    !!params.clientCredentials?.secretAccessKey;
+
   const sessionData: AdminSessionData = {
     accessToken: params.sessionData?.accessToken || "",
     refreshToken: params.sessionData?.refreshToken || "",
     expirationTime: Number(params.sessionData?.expirationTime || 0),
+  };
+
+  const defaultHeaders = {
+    Authorization: createAuthorizationHeader(sessionData.accessToken),
   };
 
   function updateSessionData(responseData: {
@@ -202,32 +214,44 @@ export function createAdminAPIClient<
     return { ...sessionData };
   }
 
-  const defaultHeaders = {
-    Authorization: createAuthorizationHeader(sessionData.accessToken),
-  };
-
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
     async onRequest({ request, options }) {
       const isExpired = sessionData.expirationTime <= Date.now();
-
       if (isExpired && !request.toString().includes("/oauth/token")) {
+        const body = isTokenBasedAuth
+          ? {
+              grant_type: "client_credentials",
+              client_id: params.clientCredentials?.accessKeyId,
+              client_secret: params.clientCredentials?.secretAccessKey,
+            }
+          : {
+              grant_type: "refresh_token",
+              client_id: "administration",
+              refresh_token: sessionData.refreshToken || "",
+            };
+
         // Access session expired, first we need to refresh it with refresh token
         await ofetch("/oauth/token", {
           baseURL: params.baseURL,
           method: "POST",
-          body: {
-            grant_type: "refresh_token",
-            client_id: "administration",
-            refresh_token: sessionData.refreshToken || "",
-          },
+          body,
           headers: defaultHeaders as HeadersInit,
           onResponseError({ response }) {
             // if resfesh is expired we get 401 and we're throwing it without invoking the original request
             errorInterceptor(response);
           },
           onResponse(context) {
+            if (!context.response._data) return;
+
             updateSessionData(context.response._data);
+            // pass enhanced (Authorization) headers to the next request
+            options.headers = {
+              ...options.headers,
+              Authorization: createAuthorizationHeader(
+                context.response._data.access_token,
+              ),
+            };
           },
         });
       }
