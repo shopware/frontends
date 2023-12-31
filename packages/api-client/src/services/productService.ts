@@ -2,7 +2,7 @@ import {
   getProductEndpoint,
   getProductDetailsEndpoint,
   getProductListingEndpoint,
-  getProductReviewsEndpoint,
+  getProductReviewsEndpoint, getProductCrossSellingEndpoint,
 } from "../endpoints";
 import type {
   ProductListingResult,
@@ -71,6 +71,25 @@ export async function getProduct(
   const resp = await contextInstance.invoke.post(
     getProductDetailsEndpoint(productId),
     params,
+  );
+  return resp.data;
+}
+
+/**
+ * Get the product with passed productId
+ *
+ * @throws ClientApiError
+ * @category Product
+ * @public
+ */
+export async function getProductCrossSelling(
+    productId: string,
+    params: unknown = null,
+    contextInstance: ShopwareApiInstance = defaultInstance,
+): Promise<CrossSellingResponse> {
+  const resp = await contextInstance.invoke.post(
+      getProductCrossSellingEndpoint(productId),
+      params,
   );
   return resp.data;
 }

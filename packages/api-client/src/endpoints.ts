@@ -51,6 +51,14 @@ export const getProductEndpoint = () => `/store-api/product`;
 export const getProductDetailsEndpoint = (productId: string) =>
   `/store-api/product/${productId}`;
 
+/**
+ * @nolink
+ * @category Endpoints
+ * @public
+ */
+export const getProductCrossSellingEndpoint = (productId: string) =>
+    `/store-api/product/${productId}/cross-selling`;
+
 // product-reviews
 
 /**
