@@ -21,6 +21,7 @@ Please tell us via [Community Slack](https://shopwarecommunity.slack.com/archive
 
 Sorted by date, newest first
 
+- [Create a CI/CD Pipeline for Shopware Frontends](https://kiplingi.de/create-a-ci-cd-pipeline-for-shopware-frontends/)
 - [Gross and Net-Switch for B2B and B2C Shops built with Composable Frontends](https://dev.to/shopware/gross-and-net-switch-for-b2b-and-b2c-shops-built-with-composable-frontends-2b24)
 - [Komponentenbasierte Entwicklung mit dem Shopware Frontends Framework](https://sitegeist.de/blog/e-commerce/komponentenbasierte-entwicklung-mit-dem-shopware-frontends-framework.html)
 - [Frontend API with Nuxt + Nitro = Flexibility 🐙](https://www.brocksi.net/blog/frontend-api-with-nuxt-and-nitro-will-lead-to-flexibility/)
