@@ -67,17 +67,14 @@ export default {
       />
     </div>
   </div>
-  <div class="pl-5 pb-3">
+  <template v-for="media in getMedia(lineItem)" :key="media.id">
     <div
-      v-for="media in getMedia(lineItem)"
-      :key="media.id"
-      class="cursor-pointer"
+      v-if="media.accessGranted"
+      class="flex gap-2 cursor-pointer pl-5 pb-3"
       @click="getMediaFileHandler(media.id, media.fileName)"
     >
-      <div class="flex gap-2">
-        <div class="w-5 h-5 i-carbon-result" />
-        {{ media.fileName }}
-      </div>
+      <div class="w-5 h-5 i-carbon-result" />
+      {{ media.fileName }}
     </div>
-  </div>
+  </template>
 </template>
