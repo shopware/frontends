@@ -168,12 +168,12 @@ importers:
 
   examples/blank-playground:
     dependencies:
-      '@shopware-pwa/api-client':
-        specifier: canary
-        version: link:../../packages/api-client
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
+      '@shopware/api-client':
+        specifier: canary
+        version: link:../../packages/api-client-next
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
@@ -181,9 +181,6 @@ importers:
         specifier: ^3.3.10
         version: 3.3.10(typescript@5.3.2)
     devDependencies:
-      '@shopware-pwa/types':
-        specifier: canary
-        version: link:../../packages/types
       '@types/node':
         specifier: ^20.0.0
         version: 20.8.6
@@ -3038,8 +3035,8 @@ packages:
     dev: false
     optional: true
 
-  /@intlify/bundle-utils@7.5.0(vue-i18n@9.8.0):
-    resolution: {integrity: sha512-6DymqusddBQ8kVtVBsVFFF7arNfIhuLacOmmsqayT2vl427j9m0VX12mMC+cgoVIodSpRfzYPaPTdPuJq7mK0Q==}
+  /@intlify/bundle-utils@7.4.0(vue-i18n@9.8.0):
+    resolution: {integrity: sha512-AQfjBe2HUxzyN8ignIk3WhhSuVcSuirgzOzkd17nb337rCbI4Gv/t1R60UUyIqFoFdviLb/wLcDUzTD/xXjv9w==}
     engines: {node: '>= 14.16'}
     peerDependencies:
       petite-vue-i18n: '*'
@@ -3113,8 +3110,8 @@ packages:
     engines: {node: '>= 16'}
     dev: true
 
-  /@intlify/unplugin-vue-i18n@1.6.0(rollup@3.29.4)(vue-i18n@9.8.0):
-    resolution: {integrity: sha512-IGeFNWxdEvB12E/3Y/+nmIsGeTg5okPsK1XEtUUD/DdkHbVqUbJucMpHKeHF8Px55Qca551pQCs/g+VjNUt6KA==}
+  /@intlify/unplugin-vue-i18n@1.5.0(rollup@3.29.4)(vue-i18n@9.8.0):
+    resolution: {integrity: sha512-jW0MCCdwxybxcwjEfCunAcKjVoxyO3i+cnLL6v+MNGRLUHqrpELF6zQAJUhgAK2afhY7mCliy8RxTFWKdXm26w==}
     engines: {node: '>= 14.16'}
     peerDependencies:
       petite-vue-i18n: '*'
@@ -3128,7 +3125,7 @@ packages:
       vue-i18n-bridge:
         optional: true
     dependencies:
-      '@intlify/bundle-utils': 7.5.0(vue-i18n@9.8.0)
+      '@intlify/bundle-utils': 7.4.0(vue-i18n@9.8.0)
       '@intlify/shared': 9.8.0
       '@rollup/pluginutils': 5.1.0(rollup@3.29.4)
       '@vue/compiler-sfc': 3.3.10
@@ -4372,7 +4369,7 @@ packages:
     dependencies:
       '@intlify/h3': 0.5.0
       '@intlify/shared': 9.8.0
-      '@intlify/unplugin-vue-i18n': 1.6.0(rollup@3.29.4)(vue-i18n@9.8.0)
+      '@intlify/unplugin-vue-i18n': 1.5.0(rollup@3.29.4)(vue-i18n@9.8.0)
       '@intlify/utils': 0.12.0
       '@miyaneee/rollup-plugin-json5': 1.1.2(rollup@3.29.4)
       '@nuxt/kit': 3.8.2(rollup@3.29.4)
@@ -4554,7 +4551,7 @@ packages:
       open: 8.4.0
       picocolors: 1.0.0
       tiny-glob: 0.2.9
-      tslib: 2.6.1
+      tslib: 2.6.0
     dev: true
 
   /@playwright/test@1.40.1:
@@ -15059,8 +15056,8 @@ packages:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
 
-  /pirates@4.0.6:
-    resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
+  /pirates@4.0.5:
+    resolution: {integrity: sha512-8V9+HQPupnaXMA23c5hvl69zXvTwTzyAYasnkb0Tts4XvO4CliqONMOnvlq26rkhLC3nWDFBJf73LU1e1VZLaQ==}
     engines: {node: '>= 6'}
     dev: true
 
@@ -16948,7 +16945,7 @@ packages:
       glob: 7.1.6
       lines-and-columns: 1.2.4
       mz: 2.7.0
-      pirates: 4.0.6
+      pirates: 4.0.5
       ts-interface-checker: 0.1.13
     dev: true
 
@@ -17341,7 +17338,6 @@ packages:
 
   /tslib@2.6.0:
     resolution: {integrity: sha512-7At1WUettjcSRHXCyYtTselblcHl9PJFFVKiCAy/bY97+BPZXSQ2wbq0P9s8tK2G7dFQfNnlJnPAiArVBVBsfA==}
-    dev: false
 
   /tslib@2.6.1:
     resolution: {integrity: sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==}
