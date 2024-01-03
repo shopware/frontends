@@ -1,22 +1,20 @@
 import { describe, expect, it, beforeEach, beforeAll } from "vitest";
 import { createAdminAPIClient } from ".";
 import { joinURL } from "ufo";
-import { listen, type Listener } from "listhen";
-
-import type {
-  operationPaths,
-  operations,
-} from "../admin-api-types/apiTypes-6.5.3.0.d.ts";
-
+import { listen } from "listhen";
+import type { Listener } from "listhen";
 import {
   createApp,
   toNodeListener,
   eventHandler,
   getRequestHeaders,
   getRequestURL,
-  readBody,
-  type App,
 } from "h3";
+import type { App } from "h3";
+import type {
+  operationPaths,
+  operations,
+} from "../admin-api-types/apiTypes-6.5.3.0.d.ts";
 
 const AccessKeyId = "SWSCBHFSA1GDHWWWDNFKSHLAYW";
 const SecretAccessKey = "QmZUb3RtQU1xCalydWc4MHk1ZWkwTHFpUEc2MURUQUhFVFhZRDk";
