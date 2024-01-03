@@ -18,7 +18,7 @@ const onChangeHandler = async (option: Event) => {
 <template>
   <select
     aria-label="Select language"
-    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+    class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
     @change="onChangeHandler"
   >
     <option

@@ -62,14 +62,14 @@ const invokeReset = async (): Promise<void> => {
   >
     <div class="max-w-md w-full space-y-8">
       <div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-secondary-900">
           {{ $t("resetPassword.header") }}
         </h2>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="invokeReset">
         <div
           v-if="state.error"
-          class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
+          class="text-red-600 focus:ring-primary border-secondary-300 rounded"
         >
           {{ state.error }}
         </div>
@@ -86,12 +86,12 @@ const invokeReset = async (): Promise<void> => {
               type="password"
               autocomplete="new-password"
               required
-              class="appearance-none rounded-none shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none shadow-sm relative block w-full px-3 py-2 border border-secondary-300 placeholder-secondary-500 text-secondary-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
               :placeholder="$t('form.newPasswordPlaceholder')"
             />
             <span
               v-if="$v.password.newPassword.$error"
-              class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
+              class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
               {{ $v.password.newPassword.$errors[0].$message }}
             </span>
@@ -107,12 +107,12 @@ const invokeReset = async (): Promise<void> => {
               type="password"
               autocomplete="off"
               required
-              class="appearance-none rounded-none shadow-sm relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none shadow-sm relative block w-full px-3 py-2 border border-secondary-300 placeholder-secondary-500 text-secondary-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
               :placeholder="$t('form.repeatPasswordPlaceholder')"
             />
             <span
               v-if="$v.password.newPasswordConfirm.$error"
-              class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
+              class="text-red-600 focus:ring-primary border-secondary-300 rounded"
             >
               {{ $v.password.newPasswordConfirm.$errors[0].$message }}
             </span>
@@ -121,7 +121,7 @@ const invokeReset = async (): Promise<void> => {
 
         <div>
           <button
-            class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+            class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary"
             type="submit"
           >
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">

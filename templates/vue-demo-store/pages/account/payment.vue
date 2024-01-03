@@ -60,10 +60,10 @@ onMounted(async () => {
 <template>
   <div class="container mx-auto my-8">
     <fieldset class="mt-6">
-      <legend class="contents text-2xl font-medium text-gray-900">
+      <legend class="contents text-2xl font-medium text-secondary-900">
         <h1 class="border-b pb-3">{{ $t("account.paymentMethodHeader") }}</h1>
       </legend>
-      <p class="text-sm text-gray-500 mt-3">
+      <p class="text-sm text-secondary-500 mt-3">
         {{ $t("account.selectDefaultPaymentLabel") }}:
       </p>
       <form
@@ -75,10 +75,10 @@ onMounted(async () => {
           <div
             class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
           >
-            <div class="w-4 bg-gray-300 h-4 rounded-full" />
+            <div class="w-4 bg-secondary-300 h-4 rounded-full" />
             <div class="flex flex-col space-y-3">
-              <div class="w-36 bg-gray-300 h-6 rounded-md" />
-              <div class="w-24 bg-gray-300 h-6 rounded-md" />
+              <div class="w-36 bg-secondary-300 h-6 rounded-md" />
+              <div class="w-24 bg-secondary-300 h-6 rounded-md" />
             </div>
           </div>
         </div>
@@ -95,18 +95,18 @@ onMounted(async () => {
               :checked="selectedPaymentMethod?.id === paymentMethod.id"
               name="payment-method"
               type="radio"
-              class="focus:ring-brand-light h-4 w-4 text-brand-primary border-gray-300"
+              class="focus:ring-brand-light h-4 w-4 text-primary border-secondary-300"
               data-testid="account-payment-checkbox"
             />
             <label
               :for="paymentMethod.id"
-              class="ml-3 block text-sm font-medium text-gray-700"
+              class="ml-3 block text-sm font-medium text-secondary-700"
             >
               {{ paymentMethod.translated?.name }}
             </label>
           </div>
           <button
-            class="group relative justify-center py-2 px-4 my-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
+            class="group relative justify-center py-2 px-4 my-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
             type="submit"
             data-testid="account-payment-submit-button"
           >

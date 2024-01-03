@@ -100,7 +100,7 @@ export default defineNuxtConfig({
   router: {
     options: {
       linkActiveClass: "link-active",
-      linkExactActiveClass: "link-exact-active text-brand-primary",
+      linkExactActiveClass: "link-exact-active text-primary",
     },
   },
   i18n: {

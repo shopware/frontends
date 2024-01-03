@@ -34,7 +34,7 @@ const getDocumentDate = (documentDate: Date | string) =>
         class="cursor-pointer"
         @click="() => getMediaFileHandler(document)"
       >
-        <span class="text-brand-dark">{{
+        <span class="text-dark">{{
           document.config.title || document.config.name
         }}</span>
         ({{

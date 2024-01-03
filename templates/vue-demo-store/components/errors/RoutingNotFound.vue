@@ -10,7 +10,7 @@ const { formatLink } = useInternationalization(localePath);
       {{ $t("pageNotFound.text") }}
     </p>
     <NuxtLink
-      class="inline-flex justify-center items-center py-2 px-4 text-base font-medium text-center text-white bg-brand-primary rounded-lg hover:bg-gray-400"
+      class="inline-flex justify-center items-center py-2 px-4 text-base font-medium text-center text-white bg-primary rounded-lg hover:bg-secondary-400"
       :to="formatLink(`/`)"
     >
       {{ $t("backToHomepage") }}

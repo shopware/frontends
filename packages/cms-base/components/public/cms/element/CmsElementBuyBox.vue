@@ -94,18 +94,18 @@ const restockTime = computed(() => product.value?.restockTime);
       <div v-if="tierPrices.length <= 1">
         <SwSharedPrice
           v-if="isListPrice"
-          class="text-1xl text-gray-900 basis-2/6 justify-start line-through"
+          class="text-1xl text-secondary-900 basis-2/6 justify-start line-through"
           :value="price?.listPrice?.price"
         />
         <SwSharedPrice
           v-if="unitPrice"
-          class="text-3xl text-gray-900 basis-2/6 justify-start"
+          class="text-3xl text-secondary-900 basis-2/6 justify-start"
           :class="{
             'text-red': isListPrice,
           }"
           :value="unitPrice"
         />
-        <div class="text-xs flex text-gray-500" v-if="regulationPrice">
+        <div class="text-xs flex text-secondary-500" v-if="regulationPrice">
           {{ translations.product.previously }}
           <SwSharedPrice class="ml-1" :value="regulationPrice" />
         </div>
@@ -115,22 +115,22 @@ const restockTime = computed(() => product.value?.restockTime);
           <thead>
             <tr>
               <th
-                class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
+                class="border-b dark:border-secondary-600 font-medium p-4 pl-8 pt-0 pb-3 text-secondary-600 dark:text-secondary-200 text-left"
               >
                 {{ translations.product.amount }}
               </th>
 
               <th
-                class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
+                class="border-b dark:border-secondary-600 font-medium p-4 pr-8 pt-0 pb-3 text-secondary-600 dark:text-secondary-200 text-left"
               >
                 {{ translations.product.price }}
               </th>
             </tr>
           </thead>
-          <tbody class="bg-white dark:bg-slate-800">
+          <tbody class="bg-white dark:bg-secondary-800">
             <tr v-for="(tierPrice, index) in tierPrices" :key="tierPrice.label">
               <td
-                class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
+                class="border-b border-secondary-100 dark:border-secondary-700 p-4 pl-8 font-medium text-secondary-500 dark:text-secondary-400"
               >
                 <span v-if="index < tierPrices.length - 1">{{
                   translations.product.to
@@ -139,7 +139,7 @@ const restockTime = computed(() => product.value?.restockTime);
                 {{ tierPrice.quantity }}
               </td>
               <td
-                class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 font-medium text-current-500 dark:text-slate-400"
+                class="border-b border-secondary-100 dark:border-secondary-700 p-4 pr-8 font-medium text-current-500 dark:text-secondary-400"
               >
                 {{ getFormattedPrice(tierPrice.unitPrice) }}
               </td>
@@ -177,7 +177,7 @@ const restockTime = computed(() => product.value?.restockTime);
     <SwVariantConfigurator @change="changeVariant" />
     <SwProductAddToCart :product="product" />
     <div class="mt-3 product-detail-ordernumber-container">
-      <span class="font-bold text-gray-900">
+      <span class="font-bold text-secondary-900">
         {{ translations.product.productNumber }}:
       </span>
       <span>

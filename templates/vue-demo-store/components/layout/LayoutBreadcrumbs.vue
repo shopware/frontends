@@ -12,7 +12,7 @@ const { formatLink } = useInternationalization(localePath);
       <li class="inline-flex items-center">
         <NuxtLink
           :to="formatLink(`/`)"
-          class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+          class="inline-flex items-center text-sm font-medium text-secondary-700 hover:text-secondary-900 dark:text-secondary-400 dark:hover:text-white"
         >
           <div class="w-5 h-5 i-carbon-home mr-2" />
           {{ $t("home") }}
@@ -27,13 +27,13 @@ const { formatLink } = useInternationalization(localePath);
         <NuxtLink
           v-if="breadcrumb.path"
           :to="formatLink(breadcrumb.path)"
-          class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+          class="inline-flex items-center text-sm font-medium text-secondary-700 hover:text-secondary-900 dark:text-secondary-400 dark:hover:text-white"
         >
           {{ breadcrumb.name }}
         </NuxtLink>
         <span
           v-else
-          class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-400 dark:hover:text-white"
+          class="inline-flex items-center text-sm font-medium text-secondary-700 dark:text-secondary-400 dark:hover:text-white"
         >
           {{ breadcrumb.name }}
         </span>
