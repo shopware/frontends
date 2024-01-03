@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.1.24",
-    "@nuxtjs/i18n": "8.0.0-rc.4",
+    "@nuxtjs/i18n": "8.0.0-rc.11",
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-vue": "^9.19.2",

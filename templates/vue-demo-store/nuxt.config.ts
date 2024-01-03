@@ -100,7 +100,7 @@ export default defineNuxtConfig({
   router: {
     options: {
       linkActiveClass: "link-active",
-      linkExactActiveClass: "link-exact-active text-brand-primary",
+      linkExactActiveClass: "link-exact-active text-primary",
     },
   },
   i18n: {
@@ -109,9 +109,6 @@ export default defineNuxtConfig({
     detectBrowserLanguage: false,
     langDir: "./i18n/src/langs/",
     vueI18n: "./i18n/config",
-    compilation: {
-      jit: false,
-    },
     locales: [
       {
         code: "en-GB",
@@ -129,8 +126,5 @@ export default defineNuxtConfig({
         file: "de-DE.ts",
       },
     ],
-    experimental: {
-      jsTsFormatResource: true,
-    },
   },
 });

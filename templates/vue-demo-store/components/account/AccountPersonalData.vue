@@ -123,7 +123,7 @@ onBeforeMount(async () => {
 </script>
 <template>
   <div class="space-y-8">
-    <div class="text-sm text-gray-500">
+    <div class="text-sm text-secondary-500">
       <div>
         {{ $t("account.personalData.infoBox") }}
       </div>
@@ -144,7 +144,7 @@ onBeforeMount(async () => {
       </div>
       <div
         v-if="errorMessages.length"
-        class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
+        class="text-red-600 focus:ring-primary border-secondary-300 rounded"
       >
         {{ errorMessages }}
       </div>
@@ -152,7 +152,7 @@ onBeforeMount(async () => {
         <div>
           <label
             for="firstname"
-            class="block mb-2 text-sm font-medium text-gray-500"
+            class="block mb-2 text-sm font-medium text-secondary-500"
           >
             {{ $t("form.firstName") }}
           </label>
@@ -163,7 +163,7 @@ onBeforeMount(async () => {
             type="text"
             autocomplete="on"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
             :placeholder="$t('form.firstNamePlaceholder')"
             data-testid="account-personal-data-firstname-input"
             :disabled="loadingData"
@@ -171,7 +171,7 @@ onBeforeMount(async () => {
           />
           <span
             v-if="$v.firstName.$error"
-            class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
+            class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.firstName.$errors[0].$message }}
           </span>
@@ -179,7 +179,7 @@ onBeforeMount(async () => {
         <div>
           <label
             for="lastname"
-            class="block mb-2 text-sm font-medium text-gray-500"
+            class="block mb-2 text-sm font-medium text-secondary-500"
           >
             {{ $t("form.lastName") }}
           </label>
@@ -190,7 +190,7 @@ onBeforeMount(async () => {
             type="text"
             autocomplete="on"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
             :placeholder="$t('form.lastNamePlaceholder')"
             data-testid="account-personal-data-lastname-input"
             :disabled="loadingData"
@@ -198,7 +198,7 @@ onBeforeMount(async () => {
           />
           <span
             v-if="$v.lastName.$error"
-            class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
+            class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.lastName.$errors[0].$message }}
           </span>
@@ -206,7 +206,7 @@ onBeforeMount(async () => {
         <div>
           <label
             for="email"
-            class="block mb-2 text-sm font-medium text-gray-500"
+            class="block mb-2 text-sm font-medium text-secondary-500"
           >
             {{ $t("form.email") }}
           </label>
@@ -217,7 +217,7 @@ onBeforeMount(async () => {
             type="email"
             autocomplete="email"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
             :placeholder="$t('form.emailPlaceholder')"
             data-testid="account-personal-data-email-input"
             :disabled="loadingData"
@@ -225,7 +225,7 @@ onBeforeMount(async () => {
           />
           <span
             v-if="$v.email.$error"
-            class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
+            class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.email.$errors[0].$message }}
           </span>
@@ -233,7 +233,7 @@ onBeforeMount(async () => {
         <div v-if="isEmailChanging">
           <label
             for="email-confirm"
-            class="block mb-2 text-sm font-medium text-gray-500"
+            class="block mb-2 text-sm font-medium text-secondary-500"
           >
             {{ $t("form.confirmEmail") }}
           </label>
@@ -244,7 +244,7 @@ onBeforeMount(async () => {
             type="email"
             autocomplete="email-confirm"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
             :placeholder="$t('form.emailPlaceholder')"
             data-testid="account-personal-data-email-confirmation-input"
             :disabled="loadingData"
@@ -252,7 +252,7 @@ onBeforeMount(async () => {
           />
           <span
             v-if="$v.emailConfirmation.$error"
-            class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
+            class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.emailConfirmation.$errors[0].$message }}
           </span>
@@ -260,7 +260,7 @@ onBeforeMount(async () => {
         <div v-if="isEmailChanging">
           <label
             for="password"
-            class="block mb-2 text-sm font-medium text-gray-500"
+            class="block mb-2 text-sm font-medium text-secondary-500"
           >
             {{ $t("form.password") }}
           </label>
@@ -271,7 +271,7 @@ onBeforeMount(async () => {
             type="password"
             autocomplete="password"
             required
-            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+            class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"
             data-testid="account-personal-data-password-input"
             :disabled="loadingData"
@@ -279,7 +279,7 @@ onBeforeMount(async () => {
           />
           <span
             v-if="$v.password.$error"
-            class="text-red-600 focus:ring-brand-primary border-gray-300 rounded"
+            class="text-red-600 focus:ring-primary border-secondary-300 rounded"
           >
             {{ $v.password.$errors[0].$message }}
           </span>
@@ -288,7 +288,7 @@ onBeforeMount(async () => {
 
       <div>
         <button
-          class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+          class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary"
           type="submit"
           data-testid="account-personal-data-submit-button"
         >

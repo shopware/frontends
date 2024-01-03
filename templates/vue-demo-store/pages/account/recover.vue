@@ -24,18 +24,18 @@ useBreadcrumbs([
     <AccountRecoverPassword>
       <template #action>
         <div class="text-center space-y-2">
-          <p class="py-2 px-4 text-lg text-brand-primary">
+          <p class="py-2 px-4 text-lg text-primary">
             {{ $t("recoveryPassword.label") }}
           </p>
           <NuxtLink
             :to="formatLink(`/register`)"
-            class="text-sm font-medium px-4 text-gray-600 focus:outline-none underline"
+            class="text-sm font-medium px-4 text-secondary-600 focus:outline-none underline"
           >
             {{ $t("recoveryPassword.register") }}
           </NuxtLink>
           <NuxtLink
             :to="formatLink(`/login`)"
-            class="flex justify-center align-center text-sm font-medium text-gray-600 py-2 px-4 focus:outline-none underline"
+            class="flex justify-center align-center text-sm font-medium text-secondary-600 py-2 px-4 focus:outline-none underline"
           >
             {{ $t("recoveryPassword.orLogin") }}
           </NuxtLink>

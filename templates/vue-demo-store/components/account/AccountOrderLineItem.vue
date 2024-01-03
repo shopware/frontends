@@ -25,9 +25,11 @@ export default {
 
 <template>
   <div
-    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-3 sm:gap-y-10 gap-x-6 py-4 border-t border-gray-200 text-gray-400 sm:items-center"
+    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-3 sm:gap-y-10 gap-x-6 py-4 border-t border-secondary-200 text-secondary-400 sm:items-center"
   >
-    <div class="sm:flex items-center sm:items-start col-span-2 text-gray-900">
+    <div
+      class="sm:flex items-center sm:items-start col-span-2 text-secondary-900"
+    >
       <div
         v-if="lineItem.type == 'product'"
         class="w-full sm:h-24 sm:w-24 flex-shrink-0 overflow-hidden rounded-md mr-2"
@@ -51,7 +53,7 @@ export default {
       <div class="sm:hidden">{{ $t("account.order.price") }}</div>
       <SharedPrice
         :value="lineItem.unitPrice"
-        class="text-gray-600 font-normal"
+        class="text-secondary-600 font-normal"
         data-testid="order-item-unitprice"
       />
     </div>
@@ -62,22 +64,19 @@ export default {
       <div class="sm:hidden">{{ $t("account.order.subtotal") }}</div>
       <SharedPrice
         :value="lineItem.totalPrice"
-        class="text-gray-600 font-normal"
+        class="text-secondary-600 font-normal"
         data-testid="order-item-totalprice"
       />
     </div>
   </div>
-  <div class="pl-5 pb-3">
+  <template v-for="media in getMedia(lineItem)" :key="media.id">
     <div
-      v-for="media in getMedia(lineItem)"
-      :key="media.id"
-      class="cursor-pointer"
+      v-if="media.accessGranted"
+      class="flex gap-2 cursor-pointer pl-5 pb-3"
       @click="getMediaFileHandler(media.id, media.fileName)"
     >
-      <div class="flex gap-2">
-        <div class="w-5 h-5 i-carbon-result" />
-        {{ media.fileName }}
-      </div>
+      <div class="w-5 h-5 i-carbon-result" />
+      {{ media.fileName }}
     </div>
-  </div>
+  </template>
 </template>

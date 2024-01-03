@@ -1,6 +1,7 @@
 type ProductMedia = {
   id: string;
   fileName: string;
+  accessGranted: boolean;
 };
 
 /**
@@ -15,6 +16,7 @@ export function getMedia<
   T extends {
     downloads?: Array<{
       id: string;
+      accessGranted: boolean;
       media: {
         fileName: string;
         fileExtension: string;
@@ -27,6 +29,7 @@ export function getMedia<
       acc.push({
         id: current.id,
         fileName: `${current.media.fileName}.${current.media.fileExtension}`,
+        accessGranted: current.accessGranted,
       });
       return acc;
     }, []) || []

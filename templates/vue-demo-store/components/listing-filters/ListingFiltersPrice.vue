@@ -68,14 +68,14 @@ watch(() => prices.max, debounceMaxPriceUpdate);
 </script>
 
 <template>
-  <div class="border-b border-gray-200 py-6 px-5">
+  <div class="border-b border-secondary-200 py-6 px-5">
     <h3 class="-my-3 flow-root">
       <button
         type="button"
-        class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
+        class="flex w-full items-center justify-between bg-white py-2 text-base text-secondary-400 hover:text-secondary-500"
         @click="toggle"
       >
-        <span class="font-medium text-gray-900 text-left">{{
+        <span class="font-medium text-secondary-900 text-left">{{
           props.filter.label
         }}</span>
         <span class="ml-6 flex items-center">
@@ -95,7 +95,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
         <div class="mt-2 flex">
           <div class="w-1/2 flex rounded-md mr-4">
             <span
-              class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
+              class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-secondary-300 bg-secondary-50 text-secondary-500 text-sm"
             >
               {{ translations.listing.min }}
             </span>
@@ -104,13 +104,13 @@ watch(() => prices.max, debounceMaxPriceUpdate);
               v-model="prices.min"
               type="number"
               name="min-price"
-              class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-gray-300"
+              class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-secondary-300"
               :placeholder="prices.min?.toString()"
             />
           </div>
           <div class="w-1/2 flex rounded-md">
             <span
-              class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
+              class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-secondary-300 bg-secondary-50 text-secondary-500 text-sm"
             >
               {{ translations.listing.max }}
             </span>
@@ -119,7 +119,7 @@ watch(() => prices.max, debounceMaxPriceUpdate);
               v-model="prices.max"
               type="number"
               name="max-price"
-              class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-gray-300"
+              class="pl-2 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border border-secondary-300"
               :placeholder="prices.max?.toString()"
             />
           </div>
