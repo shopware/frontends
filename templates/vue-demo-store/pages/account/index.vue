@@ -87,7 +87,7 @@ onBeforeMount(async () => {
         <p>{{ user?.email }}</p>
         <div class="mt-5">
           <NuxtLink
-            class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
+            class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary mt-auto"
             data-testid="my-account-change-profile-button"
             :to="formatLink(`/account/profile`)"
           >
@@ -105,7 +105,7 @@ onBeforeMount(async () => {
         <p>{{ userDefaultPaymentMethod?.description }}</p>
         <div class="mt-5">
           <NuxtLink
-            class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
+            class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary mt-auto"
             data-testid="my-account-change-payment-method-button"
             :to="formatLink(`/account/payment`)"
           >
@@ -132,7 +132,7 @@ onBeforeMount(async () => {
           v-model="newsletter"
           name="newsletter-checkbox"
           type="checkbox"
-          class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+          class="h-4 w-4 border-secondary-300 rounded text-indigo-600 focus:ring-indigo-500"
           @click="updateNewsletterStatus"
         />
         <label for="newsletter-checkbox" class="pl-5 text-base mt--1">
@@ -156,7 +156,7 @@ onBeforeMount(async () => {
         />
         <div class="mt-5">
           <NuxtLink
-            class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
+            class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary mt-auto"
             data-testid="my-account-change-default-billing-address-button"
             :to="formatLink(`/account/address`)"
           >
@@ -179,7 +179,7 @@ onBeforeMount(async () => {
         />
         <div class="mt-5">
           <NuxtLink
-            class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary mt-auto"
+            class="justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary mt-auto"
             data-testid="my-account-change-default-shipping-address-button"
             :to="formatLink(`/account/address`)"
           >

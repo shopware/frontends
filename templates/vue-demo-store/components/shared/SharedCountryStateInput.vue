@@ -34,16 +34,18 @@ function onCountrySelectChanged() {
 <template>
   <div class="flex gap-6">
     <div class="w-full">
-      <label for="country" class="block text-sm font-medium text-gray-700">{{
-        $t("form.country")
-      }}</label>
+      <label
+        for="country"
+        class="block text-sm font-medium text-secondary-700"
+        >{{ $t("form.country") }}</label
+      >
       <select
         id="country"
         v-model="countryId"
         required
         name="country"
         autocomplete="country-name"
-        class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+        class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
         data-testid="country-select"
         @change="onCountrySelectChanged"
         @blur="countryIdValidation?.$touch()"
@@ -61,13 +63,13 @@ function onCountrySelectChanged() {
       </select>
       <span
         v-if="countryIdValidation?.$error"
-        class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+        class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
       >
         {{ countryIdValidation.$errors[0].$message }}
       </span>
     </div>
     <div v-if="states && states.length" class="w-full">
-      <label for="state" class="block text-sm font-medium text-gray-700">{{
+      <label for="state" class="block text-sm font-medium text-secondary-700">{{
         $t("form.state")
       }}</label>
       <select
@@ -76,7 +78,7 @@ function onCountrySelectChanged() {
         required
         name="state"
         autocomplete="off"
-        class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+        class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
         data-testid="checkout-pi-state-input"
         @blur="stateIdValidation?.$touch()"
       >
@@ -90,7 +92,7 @@ function onCountrySelectChanged() {
       </select>
       <span
         v-if="stateIdValidation?.$error"
-        class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+        class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
       >
         {{ stateIdValidation.$errors[0].$message }}
       </span>

@@ -10,7 +10,9 @@ const sidebarController = useModal();
 <template>
   <header class="relative bg-white" aria-label="top-navigation">
     <div class="mx-auto px-4 sm:px-6">
-      <div class="flex items-center border-b-2 border-gray-100 py-6 space-x-4">
+      <div
+        class="flex items-center border-b-2 border-secondary-100 py-6 space-x-4"
+      >
         <div class="flex justify-start items-center min-w-10 lg:min-w-12">
           <div class="order-2 lg:order-1 ml-4 lg:ml-0">
             <NuxtLink :to="formatLink(`/`)">
@@ -46,7 +48,7 @@ const sidebarController = useModal();
               :to="formatLink(`/wishlist`)"
             >
               <div
-                class="w-7 h-7 i-carbon-favorite text-gray-600 hover:text-brand-primary hover:animate-count-infinite hover:animate-heart-beat"
+                class="w-7 h-7 i-carbon-favorite text-secondary-600 hover:text-primary hover:animate-count-infinite hover:animate-heart-beat"
               />
               <span
                 v-if="wishlistCount > 0"
@@ -66,11 +68,11 @@ const sidebarController = useModal();
             >
               <!-- Heroicon name: outline/shopping-bag -->
               <div
-                class="w-7 h-7 i-carbon-shopping-bag text-gray-600 hover:text-brand-primary"
+                class="w-7 h-7 i-carbon-shopping-bag text-secondary-600 hover:text-primary"
               />
               <span
                 v-if="count > 0"
-                class="text-3 font-sm text-white absolute bg-blue-600 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
+                class="text-3 font-sm text-white absolute bg-primary-600 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
               >
                 {{ count || "" }}
               </span>

@@ -80,7 +80,7 @@ useFocus(firstNameInputElement, { initialValue: true });
             <div class="col-span-6 sm:col-span-6">
               <label
                 for="country"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.salutation") }}
               </label>
@@ -90,7 +90,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 required
                 name="salutation"
                 autocomplete="salutation-name"
-                class="mt-1 block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-light focus:border-brand-light sm:text-sm"
+                class="mt-1 block w-full py-2.5 px-3 border border-secondary-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-light focus:border-light sm:text-sm"
                 data-testid="account-address-form-salutation-select"
               >
                 <option
@@ -106,7 +106,7 @@ useFocus(firstNameInputElement, { initialValue: true });
             <div class="col-span-6 sm:col-span-3">
               <label
                 for="first-name"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.firstName") }}
               </label>
@@ -117,7 +117,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 type="text"
                 required
                 name="first-name"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-firstname-input"
               />
             </div>
@@ -125,7 +125,7 @@ useFocus(firstNameInputElement, { initialValue: true });
             <div class="col-span-6 sm:col-span-3">
               <label
                 for="last-name"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.lastName") }}
               </label>
@@ -135,7 +135,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 type="text"
                 required
                 name="last-name"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-lastname-input"
               />
             </div>
@@ -147,7 +147,7 @@ useFocus(firstNameInputElement, { initialValue: true });
             <div class="col-span-6">
               <label
                 for="street-address"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.streetAddress") }}
               </label>
@@ -158,7 +158,7 @@ useFocus(firstNameInputElement, { initialValue: true });
                 required
                 name="street-address"
                 autocomplete="street-address"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-street-input"
               />
             </div>
@@ -166,7 +166,7 @@ useFocus(firstNameInputElement, { initialValue: true });
             <div class="col-span-6 sm:col-span-6 lg:col-span-4">
               <label
                 for="city"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.city") }}
               </label>
@@ -177,14 +177,14 @@ useFocus(firstNameInputElement, { initialValue: true });
                 required
                 name="city"
                 autocomplete="address-level2"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-city-input"
               />
             </div>
             <div class="col-span-6 sm:col-span-3 lg:col-span-2">
               <label
                 for="postal-code"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.postalCode") }}
               </label>
@@ -195,16 +195,16 @@ useFocus(firstNameInputElement, { initialValue: true });
                 required
                 name="postal-code"
                 autocomplete="postal-code"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-postal-code-input"
               />
             </div>
           </div>
         </div>
-        <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+        <div class="px-4 py-3 bg-secondary-50 text-right sm:px-6">
           <button
             type="submit"
-            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-light"
+            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-light"
             data-testid="account-address-form-submit-button"
             @click.stop.prevent="invokeSave"
           >

@@ -17,7 +17,7 @@ const gridColumns = computed<number>(() =>
 
 <template>
   <footer class="px-4 sm:px-6 mt-2 lg:mt-8">
-    <menu class="border-t-2 border-gray-100 flex justify-center">
+    <menu class="border-t-2 border-secondary-100 flex justify-center">
       <div
         class="py-10 w-full max-w-screen-xl"
         :class="`grid grid-cols-2 md:grid-cols-${gridColumns}`"
@@ -53,7 +53,7 @@ const gridColumns = computed<number>(() =>
                       : ''
                   "
                   :to="formatLink(getCategoryRoute(navigationChild))"
-                  class="text-base font-normal text-gray-500 hover:text-gray-900"
+                  class="text-base font-normal text-secondary-500 hover:text-secondary-900"
                 >
                   {{ getTranslatedProperty(navigationChild, "name") }}
                 </NuxtLink>
@@ -66,14 +66,14 @@ const gridColumns = computed<number>(() =>
             <li class="pb-1">
               <a
                 href="mailto:info@shopware.com"
-                class="text-base font-medium text-gray-500 hover:text-gray-900"
+                class="text-base font-medium text-secondary-500 hover:text-secondary-900"
                 >info@shopware.com</a
               >
             </li>
             <li class="pb-1">
               <a
                 href="tel:0080074676260"
-                class="text-base font-medium text-gray-500 hover:text-gray-900"
+                class="text-base font-medium text-secondary-500 hover:text-secondary-900"
               >
                 Worldwide: 00 800 746 7626 0
               </a>

@@ -287,10 +287,10 @@ const addAddressModalController = useModal();
         <div class="md:col-span-1">
           <div class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8">
             <div>
-              <h3 class="text-lg font-medium text-gray-900 m-0">
+              <h3 class="text-lg font-medium text-secondary-900 m-0">
                 {{ $t("checkout.personalInformationLabel") }}
               </h3>
-              <div class="text-sm text-gray-600">
+              <div class="text-sm text-secondary-600">
                 {{ $t("checkout.personalInformationInfo") }}
               </div>
             </div>
@@ -318,19 +318,21 @@ const addAddressModalController = useModal();
                 {{ $t("checkout.register") }} {{ $t("checkout.or") }}
                 <a
                   href="#"
-                  class="whitespace-nowrap font-medium text-brand-primary hover:text-brand-dark"
+                  class="whitespace-nowrap font-medium text-primary hover:text-dark"
                   data-testid="checkout-sign-in-link"
                   @click="loginModalController.open"
                 >
                   {{ $t("checkout.signIn") }}
                 </a>
-                <p class="text-gray-500">{{ $t("checkout.signInToOrder") }}</p>
+                <p class="text-secondary-500">
+                  {{ $t("checkout.signInToOrder") }}
+                </p>
               </div>
               <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6">
                   <label
                     for="salutation"
-                    class="block text-sm font-medium text-gray-700"
+                    class="block text-sm font-medium text-secondary-700"
                     >{{ $t("form.salutation") }}</label
                   >
                   <select
@@ -339,7 +341,7 @@ const addAddressModalController = useModal();
                     required
                     name="salutation"
                     autocomplete="on"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                    class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                     data-testid="checkout-pi-salutation-select"
                     @blur="$v.salutationId.$touch()"
                   >
@@ -356,7 +358,7 @@ const addAddressModalController = useModal();
                   </select>
                   <span
                     v-if="$v.salutationId.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                    class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.salutationId.$errors[0].$message }}
                   </span>
@@ -364,7 +366,7 @@ const addAddressModalController = useModal();
                 <div class="col-span-6 sm:col-span-3">
                   <label
                     for="first-name"
-                    class="block text-sm font-medium text-gray-700"
+                    class="block text-sm font-medium text-secondary-700"
                     >{{ $t("form.firstName") }}</label
                   >
                   <input
@@ -374,13 +376,13 @@ const addAddressModalController = useModal();
                     required
                     name="first-name"
                     :placeholder="$t('form.firstNamePlaceholder')"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                    class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                     data-testid="checkout-pi-first-name-input"
                     @blur="$v.firstName.$touch()"
                   />
                   <span
                     v-if="$v.firstName.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                    class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.firstName.$errors[0].$message }}
                   </span>
@@ -389,7 +391,7 @@ const addAddressModalController = useModal();
                 <div class="col-span-6 sm:col-span-3">
                   <label
                     for="last-name"
-                    class="block text-sm font-medium text-gray-700"
+                    class="block text-sm font-medium text-secondary-700"
                     >{{ $t("form.lastName") }}</label
                   >
                   <input
@@ -399,13 +401,13 @@ const addAddressModalController = useModal();
                     required
                     name="last-name"
                     :placeholder="$t('form.lastNamePlaceholder')"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                    class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                     data-testid="checkout-pi-last-name-input"
                     @blur="$v.lastName.$touch()"
                   />
                   <span
                     v-if="$v.lastName.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                    class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.lastName.$errors[0].$message }}
                   </span>
@@ -418,11 +420,11 @@ const addAddressModalController = useModal();
                       v-model="state.guest"
                       type="checkbox"
                       data-testid="checkout-create-account-checkbox"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      class="w-4 h-4 text-blue-600 bg-secondary-100 rounded border-secondary-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-secondary-800 focus:ring-2 dark:bg-secondary-700 dark:border-secondary-600"
                     />
                     <label
                       for="create-account"
-                      class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                      class="ml-2 text-sm font-medium text-secondary-700 dark:text-secondary-300"
                       >{{ $t("checkout.notCreateAccount") }}</label
                     >
                   </div>
@@ -431,7 +433,7 @@ const addAddressModalController = useModal();
                 <div class="col-span-6 sm:col-span-3">
                   <label
                     for="email-address"
-                    class="block text-sm font-medium text-gray-700"
+                    class="block text-sm font-medium text-secondary-700"
                     >{{ $t("form.email") }}</label
                   >
                   <input
@@ -442,13 +444,13 @@ const addAddressModalController = useModal();
                     name="email-address"
                     :placeholder="$t('form.emailPlaceholder')"
                     autocomplete="off"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                    class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                     data-testid="checkout-pi-email-input"
                     @blur="$v.email.$touch()"
                   />
                   <span
                     v-if="$v.email.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                    class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.email.$errors[0].$message }}
                   </span>
@@ -457,7 +459,7 @@ const addAddressModalController = useModal();
                   <div v-if="!state.guest">
                     <label
                       for="password"
-                      class="block text-sm font-medium text-gray-700"
+                      class="block text-sm font-medium text-secondary-700"
                       >{{ $t("form.password") }}</label
                     >
                     <input
@@ -467,12 +469,12 @@ const addAddressModalController = useModal();
                       type="password"
                       name="password"
                       :placeholder="$t('form.passwordPlaceholder')"
-                      class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                      class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                       @blur="$v.password.$touch()"
                     />
                     <span
                       v-if="$v.password.$error"
-                      class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                      class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                     >
                       {{ $v.password.$errors[0].$message }}
                     </span>
@@ -482,7 +484,7 @@ const addAddressModalController = useModal();
                 <div class="col-span-6">
                   <label
                     for="street-address"
-                    class="block text-sm font-medium text-gray-700"
+                    class="block text-sm font-medium text-secondary-700"
                     >{{ $t("form.streetAddress") }}</label
                   >
                   <input
@@ -493,13 +495,13 @@ const addAddressModalController = useModal();
                     name="street-address"
                     :placeholder="$t('form.streetPlaceholder')"
                     autocomplete="street-address"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                    class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                     data-testid="checkout-pi-street-address-input"
                     @blur="$v.billingAddress.street.$touch()"
                   />
                   <span
                     v-if="$v.billingAddress.street.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                    class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.billingAddress.street.$errors[0].$message }}
                   </span>
@@ -508,7 +510,7 @@ const addAddressModalController = useModal();
                 <div class="col-span-6 sm:col-span-3">
                   <label
                     for="postal-code"
-                    class="block text-sm font-medium text-gray-700"
+                    class="block text-sm font-medium text-secondary-700"
                     >{{ $t("form.postalCode") }}</label
                   >
                   <input
@@ -519,13 +521,13 @@ const addAddressModalController = useModal();
                     name="postal-code"
                     :placeholder="$t('form.postalCodePlaceholder')"
                     autocomplete="postal-code"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                    class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                     data-testid="checkout-pi-zip-code-input"
                     @blur="$v.billingAddress.zipcode.$touch()"
                   />
                   <span
                     v-if="$v.billingAddress.zipcode.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                    class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.billingAddress.zipcode.$errors[0].$message }}
                   </span>
@@ -533,7 +535,7 @@ const addAddressModalController = useModal();
                 <div class="col-span-6 sm:col-span-3">
                   <label
                     for="city"
-                    class="block text-sm font-medium text-gray-700"
+                    class="block text-sm font-medium text-secondary-700"
                     >{{ $t("form.city") }}</label
                   >
                   <input
@@ -544,13 +546,13 @@ const addAddressModalController = useModal();
                     name="city"
                     :placeholder="$t('form.cityPlaceholder')"
                     autocomplete="address-level2"
-                    class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                    class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                     data-testid="checkout-pi-city-input"
                     @blur="$v.billingAddress.city.$touch()"
                   />
                   <span
                     v-if="$v.billingAddress.city.$error"
-                    class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                    class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
                   >
                     {{ $v.billingAddress.city.$errors[0].$message }}
                   </span>
@@ -565,7 +567,7 @@ const addAddressModalController = useModal();
               </div>
               <button
                 type="submit"
-                class="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                class="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary"
                 data-testid="checkout-pi-submit-button"
               >
                 {{ $t("form.save") }}
@@ -575,12 +577,12 @@ const addAddressModalController = useModal();
               {{ $t("checkout.loggedInAs") }} {{ user?.firstName }}.
               <span
                 v-if="isGuestSession"
-                class="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+                class="bg-secondary-100 text-secondary-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-secondary-700 dark:text-secondary-300"
                 >{{ $t("checkout.guest") }}.</span
               >
               <a
                 href="#"
-                class="text-brand-primary font-bold hover:text-brand-dark"
+                class="text-primary font-bold hover:text-dark"
                 data-testid="checkout-logout"
                 aria-label="click here to log out"
                 @click="invokeLogout"
@@ -593,10 +595,10 @@ const addAddressModalController = useModal();
             class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8"
           >
             <legend class="pt-5">
-              <h3 class="text-lg font-medium text-gray-900 m-0">
+              <h3 class="text-lg font-medium text-secondary-900 m-0">
                 {{ $t("checkout.shippingMethodLabel") }}
               </h3>
-              <div class="text-sm text-gray-600">
+              <div class="text-sm text-secondary-600">
                 {{ $t("checkout.selectPaymentMethod") }}
               </div>
             </legend>
@@ -604,10 +606,10 @@ const addAddressModalController = useModal();
               <div
                 class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
               >
-                <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
+                <div class="w-4 bg-secondary-300 h-4 mt-1 rounded-full" />
                 <div class="flex flex-col space-y-3">
-                  <div class="w-36 bg-gray-300 h-6 rounded-md" />
-                  <div class="w-24 bg-gray-300 h-6 rounded-md" />
+                  <div class="w-36 bg-secondary-300 h-6 rounded-md" />
+                  <div class="w-24 bg-secondary-300 h-6 rounded-md" />
                 </div>
               </div>
             </div>
@@ -623,13 +625,13 @@ const addAddressModalController = useModal();
                 :value="singleShippingMethod.id"
                 name="shipping-method"
                 type="radio"
-                class="focus:ring-brand-primary h-4 w-4 border-gray-300"
+                class="focus:ring-primary h-4 w-4 border-secondary-300"
                 :data-testid="`checkout-shipping-method-${singleShippingMethod.id}`"
               />
               <label
                 :for="singleShippingMethod.id"
                 :class="{ 'animate-pulse': isLoading[singleShippingMethod.id] }"
-                class="ml-2 block text-sm font-medium text-gray-700 w-full"
+                class="ml-2 block text-sm font-medium text-secondary-700 w-full"
               >
                 <div class="flex justify-between">
                   <div>
@@ -642,7 +644,7 @@ const addAddressModalController = useModal();
                     >
                     <span
                       v-if="singleShippingMethod.translated?.description"
-                      class="italic text-sm text-gray-500 block"
+                      class="italic text-sm text-secondary-500 block"
                     >
                       {{ singleShippingMethod.translated.description }}</span
                     >
@@ -660,10 +662,10 @@ const addAddressModalController = useModal();
           </fieldset>
           <fieldset class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
             <legend class="pt-5">
-              <h3 class="text-lg font-medium text-gray-900 m-0">
+              <h3 class="text-lg font-medium text-secondary-900 m-0">
                 {{ $t("checkout.paymentMethodLabel") }}
               </h3>
-              <div class="text-sm text-gray-600">
+              <div class="text-sm text-secondary-600">
                 {{ $t("checkout.selectPaymentMethod") }}
               </div>
             </legend>
@@ -671,10 +673,10 @@ const addAddressModalController = useModal();
               <div
                 class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
               >
-                <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
+                <div class="w-4 bg-secondary-300 h-4 mt-1 rounded-full" />
                 <div class="flex flex-col space-y-3">
-                  <div class="w-36 bg-gray-300 h-6 rounded-md" />
-                  <div class="w-24 bg-gray-300 h-6 rounded-md" />
+                  <div class="w-36 bg-secondary-300 h-6 rounded-md" />
+                  <div class="w-24 bg-secondary-300 h-6 rounded-md" />
                 </div>
               </div>
             </div>
@@ -690,13 +692,13 @@ const addAddressModalController = useModal();
                 :value="singlePaymentMethod.id"
                 name="payment-method"
                 type="radio"
-                class="focus:ring-brand-primary h-4 w-4 border-gray-300"
+                class="focus:ring-primary h-4 w-4 border-secondary-300"
                 :data-testid="`checkout-payment-method-${singlePaymentMethod.id}`"
               />
               <label
                 :for="singlePaymentMethod.id"
                 :class="{ 'animate-pulse': isLoading[singlePaymentMethod.id] }"
-                class="ml-2 block text-sm font-medium text-gray-700 w-full"
+                class="ml-2 block text-sm font-medium text-secondary-700 w-full"
               >
                 <div class="flex justify-between">
                   <div>
@@ -705,7 +707,7 @@ const addAddressModalController = useModal();
                     </span>
                     <span
                       v-if="singlePaymentMethod.translated?.description"
-                      class="italic text-sm text-gray-500 block"
+                      class="italic text-sm text-secondary-500 block"
                     >
                       {{ singlePaymentMethod.translated.description }}</span
                     >
@@ -723,10 +725,10 @@ const addAddressModalController = useModal();
           </fieldset>
           <fieldset class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
             <legend class="pt-5">
-              <h3 class="text-lg font-medium text-gray-900 m-0">
+              <h3 class="text-lg font-medium text-secondary-900 m-0">
                 {{ $t("checkout.billingAddressLabel") }}
               </h3>
-              <div class="text-sm text-gray-600">
+              <div class="text-sm text-secondary-600">
                 {{ $t("checkout.selectBillingAddress") }}
               </div>
             </legend>
@@ -734,10 +736,10 @@ const addAddressModalController = useModal();
               <div
                 class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
               >
-                <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
+                <div class="w-4 bg-secondary-300 h-4 mt-1 rounded-full" />
                 <div class="flex flex-col space-y-3">
-                  <div class="w-36 bg-gray-300 h-6 rounded-md" />
-                  <div class="w-24 bg-gray-300 h-6 rounded-md" />
+                  <div class="w-36 bg-secondary-300 h-6 rounded-md" />
+                  <div class="w-24 bg-secondary-300 h-6 rounded-md" />
                 </div>
               </div>
             </div>
@@ -745,10 +747,10 @@ const addAddressModalController = useModal();
               <div
                 class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
               >
-                <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
+                <div class="w-4 bg-secondary-300 h-4 mt-1 rounded-full" />
                 <div class="flex flex-col space-y-3">
-                  <div class="w-36 bg-gray-300 h-6 rounded-md" />
-                  <div class="w-24 bg-gray-300 h-6 rounded-md" />
+                  <div class="w-36 bg-secondary-300 h-6 rounded-md" />
+                  <div class="w-24 bg-secondary-300 h-6 rounded-md" />
                 </div>
               </div>
             </div>
@@ -764,7 +766,7 @@ const addAddressModalController = useModal();
                   :value="address.id"
                   name="billing-address"
                   type="radio"
-                  class="focus:ring-brand-primary h-4 w-4 border-gray-300"
+                  class="focus:ring-primary h-4 w-4 border-secondary-300"
                   :data-testid="`checkout-billing-address-${address.id}`"
                 />
                 <label :for="`billing-${address.id}`" class="ml-2 field-label">
@@ -782,7 +784,7 @@ const addAddressModalController = useModal();
             <button
               type="button"
               data-testid="checkout-add-new-billing-address-button"
-              class="flex font-medium text-brand-dark bg-transparent"
+              class="flex font-medium text-dark bg-transparent"
               @click="addAddressModalController.open"
             >
               {{ $t("checkout.addNewBillingAddress") }}
@@ -792,10 +794,10 @@ const addAddressModalController = useModal();
                 <div
                   class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
                 >
-                  <div class="w-4 bg-gray-300 h-4 mt-1 rounded-full" />
+                  <div class="w-4 bg-secondary-300 h-4 mt-1 rounded-full" />
                   <div class="flex flex-col space-y-3">
-                    <div class="w-36 bg-gray-300 h-6 rounded-md" />
-                    <div class="w-24 bg-gray-300 h-6 rounded-md" />
+                    <div class="w-36 bg-secondary-300 h-6 rounded-md" />
+                    <div class="w-24 bg-secondary-300 h-6 rounded-md" />
                   </div>
                 </div>
               </div>
@@ -824,7 +826,7 @@ const addAddressModalController = useModal();
                     :value="address.id"
                     name="shipping-address"
                     type="radio"
-                    class="focus:ring-brand-primary h-4 w-4 border-gray-300"
+                    class="focus:ring-primary h-4 w-4 border-secondary-300"
                     :data-testid="`checkout-shipping-address-${address.id}`"
                   />
                   <label
@@ -847,7 +849,7 @@ const addAddressModalController = useModal();
                 <button
                   type="button"
                   data-testid="checkout-add-new-shipping-address-button"
-                  class="flex font-medium text-brand-dark bg-transparent"
+                  class="flex font-medium text-dark bg-transparent"
                   @click="addAddressModalController.open"
                 >
                   {{ $t("checkout.addNewShippingAddress") }}
@@ -862,7 +864,7 @@ const addAddressModalController = useModal();
             data-testid="checkout-terms-box"
           >
             <legend class="pt-5">
-              <h3 class="text-lg font-medium text-gray-900 m-0">
+              <h3 class="text-lg font-medium text-secondary-900 m-0">
                 {{ $t("checkout.termsAdnConditions") }}
               </h3>
             </legend>
@@ -873,12 +875,12 @@ const addAddressModalController = useModal();
                 :value="terms.tos"
                 name="tos"
                 type="checkbox"
-                class="focus:ring-brand-primary h-4 w-4 border-gray-300 shrink-0"
+                class="focus:ring-primary h-4 w-4 border-secondary-300 shrink-0"
                 data-testid="checkout-t&c-checkbox-tos"
               />
               <label
                 for="tos"
-                class="ml-2 block text-sm font-medium text-gray-700"
+                class="ml-2 block text-sm font-medium text-secondary-700"
                 :class="{ 'text-red': !termsSelected && placeOrderTriggered }"
               >
                 {{ $t("checkout.termsAdnConditionsLabel") }}
@@ -896,12 +898,12 @@ const addAddressModalController = useModal();
                 :value="terms.revocation"
                 name="revocation"
                 type="checkbox"
-                class="focus:ring-brand-primary h-4 w-4 border-gray-300 shrink-0"
+                class="focus:ring-primary h-4 w-4 border-secondary-300 shrink-0"
                 data-testid="checkout-t&c-checkbox-revocation"
               />
               <label
                 for="revocation"
-                class="ml-2 block text-sm font-medium text-gray-700"
+                class="ml-2 block text-sm font-medium text-secondary-700"
                 :class="{ 'text-red': !termsSelected && placeOrderTriggered }"
               >
                 {{ $t("checkout.digitalTerms") }}
@@ -912,14 +914,14 @@ const addAddressModalController = useModal();
         <div class="mt-5 md:mt-0 md:col-span-1">
           <div class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
             <div>
-              <h3 class="text-lg font-medium text-gray-900 m-0">
+              <h3 class="text-lg font-medium text-secondary-900 m-0">
                 {{ $t("checkout.orderSummary") }}
               </h3>
-              <p class="text-sm text-gray-600">
+              <p class="text-sm text-secondary-600">
                 {{ $t("checkout.orderSummaryLabel") }}
               </p>
             </div>
-            <ul role="list" class="-my-4 divide-y divide-gray-200 pl-0">
+            <ul role="list" class="-my-4 divide-y divide-secondary-200 pl-0">
               <li
                 v-for="cartItem in cartItems"
                 :key="cartItem.id"
@@ -929,46 +931,48 @@ const addAddressModalController = useModal();
               </li>
             </ul>
 
-            <div class="flex justify-between text-sm text-gray-500">
+            <div class="flex justify-between text-sm text-secondary-500">
               <p>{{ $t("checkout.subtotal") }}</p>
               <SharedPrice
                 :value="subtotal"
-                class="text-gray-900 font-medium"
+                class="text-secondary-900 font-medium"
                 data-testid="cart-subtotal"
               />
             </div>
 
             <div
-              class="flex pb-4 border-b justify-between text-sm text-gray-500"
+              class="flex pb-4 border-b justify-between text-sm text-secondary-500"
             >
               <p>{{ $t("checkout.shippingEstimate") }}</p>
               <SharedPrice
                 :value="shippingTotal"
-                class="text-gray-900 font-medium"
+                class="text-secondary-900 font-medium"
                 data-testid="cart-subtotal"
               />
             </div>
 
-            <div class="flex justify-between text-gray-900 font-medium">
+            <div class="flex justify-between text-secondary-900 font-medium">
               <p>{{ $t("checkout.orderTotal") }}l</p>
               <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
             </div>
 
             <div class="mt-4">
               <div class="text-right">
-                <span v-if="!isUserSession" class="text-sm text-gray-600">{{
-                  $t("checkout.loginRequired")
-                }}</span>
+                <span
+                  v-if="!isUserSession"
+                  class="text-sm text-secondary-600"
+                  >{{ $t("checkout.loginRequired") }}</span
+                >
                 <button
                   :disabled="!isUserSession"
                   type="button"
                   :class="{
                     grayscale: !isUserSession,
-                    'opacity-50 cursor-not-allowed hover:bg-brand-primary':
+                    'opacity-50 cursor-not-allowed hover:bg-primary':
                       !isUserSession,
                     'animate-pulse': isLoading['placeOrder'],
                   }"
-                  class="w-full flex justify-center py-2 px-4 border border-transparent font-medium rounded-md text-white bg-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                  class="w-full flex justify-center py-2 px-4 border border-transparent font-medium rounded-md text-white bg-primary focus:outline-none focus:ring-2 focus:ring-primary"
                   data-testid="checkout-place-order-button"
                   @click="placeOrder"
                 >
@@ -981,11 +985,11 @@ const addAddressModalController = useModal();
       </div>
     </div>
     <div v-else class="text-center">
-      <h1 class="m-10 text-2xl font-medium text-gray-900">
+      <h1 class="m-10 text-2xl font-medium text-secondary-900">
         {{ $t("cart.emptyCartLabel") }}
       </h1>
       <NuxtLink
-        class="inline-flex justify-center py-2 px-4 my-8 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
+        class="inline-flex justify-center py-2 px-4 my-8 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
         :to="formatLink(`/`)"
         data-testid="checkout-go-home-link"
       >

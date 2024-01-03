@@ -57,10 +57,10 @@ const border = computed(() => getConfigValue("border"));
 </script>
 <template>
   <div ref="productSlider" class="cms-element-product-slider">
-    <h3 class="mb-5 text-lg font-bold text-gray-700" v-if="title">
+    <h3 class="mb-5 text-lg font-bold text-secondary-700" v-if="title">
       {{ title }}
     </h3>
-    <div :class="{ 'py-5 border border-gray-300': border }">
+    <div :class="{ 'py-5 border border-secondary-300': border }">
       <SwSlider
         :config="config"
         gap="1.25rem"
