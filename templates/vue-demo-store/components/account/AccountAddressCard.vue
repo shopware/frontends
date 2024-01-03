@@ -80,7 +80,7 @@ const addressSaved = () => {
   <div class="col-span-6 lg:col-span-3 max-w-md">
     <div class="flex items-center mb-2">
       <h5
-        class="text-xl leading-none text-gray-900 mr-2"
+        class="text-xl leading-none text-secondary-900 mr-2"
         data-testid="address-box-name"
       >
         {{ `${address.firstName} ${address.lastName}` }}

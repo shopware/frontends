@@ -41,7 +41,7 @@ const CmsTextRender = () => {
             "a",
             {
               class:
-                "underline text-base font-normal text-brand-primary hover:text-gray-900",
+                "underline text-base font-normal text-primary hover:text-secondary-900",
               ...getOptionsFromNode(node).attrs,
             },
             [...children],
@@ -63,11 +63,8 @@ const CmsTextRender = () => {
               "rounded-md inline-block my-2 py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
 
             _class = node.attrs.class
-              .replace("btn-secondary", `${btnClass} bg-brand-dark text-white`)
-              .replace(
-                "btn-primary",
-                `${btnClass} bg-brand-primary text-white`,
-              );
+              .replace("btn-secondary", `${btnClass} bg-dark text-white`)
+              .replace("btn-primary", `${btnClass} bg-primary text-white`);
           }
 
           return createElement(

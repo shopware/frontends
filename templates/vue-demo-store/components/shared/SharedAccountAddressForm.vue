@@ -123,7 +123,7 @@ const $v = useVuelidate(rules, formData);
             <div class="col-span-6 sm:col-span-6">
               <label
                 for="country"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.salutation") }}
               </label>
@@ -134,7 +134,7 @@ const $v = useVuelidate(rules, formData);
                 name="salutation"
                 aria-label="Customer salutation"
                 autocomplete="off"
-                class="mt-1 block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-light focus:border-brand-light sm:text-sm"
+                class="mt-1 block w-full py-2.5 px-3 border border-secondary-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-light focus:border-light sm:text-sm"
                 data-testid="account-address-form-salutation-select"
               >
                 <option
@@ -148,7 +148,7 @@ const $v = useVuelidate(rules, formData);
               </select>
               <span
                 v-if="$v.salutationId.$error"
-                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.salutationId.$errors[0].$message }}
               </span>
@@ -156,7 +156,7 @@ const $v = useVuelidate(rules, formData);
             <div class="col-span-6 sm:col-span-3">
               <label
                 for="first-name"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.firstName") }}
               </label>
@@ -167,12 +167,12 @@ const $v = useVuelidate(rules, formData);
                 type="text"
                 required
                 name="first-name"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-firstname-input"
               />
               <span
                 v-if="$v.firstName.$error"
-                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.firstName.$errors[0].$message }}
               </span>
@@ -181,7 +181,7 @@ const $v = useVuelidate(rules, formData);
             <div class="col-span-6 sm:col-span-3">
               <label
                 for="last-name"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.lastName") }}
               </label>
@@ -191,12 +191,12 @@ const $v = useVuelidate(rules, formData);
                 type="text"
                 required
                 name="last-name"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-lastname-input"
               />
               <span
                 v-if="$v.lastName.$error"
-                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.lastName.$errors[0].$message }}
               </span>
@@ -212,7 +212,7 @@ const $v = useVuelidate(rules, formData);
             <div class="col-span-6">
               <label
                 for="street-address"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.streetAddress") }}
               </label>
@@ -223,12 +223,12 @@ const $v = useVuelidate(rules, formData);
                 required
                 name="street-address"
                 autocomplete="street-address"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-street-input"
               />
               <span
                 v-if="$v.street.$error"
-                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.street.$errors[0].$message }}
               </span>
@@ -237,7 +237,7 @@ const $v = useVuelidate(rules, formData);
             <div class="col-span-6 sm:col-span-6 lg:col-span-4">
               <label
                 for="city"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.city") }}
               </label>
@@ -248,12 +248,12 @@ const $v = useVuelidate(rules, formData);
                 required
                 name="city"
                 autocomplete="address-level2"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-city-input"
               />
               <span
                 v-if="$v.city.$error"
-                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.city.$errors[0].$message }}
               </span>
@@ -261,7 +261,7 @@ const $v = useVuelidate(rules, formData);
             <div class="col-span-6 sm:col-span-3 lg:col-span-2">
               <label
                 for="postal-code"
-                class="block mb-2 text-sm font-medium text-gray-500"
+                class="block mb-2 text-sm font-medium text-secondary-500"
               >
                 {{ $t("form.postalCode") }}
               </label>
@@ -272,22 +272,22 @@ const $v = useVuelidate(rules, formData);
                 required
                 name="postal-code"
                 autocomplete="postal-code"
-                class="mt-1 block w-full p-2.5 border border-gray-300 text-gray-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-brand-light"
+                class="mt-1 block w-full p-2.5 border border-secondary-300 text-secondary-900 text-sm rounded-md shadow-sm focus:ring-brand-light focus:border-light"
                 data-testid="account-address-form-postal-code-input"
               />
               <span
                 v-if="$v.zipcode.$error"
-                class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+                class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
               >
                 {{ $v.zipcode.$errors[0].$message }}
               </span>
             </div>
           </div>
         </div>
-        <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+        <div class="px-4 py-3 bg-secondary-50 text-right sm:px-6">
           <button
             type="submit"
-            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-light"
+            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-light"
             data-testid="account-address-form-submit-button"
             @click.stop.prevent="invokeSave"
           >

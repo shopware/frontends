@@ -75,7 +75,7 @@ const removeCartItem = async () => {
 <template>
   <div
     v-if="!isPromotion"
-    class="mr-4 h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+    class="mr-4 h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-secondary-200"
   >
     <img
       :src="getSmallestThumbnailUrl(cartItem.cover)"
@@ -88,7 +88,7 @@ const removeCartItem = async () => {
   <div class="flex flex-1 flex-col">
     <div>
       <div
-        class="flex flex-col lg:flex-row justify-between text-base font-medium text-gray-900"
+        class="flex flex-col lg:flex-row justify-between text-base font-medium text-secondary-900"
       >
         <h3 class="text-base" data-testid="cart-product-name">
           {{ cartItem.label }}
@@ -107,7 +107,7 @@ const removeCartItem = async () => {
 
       <p
         v-if="itemOptions"
-        class="mt-1 text-sm text-gray-500"
+        class="mt-1 text-sm text-secondary-500"
         data-testid="cart-product-options"
       >
         <span v-for="option in itemOptions" :key="option.group" class="mr-2">
@@ -129,14 +129,14 @@ const removeCartItem = async () => {
         data-testid="cart-product-qty-select"
         name="quantity"
         aria-label="Cart item quantity"
-        class="w-18 mt-1 inline-block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        class="w-18 mt-1 inline-block py-2 px-3 border border-secondary-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       />
       <div class="flex">
         <button
           v-if="!isPromotion && isRemovable"
           type="button"
-          class="font-medium text-brand-dark bg-transparent"
-          :class="{ 'text-gray-500': isLoading }"
+          class="font-medium text-dark bg-transparent"
+          :class="{ 'text-secondary-500': isLoading }"
           data-testid="product-remove-button"
           @click="removeCartItem"
         >

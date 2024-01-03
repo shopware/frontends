@@ -2,13 +2,15 @@
 
 ![Shopware Frontends](.assets/shopware-frontends-logo.png)
 
-This repository shows an example of demo application built with Shopware Frontends Framework on Nuxt 3.
+This repository is an example demo application built with Shopware Frontends Framework and Nuxt 3.
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store)
 
 ## What's inside
 
 - Nuxt 3 application
-- Required libraries installed (api-client, CMS components, composables, Nuxt 3 module)
-- Demo Shopware 6 instnace configured as the API
+- Required libraries (API client, CMS components, composables, Nuxt 3 module)
+- Pre-configured demo Shopware 6 API
 
 ## Requirements
 
@@ -16,36 +18,21 @@ Go to [Documentation > Requirements](https://frontends.shopware.com/framework/re
 
 ## Set up your Shopware 6 instance
 
-In order to have a different API connect to the app, adjust the API credentials in the `nuxt.config.ts` file:
+To connect to a different API, adjust the API credentials in the `nuxt.config.ts` file:
 `shopwareEndpoint` and `shopwareAccessToken`.
-
-## Customize
-
-Now, you can have a look on the pages and components and add your stuff there.
-
-[TODO: explain cms overriding or link to the docs].
 
 ## Install & Run
 
-1. `pnpm i` to install deps
-2. `pnpm dev` to run the project in dev mode
-
-## Try it online
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store)
+1. `pnpm i` to install dependencies
+2. `pnpm dev` to run the project with the development server
 
 ## Production
 
-There are many ways and many providers for deployment a production build of JS app. For more, read documentation [Best Practices > Deployment](https://frontends.shopware.com/best-practices/deployment.html) section.
+Refer to to the Shopware documentation for best practices on deploying a production JavaScript application with Shopware: [Best Practices > Deployment](https://frontends.shopware.com/best-practices/deployment.html)
 
-In this chapter we will cover:
+### Running the application with Node.js
 
-- SSR on Node server
-- How to dockerize it
-
-### Node server
-
-Use the `build` script to invoke building the application:
+Execute the `build` script to build the application:
 
 ```bash
 pnpm build
@@ -54,7 +41,7 @@ pnpm build
 # or yarn build
 ```
 
-Then run `start` script in order to make the application running:
+Execute the `start` script to run the application:
 
 ```bash
 pnpm start
@@ -63,31 +50,35 @@ pnpm start
 # or yarn start
 ```
 
-### Get app running as docker container
+### Running the application with Docker
 
-Create or edit a [Dockerfile](./Dockerfile) to:
+The [Dockerfile](https://github.com/shopware/frontends/blob/main/templates/vue-demo-store/Dockerfile) file in this template performs the following:
 
-- Have a node.js environment available
-- Have a built project files copied
-- Run `start` script as an entrypoint
-- Have a [.dockerignore](./.dockerignore) file defined to optimize image size (optionally)
+1. `ARG NODE_VERSION=18-alpine`: Sets a default value for the `NODE_VERSION` argument, which is used in the Docker build process.
+2. `FROM node:${NODE_VERSION}`: Tells Docker to use the Node.js image specified by `NODE_VERSION` as the base image for the build.
+3. `ENV NODE_ENV production`: Sets the `NODE_ENV` environment variable to production within the Docker container.
+4. `RUN mkdir /app`: Creates a directory named `/app` in the root of the Docker container's file system.
+5. `COPY --chown=node:node ./ /app`: Copies all files from the current directory (where the Dockerfile is located) into the `/app` directory inside the container. The `--chown=node:node` option sets the ownership of the copied files to the node user and group.
+6. `WORKDIR /app`: Sets the working directory for any `RUN`, `CMD`, `ENTRYPOINT`, `COPY`, and `ADD` instructions that follow in the Dockerfile to `/app`.
+7. `USER node`: Switches the user context to `node`.
+8. `EXPOSE 3000`: Informs Docker that the container listens on port `3000` at runtime.
+9. `CMD npm run start`: Specifies the command to run when the container starts.
 
-Prepare a docker image:
+Prepare the Docker image:
 
 ```bash
-# run in a main template dir
+# run in a main template directory
 docker build -t vue-demo-store .
 ```
 
 Run a container from the image:
 
 ```bash
-# the application is exposed via 3000 port and mapped to 3000 port on host
+# the application is exposed on the 3000 port and mapped to 3000 port on host
 docker run -p3000:3000 vue-demo-store
 ```
 
 ### Nitro presets
 
-[HERE](https://nitro.unjs.io/deploy) can be found more about generating different outputs related to the platform
-
+More information on generating different outputs can be found [here](https://nitro.unjs.io/deploy).
 Our recommendation is to use `.env` file for changing platform presets

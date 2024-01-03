@@ -47,7 +47,7 @@ const handleVariantChange = (val: Schemas["Product"]) => {
     <!-- Product name for mobile view -->
     <div class="basis-12/12 display lg:hidden">
       <h1
-        class="pl-4 py-4 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"
+        class="pl-4 py-4 text-2xl font-extrabold tracking-tight text-secondary-900 sm:text-3xl"
         v-html="productName"
       />
     </div>
@@ -61,7 +61,7 @@ const handleVariantChange = (val: Schemas["Product"]) => {
       >
         <!-- Product name starting from lg breakpoint -->
         <div
-          class="hidden lg:block text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl"
+          class="hidden lg:block text-2xl font-extrabold tracking-tight text-secondary-900 sm:text-3xl"
           v-html="productName"
         />
 
@@ -94,16 +94,19 @@ const handleVariantChange = (val: Schemas["Product"]) => {
           <div class="container mx-auto mb-8">
             <!-- Description and details -->
             <div v-if="description">
-              <h3 class="text-sm font-bold text-gray-900">
+              <h3 class="text-sm font-bold text-secondary-900">
                 {{ $t("product.description") }}
               </h3>
               <div class="mt-4 space-y-6">
-                <div class="text-base text-gray-900" v-html="description" />
+                <div
+                  class="text-base text-secondary-900"
+                  v-html="description"
+                />
               </div>
             </div>
 
             <div v-if="properties?.length" class="mt-10">
-              <h3 class="text-sm font-medium text-gray-900">
+              <h3 class="text-sm font-medium text-secondary-900">
                 {{ $t("product.price.properties") }}
               </h3>
 
@@ -112,9 +115,9 @@ const handleVariantChange = (val: Schemas["Product"]) => {
                   <li
                     v-for="property in properties"
                     :key="property.id"
-                    class="text-gray-400"
+                    class="text-secondary-400"
                   >
-                    <span class="text-gray-600">{{
+                    <span class="text-secondary-600">{{
                       getTranslatedProperty(property, "name")
                     }}</span>
                   </li>
@@ -123,7 +126,7 @@ const handleVariantChange = (val: Schemas["Product"]) => {
             </div>
 
             <div v-if="reviews?.length" class="mt-10">
-              <h3 class="text-sm font-medium text-gray-900">
+              <h3 class="text-sm font-medium text-secondary-900">
                 {{ $t("product.price.reviews") }}
               </h3>
               <div v-if="reviews?.length" class="mt-4">
@@ -131,9 +134,9 @@ const handleVariantChange = (val: Schemas["Product"]) => {
                   <li
                     v-for="review in reviews"
                     :key="review.id"
-                    class="text-gray-400"
+                    class="text-secondary-400"
                   >
-                    <span class="text-gray-600">{{ review.content }}</span>
+                    <span class="text-secondary-600">{{ review.content }}</span>
                   </li>
                 </ul>
               </div>
