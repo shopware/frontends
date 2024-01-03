@@ -901,12 +901,12 @@ importers:
       '@astrojs/vue':
         specifier: ^4.0.2
         version: 4.0.2(@babel/core@7.23.5)(astro@4.0.2)(vue@3.3.10)
-      '@shopware-pwa/api-client':
-        specifier: canary
-        version: link:../../packages/api-client
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
+      '@shopware/api-client':
+        specifier: canary
+        version: link:../../packages/api-client-next
       '@vitejs/plugin-vue':
         specifier: ^4.5.1
         version: 4.5.1(vite@5.0.6)(vue@3.3.10)
