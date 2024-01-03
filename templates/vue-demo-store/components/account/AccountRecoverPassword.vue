@@ -36,7 +36,7 @@ const invokeRecover = async (): Promise<void> => {
   >
     <div class="max-w-md w-full space-y-8">
       <div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-secondary-900">
           {{ $t("recoveryPassword.header") }}
         </h2>
       </div>
@@ -53,7 +53,7 @@ const invokeRecover = async (): Promise<void> => {
               type="email"
               autocomplete="email"
               required
-              class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-primary focus:border-brand-primary focus:z-10 sm:text-sm"
+              class="appearance-none rounded relative block w-full px-3 py-2 border border-secondary-300 placeholder-secondary-500 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
               :placeholder="$t('form.emailPlaceholder')"
             />
           </div>
@@ -66,7 +66,7 @@ const invokeRecover = async (): Promise<void> => {
           >
             <div class="flex items-center">
               <div
-                class="send-email-errors text-red-600 border-gray-300 rounded"
+                class="send-email-errors text-red-600 border-secondary-300 rounded"
               >
                 {{ recoverPasswordErrors }}
               </div>
@@ -76,7 +76,7 @@ const invokeRecover = async (): Promise<void> => {
 
         <div>
           <button
-            class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
+            class="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-dark focus:outline-none focus:ring-2 focus:ring-brand-light"
             type="submit"
           >
             {{ $t("recoveryPassword.form.button") }}
@@ -84,7 +84,7 @@ const invokeRecover = async (): Promise<void> => {
         </div>
       </form>
 
-      <p v-else class="text-center text-gray-900">
+      <p v-else class="text-center text-secondary-900">
         {{ $t("recoveryPassword.infoBox") }}
       </p>
       <slot name="action" />

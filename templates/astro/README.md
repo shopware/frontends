@@ -21,16 +21,21 @@ In order to have a different API connected to the app, change two lines of code 
 // src/entrypoints/_shopware.ts
 
 export default (app: App) => {
-  const apiInstance = createInstance({
-    endpoint: "https://demo-frontends.shopware.store", // CHANGE HERE
-    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW", // AND HERE
+   const apiInstance = createAPIClient<operations, operationPaths>({
+    baseURL:
+      import.meta.env.API_URL ||
+      "https://demo-frontends.shopware.store/store-api", // CHANGE here or in .env.* file
+    accessToken:
+      import.meta.env.API_ACCESS_TOKEN || "SWSCBHFSNTVMAWNZDNFKSHLAYW", // CHANGE here or in .env.* file
+    contextToken: Cookies.get("sw-context-token"),
+    onContextChanged(newContextToken: string) {
+      Cookies.set("sw-context-token", newContextToken, {
+        expires: 365, // days
+        path: "/",
+        sameSite: "lax",
+      });
+    },
   });
-  const shopwareContext = createShopwareContext(app, {
-    apiInstance,
-    devStorefrontUrl: null,
-  });
-
-  app.use(shopwareContext);
 };
 ```
 
