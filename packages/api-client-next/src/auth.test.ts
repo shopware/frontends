@@ -21,7 +21,7 @@ import {
 const AccessKeyId = "SWSCBHFSA1GDHWWWDNFKSHLAYW";
 const SecretAccessKey = "QmZUb3RtQU1xCalydWc4MHk1ZWkwTHFpUEc2MURUQUhFVFhZRDk";
 
-describe("", () => {
+describe("Auth process", () => {
   let app: App;
   let apiClient: ReturnType<
     typeof createAdminAPIClient<operations, operationPaths>
@@ -49,7 +49,7 @@ describe("", () => {
     });
   });
 
-  describe("ofetch", () => {
+  describe("client_credentials - type (token based)", () => {
     beforeAll(async () => {
       const app = createApp({
         async onRequest(event) {
