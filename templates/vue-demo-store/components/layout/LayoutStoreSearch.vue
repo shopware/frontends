@@ -81,7 +81,7 @@ watch(enter, (value) => {
   >
     <div class="flex items-center">
       <div
-        class="sw-search-input i-carbon-search flex-none h-6 w-6 text-gray-400 group-hover:text-brand-primary cursor-pointer"
+        class="sw-search-input i-carbon-search flex-none h-6 w-6 text-secondary-400 group-hover:text-primary cursor-pointer"
       />
 
       <input
@@ -90,7 +90,7 @@ watch(enter, (value) => {
         data-testid="layout-search-input"
         type="text"
         aria-label="Search for products"
-        class="sw-search-input text-gray-600 placeholder:text-gray-600 focus:text-gray-700 p-2 ml-2 lg:ml-0 xl:ml-2 grow h-6 transition duration-200 focus:outline-none w-56 lg:w-10/12"
+        class="sw-search-input text-secondary-600 placehotext-secondary-600y-600 focus:text-secondary-700 p-2 ml-2 lg:ml-0 xl:ml-2 grow h-6 transition duration-200 focus:outline-none w-56 lg:w-10/12"
         :placeholder="$t('form.searchPlaceholder')"
         @click="active = true"
       />
@@ -98,7 +98,7 @@ watch(enter, (value) => {
     <div
       v-if="showSuggest"
       data-testid="layout-search-result-box"
-      class="absolute border-gray-100 border-t-1 duration-300 left-0 mt-2 overflow-hidden right-0 rounded-b-md shadow-md transition-height w-auto z-1"
+      class="absolute border-secondary-100 border-t-1 duration-300 left-0 mt-2 overflow-hidden right-0 rounded-b-md shadow-md transition-height w-auto z-1"
     >
       <NuxtLink
         v-for="product in getProducts?.slice(0, displayTotal)"
@@ -113,11 +113,11 @@ watch(enter, (value) => {
       <div
         class="h-11 text-sm rounded-b-md p-3 text-center transition"
         style="clip-path: inset(0% 0% 0% 0%)"
-        :class="[loading ? ['bg-brand-primary'] : ['bg-gray-100']]"
+        :class="[loading ? ['bg-primary'] : ['bg-secondary-100']]"
       >
         <div
           v-if="loading"
-          class="w-80 h-40 bg-brand-light blur-2xl fixed animate-spin"
+          class="w-80 h-40 bg-light blur-2xl fixed animate-spin"
         />
         <div v-else>
           <NuxtLink

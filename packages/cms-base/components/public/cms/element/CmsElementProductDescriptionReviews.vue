@@ -51,15 +51,15 @@ const reviews = computed(() => props.content.data.reviews?.elements);
   >
     <div class="w-full">
       <ul
-        class="flex flex-wrap text-sm font-medium list-none text-center text-gray-500 border-b border-gray-200 dark:border-gray-500 dark:text-gray-400"
+        class="flex flex-wrap text-sm font-medium list-none text-center text-secondary-500 border-b border-secondary-200 dark:border-secondary-500 dark:text-secondary-400"
       >
         <li class="mr-2 text-center">
           <a
             class="font-bold uppercase px-5 py-3 block leading-normal cursor-pointer"
             :class="[
               currentTab !== 1
-                ? 'text-gray-500 bg-white'
-                : 'text-white bg-gray-500',
+                ? 'text-secondary-500 bg-white'
+                : 'text-white bg-secondary-500',
             ]"
             @click="() => toggleTabs(1)"
           >
@@ -72,8 +72,8 @@ const reviews = computed(() => props.content.data.reviews?.elements);
             class="font-bold uppercase px-5 py-3 block leading-normal cursor-pointer"
             :class="[
               currentTab !== 2
-                ? 'text-gray-500 bg-white'
-                : 'text-white bg-gray-500',
+                ? 'text-secondary-500 bg-white'
+                : 'text-white bg-secondary-500',
             ]"
             @click="() => toggleTabs(2)"
           >

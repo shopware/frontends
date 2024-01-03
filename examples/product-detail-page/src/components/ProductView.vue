@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, unref, defineProps, ref } from "vue";
-import type { Product } from "@shopware-pwa/types";
+import { computed, defineProps, ref } from "vue";
+import type { components } from "@shopware/api-client/api-types";
 import {
   getSmallestThumbnailUrl,
   getSrcSetForMedia,
@@ -14,7 +14,7 @@ import {
 import ProductCard from "./ProductCard.vue";
 
 const props = defineProps<{
-  product: Product;
+  product: components["schemas"]["Product"];
 }>();
 
 const product = computed(() => props.product);

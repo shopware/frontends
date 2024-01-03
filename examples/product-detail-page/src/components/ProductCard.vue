@@ -9,10 +9,9 @@ import {
   useProductPrice,
   usePrice,
 } from "@shopware-pwa/composables-next/dist";
-import type { Product } from "@shopware-pwa/types";
-
+import type { components } from "@shopware/api-client/api-types";
 const props = defineProps<{
-  product: Product;
+  product: components["schemas"]["Product"];
 }>();
 
 const product = computed(() => props.product);
