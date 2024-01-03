@@ -2,7 +2,8 @@ import {
   getProductEndpoint,
   getProductDetailsEndpoint,
   getProductListingEndpoint,
-  getProductReviewsEndpoint, getProductCrossSellingEndpoint,
+  getProductReviewsEndpoint,
+  getProductCrossSellingEndpoint,
 } from "../endpoints";
 import type {
   ProductListingResult,
@@ -83,13 +84,13 @@ export async function getProduct(
  * @public
  */
 export async function getProductCrossSelling(
-    productId: string,
-    params: unknown = null,
-    contextInstance: ShopwareApiInstance = defaultInstance,
-): Promise<CrossSellingResponse> {
+  productId: string,
+  params: unknown = null,
+  contextInstance: ShopwareApiInstance = defaultInstance,
+): Promise<unknown> {
   const resp = await contextInstance.invoke.post(
-      getProductCrossSellingEndpoint(productId),
-      params,
+    getProductCrossSellingEndpoint(productId),
+    params,
   );
   return resp.data;
 }
