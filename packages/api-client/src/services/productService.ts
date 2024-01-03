@@ -87,7 +87,11 @@ export async function getProductCrossSelling(
   productId: string,
   params: unknown = null,
   contextInstance: ShopwareApiInstance = defaultInstance,
-): Promise<unknown> {
+): Promise<{
+  crossSelling: {
+    name: string;
+  };
+}> {
   const resp = await contextInstance.invoke.post(
     getProductCrossSellingEndpoint(productId),
     params,
