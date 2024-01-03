@@ -14,7 +14,7 @@ const { unitPrice, displayFromVariants, displayFrom } =
   <div :id="product.id">
     <SharedPrice
       v-if="displayFromVariants"
-      class="text-xs text-gray-900 basis-2/6 justify-end"
+      class="text-xs text-secondary-900 basis-2/6 justify-end"
       :value="displayFromVariants"
     >
       <template #beforePrice>
@@ -22,7 +22,7 @@ const { unitPrice, displayFromVariants, displayFrom } =
       </template>
     </SharedPrice>
     <SharedPrice
-      class="text-sm text-gray-900 basis-2/6 justify-end"
+      class="text-sm text-secondary-900 basis-2/6 justify-end"
       :value="unitPrice"
     >
       <template #beforePrice>

@@ -39,7 +39,7 @@ const toggleCollapse = (navigationElement: Category) => {
     <div class="flex px-4 py-5">
       <button
         type="button"
-        class="inline-flex items-center justify-center p-2 -m-2 text-gray-400 rounded-md bg-transparent"
+        class="inline-flex items-center justify-center p-2 -m-2 text-secondary-400 rounded-md bg-transparent"
         @click="sideMenuController.close"
       >
         <span class="sr-only">Close menu</span>
@@ -60,7 +60,7 @@ const toggleCollapse = (navigationElement: Category) => {
             >
               <NuxtLink
                 :to="formatLink(getCategoryRoute(navigationElement))"
-                class="flex items-center px-5 py-3 text-base font-normal text-gray-900 break-all hover:bg-gray-100"
+                class="flex items-center px-5 py-3 text-base font-normal text-secondary-900 break-all hover:bg-secondary-100"
                 @click="sideMenuController.close"
               >
                 <span class="flex">
@@ -110,7 +110,7 @@ const toggleCollapse = (navigationElement: Category) => {
                 >
                   <NuxtLink
                     :to="formatLink(getCategoryRoute(childElement))"
-                    class="flex items-center p-3 text-base font-normal text-gray-500 break-all hover:bg-gray-100 pl-11"
+                    class="flex items-center p-3 text-base font-normal text-secondary-500 break-all hover:bg-secondary-100 pl-11"
                     @click="sideMenuController.close"
                   >
                     <span>

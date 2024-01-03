@@ -135,7 +135,7 @@ watch(
     <div
       v-for="navigationElement in navigationElements"
       :key="navigationElement.id"
-      class="relative hover:bg-gray-50 rounded-lg"
+      class="relative hover:bg-secondary-50 rounded-lg"
       @mouseover="currentMenuPosition = navigationElement.id"
     >
       <NuxtLink
@@ -149,7 +149,7 @@ watch(
         :class="{
           'link-active': (navigationElement as NavigationElement).activeClass,
         }"
-        class="text-base font-medium text-gray-500 hover:text-gray-900 p-2 inline-block"
+        class="text-base font-medium text-secondary-500 hover:text-secondary-900 p-2 inline-block"
         @click="
           updateActiveClass(navigationElement.id, navigationElement.parentId)
         "
@@ -186,7 +186,7 @@ watch(
               />
             </template>
             <div
-              class="px-5 py-5 bg-gray-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8"
+              class="px-5 py-5 bg-secondary-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8"
             >
               <div
                 class="flow-root"
@@ -202,6 +202,6 @@ watch(
 
 <style scoped>
 nav .link-active {
-  @apply text-gray-900 bg-brand-primary bg-opacity-10 rounded-lg;
+  @apply text-secondary-900 bg-primary bg-opacity-10 rounded-lg;
 }
 </style>
