@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
+import getCmsTranslations from "../helpers/getCmsTranslations";
 import { useAddToCart, useNotifications } from "#imports";
 import { toRefs } from "vue";
 import type { Schemas } from "#shopware";
@@ -26,7 +26,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { product } = toRefs(props);

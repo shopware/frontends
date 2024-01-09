@@ -9,7 +9,7 @@ import {
   useShopwareContext,
 } from "#imports";
 import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
+import getCmsTranslations from "../helpers/getCmsTranslations";
 import { computed, reactive, ref } from "vue";
 import { ApiClientError } from "@shopware/api-client";
 
@@ -68,7 +68,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const loading = ref<boolean>();

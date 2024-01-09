@@ -6,7 +6,7 @@ import {
 } from "@shopware-pwa/helpers-next";
 import SwProductReviews from "../../../SwProductReviews.vue";
 import deepMerge from "../../../../helpers/deepMerge";
-import getTranslations from "../../../../helpers/getTranslations";
+import getCmsTranslations from "../../../../helpers/getCmsTranslations";
 import { computed, ref } from "vue";
 import { useProduct } from "#imports";
 
@@ -27,7 +27,7 @@ let translations: Translations = {
     reviews: "Reviews",
   },
 };
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const currentTab = ref<number>(1);

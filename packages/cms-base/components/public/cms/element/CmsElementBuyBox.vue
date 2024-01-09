@@ -11,7 +11,7 @@ import { computed } from "vue";
 import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
 import deepMerge from "../../../../helpers/deepMerge";
-import getTranslations from "../../../../helpers/getTranslations";
+import getCmsTranslations from "../../../../helpers/getCmsTranslations";
 import SwSharedPrice from "../../../SwSharedPrice.vue";
 
 const props = defineProps<{
@@ -52,7 +52,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { getConfigValue } = useCmsElementConfig(props.content);

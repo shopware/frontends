@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Product } from "@shopware-pwa/types";
 import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
+import getCmsTranslations from "../helpers/getCmsTranslations";
 import SwSharedPrice from "./SwSharedPrice.vue";
 import { useProductPrice, usePrice } from "#imports";
 import { toRefs } from "vue";
@@ -28,7 +28,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { product } = toRefs(props);

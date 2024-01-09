@@ -12,7 +12,7 @@
 >
 import { onMounted, reactive, ref, watch } from "vue";
 import deepMerge from "../../helpers/deepMerge";
-import getTranslations from "../../helpers/getTranslations";
+import getCmsTranslations from "../../helpers/getCmsTranslations";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 
 const emits = defineEmits<{
@@ -35,7 +35,7 @@ let translations: Translations = {
     max: "Max",
   },
 };
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const prices = reactive<{ min: number; max: number }>({

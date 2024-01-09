@@ -3,7 +3,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import type { CmsElementForm } from "@shopware-pwa/composables-next";
 import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
+import getCmsTranslations from "../helpers/getCmsTranslations";
 import { useCmsElementConfig, useNewsletter, useSalutations } from "#imports";
 import { computed, reactive, ref } from "vue";
 import { ApiClientError, type ApiError } from "@shopware/api-client";
@@ -53,7 +53,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const loading = ref<boolean>();

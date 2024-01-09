@@ -2,7 +2,7 @@
 import type { Ref } from "vue";
 import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
 import deepMerge from "../../../../helpers/deepMerge";
-import getTranslations from "../../../../helpers/getTranslations";
+import getCmsTranslations from "../../../../helpers/getCmsTranslations";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import { useCategory, useNavigation } from "#imports";
 import { onMounted, ref } from "vue";
@@ -30,7 +30,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { category: activeCategory } = useCategory();

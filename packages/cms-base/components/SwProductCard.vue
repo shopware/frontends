@@ -10,7 +10,7 @@ import {
 import { toRefs, type Ref, computed, ref } from "vue";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
+import getCmsTranslations from "../helpers/getCmsTranslations";
 import getUrlPrefix from "../helpers/getUrlPrefix";
 import buildUrlPrefix from "../helpers/buildUrlPrefix";
 import { useAddToCart, useNotifications, useProductWishlist } from "#imports";
@@ -56,7 +56,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { product } = toRefs(props);
@@ -194,7 +194,7 @@ const srcPath = computed(() => {
         <h5
           class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white min-h-60px"
         >
-          {{ getProductName({ product }) }}
+          {{ getProductName({ product }) }} ahhh
         </h5>
       </RouterLink>
 

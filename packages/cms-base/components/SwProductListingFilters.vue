@@ -9,7 +9,7 @@ import type {
 } from "@shopware-pwa/composables-next";
 import { useCategory, useListing } from "#imports";
 import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
+import getCmsTranslations from "../helpers/getCmsTranslations";
 import { onClickOutside } from "@vueuse/core";
 import { useRoute, useRouter } from "vue-router";
 import type { RequestParameters } from "#shopware";
@@ -33,7 +33,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const { category } = useCategory();

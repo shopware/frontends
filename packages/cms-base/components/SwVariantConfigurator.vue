@@ -3,7 +3,7 @@ import { getProductRoute } from "@shopware-pwa/helpers-next";
 import { ref, computed, unref } from "vue";
 import type { ComputedRef } from "vue";
 import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
+import getCmsTranslations from "../helpers/getCmsTranslations";
 import { useProductConfigurator } from "#imports";
 import { useRouter } from "vue-router";
 
@@ -28,7 +28,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
+const globalTranslations = getCmsTranslations();
 translations = deepMerge(translations, globalTranslations) as Translations;
 
 const emit = defineEmits<{
