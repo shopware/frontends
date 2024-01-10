@@ -79,7 +79,7 @@ export default {
             <p>
               {{ $t("setup.support_start") }}
               <a
-                class="text-brand-primary"
+                class="text-primary"
                 href="https://frontends.shopware.com/resources/troubleshooting.html"
                 target="_blank"
                 >{{ $t("setup.support_page") }}</a
@@ -89,7 +89,7 @@ export default {
         </DevOnly>
         <NuxtLink
           :to="isFormattedError ? linkFormatter(`/`) : `/`"
-          class="block w-full lg:w-auto justify-center py-3 px-8 border shadow-sm text-sm font-medium rounded-md text-white bg-brand-light hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-primary"
+          class="block w-full lg:w-auto justify-center py-3 px-8 border shadow-sm text-sm font-medium rounded-md text-white bg-light hover:bg-dark focus:outline-none focus:ring-2 focus:ring-primary"
         >
           {{ $t("goBackHome") }}
         </NuxtLink>

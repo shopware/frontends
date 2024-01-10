@@ -39,7 +39,7 @@ const promoCode = ref("");
           class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
         />
         <button
-          class="text-white bg-blue-500 hover:bg-blue-600 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md"
+          class="text-white bg-primary-500 hover:bg-primary-600 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md"
           @click="addPromotionCodeHandler(promoCode)"
         >
           Add
@@ -52,11 +52,11 @@ const promoCode = ref("");
         <li
           v-for="appliedPromotionCode in appliedPromotionCodes"
           :key="appliedPromotionCode.id"
-          class="flex justify-between text-gray-600 border-b py-4"
+          class="flex justify-between text-secondary-600 border-b py-4"
         >
           <span>{{ appliedPromotionCode.label }}</span>
           <button
-            class="text-brand-dark"
+            class="text-dark"
             type="button"
             @click="removeItemHandler(appliedPromotionCode)"
           >
