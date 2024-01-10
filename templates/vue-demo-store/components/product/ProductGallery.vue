@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  product: Product;
+  product: Schemas["Product"];
 }>();
 const content = ref<CmsElementImageGallery>();
 
@@ -24,7 +24,7 @@ watch(
       data: {
         sliderItems: media,
       },
-    } as CmsElementImageGallery;
+    } as unknown as CmsElementImageGallery;
   },
   {
     immediate: true,
