@@ -4,7 +4,7 @@ import {
   useSessionContext,
   useShopwareContext,
   useUser,
-} from "@shopware-pwa/composables-next/dist";
+} from "@shopware-pwa/composables-next";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 
 const { apiClient } = useShopwareContext();
@@ -60,12 +60,12 @@ const showToastMessage = (message: string) => {
 // used in suggest search bar
 const search = async (phrase: string) => {
   const response = await apiClient.invoke(
-    `quickOrderProductSearch get /store-api/quick-ordewr/product?search`,
+    `quickOrderProductSearch get /store-api/quick-order/product?search`,
     {
       search: phrase,
     },
   );
-  items.value = response?.data?.elements;
+  items.value = response?.elements;
   forceCloseSuggest.value = false;
 };
 
@@ -103,7 +103,12 @@ const onAddToCartClick = async () => {
   );
 
   await apiClient.invoke("addLineItem post /checkout/cart/line-item", {
-    items: lineItemsPayload,
+    items: lineItemsPayload as Array<{
+      id?: string;
+      referencedId: string;
+      quantity?: number;
+      type: "product" | "promotion" | "custom" | "credit";
+    }>,
   });
 
   chosenItems.value = new Map();
@@ -130,7 +135,7 @@ const onCsvFileChange = async (event) => {
     { formData },
   );
 
-  for (const item of foundProductsResponse.data?.products) {
+  for (const item of foundProductsResponse.products) {
     onItemClick(item);
   }
 

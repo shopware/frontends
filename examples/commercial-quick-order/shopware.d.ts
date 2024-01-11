@@ -24,37 +24,45 @@ declare module "#shopware" {
     | "quickOrderProductSearch get /store-api/quick-order/product?search"
     | "quickOrderLoadFile post /store-api/quick-order/load-file"
     | defaultOperationPaths;
+
   type extendedOperations = {
     quickOrderProductSearch: {
       parameters: {
         query: {
           /** Product search string  */
-          phrase: string;
-        };
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            token: string;
-          };
+          search: string;
         };
       };
       responses: {
         204: never;
         400: never;
+        200: {
+          content: {
+            "application/json": {
+              elements: any;
+            };
+          };
+        };
       };
     };
     quickOrderLoadFile: {
       requestBody: {
         content: {
           "application/json": {
-            token: string;
+            formData: any;
           };
         };
       };
       responses: {
         204: never;
         400: never;
+        200: {
+          content: {
+            "application/json": {
+              products: any;
+            };
+          };
+        };
       };
     };
   } & defaultOperations<changedComponents>;
