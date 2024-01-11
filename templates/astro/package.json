@@ -17,9 +17,9 @@
     "@shopware/api-client": "canary",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
-    "astro": "^4.1.1",
+    "astro": "^4.1.2",
     "js-cookie": "^3.0.5",
-    "vue": "^3.4.7"
+    "vue": "^3.4.9"
   },
   "engines": {
     "node": "^18.x || ^20.x"

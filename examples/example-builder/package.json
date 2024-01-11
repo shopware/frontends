@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@stackblitz/sdk": "latest",
-    "vue": "^3.4.7",
+    "vue": "^3.4.9",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {

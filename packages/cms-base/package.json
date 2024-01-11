@@ -44,14 +44,14 @@
     "@vueuse/core": "^10.7.1",
     "entities": "^4.5.0",
     "html-to-ast": "^0.0.6",
-    "vue": "^3.4.7"
+    "vue": "^3.4.9"
   },
   "devDependencies": {
     "@nuxt/schema": "^3.9.1",
     "@shopware-pwa/types": "workspace:*",
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "^9.19.2",
+    "eslint-plugin-vue": "^9.20.0",
     "nuxt": "^3.9.1",
     "tsconfig": "workspace:*",
     "typescript": "^5.3.3",
