@@ -29,7 +29,7 @@ const toggleTabs = (tabNumber: number) => {
 
 <template>
   <div class="container mx-auto my-8">
-    <div class="mb-4 border-b border-gray-200">
+    <div class="mb-4 border-b border-secondary-200">
       <ul
         id="myTab"
         class="flex flex-wrap -mb-px font-medium md:text-2xl md:space-x-8 list-none pl-0"
@@ -38,11 +38,11 @@ const toggleTabs = (tabNumber: number) => {
       >
         <li class="w-1/2 md:w-auto" role="tab">
           <a
-            class="inline-block pb-3 rounded-t-lg hover:text-brand-primary"
+            class="inline-block pb-3 rounded-t-lg hover:text-primary"
             :class="[
               currentTab !== 1
-                ? 'text-gray-900'
-                : 'text-brand-primary border-b-2 border-brand-primary',
+                ? 'text-secondary-900'
+                : 'text-primary border-b-2 border-primary',
             ]"
             @click="() => toggleTabs(1)"
           >
@@ -51,11 +51,11 @@ const toggleTabs = (tabNumber: number) => {
         </li>
         <li class="w-1/2 md:w-auto" role="tab">
           <a
-            class="inline-block pb-3 rounded-t-lg hover:text-brand-primary"
+            class="inline-block pb-3 rounded-t-lg hover:text-primary"
             :class="[
               currentTab !== 2
-                ? 'text-gray-900'
-                : 'text-brand-primary border-b-2 border-brand-primary',
+                ? 'text-secondary-900'
+                : 'text-primary border-b-2 border-primary',
             ]"
             @click="() => toggleTabs(2)"
           >

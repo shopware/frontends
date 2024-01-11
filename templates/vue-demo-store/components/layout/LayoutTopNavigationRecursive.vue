@@ -51,7 +51,7 @@ const emitUpdateActiveClass = (
         :class="{
           'link-active': childElement.activeClass,
         }"
-        class="flex justify-between rounded-lg hover:bg-gray-50 p-2"
+        class="flex justify-between rounded-lg hover:bg-secondary-50 p-2"
         @click="emitUpdateActiveClass(childElement.id, childElement.parentId)"
       >
         <div
@@ -60,13 +60,13 @@ const emitUpdateActiveClass = (
             'max-w-200px md:max-w-300px': !!childElement.media,
           }"
         >
-          <p class="text-base font-medium text-gray-900">
+          <p class="text-base font-medium text-secondary-900">
             {{ getTranslatedProperty(childElement, "name") }}
           </p>
           <!-- eslint-disable vue/no-v-html -->
           <p
             v-if="getTranslatedProperty(childElement, 'description')"
-            class="mt-1 text-sm text-gray-500"
+            class="mt-1 text-sm text-secondary-500"
             v-html="getTranslatedProperty(childElement, 'description')"
           />
           <!-- eslint-enable vue/no-v-html -->
@@ -95,6 +95,6 @@ const emitUpdateActiveClass = (
 
 <style scoped>
 nav .link-active {
-  @apply text-gray-900 bg-brand-primary bg-opacity-10 rounded-lg;
+  @apply text-secondary-900 bg-primary bg-opacity-10 rounded-lg;
 }
 </style>

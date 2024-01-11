@@ -17,7 +17,7 @@ const productOptions = computed(() =>
 <template>
   <div
     v-if="!isPromotion"
-    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-secondary-200"
   >
     <img
       :src="getMainImageUrl(orderItem)"
@@ -28,13 +28,15 @@ const productOptions = computed(() =>
 
   <div class="ml-4 flex flex-1 flex-col">
     <div>
-      <div class="flex justify-between text-base font-medium text-gray-900">
+      <div
+        class="flex justify-between text-base font-medium text-secondary-900"
+      >
         <h3>
           {{ orderItem.label }}
         </h3>
         <p class="ml-4">{{ itemRegularPrice }} EUR</p>
       </div>
-      <p class="mt-1 text-sm text-gray-500">
+      <p class="mt-1 text-sm text-secondary-500">
         <span
           v-for="option in productOptions"
           :key="option.group.name"
@@ -45,7 +47,7 @@ const productOptions = computed(() =>
       </p>
     </div>
     <div class="flex flex-1 items-end justify-between text-sm">
-      <p class="text-gray-500">Qty {{ itemQuantity }}</p>
+      <p class="text-secondary-500">Qty {{ itemQuantity }}</p>
     </div>
   </div>
 </template>

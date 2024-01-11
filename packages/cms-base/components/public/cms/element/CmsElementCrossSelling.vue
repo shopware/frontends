@@ -61,10 +61,9 @@ const toggleTab = (index: number) => {
       <a
         v-for="(collection, index) of crossSellCollections"
         :key="index"
-        class="transition text-lg font-bold text-gray-700 cursor-pointer"
+        class="transition text-lg font-bold text-secondary-700 cursor-pointer"
         :class="{
-          'border-b-3 border-brand-primary text-brand-primary':
-            currentTabIndex === index,
+          'border-b-3 border-primary text-primary': currentTabIndex === index,
         }"
         @click="toggleTab(index)"
       >

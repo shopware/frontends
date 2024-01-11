@@ -74,7 +74,7 @@ onMounted(async () => {
     >
       <h2
         v-if="categoryNavigation.length > 0 && !flagAllowSubcategories"
-        class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
+        class="text-3xl font-bold tracking-tight text-secondary-900 m-0 px-5"
       >
         {{
           categoryNavigation.length > 1
@@ -84,7 +84,7 @@ onMounted(async () => {
       </h2>
       <h2
         v-if="categoryNavigation.length > 0 && flagAllowSubcategories"
-        class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5"
+        class="text-3xl font-bold tracking-tight text-secondary-900 m-0 px-5"
       >
         {{
           categoryNavigation.length > 1
@@ -102,27 +102,29 @@ onMounted(async () => {
     </div>
     <div v-if="loading">
       <div class="px-5">
-        <h2 class="text-3xl font-bold tracking-tight text-gray-900 m-0 px-5">
+        <h2
+          class="text-3xl font-bold tracking-tight text-secondary-900 m-0 px-5"
+        >
           {{ translations.listing.loading }}
         </h2>
         <div
-          class="border border-gray-200 shadow rounded-md p-4 max-w-screen-xl mx-auto"
+          class="border border-secondary-200 shadow rounded-md p-4 max-w-screen-xl mx-auto"
         >
           <div class="animate-pulse flex space-x-4">
             <div class="flex-1 space-y-6 py-1">
               <div class="space-y-3">
                 <div class="grid grid-cols-3 gap-4">
-                  <div class="h-2 bg-slate-200 rounded col-span-2"></div>
-                  <div class="h-2 bg-slate-200 rounded col-span-1"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-2"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-1"></div>
                 </div>
-                <div class="h-2 bg-gray-200 rounded"></div>
+                <div class="h-2 bg-secondary-200 rounded"></div>
               </div>
               <div class="space-y-3">
                 <div class="grid grid-cols-3 gap-4">
-                  <div class="h-2 bg-slate-200 rounded col-span-1"></div>
-                  <div class="h-2 bg-slate-200 rounded col-span-2"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-1"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-2"></div>
                 </div>
-                <div class="h-2 bg-gray-200 rounded"></div>
+                <div class="h-2 bg-secondary-200 rounded"></div>
               </div>
             </div>
           </div>
@@ -130,17 +132,17 @@ onMounted(async () => {
             <div class="flex-1 space-y-6 py-4">
               <div class="space-y-3">
                 <div class="grid grid-cols-3 gap-4">
-                  <div class="h-2 bg-slate-200 rounded col-span-2"></div>
-                  <div class="h-2 bg-slate-200 rounded col-span-1"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-2"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-1"></div>
                 </div>
-                <div class="h-2 bg-gray-200 rounded"></div>
+                <div class="h-2 bg-secondary-200 rounded"></div>
               </div>
               <div class="space-y-3">
                 <div class="grid grid-cols-3 gap-4">
-                  <div class="h-2 bg-slate-200 rounded col-span-1"></div>
-                  <div class="h-2 bg-slate-200 rounded col-span-2"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-1"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-2"></div>
                 </div>
-                <div class="h-2 bg-gray-200 rounded"></div>
+                <div class="h-2 bg-secondary-200 rounded"></div>
               </div>
             </div>
           </div>
@@ -148,17 +150,17 @@ onMounted(async () => {
             <div class="flex-1 space-y-6 pt-4">
               <div class="space-y-3">
                 <div class="grid grid-cols-6 gap-4">
-                  <div class="h-2 bg-slate-200 rounded col-span-1"></div>
-                  <div class="h-2 bg-slate-200 rounded col-span-5"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-1"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-5"></div>
                 </div>
-                <div class="h-2 bg-gray-200 rounded"></div>
+                <div class="h-2 bg-secondary-200 rounded"></div>
               </div>
               <div class="space-y-3">
                 <div class="grid grid-cols-3 gap-4">
-                  <div class="h-2 bg-slate-200 rounded col-span-2"></div>
-                  <div class="h-2 bg-slate-200 rounded col-span-1"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-2"></div>
+                  <div class="h-2 bg-light-200 rounded col-span-1"></div>
                 </div>
-                <div class="h-2 bg-gray-200 rounded"></div>
+                <div class="h-2 bg-secondary-200 rounded"></div>
               </div>
             </div>
           </div>

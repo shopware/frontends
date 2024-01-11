@@ -30,14 +30,14 @@ const toggle = () => {
 </script>
 
 <template>
-  <div class="border-b border-gray-200 py-6 px-5">
+  <div class="border-b border-secondary-200 py-6 px-5">
     <h3 class="-my-3 flow-root">
       <button
         type="button"
-        class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
+        class="flex w-full items-center justify-between bg-white py-2 text-base text-secondary-400 hover:text-secondary-500"
         @click="toggle"
       >
-        <span class="font-medium text-gray-900 text-left">{{
+        <span class="font-medium text-secondary-900 text-left">{{
           props.filter.label
         }}</span>
         <span class="ml-6 flex items-center">
@@ -52,32 +52,34 @@ const toggle = () => {
       </button>
     </h3>
     <transition name="fade" mode="out-in">
-      <div v-show="isFilterVisible" id="filter-section-0" class="pt-6">
-        <div class="space-y-4">
+      <div v-show="isFilterVisible" :id="props.filter.code" class="pt-6">
+        <fieldset class="space-y-4">
+          <legend class="sr-only">{{ props.filter.name }}</legend>
           <div
             v-for="option in props.filter.options || props.filter.entities"
             :key="`${option.id}-${selectedOptionIds?.includes(option.id)}`"
             class="flex items-center"
-            @click="
-              emits('select-value', {
-                code: props.filter.code,
-                value: option.id,
-              })
-            "
           >
             <input
               :id="`filter-mobile-${props.filter.code}-${option.id}`"
               :checked="selectedOptionIds?.includes(option.id)"
               :name="props.filter.name"
               :value="option.name"
+              :aria-label="`${option.name} filter`"
               type="checkbox"
-              class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+              class="h-4 w-4 border-secondary-300 rounded text-indigo-600 focus:ring-indigo-500"
+              @change="
+                emits('select-value', {
+                  code: props.filter.code,
+                  value: option.id,
+                })
+              "
             />
 
             <div v-if="option.media?.url">
               <img
-                class="ml-2 h-4 w-4"
                 loading="lazy"
+                class="ml-2 h-4 w-4"
                 :src="option.media.url"
                 :alt="option.media.translated?.alt || ''"
                 :class="{
@@ -95,11 +97,14 @@ const toggle = () => {
                 'border-blue border-2': selectedOptionIds?.includes(option.id),
               }"
             />
-            <label for="filter-color-0" class="ml-3 text-gray-600">
+            <label
+              :for="`filter-mobile-${props.filter.code}-${option.id}`"
+              class="ml-3 text-secondary-600"
+            >
               {{ getTranslatedProperty(option, "name") }}
             </label>
           </div>
-        </div>
+        </fieldset>
       </div>
     </transition>
   </div>

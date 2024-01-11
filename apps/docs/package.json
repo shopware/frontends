@@ -13,18 +13,18 @@
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware-pwa/types": "workspace:*",
-    "flexsearch": "^0.7.31",
+    "flexsearch": "^0.7.43",
     "markdown-it": "^14.0.0",
     "vitepress": "1.0.0-beta.7",
     "vitepress-plugin-search": "1.0.4-alpha.20",
     "vitepress-shopware-docs": "0.3.0-beta.44",
-    "vue": "^3.3.11"
+    "vue": "^3.4.9"
   },
   "devDependencies": {
     "@shopware-pwa/typer": "workspace:*",
     "@types/markdown-it": "^13.0.7",
     "@types/node": "^20.8.1",
-    "@vitejs/plugin-vue": "^4.5.2",
+    "@vitejs/plugin-vue": "^5.0.3",
     "typescript": "^5.3.3"
   },
   "pnpm": {
