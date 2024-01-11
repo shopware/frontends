@@ -46,11 +46,11 @@ describe("errorInterceptor", () => {
       errorInterceptor(resp),
     ).toThrowErrorMatchingInlineSnapshot(
       `
-      "Failed request
-       - [Constraint violation error][/salutationId] The \\"salutation\\" entity with id \\"1b341372add24e318d4aa33564245d67\\" does not exist.
+      [ApiClientError: Failed request
+       - [Constraint violation error][/salutationId] The "salutation" entity with id "1b341372add24e318d4aa33564245d67" does not exist.
        - [Constraint violation error][/storefrontUrl] The value you selected is not a valid choice.
-       - [Constraint violation error][/billingAddress/salutationId] The \\"salutation\\" entity with id \\"1b341372add24e318d4aa33564245d67\\" does not exist.
-       - [Internal Server Error] Empty ids provided in criteria"
+       - [Constraint violation error][/billingAddress/salutationId] The "salutation" entity with id "1b341372add24e318d4aa33564245d67" does not exist.
+       - [Internal Server Error] Empty ids provided in criteria]
     `,
     );
 
