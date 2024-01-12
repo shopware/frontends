@@ -83,7 +83,6 @@ const handleVariantChange = (val: Schemas["Product"]) => {
             <ProductPrice :product="product" />
             <ProductUnits :product="product" class="text-sm" />
             <ProductVariantConfigurator @change="handleVariantChange" />
-            <ProductCustomizedProductConfigurator />
             <ProductAddToCart :product="product" />
           </div>
         </div>
