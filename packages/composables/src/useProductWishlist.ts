@@ -20,12 +20,23 @@ export type UseProductWishlistReturn = {
 
 /**
  * Manage wishlist for a single product.
+ *
+ * !! Ref<Schemas["Product"]> will be deprecated in the future
+ *
  * @public
  * @category Product
  */
 export function useProductWishlist(
-  product: Ref<Schemas["Product"]>,
+  product: Ref<Schemas["Product"]> | string,
 ): UseProductWishlistReturn {
+  let productId: string;
+
+  if (typeof product === "string") {
+    productId = product;
+  } else {
+    productId = product.value.id;
+  }
+
   const { isLoggedIn } = useUser();
   const {
     addToWishlist: addItem,
@@ -42,28 +53,29 @@ export function useProductWishlist(
 
   // removes item from the list
   async function removeFromWishlist() {
+    console.log("sssss", isLoggedIn);
     if (isLoggedIn.value) {
-      await removeItemSync(product.value.id);
+      await removeItemSync(productId);
       await getWishlistProducts();
     } else {
-      await removeItem(product.value.id);
+      await removeItem(productId);
     }
   }
 
   async function addToWishlist() {
     if (isLoggedIn.value) {
-      await addItemSync(product.value.id);
+      await addItemSync(productId);
       await getWishlistProducts();
     } else {
-      await addItem(product.value.id);
+      await addItem(productId);
     }
   }
 
   // return true or false if product id is in wishlist array
   const isInWishlist = computed(() =>
     isLoggedIn.value
-      ? itemsSync.value?.includes(product.value.id)
-      : items.value?.includes(product.value.id),
+      ? itemsSync.value?.includes(productId)
+      : items.value?.includes(productId),
   );
 
   return {
