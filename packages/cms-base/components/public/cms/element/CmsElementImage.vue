@@ -41,7 +41,10 @@ const srcPath = computed(() => {
 const imageComputedContainerAttrs = computed(() => {
   const imageAttrsCopy = Object.assign({}, imageContainerAttrs.value);
   if (imageAttrsCopy?.href) {
-    imageAttrsCopy.href = buildUrlPrefix(imageAttrsCopy.href, getUrlPrefix());
+    imageAttrsCopy.href = buildUrlPrefix(
+      imageAttrsCopy.href,
+      getUrlPrefix(),
+    ).path;
   }
   return imageAttrsCopy;
 });

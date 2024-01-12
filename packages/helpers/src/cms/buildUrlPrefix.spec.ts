@@ -7,7 +7,7 @@ describe("test with relativ url and string", () => {
   const result = "/test/url";
 
   it("should return correct string in url", () => {
-    expect(buildUrlPrefix(url, prefix)).toBe(result);
+    expect(buildUrlPrefix(url, prefix)).toMatchObject({ path: result });
   });
 });
 
@@ -17,7 +17,7 @@ describe("test with relativ url and prefix", () => {
   const result = "/test/url";
 
   it("should return correct string in url", () => {
-    expect(buildUrlPrefix(url, prefix)).toBe(result);
+    expect(buildUrlPrefix(url, prefix)).toMatchObject({ path: result });
   });
 });
 
@@ -27,7 +27,7 @@ describe("test with relativ url and with empty prefix", () => {
   const result = "/url";
 
   it("should return correct string in url", () => {
-    expect(buildUrlPrefix(url, prefix)).toBe(result);
+    expect(buildUrlPrefix(url, prefix)).toMatchObject({ path: result });
   });
 });
 
@@ -58,6 +58,6 @@ describe("test with absolute url", () => {
   const result = "https://test.com/";
 
   it("should return early without changes", () => {
-    expect(buildUrlPrefix(url, prefix)).toBe(result);
+    expect(buildUrlPrefix(url, prefix)).toMatchObject({ path: result });
   });
 });

@@ -30,7 +30,7 @@ const url = computed(() => {
     class="flex items-center py-2 px-5 text-base rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 my-2"
   >
     <RouterLink
-      v-if="!urlIsAbsolute(url)"
+      v-if="!urlIsAbsolute(url.path)"
       :to="url"
       :class="[
         props.isHighlighted ? 'font-bold' : 'font-normal',
@@ -41,7 +41,7 @@ const url = computed(() => {
     </RouterLink>
     <a
       v-else
-      :href="url"
+      :href="url.path"
       :class="[
         props.isHighlighted ? 'font-bold' : 'font-normal',
         props.isActive ? 'text-indigo-600' : 'text-gray-900',

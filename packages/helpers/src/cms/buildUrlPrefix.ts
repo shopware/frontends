@@ -1,15 +1,29 @@
 import { urlIsAbsolute } from "../urlIsAbsolute";
-export function buildUrlPrefix(url: string | object, prefix: string) {
+
+type UrlRoute = {
+  path?: string;
+  state?: {
+    routeName?: string;
+    foreignKey?: string;
+  };
+};
+
+type UrlRouteOutput = Omit<UrlRoute, "path"> & { path: string };
+
+export function buildUrlPrefix(
+  url: string | UrlRoute,
+  prefix: string,
+): UrlRouteOutput {
   if (typeof url === "string") {
-    if (urlIsAbsolute(url)) return url;
+    if (urlIsAbsolute(url)) return { path: url };
     url = url[0] !== "/" ? `/${url}` : url;
-    return prefix ? `/${prefix}${url}` : url;
+    return { path: prefix ? `/${prefix}${url}` : url };
   }
-  // @ts-expect-error: Get rid of any and use a proper object type
   if (url.path && prefix) {
-    // @ts-expect-error: Get rid of any and use a proper object type
     url.path = `/${prefix}${url.path}`;
   }
 
-  return url;
+  return url.path && typeof url.path === "string"
+    ? (url as UrlRouteOutput)
+    : { path: "" };
 }
