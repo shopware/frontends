@@ -38,7 +38,7 @@ describe("test with relativ url and object", () => {
 
   it("object url path should be changed", () => {
     const output = buildUrlPrefix(url, prefix);
-    expect(output).toBe(result);
+    expect(output).toMatchObject({ path: result });
   });
 });
 
@@ -48,7 +48,7 @@ describe("test with relativ url and wrong object", () => {
 
   it("path is not in url object", () => {
     const output = buildUrlPrefix(url, prefix);
-    expect(output).toBe("");
+    expect(output).toMatchObject({});
   });
 });
 

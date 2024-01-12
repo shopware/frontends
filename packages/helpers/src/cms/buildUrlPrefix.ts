@@ -1,9 +1,6 @@
 import { urlIsAbsolute } from "../urlIsAbsolute";
-
-export function buildUrlPrefix(
-  url: string | { path?: string },
-  prefix: string,
-): string {
+// @ts-ignore-error: Get rid of any and use a proper object type
+export function buildUrlPrefix(url: string | any, prefix: string) {
   if (typeof url === "string") {
     if (urlIsAbsolute(url)) return url;
     url = url[0] !== "/" ? `/${url}` : url;
@@ -13,5 +10,5 @@ export function buildUrlPrefix(
     url.path = `/${prefix}${url.path}`;
   }
 
-  return url && url.path ? url.path : "";
+  return url;
 }
