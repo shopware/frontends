@@ -52,7 +52,7 @@ describe("useCmsElementConfig", () => {
           blockId: "123",
           fieldConfig: [],
           apiAlias: "cms_slot",
-        };
+        } as unknown as CmsElementBuyBox;
 
         const { getConfigValue } = useCmsElementConfig(cmsElement);
 
