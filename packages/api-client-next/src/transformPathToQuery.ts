@@ -59,7 +59,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
     body?: Partial<T>;
   };
 
-  if (!params) {
+  if (!params || ["head", "get"].includes(method)) {
     return [requestPathWithParams, returnOptions];
   }
 
@@ -74,10 +74,9 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
     }
   });
 
-  if (
-    !["head", "get"].includes(method) &&
-    (!Object.keys(params).length || typeof params === "object")
-  ) {
+  // Exception for unknown type of FormData - multipart/form-data MIME type
+  // pass as it is
+  if (params instanceof FormData) {
     returnOptions.body ??= params as T;
   }
 
