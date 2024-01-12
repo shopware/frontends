@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import deepMerge from "../helpers/deepMerge";
-import getCmsTranslations from "../helpers/getCmsTranslations";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { useAddToCart, useNotifications } from "#imports";
 import { toRefs } from "vue";
+import { defu } from "defu";
 import type { Schemas } from "#shopware";
 
 const { pushSuccess } = useNotifications();
@@ -26,8 +26,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getCmsTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const { product } = toRefs(props);
 

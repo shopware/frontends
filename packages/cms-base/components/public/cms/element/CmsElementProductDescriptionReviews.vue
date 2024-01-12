@@ -4,10 +4,10 @@ import {
   getTranslatedProperty,
   getProductName,
 } from "@shopware-pwa/helpers-next";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import SwProductReviews from "../../../SwProductReviews.vue";
-import deepMerge from "../../../../helpers/deepMerge";
-import getCmsTranslations from "../../../../helpers/getCmsTranslations";
 import { computed, ref } from "vue";
+import { defu } from "defu";
 import { useProduct } from "#imports";
 
 const props = defineProps<{
@@ -27,8 +27,7 @@ let translations: Translations = {
     reviews: "Reviews",
   },
 };
-const globalTranslations = getCmsTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const currentTab = ref<number>(1);
 const { product } = useProduct(props.content.data?.product);

@@ -13,6 +13,7 @@ type CmsPageResponse = {
 
 export * from "./getCmsLayoutConfiguration";
 export * from "./getBackgroundImageUrl";
+export * from "./buildUrlPrefix";
 
 /**
  * Returns the main page object depending of the type of the CMS page.

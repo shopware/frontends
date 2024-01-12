@@ -1,6 +1,9 @@
-import { urlIsAbsolute } from "@shopware-pwa/helpers-next";
+import { urlIsAbsolute } from "../urlIsAbsolute";
 
-export default function buildUrlPrefix(url: string | any, prefix: string) {
+export function buildUrlPrefix(
+  url: string | { path?: string },
+  prefix: string,
+): string {
   if (typeof url === "string") {
     if (urlIsAbsolute(url)) return url;
     url = url[0] !== "/" ? `/${url}` : url;
@@ -10,5 +13,5 @@ export default function buildUrlPrefix(url: string | any, prefix: string) {
     url.path = `/${prefix}${url.path}`;
   }
 
-  return url;
+  return url && url.path ? url.path : "";
 }

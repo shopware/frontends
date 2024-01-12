@@ -1,4 +1,4 @@
-import resolveUrl from "../resolveUrl";
+import { useUrlResolver } from "#imports";
 
 export type NodeObject = {
   type: string;
@@ -40,6 +40,7 @@ export function getOptionsFromNode(node: any): Options {
 
   // Resolve URL if exist
   if (attrs?.href) {
+    const { resolveUrl } = useUrlResolver();
     attrs.href = `${resolveUrl(attrs.href)}`;
   }
 

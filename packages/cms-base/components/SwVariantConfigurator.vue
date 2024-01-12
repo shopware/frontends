@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { getProductRoute } from "@shopware-pwa/helpers-next";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { ref, computed, unref } from "vue";
 import type { ComputedRef } from "vue";
-import deepMerge from "../helpers/deepMerge";
-import getCmsTranslations from "../helpers/getCmsTranslations";
+import { defu } from "defu";
 import { useProductConfigurator } from "#imports";
 import { useRouter } from "vue-router";
 
@@ -28,8 +28,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getCmsTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const emit = defineEmits<{
   (e: "change", selected: any): void;

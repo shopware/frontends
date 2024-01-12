@@ -2,16 +2,16 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import type { CmsElementForm } from "@shopware-pwa/composables-next";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
+import { ApiClientError } from "@shopware/api-client";
 import {
   useCmsElementConfig,
   useNavigationContext,
   useSalutations,
   useShopwareContext,
 } from "#imports";
-import deepMerge from "../helpers/deepMerge";
-import getCmsTranslations from "../helpers/getCmsTranslations";
 import { computed, reactive, ref } from "vue";
-import { ApiClientError } from "@shopware/api-client";
+import { defu } from "defu";
 
 const props = defineProps<{
   content: CmsElementForm;
@@ -68,8 +68,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getCmsTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);

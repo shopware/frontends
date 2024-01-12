@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Ref } from "vue";
+import { defu } from "defu";
 import SwCategoryNavigation from "../../../SwCategoryNavigation.vue";
-import deepMerge from "../../../../helpers/deepMerge";
-import getCmsTranslations from "../../../../helpers/getCmsTranslations";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import { useCategory, useNavigation } from "#imports";
 import { onMounted, ref } from "vue";
@@ -30,8 +30,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getCmsTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const { category: activeCategory } = useCategory();
 const loading: Ref<boolean> = ref(true);

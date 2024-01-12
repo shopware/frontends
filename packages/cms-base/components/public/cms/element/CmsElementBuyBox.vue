@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsElementBuyBox } from "@shopware-pwa/composables-next";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import {
   useCmsElementConfig,
   useProductPrice,
@@ -8,10 +9,9 @@ import {
   usePrice,
 } from "#imports";
 import { computed } from "vue";
+import { defu } from "defu";
 import SwProductAddToCart from "../../../SwProductAddToCart.vue";
 import SwVariantConfigurator from "../../../SwVariantConfigurator.vue";
-import deepMerge from "../../../../helpers/deepMerge";
-import getCmsTranslations from "../../../../helpers/getCmsTranslations";
 import SwSharedPrice from "../../../SwSharedPrice.vue";
 
 const props = defineProps<{
@@ -52,8 +52,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getCmsTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const { getConfigValue } = useCmsElementConfig(props.content);
 const alignment = computed(() => getConfigValue("alignment"));

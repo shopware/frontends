@@ -10,9 +10,9 @@
     }
   "
 >
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { onMounted, reactive, ref, watch } from "vue";
-import deepMerge from "../../helpers/deepMerge";
-import getCmsTranslations from "../../helpers/getCmsTranslations";
+import { defu } from "defu";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 
 const emits = defineEmits<{
@@ -35,8 +35,7 @@ let translations: Translations = {
     max: "Max",
   },
 };
-const globalTranslations = getCmsTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const prices = reactive<{ min: number; max: number }>({
   min: 0,

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Product, ProductReview } from "@shopware-pwa/types";
-import deepMerge from "../helpers/deepMerge";
-import getCmsTranslations from "../helpers/getCmsTranslations";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { useProductReviews } from "#imports";
 import { computed, onMounted, ref, toRefs } from "vue";
+import { defu } from "defu";
 
 const props = defineProps<{
   product: Product;
@@ -22,8 +22,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getCmsTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const { product, reviews } = toRefs(props);
 

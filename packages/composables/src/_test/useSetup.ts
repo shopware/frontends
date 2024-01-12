@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import { vi } from "vitest";
 import { defineComponent, h } from "vue";
-import deepMerge from "../helpers/deepMerge";
+import { defu } from "defu";
 
 type Injections = {
   shopware: {
@@ -34,7 +34,7 @@ export function useSetup<V>(
     },
   });
 
-  const injections: Injections = deepMerge(
+  const injections: Injections = defu(
     defaultInjections,
     customMocks || {},
   ) as Injections;

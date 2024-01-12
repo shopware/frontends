@@ -1,6 +1,6 @@
 import { inject } from "vue";
 
-export default function getCmsTranslations() {
+export function useCmsTranslations() {
   try {
     return inject("cmsTranslations", {});
   } catch ($error) {
