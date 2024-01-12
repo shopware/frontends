@@ -2,9 +2,10 @@
 "@shopware-pwa/cms-base": minor
 ---
 
-Rename getTranslations to getCmsTranslations.  
-Export some helpers for external use e.g. in demo-store:
+Moved cms helper functions:
 
-```
-import { getCmsTranslations, deepMerge } from "@shopware-pwa/cms-base/helpers";
-```
+- buildUrlPrefix - moved to helpers package, see `packages/helpers/src/cms/buildUrlPrefix.ts`.
+- deepMerge - **removed** (use defu instead)
+- getCmsTranslations - move to composables as `useCmsTranslations`
+- getUrlPrefix - move to composables as method in `useUrlResolver`
+- resolveUrl - move to composables as method in `useUrlResolver`
