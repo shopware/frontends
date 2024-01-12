@@ -11,7 +11,12 @@ export function useUrlResolver() {
   };
 
   const resolveUrl = (url: string) => {
-    const navigationPattern = /[a-zA-z0-9]+\/navigation\/[a-zA-z0-9]+/;
+    // @see: https://codeql.github.com/codeql-query-help/javascript/js-polynomial-redos/
+    if (url.length > 2083) {
+      throw new Error("URL Input too long");
+    }
+
+    const navigationPattern = /[a-zA-Z0-9]+\/navigation\/[a-zA-Z0-9]+/;
     const urlPrefix = getUrlPrefix();
 
     switch (true) {
