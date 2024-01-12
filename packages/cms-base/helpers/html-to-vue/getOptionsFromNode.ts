@@ -18,9 +18,9 @@ type Options = {
 };
 
 export function getOptionsFromNode(node: any): Options {
-  let style = null;
-  let classNames = null;
-  let align = null;
+  let style = undefined;
+  let classNames = undefined;
+  let align = undefined;
 
   if (node.attrs.style && node.attrs.style !== "") {
     style = node.attrs.style;
@@ -45,9 +45,9 @@ export function getOptionsFromNode(node: any): Options {
   }
 
   return {
-    align: align,
-    attrs: attrs,
-    class: classNames,
-    style: style,
+    ...(typeof align != "undefined" && { align }),
+    ...(typeof attrs != "undefined" && { attrs }),
+    ...(typeof classNames != "undefined" && { class: classNames }),
+    ...(typeof style != "undefined" && { style }),
   };
 }
