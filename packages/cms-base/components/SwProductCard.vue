@@ -1,19 +1,23 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import {
+  buildUrlPrefix,
   getProductName,
   getProductRoute,
   getProductFromPrice,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
 import { toRefs, type Ref, computed, ref } from "vue";
+import { defu } from "defu";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
-import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
-import getUrlPrefix from "../helpers/getUrlPrefix";
-import buildUrlPrefix from "../helpers/buildUrlPrefix";
-import { useAddToCart, useNotifications, useProductWishlist } from "#imports";
+import {
+  useAddToCart,
+  useNotifications,
+  useProductWishlist,
+  useUrlResolver,
+} from "#imports";
 import { useElementSize } from "@vueuse/core";
 import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
@@ -56,8 +60,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const { product } = toRefs(props);
 
@@ -98,7 +101,7 @@ const addToCartProxy = async () => {
 };
 
 const fromPrice = getProductFromPrice(props.product);
-const urlPrefix = getUrlPrefix();
+const { getUrlPrefix } = useUrlResolver();
 const ratingAverage: Ref<number> = computed(() =>
   props.product.ratingAverage ? Math.round(props.product.ratingAverage) : 0,
 );
@@ -130,7 +133,7 @@ const srcPath = computed(() => {
       ]"
     >
       <RouterLink
-        :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
+        :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
         class="overflow-hidden"
       >
         <img
@@ -188,7 +191,7 @@ const srcPath = computed(() => {
     <div class="px-4 pb-4">
       <RouterLink
         class="line-clamp-2"
-        :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
+        :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
         data-testid="product-box-product-name-link"
       >
         <h5
@@ -224,7 +227,7 @@ const srcPath = computed(() => {
         </button>
         <RouterLink
           v-else
-          :to="buildUrlPrefix(getProductRoute(product), urlPrefix)"
+          :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
           class=""
         >
           <div
