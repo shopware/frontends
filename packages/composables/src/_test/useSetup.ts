@@ -14,17 +14,14 @@ type Injections = {
   };
 };
 
-export function useSetup<V>(
-  setup: () => V,
-  customMocks?: Record<string, unknown>,
-) {
+export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {
   const defaultInjections: Injections = {
     shopware: {
       apiInstance: {
         config: {},
       },
     },
-    apiClient: { invoke: vi.fn() },
+    apiClient: { invoke: customMocks?.apiClient?.invoke ?? vi.fn() },
   };
 
   const compoment = defineComponent({
