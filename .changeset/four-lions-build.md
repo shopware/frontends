@@ -2,4 +2,4 @@
 "@shopware-pwa/composables-next": minor
 ---
 
-Add resolving `useProductWishlist` with product id
+**BREAKING**: Use product ID instead of whole product object in `useProductWishlist` composable

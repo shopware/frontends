@@ -1,7 +1,6 @@
 import { computed } from "vue";
 import type { Ref } from "vue";
 import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
-import type { Schemas } from "#shopware";
 
 export type UseProductWishlistReturn = {
   /**
@@ -21,22 +20,12 @@ export type UseProductWishlistReturn = {
 /**
  * Manage wishlist for a single product.
  *
- * !! Ref<Schemas["Product"]> will be deprecated in the future
- *
  * @public
  * @category Product
  */
 export function useProductWishlist(
-  product: Ref<Schemas["Product"]> | string,
+  productId: string,
 ): UseProductWishlistReturn {
-  let productId: string;
-
-  if (typeof product === "string") {
-    productId = product;
-  } else {
-    productId = product.value.id;
-  }
-
   const { isLoggedIn } = useUser();
   const {
     addToWishlist: addItem,
@@ -53,7 +42,6 @@ export function useProductWishlist(
 
   // removes item from the list
   async function removeFromWishlist() {
-    console.log("sssss", isLoggedIn);
     if (isLoggedIn.value) {
       await removeItemSync(productId);
       await getWishlistProducts();
