@@ -29,8 +29,9 @@ const props = withDefaults(
 const { product } = toRefs(props);
 const { addToCart, isInCart, count } = useAddToCart(product);
 
-const { addToWishlist, removeFromWishlist, isInWishlist } =
-  useProductWishlist(product);
+const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
+  product.value.id,
+);
 
 const toggleWishlistProduct = async () => {
   if (!isInWishlist.value) {
