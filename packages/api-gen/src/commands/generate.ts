@@ -120,7 +120,7 @@ export async function generate() {
          * GenericRecord is used for types like associations
          */
         inject: `
-            type GenericRecord = never | {[key: string]: GenericRecord};
+            type GenericRecord = never | null | string | string[] | number | { [key: string]: GenericRecord };
             `,
 
         transform(schemaObject) {
@@ -195,8 +195,18 @@ export async function generate() {
       ];
     };
 
+    type OperationsMap = Record<
+      string,
+      {
+        path: string;
+        method: string;
+        queryParamNames: string[];
+        finalPath: string;
+      }
+    >;
+
     // create map of paths
-    const operationsMap = Object.keys(paths).reduce(
+    const operationsMap: OperationsMap = Object.keys(paths).reduce(
       (acc, path) => {
         const pathObject = paths[path];
         const methods = Object.keys(pathObject);
@@ -230,16 +240,28 @@ export async function generate() {
         });
         return acc;
       },
-      {} as Record<string, unknown>,
+      {} as OperationsMap,
     );
 
-    schema += `\n export type operationPaths = ${Object.values(operationsMap)
+    const operationsSortedByPath = Object.values(operationsMap).sort((a, b) => {
+      if (a.path < b.path) return -1;
+      if (a.path > b.path) return 1;
+      return 0;
+    });
+
+    schema += `\n export type operationPaths = ${operationsSortedByPath
       .map((el) => `"${(el as { finalPath: string }).finalPath}"`)
       .join(" | ")};`;
 
     // clean up
     // remove `@description ` tags
     schema = schema.replace(/@description /g, "");
+
+    // add generic components definition
+    schema = schema.replace(
+      /export type operations =/g,
+      "export type operations<components = components> =",
+    );
 
     schema = await format(schema, {
       // semi: false,
@@ -252,6 +274,8 @@ export async function generate() {
       writeFileSync(TYPES_FILENAME(originalSchema.info.version), schema, {
         encoding: "utf-8",
       });
+    } else {
+      throw new Error("Schema is not a string");
     }
     console.log(
       c.green(
