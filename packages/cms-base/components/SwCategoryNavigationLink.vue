@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
+import { useUrlResolver } from "#imports";
 import { RouterLink } from "vue-router";
 import {
+  buildUrlPrefix,
   getCategoryRoute,
   getTranslatedProperty,
+  urlIsAbsolute,
 } from "@shopware-pwa/helpers-next";
 import { computed } from "vue";
-import { urlIsAbsolute } from "@shopware-pwa/helpers-next";
-import buildUrlPrefix from "../helpers/buildUrlPrefix";
-import getUrlPrefix from "../helpers/getUrlPrefix";
 
 interface Props {
   navigationElement: Schemas["Category"];
@@ -17,10 +17,12 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const urlPrefix = getUrlPrefix();
-
+const { getUrlPrefix } = useUrlResolver();
 const url = computed(() => {
-  return buildUrlPrefix(getCategoryRoute(props.navigationElement), urlPrefix);
+  return buildUrlPrefix(
+    getCategoryRoute(props.navigationElement),
+    getUrlPrefix(),
+  );
 });
 </script>
 <template>
@@ -28,7 +30,7 @@ const url = computed(() => {
     class="flex items-center py-2 px-5 text-base rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 my-2"
   >
     <RouterLink
-      v-if="!urlIsAbsolute(url)"
+      v-if="!urlIsAbsolute(url.path)"
       :to="url"
       :class="[
         props.isHighlighted ? 'font-bold' : 'font-normal',
@@ -39,7 +41,7 @@ const url = computed(() => {
     </RouterLink>
     <a
       v-else
-      :href="url"
+      :href="url.path"
       :class="[
         props.isHighlighted ? 'font-bold' : 'font-normal',
         props.isActive ? 'text-indigo-600' : 'text-gray-900',

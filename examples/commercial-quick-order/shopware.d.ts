@@ -21,37 +21,54 @@ declare module "#shopware" {
   // };
 
   type extendedPaths =
-    | "payPalCreateOrder post /store-api/paypal/express/create-order?isPayPalExpressCheckout=1"
-    | "payPalPrepare post /store-api/paypal/express/prepare-checkout?isPayPalExpressCheckout=1"
-    | operationPaths;
+    | "quickOrderProductSearch get /store-api/quick-order/product?search"
+    | "quickOrderLoadFile post /store-api/quick-order/load-file"
+    | defaultOperationPaths;
+
   type extendedOperations = {
-    payPalCreateOrder: {
+    quickOrderProductSearch: {
+      parameters: {
+        query: {
+          /** Product search string  */
+          search: string;
+        };
+      };
       responses: {
         204: never;
         400: never;
+        200: {
+          content: {
+            "application/json": {
+              elements: any;
+            };
+          };
+        };
       };
     };
-    payPalPrepare: {
+    quickOrderLoadFile: {
       requestBody: {
         content: {
           "application/json": {
-            token: string;
+            formData: any;
           };
         };
       };
       responses: {
-        /** Returns a success response indicating a successful update */
+        204: never;
+        400: never;
         200: {
           content: {
-            "application/json": changedComponents["schemas"]["SuccessResponse"];
+            "application/json": {
+              products: any;
+            };
           };
         };
       };
     };
-  } & operations;
+  } & defaultOperations<changedComponents>;
 
-  export type operations = defaultOperations<changedComponents>;
-  export type operationPaths = defaultOperationPaths;
+  export type operations = extendedOperations;
+  export type operationPaths = extendedPaths;
   export type Schemas = changedComponents["schemas"];
 
   // we're exporting our own Api Client definition as it depends on our own instance

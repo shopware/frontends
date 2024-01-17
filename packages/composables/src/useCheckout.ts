@@ -1,8 +1,8 @@
 import { computed, ref, inject, provide } from "vue";
 import type { ComputedRef } from "vue";
+import { defu } from "defu";
 import type { Schemas, RequestParameters } from "#shopware";
 import { useShopwareContext, useSessionContext } from "#imports";
-import deepMerge from "./helpers/deepMerge";
 
 export type UseCheckoutReturn = {
   /**
@@ -96,7 +96,7 @@ export function useCheckout(): UseCheckoutReturn {
     associations: Schemas["Criteria"] = {},
   ) {
     if (shippingMethods.value.length && !forceReload) return shippingMethods;
-    const mergedAssociations: Schemas["Criteria"] = deepMerge(
+    const mergedAssociations: Schemas["Criteria"] = defu(
       shippingMethodsAssociations,
       associations,
     );

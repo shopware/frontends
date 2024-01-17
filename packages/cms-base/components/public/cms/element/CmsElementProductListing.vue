@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { CmsElementProductListing } from "@shopware-pwa/composables-next";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
-import deepMerge from "../../../../helpers/deepMerge";
-import getTranslations from "../../../../helpers/getTranslations";
 import { useListing } from "#imports";
 import { computed } from "vue";
+import { defu } from "defu";
 import { useRoute, useRouter } from "vue-router";
 import type { RequestParameters, Schemas } from "#shopware";
 
@@ -23,8 +23,7 @@ let translations: Translations = {
     noProducts: "No products found 😔",
   },
 };
-const globalTranslations = getTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const {
   getElements,

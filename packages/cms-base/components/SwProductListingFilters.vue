@@ -2,14 +2,14 @@
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import { computed, provide, reactive, ref } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
+import { defu } from "defu";
 import SwProductListingFilter from "./SwProductListingFilter.vue";
 import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
 } from "@shopware-pwa/composables-next";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { useCategory, useListing } from "#imports";
-import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
 import { onClickOutside } from "@vueuse/core";
 import { useRoute, useRouter } from "vue-router";
 import type { RequestParameters } from "#shopware";
@@ -33,8 +33,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 const { category } = useCategory();
 const route = useRoute();
