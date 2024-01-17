@@ -1740,7 +1740,7 @@ export type components = {
     CrossSellingElementCollection: {
       // TODO: [OpenAPI][CrossSellingElementCollection] - define CrossSellingElement instead of collection
       crossSelling: {
-        // TODO [OpenAPI][CrossSellingElementCollection] - define crossSelling as required
+        // TODO: [OpenAPI][CrossSellingElementCollection] - define crossSelling as required
         active?: boolean;
         /** Format: int32 */
         limit?: number;
@@ -7765,7 +7765,7 @@ export type operations<components = components> = {
         "application/json": {
           // TODO: [OpenAPI][addLineItem] - add proper request body type with required fields
           items: Array<{
-            id?: string; // TODO: check if this is used at all?
+            id?: string; // TODO: [OpenAPI][addLineItem] - check if this is used at all?
             referencedId: string;
             quantity?: number;
             type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][addLineItem] - add proper type -> see also #456

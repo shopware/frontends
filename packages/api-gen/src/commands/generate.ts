@@ -7,74 +7,36 @@ import c from "picocolors";
 import { format } from "prettier";
 import { patches } from "../patches";
 import semver from "semver";
-// /**
-//  * @ts-ignore
-//  */
-// import tsParser from "prettier/parser-typescript";
 
 const config = dotenv.config().parsed || {};
 
-if (!config.OPENAPI_JSON_URL || !config.OPENAPI_ACCESS_KEY) {
-  console.error(
-    c.red(
-      `Missing ${c.bold("OPENAPI_JSON_URL")} or ${c.bold(
-        "OPENAPI_ACCESS_KEY",
-      )} env variables.\n\nCheck whether the .env file is created.\n`,
-    ),
-  );
-  process.exit(1);
-}
-
-// const SCHEMA_FILENAME = "schema-admin.json";
-// const TYPES_FILENAME = "admin-types.d.ts";
-const loadFromAPI = false; // TODO; cli flag
-const SCHEMA_FILENAME = (version?: string | number) =>
-  `apiSchema${version ? "-" + version : ""}.json`;
-// const SCHEMA_FILENAME = "apiSchema.json";
-const TYPES_FILENAME = (version: string | number) => `apiTypes-${version}.d.ts`;
-
-export async function generate() {
+export async function generate(args: { cwd: string; filename: string }) {
   try {
-    let version = config.API_VERSION; // TODO: read scanning files
+    const outputFilename = args.filename.replace(".json", ".d.ts");
 
     //check if file exist
-    const fileExist = existsSync(SCHEMA_FILENAME(version));
+    const fileExist = existsSync(args.filename);
 
-    if (fileExist && !loadFromAPI) {
+    if (!fileExist) {
       console.log(
         c.yellow(
           `Schema file ${c.bold(
-            SCHEMA_FILENAME(version),
-          )} already exist. Remove it or use --overwrite flag to overwrite it.`,
+            args.filename,
+          )} does not exist. Check whether the file is created (use ${c.bold(
+            "loadSchema",
+          )} command first).`,
         ),
       );
-    } else {
-      // load json and save to local file
-      const apiJSON = await fetch(config.OPENAPI_JSON_URL, {
-        headers: {
-          "sw-access-key": config.OPENAPI_ACCESS_KEY,
-          Authorization: config.OPENAPI_ACCESS_KEY,
-        },
-      }).then((res) => res.json());
-
-      const formatted = await format(JSON.stringify(apiJSON), {
-        semi: false,
-        parser: "json",
-      });
-      const content = formatted.trim();
-
-      version = apiJSON?.info?.version;
-
-      writeFileSync(SCHEMA_FILENAME(version), content, {
-        encoding: "utf-8",
-      });
+      process.exit(1);
     }
 
     // Apply patches
-    const schemaFile = readFileSync(SCHEMA_FILENAME(version), {
+    const schemaFile = readFileSync(args.filename, {
       encoding: "utf-8",
     });
     let schemaForPatching = JSON.parse(schemaFile) as OpenAPI3;
+    const version = schemaForPatching?.info?.version;
+
     const allPatches: Array<keyof typeof patches> = []; // Object.keys(patches) as Array<keyof typeof patches>;
     const semverVersion = version.slice(2);
     const patchesToApply = allPatches.filter((patch) => {
@@ -91,12 +53,11 @@ export async function generate() {
       parser: "json",
     });
     const content = formatted.trim();
-    writeFileSync(SCHEMA_FILENAME(version), content, {
+    writeFileSync(args.filename, content, {
       encoding: "utf-8",
     });
 
-    // const readedContentFromFile = readFileSync("./openapi/schema.json", {
-    const readedContentFromFile = readFileSync(SCHEMA_FILENAME(version), {
+    const readedContentFromFile = readFileSync(args.filename, {
       encoding: "utf-8",
     });
 
@@ -104,7 +65,7 @@ export async function generate() {
     const { paths } = originalSchema;
     console.log("schema", originalSchema.info);
 
-    const address = resolve(process.cwd(), SCHEMA_FILENAME(version));
+    const address = resolve(process.cwd(), args.filename);
     let schema = await openapiTS(
       // new URL(SCHEMA_FILENAME, import.meta.url),
       address,
@@ -271,17 +232,13 @@ export async function generate() {
     schema = schema.trim();
 
     if (typeof schema === "string") {
-      writeFileSync(TYPES_FILENAME(originalSchema.info.version), schema, {
+      writeFileSync(outputFilename, schema, {
         encoding: "utf-8",
       });
     } else {
       throw new Error("Schema is not a string");
     }
-    console.log(
-      c.green(
-        `Types generated in ${TYPES_FILENAME(originalSchema.info.version)}`,
-      ),
-    );
+    console.log(c.green(`Types generated in ${c.bold(outputFilename)}`));
   } catch (error) {
     console.error(
       c.red(
