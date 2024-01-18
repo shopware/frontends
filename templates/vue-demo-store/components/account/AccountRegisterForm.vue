@@ -149,11 +149,11 @@ useBreadcrumbs([
             id="salutation"
             v-model="state.salutationId"
             name="salutation"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.salutationId.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-secondary-300 focus:border-indigo-500',
             ]"
             data-testid="registration-salutation-select"
             @blur="$v.salutationId.$touch()"
@@ -171,7 +171,7 @@ useBreadcrumbs([
           </select>
           <span
             v-if="$v.salutationId.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.salutationId.$errors[0].$message }}
           </span>
@@ -185,11 +185,11 @@ useBreadcrumbs([
             name="first-name"
             type="text"
             autocomplete="first-name"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.firstName.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-secondary-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.firstNamePlaceholder')"
             data-testid="registration-first-name-input"
@@ -197,7 +197,7 @@ useBreadcrumbs([
           />
           <span
             v-if="$v.firstName.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.firstName.$errors[0].$message }}
           </span>
@@ -211,11 +211,11 @@ useBreadcrumbs([
             name="last-name"
             type="text"
             autocomplete="last-name"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.lastName.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-secondary-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.lastNamePlaceholder')"
             data-testid="registration-last-name-input"
@@ -223,7 +223,7 @@ useBreadcrumbs([
           />
           <span
             v-if="$v.lastName.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.lastName.$errors[0].$message }}
           </span>
@@ -240,16 +240,16 @@ useBreadcrumbs([
             :class="[
               $v.email.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-secondary-300 focus:border-indigo-500',
             ]"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :placeholder="$t('form.emailPlaceholder')"
             data-testid="registration-email-input"
             @blur="$v.email.$touch()"
           />
           <span
             v-if="$v.email.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.email.$errors[0].$message }}
           </span>
@@ -263,11 +263,11 @@ useBreadcrumbs([
             name="password"
             type="password"
             autocomplete="password"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.password.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-secondary-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.passwordPlaceholder')"
             data-testid="registration-password-input"
@@ -275,7 +275,7 @@ useBreadcrumbs([
           />
           <span
             v-if="$v.password.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.password.$errors[0].$message }}
           </span>
@@ -294,11 +294,11 @@ useBreadcrumbs([
             name="Street"
             type="text"
             autocomplete="Street"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.billingAddress.street.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-secondary-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.streetPlaceholder')"
             data-testid="registration-street-input"
@@ -306,7 +306,7 @@ useBreadcrumbs([
           />
           <span
             v-if="$v.billingAddress.street.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.billingAddress.street.$errors[0].$message }}
           </span>
@@ -320,11 +320,11 @@ useBreadcrumbs([
             name="zipcode"
             type="text"
             autocomplete="zipcode"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.billingAddress.zipcode.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-secondary-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.postalCodePlaceholder')"
             data-testid="registration-zipcode-input"
@@ -332,7 +332,7 @@ useBreadcrumbs([
           />
           <span
             v-if="$v.billingAddress.zipcode.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.billingAddress.zipcode.$errors[0].$message }}
           </span>
@@ -346,11 +346,11 @@ useBreadcrumbs([
             name="city"
             type="text"
             autocomplete="city"
-            class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.billingAddress.city.$error
                 ? 'border-red-600 focus:border-red-600'
-                : 'border-gray-300 focus:border-indigo-500',
+                : 'border-secondary-300 focus:border-indigo-500',
             ]"
             :placeholder="$t('form.cityPlaceholder')"
             data-testid="registration-city-input"
@@ -358,7 +358,7 @@ useBreadcrumbs([
           />
           <span
             v-if="$v.billingAddress.city.$error"
-            class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
+            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
           >
             {{ $v.billingAddress.city.$errors[0].$message }}
           </span>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import deepMerge from "../helpers/deepMerge";
-import getTranslations from "../helpers/getTranslations";
+import { useCmsTranslations } from "@shopware-pwa/composables-next";
+import { defu } from "defu";
 
 const props = defineProps<{
   total: number;
@@ -21,8 +21,7 @@ let translations: Translations = {
   },
 };
 
-const globalTranslations = getTranslations();
-translations = deepMerge(translations, globalTranslations) as Translations;
+translations = defu(translations, useCmsTranslations()) as Translations;
 
 defineEmits<{
   (e: "changePage", page: number): void;

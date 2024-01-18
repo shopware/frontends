@@ -3,6 +3,8 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 // import { version } from "../package.json";
 import { generate } from "./commands/generate";
+import packageJson from "../package.json";
+import { loadSchema } from "./commands/loadSchema";
 
 export interface CommonOptions {
   cwd: string;
@@ -26,18 +28,31 @@ yargs(hideBin(process.argv))
     "Generate schema from your API instance",
     (args) => {
       return commonOptions(args)
-        .option("detail", {
-          alias: "schema",
-          type: "boolean",
-          default: false,
-          describe: "save also schema.json file",
+        .positional("filename", {
+          type: "string",
+          default: "apiSchema.json",
+          describe: "name of the file to generate type from",
         })
         .help();
     },
-    async (args) => generate(),
+    async (args) => generate(args),
+  )
+  .command(
+    "loadSchema",
+    "Load JSON schema from your API instance. You need to have proper .env file",
+    (args) => {
+      return commonOptions(args)
+        .positional("filename", {
+          type: "string",
+          default: "apiSchema.json",
+          describe: "name of the file to save schema",
+        })
+        .help();
+    },
+    async (args) => loadSchema(args),
   )
   .showHelpOnFail(false)
   .alias("h", "help")
-  .version("version", "0.0.1") // from package.json
+  .version("version", packageJson.version)
   .alias("v", "version")
   .help().argv;

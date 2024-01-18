@@ -162,7 +162,7 @@ provide("selectedOptionIds", selectedOptionIds);
       </div>
       <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2">
         <button
-          class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-secondary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500"
           type="button"
           @click="invokeCleanFilters"
         >

@@ -17,7 +17,7 @@ async function invokeLogout() {
       <ClientOnly>
         <div v-show="!isLoggedIn">
           <button
-            class="whitespace-nowrap bg-transparent text-base font-medium text-gray-500 hover:text-gray-900"
+            class="whitespace-nowrap bg-transparent text-base font-medium text-secondary-500 hover:text-secondary-900"
             data-testid="header-sign-in-link"
             @click="loginModalController.open"
           >
@@ -35,12 +35,12 @@ async function invokeLogout() {
             class="inset-y-2 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0"
           >
             <div
-              class="w-7 h-7 i-carbon-user text-gray-600 hover:text-brand-primary sm:hidden hover:text-brand-primary"
+              class="w-7 h-7 i-carbon-user text-secondary-600 hover:text-primary sm:hidden hover:text-primary"
               @click="isAccountMenuOpen = !isAccountMenuOpen"
             />
             <button
               type="button"
-              class="text-sm text-gray-700 bg-transparent focus:outline-none hidden sm:block"
+              class="text-sm text-secondary-700 bg-transparent focus:outline-none hidden sm:block"
               data-testid="account-menu-hello-button"
               @click="isAccountMenuOpen = !isAccountMenuOpen"
             >
@@ -53,7 +53,7 @@ async function invokeLogout() {
                 <button
                   id="user-menu-button"
                   type="button"
-                  class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                  class="bg-secondary-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-secondary-800 focus:ring-white"
                   aria-expanded="false"
                   aria-haspopup="true"
                   @click="isAccountMenuOpen = !isAccountMenuOpen"
@@ -82,7 +82,7 @@ async function invokeLogout() {
                     id="user-menu-item-1"
                     :to="formatLink('/account')"
                     data-testid="header-my-account-link"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    class="block px-4 py-2 text-sm text-secondary-700 hover:bg-secondary w-full text-left"
                     tabindex="-1"
                   >
                     {{ $t("account.menu.myAccount") }}
@@ -90,7 +90,7 @@ async function invokeLogout() {
                   <button
                     id="user-menu-item-2"
                     data-testid="header-sing-out-link"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    class="block px-4 py-2 text-sm text-secondary-700 hover:bg-secondary w-full text-left"
                     role="menuitem"
                     tabindex="-2"
                     @click="invokeLogout"

@@ -1,7 +1,7 @@
 import { useShopwareContext } from "#imports";
-import { cmsAssociations } from "./cms/cmsAssociations";
-import deepMerge from "./helpers/deepMerge";
 import type { Schemas } from "#shopware";
+import { cmsAssociations } from "./cms/cmsAssociations";
+import { defu } from "defu";
 
 export type UseProductSearchReturn = {
   /**
@@ -42,7 +42,7 @@ export function useProductSearch(): {
       criteria?: Partial<Schemas["Criteria"]>;
     },
   ) => {
-    const associations = deepMerge(
+    const associations = defu(
       options?.withCmsAssociations ? cmsAssociations : {},
       options?.criteria,
     );

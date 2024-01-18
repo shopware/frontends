@@ -20,8 +20,6 @@ declare module "#shopware" {
   //   };
   // };
 
-  // qweqwe post /some/{addressId}/pathh
-  // payPalCreateOrder post /store-api/paypal/express/create-order?isPayPalExpressCheckout=1
   type extendedPaths =
     | "payPalCreateOrder post /store-api/paypal/express/create-order?isPayPalExpressCheckout=1"
     | "payPalPrepare post /store-api/paypal/express/prepare-checkout?isPayPalExpressCheckout=1"

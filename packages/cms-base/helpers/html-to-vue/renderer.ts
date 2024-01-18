@@ -28,22 +28,23 @@ export function renderer(ast, config, createElement, context) {
         return config.textTransformer(node.content); // return text
       }
       if (node.type === "tag") {
+        const transformedNode = getOptionsFromNode(node);
         const children = [];
         node.children.forEach((child, index) => {
-          children.push(_render.call(this, h, child, node, index));
+          children.push(_render.call(this, h, child, transformedNode, index));
         });
         // if it's an extra component use custom renderer
         if (typeof config.extraComponentsMap[node.name] !== "undefined") {
           return config.extraComponentsMap[node.name].renderer.call(
             this,
-            node,
+            transformedNode,
             children,
             h,
             context,
           );
         }
         // else, create normal html element
-        return h(node.name, getOptionsFromNode(node), [...children]);
+        return h(node.name, transformedNode, [...children]);
       }
     }
   }

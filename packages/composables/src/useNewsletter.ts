@@ -29,7 +29,7 @@ export type UseNewsletterReturn = {
   /**
    * Newsletter status
    */
-  newsletterStatus: Ref<Schemas["NewsletterStatus"]["status"]>;
+  newsletterStatus: Ref<Schemas["AccountNewsletterRecipientResult"]["status"]>;
   /**
    * Inform about newsletter confirmation
    */
@@ -45,7 +45,7 @@ export function useNewsletter(): UseNewsletterReturn {
   const { apiClient } = useShopwareContext();
   const { getStorefrontUrl } = useInternationalization();
   const newsletterStatus =
-    ref<Schemas["NewsletterStatus"]["status"]>("undefined");
+    ref<Schemas["AccountNewsletterRecipientResult"]["status"]>("undefined");
 
   async function newsletterSubscribe(
     params: Omit<RequestParameters<"subscribeToNewsletter">, "storefrontUrl">,
@@ -83,7 +83,9 @@ export function useNewsletter(): UseNewsletterReturn {
   const isNewsletterSubscriber = computed(
     () =>
       !(
-        ["optOut", "undefined"] as Array<Schemas["NewsletterStatus"]["status"]>
+        ["optOut", "undefined"] as Array<
+          Schemas["AccountNewsletterRecipientResult"]["status"]
+        >
       ).includes(newsletterStatus.value),
   );
 

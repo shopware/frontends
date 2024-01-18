@@ -29,8 +29,9 @@ const props = withDefaults(
 const { product } = toRefs(props);
 const { addToCart, isInCart, count } = useAddToCart(product);
 
-const { addToWishlist, removeFromWishlist, isInWishlist } =
-  useProductWishlist(product);
+const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
+  product.value.id,
+);
 
 const toggleWishlistProduct = async () => {
   if (!isInWishlist.value) {
@@ -87,7 +88,7 @@ const srcPath = computed(() => {
 
 <template>
   <div
-    class="sw-product-card group relative max-w-full inline-block max-w-sm bg-white border border-gray-200 rounded-md shadow transform transition duration-300 hover:scale-101"
+    class="sw-product-card group relative max-w-full inline-block max-w-sm bg-white border border-secondary-200 rounded-md shadow transform transition duration-300 hover:scale-101"
     data-testid="product-box"
   >
     <div
@@ -145,7 +146,7 @@ const srcPath = computed(() => {
       <span
         v-for="option in product?.options"
         :key="option.id"
-        class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+        class="inline-flex items-center rounded-md bg-secondary-50 px-2 py-1 text-xs font-medium text-secondary-600 ring-1 ring-inset ring-secondary-500/10"
       >
         {{ option.group.name }}:
         {{ option.name }}
@@ -158,7 +159,7 @@ const srcPath = computed(() => {
         data-testid="product-box-product-name-link"
       >
         <h2
-          class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white min-h-60px"
+          class="text-xl font-semibold tracking-tight text-secondary-900 dark:text-white min-h-60px"
         >
           {{ getProductName({ product }) }}
         </h2>
@@ -175,24 +176,24 @@ const srcPath = computed(() => {
         <button
           v-if="!fromPrice"
           type="button"
-          class="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 md:hover:scale-120 flex"
+          class="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500 transform transition duration-400 md:hover:scale-120 flex"
           :class="{
-            'text-white bg-blue-600 hover:bg-blue-700': !isInCart,
-            'text-gray-600 bg-gray-100': isInCart,
+            'text-white bg-primary-600 hover:bg-primary-700': !isInCart,
+            'text-secondary-600 bg-secondary-100': isInCart,
           }"
           data-testid="add-to-cart-button"
           @click="addToCartProxy"
         >
           {{ $t("product.addToCart") }}
           <div v-if="isInCart" class="flex ml-2">
-            <div class="w-5 h-5 i-carbon-shopping-bag text-gray-600" />
+            <div class="w-5 h-5 i-carbon-shopping-bag text-secondary-600" />
             {{ count }}
           </div>
         </button>
         <RouterLink
           v-else
           :to="formatLink(getProductRoute(product))"
-          class="justify-center py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 hover:scale-120"
+          class="justify-center py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:bg-secondary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500 transform transition duration-400 hover:scale-120"
         >
           <span data-testid="product-box-product-show-details"> Details </span>
         </RouterLink>

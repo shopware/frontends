@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import { vi } from "vitest";
 import { defineComponent, h } from "vue";
-import deepMerge from "../helpers/deepMerge";
+import { defu } from "defu";
 
 type Injections = {
   shopware: {
@@ -14,17 +14,14 @@ type Injections = {
   };
 };
 
-export function useSetup<V>(
-  setup: () => V,
-  customMocks?: Record<string, unknown>,
-) {
+export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {
   const defaultInjections: Injections = {
     shopware: {
       apiInstance: {
         config: {},
       },
     },
-    apiClient: { invoke: vi.fn() },
+    apiClient: { invoke: customMocks?.apiClient?.invoke ?? vi.fn() },
   };
 
   const compoment = defineComponent({
@@ -34,7 +31,7 @@ export function useSetup<V>(
     },
   });
 
-  const injections: Injections = deepMerge(
+  const injections: Injections = defu(
     defaultInjections,
     customMocks || {},
   ) as Injections;

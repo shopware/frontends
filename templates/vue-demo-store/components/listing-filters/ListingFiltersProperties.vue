@@ -30,14 +30,14 @@ const toggle = () => {
 </script>
 
 <template>
-  <div class="border-b border-gray-200 py-6 px-5">
+  <div class="border-b border-secondary-200 py-6 px-5">
     <h3 class="-my-3 flow-root">
       <button
         type="button"
-        class="flex w-full items-center justify-between bg-white py-2 text-base text-gray-400 hover:text-gray-500"
+        class="flex w-full items-center justify-between bg-white py-2 text-base text-secondary-400 hover:text-secondary-500"
         @click="toggle"
       >
-        <span class="font-medium text-gray-900 text-left">{{
+        <span class="font-medium text-secondary-900 text-left">{{
           props.filter.label
         }}</span>
         <span class="ml-6 flex items-center">
@@ -67,7 +67,7 @@ const toggle = () => {
               :value="option.name"
               :aria-label="`${option.name} filter`"
               type="checkbox"
-              class="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+              class="h-4 w-4 border-secondary-300 rounded text-indigo-600 focus:ring-indigo-500"
               @change="
                 emits('select-value', {
                   code: props.filter.code,
@@ -99,7 +99,7 @@ const toggle = () => {
             />
             <label
               :for="`filter-mobile-${props.filter.code}-${option.id}`"
-              class="ml-3 text-gray-600"
+              class="ml-3 text-secondary-600"
             >
               {{ getTranslatedProperty(option, "name")
               }}{{ option.count ? " (" + option.count + ")" : "" }}

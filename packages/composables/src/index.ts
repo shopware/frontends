@@ -28,6 +28,7 @@ export * from "./useCheckout";
 export * from "./useCmsBlock";
 export * from "./useCmsMeta";
 export * from "./useCmsSection";
+export * from "./useCmsTranslations";
 export * from "./useContext";
 export * from "./useCountries";
 export * from "./useCustomerOrders";
@@ -56,6 +57,7 @@ export * from "./useSalutations";
 export * from "./useSessionContext";
 export * from "./useShopwareContext";
 export * from "./useSyncWishlist";
+export * from "./useUrlResolver";
 export * from "./useUser";
 export * from "./useWishlist";
 

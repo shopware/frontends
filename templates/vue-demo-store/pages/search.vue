@@ -229,7 +229,7 @@ export default {
   >
     <div v-if="loading" class="flex justify-center">
       <div
-        class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-gray-500"
+        class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-secondary-500"
       />
     </div>
 

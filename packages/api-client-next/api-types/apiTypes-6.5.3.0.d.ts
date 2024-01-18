@@ -16,6 +16,7 @@ type OneOf<T extends any[]> = T extends [infer Only]
 
 type GenericRecord =
   | never
+  | null
   | string
   | string[]
   | number
@@ -1000,7 +1001,7 @@ export type components = {
       position: number;
       sectionId: string;
       sectionPosition?: string;
-      slots?: components["schemas"]["CmsSlot"];
+      slots: components["schemas"]["CmsSlot"][]; // TODO: [OpenAPI][CmsBlock] - define slots as required array
       type: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -1080,7 +1081,7 @@ export type components = {
       backgroundMedia?: components["schemas"]["Media"];
       backgroundMediaId?: string;
       backgroundMediaMode?: string;
-      blocks?: components["schemas"]["CmsBlock"];
+      blocks: components["schemas"]["CmsBlock"][]; // TODO: [OpenAPI][CmsSection] - define blocks as required array
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
@@ -2271,7 +2272,13 @@ export type components = {
       /** Runtime field, cannot be used as part of the criteria. */
       hasFile?: boolean;
       id?: string;
-      metaData?: GenericRecord;
+      // TODO: [OpenAPI][Media] metaData field should be defined properly
+      metaData?: {
+        /** Format: int64 */
+        height?: number;
+        /** Format: int64 */
+        width?: number;
+      };
       mimeType?: string;
       private?: boolean;
       thumbnails?: Array<components["schemas"]["MediaThumbnail"]>; // TODO: [OpenAPI][Media] thumbnails field should be defined as an array

@@ -30,14 +30,16 @@ export function useSalutations(): UseSalutationsReturn {
 
   const fetchSalutations = async (): Promise<void> => {
     try {
-      const { elements } = await apiClient.invoke(
+      const result = await apiClient.invoke(
         "readSalutation post /salutation",
         {},
       );
-      _salutations.value = elements;
+      _salutations.value = result?.elements;
     } catch (e) {
       if (e instanceof ApiClientError) {
         error.value = e.message;
+      } else {
+        console.error("[useSalutations][fetchSalutations]", e);
       }
     }
   };

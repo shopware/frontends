@@ -64,7 +64,7 @@ useFocus(emailImputElement, { initialValue: true });
           src="/logo.svg"
           alt="logo of the shop"
         />
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-secondary-900">
           {{ $t("account.signInLabel") }}
         </h2>
       </div>
@@ -88,7 +88,7 @@ useFocus(emailImputElement, { initialValue: true });
               type="email"
               autocomplete="email"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary-300 placeholder-secondary-500 text-secondary-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               :placeholder="$t('form.email')"
               data-testid="login-email-input"
             />
@@ -104,7 +104,7 @@ useFocus(emailImputElement, { initialValue: true });
               type="password"
               autocomplete="current-password"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary-300 placeholder-secondary-500 text-secondary-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               :placeholder="$t('form.password')"
               data-testid="login-password-input"
             />
@@ -121,7 +121,7 @@ useFocus(emailImputElement, { initialValue: true });
           >
             <div class="flex items-center">
               <div
-                class="login-errors text-red-600 focus:ring-indigo-500 border-gray-300 rounded"
+                class="login-errors text-red-600 focus:ring-indigo-500 border-secondary-300 rounded"
               >
                 {{ loginErrors }}
               </div>
