@@ -1,4 +1,5 @@
 import { ref, watch } from "vue";
+import type { Ref } from "vue";
 import { createSharedComposable } from "@vueuse/core";
 import { useSessionContext } from "#imports";
 
@@ -14,6 +15,10 @@ export type UsePriceReturn = {
     localeCode: string | undefined;
     currencyCode: string;
   }): void;
+  /**
+   * Currency code
+   */
+  currencyCode: Ref<string>;
 };
 
 /**
@@ -95,6 +100,7 @@ function _usePrice(params?: {
   return {
     getFormattedPrice,
     update,
+    currencyCode,
   };
 }
 
