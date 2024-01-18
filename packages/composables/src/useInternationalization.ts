@@ -22,7 +22,9 @@ export type UseInternationalizationReturn = {
    * @param {string} languageId
    * @returns {Promise<Schemas['ContextTokenResponse']>} context object
    */
-  changeLanguage(languageId: string): Promise<Schemas["ContextTokenResponse"]>;
+  changeLanguage(
+    languageId: string,
+  ): Promise<RequestReturnType<"updateContext">>;
   /**
    * Get language code from backend language id
    *
@@ -95,8 +97,8 @@ export function useInternationalization(
     return data;
   }
 
-  function changeLanguage(languageId: string) {
-    return apiClient.invoke("updateContext patch /context", {
+  async function changeLanguage(languageId: string) {
+    return await apiClient.invoke("updateContext patch /context", {
       languageId,
     });
   }

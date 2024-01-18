@@ -1,9 +1,8 @@
-import type { Schemas } from "#shopware";
+import type { RequestReturnType } from "@shopware/api-client";
 
-const LoginResponse: Schemas["ContextTokenResponse"] = {
-  apiAlias: "array_struct",
+const LoginResponse: RequestReturnType<"loginCustomer"> = {
   contextToken: "CK273DThPuUSoG6g76qBAncveqQ9h5I3",
   redirectUrl: "",
-} as Schemas["ContextTokenResponse"];
+} as RequestReturnType<"loginCustomer">;
 
 export default LoginResponse;

@@ -20,6 +20,7 @@
   },
   "license": "MIT",
   "files": [
+    "bin",
     "dist"
   ],
   "bin": {
