@@ -1,10 +1,41 @@
 # shopware/frontends - api-gen
 
-Welcome to `@shopware/api-gen` package.
+Welcome to `@shopware/api-gen` CLI.
+Generate TypeScript schemas from Shopware OpenAPI specification.
 
-For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
+After generating schemas, you can use them in fully typed [API Client](https://www.npmjs.com/package/@shopware/api-client).
 
-Documentation specific for this package: [api-gen](https://frontends.shopware.com/packages/api-gen.html)
+## Usage
+
+```bash
+# Using pnpm
+pnpx add @shopware/api-gen [command]
+
+# Using npm
+npx i @shopware/api-gen [command]
+```
+
+## Commands
+
+### `generate`
+
+Transform OpenAPI specification from JSON file to Typescript schemas.
+
+options:
+
+```bash
+pnpx @shopware/api-gen generate --help
+```
+
+### `loadSchema`
+
+Load OpenAPI specification from Shopware instance and save it to JSON file.
+
+options:
+
+```bash
+pnpx @shopware/api-gen loadSchema --help
+```
 
 <!-- AUTO GENERATED CHANGELOG -->
 

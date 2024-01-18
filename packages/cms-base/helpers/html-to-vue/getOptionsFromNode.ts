@@ -1,4 +1,4 @@
-import resolveUrl from "../resolveUrl";
+import { useUrlResolver } from "#imports";
 
 export type NodeObject = {
   type: string;
@@ -18,9 +18,9 @@ type Options = {
 };
 
 export function getOptionsFromNode(node: any): Options {
-  let style = null;
-  let classNames = null;
-  let align = null;
+  let style = undefined;
+  let classNames = undefined;
+  let align = undefined;
 
   if (node.attrs.style && node.attrs.style !== "") {
     style = node.attrs.style;
@@ -40,13 +40,14 @@ export function getOptionsFromNode(node: any): Options {
 
   // Resolve URL if exist
   if (attrs?.href) {
+    const { resolveUrl } = useUrlResolver();
     attrs.href = `${resolveUrl(attrs.href)}`;
   }
 
   return {
-    align: align,
-    attrs: attrs,
-    class: classNames,
-    style: style,
+    ...(typeof align != "undefined" && { align }),
+    ...(typeof attrs != "undefined" && { attrs }),
+    ...(typeof classNames != "undefined" && { class: classNames }),
+    ...(typeof style != "undefined" && { style }),
   };
 }

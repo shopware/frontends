@@ -3,9 +3,8 @@ import type {
   CmsElementImage,
   CmsElementManufacturerLogo,
 } from "@shopware-pwa/composables-next";
-import { useCmsElementImage } from "#imports";
-import buildUrlPrefix from "../../../../helpers/buildUrlPrefix";
-import getUrlPrefix from "../../../../helpers/getUrlPrefix";
+import { useCmsElementImage, useUrlResolver } from "#imports";
+import { buildUrlPrefix } from "@shopware-pwa/helpers-next";
 import { useElementSize } from "@vueuse/core";
 import { computed, ref } from "vue";
 
@@ -13,6 +12,7 @@ const props = defineProps<{
   content: CmsElementImage | CmsElementManufacturerLogo;
 }>();
 
+const { getUrlPrefix } = useUrlResolver();
 const {
   containerStyle,
   displayMode,
@@ -38,11 +38,13 @@ const srcPath = computed(() => {
       : `height=${roundUp(height.value)}`;
   return `${imageAttrs.value.src}?${biggestParam}&fit=crop,smart`;
 });
-const urlPrefix = getUrlPrefix();
 const imageComputedContainerAttrs = computed(() => {
   const imageAttrsCopy = Object.assign({}, imageContainerAttrs.value);
   if (imageAttrsCopy?.href) {
-    imageAttrsCopy.href = buildUrlPrefix(imageAttrsCopy.href, urlPrefix);
+    imageAttrsCopy.href = buildUrlPrefix(
+      imageAttrsCopy.href,
+      getUrlPrefix(),
+    ).path;
   }
   return imageAttrsCopy;
 });

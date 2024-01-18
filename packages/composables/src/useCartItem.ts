@@ -119,7 +119,7 @@ export function useCartItem(
 
   async function removeItem() {
     const newCart = await apiClient.invoke(
-      "removeLineItem delete /checkout/cart/line-item?ids",
+      "removeLineItem post /checkout/cart/line-item/delete",
       {
         ids: [cartItem.value.id],
       },

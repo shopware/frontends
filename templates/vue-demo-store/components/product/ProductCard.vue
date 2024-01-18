@@ -33,8 +33,9 @@ const { addToCart, isInCart, count } = useAddToCart(product);
 //   isActive: isCustomizedProductActive,
 // } = useProductCustomizedProductConfigurator();
 
-const { addToWishlist, removeFromWishlist, isInWishlist } =
-  useProductWishlist(product);
+const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
+  product.value.id,
+);
 
 const toggleWishlistProduct = async () => {
   if (!isInWishlist.value) {

@@ -105,10 +105,7 @@ export function useCartFunction(): UseCartReturn {
       return newCart;
     }
 
-    const result = await apiClient.invoke(
-      "readCart get /checkout/cart?name",
-      {},
-    );
+    const result = await apiClient.invoke("readCart get /checkout/cart");
     _storeCart.value = result;
     setCartErrors(result);
     return result;
@@ -138,7 +135,7 @@ export function useCartFunction(): UseCartReturn {
 
   async function removeItem(lineItem: Schemas["LineItem"]) {
     const result = await apiClient.invoke(
-      "removeLineItem delete /checkout/cart/line-item?ids",
+      "removeLineItem post /checkout/cart/line-item/delete",
       {
         ids: [lineItem.id],
       },
