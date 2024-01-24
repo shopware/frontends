@@ -35,28 +35,28 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "^3.9.1",
+    "@nuxt/kit": "^3.9.3",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "@vueuse/core": "^10.7.1",
+    "@vueuse/core": "^10.7.2",
     "entities": "^4.5.0",
     "html-to-ast": "^0.0.6",
-    "vue": "^3.4.9"
+    "vue": "^3.4.15"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.9.1",
+    "@nuxt/schema": "^3.9.3",
     "@shopware-pwa/types": "workspace:*",
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "^9.20.0",
-    "nuxt": "^3.9.1",
+    "eslint-plugin-vue": "^9.20.1",
+    "nuxt": "^3.9.3",
     "tsconfig": "workspace:*",
     "typescript": "^5.3.3",
     "unbuild": "^2.0.0",
-    "vue-eslint-parser": "^9.4.0",
+    "vue-eslint-parser": "^9.4.2",
     "vue-router": "^4.2.5",
     "vue-tsc": "^1.8.27"
   }
