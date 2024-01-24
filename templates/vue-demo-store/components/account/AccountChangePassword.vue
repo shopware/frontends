@@ -10,8 +10,8 @@ const emits = defineEmits<{
 const { updatePassword, errors } = useCustomerPassword();
 const { user, refreshUser } = useUser();
 
-const userErrorMessages = computed(
-  () => errors.updatePassword?.map(({ detail }) => detail).toString(),
+const userErrorMessages = computed(() =>
+  errors.updatePassword?.map(({ detail }) => detail).toString(),
 );
 
 const isSuccess = ref(false);

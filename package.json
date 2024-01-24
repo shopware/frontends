@@ -28,8 +28,8 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
-    "@microsoft/api-documenter": "^7.23.16",
-    "@microsoft/api-extractor": "^7.39.1",
+    "@microsoft/api-documenter": "^7.23.19",
+    "@microsoft/api-extractor": "^7.39.3",
     "@microsoft/tsdoc": "^0.14.2",
     "@types/changelog-parser": "^2.8.4",
     "changelog-parser": "^3.0.1",
@@ -38,11 +38,11 @@
     "globby": "^14.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
-    "prettier": "^3.1.1",
+    "prettier": "^3.2.4",
     "taze": "^0.13.1",
     "turbo": "^1.11.3",
     "typedoc": "^0.25.7",
-    "vercel": "^33.1.0"
+    "vercel": "^33.2.0"
   },
   "engines": {
     "node": "^18.x || ^20.x"
@@ -52,17 +52,19 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.14.1",
+  "packageManager": "pnpm@8.14.3",
   "pnpm": {
     "overrides": {
       "@antfu/utils": "^0.7.7",
-      "@types/node": "^20",
       "@babel/traverse": "^7.23.7",
+      "@types/node": "^20",
       "debug": "^4.3.4",
-      "follow-redirects": "^1.15.4",
+      "follow-redirects": "^1.15.5",
       "postcss": "^8.4.33",
       "semver": "^7.5.4",
-      "sharp": "^0.33.1",
+      "sharp": "^0.33.2",
+      "vite@4>docs": "^4.5.2",
+      "vite@5": "^5.0.12",
       "yaml@2": "^2.3.4",
       "zod": "^3.22.4"
     },
