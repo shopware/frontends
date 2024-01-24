@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CmsElementText } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig } from "#imports";
+import { useCmsElementConfig, useUrlResolver } from "#imports";
 import { computed, getCurrentInstance, h } from "vue";
 import { decodeHTML } from "entities";
 import type { CSSProperties } from "vue";
@@ -25,6 +25,8 @@ const style = computed<CSSProperties>(() => ({
 const hasVerticalAlignment = computed(() => !!style.value.alignItems);
 
 const CmsTextRender = () => {
+  const { resolveUrl } = useUrlResolver();
+
   const config = {
     textTransformer: (text: string) => decodeHTML(text),
     extraComponentsMap: {
@@ -42,7 +44,7 @@ const CmsTextRender = () => {
             {
               class:
                 "underline text-base font-normal text-primary hover:text-secondary-900",
-              ...getOptionsFromNode(node).attrs,
+              ...getOptionsFromNode(node, resolveUrl).attrs,
             },
             [...children],
           );
@@ -71,7 +73,7 @@ const CmsTextRender = () => {
             "a",
             {
               class: _class,
-              ...getOptionsFromNode(node).attrs,
+              ...getOptionsFromNode(node, resolveUrl).attrs,
             },
             [...children],
           );
@@ -95,7 +97,7 @@ const CmsTextRender = () => {
             "span",
             {
               style: newStyle,
-              ...getOptionsFromNode(node).attrs,
+              ...getOptionsFromNode(node, resolveUrl).attrs,
             },
             [...children],
           );
@@ -106,7 +108,10 @@ const CmsTextRender = () => {
           return node.type === "tag" && node.name === "img";
         },
         renderer(node: any, children: any, createElement: any) {
-          return createElement("img", getOptionsFromNode(node)?.attrs);
+          return createElement(
+            "img",
+            getOptionsFromNode(node, resolveUrl)?.attrs,
+          );
         },
       },
     },
@@ -115,7 +120,7 @@ const CmsTextRender = () => {
     mappedContent.value?.length > 0
       ? mappedContent.value
       : "<div class='cms-element-text missing-content-element'></div>";
-  return renderHtml(rawHtml, config, h, context);
+  return renderHtml(rawHtml, config, h, context, resolveUrl);
 };
 </script>
 <template>
