@@ -1,5 +1,3 @@
-import { useUrlResolver } from "#imports";
-
 export type NodeObject = {
   type: string;
   name: string;
@@ -11,43 +9,44 @@ export type NodeObject = {
 
 type Options = {
   align?: string;
-  attrs?: Record<string, string>;
+  attrs: Record<string, string>;
   class?: string;
   color?: string;
   style?: string;
+  href?: string;
 };
 
-export function getOptionsFromNode(node: any): Options {
-  let style = undefined;
-  let classNames = undefined;
-  let align = undefined;
-
-  if (node.attrs.style && node.attrs.style !== "") {
-    style = node.attrs.style;
-    delete node.attrs.style; // we delete the nodes otherwise it would be added to rest again
-  }
-
-  if (node.attrs.class && node.attrs.class !== "") {
-    classNames = node.attrs.class;
-    delete node.attrs.class;
-  }
-
-  if (node.attrs.align && node.attrs.align !== "") {
-    align = node.attrs.align;
-    delete node.attrs.align;
-  }
-  const attrs = Object.keys(node.attrs).length === 0 ? null : { ...node.attrs };
-
-  // Resolve URL if exist
-  if (attrs?.href) {
-    const { resolveUrl } = useUrlResolver();
-    attrs.href = `${resolveUrl(attrs.href)}`;
-  }
-
-  return {
-    ...(typeof align != "undefined" && { align }),
-    ...(typeof attrs != "undefined" && { attrs }),
-    ...(typeof classNames != "undefined" && { class: classNames }),
-    ...(typeof style != "undefined" && { style }),
+export function getOptionsFromNode(
+  node: any,
+  resolveUrl: (url: string) => string,
+): Options {
+  const response: Options = {
+    attrs: {},
   };
+  try {
+    if (!node?.attrs) {
+      return response;
+    }
+
+    const { align, style, class: classNames, href, ...attrs } = node.attrs;
+
+    if (align) {
+      response.align = align;
+    }
+    if (style) {
+      response.style = style;
+    }
+    if (classNames) {
+      response.class = classNames;
+    }
+    if (attrs && Object.keys(attrs).length > 0) {
+      response.attrs = attrs;
+    }
+    if (href) {
+      response.attrs.href = resolveUrl(href);
+    }
+  } catch (e) {
+    console.error("[Shopware][cms][getOptionsFromNode] error", e);
+  }
+  return response;
 }

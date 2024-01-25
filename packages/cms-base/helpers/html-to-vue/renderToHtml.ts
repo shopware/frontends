@@ -28,10 +28,17 @@ export function renderHtml(
   config: Partial<DefaultConfig>,
   createElement: any,
   context: any,
+  resolveUrl: (url: string) => string,
 ) {
   const mergedConfig = Object.assign(defaultConfig, config);
   const _ast = generateAST(html);
   const _rectifiedAst = rectifyAST(_ast, config);
 
-  return renderer(_rectifiedAst, mergedConfig, createElement, context);
+  return renderer(
+    _rectifiedAst,
+    mergedConfig,
+    createElement,
+    context,
+    resolveUrl,
+  );
 }
