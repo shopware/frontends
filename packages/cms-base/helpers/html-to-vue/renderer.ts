@@ -13,7 +13,7 @@ import { getOptionsFromNode } from "./getOptionsFromNode";
  * @param {*} createElement vue's createElement
  * @param {*} context vue functional component context
  */
-export function renderer(ast, config, createElement, context) {
+export function renderer(ast, config, createElement, context, resolveUrl) {
   function _render(h, node, parent, key, index) {
     if (Array.isArray(node)) {
       const nodes = [];
@@ -28,7 +28,7 @@ export function renderer(ast, config, createElement, context) {
         return config.textTransformer(node.content); // return text
       }
       if (node.type === "tag") {
-        const transformedNode = getOptionsFromNode(node);
+        const transformedNode = getOptionsFromNode(node, resolveUrl);
         const children = [];
         node.children.forEach((child, index) => {
           children.push(_render.call(this, h, child, transformedNode, index));

@@ -32,7 +32,8 @@
     "eslint": "eslint components/**/*.vue* --fix --max-warnings=0",
     "lint": "pnpm run eslint && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"Warn: no test specified yet\""
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@nuxt/kit": "^3.9.3",
@@ -49,6 +50,7 @@
   "devDependencies": {
     "@nuxt/schema": "^3.9.3",
     "@shopware-pwa/types": "workspace:*",
+    "@vitest/coverage-v8": "^1.2.1",
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint-config-shopware": "workspace:*",
     "eslint-plugin-vue": "^9.20.1",
@@ -56,6 +58,7 @@
     "tsconfig": "workspace:*",
     "typescript": "^5.3.3",
     "unbuild": "^2.0.0",
+    "vitest": "^1.2.1",
     "vue-eslint-parser": "^9.4.2",
     "vue-router": "^4.2.5",
     "vue-tsc": "^1.8.27"
