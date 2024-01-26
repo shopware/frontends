@@ -10,6 +10,7 @@ overrides:
   '@types/node': ^20
   debug: ^4.3.4
   follow-redirects: ^1.15.5
+  lodash: ^4.17.21
   postcss: ^8.4.33
   semver: ^7.5.4
   sharp: ^0.33.2
@@ -40,11 +41,11 @@ importers:
         specifier: ^2.27.1
         version: 2.27.1
       '@microsoft/api-documenter':
-        specifier: ^7.23.19
-        version: 7.23.19(@types/node@20.11.5)
+        specifier: ^7.23.20
+        version: 7.23.20(@types/node@20.11.5)
       '@microsoft/api-extractor':
-        specifier: ^7.39.3
-        version: 7.39.3(@types/node@20.11.5)
+        specifier: ^7.39.4
+        version: 7.39.4(@types/node@20.11.5)
       '@microsoft/tsdoc':
         specifier: ^0.14.2
         version: 0.14.2
@@ -64,8 +65,8 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0
       husky:
-        specifier: ^8.0.3
-        version: 8.0.3
+        specifier: ^9.0.4
+        version: 9.0.4
       lint-staged:
         specifier: ^15.2.0
         version: 15.2.0
@@ -137,8 +138,8 @@ importers:
   apps/e2e-tests:
     dependencies:
       dotenv:
-        specifier: ^16.4.0
-        version: 16.4.0
+        specifier: ^16.4.1
+        version: 16.4.1
     devDependencies:
       '@playwright/test':
         specifier: ^1.41.1
@@ -541,8 +542,8 @@ importers:
         version: 8.1.0
     devDependencies:
       '@faker-js/faker':
-        specifier: ^8.3.1
-        version: 8.3.1
+        specifier: ^8.4.0
+        version: 8.4.0
       '@vitest/coverage-v8':
         specifier: ^1.2.1
         version: 1.2.1(vitest@1.2.1)
@@ -2801,8 +2802,8 @@ packages:
     resolution: {integrity: sha512-R11tGE6yIFwqpaIqcfkcg7AICXzFg14+5h5v0TfF/9+RMDL6jhzCy/pxHVOfbALGdtVYdt6JdR21tuxEgl34dw==}
     dev: false
 
-  /@faker-js/faker@8.3.1:
-    resolution: {integrity: sha512-FdgpFxY6V6rLZE9mmIBb9hM0xpfvQOSNOLnzolzKwsE1DH+gC7lEKV1p1IbR0lAYyvYd5a4u3qWJzowUkw1bIw==}
+  /@faker-js/faker@8.4.0:
+    resolution: {integrity: sha512-htW87352wzUCdX1jyUQocUcmAaFqcR/w082EC8iP/gtkF0K+aKcBp0hR5Arb7dzR8tQ1TrhE9DNa5EbJELm84w==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
     dev: true
 
@@ -3351,13 +3352,13 @@ packages:
       - encoding
       - supports-color
 
-  /@microsoft/api-documenter@7.23.19(@types/node@20.11.5):
-    resolution: {integrity: sha512-/bHaIsTbcYsEA1HOZhu7rGX6auD7vMs6QU/zVkpx0Q61pneco3xmXO0hp77redBM7qPqC7GUzyesKF7qBAtXPQ==}
+  /@microsoft/api-documenter@7.23.20(@types/node@20.11.5):
+    resolution: {integrity: sha512-61V6sukyYZ5jQEdyvDFzInaIRTd0wgT2ECKPanr2ba0fc+Mien+KIr5shz9EAqJMZz0GifTnw9HmJqsfR688xA==}
     hasBin: true
     dependencies:
-      '@microsoft/api-extractor-model': 7.28.6(@types/node@20.11.5)
+      '@microsoft/api-extractor-model': 7.28.7(@types/node@20.11.5)
       '@microsoft/tsdoc': 0.14.2
-      '@rushstack/node-core-library': 3.64.1(@types/node@20.11.5)
+      '@rushstack/node-core-library': 3.64.2(@types/node@20.11.5)
       '@rushstack/ts-command-line': 4.17.1
       colors: 1.2.5
       js-yaml: 3.13.1
@@ -3366,24 +3367,24 @@ packages:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor-model@7.28.6(@types/node@20.11.5):
-    resolution: {integrity: sha512-Jmz0PkQNvxMDpdL2Kea7GDLt5RL/nbKqI5lMkeftIfCAx9OtLqMnWHzKYBPFh/AR5GhmyLT3bJ/2Ml/ykCF8qQ==}
+  /@microsoft/api-extractor-model@7.28.7(@types/node@20.11.5):
+    resolution: {integrity: sha512-4gCGGEQGHmbQmarnDcEWS2cjj0LtNuD3D6rh3ZcAyAYTkceAugAk2eyQHGdTcGX8w3qMjWCTU1TPb8xHnMM+Kg==}
     dependencies:
       '@microsoft/tsdoc': 0.14.2
       '@microsoft/tsdoc-config': 0.16.2
-      '@rushstack/node-core-library': 3.64.1(@types/node@20.11.5)
+      '@rushstack/node-core-library': 3.64.2(@types/node@20.11.5)
     transitivePeerDependencies:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor@7.39.3(@types/node@20.11.5):
-    resolution: {integrity: sha512-Gh1NBS4Hh0fIfu8lfneaiBUq8IOm/0/yCy0t7+qq6XQEEfgVQNweCx7De0ISfhyqjL7J42qSIix4v77EWubCYg==}
+  /@microsoft/api-extractor@7.39.4(@types/node@20.11.5):
+    resolution: {integrity: sha512-6YvfkpbEqRQ0UPdVBc+lOiq7VlXi9kw8U3w+RcXCFDVc/UljlXU5l9fHEyuBAW1GGO2opUe+yf9OscWhoHANhg==}
     hasBin: true
     dependencies:
-      '@microsoft/api-extractor-model': 7.28.6(@types/node@20.11.5)
+      '@microsoft/api-extractor-model': 7.28.7(@types/node@20.11.5)
       '@microsoft/tsdoc': 0.14.2
       '@microsoft/tsdoc-config': 0.16.2
-      '@rushstack/node-core-library': 3.64.1(@types/node@20.11.5)
+      '@rushstack/node-core-library': 3.64.2(@types/node@20.11.5)
       '@rushstack/rig-package': 0.5.1
       '@rushstack/ts-command-line': 4.17.1
       colors: 1.2.5
@@ -3918,7 +3919,7 @@ packages:
       create-require: 1.1.1
       defu: 6.1.4
       destr: 2.0.2
-      dotenv: 16.4.0
+      dotenv: 16.4.1
       git-url-parse: 13.1.1
       is-docker: 3.0.0
       jiti: 1.21.0
@@ -3943,7 +3944,7 @@ packages:
       create-require: 1.1.1
       defu: 6.1.4
       destr: 2.0.2
-      dotenv: 16.4.0
+      dotenv: 16.4.1
       git-url-parse: 13.1.1
       is-docker: 3.0.0
       jiti: 1.21.0
@@ -3969,7 +3970,7 @@ packages:
       create-require: 1.1.1
       defu: 6.1.4
       destr: 2.0.2
-      dotenv: 16.4.0
+      dotenv: 16.4.1
       git-url-parse: 13.1.1
       is-docker: 3.0.0
       jiti: 1.21.0
@@ -4262,6 +4263,7 @@ packages:
       - vls
       - vti
       - vue-tsc
+    dev: true
 
   /@nuxt/vite-builder@3.9.3(@types/node@20.8.6)(typescript@5.3.3)(vue@3.4.15):
     resolution: {integrity: sha512-HruOrxn0g6TS31j3jycJvGZ7pt3JNEbcXNByVh7YJwQx6ToFX8kPWRu4LPeMhrLYvZzeUr2w3iELBECFxbDmvw==}
@@ -5083,8 +5085,8 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@rushstack/node-core-library@3.64.1(@types/node@20.11.5):
-    resolution: {integrity: sha512-eC2OdAvH+1siC+H2gqS8QP+QWv9EUU0mfY0+84lWojl8wamYa5WIdVETIaHSc5gDlRTz4lk+sJUOoWCARpj5dw==}
+  /@rushstack/node-core-library@3.64.2(@types/node@20.11.5):
+    resolution: {integrity: sha512-n1S2VYEklONiwKpUyBq/Fym6yAsfsCXrqFabuOMcCuj4C+zW+HyaspSHXJCKqkMxfjviwe/c9+DUqvRWIvSN9Q==}
     peerDependencies:
       '@types/node': ^20
     peerDependenciesMeta:
@@ -7716,7 +7718,7 @@ packages:
       '@vueuse/core': 10.7.2(vue@3.4.15)
       '@vueuse/metadata': 10.7.2
       local-pkg: 0.5.0
-      nuxt: 3.9.3(@types/node@20.8.6)(typescript@5.3.3)(vue-tsc@1.8.27)
+      nuxt: 3.9.3(@types/node@20.11.5)(eslint@8.56.0)(typescript@5.3.3)
       vue-demi: 0.14.6(vue@3.4.15)
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -8472,7 +8474,7 @@ packages:
     dependencies:
       chokidar: 3.5.3
       defu: 6.1.4
-      dotenv: 16.4.0
+      dotenv: 16.4.1
       giget: 1.2.1
       jiti: 1.21.0
       mlly: 1.5.0
@@ -9460,7 +9462,7 @@ packages:
     hasBin: true
     dependencies:
       cross-spawn: 7.0.3
-      dotenv: 16.4.0
+      dotenv: 16.4.1
       dotenv-expand: 10.0.0
       minimist: 1.2.8
     dev: true
@@ -9470,8 +9472,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /dotenv@16.4.0:
-    resolution: {integrity: sha512-WvImr5kpN5NGNn7KaDjJnLTh5rDVLZiDf/YLA8T1ZEZEBZNEDOE+mnkS0PVjPax8ZxBP5zC5SLMB3/9VV5de9g==}
+  /dotenv@16.4.1:
+    resolution: {integrity: sha512-CjA3y+Dr3FyFDOAMnxZEGtnW9KBR2M0JvvUtXNW+dYJL5ROWxP9DUHCwgFqpMk0OXCc0ljhaNTr2w/kutYIcHQ==}
     engines: {node: '>=12'}
 
   /dotenv@8.6.0:
@@ -11560,9 +11562,9 @@ packages:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
 
-  /husky@8.0.3:
-    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
-    engines: {node: '>=14'}
+  /husky@9.0.4:
+    resolution: {integrity: sha512-V3C/ksKcegckemdA20SxPC8x5OE2kVmiICCtChUCmaIKKF7mriBZIQd/7+cfyWkilI1OE1P8XlpMdOQE+IIcQA==}
+    engines: {node: '>=18'}
     hasBin: true
     dev: true
 
@@ -14537,6 +14539,7 @@ packages:
       - vti
       - vue-tsc
       - xml2js
+    dev: true
 
   /nypm@0.3.4:
     resolution: {integrity: sha512-1JLkp/zHBrkS3pZ692IqOaIKSYHmQXgqfELk6YTOfVBnwealAmPA1q2kKK7PHJAHSMBozerThEFZXP3G6o7Ukg==}
@@ -18415,6 +18418,7 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
 
   /vite-plugin-checker@0.6.2(eslint@8.56.0)(typescript@5.3.3)(vite@5.0.12)(vue-tsc@1.8.27):
     resolution: {integrity: sha512-YvvvQ+IjY09BX7Ab+1pjxkELQsBd4rPhWNw8WLBeFVxu/E7O+n6VYAqNsKdK/a2luFlX/sMpoWdGFfg4HvwdJQ==}
@@ -18524,6 +18528,7 @@ packages:
       vscode-languageserver-textdocument: 1.0.8
       vscode-uri: 3.0.7
       vue-tsc: 1.8.27(typescript@5.3.3)
+    dev: true
 
   /vite-plugin-inspect@0.8.1(@nuxt/kit@3.9.3):
     resolution: {integrity: sha512-oPBPVGp6tBd5KdY/qY6lrbLXqrbHRG0hZLvEaJfiZ/GQfDB+szRuLHblQh1oi1Hhh8GeLit/50l4xfs2SA+TCA==}

@@ -40,7 +40,7 @@
     "test": "vitest run --segfault-retry=3"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.3.1",
+    "@faker-js/faker": "^8.4.0",
     "@vitest/coverage-v8": "^1.2.1",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "^13.3.1",
