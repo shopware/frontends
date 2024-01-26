@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import {
   getSmallestThumbnailUrl,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 
-const props = defineProps<{ product: Product }>();
+const props = defineProps<{ product: Schemas["Product"] }>();
 
 const { product } = toRefs(props);
 const { unitPrice, displayFrom } = useProductPrice(product);

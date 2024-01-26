@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { getProductRoute } from "@shopware-pwa/helpers-next";
 
 const props = withDefaults(
@@ -12,7 +12,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: "change", selected: Product): void;
+  (e: "change", selected: Schemas["Product"]): void;
 }>();
 
 const isLoading = ref<boolean>();

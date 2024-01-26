@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useLandingSearch } from "#imports";
-import type { CmsPage, LandingPage } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
+import type { CmsPage } from "@shopware-pwa/types";
 
 const props = defineProps<{
   navigationId: string;
@@ -19,7 +20,7 @@ const { data: landingResponse } = await useAsyncData(
 );
 
 if (typeof landingResponse?.value !== null) {
-  const landingPage = landingResponse as Ref<LandingPage>;
+  const landingPage = landingResponse as Ref<Schemas["LandingPage"]>;
   useCmsHead(landingPage, { mainShopTitle: "Shopware Frontends Demo Store" });
 }
 </script>
