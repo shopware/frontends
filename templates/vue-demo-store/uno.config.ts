@@ -113,11 +113,5 @@ export default defineConfig({
       `,
     },
   ],
-  safelist: [
-    ...[
-      "max-md:hidden",
-      "md:max-lg:hidden",
-      "lg:hidden",
-    ],
-  ],
+  safelist: ["max-md:hidden", "md:max-lg:hidden", "lg:hidden"],
 });

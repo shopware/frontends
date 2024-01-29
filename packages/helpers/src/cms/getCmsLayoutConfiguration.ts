@@ -60,32 +60,30 @@ function isCmsSection(
  * Get CSS classes for visibility based on device type.
  *
  *  i.e. if tablet device is set to hidden, the output class will be "md:max-lg:hidden"
+ *
+ *  @internal
  */
-function getVisibilityClasses(content: CmsBlock | CmsSection | CmsSlot) {
-  if (
-    isCmsSlot(content) ||
-    !content?.visibility ||
-    Object.keys(content?.visibility).length === 0
-  )
-    return {};
-
+export function _getVisibilityClasses(
+  content: CmsBlock | CmsSection | CmsSlot,
+): Record<string, boolean> {
   const visibilityCssClasses: Record<string, boolean> = {};
 
-  Object.entries(content?.visibility)?.forEach(([device, isVisible]) => {
-    if (!isVisible) {
-      switch (device) {
-        case "mobile":
-          visibilityCssClasses["max-md:hidden"] = true;
-          break;
-        case "tablet":
-          visibilityCssClasses["md:max-lg:hidden"] = true;
-          break;
-        case "desktop":
-          visibilityCssClasses["lg:hidden"] = true;
-          break;
-      }
+  if (isCmsSlot(content) || !content?.visibility) {
+    return visibilityCssClasses;
+  }
+
+  const visibilityMap: Record<CmsVisibility, string> = {
+    mobile: "max-md:hidden", // TODO: #549 - create exported helper classes to be included in safelist
+    tablet: "md:max-lg:hidden",
+    desktop: "lg:hidden",
+  };
+
+  Object.entries(content.visibility).forEach(([device, isVisible]) => {
+    if (!isVisible && visibilityMap[device]) {
+      visibilityCssClasses[visibilityMap[device]] = true;
     }
   });
+
   return visibilityCssClasses;
 }
 
@@ -105,7 +103,7 @@ export function getCmsLayoutConfiguration<
       layoutStyles: {},
     } as LayoutConfiguration;
   }
-  const visibilityCssClasses = getVisibilityClasses(content);
+  const visibilityCssClasses = _getVisibilityClasses(content);
   // convert css classes string into object in format { "css-class-name": true }
   const mappedCssClasses =
     typeof content.cssClass === "string"
