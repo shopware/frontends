@@ -56,20 +56,10 @@ function isCmsSection(
   return content.apiAlias === "cms_section";
 }
 
-const deviceMap: { [key in CmsVisibility]: "md" | "xl" | "lg" } = {
-  mobile: "md",
-  tablet: "lg",
-  desktop: "xl",
-};
-
 /**
- * Get css object for visibility classes
+ * Get CSS classes for visibility based on device type.
  *
- *  mobile  -> "md"
- *  tablet  -> "lg"
- *  desktop -> "xl"
- *
- *  i.e. if tablet device is set to hidden, the output class will be "lg:hidden"
+ *  i.e. if tablet device is set to hidden, the output class will be "md:max-lg:hidden"
  */
 function getVisibilityClasses(content: CmsBlock | CmsSection | CmsSlot) {
   if (
@@ -79,15 +69,21 @@ function getVisibilityClasses(content: CmsBlock | CmsSection | CmsSlot) {
   )
     return {};
 
-  const visibilityCssClasses: {
-    "md:hidden"?: boolean;
-    "xl:hidden"?: boolean;
-    "lg:hidden"?: boolean;
-  } = {};
+  const visibilityCssClasses: Record<string, boolean> = {};
 
   Object.entries(content?.visibility)?.forEach(([device, isVisible]) => {
     if (!isVisible) {
-      visibilityCssClasses[`${deviceMap[device]}:hidden`] = true;
+      switch (device) {
+        case "mobile":
+          visibilityCssClasses["max-md:hidden"] = true;
+          break;
+        case "tablet":
+          visibilityCssClasses["md:max-lg:hidden"] = true;
+          break;
+        case "desktop":
+          visibilityCssClasses["lg:hidden"] = true;
+          break;
+      }
     }
   });
   return visibilityCssClasses;
