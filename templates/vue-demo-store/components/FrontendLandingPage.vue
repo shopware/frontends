@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useLandingSearch } from "#imports";
 import type { Schemas } from "#shopware";
-import type { CmsPage } from "@shopware-pwa/types";
 
 const props = defineProps<{
   navigationId: string;
@@ -27,8 +26,5 @@ if (typeof landingResponse?.value !== null) {
 
 <template>
   <LayoutBreadcrumbs />
-  <CmsPage
-    v-if="landingResponse?.cmsPage"
-    :content="landingResponse.cmsPage as unknown as CmsPage"
-  />
+  <CmsPage v-if="landingResponse?.cmsPage" :content="landingResponse.cmsPage" />
 </template>
