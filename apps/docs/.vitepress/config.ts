@@ -114,6 +114,10 @@ export const sidebar = [
             text: "Custome Payment",
             link: "/getting-started/e-commerce/custom-payment",
           },
+          {
+            text: "JSON-LD",
+            link: "/getting-started/e-commerce/json-ld",
+          },
         ],
       },
       {
