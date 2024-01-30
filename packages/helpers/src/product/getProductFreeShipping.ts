@@ -1,7 +1,3 @@
-type Product<T = unknown> = T & {
-  shippingFree: boolean;
-};
-
 /**
  * Get product free shipping property
  *
@@ -12,6 +8,10 @@ type Product<T = unknown> = T & {
  *
  * @category Product
  */
-export function getProductFreeShipping(product?: Product): boolean {
+export function getProductFreeShipping<
+  T extends {
+    shippingFree: boolean;
+  },
+>(product?: T): boolean {
   return product?.shippingFree || false;
 }

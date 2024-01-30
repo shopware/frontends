@@ -20,8 +20,8 @@ describe("Test real API invocations", () => {
       }),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `
-      "Failed request
-       - [Unauthorized] Header \\"sw-access-key\\" is required."
+      [ApiClientError: Failed request
+       - [Unauthorized] Header "sw-access-key" is required.]
     `,
     );
   });

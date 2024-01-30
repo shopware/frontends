@@ -35,17 +35,16 @@
     "build": "unbuild && pnpm build:types",
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "unbuild --stub",
-    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "lint": "biome lint . && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^0.34.6",
-    "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^12.10.3",
+    "@vitest/coverage-v8": "^1.2.2",
+    "happy-dom": "^13.3.4",
     "tsconfig": "workspace:*",
     "unbuild": "^2.0.0",
-    "vitest": "^0.34.6"
+    "vitest": "^1.2.2"
   }
 }

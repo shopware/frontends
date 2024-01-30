@@ -2,6 +2,7 @@
   "recommendations": [
     "esbenp.prettier-vscode",
     "Vue.volar",
-    "Gruntfuggly.todo-tree"
+    "Gruntfuggly.todo-tree",
+    "biomejs.biome"
   ]
 }

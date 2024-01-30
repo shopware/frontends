@@ -62,9 +62,8 @@ export class ApiClientError<
         if (error.source?.pointer) {
           pointer = `[${error.source.pointer}]`;
         }
-        return `${message}\n - [${error.title}]${pointer} ${
-          error.detail ?? ""
-        }`;
+        const details = error.detail ?? "No error details provided.";
+        return `${message}\n - [${error.title}]${pointer} ${details}`;
       }, "") ?? "";
     super(message);
 

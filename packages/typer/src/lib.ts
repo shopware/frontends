@@ -214,9 +214,7 @@ export function TypesParser({
     return `\`\`\`ts
 const { ${breakLine ? "\n" : ""} ${
       breakLine ? exportedApiList.join(",\n ") : exportedApiList.join(", ")
-    } ${breakLine ? "\n" : ""}} = ${functionName}(${parametersList?.join(
-      ", ",
-    )});
+    } ${breakLine ? "\n" : ""}} = ${functionName}(${parametersList?.join(", ")});
 \`\`\``;
   }
 

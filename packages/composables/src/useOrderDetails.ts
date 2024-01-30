@@ -1,7 +1,7 @@
 import { computed, ref, inject, provide } from "vue";
 import type { ComputedRef, Ref } from "vue";
+import { defu } from "defu";
 import { useShopwareContext } from "#imports";
-import deepMerge from "./helpers/deepMerge";
 import type { Schemas } from "#shopware";
 
 /**
@@ -167,11 +167,10 @@ export function useOrderDetails(
     firstName: _sharedOrder.value?.orderCustomer?.firstName,
     lastName: _sharedOrder.value?.orderCustomer?.lastName,
   }));
-  const billingAddress = computed(
-    () =>
-      _sharedOrder.value?.addresses?.find(
-        ({ id }: { id: string }) => id === _sharedOrder.value?.billingAddressId,
-      ),
+  const billingAddress = computed(() =>
+    _sharedOrder.value?.addresses?.find(
+      ({ id }: { id: string }) => id === _sharedOrder.value?.billingAddressId,
+    ),
   );
   const shippingAddress = computed(
     () => _sharedOrder.value?.deliveries?.[0]?.shippingOrderAddress,
@@ -183,11 +182,11 @@ export function useOrderDetails(
   const status = computed(() => _sharedOrder.value?.stateMachineState?.name);
 
   async function loadOrderDetails() {
-    const mergedAssociations = deepMerge(
+    const mergedAssociations = defu(
       orderAssociations,
       associations ? associations : {},
     );
-    const params = deepMerge(mergedAssociations, {
+    const params = defu(mergedAssociations, {
       filter: [
         {
           type: "equals",
@@ -195,7 +194,7 @@ export function useOrderDetails(
           value: orderId,
         },
       ],
-    });
+    }) as Schemas["Criteria"];
 
     const orderDetailsResponse = await apiClient.invoke(
       "readOrder post /order",

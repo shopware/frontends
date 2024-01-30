@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "formatter": {
+    "indentStyle": "space"
+  },
+  "files": {
+    "ignore": [
+      "dist",
+      "node_modules",
+      "coverage",
+      ".turbo",
+      "temp",
+      ".nuxt",
+      ".vercel",
+      "apiSchema*.json",
+      "apiTypes*.d.ts"
+    ]
+  }
+}

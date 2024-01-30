@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 const props = withDefaults(
   defineProps<{
-    product: Product;
+    product: Schemas["Product"];
     showContent?: boolean;
   }>(),
   {

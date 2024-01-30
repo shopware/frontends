@@ -48,15 +48,18 @@ describe("errorInterceptor", () => {
       errors: Array<ApiError>;
     }>;
 
-    await expect(() => errorInterceptor(resp))
-      .toThrowErrorMatchingInlineSnapshot(`
-      "Failed request
-       - [Constraint violation error][/salutationId] The \\"salutation\\" entity with id \\"1b341372add24e318d4aa33564245d67\\" does not exist.
+    await expect(() =>
+      errorInterceptor(resp),
+    ).toThrowErrorMatchingInlineSnapshot(
+      `
+      [ApiClientError: Failed request
+       - [Constraint violation error][/salutationId] The "salutation" entity with id "1b341372add24e318d4aa33564245d67" does not exist.
        - [Constraint violation error][/storefrontUrl] The value you selected is not a valid choice.
-       - [Constraint violation error][/billingAddress/salutationId] The \\"salutation\\" entity with id \\"1b341372add24e318d4aa33564245d67\\" does not exist.
+       - [Constraint violation error][/billingAddress/salutationId] The "salutation" entity with id "1b341372add24e318d4aa33564245d67" does not exist.
        - [Internal Server Error] Empty ids provided in criteria
-       - [Internal Server Error] "
-    `);
+       - [Internal Server Error] No error details provided.]
+    `,
+    );
 
     try {
       errorInterceptor(resp);
@@ -78,9 +81,9 @@ describe("errorInterceptor", () => {
 
     await expect(() => errorInterceptor(resp))
       .toThrowErrorMatchingInlineSnapshot(`
-      "Failed request
-       - [Unknown error] API did not return errors, but request failed. Please check the network tab."
-    `);
+        [ApiClientError: Failed request
+         - [Unknown error] API did not return errors, but request failed. Please check the network tab.]
+      `);
 
     try {
       errorInterceptor(resp);
@@ -102,7 +105,7 @@ describe("errorInterceptor", () => {
 
     await expect(() =>
       errorInterceptor(resp),
-    ).toThrowErrorMatchingInlineSnapshot('"Failed request"');
+    ).toThrowErrorMatchingInlineSnapshot(`[ApiClientError: Failed request]`);
 
     try {
       errorInterceptor(resp);

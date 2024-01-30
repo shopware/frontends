@@ -11,8 +11,10 @@ type CmsPageResponse = {
   landingPage: LandingPage;
 };
 
-export * from "./getCmsLayoutConfiguration";
+export { getCmsLayoutConfiguration } from "./getCmsLayoutConfiguration";
+export type { LayoutConfiguration } from "./getCmsLayoutConfiguration";
 export * from "./getBackgroundImageUrl";
+export * from "./buildUrlPrefix";
 
 /**
  * Returns the main page object depending of the type of the CMS page.

@@ -1,5 +1,5 @@
-import { getProductFreeShipping } from "./getProductFreeShipping";
 import { describe, expect, it } from "vitest";
+import { getProductFreeShipping } from "./getProductFreeShipping";
 
 describe("Shopware helpers - getProductFreeShipping", () => {
   it("should return false when no product object", () => {
@@ -8,14 +8,15 @@ describe("Shopware helpers - getProductFreeShipping", () => {
   });
 
   it("should return false when no freeShipping property in product", () => {
-    const args: any = {};
+    const args = {};
 
+    // @ts-expect-error type should be wrong here
     const shippingFree = getProductFreeShipping(args);
     expect(shippingFree).toBe(false);
   });
 
   it("should return true when freeShipping property in product is true", () => {
-    const args: any = {
+    const args = {
       shippingFree: true,
     };
 
@@ -24,7 +25,7 @@ describe("Shopware helpers - getProductFreeShipping", () => {
   });
 
   it("should return false when freeShipping property in product is false", () => {
-    const args: any = {
+    const args = {
       shippingFree: false,
     };
 

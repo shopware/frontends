@@ -156,4 +156,4 @@ The `src` attribute points to the main image URL (not resized) as a fallback.
 
 As long as `thumbnails` array is fulfilled, the same strategy can be applied when we work with every `media` object for each entity available in Shopware 6.
 
-<PageRef page="../best-practices/images" title="Best Practices" sub="Best Practices to work with images" />
+<PageRef page="../../best-practices/images" title="Best Practices" sub="Best Practices to work with images" />

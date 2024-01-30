@@ -4,7 +4,7 @@
  * @param {string} relativeUrl
  * @param {boolean} slash
  */
-export function relativeUrlSlash(relativeUrl: string, slash: boolean = true) {
+export function relativeUrlSlash(relativeUrl: string, slash = true) {
   const hasUrlSlash = relativeUrl.indexOf("/") === 0 ? true : false;
 
   if (slash) {

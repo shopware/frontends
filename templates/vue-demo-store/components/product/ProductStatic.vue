@@ -126,7 +126,7 @@ const handleVariantChange = (val: Schemas["Product"]) => {
 
             <div v-if="reviews?.length" class="mt-10">
               <h3 class="text-sm font-medium text-secondary-900">
-                {{ $t("product.price.reviews") }}
+                {{ $t("product.reviews") }}
               </h3>
               <div v-if="reviews?.length" class="mt-4">
                 <ul role="list" class="pl-4 list-disc text-sm space-y-2">

@@ -1,9 +1,10 @@
-import { getProductReviews } from "./getProductReviews";
 import { describe, expect, it } from "vitest";
+import { getProductReviews } from "./getProductReviews";
 
 describe("Shopware helpers - getProductReviews", () => {
   it("should return an array of UiProductReview objects", () => {
-    const productWithReviews: any = {
+    const productWithReviews = {
+      id: "123456789",
       productReviews: [
         {
           id: "3858d1baf2544a379c92535ea3d2fe53",
@@ -16,7 +17,7 @@ describe("Shopware helpers - getProductReviews", () => {
         {
           id: "3f06d7747f904336a78bf75e86a64535",
           customerId: "3f06d7747f904336a78bf75e86a6450f",
-          externalUser: null,
+          externalUser: undefined,
           points: 5,
           content: "I'm impressed!",
           createdAt: "2019-11-14T10:22:15+00:00",
@@ -36,7 +37,8 @@ describe("Shopware helpers - getProductReviews", () => {
     expect(secondReview.author).toBe("3f06d7747f904336a78bf75e86a6450f");
   });
   it("should return no reviews if do not exist", () => {
-    const productWithoutReviews: any = {};
+    const productWithoutReviews = {};
+    // @ts-expect-error type should be wrong here
     const reviews = getProductReviews({ product: productWithoutReviews });
     expect(reviews).toHaveLength(0);
   });
@@ -47,7 +49,8 @@ describe("Shopware helpers - getProductReviews", () => {
   });
 
   it("should return default value if product was null", () => {
-    const argument: any = { product: null };
+    const argument = { product: null };
+    // @ts-expect-error type should be wrong here
     const reviews = getProductReviews(argument);
     expect(reviews).toHaveLength(0);
   });

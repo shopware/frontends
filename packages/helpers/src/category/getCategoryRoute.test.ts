@@ -3,20 +3,24 @@ import { getCategoryRoute } from "./getCategoryRoute";
 
 describe("getCategoryRoute", () => {
   it("should return / if passed category is an empty object", () => {
-    expect(getCategoryRoute({} as any)).toEqual("/");
+    // @ts-expect-error type should be wrong here
+    expect(getCategoryRoute({})).toEqual("/");
   });
 
   it("should return / if passed category is undefined", () => {
-    expect(getCategoryRoute(undefined as any)).toEqual("/");
+    // @ts-expect-error type should be wrong here
+    expect(getCategoryRoute(undefined)).toEqual("/");
   });
 
   it("should return technical URL for navigation", () => {
     expect(
       getCategoryRoute({
+        // @ts-expect-error type should be wrong here
+        id: undefined,
         type: "link",
         linkType: "category",
         internalLink: "123",
-      } as any),
+      }),
     ).toEqual({
       path: "/navigation/123",
       state: {
@@ -29,10 +33,11 @@ describe("getCategoryRoute", () => {
   it("should return technical URL for product", () => {
     expect(
       getCategoryRoute({
+        id: "123123123",
         type: "link",
         linkType: "product",
         internalLink: "123",
-      } as any),
+      }),
     ).toEqual({
       path: "/detail/123",
       state: {
@@ -45,10 +50,11 @@ describe("getCategoryRoute", () => {
   it("should return technical URL for landing page", () => {
     expect(
       getCategoryRoute({
+        id: "123123123",
         type: "link",
         linkType: "landing_page",
         internalLink: "123",
-      } as any),
+      }),
     ).toEqual({
       path: "/landingPage/123",
       state: {
@@ -61,27 +67,31 @@ describe("getCategoryRoute", () => {
   it("should return external URL", () => {
     expect(
       getCategoryRoute({
+        id: "123123123",
         type: "link",
         externalLink: "https://shopware.com",
-      } as any),
+      }),
     ).toEqual("https://shopware.com");
   });
 
   it("should return SEO URL", () => {
     expect(
       getCategoryRoute({
+        id: "123123123",
         type: "link",
         seoUrls: [{ seoPathInfo: "/test" }],
-      } as any),
+      }),
     ).toEqual("/test");
   });
 
   it("should return SEO URL for category page", () => {
     expect(
       getCategoryRoute({
+        // @ts-expect-error type should be wrong here
+        id: undefined,
         type: "page",
         seoUrls: [{ seoPathInfo: "summer-trends" }],
-      } as any),
+      }),
     ).toEqual({
       path: "/summer-trends",
       state: {
@@ -94,9 +104,10 @@ describe("getCategoryRoute", () => {
   it("should try to return SEO URL for unknown type", () => {
     expect(
       getCategoryRoute({
+        id: "123123123",
         type: "unknown",
         seoUrls: [{ seoPathInfo: "test" }],
-      } as any),
+      }),
     ).toBe("/test");
   });
   it("should try to return technical URL for unknown type", () => {
@@ -105,7 +116,7 @@ describe("getCategoryRoute", () => {
         type: "unknown",
         id: "123",
         linkType: "category",
-      } as any),
+      }),
     ).toBe("/navigation/123");
   });
 });

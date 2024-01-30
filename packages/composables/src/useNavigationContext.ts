@@ -1,6 +1,5 @@
 import { computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
-import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { useContext } from "#imports";
 import type { Schemas } from "#shopware";
 

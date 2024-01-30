@@ -1,4 +1,3 @@
-import { _parseUrlQuery } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useSessionContext } from "#imports";
 import type { Schemas } from "#shopware";
 

@@ -59,20 +59,21 @@
   "dependencies": {
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "@vueuse/core": "^10.7.0",
-    "scule": "^1.1.1"
+    "@vueuse/core": "^10.7.2",
+    "defu": "^6.1.4",
+    "scule": "^1.2.0"
   },
   "devDependencies": {
-    "@nuxt/kit": "^3.8.2",
+    "@nuxt/kit": "^3.9.3",
     "@shopware-pwa/types": "workspace:*",
-    "@vitest/coverage-v8": "^0.34.6",
-    "@vue/test-utils": "^2.4.3",
+    "@vitest/coverage-v8": "^1.2.2",
+    "@vue/test-utils": "^2.4.4",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "^12.10.3",
+    "happy-dom": "^13.3.4",
     "tsconfig": "workspace:*",
-    "typescript": "^5.3.2",
+    "typescript": "^5.3.3",
     "unbuild": "^2.0.0",
-    "vitest": "^0.34.6",
-    "vue": "^3.3.10"
+    "vitest": "^1.2.2",
+    "vue": "^3.4.15"
   }
 }
