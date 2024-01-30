@@ -1,21 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { getBackgroundImageUrl } from "./getBackgroundImageUrl";
 import {
-  cmsSectionTestCaseOne,
-  urlsTestCaseOne,
-  cmsSectionTestCaseTwo,
-  urlsTestCaseTwo,
-  cmsSectionTestCaseThree,
-  urlsTestCaseThree,
-  cmsSectionTestCaseFour,
-  urlsTestCaseFour,
   cmsSectionTestCaseFive,
-  urlsTestCaseFive,
-  cmsSectionTestCaseSix,
-  urlsTestCaseSix,
+  cmsSectionTestCaseFour,
+  cmsSectionTestCaseOne,
   cmsSectionTestCaseSeven,
-  urlsTestCaseSeven,
+  cmsSectionTestCaseSix,
+  cmsSectionTestCaseThree,
+  cmsSectionTestCaseTwo,
   urlsTestCaseEight,
+  urlsTestCaseFive,
+  urlsTestCaseFour,
+  urlsTestCaseOne,
+  urlsTestCaseSeven,
+  urlsTestCaseSix,
+  urlsTestCaseThree,
+  urlsTestCaseTwo,
 } from "./mocks/backgroundImage";
 
 describe("getBackgroundImageUrl, round up max height 1900", () => {

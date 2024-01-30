@@ -1,15 +1,11 @@
-type LinkedCategory<T = unknown> = T & {
-  type: string;
-  externalLink?: string;
-  seoUrls?: { seoPathInfo: string }[];
-  internalLink?: string;
-  id: string;
-  linkType?: string;
-};
 /**
  * Extract prefix for technical URL
  */
-function getEntityPrefix(category: LinkedCategory) {
+function getEntityPrefix<
+  T extends {
+    linkType?: string;
+  },
+>(category: T) {
   switch (category.linkType) {
     case "category":
       return "navigation";
@@ -28,7 +24,16 @@ function getEntityPrefix(category: LinkedCategory) {
  *
  * @public
  */
-export function getCategoryUrl(category: LinkedCategory): string {
+export function getCategoryUrl<
+  T extends {
+    type: string;
+    externalLink?: string;
+    seoUrls?: { seoPathInfo: string }[];
+    internalLink?: string;
+    id: string;
+    linkType?: string;
+  },
+>(category: T): string {
   if (!category) return "/";
 
   switch (category.type) {

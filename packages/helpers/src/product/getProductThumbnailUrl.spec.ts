@@ -1,9 +1,9 @@
-import { getProductThumbnailUrl } from "./getProductThumbnailUrl";
 import { describe, expect, it } from "vitest";
+import { getProductThumbnailUrl } from "./getProductThumbnailUrl";
 
 describe("Helpers - getProductThumbnailUrl", () => {
   it("should return the smallest thumbnail contained in thumbnails array", () => {
-    const product: any = {
+    const product = {
       cover: {
         media: {
           url: "https://shopware.test/media/image.jpg",
@@ -27,7 +27,7 @@ describe("Helpers - getProductThumbnailUrl", () => {
   });
 
   it("should return the smallest thumbnail contained in thumbnails array", () => {
-    const product: any = {
+    const product = {
       cover: {
         media: {
           url: "https://shopware.test/media/image.jpg",
@@ -51,7 +51,7 @@ describe("Helpers - getProductThumbnailUrl", () => {
   });
 
   it("should return the main media url as a fallback if there is no thumbnail in the list", () => {
-    const product: any = {
+    const product = {
       cover: {
         media: {
           url: "https://shopware.test/media/image.jpg",
@@ -59,12 +59,13 @@ describe("Helpers - getProductThumbnailUrl", () => {
         },
       },
     };
+    // @ts-expect-error type should be wrong here
     const coverUrl = getProductThumbnailUrl(product);
     expect(coverUrl).toEqual("https://shopware.test/media/image.jpg");
   });
 
   it("should return empty string as a fallback if the thumbnails array can't be reached", () => {
-    const product: any = {
+    const product = {
       cover: {},
     };
     const coverUrl = getProductThumbnailUrl(product);
@@ -72,23 +73,25 @@ describe("Helpers - getProductThumbnailUrl", () => {
   });
 
   it("should return null for product without cover media, cover or thumnails", () => {
-    const emptyProduct: any = {};
+    const emptyProduct = {};
     const coverUrl = getProductThumbnailUrl(emptyProduct);
     expect(coverUrl).toEqual("");
   });
 
   it("should return default negative value if argument wasn't provided", () => {
-    const coverUrl = getProductThumbnailUrl(undefined as any);
+    // @ts-expect-error type should be wrong here
+    const coverUrl = getProductThumbnailUrl(undefined);
     expect(coverUrl).toEqual("");
   });
 
   it("should return default value if product was null", () => {
-    const argument: any = null;
+    const argument = null;
+    // @ts-expect-error type should be wrong here
     const coverUrl = getProductThumbnailUrl(argument);
     expect(coverUrl).toEqual("");
   });
   it("should return default value if product cover.media has no thumnbails in array", () => {
-    const argument: any = {
+    const argument = {
       cover: {
         media: {
           url: "https://shopware-pwa.com/image.png",

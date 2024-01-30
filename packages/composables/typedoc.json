@@ -1,8 +1,6 @@
 {
   // Comments are supported, like tsconfig.json
-  "entryPoints": [
-    "src/index.ts"
-  ],
+  "entryPoints": ["src/index.ts"],
   "out": "docs",
   "exclude": [
     "**/*+(.test|.spec|.e2e).ts",
