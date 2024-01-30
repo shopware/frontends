@@ -22,6 +22,9 @@ if (!productResponse.value) {
   console.error("No product found for navigationId: " + props.navigationId);
   throw new Error("No product found for navigationId: " + props.navigationId);
 }
+
+useProductJsonLD(productResponse.value.product);
+
 const breadcrumbs = getCategoryBreadcrumbs(
   productResponse.value.product.seoCategory,
   {
