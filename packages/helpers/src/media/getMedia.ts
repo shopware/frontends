@@ -25,7 +25,7 @@ export function getMedia<
   },
 >(lineItem: T) {
   return (
-    lineItem.downloads?.reduce((acc: ProductMedia[], current) => {
+    lineItem?.downloads?.reduce((acc: ProductMedia[], current) => {
       acc.push({
         id: current.id,
         fileName: `${current.media.fileName}.${current.media.fileExtension}`,

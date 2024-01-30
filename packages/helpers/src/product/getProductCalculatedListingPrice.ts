@@ -1,12 +1,8 @@
 type CalculatedPrice = {
-  unitPrice: number;
+  unitPrice?: number;
   listPrice?: {
     price: number;
   };
-};
-type ProductWithCalculatedPrice<T = unknown> = T & {
-  calculatedPrice: CalculatedPrice;
-  calculatedPrices?: CalculatedPrice[];
 };
 
 /**
@@ -17,9 +13,12 @@ type ProductWithCalculatedPrice<T = unknown> = T & {
  *
  * @beta
  */
-export function getProductCalculatedListingPrice(
-  product?: ProductWithCalculatedPrice,
-): number | undefined {
+export function getProductCalculatedListingPrice<
+  T extends {
+    calculatedPrice?: CalculatedPrice;
+    calculatedPrices?: CalculatedPrice[];
+  },
+>(product?: T): number | undefined {
   return (
     product?.calculatedPrice?.listPrice?.price ||
     product?.calculatedPrice?.unitPrice

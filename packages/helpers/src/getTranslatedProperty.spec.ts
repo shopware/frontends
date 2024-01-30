@@ -1,5 +1,5 @@
-import { getTranslatedProperty } from "./getTranslatedProperty";
 import { describe, expect, it } from "vitest";
+import { getTranslatedProperty } from "./getTranslatedProperty";
 
 describe("getTranslatedProperty function", () => {
   it("should return the translated property value", () => {

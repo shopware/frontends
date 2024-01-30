@@ -25,9 +25,9 @@ export function getProductThumbnailUrl<
   const coverImageUrlFallback = product?.cover?.media?.url || "";
   const thumbnailImage =
     (product?.cover?.media?.thumbnails?.length &&
-      product.cover.media.thumbnails.reduce(function (res, thumb) {
-        return thumb.width < res.width ? thumb : res;
-      })) ||
+      product.cover.media.thumbnails.reduce((res, thumb) =>
+        thumb.width < res.width ? thumb : res,
+      )) ||
     null;
   return thumbnailImage?.url || coverImageUrlFallback;
 }

@@ -1,4 +1,4 @@
-import { getTranslatedProperty } from "..";
+import { getTranslatedProperty } from "../getTranslatedProperty";
 
 type AggregationFilterEntity = {
   name: string;
@@ -49,7 +49,8 @@ function isEntitiesAggregation(
 /**
  * @beta
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+// biome-ignore lint/suspicious/noExplicitAny: Listing filters needs to be improved when schema types are ready
 export function getListingFilters<T extends Record<string, any>>(
   aggregations: T | undefined | null,
 ): ListingFilter[] {

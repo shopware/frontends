@@ -32,5 +32,5 @@ export function getBackgroundImageUrl<
       : `height=${roundUp(height > 1920 ? 1900 : height)}`;
   const srcPath = `${backgroundImage}?${biggestParam}&fit=crop,smart`;
 
-  return 'url("' + srcPath + '")';
+  return `url("${srcPath}")`;
 }
