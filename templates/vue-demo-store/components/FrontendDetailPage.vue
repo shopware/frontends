@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useProductSearch } from "#imports";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
-import type { CmsPage } from "@shopware-pwa/types";
 
 const props = defineProps<{
   navigationId: string;
@@ -45,7 +44,7 @@ useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });
       <ProductStatic :product="product" />
     </template>
     <template v-else-if="product.cmsPage">
-      <CmsPage :content="product.cmsPage as unknown as CmsPage" />
+      <CmsPage :content="product.cmsPage" />
     </template>
   </div>
 </template>

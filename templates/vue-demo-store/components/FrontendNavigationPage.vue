@@ -4,7 +4,6 @@ import type { Ref } from "vue";
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 import { useCmsHead } from "@/composables/useCmsHead";
 import type { Schemas } from "#shopware";
-import type { CmsPage } from "@shopware-pwa/types";
 
 const props = defineProps<{
   navigationId: string;
@@ -38,8 +37,5 @@ useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });
 
 <template>
   <LayoutBreadcrumbs v-if="route.path != '/'" />
-  <CmsPage
-    v-if="category?.cmsPage"
-    :content="category.cmsPage as unknown as CmsPage"
-  />
+  <CmsPage v-if="category?.cmsPage" :content="category.cmsPage" />
 </template>

@@ -3,7 +3,7 @@ import {
   getCategoryRoute,
   getCategoryImageUrl,
 } from "@shopware-pwa/helpers-next";
-import type { Category } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 const { navigationElements } = useNavigation();
 
@@ -12,11 +12,11 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const expandedIds = ref<Array<string>>([]);
 
-function isCollapsed(navigationelement: Category): boolean {
+function isCollapsed(navigationelement: Schemas["Category"]): boolean {
   return !expandedIds.value.includes(navigationelement.id);
 }
 
-const toggleCollapse = (navigationElement: Category) => {
+const toggleCollapse = (navigationElement: Schemas["Category"]) => {
   if (!isCollapsed(navigationElement)) {
     expandedIds.value = expandedIds.value.filter(
       (el) => el !== navigationElement.id,
