@@ -7,9 +7,10 @@ import {
 } from "@shopware-pwa/helpers-next";
 import { useListing, useNavigationContext } from "#imports";
 import { computed, h, resolveComponent } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  content: CmsPage;
+  content: CmsPage | Schemas["CmsPage"];
 }>();
 
 const { routeName } = useNavigationContext();
@@ -18,7 +19,7 @@ if (routeName.value === "frontend.navigation.page") {
 }
 
 const cmsSections = computed<CmsSection[]>(() => {
-  return props.content?.sections || [];
+  return (props.content?.sections as unknown as CmsSection[]) || [];
 });
 
 const DynamicRender = () => {

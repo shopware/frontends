@@ -78,6 +78,10 @@ export type UseSessionContextReturn = {
    */
   countryId: ComputedRef<string | undefined>;
   /**
+   * current sales channel country id
+   */
+  salesChannelCountryId: ComputedRef<string | undefined>;
+  /**
    * current language id
    */
   languageId: ComputedRef<string | undefined>;
@@ -217,6 +221,10 @@ export function useSessionContext(
   };
 
   const countryId = computed(
+    () => sessionContext.value?.shippingLocation?.country?.id,
+  );
+
+  const salesChannelCountryId = computed(
     () => sessionContext.value?.salesChannel?.countryId,
   );
 
@@ -243,6 +251,7 @@ export function useSessionContext(
     activeBillingAddress,
     setActiveBillingAddress,
     countryId,
+    salesChannelCountryId,
     taxState,
     userFromContext,
     setLanguage,

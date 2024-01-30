@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { LineItem } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 const { appliedPromotionCodes, addPromotionCode, removeItem } = useCart();
 const { getErrorsCodes } = useCartNotification();
 const { pushError } = useNotifications();
@@ -13,7 +13,7 @@ const addPromotionCodeHandler = async (code: string) => {
   promoCode.value = "";
 };
 
-const removeItemHandler = (appliedPromotionCode: LineItem) => {
+const removeItemHandler = (appliedPromotionCode: Schemas["LineItem"]) => {
   removeItem(appliedPromotionCode);
   getErrorsCodes()?.forEach((element) => {
     pushError(t(`errors.${element.messageKey}`, { ...element }));

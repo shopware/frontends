@@ -5,12 +5,13 @@ import { defu } from "defu";
 interface UseProductJsonLD {}
 type JsonLDObject = { [key: string]: JsonLDValue };
 type JsonLDValue = string | number | JsonLDObject | JsonLDValue[];
-const { currencyCode } = usePrice();
 
 export function useProductJsonLD(
   product: components["schemas"]["Product"],
   additionalData: JsonLDObject = {},
 ): UseProductJsonLD {
+  const { currencyCode } = usePrice();
+
   const JsonLd = {
     "@context": "http://schema.org/",
     "@type": "Product",
