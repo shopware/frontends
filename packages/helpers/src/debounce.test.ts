@@ -1,5 +1,5 @@
-import { _debounce } from "./_debounce";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { _debounce } from "./_debounce";
 describe("Shopware helpers - debounce", () => {
   beforeEach(() => {
     // tell vitest we use mocked time

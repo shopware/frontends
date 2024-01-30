@@ -1,9 +1,10 @@
-import { getProductRealPrice } from "./getProductRealPrice";
 import { describe, expect, it } from "vitest";
+import { getProductRealPrice } from "./getProductRealPrice";
 
 describe("Shopware helpers - getProductRealPrice", () => {
   it("should return undefined if there is no product", () => {
-    const price = getProductRealPrice(undefined as any);
+    // @ts-expect-error type should be wrong here
+    const price = getProductRealPrice(undefined);
     expect(price).toBeUndefined();
   });
   it("should return right price extracted from a product", () => {
@@ -11,8 +12,9 @@ describe("Shopware helpers - getProductRealPrice", () => {
       calculatedPrice: {
         unitPrice: 100,
       },
+      // @ts-expect-error type should be wrong here
       calculatedPrices: [{}],
-    } as any);
+    });
     expect(price).toStrictEqual({
       unitPrice: 100,
     });
@@ -30,7 +32,7 @@ describe("Shopware helpers - getProductRealPrice", () => {
           unitPrice: 20,
         },
       ],
-    } as any);
+    });
     expect(price).toStrictEqual({
       unitPrice: 20,
     });

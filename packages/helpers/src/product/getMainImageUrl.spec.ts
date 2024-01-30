@@ -1,5 +1,5 @@
-import { getMainImageUrl } from "./getMainImageUrl";
 import { describe, expect, it } from "vitest";
+import { getMainImageUrl } from "./getMainImageUrl";
 
 describe("Helpers - getMainImageUrl", () => {
   const mediaUrl =
@@ -59,7 +59,7 @@ describe("Helpers - getMainImageUrl", () => {
       },
       apiAlias: "product",
     };
-    const coverUrl = getMainImageUrl(product as any);
+    const coverUrl = getMainImageUrl(product);
     expect(coverUrl).toEqual(mediaUrl);
   });
 
@@ -70,13 +70,14 @@ describe("Helpers - getMainImageUrl", () => {
   });
 
   it("should return default negative value if argument wasn't provided", () => {
-    const coverUrl = getMainImageUrl(undefined as any);
+    // @ts-expect-error type should be wrong here
+    const coverUrl = getMainImageUrl(undefined);
     expect(coverUrl).toEqual("");
   });
 
   it("should return default value if product was null", () => {
-    const argument: any = null;
-    const coverUrl = getMainImageUrl(argument);
+    // @ts-expect-error type should be wrong here
+    const coverUrl = getMainImageUrl(null);
     expect(coverUrl).toEqual("");
   });
 

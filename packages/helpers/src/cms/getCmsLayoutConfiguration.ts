@@ -44,18 +44,6 @@ function isCmsSlot(
   return content.apiAlias === "cms_slot";
 }
 
-function isCmsBlock(
-  content: CmsBlock | CmsSection | CmsSlot,
-): content is CmsBlock {
-  return content.apiAlias === "cms_block";
-}
-
-function isCmsSection(
-  content: CmsBlock | CmsSection | CmsSlot,
-): content is CmsSection {
-  return content.apiAlias === "cms_section";
-}
-
 /**
  * Get CSS classes for visibility based on device type.
  *
@@ -78,11 +66,11 @@ export function _getVisibilityClasses(
     desktop: "lg:hidden",
   };
 
-  Object.entries(content.visibility).forEach(([device, isVisible]) => {
+  for (const [device, isVisible] of Object.entries(content.visibility)) {
     if (!isVisible && visibilityMap[device]) {
       visibilityCssClasses[visibilityMap[device]] = true;
     }
-  });
+  }
 
   return visibilityCssClasses;
 }
@@ -97,21 +85,21 @@ export function _getVisibilityClasses(
 export function getCmsLayoutConfiguration<
   T extends CmsBlock | CmsSection | CmsSlot,
 >(content: T): LayoutConfiguration {
+  const result: LayoutConfiguration = {
+    cssClasses: null,
+    layoutStyles: {},
+  };
+
   if (!content || isCmsSlot(content)) {
-    return {
-      cssClasses: null,
-      layoutStyles: {},
-    } as LayoutConfiguration;
+    return result;
   }
   const visibilityCssClasses = _getVisibilityClasses(content);
   // convert css classes string into object in format { "css-class-name": true }
   const mappedCssClasses =
     typeof content.cssClass === "string"
-      ? {
-          ...content.cssClass.split(" ").reduce((accumulator, cssClass) => {
-            return { ...accumulator, [cssClass]: true };
-          }, {}),
-        }
+      ? content.cssClass.split(" ").reduce((accumulator, cssClass) => {
+          return Object.assign(accumulator, { [cssClass]: true });
+        }, {})
       : {};
 
   // append visibility classes to the css classes object
@@ -119,21 +107,36 @@ export function getCmsLayoutConfiguration<
     ? Object.assign({}, mappedCssClasses, visibilityCssClasses)
     : mappedCssClasses;
 
-  return {
-    cssClasses,
-    layoutStyles: {
-      backgroundColor: content.backgroundColor,
-      backgroundImage: content.backgroundMedia
-        ? `url("${content.backgroundMedia.url}")`
-        : null,
-      backgroundSize: isCmsSection(content)
-        ? content.backgroundMediaMode
-        : null,
-      sizingMode: isCmsSection(content) ? content.sizingMode : null,
-      marginBottom: isCmsBlock(content) ? content.marginBottom : null,
-      marginLeft: isCmsBlock(content) ? content.marginLeft : null,
-      marginRight: isCmsBlock(content) ? content.marginRight : null,
-      marginTop: isCmsBlock(content) ? content.marginTop : null,
-    },
-  };
+  result.cssClasses = cssClasses;
+
+  if (content.backgroundMedia) {
+    result.layoutStyles.backgroundImage = `url("${content.backgroundMedia.url}")`;
+  }
+  if (content.backgroundColor) {
+    result.layoutStyles.backgroundColor = content.backgroundColor;
+  }
+
+  if (content.marginBottom) {
+    result.layoutStyles.marginBottom = content.marginBottom;
+  }
+  if (content.marginLeft) {
+    result.layoutStyles.marginLeft = content.marginLeft;
+  }
+  if (content.marginRight) {
+    result.layoutStyles.marginRight = content.marginRight;
+  }
+  if (content.marginTop) {
+    result.layoutStyles.marginTop = content.marginTop;
+  }
+
+  if (content.backgroundMedia) {
+    result.layoutStyles.backgroundImage = `url("${content.backgroundMedia.url}")`;
+  }
+  if (content.backgroundMediaMode) {
+    result.layoutStyles.backgroundSize = content.backgroundMediaMode;
+  }
+  if (content.sizingMode) {
+    result.layoutStyles.sizingMode = content.sizingMode;
+  }
+  return result;
 }

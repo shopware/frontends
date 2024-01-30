@@ -3,66 +3,74 @@ import { getCategoryUrl } from "./getCategoryUrl";
 
 describe("getCategoryUrl", () => {
   it("should return / if passed category is an empty object", () => {
-    expect(getCategoryUrl({} as any)).toBe("/");
+    // @ts-expect-error type should be wrong here
+    expect(getCategoryUrl({})).toBe("/");
   });
 
   it("should return / if passed category is undefined", () => {
-    expect(getCategoryUrl(undefined as any)).toBe("/");
+    // @ts-expect-error type should be wrong here
+    expect(getCategoryUrl(undefined)).toBe("/");
   });
 
   it("should return technical URL for navigation", () => {
     expect(
       getCategoryUrl({
+        id: "123123123",
         type: "link",
         linkType: "category",
         internalLink: "123",
-      } as any),
+      }),
     ).toBe("/navigation/123");
   });
   it("should return technical URL for product", () => {
     expect(
       getCategoryUrl({
+        id: "123123123",
         type: "link",
         linkType: "product",
         internalLink: "123",
-      } as any),
+      }),
     ).toBe("/detail/123");
   });
 
   it("should return technical URL for landing page", () => {
     expect(
       getCategoryUrl({
+        id: "123123123",
         type: "link",
         linkType: "landing_page",
         internalLink: "123",
-      } as any),
+      }),
     ).toBe("/landingPage/123");
   });
 
   it("should return external URL", () => {
     expect(
       getCategoryUrl({
+        id: "123123123",
         type: "link",
         externalLink: "https://shopware.com",
-      } as any),
+      }),
     ).toBe("https://shopware.com");
   });
 
   it("should return SEO URL", () => {
     expect(
       getCategoryUrl({
+        id: "123123123",
         type: "link",
         seoUrls: [{ seoPathInfo: "/test" }],
-      } as any),
+      }),
     ).toBe("/test");
   });
 
   it("should try to return SEO URL for unknown type", () => {
     expect(
       getCategoryUrl({
+        id: "123123123",
         type: "unknown",
         seoUrls: [{ seoPathInfo: "test" }],
-      } as any),
+      }),
     ).toBe("/test");
   });
   it("should try to return technical URL for unknown type", () => {
@@ -71,7 +79,7 @@ describe("getCategoryUrl", () => {
         type: "unknown",
         id: "123",
         linkType: "category",
-      } as any),
+      }),
     ).toBe("/navigation/123");
   });
 });

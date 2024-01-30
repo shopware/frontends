@@ -1,14 +1,15 @@
-import { getProductTierPrices } from "./getProductTierPrices";
 import { describe, expect, it } from "vitest";
+import { getProductTierPrices } from "./getProductTierPrices";
 
 describe("Shopware helpers - getProductTierPrices", () => {
   it("should return default value if product was null", () => {
-    const argument: any = { product: null };
+    const argument = { product: null };
+    // @ts-expect-error type should be wrong here
     const price = getProductTierPrices(argument);
     expect(price).toStrictEqual([]);
   });
   it("should return default value if no argument was provided", () => {
-    const price = getProductTierPrices(undefined as any);
+    const price = getProductTierPrices(undefined);
     expect(price).toStrictEqual([]);
   });
   it("should return parsed array of TierPrice interface instance", () => {
@@ -24,7 +25,7 @@ describe("Shopware helpers - getProductTierPrices", () => {
         },
       ],
     };
-    const price = getProductTierPrices(product as any);
+    const price = getProductTierPrices(product);
     expect(price).toStrictEqual([
       {
         label: "to 5",

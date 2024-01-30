@@ -1,9 +1,5 @@
 import { getTranslatedProperty } from "../getTranslatedProperty";
 
-type Product<T = unknown> = T & {
-  name: string;
-};
-
 /**
  * @beta
  *
@@ -11,9 +7,11 @@ type Product<T = unknown> = T & {
  *
  * @category Product
  */
-export function getProductName({ product }: { product?: Product } = {}):
-  | string
-  | null {
+export function getProductName<
+  T extends {
+    name: string;
+  },
+>({ product }: { product?: T } = {}): string | null {
   if (!product) {
     return null;
   }
