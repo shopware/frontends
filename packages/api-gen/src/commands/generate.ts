@@ -12,6 +12,7 @@ const config = dotenv.config().parsed || {};
 
 export async function generate(args: { cwd: string; filename: string }) {
   try {
+    const start = performance.now();
     const outputFilename = args.filename.replace(".json", ".d.ts");
 
     const fullInputFilePath = join(args.cwd, args.filename);
@@ -241,7 +242,13 @@ export async function generate(args: { cwd: string; filename: string }) {
     } else {
       throw new Error("Schema is not a string");
     }
-    console.log(c.green(`Types generated in ${c.bold(fullOutputFilePath)}`));
+    const stop = performance.now();
+    const time = Math.round(stop - start);
+    console.log(
+      c.green(
+        `Types generated in ${c.bold(fullOutputFilePath)} (took ${time}ms)`,
+      ),
+    );
   } catch (error) {
     console.error(
       c.red(
