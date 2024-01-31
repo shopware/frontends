@@ -46,7 +46,7 @@
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --typecheck",
-    "test:bench": "vitest bench --run",
+    "test:bench": "vitest bench",
     "test:watch": "vitest"
   },
   "devDependencies": {
