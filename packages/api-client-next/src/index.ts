@@ -161,16 +161,18 @@ export function createAdminAPIClient<
   PATHS = defaultAdminPaths,
 >(params: {
   baseURL: string;
-  clientCredentials?: {
-    accessKeyId: string;
-    secretAccessKey: string;
+  /**
+   * Used for token based authentication. This authentication will be used instead of `refresh_token`.
+   */
+  clientData?: {
+    clientId: string;
+    clientSecret: string;
   };
   sessionData?: AdminSessionData;
   onAuthChange?: (params: AdminSessionData) => void;
 }) {
   const isTokenBasedAuth =
-    !!params.clientCredentials?.accessKeyId &&
-    !!params.clientCredentials?.secretAccessKey;
+    !!params.clientData?.clientId && !!params.clientData?.clientSecret;
 
   const sessionData: AdminSessionData = {
     accessToken: params.sessionData?.accessToken || "",
@@ -192,18 +194,18 @@ export function createAdminAPIClient<
         responseData.access_token,
       );
 
-      sessionData.accessToken = responseData.access_token;
-      sessionData.refreshToken = responseData.refresh_token;
-      sessionData.expirationTime = Date.now() + responseData.expires_in * 1000;
-      params.onAuthChange?.({
-        ...sessionData,
+      const dataCopy = setSessionData({
+        accessToken: responseData.access_token,
+        refreshToken: responseData.refresh_token,
+        expirationTime: Date.now() + responseData.expires_in * 1000,
       });
+      params.onAuthChange?.(dataCopy);
     }
   }
 
   function setSessionData(data: AdminSessionData): AdminSessionData {
     sessionData.accessToken = data.accessToken;
-    sessionData.refreshToken = data.refreshToken;
+    sessionData.refreshToken = data.refreshToken || "";
     sessionData.expirationTime = data.expirationTime;
 
     return getSessionData();
@@ -221,13 +223,13 @@ export function createAdminAPIClient<
         const body = isTokenBasedAuth
           ? {
               grant_type: "client_credentials",
-              client_id: params.clientCredentials?.accessKeyId,
-              client_secret: params.clientCredentials?.secretAccessKey,
+              client_id: params.clientData?.clientId,
+              client_secret: params.clientData?.clientSecret,
             }
           : {
               grant_type: "refresh_token",
               client_id: "administration",
-              refresh_token: sessionData.refreshToken || "",
+              refresh_token: sessionData.refreshToken,
             };
 
         // Access session expired, first we need to refresh it with refresh token
@@ -299,7 +301,7 @@ export function createAdminAPIClient<
     invoke,
     /**
      * Enables to change session data in runtime. Useful for testing purposes.
-     * Setting session data with this methis will **not** fire `onAuthChange` hook.
+     * Setting session data with this method will **not** fire `onAuthChange` hook.
      */
     setSessionData,
     /**

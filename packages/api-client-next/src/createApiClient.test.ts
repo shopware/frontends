@@ -9,11 +9,27 @@ import {
   setHeader,
   getHeaders,
 } from "h3";
+import type { App } from "h3";
 import { createAPIClient } from ".";
 import type { operationPaths, operations } from "../api-types";
 
 describe("createAPIClient", () => {
   const listeners: Listener[] = [];
+
+  async function createPortAndGetUrl(appToCreate: App) {
+    try {
+      const listener = await listen(toNodeListener(appToCreate), {
+        port: {
+          portRange: [3600, 3699],
+        },
+      });
+      listeners.push(listener);
+      return listener.url;
+    } catch (e) {
+      console.error("Problem with port. Getting new one...", e);
+      return createPortAndGetUrl(appToCreate);
+    }
+  }
 
   afterAll(async () => {
     for (const listener of listeners) {
@@ -32,9 +48,7 @@ describe("createAPIClient", () => {
       }),
     );
 
-    const listener = await listen(toNodeListener(app));
-    const baseURL = listener.url;
-    listeners.push(listener);
+    const baseURL = await createPortAndGetUrl(app);
 
     const client = createAPIClient<operations, operationPaths>({
       accessToken: "123",
@@ -55,9 +69,7 @@ describe("createAPIClient", () => {
       }),
     );
 
-    const listener = await listen(toNodeListener(app));
-    const baseURL = listener.url;
-    listeners.push(listener);
+    const baseURL = await createPortAndGetUrl(app);
 
     const client = createAPIClient<operations, operationPaths>({
       accessToken: "123",
@@ -90,9 +102,7 @@ describe("createAPIClient", () => {
         }),
       );
 
-    const listener = await listen(toNodeListener(app));
-    const baseURL = listener.url;
-    listeners.push(listener);
+    const baseURL = await createPortAndGetUrl(app);
 
     const contextChangedMock = vi
       .fn()
@@ -121,9 +131,7 @@ describe("createAPIClient", () => {
       }),
     );
 
-    const listener = await listen(toNodeListener(app));
-    const baseURL = listener.url;
-    listeners.push(listener);
+    const baseURL = await createPortAndGetUrl(app);
 
     const client = createAPIClient<operations, operationPaths>({
       accessToken: "123",
