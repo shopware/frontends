@@ -10,6 +10,12 @@ vi.mock("node:fs", async () => {
     readFileSync: vi.fn(),
   };
 });
+// TODO: mocking prettier for more acurate tests, but it should be replaced
+vi.mock("prettier", async () => {
+  return {
+    format: vi.fn().mockImplementation((content) => content),
+  };
+});
 vi.mocked(writeFileSync).mockReturnValue();
 vi.mocked(existsSync).mockReturnValue(true);
 vi.mocked(readFileSync).mockReturnValue(JSON.stringify(testSchema));
