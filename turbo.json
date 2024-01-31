@@ -23,6 +23,7 @@
       "outputs": []
     },
     "test:bench": {
+      "cache": false,
       "outputs": []
     },
     "dev": {
