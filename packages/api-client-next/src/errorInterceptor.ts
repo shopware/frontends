@@ -44,24 +44,31 @@ export class ApiClientError<
   constructor(response: FetchResponse<T>) {
     let message = "Failed request";
 
+    const errorDetails =
+      response._data ||
+      ({
+        errors: [
+          {
+            title: "Unknown error",
+            detail:
+              "API did not return errors, but request failed. Please check the network tab.",
+          },
+        ],
+      } as T);
+
     message +=
-      response._data?.errors?.reduce((message, error) => {
+      errorDetails.errors?.reduce((message, error) => {
         let pointer = "";
         if (error.source?.pointer) {
           pointer = `[${error.source.pointer}]`;
         }
-        return `${message}\n - [${error.title}]${pointer} ${
-          error.detail ?? ""
-        }`;
+        const details = error.detail ?? "No error details provided.";
+        return `${message}\n - [${error.title}]${pointer} ${details}`;
       }, "") ?? "";
     super(message);
 
     this.name = "ApiClientError";
-    this.details =
-      response._data ||
-      ({
-        errors: [{ title: "Unknown error", detail: "" }],
-      } as T);
+    this.details = errorDetails;
     this.ok = response.ok;
     this.status = response.status;
     this.statusText = response.statusText;
