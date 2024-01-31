@@ -8,6 +8,7 @@ import type { UiProductReview } from "../ui-interfaces";
  * @public
  *
  * @category Product
+ * @deprecated the method use wrong type (flow) and will be removed in the future
  */
 export function getProductReviews<
   T extends {

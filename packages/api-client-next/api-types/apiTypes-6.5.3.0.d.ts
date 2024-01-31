@@ -4063,24 +4063,22 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     ProductReview: {
-      comment?: string;
-      content: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: GenericRecord;
-      customerId?: string; // TODO: [OpenAPI][ProductReview] customerId field should be defined
-      externalUser?: string; // TODO: [OpenAPI][ProductReview] externalUser field should be defined
-      id: string; // TODO: [OpenAPI][ProductReview] id field should be defined as required
+      /** Format: date-time */
+      updatedAt?: string;
+      productId: string;
+      salesChannelId: string;
       languageId: string;
       /** Format: float */
       points: number; // TODO: [OpenAPI][ProductReview] points field should be defined as required
-      productId: string;
-      productVersionId?: string;
-      salesChannelId: string;
       status?: boolean;
+      comment?: string;
+      content: string;
       title: string;
-      /** Format: date-time */
-      updatedAt?: string;
+      customFields?: GenericRecord;
+      id: string; // TODO: [OpenAPI][ProductReview] id field should be defined as required
+      apiAlias: "product_review"; // TODO: [OpenAPI][ProductReview] apiAlias field should be defined as required
     };
     /** Added since version: */
     ProductReviewSummary: {
