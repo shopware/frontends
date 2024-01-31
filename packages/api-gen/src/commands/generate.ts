@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
+import { resolve, join } from "node:path";
 import openapiTS from "openapi-typescript";
 import type { OpenAPI3 } from "openapi-typescript";
 import * as dotenv from "dotenv";
@@ -14,14 +14,17 @@ export async function generate(args: { cwd: string; filename: string }) {
   try {
     const outputFilename = args.filename.replace(".json", ".d.ts");
 
+    const fullInputFilePath = join(args.cwd, args.filename);
+    const fullOutputFilePath = join(args.cwd, outputFilename);
+
     //check if file exist
-    const fileExist = existsSync(args.filename);
+    const fileExist = existsSync(fullInputFilePath);
 
     if (!fileExist) {
       console.log(
         c.yellow(
           `Schema file ${c.bold(
-            args.filename,
+            fullInputFilePath,
           )} does not exist. Check whether the file is created (use ${c.bold(
             "loadSchema",
           )} command first).`,
@@ -31,7 +34,7 @@ export async function generate(args: { cwd: string; filename: string }) {
     }
 
     // Apply patches
-    const schemaFile = readFileSync(args.filename, {
+    const schemaFile = readFileSync(fullInputFilePath, {
       encoding: "utf-8",
     });
     let schemaForPatching = JSON.parse(schemaFile) as OpenAPI3;
@@ -53,11 +56,11 @@ export async function generate(args: { cwd: string; filename: string }) {
       parser: "json",
     });
     const content = formatted.trim();
-    writeFileSync(args.filename, content, {
+    writeFileSync(fullInputFilePath, content, {
       encoding: "utf-8",
     });
 
-    const readedContentFromFile = readFileSync(args.filename, {
+    const readedContentFromFile = readFileSync(fullInputFilePath, {
       encoding: "utf-8",
     });
 
@@ -65,7 +68,7 @@ export async function generate(args: { cwd: string; filename: string }) {
     const { paths } = originalSchema;
     console.log("schema", originalSchema.info);
 
-    const address = resolve(process.cwd(), args.filename);
+    const address = resolve(fullInputFilePath);
     let schema = await openapiTS(
       // new URL(SCHEMA_FILENAME, import.meta.url),
       address,
@@ -232,13 +235,13 @@ export async function generate(args: { cwd: string; filename: string }) {
     schema = schema.trim();
 
     if (typeof schema === "string") {
-      writeFileSync(outputFilename, schema, {
+      writeFileSync(fullOutputFilePath, schema, {
         encoding: "utf-8",
       });
     } else {
       throw new Error("Schema is not a string");
     }
-    console.log(c.green(`Types generated in ${c.bold(outputFilename)}`));
+    console.log(c.green(`Types generated in ${c.bold(fullOutputFilePath)}`));
   } catch (error) {
     console.error(
       c.red(
