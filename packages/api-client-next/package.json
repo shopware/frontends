@@ -50,6 +50,7 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
+    "@codspeed/vitest-plugin": "^2.3.1",
     "@shopware/api-gen": "workspace:*",
     "@types/prettier": "^3.0.0",
     "@vitest/coverage-v8": "^1.2.2",

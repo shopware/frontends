@@ -22,6 +22,10 @@
       "dependsOn": ["^build"],
       "outputs": []
     },
+    "test:bench": {
+      "cache": false,
+      "outputs": []
+    },
     "dev": {
       "cache": false
     },
