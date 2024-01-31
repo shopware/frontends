@@ -19,6 +19,8 @@ vi.mock("prettier", async () => {
 vi.mocked(writeFileSync).mockReturnValue();
 vi.mocked(existsSync).mockReturnValue(true);
 vi.mocked(readFileSync).mockReturnValue(JSON.stringify(testSchema));
+const consoleWarnSpy = vi.spyOn(console, "log");
+consoleWarnSpy.mockImplementation(() => {});
 
 describe("api-gen - generate", () => {
   bench("[api-gen][generate] - generate schema command", async () => {
