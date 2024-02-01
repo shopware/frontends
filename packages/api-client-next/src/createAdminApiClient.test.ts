@@ -293,4 +293,37 @@ describe("createAdminAPIClient", () => {
       "[ApiClientError: Failed request]",
     );
   });
+
+  it(`should by default include "Accept" header with "application/json" value`, async () => {
+    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const app = createApp().use(
+      "/order",
+      eventHandler(async (event) => {
+        const headers = getHeaders(event);
+        seoUrlheadersSpy(headers);
+        return {
+          orderResponse: 123,
+          headers,
+        };
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations, operationPaths>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer my-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: Date.now() + 1000 * 60,
+      },
+    });
+    await client.invoke("getOrderList get /order?limit,page,query", {});
+
+    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        accept: "application/json",
+      }),
+    );
+  });
 });

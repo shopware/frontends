@@ -78,6 +78,7 @@ export function createAPIClient<
 }) {
   const defaultHeaders: Record<string, string> = {
     "sw-access-key": params.accessToken,
+    Accept: "application/json",
   };
 
   // protection from setting "null" or "undefined" as a token in API side
@@ -182,6 +183,7 @@ export function createAdminAPIClient<
 
   const defaultHeaders = {
     Authorization: createAuthorizationHeader(sessionData.accessToken),
+    Accept: "application/json",
   };
 
   function updateSessionData(responseData: {

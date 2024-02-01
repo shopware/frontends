@@ -41,7 +41,6 @@ describe("createAPIClient", () => {
     const app = createApp().use(
       "/checkout/cart",
       eventHandler(async (event) => {
-        setHeader;
         return {
           headers: event.node.req.headers,
         };
@@ -142,6 +141,34 @@ describe("createAPIClient", () => {
       client.invoke("readCart get /checkout/cart"),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       "[ApiClientError: Failed request]",
+    );
+  });
+
+  it(`should by default include "Accept" header with "application/json" value`, async () => {
+    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const app = createApp().use(
+      "/checkout/cart",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        seoUrlheadersSpy(requestHeaders);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+    });
+
+    await client.invoke("readCart get /checkout/cart");
+
+    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        accept: "application/json",
+      }),
     );
   });
 });
