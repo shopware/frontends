@@ -14,16 +14,13 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: "actions/checkout@v4"
-      - uses: "actions/setup-node@v4"
-        with:
-          node-version: 20
-      - run: corepack enable
-      - run: pnpm --version
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
           cache-dependency-path: "**/pnpm-lock.yaml"
+      - run: corepack enable
+      - run: pnpm --version
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
       - name: Run benchmarks
