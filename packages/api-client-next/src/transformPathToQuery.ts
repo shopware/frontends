@@ -28,18 +28,16 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
 
   const queryParamNames = queryParams?.split(",") || [];
 
-  const headerParamnames =
-    headerParams
-      ?.split(",")
-      .filter((header) => header !== "multipart/form-data") || []; // don't include it manually cause of boundary that is added by browser
+  const headerParamnames = headerParams?.split(",") || [];
 
   const headers: HeadersInit = {};
 
-  headerParamnames.forEach((paramName) => {
+  for (const paramName of headerParamnames) {
     headers[paramName] = params[paramName] as string;
-  });
+  }
+
   const query: Record<string, unknown> = {};
-  queryParamNames.forEach((paramName) => {
+  for (const paramName of queryParamNames) {
     // API takes array params as `paramName[]`, so multiple params have shape ?paramName[]=1&paramName[]=2
     // to improve DX we do not require user to add [] to param name, we do it here
     let queryParamName = paramName;
@@ -47,7 +45,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
       queryParamName += "[]";
     }
     query[queryParamName] = params[paramName];
-  });
+  }
   const returnOptions = {
     method: method.toUpperCase() as HttpMethod,
     headers,
@@ -63,7 +61,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
     return [requestPathWithParams, returnOptions];
   }
 
-  Object.keys(params).forEach((key) => {
+  for (const key of Object.keys(params)) {
     if (
       !pathParams.includes(key) &&
       !queryParamNames.includes(key) &&
@@ -72,7 +70,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
       returnOptions.body ??= {} as T;
       Reflect.set(returnOptions.body, key, params[key]);
     }
-  });
+  }
 
   // Exception for unknown type of FormData - multipart/form-data MIME type
   // pass as it is

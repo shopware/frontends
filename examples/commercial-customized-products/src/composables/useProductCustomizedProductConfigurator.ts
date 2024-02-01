@@ -113,7 +113,7 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     formData.append("file", file);
     formData.append("optionId", optionId);
     const addedMediaResponse = await apiClient.invoke(
-      "uploadCustomizedProductImage post /customized-products/upload multipart/form-data",
+      "uploadCustomizedProductImage post /customized-products/upload",
       formData,
     );
 
