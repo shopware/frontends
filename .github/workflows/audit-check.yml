@@ -17,7 +17,7 @@ jobs:
   init:
     name: Check audit
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: macos-14
 
     steps:
       - name: Check out code

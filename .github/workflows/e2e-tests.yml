@@ -7,7 +7,7 @@ jobs:
   run-e2e:
     name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     steps:
       - name: Check out code
         uses: actions/checkout@v3
