@@ -10,7 +10,7 @@ jobs:
   init:
     name: Init dependencies
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: macos-14
 
     steps:
       - name: Check out code
@@ -38,7 +38,7 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    runs-on: ubuntu-latest
+    runs-on: macos-14
 
     steps:
       - name: Check out code
@@ -70,7 +70,7 @@ jobs:
   test:
     name: Test
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     needs: init
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
