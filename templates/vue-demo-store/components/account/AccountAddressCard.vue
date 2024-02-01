@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
-import type { CustomerAddress, Country, Salutation } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 const { pushSuccess, pushError } = useNotifications();
 const {
   setDefaultCustomerShippingAddress,
@@ -18,9 +18,9 @@ const emits = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    address: CustomerAddress;
-    countries: Array<Country>;
-    salutations: Array<Salutation>;
+    address: Schemas["CustomerAddress"];
+    countries: Array<Schemas["Country"]>;
+    salutations: Array<Schemas["Salutation"]>;
     canSetDefault?: boolean;
     canEdit?: boolean;
     canDelete?: boolean;

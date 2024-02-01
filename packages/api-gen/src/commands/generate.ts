@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
+import { resolve, join } from "node:path";
 import openapiTS from "openapi-typescript";
 import type { OpenAPI3 } from "openapi-typescript";
 import * as dotenv from "dotenv";
@@ -12,16 +12,20 @@ const config = dotenv.config().parsed || {};
 
 export async function generate(args: { cwd: string; filename: string }) {
   try {
+    const start = performance.now();
     const outputFilename = args.filename.replace(".json", ".d.ts");
 
+    const fullInputFilePath = join(args.cwd, args.filename);
+    const fullOutputFilePath = join(args.cwd, outputFilename);
+
     //check if file exist
-    const fileExist = existsSync(args.filename);
+    const fileExist = existsSync(fullInputFilePath);
 
     if (!fileExist) {
       console.log(
         c.yellow(
           `Schema file ${c.bold(
-            args.filename,
+            fullInputFilePath,
           )} does not exist. Check whether the file is created (use ${c.bold(
             "loadSchema",
           )} command first).`,
@@ -31,7 +35,7 @@ export async function generate(args: { cwd: string; filename: string }) {
     }
 
     // Apply patches
-    const schemaFile = readFileSync(args.filename, {
+    const schemaFile = readFileSync(fullInputFilePath, {
       encoding: "utf-8",
     });
     let schemaForPatching = JSON.parse(schemaFile) as OpenAPI3;
@@ -42,30 +46,35 @@ export async function generate(args: { cwd: string; filename: string }) {
     const patchesToApply = allPatches.filter((patch) => {
       return semver.satisfies(semverVersion, patch);
     });
-    patchesToApply.forEach((patchName) => {
+    for (const patchName of patchesToApply) {
       schemaForPatching = patches[patchName].patch(schemaForPatching);
-    });
-    patchesToApply.length &&
-      console.log("Applied", patchesToApply.length, "patches");
+    }
 
-    const formatted = await format(JSON.stringify(schemaForPatching), {
-      semi: false,
-      parser: "json",
-    });
-    const content = formatted.trim();
-    writeFileSync(args.filename, content, {
-      encoding: "utf-8",
-    });
+    if (patchesToApply.length) {
+      patchesToApply.length &&
+        console.log("Applied", patchesToApply.length, "patches");
 
-    const readedContentFromFile = readFileSync(args.filename, {
-      encoding: "utf-8",
-    });
+      const formatted = await format(JSON.stringify(schemaForPatching), {
+        semi: false,
+        parser: "json",
+      });
+      const content = formatted.trim();
+      writeFileSync(fullInputFilePath, content, {
+        encoding: "utf-8",
+      });
+    }
+
+    const readedContentFromFile = !patchesToApply.length
+      ? schemaFile
+      : readFileSync(fullInputFilePath, {
+          encoding: "utf-8",
+        });
 
     const originalSchema = JSON.parse(readedContentFromFile);
     const { paths } = originalSchema;
     console.log("schema", originalSchema.info);
 
-    const address = resolve(process.cwd(), args.filename);
+    const address = resolve(fullInputFilePath);
     let schema = await openapiTS(
       // new URL(SCHEMA_FILENAME, import.meta.url),
       address,
@@ -171,7 +180,7 @@ export async function generate(args: { cwd: string; filename: string }) {
       (acc, path) => {
         const pathObject = paths[path];
         const methods = Object.keys(pathObject);
-        methods.forEach((method) => {
+        for (const method of methods) {
           const methodObject = pathObject[method] as MethodObject;
           const { operationId } = methodObject;
           const queryParamNames =
@@ -198,7 +207,7 @@ export async function generate(args: { cwd: string; filename: string }) {
             queryParamNames,
             finalPath,
           };
-        });
+        }
         return acc;
       },
       {} as OperationsMap,
@@ -232,13 +241,19 @@ export async function generate(args: { cwd: string; filename: string }) {
     schema = schema.trim();
 
     if (typeof schema === "string") {
-      writeFileSync(outputFilename, schema, {
+      writeFileSync(fullOutputFilePath, schema, {
         encoding: "utf-8",
       });
     } else {
       throw new Error("Schema is not a string");
     }
-    console.log(c.green(`Types generated in ${c.bold(outputFilename)}`));
+    const stop = performance.now();
+    const time = Math.round(stop - start);
+    console.log(
+      c.green(
+        `Types generated in ${c.bold(fullOutputFilePath)} (took ${time}ms)`,
+      ),
+    );
   } catch (error) {
     console.error(
       c.red(

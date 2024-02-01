@@ -54,9 +54,8 @@ export function useOrderPayment(
   order: ComputedRef<Schemas["Order"] | null | undefined>,
 ): UseOrderPaymentReturn {
   const { apiClient } = useShopwareContext();
-  const activeTransaction = computed(
-    () =>
-      order.value?.transactions?.find((t) => t.paymentMethod?.active === true),
+  const activeTransaction = computed(() =>
+    order.value?.transactions?.find((t) => t.paymentMethod?.active === true),
   );
   const paymentMethod = computed(() => activeTransaction.value?.paymentMethod);
   const paymentUrl = ref();

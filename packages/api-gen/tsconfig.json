@@ -1,8 +1,8 @@
 {
   "extends": "tsconfig/base.json",
-  "include": ["src"],
-  "exclude": ["dist", "node_modules"],
+  "include": ["src", "tests"],
+  "exclude": ["dist", "node_modules", "tests/**.d.ts"],
   "compilerOptions": {
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+  },
 }
