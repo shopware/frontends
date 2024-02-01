@@ -47,11 +47,6 @@ export type RequestParameters<
     ? R
     : {}) &
   (OPERATIONS[OPERATION_NAME] extends {
-    requestBody?: { content?: { "application/octet-stream"?: infer R } };
-  }
-    ? R
-    : {}) &
-  (OPERATIONS[OPERATION_NAME] extends {
     requestBody?: { content?: { "multipart/form-data"?: infer R } };
   }
     ? R
@@ -65,13 +60,21 @@ export type RequestParameters<
 export type RequestReturnType<
   T extends keyof OPERATIONS,
   OPERATIONS = defaultOperations,
-> = GetInferKey<
-  GetInferKey<
-    GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
-    "content"
-  >,
-  "application/json"
->;
+> =
+  | GetInferKey<
+      GetInferKey<
+        GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
+        "content"
+      >,
+      "application/json"
+    >
+  | GetInferKey<
+      GetInferKey<
+        GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
+        "content"
+      >,
+      "application/octet-stream"
+    >;
 
 export function createAPIClient<
   OPERATIONS extends Operations = defaultOperations,
