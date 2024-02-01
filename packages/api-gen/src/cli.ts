@@ -10,7 +10,7 @@ export interface CommonOptions {
   cwd: string;
 }
 
-function commonOptions(args: Argv<{}>): Argv<CommonOptions> {
+function commonOptions(args: Argv<unknown>): Argv<CommonOptions> {
   return args.option("cwd", {
     alias: "C",
     default: process.cwd(),

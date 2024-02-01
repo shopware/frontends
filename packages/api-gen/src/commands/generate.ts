@@ -46,24 +46,29 @@ export async function generate(args: { cwd: string; filename: string }) {
     const patchesToApply = allPatches.filter((patch) => {
       return semver.satisfies(semverVersion, patch);
     });
-    patchesToApply.forEach((patchName) => {
+    for (const patchName of patchesToApply) {
       schemaForPatching = patches[patchName].patch(schemaForPatching);
-    });
-    patchesToApply.length &&
-      console.log("Applied", patchesToApply.length, "patches");
+    }
 
-    const formatted = await format(JSON.stringify(schemaForPatching), {
-      semi: false,
-      parser: "json",
-    });
-    const content = formatted.trim();
-    writeFileSync(fullInputFilePath, content, {
-      encoding: "utf-8",
-    });
+    if (patchesToApply.length) {
+      patchesToApply.length &&
+        console.log("Applied", patchesToApply.length, "patches");
 
-    const readedContentFromFile = readFileSync(fullInputFilePath, {
-      encoding: "utf-8",
-    });
+      const formatted = await format(JSON.stringify(schemaForPatching), {
+        semi: false,
+        parser: "json",
+      });
+      const content = formatted.trim();
+      writeFileSync(fullInputFilePath, content, {
+        encoding: "utf-8",
+      });
+    }
+
+    const readedContentFromFile = !patchesToApply.length
+      ? schemaFile
+      : readFileSync(fullInputFilePath, {
+          encoding: "utf-8",
+        });
 
     const originalSchema = JSON.parse(readedContentFromFile);
     const { paths } = originalSchema;
@@ -175,7 +180,7 @@ export async function generate(args: { cwd: string; filename: string }) {
       (acc, path) => {
         const pathObject = paths[path];
         const methods = Object.keys(pathObject);
-        methods.forEach((method) => {
+        for (const method of methods) {
           const methodObject = pathObject[method] as MethodObject;
           const { operationId } = methodObject;
           const queryParamNames =
@@ -202,7 +207,7 @@ export async function generate(args: { cwd: string; filename: string }) {
             queryParamNames,
             finalPath,
           };
-        });
+        }
         return acc;
       },
       {} as OperationsMap,
