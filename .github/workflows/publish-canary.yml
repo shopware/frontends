@@ -15,7 +15,7 @@ jobs:
   publish:
     name: Publish canary version
     if: "!contains(github.event.commits[0].message, 'chore: next version release')"
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     permissions:
       id-token: write
     env:

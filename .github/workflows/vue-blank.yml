@@ -7,7 +7,7 @@ on:
     - cron: "51 23 * * *"
 jobs:
   run-code_examples-tests:
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     steps:
       - name: Check out code
         uses: actions/checkout@v3
