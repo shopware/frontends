@@ -11,7 +11,7 @@ on:
 
 jobs:
   benchmarks:
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     steps:
       - uses: "actions/checkout@v4"
       - uses: "actions/setup-node@v4"
