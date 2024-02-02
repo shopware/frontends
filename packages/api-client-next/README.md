@@ -73,7 +73,45 @@ export type ApiReturnType<OPERATION_NAME extends keyof operations> =
 
 ## Admin API client setup
 
-The setup works the same way as `creteAPIClient` function, with few differences:
+The setup works the same way as `creteAPIClient` function, with few differences
+
+### credentials (optional) - Quick scripting or token-based authentication
+
+We provide optional `credentials` parameter to `createAdminAPIClient`. Which allows you to use authentication type of your choice whenever you wish to create connection to any endpoint.
+
+Example:
+
+```typescript
+import type {
+  operationPaths,
+  operations,
+  components,
+} from "@shopware/api-client/admin-api-types"; // we take default admin api types from different directory than store-api - use your own types by generating schema with @shopware/api-gen CLI
+
+const adminApiClient = createAdminAPIClient<operations, operationPaths>({
+  baseURL: `${process.env.SHOP_URL}/api`,
+  credentials: {
+    grant_type: "password",
+    client_id: "administration",
+    scopes: "write",
+    username: process.env.SHOP_ADMIN_USERNAME,
+    password: process.env.SHOP_ADMIN_PASSWORD,
+  },
+  // credentials: { // or token-based example
+  //   grant_type: "client_credentials",
+  //   client_id: "administration",
+  //   client_secret: process.env.SHOP_ADMIN_TOKEN,
+  // },
+});
+
+await adminApiClient.invoke(...); // invoke defined endpoint
+```
+
+### sessionData (optional) - Persistent authentication
+
+This parameter is used to store session data in cookies (or other place you want to store it), so you can keep your session persistent.
+
+You can combine this option with `credentials` property.
 
 ```typescript
 // example adminApiClient.ts file

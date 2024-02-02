@@ -12,9 +12,9 @@ declare module "#shopware" {
 
   type changedComponents = defaultComponents;
   // example how to extend Cart schema:
-  // type changedComponents = components & {
+  // type changedComponents = defaultComponents & {
   //   schemas: {
-  //     Cart: components["schemas"]["Cart"] & {
+  //     Cart: defaultComponents["schemas"]["Cart"] & {
   //       myspecialfield: "hello field";
   //     };
   //   };
