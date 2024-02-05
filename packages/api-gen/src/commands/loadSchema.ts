@@ -2,11 +2,16 @@ import { writeFileSync } from "node:fs";
 import * as dotenv from "dotenv";
 import c from "picocolors";
 import { format } from "prettier";
-import { createAdminAPIClient } from "@shopware/api-client";
+import { createAdminAPIClient, createAPIClient } from "@shopware/api-client";
 import type {
-  operations,
-  operationPaths,
+  operations as adminOperations,
+  operationPaths as adminOperationPaths,
 } from "@shopware/api-client/admin-api-types";
+// TODO: change adminOperations to storeOperations after fixing NEXT-33506
+// import type {
+//   operations,
+//   operationPaths,
+// } from "@shopware/api-client/api-types";
 
 const config = dotenv.config().parsed || {};
 
@@ -58,7 +63,10 @@ export async function loadSchema(args: {
     let apiJSON;
 
     if (isAdminApi) {
-      const adminClient = createAdminAPIClient<operations, operationPaths>({
+      const adminClient = createAdminAPIClient<
+        adminOperations,
+        adminOperationPaths
+      >({
         baseURL: `${configUrl}/api`,
         credentials: {
           grant_type: "password",
@@ -75,12 +83,17 @@ export async function loadSchema(args: {
         },
       );
     } else {
-      apiJSON = await fetch(downloadUrl, {
-        headers: {
-          "sw-access-key": config.OPENAPI_ACCESS_KEY,
-          Authorization: config.OPENAPI_ACCESS_KEY,
+      // TODO: change adminOperations to storeOperations after fixing NEXT-33506
+      const apiClient = createAPIClient<adminOperations, adminOperationPaths>({
+        baseURL: `${configUrl}/store-api`,
+        accessToken: config.OPENAPI_ACCESS_KEY,
+      });
+      apiJSON = await apiClient.invoke(
+        "api-info get /_info/openapi3.json?type",
+        {
+          type: "json",
         },
-      }).then((res) => res.json());
+      );
     }
 
     const formatted = await format(JSON.stringify(apiJSON), {
