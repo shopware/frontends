@@ -1,1 +1,1 @@
-export * from "./apiTypes-6.5.3.0";
+export * from "./adminApiTypes.d.ts";

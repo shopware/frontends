@@ -3,7 +3,7 @@
  * Do not make direct changes to the file.
  */
 
-/** Type helpers */
+/** OneOf type helpers */
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 type XOR<T, U> = T | U extends object
   ? (Without<T, U> & U) | (Without<U, T> & T)
@@ -13,6 +13,14 @@ type OneOf<T extends any[]> = T extends [infer Only]
   : T extends [infer A, infer B, ...infer Rest]
     ? OneOf<[XOR<A, B>, ...Rest]>
     : never;
+
+type GenericRecord =
+  | never
+  | null
+  | string
+  | string[]
+  | number
+  | { [key: string]: GenericRecord }; // TODO: [OpenAPI] - define GenericRecord properly
 
 export type paths = {
   "/account/address": {
@@ -166,6 +174,13 @@ export type paths = {
      */
     post: operations["registerConfirm"];
   };
+  "/app-system/{name}/generate-token": {
+    /**
+     * Generate JWT token for app system backend
+     * Generate JWT token for authenticated communication with the app server
+     */
+    post: operations["generateJWTAppSystemAppServer"];
+  };
   "/category": {
     /**
      * Fetch a list of categories
@@ -173,7 +188,7 @@ export type paths = {
      */
     post: operations["readCategoryList"];
   };
-  "/category/{navigationId}": {
+  "/category/{navigationId} sw-include-seo-urls": {
     /**
      * Fetch a single category
      * This endpoint returns information about the category, as well as a fully resolved (hydrated with mapping values) CMS page, if one is assigned to the category. You can pass slots which should be resolved exclusively.
@@ -202,11 +217,12 @@ export type paths = {
     post: operations["addLineItem"];
     /**
      * Remove items from the cart
-     * This route removes items from the cart and recalculates it.
+     * @deprecated
+     * DEPRECATED: use removeLineItem instead. This route removes items from the cart and recalculates it.
      *
      * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#deleting-items-in-the-cart)
      */
-    delete: operations["removeLineItem"];
+    delete: operations["removeLineItemDeprecated"];
     /**
      * Update items in the cart
      * This route updates items in the cart. A typical example is updating the quantity of an item.
@@ -214,6 +230,15 @@ export type paths = {
      * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#updating-items-in-the-cart)
      */
     patch: operations["updateLineItem"];
+  };
+  "/checkout/cart/line-item/delete": {
+    /**
+     * Remove items from the cart
+     * This route removes items from the cart and recalculates it.
+     *
+     * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#deleting-items-in-the-cart)
+     */
+    post: operations["removeLineItem"];
   };
   "/checkout/order": {
     /**
@@ -438,7 +463,7 @@ export type paths = {
   "/product": {
     /**
      * Fetch a list of products
-     * List products that match the given criteria. For performance ressons a limit should always be set.
+     * List products that match the given criteria. For performance reasons a limit should always be set.
      */
     post: operations["readProduct"];
   };
@@ -446,7 +471,7 @@ export type paths = {
     /** Export product export */
     get: operations["readProductExport"];
   };
-  "/product-listing/{categoryId}": {
+  "/product-listing/{categoryId} sw-include-seo-urls": {
     /**
      * Fetch a product listing by category
      * Fetches a product listing for a specific category. It also provides filters, sortings and property aggregations, analogous to the /search endpoint.
@@ -487,6 +512,15 @@ export type paths = {
      * Perform a filtered search for product reviews.
      */
     post: operations["readProductReviews"];
+  };
+  "/pwa/page": {
+    /**
+     * Resolves a page by its relative `path`. Additional information, like *breadcrumb*, an associated *product* or *category* and the type of resource is fetched along with it.
+     * Resolve a page for a given resource and resource identification or path
+     * First, a PageLoaderContext object is assembled, which includes information about the resource, request and context.
+     * Then, the page is loaded through the page loader only given the page loader context.
+     */
+    post: operations["pwaResolvePage"];
   };
   "/salutation": {
     /**
@@ -534,17 +568,215 @@ export type paths = {
      */
     get: operations["readSitemap"];
   };
+  "/store-api/employee": {
+    /**
+     * Fetch a list of employees
+     * This route is used to load employees
+     */
+    post: operations["readEmployees"];
+  };
+  "/store-api/employee/{id}": {
+    /**
+     * Fetch a one employee by id
+     * This route is used to fetch one employee by id
+     */
+    post: operations["readEmployee"];
+    /**
+     * Delete an employee by id
+     * This route is used to delete one employee by id
+     */
+    delete: operations["deleteEmployee"];
+    /**
+     * Update a one employee by id
+     * This route is used to update one employee by id
+     */
+    patch: operations["updateEmployee"];
+  };
+  "/store-api/employee/create": {
+    /**
+     * Create a single employee and returns the employee
+     * This route is used to create and return an employee
+     */
+    post: operations["createEmployee"];
+  };
+  "/store-api/employee/reinvite/{id}": {
+    /**
+     * Reinvite employee by id
+     * This route is used to reinvite an employee via email by id
+     */
+    post: operations["reinviteEmployee"];
+  };
+  "/store-api/product/image-upload-search/search-term": {
+    /**
+     * Fetch product search terms by uploading an image.
+     * <b>Experimental until v6.7.0</b>
+     *
+     * Fetch product search terms by uploading an image.
+     */
+    post: operations["searchByImageSearchTerm"];
+  };
+  "/store-api/product/natural-language/search-term": {
+    /**
+     * Fetch search terms by natural language search query
+     * <b>Experimental until v6.7.0</b>
+     *
+     * Fetch search terms by natural search language query
+     */
+    post: operations["naturalLanguageSearchTerm"];
+  };
+  "/store-api/role": {
+    /**
+     * Fetch a list of roles
+     * This route is used to load roles
+     */
+    get: operations["readRoles"];
+    /**
+     * Fetch a list of roles
+     * This route is used to load roles
+     */
+    post: operations["readRolesPOST"];
+  };
+  "/store-api/role/{id}": {
+    /**
+     * Fetch a one role by id
+     * This route is used to fetch one role by id
+     */
+    get: operations["readRole"];
+    /**
+     * Delete an role by id
+     * This route is used to delete one role by id
+     */
+    delete: operations["deleteRole"];
+    /**
+     * Update a one role by id
+     * This route is used to update one role by id
+     */
+    patch: operations["updateRole"];
+  };
+  "/store-api/role/create": {
+    /**
+     * Create a single role and returns the role
+     * This route is used to create and return an role
+     */
+    post: operations["createRole"];
+  };
+  "/store-api/role/default": {
+    /**
+     * Sets the default role Id for new employees
+     * This route is used to update the defaultRoleId for new employees
+     */
+    post: operations["updateDefaultRoleId"];
+  };
+  "/store-api/role/permissions": {
+    /**
+     * Fetch a available permissions
+     * This route is used to fetch all available permissions
+     */
+    get: operations["readPermissions"];
+  };
+  "/store-api/sso/auth/{providerId}": {
+    /**
+     * Authenticates via SSO
+     * Authenticates login via a given SSO provider ID
+     */
+    post: operations["auth"];
+  };
+  "/store-api/sso/redirect/{providerId}": {
+    /**
+     * Redirects after authentication
+     * Redirects after authenticated login via a given SSO provider ID
+     */
+    post: operations["redirect"];
+  };
 };
 
 export type webhooks = Record<string, never>;
 
 export type components = {
   schemas: {
-    AccountNewsletterRecipientResult: components["schemas"]["Struct"] & {
-      status?: string;
+    AccountNewsletterRecipientResult: {
+      // TODO: [OpenAPI][AccountNewsletterRecipientResult] - update type definition
+      apiAlias: "account_newsletter_recipient";
+      status: "undefined" | "notSet" | "direct" | "optIn" | "optOut";
     };
     /** Added since version: 6.0.0.0 */
     AclRole: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    AdvancedSearchAction: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    AdvancedSearchActionSearchTerm: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    AdvancedSearchBoosting: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    AdvancedSearchConfig: {
+      /** Format: date-time */
+      createdAt: string;
+      hitCount?: {
+        category?: {
+          /** Format: int64 */
+          maxSearchCount?: number;
+          /** Format: int64 */
+          maxSuggestCount?: number;
+        };
+        product?: {
+          /** Format: int64 */
+          maxSearchCount?: number;
+          /** Format: int64 */
+          maxSuggestCount?: number;
+        };
+        product_manufacturer?: {
+          /** Format: int64 */
+          maxSearchCount?: number;
+          /** Format: int64 */
+          maxSuggestCount?: number;
+        };
+      };
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    AdvancedSearchConfigField: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    AdvancedSearchEntityStream: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    AdvancedSearchEntityStreamFilter: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    AdvancedSearchSynonym: {
       /** Format: date-time */
       createdAt: string;
       id?: string;
@@ -598,6 +830,14 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
+    /** Added since version: 6.5.2.0 */
+    AppFlowEvent: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
     /** Added since version: 6.4.1.0 */
     AppPaymentMethod: {
       /** Format: date-time */
@@ -615,6 +855,14 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
+    /** Added since version: 6.5.7.0 */
+    AppShippingMethod: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
     /** Added since version: 6.3.1.0 */
     AppTemplate: {
       /** Format: date-time */
@@ -625,8 +873,175 @@ export type components = {
     };
     ArrayStruct: components["schemas"]["Struct"];
     /** Members of the attributes object ("attributes") represent information about the resource object in which it's defined. */
-    attributes: {
-      [key: string]: unknown | undefined;
+    attributes: GenericRecord;
+    B2bBusinessPartner: {
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    /** Added since version: 6.6.0.0 */
+    B2bComponentsApprovalRule: {
+      affectedRole?: components["schemas"]["B2bComponentsRole"];
+      affectedRoleId?: string;
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      reviewerRole?: components["schemas"]["B2bComponentsRole"];
+      reviewerRoleId?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    /** Added since version: 6.6.0.0 */
+    B2bComponentsPendingOrder: {
+      addresses?: components["schemas"]["B2bComponentsPendingOrderAddress"][];
+      /** Format: float */
+      amountNet?: number;
+      /** Format: float */
+      amountTotal?: number;
+      approvalRule?: components["schemas"]["B2bComponentsApprovalRule"];
+      approvalRuleId: string;
+      billingAddress?: components["schemas"]["B2bComponentsPendingOrderAddress"];
+      billingAddressId: string;
+      country?: components["schemas"]["Country"];
+      countryId: string;
+      /** Format: date-time */
+      createdAt: string;
+      currency?: components["schemas"]["Currency"];
+      currencyId: string;
+      customer?: components["schemas"]["Customer"];
+      customerId: string;
+      decidedBy?: components["schemas"]["B2bEmployee"];
+      decidedById?: string;
+      employee?: components["schemas"]["B2bEmployee"];
+      employeeId: string;
+      id?: string;
+      language?: components["schemas"]["Language"];
+      languageId: string;
+      /** Format: float */
+      originalPrice?: number;
+      paymentMethod?: components["schemas"]["PaymentMethod"];
+      paymentMethodId: string;
+      price?: {
+        calculatedTaxes?: GenericRecord;
+        /** Format: float */
+        netPrice: number;
+        /** Format: float */
+        positionPrice: number;
+        /** Format: float */
+        rawTotal: number;
+        taxRules?: GenericRecord;
+        taxStatus: string;
+        /** Format: float */
+        totalPrice: number;
+      };
+      reason?: string;
+      salesChannelId: string;
+      shippingMethod?: components["schemas"]["ShippingMethod"];
+      shippingMethodId: string;
+      stateId: string;
+      stateMachineState?: components["schemas"]["StateMachineState"];
+      taxStatus?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    /** Added since version: 6.6.0.0 */
+    B2bComponentsPendingOrderAddress: {
+      additionalAddressLine1?: string;
+      additionalAddressLine2?: string;
+      city: string;
+      company?: string;
+      country?: components["schemas"]["Country"];
+      countryId: string;
+      countryState?: components["schemas"]["CountryState"];
+      countryStateId?: string;
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      department?: string;
+      firstName: string;
+      id?: string;
+      lastName: string;
+      pendingOrder?: components["schemas"]["B2bComponentsPendingOrder"];
+      phoneNumber?: string;
+      salutation?: components["schemas"]["Salutation"];
+      street: string;
+      title?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      vatId?: string;
+      zipcode?: string;
+    };
+    B2bComponentsRole: {
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      id?: string;
+      name: string;
+      permissions?: GenericRecord[];
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    B2bEmployee: {
+      active?: boolean;
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      email: string;
+      firstName: string;
+      id?: string;
+      language?: components["schemas"]["Language"];
+      languageId: string;
+      lastName: string;
+      role?: components["schemas"]["B2bComponentsRole"];
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    B2bOrderEmployee: {
+      /** Format: date-time */
+      createdAt: string;
+      firstName: string;
+      id?: string;
+      lastName: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    B2bPermission: {
+      /** Format: date-time */
+      createdAt: string;
+      dependencies?: string[];
+      group: string;
+      id?: string;
+      name: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    // TODO: [OpenAPI][CalculatedPrice] - define CalculatedPrice with proper fields + define calculated_cheapest_price entity as well
+    CalculatedPrice: {
+      apiAlias: "calculated_price";
+      unitPrice: number;
+      quantity: number;
+      totalPrice: number;
+      calculatedTaxes: GenericRecord[];
+      taxRules: GenericRecord[];
+      referencePrice?: {
+        price: number;
+        referenceUnit: number;
+        unitName: string;
+      };
+      hasRange?: boolean;
+      listPrice: {
+        price: number;
+        discount: number;
+        percentage: number;
+        apiAlias: string;
+      } | null;
+      regulationPrice: null | {
+        price: number;
+      };
+      variantId?: string;
     };
     Cart: components["schemas"]["ArrayStruct"] & {
       /** An affiliate tracking code */
@@ -635,12 +1050,27 @@ export type components = {
       campaignCode?: string;
       /** A comment that can be added to the cart. */
       customerComment?: string;
+      deliveries?: components["schemas"]["OrderDelivery"][]; // TODO: [OpenAPI][Cart] - `deliveries` is missing in schema
       /** A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers. */
-      errors?: {
-        key?: string;
-        level?: string;
-        message?: string;
-      }[];
+      errors: // TODO: [OpenAPI][Cart] - define errors properly, `key` and `message` should be required fields. `Errors` should be required field as well. Problem is that sometimes it's an array, and sometimes map object
+      | []
+        // | {
+        //     key: string;
+        //     code: string;
+        //     details: string;
+        //     level?: string;
+        //     message: string;
+        //   }[]
+        | Record<
+            string,
+            {
+              code: number;
+              key: string;
+              level: number;
+              message: string;
+              messageKey: string;
+            }
+          >;
       /** All items within the cart */
       lineItems?: components["schemas"]["LineItem"][];
       modified?: boolean;
@@ -677,23 +1107,27 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     Category: {
+      apiAlias: "category"; // TODO: [OpenAPI][Category] - define apiAlias properly
       active?: boolean;
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
-      breadcrumb?: readonly Record<string, never>[];
+      breadcrumb: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
       /** Format: int64 */
-      childCount?: number;
-      children?: components["schemas"]["Category"];
+      childCount: number; // TODO: [OpenAPI][Category] childCount field should be defined as required
+      children: components["schemas"]["Category"][]; // TODO: [OpenAPI][Category] - define children as required array
       cmsPage?: components["schemas"]["CmsPage"];
       cmsPageId?: string;
+      /** Runtime field, cannot be used as part of the criteria. */
+      cmsPageIdSwitched?: boolean;
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customEntityTypeId?: string;
+      customFields?: GenericRecord;
       description?: string;
       displayNestedProducts: boolean;
       externalLink?: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][Category] - define id as required field
       internalLink?: string;
       keywords?: string;
       /** Format: int64 */
@@ -710,27 +1144,58 @@ export type components = {
       parentVersionId?: string;
       path?: string;
       productAssignmentType: string;
-      seoUrls?: components["schemas"]["SeoUrl"];
-      translated?: Record<string, never>;
+      seoUrls?: components["schemas"]["SeoUrl"][];
+      tags?: components["schemas"]["Tag"][];
+      translated?: {
+        afterCategoryId?: string;
+        afterCategoryVersionId?: string;
+        breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        customEntityTypeId?: string;
+        description?: string;
+        externalLink?: string;
+        internalLink?: string;
+        keywords?: string;
+        linkType?: string;
+        mediaId?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        parentId?: string;
+        parentVersionId?: string;
+        path?: string;
+        productAssignmentType?: string;
+        type?: string;
+        versionId?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
       visible?: boolean;
+      /**
+       * Format: int64
+       * Runtime field, cannot be used as part of the criteria.
+       */
+      visibleChildCount?: number;
     };
     /** Added since version: 6.0.0.0 */
     CategoryJsonApi: components["schemas"]["resource"] & {
       active?: boolean;
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
-      breadcrumb?: readonly Record<string, never>[];
+      breadcrumb?: readonly unknown[];
       /** Format: int64 */
       childCount?: number;
       cmsPageId?: string;
+      /** Runtime field, cannot be used as part of the criteria. */
+      cmsPageIdSwitched?: boolean;
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customEntityTypeId?: string;
+      customFields?: GenericRecord;
       description?: string;
       displayNestedProducts: boolean;
       externalLink?: string;
@@ -752,7 +1217,7 @@ export type components = {
       relationships?: {
         children?: {
           data?: {
-            /** @example c16587cd454342e296c7122c466859df */
+            /** @example 268184c12df027f536154d099d497b31 */
             id?: string;
             /** @example category */
             type?: string;
@@ -760,14 +1225,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/ca8fee826bbf4292afbf47451b8366c3/children
+             * @example /category/3adbdb3ac060038aa0e6e6c138ef9873/children
              */
             related?: string;
           };
         };
         cmsPage?: {
           data?: {
-            /** @example 2bf26a4bf983475d97580d31f97902b7 */
+            /** @example 7b1460918b1abb93311108f3dc021c9b */
             id?: string;
             /** @example cms_page */
             type?: string;
@@ -775,14 +1240,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/ca8fee826bbf4292afbf47451b8366c3/cmsPage
+             * @example /category/3adbdb3ac060038aa0e6e6c138ef9873/cmsPage
              */
             related?: string;
           };
         };
         media?: {
           data?: {
-            /** @example e3f1570168074e52a372d3b7cbb03e30 */
+            /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
             id?: string;
             /** @example media */
             type?: string;
@@ -790,14 +1255,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/ca8fee826bbf4292afbf47451b8366c3/media
+             * @example /category/3adbdb3ac060038aa0e6e6c138ef9873/media
              */
             related?: string;
           };
         };
         parent?: {
           data?: {
-            /** @example 4b04d319fcfe40c1ba9f227f2c1c50ed */
+            /** @example d0e45878043844ffc41aac437e86b602 */
             id?: string;
             /** @example category */
             type?: string;
@@ -805,14 +1270,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/ca8fee826bbf4292afbf47451b8366c3/parent
+             * @example /category/3adbdb3ac060038aa0e6e6c138ef9873/parent
              */
             related?: string;
           };
         };
         seoUrls?: {
           data?: {
-            /** @example 5e36d9f233ac4fb69018b3f859fd4377 */
+            /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
             id?: string;
             /** @example seo_url */
             type?: string;
@@ -820,21 +1285,63 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /category/ca8fee826bbf4292afbf47451b8366c3/seoUrls
+             * @example /category/3adbdb3ac060038aa0e6e6c138ef9873/seoUrls
+             */
+            related?: string;
+          };
+        };
+        tags?: {
+          data?: {
+            /** @example d57ac45256849d9b13e2422d91580fb9 */
+            id?: string;
+            /** @example tag */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /category/3adbdb3ac060038aa0e6e6c138ef9873/tags
              */
             related?: string;
           };
         };
       };
-      translated?: Record<string, never>;
+      translated?: {
+        afterCategoryId?: string;
+        afterCategoryVersionId?: string;
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        customEntityTypeId?: string;
+        description?: string;
+        externalLink?: string;
+        internalLink?: string;
+        keywords?: string;
+        linkType?: string;
+        mediaId?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        parentId?: string;
+        parentVersionId?: string;
+        path?: string;
+        productAssignmentType?: string;
+        type?: string;
+        versionId?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
       visible?: boolean;
+      /**
+       * Format: int64
+       * Runtime field, cannot be used as part of the criteria.
+       */
+      visibleChildCount?: number;
     };
     /** Added since version: 6.0.0.0 */
     CmsBlock: {
+      apiAlias: "cms_block"; // TODO: [OpenAPI][CmsBlock] - define apiAlias properly
       backgroundColor?: string;
       backgroundMedia?: components["schemas"]["Media"];
       backgroundMediaId?: string;
@@ -843,11 +1350,11 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       cssClass?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       extensions?: {
         swagCmsExtensionsBlockRule?: {
           data?: {
-            /** @example 8acb05037d28498b9c910c04d12c20b0 */
+            /** @example c426e9e5d9031b933f89682d49bb02b1 */
             id?: string;
             /** @example swag_cms_extensions_block_rule */
             type?: string;
@@ -855,14 +1362,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /cms-block/51c0fba463794453956fc7f5a8af9a7a/swagCmsExtensionsBlockRule
+             * @example /cms-block/9c16ffe823ddccc710bfb336c2ef30b6/swagCmsExtensionsBlockRule
              */
             related?: string;
           };
         };
         swagCmsExtensionsQuickview?: {
           data?: {
-            /** @example eb0cb925cb8747b5aa154371215fe4a2 */
+            /** @example fae098a43df8714eda5249176ffcf26c */
             id?: string;
             /** @example swag_cms_extensions_quickview */
             type?: string;
@@ -870,7 +1377,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /cms-block/51c0fba463794453956fc7f5a8af9a7a/swagCmsExtensionsQuickview
+             * @example /cms-block/9c16ffe823ddccc710bfb336c2ef30b6/swagCmsExtensionsQuickview
              */
             related?: string;
           };
@@ -886,7 +1393,7 @@ export type components = {
       position: number;
       sectionId: string;
       sectionPosition?: string;
-      slots?: components["schemas"]["CmsSlot"];
+      slots: components["schemas"]["CmsSlot"][]; // TODO: [OpenAPI][CmsBlock] - define slots as required array
       type: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -905,12 +1412,12 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       cssClass?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       entity?: string;
       extensions?: {
         swagCmsExtensionsScrollNavigationPageSettings?: {
           data?: {
-            /** @example 03e7e018f15247b891b29fbab808bdfc */
+            /** @example 8b835206d09f3dec1b733f6a78c7ba33 */
             id?: string;
             /** @example swag_cms_extensions_scroll_navigation_page_settings */
             type?: string;
@@ -918,25 +1425,31 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /cms-page/9c952dcb46834abf84e7cf27c723686d/swagCmsExtensionsScrollNavigationPageSettings
+             * @example /cms-page/64bf107168bcd03626208c1764ce6890/swagCmsExtensionsScrollNavigationPageSettings
              */
             related?: string;
           };
         };
       };
       id?: string;
-      landingPages?: components["schemas"]["LandingPage"];
+      landingPages?: components["schemas"]["LandingPage"][];
       name?: string;
       previewMedia?: components["schemas"]["Media"];
       previewMediaId?: string;
-      sections?: components["schemas"]["CmsSection"];
-      translated?: Record<string, never>;
+      sections: components["schemas"]["CmsSection"][]; // TODO: [OpenAPI][CmsPage] - define sections as required array
+      translated?: {
+        cssClass?: string;
+        entity?: string;
+        name?: string;
+        previewMediaId?: string;
+        type?: string;
+        versionId?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
     CmsPageActivity: {
       /** Format: date-time */
       createdAt: string;
@@ -944,7 +1457,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     CmsPageDraft: {
       /** Format: date-time */
       createdAt: string;
@@ -954,20 +1466,21 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     CmsSection: {
+      apiAlias: "cms_section"; // TODO: [OpenAPI][CmsSection] - define apiAlias properly
       backgroundColor?: string;
       backgroundMedia?: components["schemas"]["Media"];
       backgroundMediaId?: string;
       backgroundMediaMode?: string;
-      blocks?: components["schemas"]["CmsBlock"];
+      blocks: components["schemas"]["CmsBlock"][]; // TODO: [OpenAPI][CmsSection] - define blocks as required array
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
       cssClass?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       extensions?: {
         swagCmsExtensionsScrollNavigation?: {
           data?: {
-            /** @example c7dcf804bb8d4daeab925ef31b15b999 */
+            /** @example 425b8d6ec722d74191c6d39370af19dc */
             id?: string;
             /** @example swag_cms_extensions_scroll_navigation */
             type?: string;
@@ -975,7 +1488,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /cms-section/5b8abe3869b94c0489ddb971fcd49ec6/swagCmsExtensionsScrollNavigation
+             * @example /cms-section/d08def49fa8924d6f4a32bdb448d5fba/swagCmsExtensionsScrollNavigation
              */
             related?: string;
           };
@@ -1003,28 +1516,31 @@ export type components = {
       block?: components["schemas"]["CmsBlock"];
       blockId: string;
       cmsBlockVersionId?: string;
-      config?: Record<string, never>;
+      config?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
-      data?: Record<string, never>;
+      customFields?: GenericRecord;
+      data?: GenericRecord;
+      fieldConfig?: GenericRecord;
       id?: string;
       locked?: boolean;
       slot: string;
-      translated?: Record<string, never>;
+      translated?: {
+        blockId?: string;
+        cmsBlockVersionId?: string;
+        slot?: string;
+        type?: string;
+        versionId?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
     };
-    ContextTokenResponse: {
-      /** Context token identifying the current user session. */
-      contextToken?: string;
-    };
     /** Added since version: 6.0.0.0 */
     Country: {
       active?: boolean;
-      addressFormat: Record<string, never>;
+      addressFormat: GenericRecord;
       advancedPostalCodePattern?: string;
       checkAdvancedPostalCodePattern?: boolean;
       checkPostalCodePattern?: boolean;
@@ -1035,8 +1551,6 @@ export type components = {
         currencyId: string;
         enabled: boolean;
       };
-      /** @deprecated */
-      companyTaxFree?: boolean;
       /** Format: date-time */
       createdAt: string;
       customerTax?: {
@@ -1045,7 +1559,7 @@ export type components = {
         currencyId: string;
         enabled: boolean;
       };
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       defaultPostalCodePattern?: string;
       displayStateInRegistration?: boolean;
       forceStateInRegistration?: boolean;
@@ -1057,10 +1571,15 @@ export type components = {
       position?: number;
       postalCodeRequired?: boolean;
       shippingAvailable?: boolean;
-      states?: components["schemas"]["CountryState"];
-      /** @deprecated */
-      taxFree?: boolean;
-      translated?: Record<string, never>;
+      states?: components["schemas"]["CountryState"][];
+      translated?: {
+        advancedPostalCodePattern?: string;
+        defaultPostalCodePattern?: string;
+        iso?: string;
+        iso3?: string;
+        name?: string;
+        vatIdPattern?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       vatIdPattern?: string;
@@ -1069,7 +1588,7 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     CountryJsonApi: components["schemas"]["resource"] & {
       active?: boolean;
-      addressFormat: Record<string, never>;
+      addressFormat: GenericRecord;
       advancedPostalCodePattern?: string;
       checkAdvancedPostalCodePattern?: boolean;
       checkPostalCodePattern?: boolean;
@@ -1080,8 +1599,6 @@ export type components = {
         currencyId: string;
         enabled: boolean;
       };
-      /** @deprecated */
-      companyTaxFree?: boolean;
       /** Format: date-time */
       createdAt: string;
       customerTax?: {
@@ -1090,7 +1607,7 @@ export type components = {
         currencyId: string;
         enabled: boolean;
       };
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       defaultPostalCodePattern?: string;
       displayStateInRegistration?: boolean;
       forceStateInRegistration?: boolean;
@@ -1104,7 +1621,7 @@ export type components = {
       relationships?: {
         states?: {
           data?: {
-            /** @example c4d6310c04e144249bba4ba6455466fb */
+            /** @example 34d955a0df5f7af9c9b4e4dccb3c3564 */
             id?: string;
             /** @example country_state */
             type?: string;
@@ -1112,16 +1629,21 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /country/d49f9b072ac840b7b74384483c9c03aa/states
+             * @example /country/59716c97497eb9694541f7c3d37b1a4d/states
              */
             related?: string;
           };
         };
       };
       shippingAvailable?: boolean;
-      /** @deprecated */
-      taxFree?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        advancedPostalCodePattern?: string;
+        defaultPostalCodePattern?: string;
+        iso?: string;
+        iso3?: string;
+        name?: string;
+        vatIdPattern?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       vatIdPattern?: string;
@@ -1133,13 +1655,17 @@ export type components = {
       countryId: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       /** Format: int64 */
       position?: number;
       shortCode: string;
-      translated?: Record<string, never>;
+      translated?: {
+        countryId?: string;
+        name?: string;
+        shortCode?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1149,13 +1675,17 @@ export type components = {
       countryId: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       /** Format: int64 */
       position?: number;
       shortCode: string;
-      translated?: Record<string, never>;
+      translated?: {
+        countryId?: string;
+        name?: string;
+        shortCode?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1170,15 +1700,21 @@ export type components = {
         /** The type of aggregation */
         type: string;
       }[];
+      includes?: GenericRecord; // TODO: [OpenAPI][Criteria] - define includes properly
       /** Used to fetch associations which are not fetched by default. */
-      associations?: Record<string, never>;
+      associations?: GenericRecord;
       /** Fields which should be returned in the search result. */
       fields?: string[];
       /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
       filter?: {
+        // TODO: [OpenAPI][Criteria] - there can be different filters, for example `equalsAny` can have array as value
         field: string;
         type: string;
-        value: string;
+        value?: string | string[] | boolean;
+        parameters?: {
+          gte?: string;
+          lte?: string;
+        };
       }[];
       /** Perform groupings over certain fields */
       grouping?: string[];
@@ -1199,14 +1735,16 @@ export type components = {
         order?: string;
       }[];
       /**
-       * Whether the total for the total number of hits should be determined for the search query. 0 = disabled total count, 1 = calculate exact total amount (slow), 2 = calculate only for next page (fast)
-       * @default 0
-       * @enum {integer}
+       * Whether the total for the total number of hits should be determined for the search query. none = disabled total count, exact = calculate exact total amount (slow), next-pages = calculate only for next page (fast)
+       * @default none
+       * @enum {string}
        */
-      "total-count-mode"?: 0 | 1 | 2;
+      "total-count-mode"?: "none" | "exact" | "next-pages";
     };
     CrossSellingElementCollection: {
-      crossSelling?: {
+      // TODO: [OpenAPI][CrossSellingElementCollection] - define CrossSellingElement instead of collection
+      crossSelling: {
+        // TODO: [OpenAPI][CrossSellingElementCollection] - define crossSelling as required
         active?: boolean;
         /** Format: int32 */
         limit?: number;
@@ -1219,7 +1757,7 @@ export type components = {
         sortDirection?: string;
         type?: string;
       };
-      products?: components["schemas"]["Product"][];
+      products: components["schemas"]["Product"][]; // TODO: [OpenAPI][CrossSellingElementCollection] - define products array as required
       /** Format: int32 */
       total?: number;
     }[];
@@ -1227,7 +1765,7 @@ export type components = {
     Currency: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       /** Format: float */
       factor: number;
       id?: string;
@@ -1255,7 +1793,12 @@ export type components = {
         interval?: number;
         roundForNet?: boolean;
       };
-      translated?: Record<string, never>;
+      translated?: {
+        isoCode?: string;
+        name?: string;
+        shortName?: string;
+        symbol?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1271,7 +1814,7 @@ export type components = {
     CurrencyJsonApi: components["schemas"]["resource"] & {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       /** Format: float */
       factor: number;
       id?: string;
@@ -1299,7 +1842,12 @@ export type components = {
         interval?: number;
         roundForNet?: boolean;
       };
-      translated?: Record<string, never>;
+      translated?: {
+        isoCode?: string;
+        name?: string;
+        shortName?: string;
+        symbol?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1313,8 +1861,11 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     Customer: {
+      accountType: string;
       active?: boolean;
-      addresses?: components["schemas"]["CustomerAddress"];
+      activeBillingAddress: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][Customer] - define activeBillingAddress as required
+      activeShippingAddress: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][Customer] - define activeShippingAddress as required
+      addresses?: components["schemas"]["CustomerAddress"][];
       affiliateCode?: string;
       birthday?: string;
       campaignCode?: string;
@@ -1323,7 +1874,7 @@ export type components = {
       createdAt: string;
       createdById?: string;
       customerNumber: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       defaultBillingAddress?: components["schemas"]["CustomerAddress"];
       defaultBillingAddressId: string;
       defaultPaymentMethod?: components["schemas"]["PaymentMethod"];
@@ -1336,6 +1887,23 @@ export type components = {
       doubleOptInEmailSentDate?: string;
       doubleOptInRegistration?: boolean;
       email: string;
+      extensions?: {
+        specificFeatures?: {
+          data?: {
+            /** @example 5cfb6fcb7542e25892e1a35cd6a06c54 */
+            id?: string;
+            /** @example customer_specific_features */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /customer/ce26601dac0dea138b7295f02b7620a7/specificFeatures
+             */
+            related?: string;
+          };
+        };
+      };
       /** Format: date-time */
       firstLogin?: string;
       firstName: string;
@@ -1353,15 +1921,17 @@ export type components = {
       lastOrderDate?: string;
       lastPaymentMethod?: components["schemas"]["PaymentMethod"];
       lastPaymentMethodId?: string;
-      newsletter?: boolean;
       /** Format: int64 */
       orderCount?: number;
       /** Format: float */
       orderTotalAmount?: number;
+      /** Format: int64 */
+      reviewCount?: number;
       salesChannelId: string;
       salutation?: components["schemas"]["Salutation"];
       salutationId?: string;
       tagIds?: readonly string[];
+      tags?: components["schemas"]["Tag"][];
       title?: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -1381,10 +1951,10 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customerId: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       department?: string;
       firstName: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][CustomerAddress] - make `id` required
       lastName: string;
       phoneNumber?: string;
       salutation?: components["schemas"]["Salutation"];
@@ -1399,7 +1969,7 @@ export type components = {
     CustomerGroup: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       displayGross?: boolean;
       id?: string;
       name: string;
@@ -1408,7 +1978,13 @@ export type components = {
       registrationOnlyCompanyRegistration?: boolean;
       registrationSeoMetaDescription?: string;
       registrationTitle?: string;
-      translated?: Record<string, never>;
+      // TODO: [OpenAPI][CustomerGroup] - make `translated` required
+      translated: {
+        name?: string;
+        registrationIntroduction?: string;
+        registrationSeoMetaDescription?: string;
+        registrationTitle?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1416,6 +1992,15 @@ export type components = {
     CustomerRecovery: {
       /** Format: date-time */
       createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    CustomerSpecificFeatures: {
+      /** Format: date-time */
+      createdAt: string;
+      customer?: components["schemas"]["Customer"];
+      customerId: string;
       id?: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -1432,7 +2017,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customerId: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -1471,7 +2056,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     CustomPrice: {
       /** Format: date-time */
       createdAt: string;
@@ -1480,7 +2064,7 @@ export type components = {
       customerGroupId?: string;
       customerId?: string;
       id?: string;
-      price: Record<string, never>;
+      price: GenericRecord;
       product?: components["schemas"]["Product"];
       productId: string;
       productVersionId?: string;
@@ -1492,43 +2076,43 @@ export type components = {
       | components["schemas"]["resource"]
       | components["schemas"]["resource"][];
     /** Added since version: 6.0.0.0 */
-    DeadMessage: {
-      /** Format: date-time */
-      createdAt: string;
-      id?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    /** Added since version: 6.0.0.0 */
     DeliveryTime: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       /** Format: int64 */
       max: number;
       /** Format: int64 */
       min: number;
       name: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        unit?: string;
+      };
       unit: string;
       /** Format: date-time */
       updatedAt?: string;
     };
     /** Added since version: 6.0.0.0 */
     Document: {
-      config: Record<string, never>;
+      // TODO: [OpenAPI][Document] - define config properly
+      config: {
+        name: string;
+        title: string;
+      };
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deepLinkCode: string;
-      dependentDocuments?: components["schemas"]["Document"];
+      dependentDocuments?: components["schemas"]["Document"][];
       documentMediaFile?: components["schemas"]["Media"];
       documentMediaFileId?: string;
+      documentNumber?: string;
       documentType?: components["schemas"]["DocumentType"];
       documentTypeId: string;
       fileType: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][Document] - make `id` required
       order?: components["schemas"]["Order"];
       orderId: string;
       orderVersionId?: string;
@@ -1541,10 +2125,10 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     DocumentBaseConfig: {
-      config?: Record<string, never>;
+      config?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       documentNumber?: string;
       documentTypeId: string;
       filenamePrefix?: string;
@@ -1572,17 +2156,20 @@ export type components = {
     DocumentType: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       technicalName: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
     EntitySearchResult: components["schemas"]["ArrayStruct"] & {
       /** Contains aggregated data. A simple example is the determination of the average price from a product search query. */
-      aggregations?: Record<string, never>[];
+      aggregations?: GenericRecord[];
       entity?: string;
       /** The actual limit. This is used for pagination and goes together with the page. */
       limit?: number;
@@ -1594,6 +2181,8 @@ export type components = {
     error: {
       /** An application-specific error code, expressed as a string value. */
       code?: string;
+      /** A human-readable description of the problem. */
+      description?: string;
       /** A human-readable explanation specific to this occurrence of the problem. */
       detail?: string;
       /** A unique identifier for this particular occurrence of the problem. */
@@ -1610,15 +2199,6 @@ export type components = {
       status?: string;
       /** A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization. */
       title?: string;
-    };
-    /** Added since version: 6.0.0.0 */
-    EventAction: {
-      /** Format: date-time */
-      createdAt: string;
-      customFields?: Record<string, never>;
-      id?: string;
-      /** Format: date-time */
-      updatedAt?: string;
     };
     failure: {
       errors: components["schemas"]["error"][];
@@ -1700,21 +2280,31 @@ export type components = {
     };
     /** Added since version: 6.4.0.0 */
     LandingPage: {
+      apiAlias: "landing_page"; // TODO: [OpenAPI][LandingPage] - add `apiAlias` definition to schema
       active?: boolean;
       cmsPage?: components["schemas"]["CmsPage"];
       cmsPageId?: string;
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       keywords?: string;
       metaDescription?: string;
       metaTitle?: string;
       name: string;
-      seoUrls?: components["schemas"]["SeoUrl"];
-      slotConfig?: Record<string, never>;
-      translated?: Record<string, never>;
+      seoUrls?: components["schemas"]["SeoUrl"][];
+      slotConfig?: GenericRecord;
+      translated?: {
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        keywords?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        url?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       url: string;
@@ -1727,7 +2317,7 @@ export type components = {
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       keywords?: string;
       metaDescription?: string;
@@ -1736,7 +2326,7 @@ export type components = {
       relationships?: {
         cmsPage?: {
           data?: {
-            /** @example 5f620d92b24e4f559beba3865e45d76c */
+            /** @example 7b1460918b1abb93311108f3dc021c9b */
             id?: string;
             /** @example cms_page */
             type?: string;
@@ -1744,14 +2334,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /landing-page/e08a146ba8924df49776b7ff5625c9ae/cmsPage
+             * @example /landing-page/815c27537bec3b60c50a2ae4d2ce875d/cmsPage
              */
             related?: string;
           };
         };
         seoUrls?: {
           data?: {
-            /** @example 1c2fdaf8859a4e84889a008ff62bcec9 */
+            /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
             id?: string;
             /** @example seo_url */
             type?: string;
@@ -1759,14 +2349,23 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /landing-page/e08a146ba8924df49776b7ff5625c9ae/seoUrls
+             * @example /landing-page/815c27537bec3b60c50a2ae4d2ce875d/seoUrls
              */
             related?: string;
           };
         };
       };
-      slotConfig?: Record<string, never>;
-      translated?: Record<string, never>;
+      slotConfig?: GenericRecord;
+      translated?: {
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        keywords?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        url?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       url: string;
@@ -1774,10 +2373,10 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     Language: {
-      children?: components["schemas"]["Language"];
+      children?: components["schemas"]["Language"][];
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       locale?: components["schemas"]["Locale"];
       localeId: string;
@@ -1793,7 +2392,7 @@ export type components = {
     LanguageJsonApi: components["schemas"]["resource"] & {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       localeId: string;
       name: string;
@@ -1801,7 +2400,7 @@ export type components = {
       relationships?: {
         children?: {
           data?: {
-            /** @example 97cbe651a14b478fbf2885e819476ccd */
+            /** @example 268184c12df027f536154d099d497b31 */
             id?: string;
             /** @example language */
             type?: string;
@@ -1809,14 +2408,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /language/6d005f49967b47ef9c5e5d96c136326a/children
+             * @example /language/4994a8ffeba4ac3140beb89e8d41f174/children
              */
             related?: string;
           };
         };
         locale?: {
           data?: {
-            /** @example 769a36700d4149c4bf9287268d4c9f29 */
+            /** @example fb216d9e8791e63c8d12bdc420956839 */
             id?: string;
             /** @example locale */
             type?: string;
@@ -1824,14 +2423,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /language/6d005f49967b47ef9c5e5d96c136326a/locale
+             * @example /language/4994a8ffeba4ac3140beb89e8d41f174/locale
              */
             related?: string;
           };
         };
         parent?: {
           data?: {
-            /** @example 61a68598fb034215ac2fd299ff64ffd9 */
+            /** @example d0e45878043844ffc41aac437e86b602 */
             id?: string;
             /** @example language */
             type?: string;
@@ -1839,14 +2438,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /language/6d005f49967b47ef9c5e5d96c136326a/parent
+             * @example /language/4994a8ffeba4ac3140beb89e8d41f174/parent
              */
             related?: string;
           };
         };
         translationCode?: {
           data?: {
-            /** @example f8f3f9beaaa54a10a6d50892f479784c */
+            /** @example 6ef2035242b8fcb7b61c3a41850e60b3 */
             id?: string;
             /** @example locale */
             type?: string;
@@ -1854,7 +2453,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /language/6d005f49967b47ef9c5e5d96c136326a/translationCode
+             * @example /language/4994a8ffeba4ac3140beb89e8d41f174/translationCode
              */
             related?: string;
           };
@@ -1867,15 +2466,55 @@ export type components = {
     LineItem: {
       description?: string;
       good?: boolean;
-      id?: string;
+      id: string; // TODO: [OpenAPI][LineItem] - make `id` required
+      cover?: components["schemas"]["ProductMedia"]; // TODO: [OpenAPI][LineItem] - add `cover` definition to schema
+      deliveryInformation: {
+        // TODO: [OpenAPI][LineItem] - define `deliveryInformation` object and find out what's inside (`cart_delivery_information` entity)
+        stock: number;
+      };
       label?: string;
       modified?: boolean;
       /** Format: int32 */
-      quantity?: number;
+      quantity: number; // TODO: [OpenAPI][LineItem] - make `quantity` required
+      payload: {
+        // TODO: [OpenAPI][LineItem] - add `payload` definition to schema (find out what's inside)
+        options: Array<{
+          group: string;
+          option: string;
+          translated: {
+            [key: string]: string;
+          };
+        }>;
+        name?: string;
+      };
+      price: {
+        // TODO: [OpenAPI][LineItem] - define price object, also UNIFY price objects across responses
+        listPrice?: {
+          /** Format: float */
+          discount?: number;
+          /** Format: float */
+          percentage?: number;
+          /** Format: float */
+          price?: number;
+        };
+        /** Format: int64 */
+        quantity: number;
+        referencePrice?: GenericRecord;
+        regulationPrice?: {
+          /** Format: float */
+          price?: number;
+        };
+        taxRules?: GenericRecord;
+        /** Format: float */
+        totalPrice: number;
+        /** Format: float */
+        unitPrice: number;
+      };
       referencedId?: string;
       removable?: boolean;
       stackable?: boolean;
-      type?: string;
+      states: string[]; // TODO: [OpenAPI][LineItem] - add definition of `states` array, also union type of possible states
+      type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][LineItem] - define type as required and string union type -> see also #456
     };
     /** A link **MUST** be represented as either: a string containing the link's URL or a link object. */
     link: OneOf<
@@ -1897,19 +2536,21 @@ export type components = {
       meta?: components["schemas"]["meta"];
       type: string;
     };
-    links: {
-      [key: string]: components["schemas"]["link"] | undefined;
-    };
+    links: GenericRecord;
     /** Added since version: 6.0.0.0 */
     Locale: {
       code: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       territory: string;
-      translated?: Record<string, never>;
+      translated?: {
+        code?: string;
+        name?: string;
+        territory?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1933,7 +2574,14 @@ export type components = {
       id?: string;
       name: string;
       systemDefault?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        footerHtml?: string;
+        footerPlain?: string;
+        headerHtml?: string;
+        headerPlain?: string;
+        name?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1943,13 +2591,17 @@ export type components = {
       contentPlain: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       mailTemplateType?: components["schemas"]["MailTemplateType"];
-      media?: components["schemas"]["MailTemplateMedia"];
+      media?: components["schemas"]["MailTemplateMedia"][];
       senderName?: string;
       systemDefault?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        contentHtml?: string;
+        contentPlain?: string;
+        senderName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1967,11 +2619,14 @@ export type components = {
     MailTemplateType: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       technicalName: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -2004,28 +2659,72 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     Media: {
       alt?: string;
+      config?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
-      fileExtension?: string;
-      fileName?: string;
+      customFields?: GenericRecord;
+      extensions?: {
+        mediaAiTag?: {
+          data?: {
+            /** @example 3c88197809d464216a8c40a8db191b38 */
+            id?: string;
+            /** @example media_ai_tag */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /media/3b563524fdb17b4a86590470d40bef74/mediaAiTag
+             */
+            related?: string;
+          };
+        };
+      };
+      fileExtension: string; // TODO: [OpenAPI][Media] fileExtension field should be defined as required
+      fileName: string; // TODO: [OpenAPI][Media] fileName field should be defined as required
       /** Format: int64 */
       fileSize?: number;
       /** Runtime field, cannot be used as part of the criteria. */
       hasFile?: boolean;
       id?: string;
-      metaData?: Record<string, never>;
+      // TODO: [OpenAPI][Media] metaData field should be defined properly
+      metaData?: {
+        /** Format: int64 */
+        height?: number;
+        /** Format: int64 */
+        width?: number;
+      };
       mimeType?: string;
+      path?: string;
       private?: boolean;
-      thumbnails?: components["schemas"]["MediaThumbnail"];
+      thumbnails?: components["schemas"]["MediaThumbnail"][];
       title?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        alt?: string;
+        fileExtension?: string;
+        fileName?: string;
+        mimeType?: string;
+        path?: string;
+        title?: string;
+        uploadedAt?: string;
+        url?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       /** Format: date-time */
       uploadedAt?: string;
       /** Runtime field, cannot be used as part of the criteria. */
-      url?: string;
+      url: string; // TODO: [OpenAPI][Media] url field should be defined as required
+    };
+    MediaAiTag: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      media?: components["schemas"]["Media"];
+      tags?: unknown[];
+      translated?: Record<string, never>;
+      /** Format: date-time */
+      updatedAt?: string;
     };
     /** Added since version: 6.0.0.0 */
     MediaDefaultFolder: {
@@ -2063,15 +2762,16 @@ export type components = {
     MediaThumbnail: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       /** Format: int64 */
       height: number;
       id?: string;
       mediaId: string;
+      path?: string;
       /** Format: date-time */
       updatedAt?: string;
       /** Runtime field, cannot be used as part of the criteria. */
-      url?: string;
+      url: string; // TODO: [OpenAPI][MediaThumbnail] url should be defined as required
       /** Format: int64 */
       width: number;
     };
@@ -2079,7 +2779,7 @@ export type components = {
     MediaThumbnailSize: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       /** Format: int64 */
       height: number;
       id?: string;
@@ -2088,19 +2788,17 @@ export type components = {
       /** Format: int64 */
       width: number;
     };
-    /** Added since version: 6.0.0.0 */
-    MessageQueueStats: {
-      /** Format: date-time */
-      createdAt: string;
-      id?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
     /** Non-standard meta-information that can not be represented as an attribute or relationship. */
-    meta: {
-      [key: string]: unknown | undefined;
-    };
+    meta: GenericRecord;
+    NaturalLanguageSearchTermResponse: {
+      /** @enum {string} */
+      apiAlias: "product_natural_language_search_term";
+      reason: string;
+      term: string;
+    }[];
     NavigationRouteResponse: components["schemas"]["Category"][];
+    NavigationType: // TODO: [OpenAPI][NavigationType] - add `NavigationType` definition to schema
+    "main-navigation" | "footer-navigation" | "service-navigation";
     /** Added since version: 6.0.0.0 */
     NewsletterRecipient: {
       /** Format: date-time */
@@ -2161,7 +2859,7 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     Order: {
-      addresses?: components["schemas"]["OrderAddress"];
+      addresses?: components["schemas"]["OrderAddress"][];
       affiliateCode?: string;
       /** Format: float */
       amountNet?: number;
@@ -2179,37 +2877,69 @@ export type components = {
       currencyFactor: number;
       currencyId: string;
       customerComment?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deepLinkCode?: string;
-      deliveries?: components["schemas"]["OrderDelivery"];
-      documents?: components["schemas"]["Document"];
-      id?: string;
+      deliveries?: components["schemas"]["OrderDelivery"][];
+      documents: components["schemas"]["Document"][]; // TODO: [OpenAPI][Order] - documents should be defined as required
+      extensions?: {
+        returns?: {
+          data?: {
+            /** @example 7fff84525c6516919851a9005373f87e */
+            id?: string;
+            /** @example order_return */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /order/a240fa27925a635b08dc28c9e4f9216d/returns
+             */
+            related?: string;
+          };
+        };
+        subscription?: {
+          data?: {
+            /** @example b48b13e73a6ac2a86dc54425dd24d9ff */
+            id?: string;
+            /** @example subscription */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /order/a240fa27925a635b08dc28c9e4f9216d/subscription
+             */
+            related?: string;
+          };
+        };
+      };
+      id: string; // TODO: [OpenAPI][Order] id field should be defined as required
       language?: components["schemas"]["Language"];
       languageId: string;
-      lineItems?: components["schemas"]["OrderLineItem"];
+      lineItems?: components["schemas"]["OrderLineItem"][];
       orderCustomer?: components["schemas"]["OrderCustomer"];
-      orderDate?: string;
+      orderDate: string; // TODO: [OpenAPI][Order] orderDate field should be defined as required
       /** Format: date-time */
       orderDateTime: string;
       orderNumber?: string;
       /** Format: float */
       positionPrice?: number;
       price?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         /** Format: float */
         netPrice: number;
         /** Format: float */
         positionPrice: number;
         /** Format: float */
         rawTotal: number;
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         taxStatus: string;
         /** Format: float */
         totalPrice: number;
       };
       salesChannelId: string;
       shippingCosts?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2220,12 +2950,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2233,10 +2963,11 @@ export type components = {
       };
       /** Format: float */
       shippingTotal?: number;
-      stateMachineState?: components["schemas"]["StateMachineState"];
-      tags?: components["schemas"]["Tag"];
+      source?: string;
+      stateMachineState: components["schemas"]["StateMachineState"]; // TODO: [OpenAPI][Order] stateMachineState field should be defined as required
+      tags?: components["schemas"]["Tag"][];
       taxStatus?: string;
-      transactions?: components["schemas"]["OrderTransaction"];
+      transactions?: components["schemas"]["OrderTransaction"][];
       /** Format: date-time */
       updatedAt?: string;
       updatedById?: string;
@@ -2254,10 +2985,10 @@ export type components = {
       countryStateId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       department?: string;
       firstName: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][OrderAddress] id field should be defined as required
       lastName: string;
       phoneNumber?: string;
       salutation?: components["schemas"]["Salutation"];
@@ -2275,13 +3006,13 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customerNumber?: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       email: string;
       firstName: string;
       id?: string;
       lastName: string;
       salutation?: components["schemas"]["Salutation"];
-      salutationId: string;
+      salutationId?: string;
       title?: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -2292,13 +3023,13 @@ export type components = {
     OrderDelivery: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       orderId: string;
       orderVersionId?: string;
-      positions?: components["schemas"]["OrderDeliveryPosition"];
+      positions?: components["schemas"]["OrderDeliveryPosition"][];
       shippingCosts?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2309,12 +3040,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2340,14 +3071,14 @@ export type components = {
     OrderDeliveryPosition: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       orderDeliveryId: string;
       orderDeliveryVersionId?: string;
       orderLineItemId: string;
       orderLineItemVersionId?: string;
       price?: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2358,12 +3089,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2381,28 +3112,60 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     OrderLineItem: {
-      children: components["schemas"]["OrderLineItem"];
+      children: components["schemas"]["OrderLineItem"][];
       cover?: components["schemas"]["Media"];
       coverId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
-      downloads?: components["schemas"]["OrderLineItemDownload"];
+      downloads?: components["schemas"]["OrderLineItemDownload"][];
+      extensions?: {
+        returns?: {
+          data?: {
+            /** @example 7fff84525c6516919851a9005373f87e */
+            id?: string;
+            /** @example order_return_line_item */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /order-line-item/40b401ac0b29ac5c5c8ffce649fdef62/returns
+             */
+            related?: string;
+          };
+        };
+        state?: {
+          data?: {
+            /** @example 9ed39e2ea931586b6a985a6942ef573e */
+            id?: string;
+            /** @example state_machine_state */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /order-line-item/40b401ac0b29ac5c5c8ffce649fdef62/state
+             */
+            related?: string;
+          };
+        };
+      };
       good?: boolean;
       id?: string;
       identifier: string;
       label: string;
-      orderDeliveryPositions?: components["schemas"]["OrderDeliveryPosition"];
+      orderDeliveryPositions?: components["schemas"]["OrderDeliveryPosition"][];
       orderId: string;
       orderVersionId?: string;
       parent?: components["schemas"]["OrderLineItem"];
       parentId?: string;
       parentVersionId?: string;
-      payload?: Record<string, never>;
+      payload: components["schemas"]["Product"]; // TODO: [OpenAPI][OrderLineItem] define possible payloads for order line items
       /** Format: int64 */
       position: number;
-      priceDefinition?: Record<string, never>;
+      priceDefinition?: GenericRecord;
       productId?: string;
       productVersionId?: string;
       /** Format: int64 */
@@ -2425,9 +3188,9 @@ export type components = {
       accessGranted: boolean;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
-      id?: string;
-      media?: components["schemas"]["Media"];
+      customFields?: GenericRecord;
+      id: string; // TODO: [OpenAPI][OrderLineItemDownload] id should be defined as required
+      media: components["schemas"]["Media"]; // TODO: [OpenAPI][OrderLineItemDownload] media should be defined as required
       mediaId: string;
       orderLineItem?: components["schemas"]["OrderLineItem"];
       orderLineItemId: string;
@@ -2438,7 +3201,6 @@ export type components = {
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
     OrderProductWarehouse: {
       /** Format: date-time */
       createdAt: string;
@@ -2446,12 +3208,108 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    OrderRouteResponse: {
-      orders?: Record<string, never>;
-      /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
-      paymentChangeable?: {
-        [key: string]: boolean | undefined;
+    OrderReturn: {
+      /** Format: float */
+      amountNet?: number;
+      /** Format: float */
+      amountTotal?: number;
+      /** Format: date-time */
+      createdAt: string;
+      createdById?: string;
+      id?: string;
+      lineItems?: components["schemas"]["OrderReturnLineItem"][];
+      orderId: string;
+      orderVersionId?: string;
+      price?: {
+        calculatedTaxes?: GenericRecord;
+        /** Format: float */
+        netPrice: number;
+        /** Format: float */
+        positionPrice: number;
+        /** Format: float */
+        rawTotal: number;
+        taxRules?: GenericRecord;
+        taxStatus: string;
+        /** Format: float */
+        totalPrice: number;
       };
+      /** Format: date-time */
+      requestedAt: string;
+      returnNumber: string;
+      shippingCosts?: {
+        calculatedTaxes?: GenericRecord;
+        listPrice?: {
+          /** Format: float */
+          discount?: number;
+          /** Format: float */
+          percentage?: number;
+          /** Format: float */
+          price?: number;
+        };
+        /** Format: int64 */
+        quantity: number;
+        referencePrice?: GenericRecord;
+        regulationPrice?: {
+          /** Format: float */
+          price?: number;
+        };
+        taxRules?: GenericRecord;
+        /** Format: float */
+        totalPrice: number;
+        /** Format: float */
+        unitPrice: number;
+      };
+      state?: components["schemas"]["StateMachineState"];
+      stateId: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      updatedById?: string;
+      versionId?: string;
+    };
+    OrderReturnLineItem: {
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      id?: string;
+      orderLineItemId: string;
+      orderLineItemVersionId?: string;
+      orderReturnId: string;
+      orderReturnVersionId?: string;
+      /** Format: int64 */
+      quantity: number;
+      reason?: components["schemas"]["OrderReturnLineItemReason"];
+      reasonId: string;
+      /** Format: float */
+      refundAmount?: number;
+      /** Format: int64 */
+      restockQuantity?: number;
+      state?: components["schemas"]["StateMachineState"];
+      stateId: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      versionId?: string;
+    };
+    OrderReturnLineItemReason: {
+      content: string;
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      reasonKey: string;
+      translated?: {
+        content?: string;
+        reasonKey?: string;
+      };
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    OrderRouteResponse: {
+      // TODO: [OpenAPI][OrderRouteResponse] - `orders` field should be required
+      orders: {
+        // TODO: [OpenAPI][OrderRouteResponse] orders field should be defined properly
+        elements: components["schemas"]["Order"][];
+      } & components["schemas"]["EntitySearchResult"];
+      /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
+      paymentChangeable?: GenericRecord;
     };
     /** Added since version: 6.0.0.0 */
     OrderTag: {
@@ -2465,7 +3323,7 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     OrderTransaction: {
       amount: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2476,21 +3334,21 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
         unitPrice: number;
       };
-      captures?: components["schemas"]["OrderTransactionCapture"];
+      captures?: components["schemas"]["OrderTransactionCapture"][];
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       orderId: string;
       orderVersionId?: string;
@@ -2505,7 +3363,7 @@ export type components = {
     /** Added since version: 6.4.12.0 */
     OrderTransactionCapture: {
       amount: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2516,12 +3374,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2529,27 +3387,23 @@ export type components = {
       };
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       externalReference?: string;
       id?: string;
       orderTransactionId: string;
       orderTransactionVersionId?: string;
-      refunds?: components["schemas"]["OrderTransactionCaptureRefund"];
+      refunds?: components["schemas"]["OrderTransactionCaptureRefund"][];
       stateId: string;
       stateMachineState?: components["schemas"]["StateMachineState"];
-      /**
-       * Format: float
-       * Runtime field, cannot be used as part of the criteria.
-       */
-      totalAmount?: number;
       transaction?: components["schemas"]["OrderTransaction"];
       /** Format: date-time */
       updatedAt?: string;
+      versionId?: string;
     };
     /** Added since version: 6.4.12.0 */
     OrderTransactionCaptureRefund: {
       amount: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2560,40 +3414,37 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
         unitPrice: number;
       };
       captureId: string;
+      captureVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       externalReference?: string;
       id?: string;
-      positions?: components["schemas"]["OrderTransactionCaptureRefundPosition"];
+      positions?: components["schemas"]["OrderTransactionCaptureRefundPosition"][];
       reason?: string;
       stateId: string;
       stateMachineState?: components["schemas"]["StateMachineState"];
-      /**
-       * Format: float
-       * Runtime field, cannot be used as part of the criteria.
-       */
-      totalAmount?: number;
       transactionCapture?: components["schemas"]["OrderTransactionCapture"];
       /** Format: date-time */
       updatedAt?: string;
+      versionId?: string;
     };
     /** Added since version: 6.4.12.0 */
     OrderTransactionCaptureRefundPosition: {
       amount: {
-        calculatedTaxes?: Record<string, never>;
+        calculatedTaxes?: GenericRecord;
         listPrice?: {
           /** Format: float */
           discount?: number;
@@ -2604,12 +3455,12 @@ export type components = {
         };
         /** Format: int64 */
         quantity: number;
-        referencePrice?: Record<string, never>;
+        referencePrice?: GenericRecord;
         regulationPrice?: {
           /** Format: float */
           price?: number;
         };
-        taxRules?: Record<string, never>;
+        taxRules?: GenericRecord;
         /** Format: float */
         totalPrice: number;
         /** Format: float */
@@ -2617,7 +3468,7 @@ export type components = {
       };
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       externalReference?: string;
       id?: string;
       orderLineItem?: components["schemas"]["OrderLineItem"];
@@ -2628,15 +3479,11 @@ export type components = {
       quantity?: number;
       reason?: string;
       refundId: string;
-      /**
-       * Format: float
-       * Runtime field, cannot be used as part of the criteria.
-       */
-      refundPrice?: number;
+      refundVersionId?: string;
       /** Format: date-time */
       updatedAt?: string;
+      versionId?: string;
     };
-    /** Added since version: */
     OrderWarehouseGroup: {
       /** Format: date-time */
       createdAt: string;
@@ -2674,10 +3521,10 @@ export type components = {
       asynchronous?: boolean;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       distinguishableName?: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][PaymentMethod] id should be defined as required
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
@@ -2686,10 +3533,22 @@ export type components = {
       /** Runtime field, cannot be used as part of the criteria. */
       prepared?: boolean;
       /** Runtime field, cannot be used as part of the criteria. */
+      recurring?: boolean;
+      /** Runtime field, cannot be used as part of the criteria. */
       refundable?: boolean;
       /** Runtime field, cannot be used as part of the criteria. */
+      shortName?: string;
+      /** Runtime field, cannot be used as part of the criteria. */
       synchronous?: boolean;
-      translated?: Record<string, never>;
+      technicalName?: string;
+      translated?: {
+        description?: string;
+        distinguishableName?: string;
+        mediaId?: string;
+        name?: string;
+        shortName?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -2701,7 +3560,7 @@ export type components = {
       asynchronous?: boolean;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       distinguishableName?: string;
       id?: string;
@@ -2712,11 +3571,13 @@ export type components = {
       /** Runtime field, cannot be used as part of the criteria. */
       prepared?: boolean;
       /** Runtime field, cannot be used as part of the criteria. */
+      recurring?: boolean;
+      /** Runtime field, cannot be used as part of the criteria. */
       refundable?: boolean;
       relationships?: {
         media?: {
           data?: {
-            /** @example e04e817661d54ba09bd0b2a72bad40d2 */
+            /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
             id?: string;
             /** @example media */
             type?: string;
@@ -2724,15 +3585,25 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /payment-method/cce09dc50f9f414a83ccc3db5fe71706/media
+             * @example /payment-method/da8da1569e6bef3249a7064261df833f/media
              */
             related?: string;
           };
         };
       };
       /** Runtime field, cannot be used as part of the criteria. */
+      shortName?: string;
+      /** Runtime field, cannot be used as part of the criteria. */
       synchronous?: boolean;
-      translated?: Record<string, never>;
+      technicalName?: string;
+      translated?: {
+        description?: string;
+        distinguishableName?: string;
+        mediaId?: string;
+        name?: string;
+        shortName?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -2746,48 +3617,66 @@ export type components = {
       updatedAt?: string;
     };
     /** Added since version: 6.0.0.0 */
+    // TODO: [OpenAPI][Product] - null should be undefined by default to decrease payload size
     Product: {
+      apiAlias: "product"; // TODO: [OpenAPI][Product] apiAlias field should be defined in schema as string literal
       active?: boolean;
       available?: boolean;
       /** Format: int64 */
       availableStock?: number;
-      calculatedCheapestPrice?: Record<string, never>;
+      calculatedCheapestPrice?: components["schemas"]["CalculatedPrice"]; // TODO: [OpenAPI][Product] calculatedCheapestPrice field should be defined exactly what it is
       /**
        * Format: int64
        * Runtime field, cannot be used as part of the criteria.
        */
       calculatedMaxPurchase?: number;
-      calculatedPrice?: Record<string, never>;
-      calculatedPrices?: Record<string, never>[];
+      // TODO: [OpenAPI][Product] calculatedPrice field should be defined properly
+      calculatedPrice?: components["schemas"]["CalculatedPrice"];
+      calculatedPrices?: components["schemas"]["CalculatedPrice"][]; // TODO: [OpenAPI][Product] calculatedPrices field should be defined as an array and required!
       canonicalProduct?: components["schemas"]["Product"];
       canonicalProductId?: string;
-      categories?: components["schemas"]["Category"];
-      categoriesRo?: components["schemas"]["Category"];
+      categories?: components["schemas"]["Category"][];
+      categoriesRo?: components["schemas"]["Category"][];
       categoryIds?: readonly string[];
       categoryTree?: readonly string[];
       /** Format: int64 */
       childCount?: number;
-      children?: components["schemas"]["Product"];
+      children?: components["schemas"]["Product"][];
       cmsPage?: components["schemas"]["CmsPage"];
       cmsPageId?: string;
       cmsPageVersionId?: string;
-      configuratorSettings?: components["schemas"]["ProductConfiguratorSetting"];
+      configuratorSettings?: components["schemas"]["ProductConfiguratorSetting"][];
       cover?: components["schemas"]["ProductMedia"];
       coverId?: string;
       /** Format: date-time */
       createdAt: string;
-      crossSellings?: components["schemas"]["ProductCrossSelling"];
-      customFields?: Record<string, never>;
+      crossSellings?: components["schemas"]["ProductCrossSelling"][];
+      customFields?: GenericRecord;
       deliveryTime?: components["schemas"]["DeliveryTime"];
       deliveryTimeId?: string;
       description?: string;
       displayGroup?: string;
-      downloads?: components["schemas"]["ProductDownload"];
+      downloads?: components["schemas"]["ProductDownload"][];
       ean?: string;
       extensions?: {
+        reviewSummaries?: {
+          data?: {
+            /** @example c9c718522e64ffa5effb26cef94f4849 */
+            id?: string;
+            /** @example product_review_summary */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/reviewSummaries
+             */
+            related?: string;
+          };
+        };
         swagCustomizedProductsTemplate?: {
           data?: {
-            /** @example be5aac4c232c4bd19d0062e98bfc7af7 */
+            /** @example 6e9fad30dd3cb84748a01bb8152f4769 */
             id?: string;
             /** @example swag_customized_products_template */
             type?: string;
@@ -2795,7 +3684,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/swagCustomizedProductsTemplate
+             * @example /product/deb10517653c255364175796ace3553f/swagCustomizedProductsTemplate
              */
             related?: string;
           };
@@ -2803,30 +3692,28 @@ export type components = {
       };
       /** Format: float */
       height?: number;
-      id?: string;
+      id: string; // TODO: [OpenAPI][Product] id field should be required in schema
       isCloseout?: boolean;
       /** Runtime field, cannot be used as part of the criteria. */
       isNew?: boolean;
       keywords?: string;
       /** Format: float */
       length?: number;
-      mainCategories?: components["schemas"]["MainCategory"];
-      /** @deprecated */
-      mainVariantId?: string;
+      mainCategories?: components["schemas"]["MainCategory"][];
       manufacturer?: components["schemas"]["ProductManufacturer"];
       manufacturerId?: string;
       manufacturerNumber?: string;
       markAsTopseller?: boolean;
       /** Format: int64 */
       maxPurchase?: number;
-      media?: components["schemas"]["ProductMedia"];
+      media?: components["schemas"]["ProductMedia"][];
       metaDescription?: string;
       metaTitle?: string;
       /** Format: int64 */
       minPurchase?: number;
       name: string;
       optionIds?: readonly string[];
-      options?: components["schemas"]["PropertyGroupOption"];
+      options?: components["schemas"]["PropertyGroupOption"][];
       packUnit?: string;
       packUnitPlural?: string;
       parent?: components["schemas"]["Product"];
@@ -2835,8 +3722,8 @@ export type components = {
       productManufacturerVersionId?: string;
       productMediaVersionId?: string;
       productNumber: string;
-      productReviews?: components["schemas"]["ProductReview"];
-      properties?: components["schemas"]["PropertyGroupOption"];
+      productReviews?: components["schemas"]["ProductReview"][];
+      properties?: components["schemas"]["PropertyGroupOption"][];
       propertyIds?: readonly string[];
       /** Format: int64 */
       purchaseSteps?: number;
@@ -2852,21 +3739,54 @@ export type components = {
       restockTime?: number;
       /** Format: int64 */
       sales?: number;
-      seoCategory?: components["schemas"]["Category"];
-      seoUrls?: components["schemas"]["SeoUrl"];
+      seoCategory: components["schemas"]["Category"]; // TODO: [OpenAPI][Product] seoCategory field should be defined as required
+      seoUrls?: components["schemas"]["SeoUrl"][];
       shippingFree?: boolean;
+      sortedProperties?: GenericRecord;
       states?: readonly string[];
       /** Format: int64 */
       stock: number;
       streamIds?: readonly string[];
-      streams?: components["schemas"]["ProductStream"];
+      streams?: components["schemas"]["ProductStream"][];
+      tagIds?: readonly string[];
+      tags?: components["schemas"]["Tag"][];
       tax?: components["schemas"]["Tax"];
       taxId: string;
-      translated?: Record<string, never>;
+      translated?: {
+        canonicalProductId?: string;
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        coverId?: string;
+        deliveryTimeId?: string;
+        description?: string;
+        displayGroup?: string;
+        ean?: string;
+        keywords?: string;
+        manufacturerId?: string;
+        manufacturerNumber?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        packUnit?: string;
+        packUnitPlural?: string;
+        parentId?: string;
+        parentVersionId?: string;
+        productManufacturerVersionId?: string;
+        productMediaVersionId?: string;
+        productNumber?: string;
+        releaseDate?: string;
+        taxId?: string;
+        unitId?: string;
+        versionId?: string;
+      };
       unit?: components["schemas"]["Unit"];
       unitId?: string;
       /** Format: date-time */
       updatedAt?: string;
+      // TODO: [OpenAPI][Product] variantListingConfig field should be defined in schema
+      variantListingConfig?: {
+        displayParent: boolean;
+      };
       versionId?: string;
       /** Format: float */
       weight?: number;
@@ -2877,7 +3797,7 @@ export type components = {
     ProductConfiguratorSetting: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
@@ -2904,7 +3824,12 @@ export type components = {
       position: number;
       sortBy?: string;
       sortDirection?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        sortBy?: string;
+        sortDirection?: string;
+        type?: string;
+      };
       type: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -2921,13 +3846,13 @@ export type components = {
     ProductDetailResponse: {
       /** List of property groups with their corresponding options and information on how to display them. */
       configurator?: components["schemas"]["PropertyGroup"][];
-      product?: components["schemas"]["Product"];
+      product: components["schemas"]["Product"]; // TODO: [OpenAPI][ProductDetailResponse] product field should be defined as required
     };
     /** Added since version: 6.4.19.0 */
     ProductDownload: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       media?: components["schemas"]["Media"];
       mediaId: string;
@@ -2963,14 +3888,14 @@ export type components = {
       available?: boolean;
       /** Format: int64 */
       availableStock?: number;
-      calculatedCheapestPrice?: Record<string, never>;
+      calculatedCheapestPrice?: GenericRecord;
       /**
        * Format: int64
        * Runtime field, cannot be used as part of the criteria.
        */
       calculatedMaxPurchase?: number;
-      calculatedPrice?: Record<string, never>;
-      calculatedPrices?: Record<string, never>[];
+      calculatedPrice?: GenericRecord;
+      calculatedPrices?: unknown[];
       canonicalProductId?: string;
       categoryIds?: readonly string[];
       categoryTree?: readonly string[];
@@ -2981,15 +3906,30 @@ export type components = {
       coverId?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deliveryTimeId?: string;
       description?: string;
       displayGroup?: string;
       ean?: string;
       extensions?: {
+        reviewSummaries?: {
+          data?: {
+            /** @example c9c718522e64ffa5effb26cef94f4849 */
+            id?: string;
+            /** @example product_review_summary */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/reviewSummaries
+             */
+            related?: string;
+          };
+        };
         swagCustomizedProductsTemplate?: {
           data?: {
-            /** @example be5aac4c232c4bd19d0062e98bfc7af7 */
+            /** @example 6e9fad30dd3cb84748a01bb8152f4769 */
             id?: string;
             /** @example swag_customized_products_template */
             type?: string;
@@ -2997,7 +3937,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/swagCustomizedProductsTemplate
+             * @example /product/deb10517653c255364175796ace3553f/swagCustomizedProductsTemplate
              */
             related?: string;
           };
@@ -3012,8 +3952,6 @@ export type components = {
       keywords?: string;
       /** Format: float */
       length?: number;
-      /** @deprecated */
-      mainVariantId?: string;
       manufacturerId?: string;
       manufacturerNumber?: string;
       markAsTopseller?: boolean;
@@ -3044,7 +3982,7 @@ export type components = {
       relationships?: {
         canonicalProduct?: {
           data?: {
-            /** @example e0ffbd41cb7a42c4b7a2c3fb36b596dd */
+            /** @example 023995a50b56c0de077323e958b2bbcd */
             id?: string;
             /** @example product */
             type?: string;
@@ -3052,14 +3990,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/canonicalProduct
+             * @example /product/deb10517653c255364175796ace3553f/canonicalProduct
              */
             related?: string;
           };
         };
         categories?: {
           data?: {
-            /** @example 8fc84703e6a64e169cae7407c82cc267 */
+            /** @example b0b5ccb4a195a07fd3eed14affb8695f */
             id?: string;
             /** @example category */
             type?: string;
@@ -3067,14 +4005,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/categories
+             * @example /product/deb10517653c255364175796ace3553f/categories
              */
             related?: string;
           };
         };
         categoriesRo?: {
           data?: {
-            /** @example 5b33186fb5034e4f92410288ab9e0de2 */
+            /** @example 7f0702d3a90d965b8c9158c451f43fdb */
             id?: string;
             /** @example category */
             type?: string;
@@ -3082,14 +4020,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/categoriesRo
+             * @example /product/deb10517653c255364175796ace3553f/categoriesRo
              */
             related?: string;
           };
         };
         children?: {
           data?: {
-            /** @example 2aaef74b213948ffaaaf58fa51ea89bf */
+            /** @example 268184c12df027f536154d099d497b31 */
             id?: string;
             /** @example product */
             type?: string;
@@ -3097,14 +4035,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/children
+             * @example /product/deb10517653c255364175796ace3553f/children
              */
             related?: string;
           };
         };
         cmsPage?: {
           data?: {
-            /** @example 56fd453653564899905ae79872cceae8 */
+            /** @example 7b1460918b1abb93311108f3dc021c9b */
             id?: string;
             /** @example cms_page */
             type?: string;
@@ -3112,14 +4050,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/cmsPage
+             * @example /product/deb10517653c255364175796ace3553f/cmsPage
              */
             related?: string;
           };
         };
         configuratorSettings?: {
           data?: {
-            /** @example 8871db53868a473da2c0397105b7d2fc */
+            /** @example c0827fee13725d41f1fd7e292243f5aa */
             id?: string;
             /** @example product_configurator_setting */
             type?: string;
@@ -3127,14 +4065,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/configuratorSettings
+             * @example /product/deb10517653c255364175796ace3553f/configuratorSettings
              */
             related?: string;
           };
         };
         cover?: {
           data?: {
-            /** @example e93bf951a5734b96a2d54ac336034907 */
+            /** @example 41d0e299ca1abeb2094852da042165c7 */
             id?: string;
             /** @example product_media */
             type?: string;
@@ -3142,14 +4080,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/cover
+             * @example /product/deb10517653c255364175796ace3553f/cover
              */
             related?: string;
           };
         };
         crossSellings?: {
           data?: {
-            /** @example 18d938fe9d5943acb6f478a08ff5a66a */
+            /** @example 89936e14544d1b403cecef938101b6b0 */
             id?: string;
             /** @example product_cross_selling */
             type?: string;
@@ -3157,14 +4095,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/crossSellings
+             * @example /product/deb10517653c255364175796ace3553f/crossSellings
              */
             related?: string;
           };
         };
         deliveryTime?: {
           data?: {
-            /** @example 8b07bc15f69d4e2bab6e97eaef1e7eaf */
+            /** @example 8c888ae25a7bd42057370e31f7e01044 */
             id?: string;
             /** @example delivery_time */
             type?: string;
@@ -3172,14 +4110,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/deliveryTime
+             * @example /product/deb10517653c255364175796ace3553f/deliveryTime
              */
             related?: string;
           };
         };
         downloads?: {
           data?: {
-            /** @example 26533a24ec6c41e09b07eb7e019941cb */
+            /** @example d07d50a751bc6ddf12bf3af0efee9b45 */
             id?: string;
             /** @example product_download */
             type?: string;
@@ -3187,14 +4125,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/downloads
+             * @example /product/deb10517653c255364175796ace3553f/downloads
              */
             related?: string;
           };
         };
         mainCategories?: {
           data?: {
-            /** @example 7c7dddd002e341beae63d6072f326c8d */
+            /** @example 1fb731fc4139cbb575429e28846f0c39 */
             id?: string;
             /** @example main_category */
             type?: string;
@@ -3202,14 +4140,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/mainCategories
+             * @example /product/deb10517653c255364175796ace3553f/mainCategories
              */
             related?: string;
           };
         };
         manufacturer?: {
           data?: {
-            /** @example 033e799279c343049278a3ab8fe70d42 */
+            /** @example c2904bca62b22443d6cf5e9d89cab204 */
             id?: string;
             /** @example product_manufacturer */
             type?: string;
@@ -3217,14 +4155,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/manufacturer
+             * @example /product/deb10517653c255364175796ace3553f/manufacturer
              */
             related?: string;
           };
         };
         media?: {
           data?: {
-            /** @example 524979e9079d4441bea971f63a2e0cb4 */
+            /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
             id?: string;
             /** @example product_media */
             type?: string;
@@ -3232,14 +4170,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/media
+             * @example /product/deb10517653c255364175796ace3553f/media
              */
             related?: string;
           };
         };
         options?: {
           data?: {
-            /** @example c2f6d71a14974da3b655810d732b402c */
+            /** @example 93da65a9fd0004d9477aeac024e08e15 */
             id?: string;
             /** @example property_group_option */
             type?: string;
@@ -3247,14 +4185,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/options
+             * @example /product/deb10517653c255364175796ace3553f/options
              */
             related?: string;
           };
         };
         parent?: {
           data?: {
-            /** @example 0dc9eef4d9574efe827887855f166ce0 */
+            /** @example d0e45878043844ffc41aac437e86b602 */
             id?: string;
             /** @example product */
             type?: string;
@@ -3262,14 +4200,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/parent
+             * @example /product/deb10517653c255364175796ace3553f/parent
              */
             related?: string;
           };
         };
         productReviews?: {
           data?: {
-            /** @example defdc0aba6534430bf4066f6dd97f6f0 */
+            /** @example 01e78541ea343ed72424a5222796a4cd */
             id?: string;
             /** @example product_review */
             type?: string;
@@ -3277,14 +4215,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/productReviews
+             * @example /product/deb10517653c255364175796ace3553f/productReviews
              */
             related?: string;
           };
         };
         properties?: {
           data?: {
-            /** @example 5b62c474253e4f7e994d70171337b95c */
+            /** @example 74693d2fc58b46bd06410f278e39aa71 */
             id?: string;
             /** @example property_group_option */
             type?: string;
@@ -3292,14 +4230,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/properties
+             * @example /product/deb10517653c255364175796ace3553f/properties
              */
             related?: string;
           };
         };
         seoCategory?: {
           data?: {
-            /** @example 5f7aedb5ba7a4245af6400f3fd22bf42 */
+            /** @example 9354d004d12e03d35ad8292bf0bb234d */
             id?: string;
             /** @example category */
             type?: string;
@@ -3307,14 +4245,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/seoCategory
+             * @example /product/deb10517653c255364175796ace3553f/seoCategory
              */
             related?: string;
           };
         };
         seoUrls?: {
           data?: {
-            /** @example 72a8eabc7063469ca7cb8808be814388 */
+            /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
             id?: string;
             /** @example seo_url */
             type?: string;
@@ -3322,14 +4260,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/seoUrls
+             * @example /product/deb10517653c255364175796ace3553f/seoUrls
              */
             related?: string;
           };
         };
         streams?: {
           data?: {
-            /** @example af788a6ee2cd4785b18a074691038405 */
+            /** @example 2f6f4768f1c2d7c8f1f54823723f1a70 */
             id?: string;
             /** @example product_stream */
             type?: string;
@@ -3337,14 +4275,29 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/streams
+             * @example /product/deb10517653c255364175796ace3553f/streams
+             */
+            related?: string;
+          };
+        };
+        tags?: {
+          data?: {
+            /** @example d57ac45256849d9b13e2422d91580fb9 */
+            id?: string;
+            /** @example tag */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /product/deb10517653c255364175796ace3553f/tags
              */
             related?: string;
           };
         };
         tax?: {
           data?: {
-            /** @example 6a8774b21c7044faa62fe2d42501df62 */
+            /** @example 06565e5611f23fdf8cc43e5077b92b54 */
             id?: string;
             /** @example tax */
             type?: string;
@@ -3352,14 +4305,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/tax
+             * @example /product/deb10517653c255364175796ace3553f/tax
              */
             related?: string;
           };
         };
         unit?: {
           data?: {
-            /** @example cec0b8e0db0b4a7198ed4960f4b005e8 */
+            /** @example 3e34bdebd9bd5edda27e8728904a2552 */
             id?: string;
             /** @example unit */
             type?: string;
@@ -3367,7 +4320,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /product/847eeef4cf504aaaa7834d65fa0866dd/unit
+             * @example /product/deb10517653c255364175796ace3553f/unit
              */
             related?: string;
           };
@@ -3380,12 +4333,40 @@ export type components = {
       /** Format: int64 */
       sales?: number;
       shippingFree?: boolean;
+      sortedProperties?: GenericRecord;
       states?: readonly string[];
       /** Format: int64 */
       stock: number;
       streamIds?: readonly string[];
+      tagIds?: readonly string[];
       taxId: string;
-      translated?: Record<string, never>;
+      translated?: {
+        canonicalProductId?: string;
+        cmsPageId?: string;
+        cmsPageVersionId?: string;
+        coverId?: string;
+        deliveryTimeId?: string;
+        description?: string;
+        displayGroup?: string;
+        ean?: string;
+        keywords?: string;
+        manufacturerId?: string;
+        manufacturerNumber?: string;
+        metaDescription?: string;
+        metaTitle?: string;
+        name?: string;
+        packUnit?: string;
+        packUnitPlural?: string;
+        parentId?: string;
+        parentVersionId?: string;
+        productManufacturerVersionId?: string;
+        productMediaVersionId?: string;
+        productNumber?: string;
+        releaseDate?: string;
+        taxId?: string;
+        unitId?: string;
+        versionId?: string;
+      };
       unitId?: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -3471,34 +4452,51 @@ export type components = {
     };
     ProductListingResult: components["schemas"]["EntitySearchResult"] & {
       /** Contains the available sorting. These can be used to show a sorting select-box in the product listing. */
-      availableSortings?: Record<string, never>[];
+      availableSortings?: Array<{
+        // TODO: [OpenAPI][ProductListingResult] availableSortings field should be defined properly
+        label: string;
+        translated: {
+          label: string;
+        };
+        key: string;
+        priority: number;
+        apiAlias: "product_sorting";
+      }>;
       /** Contains the state of the filters. These can be used to create listing filters. */
-      currentFilters?: {
-        manufacturer?: Record<string, never>[];
+      currentFilters: {
+        // TODO: [OpenAPI][ProductListingResult] currentFilters field should be required
+        manufacturer?: string[]; // TODO: [OpenAPI][ProductListingResult] currentFilters.manufacturer field should be defined properly
         navigationId?: string;
         price?: {
           max?: number;
           min?: number;
         };
-        properties?: Record<string, never>[];
+        properties?: string[]; // TODO: [OpenAPI][ProductListingResult] currentFilters.properties field should be defined properly
         rating?: number;
         "shipping-free"?: boolean;
+        search: string; // TODO: [OpenAPI][ProductListingResult] search field should be defined properly
       };
-      elements?: components["schemas"]["Product"][];
+      elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][ProductListingResult] elements field should be defined as required
       sorting?: string;
     };
     /** Added since version: 6.0.0.0 */
     ProductManufacturer: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       id?: string;
       link?: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        link?: string;
+        mediaId?: string;
+        name?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
@@ -3507,7 +4505,7 @@ export type components = {
     ProductMedia: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       media?: components["schemas"]["Media"];
       mediaId: string;
@@ -3518,6 +4516,7 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
+      thumbnails?: Array<components["schemas"]["MediaThumbnail"]>; // TODO: [OpenAPI][Product] thumbnails field should be defined in ProductMedia
     };
     /** Added since version: 6.0.0.0 */
     ProductPrice: {
@@ -3533,11 +4532,13 @@ export type components = {
       content: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
-      id?: string;
+      customFields?: GenericRecord;
+      customerId?: string; // TODO: [OpenAPI][ProductReview] customerId field should be defined
+      externalUser?: string; // TODO: [OpenAPI][ProductReview] externalUser field should be defined
+      id: string; // TODO: [OpenAPI][ProductReview] id field should be defined as required
       languageId: string;
       /** Format: float */
-      points?: number;
+      points: number; // TODO: [OpenAPI][ProductReview] points field should be defined as required
       productId: string;
       productVersionId?: string;
       salesChannelId: string;
@@ -3545,6 +4546,24 @@ export type components = {
       title: string;
       /** Format: date-time */
       updatedAt?: string;
+    };
+    ProductReviewSummary: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      product?: components["schemas"]["Product"];
+      productId: string;
+      salesChannel?: components["schemas"]["SalesChannel"];
+      salesChannelId: string;
+      summary?: string;
+      translated?: {
+        productId?: string;
+        salesChannelId?: string;
+        summary?: string;
+      };
+      /** Format: date-time */
+      updatedAt?: string;
+      visible?: boolean;
     };
     /** Added since version: 6.3.5.0 */
     ProductSearchConfig: {
@@ -3579,7 +4598,10 @@ export type components = {
       label: string;
       /** Format: int64 */
       priority: number;
-      translated?: Record<string, never>;
+      translated?: {
+        key?: string;
+        label?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -3587,11 +4609,14 @@ export type components = {
     ProductStream: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       id?: string;
       name: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        name?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -3611,7 +4636,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     ProductWarehouse: {
       /** Format: date-time */
       createdAt: string;
@@ -3623,7 +4647,7 @@ export type components = {
     Promotion: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       translated?: Record<string, never>;
       /** Format: date-time */
@@ -3673,17 +4697,22 @@ export type components = {
     PropertyGroup: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       displayType: string;
       filterable?: boolean;
       id?: string;
       name: string;
-      options?: components["schemas"]["PropertyGroupOption"];
+      options?: components["schemas"]["PropertyGroupOption"][];
       /** Format: int64 */
       position?: number;
       sortingType: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayType?: string;
+        name?: string;
+        sortingType?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       visibleOnProductDetailPage?: boolean;
@@ -3693,40 +4722,342 @@ export type components = {
       colorHexCode?: string;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
-      group?: components["schemas"]["PropertyGroup"];
+      customFields?: GenericRecord;
+      group: {
+        // components["schemas"]["PropertyGroup"]; // TODO: [OpenAPI][PropertyGroupOption] group field should be defined and required
+        name: string;
+      };
       groupId: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][PropertyGroupOption] id field should be required in schema
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
+      option: string; // TODO: [OpenAPI][PropertyGroupOption] option field should be defined; defined as string (?)
       /** Format: int64 */
       position?: number;
-      translated?: Record<string, never>;
+      translated?: {
+        colorHexCode?: string;
+        groupId?: string;
+        mediaId?: string;
+        name?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
+    };
+    /** Added since version: 6.5.3.0 */
+    Quote: {
+      /** Format: float */
+      amountNet?: number;
+      /** Format: float */
+      amountTotal?: number;
+      comments?: components["schemas"]["QuoteComment"][];
+      /** Format: date-time */
+      createdAt: string;
+      createdById?: string;
+      currency?: components["schemas"]["Currency"];
+      currencyId: string;
+      customerId: string;
+      customFields?: GenericRecord;
+      deliveries?: components["schemas"]["QuoteDelivery"][];
+      discount?: {
+        type?: string;
+        /** Format: float */
+        value?: number;
+      };
+      documents?: components["schemas"]["QuoteDocument"][];
+      /** Format: date-time */
+      expirationDate?: string;
+      id?: string;
+      language?: components["schemas"]["Language"];
+      languageId: string;
+      lineItems?: components["schemas"]["QuoteLineItem"][];
+      orderId?: string;
+      orderVersionId?: string;
+      /** Format: float */
+      originalPrice?: number;
+      price?: {
+        calculatedTaxes?: GenericRecord;
+        /** Format: float */
+        netPrice: number;
+        /** Format: float */
+        positionPrice: number;
+        /** Format: float */
+        rawTotal: number;
+        taxRules?: GenericRecord;
+        taxStatus: string;
+        /** Format: float */
+        totalPrice: number;
+      };
+      quoteNumber?: string;
+      salesChannelId: string;
+      /** Format: date-time */
+      sentAt?: string;
+      shippingCosts?: {
+        calculatedTaxes?: GenericRecord;
+        listPrice?: {
+          /** Format: float */
+          discount?: number;
+          /** Format: float */
+          percentage?: number;
+          /** Format: float */
+          price?: number;
+        };
+        /** Format: int64 */
+        quantity: number;
+        referencePrice?: GenericRecord;
+        regulationPrice?: {
+          /** Format: float */
+          price?: number;
+        };
+        taxRules?: GenericRecord;
+        /** Format: float */
+        totalPrice: number;
+        /** Format: float */
+        unitPrice: number;
+      };
+      stateId: string;
+      stateMachineState?: components["schemas"]["StateMachineState"];
+      /** Format: float */
+      subtotalNet?: number;
+      taxStatus?: string;
+      /** Format: float */
+      totalDiscount?: number;
+      transactions?: components["schemas"]["QuoteTransaction"][];
+      /** Format: date-time */
+      updatedAt?: string;
+      updatedById?: string;
+      userId?: string;
+      versionId?: string;
+    };
+    QuoteComment: {
+      comment: string;
+      /** Format: date-time */
+      createdAt: string;
+      createdById?: string;
+      customer?: components["schemas"]["Customer"];
+      customerId?: string;
+      id?: string;
+      quoteId: string;
+      quoteVersionId?: string;
+      /** Format: date-time */
+      seenAt?: string;
+      stateId?: string;
+      stateMachineState?: components["schemas"]["StateMachineState"];
+      /** Format: date-time */
+      updatedAt?: string;
+      versionId?: string;
+    };
+    /** Added since version: 6.5.3.0 */
+    QuoteDelivery: {
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      id?: string;
+      positions?: components["schemas"]["QuoteDeliveryPosition"][];
+      quoteId: string;
+      quoteVersionId?: string;
+      shippingCosts?: {
+        calculatedTaxes?: GenericRecord;
+        listPrice?: {
+          /** Format: float */
+          discount?: number;
+          /** Format: float */
+          percentage?: number;
+          /** Format: float */
+          price?: number;
+        };
+        /** Format: int64 */
+        quantity: number;
+        referencePrice?: GenericRecord;
+        regulationPrice?: {
+          /** Format: float */
+          price?: number;
+        };
+        taxRules?: GenericRecord;
+        /** Format: float */
+        totalPrice: number;
+        /** Format: float */
+        unitPrice: number;
+      };
+      /** Format: date-time */
+      shippingDateEarliest: string;
+      /** Format: date-time */
+      shippingDateLatest: string;
+      shippingMethod?: components["schemas"]["ShippingMethod"];
+      shippingMethodId: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      versionId?: string;
+    };
+    /** Added since version: 6.5.3.0 */
+    QuoteDeliveryPosition: {
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      id?: string;
+      price?: {
+        calculatedTaxes?: GenericRecord;
+        listPrice?: {
+          /** Format: float */
+          discount?: number;
+          /** Format: float */
+          percentage?: number;
+          /** Format: float */
+          price?: number;
+        };
+        /** Format: int64 */
+        quantity: number;
+        referencePrice?: GenericRecord;
+        regulationPrice?: {
+          /** Format: float */
+          price?: number;
+        };
+        taxRules?: GenericRecord;
+        /** Format: float */
+        totalPrice: number;
+        /** Format: float */
+        unitPrice: number;
+      };
+      /** Format: int64 */
+      quantity?: number;
+      quoteDeliveryId: string;
+      quoteDeliveryVersionId?: string;
+      quoteLineItemId: string;
+      quoteLineItemVersionId?: string;
+      /** Format: float */
+      totalPrice?: number;
+      /** Format: float */
+      unitPrice?: number;
+      /** Format: date-time */
+      updatedAt?: string;
+      versionId?: string;
+    };
+    QuoteDocument: {
+      active?: boolean;
+      config: GenericRecord;
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      deepLinkCode: string;
+      documentMediaFile?: components["schemas"]["Media"];
+      documentMediaFileId?: string;
+      documentNumber?: string;
+      documentType?: components["schemas"]["DocumentType"];
+      documentTypeId: string;
+      fileType: string;
+      id?: string;
+      quote?: components["schemas"]["Quote"];
+      quoteId: string;
+      quoteVersionId?: string;
+      sent?: boolean;
+      static?: boolean;
+      /** Format: date-time */
+      updatedAt?: string;
+      versionId?: string;
+    };
+    QuoteEmployee: {
+      /** Format: date-time */
+      createdAt: string;
+      firstName: string;
+      id?: string;
+      lastName: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    /** Added since version: 6.5.3.0 */
+    QuoteLineItem: {
+      children: components["schemas"]["QuoteLineItem"][];
+      cover?: components["schemas"]["Media"];
+      coverId?: string;
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      description?: string;
+      discount?: {
+        type?: string;
+        /** Format: int64 */
+        value?: number;
+      };
+      good?: boolean;
+      id?: string;
+      identifier: string;
+      label: string;
+      parent?: components["schemas"]["QuoteLineItem"];
+      parentId?: string;
+      parentVersionId?: string;
+      payload?: GenericRecord;
+      /** Format: int64 */
+      position: number;
+      priceDefinition?: GenericRecord;
+      productId?: string;
+      productPrice?: GenericRecord;
+      productVersionId?: string;
+      purchasePrice?: GenericRecord;
+      /** Format: int64 */
+      quantity: number;
+      quoteId: string;
+      quoteVersionId?: string;
+      referencedId?: string;
+      removable?: boolean;
+      stackable?: boolean;
+      states: string[];
+      /** Format: float */
+      totalPrice?: number;
+      type?: string;
+      /** Format: float */
+      unitPrice?: number;
+      /** Format: date-time */
+      updatedAt?: string;
+      versionId?: string;
+    };
+    /** Added since version: 6.5.3.0 */
+    QuoteTransaction: {
+      amount: {
+        calculatedTaxes?: GenericRecord;
+        listPrice?: {
+          /** Format: float */
+          discount?: number;
+          /** Format: float */
+          percentage?: number;
+          /** Format: float */
+          price?: number;
+        };
+        /** Format: int64 */
+        quantity: number;
+        referencePrice?: GenericRecord;
+        regulationPrice?: {
+          /** Format: float */
+          price?: number;
+        };
+        taxRules?: GenericRecord;
+        /** Format: float */
+        totalPrice: number;
+        /** Format: float */
+        unitPrice: number;
+      };
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      id?: string;
+      paymentMethod?: components["schemas"]["PaymentMethod"];
+      paymentMethodId: string;
+      quoteId: string;
+      quoteVersionId?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      versionId?: string;
     };
     /** A resource object **MAY** contain references to other resource objects ("relationships"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object. */
     relationshipLinks: {
       related?: components["schemas"]["link"];
-      self?: Record<string, never>[] & components["schemas"]["link"];
-      [key: string]: unknown | undefined;
+      self?: GenericRecord[] & components["schemas"]["link"];
+      [key: string]: unknown;
     };
     /** Members of the relationships object ("relationships") represent references from the resource object in which it's defined to other resource objects. */
-    relationships:
-      | Record<string, never>
-      | Record<string, never>
-      | Record<string, never>
-      | {
-          /** Member, whose value represents "resource linkage". */
-          data?:
-            | components["schemas"]["relationshipToOne"]
-            | components["schemas"]["relationshipToMany"];
-          links?: components["schemas"]["relationshipLinks"];
-        };
+    relationships: unknown;
     /** An array of objects each containing \"type\" and \"id\" members for to-many relationships. */
     relationshipToMany: components["schemas"]["linkage"][];
-    relationshipToOne: Record<string, never> & components["schemas"]["linkage"];
+    relationshipToOne: components["schemas"]["linkage"];
     /** "Resource objects" appear in a JSON API document to represent resources. */
     resource: {
       attributes?: components["schemas"]["attributes"];
@@ -3740,12 +5071,12 @@ export type components = {
     Rule: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
       extensions?: {
         warehouseGroup?: {
           data?: {
-            /** @example 055936509b3a42ae9b675e82a089dbfd */
+            /** @example 1768e3071b62161d415e0c24332055ed */
             id?: string;
             /** @example warehouse_group */
             type?: string;
@@ -3753,7 +5084,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /rule/e760e9aa6a3e452d9a83154108a859a6/warehouseGroup
+             * @example /rule/ab7a485ebe75b6dd7243ad719f23c7de/warehouseGroup
              */
             related?: string;
           };
@@ -3772,7 +5103,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SaasAppStorefrontConfig: {
       /** Format: date-time */
       createdAt: string;
@@ -3780,7 +5110,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SaasSbpUserData: {
       /** Format: date-time */
       createdAt: string;
@@ -3788,7 +5117,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SaasStorefrontDemoToken: {
       /** Format: date-time */
       createdAt: string;
@@ -3796,7 +5124,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SaasUserLoginToken: {
       /** Format: date-time */
       createdAt: string;
@@ -3807,7 +5134,7 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     SalesChannel: {
       active?: boolean;
-      configuration?: Record<string, never>;
+      configuration?: GenericRecord;
       country?: components["schemas"]["Country"];
       countryId: string;
       /** Format: date-time */
@@ -3815,8 +5142,8 @@ export type components = {
       currency?: components["schemas"]["Currency"];
       currencyId: string;
       customerGroupId: string;
-      customFields?: Record<string, never>;
-      domains?: components["schemas"]["SalesChannelDomain"];
+      customFields?: GenericRecord;
+      domains?: components["schemas"]["SalesChannelDomain"][];
       footerCategory?: components["schemas"]["Category"];
       footerCategoryId?: string;
       footerCategoryVersionId?: string;
@@ -3843,7 +5170,25 @@ export type components = {
       shippingMethodId: string;
       shortName?: string;
       taxCalculationType?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        countryId?: string;
+        currencyId?: string;
+        customerGroupId?: string;
+        footerCategoryId?: string;
+        footerCategoryVersionId?: string;
+        hreflangDefaultDomainId?: string;
+        languageId?: string;
+        mailHeaderFooterId?: string;
+        name?: string;
+        navigationCategoryId?: string;
+        navigationCategoryVersionId?: string;
+        paymentMethodId?: string;
+        serviceCategoryId?: string;
+        serviceCategoryVersionId?: string;
+        shippingMethodId?: string;
+        shortName?: string;
+        taxCalculationType?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -3862,6 +5207,7 @@ export type components = {
         currencyId?: string;
         /** Format: int32 */
         currencyPrecision?: number;
+        languageIdChain?: string[]; // TODO: [OpenAPI][SalesChannelContext] languageIdChain field should be defined properly in context
         scope?: string;
         source?: string;
         taxState?: string;
@@ -3869,85 +5215,87 @@ export type components = {
         versionId?: string;
       };
       /** Currency associated with the current user */
-      currency?: {
-        /** Format: int32 */
-        decimalPrecision?: number;
-        factor?: number;
-        isoCode?: string;
-        isSystemDefault?: boolean;
-        name?: string;
-        /** Format: int32 */
-        position?: number;
-        shortName?: string;
-        symbol?: string;
-      };
+      currency?: components["schemas"]["Currency"]; // TODO: [OpenAPI][SalesChannelContext] currency field should be defined reusing Currency schema
+      // currency?: {
+      //   /** Format: int32 */
+      //   decimalPrecision?: number;
+      //   factor?: number;
+      //   isoCode?: string;
+      //   isSystemDefault?: boolean;
+      //   name?: string;
+      //   /** Format: int32 */
+      //   position?: number;
+      //   shortName?: string;
+      //   symbol?: string;
+      // };
       /** Customer group of the current user */
       currentCustomerGroup?: {
         displayGross?: boolean;
         name?: string;
       };
-      /** Information about the current customer - `null` if the customer is not logged in */
-      customer?: {
-        active?: boolean;
-        affiliateCode?: string;
-        /** Format: int32 */
-        autoIncrement?: number;
-        /** Format: date-time */
-        birthday?: string;
-        campaignCode?: string;
-        company?: string;
-        customerNumber?: string;
-        defaultBillingAddressId?: string;
-        defaultPaymentMethodId?: string;
-        defaultShippingAddressId?: string;
-        /** Format: date-time */
-        doubleOptInConfirmDate?: string;
-        /** Format: date-time */
-        doubleOptInEmailSentDate?: string;
-        doubleOptInRegistration?: boolean;
-        email?: string;
-        /** Format: date-time */
-        firstLogin?: string;
-        firstName?: string;
-        groupId?: string;
-        guest?: boolean;
-        hash?: string;
-        languageId?: string;
-        /** Format: date-time */
-        lastLogin?: string;
-        lastName?: string;
-        /** Format: date-time */
-        lastOrderDate?: string;
-        lastPaymentMethodId?: string;
-        legacyEncoder?: string;
-        legacyPassword?: string;
-        newsletter?: boolean;
-        /** Format: int32 */
-        orderCount?: number;
-        password?: string;
-        remoteAddress?: string;
-        salesChannelId?: string;
-        salutationId?: string;
-        title?: string;
-      };
+      customer?: components["schemas"]["Customer"]; // TODO: [OpenAPI][SalesChannelContext] customer field should be defined reusing Customer schema
+      // customer?: {
+      //   active?: boolean;
+      //   affiliateCode?: string;
+      //   /** Format: int32 */
+      //   autoIncrement?: number;
+      //   /** Format: date-time */
+      //   birthday?: string;
+      //   campaignCode?: string;
+      //   company?: string;
+      //   customerNumber?: string;
+      //   defaultBillingAddressId?: string;
+      //   defaultPaymentMethodId?: string;
+      //   defaultShippingAddressId?: string;
+      //   /** Format: date-time */
+      //   doubleOptInConfirmDate?: string;
+      //   /** Format: date-time */
+      //   doubleOptInEmailSentDate?: string;
+      //   doubleOptInRegistration?: boolean;
+      //   email?: string;
+      //   /** Format: date-time */
+      //   firstLogin?: string;
+      //   firstName?: string;
+      //   groupId?: string;
+      //   guest?: boolean;
+      //   hash?: string;
+      //   languageId?: string;
+      //   /** Format: date-time */
+      //   lastLogin?: string;
+      //   lastName?: string;
+      //   /** Format: date-time */
+      //   lastOrderDate?: string;
+      //   lastPaymentMethodId?: string;
+      //   legacyEncoder?: string;
+      //   legacyPassword?: string;
+      //   newsletter?: boolean;
+      //   /** Format: int32 */
+      //   orderCount?: number;
+      //   password?: string;
+      //   remoteAddress?: string;
+      //   salesChannelId?: string;
+      //   salutationId?: string;
+      //   title?: string;
+      // };
       /** Fallback group if the default customer group is not applicable */
       fallbackCustomerGroup?: {
         displayGross?: boolean;
         name?: string;
       };
       /** Selected payment method */
-      paymentMethod?: {
-        active?: boolean;
-        availabilityRuleId?: string;
-        description?: string;
-        formattedHandlerIdentifier?: string;
-        handlerIdentifier?: string;
-        mediaId?: string;
-        name?: string;
-        pluginId?: string;
-        /** Format: int32 */
-        position?: number;
-      };
+      paymentMethod?: components["schemas"]["PaymentMethod"]; // TODO: [OpenAPI][SalesChannelContext] paymentMethod field should be defined properly reusing PaymentMethod schema
+      // paymentMethod?: {
+      //   active?: boolean;
+      //   availabilityRuleId?: string;
+      //   description?: string;
+      //   formattedHandlerIdentifier?: string;
+      //   handlerIdentifier?: string;
+      //   mediaId?: string;
+      //   name?: string;
+      //   pluginId?: string;
+      //   /** Format: int32 */
+      //   position?: number;
+      // };
       /** Information about the current sales channel */
       salesChannel?: {
         accessKey?: string;
@@ -3973,16 +5321,23 @@ export type components = {
         shortName?: string;
         typeId?: string;
       };
-      /** Selected shipping method */
-      shippingMethod?: {
-        active?: boolean;
-        availabilityRuleId?: string;
-        deliveryTimeId?: string;
-        description?: string;
-        mediaId?: string;
-        name?: string;
-        trackingUrl?: string;
+      shippingLocation?: {
+        // TODO: [OpenAPI][SalesChannelContext] shippingLocation field should be defined properly
+        apiAlias: "cart_delivery_shipping_location";
+        country: components["schemas"]["Country"];
+        address: components["schemas"]["CustomerAddress"];
       };
+      /** Selected shipping method */
+      shippingMethod?: components["schemas"]["ShippingMethod"]; // TODO: [OpenAPI][SalesChannelContext] shippingMethod field should be defined properly reusing ShippingMethod schema
+      // shippingMethod?: {
+      //   active?: boolean;
+      //   availabilityRuleId?: string;
+      //   deliveryTimeId?: string;
+      //   description?: string;
+      //   mediaId?: string;
+      //   name?: string;
+      //   trackingUrl?: string;
+      // };
       /** Currently active tax rules and/or rates */
       taxRules?: {
         name?: string;
@@ -3998,7 +5353,7 @@ export type components = {
       createdAt: string;
       currency?: components["schemas"]["Currency"];
       currencyId: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       hreflangUseOnlyLocale?: boolean;
       id?: string;
       language?: components["schemas"]["Language"];
@@ -4023,12 +5378,16 @@ export type components = {
     Salutation: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       displayName: string;
       id?: string;
       letterName: string;
       salutationKey: string;
-      translated?: Record<string, never>;
+      translated?: {
+        displayName?: string;
+        letterName?: string;
+        salutationKey?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4036,12 +5395,16 @@ export type components = {
     SalutationJsonApi: components["schemas"]["resource"] & {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       displayName: string;
       id?: string;
       letterName: string;
       salutationKey: string;
-      translated?: Record<string, never>;
+      translated?: {
+        displayName?: string;
+        letterName?: string;
+        salutationKey?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4061,19 +5424,19 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
-    SendcloudApiRequestsCache: {
-      /** Format: date-time */
-      createdAt: string;
-      id?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
+    SearchByImageSearchTermResponse: {
+      /** @enum {string} */
+      apiAlias: "product_image_upload_search_term";
+      extensions?: GenericRecord[];
+      term: string;
+    }[];
     /** Added since version: 6.0.0.0 */
     SeoUrl: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
+      /** Runtime field, cannot be used as part of the criteria. */
+      error?: string;
       foreignKey: string;
       id?: string;
       isCanonical?: boolean;
@@ -4081,7 +5444,10 @@ export type components = {
       isModified?: boolean;
       languageId: string;
       pathInfo: string;
-      routeName: string;
+      routeName: // TODO: [OpenAPI][SeoUrl] routeName field should be defined as union type
+      | "frontend.navigation.page"
+        | "frontend.landing.page"
+        | "frontend.detail.page";
       salesChannelId?: string;
       seoPathInfo: string;
       /** Format: date-time */
@@ -4093,7 +5459,9 @@ export type components = {
     SeoUrlJsonApi: components["schemas"]["resource"] & {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
+      /** Runtime field, cannot be used as part of the criteria. */
+      error?: string;
       foreignKey: string;
       id?: string;
       isCanonical?: boolean;
@@ -4113,7 +5481,7 @@ export type components = {
     SeoUrlTemplate: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       isValid?: boolean;
       salesChannelId?: string;
@@ -4126,22 +5494,31 @@ export type components = {
       availabilityRule?: components["schemas"]["Rule"];
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deliveryTime?: components["schemas"]["DeliveryTime"];
       deliveryTimeId: string;
       description?: string;
-      id?: string;
+      id: string; // TODO: [OpenAPI][ShippingMethod] id field should be required in schema
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
       /** Format: int64 */
       position?: number;
-      prices?: components["schemas"]["ShippingMethodPrice"];
-      tags?: components["schemas"]["Tag"];
+      prices?: components["schemas"]["ShippingMethodPrice"][];
+      tags?: components["schemas"]["Tag"][];
       tax?: components["schemas"]["Tax"];
       taxType: string;
+      technicalName?: string;
       trackingUrl?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        deliveryTimeId?: string;
+        description?: string;
+        mediaId?: string;
+        name?: string;
+        taxType?: string;
+        technicalName?: string;
+        trackingUrl?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4150,7 +5527,7 @@ export type components = {
       active?: boolean;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       deliveryTimeId: string;
       description?: string;
       id?: string;
@@ -4161,7 +5538,7 @@ export type components = {
       relationships?: {
         availabilityRule?: {
           data?: {
-            /** @example dc3be6202494434695b76343b811c8d9 */
+            /** @example 9fbb7961d1cb158094924c679e1b302c */
             id?: string;
             /** @example rule */
             type?: string;
@@ -4169,14 +5546,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/82876b3e43754f1dad9b9645f86985b0/availabilityRule
+             * @example /shipping-method/d72e7a227a27328b28342b32fc66b6bf/availabilityRule
              */
             related?: string;
           };
         };
         deliveryTime?: {
           data?: {
-            /** @example 9391c768cb97448b8aadede2c4b912ff */
+            /** @example 8c888ae25a7bd42057370e31f7e01044 */
             id?: string;
             /** @example delivery_time */
             type?: string;
@@ -4184,14 +5561,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/82876b3e43754f1dad9b9645f86985b0/deliveryTime
+             * @example /shipping-method/d72e7a227a27328b28342b32fc66b6bf/deliveryTime
              */
             related?: string;
           };
         };
         media?: {
           data?: {
-            /** @example 813bd53a2f7842aeb5e6f2cc66d6d323 */
+            /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
             id?: string;
             /** @example media */
             type?: string;
@@ -4199,14 +5576,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/82876b3e43754f1dad9b9645f86985b0/media
+             * @example /shipping-method/d72e7a227a27328b28342b32fc66b6bf/media
              */
             related?: string;
           };
         };
         prices?: {
           data?: {
-            /** @example 0e6e16eb258e45a7abebab30cb47be3f */
+            /** @example afae32efe0f84fece3f96b377b768b33 */
             id?: string;
             /** @example shipping_method_price */
             type?: string;
@@ -4214,14 +5591,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/82876b3e43754f1dad9b9645f86985b0/prices
+             * @example /shipping-method/d72e7a227a27328b28342b32fc66b6bf/prices
              */
             related?: string;
           };
         };
         tags?: {
           data?: {
-            /** @example b685a4e239254173993ddb7961ca2a65 */
+            /** @example d57ac45256849d9b13e2422d91580fb9 */
             id?: string;
             /** @example tag */
             type?: string;
@@ -4229,14 +5606,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/82876b3e43754f1dad9b9645f86985b0/tags
+             * @example /shipping-method/d72e7a227a27328b28342b32fc66b6bf/tags
              */
             related?: string;
           };
         };
         tax?: {
           data?: {
-            /** @example 100e4793a1474517b0fb8768d6bc69f8 */
+            /** @example 06565e5611f23fdf8cc43e5077b92b54 */
             id?: string;
             /** @example tax */
             type?: string;
@@ -4244,15 +5621,24 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /shipping-method/82876b3e43754f1dad9b9645f86985b0/tax
+             * @example /shipping-method/d72e7a227a27328b28342b32fc66b6bf/tax
              */
             related?: string;
           };
         };
       };
       taxType: string;
+      technicalName?: string;
       trackingUrl?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        deliveryTimeId?: string;
+        description?: string;
+        mediaId?: string;
+        name?: string;
+        taxType?: string;
+        technicalName?: string;
+        trackingUrl?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4382,8 +5768,8 @@ export type components = {
       calculationRuleId?: string;
       /** Format: date-time */
       createdAt: string;
-      currencyPrice?: Record<string, never>;
-      customFields?: Record<string, never>;
+      currencyPrice?: GenericRecord;
+      customFields?: GenericRecord;
       id?: string;
       /** Format: float */
       quantityEnd?: number;
@@ -4396,14 +5782,14 @@ export type components = {
     };
     Sitemap: components["schemas"]["ArrayStruct"] & {
       /** Format: date-time */
-      created?: string;
-      filename?: string;
+      created: string; // TODO: [OpenAPI][Sitemap] created field should be defined as required
+      filename: string; // TODO: [OpenAPI][Sitemap] filename field should be defined as required
     };
     /** Added since version: 6.0.0.0 */
     Snippet: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       setId: string;
       translationKey: string;
@@ -4415,11 +5801,26 @@ export type components = {
     SnippetSet: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       iso: string;
       name: string;
-      snippets?: components["schemas"]["Snippet"];
+      snippets?: components["schemas"]["Snippet"][];
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    SsoProvider: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      media?: components["schemas"]["Media"];
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    SsoProviderCustomer: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4428,8 +5829,8 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       id?: string;
-      states?: components["schemas"]["StateMachineState"];
-      transitions?: components["schemas"]["StateMachineTransition"];
+      states?: components["schemas"]["StateMachineState"][];
+      transitions?: components["schemas"]["StateMachineTransition"][];
       translated?: Record<string, never>;
       /** Format: date-time */
       updatedAt?: string;
@@ -4448,11 +5849,14 @@ export type components = {
     StateMachineState: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       technicalName: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -4468,6 +5872,203 @@ export type components = {
       /** Alias which can be used to restrict response fields. For more information see [includes](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#includes-apialias). */
       apiAlias?: string;
     };
+    Subscription: {
+      addresses?: components["schemas"]["SubscriptionAddress"][];
+      billingAddress?: components["schemas"]["SubscriptionAddress"];
+      billingAddressId: string;
+      convertedOrder: GenericRecord;
+      /** Format: date-time */
+      createdAt: string;
+      cronInterval: string;
+      currency?: components["schemas"]["Currency"];
+      currencyId: string;
+      customFields?: GenericRecord;
+      dateInterval: string;
+      id?: string;
+      /** Format: int64 */
+      initialExecutionCount: number;
+      language?: components["schemas"]["Language"];
+      languageId: string;
+      /** Format: date-time */
+      nextSchedule: string;
+      orders?: components["schemas"]["Order"][];
+      paymentMethod?: components["schemas"]["PaymentMethod"];
+      paymentMethodId: string;
+      /** Format: int64 */
+      remainingExecutionCount: number;
+      salesChannelId: string;
+      shippingAddress?: components["schemas"]["SubscriptionAddress"];
+      shippingAddressId: string;
+      shippingMethod?: components["schemas"]["ShippingMethod"];
+      shippingMethodId: string;
+      stateMachineState?: components["schemas"]["StateMachineState"];
+      subscriptionCustomer?: components["schemas"]["SubscriptionCustomer"];
+      subscriptionInterval?: components["schemas"]["SubscriptionInterval"];
+      subscriptionIntervalId?: string;
+      subscriptionIntervalName: string;
+      subscriptionNumber: string;
+      subscriptionPlan?: components["schemas"]["SubscriptionPlan"];
+      subscriptionPlanId?: string;
+      subscriptionPlanName: string;
+      tags?: components["schemas"]["Tag"][];
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    SubscriptionAddress: {
+      additionalAddressLine1?: string;
+      additionalAddressLine2?: string;
+      billingSubscription?: components["schemas"]["Subscription"];
+      city: string;
+      company?: string;
+      country?: components["schemas"]["Country"];
+      countryId: string;
+      countryState?: components["schemas"]["CountryState"];
+      countryStateId?: string;
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      department?: string;
+      firstName: string;
+      id?: string;
+      lastName: string;
+      phoneNumber?: string;
+      salutation?: components["schemas"]["Salutation"];
+      salutationId?: string;
+      shippingSubscription?: components["schemas"]["Subscription"];
+      street: string;
+      subscription?: components["schemas"]["Subscription"];
+      subscriptionId: string;
+      title?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      vatId?: string;
+      zipcode?: string;
+    };
+    SubscriptionCustomer: {
+      company?: string;
+      /** Format: date-time */
+      createdAt: string;
+      customerId?: string;
+      customerNumber?: string;
+      customFields?: GenericRecord;
+      email: string;
+      firstName: string;
+      id?: string;
+      lastName: string;
+      salutation?: components["schemas"]["Salutation"];
+      salutationId: string;
+      title?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      vatIds?: string[];
+    };
+    SubscriptionInterval: {
+      active: boolean;
+      availabilityRuleId?: string;
+      /** Format: date-time */
+      createdAt: string;
+      cronInterval: string;
+      dateInterval: string;
+      id?: string;
+      name: string;
+      subscriptions?: components["schemas"]["Subscription"][];
+      translated?: {
+        availabilityRuleId?: string;
+        cronInterval?: string;
+        dateInterval?: string;
+        name?: string;
+      };
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    SubscriptionPlan: {
+      active: boolean;
+      activeStorefrontLabel: boolean;
+      availabilityRuleId?: string;
+      /** Format: date-time */
+      createdAt: string;
+      description?: string;
+      /** Format: float */
+      discountPercentage?: number;
+      discountPrice?: GenericRecord;
+      id?: string;
+      label?: string;
+      /** Format: int64 */
+      minimumExecutionCount?: number;
+      name: string;
+      subscriptions?: components["schemas"]["Subscription"][];
+      translated?: {
+        availabilityRuleId?: string;
+        description?: string;
+        label?: string;
+        name?: string;
+      };
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    SubscriptionPlanIntervalMapping: {
+      id?: string;
+      subscriptionInterval?: components["schemas"]["SubscriptionInterval"];
+      subscriptionIntervalId: string;
+      subscriptionPlan?: components["schemas"]["SubscriptionPlan"];
+      subscriptionPlanId: string;
+    };
+    SubscriptionPlanJsonApi: components["schemas"]["resource"] & {
+      active: boolean;
+      activeStorefrontLabel: boolean;
+      availabilityRuleId?: string;
+      /** Format: date-time */
+      createdAt: string;
+      description?: string;
+      /** Format: float */
+      discountPercentage?: number;
+      discountPrice?: GenericRecord;
+      id?: string;
+      label?: string;
+      /** Format: int64 */
+      minimumExecutionCount?: number;
+      name: string;
+      relationships?: {
+        subscriptions?: {
+          data?: {
+            /** @example 2d5d14f95af035cbd8437948de61f94c */
+            id?: string;
+            /** @example subscription */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /subscription-plan/5e63f9057837020694081b9412211bfb/subscriptions
+             */
+            related?: string;
+          };
+        };
+      };
+      translated?: {
+        availabilityRuleId?: string;
+        description?: string;
+        label?: string;
+        name?: string;
+      };
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    SubscriptionPlanProductMapping: {
+      id?: string;
+      product?: components["schemas"]["Product"];
+      productId: string;
+      productVersionId?: string;
+      subscriptionPlan?: components["schemas"]["SubscriptionPlan"];
+      subscriptionPlanId: string;
+    };
+    SubscriptionTagMapping: {
+      id?: string;
+      subscription?: components["schemas"]["Subscription"];
+      subscriptionId: string;
+      tag?: components["schemas"]["Tag"];
+      tagId: string;
+    };
     success: {
       data: components["schemas"]["data"];
       /** To reduce the number of HTTP requests, servers **MAY** allow responses that include related resources along with the requested primary resources. Such responses are called "compound documents". */
@@ -4480,999 +6081,6 @@ export type components = {
     SuccessResponse: {
       success?: boolean;
     };
-    swag_paypal_v1_capture: {
-      amount?: components["schemas"]["swag_paypal_v1_common_amount"];
-      createTime?: string;
-      id?: string;
-      isFinalCapture?: boolean;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      parentPayment?: string;
-      reasonCode?: string;
-      state?: string;
-      transactionFee?: components["schemas"]["swag_paypal_v1_common_value"];
-      updateTime?: string;
-    };
-    swag_paypal_v1_client_token: {
-      clientToken?: string;
-      /** Calculated expiration date */
-      expireDateTime?: Record<string, never>;
-      /** The lifetime of the access token, in seconds. */
-      expiresIn?: number;
-    };
-    swag_paypal_v1_common_address: {
-      city?: string;
-      countryCode?: string;
-      line1?: string;
-      line2?: string | null;
-      phone?: string | null;
-      postalCode?: string;
-      state?: string | null;
-    };
-    swag_paypal_v1_common_amount: {
-      currency?: string;
-      details?: components["schemas"]["swag_paypal_v1_common_details"];
-      total?: string;
-    };
-    swag_paypal_v1_common_details: {
-      discount?: string;
-      handlingFee?: string;
-      insurance?: string;
-      shipping?: string;
-      shippingDiscount?: string;
-      subtotal?: string;
-      tax?: string;
-    };
-    swag_paypal_v1_common_link: {
-      encType?: string | null;
-      href?: string;
-      method?: string;
-      rel?: string;
-    };
-    swag_paypal_v1_common_money: {
-      currencyCode?: string;
-      value?: string;
-    };
-    swag_paypal_v1_common_value: {
-      currency?: string;
-      value?: string;
-    };
-    swag_paypal_v1_create_webhooks: {
-      eventTypes?: components["schemas"]["swag_paypal_v1_create_webhooks_event_type"][];
-      url?: string;
-    };
-    swag_paypal_v1_create_webhooks_event_type: {
-      name?: string;
-    };
-    swag_paypal_v1_disputes: {
-      items?: components["schemas"]["swag_paypal_v1_disputes_item"][] | null;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-    };
-    swag_paypal_v1_disputes_adjudication: {
-      adjudicationTime?: string;
-      disputeLifeCycleStage?: string;
-      reason?: string;
-      type?: string;
-    };
-    swag_paypal_v1_disputes_common_buyer: {
-      name?: string;
-    };
-    swag_paypal_v1_disputes_common_item: {
-      disputeAmount?: components["schemas"]["swag_paypal_v1_common_money"];
-      itemDescription?: string;
-      itemId?: string;
-      itemQuantity?: string;
-      notes?: string;
-      partnerTransactionId?: string;
-      reason?: string;
-    };
-    swag_paypal_v1_disputes_common_product_details: {
-      productReceived?: string;
-      productReceivedTime?: string;
-      purchaseUrl?: string;
-      returnDetails?: components["schemas"]["swag_paypal_v1_disputes_common_return_details"];
-      subReasons?: components["schemas"]["swag_paypal_v1_disputes_common_sub_reason"][];
-    };
-    swag_paypal_v1_disputes_common_return_details: {
-      mode?: string;
-      receipt?: boolean;
-      returnConfirmationNumber?: string;
-      returned?: boolean;
-      returnTime?: string;
-    };
-    swag_paypal_v1_disputes_common_seller: {
-      email?: string;
-      merchantId?: string;
-      name?: string;
-    };
-    swag_paypal_v1_disputes_common_service_details: {
-      description?: string;
-      note?: string;
-      purchaseUrl?: string;
-      serviceStarted?: string;
-      subReasons?: components["schemas"]["swag_paypal_v1_disputes_common_sub_reason"][];
-    };
-    swag_paypal_v1_disputes_common_sub_reason: {
-      subReason?: string;
-    };
-    swag_paypal_v1_disputes_common_transaction: {
-      buyer?: components["schemas"]["swag_paypal_v1_disputes_common_buyer"];
-      buyerTransactionId?: string;
-      createTime?: string;
-      custom?: string;
-      grossAmount?: components["schemas"]["swag_paypal_v1_common_money"];
-      invoiceNumber?: string;
-      items?: components["schemas"]["swag_paypal_v1_disputes_common_item"][];
-      referenceId?: string;
-      seller?: components["schemas"]["swag_paypal_v1_disputes_common_seller"];
-      sellerTransactionId?: string;
-      transactionStatus?: string;
-    };
-    swag_paypal_v1_disputes_communication_details: {
-      email?: string;
-      note?: string;
-      timePosted?: string;
-    };
-    swag_paypal_v1_disputes_dispute_outcome: {
-      amountRefunded?: components["schemas"]["swag_paypal_v1_common_money"];
-      outcomeCode?: string;
-    };
-    swag_paypal_v1_disputes_disputed_transaction: {
-      sellerProtectionEligible?: boolean;
-    } & components["schemas"]["swag_paypal_v1_disputes_common_transaction"];
-    swag_paypal_v1_disputes_evidence: {
-      documents?: components["schemas"]["swag_paypal_v1_disputes_evidence_document"][];
-      evidenceInfo?: components["schemas"]["swag_paypal_v1_disputes_evidence_info"];
-      evidenceType?: string;
-      itemId?: string;
-      notes?: string;
-    };
-    swag_paypal_v1_disputes_evidence_document: {
-      name?: string;
-    };
-    swag_paypal_v1_disputes_evidence_info: {
-      refundIds?: components["schemas"]["swag_paypal_v1_disputes_evidence_refund_id"][];
-      trackingInfo?: components["schemas"]["swag_paypal_v1_disputes_evidence_tracking_info"][];
-    };
-    swag_paypal_v1_disputes_evidence_refund_id: {
-      refundId?: string;
-    };
-    swag_paypal_v1_disputes_evidence_tracking_info: {
-      carrierName?: string;
-      carrierNameOther?: string;
-      trackingNumber?: string;
-      trackingUrl?: string;
-    };
-    swag_paypal_v1_disputes_extensions: {
-      billingDisputeProperties?: components["schemas"]["swag_paypal_v1_disputes_extensions_billing_dispute_properties"];
-      buyerContactedChannel?: string;
-      buyerContactedTime?: string;
-      merchandizeDisputeProperties?: components["schemas"]["swag_paypal_v1_disputes_extensions_merchandize_dispute_properties"];
-      merchantContacted?: boolean;
-      merchantContactedMode?: string;
-      merchantContactedOutcome?: string;
-      merchantContactedTime?: string;
-    };
-    swag_paypal_v1_disputes_extensions_aggred_refund_details: {
-      merchantAgreedRefund?: boolean;
-      merchantAgreedRefundTime?: string;
-    };
-    swag_paypal_v1_disputes_extensions_billing_dispute_properties: {
-      canceledRecurringBilling?: components["schemas"]["swag_paypal_v1_disputes_extensions_canceled_recurring_billing"];
-      creditNotProcessed?: components["schemas"]["swag_paypal_v1_disputes_extensions_cretid_not_processed"];
-      duplicateTransaction?: components["schemas"]["swag_paypal_v1_disputes_extensions_duplicate_transaction"];
-      incorrectTransactionAmount?: components["schemas"]["swag_paypal_v1_disputes_extensions_incorrect_transaction_amount"];
-      paymentByOtherMeans?: components["schemas"]["swag_paypal_v1_disputes_extensions_payment_by_other_means"];
-    };
-    swag_paypal_v1_disputes_extensions_canceled_recurring_billing: {
-      cancellationDetails?: components["schemas"]["swag_paypal_v1_disputes_extensions_cancellation_details"];
-      expectedRefund?: components["schemas"]["swag_paypal_v1_common_money"];
-    };
-    swag_paypal_v1_disputes_extensions_cancellation_details: {
-      cancellationDate?: string;
-      cancellationMode?: string;
-      cancellationNumber?: string;
-      cancelled?: boolean;
-    };
-    swag_paypal_v1_disputes_extensions_cretid_not_processed: {
-      agreedRefundDetails?: components["schemas"]["swag_paypal_v1_disputes_extensions_aggred_refund_details"];
-      cancellationDetails?: components["schemas"]["swag_paypal_v1_disputes_extensions_cancellation_details"];
-      expectedRefund?: components["schemas"]["swag_paypal_v1_common_money"];
-      issueType?: string;
-      productDetails?: components["schemas"]["swag_paypal_v1_disputes_common_product_details"];
-      serviceDetails?: components["schemas"]["swag_paypal_v1_disputes_common_service_details"];
-    };
-    swag_paypal_v1_disputes_extensions_duplicate_transaction: {
-      originalTransaction?: components["schemas"]["swag_paypal_v1_disputes_common_transaction"];
-      receivedDuplicate?: boolean;
-    };
-    swag_paypal_v1_disputes_extensions_incorrect_transaction_amount: {
-      correctTransactionAmount?: components["schemas"]["swag_paypal_v1_common_money"];
-      correctTransactionTime?: string;
-    };
-    swag_paypal_v1_disputes_extensions_merchandize_dispute_properties: {
-      issueType?: string;
-      productDetails?: components["schemas"]["swag_paypal_v1_disputes_common_product_details"];
-      serviceDetails?: components["schemas"]["swag_paypal_v1_disputes_common_service_details"];
-    };
-    swag_paypal_v1_disputes_extensions_payment_by_other_means: {
-      chargeDifferentFromOriginal?: boolean;
-      paymentInstrumentSuffix?: string;
-      paymentMethod?: string;
-      receivedDuplicate?: boolean;
-    };
-    swag_paypal_v1_disputes_item: {
-      adjudications?: components["schemas"]["swag_paypal_v1_disputes_adjudication"][];
-      buyerResponseDueDate?: string | null;
-      communicationDetails?: components["schemas"]["swag_paypal_v1_disputes_communication_details"];
-      createTime?: string;
-      disputeAmount?: components["schemas"]["swag_paypal_v1_common_money"];
-      disputeChannel?: string | null;
-      disputedTransactions?:
-        | components["schemas"]["swag_paypal_v1_disputes_disputed_transaction"][]
-        | null;
-      disputeId?: string;
-      disputeLifeCycleStage?: string;
-      disputeOutcome?: components["schemas"]["swag_paypal_v1_disputes_dispute_outcome"];
-      disputeState?: string | null;
-      evidences?:
-        | components["schemas"]["swag_paypal_v1_disputes_evidence"][]
-        | null;
-      extensions?: components["schemas"]["swag_paypal_v1_disputes_extensions"];
-      externalReasonCode?: string | null;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      messages?:
-        | components["schemas"]["swag_paypal_v1_disputes_message"][]
-        | null;
-      moneyMovements?: components["schemas"]["swag_paypal_v1_disputes_money_movement"][];
-      offer?: components["schemas"]["swag_paypal_v1_disputes_offer"];
-      partnerActions?:
-        | components["schemas"]["swag_paypal_v1_disputes_partner_action"][]
-        | null;
-      reason?: string;
-      refundDetails?: components["schemas"]["swag_paypal_v1_disputes_refund_details"];
-      sellerResponseDueDate?: string | null;
-      status?: string;
-      supportingInfo?:
-        | components["schemas"]["swag_paypal_v1_disputes_supporting_info"][]
-        | null;
-      updateTime?: string;
-    };
-    swag_paypal_v1_disputes_message: {
-      content?: string;
-      postedBy?: string;
-      timePosted?: string;
-    };
-    swag_paypal_v1_disputes_money_movement: {
-      affectedParty?: string;
-      amount?: components["schemas"]["swag_paypal_v1_common_money"];
-      initiatedTime?: string;
-      reason?: string;
-      type?: string;
-    };
-    swag_paypal_v1_disputes_offer: {
-      buyerRequestedAmount?: components["schemas"]["swag_paypal_v1_common_money"];
-      history?:
-        | components["schemas"]["swag_paypal_v1_disputes_offer_history"][]
-        | null;
-      offerType?: string;
-      sellerOfferedAmount?: components["schemas"]["swag_paypal_v1_common_money"];
-    };
-    swag_paypal_v1_disputes_offer_history: {
-      actor?: string;
-      eventType?: string;
-      offerTime?: string;
-      offerType?: string;
-    };
-    swag_paypal_v1_disputes_partner_action: {
-      amount?: components["schemas"]["swag_paypal_v1_common_money"];
-      createTime?: string;
-      dueTime?: string;
-      id?: string;
-      name?: string;
-      status?: string;
-      updateTime?: string;
-    };
-    swag_paypal_v1_disputes_refund_details: {
-      allowedRefundAmount?: components["schemas"]["swag_paypal_v1_common_money"];
-    };
-    swag_paypal_v1_disputes_supporting_info: {
-      notes?: string;
-      providedTime?: string;
-      source?: string;
-    };
-    swag_paypal_v1_do_void: {
-      amount?: components["schemas"]["swag_paypal_v1_common_amount"];
-      createTime?: string;
-      id?: string;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      parentPayment?: string;
-      state?: string;
-      updateTime?: string;
-    };
-    swag_paypal_v1_merchant_integrations: {
-      capabilities?: components["schemas"]["swag_paypal_v1_merchant_integrations_capability"][];
-      grantedPermissions?: string[];
-      legalName?: string;
-      merchantId?: string;
-      oauthIntegrations?: components["schemas"]["swag_paypal_v1_merchant_integrations_oauth_integration"][];
-      paymentsReceivable?: boolean;
-      primaryEmail?: string;
-      primaryEmailConfirmed?: boolean;
-      products?: components["schemas"]["swag_paypal_v1_merchant_integrations_product"][];
-      trackingId?: string;
-    };
-    swag_paypal_v1_merchant_integrations_capability: {
-      name?: string;
-      status?: string;
-    };
-    swag_paypal_v1_merchant_integrations_oauth_integration: {
-      integrationMethod?: string;
-      integrationType?: string;
-      oauthThirdParty?: components["schemas"]["swag_paypal_v1_merchant_integrations_oauth_integration_third_party"][];
-      status?: string;
-    };
-    swag_paypal_v1_merchant_integrations_oauth_integration_third_party: {
-      accessToken?: string;
-      merchantClientId?: string;
-      partnerClientId?: string;
-      refreshToken?: string;
-      scopes?: string[];
-    };
-    swag_paypal_v1_merchant_integrations_product: {
-      capabilities?: components["schemas"]["swag_paypal_v1_merchant_integrations_capability"][];
-      name?: string;
-      vettingStatus?: string;
-    };
-    swag_paypal_v1_merchant_status: {
-      paymentsReceivable?: boolean;
-      primaryEmail?: string;
-      primaryEmailConfirmed?: boolean;
-    };
-    swag_paypal_v1_oauth_credentials: {
-      restId?: string;
-      restSecret?: string;
-      url?: string;
-    };
-    swag_paypal_v1_patch: {
-      op?: string;
-      path?: string;
-      value?: string | unknown[];
-    };
-    swag_paypal_v1_payment: {
-      applicationContext?: components["schemas"]["swag_paypal_v1_payment_application_context"];
-      cart?: string;
-      createTime?: string;
-      id?: string;
-      /** @default sale */
-      intent?: string;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      payer?: components["schemas"]["swag_paypal_v1_payment_payer"];
-      paymentInstruction?: components["schemas"]["swag_paypal_v1_payment_payment_instruction"];
-      redirectUrls?: components["schemas"]["swag_paypal_v1_payment_redirect_urls"];
-      state?: string;
-      transactions?: components["schemas"]["swag_paypal_v1_payment_transaction"][];
-      updateTime?: string;
-    };
-    swag_paypal_v1_payment_application_context: {
-      brandName?: string;
-      landingPage?: string;
-      locale?: string;
-      /** @default SET_PROVIDED_ADDRESS */
-      shippingPreference?: string;
-      /** @default commit */
-      userAction?: string;
-    };
-    swag_paypal_v1_payment_execute_payer_info: {
-      payerId?: string;
-    };
-    swag_paypal_v1_payment_payer: {
-      externalSelectedFundingInstrumentType?: string;
-      payerInfo?: components["schemas"]["swag_paypal_v1_payment_payer_info"];
-      paymentMethod?: string;
-      status?: string;
-    };
-    swag_paypal_v1_payment_payer_info: {
-      billingAddress?: components["schemas"]["swag_paypal_v1_common_address"];
-      countryCode?: string;
-      email?: string;
-      firstName?: string;
-      lastName?: string;
-      phone?: string;
-      shippingAddress?: components["schemas"]["swag_paypal_v1_payment_payer_info_shipping_address"];
-    } & components["schemas"]["swag_paypal_v1_payment_execute_payer_info"];
-    swag_paypal_v1_payment_payer_info_shipping_address: {
-      recipientName?: string;
-    } & components["schemas"]["swag_paypal_v1_common_address"];
-    swag_paypal_v1_payment_payment_instruction: {
-      amount?: components["schemas"]["swag_paypal_v1_common_value"];
-      instructionType?: string;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      paymentDueDate?: string;
-      recipientBankingInstruction?: components["schemas"]["swag_paypal_v1_payment_recipient_banking_instruction"];
-      referenceNumber?: string;
-    };
-    swag_paypal_v1_payment_recipient_banking_instruction: {
-      accountHolderName?: string;
-      bankIdentifierCode?: string;
-      bankName?: string;
-      internationalBankAccountNumber?: string;
-    };
-    swag_paypal_v1_payment_redirect_urls: {
-      cancelUrl?: string;
-      returnUrl?: string;
-    };
-    swag_paypal_v1_payment_transaction: {
-      amount?: components["schemas"]["swag_paypal_v1_common_amount"];
-      custom?: string;
-      description?: string;
-      invoiceNumber?: string | null;
-      itemList?: components["schemas"]["swag_paypal_v1_payment_transaction_item_list"];
-      payee?: components["schemas"]["swag_paypal_v1_payment_transaction_payee"];
-      relatedResources?: components["schemas"]["swag_paypal_v1_payment_transaction_related_resource"][];
-      softDescriptor?: string;
-    };
-    swag_paypal_v1_payment_transaction_abstract_related_resource: {
-      amount?: components["schemas"]["swag_paypal_v1_common_amount"];
-      createTime?: string;
-      id?: string;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      parentPayment?: string;
-      paymentMode?: string;
-      protectionEligibility?: string;
-      protectionEligibilityType?: string;
-      receiptId?: string;
-      state?: string;
-      updateTime?: string;
-    };
-    swag_paypal_v1_payment_transaction_authorization: {
-      reasonCode?: string;
-      validUntil?: string;
-    } & components["schemas"]["swag_paypal_v1_payment_transaction_abstract_related_resource"];
-    swag_paypal_v1_payment_transaction_capture: {
-      custom?: string;
-      invoiceNumber?: string;
-      transactionFee?: components["schemas"]["swag_paypal_v1_common_value"];
-    } & components["schemas"]["swag_paypal_v1_payment_transaction_abstract_related_resource"];
-    swag_paypal_v1_payment_transaction_item: {
-      currency?: string;
-      name?: string;
-      price?: string;
-      quantity?: number;
-      sku?: string | null;
-      tax?: string;
-    };
-    swag_paypal_v1_payment_transaction_item_list: {
-      items?: components["schemas"]["swag_paypal_v1_payment_transaction_item"][];
-      shippingAddress?: components["schemas"]["swag_paypal_v1_payment_transaction_shipping_address"];
-      shippingOptions?: components["schemas"]["swag_paypal_v1_payment_transaction_shipping_option"][];
-      shippingPhoneNumber?: string;
-    };
-    swag_paypal_v1_payment_transaction_order: {
-      reasonCode?: string;
-    } & components["schemas"]["swag_paypal_v1_payment_transaction_abstract_related_resource"];
-    swag_paypal_v1_payment_transaction_payee: {
-      email?: string;
-      merchantId?: string;
-    };
-    swag_paypal_v1_payment_transaction_refund: {
-      captureId?: string;
-      saleId?: string;
-    } & components["schemas"]["swag_paypal_v1_payment_transaction_abstract_related_resource"];
-    swag_paypal_v1_payment_transaction_related_resource: {
-      authorization?: components["schemas"]["swag_paypal_v1_payment_transaction_authorization"];
-      capture?: components["schemas"]["swag_paypal_v1_payment_transaction_capture"];
-      order?: components["schemas"]["swag_paypal_v1_payment_transaction_order"];
-      refund?: components["schemas"]["swag_paypal_v1_payment_transaction_refund"];
-      sale?: components["schemas"]["swag_paypal_v1_payment_transaction_sale"];
-    };
-    swag_paypal_v1_payment_transaction_sale: {
-      transactionFee?: components["schemas"]["swag_paypal_v1_common_value"];
-    } & components["schemas"]["swag_paypal_v1_payment_transaction_abstract_related_resource"];
-    swag_paypal_v1_payment_transaction_shipping_address: {
-      recipientName?: string;
-    } & components["schemas"]["swag_paypal_v1_common_address"];
-    swag_paypal_v1_payment_transaction_shipping_option: [];
-    swag_paypal_v1_plan: {
-      billingCycles?: components["schemas"]["swag_paypal_v1_plan_billing_cycle"][];
-      description?: string | null;
-      name?: string;
-      paymentPreferences?: components["schemas"]["swag_paypal_v1_plan_payment_preferences"];
-      productId?: string;
-      status?: string;
-      taxes?: components["schemas"]["swag_paypal_v1_plan_taxes"];
-    };
-    swag_paypal_v1_plan_billing_cycle: {
-      frequency?: components["schemas"]["swag_paypal_v1_plan_frequency"];
-      pricingScheme?: components["schemas"]["swag_paypal_v1_plan_pricing_scheme"];
-      sequence?: number;
-      tenureType?: string;
-      totalCycles?: number;
-    };
-    swag_paypal_v1_plan_frequency: {
-      intervalCount?: number;
-      intervalUnit?: string;
-    };
-    swag_paypal_v1_plan_payment_preferences: {
-      autoBillOutstanding?: boolean;
-      paymentFailureThreshold?: number;
-    };
-    swag_paypal_v1_plan_pricing_scheme: {
-      fixedPrice?: components["schemas"]["swag_paypal_v1_common_money"];
-    };
-    swag_paypal_v1_plan_taxes: {
-      inclusive?: boolean;
-      percentage?: string;
-    };
-    swag_paypal_v1_product: {
-      description?: string;
-      name?: string;
-      type?: string;
-    };
-    swag_paypal_v1_refund: {
-      amount?: components["schemas"]["swag_paypal_v1_common_amount"];
-      captureId?: string;
-      createTime?: string;
-      description?: string;
-      id?: string;
-      invoiceNumber?: string;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      parentPayment?: string;
-      reason?: string;
-      refundFromReceivedAmount?: components["schemas"]["swag_paypal_v1_common_value"];
-      refundFromTransactionFee?: components["schemas"]["swag_paypal_v1_common_value"];
-      saleId?: string;
-      state?: string;
-      totalRefundedAmount?: components["schemas"]["swag_paypal_v1_common_value"];
-      updateTime?: string;
-    };
-    swag_paypal_v1_shipping_batch: {
-      trackers?: components["schemas"]["swag_paypal_v1_common_link"][];
-    };
-    swag_paypal_v1_shipping_tracker: {
-      carrier?: string;
-      notifyBuyer?: boolean;
-      /** Pattern: '2022-08-15' */
-      shipmentDate?: string;
-      status?: string;
-      trackingNumber?: string;
-      transactionId?: string;
-    };
-    swag_paypal_v1_subscription: {
-      applicationContext?: components["schemas"]["swag_paypal_v1_subscription_application_context"];
-      billingInfo?: components["schemas"]["swag_paypal_v1_subscription_billing_info"];
-      createTime?: string;
-      id?: string;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      planId?: string;
-      quantity?: string;
-      shippingAmount?: components["schemas"]["swag_paypal_v1_common_money"];
-      startTime?: string;
-      status?: string;
-      statusUpdateTime?: string;
-      subscriber?: components["schemas"]["swag_paypal_v1_subscription_subscriber"];
-      updateTime?: string;
-    };
-    swag_paypal_v1_subscription_application_context: {
-      brandName?: string;
-      cancelUrl?: string;
-      locale?: string;
-      returnUrl?: string;
-      /** @default SET_PROVIDED_ADDRESS */
-      shippingPreference?: string;
-      /** @default SUBSCRIBE_NOW */
-      userAction?: string;
-    };
-    swag_paypal_v1_subscription_billing_info: {
-      cycleExecutions?: components["schemas"]["swag_paypal_v1_subscription_cycle_execution"][];
-      failedPaymentsCount?: number;
-      lastPayment?: components["schemas"]["swag_paypal_v1_subscription_last_payment"];
-      nextBillingTime?: string | null;
-      outstandingBalance?: components["schemas"]["swag_paypal_v1_common_money"];
-    };
-    swag_paypal_v1_subscription_cycle_execution: {
-      cyclesCompleted?: number;
-      cyclesRemaining?: number;
-      sequence?: number;
-      tenureType?: string;
-      totalCycles?: number;
-    };
-    swag_paypal_v1_subscription_last_payment: {
-      amount?: components["schemas"]["swag_paypal_v1_common_money"];
-      time?: string;
-    };
-    swag_paypal_v1_subscription_name: {
-      givenName?: string;
-      surname?: string;
-    };
-    swag_paypal_v1_subscription_shipping_address: {
-      address?: components["schemas"]["swag_paypal_v1_subscription_shipping_address_address"];
-      name?: components["schemas"]["swag_paypal_v1_subscription_shipping_address_name"];
-    };
-    swag_paypal_v1_subscription_shipping_address_address: {
-      addressLine_1?: string | null;
-      addressLine_2?: string | null;
-      adminArea_1?: string | null;
-      adminArea_2?: string | null;
-      countryCode?: string;
-      postalCode?: string | null;
-    };
-    swag_paypal_v1_subscription_shipping_address_name: {
-      fullName?: string;
-    };
-    swag_paypal_v1_subscription_subscriber: {
-      emailAddress?: string;
-      name?: components["schemas"]["swag_paypal_v1_subscription_name"];
-      payerId?: string;
-      shippingAddress?: components["schemas"]["swag_paypal_v1_subscription_shipping_address"];
-    };
-    swag_paypal_v1_token: {
-      /**
-       * The access token issued by PayPal. After the access token
-       * expires (see $expiresIn), you must request a new access token.
-       */
-      accessToken?: string;
-      appId?: string;
-      /** Calculated expiration date */
-      expireDateTime?: Record<string, never>;
-      /** The lifetime of the access token, in seconds. */
-      expiresIn?: number;
-      nonce?: string;
-      /**
-       * Scopes expressed in the form of resource URL endpoints. The value of the scope parameter
-       * is expressed as a list of space-delimited, case-sensitive strings.
-       */
-      scope?: string;
-      /**
-       * The type of the token issued as described in OAuth2.0 RFC6749,
-       * Section 7.1. Value is case insensitive.
-       */
-      tokenType?: string;
-    };
-    swag_paypal_v1_webhook: {
-      createTime?: string;
-      eventType?: string;
-      eventVersion?: string;
-      id?: string;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      resource?: components["schemas"]["swag_paypal_v1_webhook_resource"];
-      resourceType?: string;
-      summary?: string;
-    };
-    swag_paypal_v1_webhook_resource: {
-      amount?: components["schemas"]["swag_paypal_v1_common_amount"];
-      billingAgreementId?: string | null;
-      clearingTime?: string;
-      createTime?: string;
-      id?: string;
-      invoiceNumber?: string;
-      links?: components["schemas"]["swag_paypal_v1_common_link"][];
-      merchantId?: string | null;
-      parentPayment?: string | null;
-      paymentMode?: string;
-      protectionEligibility?: string;
-      protectionEligibilityType?: string;
-      refundReasonCode?: string | null;
-      saleId?: string | null;
-      state?: string;
-      transactionFee?: components["schemas"]["swag_paypal_v1_common_value"];
-      updateTime?: string;
-    };
-    swag_paypal_v2_common_address: {
-      /**
-       * The first line of the address. For example, number or street. For example, 173 Drury Lane.
-       * Required for data entry and compliance and risk checks. Must contain the full address.
-       */
-      addressLine_1?: string | null;
-      /** The second line of the address. For example, suite or apartment number. */
-      addressLine_2?: string | null;
-      /**
-       * The highest level sub-division in a country, which is usually a province, state, or ISO-3166-2 subdivision.
-       * Format for postal delivery. For example, CA and not California.
-       */
-      adminArea_1?: string | null;
-      /** A city, town, or village. Smaller than $adminArea1 */
-      adminArea_2?: string | null;
-      countryCode?: string;
-      postalCode?: string | null;
-    };
-    swag_paypal_v2_common_link: {
-      encType?: string | null;
-      href?: string;
-      method?: string;
-      rel?: string;
-    };
-    swag_paypal_v2_common_money: {
-      currencyCode?: string;
-      value?: string;
-    };
-    swag_paypal_v2_common_name: {
-      givenName?: string;
-      surname?: string;
-    };
-    swag_paypal_v2_common_phone_number: {
-      countryCode?: string;
-      nationalNumber?: string;
-    };
-    swag_paypal_v2_order: {
-      applicationContext?: components["schemas"]["swag_paypal_v2_order_application_context"];
-      createTime?: string;
-      id?: string;
-      intent?: string;
-      links?: components["schemas"]["swag_paypal_v2_common_link"][];
-      payer?: components["schemas"]["swag_paypal_v2_order_payer"];
-      paymentSource?: components["schemas"]["swag_paypal_v2_order_payment_source"];
-      processingInstruction?: string;
-      purchaseUnits?: components["schemas"]["swag_paypal_v2_order_purchase_unit"][];
-      status?: string;
-      updateTime?: string;
-    };
-    swag_paypal_v2_order_amount: {
-      breakdown?: components["schemas"]["swag_paypal_v2_order_breakdown"];
-    } & components["schemas"]["swag_paypal_v2_common_money"];
-    swag_paypal_v2_order_application_context: {
-      brandName?: string;
-      cancelUrl?: string;
-      /** @default NO_PREFERENCE */
-      landingPage?: string;
-      returnUrl?: string;
-      /** @default SET_PROVIDED_ADDRESS */
-      shippingPreference?: string;
-      /** @default PAY_NOW */
-      userAction?: string;
-    };
-    swag_paypal_v2_order_authorization: {
-      expirationTime?: string;
-      sellerProtection?: components["schemas"]["swag_paypal_v2_order_authorization_seller_protection"];
-    } & components["schemas"]["swag_paypal_v2_order_payment"];
-    swag_paypal_v2_order_authorization_seller_protection: {
-      disputeCategories?: string[];
-      status?: string;
-    };
-    swag_paypal_v2_order_breakdown: {
-      discount?: components["schemas"]["swag_paypal_v2_common_money"];
-      handling?: components["schemas"]["swag_paypal_v2_common_money"];
-      insurance?: components["schemas"]["swag_paypal_v2_common_money"];
-      itemTotal?: components["schemas"]["swag_paypal_v2_common_money"];
-      shipping?: components["schemas"]["swag_paypal_v2_common_money"];
-      shippingDiscount?: components["schemas"]["swag_paypal_v2_common_money"];
-      taxTotal?: components["schemas"]["swag_paypal_v2_common_money"];
-    };
-    swag_paypal_v2_order_capture: {
-      disbursementMode?: string;
-      finalCapture?: boolean;
-      invoiceId?: string | null;
-      noteToPayer?: string | null;
-      sellerProtection?: components["schemas"]["swag_paypal_v2_order_capture_seller_protection"];
-      sellerReceivableBreakdown?: components["schemas"]["swag_paypal_v2_order_capture_seller_receivable_breakdown"];
-    } & components["schemas"]["swag_paypal_v2_order_payment"];
-    swag_paypal_v2_order_capture_seller_protection: {
-      disputeCategories?: string[];
-      status?: string;
-    };
-    swag_paypal_v2_order_capture_seller_receivable_breakdown: {
-      grossAmount?: components["schemas"]["swag_paypal_v2_common_money"];
-      netAmount?: components["schemas"]["swag_paypal_v2_common_money"];
-      paypalFee?: components["schemas"]["swag_paypal_v2_common_money"];
-    };
-    swag_paypal_v2_order_display_data: {
-      brandName?: string;
-    };
-    swag_paypal_v2_order_item: {
-      category?: string;
-      name?: string;
-      quantity?: number;
-      sku?: string | null;
-      tax?: components["schemas"]["swag_paypal_v2_common_money"];
-      taxRate?: number | Record<string, never> | string;
-      unitAmount?: components["schemas"]["swag_paypal_v2_common_money"];
-    };
-    swag_paypal_v2_order_pay_upon_invoice: {
-      billingAddress?: components["schemas"]["swag_paypal_v2_common_address"];
-      birthDate?: string;
-      depositBankDetails?: components["schemas"]["swag_paypal_v2_order_pay_upon_invoice_deposit_bank_details"];
-      email?: string;
-      experienceContext?: components["schemas"]["swag_paypal_v2_order_pay_upon_invoice_experience_context"];
-      name?: components["schemas"]["swag_paypal_v2_common_name"];
-      paymentReference?: string;
-      phone?: components["schemas"]["swag_paypal_v2_common_phone_number"];
-    };
-    swag_paypal_v2_order_pay_upon_invoice_deposit_bank_details: {
-      accountHolderName?: string;
-      bankName?: string;
-      bic?: string;
-      iban?: string;
-    };
-    swag_paypal_v2_order_pay_upon_invoice_experience_context: {
-      brandName?: string;
-      customerServiceInstructions?: string[];
-      locale?: string;
-      logoUrl?: string;
-    };
-    swag_paypal_v2_order_payee: {
-      displayData?: components["schemas"]["swag_paypal_v2_order_display_data"];
-      emailAddress?: string;
-      merchantId?: string;
-    };
-    swag_paypal_v2_order_payer: {
-      address?: components["schemas"]["swag_paypal_v2_common_address"];
-      emailAddress?: string;
-      name?: string;
-      payerId?: string;
-      phone?: components["schemas"]["swag_paypal_v2_order_phone"];
-    };
-    swag_paypal_v2_order_payment: {
-      amount?: components["schemas"]["swag_paypal_v2_common_money"];
-      createTime?: string;
-      customId?: string | null;
-      id?: string;
-      links?: components["schemas"]["swag_paypal_v2_common_link"][];
-      status?: string;
-      updateTime?: string;
-    };
-    swag_paypal_v2_order_payment_source: {
-      bancontact?: components["schemas"]["swag_paypal_v2_order_payment_source_bancontact"];
-      blik?: components["schemas"]["swag_paypal_v2_order_payment_source_blik"];
-      boletobancario?: components["schemas"]["swag_paypal_v2_order_payment_source_boletobancario"];
-      card?: components["schemas"]["swag_paypal_v2_order_payment_source_card"];
-      eps?: components["schemas"]["swag_paypal_v2_order_payment_source_eps"];
-      giropay?: components["schemas"]["swag_paypal_v2_order_payment_source_giropay"];
-      ideal?: components["schemas"]["swag_paypal_v2_order_payment_source_ideal"];
-      multibanco?: components["schemas"]["swag_paypal_v2_order_payment_source_multibanco"];
-      myBank?: components["schemas"]["swag_paypal_v2_order_payment_source_mybank"];
-      oxxo?: components["schemas"]["swag_paypal_v2_order_payment_source_oxxo"];
-      p24?: components["schemas"]["swag_paypal_v2_order_payment_source_p24"];
-      payUponInvoice?: components["schemas"]["swag_paypal_v2_order_pay_upon_invoice"];
-      sofort?: components["schemas"]["swag_paypal_v2_order_payment_source_sofort"];
-      trustly?: components["schemas"]["swag_paypal_v2_order_payment_source_trustly"];
-    };
-    swag_paypal_v2_order_payment_source_bancontact: components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_blik: {
-      email?: string;
-    } & components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_boletobancario: {
-      billingAddress?: components["schemas"]["swag_paypal_v2_common_address"];
-      email?: string;
-      expiryDate?: string;
-      taxInfo?: components["schemas"]["swag_paypal_v2_order_payment_source_boletobancario_taxinfo"];
-    } & components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_boletobancario_taxinfo: {
-      taxId?: string;
-      taxIdType?: string;
-    };
-    swag_paypal_v2_order_payment_source_card: {
-      authenticationResult?: Record<string, unknown> | null;
-      brand?: string;
-      lastDigits?: string;
-      type?: string;
-    };
-    swag_paypal_v2_order_payment_source_card_authentication_result: {
-      liabilityShift?: string;
-      threeDSecure?: string | null;
-    };
-    swag_paypal_v2_order_payment_source_card_authentication_result_3d_secure: {
-      authenticationStatus?: string;
-      enrollmentStatus?: string;
-    };
-    swag_paypal_v2_order_payment_source_common: {
-      countryCode?: string;
-      name?: string;
-    };
-    swag_paypal_v2_order_payment_source_eps: components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_giropay: components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_ideal: components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_multibanco: components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_mybank: components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_oxxo: {
-      email?: string;
-    } & components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_p24: {
-      email?: string;
-    } & components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_sofort: components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payment_source_trustly: components["schemas"]["swag_paypal_v2_order_payment_source_common"];
-    swag_paypal_v2_order_payments: {
-      authorizations?:
-        | components["schemas"]["swag_paypal_v2_order_authorization"][]
-        | null;
-      captures?: components["schemas"]["swag_paypal_v2_order_capture"][] | null;
-      refunds?: components["schemas"]["swag_paypal_v2_order_refund"][] | null;
-    };
-    swag_paypal_v2_order_phone: {
-      phoneNumber?: string;
-      phoneType?: string;
-    };
-    swag_paypal_v2_order_purchase_unit: {
-      amount?: components["schemas"]["swag_paypal_v2_order_amount"];
-      customId?: string | null;
-      description?: string;
-      invoiceId?: string | null;
-      items?: components["schemas"]["swag_paypal_v2_order_item"][] | null;
-      payee?: components["schemas"]["swag_paypal_v2_order_payee"];
-      payments?: components["schemas"]["swag_paypal_v2_order_payments"];
-      referenceId?: string;
-      shipping?: components["schemas"]["swag_paypal_v2_order_shipping"];
-    };
-    swag_paypal_v2_order_refund: {
-      invoiceId?: string | null;
-      noteToPayer?: string | null;
-      sellerPayableBreakdown?: components["schemas"]["swag_paypal_v2_order_refund_seller_paypable_breakdown"];
-    } & components["schemas"]["swag_paypal_v2_order_payment"];
-    swag_paypal_v2_order_refund_seller_paypable_breakdown: {
-      grossAmount?: components["schemas"]["swag_paypal_v2_common_money"];
-      netAmount?: components["schemas"]["swag_paypal_v2_common_money"];
-      paypalFee?: components["schemas"]["swag_paypal_v2_common_money"];
-      totalRefundedAmount?: components["schemas"]["swag_paypal_v2_common_money"];
-    };
-    swag_paypal_v2_order_shipping: {
-      address?: components["schemas"]["swag_paypal_v2_common_address"];
-      name?: components["schemas"]["swag_paypal_v2_order_shipping_name"];
-    };
-    swag_paypal_v2_order_shipping_name: {
-      fullName?: string;
-    };
-    swag_paypal_v2_patch: {
-      from?: string;
-      op?: string;
-      path?: string;
-      value?: number | Record<string, never> | string | boolean | unknown[];
-    };
-    swag_paypal_v2_referral: {
-      businessEntity?: components["schemas"]["swag_paypal_v2_referral_business_entity"];
-      capabilities?: string[];
-      legalConsents?: components["schemas"]["swag_paypal_v2_referral_legal_consent"][];
-      links?: components["schemas"]["swag_paypal_v2_common_link"][];
-      operations?: components["schemas"]["swag_paypal_v2_referral_operation"][];
-      partnerConfigOverride?: components["schemas"]["swag_paypal_v2_referral_partner_config_override"];
-      preferredLanguageCode?: string;
-      products?: string[];
-      trackingId?: string;
-    };
-    swag_paypal_v2_referral_address: {
-      countryCode?: string;
-      /** @default WORK */
-      type?: string;
-    };
-    swag_paypal_v2_referral_api_integration_preference: {
-      restApiIntegration?: components["schemas"]["swag_paypal_v2_referral_rest_api_integration"];
-    };
-    swag_paypal_v2_referral_business_entity: {
-      addresses?: components["schemas"]["swag_paypal_v2_referral_address"][];
-    };
-    swag_paypal_v2_referral_legal_consent: {
-      granted?: boolean;
-      /** @default SHARE_DATA_CONSENT */
-      type?: string;
-    };
-    swag_paypal_v2_referral_operation: {
-      apiIntegrationPreference?: string;
-      /** @default API_INTEGRATION */
-      operation?: string;
-    };
-    swag_paypal_v2_referral_partner_config_override: {
-      returnUrl?: string;
-    };
-    swag_paypal_v2_referral_rest_api_integration: {
-      /** @default PAYPAL */
-      integrationMethod?: string;
-      /** @default THIRD_PARTY */
-      integrationType?: string;
-      thirdPartyDetails?: string;
-    };
-    swag_paypal_v2_referral_third_party_details: {
-      features?: string[];
-    };
-    swag_paypal_v2_webhook: {
-      createTime?: string;
-      eventType?: string;
-      eventVersion?: string;
-      id?: string;
-      links?: components["schemas"]["swag_paypal_v2_common_link"][];
-      resource?: string;
-      resourceType?: string;
-      resourceVersion?: string;
-      summary?: string;
-    };
-    /** Added since version: */
     SwagCmsExtensionsBlockRule: {
       cmsBlock?: components["schemas"]["CmsBlock"];
       cmsBlockId: string;
@@ -5486,7 +6094,6 @@ export type components = {
       visibilityRule?: components["schemas"]["Rule"];
       visibilityRuleId?: string;
     };
-    /** Added since version: */
     SwagCmsExtensionsForm: {
       /** Format: date-time */
       createdAt: string;
@@ -5495,7 +6102,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagCmsExtensionsFormGroup: {
       /** Format: date-time */
       createdAt: string;
@@ -5504,7 +6110,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagCmsExtensionsFormGroupField: {
       /** Format: date-time */
       createdAt: string;
@@ -5513,7 +6118,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagCmsExtensionsQuickview: {
       active?: boolean;
       cmsBlock?: components["schemas"]["CmsBlock"];
@@ -5525,7 +6129,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagCmsExtensionsScrollNavigation: {
       active?: boolean;
       cmsSection?: components["schemas"]["CmsSection"];
@@ -5535,11 +6138,14 @@ export type components = {
       createdAt: string;
       displayName?: string;
       id?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        cmsSectionId?: string;
+        cmsSectionVersionId?: string;
+        displayName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagCmsExtensionsScrollNavigationPageSettings: {
       active: boolean;
       bouncy: boolean;
@@ -5557,49 +6163,53 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplate: {
       active?: boolean;
-      configurations?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"];
+      configurations?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"][];
       confirmInput?: boolean;
       /** Format: date-time */
       createdAt: string;
-      decisionTree?: Record<string, never>;
+      decisionTree?: GenericRecord;
       description?: string;
       displayName: string;
-      exclusions?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"];
+      exclusions?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"][];
       id?: string;
       internalName: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
-      options?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
+      options?: components["schemas"]["SwagCustomizedProductsTemplateOption"][];
       optionsAutoCollapse?: boolean;
       parentVersionId?: string;
-      products?: components["schemas"]["Product"];
+      products?: components["schemas"]["Product"][];
       stepByStep?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayName?: string;
+        internalName?: string;
+        mediaId?: string;
+        parentVersionId?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateConfiguration: {
-      configuration: Record<string, never>;
+      configuration: GenericRecord;
       /** Format: date-time */
       createdAt: string;
       hash: string;
       id?: string;
       template?: components["schemas"]["SwagCustomizedProductsTemplate"];
-      templateConfigurationShares?: components["schemas"]["SwagCustomizedProductsTemplateConfigurationShare"];
+      templateConfigurationShares?: components["schemas"]["SwagCustomizedProductsTemplateConfigurationShare"][];
       templateId: string;
       templateVersionId?: string;
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateConfigurationJsonApi: components["schemas"]["resource"] & {
-      configuration: Record<string, never>;
+      configuration: GenericRecord;
       /** Format: date-time */
       createdAt: string;
       hash: string;
@@ -5607,7 +6217,7 @@ export type components = {
       relationships?: {
         template?: {
           data?: {
-            /** @example 1f7c46b0461d4e16a1f854d112c2a80e */
+            /** @example 66f6181bcb4cff4cd38fbc804a036db6 */
             id?: string;
             /** @example swag_customized_products_template */
             type?: string;
@@ -5615,14 +6225,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-configuration/f00db67fd1af45c68aa51e5aca027079/template
+             * @example /swag-customized-products-template-configuration/ab78fa5f6df63876a7c6575bdf517fe2/template
              */
             related?: string;
           };
         };
         templateConfigurationShares?: {
           data?: {
-            /** @example 6cf7371dd93c49838d80d5d406505000 */
+            /** @example 81a31c81fde24f296e176502d32baa6d */
             id?: string;
             /** @example swag_customized_products_template_configuration_share */
             type?: string;
@@ -5630,7 +6240,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-configuration/f00db67fd1af45c68aa51e5aca027079/templateConfigurationShares
+             * @example /swag-customized-products-template-configuration/ab78fa5f6df63876a7c6575bdf517fe2/templateConfigurationShares
              */
             related?: string;
           };
@@ -5642,7 +6252,6 @@ export type components = {
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateConfigurationShare: {
       /** Format: date-time */
       createdAt: string;
@@ -5650,9 +6259,8 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateExclusion: {
-      conditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"];
+      conditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
       /** Format: date-time */
       createdAt: string;
       id?: string;
@@ -5664,7 +6272,6 @@ export type components = {
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateExclusionCondition: {
       /** Format: date-time */
       createdAt: string;
@@ -5676,32 +6283,34 @@ export type components = {
       templateExclusionVersionId?: string;
       templateOption?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
       templateOptionId: string;
-      templateOptionValues?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"];
+      templateOptionValues?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"][];
       templateOptionVersionId?: string;
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateExclusionOperator: {
       /** Format: date-time */
       createdAt: string;
       id?: string;
       label: string;
       operator: string;
-      templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"];
+      templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
       templateOptionType: string;
-      translated?: Record<string, never>;
+      translated?: {
+        label?: string;
+        operator?: string;
+        templateOptionType?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateJsonApi: components["schemas"]["resource"] & {
       active?: boolean;
       confirmInput?: boolean;
       /** Format: date-time */
       createdAt: string;
-      decisionTree?: Record<string, never>;
+      decisionTree?: GenericRecord;
       description?: string;
       displayName: string;
       id?: string;
@@ -5712,7 +6321,7 @@ export type components = {
       relationships?: {
         configurations?: {
           data?: {
-            /** @example f7e660e467e44bff91e27fc61c9af01a */
+            /** @example 86f23519571eb918e8812e1979d55409 */
             id?: string;
             /** @example swag_customized_products_template_configuration */
             type?: string;
@@ -5720,14 +6329,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/756287a5fedd43f3a382305b2d00da2c/configurations
+             * @example /swag-customized-products-template/4751e4cb483e992aa073494b9cfa9be6/configurations
              */
             related?: string;
           };
         };
         exclusions?: {
           data?: {
-            /** @example d73076eeaea547de99a19c54fe95735b */
+            /** @example c6fc0a7508c1a1fe9e233e81d31133b8 */
             id?: string;
             /** @example swag_customized_products_template_exclusion */
             type?: string;
@@ -5735,14 +6344,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/756287a5fedd43f3a382305b2d00da2c/exclusions
+             * @example /swag-customized-products-template/4751e4cb483e992aa073494b9cfa9be6/exclusions
              */
             related?: string;
           };
         };
         media?: {
           data?: {
-            /** @example 8372563d32984eaf823286f289b284fe */
+            /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
             id?: string;
             /** @example media */
             type?: string;
@@ -5750,14 +6359,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/756287a5fedd43f3a382305b2d00da2c/media
+             * @example /swag-customized-products-template/4751e4cb483e992aa073494b9cfa9be6/media
              */
             related?: string;
           };
         };
         options?: {
           data?: {
-            /** @example f1f03edf3ea549e3ae1ba3da53219429 */
+            /** @example 93da65a9fd0004d9477aeac024e08e15 */
             id?: string;
             /** @example swag_customized_products_template_option */
             type?: string;
@@ -5765,14 +6374,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/756287a5fedd43f3a382305b2d00da2c/options
+             * @example /swag-customized-products-template/4751e4cb483e992aa073494b9cfa9be6/options
              */
             related?: string;
           };
         };
         products?: {
           data?: {
-            /** @example cde0ffc74aea42dfb65a829577e8e853 */
+            /** @example 86024cad1e83101d97359d7351051156 */
             id?: string;
             /** @example product */
             type?: string;
@@ -5780,22 +6389,28 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template/756287a5fedd43f3a382305b2d00da2c/products
+             * @example /swag-customized-products-template/4751e4cb483e992aa073494b9cfa9be6/products
              */
             related?: string;
           };
         };
       };
       stepByStep?: boolean;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayName?: string;
+        internalName?: string;
+        mediaId?: string;
+        parentVersionId?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateOption: {
       advancedSurcharge?: boolean;
-      calculatedPrice?: Record<string, never>;
+      calculatedPrice?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
       description?: string;
@@ -5808,27 +6423,35 @@ export type components = {
       placeholder?: string;
       /** Format: int64 */
       position?: number;
-      price?: Record<string, never>;
-      prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionPrice"];
+      price?: GenericRecord;
+      prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionPrice"][];
       relativeSurcharge?: boolean;
       required?: boolean;
       tax?: components["schemas"]["Tax"];
       taxId?: string;
       template?: components["schemas"]["SwagCustomizedProductsTemplate"];
-      templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"];
+      templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
       templateId: string;
       templateVersionId?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayName?: string;
+        itemNumber?: string;
+        placeholder?: string;
+        taxId?: string;
+        templateId?: string;
+        templateVersionId?: string;
+        type?: string;
+      };
       type: string;
-      typeProperties?: Record<string, never>;
+      typeProperties?: GenericRecord;
       /** Format: date-time */
       updatedAt?: string;
-      values?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"];
+      values?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"][];
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateOptionJsonApi: components["schemas"]["resource"] & {
       advancedSurcharge?: boolean;
-      calculatedPrice?: Record<string, never>;
+      calculatedPrice?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
       description?: string;
@@ -5841,11 +6464,11 @@ export type components = {
       placeholder?: string;
       /** Format: int64 */
       position?: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       relationships?: {
         prices?: {
           data?: {
-            /** @example 2d1d898e4d77463d9484d2f7b1806c81 */
+            /** @example afae32efe0f84fece3f96b377b768b33 */
             id?: string;
             /** @example swag_customized_products_template_option_price */
             type?: string;
@@ -5853,14 +6476,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/b3a53129ef654d5db1a4634634969940/prices
+             * @example /swag-customized-products-template-option/6342f0c20b443cb5408ec0fc12430bcb/prices
              */
             related?: string;
           };
         };
         tax?: {
           data?: {
-            /** @example 15d5a9b8dae14b2d985b2d0f2750cf01 */
+            /** @example 06565e5611f23fdf8cc43e5077b92b54 */
             id?: string;
             /** @example tax */
             type?: string;
@@ -5868,14 +6491,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/b3a53129ef654d5db1a4634634969940/tax
+             * @example /swag-customized-products-template-option/6342f0c20b443cb5408ec0fc12430bcb/tax
              */
             related?: string;
           };
         };
         template?: {
           data?: {
-            /** @example 68d736d961d046239094ed7ba9d14549 */
+            /** @example 66f6181bcb4cff4cd38fbc804a036db6 */
             id?: string;
             /** @example swag_customized_products_template */
             type?: string;
@@ -5883,14 +6506,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/b3a53129ef654d5db1a4634634969940/template
+             * @example /swag-customized-products-template-option/6342f0c20b443cb5408ec0fc12430bcb/template
              */
             related?: string;
           };
         };
         templateExclusionConditions?: {
           data?: {
-            /** @example ebe28bc01bb241a5a4a5c9d152c287a5 */
+            /** @example 57e853a74b92e339ec2e302b015e60f3 */
             id?: string;
             /** @example swag_customized_products_template_exclusion_condition */
             type?: string;
@@ -5898,14 +6521,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/b3a53129ef654d5db1a4634634969940/templateExclusionConditions
+             * @example /swag-customized-products-template-option/6342f0c20b443cb5408ec0fc12430bcb/templateExclusionConditions
              */
             related?: string;
           };
         };
         values?: {
           data?: {
-            /** @example 4d0c983fcc5e4c388234097b6d671b64 */
+            /** @example f09cc7ee3a9a93273f4b80601cafb00c */
             id?: string;
             /** @example swag_customized_products_template_option_value */
             type?: string;
@@ -5913,7 +6536,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option/b3a53129ef654d5db1a4634634969940/values
+             * @example /swag-customized-products-template-option/6342f0c20b443cb5408ec0fc12430bcb/values
              */
             related?: string;
           };
@@ -5924,20 +6547,28 @@ export type components = {
       taxId?: string;
       templateId: string;
       templateVersionId?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        description?: string;
+        displayName?: string;
+        itemNumber?: string;
+        placeholder?: string;
+        taxId?: string;
+        templateId?: string;
+        templateVersionId?: string;
+        type?: string;
+      };
       type: string;
-      typeProperties?: Record<string, never>;
+      typeProperties?: GenericRecord;
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateOptionPrice: {
       /** Format: date-time */
       createdAt: string;
       id?: string;
       /** Format: float */
       percentageSurcharge?: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       rule?: components["schemas"]["Rule"];
       ruleId?: string;
       templateOption?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
@@ -5947,7 +6578,6 @@ export type components = {
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateOptionValue: {
       advancedSurcharge?: boolean;
       /** Format: date-time */
@@ -5961,22 +6591,28 @@ export type components = {
       percentageSurcharge?: number;
       /** Format: int64 */
       position: number;
-      price?: Record<string, never>;
-      prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionValuePrice"];
+      price?: GenericRecord;
+      prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionValuePrice"][];
       relativeSurcharge?: boolean;
       tax?: components["schemas"]["Tax"];
       taxId?: string;
-      templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"];
+      templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
       templateOption?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
       templateOptionId: string;
       templateOptionVersionId?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        displayName?: string;
+        itemNumber?: string;
+        taxId?: string;
+        templateOptionId?: string;
+        templateOptionVersionId?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
-      value?: Record<string, never>;
+      value?: GenericRecord;
       versionId?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateOptionValueJsonApi: components["schemas"]["resource"] & {
       advancedSurcharge?: boolean;
       /** Format: date-time */
@@ -5990,11 +6626,11 @@ export type components = {
       percentageSurcharge?: number;
       /** Format: int64 */
       position: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       relationships?: {
         prices?: {
           data?: {
-            /** @example 73aff29a012f45e08b1fc4cf1152333a */
+            /** @example afae32efe0f84fece3f96b377b768b33 */
             id?: string;
             /** @example swag_customized_products_template_option_value_price */
             type?: string;
@@ -6002,14 +6638,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option-value/35138ceb624e4e1eac123a342e4c4ef0/prices
+             * @example /swag-customized-products-template-option-value/b57f26a8362182be3e67a815927b7f37/prices
              */
             related?: string;
           };
         };
         tax?: {
           data?: {
-            /** @example 3731e61173f14cd2a127db24d55bf76f */
+            /** @example 06565e5611f23fdf8cc43e5077b92b54 */
             id?: string;
             /** @example tax */
             type?: string;
@@ -6017,14 +6653,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option-value/35138ceb624e4e1eac123a342e4c4ef0/tax
+             * @example /swag-customized-products-template-option-value/b57f26a8362182be3e67a815927b7f37/tax
              */
             related?: string;
           };
         };
         templateExclusionConditions?: {
           data?: {
-            /** @example 957e34aed872412eaa373f672bc56b0d */
+            /** @example 57e853a74b92e339ec2e302b015e60f3 */
             id?: string;
             /** @example swag_customized_products_template_exclusion_condition */
             type?: string;
@@ -6032,14 +6668,14 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option-value/35138ceb624e4e1eac123a342e4c4ef0/templateExclusionConditions
+             * @example /swag-customized-products-template-option-value/b57f26a8362182be3e67a815927b7f37/templateExclusionConditions
              */
             related?: string;
           };
         };
         templateOption?: {
           data?: {
-            /** @example 3562b32c3d624c11802c023ee9a40ada */
+            /** @example 6891a002a90a39e71e67c4fc148db8df */
             id?: string;
             /** @example swag_customized_products_template_option */
             type?: string;
@@ -6047,7 +6683,7 @@ export type components = {
           links?: {
             /**
              * Format: uri-reference
-             * @example /swag-customized-products-template-option-value/35138ceb624e4e1eac123a342e4c4ef0/templateOption
+             * @example /swag-customized-products-template-option-value/b57f26a8362182be3e67a815927b7f37/templateOption
              */
             related?: string;
           };
@@ -6057,20 +6693,26 @@ export type components = {
       taxId?: string;
       templateOptionId: string;
       templateOptionVersionId?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        displayName?: string;
+        itemNumber?: string;
+        taxId?: string;
+        templateOptionId?: string;
+        templateOptionVersionId?: string;
+        versionId?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
-      value?: Record<string, never>;
+      value?: GenericRecord;
       versionId?: string;
     };
-    /** Added since version: */
     SwagCustomizedProductsTemplateOptionValuePrice: {
       /** Format: date-time */
       createdAt: string;
       id?: string;
       /** Format: float */
       percentageSurcharge?: number;
-      price?: Record<string, never>;
+      price?: GenericRecord;
       rule?: components["schemas"]["Rule"];
       ruleId?: string;
       templateOptionValue?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"];
@@ -6080,7 +6722,15 @@ export type components = {
       updatedAt?: string;
       versionId?: string;
     };
-    /** Added since version: */
+    SwagDelayAction: {
+      /** Format: date-time */
+      createdAt: string;
+      customerId?: string;
+      id?: string;
+      orderId?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
     SwagDynamicAccessLandingPageRule: {
       id?: string;
       landingPage?: components["schemas"]["LandingPage"];
@@ -6089,7 +6739,6 @@ export type components = {
       rule?: components["schemas"]["Rule"];
       ruleId: string;
     };
-    /** Added since version: */
     SwagDynamicAccessProductRule: {
       id?: string;
       product?: components["schemas"]["Product"];
@@ -6098,7 +6747,6 @@ export type components = {
       rule?: components["schemas"]["Rule"];
       ruleId: string;
     };
-    /** Added since version: */
     SwagLanguagePackLanguage: {
       /** Format: date-time */
       createdAt: string;
@@ -6106,7 +6754,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagMigrationConnection: {
       /** Format: date-time */
       createdAt: string;
@@ -6114,7 +6761,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagMigrationData: {
       /** Format: date-time */
       createdAt: string;
@@ -6122,7 +6768,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagMigrationGeneralSetting: {
       /** Format: date-time */
       createdAt: string;
@@ -6130,7 +6775,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagMigrationLogging: {
       /** Format: date-time */
       createdAt: string;
@@ -6138,7 +6782,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagMigrationMapping: {
       /** Format: date-time */
       createdAt: string;
@@ -6146,7 +6789,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagMigrationMediaFile: {
       /** Format: date-time */
       createdAt: string;
@@ -6154,7 +6796,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagMigrationRun: {
       /** Format: date-time */
       createdAt: string;
@@ -6162,7 +6803,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagPaypalPosSalesChannel: {
       /** Format: date-time */
       createdAt: string;
@@ -6170,7 +6810,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagPaypalPosSalesChannelRun: {
       /** Format: date-time */
       createdAt: string;
@@ -6178,7 +6817,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagPaypalPosSalesChannelRunLog: {
       /** Format: date-time */
       createdAt: string;
@@ -6186,7 +6824,32 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
+    SwagPaypalVaultToken: {
+      /** Format: date-time */
+      createdAt: string;
+      customer?: components["schemas"]["Customer"];
+      customerId: string;
+      id?: string;
+      identifier: string;
+      mainMapping?: components["schemas"]["SwagPaypalVaultTokenMapping"];
+      paymentMethod?: components["schemas"]["PaymentMethod"];
+      paymentMethodId: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    SwagPaypalVaultTokenMapping: {
+      /** Format: date-time */
+      createdAt: string;
+      customer?: components["schemas"]["Customer"];
+      customerId: string;
+      id?: string;
+      paymentMethod?: components["schemas"]["PaymentMethod"];
+      paymentMethodId: string;
+      token?: components["schemas"]["SwagPaypalVaultToken"];
+      tokenId: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
     SwagSocialShoppingCustomer: {
       /** Format: date-time */
       createdAt: string;
@@ -6194,7 +6857,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagSocialShoppingOrder: {
       /** Format: date-time */
       createdAt: string;
@@ -6202,7 +6864,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagSocialShoppingProductError: {
       /** Format: date-time */
       createdAt: string;
@@ -6210,7 +6871,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     SwagSocialShoppingSalesChannel: {
       /** Format: date-time */
       createdAt: string;
@@ -6222,7 +6882,7 @@ export type components = {
     SystemConfig: {
       configurationKey: string;
       configurationValue: {
-        _value?: Record<string, never>;
+        _value?: GenericRecord;
       };
       /** Format: date-time */
       createdAt: string;
@@ -6237,6 +6897,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       id?: string;
+      name: string;
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -6244,7 +6905,7 @@ export type components = {
     Tax: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       /**
@@ -6254,6 +6915,26 @@ export type components = {
       position: number;
       /** Format: float */
       taxRate: number;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    /** Added since version: 6.5.0.0 */
+    TaxProvider: {
+      active?: boolean;
+      appId?: string;
+      /** Format: date-time */
+      createdAt: string;
+      customFields?: GenericRecord;
+      id?: string;
+      name: string;
+      /** Format: int64 */
+      priority: number;
+      processUrl?: string;
+      translated?: {
+        appId?: string;
+        name?: string;
+        processUrl?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -6278,21 +6959,28 @@ export type components = {
     Theme: {
       active: boolean;
       author: string;
-      baseConfig?: Record<string, never>;
-      configValues?: Record<string, never>;
+      baseConfig?: GenericRecord;
+      configValues?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       description?: string;
-      helpTexts?: Record<string, never>;
+      helpTexts?: GenericRecord;
       id?: string;
-      labels?: Record<string, never>;
-      media?: components["schemas"]["Media"];
+      labels?: GenericRecord;
+      media?: components["schemas"]["Media"][];
       name: string;
       parentThemeId?: string;
       previewMediaId?: string;
       technicalName?: string;
-      translated?: Record<string, never>;
+      translated?: {
+        author?: string;
+        description?: string;
+        name?: string;
+        parentThemeId?: string;
+        previewMediaId?: string;
+        technicalName?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -6300,11 +6988,14 @@ export type components = {
     Unit: {
       /** Format: date-time */
       createdAt: string;
-      customFields?: Record<string, never>;
+      customFields?: GenericRecord;
       id?: string;
       name: string;
       shortCode: string;
-      translated?: Record<string, never>;
+      translated?: {
+        name?: string;
+        shortCode?: string;
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -6340,7 +7031,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     Warehouse: {
       /** Format: date-time */
       createdAt: string;
@@ -6348,7 +7038,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /** Added since version: */
     WarehouseGroup: {
       /** Format: date-time */
       createdAt: string;
@@ -6373,7 +7062,7 @@ export type components = {
       updatedAt?: string;
     };
     WishlistLoadRouteResponse: {
-      products?: components["schemas"]["ProductListingResult"][];
+      products: components["schemas"]["ProductListingResult"]; // TODO: [OpenAPI][WishlistLoadRouteResponse] - products is listing result, not array
       wishlist?: {
         customerId?: string;
         salesChannelId?: string;
@@ -6382,7 +7071,9 @@ export type components = {
   };
   responses: {
     /** No Content */
-    204: never;
+    204: {
+      content: never;
+    };
     /** Bad Request */
     400: {
       content: {
@@ -6411,6 +7102,19 @@ export type components = {
         "application/vnd.api+json": components["schemas"]["failure"];
       };
     };
+    /** Returns the context token. Use that as your `sw-context-token` header for subsequent requests. Redirect if getRedirectUrl is set. */
+    ContextTokenResponse: {
+      headers: {
+        /** Contains sw-context-token value */
+        "sw-context-token"?: string;
+      };
+      content: {
+        "application/json": {
+          /** Define the URL which browser will be redirected to */
+          redirectUrl?: string;
+        };
+      };
+    };
   };
   parameters: {
     /** Accepted response content types */
@@ -6423,17 +7127,23 @@ export type components = {
   pathItems: never;
 };
 
+export type $defs = Record<string, never>;
+
 export type external = Record<string, never>;
 
-export type operations = {
+export type operations<components = components> = {
+  /**
+   * Create a new address for a customer
+   * Creates a new address for a customer.
+   */
   createCustomerAddress: {
-    /**
-     * Create a new address for a customer
-     * Creates a new address for a customer.
-     */
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["CustomerAddress"];
+        "application/json": Omit<
+          // TODO: [OpenAPI][createCustomerAddress] - omit id while creating address
+          components["schemas"]["CustomerAddress"],
+          "id" | "createdAt"
+        >;
       };
     };
     responses: {
@@ -6444,38 +7154,42 @@ export type operations = {
       };
     };
   };
+  /**
+   * Delete an address of a customer
+   * Delete an address of customer.
+   *
+   *     Only addresses which are not set as default addresses for shipping or billing can be deleted. You can check the current default addresses of your customer using the profile information endpoint and change them using the default address endpoint.
+   *
+   *     **A customer must have at least one address (which can be used for shipping and billing).**
+   *
+   *     An automatic fallback is not applied.
+   */
   deleteCustomerAddress: {
-    /**
-     * Delete an address of a customer
-     * Delete an address of customer.
-     *
-     *     Only addresses which are not set as default addresses for shipping or billing can be deleted. You can check the current default addresses of your customer using the profile information endpoint and change them using the default address endpoint.
-     *
-     *     **A customer must have at least one address (which can be used for shipping and billing).**
-     *
-     *     An automatic fallback is not applied.
-     */
     parameters: {
-      /** ID of the address to be deleted. */
       path: {
+        /** ID of the address to be deleted. */
         addressId: string;
       };
     };
     responses: {
       /** No Content response, when the address has been deleted */
-      204: never;
+      204: {
+        content: never;
+      };
       /** Response containing a list of errors, most likely due to the address being in use */
-      400: never;
+      400: {
+        content: never;
+      };
     };
   };
+  /**
+   * Modify an address of a customer
+   * Modifies an existing address of a customer.
+   */
   updateCustomerAddress: {
-    /**
-     * Modify an address of a customer
-     * Modifies an existing address of a customer.
-     */
     parameters: {
-      /** Address ID */
       path: {
+        /** Address ID */
         addressId: string;
       };
     };
@@ -6492,41 +7206,45 @@ export type operations = {
       };
     };
   };
+  /**
+   * Change a customer's default billing address
+   * Updates the default (preselected) billing addresses of a customer.
+   */
   defaultBillingAddress: {
-    /**
-     * Change a customer's default billing address
-     * Updates the default (preselected) billing addresses of a customer.
-     */
     parameters: {
-      /** Address ID */
       path: {
+        /** Address ID */
         addressId: string;
       };
     };
     responses: {
-      200: never;
+      200: {
+        content: never;
+      };
     };
   };
+  /**
+   * Change a customer's default shipping address
+   * Updates the default (preselected) shipping addresses of a customer.
+   */
   defaultShippingAddress: {
-    /**
-     * Change a customer's default shipping address
-     * Updates the default (preselected) shipping addresses of a customer.
-     */
     parameters: {
-      /** Address ID */
       path: {
+        /** Address ID */
         addressId: string;
       };
     };
     responses: {
-      200: never;
+      200: {
+        content: never;
+      };
     };
   };
+  /**
+   * Change the customer's email address
+   * Changes a customer's email address to a new email address, using their current password as a validation.
+   */
   changeEmail: {
-    /**
-     * Change the customer's email address
-     * Changes a customer's email address to a new email address, using their current password as a validation.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6548,11 +7266,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Change the customer's language.
+   * Changes the language of the logged in customer
+   */
   changeLanguage: {
-    /**
-     * Change the customer's language.
-     * Changes the language of the logged in customer
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6570,11 +7288,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Change the customer's password
+   * Changes a customer's password using their current password as a validation.
+   */
   changePassword: {
-    /**
-     * Change the customer's password
-     * Changes a customer's password using their current password as a validation.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6596,14 +7314,14 @@ export type operations = {
       };
     };
   };
+  /**
+   * Change the customer's default payment method
+   * Changes a customer's default (preselected) payment method.
+   */
   changePaymentMethod: {
-    /**
-     * Change the customer's default payment method
-     * Changes a customer's default (preselected) payment method.
-     */
     parameters: {
-      /** Identifier of the desired default payment method */
       path: {
+        /** Identifier of the desired default payment method */
         paymentMethodId: string;
       };
     };
@@ -6616,11 +7334,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Change the customer's information
+   * Make changes to a customer's account, like changing their name, salutation or title.
+   */
   changeProfile: {
-    /**
-     * Change the customer's information
-     * Make changes to a customer's account, like changing their name, salutation or title.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6652,11 +7370,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Get information about current customer
+   * Returns information about the current customer.
+   */
   readCustomer: {
-    /**
-     * Get information about current customer
-     * Returns information about the current customer.
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -6671,21 +7389,23 @@ export type operations = {
       };
     };
   };
+  /**
+   * Delete the customer's profile
+   * Deletes a customer profile along with their addresses, wishlists and associated data. Created orders and their payment/shipping information (addresses) and reviews are not deleted.
+   */
   deleteCustomer: {
-    /**
-     * Delete the customer's profile
-     * Deletes a customer profile along with their addresses, wishlists and associated data. Created orders and their payment/shipping information (addresses) and reviews are not deleted.
-     */
     responses: {
       /** Returns a no content response indicating a successful removal of the customer profile */
-      204: never;
+      204: {
+        content: never;
+      };
     };
   };
+  /**
+   * Checks if the customer recovery entry for a given hash is expired.
+   * This can be used to validate a provided hash has a valid and not expired customer recovery hash.
+   */
   getCustomerRecoveryIsExpired: {
-    /**
-     * Checks if the customer recovery entry for a given hash is expired.
-     * This can be used to validate a provided hash has a valid and not expired customer recovery hash.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6703,11 +7423,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch addresses of a customer
+   * Lists all addresses of the current customer and allows filtering them based on a criteria.
+   */
   listAddress: {
-    /**
-     * Fetch addresses of a customer
-     * Lists all addresses of the current customer and allows filtering them based on a criteria.
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -6716,16 +7436,19 @@ export type operations = {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["CustomerAddress"][];
+          "application/json": {
+            // TODO: [OpenAPI][listAddress] add proper response type as EntitySearchResult
+            elements: components["schemas"]["CustomerAddress"][];
+          } & components["schemas"]["EntitySearchResult"];
         };
       };
     };
   };
+  /**
+   * Log in a customer
+   * Logs in customers given their credentials.
+   */
   loginCustomer: {
-    /**
-     * Log in a customer
-     * Logs in customers given their credentials.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6737,12 +7460,7 @@ export type operations = {
       };
     };
     responses: {
-      /** A successful login returns a context token which is associated with the logged in user. Use that as your `sw-context-token` header for subsequent requests. */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ContextTokenResponse"];
-        };
-      };
+      200: components["responses"]["ContextTokenResponse"];
       /** If credentials are incorrect an error is returned */
       401: {
         content: {
@@ -6751,26 +7469,21 @@ export type operations = {
       };
     };
   };
+  /**
+   * Log out a customer
+   * Logs out a customer.
+   */
   logoutCustomer: {
-    /**
-     * Log out a customer
-     * Logs out a customer.
-     */
     responses: {
-      /** A successful logout returns a context token for the anonymous user. Use that as your `sw-context-token` header for subsequent requests. */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ContextTokenResponse"];
-        };
-      };
+      200: components["responses"]["ContextTokenResponse"];
       403: components["responses"]["403"];
     };
   };
+  /**
+   * Fetch newsletter recipients
+   * Perform a filtered search for newsletter recipients.
+   */
   readNewsletterRecipient: {
-    /**
-     * Fetch newsletter recipients
-     * Perform a filtered search for newsletter recipients.
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -6779,16 +7492,17 @@ export type operations = {
     responses: {
       200: {
         content: {
-          "application/json": Record<string, never>;
+          // TODO: [OpenAPI][readNewsletterRecipient] return type is not array
+          "application/json": components["schemas"]["AccountNewsletterRecipientResult"];
         };
       };
     };
   };
+  /**
+   * Send a password recovery mail
+   * This operation is Step 1 of the password reset flow. Make sure to implement Step 2 "Reset password with recovery credentials" in order to allow for the complete flow in your application. Sends a recovery mail containing a link with credentials that allows a customer to reset their password.
+   */
   sendRecoveryMail: {
-    /**
-     * Send a password recovery mail
-     * This operation is Step 1 of the password reset flow. Make sure to implement Step 2 "Reset password with recovery credentials" in order to allow for the complete flow in your application. Sends a recovery mail containing a link with credentials that allows a customer to reset their password.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6812,11 +7526,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Reset a password with recovery credentials
+   * This operation is Step 2 of the password reset flow. It is required to conduct Step 1 "Send a password recovery mail" in order to obtain the required credentials for this step.Resets a customer's password using credentials from a password recovery mail as a validation.
+   */
   recoveryPassword: {
-    /**
-     * Reset a password with recovery credentials
-     * This operation is Step 2 of the password reset flow. It is required to conduct Step 1 "Send a password recovery mail" in order to obtain the required credentials for this step.Resets a customer's password using credentials from a password recovery mail as a validation.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6838,11 +7552,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Register a customer
+   * Registers a customer. Used both for normal customers and guest customers.See the Guide "Register a customer" for more information on customer registration.
+   */
   register: {
-    /**
-     * Register a customer
-     * Registers a customer. Used both for normal customers and guest customers.See the Guide "Register a customer" for more information on customer registration.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6855,7 +7569,10 @@ export type operations = {
           accountType?: string;
           /** Field can be used to store an affiliate tracking code */
           affiliateCode?: string;
-          billingAddress: components["schemas"]["CustomerAddress"];
+          billingAddress: Omit<
+            components["schemas"]["CustomerAddress"],
+            "createdAt" | "id" | "customerId" | "firstName" | "lastName"
+          >; // TODO: [OpenAPI][register] - omit id, createdAt, customerId, firstName, lastName while creating address (or better to reverse and pick required fields)
           /** Birthday day */
           birthdayDay?: number;
           /** Birthday month */
@@ -6896,13 +7613,13 @@ export type operations = {
       };
     };
   };
+  /**
+   * Confirm a customer registration
+   * Confirms a customer registration when double opt-in is activated.
+   *
+   * Learn more about double opt-in registration in our guide "Register a customer".
+   */
   registerConfirm: {
-    /**
-     * Confirm a customer registration
-     * Confirms a customer registration when double opt-in is activated.
-     *
-     * Learn more about double opt-in registration in our guide "Register a customer".
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -6915,18 +7632,53 @@ export type operations = {
     };
     responses: {
       /** Returns the logged in customer. The customer is automatically logged in with the `sw-context-token` header provided, which can be reused for subsequent requests. */
-      200: never;
+      200: {
+        content: never;
+      };
       /** No hash provided */
-      404: never;
+      404: {
+        content: never;
+      };
       /** The customer has already been confirmed */
-      412: never;
+      412: {
+        content: never;
+      };
     };
   };
+  /**
+   * Generate JWT token for app system backend
+   * Generate JWT token for authenticated communication with the app server
+   */
+  generateJWTAppSystemAppServer: {
+    parameters: {
+      path: {
+        /** Name of the app */
+        name: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": GenericRecord;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            /** Format: date-time */
+            expires?: string;
+            shopId?: string;
+            token?: string;
+          };
+        };
+      };
+    };
+  };
+  /**
+   * Fetch a list of categories
+   * Perform a filtered search for categories.
+   */
   readCategoryList: {
-    /**
-     * Fetch a list of categories
-     * Perform a filtered search for categories.
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -6943,18 +7695,22 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch a single category
+   * This endpoint returns information about the category, as well as a fully resolved (hydrated with mapping values) CMS page, if one is assigned to the category. You can pass slots which should be resolved exclusively.
+   */
   readCategory: {
-    /**
-     * Fetch a single category
-     * This endpoint returns information about the category, as well as a fully resolved (hydrated with mapping values) CMS page, if one is assigned to the category. You can pass slots which should be resolved exclusively.
-     */
     parameters: {
-      /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
+      header?: {
+        /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+        "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
+      };
       query?: {
+        /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
         slots?: string;
       };
-      /** Identifier of the category to be fetched */
       path: {
+        /** Identifier of the category to be fetched */
         navigationId: string;
       };
     };
@@ -6973,17 +7729,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch or create a cart
+   * Used to fetch the current cart or for creating a new one.
+   */
   readCart: {
-    /**
-     * Fetch or create a cart
-     * Used to fetch the current cart or for creating a new one.
-     */
-    parameters?: {
-      /** The name of the new cart. This parameter will only be used when creating a new cart. */
-      query?: {
-        name?: string;
-      };
-    };
     responses: {
       /** Cart */
       200: {
@@ -6993,11 +7743,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Delete a cart
+   * This route deletes the cart of the customer.
+   */
   deleteCart: {
-    /**
-     * Delete a cart
-     * This route deletes the cart of the customer.
-     */
     responses: {
       /** Successfully deleted the cart */
       204: {
@@ -7007,16 +7757,24 @@ export type operations = {
       };
     };
   };
+  /**
+   * Add items to the cart
+   * This route adds items to the cart. An item can be a product or promotion for example. They are referenced by the `referencedId`-parameter.
+   *
+   * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#adding-new-items-to-the-cart)
+   */
   addLineItem: {
-    /**
-     * Add items to the cart
-     * This route adds items to the cart. An item can be a product or promotion for example. They are referenced by the `referencedId`-parameter.
-     *
-     * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#adding-new-items-to-the-cart)
-     */
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["CartItems"];
+        "application/json": {
+          // TODO: [OpenAPI][addLineItem] - add proper request body type with required fields
+          items: Array<{
+            id?: string; // TODO: [OpenAPI][addLineItem] - check if this is used at all?
+            referencedId: string;
+            quantity?: number;
+            type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][addLineItem] - add proper type -> see also #456
+          }>;
+        };
       };
     };
     responses: {
@@ -7028,16 +7786,17 @@ export type operations = {
       };
     };
   };
-  removeLineItem: {
-    /**
-     * Remove items from the cart
-     * This route removes items from the cart and recalculates it.
-     *
-     * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#deleting-items-in-the-cart)
-     */
+  /**
+   * Remove items from the cart
+   * @deprecated
+   * DEPRECATED: use removeLineItem instead. This route removes items from the cart and recalculates it.
+   *
+   * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#deleting-items-in-the-cart)
+   */
+  removeLineItemDeprecated: {
     parameters: {
-      /** A list of product identifiers. */
       query: {
+        /** A list of product identifiers. */
         ids: string[];
       };
     };
@@ -7050,16 +7809,22 @@ export type operations = {
       };
     };
   };
+  /**
+   * Update items in the cart
+   * This route updates items in the cart. A typical example is updating the quantity of an item.
+   *
+   * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#updating-items-in-the-cart)
+   */
   updateLineItem: {
-    /**
-     * Update items in the cart
-     * This route updates items in the cart. A typical example is updating the quantity of an item.
-     *
-     * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#updating-items-in-the-cart)
-     */
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["CartItems"];
+        "application/json": {
+          // TODO: [OpenAPI][updateLineItem] - add proper request body type with required fields
+          items: Array<{
+            id: string;
+            quantity: number;
+          }>;
+        };
       };
     };
     responses: {
@@ -7071,13 +7836,37 @@ export type operations = {
       };
     };
   };
+  /**
+   * Remove items from the cart
+   * This route removes items from the cart and recalculates it.
+   *
+   * Example: [Working with the cart - Guide](https://developer.shopware.com/docs/guides/integrations-api/store-api-guide/work-with-the-cart#deleting-items-in-the-cart)
+   */
+  removeLineItem: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** A list of product identifiers. */
+          ids: [string, ...string[]];
+        };
+      };
+    };
+    responses: {
+      /** The updated cart. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Cart"];
+        };
+      };
+    };
+  };
+  /**
+   * Create an order from a cart
+   * Creates a new order from the current cart and deletes the cart.
+   *
+   * If you are using the [prepared payment flow](https://developer.shopware.com/docs/concepts/commerce/checkout-concept/payments#2.1-prepare-payment-optional), this endpoint also receives additional transaction details. The exact name of the parameters depends on the implementation of the corresponding *payment handler*.
+   */
   createOrder: {
-    /**
-     * Create an order from a cart
-     * Creates a new order from the current cart and deletes the cart.
-     *
-     * If you are using the [prepared payment flow](https://developer.shopware.com/docs/concepts/commerce/checkout-concept/payments#2.1-prepare-payment-optional), this endpoint also receives additional transaction details. The exact name of the parameters depends on the implementation of the corresponding *payment handler*.
-     */
     /** Contains additional metadata which is stored together with the order. It can also contain payment transaction details. */
     requestBody?: {
       content: {
@@ -7100,18 +7889,18 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch and resolve a CMS page
+   * Loads a content management page by its identifier and resolve the slot data. This could be media files, product listing and so on.
+   *
+   * **Important notice**
+   *
+   * The criteria passed with this route also affects the listing, if there is one within the cms page.
+   */
   readCms: {
-    /**
-     * Fetch and resolve a CMS page
-     * Loads a content management page by its identifier and resolve the slot data. This could be media files, product listing and so on.
-     *
-     * **Important notice**
-     *
-     * The criteria passed with this route also affects the listing, if there is one within the cms page.
-     */
     parameters: {
-      /** Identifier of the CMS page to be resolved */
       path: {
+        /** Identifier of the CMS page to be resolved */
         id: string;
       };
     };
@@ -7133,11 +7922,11 @@ export type operations = {
       404: components["responses"]["404"];
     };
   };
+  /**
+   * Submit a contact form message
+   * Used for submitting contact forms. Be aware that there can be more required fields, depending on the system settings.
+   */
   sendContactMail: {
-    /**
-     * Submit a contact form message
-     * Used for submitting contact forms. Be aware that there can be more required fields, depending on the system settings.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -7171,14 +7960,16 @@ export type operations = {
     };
     responses: {
       /** Message sent successful. */
-      200: never;
+      200: {
+        content: never;
+      };
     };
   };
+  /**
+   * Fetch the current context
+   * Fetches the current context. This includes for example the `customerGroup`, `currency`, `taxRules` and many more.
+   */
   readContext: {
-    /**
-     * Fetch the current context
-     * Fetches the current context. This includes for example the `customerGroup`, `currency`, `taxRules` and many more.
-     */
     responses: {
       /** Returns the current context. */
       200: {
@@ -7188,11 +7979,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Modify the current context
+   * Used for switching the context. A typical example would be changing the language or changing the currency.
+   */
   updateContext: {
-    /**
-     * Modify the current context
-     * Used for switching the context. A typical example would be changing the language or changing the currency.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -7216,19 +8007,14 @@ export type operations = {
       };
     };
     responses: {
-      /** Returns the context token. Use that as your `sw-context-token` header for subsequent requests. Redirect if getRedirectUrl is set. */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ContextTokenResponse"];
-        };
-      };
+      200: components["responses"]["ContextTokenResponse"];
     };
   };
+  /**
+   * Fetch countries
+   * Perform a filtered search for countries
+   */
   readCountry: {
-    /**
-     * Fetch countries
-     * Perform a filtered search for countries
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -7245,11 +8031,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch the states of a country
+   * Perform a filtered search the states for a country
+   */
   readCountryState: {
-    /**
-     * Fetch the states of a country
-     * Perform a filtered search the states for a country
-     */
     parameters: {
       path: {
         countryId: string;
@@ -7271,11 +8057,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch currencies
+   * Perform a filtered search for currencies.
+   */
   readCurrency: {
-    /**
-     * Fetch currencies
-     * Perform a filtered search for currencies.
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -7292,11 +8078,11 @@ export type operations = {
       };
     };
   };
+  /** Fetch registration settings for customer group */
   getCustomerGroupRegistrationInfo: {
-    /** Fetch registration settings for customer group */
     parameters: {
-      /** Customer group id */
       path: {
+        /** Customer group id */
         customerGroupId: string;
       };
     };
@@ -7309,16 +8095,16 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch a wishlist
+   * Fetch a customer's wishlist. Products on the wishlist can be filtered using a criteria object.
+   *
+   *     **Important constraints**
+   *
+   *     * Anonymous (not logged-in) customers can not have wishlists.
+   *     * The wishlist feature has to be activated.
+   */
   readCustomerWishlist: {
-    /**
-     * Fetch a wishlist
-     * Fetch a customer's wishlist. Products on the wishlist can be filtered using a criteria object.
-     *
-     *     **Important constraints**
-     *
-     *     * Anonymous (not logged-in) customers can not have wishlists.
-     *     * The wishlist feature has to be activated.
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -7332,16 +8118,22 @@ export type operations = {
       };
     };
   };
+  /**
+   * Add a product to a wishlist
+   * Adds a product to a customers wishlist.
+   *
+   *     **Important constraints**
+   *
+   *     * Anonymous (not logged-in) customers can not have wishlists.
+   *     * The wishlist feature has to be activated.
+   */
   addProductOnWishlist: {
-    /**
-     * Add a product to a wishlist
-     * Adds a product to a customers wishlist.
-     *
-     *     **Important constraints**
-     *
-     *     * Anonymous (not logged-in) customers can not have wishlists.
-     *     * The wishlist feature has to be activated.
-     */
+    parameters: {
+      path: {
+        /** Identifier of the product to be added. */
+        productId: string;
+      };
+    };
     responses: {
       /** Returns a success response. */
       200: {
@@ -7351,19 +8143,19 @@ export type operations = {
       };
     };
   };
+  /**
+   * Remove a product from a wishlist
+   * Removes a product from a customer's wishlist.
+   *
+   *     **Important constraints**
+   *
+   *     * Anonymous (not logged-in) customers can not have wishlists.
+   *     * The wishlist feature has to be activated.
+   */
   deleteProductOnWishlist: {
-    /**
-     * Remove a product from a wishlist
-     * Removes a product from a customer's wishlist.
-     *
-     *     **Important constraints**
-     *
-     *     * Anonymous (not logged-in) customers can not have wishlists.
-     *     * The wishlist feature has to be activated.
-     */
     parameters: {
-      /** The identifier of the product to be removed from the wishlist. */
       path: {
+        /** The identifier of the product to be removed from the wishlist. */
         productId: string;
       };
     };
@@ -7382,17 +8174,17 @@ export type operations = {
       };
     };
   };
+  /**
+   * Create a wishlist for a customer
+   * Create a new wishlist for a logged in customer or extend the existing wishlist given a set of products.
+   *
+   *     **Important constraints**
+   *
+   *     * Anonymous (not logged-in) customers can not have wishlists.
+   *     * A customer can only have a single wishlist.
+   *     * The wishlist feature has to be activated.
+   */
   mergeProductOnWishlist: {
-    /**
-     * Create a wishlist for a customer
-     * Create a new wishlist for a logged in customer or extend the existing wishlist given a set of products.
-     *
-     *     **Important constraints**
-     *
-     *     * Anonymous (not logged-in) customers can not have wishlists.
-     *     * A customer can only have a single wishlist.
-     *     * The wishlist feature has to be activated.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -7410,11 +8202,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Download generated document
+   * Returns blob file of a generated document to download.
+   */
   download: {
-    /**
-     * Download generated document
-     * Returns blob file of a generated document to download.
-     */
     parameters: {
       path: {
         documentId: string;
@@ -7435,13 +8227,13 @@ export type operations = {
       };
     };
   };
+  /**
+   * Initiate a payment for an order
+   * This generic endpoint is should be called to initiate a payment flow after an order has been created. The details of the payment flow can differ depending on the payment integration and might require calling additional operations or the setup of webhooks.
+   *
+   * The endpoint internally calls the payment handler of the payment method currently set for the order.
+   */
   handlePaymentMethod: {
-    /**
-     * Initiate a payment for an order
-     * This generic endpoint is should be called to initiate a payment flow after an order has been created. The details of the payment flow can differ depending on the payment integration and might require calling additional operations or the setup of webhooks.
-     *
-     * The endpoint internally calls the payment handler of the payment method currently set for the order.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -7456,21 +8248,27 @@ export type operations = {
     };
     responses: {
       /** Redirect to external payment provider */
-      200: never;
+      200: {
+        content: {
+          "application/json": {
+            redirectUrl: string; // TODO: [OpenAPI][handlePaymentMethod] add proper response type
+          };
+        };
+      };
     };
   };
+  /**
+   * Fetch a landing page with the resolved CMS page
+   * Loads a landing page by its identifier and resolves the CMS page.
+   *
+   * **Important notice**
+   *
+   * The criteria passed with this route also affects the listing, if there is one within the cms page.
+   */
   readLandingPage: {
-    /**
-     * Fetch a landing page with the resolved CMS page
-     * Loads a landing page by its identifier and resolves the CMS page.
-     *
-     * **Important notice**
-     *
-     * The criteria passed with this route also affects the listing, if there is one within the cms page.
-     */
     parameters: {
-      /** Identifier of the landing page. */
       path: {
+        /** Identifier of the landing page. */
         landingPageId: string;
       };
     };
@@ -7493,11 +8291,11 @@ export type operations = {
       404: components["responses"]["404"];
     };
   };
+  /**
+   * Fetch languages
+   * Perform a filtered search for languages.
+   */
   readLanguages: {
-    /**
-     * Fetch languages
-     * Perform a filtered search for languages.
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -7508,42 +8306,47 @@ export type operations = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Language"][];
+            elements: components["schemas"]["Language"][]; // TODO: [OpenAPI][readLanguages] add elements property as required
           } & components["schemas"]["EntitySearchResult"];
         };
       };
     };
   };
+  /**
+   * Fetch a navigation menu
+   * This endpoint returns categories that can be used as a page navigation. You can either return them as a tree or as a flat list. You can also control the depth of the tree.
+   *
+   *     Instead of passing uuids, you can also use one of the following aliases for the activeId and rootId parameters to get the respective navigations of your sales channel.
+   *
+   *      * main-navigation
+   *      * service-navigation
+   *      * footer-navigation
+   */
   readNavigation: {
-    /**
-     * Fetch a navigation menu
-     * This endpoint returns categories that can be used as a page navigation. You can either return them as a tree or as a flat list. You can also control the depth of the tree.
-     *
-     *     Instead of passing uuids, you can also use one of the following aliases for the activeId and rootId parameters to get the respective navigations of your sales channel.
-     *
-     *      * main-navigation
-     *      * service-navigation
-     *      * footer-navigation
-     */
     parameters: {
-      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       header?: {
+        /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
         "sw-include-seo-urls"?: boolean;
       };
-      /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
-      /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
       path: {
-        activeId: string;
-        rootId: string;
+        /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
+        // TODO: [OpenAPI][readNavigation] add union type in definition
+        activeId: components["schemas"]["NavigationType"] | string;
+        /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
+        // TODO: [OpenAPI][readNavigation] add union type in definition
+        rootId: components["schemas"]["NavigationType"] | string;
       };
     };
     requestBody: {
       content: {
         "application/json": components["schemas"]["Criteria"] & {
           /** Return the categories as a tree or as a flat list. */
-          buildTree?: Record<string, never>;
-          /** Determines the depth of fetched navigation levels. */
-          depth?: Record<string, never>;
+          buildTree?: unknown;
+          /**
+           * Format: int32
+           * Determines the depth of fetched navigation levels.
+           */
+          depth?: number;
         };
       };
     };
@@ -7556,11 +8359,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Confirm a newsletter registration
+   * You have to use the hash from the link sent out via email to confirm the user registration.
+   */
   confirmNewsletter: {
-    /**
-     * Confirm a newsletter registration
-     * You have to use the hash from the link sent out via email to confirm the user registration.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -7573,21 +8376,23 @@ export type operations = {
     };
     responses: {
       /** The newsletter confirmation was successful. */
-      200: never;
+      200: {
+        content: never;
+      };
     };
   };
+  /**
+   * Create or remove a newsletter subscription
+   * This route is used to create/remove/confirm a newsletter subscription.
+   *
+   * The `option` property controls what should happen:
+   * * `direct`: The subscription is directly active and does not need a confirmation.
+   * * `subscribe`: An email will be send to the provided email addrees containing a link to the /newsletter/confirm route.
+   * The subscription is only successful, if the /newsletter/confirm route is called with the generated hashes.
+   * * `unsubscribe`: The email address will be removed from the newsletter subscriptions.
+   * * `confirmSubscribe`: Confirmes the newsletter subscription for the provided email address.
+   */
   subscribeToNewsletter: {
-    /**
-     * Create or remove a newsletter subscription
-     * This route is used to create/remove/confirm a newsletter subscription.
-     *
-     * The `option` property controls what should happen:
-     * * `direct`: The subscription is directly active and does not need a confirmation.
-     * * `subscribe`: An email will be send to the provided email addrees containing a link to the /newsletter/confirm route.
-     * The subscription is only successful, if the /newsletter/confirm route is called with the generated hashes.
-     * * `unsubscribe`: The email address will be removed from the newsletter subscriptions.
-     * * `confirmSubscribe`: Confirmes the newsletter subscription for the provided email address.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -7600,13 +8405,13 @@ export type operations = {
           /** First name */
           firstName?: string;
           /** Identifier of the language. */
-          languageId?: Record<string, never>;
+          languageId?: string;
           /** Last name */
           lastName?: string;
           /** Defines what should be done. */
-          option: Record<string, never>;
+          option: string;
           /** Identifier of the salutation. */
-          salutationId?: Record<string, never>;
+          salutationId?: string;
           /** Url of the storefront of the shop. This will be used for generating the link to the /newsletter/confirm inside the confirm email. */
           storefrontUrl: string;
           /** Street */
@@ -7620,14 +8425,16 @@ export type operations = {
     };
     responses: {
       /** Success */
-      200: never;
+      200: {
+        content: never;
+      };
     };
   };
+  /**
+   * Remove a newsletter subscription
+   * Removes a newsletter recipient from the mailing lists.
+   */
   unsubscribeToNewsletter: {
-    /**
-     * Remove a newsletter subscription
-     * Removes a newsletter recipient from the mailing lists.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -7638,14 +8445,16 @@ export type operations = {
     };
     responses: {
       /** Unsubscribing was successful. */
-      200: never;
+      200: {
+        content: never;
+      };
     };
   };
+  /**
+   * Fetch a list of orders
+   * List orders of a customer.
+   */
   readOrder: {
-    /**
-     * Fetch a list of orders
-     * List orders of a customer.
-     */
     requestBody: {
       content: {
         "application/json": components["schemas"]["Criteria"] & {
@@ -7663,11 +8472,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Download a purchased file
+   * Download a file included in the given order and with the given id. Access must be granted.
+   */
   orderDownloadFile: {
-    /**
-     * Download a purchased file
-     * Download a file included in the given order and with the given id. Access must be granted.
-     */
     parameters: {
       path: {
         orderId: string;
@@ -7678,16 +8487,16 @@ export type operations = {
       /** An arbitrary binary file. */
       200: {
         content: {
-          "application/octet-stream": unknown;
+          "application/octet-stream": string;
         };
       };
     };
   };
+  /**
+   * Update the payment method of an order
+   * Changes the payment method of a specific order. You can use the /order route to find out if the payment method of an order can be changed - take a look at the `paymentChangeable`- array in the response.
+   */
   orderSetPayment: {
-    /**
-     * Update the payment method of an order
-     * Changes the payment method of a specific order. You can use the /order route to find out if the payment method of an order can be changed - take a look at the `paymentChangeable`- array in the response.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -7707,16 +8516,16 @@ export type operations = {
       };
     };
   };
+  /**
+   * Cancel an order
+   * Cancels an order. The order state will be set to 'cancelled'.
+   */
   cancelOrder: {
-    /**
-     * Cancel an order
-     * Cancels an order. The order state will be set to 'cancelled'.
-     */
     requestBody: {
       content: {
         "application/json": {
           /** The identifier of the order to be canceled. */
-          orderId?: string;
+          orderId: string; // TODO: [OpenAPI][cancelOrder] add orderId as required field
         };
       };
     };
@@ -7733,8 +8542,8 @@ export type operations = {
       };
     };
   };
+  /** Loads all available payment methods */
   readPaymentMethod: {
-    /** Loads all available payment methods */
     requestBody: {
       content: {
         "application/json": components["schemas"]["Criteria"] & {
@@ -7748,7 +8557,7 @@ export type operations = {
         content: {
           "application/json": {
             /** aggregation result */
-            aggregations?: Record<string, never>;
+            aggregations?: GenericRecord;
             elements?: components["schemas"]["PaymentMethod"][];
             /** Total amount */
             total?: number;
@@ -7757,14 +8566,16 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch a list of products
+   * List products that match the given criteria. For performance reasons a limit should always be set.
+   */
   readProduct: {
-    /**
-     * Fetch a list of products
-     * List products that match the given criteria. For performance ressons a limit should always be set.
-     */
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": components["schemas"]["Criteria"] & {
+          ids?: string[]; // TODO: [OpenAPI][readProduct]: add `ids` as field to criteria - (is required?)
+        };
       };
     };
     responses: {
@@ -7772,34 +8583,39 @@ export type operations = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Product"][];
+            elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
           } & components["schemas"]["EntitySearchResult"];
         };
       };
     };
   };
+  /** Export product export */
   readProductExport: {
-    /** Export product export */
     parameters: {
-      /** Access Key */
-      /** File Name */
       path: {
+        /** Access Key */
         accessKey: string;
+        /** File Name */
         fileName: string;
       };
     };
     responses: {
-      200: never;
+      200: {
+        content: never;
+      };
     };
   };
+  /**
+   * Fetch a product listing by category
+   * Fetches a product listing for a specific category. It also provides filters, sortings and property aggregations, analogous to the /search endpoint.
+   */
   readProductListing: {
-    /**
-     * Fetch a product listing by category
-     * Fetches a product listing for a specific category. It also provides filters, sortings and property aggregations, analogous to the /search endpoint.
-     */
     parameters: {
-      /** Identifier of a category. */
+      header?: {
+        "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readProductListing] - add sw-include-seo-urls to header parameters
+      };
       path: {
+        /** Identifier of a category. */
         categoryId: string;
       };
     };
@@ -7818,15 +8634,15 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch a single product
+   * This route is used to load a single product with the corresponding details. In addition to loading the data, the best variant of the product is determined when a parent id is passed.
+   */
   readProductDetail: {
-    /**
-     * Fetch a single product
-     * This route is used to load a single product with the corresponding details. In addition to loading the data, the best variant of the product is determined when a parent id is passed.
-     */
     parameters: {
-      /** Product ID */
       path: {
-        productId: string;
+        /** Product ID */
+        productId: string; // TODO: [OpenAPI][readProductDetails]: add cmsAssociations to product detail parameters
       };
     };
     responses: {
@@ -7838,14 +8654,14 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch cross-selling groups of a product
+   * This route is used to load the cross sellings for a product. A product has several cross selling definitions in which several products are linked. The route returns the cross sellings together with the linked products
+   */
   readProductCrossSellings: {
-    /**
-     * Fetch cross-selling groups of a product
-     * This route is used to load the cross sellings for a product. A product has several cross selling definitions in which several products are linked. The route returns the cross sellings together with the linked products
-     */
     parameters: {
-      /** Product ID */
       path: {
+        /** Product ID */
         productId: string;
       };
     };
@@ -7858,14 +8674,14 @@ export type operations = {
       };
     };
   };
+  /**
+   * Search for a matching variant by product options.
+   * Performs a search for product variants and returns the best matching variant.
+   */
   searchProductVariantIds: {
-    /**
-     * Search for a matching variant by product options.
-     * Performs a search for product variants and returns the best matching variant.
-     */
     parameters: {
-      /** Product ID */
       path: {
+        /** Product ID */
         productId: string;
       };
     };
@@ -7888,14 +8704,14 @@ export type operations = {
       };
     };
   };
+  /**
+   * Save a product review
+   * Saves a review for a product. Reviews have to be activated in the settings.
+   */
   saveProductReview: {
-    /**
-     * Save a product review
-     * Saves a review for a product. Reviews have to be activated in the settings.
-     */
     parameters: {
-      /** Identifier of the product which is reviewed. */
       path: {
+        /** Identifier of the product which is reviewed. */
         productId: string;
       };
     };
@@ -7903,31 +8719,36 @@ export type operations = {
       content: {
         "application/json": {
           /** The content of review. */
-          content: Record<string, never>;
+          content: string;
           /** The email address of the review author. If not set, the email of the customer is chosen. */
           email?: string;
           /** The name of the review author. If not set, the first name of the customer is chosen. */
           name?: string;
-          /** The review rating for the product. */
-          points: Record<string, never>;
+          /**
+           * Format: double
+           * The review rating for the product.
+           */
+          points: number;
           /** The title of the review. */
-          title: Record<string, never>;
+          title: string;
         };
       };
     };
     responses: {
       /** Success response indicating the review was saved successfuly. */
-      200: never;
+      200: {
+        content: never;
+      };
     };
   };
+  /**
+   * Fetch product reviews
+   * Perform a filtered search for product reviews.
+   */
   readProductReviews: {
-    /**
-     * Fetch product reviews
-     * Perform a filtered search for product reviews.
-     */
     parameters: {
-      /** Identifier of the product. */
       path: {
+        /** Identifier of the product. */
         productId: string;
       };
     };
@@ -7947,11 +8768,69 @@ export type operations = {
       };
     };
   };
+  /**
+   * Resolves a page by its relative `path`. Additional information, like *breadcrumb*, an associated *product* or *category* and the type of resource is fetched along with it.
+   * Resolve a page for a given resource and resource identification or path
+   * First, a PageLoaderContext object is assembled, which includes information about the resource, request and context.
+   * Then, the page is loaded through the page loader only given the page loader context.
+   */
+  pwaResolvePage: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Relative path to the page that should be resolved */
+          path?: string;
+        };
+      };
+    };
+    responses: {
+      /** The resolved page including additional data. */
+      200: {
+        content: {
+          "application/json": OneOf<
+            [
+              {
+                /** List of property groups with their corresponding options and information on how to display them. */
+                configuration?: components["schemas"]["PropertyGroup"];
+                /** The product associated with the loaded pag. */
+                product?: components["schemas"]["Product"];
+                /**
+                 * Type of page that was fetched. Indicates whether it is a product page or a category page.
+                 * @enum {string}
+                 */
+                resourceType?: "frontend.detail.page";
+              },
+              {
+                /** The category associated with the loaded page. */
+                category?: components["schemas"]["Category"];
+                /**
+                 * Type of page that was fetched. Indicates whether it is a product page or a category page.
+                 * @enum {string}
+                 */
+                resourceType?: "frontend.navigation.page";
+              },
+              {
+                /**
+                 * Type of page that was fetched. Indicates whether it is a product page or a category page.
+                 * @enum {string}
+                 */
+                resourceType?: "frontend.landing.page";
+              },
+            ]
+          >;
+        };
+      };
+      /** The resource could not be resolved or no path is provided.. */
+      404: {
+        content: components["responses"]["404"]; // TODO: [OpenAPI][pwaResolvePage] - properly define 404 response
+      };
+    };
+  };
+  /**
+   * Fetch salutations
+   * Perform a filtered search for salutations.
+   */
   readSalutation: {
-    /**
-     * Fetch salutations
-     * Perform a filtered search for salutations.
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -7968,24 +8847,26 @@ export type operations = {
       };
     };
   };
+  /** Access point for different api logics which are provided by apps over script hooks */
   postScriptStoreApiRoute: {
-    /** Access point for different api logics which are provided by apps over script hooks */
     parameters: {
-      /** Dynamic hook which used to build the hook name */
       path: {
+        /** Dynamic hook which used to build the hook name */
         hook: string;
       };
     };
     responses: {
       /** Returns different structures of results based on the called script. */
-      200: never;
+      200: {
+        content: never;
+      };
     };
   };
+  /**
+   * Search for products
+   * Performs a search for products which can be used to display a product listing.
+   */
   searchPage: {
-    /**
-     * Search for products
-     * Performs a search for products which can be used to display a product listing.
-     */
     requestBody?: {
       content: {
         "application/json": {
@@ -8004,11 +8885,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Search for products (suggest)
+   * Can be used to implement search previews or suggestion listings, that don’t require any interaction.
+   */
   searchSuggest: {
-    /**
-     * Search for products (suggest)
-     * Can be used to implement search previews or suggestion listings, that don’t require any interaction.
-     */
     requestBody: {
       content: {
         "application/json": {
@@ -8030,11 +8911,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch SEO routes
+   * Perform a filtered search for seo urls.
+   */
   readSeoUrl: {
-    /**
-     * Fetch SEO routes
-     * Perform a filtered search for seo urls.
-     */
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
@@ -8045,21 +8926,21 @@ export type operations = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["SeoUrl"][];
+            elements: components["schemas"]["SeoUrl"][]; // TODO: [OpenAPI][readSeoUrl]: response should be `EntitySearchResult` and elements should be required
           } & components["schemas"]["EntitySearchResult"];
         };
       };
       404: components["responses"]["404"];
     };
   };
+  /**
+   * Fetch shipping methods
+   * Perform a filtered search for shipping methods.
+   */
   readShippingMethod: {
-    /**
-     * Fetch shipping methods
-     * Perform a filtered search for shipping methods.
-     */
-    parameters?: {
-      /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
+    parameters: {
       query?: {
+        /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
         onlyAvailable?: boolean;
       };
     };
@@ -8073,8 +8954,8 @@ export type operations = {
         content: {
           "application/json": {
             /** aggregation result */
-            aggregations?: Record<string, never>;
-            elements?: components["schemas"]["ShippingMethod"][];
+            aggregations?: GenericRecord;
+            elements: components["schemas"]["ShippingMethod"][]; // TODO: [OpenAPI][readShippingMethod]: response should be `EntitySearchResult` and elements should be required
             /** Total amount */
             total?: number;
           };
@@ -8082,11 +8963,11 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch sitemaps
+   * Fetches a list of compressed sitemap files, which are often used by search engines.
+   */
   readSitemap: {
-    /**
-     * Fetch sitemaps
-     * Fetches a list of compressed sitemap files, which are often used by search engines.
-     */
     responses: {
       /** Returns a list of available sitemaps. */
       200: {
@@ -8096,75 +8977,517 @@ export type operations = {
       };
     };
   };
+  /**
+   * Fetch a list of employees
+   * This route is used to load employees
+   */
+  readEmployees: {
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Entity search result containing employees */
+      200: {
+        content: {
+          "application/json": {
+            elements?: components["schemas"]["B2bEmployee"][];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch a one employee by id
+   * This route is used to fetch one employee by id
+   */
+  readEmployee: {
+    parameters: {
+      path: {
+        /** Identifier of the employee to be fetched */
+        id: string;
+      };
+    };
+    responses: {
+      /** Employee entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bEmployee"];
+        };
+      };
+    };
+  };
+  /**
+   * Delete an employee by id
+   * This route is used to delete one employee by id
+   */
+  deleteEmployee: {
+    parameters: {
+      path: {
+        /** Identifier of the employee to be deleted */
+        id: string;
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Update a one employee by id
+   * This route is used to update one employee by id
+   */
+  updateEmployee: {
+    parameters: {
+      path: {
+        /** Identifier of the employee to be updated */
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** New email of the employee */
+          email?: string;
+          /** New first name of the employee */
+          firstName?: string;
+          /** New last name of the employee */
+          lastName?: string;
+          /** New id of the role of the employee */
+          roleId?: string;
+        };
+      };
+    };
+    responses: {
+      /** Employee entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bEmployee"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a single employee and returns the employee
+   * This route is used to create and return an employee
+   */
+  createEmployee: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Email of the new employee */
+          email?: string;
+          /** First name of the new employee */
+          firstName?: string;
+          /** Last name of the new employee */
+          lastName?: string;
+          /** Id of the role of the new employee */
+          roleId?: string;
+        };
+      };
+    };
+    responses: {
+      /** Employee entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bEmployee"];
+        };
+      };
+    };
+  };
+  /**
+   * Reinvite employee by id
+   * This route is used to reinvite an employee via email by id
+   */
+  reinviteEmployee: {
+    parameters: {
+      path: {
+        /** Identifier of the employee to be reinvited */
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** URL of the storefront domain */
+          storefrontUrl?: string;
+        };
+      };
+    };
+    responses: {
+      /** Employee entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bEmployee"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch product search terms by uploading an image.
+   * <b>Experimental until v6.7.0</b>
+   *
+   * Fetch product search terms by uploading an image.
+   */
+  searchByImageSearchTerm: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /**
+           * Format: binary
+           * Base-64 encoded image
+           */
+          file?: string;
+        };
+      };
+    };
+    responses: {
+      /** A collection of search terms */
+      200: {
+        content: {
+          "application/json": components["schemas"]["SearchByImageSearchTermResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch search terms by natural language search query
+   * <b>Experimental until v6.7.0</b>
+   *
+   * Fetch search terms by natural search language query
+   */
+  naturalLanguageSearchTerm: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /**
+           * Natural language query
+           * @example I'm looking for a present for my wife
+           */
+          query?: string;
+        };
+      };
+    };
+    responses: {
+      /** A collection of search terms, with an associated 'reason' based on search context */
+      200: {
+        content: {
+          "application/json": components["schemas"]["NaturalLanguageSearchTermResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch a list of roles
+   * This route is used to load roles
+   */
+  readRoles: {
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Entity search result containing roles */
+      200: {
+        content: {
+          "application/json": {
+            elements?: components["schemas"]["B2bComponentsRole"][];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch a list of roles
+   * This route is used to load roles
+   */
+  readRolesPOST: {
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Entity search result containing roles */
+      200: {
+        content: {
+          "application/json": {
+            elements?: components["schemas"]["B2bComponentsRole"][];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch a one role by id
+   * This route is used to fetch one role by id
+   */
+  readRole: {
+    parameters: {
+      path: {
+        /** Identifier of the role to be fetched */
+        id: string;
+      };
+    };
+    responses: {
+      /** Role entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bComponentsRole"];
+        };
+      };
+    };
+  };
+  /**
+   * Delete an role by id
+   * This route is used to delete one role by id
+   */
+  deleteRole: {
+    parameters: {
+      path: {
+        /** Identifier of the role to be fetched */
+        id: string;
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Update a one role by id
+   * This route is used to update one role by id
+   */
+  updateRole: {
+    parameters: {
+      path: {
+        /** Identifier of the role to be updated */
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Ability to set the role as default */
+          isDefaultRole?: boolean;
+          /** New name of the role */
+          name?: string;
+          /** New permissions of the role */
+          permissions?: string[];
+        };
+      };
+    };
+    responses: {
+      /** Role entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bComponentsRole"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a single role and returns the role
+   * This route is used to create and return an role
+   */
+  createRole: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Ability to set the new role as default */
+          isDefaultRole?: boolean;
+          /** Name of the new role */
+          name?: string;
+          /** Permissions of the new role */
+          permissions?: string[];
+        };
+      };
+    };
+    responses: {
+      /** Role entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bComponentsRole"];
+        };
+      };
+    };
+  };
+  /**
+   * Sets the default role Id for new employees
+   * This route is used to update the defaultRoleId for new employees
+   */
+  updateDefaultRoleId: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Id of the roleId to be set as default */
+          id?: string;
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Fetch a available permissions
+   * This route is used to fetch all available permissions
+   */
+  readPermissions: {
+    responses: {
+      /** Permission collection */
+      200: {
+        content: {
+          "application/json": {
+            elements?: {
+              permissionDependencies?: string[];
+              permissionGroupName?: string;
+              permissionName?: string;
+            }[];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /**
+   * Authenticates via SSO
+   * Authenticates login via a given SSO provider ID
+   */
+  auth: {
+    parameters: {
+      path: {
+        /** Identifier of the SSO provider used to authenticate */
+        providerId: string;
+      };
+    };
+    responses: {
+      /** Successfully authenticated */
+      204: {
+        content: {
+          "application/json": components["schemas"]["SuccessResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Redirects after authentication
+   * Redirects after authenticated login via a given SSO provider ID
+   */
+  redirect: {
+    parameters: {
+      path: {
+        /** Identifier of the SSO provider used to authenticate */
+        providerId: string;
+      };
+    };
+    responses: {
+      /** Successfully authenticated */
+      204: {
+        content: {
+          "application/json": components["schemas"]["SuccessResponse"];
+        };
+      };
+    };
+  };
 };
 
 export type operationPaths =
-  | "readSalutation post /salutation"
-  | "searchSuggest post /search-suggest"
-  | "sendContactMail post /contact-form"
-  | "addProductOnWishlist post /customer/wishlist/add/{productId}"
-  | "readCustomerWishlist post /customer/wishlist"
-  | "mergeProductOnWishlist post /customer/wishlist/merge"
-  | "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}"
-  | "readProductCrossSellings post /product/{productId}/cross-selling"
-  | "readProductDetail post /product/{productId}"
-  | "readProduct post /product"
-  | "readProductReviews post /product/{productId}/reviews"
-  | "saveProductReview post /product/{productId}/review"
-  | "searchProductVariantIds post /product/{productId}/find-variant"
-  | "readCms post /cms/{id}"
-  | "confirmNewsletter post /newsletter/confirm"
-  | "subscribeToNewsletter post /newsletter/subscribe"
-  | "unsubscribeToNewsletter post /newsletter/unsubscribe"
-  | "readNavigation post /navigation/{activeId}/{rootId} sw-include-seo-urls"
-  | "readNewsletterRecipient post /account/newsletter-recipient"
-  | "changeProfile post /account/change-profile"
+  | "createCustomerAddress post /account/address"
+  | "defaultBillingAddress patch /account/address/default-billing/{addressId}"
+  | "defaultShippingAddress patch /account/address/default-shipping/{addressId}"
+  | "deleteCustomerAddress delete /account/address/{addressId}"
+  | "updateCustomerAddress patch /account/address/{addressId}"
   | "changeEmail post /account/change-email"
   | "changeLanguage post /account/change-language"
   | "changePassword post /account/change-password"
   | "changePaymentMethod post /account/change-payment-method/{paymentMethodId}"
-  | "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired"
+  | "changeProfile post /account/change-profile"
   | "readCustomer post /account/customer"
   | "deleteCustomer delete /account/customer"
-  | "deleteCustomerAddress delete /account/address/{addressId}"
-  | "updateCustomerAddress patch /account/address/{addressId}"
+  | "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired"
   | "listAddress post /account/list-address"
   | "loginCustomer post /account/login"
   | "logoutCustomer post /account/logout"
-  | "registerConfirm post /account/register-confirm"
-  | "register post /account/register"
-  | "recoveryPassword post /account/recovery-password-confirm"
+  | "readNewsletterRecipient post /account/newsletter-recipient"
   | "sendRecoveryMail post /account/recovery-password"
-  | "defaultShippingAddress patch /account/address/default-shipping/{addressId}"
-  | "defaultBillingAddress patch /account/address/default-billing/{addressId}"
-  | "createCustomerAddress post /account/address"
-  | "readProductExport get /product-export/{accessKey}/{fileName}"
-  | "cancelOrder post /order/state/cancel"
-  | "readOrder post /order"
-  | "orderSetPayment post /order/payment"
-  | "orderDownloadFile get /order/download/{orderId}/{downloadId}"
-  | "readSitemap get /sitemap"
-  | "readLanguages post /language"
-  | "readSeoUrl post /seo-url"
-  | "handlePaymentMethod post /handle-payment"
-  | "readCountryState post /country-state/{countryId}"
-  | "postScriptStoreApiRoute post /script/{hook}"
-  | "readShippingMethod post /shipping-method?onlyAvailable"
-  | "readCurrency post /currency"
-  | "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}"
+  | "recoveryPassword post /account/recovery-password-confirm"
+  | "register post /account/register"
+  | "registerConfirm post /account/register-confirm"
+  | "generateJWTAppSystemAppServer post /app-system/{name}/generate-token"
   | "readCategoryList post /category"
-  | "readCategory post /category/{navigationId}?slots"
-  | "readContext get /context"
-  | "updateContext patch /context"
-  | "readPaymentMethod post /payment-method"
-  | "searchPage post /search"
-  | "readCart get /checkout/cart?name"
+  | "readCategory post /category/{navigationId}?slots sw-include-seo-urls"
+  | "readCart get /checkout/cart"
   | "deleteCart delete /checkout/cart"
   | "addLineItem post /checkout/cart/line-item"
-  | "removeLineItem delete /checkout/cart/line-item?ids"
+  | "removeLineItemDeprecated delete /checkout/cart/line-item?ids"
   | "updateLineItem patch /checkout/cart/line-item"
+  | "removeLineItem post /checkout/cart/line-item/delete"
   | "createOrder post /checkout/order"
-  | "readLandingPage post /landing-page/{landingPageId}"
+  | "readCms post /cms/{id}"
+  | "sendContactMail post /contact-form"
+  | "readContext get /context"
+  | "updateContext patch /context"
+  | "readCountry post /country"
+  | "readCountryState post /country-state/{countryId}"
+  | "readCurrency post /currency"
+  | "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}"
+  | "readCustomerWishlist post /customer/wishlist"
+  | "addProductOnWishlist post /customer/wishlist/add/{productId}"
+  | "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}"
+  | "mergeProductOnWishlist post /customer/wishlist/merge"
   | "download post /document/download/{documentId}/{deepLinkCode}"
-  | "readProductListing post /product-listing/{categoryId}"
-  | "readCountry post /country";
+  | "handlePaymentMethod post /handle-payment"
+  | "readLandingPage post /landing-page/{landingPageId}"
+  | "readLanguages post /language"
+  | "readNavigation post /navigation/{activeId}/{rootId} sw-include-seo-urls"
+  | "confirmNewsletter post /newsletter/confirm"
+  | "subscribeToNewsletter post /newsletter/subscribe"
+  | "unsubscribeToNewsletter post /newsletter/unsubscribe"
+  | "readOrder post /order"
+  | "orderDownloadFile get /order/download/{orderId}/{downloadId}"
+  | "orderSetPayment post /order/payment"
+  | "cancelOrder post /order/state/cancel"
+  | "readPaymentMethod post /payment-method"
+  | "readProduct post /product"
+  | "readProductExport get /product-export/{accessKey}/{fileName}"
+  | "readProductListing post /product-listing/{categoryId} sw-include-seo-urls"
+  | "readProductDetail post /product/{productId}"
+  | "readProductCrossSellings post /product/{productId}/cross-selling"
+  | "searchProductVariantIds post /product/{productId}/find-variant"
+  | "saveProductReview post /product/{productId}/review"
+  | "readProductReviews post /product/{productId}/reviews"
+  | "pwaResolvePage post /pwa/page"
+  | "readSalutation post /salutation"
+  | "postScriptStoreApiRoute post /script/{hook}"
+  | "searchPage post /search"
+  | "searchSuggest post /search-suggest"
+  | "readSeoUrl post /seo-url"
+  | "readShippingMethod post /shipping-method?onlyAvailable"
+  | "readSitemap get /sitemap"
+  | "readEmployees post /store-api/employee"
+  | "createEmployee post /store-api/employee/create"
+  | "reinviteEmployee post /store-api/employee/reinvite/{id}"
+  | "readEmployee post /store-api/employee/{id}"
+  | "updateEmployee patch /store-api/employee/{id}"
+  | "deleteEmployee delete /store-api/employee/{id}"
+  | "searchByImageSearchTerm post /store-api/product/image-upload-search/search-term"
+  | "naturalLanguageSearchTerm post /store-api/product/natural-language/search-term"
+  | "readRoles get /store-api/role"
+  | "readRolesPOST post /store-api/role"
+  | "createRole post /store-api/role/create"
+  | "updateDefaultRoleId post /store-api/role/default"
+  | "readPermissions get /store-api/role/permissions"
+  | "readRole get /store-api/role/{id}"
+  | "updateRole patch /store-api/role/{id}"
+  | "deleteRole delete /store-api/role/{id}"
+  | "auth post /store-api/sso/auth/{providerId}"
+  | "redirect post /store-api/sso/redirect/{providerId}";

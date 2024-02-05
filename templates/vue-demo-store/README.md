@@ -26,6 +26,18 @@ To connect to a different API, adjust the API credentials in the `nuxt.config.ts
 1. `pnpm i` to install dependencies
 2. `pnpm dev` to run the project with the development server
 
+## Generate your own API types
+
+By default API types are delivered from our [demo instance](https://frontends-demo.vercel.app/).
+To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package/@shopware/api-gen) CLI.
+
+1. update `.env` file with your Shopware API information
+2. load JSON schema from your instance `pnpx @shopware/api-gen loadSchema --apiType=store --filename=storeApiSchema.json`
+3. generate types `pnpx @shopware/api-gen generateTypes --filename=storeApiSchema.json`
+
+> [!NOTE]
+> Do not edit your `storeApiSchema.d.ts` file. It will be overwritten on the next schema generation. Instead use your `shopware.d.ts` file to extend types.
+
 ## Production
 
 Refer to to the Shopware documentation for best practices on deploying a production JavaScript application with Shopware: [Best Practices > Deployment](https://frontends.shopware.com/best-practices/deployment.html)

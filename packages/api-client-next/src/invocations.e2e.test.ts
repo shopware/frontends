@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createAPIClient } from ".";
-import type {
-  operationPaths,
-  operations,
-} from "../api-types/apiTypes-6.4.19.0";
+import type { operationPaths, operations } from "../api-types";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
@@ -15,9 +12,7 @@ describe("Test real API invocations", () => {
       accessToken: "",
     });
     await expect(() =>
-      apiInstance.invoke("readCart get /checkout/cart?name", {
-        name: "myCartName",
-      }),
+      apiInstance.invoke("readCart get /checkout/cart", {}),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `
       [ApiClientError: Failed request
