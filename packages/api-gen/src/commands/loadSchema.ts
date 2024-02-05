@@ -24,7 +24,7 @@ export async function loadSchema(args: {
   filename: string;
   apiType: string;
 }) {
-  if (args.apiType !== "store" && args.apiType !== "admin") {
+  if (!["store", "admin"].includes(args.apiType)) {
     console.error(
       c.red(`Invalid "apiType" argument. It should be "store" or "admin"`),
     );
