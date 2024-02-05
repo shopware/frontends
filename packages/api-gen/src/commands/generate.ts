@@ -86,6 +86,14 @@ export async function generate(args: { cwd: string; filename: string }) {
         additionalProperties: false,
         alphabetize: true,
         supportArrayLength: true,
+        commentHeader: `/**
+ * This file is auto-generated. Do not make direct changes to the file. 
+ * Instead override it in your shopware.d.ts file.
+ * 
+ * Shopware API version: ${version}
+ * 
+ */
+`,
         /**
          * GenericRecord is used for types like associations
          */

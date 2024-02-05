@@ -4,10 +4,7 @@
 
 import { createAPIClient } from ".";
 import type { RequestParameters } from ".";
-import type {
-  operationPaths,
-  operations,
-} from "../api-types/apiTypes-6.4.19.0";
+import type { operationPaths, operations } from "../api-types";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
@@ -34,7 +31,7 @@ const apiInstance = createAPIClient<extendedOperations, extendedPaths>({
 
 async function testing() {
   const myResponse = await apiInstance.invoke(
-    "readCart get /checkout/cart?name",
+    "readCart get /checkout/cart",
     {},
   );
 }
@@ -53,7 +50,7 @@ async function testing() {
 
 // Define method with predefined path
 const readCart = (params: RequestParameters<"readCart", operations>) =>
-  apiInstance.invoke("readCart get /checkout/cart?name", params);
+  apiInstance.invoke("readCart get /checkout/cart", params);
 
 async function test() {
   const resp = await readCart({});
