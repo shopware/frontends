@@ -147,7 +147,7 @@ export function createAPIClient<
  */
 export type AdminSessionData = {
   accessToken: string;
-  refreshToken: string;
+  refreshToken?: string;
   expirationTime: number;
 };
 
@@ -163,17 +163,15 @@ export function createAdminAPIClient<
 >(params: {
   baseURL: string;
   /**
-   * Used for token based authentication. This authentication will be used instead of `refresh_token`.
+   * If you pass `credentials` object, it will be used to authenticate the client whenever session expires.
+   * You don't need to manually invoke `/token` endpoint first.
    */
-  clientData?: {
-    clientId: string;
-    clientSecret: string;
-  };
+  credentials?: RequestParameters<"token", defaultAdminOperations>;
   sessionData?: AdminSessionData;
   onAuthChange?: (params: AdminSessionData) => void;
 }) {
   const isTokenBasedAuth =
-    !!params.clientData?.clientId && !!params.clientData?.clientSecret;
+    params.credentials?.grant_type === "client_credentials";
 
   const sessionData: AdminSessionData = {
     accessToken: params.sessionData?.accessToken || "",
@@ -222,17 +220,24 @@ export function createAdminAPIClient<
     async onRequest({ request, options }) {
       const isExpired = sessionData.expirationTime <= Date.now();
       if (isExpired && !request.toString().includes("/oauth/token")) {
-        const body = isTokenBasedAuth
-          ? {
-              grant_type: "client_credentials",
-              client_id: params.clientData?.clientId,
-              client_secret: params.clientData?.clientSecret,
-            }
-          : {
-              grant_type: "refresh_token",
-              client_id: "administration",
-              refresh_token: sessionData.refreshToken,
-            };
+        if (
+          !params.credentials &&
+          !isTokenBasedAuth &&
+          !sessionData.refreshToken
+        ) {
+          console.warn(
+            "[ApiClientWarning] No `credentials` or `sessionData` provided. Provide at least one of them to ensure authentication.",
+          );
+        }
+
+        const body =
+          params.credentials && !sessionData.refreshToken
+            ? params.credentials
+            : {
+                grant_type: "refresh_token",
+                client_id: "administration",
+                refresh_token: sessionData.refreshToken,
+              };
 
         // Access session expired, first we need to refresh it with refresh token
         await ofetch("/oauth/token", {
