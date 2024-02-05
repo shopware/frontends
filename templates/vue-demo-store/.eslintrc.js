@@ -7,7 +7,7 @@ module.exports = {
     "prettier",
   ],
   parser: "vue-eslint-parser",
-  ignorePatterns: ["dist/", "node_modules/"],
+  ignorePatterns: ["dist/", "node_modules/", "storeApiSchema.d.ts"],
   parserOptions: {
     parser: "@typescript-eslint/parser",
     sourceType: "module",
