@@ -19,12 +19,18 @@ npx i @shopware/api-gen [command]
 
 ### `generate`
 
-Transform OpenAPI specification from JSON file to Typescript schemas.
+Transform OpenAPI specification from JSON file to Typescript schemas. Use `loadSchema` command first.
 
 options:
 
 ```bash
 pnpx @shopware/api-gen generate --help
+
+# generate schemas from store API
+pnpx @shopware/api-gen generate --filename=storeApiSchema.json
+
+# generate schemas from admin API
+pnpx @shopware/api-gen generate --filename=adminApiSchema.json
 ```
 
 ### `loadSchema`
@@ -35,6 +41,21 @@ options:
 
 ```bash
 pnpx @shopware/api-gen loadSchema --help
+
+# load schema from store API
+pnpx @shopware/api-gen loadSchema --apiType=store --filename=storeApiSchema.json
+
+# load schema from admin API
+pnpx @shopware/api-gen loadSchema --apiType=admin --filename=adminApiSchema.json
+```
+
+Remember to add `.env` file in order to authenticate with Shopware instance.
+
+```bash
+OPENAPI_JSON_URL="https://your-shop-instance.shopware.store"
+OPENAPI_ACCESS_KEY="YOUR_STORE_API_ACCESS_KEY"
+SHOPWARE_ADMIN_USERNAME="my@username.com"
+SHOPWARE_ADMIN_PASSWORD="my-password"
 ```
 
 <!-- AUTO GENERATED CHANGELOG -->
