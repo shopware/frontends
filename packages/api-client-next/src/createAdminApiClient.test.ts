@@ -156,9 +156,10 @@ describe("createAdminAPIClient", () => {
 
     const client = createAdminAPIClient<operations, operationPaths>({
       baseURL,
-      clientData: {
-        clientId: "my-client-id",
-        clientSecret: "my-client-secret-token",
+      credentials: {
+        grant_type: "client_credentials",
+        client_id: "my-client-id",
+        client_secret: "my-client-secret-token",
       },
       onAuthChange: onAuthChangeSpy,
     });
@@ -205,9 +206,10 @@ describe("createAdminAPIClient", () => {
 
     const client = createAdminAPIClient<operations, operationPaths>({
       baseURL,
-      clientData: {
-        clientId: "my-client-id",
-        clientSecret: "my-client-secret-token",
+      credentials: {
+        grant_type: "client_credentials",
+        client_id: "my-client-id",
+        client_secret: "my-client-secret-token",
       },
       onAuthChange: onAuthChangeSpy,
     });
