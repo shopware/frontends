@@ -30,8 +30,7 @@ export async function loadSchema(args: {
     );
     process.exit(1);
   }
-  const apiType: "store" | "admin" = args.apiType;
-  const isAdminApi = apiType === "admin";
+  const isAdminApi = args.apiType === "admin";
 
   const requiredEnvVars = ["OPENAPI_JSON_URL"];
   if (isAdminApi) {
