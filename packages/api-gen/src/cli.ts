@@ -21,7 +21,7 @@ function commonOptions(args: Argv<unknown>): Argv<CommonOptions> {
 
 // eslint-disable-next-line no-unused-expressions
 yargs(hideBin(process.argv))
-  .scriptName("client")
+  .scriptName("@shopware/api-gen")
   .usage("$0 [args]")
   .command(
     "generate",
@@ -42,6 +42,12 @@ yargs(hideBin(process.argv))
     "Load JSON schema from your API instance. You need to have proper .env file",
     (args) => {
       return commonOptions(args)
+        .option("apiType", {
+          describe:
+            "Type of the API schema to load. It can be 'store' or 'admin'",
+          default: "store",
+          choices: ["store", "admin"],
+        })
         .positional("filename", {
           type: "string",
           default: "apiSchema.json",
