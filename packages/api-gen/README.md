@@ -52,8 +52,8 @@ pnpx @shopware/api-gen loadSchema --apiType=admin --filename=adminApiSchema.json
 Remember to add `.env` file in order to authenticate with Shopware instance.
 
 ```bash
-OPENAPI_JSON_URL="https://demo-frontends.shopware.store"
-OPENAPI_ACCESS_KEY="SWSCBHFSNTVMAWNZDNFKSHLAYW"
+OPENAPI_JSON_URL="https://your-shop-instance.shopware.store"
+OPENAPI_ACCESS_KEY="YOUR_STORE_API_ACCESS_KEY"
 SHOPWARE_ADMIN_USERNAME="my@username.com"
 SHOPWARE_ADMIN_PASSWORD="my-password"
 ```
