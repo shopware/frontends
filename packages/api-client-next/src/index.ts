@@ -136,7 +136,7 @@ export function createAPIClient<
   ): Promise<RequestReturnType<OPERATION_NAME, OPERATIONS>> {
     const [requestPath, options] = transformPathToQuery(
       pathParam,
-      params[0] as Record<string, string>,
+      params?.[0] as Record<string, string>,
     );
     return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
       requestPath,
