@@ -28,11 +28,6 @@ const props = withDefaults(
 );
 const { product } = toRefs(props);
 const { addToCart, isInCart, count } = useAddToCart(product);
-// const {
-//   addToCart: customizedProductAddToCart,
-//   isActive: isCustomizedProductActive,
-// } = useProductCustomizedProductConfigurator();
-
 const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
   product.value.id,
 );
@@ -64,11 +59,7 @@ const toggleWishlistProduct = async () => {
 };
 
 const addToCartProxy = async () => {
-  // if (isCustomizedProductActive.value) {
-  //   await customizedProductAddToCart();
-  // } else {
   await addToCart();
-  //}
 
   getErrorsCodes()?.forEach((element) => {
     pushError(t(`errors.${element.messageKey}`, { ...element }));
