@@ -1,5 +1,4 @@
 ---
-"vue-demo-store": patch
 "docs": patch
 ---
 
