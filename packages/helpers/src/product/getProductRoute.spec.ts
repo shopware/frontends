@@ -1,9 +1,9 @@
-import { getProductRoute } from "./getProductRoute";
 import { describe, expect, it } from "vitest";
+import { getProductRoute } from "./getProductRoute";
 
 describe("Shopware helpers - getProductRoute", () => {
   it("should return product technical URL", () => {
-    const result = getProductRoute({ id: "qwerty" } as any);
+    const result = getProductRoute({ id: "qwerty" });
     expect(result).toEqual({
       path: "/detail/qwerty",
       state: {
@@ -14,7 +14,7 @@ describe("Shopware helpers - getProductRoute", () => {
   });
 
   it("should return default URL if seoUrls is undefined", () => {
-    const result = getProductRoute({ id: "qwerty", seoUrls: undefined } as any);
+    const result = getProductRoute({ id: "qwerty", seoUrls: undefined });
     expect(result).toEqual({
       path: "/detail/qwerty",
       state: {
@@ -25,7 +25,7 @@ describe("Shopware helpers - getProductRoute", () => {
   });
 
   it("should return default url for no product", () => {
-    const result = getProductRoute(undefined as any);
+    const result = getProductRoute(undefined);
     expect(result).toEqual({
       path: "/",
       state: {
@@ -42,7 +42,7 @@ describe("Shopware helpers - getProductRoute", () => {
           seoPathInfo: "pretty-url/012345",
         },
       ],
-    } as any);
+    });
     expect(result).toEqual({
       path: "/pretty-url/012345",
       state: {

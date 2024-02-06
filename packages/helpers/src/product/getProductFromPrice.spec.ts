@@ -1,9 +1,10 @@
-import { getProductFromPrice } from "./getProductFromPrice";
 import { describe, expect, it } from "vitest";
+import { getProductFromPrice } from "./getProductFromPrice";
 
 describe("Shopware helpers - getProductFromPrice", () => {
   it("should return undefined if there is no product", () => {
-    const price = getProductFromPrice(undefined as any);
+    // @ts-expect-error type should be wrong here
+    const price = getProductFromPrice(undefined);
     expect(price).toBeUndefined();
   });
   it("should return right from price extracted from a product", () => {
@@ -11,21 +12,23 @@ describe("Shopware helpers - getProductFromPrice", () => {
       calculatedPrice: {
         unitPrice: 100,
       },
+      // @ts-expect-error type should be wrong here
       calculatedPrices: [{}],
-    } as any);
+    });
     expect(price).toBe(100);
   });
   it("should return undefined if there are no calculated prices", () => {
     const price = getProductFromPrice({
       calculatedPrices: undefined,
-    } as any);
+    });
     expect(price).toBe(undefined);
   });
   it("should return undefined if there are calculated prices but no real price itself", () => {
     const price = getProductFromPrice({
       calculatedPrice: undefined,
+      // @ts-expect-error type should be wrong here
       calculatedPrices: [{}],
-    } as any);
+    });
     expect(price).toBe(undefined);
   });
 });

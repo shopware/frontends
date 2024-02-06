@@ -5,7 +5,10 @@ export default defineConfig({
     environment: "happy-dom",
     coverage: {
       enabled: true,
-      "100": true,
+      reportOnFailure: true,
+      thresholds: {
+        "100": true,
+      },
     },
   },
 });

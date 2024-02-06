@@ -88,6 +88,7 @@ export function createAPIClient<
 }) {
   const defaultHeaders: Record<string, string> = {
     "sw-access-key": params.accessToken,
+    Accept: "application/json",
   };
 
   // protection from setting "null" or "undefined" as a token in API side
@@ -158,12 +159,12 @@ export function createAPIClient<
  */
 export type AdminSessionData = {
   accessToken: string;
-  refreshToken: string;
+  refreshToken?: string;
   expirationTime: number;
 };
 
 function createAuthorizationHeader(token: string) {
-  if (!token) return null;
+  if (!token) return "";
   if (token.startsWith("Bearer ")) return token;
   return `Bearer ${token}`;
 }
@@ -173,13 +174,26 @@ export function createAdminAPIClient<
   PATHS = defaultAdminPaths,
 >(params: {
   baseURL: string;
+  /**
+   * If you pass `credentials` object, it will be used to authenticate the client whenever session expires.
+   * You don't need to manually invoke `/token` endpoint first.
+   */
+  credentials?: RequestParameters<"token", defaultAdminOperations>;
   sessionData?: AdminSessionData;
   onAuthChange?: (params: AdminSessionData) => void;
 }) {
+  const isTokenBasedAuth =
+    params.credentials?.grant_type === "client_credentials";
+
   const sessionData: AdminSessionData = {
     accessToken: params.sessionData?.accessToken || "",
     refreshToken: params.sessionData?.refreshToken || "",
     expirationTime: Number(params.sessionData?.expirationTime || 0),
+  };
+
+  const defaultHeaders = {
+    Authorization: createAuthorizationHeader(sessionData.accessToken),
+    Accept: "application/json",
   };
 
   function updateSessionData(responseData: {
@@ -192,18 +206,18 @@ export function createAdminAPIClient<
         responseData.access_token,
       );
 
-      sessionData.accessToken = responseData.access_token;
-      sessionData.refreshToken = responseData.refresh_token;
-      sessionData.expirationTime = Date.now() + responseData.expires_in * 1000;
-      params.onAuthChange?.({
-        ...sessionData,
+      const dataCopy = setSessionData({
+        accessToken: responseData.access_token,
+        refreshToken: responseData.refresh_token,
+        expirationTime: Date.now() + responseData.expires_in * 1000,
       });
+      params.onAuthChange?.(dataCopy);
     }
   }
 
   function setSessionData(data: AdminSessionData): AdminSessionData {
     sessionData.accessToken = data.accessToken;
-    sessionData.refreshToken = data.refreshToken;
+    sessionData.refreshToken = data.refreshToken || "";
     sessionData.expirationTime = data.expirationTime;
 
     return getSessionData();
@@ -213,32 +227,51 @@ export function createAdminAPIClient<
     return { ...sessionData };
   }
 
-  const defaultHeaders = {
-    Authorization: createAuthorizationHeader(sessionData.accessToken),
-  };
-
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
     async onRequest({ request, options }) {
       const isExpired = sessionData.expirationTime <= Date.now();
-
       if (isExpired && !request.toString().includes("/oauth/token")) {
+        if (
+          !params.credentials &&
+          !isTokenBasedAuth &&
+          !sessionData.refreshToken
+        ) {
+          console.warn(
+            "[ApiClientWarning] No `credentials` or `sessionData` provided. Provide at least one of them to ensure authentication.",
+          );
+        }
+
+        const body =
+          params.credentials && !sessionData.refreshToken
+            ? params.credentials
+            : {
+                grant_type: "refresh_token",
+                client_id: "administration",
+                refresh_token: sessionData.refreshToken,
+              };
+
         // Access session expired, first we need to refresh it with refresh token
         await ofetch("/oauth/token", {
           baseURL: params.baseURL,
           method: "POST",
-          body: {
-            grant_type: "refresh_token",
-            client_id: "administration",
-            refresh_token: sessionData.refreshToken || "",
-          },
+          body,
           headers: defaultHeaders as HeadersInit,
           onResponseError({ response }) {
             // if resfesh is expired we get 401 and we're throwing it without invoking the original request
             errorInterceptor(response);
           },
           onResponse(context) {
+            if (!context.response._data) return;
+
             updateSessionData(context.response._data);
+            // pass enhanced (Authorization) headers to the next request
+            options.headers = {
+              ...options.headers,
+              Authorization: createAuthorizationHeader(
+                context.response._data.access_token,
+              ),
+            };
           },
         });
       }
@@ -287,7 +320,7 @@ export function createAdminAPIClient<
     invoke,
     /**
      * Enables to change session data in runtime. Useful for testing purposes.
-     * Setting session data with this methis will **not** fire `onAuthChange` hook.
+     * Setting session data with this method will **not** fire `onAuthChange` hook.
      */
     setSessionData,
     /**

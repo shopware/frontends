@@ -11,7 +11,8 @@ type CmsPageResponse = {
   landingPage: LandingPage;
 };
 
-export * from "./getCmsLayoutConfiguration";
+export { getCmsLayoutConfiguration } from "./getCmsLayoutConfiguration";
+export type { LayoutConfiguration } from "./getCmsLayoutConfiguration";
 export * from "./getBackgroundImageUrl";
 export * from "./buildUrlPrefix";
 

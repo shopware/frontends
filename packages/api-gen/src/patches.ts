@@ -15,7 +15,7 @@ export const patches = {
       schema.components.schemas ??= {};
       schema.paths ??= {};
 
-      schema.components.schemas["ContextTokenResponse"] ??= {
+      schema.components.schemas.ContextTokenResponse ??= {
         type: "object",
         properties: {
           contextToken: {

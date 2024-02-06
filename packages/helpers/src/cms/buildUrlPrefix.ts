@@ -16,8 +16,8 @@ export function buildUrlPrefix(
 ): UrlRouteOutput {
   if (typeof url === "string") {
     if (urlIsAbsolute(url)) return { path: url };
-    url = url[0] !== "/" ? `/${url}` : url;
-    return { path: prefix ? `/${prefix}${url}` : url };
+    const resultUrl = url[0] !== "/" ? `/${url}` : url;
+    return { path: prefix ? `/${prefix}${resultUrl}` : resultUrl };
   }
   if (url.path && prefix) {
     url.path = `/${prefix}${url.path}`;
