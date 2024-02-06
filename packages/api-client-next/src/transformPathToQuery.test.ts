@@ -95,33 +95,6 @@ describe("transform path to query request", () => {
     `);
   });
 
-  it("should omit passing param in a payload s when HTTP method is GET", async () => {
-    const [path, params] = transformPathToQuery("getContext get /context", {
-      languageId: "some-en-id",
-    });
-
-    expect(path).toEqual("/context");
-    expect(params.body).toBeUndefined();
-  });
-
-  it("should omit passing params in a payload when HTTP method is OPTIONS", async () => {
-    const [path, params] = transformPathToQuery("getContext options /context", {
-      languageId: "some-en-id",
-    });
-
-    expect(path).toEqual("/context");
-    expect(params.body).toBeUndefined();
-  });
-
-  it("should omit passing params in a payload  when HTTP method is HEAD", async () => {
-    const [path, params] = transformPathToQuery("getContext head /context", {
-      languageId: "some-en-id",
-    });
-
-    expect(path).toEqual("/context");
-    expect(params.body).toBeUndefined();
-  });
-
   it("should put other params into body", async () => {
     const [path, params] = transformPathToQuery(
       "createCustomerAddress post /account/address",

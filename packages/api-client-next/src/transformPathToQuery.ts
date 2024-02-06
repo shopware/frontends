@@ -57,7 +57,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
     body?: Partial<T>;
   };
 
-  if (!params || ["head", "get", "options"].includes(method)) {
+  if (!params) {
     return [requestPathWithParams, returnOptions];
   }
 
