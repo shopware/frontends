@@ -1,5 +1,5 @@
 ---
-"@shopware-pwa/composables-next": minor
+"@shopware-pwa/composables-next": patch
 ---
 
 Fix only available shipping methods
