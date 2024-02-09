@@ -14,10 +14,18 @@
       "to": "Bis",
       "from": "Ab"
     },
+    "reviewsForm": {
+      "title": "Titel",
+      "review": "Ihre Bewertung",
+      "submit": "Einreichen",
+      "rating": "Ihre Bewertung"
+    },
+    "reviewNoComments": "Noch keine Kommentare.",
     "messages": {
       "addedToWishlist": "{p} wurde zur Wunschliste hinzugefügt.",
       "removedFromWishlist": "{p} wurde aus der Wunschliste entfernt.",
-      "addedToCart": "{p} wurde dem Warenkorb hinzugefügt."
+      "addedToCart": "{p} wurde dem Warenkorb hinzugefügt.",
+      "reviewAdded": "Vielen Dank für Ihre Bewertung"
     }
   }
 }
