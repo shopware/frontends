@@ -19,7 +19,7 @@ const formatDate = (date: string) =>
 </script>
 
 <template>
-  <div v-if="$props.reviews.length">
+  <div v-if="props.reviews.length">
     <div v-for="review in reviews" :key="review.id">
       <div
         class="cms-block-product-description-reviews__reviews-time mt-3 text-gray-600 text-sm"
