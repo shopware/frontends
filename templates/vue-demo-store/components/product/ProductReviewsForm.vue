@@ -63,7 +63,7 @@ const invokeSend = async () => {
         productId: props.productId,
         title: state.title,
         content: state.review,
-        points: state.rating,
+        points: state.rating || 0,
       },
     );
     reviewAdded.value = true;
@@ -84,20 +84,22 @@ const invokeRating = (value: number) => {
 </script>
 
 <template>
-  <form @submit.prevent="invokeSend" class="flex flex-col gap-4">
+  <form class="flex flex-col gap-4" @submit.prevent="invokeSend">
     <div>
       <div class="mt-2 flex flex-col gap-2">
         <span>{{ $t("product.reviewsForm.rating") }}</span>
         <div class="flex flex-row">
           <div
-            v-for="value in state.rating"
-            @click="invokeRating(value)"
+            v-for="(value, index) in state.rating"
+            :key="index"
             class="w-5 h-5 i-carbon-star-filled"
+            @click="invokeRating(value)"
           ></div>
           <div
-            v-for="value in 5 - (state.rating || 0)"
-            @click="invokeRating(value + (state.rating || 0))"
+            v-for="(value, index) in 5 - (state.rating || 0)"
+            :key="index"
             class="w-5 h-5 i-carbon-star"
+            @click="invokeRating(value + (state.rating || 0))"
           ></div>
         </div>
         <span
@@ -111,11 +113,11 @@ const invokeRating = (value: number) => {
     <div>
       <label for="title">{{ $t("product.reviewsForm.title") }}</label>
       <input
+        id="title"
+        v-model="state.title"
         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         type="text"
-        id="title"
         :disabled="isLoading"
-        v-model="state.title"
       />
       <span
         v-if="$v.title.$error"
@@ -127,10 +129,10 @@ const invokeRating = (value: number) => {
     <div>
       <label for="review">{{ $t("product.reviewsForm.review") }}</label>
       <textarea
-        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="review"
-        :disabled="isLoading"
         v-model="state.review"
+        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        :disabled="isLoading"
       />
       <span
         v-if="$v.review.$error"

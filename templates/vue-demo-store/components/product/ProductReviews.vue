@@ -30,11 +30,13 @@ const formatDate = (date: string) =>
         class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"
       >
         <div
-          v-for="value in review.points"
+          v-for="(value, index) in review.points"
+          :key="index"
           class="w-5 h-5 i-carbon-star-filled"
         ></div>
         <div
-          v-for="value in 5 - (review.points || 0)"
+          v-for="(value, index) in 5 - (review.points || 0)"
+          :key="index"
           class="w-5 h-5 i-carbon-star"
         ></div>
         <div
