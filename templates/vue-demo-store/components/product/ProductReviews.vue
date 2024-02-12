@@ -27,6 +27,13 @@ const formatDate = (date: string) =>
         <span>{{ formatDate(review.createdAt) }}</span>
       </div>
       <div
+        v-if="!review.status"
+        class="mt-2 text-3 p-2 bg-[#d4f0f5] flex gap-2 items-center"
+      >
+        <div class="w-6 h-6 i-carbon-warning" />
+        {{ $t("product.reviewNotAccepted") }}
+      </div>
+      <div
         class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"
       >
         <div
