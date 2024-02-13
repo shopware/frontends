@@ -98,7 +98,13 @@ export default defineI18nLocale(async (locale) => {
 });
 ```
 
-## API middleware
+## API middleware - what it does
+
+Server API exposes an endpoint under `/api/translations` for HTTP GET requests that accepts query parameter.
+
+1. It accepts a `locale` query parameter (en-GB, de-DE, ...) to find a snippet set ID (identifier of specific language)
+2. Gets all translations for given `snippetSedId`
+3. Narrow down the result by applying `prefix` filter with `frontends.` value to have snippets made only for our purposes.
 
 ## Install & Run
 
@@ -111,6 +117,6 @@ export default defineI18nLocale(async (locale) => {
 
 ## FURTHER STEPS
 
-1. Add caching layers (HTTP Cache / LRU Cache /... )
+1. Add caching layers (HTTP Cache / LRU Cache /... ) to speed up
 2. Share snippets between app contexts for different users (useNuxtApp / Redis / ... )
 3. Store oauth access token to save amount of requests - utilize `onAuthChange` and `sessionData` parameters while creating a client instance using `createAdminAPIClient` method.

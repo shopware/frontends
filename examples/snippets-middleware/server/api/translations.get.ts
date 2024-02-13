@@ -88,7 +88,7 @@ export default defineEventHandler(async (handler) => {
     {
       filter: [
         {
-          type: "contains",
+          type: "prefix",
           field: "translationKey",
           value: "frontends.",
         },
