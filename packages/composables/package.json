@@ -37,6 +37,9 @@
     "./dist": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
+    },
+    "./types/api-types": {
+      "import": "./types/api-types.ts"
     }
   },
   "files": [
