@@ -3813,6 +3813,14 @@ export type paths = {
      */
     patch: operations["updateShippingMethod"];
   };
+  "/search/snippet": {
+    // TODO: [OpenAPI][searchSnippet] path should be present
+    post: operations["searchSnippet"];
+  };
+  "/search/snippet-set": {
+    // TODO: [OpenAPI][searchSnippetSet] path should be present
+    post: operations["searchSnippetSet"];
+  };
   "/snippet": {
     /**
      * List with basic information of Snippet resources.
@@ -58578,6 +58586,57 @@ export type operations = {
       404: components["responses"]["404"];
     };
   };
+  // TODO: [OpenAPI][searchSnippet] operation should be present
+  searchSnippet: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+        "application/vnd.api+json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** List of Snippet */
+      200: {
+        content: {
+          "application/json": {
+            data?: components["schemas"]["Snippet"][];
+            total?: number;
+          };
+          "application/vnd.api+json": components["schemas"]["success"] & {
+            data?: components["schemas"]["Snippet"][];
+          };
+        };
+      };
+      400: components["responses"]["400"];
+      401: components["responses"]["401"];
+    };
+  };
+  // TODO: [OpenAPI][searchSnippetSet] operation should be present
+
+  searchSnippetSet: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+        "application/vnd.api+json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** List of SnippetSet */
+      200: {
+        content: {
+          "application/json": {
+            data?: components["schemas"]["SnippetSet"][];
+            total?: number;
+          };
+          "application/vnd.api+json": components["schemas"]["success"] & {
+            data?: components["schemas"]["SnippetSet"][];
+          };
+        };
+      };
+      400: components["responses"]["400"];
+      401: components["responses"]["401"];
+    };
+  };
 };
 
 export type operationPaths =
@@ -59565,4 +59624,6 @@ export type operationPaths =
   | "iterate post /_action/indexing/{indexer}"
   | "info get /_action/cache_info"
   | "customPriceImport post /_action/custom-price"
-  | "rulePreview post /api/_admin/rule-builder-preview/{orderId}";
+  | "rulePreview post /api/_admin/rule-builder-preview/{orderId}"
+  | "searchSnippet post /search/snippet" // TODO: [OpenAPI][searchSnippet] missing operation should be added
+  | "searchSnippetSet post /search/snippet-set"; // TODO: [OpenAPI][searchSnippetSet] missing operation should be added
