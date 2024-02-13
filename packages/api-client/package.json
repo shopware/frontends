@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",
-    "axios": "^0.27.2",
+    "axios": "^1.6.7",
     "query-string": "^8.1.0"
   }
 }
