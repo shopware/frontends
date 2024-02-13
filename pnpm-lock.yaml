@@ -258,8 +258,8 @@ importers:
   examples/express-checkout:
     dependencies:
       '@paypal/paypal-js':
-        specifier: ^8.0.0
-        version: 8.0.0
+        specifier: ^8.0.2
+        version: 8.0.2
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
@@ -4535,8 +4535,8 @@ packages:
       '@parcel/watcher-win32-ia32': 2.3.0
       '@parcel/watcher-win32-x64': 2.3.0
 
-  /@paypal/paypal-js@8.0.0:
-    resolution: {integrity: sha512-wiABljZw5IbvuWkuspmRA/xN9T78zXbEfBzz6Ea94Nxg5hoxs1l9u4rzjO30IEglmIFH3+fLsGla+PfnUzvFSw==}
+  /@paypal/paypal-js@8.0.2:
+    resolution: {integrity: sha512-JbWXxMsTDUE4j+JXAu04qBacjkP6/38lgGC5YKW/FBfU1v3S5EgjfF1cMCGFehcpmsU5T88rkpKDsuftrCkyCA==}
     dependencies:
       promise-polyfill: 8.3.0
     dev: false
