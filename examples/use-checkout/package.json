@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@shopware-pwa/types": "canary",
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.11.17",
     "@vitejs/plugin-vue": "^5.0.4",
     "vite": "^5.1.1"
   }
