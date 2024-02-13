@@ -66,6 +66,7 @@
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
       "postcss": "^8.4.33",
       "semver": "^7.5.4",
+      "socks": "^2.7.3",
       "sharp": "^0.33.2",
       "vite@4>docs": "^4.5.2",
       "vite@5": "^5.0.12",
