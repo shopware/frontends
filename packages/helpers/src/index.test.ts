@@ -36,6 +36,11 @@ describe("helpers - test global API", () => {
         "getSmallestThumbnailUrl": [Function],
         "getSrcSetForMedia": [Function],
         "getTranslatedProperty": [Function],
+        "helpersCssClasses": [
+          "max-md:hidden",
+          "md:max-lg:hidden",
+          "lg:hidden",
+        ],
         "isCategory": [Function],
         "isLandingPage": [Function],
         "isProduct": [Function],

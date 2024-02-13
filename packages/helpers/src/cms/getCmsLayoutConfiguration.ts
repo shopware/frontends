@@ -1,4 +1,4 @@
-import { HelpersCssClasses } from "./layoutClasses";
+import type { HelpersCssClasses } from "./layoutClasses";
 
 // CmsBlock make as a generic type
 type GenericCms = {
