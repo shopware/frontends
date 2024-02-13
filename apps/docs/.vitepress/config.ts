@@ -109,6 +109,10 @@ export const sidebar = [
             text: "Overwriting CMS",
             link: "/getting-started/cms/overwriting-cms.html",
           },
+          {
+            text: "Multiple CMS",
+            link: "/getting-started/cms/multiple-cms",
+          },
         ],
       },
       {
@@ -134,7 +138,7 @@ export const sidebar = [
             link: "/getting-started/e-commerce/payments.html",
           },
           {
-            text: "Custome Payment",
+            text: "Custom Payment",
             link: "/getting-started/e-commerce/custom-payment.html",
           },
           {
@@ -262,10 +266,37 @@ export const sidebar = [
         link: "/resources/integrations/",
         items: [
           {
-            text: "Multi CMS instance",
-            link: "/resources/integrations/multi-cms.html",
+            text: "CMS",
+            link: "/resources/integrations/cms/",
+            items: [
+              {
+                text: "Storyblok",
+                link: "/resources/integrations/cms/storyblok.html",
+              },
+              {
+                text: "Strapi",
+                link: "/resources/integrations/cms/strapi.html",
+              },
+            ],
           },
-          { text: "Strapi", link: "/resources/integrations/strapi/" },
+          {
+            text: "Payments",
+            link: "/resources/integrations/payments/",
+            items: [
+              {
+                text: "Adyen",
+                link: "/resources/integrations/payments/adyen.html",
+              },
+              {
+                text: "mollie",
+                link: "/resources/integrations/payments/mollie.html",
+              },
+              {
+                text: "Paypal Express",
+                link: "/getting-started/e-commerce/custom-payment.html",
+              },
+            ],
+          },
         ],
       },
     ],
