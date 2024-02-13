@@ -37,6 +37,9 @@
     "./dist": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
+    },
+    "./types/api-types": {
+      "import": "./types/api-types.ts"
     }
   },
   "files": [
@@ -64,7 +67,7 @@
     "scule": "^1.2.0"
   },
   "devDependencies": {
-    "@nuxt/kit": "^3.9.3",
+    "@nuxt/kit": "^3.10.1",
     "@shopware-pwa/types": "workspace:*",
     "@vitest/coverage-v8": "^1.2.2",
     "@vue/test-utils": "^2.4.4",
@@ -74,6 +77,6 @@
     "typescript": "^5.3.3",
     "unbuild": "^2.0.0",
     "vitest": "^1.2.2",
-    "vue": "^3.4.15"
+    "vue": "^3.4.19"
   }
 }
