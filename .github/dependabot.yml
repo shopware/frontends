@@ -16,6 +16,8 @@ updates:
       - dependency-name: 'axios'
       # not upgrading until we move to new docs
       - dependency-name: 'vitepress'
+      # not upgrading until we move to new docs
+      - dependency-name: 'vitepress-shopware-docs'
       # until https://github.com/nuxt-modules/i18n/issues/2215 is resolved
       - dependency-name: '@nuxtjs/i18n'
     groups:
@@ -50,12 +52,16 @@ updates:
           - 'lint-staged'
           - 'taze'
           - 'pnpm'
+      node:
+        patterns:
+          - '@types/node'
       tests:
         patterns:
           - 'vitest'
           - '@vitest/*'
           - 'happy-dom'
           - '@faker*'
+          - '@codspeed/*'
       e2e-tests:
         patterns:
           - 'dotenv'
