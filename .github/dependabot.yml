@@ -11,9 +11,13 @@ updates:
       interval: 'weekly'
     open-pull-requests-limit: 10
     versioning-strategy: 'increase'
-    # Possible ignores to update
-    # ignore:
-      # - dependency-name: 'PACKAGE_NAME'
+    ignore:
+      # used in old client, not upgrading
+      - dependency-name: 'axios'
+      # not upgrading until we move to new docs
+      - dependency-name: 'vitepress'
+      # until https://github.com/nuxt-modules/i18n/issues/2215 is resolved
+      - dependency-name: '@nuxtjs/i18n'
     groups:
       astro:
         patterns:
