@@ -59,7 +59,7 @@ updates:
       e2e-tests:
         patterns:
           - 'dotenv'
-          - '@playwright/'
+          - '@playwright*'
       prettier:
         patterns:
           - 'prettier'
