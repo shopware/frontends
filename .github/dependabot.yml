@@ -1,0 +1,75 @@
+---
+version: 2
+updates:
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+    versioning-strategy: 'increase'
+    # Possible ignores to update
+    # ignore:
+      # - dependency-name: 'PACKAGE_NAME'
+    groups:
+      astro:
+        patterns:
+          - '@astrojs/*'
+          - 'astro'
+      changelog:
+        patterns:
+          - '@changesets/*'
+          - 'changelog-parser'
+          - '*/changelog-parser'
+      api-extractor:
+        patterns:
+          - '@microsoft/*'
+          - 'typedoc'
+      eslint:
+        patterns:
+          - 'eslint'
+          - '@types/eslint'
+          - '@eslint/*'
+          - '@typescript-eslint/*'
+          - 'eslint-*'
+          - 'globals'
+      maintenance:
+        patterns:
+          - 'turbo*'
+          - 'vercel'
+          - 'semver'
+          - 'globby'
+          - 'husky'
+          - 'lint-staged'
+          - 'taze'
+          - 'pnpm'
+      tests:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+          - 'happy-dom'
+          - '@faker*'
+      e2e-tests:
+        patterns:
+          - 'dotenv'
+          - '@playwright/'
+      prettier:
+        patterns:
+          - 'prettier'
+          - '@types/prettier'
+      turbo:
+        patterns:
+          - 'turbo*'
+      vue:
+        patterns:
+          - 'vue'
+          - 'nuxt'
+          - 'vite'
+          - '@vitejs/*'
+          - '@iconify*'
+          - '@nuxt/*'
+          - '@unocss/*'
+          - 'unocss'
