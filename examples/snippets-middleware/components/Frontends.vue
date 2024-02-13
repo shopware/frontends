@@ -37,7 +37,11 @@ const { t, availableLocales, locale: currentLocale } = useI18n();
       <strong>{{ isLoggedIn }}</strong>
     </p>
   </div>
-  <div>you can also examine what is returned by <strong>/api/translations?locale={{ currentLocale }}</strong> and loaded by i18n module</div>
+  <div>
+    you can also examine what is returned by visiting
+    <strong>/api/translations?locale={{ currentLocale }}</strong> and loaded by
+    i18n module
+  </div>
 </template>
 <style scoped>
 .logo {
