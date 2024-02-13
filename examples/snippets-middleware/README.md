@@ -24,11 +24,11 @@ The problem is the translation snippets aren't exposed in `store-api` scope, so 
 
 1. As a store to keep translations for each language we utilize Snippets system which a part of Shopware 6.
 
-   | translation key                | en-GB                  | de-DE                     |
-   | ------------------------------ | ---------------------- | ------------------------- |
-   | general.currency               | Currency               | Währung                   |
-   | general.default_payment_method | Default payment method | Standard-Zahlungsmethode  |
-   | account.is_customer_logged_in  | Is logged in           | Ist der Kunde eingeloggt? |
+   | translation key                          | en-GB                  | de-DE                     |
+   | ---------------------------------------- | ---------------------- | ------------------------- |
+   | frontends.general.currency               | Currency               | Währung                   |
+   | frontends.general.default_payment_method | Default payment method | Standard-Zahlungsmethode  |
+   | frontends.account.is_customer_logged_in  | Is logged in           | Ist der Kunde eingeloggt? |
 
 2. Fetch translations from backend via Admin API (using [@shopware/api-client](https://www.npmjs.com/package/@shopware/api-client)) and expose them via Nuxt's server endpoint ([see Nuxt docs](https://nuxt.com/docs/guide/directory-structure/server))
 
