@@ -37,8 +37,8 @@ importers:
   .:
     devDependencies:
       '@biomejs/biome':
-        specifier: 1.4.1
-        version: 1.4.1
+        specifier: 1.5.3
+        version: 1.5.3
       '@changesets/changelog-github':
         specifier: ^0.5.0
         version: 0.5.0
@@ -113,13 +113,13 @@ importers:
         version: 14.0.0
       vitepress:
         specifier: 1.0.0-beta.7
-        version: 1.0.0-beta.7(@algolia/client-search@4.22.1)(@types/node@20.8.6)(react@17.0.2)(search-insights@2.6.0)(typescript@5.3.3)
+        version: 1.0.0-beta.7(@algolia/client-search@4.22.1)(@types/node@20.8.6)(react@17.0.2)(search-insights@2.13.0)(typescript@5.3.3)
       vitepress-plugin-search:
         specifier: 1.0.4-alpha.22
         version: 1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.0.0-beta.7)(vue@3.4.19)
       vitepress-shopware-docs:
         specifier: 0.3.0-beta.44
-        version: 0.3.0-beta.44(@algolia/client-search@4.22.1)(@stoplight/mosaic-code-viewer@1.41.0)(react@17.0.2)(search-insights@2.6.0)(vue@3.4.19)
+        version: 0.3.0-beta.44(@algolia/client-search@4.22.1)(@stoplight/mosaic-code-viewer@1.51.3)(react@17.0.2)(search-insights@2.13.0)(vue@3.4.19)
       vue:
         specifier: ^3.4.19
         version: 3.4.19(typescript@5.3.3)
@@ -1131,10 +1131,10 @@ packages:
       preact: 10.13.2
     dev: true
 
-  /@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)(search-insights@2.6.0):
+  /@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)(search-insights@2.13.0):
     resolution: {integrity: sha512-009HdfugtGCdC4JdXUbVJClA0q0zh24yyePn+KUGk3rP7j8FEe/m5Yo/z65gn6nP/cM39PxpzqKrL7A6fP6PPw==}
     dependencies:
-      '@algolia/autocomplete-plugin-algolia-insights': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)(search-insights@2.6.0)
+      '@algolia/autocomplete-plugin-algolia-insights': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)(search-insights@2.13.0)
       '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -1142,13 +1142,13 @@ packages:
       - search-insights
     dev: false
 
-  /@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)(search-insights@2.6.0):
+  /@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)(search-insights@2.13.0):
     resolution: {integrity: sha512-a/yTUkcO/Vyy+JffmAnTWbr4/90cLzw+CC3bRbhnULr/EM0fGNvM13oQQ14f2moLMcVDyAx/leczLlAOovhSZg==}
     peerDependencies:
       search-insights: '>= 1 < 3'
     dependencies:
       '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)
-      search-insights: 2.6.0
+      search-insights: 2.13.0
     transitivePeerDependencies:
       - '@algolia/client-search'
       - algoliasearch
@@ -1765,22 +1765,24 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@biomejs/biome@1.4.1:
-    resolution: {integrity: sha512-JccVAwPbhi37pdxbAGmaOBjUTKEwEjWAhl7rKkVVuXHo4MLASXJ5HR8BTgrImi4/7rTBsGz1tgVD1Kwv1CHGRg==}
+  /@biomejs/biome@1.5.3:
+    resolution: {integrity: sha512-yvZCa/g3akwTaAQ7PCwPWDCkZs3Qa5ONg/fgOUT9e6wAWsPftCjLQFPXBeGxPK30yZSSpgEmRCfpGTmVbUjGgg==}
     engines: {node: '>=14.*'}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      '@biomejs/cli-darwin-arm64': 1.4.1
-      '@biomejs/cli-darwin-x64': 1.4.1
-      '@biomejs/cli-linux-arm64': 1.4.1
-      '@biomejs/cli-linux-x64': 1.4.1
-      '@biomejs/cli-win32-arm64': 1.4.1
-      '@biomejs/cli-win32-x64': 1.4.1
+      '@biomejs/cli-darwin-arm64': 1.5.3
+      '@biomejs/cli-darwin-x64': 1.5.3
+      '@biomejs/cli-linux-arm64': 1.5.3
+      '@biomejs/cli-linux-arm64-musl': 1.5.3
+      '@biomejs/cli-linux-x64': 1.5.3
+      '@biomejs/cli-linux-x64-musl': 1.5.3
+      '@biomejs/cli-win32-arm64': 1.5.3
+      '@biomejs/cli-win32-x64': 1.5.3
     dev: true
 
-  /@biomejs/cli-darwin-arm64@1.4.1:
-    resolution: {integrity: sha512-PZWy2Idndqux38p6AXSDQM2ldRAWi32bvb7bMbTN0ALzpWYMYnxd71ornatumSSJYoNhKmxzDLq+jct7nZJ79w==}
+  /@biomejs/cli-darwin-arm64@1.5.3:
+    resolution: {integrity: sha512-ImU7mh1HghEDyqNmxEZBoMPr8SxekkZuYcs+gynKlNW+TALQs7swkERiBLkG9NR0K1B3/2uVzlvYowXrmlW8hw==}
     engines: {node: '>=14.*'}
     cpu: [arm64]
     os: [darwin]
@@ -1788,8 +1790,8 @@ packages:
     dev: true
     optional: true
 
-  /@biomejs/cli-darwin-x64@1.4.1:
-    resolution: {integrity: sha512-soj3BWhnsM1M2JlzR09cibUzG1owJqetwj/Oo7yg0foijo9lNH9XWXZfJBYDKgW/6Fomn+CC2EcUS+hisQzt9g==}
+  /@biomejs/cli-darwin-x64@1.5.3:
+    resolution: {integrity: sha512-vCdASqYnlpq/swErH7FD6nrFz0czFtK4k/iLgj0/+VmZVjineFPgevOb+Sr9vz0tk0GfdQO60bSpI74zU8M9Dw==}
     engines: {node: '>=14.*'}
     cpu: [x64]
     os: [darwin]
@@ -1797,8 +1799,8 @@ packages:
     dev: true
     optional: true
 
-  /@biomejs/cli-linux-arm64@1.4.1:
-    resolution: {integrity: sha512-YIZqfJUg4F+fPsBTXxgD7EU2E5OAYbmYSl/snf4PevwfQCWE/omOFZv+NnIQmjYj9I7ParDgcJvanoA3/kO0JQ==}
+  /@biomejs/cli-linux-arm64-musl@1.5.3:
+    resolution: {integrity: sha512-DYuMizUYUBYfS0IHGjDrOP1RGipqWfMGEvNEJ398zdtmCKLXaUvTimiox5dvx4X15mBK5M2m8wgWUgOP1giUpQ==}
     engines: {node: '>=14.*'}
     cpu: [arm64]
     os: [linux]
@@ -1806,8 +1808,17 @@ packages:
     dev: true
     optional: true
 
-  /@biomejs/cli-linux-x64@1.4.1:
-    resolution: {integrity: sha512-9YOZw3qBd/KUj63A6Hn2zZgzGb2nbESM0qNmeMXgmqinVKM//uc4OgY5TuKITuGjMSvcVxxd4dX1IzYjV9qvNQ==}
+  /@biomejs/cli-linux-arm64@1.5.3:
+    resolution: {integrity: sha512-cupBQv0sNF1OKqBfx7EDWMSsKwRrBUZfjXawT4s6hKV6ALq7p0QzWlxr/sDmbKMLOaLQtw2Qgu/77N9rm+f9Rg==}
+    engines: {node: '>=14.*'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@biomejs/cli-linux-x64-musl@1.5.3:
+    resolution: {integrity: sha512-UUHiAnlDqr2Y/LpvshBFhUYMWkl2/Jn+bi3U6jKuav0qWbbBKU/ByHgR4+NBxpKBYoCtWxhnmatfH1bpPIuZMw==}
     engines: {node: '>=14.*'}
     cpu: [x64]
     os: [linux]
@@ -1815,8 +1826,17 @@ packages:
     dev: true
     optional: true
 
-  /@biomejs/cli-win32-arm64@1.4.1:
-    resolution: {integrity: sha512-nWQbvkNKxYn/kCQ0yVF8kCaS3VzaGvtFSmItXiMknU4521LDjJ7tNWH12Gol+pIslrCbd4E1LhJa0a3ThRsBVg==}
+  /@biomejs/cli-linux-x64@1.5.3:
+    resolution: {integrity: sha512-YQrSArQvcv4FYsk7Q91Yv4uuu5F8hJyORVcv3zsjCLGkjIjx2RhjYLpTL733SNL7v33GmOlZY0eFR1ko38tuUw==}
+    engines: {node: '>=14.*'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@biomejs/cli-win32-arm64@1.5.3:
+    resolution: {integrity: sha512-HxatYH7vf/kX9nrD+pDYuV2GI9GV8EFo6cfKkahAecTuZLPxryHx1WEfJthp5eNsE0+09STGkKIKjirP0ufaZA==}
     engines: {node: '>=14.*'}
     cpu: [arm64]
     os: [win32]
@@ -1824,8 +1844,8 @@ packages:
     dev: true
     optional: true
 
-  /@biomejs/cli-win32-x64@1.4.1:
-    resolution: {integrity: sha512-88fR2CQxQ4YLs2BUDuywWYQpUKgU3A3sTezANFc/4LGKQFFLV2yX+F7QAdZVkMHfA+RD9Xg178HomM/6mnTNPA==}
+  /@biomejs/cli-win32-x64@1.5.3:
+    resolution: {integrity: sha512-fMvbSouZEASU7mZH8SIJSANDm5OqsjgtVXlbUqxwed6BP7uuHRSs396Aqwh2+VoW8fwTpp6ybIUoC9FrzB0kyA==}
     engines: {node: '>=14.*'}
     cpu: [x64]
     os: [win32]
@@ -2078,10 +2098,10 @@ packages:
     resolution: {integrity: sha512-2Pu9HDg/uP/IT10rbQ+4OrTQuxIWdKVUEdcw9/w7kZJv9NeHS6skJx1xuRiFyoGKwAzcHXnLp7csE99sj+O1YA==}
     dev: false
 
-  /@docsearch/js@3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.6.0):
+  /@docsearch/js@3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0):
     resolution: {integrity: sha512-EXi8de5njxgP6TV3N9ytnGRLG9zmBNTEZjR4VzwPcpPLbZxxTLG2gaFyJyKiFVQxHW/DPlMrDJA3qoRRGEkgZw==}
     dependencies:
-      '@docsearch/react': 3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.6.0)
+      '@docsearch/react': 3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0)
       preact: 10.13.2
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -2091,7 +2111,7 @@ packages:
       - search-insights
     dev: false
 
-  /@docsearch/react@3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.6.0):
+  /@docsearch/react@3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0):
     resolution: {integrity: sha512-t5mEODdLzZq4PTFAm/dvqcvZFdPDMdfPE5rJS5SC8OUq9mPzxEy6b+9THIqNM9P0ocCb4UC5jqBrxKclnuIbzQ==}
     peerDependencies:
       '@types/react': '>= 16.8.0 < 19.0.0'
@@ -2105,7 +2125,7 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      '@algolia/autocomplete-core': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)(search-insights@2.6.0)
+      '@algolia/autocomplete-core': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)(search-insights@2.13.0)
       '@algolia/autocomplete-preset-algolia': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.14.2)
       '@docsearch/css': 3.5.1
       algoliasearch: 4.14.2
@@ -3135,12 +3155,26 @@ packages:
     requiresBuild: true
     dev: false
 
+  /@fortawesome/fontawesome-common-types@6.5.1:
+    resolution: {integrity: sha512-GkWzv+L6d2bI5f/Vk6ikJ9xtl7dfXtoRu3YGE6nq0p/FFqA1ebMOAWg3XgRyb0I6LYyYkiAo+3/KrwuBp8xG7A==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dev: false
+
   /@fortawesome/fontawesome-svg-core@6.4.0:
     resolution: {integrity: sha512-Bertv8xOiVELz5raB2FlXDPKt+m94MQ3JgDfsVbrqNpLU9+UE2E18GKjLKw+d3XbeYPqg1pzyQKGsrzbw+pPaw==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
       '@fortawesome/fontawesome-common-types': 6.4.0
+    dev: false
+
+  /@fortawesome/fontawesome-svg-core@6.5.1:
+    resolution: {integrity: sha512-MfRCYlQPXoLlpem+egxjfkEuP9UQswTrlCOsknus/NcMoblTH2g0jPrapbcIb04KGA7E2GZxbAccGZfWoYgsrQ==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.5.1
     dev: false
 
   /@fortawesome/react-fontawesome@0.2.0(@fortawesome/fontawesome-svg-core@6.4.0)(react@17.0.2):
@@ -3150,6 +3184,17 @@ packages:
       react: '>=16.3'
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.4.0
+      prop-types: 15.8.1
+      react: 17.0.2
+    dev: false
+
+  /@fortawesome/react-fontawesome@0.2.0(@fortawesome/fontawesome-svg-core@6.5.1)(react@17.0.2):
+    resolution: {integrity: sha512-uHg75Rb/XORTtVt7OS9WoK8uM276Ufi7gCzshVWkUJbHhh3svsUUeqXerrM96Wm7fRiDzfKRwSoahhMIkGAYHw==}
+    peerDependencies:
+      '@fortawesome/fontawesome-svg-core': ~1 || ~6
+      react: '>=16.3'
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.5.1
       prop-types: 15.8.1
       react: 17.0.2
     dev: false
@@ -5574,7 +5619,7 @@ packages:
       '@stoplight/json-schema-ref-parser': 9.2.2
       '@stoplight/json-schema-sampler': 0.2.3
       '@stoplight/json-schema-viewer': 4.10.0(@stoplight/markdown-viewer@5.6.0)(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2)
-      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2)
+      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.51.3)(@stoplight/mosaic@1.41.0)(react@17.0.2)
       '@stoplight/mosaic': 1.41.0(react@17.0.2)
       '@stoplight/mosaic-code-editor': 1.40.0(react@17.0.2)
       '@stoplight/mosaic-code-viewer': 1.41.0(react@17.0.2)
@@ -5620,7 +5665,7 @@ packages:
       - xstate
     dev: false
 
-  /@stoplight/elements-dev-portal@1.10.2(@stoplight/mosaic-code-viewer@1.41.0)(react@17.0.2):
+  /@stoplight/elements-dev-portal@1.10.2(@stoplight/mosaic-code-viewer@1.51.3)(react@17.0.2):
     resolution: {integrity: sha512-zPfKefRTQ83/CML+A9YYjub1G1Tv6+pH8kXqi0iDklkkUsb3ih88IGoIf3Jdj0ShbmXY5mKQfRXD1coYDgjy/g==}
     engines: {node: '>=14.13'}
     peerDependencies:
@@ -5631,7 +5676,7 @@ packages:
         optional: true
     dependencies:
       '@stoplight/elements-core': 7.7.18(react@17.0.2)
-      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2)
+      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.51.3)(@stoplight/mosaic@1.41.0)(react@17.0.2)
       '@stoplight/mosaic': 1.41.0(react@17.0.2)
       '@stoplight/path': 1.3.2
       '@stoplight/types': 13.15.0
@@ -5755,7 +5800,7 @@ packages:
     dependencies:
       '@stoplight/json': 3.20.2
       '@stoplight/json-schema-tree': 2.2.2
-      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2)
+      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.51.3)(@stoplight/mosaic@1.41.0)(react@17.0.2)
       '@stoplight/mosaic': 1.41.0(react@17.0.2)
       '@stoplight/mosaic-code-viewer': 1.41.0(react@17.0.2)
       '@stoplight/react-error-boundary': 2.0.0(react@17.0.2)
@@ -5799,7 +5844,7 @@ packages:
       wolfy87-eventemitter: 5.2.9
     dev: false
 
-  /@stoplight/markdown-viewer@5.6.0(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2):
+  /@stoplight/markdown-viewer@5.6.0(@stoplight/mosaic-code-viewer@1.51.3)(@stoplight/mosaic@1.41.0)(react@17.0.2):
     resolution: {integrity: sha512-vKHn1Bv9nafBYQWtNLlrRZ1aKqFRTOdfWUAhCSV1ZH4iqxGa+O1OWWTBbeOF5du8vcrWu1tTrXoCXkZjmq1NlA==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -5814,7 +5859,7 @@ packages:
       '@rehooks/component-size': 1.0.3(react@17.0.2)
       '@stoplight/markdown': 3.2.0
       '@stoplight/mosaic': 1.41.0(react@17.0.2)
-      '@stoplight/mosaic-code-viewer': 1.41.0(react@17.0.2)
+      '@stoplight/mosaic-code-viewer': 1.51.3(prop-types@15.8.1)(react@17.0.2)
       '@stoplight/react-error-boundary': 2.0.0(react@17.0.2)
       deepmerge: 4.3.1
       hast-to-hyperscript: 10.0.1
@@ -5954,6 +5999,41 @@ packages:
       - react-dom
     dev: false
 
+  /@stoplight/mosaic-code-viewer@1.51.3(prop-types@15.8.1)(react@17.0.2):
+    resolution: {integrity: sha512-S+efac0brZrFw4mt75dLCJim4tBilmr80HoIwrCgc3opqdmFlGvksu+bwp3pIJu2Hk/JQxrLu+eZ4DZ7TgDc8Q==}
+    peerDependencies:
+      react: '>= 16.14'
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.5.1
+      '@fortawesome/react-fontawesome': 0.2.0(@fortawesome/fontawesome-svg-core@6.5.1)(react@17.0.2)
+      '@react-hook/size': 2.1.2(react@17.0.2)
+      '@react-hook/window-size': 3.1.1(react@17.0.2)
+      '@react-types/radio': 3.1.2(react@17.0.2)
+      '@react-types/shared': 3.9.0(react@17.0.2)
+      '@react-types/switch': 3.1.2(react@17.0.2)
+      '@stoplight/mosaic': 1.51.3(prop-types@15.8.1)(react@17.0.2)
+      '@stoplight/types': 13.20.0
+      clsx: 1.2.1
+      copy-to-clipboard: 3.3.3
+      dom-helpers: 3.4.0
+      focus-trap-react: 10.2.3(prop-types@15.8.1)(react@17.0.2)
+      lodash.get: 4.4.2
+      nano-memoize: 1.3.1
+      polished: 4.3.1
+      prism-react-renderer: 1.3.5(react@17.0.2)
+      prismjs: 1.29.0
+      react: 17.0.2
+      react-fast-compare: 3.2.2
+      react-overflow-list: 0.5.0(react@17.0.2)
+      ts-keycode-enum: 1.0.6
+      tslib: 2.6.2
+      use-resize-observer: 9.1.0(react@17.0.2)
+      zustand: 3.7.2(react@17.0.2)
+    transitivePeerDependencies:
+      - prop-types
+      - react-dom
+    dev: false
+
   /@stoplight/mosaic@1.40.0(react@17.0.2):
     resolution: {integrity: sha512-hHEb0Cc4TzaPRjt9h5Ll7FuuVedvW6ZPa5HIxIMhPj4jgy5G3AaC1CCXzdRlwicBkUIp6lNkBOpB7cHadpXp1w==}
     peerDependencies:
@@ -6022,6 +6102,42 @@ packages:
       - react-dom
     dev: false
 
+  /@stoplight/mosaic@1.51.3(prop-types@15.8.1)(react@17.0.2):
+    resolution: {integrity: sha512-3C4bAvfG85sO2j6S4saseDbwS4sekmZ9CJy+vwpDK8EaBTy8GEon9TKTkwRiJ9VbFVCNhMVI/xucKuHHMMfYsQ==}
+    peerDependencies:
+      react: '>= 16.14'
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.5.1
+      '@fortawesome/react-fontawesome': 0.2.0(@fortawesome/fontawesome-svg-core@6.5.1)(react@17.0.2)
+      '@react-hook/size': 2.1.2(react@17.0.2)
+      '@react-hook/window-size': 3.1.1(react@17.0.2)
+      '@react-types/button': 3.4.1(react@17.0.2)
+      '@react-types/radio': 3.1.2(react@17.0.2)
+      '@react-types/shared': 3.9.0(react@17.0.2)
+      '@react-types/switch': 3.1.2(react@17.0.2)
+      '@react-types/textfield': 3.3.0(react@17.0.2)
+      '@stoplight/types': 13.20.0
+      '@types/react': 17.0.75
+      '@types/react-dom': 17.0.25
+      clsx: 1.2.1
+      copy-to-clipboard: 3.3.3
+      dom-helpers: 3.4.0
+      focus-trap-react: 10.2.3(prop-types@15.8.1)(react@17.0.2)
+      lodash.get: 4.4.2
+      nano-memoize: 1.3.1
+      polished: 4.3.1
+      react: 17.0.2
+      react-fast-compare: 3.2.2
+      react-overflow-list: 0.5.0(react@17.0.2)
+      ts-keycode-enum: 1.0.6
+      tslib: 2.6.2
+      use-resize-observer: 9.1.0(react@17.0.2)
+      zustand: 3.7.2(react@17.0.2)
+    transitivePeerDependencies:
+      - prop-types
+      - react-dom
+    dev: false
+
   /@stoplight/ordered-object-literal@1.0.4:
     resolution: {integrity: sha512-OF8uib1jjDs5/cCU+iOVy+GJjU3X7vk/qJIkIJFqwmlJKrrtijFmqwbu8XToXrwTYLQTP+Hebws5gtZEmk9jag==}
     engines: {node: '>=8'}
@@ -6060,6 +6176,14 @@ packages:
     dependencies:
       '@types/json-schema': 7.0.15
       utility-types: 3.10.0
+    dev: false
+
+  /@stoplight/types@13.20.0:
+    resolution: {integrity: sha512-2FNTv05If7ib79VPDA/r9eUet76jewXFH2y2K5vuge6SXbRHtWBhcaRmu+6QpF4/WRNoJj5XYRSwLGXDxysBGA==}
+    engines: {node: ^12.20 || >=14.13}
+    dependencies:
+      '@types/json-schema': 7.0.15
+      utility-types: 3.11.0
     dev: false
 
   /@stoplight/yaml-ast-parser@0.0.48:
@@ -6395,6 +6519,10 @@ packages:
       prettier: 3.2.5
     dev: true
 
+  /@types/prop-types@15.7.11:
+    resolution: {integrity: sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==}
+    dev: false
+
   /@types/prop-types@15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: false
@@ -6417,11 +6545,25 @@ packages:
       '@types/react': 17.0.62
     dev: false
 
+  /@types/react-dom@17.0.25:
+    resolution: {integrity: sha512-urx7A7UxkZQmThYA4So0NelOVjx3V4rNFVJwp0WZlbIK5eM4rNJDiN3R/E9ix0MBh6kAEojk/9YL+Te6D9zHNA==}
+    dependencies:
+      '@types/react': 17.0.75
+    dev: false
+
   /@types/react@17.0.62:
     resolution: {integrity: sha512-eANCyz9DG8p/Vdhr0ZKST8JV12PhH2ACCDYlFw6DIO+D+ca+uP4jtEDEpVqXZrh/uZdXQGwk7whJa3ah5DtyLw==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
+      csstype: 3.1.3
+    dev: false
+
+  /@types/react@17.0.75:
+    resolution: {integrity: sha512-MSA+NzEzXnQKrqpO63CYqNstFjsESgvJAdAyyJ1n6ZQq/GLgf6nOfIKwk+Twuz0L1N6xPe+qz5xRCJrbhMaLsw==}
+    dependencies:
+      '@types/prop-types': 15.7.11
+      '@types/scheduler': 0.16.8
       csstype: 3.1.3
     dev: false
 
@@ -6440,6 +6582,10 @@ packages:
 
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
+    dev: false
+
+  /@types/scheduler@0.16.8:
+    resolution: {integrity: sha512-WZLiwShhwLRmeV6zH+GkbOFT6Z6VklCItrDioxUnv+u4Ll+8vKeFySoFyK/0ctcRpOmwAicELfmys1sDc/Rw+A==}
     dev: false
 
   /@types/semver@7.5.6:
@@ -11229,8 +11375,30 @@ packages:
     resolution: {integrity: sha512-Gz1EvfOneuFfk4yG458dJ3TLJ7gV19q3OM/vVvvHf7eT02Hm1DleB4edsia6ahbKgAYxO9gvyQ1ioWZR+a00Yw==}
     dev: false
 
+  /focus-trap-react@10.2.3(prop-types@15.8.1)(react@17.0.2):
+    resolution: {integrity: sha512-YXBpFu/hIeSu6NnmV2xlXzOYxuWkoOtar9jzgp3lOmjWLWY59C/b8DtDHEAV4SPU07Nd/t+nS/SBNGkhUBFmEw==}
+    peerDependencies:
+      prop-types: ^15.8.1
+      react: '>=16.3.0'
+      react-dom: '>=16.3.0'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+    dependencies:
+      focus-trap: 7.5.4
+      prop-types: 15.8.1
+      react: 17.0.2
+      tabbable: 6.2.0
+    dev: false
+
   /focus-trap@7.5.2:
     resolution: {integrity: sha512-p6vGNNWLDGwJCiEjkSK6oERj/hEyI9ITsSwIUICBoKLlWiTWXJRfQibCwcoi50rTZdbi87qDtUlMCmQwsGSgPw==}
+    dependencies:
+      tabbable: 6.2.0
+    dev: false
+
+  /focus-trap@7.5.4:
+    resolution: {integrity: sha512-N7kHdlgsO/v+iD/dMoJKtsSqs5Dz/dXZVebRgJw23LDk+jMi/974zyiOYDziY2JPp8xivq9BmUGwIJMiuSBi7w==}
     dependencies:
       tabbable: 6.2.0
     dev: false
@@ -15799,6 +15967,13 @@ packages:
       '@babel/runtime': 7.23.9
     dev: false
 
+  /polished@4.3.1:
+    resolution: {integrity: sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA==}
+    engines: {node: '>=10'}
+    dependencies:
+      '@babel/runtime': 7.23.9
+    dev: false
+
   /postcss-calc@9.0.1(postcss@8.4.35):
     resolution: {integrity: sha512-TipgjGyzP5QzEhsOZUaIkeO5mKeMFpebWzRogWG/ysonUlnHcq5aJe0jOjpfzUU8PeSaBQnrE8ehR0QA5vs8PQ==}
     engines: {node: ^14 || ^16 || >=18.0}
@@ -17029,9 +17204,8 @@ packages:
   /scule@1.3.0:
     resolution: {integrity: sha512-6FtHJEvt+pVMIB9IBY+IcCJ6Z5f1iQnytgyfKMhDKgmzYG+TeH/wx1y3l27rshSbLiSanrR9ffZDrEsmjlQF2g==}
 
-  /search-insights@2.6.0:
-    resolution: {integrity: sha512-vU2/fJ+h/Mkm/DJOe+EaM5cafJv/1rRTZpGJTuFPf/Q5LjzgMDsqPdSaZsAe+GAWHHsfsu+rQSAn6c8IGtBEVw==}
-    engines: {node: '>=8.16.0'}
+  /search-insights@2.13.0:
+    resolution: {integrity: sha512-Orrsjf9trHHxFRuo9/rzm0KIWmgzE8RMlZMzuhZOJ01Rnz3D0YBAe+V6473t6/H6c7irs6Lt48brULAiRWb3Vw==}
     dev: false
 
   /section-matter@1.0.0:
@@ -19109,6 +19283,11 @@ packages:
     engines: {node: '>= 4'}
     dev: false
 
+  /utility-types@3.11.0:
+    resolution: {integrity: sha512-6Z7Ma2aVEWisaL6TvBCy7P8rm2LQoPv6dJ7ecIaIixHcwfbJ0x7mWdbcwlIM5IGQxPZSFYeqRCqlOOeKoJYMkw==}
+    engines: {node: '>= 4'}
+    dev: false
+
   /uuid@3.3.2:
     resolution: {integrity: sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
@@ -19530,7 +19709,7 @@ packages:
     dependencies:
       '@types/node': 20.11.17
       esbuild: 0.19.12
-      postcss: 8.4.33
+      postcss: 8.4.35
       rollup: 4.6.0
     optionalDependencies:
       fsevents: 2.3.3
@@ -19594,17 +19773,17 @@ packages:
       flexsearch: 0.7.43
       glob-to-regexp: 0.4.1
       markdown-it: 13.0.2
-      vitepress: 1.0.0-beta.7(@algolia/client-search@4.22.1)(@types/node@20.8.6)(react@17.0.2)(search-insights@2.6.0)(typescript@5.3.3)
+      vitepress: 1.0.0-beta.7(@algolia/client-search@4.22.1)(@types/node@20.8.6)(react@17.0.2)(search-insights@2.13.0)(typescript@5.3.3)
       vue: 3.4.19(typescript@5.3.3)
     dev: false
 
-  /vitepress-shopware-docs@0.3.0-beta.44(@algolia/client-search@4.22.1)(@stoplight/mosaic-code-viewer@1.41.0)(react@17.0.2)(search-insights@2.6.0)(vue@3.4.19):
+  /vitepress-shopware-docs@0.3.0-beta.44(@algolia/client-search@4.22.1)(@stoplight/mosaic-code-viewer@1.51.3)(react@17.0.2)(search-insights@2.13.0)(vue@3.4.19):
     resolution: {integrity: sha512-Lfs/MtX0FkTJI6tcPLQw0H2bTwY04UMqPfiAabZjqflnMXlYx93dKYtZyf518zIuOKUR5nb0Ka+ftjkBCyfrhg==}
     dependencies:
       '@docsearch/css': 3.5.1
-      '@docsearch/js': 3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.6.0)
+      '@docsearch/js': 3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0)
       '@iconify-json/carbon': 1.1.28
-      '@stoplight/elements-dev-portal': 1.10.2(@stoplight/mosaic-code-viewer@1.41.0)(react@17.0.2)
+      '@stoplight/elements-dev-portal': 1.10.2(@stoplight/mosaic-code-viewer@1.51.3)(react@17.0.2)
       '@stoplight/json-schema-generator': 1.0.2
       '@vueuse/core': 9.13.0(vue@3.4.19)
       axios: 0.27.2
@@ -19650,12 +19829,12 @@ packages:
       - xstate
     dev: false
 
-  /vitepress@1.0.0-beta.7(@algolia/client-search@4.22.1)(@types/node@20.8.6)(react@17.0.2)(search-insights@2.6.0)(typescript@5.3.3):
+  /vitepress@1.0.0-beta.7(@algolia/client-search@4.22.1)(@types/node@20.8.6)(react@17.0.2)(search-insights@2.13.0)(typescript@5.3.3):
     resolution: {integrity: sha512-P9Rw+FXatKIU4fVdtKxqwHl6fby8E/8zE3FIfep6meNgN4BxbWqoKJ6yfuuQQR9IrpQqwnyaBh4LSabyll6tWg==}
     hasBin: true
     dependencies:
       '@docsearch/css': 3.5.1
-      '@docsearch/js': 3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.6.0)
+      '@docsearch/js': 3.5.1(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0)
       '@vitejs/plugin-vue': 4.5.1(vite@4.5.2)(vue@3.4.19)
       '@vue/devtools-api': 6.5.0
       '@vueuse/core': 10.5.0(vue@3.4.19)
