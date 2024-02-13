@@ -37,14 +37,14 @@
     "changelog-parser": "^3.0.1",
     "dotenv-cli": "^7.3.0",
     "esno": "^4.0.0",
-    "globby": "^14.0.0",
-    "husky": "^9.0.7",
-    "lint-staged": "^15.2.0",
+    "globby": "^14.0.1",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
-    "taze": "^0.13.1",
-    "turbo": "^1.11.3",
+    "taze": "^0.13.3",
+    "turbo": "^1.12.3",
     "typedoc": "^0.25.8",
-    "vercel": "^33.3.0"
+    "vercel": "^33.5.0"
   },
   "engines": {
     "node": "^18.x || ^20.x"
