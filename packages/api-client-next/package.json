@@ -55,7 +55,7 @@
     "@types/prettier": "^3.0.0",
     "@vitest/coverage-v8": "^1.2.2",
     "eslint-config-shopware": "workspace:*",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "tsconfig": "workspace:*",
     "unbuild": "^2.0.0",
     "vitest": "^1.2.2"
