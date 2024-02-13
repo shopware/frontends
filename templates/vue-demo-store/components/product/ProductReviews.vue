@@ -54,6 +54,9 @@ const formatDate = (date: string) =>
       </div>
       <div class="cms-block-product-description-reviews__reviews-content mt-2">
         <p class="break-words">{{ review.content }}</p>
+        <p v-if="review.comment" class="text-gray">
+          - {{ $t("product.reviewFeedback") }}: {{ review.comment }}
+        </p>
       </div>
     </div>
   </div>

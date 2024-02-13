@@ -22,6 +22,7 @@
     },
     "reviewNoComments": "Noch keine Kommentare.",
     "reviewNotAccepted": "Ihre Bewertung wurde noch nicht genehmigt",
+    "reviewFeedback": "Unser Feedback",
     "messages": {
       "addedToWishlist": "{p} wurde zur Wunschliste hinzugefügt.",
       "removedFromWishlist": "{p} wurde aus der Wunschliste entfernt.",
