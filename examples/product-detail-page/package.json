@@ -13,11 +13,11 @@
     "@shopware-pwa/helpers-next": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "^3.0.5",
-    "vue": "^3.4.15"
+    "vue": "^3.4.19"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "@vitejs/plugin-vue": "^5.0.3",
-    "vite": "^5.0.12"
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.1.1"
   }
 }
