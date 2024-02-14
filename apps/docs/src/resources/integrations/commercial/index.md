@@ -2,13 +2,13 @@
 head:
   - - meta
     - name: og:title
-      content: Commerical - Integrations
+      content: Commercial - Integrations
   - - meta
     - name: og:description
-      content: "Overview about all Commerical Integrations for Composable Frontends."
+      content: "Overview about all Commercial Integrations for Composable Frontends."
   - - meta
     - name: og:image
-      content: "https://frontends-og-image.vercel.app/Commerical%20Integrations.png?fontSize=120px"
+      content: "https://frontends-og-image.vercel.app/Commercial%20Integrations.png?fontSize=120px"
 nav:
   position: 20
 ---
