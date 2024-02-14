@@ -8,7 +8,7 @@ head:
       content: "In this chapter you will learn how to integrate Adyen (Payments)."
   - - meta
     - name: og:image
-      content: "https://frontends-og-image.vercel.app/Adyen%Integration.png?fontSize=120px"
+      content: "https://frontends-og-image.vercel.app/Adyen%20Integration.png?fontSize=120px"
 nav:
   position: 10
 ---

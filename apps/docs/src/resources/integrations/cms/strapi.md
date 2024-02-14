@@ -8,14 +8,15 @@ head:
       content: "In this chapter you will learn how to integrate Strapi (CMS)."
   - - meta
     - name: og:image
-      content: "https://frontends-og-image.vercel.app/Strapi%Integration.png?fontSize=120px"
+      content: "https://frontends-og-image.vercel.app/Strapi%20Integration.png?fontSize=120px"
 nav:
   position: 20
 ---
 
 # Strapi Integration
 
-[<img src="../../../.assets/cms-icons/Strapi.full.logo.dark.png" alt="Strapi Logo" class="mb-8 h-20" />](https://docs.strapi.io/dev-docs/intro)
+[<img src="../../../.assets/cms-icons/Strapi.full.logo.light.png" alt="Strapi Logo" class="mb-8 h-20 hidden dark:block" />](https://docs.strapi.io/dev-docs/intro)
+[<img src="../../../.assets/cms-icons/Strapi.full.logo.dark.png" alt="Strapi Logo" class="mb-8 h-20 block dark:hidden" />](https://docs.strapi.io/dev-docs/intro)
 
 Strapi is a headless CMS that can be integrated with the Composable Frontends.
 This example requires NUXT 3 instance.

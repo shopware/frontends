@@ -2,22 +2,22 @@
 head:
   - - meta
     - name: og:title
-      content: "Custom payment"
+      content: "PayPal Express Integration"
   - - meta
     - name: og:description
       content: "In this chapter you will learn how to implement a custom payment flow based on PayPal Express Checkout."
   - - meta
     - name: og:image
-      content: "https://frontends-og-image.vercel.app/Custom%20**Payment**%20Process.png"
+      content: "https://frontends-og-image.vercel.app/Paypal%20Express%20Checkout.png"
 ---
 
 <script setup>
-import StackBlitzLiveExample from '../../components/StackBlitzLiveExample.vue'
+import StackBlitzLiveExample from '../../../components/StackBlitzLiveExample.vue'
 </script>
 
-# Custom payment flow based on PayPal Express Checkout
+# PayPal Express Integration
 
-<img src="../../.assets/payment-icons/paypal-express.png" alt="Paypal Express Logo" class="mb-8 h-20" />
+<img src="../../../.assets/payment-icons/paypal-express.png" alt="Paypal Express Logo" class="mb-8 h-20" />
 
 :::tip Advanced Guide - prior knowledge required
 In order to follow this guide properly, we recommend that you get familiar with the payment flow and payment API concepts first.

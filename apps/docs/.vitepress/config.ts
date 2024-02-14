@@ -120,11 +120,11 @@ export const sidebar = [
         link: "/getting-started/e-commerce/",
         items: [
           {
-            text: "Product listing",
+            text: "Product Listing",
             link: "/getting-started/e-commerce/product-listing.html",
           },
           {
-            text: "Product detail page",
+            text: "Product Detail Page",
             link: "/getting-started/e-commerce/product-detail-page.html",
           },
           { text: "Prices", link: "/getting-started/e-commerce/prices.html" },
@@ -280,6 +280,24 @@ export const sidebar = [
             ],
           },
           {
+            text: "Commerical",
+            link: "/resources/integrations/commercial/",
+            items: [
+              {
+                text: "B2B Quick Order",
+                link: "/resources/integrations/commercial/b2b-quick-order",
+              },
+              {
+                text: "B2B Quote Management",
+                link: "/resources/integrations/commercial/b2b-quote-management",
+              },
+              {
+                text: "Custom Products",
+                link: "/resources/integrations/commercial/custom-products",
+              },
+            ],
+          },
+          {
             text: "Payments",
             link: "/resources/integrations/payments/",
             items: [
@@ -293,7 +311,7 @@ export const sidebar = [
               },
               {
                 text: "Paypal Express",
-                link: "/getting-started/e-commerce/custom-payment.html",
+                link: "/resources/integrations/payments/paypal-express.html",
               },
             ],
           },
