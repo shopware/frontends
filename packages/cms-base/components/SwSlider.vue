@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
 });
 
 watch(
-  () => props.autoplay,
+  () => props.autoplay && isReady.value,
   (value) => {
     if (value) {
       autoPlayInterval.value = setInterval(() => {
