@@ -1,0 +1,14 @@
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "lib": ["esnext", "DOM"],
+    "types": ["vite/client"],
+    "paths": {
+      "#imports": ["./imports.d.ts"],
+      "#shopware": ["./shopware.d.ts"],
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+    },
+  },
+}

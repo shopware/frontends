@@ -132,6 +132,10 @@ export const sidebar = [
             text: "Wishlist",
             link: "/getting-started/features/wishlist",
           },
+          {
+            text: "Custom Products extension",
+            link: "/getting-started/features/custom-products",
+          },
         ],
       },
       {

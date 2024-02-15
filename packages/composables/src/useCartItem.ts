@@ -38,6 +38,10 @@ export type UseCartItemReturn = {
    */
   isPromotion: ComputedRef<boolean>;
   /**
+   * Determines if the current item can be removed from cart
+   */
+  isRemovable: ComputedRef<boolean>;
+  /**
    * Stock information for the current item
    */
   itemStock: ComputedRef<number | undefined>;
@@ -111,6 +115,8 @@ export function useCartItem(
 
   const isPromotion = computed(() => cartItem.value.type === "promotion");
 
+  const isRemovable = computed(() => !!cartItem.value.removable);
+
   async function removeItem() {
     const newCart = await apiClient.invoke(
       "removeLineItem post /checkout/cart/line-item/delete",
@@ -170,5 +176,6 @@ export function useCartItem(
     itemImageThumbnailUrl,
     isProduct,
     isPromotion,
+    isRemovable,
   };
 }

@@ -27791,7 +27791,7 @@ export type operations = {
       /** The document. */
       200: {
         content: {
-          "application/octet-stream": string;
+          "application/octet-stream": Blob; // TODO: [OpenAPI][orderDownloadFile] add proper response type
         };
       };
     };
@@ -27828,7 +27828,9 @@ export type operations = {
           /** The url of the document that will be downloaded. */
           url: string;
         };
-        "application/octet-stream": string;
+        "application/octet-stream": {
+          file: string;
+        };
       };
     };
     responses: {
@@ -28392,7 +28394,7 @@ export type operations = {
       /** The documents. */
       200: {
         content: {
-          "application/octet-stream": string;
+          "application/octet-stream": Blob[]; // TODO: [OpenAPI][orderDownloadFile] add proper response type
         };
       };
     };

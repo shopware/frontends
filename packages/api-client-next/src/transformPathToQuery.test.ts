@@ -65,6 +65,17 @@ describe("transform path to query request", () => {
         }
       `);
     });
+
+    it("should use the whole formData object as a request payload", async () => {
+      const formData = new FormData();
+      formData.append("optionId", "some-id");
+      const [path, params] = transformPathToQuery(
+        "sendFormData post /some/path/to/send/form/data",
+        formData as unknown as Record<string, unknown>,
+      );
+      expect(path).toEqual("/some/path/to/send/form/data");
+      expect(params.body).toEqual(expect.any(FormData));
+    });
   });
 
   it("should transform path param", async () => {
@@ -82,6 +93,33 @@ describe("transform path to query request", () => {
         "query": {},
       }
     `);
+  });
+
+  it("should omit passing param in a payload s when HTTP method is GET", async () => {
+    const [path, params] = transformPathToQuery("getContext get /context", {
+      languageId: "some-en-id",
+    });
+
+    expect(path).toEqual("/context");
+    expect(params.body).toBeUndefined();
+  });
+
+  it("should omit passing params in a payload when HTTP method is OPTIONS", async () => {
+    const [path, params] = transformPathToQuery("getContext options /context", {
+      languageId: "some-en-id",
+    });
+
+    expect(path).toEqual("/context");
+    expect(params.body).toBeUndefined();
+  });
+
+  it("should omit passing params in a payload  when HTTP method is HEAD", async () => {
+    const [path, params] = transformPathToQuery("getContext head /context", {
+      languageId: "some-en-id",
+    });
+
+    expect(path).toEqual("/context");
+    expect(params.body).toBeUndefined();
   });
 
   it("should put other params into body", async () => {

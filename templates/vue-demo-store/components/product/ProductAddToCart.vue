@@ -9,7 +9,6 @@ const { product } = toRefs(props);
 const { getErrorsCodes } = useCartNotification();
 const { t } = useI18n();
 const { addToCart, quantity } = useAddToCart(product);
-
 const addToCartProxy = async () => {
   await addToCart();
   getErrorsCodes()?.forEach((element) => {

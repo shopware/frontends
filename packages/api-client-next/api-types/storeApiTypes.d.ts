@@ -8487,7 +8487,7 @@ export type operations<components = components> = {
       /** An arbitrary binary file. */
       200: {
         content: {
-          "application/octet-stream": string;
+          "application/octet-stream": Blob; // TODO: [OpenAPI][orderDownloadFile] add proper response type
         };
       };
     };

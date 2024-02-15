@@ -56,6 +56,7 @@ export type CrossSelling = Schemas["CrossSellingElementCollection"];
 /**
  * @deprecated - use Schema["Product"] instead from import "#shopware"
  */
+
 export type Product = Schemas["Product"];
 // export type Product = {
 //   active: boolean;
