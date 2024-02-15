@@ -6,7 +6,8 @@ const props = defineProps<{
 }>();
 const { product } = toRefs(props);
 
-const { unitPrice, price, tierPrices, isListPrice } = useProductPrice(product);
+const { unitPrice, price, tierPrices, isListPrice, regulationPrice } =
+  useProductPrice(product);
 const { getFormattedPrice } = usePrice();
 </script>
 
@@ -26,6 +27,12 @@ const { getFormattedPrice } = usePrice();
         }"
         :value="unitPrice"
       />
+      <div
+        v-if="regulationPrice"
+        class="flex gap-2 justify-end text-gray-500 text-3.5"
+      >
+        {{ $t("product.previously") }} <SharedPrice :value="regulationPrice" />
+      </div>
     </div>
     <div v-else>
       <table class="border-collapse table-auto w-full text-sm mb-8">

@@ -39,6 +39,10 @@ export type UseProductPriceReturn = {
    * determines whether a discount price is set
    */
   isListPrice: ComputedRef<boolean>;
+  /**
+   * price for products with regulation price
+   */
+  regulationPrice: ComputedRef<number | undefined>;
 };
 
 /**
@@ -114,6 +118,10 @@ export function useProductPrice(
     () => !!_price.value?.listPrice?.percentage,
   );
 
+  const regulationPrice: ComputedRef<number | undefined> = computed(
+    () => product.value.calculatedPrice?.regulationPrice?.price,
+  );
+
   const tierPrices = computed(() => getProductTierPrices(product.value));
 
   return {
@@ -125,5 +133,6 @@ export function useProductPrice(
     tierPrices,
     referencePrice,
     isListPrice,
+    regulationPrice,
   };
 }

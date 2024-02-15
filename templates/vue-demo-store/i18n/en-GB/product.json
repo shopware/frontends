@@ -9,12 +9,12 @@
     "content": "Content",
     "choose": "Choose a",
     "variantsFrom": "variants from",
+    "previously": "previously",
     "price": {
       "label": "Price",
       "to": "To",
       "from": "From"
     },
-
     "messages": {
       "addedToWishlist": "{p} has been added to wishlist.",
       "removedFromWishlist": "{p} has been removed from wishlist.",
