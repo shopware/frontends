@@ -80,7 +80,8 @@ export async function loadSchema(args: {
       apiJSON = await adminClient.invoke(
         "api-info get /_info/openapi3.json?type",
         {
-          type: "json",
+          // TODO: change to json once default content-type is changed NEXT-30635
+          type: "jsonapi",
         },
       );
     } else {

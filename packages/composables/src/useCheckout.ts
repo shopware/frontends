@@ -104,6 +104,7 @@ export function useCheckout(): UseCheckoutReturn {
       "readShippingMethod post /shipping-method?onlyAvailable",
       {
         ...mergedAssociations,
+        onlyAvailable: true,
       },
     );
     storeShippingMethods.value =

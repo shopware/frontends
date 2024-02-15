@@ -36,13 +36,14 @@
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "unbuild --stub",
     "lint": "biome lint . && pnpm run typecheck",
+    "lint:fix": "biome lint --apply . && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^1.2.2",
-    "happy-dom": "^13.3.4",
+    "happy-dom": "^13.3.8",
     "tsconfig": "workspace:*",
     "unbuild": "^2.0.0",
     "vitest": "^1.2.2"
