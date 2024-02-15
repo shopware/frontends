@@ -23,7 +23,7 @@ type Translations = {
 let translations: Translations = {
   listing: {
     variantsFrom: "variants from",
-    previously: "Previously",
+    previously: "previously",
     to: "to",
   },
 };
@@ -32,9 +32,14 @@ translations = defu(translations, useCmsTranslations()) as Translations;
 
 const { product } = toRefs(props);
 
-const { price, unitPrice, displayFromVariants, displayFrom, isListPrice } =
-  useProductPrice(product);
-const regulationPrice = computed(() => price.value?.regulationPrice?.price);
+const {
+  price,
+  unitPrice,
+  displayFromVariants,
+  displayFrom,
+  isListPrice,
+  regulationPrice,
+} = useProductPrice(product);
 </script>
 
 <template>
@@ -74,13 +79,13 @@ const regulationPrice = computed(() => price.value?.regulationPrice?.price);
       >
     </SwSharedPrice>
     <template v-if="regulationPrice">
-      <div class="text-xs flex text-gray-500">
+      <div class="flex gap-2 justify-end text-gray-500 text-3.5 mb-2">
         {{ translations.listing.previously }}
-        <SharedPrice class="ml-1" :value="regulationPrice" />
+        <SharedPrice :value="regulationPrice" />
       </div>
     </template>
     <template v-if="!regulationPrice">
-      <div class="h-4"><!-- placeholder --></div>
+      <div class="h-7"><!-- placeholder --></div>
     </template>
   </div>
 </template>
