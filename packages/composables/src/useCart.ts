@@ -212,9 +212,7 @@ export function useCartFunction(): UseCartReturn {
   const count = computed(() => {
     return cartItems.value.reduce(
       (accumulator: number, lineItem: Schemas["LineItem"]) =>
-        lineItem.type === "product"
-          ? lineItem.quantity + accumulator
-          : accumulator,
+        lineItem.good === true ? lineItem.quantity + accumulator : accumulator,
       0,
     );
   });

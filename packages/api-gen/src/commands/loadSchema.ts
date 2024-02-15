@@ -45,7 +45,9 @@ export async function loadSchema(args: {
     if (missingEnvVars.length) {
       console.error(
         c.red(
-          `Missing ${c.bold(missingEnvVars.join(","))} env variables.\n\nCheck whether the .env file is created.\n`,
+          `Missing ${c.bold(
+            missingEnvVars.join(","),
+          )} env variables.\n\nCheck whether the .env file is created.\n`,
         ),
       );
       process.exit(1);
@@ -110,9 +112,9 @@ export async function loadSchema(args: {
 
     console.log(
       c.green(
-        `Schema file loaded from ${c.bold(
-          downloadUrl,
-        )} and saved to ${c.bold(args.filename)}`,
+        `Schema file loaded from ${c.bold(downloadUrl)} and saved to ${c.bold(
+          args.filename,
+        )}`,
       ),
     );
   } catch (error) {

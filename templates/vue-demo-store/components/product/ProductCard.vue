@@ -28,7 +28,6 @@ const props = withDefaults(
 );
 const { product } = toRefs(props);
 const { addToCart, isInCart, count } = useAddToCart(product);
-
 const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
   product.value.id,
 );
@@ -61,6 +60,7 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
+
   getErrorsCodes()?.forEach((element) => {
     pushError(t(`errors.${element.messageKey}`, { ...element }));
   });
