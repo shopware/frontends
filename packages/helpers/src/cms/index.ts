@@ -15,6 +15,7 @@ export { getCmsLayoutConfiguration } from "./getCmsLayoutConfiguration";
 export type { LayoutConfiguration } from "./getCmsLayoutConfiguration";
 export * from "./getBackgroundImageUrl";
 export * from "./buildUrlPrefix";
+export * from "./layoutClasses";
 
 /**
  * Returns the main page object depending of the type of the CMS page.
