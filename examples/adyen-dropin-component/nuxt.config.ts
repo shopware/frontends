@@ -29,4 +29,5 @@ export default defineNuxtConfig({
   ],
   modules: ["@unocss/nuxt", "@shopware-pwa/nuxt3-module"],
   devtools: { enabled: true },
+  telemetry: false,
 });

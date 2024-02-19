@@ -11,4 +11,5 @@ export default defineNuxtConfig({
   build: {
     transpile: ["@shopware-pwa/cms-base"],
   },
+  telemetry: false,
 });

@@ -22,4 +22,5 @@ export default defineNuxtConfig({
     // typeCheck: true,
     strict: true,
   },
+  telemetry: false,
 });
