@@ -8,4 +8,5 @@ export default defineNuxtConfig({
   build: {
     transpile: ["@shopware-pwa/composables-next"],
   },
+  telemetry: false,
 });
