@@ -48,3 +48,10 @@ yarn-error.log*
 .env 
 temp
 .temp
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
