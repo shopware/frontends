@@ -11,4 +11,5 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: true,
   },
+  telemetry: false,
 });
