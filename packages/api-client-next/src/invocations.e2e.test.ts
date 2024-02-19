@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createAPIClient } from ".";
-import type { operationPaths, operations } from "../api-types";
+import type { operationPaths, operations, components } from "../api-types";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
@@ -12,7 +12,7 @@ describe("Test real API invocations", () => {
       accessToken: "",
     });
     await expect(() =>
-      apiInstance.invoke("readCart get /checkout/cart", {}),
+      apiInstance.invoke("readCart get /checkout/cart"),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `
       [ApiClientError: Failed request
@@ -33,11 +33,13 @@ describe("Test real API invocations", () => {
   });
 
   it("should not allow to pass undefined as context token", async () => {
-    const apiInstance = createAPIClient<operations, operationPaths>({
-      baseURL,
-      accessToken,
-      contextToken: undefined,
-    });
+    const apiInstance = createAPIClient<operations<components>, operationPaths>(
+      {
+        baseURL,
+        accessToken,
+        contextToken: undefined,
+      },
+    );
     const result = await apiInstance.invoke("readContext get /context");
     expect(result).toHaveProperty("token");
     expect(result.token).not.toBe("undefined");

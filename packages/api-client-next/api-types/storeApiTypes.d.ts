@@ -7127,7 +7127,9 @@ export type $defs = Record<string, never>;
 
 export type external = Record<string, never>;
 
-export type operations<components = components> = {
+export type operations<
+  COMPONENTS extends Record<string, Record<string, unknown>> = components,
+> = {
   /**
    * Create a new address for a customer
    * Creates a new address for a customer.
@@ -7137,7 +7139,7 @@ export type operations<components = components> = {
       content: {
         "application/json": Omit<
           // TODO: [OpenAPI][createCustomerAddress] - omit id while creating address
-          components["schemas"]["CustomerAddress"],
+          COMPONENTS["schemas"]["CustomerAddress"],
           "id" | "createdAt"
         >;
       };
@@ -7145,7 +7147,7 @@ export type operations<components = components> = {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["CustomerAddress"];
+          "application/json": COMPONENTS["schemas"]["CustomerAddress"];
         };
       };
     };
@@ -7191,13 +7193,13 @@ export type operations<components = components> = {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["CustomerAddress"];
+        "application/json": COMPONENTS["schemas"]["CustomerAddress"];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["CustomerAddress"];
+          "application/json": COMPONENTS["schemas"]["CustomerAddress"];
         };
       };
     };
@@ -7257,7 +7259,7 @@ export type operations<components = components> = {
       /** Returns a success response indicating a successful update */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -7279,7 +7281,7 @@ export type operations<components = components> = {
       /** Returns a success response indicating a successful update */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -7305,7 +7307,7 @@ export type operations<components = components> = {
       /** Returns a success response indicating a successful update. */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -7325,7 +7327,7 @@ export type operations<components = components> = {
       /** Returns a success response indicating a successful update. */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -7361,7 +7363,7 @@ export type operations<components = components> = {
       /** Returns a success response indicating a successful update */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -7373,14 +7375,14 @@ export type operations<components = components> = {
   readCustomer: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
       /** Returns the logged in customer, also for guest sessions. Check for the value of `guest` field to see whether the customer is a guest. */
       200: {
         content: {
-          "application/json": components["schemas"]["Customer"];
+          "application/json": COMPONENTS["schemas"]["Customer"];
         };
       };
     };
@@ -7414,7 +7416,7 @@ export type operations<components = components> = {
       /** Returns a CustomerRecoveryIsExpiredResponse that indicates if the hash is expired or not. */
       200: {
         content: {
-          "application/json": components["schemas"]["ArrayStruct"];
+          "application/json": COMPONENTS["schemas"]["ArrayStruct"];
         };
       };
     };
@@ -7426,7 +7428,7 @@ export type operations<components = components> = {
   listAddress: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -7434,8 +7436,8 @@ export type operations<components = components> = {
         content: {
           "application/json": {
             // TODO: [OpenAPI][listAddress] add proper response type as EntitySearchResult
-            elements: components["schemas"]["CustomerAddress"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements: COMPONENTS["schemas"]["CustomerAddress"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -7456,11 +7458,11 @@ export type operations<components = components> = {
       };
     };
     responses: {
-      200: components["responses"]["ContextTokenResponse"];
+      200: COMPONENTS["responses"]["ContextTokenResponse"];
       /** If credentials are incorrect an error is returned */
       401: {
         content: {
-          "application/json": components["schemas"]["failure"];
+          "application/json": COMPONENTS["schemas"]["failure"];
         };
       };
     };
@@ -7471,8 +7473,8 @@ export type operations<components = components> = {
    */
   logoutCustomer: {
     responses: {
-      200: components["responses"]["ContextTokenResponse"];
-      403: components["responses"]["403"];
+      200: COMPONENTS["responses"]["ContextTokenResponse"];
+      403: COMPONENTS["responses"]["403"];
     };
   };
   /**
@@ -7482,14 +7484,14 @@ export type operations<components = components> = {
   readNewsletterRecipient: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
       200: {
         content: {
           // TODO: [OpenAPI][readNewsletterRecipient] return type is not array
-          "application/json": components["schemas"]["AccountNewsletterRecipientResult"];
+          "application/json": COMPONENTS["schemas"]["AccountNewsletterRecipientResult"];
         };
       };
     };
@@ -7517,7 +7519,7 @@ export type operations<components = components> = {
        */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -7543,7 +7545,7 @@ export type operations<components = components> = {
       /** Returns a success response indicating a successful update. */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -7566,7 +7568,7 @@ export type operations<components = components> = {
           /** Field can be used to store an affiliate tracking code */
           affiliateCode?: string;
           billingAddress: Omit<
-            components["schemas"]["CustomerAddress"],
+            COMPONENTS["schemas"]["CustomerAddress"],
             "createdAt" | "id" | "customerId" | "firstName" | "lastName"
           >; // TODO: [OpenAPI][register] - omit id, createdAt, customerId, firstName, lastName while creating address (or better to reverse and pick required fields)
           /** Birthday day */
@@ -7592,7 +7594,7 @@ export type operations<components = components> = {
           password: string;
           /** Id of the salutation for the customer account. Fetch options using `salutation` endpoint. */
           salutationId: string;
-          shippingAddress?: components["schemas"]["CustomerAddress"];
+          shippingAddress?: COMPONENTS["schemas"]["CustomerAddress"];
           /** URL of the storefront for that registration. Used in confirmation emails. Has to be one of the configured domains of the sales channel. */
           storefrontUrl: string;
           /** (Academic) title of the customer */
@@ -7604,7 +7606,7 @@ export type operations<components = components> = {
       /** Success */
       200: {
         content: {
-          "application/json": components["schemas"]["Customer"];
+          "application/json": COMPONENTS["schemas"]["Customer"];
         };
       };
     };
@@ -7677,7 +7679,7 @@ export type operations<components = components> = {
   readCategoryList: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -7685,8 +7687,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Category"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements?: COMPONENTS["schemas"]["Category"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -7712,15 +7714,15 @@ export type operations<components = components> = {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"] &
-          components["schemas"]["ProductListingCriteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"] &
+          COMPONENTS["schemas"]["ProductListingCriteria"];
       };
     };
     responses: {
       /** The loaded category with cms page */
       200: {
         content: {
-          "application/json": components["schemas"]["Category"];
+          "application/json": COMPONENTS["schemas"]["Category"];
         };
       };
     };
@@ -7734,7 +7736,7 @@ export type operations<components = components> = {
       /** Cart */
       200: {
         content: {
-          "application/json": components["schemas"]["Cart"];
+          "application/json": COMPONENTS["schemas"]["Cart"];
         };
       };
     };
@@ -7748,7 +7750,7 @@ export type operations<components = components> = {
       /** Successfully deleted the cart */
       204: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -7777,7 +7779,7 @@ export type operations<components = components> = {
       /** The updated cart. */
       200: {
         content: {
-          "application/json": components["schemas"]["Cart"];
+          "application/json": COMPONENTS["schemas"]["Cart"];
         };
       };
     };
@@ -7800,7 +7802,7 @@ export type operations<components = components> = {
       /** The updated cart. */
       200: {
         content: {
-          "application/json": components["schemas"]["Cart"];
+          "application/json": COMPONENTS["schemas"]["Cart"];
         };
       };
     };
@@ -7827,7 +7829,7 @@ export type operations<components = components> = {
       /** The updated cart. */
       200: {
         content: {
-          "application/json": components["schemas"]["Cart"];
+          "application/json": COMPONENTS["schemas"]["Cart"];
         };
       };
     };
@@ -7851,7 +7853,7 @@ export type operations<components = components> = {
       /** The updated cart. */
       200: {
         content: {
-          "application/json": components["schemas"]["Cart"];
+          "application/json": COMPONENTS["schemas"]["Cart"];
         };
       };
     };
@@ -7880,7 +7882,7 @@ export type operations<components = components> = {
       /** Order */
       200: {
         content: {
-          "application/json": components["schemas"]["Order"];
+          "application/json": COMPONENTS["schemas"]["Order"];
         };
       };
     };
@@ -7905,17 +7907,17 @@ export type operations<components = components> = {
         "application/json": {
           /** Resolves only the given slot identifiers. The identifiers have to be seperated by a `|` character. */
           slots?: string;
-        } & components["schemas"]["ProductListingCriteria"];
+        } & COMPONENTS["schemas"]["ProductListingCriteria"];
       };
     };
     responses: {
       /** The loaded cms page */
       200: {
         content: {
-          "application/json": components["schemas"]["CmsPage"];
+          "application/json": COMPONENTS["schemas"]["CmsPage"];
         };
       };
-      404: components["responses"]["404"];
+      404: COMPONENTS["responses"]["404"];
     };
   };
   /**
@@ -7970,7 +7972,7 @@ export type operations<components = components> = {
       /** Returns the current context. */
       200: {
         content: {
-          "application/json": components["schemas"]["SalesChannelContext"];
+          "application/json": COMPONENTS["schemas"]["SalesChannelContext"];
         };
       };
     };
@@ -8003,7 +8005,7 @@ export type operations<components = components> = {
       };
     };
     responses: {
-      200: components["responses"]["ContextTokenResponse"];
+      200: COMPONENTS["responses"]["ContextTokenResponse"];
     };
   };
   /**
@@ -8013,7 +8015,7 @@ export type operations<components = components> = {
   readCountry: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -8021,8 +8023,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Country"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements?: COMPONENTS["schemas"]["Country"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -8039,7 +8041,7 @@ export type operations<components = components> = {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -8047,8 +8049,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["CountryState"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements?: COMPONENTS["schemas"]["CountryState"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -8060,7 +8062,7 @@ export type operations<components = components> = {
   readCurrency: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -8068,8 +8070,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Currency"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements?: COMPONENTS["schemas"]["Currency"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -8086,7 +8088,7 @@ export type operations<components = components> = {
       /** Returns the customer group including registration settings. */
       200: {
         content: {
-          "application/json": components["schemas"]["CustomerGroup"];
+          "application/json": COMPONENTS["schemas"]["CustomerGroup"];
         };
       };
     };
@@ -8103,13 +8105,13 @@ export type operations<components = components> = {
   readCustomerWishlist: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["WishlistLoadRouteResponse"];
+          "application/json": COMPONENTS["schemas"]["WishlistLoadRouteResponse"];
         };
       };
     };
@@ -8134,7 +8136,7 @@ export type operations<components = components> = {
       /** Returns a success response. */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -8159,13 +8161,13 @@ export type operations<components = components> = {
       /** Returns a success response indicating a successful removal. */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
       /** The removal of the product failed. Probably because the product could not be found on the wishlist. */
       404: {
         content: {
-          "application/json": components["schemas"]["failure"];
+          "application/json": COMPONENTS["schemas"]["failure"];
         };
       };
     };
@@ -8193,7 +8195,7 @@ export type operations<components = components> = {
       /** Returns a success response. */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -8211,14 +8213,14 @@ export type operations<components = components> = {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
       /** Returns the document information and blob to download. */
       200: {
         content: {
-          "application/json": components["schemas"]["Document"];
+          "application/json": COMPONENTS["schemas"]["Document"];
         };
       };
     };
@@ -8270,21 +8272,21 @@ export type operations<components = components> = {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"] &
+        "application/json": COMPONENTS["schemas"]["Criteria"] &
           ({
             /** Resolves only the given slot identifiers. The identifiers have to be seperated by a `|` character. */
             slots?: string;
-          } & components["schemas"]["ProductListingCriteria"]);
+          } & COMPONENTS["schemas"]["ProductListingCriteria"]);
       };
     };
     responses: {
       /** The loaded landing page with cms page */
       200: {
         content: {
-          "application/json": components["schemas"]["LandingPage"];
+          "application/json": COMPONENTS["schemas"]["LandingPage"];
         };
       };
-      404: components["responses"]["404"];
+      404: COMPONENTS["responses"]["404"];
     };
   };
   /**
@@ -8294,7 +8296,7 @@ export type operations<components = components> = {
   readLanguages: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -8302,8 +8304,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements: components["schemas"]["Language"][]; // TODO: [OpenAPI][readLanguages] add elements property as required
-          } & components["schemas"]["EntitySearchResult"];
+            elements: COMPONENTS["schemas"]["Language"][]; // TODO: [OpenAPI][readLanguages] add elements property as required
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -8327,15 +8329,15 @@ export type operations<components = components> = {
       path: {
         /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
         // TODO: [OpenAPI][readNavigation] add union type in definition
-        activeId: components["schemas"]["NavigationType"] | string;
+        activeId: COMPONENTS["schemas"]["NavigationType"] | string;
         /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
         // TODO: [OpenAPI][readNavigation] add union type in definition
-        rootId: components["schemas"]["NavigationType"] | string;
+        rootId: COMPONENTS["schemas"]["NavigationType"] | string;
       };
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Criteria"] & {
+        "application/json": COMPONENTS["schemas"]["Criteria"] & {
           /** Return the categories as a tree or as a flat list. */
           buildTree?: unknown;
           /**
@@ -8350,7 +8352,7 @@ export type operations<components = components> = {
       /** All available navigations */
       200: {
         content: {
-          "application/json": components["schemas"]["NavigationRouteResponse"];
+          "application/json": COMPONENTS["schemas"]["NavigationRouteResponse"];
         };
       };
     };
@@ -8453,7 +8455,7 @@ export type operations<components = components> = {
   readOrder: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Criteria"] & {
+        "application/json": COMPONENTS["schemas"]["Criteria"] & {
           /** Check if the payment method of the order is still changeable. */
           checkPromotion?: boolean;
         };
@@ -8463,7 +8465,7 @@ export type operations<components = components> = {
       /** An array of orders and an indicator if the payment of the order can be changed. */
       200: {
         content: {
-          "application/json": components["schemas"]["OrderRouteResponse"];
+          "application/json": COMPONENTS["schemas"]["OrderRouteResponse"];
         };
       };
     };
@@ -8507,7 +8509,7 @@ export type operations<components = components> = {
       /** Successfully updated the payment method of the order. */
       200: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -8533,7 +8535,7 @@ export type operations<components = components> = {
        */
       200: {
         content: {
-          "application/json": components["schemas"]["StateMachineState"];
+          "application/json": COMPONENTS["schemas"]["StateMachineState"];
         };
       };
     };
@@ -8542,7 +8544,7 @@ export type operations<components = components> = {
   readPaymentMethod: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Criteria"] & {
+        "application/json": COMPONENTS["schemas"]["Criteria"] & {
           /** List only available */
           onlyAvailable?: boolean;
         };
@@ -8554,7 +8556,7 @@ export type operations<components = components> = {
           "application/json": {
             /** aggregation result */
             aggregations?: GenericRecord;
-            elements?: components["schemas"]["PaymentMethod"][];
+            elements?: COMPONENTS["schemas"]["PaymentMethod"][];
             /** Total amount */
             total?: number;
           };
@@ -8569,7 +8571,7 @@ export type operations<components = components> = {
   readProduct: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"] & {
+        "application/json": COMPONENTS["schemas"]["Criteria"] & {
           ids?: string[]; // TODO: [OpenAPI][readProduct]: add `ids` as field to criteria - (is required?)
         };
       };
@@ -8579,8 +8581,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
-          } & components["schemas"]["EntitySearchResult"];
+            elements: COMPONENTS["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -8617,15 +8619,15 @@ export type operations<components = components> = {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["ProductListingCriteria"] &
-          components["schemas"]["ProductListingFlags"];
+        "application/json": COMPONENTS["schemas"]["ProductListingCriteria"] &
+          COMPONENTS["schemas"]["ProductListingFlags"];
       };
     };
     responses: {
       /** Returns a product listing containing all products and additional fields to display a listing. */
       200: {
         content: {
-          "application/json": components["schemas"]["ProductListingResult"];
+          "application/json": COMPONENTS["schemas"]["ProductListingResult"];
         };
       };
     };
@@ -8645,7 +8647,7 @@ export type operations<components = components> = {
       /** Product information along with variant groups and options */
       200: {
         content: {
-          "application/json": components["schemas"]["ProductDetailResponse"];
+          "application/json": COMPONENTS["schemas"]["ProductDetailResponse"];
         };
       };
     };
@@ -8665,7 +8667,7 @@ export type operations<components = components> = {
       /** Found cross sellings */
       200: {
         content: {
-          "application/json": components["schemas"]["CrossSellingElementCollection"];
+          "application/json": COMPONENTS["schemas"]["CrossSellingElementCollection"];
         };
       };
     };
@@ -8695,7 +8697,7 @@ export type operations<components = components> = {
       /** Returns an FoundCombination struct containing the ids matching the search. */
       200: {
         content: {
-          "application/json": components["schemas"]["FindProductVariantRouteResponse"];
+          "application/json": COMPONENTS["schemas"]["FindProductVariantRouteResponse"];
         };
       };
     };
@@ -8750,7 +8752,7 @@ export type operations<components = components> = {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -8758,8 +8760,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["ProductReview"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements?: COMPONENTS["schemas"]["ProductReview"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -8787,9 +8789,9 @@ export type operations<components = components> = {
             [
               {
                 /** List of property groups with their corresponding options and information on how to display them. */
-                configuration?: components["schemas"]["PropertyGroup"];
+                configuration?: COMPONENTS["schemas"]["PropertyGroup"];
                 /** The product associated with the loaded pag. */
-                product?: components["schemas"]["Product"];
+                product?: COMPONENTS["schemas"]["Product"];
                 /**
                  * Type of page that was fetched. Indicates whether it is a product page or a category page.
                  * @enum {string}
@@ -8798,7 +8800,7 @@ export type operations<components = components> = {
               },
               {
                 /** The category associated with the loaded page. */
-                category?: components["schemas"]["Category"];
+                category?: COMPONENTS["schemas"]["Category"];
                 /**
                  * Type of page that was fetched. Indicates whether it is a product page or a category page.
                  * @enum {string}
@@ -8818,7 +8820,7 @@ export type operations<components = components> = {
       };
       /** The resource could not be resolved or no path is provided.. */
       404: {
-        content: components["responses"]["404"]; // TODO: [OpenAPI][pwaResolvePage] - properly define 404 response
+        content: COMPONENTS["responses"]["404"]; // TODO: [OpenAPI][pwaResolvePage] - properly define 404 response
       };
     };
   };
@@ -8829,7 +8831,7 @@ export type operations<components = components> = {
   readSalutation: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -8837,8 +8839,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Salutation"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements?: COMPONENTS["schemas"]["Salutation"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -8868,15 +8870,15 @@ export type operations<components = components> = {
         "application/json": {
           /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
           search: string;
-        } & components["schemas"]["ProductListingCriteria"] &
-          components["schemas"]["ProductListingFlags"];
+        } & COMPONENTS["schemas"]["ProductListingCriteria"] &
+          COMPONENTS["schemas"]["ProductListingFlags"];
       };
     };
     responses: {
       /** Returns a product listing containing all products and additional fields to display a listing. */
       200: {
         content: {
-          "application/json": components["schemas"]["ProductListingResult"];
+          "application/json": COMPONENTS["schemas"]["ProductListingResult"];
         };
       };
     };
@@ -8891,7 +8893,7 @@ export type operations<components = components> = {
         "application/json": {
           /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
           search: string;
-        } & components["schemas"]["ProductListingFlags"];
+        } & COMPONENTS["schemas"]["ProductListingFlags"];
       };
     };
     responses: {
@@ -8902,7 +8904,7 @@ export type operations<components = components> = {
        */
       200: {
         content: {
-          "application/json": components["schemas"]["ProductListingResult"];
+          "application/json": COMPONENTS["schemas"]["ProductListingResult"];
         };
       };
     };
@@ -8914,7 +8916,7 @@ export type operations<components = components> = {
   readSeoUrl: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -8922,11 +8924,11 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements: components["schemas"]["SeoUrl"][]; // TODO: [OpenAPI][readSeoUrl]: response should be `EntitySearchResult` and elements should be required
-          } & components["schemas"]["EntitySearchResult"];
+            elements: COMPONENTS["schemas"]["SeoUrl"][]; // TODO: [OpenAPI][readSeoUrl]: response should be `EntitySearchResult` and elements should be required
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
-      404: components["responses"]["404"];
+      404: COMPONENTS["responses"]["404"];
     };
   };
   /**
@@ -8942,7 +8944,7 @@ export type operations<components = components> = {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -8951,7 +8953,7 @@ export type operations<components = components> = {
           "application/json": {
             /** aggregation result */
             aggregations?: GenericRecord;
-            elements: components["schemas"]["ShippingMethod"][]; // TODO: [OpenAPI][readShippingMethod]: response should be `EntitySearchResult` and elements should be required
+            elements: COMPONENTS["schemas"]["ShippingMethod"][]; // TODO: [OpenAPI][readShippingMethod]: response should be `EntitySearchResult` and elements should be required
             /** Total amount */
             total?: number;
           };
@@ -8968,7 +8970,7 @@ export type operations<components = components> = {
       /** Returns a list of available sitemaps. */
       200: {
         content: {
-          "application/json": components["schemas"]["Sitemap"][];
+          "application/json": COMPONENTS["schemas"]["Sitemap"][];
         };
       };
     };
@@ -8980,7 +8982,7 @@ export type operations<components = components> = {
   readEmployees: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -8988,8 +8990,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["B2bEmployee"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements?: COMPONENTS["schemas"]["B2bEmployee"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -9009,7 +9011,7 @@ export type operations<components = components> = {
       /** Employee entity */
       200: {
         content: {
-          "application/json": components["schemas"]["B2bEmployee"];
+          "application/json": COMPONENTS["schemas"]["B2bEmployee"];
         };
       };
     };
@@ -9061,7 +9063,7 @@ export type operations<components = components> = {
       /** Employee entity */
       200: {
         content: {
-          "application/json": components["schemas"]["B2bEmployee"];
+          "application/json": COMPONENTS["schemas"]["B2bEmployee"];
         };
       };
     };
@@ -9089,7 +9091,7 @@ export type operations<components = components> = {
       /** Employee entity */
       200: {
         content: {
-          "application/json": components["schemas"]["B2bEmployee"];
+          "application/json": COMPONENTS["schemas"]["B2bEmployee"];
         };
       };
     };
@@ -9117,7 +9119,7 @@ export type operations<components = components> = {
       /** Employee entity */
       200: {
         content: {
-          "application/json": components["schemas"]["B2bEmployee"];
+          "application/json": COMPONENTS["schemas"]["B2bEmployee"];
         };
       };
     };
@@ -9144,7 +9146,7 @@ export type operations<components = components> = {
       /** A collection of search terms */
       200: {
         content: {
-          "application/json": components["schemas"]["SearchByImageSearchTermResponse"];
+          "application/json": COMPONENTS["schemas"]["SearchByImageSearchTermResponse"];
         };
       };
     };
@@ -9171,7 +9173,7 @@ export type operations<components = components> = {
       /** A collection of search terms, with an associated 'reason' based on search context */
       200: {
         content: {
-          "application/json": components["schemas"]["NaturalLanguageSearchTermResponse"];
+          "application/json": COMPONENTS["schemas"]["NaturalLanguageSearchTermResponse"];
         };
       };
     };
@@ -9183,7 +9185,7 @@ export type operations<components = components> = {
   readRoles: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -9191,8 +9193,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["B2bComponentsRole"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements?: COMPONENTS["schemas"]["B2bComponentsRole"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -9204,7 +9206,7 @@ export type operations<components = components> = {
   readRolesPOST: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["Criteria"];
+        "application/json": COMPONENTS["schemas"]["Criteria"];
       };
     };
     responses: {
@@ -9212,8 +9214,8 @@ export type operations<components = components> = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["B2bComponentsRole"][];
-          } & components["schemas"]["EntitySearchResult"];
+            elements?: COMPONENTS["schemas"]["B2bComponentsRole"][];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -9233,7 +9235,7 @@ export type operations<components = components> = {
       /** Role entity */
       200: {
         content: {
-          "application/json": components["schemas"]["B2bComponentsRole"];
+          "application/json": COMPONENTS["schemas"]["B2bComponentsRole"];
         };
       };
     };
@@ -9283,7 +9285,7 @@ export type operations<components = components> = {
       /** Role entity */
       200: {
         content: {
-          "application/json": components["schemas"]["B2bComponentsRole"];
+          "application/json": COMPONENTS["schemas"]["B2bComponentsRole"];
         };
       };
     };
@@ -9309,7 +9311,7 @@ export type operations<components = components> = {
       /** Role entity */
       200: {
         content: {
-          "application/json": components["schemas"]["B2bComponentsRole"];
+          "application/json": COMPONENTS["schemas"]["B2bComponentsRole"];
         };
       };
     };
@@ -9349,7 +9351,7 @@ export type operations<components = components> = {
               permissionGroupName?: string;
               permissionName?: string;
             }[];
-          } & components["schemas"]["EntitySearchResult"];
+          } & COMPONENTS["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -9369,7 +9371,7 @@ export type operations<components = components> = {
       /** Successfully authenticated */
       204: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
@@ -9389,7 +9391,7 @@ export type operations<components = components> = {
       /** Successfully authenticated */
       204: {
         content: {
-          "application/json": components["schemas"]["SuccessResponse"];
+          "application/json": COMPONENTS["schemas"]["SuccessResponse"];
         };
       };
     };
