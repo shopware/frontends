@@ -63,3 +63,7 @@ The HTTP status code 412 (Precondition Failed) usually means in the Shopware `st
 ## Access from origin 127.0.0.1:3000 has been blocked by CORS policy
 
 Depending on your server, you may need to set the `Access-Control-Allow-Origin` header to access your server from an external origin. And yes, your local development server is also an external origin in this case. Also, have a look at this [documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin) from MDN.
+
+## Local frontends used in devenv only show 503 errors on the network tab?
+
+If you encounter this problem, try to set the option `NUXT_TELEMETRY_DISABLED=1` in your local .env file for your template/project root folder, see also [Nuxt telemetry module](https://github.com/nuxt/telemetry).
