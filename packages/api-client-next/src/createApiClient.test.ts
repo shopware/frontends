@@ -120,6 +120,31 @@ describe("createAPIClient", () => {
     expect(contextChangedMock).toHaveBeenCalledWith("789");
   });
 
+  it("should NOT invoke onContextChanged method when no context header is set in response", async () => {
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const contextChangedMock = vi
+      .fn()
+      .mockImplementation((param: string) => {});
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+      onContextChanged: contextChangedMock,
+    });
+
+    await client.invoke("readContext get /context");
+    expect(contextChangedMock).not.toHaveBeenCalled();
+  });
+
   it("should throw error when there is a problem with request", async () => {
     const app = createApp().use(
       "/checkout/cart",
