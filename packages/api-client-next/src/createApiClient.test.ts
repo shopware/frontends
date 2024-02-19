@@ -171,4 +171,27 @@ describe("createAPIClient", () => {
       }),
     );
   });
+
+  it("should invoke requests with sw-language-id header if languageId is set", async () => {
+    const app = createApp().use(
+      "/checkout/cart",
+      eventHandler(async (event) => {
+        return {
+          headers: event.node.req.headers,
+        };
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      contextToken: "456",
+      languageId: "language-id",
+      baseURL,
+    });
+    const res = await client.invoke("readCart get /checkout/cart");
+    expect(res.headers["sw-context-token"]).toEqual("456");
+    expect(res.headers["sw-language-id"]).toEqual("language-id");
+  });
 });

@@ -87,6 +87,7 @@ export function createAPIClient<
   apiType?: "store-api" | "admin-api";
   accessToken: string;
   contextToken?: string;
+  languageId?: string;
   onContextChanged?: (newContextToken: string) => void;
 }) {
   const defaultHeaders: Record<string, string> = {
@@ -97,6 +98,9 @@ export function createAPIClient<
   // protection from setting "null" or "undefined" as a token in API side
   if (params.contextToken) {
     defaultHeaders["sw-context-token"] = params.contextToken;
+  }
+  if (params.languageId) {
+    defaultHeaders["sw-language-id"] = params.languageId;
   }
 
   const apiFetch = ofetch.create({
