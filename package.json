@@ -38,13 +38,13 @@
     "dotenv-cli": "^7.3.0",
     "esno": "^4.0.0",
     "globby": "^14.0.1",
-    "husky": "^9.0.10",
+    "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "taze": "^0.13.3",
-    "turbo": "^1.12.3",
+    "turbo": "^1.12.4",
     "typedoc": "^0.25.8",
-    "vercel": "^33.5.0"
+    "vercel": "^33.5.1"
   },
   "engines": {
     "node": "^18.x || ^20.x"
