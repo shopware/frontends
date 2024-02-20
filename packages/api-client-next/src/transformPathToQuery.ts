@@ -8,7 +8,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
   {
     method: HttpMethod;
     query: Record<string, unknown>;
-    headers: HeadersInit;
+    headers: Record<string, string>;
     body?: Partial<T>;
   },
 ] {
@@ -30,7 +30,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
 
   const headerParamnames = headerParams?.split(",") || [];
 
-  const headers: HeadersInit = {};
+  const headers: Record<string, string> = {};
 
   for (const paramName of headerParamnames) {
     headers[paramName] = params[paramName] as string;
@@ -52,7 +52,7 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
     query,
   } as {
     method: HttpMethod;
-    headers: HeadersInit;
+    headers: Record<string, string>;
     query: Record<string, unknown>;
     body?: Partial<T>;
   };
