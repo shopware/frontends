@@ -328,4 +328,35 @@ describe("createAdminAPIClient", () => {
       }),
     );
   });
+
+  it("should change default headers", async () => {
+    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const app = createApp().use(
+      "/order",
+      eventHandler(async (event) => {
+        const headers = getHeaders(event);
+        seoUrlheadersSpy(headers);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations, operationPaths>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer my-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: Date.now() + 1000 * 60,
+      },
+    });
+    client.defaultHeaders.Accept = "application/xml";
+    await client.invoke("getOrderList get /order?limit,page,query", {});
+
+    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        accept: "application/xml",
+      }),
+    );
+  });
 });
