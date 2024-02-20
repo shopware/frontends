@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
+import type { RequestParameters, Schemas } from "#shopware";
 const route = useRoute();
 const router = useRouter();
 
@@ -8,6 +8,7 @@ const {
   getElements: products,
   getTotalPagesCount,
   getCurrentPage,
+  changeCurrentPage,
   loading,
   setInitialListing,
   getCurrentListing,
@@ -83,6 +84,7 @@ const createFiltersFromRoute = () => {
   return filters;
 };
 
+const limit = ref(route.query.limit ? Number(route.query.limit) : 12);
 const cacheKey = computed(() => `productSearch-${JSON.stringify(route.query)}`);
 const loadProducts = async (cacheKey: string) => {
   const { data: productSearch } = await useAsyncData(cacheKey, async () => {
@@ -90,6 +92,7 @@ const loadProducts = async (cacheKey: string) => {
     await search({
       search: route.query.search as string,
       filter: filters,
+      limit: limit.value,
       aggregations: [
         {
           name: "manufacturer_ids_counter",
@@ -120,10 +123,31 @@ const changePage = async (page: number) => {
   await router.push({
     query: {
       ...route.query,
+      limit: limit.value,
       p: page,
     },
   });
+  await changeCurrentPage(
+    page,
+    route.query as unknown as RequestParameters<"searchPage">,
+  );
 };
+const changeLimit = async (limit: Event) => {
+  const select = limit.target as HTMLSelectElement;
+
+  await router.push({
+    query: {
+      ...route.query,
+      limit: select.value,
+      p: 1,
+    },
+  });
+  await changeCurrentPage(
+    1,
+    route.query as unknown as RequestParameters<"searchPage">,
+  );
+};
+
 setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
 
 type FilterAndAggregations = {
@@ -246,7 +270,7 @@ export default {
     <div class="cms-section-sidebar flex flex-col md:block">
       <div class="inline-block align-top w-12/12 md:w-3/12 order-2 md:order-1">
         <h2>{{ $t("search.filters") }}</h2>
-        <ListingFilters class="pr-4 md:pr-8" />
+        <ListingFilters class="pr-4 md:pr-8 pb-16" />
       </div>
       <div class="inline-block w-12/12 md:w-9/12 order-1 md:order-2">
         <div class="flex flex-wrap justify-center sm:justify-between">
@@ -260,11 +284,61 @@ export default {
       </div>
     </div>
 
-    <SharedPagination
-      :total="getTotalPagesCount"
-      :current="Number(getCurrentPage)"
-      class="mt-10"
-      @change-page="changePage"
-    />
+    <div
+      class="cms-section-sidebar flex flex-col md:block border-t border-secondary-200 mt-2"
+    >
+      <div
+        class="inline-block align-top w-12/12 md:w-3/12 order-2 md:order-1 mt-10"
+      >
+        <label for="limit" class="inline mr-4">{{
+          $t("search.perPage")
+        }}</label>
+        <select
+          id="limit"
+          v-model="limit"
+          name="limitchoices"
+          class="inline appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+          @change="changeLimit"
+        >
+          <option :value="1">
+            {{ $t("search.limitLabel", { count: "1" }) }}
+          </option>
+          <option :value="12">
+            {{ $t("search.limitLabel", { count: "12" }) }}
+          </option>
+          <option :value="24">
+            {{ $t("search.limitLabel", { count: "24" }) }}
+          </option>
+          <option :value="32">
+            {{ $t("search.limitLabel", { count: "32" }) }}
+          </option>
+        </select>
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+        >
+          <svg
+            class="fill-current h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="inline-block w-12/12 md:w-9/12 order-1 md:order-2 bg-white text-center"
+      >
+        <SharedPagination
+          :total="getTotalPagesCount"
+          :current="
+            route.query.p ? Number(route.query.p) : Number(getCurrentPage)
+          "
+          class="mt-10"
+          @change-page="changePage"
+        />
+      </div>
+    </div>
   </div>
 </template>

@@ -18,8 +18,10 @@
     "noResults": "Nie znaleziono produktów",
     "resetFilters": "Zresetuj filtry",
     "result": "wynik | wyniki | wyników",
+    "see": "zobacz",
     "resultsHeader": "Wynik wyszukiwania dla",
-    "see": "zobacz"
+    "perPage": "Na stronę:",
+    "limitLabel": "{count} Artykuł"
   },
   "messages": {
     "error": "Coś poszło nie tak, spróbuj ponownie później"
