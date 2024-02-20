@@ -90,6 +90,28 @@ describe("createAPIClient", () => {
     );
   });
 
+  it("should NOT invoke requests with sw-context-token header when not present", async () => {
+    const seoUrlHeadersSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/checkout/cart",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        seoUrlHeadersSpy(requestHeaders["sw-context-token"]);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      baseURL,
+    });
+    const res = await client.invoke("readCart get /checkout/cart");
+
+    expect(seoUrlHeadersSpy).toHaveBeenCalledWith(undefined);
+  });
+
   it("should invoke onContextChanged method when context token is changed", async () => {
     const app = createApp()
       .use(
@@ -204,6 +226,35 @@ describe("createAPIClient", () => {
     expect(seoUrlHeadersSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         accept: "application/json",
+      }),
+    );
+  });
+
+  it("should change default headers", async () => {
+    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const app = createApp().use(
+      "/checkout/cart",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        seoUrlheadersSpy(requestHeaders);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+    });
+
+    client.defaultHeaders.apply({ "sw-language-id": "my-language-id" });
+    await client.invoke("readCart get /checkout/cart");
+
+    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "sw-language-id": "my-language-id",
       }),
     );
   });
