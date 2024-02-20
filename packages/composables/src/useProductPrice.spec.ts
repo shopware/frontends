@@ -20,6 +20,7 @@ describe("useProductPrice", () => {
       mockedProduct.calculatedPrice?.referencePrice,
     );
     expect(vm.isListPrice).toBe(false);
+    expect(vm.regulationPrice).toBe(80);
   });
 
   it("product price are displayed - product with tier prices", () => {

@@ -1,3 +1,5 @@
+import type { HelpersCssClasses } from "./layoutClasses";
+
 // CmsBlock make as a generic type
 type GenericCms = {
   visibility?: {
@@ -60,8 +62,8 @@ export function _getVisibilityClasses(
     return visibilityCssClasses;
   }
 
-  const visibilityMap: Record<CmsVisibility, string> = {
-    mobile: "max-md:hidden", // TODO: #549 - create exported helper classes to be included in safelist
+  const visibilityMap: Record<CmsVisibility, HelpersCssClasses> = {
+    mobile: "max-md:hidden",
     tablet: "md:max-lg:hidden",
     desktop: "lg:hidden",
   };

@@ -47,6 +47,11 @@ export type RequestParameters<
     ? R
     : {}) &
   (OPERATIONS[OPERATION_NAME] extends {
+    requestBody?: { content?: { "multipart/form-data"?: infer R } };
+  }
+    ? R
+    : {}) &
+  (OPERATIONS[OPERATION_NAME] extends {
     parameters?: { header?: infer R };
   }
     ? R
@@ -55,13 +60,21 @@ export type RequestParameters<
 export type RequestReturnType<
   T extends keyof OPERATIONS,
   OPERATIONS = defaultOperations,
-> = GetInferKey<
-  GetInferKey<
-    GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
-    "content"
-  >,
-  "application/json"
->;
+> =
+  | GetInferKey<
+      GetInferKey<
+        GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
+        "content"
+      >,
+      "application/json"
+    >
+  | GetInferKey<
+      GetInferKey<
+        GetInferKey<GetInferKey<OPERATIONS[T], "responses">, "200">,
+        "content"
+      >,
+      "application/octet-stream"
+    >;
 
 export function createAPIClient<
   OPERATIONS extends Operations = defaultOperations,
@@ -92,11 +105,13 @@ export function createAPIClient<
     // async onRequestError({ request, options, error }) {},
     async onResponse(context) {
       if (
+        context.response.headers.has("sw-context-token") &&
         defaultHeaders["sw-context-token"] !==
-        context.response.headers.get("sw-context-token")
+          context.response.headers.get("sw-context-token")
       ) {
-        const newContextToken =
-          context.response.headers.get("sw-context-token") || "";
+        const newContextToken = context.response.headers.get(
+          "sw-context-token",
+        ) as string;
         defaultHeaders["sw-context-token"] = newContextToken;
         params.onContextChanged?.(newContextToken);
       }

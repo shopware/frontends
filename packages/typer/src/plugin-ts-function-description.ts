@@ -5,8 +5,9 @@ import { normalizeString, replacer } from ".";
 import { DeclarationReflection } from "typedoc";
 
 function isFunctionDeprecated(fn: DeclarationReflection): boolean {
-  return !!fn.signatures?.some((signature) =>
-    signature.comment?.blockTags?.some((tag) => tag.tag === "@deprecated"),
+  return !!fn.signatures?.some(
+    (signature) =>
+      signature.comment?.blockTags?.some((tag) => tag.tag === "@deprecated"),
   );
 }
 

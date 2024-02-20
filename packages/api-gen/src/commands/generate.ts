@@ -10,6 +10,31 @@ import semver from "semver";
 
 const config = dotenv.config().parsed || {};
 
+function replaceNameInRange(
+  str: string,
+  oldName: RegExp,
+  newName: string,
+  startIndex: number,
+) {
+  // Ensure valid indices
+  if (startIndex < 0 || startIndex > str.length) {
+    throw new Error("Invalid index range");
+  }
+
+  // Get the parts before and after the replacement range
+  const part1 = str.slice(0, startIndex);
+  const partToReplace = str.slice(startIndex);
+
+  // Replace the specific name within the range (case-insensitive)
+  const replacedPart = partToReplace.replace(
+    new RegExp(oldName, "gi"),
+    newName,
+  );
+
+  // Concatenate the parts to form the new string
+  return part1 + replacedPart;
+}
+
 export async function generate(args: { cwd: string; filename: string }) {
   try {
     const start = performance.now();
@@ -238,7 +263,16 @@ export async function generate(args: { cwd: string; filename: string }) {
     // add generic components definition
     schema = schema.replace(
       /export type operations =/g,
-      "export type operations<components = components> =",
+      "export type operations<COMPONENTS extends Record<string, Record<string, unknown>> = components> =",
+    );
+
+    const operationsIndex = schema.indexOf("export type operations<");
+
+    schema = replaceNameInRange(
+      schema,
+      /components\[/,
+      "COMPONENTS[",
+      operationsIndex,
     );
 
     schema = await format(schema, {

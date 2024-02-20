@@ -1,0 +1,85 @@
+---
+version: 2
+updates:
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+    versioning-strategy: 'increase'
+    ignore:
+      # used in old client, not upgrading
+      - dependency-name: 'axios'
+      # not upgrading until we move to new docs
+      - dependency-name: 'vitepress'
+      # not upgrading until we move to new docs
+      - dependency-name: 'vitepress-shopware-docs'
+      # until https://github.com/nuxt-modules/i18n/issues/2215 is resolved
+      - dependency-name: '@nuxtjs/i18n'
+    groups:
+      astro:
+        patterns:
+          - '@astrojs/*'
+          - 'astro'
+      changelog:
+        patterns:
+          - '@changesets/*'
+          - 'changelog-parser'
+          - '*/changelog-parser'
+      api-extractor:
+        patterns:
+          - '@microsoft/*'
+          - 'typedoc'
+      eslint:
+        patterns:
+          - 'eslint'
+          - '@types/eslint'
+          - '@eslint/*'
+          - '@typescript-eslint/*'
+          - 'eslint-*'
+          - 'globals'
+      maintenance:
+        patterns:
+          - 'turbo*'
+          - 'vercel'
+          - 'semver'
+          - 'globby'
+          - 'husky'
+          - 'lint-staged'
+          - 'taze'
+          - 'pnpm'
+      node:
+        patterns:
+          - '@types/node'
+      tests:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+          - 'happy-dom'
+          - '@faker*'
+          - '@codspeed/*'
+      e2e-tests:
+        patterns:
+          - 'dotenv'
+          - '@playwright*'
+      prettier:
+        patterns:
+          - 'prettier'
+          - '@types/prettier'
+      turbo:
+        patterns:
+          - 'turbo*'
+      vue:
+        patterns:
+          - 'vue'
+          - 'nuxt'
+          - 'vite'
+          - '@vitejs/*'
+          - '@iconify*'
+          - '@nuxt/*'
+          - '@unocss/*'
+          - 'unocss'

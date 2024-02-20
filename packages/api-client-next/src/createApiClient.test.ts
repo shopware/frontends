@@ -38,12 +38,13 @@ describe("createAPIClient", () => {
   });
 
   it("should invoke requests with sw-access-key header and no context-token by default", async () => {
+    const seoUrlHeadersSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/checkout/cart",
       eventHandler(async (event) => {
-        return {
-          headers: event.node.req.headers,
-        };
+        const requestHeaders = getHeaders(event);
+        seoUrlHeadersSpy(requestHeaders);
+        return {};
       }),
     );
 
@@ -54,17 +55,21 @@ describe("createAPIClient", () => {
       baseURL,
     });
     const res = await client.invoke("readCart get /checkout/cart");
-    expect(res.headers["sw-access-key"]).toEqual("123");
-    expect(res.headers["sw-context-token"]).toBeUndefined();
+    expect(seoUrlHeadersSpy).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        "sw-context-token": "",
+      }),
+    );
   });
 
   it("should invoke requests with sw-context-token header", async () => {
+    const seoUrlHeadersSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/checkout/cart",
       eventHandler(async (event) => {
-        return {
-          headers: event.node.req.headers,
-        };
+        const requestHeaders = getHeaders(event);
+        seoUrlHeadersSpy(requestHeaders);
+        return {};
       }),
     );
 
@@ -76,7 +81,13 @@ describe("createAPIClient", () => {
       baseURL,
     });
     const res = await client.invoke("readCart get /checkout/cart");
-    expect(res.headers["sw-context-token"]).toEqual("456");
+
+    expect(seoUrlHeadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "sw-access-key": "123",
+        "sw-context-token": "456",
+      }),
+    );
   });
 
   it("should invoke onContextChanged method when context token is changed", async () => {
@@ -120,6 +131,31 @@ describe("createAPIClient", () => {
     expect(contextChangedMock).toHaveBeenCalledWith("789");
   });
 
+  it("should NOT invoke onContextChanged method when no context header is set in response", async () => {
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const contextChangedMock = vi
+      .fn()
+      .mockImplementation((param: string) => {});
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+      onContextChanged: contextChangedMock,
+    });
+
+    await client.invoke("readContext get /context");
+    expect(contextChangedMock).not.toHaveBeenCalled();
+  });
+
   it("should throw error when there is a problem with request", async () => {
     const app = createApp().use(
       "/checkout/cart",
@@ -145,12 +181,12 @@ describe("createAPIClient", () => {
   });
 
   it(`should by default include "Accept" header with "application/json" value`, async () => {
-    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const seoUrlHeadersSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/checkout/cart",
       eventHandler(async (event) => {
         const requestHeaders = getHeaders(event);
-        seoUrlheadersSpy(requestHeaders);
+        seoUrlHeadersSpy(requestHeaders);
         return {};
       }),
     );
@@ -165,7 +201,7 @@ describe("createAPIClient", () => {
 
     await client.invoke("readCart get /checkout/cart");
 
-    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+    expect(seoUrlHeadersSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         accept: "application/json",
       }),

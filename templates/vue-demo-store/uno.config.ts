@@ -6,6 +6,7 @@ import {
   presetUno,
 } from "unocss";
 import transformerDirectives from "@unocss/transformer-directives";
+import { helpersCssClasses } from "@shopware-pwa/helpers-next";
 
 export default defineConfig({
   theme: {
@@ -113,5 +114,5 @@ export default defineConfig({
       `,
     },
   ],
-  safelist: ["max-md:hidden", "md:max-lg:hidden", "lg:hidden"],
+  safelist: helpersCssClasses,
 });

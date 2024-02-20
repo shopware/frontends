@@ -14,9 +14,10 @@
 
 ---
 
-## Getting started
+## Getting started (contribution)
 
-Node.js v16 or v18 and pnpm are required to run the project.
+Node.js (current LTS) and [pnpm](https://pnpm.io/installation#using-npm) are required to run the project.
+To be sure about the version compatibility you can enable Node's [corepack](https://nodejs.org/api/corepack.html).
 
 ```sh
 # Install dependencies

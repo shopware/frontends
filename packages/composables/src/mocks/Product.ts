@@ -428,7 +428,9 @@ const product: Schemas["Product"] = {
       apiAlias: "cart_price_reference",
     },
     listPrice: null,
-    regulationPrice: null,
+    regulationPrice: {
+      price: 80,
+    },
     apiAlias: "calculated_price",
   },
   sortedProperties: null,

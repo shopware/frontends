@@ -27,6 +27,7 @@ const {
   itemTotalPrice,
   itemQuantity,
   isPromotion,
+  isRemovable,
   changeItemQuantity,
 } = useCartItem(cartItem);
 
@@ -132,7 +133,7 @@ const removeCartItem = async () => {
       />
       <div class="flex">
         <button
-          v-if="!isPromotion"
+          v-if="!isPromotion && isRemovable"
           type="button"
           class="font-medium text-dark bg-transparent"
           :class="{ 'text-secondary-500': isLoading }"
