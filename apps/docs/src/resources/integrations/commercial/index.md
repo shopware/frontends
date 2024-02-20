@@ -20,3 +20,4 @@ Here you will find all integration documents for the commercial features of Rise
 - [B2B Quick-Order](b2b-quick-order)
 - [B2B Quote-Management](b2b-quote-management) (in development)
 - [Custom Products](custom-products)
+- [Digital Sales Rooms](digital-sales-rooms)
