@@ -14,7 +14,11 @@ type RequestHeaderName =
   | "indexing-behavior"
   | "indexing-skip";
 
-export type ClientHeaders = Record<RequestHeaderName | string, string>;
+type LiteralUnion<T extends U, U = string> = T | (U & { _x?: never });
+
+export type ClientHeaders = Partial<
+  Record<LiteralUnion<RequestHeaderName>, string>
+>;
 
 export type ClientHeadersProxy = ClientHeaders & {
   /**

@@ -96,7 +96,7 @@ export function createAPIClient<
   const defaultHeaders = createHeaders({
     "sw-access-key": params.accessToken,
     Accept: "application/json",
-    ...(params.contextToken && { "sw-context-token": params.contextToken }),
+    "sw-context-token": params.contextToken,
     ...params.defaultHeaders,
   });
 
@@ -259,7 +259,7 @@ export function createAdminAPIClient<
           baseURL: params.baseURL,
           method: "POST",
           body,
-          headers: defaultHeaders,
+          headers: defaultHeaders as HeadersInit,
           onResponseError({ response }) {
             // if resfesh is expired we get 401 and we're throwing it without invoking the original request
             errorInterceptor(response);

@@ -90,6 +90,28 @@ describe("createAPIClient", () => {
     );
   });
 
+  it("should NOT invoke requests with sw-context-token header when not present", async () => {
+    const seoUrlHeadersSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/checkout/cart",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        seoUrlHeadersSpy(requestHeaders["sw-context-token"]);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      baseURL,
+    });
+    const res = await client.invoke("readCart get /checkout/cart");
+
+    expect(seoUrlHeadersSpy).toHaveBeenCalledWith(undefined);
+  });
+
   it("should invoke onContextChanged method when context token is changed", async () => {
     const app = createApp()
       .use(
