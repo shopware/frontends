@@ -94,12 +94,14 @@ const invokeRating = (value: number) => {
             :key="index"
             class="w-5 h-5 i-carbon-star-filled"
             @click="invokeRating(value)"
+            data-testid="review-filled-star"
           ></div>
           <div
             v-for="(value, index) in 5 - (state.rating || 0)"
             :key="index"
             class="w-5 h-5 i-carbon-star"
             @click="invokeRating(value + (state.rating || 0))"
+            data-testid="review-empty-star"
           ></div>
         </div>
         <span
@@ -118,6 +120,7 @@ const invokeRating = (value: number) => {
         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         type="text"
         :disabled="isLoading"
+        data-testid="review-title-input"
       />
       <span
         v-if="$v.title.$error"
@@ -133,6 +136,7 @@ const invokeRating = (value: number) => {
         v-model="state.review"
         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         :disabled="isLoading"
+        data-testid="review-text-input"
       />
       <span
         v-if="$v.review.$error"
@@ -145,6 +149,7 @@ const invokeRating = (value: number) => {
       class="bg-sky-400 text-white mt-4 w-full font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-sky-500"
       type="submit"
       :disabled="isLoading"
+      data-testid="review-submit-button"
     >
       {{ $t("product.reviewsForm.submit") }}
     </button>

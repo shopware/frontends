@@ -21,10 +21,10 @@ export class ProductPage {
     this.productOption = page.getByTestId("cart-product-options");
     this.miniCartLink = page.getByTestId("cart-button");
     this.productRemove = page.getByTestId("product-remove-button");
-    this.ratingStar = page.locator(".mt-2 > .flex > div:nth-child(5)");
-    this.reviewTitle = page.getByLabel("Title");
-    this.reviewText = page.getByLabel("Your review");
-    this.submitReview = page.getByRole("button", { name: "Submit" });
+    this.ratingStar = page.getByTestId("review-empty-star");
+    this.reviewTitle = page.getByTestId("review-title-input");
+    this.reviewText = page.getByTestId("review-text-input");
+    this.submitReview = page.getByTestId("review-submit-button");
   }
 
   async addToCart() {
@@ -60,7 +60,7 @@ export class ProductPage {
   }
 
   async fillReviewForm() {
-    await this.ratingStar.click();
+    await this.ratingStar[4].click();
     await this.reviewTitle.fill("Review test title");
     await this.reviewText.fill(
       "Review text Review text Review text Review text Review text",
