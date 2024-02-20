@@ -18,8 +18,10 @@
     "noResults": "No products found",
     "resetFilters": "Reset Filters",
     "result": "result | results",
+    "see": "see",
     "resultsHeader": "Search Result for",
-    "see": "see"
+    "perPage": "Per Page:",
+    "limitLabel": "{count} Products"
   },
   "messages": {
     "error": "Something goes wrong please try again later"
