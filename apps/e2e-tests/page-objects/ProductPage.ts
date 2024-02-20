@@ -60,7 +60,7 @@ export class ProductPage {
   }
 
   async fillReviewForm() {
-    await this.ratingStar[4].click();
+    await this.ratingStar.nth(4).click();
     await this.reviewTitle.fill("Review test title");
     await this.reviewText.fill(
       "Review text Review text Review text Review text Review text",
