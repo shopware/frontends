@@ -196,4 +196,33 @@ describe("createAPIClient", () => {
       }),
     );
   });
+
+  it("should change default headers", async () => {
+    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const app = createApp().use(
+      "/checkout/cart",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        seoUrlheadersSpy(requestHeaders);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+    });
+
+    client.defaultHeaders.apply({ "sw-language-id": "my-language-id" });
+    await client.invoke("readCart get /checkout/cart");
+
+    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "sw-language-id": "my-language-id",
+      }),
+    );
+  });
 });

@@ -9,6 +9,9 @@ import type {
 } from "../admin-api-types";
 import { errorInterceptor } from "./errorInterceptor";
 import { transformPathToQuery } from "./transformPathToQuery";
+import { defu } from "defu";
+import { createHeaders } from "./defaultHeaders";
+import type { ClientHeaders } from "./defaultHeaders";
 
 type Operations = Record<string, unknown>;
 
@@ -88,16 +91,14 @@ export function createAPIClient<
   accessToken: string;
   contextToken?: string;
   onContextChanged?: (newContextToken: string) => void;
+  defaultHeaders?: ClientHeaders;
 }) {
-  const defaultHeaders: Record<string, string> = {
+  const defaultHeaders = createHeaders({
     "sw-access-key": params.accessToken,
     Accept: "application/json",
-  };
-
-  // protection from setting "null" or "undefined" as a token in API side
-  if (params.contextToken) {
-    defaultHeaders["sw-context-token"] = params.contextToken;
-  }
+    ...(params.contextToken && { "sw-context-token": params.contextToken }),
+    ...params.defaultHeaders,
+  });
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
@@ -142,18 +143,16 @@ export function createAPIClient<
     );
     return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
       requestPath,
-      {
-        ...options,
-        headers: {
-          ...defaultHeaders,
-          ...options.headers,
-        } as HeadersInit,
-      },
+      defu(options, { headers: defaultHeaders }),
     );
   }
 
   return {
     invoke,
+    /**
+     * Default headers used in every client request (if not overriden in specific request).
+     */
+    defaultHeaders,
   };
 }
 
@@ -184,6 +183,7 @@ export function createAdminAPIClient<
   credentials?: RequestParameters<"token", defaultAdminOperations>;
   sessionData?: AdminSessionData;
   onAuthChange?: (params: AdminSessionData) => void;
+  defaultHeaders?: ClientHeaders;
 }) {
   const isTokenBasedAuth =
     params.credentials?.grant_type === "client_credentials";
@@ -194,10 +194,10 @@ export function createAdminAPIClient<
     expirationTime: Number(params.sessionData?.expirationTime || 0),
   };
 
-  const defaultHeaders = {
+  const defaultHeaders = createHeaders({
     Authorization: createAuthorizationHeader(sessionData.accessToken),
     Accept: "application/json",
-  };
+  });
 
   function updateSessionData(responseData: {
     access_token?: string;
@@ -259,7 +259,7 @@ export function createAdminAPIClient<
           baseURL: params.baseURL,
           method: "POST",
           body,
-          headers: defaultHeaders as HeadersInit,
+          headers: defaultHeaders,
           onResponseError({ response }) {
             // if resfesh is expired we get 401 and we're throwing it without invoking the original request
             errorInterceptor(response);
@@ -306,13 +306,7 @@ export function createAdminAPIClient<
     );
     return apiFetch<RequestReturnType<OPERATION_NAME, OPERATIONS>>(
       requestPath,
-      {
-        ...options,
-        headers: {
-          ...defaultHeaders,
-          ...options.headers,
-        } as HeadersInit,
-      },
+      defu(options, { headers: defaultHeaders }),
     );
   }
 
@@ -330,6 +324,10 @@ export function createAdminAPIClient<
      * Returns current session data. Useful for testing purposes, as in most cases you'll want to use `onAuthChange` hook for that.
      */
     getSessionData,
+    /**
+     * Default headers used in every client request (if not overriden in specific request).
+     */
+    defaultHeaders,
   };
 }
 
