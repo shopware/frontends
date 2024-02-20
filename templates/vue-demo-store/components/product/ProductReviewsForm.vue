@@ -93,15 +93,15 @@ const invokeRating = (value: number) => {
             v-for="(value, index) in state.rating"
             :key="index"
             class="w-5 h-5 i-carbon-star-filled"
-            @click="invokeRating(value)"
             data-testid="review-filled-star"
+            @click="invokeRating(value)"
           ></div>
           <div
             v-for="(value, index) in 5 - (state.rating || 0)"
             :key="index"
             class="w-5 h-5 i-carbon-star"
-            @click="invokeRating(value + (state.rating || 0))"
             data-testid="review-empty-star"
+            @click="invokeRating(value + (state.rating || 0))"
           ></div>
         </div>
         <span
