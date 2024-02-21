@@ -250,8 +250,8 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4(vite@5.0.12)(vue@3.4.19)
       '@vueuse/core':
-        specifier: ^10.7.2
-        version: 10.7.2(vue@3.4.19)
+        specifier: ^10.8.0
+        version: 10.8.0(vue@3.4.19)
       vite:
         specifier: ^5.0.12
         version: 5.0.12(@types/node@20.11.17)
@@ -737,8 +737,8 @@ importers:
         specifier: ^2.0.4
         version: 2.0.4(vue@3.4.19)
       '@vueuse/core':
-        specifier: ^10.7.2
-        version: 10.7.2(vue@3.4.19)
+        specifier: ^10.8.0
+        version: 10.8.0(vue@3.4.19)
       entities:
         specifier: ^4.5.0
         version: 4.5.0
@@ -801,8 +801,8 @@ importers:
         specifier: workspace:*
         version: link:../api-client-next
       '@vueuse/core':
-        specifier: ^10.7.2
-        version: 10.7.2(vue@3.4.19)
+        specifier: ^10.8.0
+        version: 10.8.0(vue@3.4.19)
       defu:
         specifier: ^6.1.4
         version: 6.1.4

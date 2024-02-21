@@ -62,7 +62,7 @@
   "dependencies": {
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "@vueuse/core": "^10.7.2",
+    "@vueuse/core": "^10.8.0",
     "defu": "^6.1.4",
     "scule": "^1.3.0"
   },
