@@ -114,13 +114,13 @@ importers:
         version: 14.0.0
       vitepress:
         specifier: 1.0.0-beta.7
-        version: 1.0.0-beta.7(@algolia/client-search@4.20.0)(@types/node@20.11.17)(react@17.0.2)(search-insights@2.6.0)(typescript@5.3.3)
+        version: 1.0.0-beta.7(@algolia/client-search@4.22.1)(@types/node@20.11.17)(react@17.0.2)(search-insights@2.13.0)(typescript@5.3.3)
       vitepress-plugin-search:
         specifier: 1.0.4-alpha.22
         version: 1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.0.0-beta.7)(vue@3.4.19)
       vitepress-shopware-docs:
         specifier: 0.3.0-beta.44
-        version: 0.3.0-beta.44(@algolia/client-search@4.20.0)(@stoplight/mosaic-code-viewer@1.41.0)(react@17.0.2)(search-insights@2.6.0)(vue@3.4.19)
+        version: 0.3.0-beta.44(@algolia/client-search@4.22.1)(@stoplight/mosaic-code-viewer@1.51.3)(react@17.0.2)(search-insights@2.13.0)(vue@3.4.19)
       vue:
         specifier: ^3.4.19
         version: 3.4.19(typescript@5.3.3)
@@ -1166,47 +1166,47 @@ packages:
       preact: 10.13.2
     dev: true
 
-  /@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.6.0):
+  /@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0)(search-insights@2.13.0):
     resolution: {integrity: sha512-009HdfugtGCdC4JdXUbVJClA0q0zh24yyePn+KUGk3rP7j8FEe/m5Yo/z65gn6nP/cM39PxpzqKrL7A6fP6PPw==}
     dependencies:
-      '@algolia/autocomplete-plugin-algolia-insights': 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.6.0)
-      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)
+      '@algolia/autocomplete-plugin-algolia-insights': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0)(search-insights@2.13.0)
+      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0)
     transitivePeerDependencies:
       - '@algolia/client-search'
       - algoliasearch
       - search-insights
     dev: false
 
-  /@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.6.0):
+  /@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0)(search-insights@2.13.0):
     resolution: {integrity: sha512-a/yTUkcO/Vyy+JffmAnTWbr4/90cLzw+CC3bRbhnULr/EM0fGNvM13oQQ14f2moLMcVDyAx/leczLlAOovhSZg==}
     peerDependencies:
       search-insights: '>= 1 < 3'
     dependencies:
-      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)
-      search-insights: 2.6.0
+      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0)
+      search-insights: 2.13.0
     transitivePeerDependencies:
       - '@algolia/client-search'
       - algoliasearch
     dev: false
 
-  /@algolia/autocomplete-preset-algolia@1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0):
+  /@algolia/autocomplete-preset-algolia@1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0):
     resolution: {integrity: sha512-d4qlt6YmrLMYy95n5TB52wtNDr6EgAIPH81dvvvW8UmuWRgxEtY0NJiPwl/h95JtG2vmRM804M0DSwMCNZlzRA==}
     peerDependencies:
       '@algolia/client-search': '>= 4.9.1 < 6'
       algoliasearch: '>= 4.9.1 < 6'
     dependencies:
-      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)
-      '@algolia/client-search': 4.20.0
+      '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0)
+      '@algolia/client-search': 4.22.1
       algoliasearch: 4.20.0
     dev: false
 
-  /@algolia/autocomplete-shared@1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0):
+  /@algolia/autocomplete-shared@1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0):
     resolution: {integrity: sha512-Wnm9E4Ye6Rl6sTTqjoymD+l8DjSTHsHboVRYrKgEt8Q7UHm9nYbqhN/i0fhUYA3OAEH7WA8x3jfpnmJm3rKvaQ==}
     peerDependencies:
       '@algolia/client-search': '>= 4.9.1 < 6'
       algoliasearch: '>= 4.9.1 < 6'
     dependencies:
-      '@algolia/client-search': 4.20.0
+      '@algolia/client-search': 4.22.1
       algoliasearch: 4.20.0
     dev: false
 
@@ -1218,6 +1218,10 @@ packages:
 
   /@algolia/cache-common@4.20.0:
     resolution: {integrity: sha512-vCfxauaZutL3NImzB2G9LjLt36vKAckc6DhMp05An14kVo8F1Yofb6SIl6U3SaEz8pG2QOB9ptwM5c+zGevwIQ==}
+    dev: false
+
+  /@algolia/cache-common@4.22.1:
+    resolution: {integrity: sha512-TJMBKqZNKYB9TptRRjSUtevJeQVXRmg6rk9qgFKWvOy8jhCPdyNZV1nB3SKGufzvTVbomAukFR8guu/8NRKBTA==}
     dev: false
 
   /@algolia/cache-in-memory@4.20.0:
@@ -1250,6 +1254,13 @@ packages:
       '@algolia/transporter': 4.20.0
     dev: false
 
+  /@algolia/client-common@4.22.1:
+    resolution: {integrity: sha512-IvaL5v9mZtm4k4QHbBGDmU3wa/mKokmqNBqPj0K7lcR8ZDKzUorhcGp/u8PkPC/e0zoHSTvRh7TRkGX3Lm7iOQ==}
+    dependencies:
+      '@algolia/requester-common': 4.22.1
+      '@algolia/transporter': 4.22.1
+    dev: false
+
   /@algolia/client-personalization@4.20.0:
     resolution: {integrity: sha512-N9+zx0tWOQsLc3K4PVRDV8GUeOLAY0i445En79Pr3zWB+m67V+n/8w4Kw1C5LlbHDDJcyhMMIlqezh6BEk7xAQ==}
     dependencies:
@@ -1266,8 +1277,20 @@ packages:
       '@algolia/transporter': 4.20.0
     dev: false
 
+  /@algolia/client-search@4.22.1:
+    resolution: {integrity: sha512-yb05NA4tNaOgx3+rOxAmFztgMTtGBi97X7PC3jyNeGiwkAjOZc2QrdZBYyIdcDLoI09N0gjtpClcackoTN0gPA==}
+    dependencies:
+      '@algolia/client-common': 4.22.1
+      '@algolia/requester-common': 4.22.1
+      '@algolia/transporter': 4.22.1
+    dev: false
+
   /@algolia/logger-common@4.20.0:
     resolution: {integrity: sha512-xouigCMB5WJYEwvoWW5XDv7Z9f0A8VoXJc3VKwlHJw/je+3p2RcDXfksLI4G4lIVncFUYMZx30tP/rsdlvvzHQ==}
+    dev: false
+
+  /@algolia/logger-common@4.22.1:
+    resolution: {integrity: sha512-OnTFymd2odHSO39r4DSWRFETkBufnY2iGUZNrMXpIhF5cmFE8pGoINNPzwg02QLBlGSaLqdKy0bM8S0GyqPLBg==}
     dev: false
 
   /@algolia/logger-console@4.20.0:
@@ -1286,6 +1309,10 @@ packages:
     resolution: {integrity: sha512-9h6ye6RY/BkfmeJp7Z8gyyeMrmmWsMOCRBXQDs4mZKKsyVlfIVICpcSibbeYcuUdurLhIlrOUkH3rQEgZzonng==}
     dev: false
 
+  /@algolia/requester-common@4.22.1:
+    resolution: {integrity: sha512-dgvhSAtg2MJnR+BxrIFqlLtkLlVVhas9HgYKMk2Uxiy5m6/8HZBL40JVAMb2LovoPFs9I/EWIoFVjOrFwzn5Qg==}
+    dev: false
+
   /@algolia/requester-node-http@4.20.0:
     resolution: {integrity: sha512-ocJ66L60ABSSTRFnCHIEZpNHv6qTxsBwJEPfYaSBsLQodm0F9ptvalFkHMpvj5DfE22oZrcrLbOYM2bdPJRHng==}
     dependencies:
@@ -1298,6 +1325,14 @@ packages:
       '@algolia/cache-common': 4.20.0
       '@algolia/logger-common': 4.20.0
       '@algolia/requester-common': 4.20.0
+    dev: false
+
+  /@algolia/transporter@4.22.1:
+    resolution: {integrity: sha512-kzWgc2c9IdxMa3YqA6TN0NW5VrKYYW/BELIn7vnLyn+U/RFdZ4lxxt9/8yq3DKV5snvoDzzO4ClyejZRdV3lMQ==}
+    dependencies:
+      '@algolia/cache-common': 4.22.1
+      '@algolia/logger-common': 4.22.1
+      '@algolia/requester-common': 4.22.1
     dev: false
 
   /@ampproject/remapping@2.2.1:
@@ -2091,10 +2126,10 @@ packages:
     resolution: {integrity: sha512-SPiDHaWKQZpwR2siD0KQUwlStvIAnEyK6tAE2h2Wuoq8ue9skzhlyVQ1ddzOxX6khULnAALDiR/isSF3bnuciA==}
     dev: false
 
-  /@docsearch/js@3.5.2(@algolia/client-search@4.20.0)(react@17.0.2)(search-insights@2.6.0):
+  /@docsearch/js@3.5.2(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0):
     resolution: {integrity: sha512-p1YFTCDflk8ieHgFJYfmyHBki1D61+U9idwrLh+GQQMrBSP3DLGKpy0XUJtPjAOPltcVbqsTjiPFfH7JImjUNg==}
     dependencies:
-      '@docsearch/react': 3.5.2(@algolia/client-search@4.20.0)(react@17.0.2)(search-insights@2.6.0)
+      '@docsearch/react': 3.5.2(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0)
       preact: 10.17.1
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -2104,7 +2139,7 @@ packages:
       - search-insights
     dev: false
 
-  /@docsearch/react@3.5.2(@algolia/client-search@4.20.0)(react@17.0.2)(search-insights@2.6.0):
+  /@docsearch/react@3.5.2(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0):
     resolution: {integrity: sha512-9Ahcrs5z2jq/DcAvYtvlqEBHImbm4YJI8M9y0x6Tqg598P40HTEkX7hsMcIuThI+hTFxRGZ9hll0Wygm2yEjng==}
     peerDependencies:
       '@types/react': '>= 16.8.0 < 19.0.0'
@@ -2121,12 +2156,12 @@ packages:
       search-insights:
         optional: true
     dependencies:
-      '@algolia/autocomplete-core': 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.6.0)
-      '@algolia/autocomplete-preset-algolia': 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)
+      '@algolia/autocomplete-core': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0)(search-insights@2.13.0)
+      '@algolia/autocomplete-preset-algolia': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.20.0)
       '@docsearch/css': 3.5.2
       algoliasearch: 4.20.0
       react: 17.0.2
-      search-insights: 2.6.0
+      search-insights: 2.13.0
     transitivePeerDependencies:
       - '@algolia/client-search'
     dev: false
@@ -2762,12 +2797,26 @@ packages:
     requiresBuild: true
     dev: false
 
+  /@fortawesome/fontawesome-common-types@6.5.1:
+    resolution: {integrity: sha512-GkWzv+L6d2bI5f/Vk6ikJ9xtl7dfXtoRu3YGE6nq0p/FFqA1ebMOAWg3XgRyb0I6LYyYkiAo+3/KrwuBp8xG7A==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dev: false
+
   /@fortawesome/fontawesome-svg-core@6.4.0:
     resolution: {integrity: sha512-Bertv8xOiVELz5raB2FlXDPKt+m94MQ3JgDfsVbrqNpLU9+UE2E18GKjLKw+d3XbeYPqg1pzyQKGsrzbw+pPaw==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
       '@fortawesome/fontawesome-common-types': 6.4.0
+    dev: false
+
+  /@fortawesome/fontawesome-svg-core@6.5.1:
+    resolution: {integrity: sha512-MfRCYlQPXoLlpem+egxjfkEuP9UQswTrlCOsknus/NcMoblTH2g0jPrapbcIb04KGA7E2GZxbAccGZfWoYgsrQ==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.5.1
     dev: false
 
   /@fortawesome/react-fontawesome@0.2.0(@fortawesome/fontawesome-svg-core@6.4.0)(react@17.0.2):
@@ -2777,6 +2826,17 @@ packages:
       react: '>=16.3'
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.4.0
+      prop-types: 15.8.1
+      react: 17.0.2
+    dev: false
+
+  /@fortawesome/react-fontawesome@0.2.0(@fortawesome/fontawesome-svg-core@6.5.1)(react@17.0.2):
+    resolution: {integrity: sha512-uHg75Rb/XORTtVt7OS9WoK8uM276Ufi7gCzshVWkUJbHhh3svsUUeqXerrM96Wm7fRiDzfKRwSoahhMIkGAYHw==}
+    peerDependencies:
+      '@fortawesome/fontawesome-svg-core': ~1 || ~6
+      react: '>=16.3'
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.5.1
       prop-types: 15.8.1
       react: 17.0.2
     dev: false
@@ -4983,7 +5043,7 @@ packages:
       '@stoplight/json-schema-ref-parser': 9.2.2
       '@stoplight/json-schema-sampler': 0.2.3
       '@stoplight/json-schema-viewer': 4.10.0(@stoplight/markdown-viewer@5.6.0)(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2)
-      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2)
+      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.51.3)(@stoplight/mosaic@1.41.0)(react@17.0.2)
       '@stoplight/mosaic': 1.41.0(react@17.0.2)
       '@stoplight/mosaic-code-editor': 1.40.0(react@17.0.2)
       '@stoplight/mosaic-code-viewer': 1.41.0(react@17.0.2)
@@ -5029,7 +5089,7 @@ packages:
       - xstate
     dev: false
 
-  /@stoplight/elements-dev-portal@1.10.2(@stoplight/mosaic-code-viewer@1.41.0)(react@17.0.2):
+  /@stoplight/elements-dev-portal@1.10.2(@stoplight/mosaic-code-viewer@1.51.3)(react@17.0.2):
     resolution: {integrity: sha512-zPfKefRTQ83/CML+A9YYjub1G1Tv6+pH8kXqi0iDklkkUsb3ih88IGoIf3Jdj0ShbmXY5mKQfRXD1coYDgjy/g==}
     engines: {node: '>=14.13'}
     peerDependencies:
@@ -5040,7 +5100,7 @@ packages:
         optional: true
     dependencies:
       '@stoplight/elements-core': 7.7.18(react@17.0.2)
-      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2)
+      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.51.3)(@stoplight/mosaic@1.41.0)(react@17.0.2)
       '@stoplight/mosaic': 1.41.0(react@17.0.2)
       '@stoplight/path': 1.3.2
       '@stoplight/types': 13.15.0
@@ -5164,7 +5224,7 @@ packages:
     dependencies:
       '@stoplight/json': 3.20.2
       '@stoplight/json-schema-tree': 2.2.2
-      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2)
+      '@stoplight/markdown-viewer': 5.6.0(@stoplight/mosaic-code-viewer@1.51.3)(@stoplight/mosaic@1.41.0)(react@17.0.2)
       '@stoplight/mosaic': 1.41.0(react@17.0.2)
       '@stoplight/mosaic-code-viewer': 1.41.0(react@17.0.2)
       '@stoplight/react-error-boundary': 2.0.0(react@17.0.2)
@@ -5208,7 +5268,7 @@ packages:
       wolfy87-eventemitter: 5.2.9
     dev: false
 
-  /@stoplight/markdown-viewer@5.6.0(@stoplight/mosaic-code-viewer@1.41.0)(@stoplight/mosaic@1.41.0)(react@17.0.2):
+  /@stoplight/markdown-viewer@5.6.0(@stoplight/mosaic-code-viewer@1.51.3)(@stoplight/mosaic@1.41.0)(react@17.0.2):
     resolution: {integrity: sha512-vKHn1Bv9nafBYQWtNLlrRZ1aKqFRTOdfWUAhCSV1ZH4iqxGa+O1OWWTBbeOF5du8vcrWu1tTrXoCXkZjmq1NlA==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -5223,7 +5283,7 @@ packages:
       '@rehooks/component-size': 1.0.3(react@17.0.2)
       '@stoplight/markdown': 3.2.0
       '@stoplight/mosaic': 1.41.0(react@17.0.2)
-      '@stoplight/mosaic-code-viewer': 1.41.0(react@17.0.2)
+      '@stoplight/mosaic-code-viewer': 1.51.3(prop-types@15.8.1)(react@17.0.2)
       '@stoplight/react-error-boundary': 2.0.0(react@17.0.2)
       deepmerge: 4.3.1
       hast-to-hyperscript: 10.0.3
@@ -5363,6 +5423,41 @@ packages:
       - react-dom
     dev: false
 
+  /@stoplight/mosaic-code-viewer@1.51.3(prop-types@15.8.1)(react@17.0.2):
+    resolution: {integrity: sha512-S+efac0brZrFw4mt75dLCJim4tBilmr80HoIwrCgc3opqdmFlGvksu+bwp3pIJu2Hk/JQxrLu+eZ4DZ7TgDc8Q==}
+    peerDependencies:
+      react: '>= 16.14'
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.5.1
+      '@fortawesome/react-fontawesome': 0.2.0(@fortawesome/fontawesome-svg-core@6.5.1)(react@17.0.2)
+      '@react-hook/size': 2.1.2(react@17.0.2)
+      '@react-hook/window-size': 3.1.1(react@17.0.2)
+      '@react-types/radio': 3.1.2(react@17.0.2)
+      '@react-types/shared': 3.9.0(react@17.0.2)
+      '@react-types/switch': 3.1.2(react@17.0.2)
+      '@stoplight/mosaic': 1.51.3(prop-types@15.8.1)(react@17.0.2)
+      '@stoplight/types': 13.20.0
+      clsx: 1.2.1
+      copy-to-clipboard: 3.3.3
+      dom-helpers: 3.4.0
+      focus-trap-react: 10.2.3(prop-types@15.8.1)(react@17.0.2)
+      lodash.get: 4.4.2
+      nano-memoize: 1.3.1
+      polished: 4.3.1
+      prism-react-renderer: 1.3.5(react@17.0.2)
+      prismjs: 1.29.0
+      react: 17.0.2
+      react-fast-compare: 3.2.2
+      react-overflow-list: 0.5.0(react@17.0.2)
+      ts-keycode-enum: 1.0.6
+      tslib: 2.6.2
+      use-resize-observer: 9.1.0(react@17.0.2)
+      zustand: 3.7.2(react@17.0.2)
+    transitivePeerDependencies:
+      - prop-types
+      - react-dom
+    dev: false
+
   /@stoplight/mosaic@1.40.0(react@17.0.2):
     resolution: {integrity: sha512-hHEb0Cc4TzaPRjt9h5Ll7FuuVedvW6ZPa5HIxIMhPj4jgy5G3AaC1CCXzdRlwicBkUIp6lNkBOpB7cHadpXp1w==}
     peerDependencies:
@@ -5431,6 +5526,42 @@ packages:
       - react-dom
     dev: false
 
+  /@stoplight/mosaic@1.51.3(prop-types@15.8.1)(react@17.0.2):
+    resolution: {integrity: sha512-3C4bAvfG85sO2j6S4saseDbwS4sekmZ9CJy+vwpDK8EaBTy8GEon9TKTkwRiJ9VbFVCNhMVI/xucKuHHMMfYsQ==}
+    peerDependencies:
+      react: '>= 16.14'
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 6.5.1
+      '@fortawesome/react-fontawesome': 0.2.0(@fortawesome/fontawesome-svg-core@6.5.1)(react@17.0.2)
+      '@react-hook/size': 2.1.2(react@17.0.2)
+      '@react-hook/window-size': 3.1.1(react@17.0.2)
+      '@react-types/button': 3.4.1(react@17.0.2)
+      '@react-types/radio': 3.1.2(react@17.0.2)
+      '@react-types/shared': 3.9.0(react@17.0.2)
+      '@react-types/switch': 3.1.2(react@17.0.2)
+      '@react-types/textfield': 3.3.0(react@17.0.2)
+      '@stoplight/types': 13.20.0
+      '@types/react': 17.0.75
+      '@types/react-dom': 17.0.25
+      clsx: 1.2.1
+      copy-to-clipboard: 3.3.3
+      dom-helpers: 3.4.0
+      focus-trap-react: 10.2.3(prop-types@15.8.1)(react@17.0.2)
+      lodash.get: 4.4.2
+      nano-memoize: 1.3.1
+      polished: 4.3.1
+      react: 17.0.2
+      react-fast-compare: 3.2.2
+      react-overflow-list: 0.5.0(react@17.0.2)
+      ts-keycode-enum: 1.0.6
+      tslib: 2.6.2
+      use-resize-observer: 9.1.0(react@17.0.2)
+      zustand: 3.7.2(react@17.0.2)
+    transitivePeerDependencies:
+      - prop-types
+      - react-dom
+    dev: false
+
   /@stoplight/ordered-object-literal@1.0.4:
     resolution: {integrity: sha512-OF8uib1jjDs5/cCU+iOVy+GJjU3X7vk/qJIkIJFqwmlJKrrtijFmqwbu8XToXrwTYLQTP+Hebws5gtZEmk9jag==}
     engines: {node: '>=8'}
@@ -5469,6 +5600,14 @@ packages:
     dependencies:
       '@types/json-schema': 7.0.15
       utility-types: 3.10.0
+    dev: false
+
+  /@stoplight/types@13.20.0:
+    resolution: {integrity: sha512-2FNTv05If7ib79VPDA/r9eUet76jewXFH2y2K5vuge6SXbRHtWBhcaRmu+6QpF4/WRNoJj5XYRSwLGXDxysBGA==}
+    engines: {node: ^12.20 || >=14.13}
+    dependencies:
+      '@types/json-schema': 7.0.15
+      utility-types: 3.11.0
     dev: false
 
   /@stoplight/yaml-ast-parser@0.0.48:
@@ -10242,6 +10381,22 @@ packages:
     resolution: {integrity: sha512-Gz1EvfOneuFfk4yG458dJ3TLJ7gV19q3OM/vVvvHf7eT02Hm1DleB4edsia6ahbKgAYxO9gvyQ1ioWZR+a00Yw==}
     dev: false
 
+  /focus-trap-react@10.2.3(prop-types@15.8.1)(react@17.0.2):
+    resolution: {integrity: sha512-YXBpFu/hIeSu6NnmV2xlXzOYxuWkoOtar9jzgp3lOmjWLWY59C/b8DtDHEAV4SPU07Nd/t+nS/SBNGkhUBFmEw==}
+    peerDependencies:
+      prop-types: ^15.8.1
+      react: '>=16.3.0'
+      react-dom: '>=16.3.0'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+    dependencies:
+      focus-trap: 7.5.4
+      prop-types: 15.8.1
+      react: 17.0.2
+      tabbable: 6.2.0
+    dev: false
+
   /focus-trap@7.5.4:
     resolution: {integrity: sha512-N7kHdlgsO/v+iD/dMoJKtsSqs5Dz/dXZVebRgJw23LDk+jMi/974zyiOYDziY2JPp8xivq9BmUGwIJMiuSBi7w==}
     dependencies:
@@ -14535,6 +14690,13 @@ packages:
       '@babel/runtime': 7.23.9
     dev: false
 
+  /polished@4.3.1:
+    resolution: {integrity: sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA==}
+    engines: {node: '>=10'}
+    dependencies:
+      '@babel/runtime': 7.23.9
+    dev: false
+
   /postcss-calc@9.0.1(postcss@8.4.35):
     resolution: {integrity: sha512-TipgjGyzP5QzEhsOZUaIkeO5mKeMFpebWzRogWG/ysonUlnHcq5aJe0jOjpfzUU8PeSaBQnrE8ehR0QA5vs8PQ==}
     engines: {node: ^14 || ^16 || >=18.0}
@@ -15700,9 +15862,8 @@ packages:
   /scule@1.3.0:
     resolution: {integrity: sha512-6FtHJEvt+pVMIB9IBY+IcCJ6Z5f1iQnytgyfKMhDKgmzYG+TeH/wx1y3l27rshSbLiSanrR9ffZDrEsmjlQF2g==}
 
-  /search-insights@2.6.0:
-    resolution: {integrity: sha512-vU2/fJ+h/Mkm/DJOe+EaM5cafJv/1rRTZpGJTuFPf/Q5LjzgMDsqPdSaZsAe+GAWHHsfsu+rQSAn6c8IGtBEVw==}
-    engines: {node: '>=8.16.0'}
+  /search-insights@2.13.0:
+    resolution: {integrity: sha512-Orrsjf9trHHxFRuo9/rzm0KIWmgzE8RMlZMzuhZOJ01Rnz3D0YBAe+V6473t6/H6c7irs6Lt48brULAiRWb3Vw==}
     dev: false
 
   /section-matter@1.0.0:
@@ -17594,6 +17755,11 @@ packages:
     engines: {node: '>= 4'}
     dev: false
 
+  /utility-types@3.11.0:
+    resolution: {integrity: sha512-6Z7Ma2aVEWisaL6TvBCy7P8rm2LQoPv6dJ7ecIaIixHcwfbJ0x7mWdbcwlIM5IGQxPZSFYeqRCqlOOeKoJYMkw==}
+    engines: {node: '>= 4'}
+    dev: false
+
   /uuid@3.3.2:
     resolution: {integrity: sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
@@ -18081,17 +18247,17 @@ packages:
       flexsearch: 0.7.43
       glob-to-regexp: 0.4.1
       markdown-it: 13.0.2
-      vitepress: 1.0.0-beta.7(@algolia/client-search@4.20.0)(@types/node@20.11.17)(react@17.0.2)(search-insights@2.6.0)(typescript@5.3.3)
+      vitepress: 1.0.0-beta.7(@algolia/client-search@4.22.1)(@types/node@20.11.17)(react@17.0.2)(search-insights@2.13.0)(typescript@5.3.3)
       vue: 3.4.19(typescript@5.3.3)
     dev: false
 
-  /vitepress-shopware-docs@0.3.0-beta.44(@algolia/client-search@4.20.0)(@stoplight/mosaic-code-viewer@1.41.0)(react@17.0.2)(search-insights@2.6.0)(vue@3.4.19):
+  /vitepress-shopware-docs@0.3.0-beta.44(@algolia/client-search@4.22.1)(@stoplight/mosaic-code-viewer@1.51.3)(react@17.0.2)(search-insights@2.13.0)(vue@3.4.19):
     resolution: {integrity: sha512-Lfs/MtX0FkTJI6tcPLQw0H2bTwY04UMqPfiAabZjqflnMXlYx93dKYtZyf518zIuOKUR5nb0Ka+ftjkBCyfrhg==}
     dependencies:
       '@docsearch/css': 3.5.2
-      '@docsearch/js': 3.5.2(@algolia/client-search@4.20.0)(react@17.0.2)(search-insights@2.6.0)
+      '@docsearch/js': 3.5.2(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0)
       '@iconify-json/carbon': 1.1.30
-      '@stoplight/elements-dev-portal': 1.10.2(@stoplight/mosaic-code-viewer@1.41.0)(react@17.0.2)
+      '@stoplight/elements-dev-portal': 1.10.2(@stoplight/mosaic-code-viewer@1.51.3)(react@17.0.2)
       '@stoplight/json-schema-generator': 1.0.2
       '@vueuse/core': 9.13.0(vue@3.4.19)
       axios: 0.27.2
@@ -18137,12 +18303,12 @@ packages:
       - xstate
     dev: false
 
-  /vitepress@1.0.0-beta.7(@algolia/client-search@4.20.0)(@types/node@20.11.17)(react@17.0.2)(search-insights@2.6.0)(typescript@5.3.3):
+  /vitepress@1.0.0-beta.7(@algolia/client-search@4.22.1)(@types/node@20.11.17)(react@17.0.2)(search-insights@2.13.0)(typescript@5.3.3):
     resolution: {integrity: sha512-P9Rw+FXatKIU4fVdtKxqwHl6fby8E/8zE3FIfep6meNgN4BxbWqoKJ6yfuuQQR9IrpQqwnyaBh4LSabyll6tWg==}
     hasBin: true
     dependencies:
       '@docsearch/css': 3.5.2
-      '@docsearch/js': 3.5.2(@algolia/client-search@4.20.0)(react@17.0.2)(search-insights@2.6.0)
+      '@docsearch/js': 3.5.2(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0)
       '@vitejs/plugin-vue': 4.6.2(vite@4.5.2)(vue@3.4.19)
       '@vue/devtools-api': 6.5.1
       '@vueuse/core': 10.7.2(vue@3.4.19)
