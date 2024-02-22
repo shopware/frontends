@@ -47,11 +47,11 @@ importers:
         specifier: ^2.27.1
         version: 2.27.1
       '@microsoft/api-documenter':
-        specifier: ^7.23.25
-        version: 7.23.25(@types/node@20.11.19)
+        specifier: ^7.23.28
+        version: 7.23.28(@types/node@20.11.19)
       '@microsoft/api-extractor':
-        specifier: ^7.40.3
-        version: 7.40.3(@types/node@20.11.19)
+        specifier: ^7.40.5
+        version: 7.40.5(@types/node@20.11.19)
       '@microsoft/tsdoc':
         specifier: ^0.14.2
         version: 0.14.2
@@ -3362,13 +3362,13 @@ packages:
     resolution: {integrity: sha512-ojkXjR3K0Zz3jnCR80tqPL+0yvbZk/lEodb6RIVjLz7W8RVA2wrw8ym/CzCpXO9SYVUIKHFUpc7jvf8UKfIM3w==}
     dev: false
 
-  /@microsoft/api-documenter@7.23.25(@types/node@20.11.19):
-    resolution: {integrity: sha512-zb7wm2l5n+DDkU1P9D9px9dpbzB8WWWFRmIyJweCVjyAX12dNeoqHS9kr4LiOfJcDjpdRJT2zPU0vNqMpkSLWA==}
+  /@microsoft/api-documenter@7.23.28(@types/node@20.11.19):
+    resolution: {integrity: sha512-vIAP9/jUWtA2Uczvcju6KR0le5UVKJY95XGdK1SuJz3pHvY/4aq8XgmVDaqGqQ8lM7z+XsKgepO/GrkXgu1Nhw==}
     hasBin: true
     dependencies:
-      '@microsoft/api-extractor-model': 7.28.11(@types/node@20.11.19)
+      '@microsoft/api-extractor-model': 7.28.12(@types/node@20.11.19)
       '@microsoft/tsdoc': 0.14.2
-      '@rushstack/node-core-library': 4.0.0(@types/node@20.11.19)
+      '@rushstack/node-core-library': 4.0.1(@types/node@20.11.19)
       '@rushstack/ts-command-line': 4.17.2
       colors: 1.2.5
       js-yaml: 3.13.1
@@ -3377,24 +3377,24 @@ packages:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor-model@7.28.11(@types/node@20.11.19):
-    resolution: {integrity: sha512-iyYqSH4gI3dFj4GLTTvi4Usgd5bILc9bbB5m2xul5tJ0JQ9G9lc1rY67rSD6O0hU62E1WRHOai9GUUVXMgCTdA==}
+  /@microsoft/api-extractor-model@7.28.12(@types/node@20.11.19):
+    resolution: {integrity: sha512-h/gR7+VVp3KO/++YXodpIUKEznTznyawNugwTQka1RwchLwjPEFXmpT1UZ3Cnu8kt3CsNERw9ZUFajBHwUxW7w==}
     dependencies:
       '@microsoft/tsdoc': 0.14.2
       '@microsoft/tsdoc-config': 0.16.2
-      '@rushstack/node-core-library': 4.0.0(@types/node@20.11.19)
+      '@rushstack/node-core-library': 4.0.1(@types/node@20.11.19)
     transitivePeerDependencies:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor@7.40.3(@types/node@20.11.19):
-    resolution: {integrity: sha512-mh1BTKFxowAcArjUG3ryKN7seUEQt5BawAWCEtVq7nJYT2w2lBRGBmMBy93fnrWUxnvatXdtWgNi++Dl5R+7sQ==}
+  /@microsoft/api-extractor@7.40.5(@types/node@20.11.19):
+    resolution: {integrity: sha512-lcYS2slqA7Lil3BrWiaMBK95WmGXvZx12pDeYo6g9BWrtEok+ghmvgSO0SxoX2vgoOUquNDov1nwv6EZa6d3zQ==}
     hasBin: true
     dependencies:
-      '@microsoft/api-extractor-model': 7.28.11(@types/node@20.11.19)
+      '@microsoft/api-extractor-model': 7.28.12(@types/node@20.11.19)
       '@microsoft/tsdoc': 0.14.2
       '@microsoft/tsdoc-config': 0.16.2
-      '@rushstack/node-core-library': 4.0.0(@types/node@20.11.19)
+      '@rushstack/node-core-library': 4.0.1(@types/node@20.11.19)
       '@rushstack/rig-package': 0.5.2
       '@rushstack/ts-command-line': 4.17.2
       colors: 1.2.5
@@ -4869,8 +4869,8 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@rushstack/node-core-library@4.0.0(@types/node@20.11.19):
-    resolution: {integrity: sha512-4ocU3K2NtpILEWG6LjSMRSwrb0CjvYOioVTzqvIOj6vc5yD0BcscfpVp5dkHGLZxnqdmkBrTKvyg6AmqhWnw1w==}
+  /@rushstack/node-core-library@4.0.1(@types/node@20.11.19):
+    resolution: {integrity: sha512-wBGR9S/o/Q/7qVghqdfyocLz/Xc+VpjBTYzA8dAPNqHVSZNiEOWB37GPQWAUpHPWD1m8X7GUio8YMh8oe+uV0w==}
     peerDependencies:
       '@types/node': ^20
     peerDependenciesMeta:
@@ -4878,7 +4878,6 @@ packages:
         optional: true
     dependencies:
       '@types/node': 20.11.19
-      colors: 1.2.5
       fs-extra: 7.0.1
       import-lazy: 4.0.0
       jju: 1.4.0
@@ -7359,6 +7358,7 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+    dev: false
 
   /@vueuse/core@10.8.0(vue@3.4.19):
     resolution: {integrity: sha512-G9Ok9fjx10TkNIPn8V1dJmK1NcdJCtYmDRyYiTMUyJ1p0Tywc1zmOoCQ2xhHYyz8ULBU4KjIJQ9n+Lrty74iVw==}
@@ -7439,6 +7439,7 @@ packages:
 
   /@vueuse/metadata@10.7.2:
     resolution: {integrity: sha512-kCWPb4J2KGrwLtn1eJwaJD742u1k5h6v/St5wFe8Quih90+k2a0JP8BS4Zp34XUuJqS2AxFYMb1wjUL8HfhWsQ==}
+    dev: false
 
   /@vueuse/metadata@10.8.0:
     resolution: {integrity: sha512-Nim/Vle5OgXcXhAvGOgkJQXB1Yb+Kq/fMbLuv3YYDYbiQrwr39ljuD4k9fPeq4yUyokYRo2RaNQmbbIMWB/9+w==}
@@ -7497,6 +7498,7 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+    dev: false
 
   /@vueuse/shared@10.8.0(vue@3.4.19):
     resolution: {integrity: sha512-dUdy6zwHhULGxmr9YUg8e+EnB39gcM4Fe2oKBSrh3cOsV30JcMPtsyuspgFCUo5xxFNaeMf/W2yyKfST7Bg8oQ==}
