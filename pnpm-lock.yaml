@@ -760,13 +760,13 @@ importers:
         version: 1.3.1(vitest@1.3.1)
       '@vue/eslint-config-typescript':
         specifier: 12.0.0
-        version: 12.0.0(eslint-plugin-vue@9.21.1)(eslint@8.56.0)(typescript@5.3.3)
+        version: 12.0.0(eslint-plugin-vue@9.22.0)(eslint@8.56.0)(typescript@5.3.3)
       eslint-config-shopware:
         specifier: workspace:*
         version: link:../eslint-config-shopware
       eslint-plugin-vue:
-        specifier: 9.21.1
-        version: 9.21.1(eslint@8.56.0)
+        specifier: 9.22.0
+        version: 9.22.0(eslint@8.56.0)
       nuxt:
         specifier: 3.10.2
         version: 3.10.2(@types/node@20.11.19)(eslint@8.56.0)(rollup@3.29.4)(typescript@5.3.3)(vue-tsc@1.8.27)
@@ -1097,13 +1097,13 @@ importers:
         version: 8.1.1(rollup@3.29.4)(vue@3.4.19)
       '@vue/eslint-config-typescript':
         specifier: 12.0.0
-        version: 12.0.0(eslint-plugin-vue@9.21.1)(eslint@8.56.0)(typescript@5.3.3)
+        version: 12.0.0(eslint-plugin-vue@9.22.0)(eslint@8.56.0)(typescript@5.3.3)
       eslint-plugin-prettier:
         specifier: 5.1.3
         version: 5.1.3(eslint@8.56.0)(prettier@3.2.5)
       eslint-plugin-vue:
-        specifier: 9.21.1
-        version: 9.21.1(eslint@8.56.0)
+        specifier: 9.22.0
+        version: 9.22.0(eslint@8.56.0)
       nuxt:
         specifier: 3.10.2
         version: 3.10.2(@types/node@20.11.19)(eslint@8.56.0)(rollup@3.29.4)(typescript@5.3.3)(vue-tsc@1.8.27)
@@ -4043,7 +4043,7 @@ packages:
       eslint: 8.56.0
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@6.21.0)(eslint-plugin-import@2.29.1)(eslint@8.56.0)
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0)(eslint-import-resolver-typescript@3.6.1)(eslint@8.56.0)
-      eslint-plugin-vue: 9.21.1(eslint@8.56.0)
+      eslint-plugin-vue: 9.22.0(eslint@8.56.0)
     transitivePeerDependencies:
       - eslint-import-resolver-node
       - eslint-import-resolver-webpack
@@ -4063,7 +4063,7 @@ packages:
       eslint-plugin-node: 11.1.0(eslint@8.56.0)
       eslint-plugin-promise: 6.1.1(eslint@8.56.0)
       eslint-plugin-unicorn: 44.0.2(eslint@8.56.0)
-      eslint-plugin-vue: 9.21.1(eslint@8.56.0)
+      eslint-plugin-vue: 9.22.0(eslint@8.56.0)
       local-pkg: 0.4.3
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
@@ -7108,7 +7108,7 @@ packages:
   /@vue/devtools-api@6.5.1:
     resolution: {integrity: sha512-+KpckaAQyfbvshdDW5xQylLni1asvNSGme1JFs8I1+/H5pHEhqUKMEQD/qn3Nx5+/nycBq11qAEi8lk+LXI2dA==}
 
-  /@vue/eslint-config-typescript@12.0.0(eslint-plugin-vue@9.21.1)(eslint@8.56.0)(typescript@5.3.3):
+  /@vue/eslint-config-typescript@12.0.0(eslint-plugin-vue@9.22.0)(eslint@8.56.0)(typescript@5.3.3):
     resolution: {integrity: sha512-StxLFet2Qe97T8+7L8pGlhYBBr8Eg05LPuTDVopQV6il+SK6qqom59BA/rcFipUef2jD8P2X44Vd8tMFytfvlg==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -7122,7 +7122,7 @@ packages:
       '@typescript-eslint/eslint-plugin': 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.56.0)(typescript@5.3.3)
       '@typescript-eslint/parser': 6.21.0(eslint@8.56.0)(typescript@5.3.3)
       eslint: 8.56.0
-      eslint-plugin-vue: 9.21.1(eslint@8.56.0)
+      eslint-plugin-vue: 9.22.0(eslint@8.56.0)
       typescript: 5.3.3
       vue-eslint-parser: 9.4.2(eslint@8.56.0)
     transitivePeerDependencies:
@@ -9835,8 +9835,8 @@ packages:
       strip-indent: 3.0.0
     dev: true
 
-  /eslint-plugin-vue@9.21.1(eslint@8.56.0):
-    resolution: {integrity: sha512-XVtI7z39yOVBFJyi8Ljbn7kY9yHzznKXL02qQYn+ta63Iy4A9JFBw6o4OSB9hyD2++tVT+su9kQqetUyCCwhjw==}
+  /eslint-plugin-vue@9.22.0(eslint@8.56.0):
+    resolution: {integrity: sha512-7wCXv5zuVnBtZE/74z4yZ0CM8AjH6bk4MQGm7hZjUC2DBppKU5ioeOk5LGSg/s9a1ZJnIsdPLJpXnu1Rc+cVHg==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
