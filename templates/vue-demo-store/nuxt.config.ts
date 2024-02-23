@@ -72,7 +72,7 @@ export default defineNuxtConfig({
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
-    "@shopware-pwa/nuxt3-module",
+    "./modules/nuxt3-module",
     "@nuxtjs/i18n",
   ],
   // components: true,
