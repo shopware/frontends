@@ -23,7 +23,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       moduleConfig.shopwareAccessToken ?? "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
     addPluginTemplate({
-      filename: "shopware.plugin.mjs",
+      filename: "runtime/shopware.plugin.mjs",
       src: resolver.resolve("../plugin.ts"),
       options: {
         shopwareEndpoint: shopwareEndpoint,
