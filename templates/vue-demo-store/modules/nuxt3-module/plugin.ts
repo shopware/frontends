@@ -1,10 +1,5 @@
-import {
-  defineNuxtPlugin,
-  useRuntimeConfig,
-  // useCookie,
-  useState,
-  createShopwareContext,
-} from "#imports";
+import { useRuntimeConfig, useState, createShopwareContext } from "#imports";
+import { defineNuxtPlugin } from "#app";
 import { ref } from "vue";
 import Cookies from "js-cookie";
 import { createAPIClient } from "@shopware/api-client";

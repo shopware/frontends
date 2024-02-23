@@ -4,9 +4,8 @@
 import {
   defineNuxtModule,
   addPluginTemplate,
-  // addTypeTemplate,
+  createResolver,
 } from "@nuxt/kit";
-import { resolve } from "path";
 import { addCustomTab } from "@nuxt/devtools-kit";
 
 export default defineNuxtModule<ShopwareNuxtOptions>({
@@ -15,6 +14,8 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     configKey: "shopware",
   },
   async setup(moduleConfig) {
+    const resolver = createResolver(import.meta.url);
+
     const shopwareEndpoint =
       moduleConfig.shopwareEndpoint ??
       "https://demo-frontends.shopware.store/store-api/";
@@ -22,8 +23,8 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       moduleConfig.shopwareAccessToken ?? "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
     addPluginTemplate({
-      filename: "runtime/shopware.plugin.mjs",
-      src: resolve(__dirname, "../plugin.ts"),
+      filename: "shopware.plugin.mjs",
+      src: resolver.resolve("../plugin.ts"),
       options: {
         shopwareEndpoint: shopwareEndpoint,
         shopwareAccessToken: accessToken,
