@@ -72,7 +72,7 @@ export default defineNuxtConfig({
   modules: [
     "@vueuse/nuxt",
     "@unocss/nuxt",
-    "./modules/nuxt3-module",
+    "./modules/nuxt3-module/src/index.ts",
     "@nuxtjs/i18n",
   ],
   // components: true,
