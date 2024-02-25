@@ -63,6 +63,7 @@
     },
     "messages": {
       "checkoutSignInSuccess": "Vielen Dank für Ihre Anmeldung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Anmeldung abzuschließen."
-    }
+    },
+    "switchNotAllowed": "Auf diese Zahlungsmethode kann nicht gewechselt werden."
   }
 }

@@ -7,6 +7,10 @@ export default {
 const { params } = useRoute();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
+const { emit } = useEventBus();
+onMounted(() => {
+  emit("order:reset-payment");
+});
 </script>
 <template>
   <div class="container mx-auto w-1/2 mb-24 mt-24 text-center">

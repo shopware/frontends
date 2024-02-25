@@ -64,6 +64,7 @@
     },
     "messages": {
       "checkoutSignInSuccess": "Dziękujemy za rejestrację! Wkrótce otrzymasz e-mail z potwierdzeniem. Kliknij w link w e-mailu, aby ukończyć rejestrację."
-    }
+    },
+    "switchNotAllowed": "Nie ma możliwości przejścia na tę metodę płatności."
   }
 }

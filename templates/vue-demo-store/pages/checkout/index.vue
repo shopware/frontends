@@ -7,7 +7,7 @@ export default {
 import { useVuelidate } from "@vuelidate/core";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 import { customValidators } from "@/i18n/utils/i18n-validators";
-import type { RequestParameters } from "#shopware";
+import type { RequestParameters, Schemas } from "#shopware";
 import { ApiClientError, type ApiError } from "@shopware/api-client";
 
 const { required, minLength, requiredIf, email } = customValidators();
@@ -23,20 +23,13 @@ const { pushInfo } = useNotifications();
 const { t } = useI18n();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
-const {
-  paymentMethods,
-  shippingMethods,
-  getPaymentMethods,
-  getShippingMethods,
-  createOrder,
-} = useCheckout();
+const { shippingMethods, getShippingMethods, createOrder } = useCheckout();
 const { register, logout, isLoggedIn, isGuestSession, user } = useUser();
 const {
   refreshSessionContext,
   selectedShippingMethod: shippingMethod,
   selectedPaymentMethod: paymentMethod,
   setShippingMethod,
-  setPaymentMethod,
   activeShippingAddress,
   setActiveShippingAddress,
   activeBillingAddress,
@@ -70,16 +63,6 @@ const selectedShippingMethod = computed({
     isLoading[shippingMethodId] = false;
   },
 });
-const selectedPaymentMethod = computed({
-  get(): string {
-    return paymentMethod.value?.id || "";
-  },
-  async set(paymentMethodId: string) {
-    isLoading[paymentMethodId] = true;
-    await setPaymentMethod({ id: paymentMethodId });
-    isLoading[paymentMethodId] = false;
-  },
-});
 
 const selectedShippingAddress = computed({
   get(): string {
@@ -106,6 +89,8 @@ const selectedBillingAddress = computed({
     isLoading[`billing-${billingAddressId}`] = false;
   },
 });
+
+const { emit } = useEventBus();
 
 const isCartLoading = computed(() => {
   return !cart.value;
@@ -199,6 +184,14 @@ const placeOrder = async () => {
   }
 
   isLoading["placeOrder"] = true;
+
+  try {
+    await emit("order:placed", paymentMethod.value as Schemas["PaymentMethod"]);
+  } catch (e) {
+    isLoading["placeOrder"] = false;
+    return;
+  }
+
   const order = await createOrder();
   isLoading["placeOrder"] = false;
   await push("/checkout/success/" + order.id);
@@ -214,15 +207,12 @@ onMounted(async () => {
   await refreshSessionContext();
 
   isLoading["shippingMethods"] = true;
-  isLoading["paymentMethods"] = true;
 
   Promise.any([
     loadCustomerAddresses(),
     !isVirtualCart.value ? getShippingMethods() : null,
-    getPaymentMethods(),
   ]).finally(() => {
     isLoading["shippingMethods"] = false;
-    isLoading["paymentMethods"] = false;
   });
 });
 
@@ -660,69 +650,9 @@ const addAddressModalController = useModal();
               </label>
             </div>
           </fieldset>
-          <fieldset class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
-            <legend class="pt-5">
-              <h3 class="text-lg font-medium text-secondary-900 m-0">
-                {{ $t("checkout.paymentMethodLabel") }}
-              </h3>
-              <div class="text-sm text-secondary-600">
-                {{ $t("checkout.selectPaymentMethod") }}
-              </div>
-            </legend>
-            <div v-if="isLoading['paymentMethods']" class="w-60 h-24">
-              <div
-                class="flex animate-pulse flex-row items-top pt-4 h-full space-x-5"
-              >
-                <div class="w-4 bg-secondary-300 h-4 mt-1 rounded-full" />
-                <div class="flex flex-col space-y-3">
-                  <div class="w-36 bg-secondary-300 h-6 rounded-md" />
-                  <div class="w-24 bg-secondary-300 h-6 rounded-md" />
-                </div>
-              </div>
-            </div>
-            <div
-              v-for="singlePaymentMethod in paymentMethods"
-              v-else
-              :key="singlePaymentMethod.id"
-              class="flex items-center"
-            >
-              <input
-                :id="singlePaymentMethod.id"
-                v-model="selectedPaymentMethod"
-                :value="singlePaymentMethod.id"
-                name="payment-method"
-                type="radio"
-                class="focus:ring-primary h-4 w-4 border-secondary-300"
-                :data-testid="`checkout-payment-method-${singlePaymentMethod.id}`"
-              />
-              <label
-                :for="singlePaymentMethod.id"
-                :class="{ 'animate-pulse': isLoading[singlePaymentMethod.id] }"
-                class="ml-2 block text-sm font-medium text-secondary-700 w-full"
-              >
-                <div class="flex justify-between">
-                  <div>
-                    <span>
-                      {{ singlePaymentMethod.translated?.name }}
-                    </span>
-                    <span
-                      v-if="singlePaymentMethod.translated?.description"
-                      class="italic text-sm text-secondary-500 block"
-                    >
-                      {{ singlePaymentMethod.translated.description }}</span
-                    >
-                  </div>
-                  <div v-if="singlePaymentMethod.media?.url">
-                    <img
-                      loading="lazy"
-                      :src="singlePaymentMethod.media.url"
-                      :alt="`Logo of ${singlePaymentMethod.shortName}`"
-                    />
-                  </div>
-                </div>
-              </label>
-            </div>
-          </fieldset>
+
+          <CheckoutPaymentForm />
+
           <fieldset class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6">
             <legend class="pt-5">
               <h3 class="text-lg font-medium text-secondary-900 m-0">

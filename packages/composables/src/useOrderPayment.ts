@@ -54,9 +54,8 @@ export function useOrderPayment(
   order: ComputedRef<Schemas["Order"] | null | undefined>,
 ): UseOrderPaymentReturn {
   const { apiClient } = useShopwareContext();
-  const activeTransaction = computed(
-    () =>
-      order.value?.transactions?.find((t) => t.paymentMethod?.active === true),
+  const activeTransaction = computed(() =>
+    order.value?.transactions?.find((t) => t.paymentMethod?.active === true),
   );
   const paymentMethod = computed(() => activeTransaction.value?.paymentMethod);
   const paymentUrl = ref();
@@ -70,7 +69,7 @@ export function useOrderPayment(
   async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
-    // paymentDetails?: unknown, // TODO: check if it's needed
+    paymentDetails?: unknown,
   ): Promise<void | unknown> {
     if (!order.value) {
       return;
@@ -81,7 +80,7 @@ export function useOrderPayment(
         orderId: order.value.id,
         errorUrl,
         finishUrl,
-        // paymentDetails,
+        ...(paymentDetails as Record<string, unknown>),
       },
     );
 
