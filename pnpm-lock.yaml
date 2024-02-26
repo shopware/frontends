@@ -611,8 +611,8 @@ importers:
         specifier: 0.27.2
         version: 0.27.2
       query-string:
-        specifier: 8.2.0
-        version: 8.2.0
+        specifier: 9.0.0
+        version: 9.0.0
     devDependencies:
       '@faker-js/faker':
         specifier: 8.4.1
@@ -15098,9 +15098,9 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: false
 
-  /query-string@8.2.0:
-    resolution: {integrity: sha512-tUZIw8J0CawM5wyGBiDOAp7ObdRQh4uBor/fUR9ZjmbZVvw95OD9If4w3MQxr99rg0DJZ/9CIORcpEqU5hQG7g==}
-    engines: {node: '>=14.16'}
+  /query-string@9.0.0:
+    resolution: {integrity: sha512-4EWwcRGsO2H+yzq6ddHcVqkCQ2EFUSfDMEjF8ryp8ReymyZhIuaFRGLomeOQLkrzacMHoyky2HW0Qe30UbzkKw==}
+    engines: {node: '>=18'}
     dependencies:
       decode-uri-component: 0.4.1
       filter-obj: 5.1.0
