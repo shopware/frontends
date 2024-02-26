@@ -624,7 +624,49 @@ export type paths = {
      */
     post: operations["naturalLanguageSearchTerm"];
   };
-  "/store-api/quotes": {
+  "/quote/{id}/configure": {
+    /**
+     * Change payment or shipping method
+     * This route is used to change a payment or shipping method when place a order
+     */
+    post: operations["switchPaymentOrShippingMethod"];
+  };
+  "quote/{id}/decline": {
+    /**
+     * Decline a quote by id
+     * This route is used to decline a quote from the store by id
+     */
+    post: operations["declineQuote"];
+  };
+  "/quote/{id}/request-change": {
+    /**
+     * Request change a quote by id
+     * This route is used to request change a quote from the store by id
+     */
+    post: operations["requestChangeQuote"];
+  };
+  "/quote/detail/{id}": {
+    /**
+     * Fetch a one quote by id
+     * This route is used to fetch one quote by id
+     */
+    post: operations["readQuote"];
+  };
+  "/quote/order/{id}": {
+    /**
+     * Create a order from a quote
+     * This route is used to create a order from a quote
+     */
+    post: operations["createOrderFromQuote"];
+  };
+  "/quote/request": {
+    /**
+     * Request new quote
+     * This route is used to request a new quote from the store
+     */
+    post: operations["requestQuote"];
+  };
+  "/quotes": {
     /**
      * Fetch a list of quotes
      * This route is used to load quotes
@@ -9189,6 +9231,156 @@ export type operations<
    * Fetch a list of quotes
    * This route is used to load quotes
    */
+  switchPaymentOrShippingMethod: {
+    parameters: {
+      path: {
+        /** Identifier of the quote to be reinvited */
+        id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Id of the payment method */
+          paymentMethodId?: string;
+          /** Id of the shipping method */
+          shippingMethodId?: string;
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Decline a quote by id
+   * This route is used to decline a quote from the store by id
+   */
+  declineQuote: {
+    parameters: {
+      path: {
+        /** Identifier of the quote to be reinvited */
+        id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Message content */
+          comment?: string;
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Request change a quote by id
+   * This route is used to request change a quote from the store by id
+   */
+  requestChangeQuote: {
+    parameters: {
+      path: {
+        /** Identifier of the quote to be reinvited */
+        id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Message content */
+          comment?: string;
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Fetch a one quote by id
+   * This route is used to fetch one quote by id
+   */
+  readQuote: {
+    parameters: {
+      path: {
+        /** Identifier of the quote to be fetched */
+        id: string;
+      };
+    };
+    responses: {
+      /** Quote entity */
+      200: {
+        content: {
+          "application/json": COMPONENTS["schemas"]["Quote"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a order from a quote
+   * This route is used to create a order from a quote
+   */
+  createOrderFromQuote: {
+    parameters: {
+      path: {
+        /** Identifier of the quote to be reinvited */
+        id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Message content */
+          customerComment?: string;
+        };
+      };
+    };
+    responses: {
+      /** Order entity */
+      200: {
+        content: {
+          "application/json": COMPONENTS["schemas"]["Order"];
+        };
+      };
+    };
+  };
+  /**
+   * Request new quote
+   * This route is used to request a new quote from the store
+   */
+  requestQuote: {
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Message content */
+          comment?: string;
+        };
+      };
+    };
+    responses: {
+      /** Quote entity */
+      200: {
+        content: {
+          "application/json": COMPONENTS["schemas"]["Quote"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch a list of quotes
+   * This route is used to load quotes
+   */
   readQuotes: {
     requestBody?: {
       content: {
@@ -9517,4 +9709,10 @@ export type operationPaths =
   | "deleteRole delete /store-api/role/{id}"
   | "auth post /store-api/sso/auth/{providerId}"
   | "redirect post /store-api/sso/redirect/{providerId}"
+  | "readQuote post /quote/detail/{id}"
+  | "createOrderFromQuote post /quote/order/{id}"
+  | "requestQuote post /quote/request"
+  | "switchPaymentOrShippingMethod post /quote/{id}/configure"
+  | "declineQuote post /quote/{id}/decline"
+  | "requestChangeQuote post /quote/{id}/request-change"
   | "readQuotes post /quotes";
