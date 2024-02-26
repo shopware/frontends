@@ -5,6 +5,7 @@ const { refreshSessionContext, sessionContext } = useSessionContext();
 refreshSessionContext();
 </script>
 <template>
+<div test-id="test-wrapper">
   <h1
     class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"
   >
@@ -14,5 +15,5 @@ refreshSessionContext();
     >
     context
   </h1>
-  <pre>{{ sessionContext }}</pre>
+  <pre>{{ sessionContext }}</pre></div>
 </template>
