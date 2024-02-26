@@ -16,7 +16,7 @@
     "vue": "3.4.19"
   },
   "devDependencies": {
-    "@types/node": "20.11.19",
+    "@types/node": "20.11.20",
     "@vitejs/plugin-vue": "5.0.4",
     "vite": "5.1.4"
   }
