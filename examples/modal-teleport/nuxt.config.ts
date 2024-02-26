@@ -21,8 +21,5 @@ export default defineNuxtConfig({
     dirs: ["~/components"],
     global: true,
   },
-  nitro: {
-    compressPublicAssets: true,
-  },
   telemetry: false,
 });
