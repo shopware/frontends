@@ -43,7 +43,7 @@ export async function generatePackageDocs(packageName: string) {
       (name) => !name.startsWith("_") && name[0] === name[0].toLowerCase(),
     );
 
-    filteredNames.forEach(async (name) => {
+    for (const name of filteredNames) {
       const fileExistBoolean = await fs
         .access(path.join(docsPackagePath, `${name}.md`))
         .then(() => true)
@@ -55,7 +55,7 @@ export async function generatePackageDocs(packageName: string) {
           getDocTemplate({ name, category: packageName }),
         );
       }
-    });
+    }
 
     console.log(`+ Processed ${packageName} package.`);
   } catch (e) {
