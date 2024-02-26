@@ -1,5 +1,5 @@
-import parseChangelog from "changelog-parser";
 import path from "path";
+import parseChangelog from "changelog-parser";
 import fs from "fs/promises";
 
 /**

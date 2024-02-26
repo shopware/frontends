@@ -1,9 +1,9 @@
 import { join } from "path";
-import fs from "fs-extra";
-import parser from "prettier/parser-typescript";
-import prettier from "prettier";
 // import { globby } from "globby";
 import { TSDocParser } from "@microsoft/tsdoc";
+import fs from "fs-extra";
+import prettier from "prettier";
+import parser from "prettier/parser-typescript";
 import { TypeDocReader } from "typedoc";
 // import { markdownTable } from "markdown-table";
 
@@ -112,8 +112,8 @@ export function replacer(
 
   if (!code.match(regex)) {
     if (insert === "none") return code;
-    else if (insert === "head") return `${target}\n\n${code}`;
-    else return `${code}\n\n${target}`;
+    if (insert === "head") return `${target}\n\n${code}`;
+    return `${code}\n\n${target}`;
   }
 
   return code.replace(regex, target);
