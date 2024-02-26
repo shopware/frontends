@@ -20,6 +20,6 @@
   },
   "dependencies": {
     "@vueuse/nuxt": "10.8.0",
-    "vue": "3.4.19"
+    "vue": "3.4.20"
   }
 }
