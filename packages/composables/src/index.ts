@@ -60,6 +60,7 @@ export * from "./useSyncWishlist";
 export * from "./useUrlResolver";
 export * from "./useUser";
 export * from "./useWishlist";
+export * from "./useB2bQuoteManagement";
 
 export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   const componentName = content.type;
