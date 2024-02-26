@@ -148,7 +148,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <div role="test-wrapper">
+  <div test-id="test-wrapper">
     <div v-if="!orderCreated">
       <div
         class="p-4 mb-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800"
