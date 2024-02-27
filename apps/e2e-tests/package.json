@@ -8,9 +8,9 @@
     "test:examples": "playwright test -c examples.config.ts checkCodeExamples.spec.ts"
   },
   "devDependencies": {
-    "@playwright/test": "^1.41.2"
+    "@playwright/test": "1.41.2"
   },
   "dependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "16.4.5"
   }
 }

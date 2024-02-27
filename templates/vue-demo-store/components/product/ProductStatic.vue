@@ -13,7 +13,15 @@ const reviews: Ref<Schemas["ProductReview"][]> = ref([]);
 const router = useRouter();
 
 const { apiClient } = useShopwareContext();
+const { isLoggedIn } = useUser();
+
+const reviewAdded = ref(false);
+
 onMounted(async () => {
+  await fetchReviews();
+});
+
+const fetchReviews = async () => {
   const reviewsResponse = await apiClient.invoke(
     "readProductReviews post /product/{productId}/reviews",
     {
@@ -21,7 +29,7 @@ onMounted(async () => {
     },
   );
   reviews.value = reviewsResponse?.elements || [];
-});
+};
 
 const productName = computed(() =>
   getTranslatedProperty(props.product, "name"),
@@ -38,6 +46,11 @@ const properties = computed(() => props.product?.properties || []);
 const handleVariantChange = (val: Schemas["Product"]) => {
   const newRoute = getProductRoute(val);
   router.push(newRoute);
+};
+
+const handleReviewAdded = () => {
+  reviewAdded.value = true;
+  fetchReviews();
 };
 </script>
 
@@ -124,22 +137,18 @@ const handleVariantChange = (val: Schemas["Product"]) => {
               </div>
             </div>
 
-            <div v-if="reviews?.length" class="mt-10">
-              <h3 class="text-sm font-medium text-secondary-900">
-                {{ $t("product.reviews") }}
-              </h3>
-              <div v-if="reviews?.length" class="mt-4">
-                <ul role="list" class="pl-4 list-disc text-sm space-y-2">
-                  <li
-                    v-for="review in reviews"
-                    :key="review.id"
-                    class="text-secondary-400"
-                  >
-                    <span class="text-secondary-600">{{ review.content }}</span>
-                  </li>
-                </ul>
-              </div>
+            <h3 class="mt-10 mb-4 text-sm font-bold text-secondary-900">
+              {{ $t("product.reviews") }}
+            </h3>
+            <ProductReviewsForm
+              v-if="isLoggedIn && !reviewAdded"
+              :product-id="product.id"
+              @success="handleReviewAdded"
+            />
+            <div v-if="reviewAdded">
+              {{ $t("product.messages.reviewAdded") }}
             </div>
+            <ProductReviews class="mt-10" :reviews="reviews" />
           </div>
         </div>
       </div>
