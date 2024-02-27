@@ -250,8 +250,8 @@ importers:
         specifier: 5.0.4
         version: 5.0.4(vite@5.1.4)(vue@3.4.20)
       '@vueuse/core':
-        specifier: 10.8.0
-        version: 10.8.0(vue@3.4.20)
+        specifier: 10.9.0
+        version: 10.9.0(vue@3.4.20)
       vite:
         specifier: ^5.1.4
         version: 5.1.4(@types/node@20.11.17)
@@ -349,8 +349,8 @@ importers:
   examples/modal-teleport:
     dependencies:
       '@vueuse/nuxt':
-        specifier: 10.8.0
-        version: 10.8.0(nuxt@3.10.3)(vue@3.4.20)
+        specifier: 10.9.0
+        version: 10.9.0(nuxt@3.10.3)(vue@3.4.20)
       vue:
         specifier: 3.4.20
         version: 3.4.20(typescript@5.3.3)
@@ -507,8 +507,8 @@ importers:
         specifier: ^20
         version: 20.11.17
       '@vueuse/nuxt':
-        specifier: 10.8.0
-        version: 10.8.0(nuxt@3.10.3)(rollup@3.29.4)(vue@3.4.20)
+        specifier: 10.9.0
+        version: 10.9.0(nuxt@3.10.3)(rollup@3.29.4)(vue@3.4.20)
       nuxt:
         specifier: 3.10.3
         version: 3.10.3(@types/node@20.11.17)(rollup@3.29.4)(typescript@5.3.3)(vue-tsc@1.8.27)
@@ -737,8 +737,8 @@ importers:
         specifier: 2.0.4
         version: 2.0.4(vue@3.4.20)
       '@vueuse/core':
-        specifier: 10.8.0
-        version: 10.8.0(vue@3.4.20)
+        specifier: 10.9.0
+        version: 10.9.0(vue@3.4.20)
       entities:
         specifier: 4.5.0
         version: 4.5.0
@@ -801,8 +801,8 @@ importers:
         specifier: workspace:*
         version: link:../api-client-next
       '@vueuse/core':
-        specifier: 10.8.0
-        version: 10.8.0(vue@3.4.20)
+        specifier: 10.9.0
+        version: 10.9.0(vue@3.4.20)
       defu:
         specifier: 6.1.4
         version: 6.1.4
@@ -1029,8 +1029,8 @@ importers:
         specifier: ^20
         version: 20.11.17
       '@vueuse/nuxt':
-        specifier: 10.8.0
-        version: 10.8.0(nuxt@3.10.3)(vue@3.4.20)
+        specifier: 10.9.0
+        version: 10.9.0(nuxt@3.10.3)(vue@3.4.20)
       nuxt:
         specifier: 3.10.3
         version: 3.10.3(@types/node@20.11.17)(typescript@5.3.3)(vue-tsc@1.8.27)
@@ -1074,8 +1074,8 @@ importers:
         specifier: 2.0.4
         version: 2.0.4(vue@3.4.20)
       '@vueuse/nuxt':
-        specifier: 10.8.0
-        version: 10.8.0(nuxt@3.10.3)(rollup@3.29.4)(vue@3.4.20)
+        specifier: 10.9.0
+        version: 10.9.0(nuxt@3.10.3)(rollup@3.29.4)(vue@3.4.20)
       defu:
         specifier: 6.1.4
         version: 6.1.4
@@ -7320,24 +7320,24 @@ packages:
       - vue
     dev: false
 
-  /@vueuse/core@10.7.2(vue@3.4.20):
-    resolution: {integrity: sha512-AOyAL2rK0By62Hm+iqQn6Rbu8bfmbgaIMXcE3TSr7BdQ42wnSFlwIdPjInO62onYsEMK/yDMU8C6oGfDAtZ2qQ==}
-    dependencies:
-      '@types/web-bluetooth': 0.0.20
-      '@vueuse/metadata': 10.7.2
-      '@vueuse/shared': 10.7.2(vue@3.4.20)
-      vue-demi: 0.14.7(vue@3.4.20)
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
-    dev: false
-
   /@vueuse/core@10.8.0(vue@3.4.20):
     resolution: {integrity: sha512-G9Ok9fjx10TkNIPn8V1dJmK1NcdJCtYmDRyYiTMUyJ1p0Tywc1zmOoCQ2xhHYyz8ULBU4KjIJQ9n+Lrty74iVw==}
     dependencies:
       '@types/web-bluetooth': 0.0.20
       '@vueuse/metadata': 10.8.0
       '@vueuse/shared': 10.8.0(vue@3.4.20)
+      vue-demi: 0.14.7(vue@3.4.20)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
+  /@vueuse/core@10.9.0(vue@3.4.20):
+    resolution: {integrity: sha512-/1vjTol8SXnx6xewDEKfS0Ra//ncg4Hb0DaZiwKf7drgfMsKFExQ+FnnENcN6efPen+1kIzhLQoGSy0eDUVOMg==}
+    dependencies:
+      '@types/web-bluetooth': 0.0.20
+      '@vueuse/metadata': 10.9.0
+      '@vueuse/shared': 10.9.0(vue@3.4.20)
       vue-demi: 0.14.7(vue@3.4.20)
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -7409,25 +7409,25 @@ packages:
     resolution: {integrity: sha512-GlaH7tKP2iBCZ3bHNZ6b0cl9g0CJK8lttkBNUX156gWvNYhTKEtbweWLm9rxCPIiwzYcr/5xML6T8ZUEt+DkvA==}
     dev: false
 
-  /@vueuse/metadata@10.7.2:
-    resolution: {integrity: sha512-kCWPb4J2KGrwLtn1eJwaJD742u1k5h6v/St5wFe8Quih90+k2a0JP8BS4Zp34XUuJqS2AxFYMb1wjUL8HfhWsQ==}
-    dev: false
-
   /@vueuse/metadata@10.8.0:
     resolution: {integrity: sha512-Nim/Vle5OgXcXhAvGOgkJQXB1Yb+Kq/fMbLuv3YYDYbiQrwr39ljuD4k9fPeq4yUyokYRo2RaNQmbbIMWB/9+w==}
+    dev: false
+
+  /@vueuse/metadata@10.9.0:
+    resolution: {integrity: sha512-iddNbg3yZM0X7qFY2sAotomgdHK7YJ6sKUvQqbvwnf7TmaVPxS4EJydcNsVejNdS8iWCtDk+fYXr7E32nyTnGA==}
 
   /@vueuse/metadata@9.13.0:
     resolution: {integrity: sha512-gdU7TKNAUVlXXLbaF+ZCfte8BjRJQWPCa2J55+7/h+yDtzw3vOoGQDRXzI6pyKyo6bXFT5/QoPE4hAknExjRLQ==}
     dev: false
 
-  /@vueuse/nuxt@10.8.0(nuxt@3.10.3)(rollup@3.29.4)(vue@3.4.20):
-    resolution: {integrity: sha512-7b1S52exryoJoAgwH/4GRjtCjr7j8Fc5/H/orAt1DxZuiOGYEOCo7zaoM6twiURSzyiBiUemdvaRJqYzV37W6A==}
+  /@vueuse/nuxt@10.9.0(nuxt@3.10.3)(rollup@3.29.4)(vue@3.4.20):
+    resolution: {integrity: sha512-nC4Efg28Q6E41fUD5R+zM9uT5c+NfaDzaJCpqaEV/qHj+/BNJmkDBK8POLIUsiVOY35d0oD/YxZ+eVizqWBZow==}
     peerDependencies:
       nuxt: ^3.0.0
     dependencies:
       '@nuxt/kit': 3.10.3(rollup@3.29.4)
-      '@vueuse/core': 10.8.0(vue@3.4.20)
-      '@vueuse/metadata': 10.8.0
+      '@vueuse/core': 10.9.0(vue@3.4.20)
+      '@vueuse/metadata': 10.9.0
       local-pkg: 0.5.0
       nuxt: 3.10.3(@types/node@20.11.17)(rollup@3.29.4)(typescript@5.3.3)(vue-tsc@1.8.27)
       vue-demi: 0.14.7(vue@3.4.20)
@@ -7437,14 +7437,14 @@ packages:
       - supports-color
       - vue
 
-  /@vueuse/nuxt@10.8.0(nuxt@3.10.3)(vue@3.4.20):
-    resolution: {integrity: sha512-7b1S52exryoJoAgwH/4GRjtCjr7j8Fc5/H/orAt1DxZuiOGYEOCo7zaoM6twiURSzyiBiUemdvaRJqYzV37W6A==}
+  /@vueuse/nuxt@10.9.0(nuxt@3.10.3)(vue@3.4.20):
+    resolution: {integrity: sha512-nC4Efg28Q6E41fUD5R+zM9uT5c+NfaDzaJCpqaEV/qHj+/BNJmkDBK8POLIUsiVOY35d0oD/YxZ+eVizqWBZow==}
     peerDependencies:
       nuxt: ^3.0.0
     dependencies:
       '@nuxt/kit': 3.10.3(rollup@3.29.4)
-      '@vueuse/core': 10.8.0(vue@3.4.20)
-      '@vueuse/metadata': 10.8.0
+      '@vueuse/core': 10.9.0(vue@3.4.20)
+      '@vueuse/metadata': 10.9.0
       local-pkg: 0.5.0
       nuxt: 3.10.3(@types/node@20.11.17)(typescript@5.3.3)(vue-tsc@1.8.27)
       vue-demi: 0.14.7(vue@3.4.20)
@@ -7463,8 +7463,8 @@ packages:
       - vue
     dev: false
 
-  /@vueuse/shared@10.7.2(vue@3.4.20):
-    resolution: {integrity: sha512-qFbXoxS44pi2FkgFjPvF4h7c9oMDutpyBdcJdMYIMg9XyXli2meFMuaKn+UMgsClo//Th6+beeCgqweT/79BVA==}
+  /@vueuse/shared@10.8.0(vue@3.4.20):
+    resolution: {integrity: sha512-dUdy6zwHhULGxmr9YUg8e+EnB39gcM4Fe2oKBSrh3cOsV30JcMPtsyuspgFCUo5xxFNaeMf/W2yyKfST7Bg8oQ==}
     dependencies:
       vue-demi: 0.14.7(vue@3.4.20)
     transitivePeerDependencies:
@@ -7472,8 +7472,8 @@ packages:
       - vue
     dev: false
 
-  /@vueuse/shared@10.8.0(vue@3.4.20):
-    resolution: {integrity: sha512-dUdy6zwHhULGxmr9YUg8e+EnB39gcM4Fe2oKBSrh3cOsV30JcMPtsyuspgFCUo5xxFNaeMf/W2yyKfST7Bg8oQ==}
+  /@vueuse/shared@10.9.0(vue@3.4.20):
+    resolution: {integrity: sha512-Uud2IWncmAfJvRaFYzv5OHDli+FbOzxiVEQdLCKQKLyhz94PIyFC3CHcH7EDMwIn8NPtD06+PNbC/PiO0LGLtw==}
     dependencies:
       vue-demi: 0.14.7(vue@3.4.20)
     transitivePeerDependencies:
@@ -18287,7 +18287,7 @@ packages:
       '@docsearch/js': 3.5.2(@algolia/client-search@4.22.1)(react@17.0.2)(search-insights@2.13.0)
       '@vitejs/plugin-vue': 4.6.2(vite@4.5.2)(vue@3.4.20)
       '@vue/devtools-api': 6.5.1
-      '@vueuse/core': 10.7.2(vue@3.4.20)
+      '@vueuse/core': 10.8.0(vue@3.4.20)
       '@vueuse/integrations': 10.7.0(focus-trap@7.5.4)(vue@3.4.20)
       body-scroll-lock: 4.0.0-beta.0
       focus-trap: 7.5.4
