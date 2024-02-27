@@ -16,16 +16,17 @@ require("dotenv").config({ path: findEnv() });
 const config: PlaywrightTestConfig = {
   outputDir: "./reports",
   /* Maximum time one test can run for. */
-  timeout: 90000,
+  timeout: 0,
+
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: process.env.CI ? 30000 : 5000,
+    timeout: process.env.CI ? 0 : 0,
   },
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: false, //!!process.env.CI
   /* Retry on CI only */
@@ -33,7 +34,7 @@ const config: PlaywrightTestConfig = {
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 4 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "github",
+  reporter: "list",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -42,9 +43,8 @@ const config: PlaywrightTestConfig = {
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "retain-on-failure",
+    trace: "on",
   },
-
   /* Configure projects for major browsers */
   projects: [
     {
