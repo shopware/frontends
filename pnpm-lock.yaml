@@ -154,8 +154,8 @@ importers:
   examples/adyen-dropin-component:
     devDependencies:
       '@adyen/adyen-web':
-        specifier: 5.58.0
-        version: 5.58.0
+        specifier: 5.59.0
+        version: 5.59.0
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
@@ -1154,8 +1154,8 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
 
-  /@adyen/adyen-web@5.58.0:
-    resolution: {integrity: sha512-4Vv0qae7OuzMqvydLHZGBsMJobsmBfrMVQgmUpgm0qj4UpOlPFKTMrPDGshpaJ332zIEIijftkMzqk7RaGF2yg==}
+  /@adyen/adyen-web@5.59.0:
+    resolution: {integrity: sha512-hkIDzek/5bhhamip0ujOQGctrcr44+mwSn34tU4fVqm13TcKsxdY+2SxD79cSplLlDYYQzfMgnlC8azlOmm7Ww==}
     dependencies:
       '@babel/runtime': 7.23.9
       '@babel/runtime-corejs3': 7.20.6
