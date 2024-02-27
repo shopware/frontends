@@ -9,11 +9,11 @@
     "start": "npx http-server"
   },
   "devDependencies": {
-    "@playwright/test": "^1.41.2"
+    "@playwright/test": "1.41.2"
   },
   "dependencies": {
-    "@stackblitz/sdk": "^1.9.0",
-    "dotenv": "^16.4.5",
-    "http-server": "^14.1.1"
+    "@stackblitz/sdk": "1.9.0",
+    "dotenv": "16.4.5",
+    "http-server": "14.1.1"
   }
 }
