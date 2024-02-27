@@ -19,7 +19,7 @@
     "unocss": "0.58.5"
   },
   "dependencies": {
-    "@vueuse/nuxt": "10.8.0",
+    "@vueuse/nuxt": "10.9.0",
     "vue": "3.4.20"
   }
 }
