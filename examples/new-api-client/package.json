@@ -11,7 +11,7 @@
   "dependencies": {
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.4.19"
+    "vue": "3.4.20"
   },
   "devDependencies": {
     "@types/node": "20.11.20",
