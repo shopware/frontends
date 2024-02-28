@@ -8,6 +8,7 @@ const IGNORE_CHECK_EXAMPLES = [
   "mollie-credit-card",
   "adyen-dropin-component",
   "commercial-quick-order",
+  "strapi-cms",
   // TODO: https://github.com/shopware/frontends/issues/678
 ];
 
