@@ -6,12 +6,14 @@ import {
   useUser,
 } from "@shopware-pwa/composables-next";
 import QuotesTable from "./components/QuotesTable.vue";
+import Quote from "./components/Quote.vue";
 
 const { refreshSessionContext } = useSessionContext();
 const { login } = useUser();
 
 const username = ref("");
 const password = ref("");
+const chosenQuote = ref(null);
 
 const isLoggedIn = ref(false);
 
@@ -27,7 +29,7 @@ const loginAction = async () => {
 </script>
 <template>
   <div>
-    <h1 class="text-xl">Shopware B2B Quote Management</h1>
+    <!-- <h1 class="text-xl">Shopware B2B Quote Management</h1>
 
     <form v-if="!isLoggedIn" @submit.prevent="loginAction">
       <input class="border" type="text" v-model="username" />
@@ -35,6 +37,7 @@ const loginAction = async () => {
       <button type="submit">Login</button>
     </form>
     <QuotesTable v-if="isLoggedIn" class="mt-10" />
+    <Quote v-if="isLoggedIn && chosenQuote" :quoteId="chosenQuote" /> -->
     <router-view></router-view>
   </div>
 </template>

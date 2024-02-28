@@ -9312,6 +9312,11 @@ export type operations<
    * This route is used to fetch one quote by id
    */
   readQuote: {
+    requestBody?: {
+      content: {
+        "application/json": COMPONENTS["schemas"]["Criteria"];
+      };
+    };
     parameters: {
       path: {
         /** Identifier of the quote to be fetched */
