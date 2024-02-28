@@ -27,6 +27,7 @@ In an example URL above there are few parts that need explanation:
 To keep every example consistent in terms of using it by the users there are few rules to follow:
 
 - Use Vue or Nuxt as a base library/framework
+- For e2e availability purposes, wrap the presentation layer (an entrypoint template) in a DOM element with a `test-wrapper` test-id attribute, like in this [PR](https://github.com/shopware/frontends/pull/679/files#diff-12260e5806d489206db5e938f4e1027c4ac4362d4f7f6e3a8957cf3017e9a88cR158)
 - Try to always add a README.md explaining how to work with an example
 - Add comments to the code wherever it's reasonable
 - Keep It simple - the smaller example, the better
