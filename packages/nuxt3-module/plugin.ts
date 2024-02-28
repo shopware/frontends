@@ -19,7 +19,7 @@ export default defineNuxtPlugin((NuxtApp) => {
     runtimeConfig.public?.shopware?.shopwareAccessToken;
   if (!shopwareEndpoint || !shopwareAccessToken) {
     throw new Error(
-      "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration",
+      "Make sure that endpoint and accessToken are settled in the configuration",
     );
   }
 
