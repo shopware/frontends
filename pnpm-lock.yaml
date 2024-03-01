@@ -47,11 +47,11 @@ importers:
         specifier: 2.27.1
         version: 2.27.1
       '@microsoft/api-documenter':
-        specifier: 7.23.31
-        version: 7.23.31(@types/node@20.11.24)
+        specifier: 7.23.34
+        version: 7.23.34(@types/node@20.11.24)
       '@microsoft/api-extractor':
-        specifier: 7.41.0
-        version: 7.41.0(@types/node@20.11.24)
+        specifier: 7.42.1
+        version: 7.42.1(@types/node@20.11.24)
       '@microsoft/tsdoc':
         specifier: 0.14.2
         version: 0.14.2
@@ -1342,6 +1342,14 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.23
 
+  /@ampproject/remapping@2.3.0:
+    resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@jridgewell/gen-mapping': 0.3.5
+      '@jridgewell/trace-mapping': 0.3.24
+    dev: false
+
   /@antfu/install-pkg@0.1.1:
     resolution: {integrity: sha512-LyB/8+bSfa0DFGC06zpCEfs89/XoWZwws5ygEa5D+Xsm3OfI+aXQ86VgVG7Acyef+rSZ5HE7J8rrxzrQeM3PjQ==}
     dependencies:
@@ -1475,7 +1483,7 @@ packages:
     resolution: {integrity: sha512-fQfkg0Gjkza3nf0c7/w6Xf34BW4YvzNfACRLmmb7XRLa6XHdR+K9AlJlxneFfWYf6uhOzuzZVTjF/8KfndZANw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@ampproject/remapping': 2.2.1
+      '@ampproject/remapping': 2.3.0
       '@babel/code-frame': 7.23.5
       '@babel/generator': 7.23.6
       '@babel/helper-compilation-targets': 7.23.6
@@ -3331,6 +3339,15 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
       '@jridgewell/trace-mapping': 0.3.23
 
+  /@jridgewell/gen-mapping@0.3.5:
+    resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@jridgewell/set-array': 1.2.1
+      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/trace-mapping': 0.3.24
+    dev: false
+
   /@jridgewell/resolve-uri@3.1.2:
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
     engines: {node: '>=6.0.0'}
@@ -3338,6 +3355,11 @@ packages:
   /@jridgewell/set-array@1.1.2:
     resolution: {integrity: sha512-xnkseuNADM0gt2bs+BvhO0p78Mk762YnZdsuzFV018NoG1Sj1SCQvpSqa7XUaTam5vAGasABV9qXASMKnFMwMw==}
     engines: {node: '>=6.0.0'}
+
+  /@jridgewell/set-array@1.2.1:
+    resolution: {integrity: sha512-R8gLRTZeyp03ymzP/6Lil/28tGeGEzhx1q2k703KGWRAI1VdvPIXdG70VJc2pAMw3NA6JKL5hhFu1sJX0Mnn/A==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /@jridgewell/source-map@0.3.5:
     resolution: {integrity: sha512-UTYAUj/wviwdsMfzoSJspJxbkH5o1snzwX0//0ENX1u/55kkZZkcTZP6u9bwKGkv+dkk9at4m1Cpt0uY80kcpQ==}
@@ -3353,6 +3375,13 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
+
+  /@jridgewell/trace-mapping@0.3.24:
+    resolution: {integrity: sha512-+VaWXDa6+l6MhflBvVXjIEAzb59nQ2JUK3bwRp2zRpPtU+8TFRy9Gg/5oIcNlkEL5PGlBFGfemUVvIgLnTzq7Q==}
+    dependencies:
+      '@jridgewell/resolve-uri': 3.1.2
+      '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
 
   /@jridgewell/trace-mapping@0.3.9:
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
@@ -3420,15 +3449,15 @@ packages:
     resolution: {integrity: sha512-ojkXjR3K0Zz3jnCR80tqPL+0yvbZk/lEodb6RIVjLz7W8RVA2wrw8ym/CzCpXO9SYVUIKHFUpc7jvf8UKfIM3w==}
     dev: false
 
-  /@microsoft/api-documenter@7.23.31(@types/node@20.11.24):
-    resolution: {integrity: sha512-dHCoUN98ihW5+iro0q31tIOt6t5jwk4DKLq+GGDKlGvepwzP3X2XUkcq3zlh9OtxqLt320+9BvKMiJknZo4SXw==}
+  /@microsoft/api-documenter@7.23.34(@types/node@20.11.24):
+    resolution: {integrity: sha512-HysN+5iIZvJgQs+LqygGhYO0Fz7uEN4pZhuKf2nqVCbnpIrl9yb09Zgkan/n4CJU0Yxt/AhENYIhXVHXFnFM7Q==}
     hasBin: true
     dependencies:
       '@microsoft/api-extractor-model': 7.28.13(@types/node@20.11.24)
       '@microsoft/tsdoc': 0.14.2
       '@rushstack/node-core-library': 4.0.2(@types/node@20.11.24)
       '@rushstack/terminal': 0.10.0(@types/node@20.11.24)
-      '@rushstack/ts-command-line': 4.17.4(@types/node@20.11.24)
+      '@rushstack/ts-command-line': 4.18.1(@types/node@20.11.24)
       js-yaml: 3.13.1
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -3445,8 +3474,8 @@ packages:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor@7.41.0(@types/node@20.11.24):
-    resolution: {integrity: sha512-Wk4fcSqO1i32FspStEm4ak+cfdo2xGsWk/K9uZoYIRQxjQH/roLU78waP+g+GhoAg5OxH63BfY37h6ISkNfQEQ==}
+  /@microsoft/api-extractor@7.42.1(@types/node@20.11.24):
+    resolution: {integrity: sha512-eswRJCfiscDDcgu+0DPBdpYKRCVXaeFOOp9h4Y4ixoCCeGoEwgNi/P9zp39O+61pLWxZ3pAShTY0pe8vw5LtrQ==}
     hasBin: true
     dependencies:
       '@microsoft/api-extractor-model': 7.28.13(@types/node@20.11.24)
@@ -3455,8 +3484,9 @@ packages:
       '@rushstack/node-core-library': 4.0.2(@types/node@20.11.24)
       '@rushstack/rig-package': 0.5.2
       '@rushstack/terminal': 0.10.0(@types/node@20.11.24)
-      '@rushstack/ts-command-line': 4.17.4(@types/node@20.11.24)
+      '@rushstack/ts-command-line': 4.18.1(@types/node@20.11.24)
       lodash: 4.17.21
+      minimatch: 3.0.8
       resolve: 1.22.8
       semver: 7.6.0
       source-map: 0.6.1
@@ -4927,8 +4957,8 @@ packages:
       supports-color: 8.1.1
     dev: true
 
-  /@rushstack/ts-command-line@4.17.4(@types/node@20.11.24):
-    resolution: {integrity: sha512-XPQQDaxgFqRHFRgt7jjCKnr0vrC75s/+ISU6kGhWpDlGzWl4vig6ZfZTs3HgM6Kh1Bb3wUKSyKQOV+G36cyZfg==}
+  /@rushstack/ts-command-line@4.18.1(@types/node@20.11.24):
+    resolution: {integrity: sha512-A3x3ARWzoW4ARU1XS87wFVJvdywzo2j27aRm5SIFY3Nwl5vQqo0hvzaQDYCq/hEGBxAdBGW8q6N5clNk36H34A==}
     dependencies:
       '@rushstack/terminal': 0.10.0(@types/node@20.11.24)
       '@types/argparse': 1.0.38
@@ -13197,6 +13227,12 @@ packages:
   /min-indent@1.0.1:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
+    dev: true
+
+  /minimatch@3.0.8:
+    resolution: {integrity: sha512-6FsRAQsxQ61mw+qP1ZzbL9Bc78x2p5OqNgNpnoAFLTrX8n5Kxph0CsnhmKKNXTWjXqU5L0pGPR7hYk+XWZr60Q==}
+    dependencies:
+      brace-expansion: 1.1.11
     dev: true
 
   /minimatch@3.1.2:
