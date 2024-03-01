@@ -28,16 +28,34 @@ const loginAction = async () => {
 };
 </script>
 <template>
-  <div>
-    <!-- <h1 class="text-xl">Shopware B2B Quote Management</h1>
+  <div class="w-400 mx-auto">
+    <h1 class="text-2xl mb-10 text-center">Shopware B2B Quote feature</h1>
+    <div>
+      <p class="mb-10">
+        In this example we will show how to use the B2B Quote Management
+        feature. B2b Quote Management is a feature that allows you to create
+        quotes for your customers and manage them. This feature is available in
+        Shopware Evolve plan.
+      </p>
+      <div v-if="!isLoggedIn">
+        <p class="mb-2">Please login to use example:</p>
+        <form class="flex flex-col gap-4" @submit.prevent="loginAction">
+          <input class="border" type="text" v-model="username" />
+          <input class="border" type="password" v-model="password" />
+          <button type="submit">Login</button>
+        </form>
+      </div>
+      <!-- 
+      <QuotesTable v-if="isLoggedIn" class="mt-10" />
+      <Quote v-if="isLoggedIn && chosenQuote" :quoteId="chosenQuote" /> -->
 
-    <form v-if="!isLoggedIn" @submit.prevent="loginAction">
-      <input class="border" type="text" v-model="username" />
-      <input class="border" type="password" v-model="password" />
-      <button type="submit">Login</button>
-    </form>
-    <QuotesTable v-if="isLoggedIn" class="mt-10" />
-    <Quote v-if="isLoggedIn && chosenQuote" :quoteId="chosenQuote" /> -->
-    <router-view></router-view>
+      <menu class="">
+        <ul class="flex gap-10">
+          <li class="text-xl">Request quote</li>
+          <li class="text-xl">Quote list</li>
+        </ul>
+      </menu>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
