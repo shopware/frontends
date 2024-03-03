@@ -36,31 +36,31 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.10.2",
+    "@nuxt/kit": "3.10.3",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "@vuelidate/core": "^2.0.3",
-    "@vuelidate/validators": "^2.0.4",
-    "@vueuse/core": "^10.8.0",
-    "entities": "^4.5.0",
-    "html-to-ast": "^0.0.6",
-    "vue": "^3.4.19"
+    "@vuelidate/core": "2.0.3",
+    "@vuelidate/validators": "2.0.4",
+    "@vueuse/core": "10.9.0",
+    "entities": "4.5.0",
+    "html-to-ast": "0.0.6",
+    "vue": "3.4.20"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.10.2",
+    "@nuxt/schema": "3.10.3",
     "@shopware-pwa/types": "workspace:*",
-    "@vitest/coverage-v8": "^1.3.1",
-    "@vue/eslint-config-typescript": "^12.0.0",
+    "@vitest/coverage-v8": "1.3.1",
+    "@vue/eslint-config-typescript": "12.0.0",
     "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "^9.21.1",
-    "nuxt": "^3.10.2",
+    "eslint-plugin-vue": "9.22.0",
+    "nuxt": "3.10.3",
     "tsconfig": "workspace:*",
-    "typescript": "^5.3.3",
-    "unbuild": "^2.0.0",
-    "vitest": "^1.3.1",
-    "vue-eslint-parser": "^9.4.2",
-    "vue-router": "^4.2.5",
-    "vue-tsc": "^1.8.27"
+    "typescript": "5.3.3",
+    "unbuild": "2.0.0",
+    "vitest": "1.3.1",
+    "vue-eslint-parser": "9.4.2",
+    "vue-router": "4.3.0",
+    "vue-tsc": "1.8.27"
   }
 }

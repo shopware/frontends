@@ -15,10 +15,20 @@
       "to": "To",
       "from": "From"
     },
+    "reviewsForm": {
+      "title": "Title",
+      "review": "Your review",
+      "submit": "Submit",
+      "rating": "Your rating"
+    },
+    "reviewNoComments": "No comments yet.",
+    "reviewNotAccepted": "Your review has not been approved yet",
+    "reviewFeedback": "Our feedback",
     "messages": {
       "addedToWishlist": "{p} has been added to wishlist.",
       "removedFromWishlist": "{p} has been removed from wishlist.",
-      "addedToCart": "{p} has been added to cart."
+      "addedToCart": "{p} has been added to cart.",
+      "reviewAdded": "Thank you for submitting your review"
     }
   }
 }

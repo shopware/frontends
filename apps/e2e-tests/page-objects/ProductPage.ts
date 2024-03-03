@@ -8,6 +8,10 @@ export class ProductPage {
   readonly productOption: Locator;
   readonly miniCartLink: Locator;
   readonly productRemove: Locator;
+  readonly ratingStar: Locator;
+  readonly reviewTitle: Locator;
+  readonly reviewText: Locator;
+  readonly submitReview: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,6 +21,10 @@ export class ProductPage {
     this.productOption = page.getByTestId("cart-product-options");
     this.miniCartLink = page.getByTestId("cart-button");
     this.productRemove = page.getByTestId("product-remove-button");
+    this.ratingStar = page.getByTestId("review-empty-star");
+    this.reviewTitle = page.getByTestId("review-title-input");
+    this.reviewText = page.getByTestId("review-text-input");
+    this.submitReview = page.getByTestId("review-submit-button");
   }
 
   async addToCart() {
@@ -49,5 +57,14 @@ export class ProductPage {
     await this.page.waitForLoadState("networkidle");
     await this.productRemove.click();
     await this.page.getByTestId("cart-close-button").click();
+  }
+
+  async fillReviewForm() {
+    await this.ratingStar.nth(4).click();
+    await this.reviewTitle.fill("Review test title");
+    await this.reviewText.fill(
+      "Review text Review text Review text Review text Review text",
+    );
+    await this.submitReview.click();
   }
 }

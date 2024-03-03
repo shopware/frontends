@@ -76,8 +76,10 @@ updates:
       vue:
         patterns:
           - 'vue'
+          - 'vue-*'
           - 'nuxt'
           - 'vite'
+          - '@vueuse/*'
           - '@vitejs/*'
           - '@iconify*'
           - '@nuxt/*'
