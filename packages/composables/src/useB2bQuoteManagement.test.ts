@@ -5,61 +5,104 @@ import { useSetup } from "./_test";
  * ToDo - How to mock api-client!!
  */
 describe("useB2bQuoteManagement", () => {
-  describe("getQuoteList", () => {
-    it("", () => {
-      const { vm } = useSetup(() => useB2bQuoteManagement());
+  it("getQuoteList", async () => {
+    const { vm, injections } = useSetup(useB2bQuoteManagement);
+    await vm.getQuoteList();
 
-      vm.getQuoteList();
-    });
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readQuotes"),
+      expect.objectContaining({}),
+    );
   });
 
-  describe("getQuote", () => {
-    it("", () => {
-      const { vm } = useSetup(() => useB2bQuoteManagement());
+  it("getQuote", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    await vm.getQuote("test-12");
 
-      vm.getQuote("test-12");
-    });
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readQuote"),
+      expect.objectContaining({
+        id: "test-12",
+        associations: {
+          lineItems: {},
+          comments: {},
+        },
+      }),
+    );
   });
 
-  describe("declineQuote", () => {
-    it("", () => {
-      const { vm } = useSetup(() => useB2bQuoteManagement());
-      vm.declineQuote("test-12", "test-comment");
-    });
+  it("declineQuote", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    await vm.declineQuote("test-12", "test-comment");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("declineQuote"),
+      expect.objectContaining({
+        id: "test-12",
+        comment: "test-comment",
+      }),
+    );
   });
 
-  describe("requestChangeQuote", () => {
-    it("", () => {
-      const { vm } = useSetup(() => useB2bQuoteManagement());
-      vm.requestChangeQuote("test-12", "test-comment");
-    });
+  it("requestChangeQuote", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    await vm.requestChangeQuote("test-12", "test-comment");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("requestChangeQuote"),
+      expect.objectContaining({
+        id: "test-12",
+        comment: "test-comment",
+      }),
+    );
   });
 
-  describe("changeShippingMethod", () => {
-    it("", () => {
-      const { vm } = useSetup(() => useB2bQuoteManagement());
-      vm.changeShippingMethod("test-12", "test-method");
-    });
+  it("changeShippingMethod", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    await vm.changeShippingMethod("test-12", "test-method");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("switchPaymentOrShippingMethod"),
+      expect.objectContaining({
+        id: "test-12",
+      }),
+    );
   });
 
-  describe("changePaymentMethod", () => {
-    it("", () => {
-      const { vm } = useSetup(() => useB2bQuoteManagement());
-      vm.changePaymentMethod("test-12", "test-method");
-    });
+  it("changePaymentMethod", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    await vm.changePaymentMethod("test-12", "test-method");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("switchPaymentOrShippingMethod"),
+      expect.objectContaining({
+        id: "test-12",
+      }),
+    );
   });
 
-  describe("requestQuote", () => {
-    it("", () => {
-      const { vm } = useSetup(() => useB2bQuoteManagement());
-      vm.requestQuote("test-12");
-    });
+  it("requestQuote", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    await vm.requestQuote("comment");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("requestQuote"),
+      expect.objectContaining({
+        comment: "comment",
+      }),
+    );
   });
 
-  describe("createOrderFromQuote", () => {
-    it("", () => {
-      const { vm } = useSetup(() => useB2bQuoteManagement());
-      vm.createOrderFromQuote("test-12", "test-comment");
-    });
+  it("createOrderFromQuote", async () => {
+    const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    await vm.createOrderFromQuote("test-12", "test-comment");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("createOrderFromQuote"),
+      expect.objectContaining({
+        id: "test-12",
+        customerComment: "test-comment",
+      }),
+    );
   });
 });
