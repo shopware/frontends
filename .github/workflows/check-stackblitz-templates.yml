@@ -20,7 +20,7 @@ jobs:
       - name: try zip the test result folder
         if: failure()
         run: zip -r playwright-report.zip playwright-report/
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report zip
