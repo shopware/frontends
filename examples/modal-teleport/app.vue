@@ -1,5 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <NuxtLayout />
+  <div test-id="test-wrapper">
+    <NuxtLayout />
+  </div>
 </template>

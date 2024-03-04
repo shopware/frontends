@@ -4,12 +4,22 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
+  vite: {
+    build: {
+      minify: false,
+      sourcemap: false,
+    },
+  },
+  devtools: {
+    enabled: false,
+  },
+  sourcemap: {
+    server: false,
+    client: false,
+  },
   components: {
     dirs: ["~/components"],
     global: true,
-  },
-  nitro: {
-    compressPublicAssets: true,
   },
   telemetry: false,
 });

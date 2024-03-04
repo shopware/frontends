@@ -88,8 +88,8 @@ We prepare some types to be used during the registration of the plugin to pass b
 
 ```ts
 export type ShopwareFrontendsOptions = {
-  shopwareEndpoint: string;
-  shopwareAccessToken: string;
+  endpoint: string;
+  accessToken: string;
   shopwareApiClient?: {
     timeout: number;
   };
@@ -109,8 +109,8 @@ const contextToken = ref(cookieContextToken);
 const languageId = ref(cookieLanguageId);
 
 const instance = createInstance({
-  endpoint: options.shopwareEndpoint,
-  accessToken: options.shopwareAccessToken,
+  endpoint: options.endpoint,
+  accessToken: options.accessToken,
   timeout: options.shopwareApiClient?.timeout || 5000,
   contextToken: contextToken.value,
   languageId: languageId.value,
@@ -182,8 +182,8 @@ const app = createApp(App);
 
 app.use(ShopwareFrontends, {
     // pass options described under ShopwareFrontendsOptions type in the previous section
-    shopwareEndpoint: "https://demo-frontends.swstage.store",
-    shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    endpoint: "https://demo-frontends.swstage.store",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     apiDefaults: {},
 });
 
@@ -202,8 +202,8 @@ import Cookies from "js-cookie";
 
 // Types to be used during the registration of the plugin to pass basic credentials for your Shopware 6 instance.
 export type ShopwareFrontendsOptions = {
-  shopwareEndpoint: string;
-  shopwareAccessToken: string;
+  endpoint: string;
+  accessToken: string;
   shopwareApiClient?: {
     timeout: number;
   };
@@ -219,8 +219,8 @@ export default {
     const languageId = ref(cookieLanguageId);
 
     const instance = createInstance({
-      endpoint: options.shopwareEndpoint,
-      accessToken: options.shopwareAccessToken,
+      endpoint: options.endpoint,
+      accessToken: options.accessToken,
       timeout: options.shopwareApiClient?.timeout || 5000,
       contextToken: contextToken.value,
       languageId: languageId.value,
@@ -269,8 +269,8 @@ Client URL to the backend  https://demo-frontends.shopware.store (exposed)
 If you are using the Nuxt plugin, you can set private and public envs:
 
 ```
-NUXT_SHOPWARE_SHOPWARE_ENDPOINT=http://shopware
-NUXT_PUBLIC_SHOPWARE_SHOPWARE_ENDPOINT=https://demo-frontends.shopware.store
+NUXT_SHOPWARE_ENDPOINT=http://shopware
+NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://demo-frontends.shopware.store
 ```
 
 Otherwise, make sure that you are setting different values on the create instance phase
@@ -278,7 +278,7 @@ Otherwise, make sure that you are setting different values on the create instanc
 ```ts
 const instance = createInstance({
   endpoint: ssrValue || clientValue,
-  accessToken: options.shopwareAccessToken,
+  accessToken: options.accessToken,
   timeout: options.shopwareApiClient?.timeout || 5000,
   contextToken: contextToken.value,
   languageId: languageId.value,
