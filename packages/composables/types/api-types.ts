@@ -7,7 +7,7 @@ import type {
   operationPaths as defaultOperationPaths,
   operations as defaultOperations,
   components as defaultComponents,
-} from "@shopware/api-client/api-types";
+} from "./apiSchemaCommerce";
 
 export type operations = defaultOperations<defaultComponents>;
 export type operationPaths = defaultOperationPaths;
