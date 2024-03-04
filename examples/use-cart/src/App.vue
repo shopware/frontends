@@ -44,7 +44,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <div>
+  <div test-id="test-wrapper">
     <div
       v-if="product"
       class="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"

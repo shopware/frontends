@@ -9,7 +9,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" test-id="test-wrapper">
     <Frontends template="Blank Vue 3 template (Nuxt)" />
     <div class="mollie-credit-card-wrapper">
       <ShopwareFrontendsCreditCard

@@ -17,10 +17,10 @@
     "@shopware/api-client": "canary",
     "@vitejs/plugin-vue": "5.0.4",
     "@vitejs/plugin-vue-jsx": "3.1.0",
-    "astro": "4.4.4",
+    "astro": "4.4.5",
     "js-cookie": "3.0.5",
     "sharp": "0.33.2",
-    "vue": "3.4.20"
+    "vue": "3.4.21"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"

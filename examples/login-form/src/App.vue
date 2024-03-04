@@ -20,7 +20,7 @@ const invokeLogin = async () => {
 };
 </script>
 <template>
-  <div>
+  <div test-id="test-wrapper">
     <div v-if="!isLoggedIn">
       <h1
         class="text-md font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
