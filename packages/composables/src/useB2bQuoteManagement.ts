@@ -24,6 +24,12 @@ type UseB2bQuoteManagement = {
   ) => Promise<void>;
 };
 
+export type ChangePaymentShippingMethodParams = {
+  quoteId: string;
+  paymentMethodId?: string;
+  shippingMethodId?: string;
+};
+
 /**
  * Composable to manage quotes in the B2BQuote module.
  * @returns {UseB2bQuoteManagement}
@@ -110,30 +116,30 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
   /**
    * Change payment or shipping method
    *
-   * @param {string} quoteId
-   * @param {string} paymentMethodId
-   * @param {string} shippingMethodId
+   * @param {ChangePaymentShippingMethodParams} params
    *
    * @returns {Promise<void>}
    */
-  const changePaymentShippingMethod = (
-    quoteId: string,
-    paymentMethodId: string | null = null,
-    shippingMethodId: string | null = null,
-  ) => {
-    let body: {
+  const changePaymentShippingMethod = (params: {
+    quoteId: string;
+    paymentMethodId?: string;
+    shippingMethodId?: string;
+  }) => {
+    const body: {
       paymentMethodId?: string;
       shippingMethodId?: string;
     } = {};
 
-    if (paymentMethodId) body["paymentMethodId"] = paymentMethodId;
+    if (params.paymentMethodId)
+      body["paymentMethodId"] = params.paymentMethodId;
 
-    if (shippingMethodId) body["shippingMethodId"] = shippingMethodId;
+    if (params.shippingMethodId)
+      body["shippingMethodId"] = params.shippingMethodId;
 
     return apiClient.invoke(
       "switchPaymentOrShippingMethod post /quote/{id}/configure",
       {
-        id: quoteId,
+        id: params.quoteId,
         ...body,
       },
     );
@@ -147,7 +153,7 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * @returns {Promise<void>}
    */
   const changeShippingMethod = (quoteId: string, shippingMethodId: string) => {
-    return changePaymentShippingMethod(quoteId, null, shippingMethodId);
+    return changePaymentShippingMethod({ quoteId, shippingMethodId });
   };
 
   /**
@@ -158,7 +164,7 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * @returns {Promise<void>}
    */
   const changePaymentMethod = (quoteId: string, paymentMethodId: string) => {
-    return changePaymentShippingMethod(quoteId, paymentMethodId, null);
+    return changePaymentShippingMethod({ quoteId, paymentMethodId });
   };
 
   /**
