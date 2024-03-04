@@ -36,7 +36,7 @@ fs.readdirSync(directoryPath)
       expect(page.url()).toContain(
         `https://stackblitz.com/github/${exampleName}`,
       );
-      expect(await page.title()).toContain("Frontends");
+      expect(await page.title()).toContain("StackBlitz");
       await page
         .locator('iframe[title="Preview page"]')
         .waitFor({ state: "visible" });
