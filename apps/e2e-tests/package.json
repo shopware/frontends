@@ -5,12 +5,15 @@
   "description": "",
   "scripts": {
     "test:e2e": "playwright test e2e",
-    "test:examples": "playwright test -c examples.config.ts checkCodeExamples.spec.ts"
+    "test:examples": "playwright test -c examples.config.ts checkCodeExamples.spec.ts",
+    "start": "npx http-server"
   },
   "devDependencies": {
     "@playwright/test": "1.41.2"
   },
   "dependencies": {
-    "dotenv": "16.4.5"
+    "@stackblitz/sdk": "1.9.0",
+    "dotenv": "16.4.5",
+    "http-server": "14.1.1"
   }
 }
