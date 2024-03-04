@@ -76,7 +76,7 @@ const onPayButton = async (state: any) => {
 };
 </script>
 <template>
-  <div class="p-4">
+  <div class="p-4" test-id="test-wrapper">
     <ProgressBar :activeStep="activeStep" />
     <div class="messages">
       <div

@@ -48,21 +48,23 @@ onMounted(() => setTimeout(openExample, 500));
 </script>
 
 <template>
-  <div v-if="isConfigOk">
-    <div>Your example configuration:</div>
-    <div class="settings">
-      <pre>{{
-        {
-          packageName,
-          packageVersion,
-          functionName,
-          isAsync,
-        }
-      }}</pre>
+  <div test-id="test-wrapper">
+    <div v-if="isConfigOk">
+      <div>Your example configuration:</div>
+      <div class="settings">
+        <pre>{{
+          {
+            packageName,
+            packageVersion,
+            functionName,
+            isAsync,
+          }
+        }}</pre>
+      </div>
     </div>
-  </div>
-  <div v-else>
-    <h2>Missing configuration</h2>
+    <div v-else>
+      <h2>Missing configuration</h2>
+    </div>
   </div>
 </template>
 

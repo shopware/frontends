@@ -30,7 +30,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <div>
+  <div test-id="test-wrapper">
     <ProductBox v-if="product" :product="product" />
     <div
       class="w-full mt-4 max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
