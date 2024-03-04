@@ -19,7 +19,8 @@ Go to [Documentation > Requirements](https://frontends.shopware.com/framework/re
 ## Set up your Shopware 6 instance
 
 To connect to a different API, adjust the API credentials in the `nuxt.config.ts` file:
-`shopwareEndpoint` and `shopwareAccessToken`.
+
+`Shopware:`{`endpoint` and `accessToken`}.
 
 ## Install & Run
 
