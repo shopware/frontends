@@ -107,7 +107,7 @@ While a file is uploaded, it's been automatically resized for the current config
 
 ## Helpers
 
-There are few functions that could be used to extract some crucial information about the media in short way. Browse [Helpers > Media](../packages/helpers.html#Media) category to see them all.
+There are few functions that could be used to extract some crucial information about the media in short way. Browse [Helpers > Media](../../packages/helpers.html#Media) category to see them all.
 
 Example how to work with Product's main image:
 

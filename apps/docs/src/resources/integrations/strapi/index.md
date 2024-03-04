@@ -94,7 +94,7 @@ Now we can add our component to the layout.
 ## Fetching and displaying pages
 
 :::warning
-This example is written for the vue-demo-store template and assuming that you [implemented multi CMS middleware](/resources/integrations/multi-cms.md)
+This example is written for the vue-demo-store template and assuming that you [implemented multi CMS middleware](../multi-cms.md)
 :::
 
 Create new collection type `Page` on the Stripe admin site with fields:

@@ -10,7 +10,7 @@ Just copy the code snippet and paste it into your project. Sometimes it's useful
 
 Implementing Footer navigation can be described in few steps:
 
-1. Use [useNavigation](../../../packages/composables/useNavigation) composable to `loadNavigationElements` to display a navigation configured in admin panel.
+1. Use [useNavigation](../../../../packages/composables/useNavigation) composable to `loadNavigationElements` to display a navigation configured in admin panel.
 2. Iterate over `navigationElements` array of categories and display them.
 3. Add some static links next-to dynamic ones if needed.
 4. Resolve URLs and implement dedicated pages for it.
@@ -75,14 +75,14 @@ loadNavigationElements({
 </style>
 ```
 
-[getCategoryUrl](../../../packages/helpers/getCategoryUrl) method imported from `helpers-next` package can extract a SEO Url or technical URL for given category.
+[getCategoryUrl](../../../../packages/helpers/getCategoryUrl) method imported from `helpers-next` package can extract a SEO Url or technical URL for given category.
 
 :::warning
 `getCategoryUrl` returns absolute path for corresponding category, which means you will get for example `/some-category/some-subcategory` and not the entire URL including domain.
 
 By design, the URL can point also to the Product or Landing Page.
-In order to resolve an entity assigned to each category path, utilize a [composable](../../../packages/composables.html#navigation-routing) dedicated for expected entity:
+In order to resolve an entity assigned to each category path, utilize a [composable](../../../../packages/composables.html#navigation-routing) dedicated for expected entity:
 
 1. `search` from `useNavigationSearch` to find entity type.
-2. use [dedicated composable](../../../packages/composables.html#navigation-routing) to process page resolving.
+2. use [dedicated composable](../../../../packages/composables.html#navigation-routing) to process page resolving.
    :::

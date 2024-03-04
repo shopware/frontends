@@ -4,7 +4,7 @@ Documentation related to the [API Client package](https://github.com/shopware/fr
 
 :::info
 A new version of the API Client is currently in development ([see NPM](https://www.npmjs.com/package/@shopware/api-client)).  
-Features are TypeScript autocompletion and generated types based on the envoirment.
+Features are TypeScript autocompletion and generated types based on the environment.
 :::
 
 ## Additional docs about the API Client

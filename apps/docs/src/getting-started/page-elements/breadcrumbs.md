@@ -22,8 +22,8 @@ In this chapter you will learn how to
 
 ### Quick reference
 
-- [useBreadcrumbs](/packages/composables/useBreadcrumbs) is a composable used for a breadcrumbs management with sharable state
-- [getCategoryBreadcrumbs](/packages/helpers/getCategoryBreadcrumbs) is a helper used for converting `Category` to the `Breadcrumb` object
+- [useBreadcrumbs](../../packages/composables/useBreadcrumbs) is a composable used for a breadcrumbs management with sharable state
+- [getCategoryBreadcrumbs](../../packages/helpers/getCategoryBreadcrumbs) is a helper used for converting `Category` to the `Breadcrumb` object
 
 ## Building breadcrumbs for a static page
 
@@ -49,7 +49,7 @@ Each CMS page contains the `Category` with `breadcrumb` array, which contains a 
 breadcrumb: ["Home", "Main navigation ", "Summer Party"]
 ```
 
-we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](/packages/helpers/getCategoryBreadcrumbs) helper, and then pass it to [useBreadcrumbs](/packages/composables/useBreadcrumbs) composable.
+we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](../../packages/helpers/getCategoryBreadcrumbs) helper, and then pass it to [useBreadcrumbs](../../packages/composables/useBreadcrumbs) composable.
 
 ```ts
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
@@ -74,7 +74,7 @@ onBeforeRouteLeave(() => {
 
 ## Displaying Breadcrumbs
 
-Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](/packages/composables/useBreadcrumbs) composable.
+Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](../../packages/composables/useBreadcrumbs) composable.
 
 ```vue
 <script setup lang="ts">

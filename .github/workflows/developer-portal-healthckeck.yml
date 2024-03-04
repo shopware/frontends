@@ -1,0 +1,19 @@
+name: Healthcheck
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  create-healthcheck:
+    uses: shopware/developer-portal/.github/workflows/healthcheck.yml@main
+    with:
+      owner: ${{ github.repository_owner }}
+      repo: ${{ github.event.repository.name }}
+      branch: ${{ github.event.pull_request.head.ref }}
+      sha: ${{ github.event.pull_request.head.sha }}
+    secrets:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PERSONAL_TOKEN: ${{ secrets.DEV_HUB_PERSONAL_ACCESS_TOKEN }}

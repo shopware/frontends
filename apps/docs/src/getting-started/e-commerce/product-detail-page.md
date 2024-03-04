@@ -19,7 +19,7 @@ In order to display information of a product there is a `Product` object needed,
 - Images
 - ...
 
-To achieve that, you can utilize methods available within `composables` package (or directly via API client package named `@shopware-pwa/api-client`). In this example we will use [useProductSearch](../../../packages/composables/useProductSearch.md).
+To achieve that, you can utilize methods available within `composables` package (or directly via API client package named `@shopware-pwa/api-client`). In this example we will use [useProductSearch](../../packages/composables/useProductSearch.md).
 
 :::info Associations
 Keep in mind that not every field, or inner object of the `Product` entity is available automatically.
@@ -66,7 +66,7 @@ const productNumber = computed(() => product.value?.productNumber);
 
 Each product can have additional resource loaded asynchronously like Cross-Sells, or Customer Reviews.
 
-Thanks to [useProductAssociations](../../../packages/composables/useProductAssociations.md) composable, you can load it providing the product you are on:
+Thanks to [useProductAssociations](../../packages/composables/useProductAssociations.md) composable, you can load it providing the product you are on:
 
 ```js
 const { loadAssociations, isLoading, productAssociations } =

@@ -54,7 +54,7 @@ This tech-stack is the definition of superior developer experience, quick learni
 ### Flexible
 
 No theming system means no inheritance magic, drastically reduced compatibility issues, update efforts, and restrictions
-to what your site can look like. Build your site in a lego-block-manner by using [prepared templates](./resources/examples/index.md) or just get creative using all perks of [utility-driven CSS](./framework/styling.md).
+to what your site can look like. Build your site in a lego-block-manner by using [prepared templates](./examples/) or just get creative using all perks of [utility-driven CSS](./framework/styling.md).
 
 ## Limitations
 
