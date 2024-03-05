@@ -14,7 +14,7 @@
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
     "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint --no-cache",
     "test": "turbo run test",
     "test:bench": "turbo run test:bench -- --run",
     "test:e2e": "turbo run test:e2e",
