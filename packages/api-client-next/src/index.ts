@@ -83,12 +83,12 @@ export function createAPIClient<
   OPERATIONS extends Operations = defaultOperations,
   PATHS = defaultPaths,
 >(params: {
-  baseURL: string;
+  baseURL?: string;
   /**
    * @deprecated this method is only for store-api, for admin API use `createAdminAPIClient`. Remove this param
    */
   apiType?: "store-api" | "admin-api";
-  accessToken: string;
+  accessToken?: string;
   contextToken?: string;
   onContextChanged?: (newContextToken: string) => void;
   defaultHeaders?: ClientHeaders;

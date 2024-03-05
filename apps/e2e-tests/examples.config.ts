@@ -16,13 +16,13 @@ require("dotenv").config({ path: findEnv() });
 const config: PlaywrightTestConfig = {
   outputDir: "./reports",
   /* Maximum time one test can run for. */
-  timeout: 90000,
+  timeout: 0,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: process.env.CI ? 30000 : 5000,
+    timeout: 0, // it's really hard to predict how long it will take to load the page in stackblitz - installation and build time can vary
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -44,7 +44,6 @@ const config: PlaywrightTestConfig = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "retain-on-failure",
   },
-
   /* Configure projects for major browsers */
   projects: [
     {

@@ -14,8 +14,8 @@ export default defineNuxtConfig({
     },
     public: {
       shopware: {
-        shopwareEndpoint: "https://demo-frontends.shopware.store/store-api/",
-        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        endpoint: "https://demo-frontends.shopware.store/store-api/",
+        accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
         devStorefrontUrl: "",
       },
     },

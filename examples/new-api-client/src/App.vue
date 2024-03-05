@@ -37,30 +37,32 @@ async function getProducts() {
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
-  <button @click="getProducts">Remove line item</button>
-  <div>
-    <div
-      v-for="product in productsResponse?.elements"
-      :key="product.id"
-      style="margin-top: 20px"
-    >
-      <div>{{ product.translated?.name }}</div>
-      <div>{{ product.calculatedPrice?.unitPrice }}</div>
+  <div test-id="test-wrapper">
+    <div>
+      <a href="https://vitejs.dev" target="_blank">
+        <img src="/vite.svg" class="logo" alt="Vite logo" />
+      </a>
+      <a href="https://vuejs.org/" target="_blank">
+        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+      </a>
     </div>
+    <HelloWorld msg="Vite + Vue" />
+    <button @click="getProducts">Remove line item</button>
+    <div>
+      <div
+        v-for="product in productsResponse?.elements"
+        :key="product.id"
+        style="margin-top: 20px"
+      >
+        <div>{{ product.translated?.name }}</div>
+        <div>{{ product.calculatedPrice?.unitPrice }}</div>
+      </div>
+    </div>
+    <h2>Client login test form:</h2>
+    <LoginForm />
+    <h2>Admin login test form:</h2>
+    <AdminLoginForm />
   </div>
-  <h2>Client login test form:</h2>
-  <LoginForm />
-  <h2>Admin login test form:</h2>
-  <AdminLoginForm />
 </template>
 
 <style scoped>

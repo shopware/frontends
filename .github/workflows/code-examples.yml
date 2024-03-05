@@ -4,7 +4,7 @@ run-name: Playwright is testing code examples 🚀
 on:
   workflow_dispatch:
   schedule:
-    - cron: "59 23 * * *"
+    - cron: "0 7 * * *"
 jobs:
   run-code_examples-tests:
     runs-on: macos-14

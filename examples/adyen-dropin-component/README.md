@@ -55,8 +55,8 @@ runtimeConfig: {
       },
       shopware: {
         // your Shopware 6 instance endpoint and access key
-        shopwareEndpoint: "http://localhost:8000",
-        shopwareAccessToken: "SWSCCMR1DEXDTK0XRJVSD3DHMW",
+        endpoint: "http://localhost:8000",
+        accessToken: "SWSCCMR1DEXDTK0XRJVSD3DHMW",
       },
       adyenCheckout: {
         environment: "test", // Change to 'live' for the live environment.

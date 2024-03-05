@@ -43,8 +43,8 @@ export default defineNuxtConfig({
     public: {
       shopware: {
         // connect to your Shopware 6 API instance
-        shopwareEndpoint: "https://demo-frontends.shopware.store",
-        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+        endpoint: "https://demo-frontends.shopware.store",
+        accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
       },
     },
   },

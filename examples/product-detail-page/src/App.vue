@@ -25,9 +25,11 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <Transition mode="out-in">
-    <ProductView v-if="product" :product="product" />
-  </Transition>
+  <div test-id="test-wrapper">
+    <Transition mode="out-in">
+      <ProductView v-if="product" :product="product" />
+    </Transition>
+  </div>
 </template>
 <style>
 /* we will explain what these classes do next! */
