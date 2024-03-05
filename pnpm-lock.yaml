@@ -47,8 +47,8 @@ importers:
         specifier: 2.27.1
         version: 2.27.1
       '@microsoft/api-documenter':
-        specifier: 7.23.36
-        version: 7.23.36(@types/node@20.11.24)
+        specifier: 7.23.37
+        version: 7.23.37(@types/node@20.11.24)
       '@microsoft/api-extractor':
         specifier: 7.42.3
         version: 7.42.3(@types/node@20.11.24)
@@ -3425,8 +3425,8 @@ packages:
     resolution: {integrity: sha512-ojkXjR3K0Zz3jnCR80tqPL+0yvbZk/lEodb6RIVjLz7W8RVA2wrw8ym/CzCpXO9SYVUIKHFUpc7jvf8UKfIM3w==}
     dev: false
 
-  /@microsoft/api-documenter@7.23.36(@types/node@20.11.24):
-    resolution: {integrity: sha512-DD4SkP0EKFmXJprt/WB4XykK2KdKSk5FjXeOvJ3D4cKFw0R5Da7TKfvsDKAASE1COB8FgQO3sftoPDHu9OD3lw==}
+  /@microsoft/api-documenter@7.23.37(@types/node@20.11.24):
+    resolution: {integrity: sha512-8StaLn4tLGllcgXCNGnqQRLFcWT9JILv5dHm2rYDdMWDQulInNKJnc2P9rpcI5mrO+cKcIRl75kdq4QrI9zunw==}
     hasBin: true
     dependencies:
       '@microsoft/api-extractor-model': 7.28.13(@types/node@20.11.24)
