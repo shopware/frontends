@@ -26,10 +26,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "pnpm"
-          cache-dependency-path: "**/pnpm-lock.yaml"
+          # cache: "pnpm"
+          # cache-dependency-path: "**/pnpm-lock.yaml"
       - name: install
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: pnpm install --frozen-lockfile
 
   build:
     name: Build
@@ -57,7 +57,7 @@ jobs:
           # cache: "pnpm"
           # cache-dependency-path: "**/pnpm-lock.yaml"
       - name: install
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
