@@ -105,11 +105,10 @@ const clearFilters = async () => {
   searchSelectedFilters["max-price"] = undefined;
   searchSelectedFilters["rating"] = undefined;
   searchSelectedFilters["shipping-free"] = undefined;
-  search({
+  await search({
     ...route.query,
     ...filtersToQuery(searchCriteriaForRequest.value),
   } as RequestParameters<"searchPage">);
-
   await router.push({
     query: {
       search: route.query.search,

@@ -19,9 +19,7 @@
     "resetFilters": "Zresetuj filtry",
     "result": "wynik | wyniki | wyników",
     "see": "zobacz",
-    "resultsHeader": "Wynik wyszukiwania dla",
-    "perPage": "Na stronę:",
-    "limitLabel": "{count} Artykuł"
+    "resultsHeader": "Wynik wyszukiwania dla"
   },
   "messages": {
     "error": "Coś poszło nie tak, spróbuj ponownie później"

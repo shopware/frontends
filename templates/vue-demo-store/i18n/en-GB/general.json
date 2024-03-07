@@ -19,9 +19,7 @@
     "resetFilters": "Reset Filters",
     "result": "result | results",
     "see": "see",
-    "resultsHeader": "Search Result for",
-    "perPage": "Per Page:",
-    "limitLabel": "{count} Products"
+    "resultsHeader": "Search Result for"
   },
   "messages": {
     "error": "Something goes wrong please try again later"

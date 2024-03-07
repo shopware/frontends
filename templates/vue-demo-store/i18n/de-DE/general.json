@@ -17,9 +17,7 @@
     "all": "alle",
     "result": "Ergebnis | Ergebnisse",
     "see": "anzeigen",
-    "resultsHeader": "Suchergebnis",
-    "perPage": "Pro Seite:",
-    "limitLabel": "{count} Artikel"
+    "resultsHeader": "Suchergebnis"
   },
   "messages": {
     "error": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
