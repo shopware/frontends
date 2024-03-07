@@ -42,6 +42,7 @@ test.describe.only("Check filters", () => {
     await resultPage.selectRandomManufacturerCheckbox();
 
     await expect(page).toHaveURL(new RegExp(".*manufacturer.*"));
+    await expect(page.getByTestId("loading")).toHaveCount(0);
     expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
       0,
     );
@@ -52,6 +53,7 @@ test.describe.only("Check filters", () => {
     await resultPage.selectRandomSelectionCheckbox();
 
     await expect(page).toHaveURL(new RegExp(".*properties.*"));
+    await expect(page.getByTestId("loading")).toHaveCount(0);
     expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
       0,
     );

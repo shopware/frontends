@@ -24,7 +24,6 @@ export class SearchResultPage {
   }
 
   async selectRandomManufacturerCheckbox() {
-    await this.page.waitForLoadState("networkidle");
     await this.selectedManufacturerFilterSearch.click();
     const manufacturerCheckboxes = await this.manufacturerCheckboxes.all();
     const countManufacturerCheckboxes = (
@@ -38,7 +37,6 @@ export class SearchResultPage {
   }
 
   async selectRandomSelectionCheckbox() {
-    await this.page.waitForLoadState("networkidle");
     await this.selectedSelectionFilterSearch.click();
     const selectionCheckboxes = await this.selectionCheckboxes.all();
     const countSelectionCheckboxes = (await this.selectionCheckboxes.all())

@@ -342,7 +342,7 @@ export default {
         </div>
       </div>
       <div class="col-span-12 md:col-span-9 order-1 md:order-2">
-        <div v-if="loading" class="flex justify-center">
+        <div v-if="loading" data-testid="loading" class="flex justify-center">
           <div
             class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-secondary-500"
           />
