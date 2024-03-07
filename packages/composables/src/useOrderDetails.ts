@@ -167,11 +167,10 @@ export function useOrderDetails(
     firstName: _sharedOrder.value?.orderCustomer?.firstName,
     lastName: _sharedOrder.value?.orderCustomer?.lastName,
   }));
-  const billingAddress = computed(
-    () =>
-      _sharedOrder.value?.addresses?.find(
-        ({ id }: { id: string }) => id === _sharedOrder.value?.billingAddressId,
-      ),
+  const billingAddress = computed(() =>
+    _sharedOrder.value?.addresses?.find(
+      ({ id }: { id: string }) => id === _sharedOrder.value?.billingAddressId,
+    ),
   );
   const shippingAddress = computed(
     () => _sharedOrder.value?.deliveries?.[0]?.shippingOrderAddress,
