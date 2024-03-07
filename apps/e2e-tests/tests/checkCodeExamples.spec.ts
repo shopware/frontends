@@ -9,6 +9,7 @@ const IGNORE_CHECK_EXAMPLES = [
   "adyen-dropin-component",
   "commercial-quick-order",
   "strapi-cms",
+  "README.md",
   // TODO: https://github.com/shopware/frontends/issues/678
 ];
 
@@ -18,7 +19,7 @@ fs.readdirSync(directoryPath)
   .filter((file) => !IGNORE_CHECK_EXAMPLES.includes(file))
   .forEach((file) => {
     test(`Verify ${file}`, async ({ page }) => {
-      const exampleName = `shopware/frontends/tree/feat/speed-up-stackblitz-examples/examples/${file}`;
+      const exampleName = `shopware/frontends/tree/main/examples/${file}`;
       await page.goto("file://" + __dirname + "/pages/blank.html", {
         waitUntil: "domcontentloaded",
         timeout: 0,
