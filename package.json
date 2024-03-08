@@ -43,7 +43,7 @@
     "prettier": "3.2.5",
     "taze": "0.13.3",
     "turbo": "1.12.4",
-    "typedoc": "0.25.10",
+    "typedoc": "0.25.11",
     "vercel": "33.5.3"
   },
   "engines": {
