@@ -86,8 +86,8 @@ importers:
         specifier: 1.12.4
         version: 1.12.4
       typedoc:
-        specifier: 0.25.10
-        version: 0.25.10(typescript@5.3.3)
+        specifier: 0.25.11
+        version: 0.25.11(typescript@5.3.3)
       vercel:
         specifier: 33.5.3
         version: 33.5.3
@@ -934,8 +934,8 @@ importers:
         specifier: 0.1.0
         version: 0.1.0
       typedoc:
-        specifier: 0.25.10
-        version: 0.25.10(typescript@5.3.3)
+        specifier: 0.25.11
+        version: 0.25.11(typescript@5.3.3)
       vinyl:
         specifier: 3.0.0
         version: 3.0.0
@@ -17264,8 +17264,8 @@ packages:
       is-typed-array: 1.1.13
     dev: true
 
-  /typedoc@0.25.10(typescript@5.3.3):
-    resolution: {integrity: sha512-v10rtOFojrjW9og3T+6wAKeJaGMuojU87DXGZ33sfs+554wgPTRG+s07Ag1BjPZI85Y5QPVouPI63JQ6fcQM5w==}
+  /typedoc@0.25.11(typescript@5.3.3):
+    resolution: {integrity: sha512-5MbI1W/FOG6oXsd8bdssQidSTeKh8Kt3xA5uKVzI+K99uzP8EGN45uPnPvQesyaWdD+89s4wCQdtWEd8QUbiRg==}
     engines: {node: '>= 16'}
     hasBin: true
     peerDependencies:
