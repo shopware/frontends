@@ -35,7 +35,7 @@
     "@microsoft/tsdoc": "0.14.2",
     "@types/changelog-parser": "2.8.4",
     "changelog-parser": "3.0.1",
-    "dotenv-cli": "7.3.0",
+    "dotenv-cli": "7.4.0",
     "esno": "4.7.0",
     "globby": "14.0.1",
     "husky": "9.0.11",
