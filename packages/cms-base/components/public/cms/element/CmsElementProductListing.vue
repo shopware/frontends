@@ -104,14 +104,15 @@ setInitialListing(
           />
         </div>
         <div
-          class="grid grid-cols-1 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
-          :class="{ 'lg:grid-cols-2': getTotalPagesCount > 1 }"
+          class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
         >
-          <SwPagination
-            :total="getTotalPagesCount"
-            :current="Number(getCurrentPage)"
-            @changePage="changePage"
-          />
+          <div class="text-center place-self-center">
+            <SwPagination
+              :total="getTotalPagesCount"
+              :current="Number(getCurrentPage)"
+              @changePage="changePage"
+            />
+          </div>
           <div class="text-center place-self-center mt-2 lg:mt-0">
             <div class="inline-block align-top text-center md:text-left">
               <label for="limit" class="inline mr-4">{{

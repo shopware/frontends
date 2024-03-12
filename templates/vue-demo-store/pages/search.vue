@@ -360,13 +360,9 @@ export default {
         </div>
         <div
           v-if="!loading"
-          class="grid grid-cols-1 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
-          :class="{ 'lg:grid-cols-2': getTotalPagesCount > 1 }"
+          class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
         >
-          <div
-            v-if="getTotalPagesCount > 1"
-            class="text-center place-self-center"
-          >
+          <div class="text-center place-self-center">
             <SharedPagination
               :total="getTotalPagesCount"
               :current="
