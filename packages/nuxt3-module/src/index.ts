@@ -27,7 +27,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       options || {},
     );
 
-    if (!isConfigDeprecated(nuxt.options?.runtimeConfig?.public?.shopware)) {
+    if (isConfigDeprecated(nuxt.options?.runtimeConfig?.public?.shopware)) {
       logger.warn(
         "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
       );

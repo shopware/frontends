@@ -57,7 +57,7 @@ export default defineNuxtConfig({
 });
 ```
 
-Set up your own API instance by adding public `runtimeConfiguration` in the same file. The nuxt module (and vue plugin) will use this values.
+Set up your own API instance under `shopware` key or by extending public `runtimeConfiguration` in the same file. The nuxt module (and vue plugin) will use those values (runtimeConfig will always override the base ones).
 
 ## Basic usage
 
