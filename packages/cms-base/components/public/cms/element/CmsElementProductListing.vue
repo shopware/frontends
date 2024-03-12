@@ -119,6 +119,7 @@ const compareRouteQueryWithInitialListing = async () => {
       : "name-asc";
     const newQuery = {
       limit: limitQuery,
+      p: pageQuery,
       order: orderQuery,
     };
     console.warn(
