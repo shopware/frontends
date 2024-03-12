@@ -5,18 +5,33 @@ import {
   defineNuxtModule,
   addPlugin,
   createResolver,
+  logger,
   // addTypeTemplate,
 } from "@nuxt/kit";
 import { addCustomTab } from "@nuxt/devtools-kit";
+import { defu } from "defu";
+import { isConfigDeprecated } from "./utils";
 
 export default defineNuxtModule<ShopwareNuxtOptions>({
   meta: {
     name: "@shopware/nuxt3",
     configKey: "shopware",
   },
-  async setup() {
+  async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url);
 
+    if (
+      isConfigDeprecated(options) ||
+      isConfigDeprecated(nuxt.options?.runtimeConfig?.public?.shopware)
+    ) {
+      logger.warn(
+        "You are using deprecated Shopware Nuxt3 module configuration. Please update your configuration to the new format. More information: <>",
+      );
+    }
+    nuxt.options.runtimeConfig.public.shopware = defu(
+      nuxt.options.runtimeConfig.public.shopware || {},
+      options || {},
+    );
     addPlugin({
       src: resolver.resolve("../plugin.ts"),
     });

@@ -13,7 +13,7 @@ If you want to use these packages with a different Vue.js framework, see [the gu
 
 - Business logic covered by [Composables](https://npmjs.com/package/@shopware-pwa/composables-next) package. Registering all composable functions globally. [See the reference](https://frontends.shopware.com/packages/composables.html).
 - Shopware context shared in Nuxt application.
-- Configured [API Client](https://npmjs.com/package/@shopware-pwa/api-client) package.
+- Configured [API Client](https://npmjs.com/package/@shopware/api-client) package.
 
 ## Setup
 
@@ -38,11 +38,17 @@ Then, register the module by editing `nuxt.config.js` or (`.ts`) file (by extend
 export default defineNuxtConfig({
   /* ... */
   modules: [, /* ... */ "@shopware-pwa/nuxt3-module"],
-
+  // set the module config
+  shopware: {
+    // connect to your Shopware 6 API instance
+    endpoint: "https://demo-frontends.shopware.store",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  },
+  // or directly in the runtime config
+  // this config will override the base one
   runtimeConfig: {
     public: {
       shopware: {
-        // connect to your Shopware 6 API instance
         endpoint: "https://demo-frontends.shopware.store",
         accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
       },
@@ -69,8 +75,8 @@ The information about the session is kept in a cookie (`sw-context-token`) and u
 
 ```html
 <script>
-  const { apiInstance } = useShopwareContext();
-  const rawApiResponse = await apiInstance.invokePost(/** params omitted */);
+  const { apiClient } = useShopwareContext();
+  const apiResponse = await apiClient.invoke(/** params omitted */);
 </script>
 ```
 

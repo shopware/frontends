@@ -44,7 +44,8 @@
     "@nuxt/kit": "3.10.3",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "js-cookie": "3.0.5"
+    "js-cookie": "3.0.5",
+    "defu": "6.1.4"
   },
   "devDependencies": {
     "@nuxt/schema": "3.10.3",

@@ -12,13 +12,17 @@ export default defineNuxtConfig({
        */
       shopwareEndpoint: "",
     },
-    public: {
-      shopware: {
-        endpoint: "https://demo-frontends.shopware.store/store-api/",
-        accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-        devStorefrontUrl: "",
-      },
-    },
+    // public: {
+    //   shopware: {
+    //     endpoint: "https://demo-frontends.shopware.store/store-api/",
+    //     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    //     devStorefrontUrl: "",
+    //   },
+    // },
+  },
+  shopware: {
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    endpoint: "https://demo-frontends.shopware.store/store-api/",
   },
   routeRules: {
     "/": {
