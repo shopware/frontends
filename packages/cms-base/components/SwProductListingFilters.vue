@@ -162,10 +162,10 @@ const currentSortingOrder = computed({
       },
     });
 
-    changeCurrentSortingOrder(
-      order,
-      route.query as unknown as RequestParameters<"searchPage">,
-    );
+    changeCurrentSortingOrder(order, {
+      ...(route.query as unknown as RequestParameters<"searchPage">),
+      limit: route.query.limit ? Number(route.query.limit) : 15,
+    });
   },
 });
 

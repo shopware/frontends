@@ -118,9 +118,7 @@ const compareRouteQueryWithInitialListing = async () => {
       ? (route.query.order as string)
       : "name-asc";
     const newQuery = {
-      ...route.query,
       limit: limitQuery,
-      p: pageQuery,
       order: orderQuery,
     };
     console.warn(
