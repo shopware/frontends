@@ -82,10 +82,52 @@ const changeLimit = async (limit: Event) => {
 const isProductListing = computed(
   () => props.content?.type === "product-listing",
 );
+// This is a workaround because vercel caching with the nuxt preset does not support query params at the moment
+// @see https://github.com/shopware/frontends/issues/687#issuecomment-1988392091
+const compareRouteQueryWithInitialListing = async () => {
+  let isChangePageNeeded = false;
+  const pageListing = props?.content?.data?.listing.page ?? 1;
+  const limitListing = props?.content?.data?.listing.limit ?? 15;
+  const orderListing = props?.content?.data?.listing.sorting ?? "name-asc";
+
+  if (route.query.p && Number(route.query.p) !== pageListing) {
+    console.warn("Change page needed query page");
+    isChangePageNeeded = true;
+  }
+  if (
+    isChangePageNeeded !== true &&
+    route.query.limit &&
+    limit.value !== limitListing
+  ) {
+    console.warn("Change page needed query limit");
+    isChangePageNeeded = true;
+  }
+  if (
+    isChangePageNeeded !== true &&
+    route.query.order &&
+    route.query.order !== orderListing
+  ) {
+    console.warn("Change page needed query order");
+    isChangePageNeeded = true;
+  }
+
+  if (isChangePageNeeded) {
+    console.warn(
+      "The current route does not match the initial listing. Changing the route to match the initial listing.",
+    );
+    limit.value = Number(route.query.limit);
+    await changeCurrentPage(
+      Number(route.query.p),
+      route.query as unknown as RequestParameters<"searchPage">,
+    );
+  }
+};
 
 setInitialListing(
   props?.content?.data?.listing as Schemas["ProductListingResult"],
 );
+
+compareRouteQueryWithInitialListing();
 </script>
 
 <template>
