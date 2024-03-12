@@ -86,8 +86,8 @@ const isProductListing = computed(
 // @see https://github.com/shopware/frontends/issues/687#issuecomment-1988392091
 const compareRouteQueryWithInitialListing = async () => {
   let isChangePageNeeded = false;
-  const pageListing = props?.content?.data?.listing.page ?? 1;
   const limitListing = props?.content?.data?.listing.limit ?? 15;
+  const pageListing = props?.content?.data?.listing.page ?? 1;
   const orderListing = props?.content?.data?.listing.sorting ?? "name-asc";
 
   if (route.query.p && Number(route.query.p) !== pageListing) {
@@ -112,13 +112,24 @@ const compareRouteQueryWithInitialListing = async () => {
   }
 
   if (isChangePageNeeded) {
+    const limitQuery = route.query.limit ? Number(route.query.limit) : 15;
+    const pageQuery = route.query.p ? Number(route.query.p) : 1;
+    const orderQuery = route.query.order
+      ? (route.query.order as string)
+      : "name-asc";
+    const newQuery = {
+      ...route.query,
+      limit: limitQuery,
+      p: pageQuery,
+      order: orderQuery,
+    };
     console.warn(
       "The current route does not match the initial listing. Changing the route to match the initial listing.",
     );
-    limit.value = Number(route.query.limit);
+    limit.value = limitQuery;
     await changeCurrentPage(
-      Number(route.query.p),
-      route.query as unknown as RequestParameters<"searchPage">,
+      pageQuery,
+      newQuery as unknown as RequestParameters<"searchPage">,
     );
   }
 };
