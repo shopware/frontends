@@ -5,33 +5,34 @@ import {
   defineNuxtModule,
   addPlugin,
   createResolver,
-  logger,
+  useLogger,
   // addTypeTemplate,
 } from "@nuxt/kit";
 import { addCustomTab } from "@nuxt/devtools-kit";
 import { defu } from "defu";
 import { isConfigDeprecated } from "./utils";
+const MODULE_ID = "@shopware/nuxt3";
 
 export default defineNuxtModule<ShopwareNuxtOptions>({
   meta: {
-    name: "@shopware/nuxt3",
+    name: MODULE_ID,
     configKey: "shopware",
   },
-  async setup(options, nuxt) {
+  async setup(options: ShopwareNuxtOptions, nuxt) {
+    const logger = useLogger(MODULE_ID);
     const resolver = createResolver(import.meta.url);
 
-    if (
-      isConfigDeprecated(options) ||
-      isConfigDeprecated(nuxt.options?.runtimeConfig?.public?.shopware)
-    ) {
-      logger.warn(
-        "You are using deprecated Shopware Nuxt3 module configuration. Please update your configuration to the new format. More information: <>",
-      );
-    }
     nuxt.options.runtimeConfig.public.shopware = defu(
       nuxt.options.runtimeConfig.public.shopware || {},
       options || {},
     );
+
+    if (!isConfigDeprecated(nuxt.options?.runtimeConfig?.public?.shopware)) {
+      logger.warn(
+        "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
+      );
+    }
+
     addPlugin({
       src: resolver.resolve("../plugin.ts"),
     });
