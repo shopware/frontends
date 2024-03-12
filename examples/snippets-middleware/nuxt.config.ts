@@ -11,8 +11,8 @@ export default defineNuxtConfig({
     api_client_secret: "dTRpT3ptZDlmMHZocDNrb2ZOODYxYWtIWnZtRTByUnBvRXh5M3Q", // or import.meta.env.NUXT_SHOPWARE_SECRET_ACCESS_KEY  when .env is defined
   },
   shopware: {
-    shopwareEndpoint: "https://demo-frontends.shopware.store/store-api",
-    shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    endpoint: "https://demo-frontends.shopware.store/store-api",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
   modules: ["@shopware-pwa/nuxt3-module", "@nuxtjs/i18n"],
   typescript: {

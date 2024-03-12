@@ -5,8 +5,8 @@ export default defineNuxtConfig({
   ],
   shopware: {
     // your Shopware 6 instance endpoint and access key
-    shopwareEndpoint: "https://demo-frontends.shopware.store",
-    shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    endpoint: "https://demo-frontends.shopware.store",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
   runtimeConfig: {
     public: {

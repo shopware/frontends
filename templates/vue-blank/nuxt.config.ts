@@ -5,8 +5,8 @@ export default defineNuxtConfig({
     "@shopware-pwa/cms-base",
   ],
   shopware: {
-    shopwareEndpoint: "https://demo-frontends.shopware.store/store-api/",
-    shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    endpoint: "https://demo-frontends.shopware.store/store-api/",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
   modules: ["@shopware-pwa/nuxt3-module"],
   /**
