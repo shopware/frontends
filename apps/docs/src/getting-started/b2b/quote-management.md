@@ -45,10 +45,8 @@ import {
   useCart,
   useB2bQuoteManagement,
 } from "@shopware-pwa/composables-next/dist";
-
 const { cartItems } = useCart();
 const { requestQuote } = UseB2bQuoteManagement();
-
 const comment = ref("");
 const handleRequestQuote = async () => {
   await requestQuote(comment.value);
@@ -70,10 +68,8 @@ This feature allows users to retrieve a list of all their requested quotes or qu
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
 import { useB2bQuoteManagement } from "@shopware-pwa/composables-next";
-
 const quotesList = ref([]);
 const { getQuoteList } = useB2bQuoteManagement();
-
 onBeforeMount(async () => {
   quotesList.value = await getQuoteList();
 });
@@ -114,12 +110,9 @@ The "Decline Quote" feature provides users with the ability to reject a quote th
 <script setup lang="ts">
 import { ref } from "vue";
 import { useB2bQuoteManagement } from "@shopware-pwa/composables-next";
-
 const declineComment = ref("");
 const quote = ref("example-id");
-
 const { declineQuote } = useB2bQuoteManagement();
-
 const handleDecline = async () => {
   declineQuote(quote.value.id, declineComment.value);
   declineComment.value = "";
@@ -141,12 +134,9 @@ The "Request Change in Quote" feature empowers users to actively participate in 
 <script setup lang="ts">
 import { ref } from "vue";
 import { useB2bQuoteManagement } from "@shopware-pwa/composables-next";
-
 const quote = ref("example-id");
 const changeRequest = ref("");
-
 const { requestChangeQuote } = useB2bQuoteManagement();
-
 const handleChangeRequest = async () => {
   requestChangeQuote(quote.value.id, changeRequest.value);
   changeRequest.value = "";
@@ -168,11 +158,8 @@ The "Change Payment or Shipping in Quote" feature provides users with the flexib
 <script setup lang="ts">
 import { ref } from "vue";
 import { useB2bQuoteManagement } from "@shopware-pwa/composables-next";
-
 const quote = ref("example-id");
-
 const { changeShippingMethod, changePaymentMethod } = useB2bQuoteManagement();
-
 changeShippingMethod(quote.value.id, "example-shipping-id");
 changePaymentMethod(quote.value.id, "example-payment-id");
 </script>
@@ -186,11 +173,9 @@ The "Create an Order from a Quote" feature allows users to seamlessly convert a 
 <script setup lang="ts">
 import { ref } from "vue";
 import { useB2bQuoteManagement } from "@shopware-pwa/composables-next";
-
 const quote = ref("example-id");
 const comment = ref("");
 const { createOrderFromQuote } = useB2bQuoteManagement();
-
 const handleCreateOrder = async () => {
   await createOrderFromQuote(quote.value.id, comment.value);
 };
