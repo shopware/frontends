@@ -28,8 +28,8 @@ const loginAction = async () => {
 };
 </script>
 <template>
-  <div class="w-400 mx-auto">
-    <h1 class="text-2xl mb-10 text-center">Shopware B2B Quote feature</h1>
+  <div class="container mx-auto">
+    <!-- <h1 class="text-2xl mb-10 text-center">Shopware B2B Quote feature</h1>
     <div>
       <p class="mb-10">
         In this example we will show how to use the B2B Quote Management
@@ -44,18 +44,18 @@ const loginAction = async () => {
           <input class="border" type="password" v-model="password" />
           <button type="submit">Login</button>
         </form>
-      </div>
-      <!-- 
+      </div> -->
+    <!-- 
       <QuotesTable v-if="isLoggedIn" class="mt-10" />
       <Quote v-if="isLoggedIn && chosenQuote" :quoteId="chosenQuote" /> -->
 
-      <menu class="">
+    <!-- <menu class="">
         <ul class="flex gap-10">
           <li class="text-xl">Request quote</li>
           <li class="text-xl">Quote list</li>
         </ul>
-      </menu>
-      <router-view></router-view>
-    </div>
+      </menu> -->
+    <router-view></router-view>
+    <!-- </div> -->
   </div>
 </template>
