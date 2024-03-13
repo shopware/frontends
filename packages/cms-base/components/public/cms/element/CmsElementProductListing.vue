@@ -13,6 +13,10 @@ const props = defineProps<{
   content: CmsElementProductListing;
 }>();
 
+const defaultLimit = 15;
+const defaultPage = 1;
+const defaultOrder = "name-asc";
+
 type Translations = {
   listing: {
     noProducts: string;
@@ -46,7 +50,7 @@ const limit = ref(
     ? Number(route.query.limit)
     : props.content?.data?.listing?.limit
       ? Number(props.content?.data?.listing?.limit)
-      : 15,
+      : defaultLimit,
 );
 
 const changePage = async (page: number) => {
@@ -70,11 +74,11 @@ const changeLimit = async (limit: Event) => {
     query: {
       ...route.query,
       limit: select.value,
-      p: 1,
+      p: defaultPage,
     },
   });
   await changeCurrentPage(
-    1,
+    defaultPage,
     route.query as unknown as RequestParameters<"searchPage">,
   );
 };
@@ -85,38 +89,25 @@ const isProductListing = computed(
 // This is a workaround because vercel caching with the nuxt preset does not support query params at the moment
 // @see https://github.com/shopware/frontends/issues/687#issuecomment-1988392091
 const compareRouteQueryWithInitialListing = async () => {
-  let isChangePageNeeded = false;
-  const limitListing = props?.content?.data?.listing.limit ?? 15;
-  const pageListing = props?.content?.data?.listing.page ?? 1;
-  const orderListing = props?.content?.data?.listing.sorting ?? "name-asc";
+  const limitListing = props?.content?.data?.listing.limit ?? defaultLimit;
+  const pageListing = props?.content?.data?.listing.page ?? defaultPage;
+  const orderListing = props?.content?.data?.listing.sorting ?? defaultOrder;
 
-  if (route.query.p && Number(route.query.p) !== pageListing) {
-    console.warn("Change page needed query page");
-    isChangePageNeeded = true;
-  }
-  if (
-    isChangePageNeeded !== true &&
-    route.query.limit &&
-    limit.value !== limitListing
-  ) {
-    console.warn("Change page needed query limit");
-    isChangePageNeeded = true;
-  }
-  if (
-    isChangePageNeeded !== true &&
-    route.query.order &&
-    route.query.order !== orderListing
-  ) {
-    console.warn("Change page needed query order");
-    isChangePageNeeded = true;
-  }
+  const isChangePageNeeded =
+    (route.query.limit && limit.value !== limitListing) ||
+    (route.query.p && Number(route.query.p) !== pageListing) ||
+    (route.query.order && route.query.order !== orderListing)
+      ? true
+      : false;
 
   if (isChangePageNeeded) {
-    const limitQuery = route.query.limit ? Number(route.query.limit) : 15;
-    const pageQuery = route.query.p ? Number(route.query.p) : 1;
+    const limitQuery = route.query.limit
+      ? Number(route.query.limit)
+      : defaultLimit;
+    const pageQuery = route.query.p ? Number(route.query.p) : defaultPage;
     const orderQuery = route.query.order
       ? (route.query.order as string)
-      : "name-asc";
+      : defaultOrder;
     const newQuery = {
       limit: limitQuery,
       p: pageQuery,
