@@ -101,6 +101,7 @@ const loadProducts = async (cacheKey: string) => {
           name: "manufacturer_ids_counter",
           type: "terms",
           field: "manufacturerId",
+          /* this can be slow for large datasets, we have an internal task to ignore childs in the aggregation (terms_without_children), after that this can be removed, just here for showcase **/
           aggregation: {
             name: "parent_childs",
             type: "terms",
@@ -110,7 +111,8 @@ const loadProducts = async (cacheKey: string) => {
         {
           name: "option_ids_counter",
           type: "terms",
-          field: "optionIds",
+          field: "options.id",
+          /* this can be slow for large datasets, we have an internal task to ignore childs in the aggregation (terms_without_children), after that this can be removed, just here for showcase **/
           aggregation: {
             name: "parent_childs",
             type: "terms",
