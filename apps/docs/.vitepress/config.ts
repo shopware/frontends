@@ -183,6 +183,16 @@ export const sidebar = [
           },
         ],
       },
+      {
+        text: "B2B",
+        link: "/getting-started/b2b/",
+        items: [
+          {
+            text: "Quote Management",
+            link: "/getting-started/b2b/quote-management",
+          },
+        ],
+      },
     ],
   },
   {
