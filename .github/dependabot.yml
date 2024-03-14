@@ -71,6 +71,7 @@ updates:
         patterns:
           - 'vue'
           - 'vue-*'
+          - '@vue/*'
           - 'nuxt'
           - 'vite'
           - '@vueuse/*'
