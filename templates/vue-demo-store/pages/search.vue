@@ -101,11 +101,21 @@ const loadProducts = async (cacheKey: string) => {
           name: "manufacturer_ids_counter",
           type: "terms",
           field: "manufacturerId",
+          aggregation: {
+            name: "parent_childs",
+            type: "terms",
+            field: "parentId",
+          },
         },
         {
           name: "option_ids_counter",
           type: "terms",
           field: "optionIds",
+          aggregation: {
+            name: "parent_childs",
+            type: "terms",
+            field: "parentId",
+          },
         },
       ],
     });
@@ -168,17 +178,26 @@ const currentSortingOrder = computed({
 
 setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
 
+type AggregationBucket = {
+  apiAlias: string;
+  key: string;
+  count: number;
+  parent_childs?: {
+    buckets: Array<{
+      apiAlias: string;
+      key: string;
+      count: number;
+    }>;
+  };
+};
+
 type FilterAndAggregations = {
   code: string;
   label: string;
   name: string;
   options: Array<Schemas["PropertyGroupOption"] & { count: number }>;
   entities: Array<Schemas["ProductManufacturer"] & { count: number }>;
-  buckets?: Array<{
-    apiAlias: string;
-    key: string; // can be "", "5e698b809f75483196868427ec5abd8e" or "["5e698b809f75483196868427ec5abd8e"]"
-    count: number;
-  }>;
+  buckets?: Array<AggregationBucket>;
   apiAlias: string;
 };
 
@@ -193,6 +212,9 @@ const addCountToFilterOptions = (
       );
       if (bucket) {
         option.count = bucket.count + (option.count ?? 0);
+        if (bucket.parent_childs && bucket.parent_childs.buckets) {
+          option.count = calculateCountByParentChildsBucket(bucket);
+        }
       }
     }
   });
@@ -209,9 +231,26 @@ const addCountToFilterEntities = (
       );
       if (bucket) {
         entity.count = bucket.count + (entity.count ?? 0);
+        if (bucket.parent_childs && bucket.parent_childs.buckets) {
+          entity.count = calculateCountByParentChildsBucket(bucket);
+        }
       }
     }
   });
+};
+
+const calculateCountByParentChildsBucket = (bucket: AggregationBucket) => {
+  let count = 0;
+  if (bucket.parent_childs && bucket.parent_childs.buckets) {
+    bucket.parent_childs.buckets.forEach((child) => {
+      if (child.key === "") {
+        count = count + child.count;
+      } else {
+        count = count + 1;
+      }
+    });
+  }
+  return count;
 };
 
 const addCountsToFilter = () => {
