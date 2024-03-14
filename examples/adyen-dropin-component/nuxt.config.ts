@@ -3,17 +3,17 @@ export default defineNuxtConfig({
     "@shopware-pwa/composables-next/nuxt-layer",
     "@shopware-pwa/cms-base",
   ],
+  shopware: {
+    // your Shopware 6 instance endpoint and access key
+    endpoint: "https://demo-frontends.shopware.store",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  },
   runtimeConfig: {
     public: {
       loginData: {
         // for demo purposes, the customer is logged in automatically, so please adjust the loginData to some of yours customer account
         username: "someemail@demo.com",
         password: "changeme",
-      },
-      shopware: {
-        // your Shopware 6 instance endpoint and access key
-        shopwareEndpoint: "https://demo-frontends.shopware.store",
-        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
       },
       adyenCheckout: {
         environment: "test", // Change to 'live' for the live environment.
