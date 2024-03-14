@@ -988,10 +988,10 @@ importers:
     dependencies:
       '@astrojs/node':
         specifier: 8.2.3
-        version: 8.2.3(astro@4.5.0)
+        version: 8.2.3(astro@4.5.2)
       '@astrojs/vue':
         specifier: 4.0.8
-        version: 4.0.8(@babel/core@7.24.0)(astro@4.5.0)(vue@3.4.21)
+        version: 4.0.8(@babel/core@7.24.0)(astro@4.5.2)(vue@3.4.21)
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
@@ -1005,8 +1005,8 @@ importers:
         specifier: 3.1.0
         version: 3.1.0(vite@5.1.4)(vue@3.4.21)
       astro:
-        specifier: 4.5.0
-        version: 4.5.0(@types/node@20.11.25)(typescript@5.4.2)
+        specifier: 4.5.2
+        version: 4.5.2(@types/node@20.11.25)(typescript@5.4.2)
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -1403,12 +1403,12 @@ packages:
       - supports-color
     dev: false
 
-  /@astrojs/node@8.2.3(astro@4.5.0):
+  /@astrojs/node@8.2.3(astro@4.5.2):
     resolution: {integrity: sha512-VQQy7QIv4X+5dlKCEchYIxMFryS+BwDOFGNzeRmHe1/P819TlNup9/M8XqnWW4aZPxV7P6CoDeFxX6HuT/kOmQ==}
     peerDependencies:
       astro: ^4.2.0
     dependencies:
-      astro: 4.5.0(@types/node@20.11.25)(typescript@5.4.2)
+      astro: 4.5.2(@types/node@20.11.25)(typescript@5.4.2)
       send: 0.18.0
       server-destroy: 1.0.1
     transitivePeerDependencies:
@@ -1437,7 +1437,7 @@ packages:
       - supports-color
     dev: false
 
-  /@astrojs/vue@4.0.8(@babel/core@7.24.0)(astro@4.5.0)(vue@3.4.21):
+  /@astrojs/vue@4.0.8(@babel/core@7.24.0)(astro@4.5.2)(vue@3.4.21):
     resolution: {integrity: sha512-RnNA4wFy4HvQxU4vswH3c6sa7Br1F/JVzWdQvHYLP4CEe5OZ6yhEqxAUUo3LDkF+sNn23XznFLOPqZak6ziBwg==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
@@ -1448,7 +1448,7 @@ packages:
       '@vitejs/plugin-vue-jsx': 3.1.0(vite@5.1.4)(vue@3.4.21)
       '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.24.0)
       '@vue/compiler-sfc': 3.4.19
-      astro: 4.5.0(@types/node@20.11.25)(typescript@5.4.2)
+      astro: 4.5.2(@types/node@20.11.25)(typescript@5.4.2)
       vue: 3.4.21(typescript@5.4.2)
     transitivePeerDependencies:
       - '@babel/core'
@@ -8089,8 +8089,8 @@ packages:
     transitivePeerDependencies:
       - rollup
 
-  /astro@4.5.0(@types/node@20.11.25)(typescript@5.4.2):
-    resolution: {integrity: sha512-NyBePQs0MqsLLde2hOuZO6eiLY2SzpDDeDQDfx39r2Ho2wmlaRFiWxIvcI5vAw75UNVUQuLWRDe+ZNl29AossQ==}
+  /astro@4.5.2(@types/node@20.11.25)(typescript@5.4.2):
+    resolution: {integrity: sha512-Nq3GojlwXJ3XD047khraCWu/6aqGFfcyq7Q0blpTBSZnCz2s4Zri04PHvUkbKF7TK2UljkFuTXKP0CE4ZuJi9Q==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
