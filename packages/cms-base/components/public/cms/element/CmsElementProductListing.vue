@@ -142,12 +142,12 @@ const compareRouteQueryWithInitialListing = async () => {
       pageQuery,
       newQuery as unknown as RequestParameters<"searchPage">,
     );
+  } else {
+    setInitialListing(
+      props?.content?.data?.listing as Schemas["ProductListingResult"],
+    );
   }
 };
-
-setInitialListing(
-  props?.content?.data?.listing as Schemas["ProductListingResult"],
-);
 
 compareRouteQueryWithInitialListing();
 </script>
