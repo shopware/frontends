@@ -10,15 +10,19 @@ export default defineNuxtConfig({
        * SSR Shopware Endpoint
        * More here: https://frontends.shopware.com/getting-started/templates/custom-vue-project.html#shopware-endpoint-on-the-ssr-mode
        */
-      shopwareEndpoint: "",
+      endpoint: "",
     },
-    public: {
-      shopware: {
-        endpoint: "https://demo-frontends.shopware.store/store-api/",
-        accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-        devStorefrontUrl: "",
-      },
-    },
+    // public: {
+    //   shopware: {
+    //     endpoint: "https://demo-frontends.shopware.store/store-api/",
+    //     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    //     devStorefrontUrl: "",
+    //   },
+    // },
+  },
+  shopware: {
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    endpoint: "https://demo-frontends.shopware.store/store-api/",
   },
   routeRules: {
     "/": {

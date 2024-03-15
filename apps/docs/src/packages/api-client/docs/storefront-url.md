@@ -32,7 +32,19 @@ Linux/macOS "/etc/hosts"
 
 Another problem that you may encounter is with the preview instance. For example, the backend may expect http://frontends.shopware.com, but your preview instance may be http://1.0.4.frontends.shopware.com. To address this problem, you can set the `devStorefrontUrl` parameter as shown below:
 
+```js
+//nuxt.config.ts
+shopware: {
+  ...
+  devStorefrontUrl: 'http://frontends.shopware.com'
+},
+
 ```
+
+or
+
+```js
+//nuxt.config.ts
 runtimeConfig: {
     public: {
       shopware: {

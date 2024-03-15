@@ -44,6 +44,8 @@ updates:
           - 'globals'
       maintenance:
         patterns:
+          - '@types/node'
+          - 'dotenv-cli'
           - 'turbo*'
           - 'vercel'
           - 'semver'
@@ -52,31 +54,24 @@ updates:
           - 'lint-staged'
           - 'taze'
           - 'pnpm'
-      node:
-        patterns:
-          - '@types/node'
       tests:
         patterns:
           - 'vitest'
           - '@vitest/*'
+          - 'dotenv'
           - 'happy-dom'
           - '@faker*'
           - '@codspeed/*'
-      e2e-tests:
-        patterns:
-          - 'dotenv'
           - '@playwright*'
       prettier:
         patterns:
           - 'prettier'
           - '@types/prettier'
-      turbo:
-        patterns:
-          - 'turbo*'
       vue:
         patterns:
           - 'vue'
           - 'vue-*'
+          - '@vue/*'
           - 'nuxt'
           - 'vite'
           - '@vueuse/*'
@@ -85,3 +80,7 @@ updates:
           - '@nuxt/*'
           - '@unocss/*'
           - 'unocss'
+      # others not defined will be grouped
+      grouped-dependencies:
+        patterns:
+          - "*"
