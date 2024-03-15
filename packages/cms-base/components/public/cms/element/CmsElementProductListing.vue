@@ -4,7 +4,7 @@ import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
 import { useListing } from "#imports";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { defu } from "defu";
 import { useRoute, useRouter } from "vue-router";
 import type { RequestParameters, Schemas } from "#shopware";
@@ -36,11 +36,12 @@ let translations: Translations = {
 translations = defu(translations, useCmsTranslations()) as Translations;
 
 const {
-  getElements,
-  setInitialListing,
-  getCurrentPage,
   changeCurrentPage,
+  getCurrentPage,
+  getElements,
   getTotalPagesCount,
+  loading,
+  setInitialListing,
 } = useListing({ listingType: "categoryListing" });
 
 const route = useRoute();
@@ -51,6 +52,26 @@ const limit = ref(
     : props.content?.data?.listing?.limit
       ? Number(props.content?.data?.listing?.limit)
       : defaultLimit,
+);
+
+const initalRoute = defu(route);
+watch(
+  () => route,
+  (newRoute) => {
+    if (initalRoute.path !== newRoute.path) {
+      return;
+    }
+    if (Object.keys(newRoute.query).length > 0) {
+      return;
+    }
+    // this fires to reset the page when query are removed/empty on client side navigation for the same page (without hard reload)
+    changeCurrentPage(defaultPage, {
+      limit: defaultLimit,
+      p: defaultPage,
+      order: defaultOrder,
+    } as unknown as RequestParameters<"searchPage">);
+  },
+  { deep: true },
 );
 
 const changePage = async (page: number) => {
@@ -134,8 +155,9 @@ compareRouteQueryWithInitialListing();
 <template>
   <div class="bg-white">
     <div class="max-w-2xl mx-auto lg:max-w-full">
-      <div v-if="getElements?.length" class="mt-6">
+      <div class="mt-6">
         <div
+          v-if="!loading"
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
         >
           <SwProductCard
@@ -144,6 +166,17 @@ compareRouteQueryWithInitialListing();
             :product="product"
             :isProductListing="isProductListing"
             class="p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 ease-in-out"
+          />
+        </div>
+        <div
+          v-if="loading"
+          data-testid="loading"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
+        >
+          <ProductCardSkeleton
+            v-for="index in limit"
+            :key="index"
+            class="w-full mb-8"
           />
         </div>
         <div
@@ -196,11 +229,11 @@ compareRouteQueryWithInitialListing();
           </div>
         </div>
       </div>
-      <div v-else>
+      <!-- <div v-else>
         <h2 class="mx-auto text-center">
           {{ translations.listing.noProducts }}
         </h2>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

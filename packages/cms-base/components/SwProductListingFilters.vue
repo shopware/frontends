@@ -41,13 +41,13 @@ const router = useRouter();
 
 const isSortMenuOpen = ref(false);
 const {
-  getCurrentSortingOrder,
   changeCurrentSortingOrder,
-  getSortingOrders,
-  getInitialFilters,
-  search,
-  getCurrentFilters,
   filtersToQuery,
+  getCurrentFilters,
+  getCurrentSortingOrder,
+  getInitialFilters,
+  getSortingOrders,
+  search,
 } = useListing({ listingType: "categoryListing" });
 
 const sidebarSelectedFilters: UnwrapNestedRefs<{
@@ -162,7 +162,7 @@ const currentSortingOrder = computed({
       },
     });
 
-    changeCurrentSortingOrder(order, {
+    await changeCurrentSortingOrder(order, {
       ...(route.query as unknown as RequestParameters<"searchPage">),
       limit: route.query.limit ? Number(route.query.limit) : 15,
     });

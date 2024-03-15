@@ -383,9 +383,15 @@ export default {
         </div>
       </div>
       <div class="col-span-12 md:col-span-9 order-1 md:order-2">
-        <div v-if="loading" data-testid="loading" class="flex justify-center">
-          <div
-            class="h-15 w-15 i-carbon-progress-bar-round animate-spin c-secondary-500"
+        <div
+          v-if="loading"
+          data-testid="loading"
+          class="flex flex-wrap justify-center sm:justify-between p-4 md:p-6 lg:p-8"
+        >
+          <ProductCardSkeleton
+            v-for="index in limit"
+            :key="index"
+            class="w-full sm:w-3/7 lg:w-2/7 mb-8"
           />
         </div>
         <div

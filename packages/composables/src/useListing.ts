@@ -4,6 +4,7 @@ import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from "#imports";
 import ContextError from "./helpers/ContextError";
 import type { Schemas, RequestParameters } from "#shopware";
+import { useListingLoading } from "./useListingLoading";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -253,7 +254,7 @@ export function createListingComposable({
   //   ? `${contextName}(cms-${cmsContext})`
   //   : contextName;
 
-  const loading = ref(false);
+  const { loading } = useListingLoading();
   const loadingMore = ref(false);
 
   // const { sharedRef } = useSharedState();
@@ -501,28 +502,28 @@ export function createListingComposable({
   };
 
   return {
-    getInitialListing,
-    setInitialListing,
-    initSearch,
-    search,
-    getCurrentListing,
-    getElements,
-    getSortingOrders,
-    getCurrentSortingOrder,
-    changeCurrentSortingOrder,
-    getCurrentPage,
     changeCurrentPage,
-    getTotal,
-    getTotalPagesCount,
-    getLimit,
-    getInitialFilters,
+    changeCurrentSortingOrder,
+    filtersToQuery,
     getAvailableFilters,
     getCurrentFilters,
-    setCurrentFilters,
-    loading: computed(() => loading.value),
+    getCurrentListing,
+    getCurrentPage,
+    getCurrentSortingOrder,
+    getElements,
+    getInitialFilters,
+    getInitialListing,
+    getLimit,
+    getSortingOrders,
+    getTotal,
+    getTotalPagesCount,
+    initSearch,
     loadMore,
+    loading: computed(() => loading.value),
     loadingMore: computed(() => loadingMore.value),
     resetFilters,
-    filtersToQuery,
+    search,
+    setCurrentFilters,
+    setInitialListing,
   };
 }
