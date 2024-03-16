@@ -26,6 +26,7 @@ describe("useB2bQuoteManagement", () => {
         associations: {
           lineItems: {},
           comments: {},
+          stateMachineState: {},
         },
       }),
     );
