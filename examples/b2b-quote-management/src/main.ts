@@ -8,6 +8,7 @@ import QuotesTable from "./components/QuotesTable.vue";
 import RequestQuote from "./components/RequestQuote.vue";
 import PrimeVue from "primevue/config";
 import "primevue/resources/themes/aura-light-green/theme.css";
+import "virtual:uno.css";
 
 const routes = [
   { path: "/", component: App, name: "home" },

@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import {
-  usePrice,
-  useProductPrice,
-  useProductSearch,
-  useCart,
-} from "@shopware-pwa/composables-next/dist";
+import { onBeforeMount, onMounted, ref } from "vue";
+import { useProductSearch, useCart } from "@shopware-pwa/composables-next/dist";
 import { useB2bQuoteManagement } from "@shopware-pwa/composables-next";
 import Textarea from "primevue/textarea";
 import Button from "primevue/button";
+import Stepper from "primevue/stepper";
+import StepperPanel from "primevue/stepperpanel";
+import Message from "primevue/message";
 
 const product = ref();
 const requestComment = ref("");
 const requested = ref(false);
-const { createOrderFromQuote } = useB2bQuoteManagement();
+const { requestQuote } = useB2bQuoteManagement();
 const { search } = useProductSearch();
 const { cartItems, refreshCart, cart, addProduct } = useCart();
 
@@ -22,37 +20,111 @@ const proxyAddToCart = async (quantity: number = 1) => {
   refreshCart();
 };
 const handleCreateQuote = async () => {
-  await createOrderFromQuote(cart.value.token, requestComment.value);
+  await requestQuote(requestComment.value);
+  requested.value = true;
 };
-onMounted(async () => {
+onBeforeMount(async () => {
   refreshCart();
   const productResponse = await search("85a0d7e39bdf49d0a6f6318c6e464cc1");
   product.value = productResponse.product;
 });
 </script>
 <template>
-  <div>
-    <pre>{{ cart }}</pre>
-    <p>Quote can requested only for not empty cart</p>
-    <div v-if="cartItems.length > 0">Items in cart {{ cartItems.length }}</div>
-    <div v-else>
-      <p>Your cart is empty. Click button bellow to add an item</p>
-      <button
-        @click="proxyAddToCart(1)"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Add item to cart
-      </button>
-    </div>
-  </div>
-  <div class="flex flex-col">
-    <template v-if="!requested">
-      <Textarea v-model="requestComment" rows="5" cols="30" />
-      <Button label="Request quote" @click="handleCreateQuote" />
-    </template>
-    <template v-else>
-      Quote requested.
-      <RouterLink :to="'/quotes'">CLICK HERE TO SEE THE LIST</RouterLink>
-    </template>
-  </div>
+  <Stepper>
+    <StepperPanel header="Add product to the basket">
+      <template #content="{ nextCallback }">
+        <Message severity="warn" :closable="false"
+          >Quote can be requested only for not empty cart</Message
+        >
+        <template v-if="!cartItems.length">
+          <Message severity="error" :closable="false"
+            >Your cart is empty. Click "Add item"</Message
+          >
+          <div v-if="product" class="flex w-100 mt-10">
+            <div
+              class="mr-4 h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-secondary-200"
+            >
+              <img
+                :src="product.cover.media.thumbnails[0].url"
+                class="h-full w-full object-cover object-center"
+              />
+            </div>
+            <div class="flex flex-1 flex-col">
+              <div>
+                <div
+                  class="flex flex-col lg:flex-row justify-between text-base font-medium text-secondary-900"
+                >
+                  <h3 class="text-base m-0">
+                    {{ product.name }}
+                  </h3>
+                  <p class="flex gap-1">
+                    {{ product.calculatedCheapestPrice.unitPrice }}
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-1 items-end justify-between text-sm">
+                <input
+                  value="1"
+                  type="number"
+                  :disabled="true"
+                  name="quantity"
+                  aria-label="Cart item quantity"
+                  class="w-18 mt-1 inline-block py-2 px-3 border border-secondary-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+                <div class="flex">
+                  <Button
+                    icon="pi pi-shopping-cart"
+                    label="Add item"
+                    class="flex-auto md:flex-initial white-space-nowrap"
+                    @click="proxyAddToCart(1)"
+                  ></Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <Message severity="success"
+            >You have {{ cartItems.length }} items in cart. Click "Next"
+            button</Message
+          >
+        </template>
+        <div class="flex pt-4 justify-end">
+          <Button
+            label="Next"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            @click="nextCallback"
+          />
+        </div>
+      </template>
+    </StepperPanel>
+    <StepperPanel header="Request quote">
+      <template #content="{ prevCallback, nextCallback }">
+        <Message severity="info" :closable="false"
+          >You can add comment to your requested quote</Message
+        >
+        <template v-if="!requested">
+          <div class="flex flex-col gap-2">
+            <Textarea v-model="requestComment" rows="5" cols="30" />
+            <Button label="Request quote" @click="handleCreateQuote" />
+          </div>
+        </template>
+        <template v-else>
+          <Message severity="success" :closable="false">
+            Quote requested.
+            <RouterLink :to="'/quotes'">CLICK HERE TO SEE THE LIST</RouterLink>
+          </Message>
+        </template>
+        <div class="flex pt-4 justify-between">
+          <Button
+            label="Back"
+            severity="secondary"
+            icon="pi pi-arrow-left"
+            @click="prevCallback"
+          />
+        </div>
+      </template>
+    </StepperPanel>
+  </Stepper>
 </template>

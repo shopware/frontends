@@ -186,6 +186,9 @@ importers:
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
+      '@shopware-pwa/helpers-next':
+        specifier: workspace:*
+        version: link:../../packages/helpers
       '@shopware/api-client':
         specifier: canary
         version: link:../../packages/api-client-next
@@ -211,6 +214,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.8.0
         version: 10.9.0(vue@3.4.21)
+      unocss:
+        specifier: 0.58.5
+        version: 0.58.5(postcss@8.4.35)(vite@5.1.4)
       vite:
         specifier: ^5.1.4
         version: 5.1.4(@types/node@20.11.17)
@@ -4170,7 +4176,6 @@ packages:
       - vls
       - vti
       - vue-tsc
-    dev: true
 
   /@nuxtjs/eslint-config-typescript@12.1.0(eslint@8.57.0)(typescript@5.3.3):
     resolution: {integrity: sha512-l2fLouDYwdAvCZEEw7wGxOBj+i8TQcHFu3zMPTLqKuv1qu6WcZIr0uztkbaa8ND1uKZ9YPqKx6UlSOjM4Le69Q==}
@@ -6446,6 +6451,23 @@ packages:
       '@unocss/vite': 0.58.5(rollup@3.29.4)
     transitivePeerDependencies:
       - rollup
+    dev: false
+
+  /@unocss/astro@0.58.5(vite@5.1.4):
+    resolution: {integrity: sha512-LtuVnj8oFAK9663OVhQO8KpdJFiOyyPsYfnOZlDCOFK3gHb/2WMrzdBwr1w8LoQF3bDedkFMKirVF7gWjyZiaw==}
+    peerDependencies:
+      vite: ^5.1.4
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      '@unocss/core': 0.58.5
+      '@unocss/reset': 0.58.5
+      '@unocss/vite': 0.58.5(vite@5.1.4)
+      vite: 5.1.4(@types/node@20.11.17)
+    transitivePeerDependencies:
+      - rollup
+    dev: true
 
   /@unocss/cli@0.49.8:
     resolution: {integrity: sha512-UDm4aQmZqbUrqxZXD+d4fmRvGZPnEV1zk0vdjZZ33jX8kZjIA3FwmmXStnuQitFK7FPY6B72pqNSXV5QLgc+gA==}
@@ -6546,7 +6568,7 @@ packages:
       '@unocss/preset-web-fonts': 0.58.5
       '@unocss/preset-wind': 0.58.5
       '@unocss/reset': 0.58.5
-      '@unocss/vite': 0.58.5(rollup@3.29.4)
+      '@unocss/vite': 0.58.5(vite@5.1.4)
       '@unocss/webpack': 0.58.5(rollup@3.29.4)
       unocss: 0.58.5(@unocss/webpack@0.58.5)(postcss@8.4.35)
     transitivePeerDependencies:
@@ -6825,6 +6847,30 @@ packages:
       magic-string: 0.30.7
     transitivePeerDependencies:
       - rollup
+    dev: false
+
+  /@unocss/vite@0.58.5(vite@5.1.4):
+    resolution: {integrity: sha512-p4o1XNX1rvjmoUqSSdua8XyWNg/d+YUChDd2L/xEty+6j2qv0wUaohs3UQ87vWlv632/UmgdX+2MbrgtqthCtw==}
+    peerDependencies:
+      vite: ^5.1.4
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@rollup/pluginutils': 5.1.0(rollup@3.29.4)
+      '@unocss/config': 0.58.5
+      '@unocss/core': 0.58.5
+      '@unocss/inspector': 0.58.5
+      '@unocss/scope': 0.58.5
+      '@unocss/transformer-directives': 0.58.5
+      chokidar: 3.6.0
+      fast-glob: 3.3.2
+      magic-string: 0.30.7
+      vite: 5.1.4(@types/node@20.11.17)
+    transitivePeerDependencies:
+      - rollup
+    dev: true
 
   /@unocss/webpack@0.58.5(rollup@3.29.4):
     resolution: {integrity: sha512-FR17fZRZA+dHJtk7mmUUOlWuuhAxahhsQlTG0WSHh1FVDtpHGwGKDqWHrfmhFRi0XOcV+5bkVc6cp05yjfYqdA==}
@@ -7577,7 +7623,7 @@ packages:
       '@vueuse/core': 10.9.0(vue@3.4.21)
       '@vueuse/metadata': 10.9.0
       local-pkg: 0.5.0
-      nuxt: 3.10.3(@types/node@20.11.17)(eslint@8.57.0)(typescript@5.3.3)
+      nuxt: 3.10.3(@types/node@20.11.17)(typescript@5.4.2)(vue-tsc@2.0.6)
       vue-demi: 0.14.7(vue@3.4.21)
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -14172,7 +14218,6 @@ packages:
       - vti
       - vue-tsc
       - xml2js
-    dev: true
 
   /nypm@0.3.6:
     resolution: {integrity: sha512-2CATJh3pd6CyNfU5VZM7qSwFu0ieyabkEdnogE30Obn1czrmOYiZ8DOZLe1yBdLKWoyD3Mcy2maUs+0MR3yVjQ==}
@@ -17628,7 +17673,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      '@unocss/astro': 0.58.5(rollup@3.29.4)
+      '@unocss/astro': 0.58.5(vite@5.1.4)
       '@unocss/cli': 0.58.5(rollup@3.29.4)
       '@unocss/core': 0.58.5
       '@unocss/extractor-arbitrary-variants': 0.58.5
@@ -17647,7 +17692,7 @@ packages:
       '@unocss/transformer-compile-class': 0.58.5
       '@unocss/transformer-directives': 0.58.5
       '@unocss/transformer-variant-group': 0.58.5
-      '@unocss/vite': 0.58.5(rollup@3.29.4)
+      '@unocss/vite': 0.58.5(vite@5.1.4)
       '@unocss/webpack': 0.58.5(rollup@3.29.4)
     transitivePeerDependencies:
       - postcss
@@ -17693,6 +17738,45 @@ packages:
       - rollup
       - supports-color
     dev: false
+
+  /unocss@0.58.5(postcss@8.4.35)(vite@5.1.4):
+    resolution: {integrity: sha512-0g4P6jLgRRNnhscxw7nQ9RHGrKJ1UPPiHPet+YT3TXUcmy4mTiYgo9+kGQf5bjyrzsELJ10cT6Qz2y6g9Tls4g==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@unocss/webpack': 0.58.5
+      vite: ^5.1.4
+    peerDependenciesMeta:
+      '@unocss/webpack':
+        optional: true
+      vite:
+        optional: true
+    dependencies:
+      '@unocss/astro': 0.58.5(vite@5.1.4)
+      '@unocss/cli': 0.58.5(rollup@3.29.4)
+      '@unocss/core': 0.58.5
+      '@unocss/extractor-arbitrary-variants': 0.58.5
+      '@unocss/postcss': 0.58.5(postcss@8.4.35)
+      '@unocss/preset-attributify': 0.58.5
+      '@unocss/preset-icons': 0.58.5
+      '@unocss/preset-mini': 0.58.5
+      '@unocss/preset-tagify': 0.58.5
+      '@unocss/preset-typography': 0.58.5
+      '@unocss/preset-uno': 0.58.5
+      '@unocss/preset-web-fonts': 0.58.5
+      '@unocss/preset-wind': 0.58.5
+      '@unocss/reset': 0.58.5
+      '@unocss/transformer-attributify-jsx': 0.58.5
+      '@unocss/transformer-attributify-jsx-babel': 0.58.5
+      '@unocss/transformer-compile-class': 0.58.5
+      '@unocss/transformer-directives': 0.58.5
+      '@unocss/transformer-variant-group': 0.58.5
+      '@unocss/vite': 0.58.5(vite@5.1.4)
+      vite: 5.1.4(@types/node@20.11.17)
+    transitivePeerDependencies:
+      - postcss
+      - rollup
+      - supports-color
+    dev: true
 
   /unpipe@1.0.0:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
@@ -18575,7 +18659,7 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      vue: 3.4.21(typescript@5.3.3)
+      vue: 3.4.21(typescript@5.4.2)
 
   /vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}

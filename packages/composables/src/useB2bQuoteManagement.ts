@@ -61,6 +61,7 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
         associations: {
           lineItems: {},
           comments: {},
+          stateMachineState: {},
         },
       },
     );

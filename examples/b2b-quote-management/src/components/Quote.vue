@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
-import { useB2bQuoteManagement } from "@shopware-pwa/composables-next";
+import { ref, onBeforeMount, computed } from "vue";
+import { useB2bQuoteManagement, useUser } from "@shopware-pwa/composables-next";
 import { useRoute } from "vue-router";
+import Textarea from "primevue/textarea";
+import Button from "primevue/button";
+import Timeline from "primevue/timeline";
 
+const { isLoggedIn } = useUser();
 const quote = ref();
 const changeRequest = ref("");
 const declineComment = ref("");
@@ -15,20 +19,30 @@ onBeforeMount(async () => {
 });
 
 const handleChangeRequest = async () => {
-  requestChangeQuote(quote.value.id, changeRequest.value);
+  await requestChangeQuote(quote.value.id, changeRequest.value);
   changeRequest.value = "";
+  quote.value = await getQuote(route.params.id as string);
 };
 
 const handleDecline = async () => {
   declineQuote(quote.value.id, declineComment.value);
   declineComment.value = "";
 };
+
+const handleRequestQuote = async () => {
+  requestQuote(quote.value.id);
+};
+
+const activeQuote = computed(() => {
+  return quote.value.stateMachineState?.technicalName === "replied";
+});
+const refreshQuote = async () => {
+  quote.value = await getQuote(route.params.id as string);
+};
 </script>
 <template>
-  <div>
-    <h1>Quote</h1>
-    <!-- <pre>{{ quote }}</pre> -->
-    <div class="flex">
+  <div v-if="isLoggedIn">
+    <div class="flex gap-20">
       <div>
         <h2>Details</h2>
         <table class="w-full text-sm leading-5">
@@ -41,18 +55,7 @@ const handleDecline = async () => {
                 {{ quote?.createdAt }}
               </td>
             </tr>
-            <tr>
-              <td class="py-3 px-4 text-left font-medium text-gray-600">
-                Requested at
-              </td>
-              <td class="py-3 px-4 text-left">[No data]</td>
-            </tr>
-            <tr>
-              <td class="py-3 px-4 text-left font-medium text-gray-600">
-                Created by
-              </td>
-              <td class="py-3 px-4 text-left">[No data]</td>
-            </tr>
+
             <tr>
               <td class="py-3 px-4 text-left font-medium text-gray-600">
                 Valid until
@@ -107,54 +110,65 @@ const handleDecline = async () => {
               </td>
               <td class="py-3 px-4 text-left">{{ taxRule.price }}</td>
             </tr>
-
-            <tr>
-              <td class="py-3 px-4 text-left font-medium text-gray-600">
-                Grand total (gross)
-              </td>
-              <td class="py-3 px-4 text-left"></td>
-            </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div>
-      <h2>Items</h2>
-      <div v-for="item in quote.lineItems" :key="item.id">
-        {{ item.label }}
+    <hr class="my-10" />
+    <div class="flex justify-between gap-20">
+      <div class="w-50%">
+        <h2>Request changes</h2>
+        <div class="flex flex-col gap-2">
+          <Textarea
+            v-model="changeRequest"
+            rows="5"
+            cols="30"
+            :disabled="!activeQuote"
+          />
+          <Button
+            label="Request changes"
+            :disabled="!activeQuote"
+            @click="handleChangeRequest"
+          />
+        </div>
       </div>
-    </div>
-    <div>
-      <h2>Request changes</h2>
-      <form @submit.prevent="handleChangeRequest">
-        <textarea class="border" v-model="changeRequest"> </textarea>
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          type="submit"
-        >
-          Send
-        </button>
-      </form>
-    </div>
 
-    <form @submit.prevent="handleDecline">
-      <textarea class="border" v-model="declineComment"> </textarea>
-      <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Decline
-      </button>
-    </form>
-
-    <div>
-      <h2>Message history</h2>
-      <div>
-        <div v-for="comment in quote.comments">
-          {{ comment.comment }}
+      <div class="w-50%">
+        <h2>Decline quote</h2>
+        <div class="flex flex-col gap-2">
+          <Textarea
+            v-model="declineComment"
+            rows="5"
+            cols="30"
+            :disabled="!activeQuote"
+          />
+          <Button
+            label="Decline quote"
+            :disabled="!activeQuote"
+            @click="handleDecline"
+          />
         </div>
       </div>
     </div>
-
-    <button @click="handleRequestQuote">Request quote</button>
+    <hr class="my-10" />
+    <div>
+      <h2>Message history</h2>
+      <Timeline :value="quote.comments">
+        <template #opposite="slotProps">
+          <small class="p-text-secondary">{{ slotProps.item.createdAt }}</small>
+        </template>
+        <template #content="slotProps">
+          {{ slotProps.item.comment }}
+        </template>
+      </Timeline>
+    </div>
+    <hr class="my-10" />
+    <Button
+      class="w-full"
+      label="Request quot"
+      @click="handleRequestQuote"
+      :disabled="!activeQuote"
+    />
   </div>
+  <Login v-else @success="refreshQuote" />
 </template>
