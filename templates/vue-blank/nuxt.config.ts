@@ -4,13 +4,9 @@ export default defineNuxtConfig({
     "@shopware-pwa/composables-next/nuxt-layer",
     "@shopware-pwa/cms-base",
   ],
-  runtimeConfig: {
-    public: {
-      shopware: {
-        shopwareEndpoint: "https://demo-frontends.shopware.store/store-api/",
-        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-      },
-    },
+  shopware: {
+    endpoint: "https://demo-frontends.shopware.store/store-api/",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
   modules: ["@shopware-pwa/nuxt3-module"],
   /**

@@ -2,6 +2,7 @@ import { Nuxt } from "@nuxt/schema";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "node:url";
 import { promises as fs, constants as FS_CONSTANTS } from "node:fs";
+import { ShopwareNuxtOptions } from ".";
 
 type DEPENDENCY = "@shopware-pwa/composables-next";
 
@@ -55,4 +56,8 @@ export async function resolveOwnDependency(dependency: DEPENDENCY, nuxt: Nuxt) {
       return target;
     }
   }
+}
+
+export function isConfigDeprecated(config: ShopwareNuxtOptions) {
+  return Boolean(config?.shopwareEndpoint || config?.shopwareAccessToken);
 }

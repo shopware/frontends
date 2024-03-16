@@ -1,12 +1,8 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  runtimeConfig: {
-    public: {
-      shopware: {
-        shopwareEndpoint: "https://demo-frontends.shopware.store",
-        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-      },
-    },
+  shopware: {
+    endpoint: "https://demo-frontends.shopware.store",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
   modules: ["@vueuse/nuxt", "@shopware-pwa/nuxt3-module", "../src/module"],
   mollie: {
