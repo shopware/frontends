@@ -30,7 +30,7 @@
     "@biomejs/biome": "1.6.1",
     "@changesets/changelog-github": "0.5.0",
     "@changesets/cli": "2.27.1",
-    "@microsoft/api-documenter": "7.23.37",
+    "@microsoft/api-documenter": "7.24.0",
     "@microsoft/api-extractor": "7.42.3",
     "@microsoft/tsdoc": "0.14.2",
     "@types/changelog-parser": "2.8.4",
@@ -44,7 +44,7 @@
     "taze": "0.13.3",
     "turbo": "1.12.5",
     "typedoc": "0.25.12",
-    "vercel": "33.5.5"
+    "vercel": "33.6.1"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"
@@ -61,7 +61,7 @@
       "@babel/traverse": "^7.23.9",
       "@types/node": "^20",
       "debug": "^4.3.4",
-      "follow-redirects": "^1.15.5",
+      "follow-redirects": "^1.15.6",
       "lodash": "^4.17.21",
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
       "postcss": "^8.4.35",

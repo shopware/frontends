@@ -6,6 +6,7 @@ export class CategoryPage {
   readonly colourCheckboxes: Locator;
   readonly selectedManufacturerFiltersCategory: Locator;
   readonly manufacturerCheckboxes: Locator;
+  readonly limitSelect: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -19,10 +20,10 @@ export class CategoryPage {
       exact: true,
     });
     this.manufacturerCheckboxes = page.locator("input[name='manufacturer']");
+    this.limitSelect = page.locator("select[name='limitchoices']");
   }
 
   async selectRandomManufacturerCheckbox() {
-    await this.page.waitForLoadState("networkidle");
     await this.selectedManufacturerFiltersCategory.click();
     const manufacturerCheckboxes = await this.manufacturerCheckboxes.all();
     const countManufacturerCheckboxes = (
@@ -36,7 +37,6 @@ export class CategoryPage {
   }
 
   async selectRandomColorCheckbox() {
-    await this.page.waitForLoadState("networkidle");
     await this.selectedColourFiltersCategory.click();
     const colourCheckboxes = await this.colourCheckboxes.all();
     const countColourCheckboxes = (await this.colourCheckboxes.all()).length;
@@ -45,5 +45,18 @@ export class CategoryPage {
     );
     const randomCheckbox = colourCheckboxes[randomCheckboxSelctor];
     await randomCheckbox.check();
+  }
+
+  async selectLimitOneProductPerPage() {
+    await this.limitSelect.selectOption({ value: "1" });
+  }
+
+  async goToSecondPage() {
+    await this.page.getByRole("button", { name: /2/i }).click();
+  }
+
+  async selectSortingPriceAsc() {
+    await this.page.getByRole("button", { name: "Sort" }).click();
+    await this.page.getByRole("menuitem", { name: "Price ascending" }).click();
   }
 }

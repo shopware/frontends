@@ -15,7 +15,7 @@
     "vue": "3.4.21"
   },
   "devDependencies": {
-    "@types/node": "20.11.27",
+    "@types/node": "20.11.28",
     "@vitejs/plugin-vue": "5.0.4",
     "@vueuse/core": "10.9.0",
     "vite": "5.1.6"

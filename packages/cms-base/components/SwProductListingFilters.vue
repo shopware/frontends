@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import { computed, provide, reactive, ref } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import { defu } from "defu";
@@ -9,7 +8,7 @@ import type {
   CmsElementSidebarFilter,
 } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { useCategory, useListing } from "#imports";
+import { useCategoryListing } from "#imports";
 import { onClickOutside } from "@vueuse/core";
 import { useRoute, useRouter } from "vue-router";
 import type { RequestParameters } from "#shopware";
@@ -21,6 +20,7 @@ const props = defineProps<{
 
 type Translations = {
   listing: {
+    filters: string;
     sort: string;
     resetFilters: string;
   };
@@ -28,6 +28,7 @@ type Translations = {
 
 let translations: Translations = {
   listing: {
+    filters: "Filters",
     sort: "Sort",
     resetFilters: "Reset filters",
   },
@@ -35,20 +36,19 @@ let translations: Translations = {
 
 translations = defu(translations, useCmsTranslations()) as Translations;
 
-const { category } = useCategory();
 const route = useRoute();
 const router = useRouter();
 
 const isSortMenuOpen = ref(false);
 const {
-  getCurrentSortingOrder,
   changeCurrentSortingOrder,
-  getSortingOrders,
-  getInitialFilters,
-  search,
-  getCurrentFilters,
   filtersToQuery,
-} = useListing({ listingType: "categoryListing" });
+  getCurrentFilters,
+  getCurrentSortingOrder,
+  getInitialFilters,
+  getSortingOrders,
+  search,
+} = useCategoryListing();
 
 const sidebarSelectedFilters: UnwrapNestedRefs<{
   [key: string]: any;
@@ -68,6 +68,20 @@ const sidebarSelectedFilters: UnwrapNestedRefs<{
   "shipping-free": undefined,
 });
 
+const showResetFiltersButton = computed<boolean>(() => {
+  if (
+    selectedOptionIds.value.length !== 0 ||
+    sidebarSelectedFilters["max-price"] ||
+    sidebarSelectedFilters["min-price"] ||
+    sidebarSelectedFilters["rating"] ||
+    sidebarSelectedFilters["shipping-free"]
+  ) {
+    return true;
+  }
+
+  return false;
+});
+
 const searchCriteriaForRequest: ComputedRef<RequestParameters<"searchPage">> =
   computed(() => ({
     // turn Set to array and then into string with | separator
@@ -80,6 +94,7 @@ const searchCriteriaForRequest: ComputedRef<RequestParameters<"searchPage">> =
     "shipping-free": sidebarSelectedFilters["shipping-free"],
     rating: sidebarSelectedFilters["rating"],
     search: "",
+    limit: route.query.limit ? Number(route.query.limit) : 15,
   }));
 
 for (const param in route.query) {
@@ -116,27 +131,25 @@ const onOptionSelectToggle = async ({
     }
   }
 
+  await executeSearch();
+};
+
+const executeSearch = async () => {
   await search(searchCriteriaForRequest.value);
+  const query = filtersToQuery(searchCriteriaForRequest.value);
+  delete query.limit; // this will remove limit from the url query but still use it in the search
   await router.push({
-    query: {
-      ...filtersToQuery(searchCriteriaForRequest.value),
-    },
+    query,
   });
 };
 
-const clearFilters = async () => {
+const clearFilters = () => {
   sidebarSelectedFilters.manufacturer.clear();
   sidebarSelectedFilters.properties.clear();
   sidebarSelectedFilters["min-price"] = undefined;
   sidebarSelectedFilters["max-price"] = undefined;
   sidebarSelectedFilters["rating"] = undefined;
   sidebarSelectedFilters["shipping-free"] = undefined;
-  search(searchCriteriaForRequest.value);
-  await router.push({
-    query: {
-      ...filtersToQuery(searchCriteriaForRequest.value),
-    },
-  });
 };
 
 const currentSortingOrder = computed({
@@ -149,10 +162,10 @@ const currentSortingOrder = computed({
       },
     });
 
-    changeCurrentSortingOrder(
-      order,
-      route.query as unknown as RequestParameters<"searchPage">,
-    );
+    await changeCurrentSortingOrder(order, {
+      ...(route.query as unknown as RequestParameters<"searchPage">),
+      limit: route.query.limit ? Number(route.query.limit) : 15,
+    });
   },
 });
 
@@ -163,26 +176,26 @@ const selectedOptionIds = computed(() => [
 provide("selectedOptionIds", selectedOptionIds);
 
 async function invokeCleanFilters() {
-  await search({ search: "" });
   clearFilters();
+  await executeSearch();
 }
-
+const isDefaultSidebarFilter =
+  props.content.type === "sidebar-filter" &&
+  props.content.config?.boxLayout?.value === "standard";
 const dropdownElement = ref(null);
 onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
 </script>
 <template>
   <div class="bg-white">
-    <div class="mx-auto m-0 px-5">
+    <div class="mx-auto m-0" :class="{ 'px-5': isDefaultSidebarFilter }">
       <div
         class="relative lg:flex lg:items-baseline lg:justify-between pt-6 pb-6 border-b border-gray-200"
       >
-        <div>
-          <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
-            {{ getTranslatedProperty(category, "name") }}
-          </h1>
+        <div class="text-4xl tracking-tight text-gray-900">
+          {{ translations.listing.filters }}
         </div>
 
-        <div class="flex items-center" ref="dropdownElement">
+        <div ref="dropdownElement" class="flex items-center">
           <div class="relative inline-block text-left">
             <div>
               <button
@@ -250,7 +263,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
             class="relative"
           />
         </div>
-        <div class="mx-auto mt-4 mb-2">
+        <div v-if="showResetFiltersButton" class="mx-auto mt-4 mb-2">
           <button
             class="w-full justify-center py-2 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             @click="invokeCleanFilters"
