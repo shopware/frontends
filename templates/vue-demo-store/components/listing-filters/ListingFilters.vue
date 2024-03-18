@@ -118,10 +118,10 @@ const clearFilters = async () => {
 };
 
 async function invokeCleanFilters() {
+  clearFilters();
   await search({
     ...route.query,
   } as unknown as RequestParameters<"searchPage">);
-  clearFilters();
 }
 
 const selectedOptionIds = computed(() => [
