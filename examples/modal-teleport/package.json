@@ -12,11 +12,11 @@
     "@nuxt/types": "2.17.3",
     "@nuxt/typescript-build": "3.0.2",
     "@nuxtjs/eslint-config-typescript": "12.1.0",
-    "@unocss/nuxt": "0.58.5",
-    "@unocss/reset": "0.58.5",
+    "@unocss/nuxt": "0.58.6",
+    "@unocss/reset": "0.58.6",
     "eslint": "8.57.0",
-    "nuxt": "3.10.3",
-    "unocss": "0.58.5"
+    "nuxt": "3.11.0",
+    "unocss": "0.58.6"
   },
   "dependencies": {
     "@vueuse/nuxt": "10.9.0",

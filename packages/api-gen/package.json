@@ -39,12 +39,12 @@
   "devDependencies": {
     "@types/prettier": "3.0.0",
     "@types/yargs": "17.0.32",
-    "@vitest/coverage-v8": "1.3.1",
+    "@vitest/coverage-v8": "1.4.0",
     "eslint-config-shopware": "workspace:*",
     "picocolors": "1.0.0",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "1.3.1"
+    "vitest": "1.4.0"
   },
   "dependencies": {
     "@shopware/api-client": "workspace:*",
