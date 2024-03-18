@@ -3,7 +3,7 @@ import type { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
-import { useListing } from "#imports";
+import { useCategoryListing } from "#imports";
 import { computed, ref, watch } from "vue";
 import { defu } from "defu";
 import { useRoute, useRouter } from "vue-router";
@@ -42,8 +42,7 @@ const {
   getTotalPagesCount,
   loading,
   setInitialListing,
-} = useListing({ listingType: "categoryListing" });
-
+} = useCategoryListing();
 const route = useRoute();
 const router = useRouter();
 const limit = ref(

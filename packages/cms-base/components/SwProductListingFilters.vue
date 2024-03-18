@@ -8,7 +8,7 @@ import type {
   CmsElementSidebarFilter,
 } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { useListing } from "#imports";
+import { useCategoryListing } from "#imports";
 import { onClickOutside } from "@vueuse/core";
 import { useRoute, useRouter } from "vue-router";
 import type { RequestParameters } from "#shopware";
@@ -48,7 +48,7 @@ const {
   getInitialFilters,
   getSortingOrders,
   search,
-} = useListing({ listingType: "categoryListing" });
+} = useCategoryListing();
 
 const sidebarSelectedFilters: UnwrapNestedRefs<{
   [key: string]: any;

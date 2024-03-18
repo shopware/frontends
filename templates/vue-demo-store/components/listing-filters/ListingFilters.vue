@@ -10,9 +10,7 @@ const {
   getCurrentSortingOrder,
   getInitialFilters,
   search,
-} = useListing({
-  listingType: "productSearchListing",
-});
+} = useProductSearchListing();
 
 const route = useRoute();
 const router = useRouter();

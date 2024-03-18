@@ -4,7 +4,7 @@ import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from "#imports";
 import ContextError from "./helpers/ContextError";
 import type { Schemas, RequestParameters } from "#shopware";
-import { useListingLoading } from "./useListingLoading";
+import { createSharedComposable } from "@vueuse/core";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -224,6 +224,19 @@ export function useListing(params?: {
 }
 
 /**
+ * Temporary workaround over `useListing` to support shared data. This composable API will change in the future.
+ */
+export const useCategoryListing = createSharedComposable(() =>
+  useListing({ listingType: "categoryListing" }),
+);
+/**
+ * Temporary workaround over `useListing` to support shared data. This composable API will change in the future.
+ */
+export const useProductSearchListing = createSharedComposable(() =>
+  useListing({ listingType: "productSearchListing" }),
+);
+
+/**
  * Factory to create your own listing.
  *
  * By default you can use useListing composable, which provides you predefined listings for category(cms) listing and product search listing.
@@ -254,7 +267,7 @@ export function createListingComposable({
   //   ? `${contextName}(cms-${cmsContext})`
   //   : contextName;
 
-  const { loading } = useListingLoading();
+  const loading = ref(false);
   const loadingMore = ref(false);
 
   // const { sharedRef } = useSharedState();
