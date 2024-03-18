@@ -86,6 +86,9 @@ declare module "@nuxt/schema" {
     shopware?: ShopwareNuxtOptions;
   }
 
+  interface RuntimeConfig {
+    shopware?: Pick<ShopwareNuxtOptions, "endpoint" | "shopwareEndpoint">;
+  }
   interface PublicRuntimeConfig {
     shopware: ShopwareNuxtOptions;
   }
