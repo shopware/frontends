@@ -23,6 +23,7 @@ export default defineNuxtConfig({
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     endpoint: "https://demo-frontends.shopware.store/store-api/",
+    devStorefrontUrl: "",
   },
   routeRules: {
     "/": {
