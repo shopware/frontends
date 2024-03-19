@@ -72,7 +72,7 @@
     "@vitest/coverage-v8": "1.4.0",
     "@vue/test-utils": "2.4.5",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "13.9.0",
+    "happy-dom": "13.10.0",
     "tsconfig": "workspace:*",
     "typescript": "5.4.2",
     "unbuild": "2.0.0",
