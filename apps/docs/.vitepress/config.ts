@@ -221,16 +221,6 @@ export const sidebar = [
           },
         ],
       },
-      {
-        text: "B2B",
-        link: "/getting-started/b2b/",
-        items: [
-          {
-            text: "Quote Management",
-            link: "/getting-started/b2b/quote-management.html",
-          },
-        ],
-      },
     ],
   },
   {
@@ -285,15 +275,15 @@ export const sidebar = [
             items: [
               {
                 text: "B2B Quick Order",
-                link: "/resources/integrations/commercial/b2b-quick-order",
+                link: "/resources/integrations/commercial/b2b-quick-order.html",
               },
               {
                 text: "B2B Quote Management",
-                link: "/resources/integrations/commercial/b2b-quote-management",
+                link: "/resources/integrations/commercial/b2b-quote-management.html",
               },
               {
                 text: "Custom Products",
-                link: "/resources/integrations/commercial/custom-products",
+                link: "/resources/integrations/commercial/custom-products.html",
               },
             ],
           },
