@@ -630,8 +630,8 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config-shopware
       happy-dom:
-        specifier: 13.10.0
-        version: 13.10.0
+        specifier: 14.0.0
+        version: 14.0.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -640,7 +640,7 @@ importers:
         version: 2.0.0(typescript@5.4.2)
       vitest:
         specifier: 1.4.0
-        version: 1.4.0(@types/node@20.11.28)(happy-dom@13.10.0)
+        version: 1.4.0(@types/node@20.11.28)(happy-dom@14.0.0)
 
   packages/api-client-next:
     dependencies:
@@ -674,7 +674,7 @@ importers:
         version: 2.0.0(typescript@5.4.2)
       vitest:
         specifier: 1.4.0
-        version: 1.4.0(@types/node@20.11.28)(happy-dom@13.10.0)
+        version: 1.4.0(@types/node@20.11.28)(happy-dom@14.0.0)
 
   packages/api-gen:
     dependencies:
@@ -720,7 +720,7 @@ importers:
         version: 2.0.0(typescript@5.4.2)
       vitest:
         specifier: 1.4.0
-        version: 1.4.0(@types/node@20.11.28)(happy-dom@13.10.0)
+        version: 1.4.0(@types/node@20.11.28)(happy-dom@14.0.0)
 
   packages/cms-base:
     dependencies:
@@ -787,7 +787,7 @@ importers:
         version: 2.0.0(typescript@5.4.2)
       vitest:
         specifier: 1.4.0
-        version: 1.4.0(@types/node@20.11.28)(happy-dom@13.10.0)
+        version: 1.4.0(@types/node@20.11.28)(happy-dom@14.0.0)
       vue-eslint-parser:
         specifier: 9.4.2
         version: 9.4.2(eslint@8.57.0)
@@ -832,8 +832,8 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config-shopware
       happy-dom:
-        specifier: 13.10.0
-        version: 13.10.0
+        specifier: 14.0.0
+        version: 14.0.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -845,7 +845,7 @@ importers:
         version: 2.0.0(typescript@5.4.2)
       vitest:
         specifier: 1.4.0
-        version: 1.4.0(@types/node@20.11.28)(happy-dom@13.10.0)
+        version: 1.4.0(@types/node@20.11.28)(happy-dom@14.0.0)
       vue:
         specifier: 3.4.21
         version: 3.4.21(typescript@5.4.2)
@@ -874,8 +874,8 @@ importers:
         specifier: 1.4.0
         version: 1.4.0(vitest@1.4.0)
       happy-dom:
-        specifier: 13.10.0
-        version: 13.10.0
+        specifier: 14.0.0
+        version: 14.0.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -884,7 +884,7 @@ importers:
         version: 2.0.0(typescript@5.4.2)
       vitest:
         specifier: 1.4.0
-        version: 1.4.0(@types/node@20.11.28)(happy-dom@13.10.0)
+        version: 1.4.0(@types/node@20.11.28)(happy-dom@14.0.0)
 
   packages/nuxt3-module:
     dependencies:
@@ -2232,7 +2232,7 @@ packages:
         optional: true
     dependencies:
       '@codspeed/core': 3.1.0
-      vitest: 1.4.0(@types/node@20.11.28)(happy-dom@13.10.0)
+      vitest: 1.4.0(@types/node@20.11.28)(happy-dom@14.0.0)
     transitivePeerDependencies:
       - debug
     dev: true
@@ -7350,7 +7350,7 @@ packages:
       strip-literal: 2.0.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
-      vitest: 1.4.0(@types/node@20.11.28)(happy-dom@13.10.0)
+      vitest: 1.4.0(@types/node@20.11.28)(happy-dom@14.0.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11213,8 +11213,8 @@ packages:
     transitivePeerDependencies:
       - uWebSockets.js
 
-  /happy-dom@13.10.0:
-    resolution: {integrity: sha512-e5PUMmcJjwuIBTChTGa1cgzKJnPPaMLFXFRYDnFv1j5hdbZ25F5lj+nYOVB4Nx7RaHLkTvn6Il6cFyPAff1L2w==}
+  /happy-dom@14.0.0:
+    resolution: {integrity: sha512-XdxaqufN4QZs0WFuo7L4vGkKpj08gmpEpSMFxDtvYo4OipZLssz7VlavE03FuLabHBTJAWxcR6MlKyOQZM9e0w==}
     engines: {node: '>=16.0.0'}
     dependencies:
       entities: 4.5.0
@@ -18596,7 +18596,7 @@ packages:
       vue-tsc:
         optional: true
     dependencies:
-      '@babel/code-frame': 7.23.5
+      '@babel/code-frame': 7.24.1
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       chokidar: 3.6.0
@@ -18649,7 +18649,7 @@ packages:
       vue-tsc:
         optional: true
     dependencies:
-      '@babel/code-frame': 7.23.5
+      '@babel/code-frame': 7.24.1
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       chokidar: 3.6.0
@@ -19001,7 +19001,7 @@ packages:
       - terser
     dev: true
 
-  /vitest@1.4.0(@types/node@20.11.28)(happy-dom@13.10.0):
+  /vitest@1.4.0(@types/node@20.11.28)(happy-dom@14.0.0):
     resolution: {integrity: sha512-gujzn0g7fmwf83/WzrDTnncZt2UiXP41mHuFYFrdwaLRVQ6JYQEiME2IfEjU3vcFL3VKa75XhI3lFgn+hfVsQw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -19036,7 +19036,7 @@ packages:
       chai: 4.4.1
       debug: 4.3.4
       execa: 8.0.1
-      happy-dom: 13.10.0
+      happy-dom: 14.0.0
       local-pkg: 0.5.0
       magic-string: 0.30.7
       pathe: 1.1.2
