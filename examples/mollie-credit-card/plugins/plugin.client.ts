@@ -1,5 +1,15 @@
 import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
-import type { CreateLocaleInstanceArgs, MolliePlugin } from "@/types";
+import type {
+  CreateLocaleInstanceArgs,
+  MolliePlugin,
+  MollieOptions,
+} from "@/types";
+
+declare module "@nuxt/schema" {
+  interface PublicRuntimeConfig {
+    mollie: MollieOptions;
+  }
+}
 
 export default defineNuxtPlugin({
   name: "mollie-instance",
