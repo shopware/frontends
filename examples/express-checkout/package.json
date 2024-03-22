@@ -21,6 +21,6 @@
     "@shopware-pwa/types": "canary",
     "@types/node": "20.11.28",
     "@vitejs/plugin-vue": "5.0.4",
-    "vite": "5.1.6"
+    "vite": "5.2.3"
   }
 }
