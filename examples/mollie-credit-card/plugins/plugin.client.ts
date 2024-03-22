@@ -1,5 +1,5 @@
 import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
-import { CreateLocaleInstanceArgs, MolliePlugin } from "../../types";
+import type { CreateLocaleInstanceArgs, MolliePlugin } from "@/types";
 
 export default defineNuxtPlugin({
   name: "mollie-instance",
@@ -17,14 +17,14 @@ export default defineNuxtPlugin({
 
     function createLocaleInstance(
       { profileId, testMode, locale }: CreateLocaleInstanceArgs = {
-        profileId: mollieOptions.profileId,
-        testMode: mollieOptions.testMode,
-        locale: mollieOptions.defaultLocale,
+        profileId: mollieOptions?.profileId,
+        testMode: mollieOptions?.testMode,
+        locale: mollieOptions?.defaultLocale,
       },
     ) {
-      return window.Mollie(profileId || mollieOptions.profileId, {
-        locale: locale || mollieOptions.defaultLocale,
-        testmode: testMode || mollieOptions.testMode,
+      return window.Mollie(profileId || mollieOptions?.profileId, {
+        locale: locale || mollieOptions?.defaultLocale,
+        testmode: testMode || mollieOptions?.testMode,
       });
     }
 
