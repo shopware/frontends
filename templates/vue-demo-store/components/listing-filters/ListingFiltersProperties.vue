@@ -6,8 +6,8 @@
       code: string;
       label: string;
       name: string;
-      options: Array<Schemas['PropertyGroupOption']>;
-      entities: Array<Schemas['ProductManufacturer']>;
+      options: Array<Schemas['PropertyGroupOption'] & { count: number }>;
+      entities: Array<Schemas['ProductManufacturer'] & { count: number }>;
     }
   "
 >
@@ -101,7 +101,8 @@ const toggle = () => {
               :for="`filter-mobile-${props.filter.code}-${option.id}`"
               class="ml-3 text-secondary-600"
             >
-              {{ getTranslatedProperty(option, "name") }}
+              {{ getTranslatedProperty(option, "name")
+              }}{{ option.count ? " (" + option.count + ")" : "" }}
             </label>
           </div>
         </fieldset>

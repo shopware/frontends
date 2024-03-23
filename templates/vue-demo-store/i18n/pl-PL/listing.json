@@ -1,7 +1,13 @@
 {
   "listing": {
-    "resetFilters": "Resetuj filtry",
+    "filters": "Filtry",
+    "max": "Max",
     "min": "Min",
-    "max": "Max"
+    "noProducts": "Nie znaleziono produktów 😔",
+    "perPage": "Na stronę:",
+    "product": "Produkt",
+    "products": "Produkty",
+    "resetFilters": "Resetuj filtry",
+    "sort": "Sortuj według"
   }
 }

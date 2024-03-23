@@ -10,7 +10,7 @@ export default defineNuxtConfig({
        * SSR Shopware Endpoint
        * More here: https://frontends.shopware.com/getting-started/templates/custom-vue-project.html#shopware-endpoint-on-the-ssr-mode
        */
-      endpoint: "",
+      // endpoint: "",
     },
     // public: {
     //   shopware: {
@@ -23,6 +23,7 @@ export default defineNuxtConfig({
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     endpoint: "https://demo-frontends.shopware.store/store-api/",
+    devStorefrontUrl: "",
   },
   routeRules: {
     "/": {

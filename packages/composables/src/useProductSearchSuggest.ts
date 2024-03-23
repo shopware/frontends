@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import { useListing } from "#imports";
+import { useProductSearchListing } from "#imports";
 import type { Schemas, RequestParameters } from "#shopware";
 
 export type UseProductSearchSuggestReturn = {
@@ -42,9 +42,7 @@ export type UseProductSearchSuggestReturn = {
 export function useProductSearchSuggest(): UseProductSearchSuggestReturn {
   const searchTerm = ref("");
 
-  const listingComposable = useListing({
-    listingType: "productSearchListing",
-  });
+  const listingComposable = useProductSearchListing();
 
   const search = async (
     additionalCriteria = {} as RequestParameters<"searchPage">,

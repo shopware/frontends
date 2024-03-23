@@ -73,7 +73,7 @@ onMounted(async () => {
     >
       <h2
         v-if="categoryNavigation.length > 0 && !flagAllowSubcategories"
-        class="text-3xl font-bold tracking-tight text-secondary-900 m-0 px-5"
+        class="text-3xl tracking-tight text-secondary-900 m-0 px-5"
       >
         {{
           categoryNavigation.length > 1
@@ -83,7 +83,7 @@ onMounted(async () => {
       </h2>
       <h2
         v-if="categoryNavigation.length > 0 && flagAllowSubcategories"
-        class="text-3xl font-bold tracking-tight text-secondary-900 m-0 px-5"
+        class="text-3xl tracking-tight text-secondary-900 m-0 px-5"
       >
         {{
           categoryNavigation.length > 1
@@ -101,9 +101,7 @@ onMounted(async () => {
     </div>
     <div v-if="loading">
       <div class="px-5">
-        <h2
-          class="text-3xl font-bold tracking-tight text-secondary-900 m-0 px-5"
-        >
+        <h2 class="text-3xl tracking-tight text-secondary-900 m-0 px-5 pl-0">
           {{ translations.listing.loading }}
         </h2>
         <div

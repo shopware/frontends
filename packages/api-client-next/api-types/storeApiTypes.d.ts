@@ -1699,6 +1699,15 @@ export type components = {
         name: string;
         /** The type of aggregation */
         type: string;
+        /** Used to perform aggregations on the search result. For more information, see [Search Queries > Aggregations](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#aggregations) */
+        aggregation?: {
+          /** The field you want to aggregate over. */
+          field: string;
+          /** Give your aggregation an identifier, so you can find it easier */
+          name: string;
+          /** The type of aggregation */
+          type: string;
+        };
       }[];
       includes?: GenericRecord; // TODO: [OpenAPI][Criteria] - define includes properly
       /** Used to fetch associations which are not fetched by default. */
@@ -1710,7 +1719,11 @@ export type components = {
         // TODO: [OpenAPI][Criteria] - there can be different filters, for example `equalsAny` can have array as value
         field: string;
         type: string;
-        value: string | string[];
+        value?: string | string[] | boolean;
+        parameters?: {
+          gte?: string;
+          lte?: string;
+        };
       }[];
       /** Perform groupings over certain fields */
       grouping?: string[];
