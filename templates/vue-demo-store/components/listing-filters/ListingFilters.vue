@@ -10,9 +10,7 @@ const {
   getCurrentSortingOrder,
   getInitialFilters,
   search,
-} = useListing({
-  listingType: "productSearchListing",
-});
+} = useProductSearchListing();
 
 const route = useRoute();
 const router = useRouter();
@@ -105,11 +103,10 @@ const clearFilters = async () => {
   searchSelectedFilters["max-price"] = undefined;
   searchSelectedFilters["rating"] = undefined;
   searchSelectedFilters["shipping-free"] = undefined;
-  search({
+  await search({
     ...route.query,
     ...filtersToQuery(searchCriteriaForRequest.value),
   } as RequestParameters<"searchPage">);
-
   await router.push({
     query: {
       search: route.query.search,
@@ -119,10 +116,10 @@ const clearFilters = async () => {
 };
 
 async function invokeCleanFilters() {
+  clearFilters();
   await search({
     ...route.query,
   } as unknown as RequestParameters<"searchPage">);
-  clearFilters();
 }
 
 const selectedOptionIds = computed(() => [
