@@ -5,7 +5,7 @@ import { toRefs } from "vue";
 import { defu } from "defu";
 import type { Schemas } from "#shopware";
 
-const { pushSuccess } = useNotifications();
+const { pushSuccess, pushError } = useNotifications();
 const props = defineProps<{
   product: Schemas["Product"];
 }>();
@@ -33,7 +33,14 @@ const { product } = toRefs(props);
 const { addToCart, quantity } = useAddToCart(product);
 
 const addToCartProxy = async () => {
-  await addToCart();
+  const res = await addToCart();
+
+  if (res.errors) {
+    const errors = Object.values(res.errors).map((error) => error.message);
+    pushError(errors.join(". "));
+    return;
+  }
+
   pushSuccess(
     `${props.product?.translated?.name} ${translations.product.addedToCart}`,
   );
