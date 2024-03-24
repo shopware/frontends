@@ -37,8 +37,8 @@ const addToCartProxy = async () => {
   const errors = Object.values(res.errors);
 
   if (errors.length > 0) {
-    const errors = Object.values(res.errors).map((error) => error.message);
-    pushError(errors.join(". "));
+    const errorMessages = errors.map((error) => error.message);
+    pushError(errorMessages.join(". "));
     return;
   }
 
