@@ -2,6 +2,7 @@ import { expect, Locator, Page } from "@playwright/test";
 
 export class ProductPage {
   readonly page: Page;
+  readonly productQuantity: Locator;
   readonly addToCartButton: Locator;
   readonly variant: Locator;
   readonly variantText: Locator;
@@ -15,6 +16,7 @@ export class ProductPage {
 
   constructor(page: Page) {
     this.page = page;
+    this.productQuantity = page.getByTestId("product-quantity");
     this.addToCartButton = page.getByTestId("add-to-cart-button");
     this.variant = page.getByTestId("product-variant");
     this.variantText = page.getByTestId("product-variant-text");
@@ -40,6 +42,14 @@ export class ProductPage {
       intervals: [1_000, 2_000, 10_000],
       timeout: 60_000,
     });
+  }
+
+  async addToCartQuantity(quantity: number) {
+    await this.addToCartButton.waitFor();
+    await this.productQuantity.waitFor();
+    await this.productQuantity.fill(String(quantity));
+    await this.addToCartButton.click();
+    await this.page.waitForLoadState("networkidle");
   }
 
   async addVariantToCart() {

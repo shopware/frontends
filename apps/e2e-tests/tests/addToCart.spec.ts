@@ -29,6 +29,15 @@ test.describe.parallel.only("Add product to cart / Remove from cart", () => {
     await expect(page.getByTestId("cart-product-image")).toBeVisible();
   });
 
+  test("Add product to cart & show error", async ({ page }) => {
+    await homePage.openCartPage();
+    await productPage.addToCartQuantity(99999);
+
+    await expect(page.getByTestId("notification-element-message")).toHaveText(
+      /The product YORK 3 is only available 100 times$/,
+    );
+  });
+
   test("Add product to cart from wishlist", async ({ page }) => {
     await page.waitForEvent("requestfinished");
     await homePage.addProductToWishlist();
