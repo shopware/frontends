@@ -14,4 +14,4 @@ export * from "./checkout";
 export * from "./languages";
 export * from "./relativeUrlSlash";
 export * from "./urlIsAbsolute";
-export * from "./b2bQuote Management/canUseQuoteActions";
+export * from "./b2bQuoteManagement/canUseQuoteActions";
