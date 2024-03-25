@@ -12,7 +12,7 @@
 
 ## Requirements
 
-- Frontend side: any Nuxt 3 project, or a project with [Shopware Frontends](https://frontends.shopware.com/getting-started/templates.html) registered and running (you can use one of the Nuxt templates provided in [shopware/frontends](https://github.com/shopware/frontends/tree/main/templates) GitHub Project or see the [./playground](./playground/) app included to this module)
+- Frontend side: any Nuxt 3 project, or a project with [Shopware Frontends](https://frontends.shopware.com/getting-started/templates.html) registered and running (you can use one of the Nuxt templates provided in [shopware/frontends](https://github.com/shopware/frontends/tree/main/templates) GitHub Project
 - Backend side: [Mollie Payments App for Shopware](https://store.shopware.com/en/molli23282346664f/mollie-payments-app-for-shopware.html) installed on your environment ([See how to setup it locally](https://boxblinkracer.com/blog/mollie-app-setup))
 
 ## Setup
@@ -27,18 +27,10 @@ Install the Mollie Payments in your Shopware 6 instance and set it up
 
    run `pnpm i` command.
 
-1. Register the module in your Nuxt 3 project
+1. Configure Mollie module in `runtimeConfig > public` section of _nuxt.config.ts_
 
 ```js
-  // ./playground/nuxt.config.ts
-  modules: ["@vueuse/nuxt", "@shopware-pwa/nuxt3-module", "../src/module"],
-  // see that "../src/module" points to this dir (from ./playground/nuxt.config.ts file)
-```
-
-2. Configure Mollie module
-
-```js
-// ./playground/nuxt.config.ts
+// ./nuxt.config.ts
 mollie: {
     defaultLocale: "en_US", // fallback locale
     profileId: "pfl_E5EmGZ98YT", // from Mollie's dashboard
