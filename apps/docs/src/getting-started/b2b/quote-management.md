@@ -46,7 +46,7 @@ import {
   useB2bQuoteManagement,
 } from "@shopware-pwa/composables-next/dist";
 const { cartItems } = useCart();
-const { requestQuote } = UseB2bQuoteManagement();
+const { requestQuote } = useB2bQuoteManagement();
 const comment = ref("");
 const handleRequestQuote = async () => {
   await requestQuote(comment.value);
