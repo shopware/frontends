@@ -27,15 +27,7 @@ Install the Mollie Payments in your Shopware 6 instance and set it up
 
    run `pnpm i` command.
 
-1. Register the module in your Nuxt 3 project
-
-```js
-  // ./nuxt.config.ts
-  modules: ["@vueuse/nuxt", "@shopware-pwa/nuxt3-module", "../src/module"],
-  // see that "../src/module" points to this dir (from ./nuxt.config.ts file)
-```
-
-2. Configure Mollie module in `runtimeConfig > public` section of _nuxt.config.ts_
+1. Configure Mollie module in `runtimeConfig > public` section of _nuxt.config.ts_
 
 ```js
 // ./nuxt.config.ts
