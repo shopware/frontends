@@ -8,7 +8,7 @@
     "generate": "nuxi generate"
   },
   "devDependencies": {
-    "@adyen/adyen-web": "5.60.0",
+    "@adyen/adyen-web": "5.61.0",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
