@@ -35,7 +35,7 @@ Install the Mollie Payments in your Shopware 6 instance and set it up
   // see that "../src/module" points to this dir (from ./nuxt.config.ts file)
 ```
 
-2. Configure Mollie module
+2. Configure Mollie module in `runtimeConfig > public` section of _nuxt.config.ts_
 
 ```js
 // ./nuxt.config.ts
