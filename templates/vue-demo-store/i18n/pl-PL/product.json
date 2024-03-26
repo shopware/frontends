@@ -9,15 +9,27 @@
     "content": "Zawartość",
     "choose": "Wybierz",
     "variantsFrom": "wariantów od",
+    "previously": "przed",
     "price": {
       "label": "Cena",
       "to": "do",
       "from": "od"
     },
+    "reviewsForm": {
+      "title": "Tytuł",
+      "review": "Ocena",
+      "submit": "Prześlij",
+      "rating": "Twoja ocena"
+    },
+    "addReview": "Dodaj ocenę",
+    "noReviews": "Nie ma jeszcze recenzji.",
+    "reviewNotAccepted": "Twoja recenzja nie została jeszcze zatwierdzona",
+    "reviewFeedback": "Nasza opinia",    
     "messages": {
       "addedToWishlist": "{p} został dodany do listy życzeń.",
       "removedFromWishlist": "{p} został usunięty z listy życzeń.",
-      "addedToCart": "{p} został dodany do koszyka."
+      "addedToCart": "{p} został dodany do koszyka.",
+      "reviewAdded": "Dziękujemy za ocenę"
     }
   }
 }

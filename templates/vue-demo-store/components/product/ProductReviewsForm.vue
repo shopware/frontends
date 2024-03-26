@@ -86,7 +86,10 @@ const invokeRating = (value: number) => {
 <template>
   <form class="flex flex-col gap-4" @submit.prevent="invokeSend">
     <div>
-      <div class="mt-2 flex flex-col gap-2">
+      <div class="flex flex-col gap-2">
+        <h4 class="text-xl font-bold dark:text-white mt-3">
+          {{ $t("product.addReview") }}
+        </h4>
         <span>{{ $t("product.reviewsForm.rating") }}</span>
         <div class="flex flex-row">
           <div
