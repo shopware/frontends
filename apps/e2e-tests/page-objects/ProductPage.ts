@@ -49,9 +49,8 @@ export class ProductPage {
       .getByTestId("product-variant-text")
       .all())
       await variant.click();
-    await this.page.waitForLoadState("load");
-    await this.addToCartButton.waitFor();
-    await this.addToCartButton.click();
+    await expect(this.page.getByTestId("loading")).toHaveCount(0);
+    await this.addToCartButton.nth(0).click();
     await this.miniCartLink.click();
     expect(this.variantText.textContent).toEqual(
       this.productOption.textContent,
