@@ -12,6 +12,7 @@ export class ProductPage {
   readonly reviewTitle: Locator;
   readonly reviewText: Locator;
   readonly submitReview: Locator;
+  readonly reviewTab: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -25,6 +26,7 @@ export class ProductPage {
     this.reviewTitle = page.getByTestId("review-title-input");
     this.reviewText = page.getByTestId("review-text-input");
     this.submitReview = page.getByTestId("review-submit-button");
+    this.reviewTab = page.getByTestId("product-reviews-tab");
   }
 
   async addToCart() {
@@ -60,6 +62,7 @@ export class ProductPage {
   }
 
   async fillReviewForm() {
+    await this.reviewTab.click();
     await this.ratingStar.nth(4).click();
     await this.reviewTitle.fill("Review test title");
     await this.reviewText.fill(

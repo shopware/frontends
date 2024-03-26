@@ -104,6 +104,7 @@ onMounted(async () => {
                 ? 'text-secondary-500 bg-white'
                 : 'text-white bg-secondary-500',
             ]"
+            data-testid="product-reviews-tab"
             @click="() => toggleTabs(2)"
           >
             <i class="fas fa-cog text-base mr-1" />
