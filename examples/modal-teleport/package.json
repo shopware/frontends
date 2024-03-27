@@ -15,7 +15,7 @@
     "@unocss/nuxt": "0.58.7",
     "@unocss/reset": "0.58.7",
     "eslint": "8.57.0",
-    "nuxt": "3.11.0",
+    "nuxt": "3.11.1",
     "unocss": "0.58.7"
   },
   "dependencies": {
