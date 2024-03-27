@@ -86,7 +86,7 @@ export function useNotifications(): UseNotificationsReturn {
     message: string,
     options: NotificationOptions,
   ) {
-    const timeout = options.timeout || 2500;
+    const timeout = options.timeout || 5000;
     const persistent = !!options.persistent;
     _notifications.value = _notifications.value || [];
 

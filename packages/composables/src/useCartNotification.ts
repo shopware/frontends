@@ -1,5 +1,6 @@
 import type { Schemas } from "#shopware";
 import type { CartError } from "@shopware-pwa/types";
+import { useCart, useNotifications } from "#imports";
 
 const successCodes = ["promotion-discount-added"];
 

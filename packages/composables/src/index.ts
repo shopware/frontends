@@ -22,6 +22,7 @@ export * from "./useAddress";
 export * from "./useBreadcrumbs";
 export * from "./useCart";
 export * from "./useCartItem";
+export * from "./useCartNotification";
 export * from "./useCategory";
 export * from "./useCategorySearch";
 export * from "./useCheckout";

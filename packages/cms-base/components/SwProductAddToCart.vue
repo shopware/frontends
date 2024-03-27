@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
+import type { Schemas } from "#shopware";
+import {
+  useCmsTranslations,
+  useCartNotification,
+} from "@shopware-pwa/composables-next";
 import { useAddToCart, useNotifications } from "#imports";
 import { toRefs } from "vue";
 import { defu } from "defu";
-import type { Schemas } from "#shopware";
+import { useI18n } from "vue-i18n";
 
 const { pushSuccess, pushError } = useNotifications();
+const { getErrorsCodes } = useCartNotification();
+const { t, locale } = useI18n();
 const props = defineProps<{
   product: Schemas["Product"];
 }>();
@@ -33,15 +39,21 @@ const { product } = toRefs(props);
 const { addToCart, quantity } = useAddToCart(product);
 
 const addToCartProxy = async () => {
-  const res = await addToCart();
-  const errors = Object.values(res.errors);
-
-  if (errors.length > 0) {
-    const errorMessages = errors.map((error) => error.message);
-    pushError(errorMessages.join(". "));
-    return;
-  }
-
+  await addToCart();
+  getErrorsCodes()?.forEach((element) => {
+    if (locale.value === "en-GB") {
+      pushError(`${element.message}`);
+    } else {
+      pushError(
+        t(`errors.${element.messageKey}`, {
+          name: product.value.translated
+            ? product.value.translated.name
+            : product.value.name,
+          quantity: 100, // example of additional parameter
+        }),
+      );
+    }
+  });
   pushSuccess(
     `${props.product?.translated?.name} ${translations.product.addedToCart}`,
   );
