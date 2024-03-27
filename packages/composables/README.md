@@ -137,18 +137,29 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.14.1
+### Latest changes: 1.0.0
+
+### Major Changes
+
+- [#452](https://github.com/shopware/frontends/pull/452) [`e2c225f`](https://github.com/shopware/frontends/commit/e2c225f1d69a5d523f3c1e6c90449ee28f98b2f2) Thanks [@patzick](https://github.com/patzick)! - Created Nuxt layer for `composables` and `cms-base`. This way overriding any part of that is now possible.
+
+### Minor Changes
+
+- [#529](https://github.com/shopware/frontends/pull/529) [`4dce006`](https://github.com/shopware/frontends/commit/4dce006460611e59fed084511ca9ecb814f95cf1) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - **BREAKING**: Use product ID instead of whole product object in `useProductWishlist` composable
+
+- [#535](https://github.com/shopware/frontends/pull/535) [`bebae42`](https://github.com/shopware/frontends/commit/bebae42e58e3dd47f13bf166b0fb0d8ac9a416e3) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix country ID in session context
+  Add `salesChannelCountryId` that represent sales channel default city ID
+
+- [#703](https://github.com/shopware/frontends/pull/703) [`7a3a92c`](https://github.com/shopware/frontends/commit/7a3a92c3ee1a337e752adbcfa5057d30064eed7c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add B2b quote management composable
 
 ### Patch Changes
 
-- [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+- [#569](https://github.com/shopware/frontends/pull/569) [`f1b2a30`](https://github.com/shopware/frontends/commit/f1b2a307de58e0f296edab3222b7cd5684104347) Thanks [@itscark](https://github.com/itscark)! - Fix only available shipping methods
 
-  - Changed dependency _@vueuse/core_ from **^10.5.0** to **^10.6.1**
+- [#705](https://github.com/shopware/frontends/pull/705) [`8f0b468`](https://github.com/shopware/frontends/commit/8f0b46850a0b89667934c551431306f7d765f86b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add missing addressId to the `updateCustomerAddress` method
 
-- [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+- [#524](https://github.com/shopware/frontends/pull/524) [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Added new composables (previously internal helpers of the `cms-base` package): `useCmsTranslations`, `useUrlResolver`, `useUrlResolver`
 
-  - Changed dependency _scule_ from **^1.0.0** to **^1.1.0**
-
-- Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831)]:
-  - @shopware-pwa/helpers-next@0.5.1
-  - @shopware-pwa/api-client@0.7.0
+- Updated dependencies [[`782ef4d`](https://github.com/shopware/frontends/commit/782ef4d417dce6e6d60992bd54f876aa4bc5f45d), [`9643e56`](https://github.com/shopware/frontends/commit/9643e56dafba9282b75c12c96b2afb3a4738f86e), [`1583a7a`](https://github.com/shopware/frontends/commit/1583a7ae0d68b72fb362b625e1634e03bad68110), [`97d2859`](https://github.com/shopware/frontends/commit/97d2859e4dcbdc563200f2f64d1a20880b675d87), [`d60d062`](https://github.com/shopware/frontends/commit/d60d0620c7114a2f26bb2faf24241e2cbabc8798), [`a92941e`](https://github.com/shopware/frontends/commit/a92941ed59313fe85d5bbe204c2930d8a1a106b1), [`487d991`](https://github.com/shopware/frontends/commit/487d991f2cda0fbf637502597b20dd931498fe6a), [`89a97a4`](https://github.com/shopware/frontends/commit/89a97a45ae4a58616e41f63e9884a2a67f0a6ce8), [`97b5949`](https://github.com/shopware/frontends/commit/97b5949da2663700aa4047c4927b4a5f192cee74), [`6664aa2`](https://github.com/shopware/frontends/commit/6664aa2aa48ec63fc053ad024a03940113e17956), [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715)]:
+  - @shopware/api-client@0.6.0
+  - @shopware-pwa/helpers-next@0.6.0

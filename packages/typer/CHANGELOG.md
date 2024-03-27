@@ -1,5 +1,15 @@
 # @shopware-pwa/typer
 
+## 0.1.12
+
+### Patch Changes
+
+- [#478](https://github.com/shopware/frontends/pull/478) [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _fs-extra_ from **^11.1.1** to **^11.2.0**
+  - Changed dependency _typedoc_ from **^0.25.3** to **^0.25.4**
+  - Changed dependency _vite_ from **^5.0.0** to **^5.0.4**
+
 ## 0.1.11
 
 ### Patch Changes

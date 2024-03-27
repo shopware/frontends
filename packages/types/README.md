@@ -12,12 +12,13 @@ Documentation specific for this package: [types](https://frontends.shopware.com/
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/types/CHANGELOG.md)
 
-### Latest changes: 0.6.0
+### Latest changes: 0.7.0
 
 ### Minor Changes
 
-- [#433](https://github.com/shopware/frontends/pull/433) [`43510a10`](https://github.com/shopware/frontends/commit/43510a108d351aca361e460844b2cddd29f889b5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add CartError type
+- [#463](https://github.com/shopware/frontends/pull/463) [`543a8e1`](https://github.com/shopware/frontends/commit/543a8e1fb3b391a0238f329e0ead30b8322016ec) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add Meta type for the global Error type
 
 ### Patch Changes
 
-- [#417](https://github.com/shopware/frontends/pull/417) [`2e80139c`](https://github.com/shopware/frontends/commit/2e80139c6fa0bace77d385cfaffa30c4811f8831) Thanks [@annaostermann](https://github.com/annaostermann)! - Add missing translated.url property for LandingPage.d.ts
+- Updated dependencies [[`782ef4d`](https://github.com/shopware/frontends/commit/782ef4d417dce6e6d60992bd54f876aa4bc5f45d), [`9643e56`](https://github.com/shopware/frontends/commit/9643e56dafba9282b75c12c96b2afb3a4738f86e), [`1583a7a`](https://github.com/shopware/frontends/commit/1583a7ae0d68b72fb362b625e1634e03bad68110), [`97d2859`](https://github.com/shopware/frontends/commit/97d2859e4dcbdc563200f2f64d1a20880b675d87), [`d60d062`](https://github.com/shopware/frontends/commit/d60d0620c7114a2f26bb2faf24241e2cbabc8798), [`89a97a4`](https://github.com/shopware/frontends/commit/89a97a45ae4a58616e41f63e9884a2a67f0a6ce8)]:
+  - @shopware/api-client@0.6.0

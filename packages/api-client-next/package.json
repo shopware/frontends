@@ -1,6 +1,6 @@
 {
   "name": "@shopware/api-client",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Shopware client for API connection.",
   "author": "Shopware",
   "type": "module",

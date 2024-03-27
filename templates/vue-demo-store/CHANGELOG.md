@@ -1,5 +1,70 @@
 # vue-demo-store
 
+## 0.16.0
+
+### Minor Changes
+
+- [#517](https://github.com/shopware/frontends/pull/517) [`f7797e8`](https://github.com/shopware/frontends/commit/f7797e8eb8cc72d425e568f3abedeb174e703de5) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Adding all colors to uno.config.ts to show that they can changed via config.
+
+  Changes in detail:
+
+  - blue is now covered by primary.
+  - gray and slate are now covered by secondary.
+  - brand-primary is now primary (default).
+  - brand-light is now light (default).
+  - brand-dark is now dark (default).
+  - Added also other colors to config like yellow, green, indigo and white.
+
+- [#463](https://github.com/shopware/frontends/pull/463) [`543a8e1`](https://github.com/shopware/frontends/commit/543a8e1fb3b391a0238f329e0ead30b8322016ec) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add api error resolver for:
+
+  - Login page
+  - Account registration
+  - Update product qty (cart)
+
+  Add `useApiErrorsResolver` composable
+
+- [#529](https://github.com/shopware/frontends/pull/529) [`4dce006`](https://github.com/shopware/frontends/commit/4dce006460611e59fed084511ca9ecb814f95cf1) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Use product ID instead the product object in the wishlist composable
+
+- [#611](https://github.com/shopware/frontends/pull/611) [`4593318`](https://github.com/shopware/frontends/commit/459331829b0159eeafdb55564f6b2859595814b0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add regulation price to the product card
+
+- [#531](https://github.com/shopware/frontends/pull/531) [`f99d49c`](https://github.com/shopware/frontends/commit/f99d49c97f32cd4b0a4344a74dcf6e523f089d0b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add JSON-LD for a product page
+
+- [#571](https://github.com/shopware/frontends/pull/571) [`67654fc`](https://github.com/shopware/frontends/commit/67654fc8ed2768892668dd42a2d367205e42cbf3) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add product review form on the product card
+
+- [#545](https://github.com/shopware/frontends/pull/545) [`6664aa2`](https://github.com/shopware/frontends/commit/6664aa2aa48ec63fc053ad024a03940113e17956) Thanks [@itscark](https://github.com/itscark)! - Fix visibility classes
+
+### Patch Changes
+
+- [#514](https://github.com/shopware/frontends/pull/514) [`e6ea89c`](https://github.com/shopware/frontends/commit/e6ea89cf460177e43f2333870d67c8fe72874e1a) Thanks [@mkucmus](https://github.com/mkucmus)! - @nuxtjs/i18n module upgrade
+
+- [#478](https://github.com/shopware/frontends/pull/478) [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@unocss/nuxt_ from **^0.57.6** to **^0.57.7**
+  - Changed dependency _vue_ from **^3.3.8** to **^3.3.9**
+
+- [#640](https://github.com/shopware/frontends/pull/640) [`eef5f3d`](https://github.com/shopware/frontends/commit/eef5f3d56cdaafc4da3b9f497ca83087ec97855e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Change the minimum node 18 version to 18.17.x
+
+- [#508](https://github.com/shopware/frontends/pull/508) [`a92941e`](https://github.com/shopware/frontends/commit/a92941ed59313fe85d5bbe204c2930d8a1a106b1) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Hide digital product link if link cannot be downloaded
+
+- [#488](https://github.com/shopware/frontends/pull/488) [`3ebe003`](https://github.com/shopware/frontends/commit/3ebe0031f0e2f41492232b4a3afed44dd41a48e8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix category external link
+
+- [#768](https://github.com/shopware/frontends/pull/768) [`789b2b5`](https://github.com/shopware/frontends/commit/789b2b55939efef47010500ecbf614840703c284) Thanks [@mkucmus](https://github.com/mkucmus)! - Allow to provide devStorerontUrl from .env
+
+- [#805](https://github.com/shopware/frontends/pull/805) [`815acda`](https://github.com/shopware/frontends/commit/815acdaab3f68644d5e2a71c5bc44ef9f9e5423e) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Remove ProductStatic and all related components, fix ReviewForm in demo-store
+
+- [#664](https://github.com/shopware/frontends/pull/664) [`af2bc19`](https://github.com/shopware/frontends/commit/af2bc19063d967bd1d13b388ddf430d97ae8445a) Thanks [@rebewp](https://github.com/rebewp)! - Changed usage of env variables to be able to adjust their naming to only include shopware once.
+  After merging, ENV Variables with names including _*SHOPWARE_SHOPWARE*_ still work.
+
+- [#620](https://github.com/shopware/frontends/pull/620) [`7535a51`](https://github.com/shopware/frontends/commit/7535a51562adaea4be1afc93a7b9d1e84a777b73) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Switch off telemetry
+
+- Updated dependencies [[`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622), [`f1b2a30`](https://github.com/shopware/frontends/commit/f1b2a307de58e0f296edab3222b7cd5684104347), [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622), [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715), [`801420a`](https://github.com/shopware/frontends/commit/801420aedcd8f43159862dfdb31eb9240d8d7fe2), [`4dce006`](https://github.com/shopware/frontends/commit/4dce006460611e59fed084511ca9ecb814f95cf1), [`bebae42`](https://github.com/shopware/frontends/commit/bebae42e58e3dd47f13bf166b0fb0d8ac9a416e3), [`f7797e8`](https://github.com/shopware/frontends/commit/f7797e8eb8cc72d425e568f3abedeb174e703de5), [`782ef4d`](https://github.com/shopware/frontends/commit/782ef4d417dce6e6d60992bd54f876aa4bc5f45d), [`9643e56`](https://github.com/shopware/frontends/commit/9643e56dafba9282b75c12c96b2afb3a4738f86e), [`1583a7a`](https://github.com/shopware/frontends/commit/1583a7ae0d68b72fb362b625e1634e03bad68110), [`97d2859`](https://github.com/shopware/frontends/commit/97d2859e4dcbdc563200f2f64d1a20880b675d87), [`d60d062`](https://github.com/shopware/frontends/commit/d60d0620c7114a2f26bb2faf24241e2cbabc8798), [`a92941e`](https://github.com/shopware/frontends/commit/a92941ed59313fe85d5bbe204c2930d8a1a106b1), [`aa97efe`](https://github.com/shopware/frontends/commit/aa97efe0131024fb3d61cf0d8df6c44eccc62e70), [`487d991`](https://github.com/shopware/frontends/commit/487d991f2cda0fbf637502597b20dd931498fe6a), [`543a8e1`](https://github.com/shopware/frontends/commit/543a8e1fb3b391a0238f329e0ead30b8322016ec), [`3c40741`](https://github.com/shopware/frontends/commit/3c407411cf9ce7ad18df9e9647c70972da4509e0), [`e2c225f`](https://github.com/shopware/frontends/commit/e2c225f1d69a5d523f3c1e6c90449ee28f98b2f2), [`89a97a4`](https://github.com/shopware/frontends/commit/89a97a45ae4a58616e41f63e9884a2a67f0a6ce8), [`815acda`](https://github.com/shopware/frontends/commit/815acdaab3f68644d5e2a71c5bc44ef9f9e5423e), [`8f0b468`](https://github.com/shopware/frontends/commit/8f0b46850a0b89667934c551431306f7d765f86b), [`f8266a0`](https://github.com/shopware/frontends/commit/f8266a0bba4f6d2195dd128e177933e6e61478ff), [`97b5949`](https://github.com/shopware/frontends/commit/97b5949da2663700aa4047c4927b4a5f192cee74), [`af2bc19`](https://github.com/shopware/frontends/commit/af2bc19063d967bd1d13b388ddf430d97ae8445a), [`7a3a92c`](https://github.com/shopware/frontends/commit/7a3a92c3ee1a337e752adbcfa5057d30064eed7c), [`6664aa2`](https://github.com/shopware/frontends/commit/6664aa2aa48ec63fc053ad024a03940113e17956), [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715), [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715)]:
+  - @shopware-pwa/cms-base@1.0.0
+  - @shopware-pwa/composables-next@1.0.0
+  - @shopware-pwa/nuxt3-module@1.0.0
+  - @shopware/api-client@0.6.0
+  - @shopware-pwa/helpers-next@0.6.0
+  - @shopware-pwa/types@0.7.0
+
 ## 0.15.1
 
 ### Patch Changes
