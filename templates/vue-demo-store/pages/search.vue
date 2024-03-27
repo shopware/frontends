@@ -384,23 +384,23 @@ export default {
         <div
           v-if="loading"
           data-testid="loading"
-          class="flex flex-wrap justify-center sm:justify-between p-4 md:p-6 lg:p-8"
+          class="flex justify-center lg:justify-initial flex-wrap p-4 md:p-6 lg:p-8"
         >
           <ProductCardSkeleton
             v-for="index in limit"
             :key="index"
-            class="w-full sm:w-3/7 lg:w-2/7 mb-8"
+            class="w-full sm:w-3/7 lg:w-2/7 mr-0 sm:mr-8 mb-8"
           />
         </div>
         <div
           v-if="!loading"
-          class="flex flex-wrap justify-center sm:justify-between p-4 md:p-6 lg:p-8"
+          class="flex justify-center lg:justify-initial flex-wrap p-4 md:p-6 lg:p-8"
         >
           <ProductCard
             v-for="product in products"
             :key="product.id"
             :product="product"
-            class="w-full sm:w-3/7 lg:w-2/7 mb-8"
+            class="w-full sm:w-3/7 lg:w-2/7 mr-0 sm:mr-8 mb-8"
           />
         </div>
         <div
