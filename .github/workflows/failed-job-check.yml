@@ -5,9 +5,7 @@ on:
       [
         Code examples,
         Lighthouse CI,
-        Vue vite blank,
-        Vue Blank,
-        Vue demo store,
+        Stackblitz templates,
         Audit check,
       ]
     types: [completed]
