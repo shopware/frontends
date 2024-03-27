@@ -18,7 +18,7 @@ useBreadcrumbs([
 ]);
 
 await useAsyncData("getOrders", () => {
-  return loadOrders();
+  return loadOrders({ associations: { stateMachineState: {} } });
 });
 </script>
 
