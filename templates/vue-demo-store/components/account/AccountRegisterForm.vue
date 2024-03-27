@@ -31,12 +31,15 @@ watch(isLoggedIn, (isLoggedIn) => {
 
 const initialState = {
   requestedGroupId: props.customerGroupId,
+  accountType: "private",
   salutationId: "",
   firstName: "",
   lastName: "",
   email: "",
   password: "",
+  vatIds: [null],
   billingAddress: {
+    company: null,
     street: "",
     zipcode: "",
     city: "",
@@ -48,6 +51,9 @@ const initialState = {
 const state = reactive(JSON.parse(JSON.stringify(initialState)));
 
 const rules = computed(() => ({
+  accountType: {
+    required,
+  },
   salutationId: {
     required,
   },
@@ -68,6 +74,9 @@ const rules = computed(() => ({
     minLength: minLength(8),
   },
   billingAddress: {
+    company: {
+      required: requiredIf(() => state.accountType === "business"),
+    },
     street: {
       required,
       minLength: minLength(3),
@@ -143,6 +152,24 @@ useBreadcrumbs([
         {{ $t("account.signUpHeader") }}
       </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
+        <div class="col-span-12">
+          <label for="accountType">{{ $t("form.accountType.title") }} *</label>
+          <select
+            id="accountType"
+            v-model="state.accountType"
+            name="accountType"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            data-testid="registration-account-type-select"
+            @blur="$v.accountType.$touch()"
+          >
+            <option value="private">
+              {{ $t("form.accountType.private") }}
+            </option>
+            <option value="business">
+              {{ $t("form.accountType.business") }}
+            </option>
+          </select>
+        </div>
         <div class="col-span-12">
           <label for="salutation">{{ $t("form.salutation") }} *</label>
           <select
@@ -280,12 +307,56 @@ useBreadcrumbs([
             {{ $v.password.$errors[0].$message }}
           </span>
         </div>
+
+        <div
+          v-if="state.accountType === 'business'"
+          class="col-span-12 md:col-span-4"
+        >
+          <label for="vatId">{{ $t("form.vatId") }}</label>
+          <input
+            id="vatId"
+            v-model="state.vatIds[0]"
+            name="vatId"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            :placeholder="$t('form.vatIdPlaceholder')"
+            data-testid="registration-vatid-input"
+            @blur="$v.vatIds.$touch()"
+          />
+        </div>
       </div>
 
       <h3 class="block border-b-1 mb-5 pb-2 font-bold">
         {{ $t("account.yourAddress") }}
       </h3>
       <div class="grid grid-cols-12 gap-5 mb-10">
+        <div
+          v-if="state.accountType === 'business'"
+          class="col-span-12 md:col-span-4"
+        >
+          <label for="company">{{ $t("form.company") }} *</label>
+          <input
+            id="company"
+            v-model="state.billingAddress.company"
+            name="company"
+            type="text"
+            autocomplete="company"
+            class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
+            :class="[
+              $v.billingAddress.company.$error
+                ? 'border-red-600 focus:border-red-600'
+                : 'border-secondary-300 focus:border-indigo-500',
+            ]"
+            :placeholder="$t('form.companyPlaceholder')"
+            data-testid="registration-company-input"
+            @blur="$v.billingAddress.company.$touch()"
+          />
+          <span
+            v-if="$v.billingAddress.company.$error"
+            class="pt-1 text-sm text-red-600 focus:ring-primary border-secondary-300"
+          >
+            {{ $v.billingAddress.company.$errors[0].$message }}
+          </span>
+        </div>
         <div class="col-span-12 md:col-span-4">
           <label for="street">{{ $t("form.streetAddress") }} *</label>
           <input

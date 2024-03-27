@@ -1,5 +1,10 @@
 {
   "form": {
+    "accountType": {
+      "title": "Kontotyp",
+      "private": "Privat",
+      "business": "Gewerblich"
+    },
     "salutation": "Anrede",
     "chooseSalutation": "Anrede wählen...",
     "firstName": "Vorname",
@@ -8,6 +13,8 @@
     "lastNamePlaceholder": "Nachname eingeben...",
     "country": "Land",
     "chooseCountry": "Land auswählen...",
+    "company": "Firma",
+    "companyPlaceholder": "Firma eingeben...",
     "streetAddress": "Straße und Hausnummer",
     "streetPlaceholder": "Straße eingeben...",
     "password": "Passwort",
@@ -16,6 +23,8 @@
     "repeatPasswordPlaceholder": "Passwort wiederholen",
     "email": "E-Mail-Adresse",
     "emailPlaceholder": "E-Mail eingeben...",
+    "vatId": "USt-IdNr.",
+    "vatIdPlaceholder": "USt-IdNr. eingeben...",
     "confirmEmail": "E-Mail bestätigen",
     "city": "Stadt",
     "cityPlaceholder": "Stadt eingeben...",
