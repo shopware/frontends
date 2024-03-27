@@ -21,8 +21,8 @@ declare module "#shopware" {
   // };
 
   type extendedPaths =
-    | "quickOrderProductSearch get /store-api/quick-order/product?search"
-    | "quickOrderLoadFile post /store-api/quick-order/load-file"
+    | "quickOrderProductSearch get /quick-order/product?search"
+    | "quickOrderLoadFile post /quick-order/load-file"
     | defaultOperationPaths;
 
   type extendedOperations = {
