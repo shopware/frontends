@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Product, ProductReview } from "@shopware-pwa/types";
-import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { useProductReviews } from "#imports";
+import { useProductReviews, useCmsTranslations } from "#imports";
 import { computed, onMounted, ref, toRefs } from "vue";
 import { defu } from "defu";
 
@@ -12,13 +11,13 @@ const props = defineProps<{
 
 type Translations = {
   product: {
-    reviewNoComments: string;
+    noReviews: string;
   };
 };
 
 let translations: Translations = {
   product: {
-    reviewNoComments: "No comments yet.",
+    noReviews: "No reviews yet.",
   },
 };
 
@@ -91,5 +90,5 @@ const formatDate = (date: string) =>
     </div>
   </div>
 
-  <div v-else>{{ translations.product.reviewNoComments }}.</div>
+  <div v-else>{{ translations.product.noReviews }}.</div>
 </template>
