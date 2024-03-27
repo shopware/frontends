@@ -21,7 +21,8 @@
       "submit": "Submit",
       "rating": "Your rating"
     },
-    "reviewNoComments": "No comments yet.",
+    "addReview": "Add review",
+    "noReviews": "No reviews yet.",
     "reviewNotAccepted": "Your review has not been approved yet",
     "reviewFeedback": "Our feedback",
     "messages": {

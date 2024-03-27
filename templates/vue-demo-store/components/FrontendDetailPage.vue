@@ -40,14 +40,17 @@ const { product } = useProduct(
 
 useCmsHead(product, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
+
 <template>
   <LayoutBreadcrumbs />
-  <div class="container mx-auto bg-white flex flex-col">
-    <template v-if="!product?.cmsPage">
-      <ProductStatic :product="product" />
-    </template>
-    <template v-else-if="product.cmsPage">
-      <CmsPage :content="product.cmsPage" />
-    </template>
+  <div v-if="product?.cmsPage" class="container mx-auto bg-white flex flex-col">
+    <CmsPage :content="product.cmsPage" />
+  </div>
+  <div
+    v-if="!product?.cmsPage"
+    class="container mx-auto bg-white flex flex-col"
+  >
+    <!-- Since Shopware Version 6.6.0.0 there should be always a cmsPage for products -->
+    <span>😱 cmsPage is missing.</span>
   </div>
 </template>
