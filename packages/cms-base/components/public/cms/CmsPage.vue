@@ -5,7 +5,7 @@ import {
   getCmsLayoutConfiguration,
   getBackgroundImageUrl,
 } from "@shopware-pwa/helpers-next";
-import { useCategoryListing, useNavigationContext } from "#imports";
+import { useListing, useNavigationContext } from "#imports";
 import { computed, h, resolveComponent } from "vue";
 import type { Schemas } from "#shopware";
 
@@ -15,7 +15,7 @@ const props = defineProps<{
 
 const { routeName } = useNavigationContext();
 if (routeName.value === "frontend.navigation.page") {
-  useCategoryListing();
+  useListing({ listingType: "categoryListing" });
 }
 
 const cmsSections = computed<CmsSection[]>(() => {

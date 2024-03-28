@@ -3,7 +3,7 @@ import type { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwPagination from "../../../SwPagination.vue";
-import { useCategoryListing } from "#imports";
+import { useListing } from "#imports";
 import { computed, ref, watch } from "vue";
 import { defu } from "defu";
 import { useRoute, useRouter } from "vue-router";
@@ -40,9 +40,9 @@ const {
   getCurrentPage,
   getElements,
   getTotalPagesCount,
-  loading,
+  sharedLoading,
   setInitialListing,
-} = useCategoryListing();
+} = useListing({ listingType: "categoryListing" });
 const route = useRoute();
 const router = useRouter();
 const limit = ref(
@@ -156,7 +156,7 @@ compareRouteQueryWithInitialListing();
     <div class="max-w-2xl mx-auto lg:max-w-full">
       <div class="mt-6">
         <div
-          v-if="!loading"
+          v-if="!sharedLoading"
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
         >
           <SwProductCard
@@ -168,7 +168,7 @@ compareRouteQueryWithInitialListing();
           />
         </div>
         <div
-          v-if="loading"
+          v-if="sharedLoading"
           data-testid="loading"
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
         >
