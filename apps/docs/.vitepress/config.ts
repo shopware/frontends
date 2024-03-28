@@ -92,6 +92,10 @@ export const sidebar = [
             text: "Overwriting CMS",
             link: "/getting-started/cms/overwriting-cms",
           },
+          {
+            text: "Multiple CMS",
+            link: "/getting-started/cms/multiple-cms",
+          },
         ],
       },
       {
@@ -99,25 +103,18 @@ export const sidebar = [
         link: "/getting-started/e-commerce/",
         items: [
           {
-            text: "Product listing",
+            text: "Product Listing",
             link: "/getting-started/e-commerce/product-listing",
           },
           {
-            text: "Product detail page",
+            text: "Product Detail Page",
             link: "/getting-started/e-commerce/product-detail-page",
           },
           { text: "Prices", link: "/getting-started/e-commerce/prices" },
           { text: "Cart", link: "/getting-started/e-commerce/cart" },
           { text: "Checkout", link: "/getting-started/e-commerce/checkout" },
           { text: "Payments", link: "/getting-started/e-commerce/payments" },
-          {
-            text: "Custome Payment",
-            link: "/getting-started/e-commerce/custom-payment",
-          },
-          {
-            text: "JSON-LD",
-            link: "/getting-started/e-commerce/json-ld",
-          },
+          { text: "JSON-LD", link: "/getting-started/e-commerce/json-ld" },
         ],
       },
       {
@@ -183,16 +180,6 @@ export const sidebar = [
           },
         ],
       },
-      {
-        text: "B2B",
-        link: "/getting-started/b2b/",
-        items: [
-          {
-            text: "Quote Management",
-            link: "/getting-started/b2b/quote-management",
-          },
-        ],
-      },
     ],
   },
   {
@@ -227,10 +214,55 @@ export const sidebar = [
         link: "/resources/integrations/",
         items: [
           {
-            text: "Multi CMS instance",
-            link: "/resources/integrations/multi-cms",
+            text: "CMS",
+            link: "/resources/integrations/cms/",
+            items: [
+              {
+                text: "Storyblok",
+                link: "/resources/integrations/cms/storyblok",
+              },
+              {
+                text: "Strapi",
+                link: "/resources/integrations/cms/strapi",
+              },
+            ],
           },
-          { text: "Strapi", link: "/resources/integrations/strapi/" },
+          {
+            text: "Commercial",
+            link: "/resources/integrations/commercial/",
+            items: [
+              {
+                text: "B2B Quick Order",
+                link: "/resources/integrations/commercial/b2b-quick-order",
+              },
+              {
+                text: "B2B Quote Management",
+                link: "/resources/integrations/commercial/b2b-quote-management",
+              },
+              {
+                text: "Custom Products",
+                link: "/resources/integrations/commercial/custom-products",
+              },
+            ],
+          },
+          {
+            text: "Payments",
+            link: "/resources/integrations/payments/",
+            items: [
+              {
+                text: "Adyen",
+                link: "/resources/integrations/payments/adyen",
+              },
+              {
+                text: "mollie",
+                link: "/resources/integrations/payments/mollie",
+              },
+              {
+                text: "Paypal Express",
+                link: "/resources/integrations/payments/paypal-express",
+              },
+            ],
+          },
         ],
       },
     ],
