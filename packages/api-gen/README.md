@@ -64,11 +64,33 @@ SHOPWARE_ADMIN_PASSWORD="my-password"
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 0.1.1
+### Latest changes: 0.2.0
+
+### Minor Changes
+
+- [#534](https://github.com/shopware/frontends/pull/534) [`6170dca`](https://github.com/shopware/frontends/commit/6170dca220f4b33c4dcb6fd1c3172ad931a47c75) Thanks [@patzick](https://github.com/patzick)! - `loadSchema` command added by splitting `generate` command
+
+- [#534](https://github.com/shopware/frontends/pull/534) [`6170dca`](https://github.com/shopware/frontends/commit/6170dca220f4b33c4dcb6fd1c3172ad931a47c75) Thanks [@patzick](https://github.com/patzick)! - Sorting `paths` in the same order by api patchs
+
+- [#534](https://github.com/shopware/frontends/pull/534) [`6170dca`](https://github.com/shopware/frontends/commit/6170dca220f4b33c4dcb6fd1c3172ad931a47c75) Thanks [@patzick](https://github.com/patzick)! - Command `generate` has been splitted and doing only transformation from json to d.ts file
+
+- [#564](https://github.com/shopware/frontends/pull/564) [`93a6048`](https://github.com/shopware/frontends/commit/93a6048ee28c1975750ef6911f303ea095cb9941) Thanks [@patzick](https://github.com/patzick)! - Added `apiType` option in `loadSchema` command. With `SHOPWARE_ADMIN_USERNAME` and `SHOPWARE_ADMIN_PASSWORD` env variables we can now authorize Admin API schema.
+
+  example:
+
+  ```bash
+  # load schema from store API
+  pnpx @shopware/api-gen loadSchema --apiType=store --filename=storeApiSchema.json
+
+  # load schema from admin API
+  pnpx @shopware/api-gen loadSchema --apiType=admin --filename=adminApiSchema.json
+  ```
+
+- [#534](https://github.com/shopware/frontends/pull/534) [`6170dca`](https://github.com/shopware/frontends/commit/6170dca220f4b33c4dcb6fd1c3172ad931a47c75) Thanks [@patzick](https://github.com/patzick)! - Schema `operations` is now a generic type to help with overriding types
 
 ### Patch Changes
 
-- [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+- [#534](https://github.com/shopware/frontends/pull/534) [`6170dca`](https://github.com/shopware/frontends/commit/6170dca220f4b33c4dcb6fd1c3172ad931a47c75) Thanks [@patzick](https://github.com/patzick)! - Generated `GenericRecord` is more open to avoid type problems
 
-  - Changed dependency _openapi-typescript_ from **^6.7.0** to **^6.7.1**
-  - Changed dependency _prettier_ from **^3.0.3** to **^3.1.0**
+- Updated dependencies [[`782ef4d`](https://github.com/shopware/frontends/commit/782ef4d417dce6e6d60992bd54f876aa4bc5f45d), [`9643e56`](https://github.com/shopware/frontends/commit/9643e56dafba9282b75c12c96b2afb3a4738f86e), [`1583a7a`](https://github.com/shopware/frontends/commit/1583a7ae0d68b72fb362b625e1634e03bad68110), [`97d2859`](https://github.com/shopware/frontends/commit/97d2859e4dcbdc563200f2f64d1a20880b675d87), [`d60d062`](https://github.com/shopware/frontends/commit/d60d0620c7114a2f26bb2faf24241e2cbabc8798), [`89a97a4`](https://github.com/shopware/frontends/commit/89a97a45ae4a58616e41f63e9884a2a67f0a6ce8)]:
+  - @shopware/api-client@0.6.0

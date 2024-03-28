@@ -106,10 +106,12 @@ Paths for type resolver and codebase are configured during plugin registration.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/typer/CHANGELOG.md)
 
-### Latest changes: 0.1.11
+### Latest changes: 0.1.12
 
 ### Patch Changes
 
-- [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+- [#478](https://github.com/shopware/frontends/pull/478) [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
 
-  - Changed dependency _vite_ from **^4.5.0** to **^5.0.0**
+  - Changed dependency _fs-extra_ from **^11.1.1** to **^11.2.0**
+  - Changed dependency _typedoc_ from **^0.25.3** to **^0.25.4**
+  - Changed dependency _vite_ from **^5.0.0** to **^5.0.4**

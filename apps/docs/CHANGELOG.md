@@ -1,5 +1,25 @@
 # docs
 
+## 1.7.0
+
+### Minor Changes
+
+- [#729](https://github.com/shopware/frontends/pull/729) [`2e80090`](https://github.com/shopware/frontends/commit/2e80090f2ed8c047631684a2bf45298d88ad7491) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add B2B Quote Management section
+
+### Patch Changes
+
+- [#478](https://github.com/shopware/frontends/pull/478) [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _vue_ from **^3.3.8** to **^3.3.9**
+
+- [#451](https://github.com/shopware/frontends/pull/451) [`d4e6812`](https://github.com/shopware/frontends/commit/d4e68129a8b822f564bfb92ffb53dce777689cfd) Thanks [@mkucmus](https://github.com/mkucmus)! - Compatibility with Custom Products extension
+
+- Updated dependencies [[`f1b2a30`](https://github.com/shopware/frontends/commit/f1b2a307de58e0f296edab3222b7cd5684104347), [`4dce006`](https://github.com/shopware/frontends/commit/4dce006460611e59fed084511ca9ecb814f95cf1), [`bebae42`](https://github.com/shopware/frontends/commit/bebae42e58e3dd47f13bf166b0fb0d8ac9a416e3), [`a92941e`](https://github.com/shopware/frontends/commit/a92941ed59313fe85d5bbe204c2930d8a1a106b1), [`487d991`](https://github.com/shopware/frontends/commit/487d991f2cda0fbf637502597b20dd931498fe6a), [`543a8e1`](https://github.com/shopware/frontends/commit/543a8e1fb3b391a0238f329e0ead30b8322016ec), [`e2c225f`](https://github.com/shopware/frontends/commit/e2c225f1d69a5d523f3c1e6c90449ee28f98b2f2), [`8f0b468`](https://github.com/shopware/frontends/commit/8f0b46850a0b89667934c551431306f7d765f86b), [`97b5949`](https://github.com/shopware/frontends/commit/97b5949da2663700aa4047c4927b4a5f192cee74), [`7a3a92c`](https://github.com/shopware/frontends/commit/7a3a92c3ee1a337e752adbcfa5057d30064eed7c), [`6664aa2`](https://github.com/shopware/frontends/commit/6664aa2aa48ec63fc053ad024a03940113e17956), [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715), [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715)]:
+  - @shopware-pwa/composables-next@1.0.0
+  - @shopware-pwa/helpers-next@0.6.0
+  - @shopware-pwa/types@0.7.0
+  - @shopware-pwa/api-client@0.7.1
+
 ## 1.6.1
 
 ### Patch Changes
