@@ -4,7 +4,7 @@ import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from "#imports";
 import ContextError from "./helpers/ContextError";
 import type { Schemas, RequestParameters } from "#shopware";
-import { createSharedComposable } from "@vueuse/core";
+import { useListingSharedLoading } from "./useListingSharedLoading";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -151,6 +151,10 @@ export type UseListingReturn = {
    */
   loading: ComputedRef<boolean>;
   /**
+   * Indicates if the listing is being fetched
+   */
+  sharedLoading: ComputedRef<boolean>;
+  /**
    * Indicates if the listing is being fetched via `loadMore` method
    */
   loadingMore: ComputedRef<boolean>;
@@ -224,19 +228,6 @@ export function useListing(params?: {
 }
 
 /**
- * Temporary workaround over `useListing` to support shared data. This composable API will change in the future.
- */
-export const useCategoryListing = createSharedComposable(() =>
-  useListing({ listingType: "categoryListing" }),
-);
-/**
- * Temporary workaround over `useListing` to support shared data. This composable API will change in the future.
- */
-export const useProductSearchListing = createSharedComposable(() =>
-  useListing({ listingType: "productSearchListing" }),
-);
-
-/**
  * Factory to create your own listing.
  *
  * By default you can use useListing composable, which provides you predefined listings for category(cms) listing and product search listing.
@@ -268,6 +259,7 @@ export function createListingComposable({
   //   : contextName;
 
   const loading = ref(false);
+  const { sharedLoading } = useListingSharedLoading();
   const loadingMore = ref(false);
 
   // const { sharedRef } = useSharedState();
@@ -298,6 +290,7 @@ export function createListingComposable({
     criteria: RequestParameters<"searchPage">,
   ): Promise<Schemas["ProductListingResult"]> => {
     loading.value = true;
+    sharedLoading.value = true;
     try {
       const searchCriteria = merge(
         {} as RequestParameters<"searchPage">,
@@ -310,6 +303,7 @@ export function createListingComposable({
       throw e;
     } finally {
       loading.value = false;
+      sharedLoading.value = false;
     }
   };
 
@@ -320,6 +314,7 @@ export function createListingComposable({
     },
   ) {
     loading.value = true;
+    sharedLoading.value = true;
     try {
       const searchCriteria = merge(
         {} as RequestParameters<"searchPage">,
@@ -333,6 +328,7 @@ export function createListingComposable({
       throw e;
     } finally {
       loading.value = false;
+      sharedLoading.value = false;
     }
   }
 
@@ -533,6 +529,7 @@ export function createListingComposable({
     initSearch,
     loadMore,
     loading: computed(() => loading.value),
+    sharedLoading: computed(() => sharedLoading.value),
     loadingMore: computed(() => loadingMore.value),
     resetFilters,
     search,

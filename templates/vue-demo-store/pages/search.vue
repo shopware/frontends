@@ -15,7 +15,7 @@ const {
   loading,
   search,
   setInitialListing,
-} = useProductSearchListing();
+} = useListing({ listingType: "productSearchListing" });
 const { t } = useI18n();
 useBreadcrumbs([
   {

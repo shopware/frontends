@@ -9,7 +9,9 @@ const {
 } = useRuntimeConfig();
 
 // useListing for further product search
-const { search, getElements } = useProductSearchListing();
+const { search, getElements } = useListing({
+  listingType: "productSearchListing",
+});
 // composable used to add to cart a product
 const { addProduct } = useCart();
 // configured apiClient instance in order to make a custom API call
