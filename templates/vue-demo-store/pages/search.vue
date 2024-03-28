@@ -305,7 +305,7 @@ export default {
 <template>
   <LayoutBreadcrumbs />
   <div class="mb-8 mx-4 md:mx-auto" data-testid="search-results-container">
-    <h1 class="mb-8 mt-8 md:mt-0 text-3xl text-center">
+    <h1 class="mb-8 mt-8 lg:mt-0 text-3xl text-center">
       <span v-if="products?.length"
         >{{ $t("search.resultsHeader") }} "<strong>{{
           route.query.search
@@ -315,10 +315,12 @@ export default {
       <span v-else>{{ $t("search.noResults") }}</span>
     </h1>
     <div class="cms-section-sidebar grid grid-cols-12 md:grid">
-      <div class="align-top col-span-12 md:col-span-3 order-2 md:order-1">
+      <div
+        class="align-top col-span-12 md:col-span-5 lg:col-span-3 order-2 md:order-1"
+      >
         <div class="px-5 mx-auto m-0">
           <div
-            class="relative lg:flex lg:items-baseline lg:justify-between pt-6 pb-6 border-b border-gray-200"
+            class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
           >
             <div class="text-4xl tracking-tight text-gray-900">
               {{ $t("search.filters") }}
@@ -380,27 +382,27 @@ export default {
           <ListingFilters class="pr-4 md:pr-8 pb-16" />
         </div>
       </div>
-      <div class="col-span-12 md:col-span-9 order-1 md:order-2">
+      <div class="col-span-12 md:col-span-7 lg:col-span-9 order-1 md:order-2">
         <div
           v-if="loading"
           data-testid="loading"
-          class="flex justify-center lg:justify-initial flex-wrap p-4 md:p-6 lg:p-8"
+          class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8"
         >
           <ProductCardSkeleton
             v-for="index in limit"
             :key="index"
-            class="w-full sm:w-3/7 lg:w-2/7 mr-0 sm:mr-8 mb-8"
+            class="w-full lg:w-3/7 2xl:w-7/24 mr-0 sm:mr-8 mb-8"
           />
         </div>
         <div
           v-if="!loading"
-          class="flex justify-center lg:justify-initial flex-wrap p-4 md:p-6 lg:p-8"
+          class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8"
         >
           <ProductCard
             v-for="product in products"
             :key="product.id"
             :product="product"
-            class="w-full sm:w-3/7 lg:w-2/7 mr-0 sm:mr-8 mb-8"
+            class="w-full lg:w-3/7 2xl:w-7/24 mr-0 sm:mr-8 mb-8"
           />
         </div>
         <div
