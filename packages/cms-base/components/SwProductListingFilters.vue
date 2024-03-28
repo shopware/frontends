@@ -189,7 +189,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
   <div class="bg-white">
     <div class="mx-auto m-0" :class="{ 'px-5': isDefaultSidebarFilter }">
       <div
-        class="relative lg:flex lg:items-baseline lg:justify-between pt-6 pb-6 border-b border-gray-200"
+        class="relative flex items-baseline justify-between pt-6 pb-6 border-b border-gray-200"
       >
         <div class="text-4xl tracking-tight text-gray-900">
           {{ translations.listing.filters }}
