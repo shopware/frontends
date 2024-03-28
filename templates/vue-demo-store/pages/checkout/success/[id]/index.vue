@@ -7,6 +7,7 @@ export default {
 <script setup lang="ts">
 import { watchDebounced } from "@vueuse/core";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import type { Schemas } from "#shopware";
 
 const { params } = useRoute();
 const router = useRouter();
@@ -29,13 +30,32 @@ const {
 const { paymentUrl, handlePayment, isAsynchronous, state, paymentMethod } =
   useOrderPayment(order);
 
+const { selectedPaymentMethod } = useSessionContext();
+
+const { emit } = useEventBus();
+
 onMounted(async () => {
+  await loadOrderDetails();
+  await processPayment(selectedPaymentMethod.value as Schemas["PaymentMethod"]);
+});
+
+const processPayment = async (paymentMethod: Schemas["PaymentMethod"]) => {
   const SUCCESS_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/paid`;
   const FAILURE_PAYMENT_URL = `${window?.location?.origin}/checkout/success/${orderId}/unpaid`;
 
-  await loadOrderDetails();
-  handlePayment(SUCCESS_PAYMENT_URL, FAILURE_PAYMENT_URL);
-});
+  const paymentDetails = {};
+  try {
+    await emit("order:handle-payment", { paymentDetails, paymentMethod });
+
+    await handlePayment(
+      SUCCESS_PAYMENT_URL,
+      FAILURE_PAYMENT_URL,
+      paymentDetails,
+    );
+  } catch (error) {
+    console.error("Payment error", error);
+  }
+};
 
 const goToUrl = (url: string | null) => {
   if (typeof window !== undefined && url) {

@@ -1,3 +1,9 @@
+<script setup lang="ts">
+const { emit } = useEventBus();
+onMounted(async () => {
+  emit("order:reset-payment");
+});
+</script>
 <script lang="ts">
 export default {
   name: "CheckoutSuccessPaidPage",
