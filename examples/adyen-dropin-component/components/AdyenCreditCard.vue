@@ -14,7 +14,7 @@ const emits = defineEmits<{
   payButtonClicked: [state: any];
 }>();
 
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 const { sessionContext } = useSessionContext();
 const {
   public: { adyenCheckout },
@@ -25,9 +25,7 @@ const nuxtApp = useNuxtApp();
 let adyenConfigResponse;
 // get the clientKey and environment settings from backend (will overwrite the corresponding settings from nuxt.config.ts)
 try {
-  adyenConfigResponse = await apiInstance.invoke.get(
-    "/store-api/adyen/payment-methods",
-  );
+  adyenConfigResponse = await apiClient.invoke("readAdyenConfiguration get /adyen/payment-methods")
 } catch (error) {
   alert(
     "The project or API instance isn't configured properly. Please check the README.md to have it working correctly.",

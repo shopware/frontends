@@ -3,9 +3,10 @@
   "name": "example-adyen-dropin-playground",
   "type": "module",
   "scripts": {
-    "dev": "nuxi dev",
-    "build": "nuxi build",
-    "generate": "nuxi generate"
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
     "@adyen/adyen-web": "5.61.0",
