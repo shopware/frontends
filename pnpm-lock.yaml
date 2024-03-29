@@ -18739,8 +18739,8 @@ packages:
     dependencies:
       '@types/node': 20.11.30
       esbuild: 0.19.12
-      postcss: 8.4.35
-      rollup: 4.10.0
+      postcss: 8.4.38
+      rollup: 4.13.0
     optionalDependencies:
       fsevents: 2.3.3
 
