@@ -13,7 +13,7 @@
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "0.58.8",
+    "@unocss/nuxt": "0.58.9",
     "nuxt": "3.11.1"
   }
 }
