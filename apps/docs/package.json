@@ -23,9 +23,9 @@
   "devDependencies": {
     "@shopware-pwa/typer": "workspace:*",
     "@types/markdown-it": "13.0.7",
-    "@types/node": "20.11.28",
+    "@types/node": "20.11.30",
     "@vitejs/plugin-vue": "5.0.4",
-    "typescript": "5.4.2"
+    "typescript": "5.4.3"
   },
   "pnpm": {
     "peerDependencyRules": {
