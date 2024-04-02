@@ -168,9 +168,6 @@ importers:
       '@shopware-pwa/nuxt3-module':
         specifier: canary
         version: link:../../packages/nuxt3-module
-      '@shopware-pwa/types':
-        specifier: canary
-        version: link:../../packages/types
       '@shopware/api-client':
         specifier: canary
         version: link:../../packages/api-client-next

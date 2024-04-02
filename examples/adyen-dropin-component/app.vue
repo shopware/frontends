@@ -42,7 +42,6 @@ try {
   console.error(
     "Your configuration isn't correct. Please check the README.md and try again.",
   );
-  //console.error("Error details: ", error);
 }
 
 // handler for @payButtonClicked event from <AdyenCreditCard /> component located a template
