@@ -1,12 +1,10 @@
 {
   "private": true,
   "name": "example-adyen-dropin-playground",
-  "type": "module",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "generate": "nuxt generate",
-    "postinstall": "nuxt prepare"
+    "generate": "nuxt generate"
   },
   "devDependencies": {
     "@adyen/adyen-web": "5.61.0",
