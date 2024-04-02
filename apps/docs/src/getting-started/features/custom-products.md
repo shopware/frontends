@@ -21,7 +21,7 @@ The example explains how **Custom Products** feature is implemented in `vue-demo
 
 ## Logic: Composable function
 
-See [the source code](https://github.com/shopware/frontends/blob/main/templates/vue-demo-store/composables/useProductCustomizedProductConfigurator.ts) of `useProductCustomizedProductConfigurator` composable function.
+See [the source code](https://github.com/shopware/frontends/blob/main/examples/commercial-customized-products/src/composables/useProductCustomizedProductConfigurator.ts) of `useProductCustomizedProductConfigurator` composable function.
 
 The composable is a main place to keep the logic related to _custom product_ features:
 
@@ -53,7 +53,7 @@ const {
 
 ## Presentation: Vue component
 
-See [the source code](https://github.com/shopware/frontends/blob/main/templates/vue-demo-store/components/product/ProductCustomizedProductConfigurator.vue) of the `ProductCustomizedProductConfigurator` Vue component.
+See [the source code](https://github.com/shopware/frontends/blob/main/examples/commercial-customized-products/src/components/ProductCustomizedProductConfigurator.vue) of the `ProductCustomizedProductConfigurator` Vue component.
 
 The component is responsible for:
 

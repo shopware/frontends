@@ -32,7 +32,7 @@ export default {
       <div class="col-span-2">{{ $t("account.order.product") }}</div>
       <div>{{ $t("account.order.quantity") }}</div>
       <div>{{ $t("account.order.price") }}</div>
-      <div class="justify-self-end text-dark">
+      <div class="justify-self-end">
         {{ $t("account.order.subtotal") }}
       </div>
     </div>
