@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const sharedModal = useTeamModal();
 </script>
-<template>
+<template test-id="modal-teleport-example">
   <h2>Home page - example of shared modal</h2>
   <p>
     To see effect of Shared Modal press "Open Team Modal" button and go to Team

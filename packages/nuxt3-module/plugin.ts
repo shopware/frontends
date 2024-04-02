@@ -11,19 +11,23 @@ import { createAPIClient } from "@shopware/api-client";
 
 export default defineNuxtPlugin((NuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
-
-  if (
-    !runtimeConfig.public?.shopware?.shopwareEndpoint ||
-    !runtimeConfig.public?.shopware?.shopwareAccessToken
-  ) {
+  const shopwareEndpoint =
+    runtimeConfig.shopware?.endpoint ??
+    runtimeConfig.shopware?.shopwareEndpoint ??
+    runtimeConfig.public?.shopware?.endpoint ??
+    runtimeConfig.public?.shopware?.shopwareEndpoint;
+  const shopwareAccessToken =
+    runtimeConfig.public?.shopware?.accessToken ??
+    runtimeConfig.public?.shopware?.shopwareAccessToken;
+  if (!shopwareEndpoint || !shopwareAccessToken) {
     throw new Error(
-      "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration",
+      "Make sure that endpoint and accessToken are settled in the configuration",
     );
   }
 
   const apiClient = createAPIClient({
-    baseURL: runtimeConfig.public.shopware.shopwareEndpoint,
-    accessToken: runtimeConfig.public.shopware.shopwareAccessToken,
+    baseURL: shopwareEndpoint,
+    accessToken: shopwareAccessToken,
     contextToken: Cookies.get("sw-context-token"),
     onContextChanged(newContextToken) {
       Cookies.set("sw-context-token", newContextToken, {

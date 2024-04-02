@@ -1,4 +1,5 @@
 import { defineBuildConfig } from "unbuild";
+import { resolve } from "pathe";
 
 export default defineBuildConfig({
   entries: ["src/index"],
@@ -13,8 +14,8 @@ export default defineBuildConfig({
     "@vueuse/core",
   ],
   alias: {
-    "#imports": "./src/index.ts",
-    "#shopware": "./types/api-types.ts",
+    "#imports": resolve("./src/index.ts"),
+    "#shopware": resolve("./types/api-types.ts"),
   },
   failOnWarn: false,
 });

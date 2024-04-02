@@ -8,7 +8,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" test-id="test-wrapper">
     <Frontends />
   </div>
 </template>

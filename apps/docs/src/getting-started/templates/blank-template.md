@@ -29,11 +29,16 @@ In order to connect it to your own store backend, you need to edit the `nuxt.con
 /* ... */
 export default defineNuxtConfig({
   /* ... */
+  shopware: {
+    endpoint: "https://your-business.shopware.store",
+    accessToken: "access-token-from-settings",
+  },
+  // or
   runtimeConfig: {
     public: {
       shopware: {
-        shopwareEndpoint: "https://your-business.shopware.store",
-        shopwareAccessToken: "access-token-from-settings",
+        endpoint: "https://your-business.shopware.store",
+        accessToken: "access-token-from-settings",
       },
     },
   },

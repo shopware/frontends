@@ -37,7 +37,7 @@
         "default": "./dist/index.mjs"
       }
     },
-    "./api-types": "./api-types/storeApiTypes.d.ts",
+    "./api-types": "./api-types/storeApiTypesCommerce.d.ts",
     "./admin-api-types": "./admin-api-types/adminApiTypes.d.ts"
   },
   "scripts": {
@@ -53,15 +53,15 @@
   "devDependencies": {
     "@codspeed/vitest-plugin": "3.1.0",
     "@types/prettier": "3.0.0",
-    "@vitest/coverage-v8": "1.3.1",
+    "@vitest/coverage-v8": "1.4.0",
     "eslint-config-shopware": "workspace:*",
     "prettier": "3.2.5",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "1.3.1"
+    "vitest": "1.4.0"
   },
   "dependencies": {
     "defu": "6.1.4",
-    "ofetch": "1.3.3"
+    "ofetch": "1.3.4"
   }
 }

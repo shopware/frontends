@@ -1,1 +1,1 @@
-export * from "./storeApiTypes.d.ts";
+export * from "./storeApiTypesCommerce.d.ts";

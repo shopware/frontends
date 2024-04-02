@@ -3,34 +3,38 @@
  */
 import {
   defineNuxtModule,
-  addPluginTemplate,
+  addPlugin,
+  createResolver,
+  useLogger,
   // addTypeTemplate,
 } from "@nuxt/kit";
-import { resolve } from "path";
 import { addCustomTab } from "@nuxt/devtools-kit";
+import { defu } from "defu";
+import { isConfigDeprecated } from "./utils";
+const MODULE_ID = "@shopware/nuxt3";
 
 export default defineNuxtModule<ShopwareNuxtOptions>({
   meta: {
-    name: "@shopware/nuxt3",
+    name: MODULE_ID,
     configKey: "shopware",
   },
-  async setup(moduleConfig) {
-    const shopwareEndpoint =
-      moduleConfig.shopwareEndpoint ??
-      "https://demo-frontends.shopware.store/store-api/";
-    const accessToken =
-      moduleConfig.shopwareAccessToken ?? "SWSCBHFSNTVMAWNZDNFKSHLAYW";
+  async setup(options: ShopwareNuxtOptions, nuxt) {
+    const logger = useLogger(MODULE_ID);
+    const resolver = createResolver(import.meta.url);
 
-    addPluginTemplate({
-      filename: "runtime/shopware.plugin.mjs",
-      src: resolve(__dirname, "../plugin.ts"),
-      options: {
-        shopwareEndpoint: shopwareEndpoint,
-        shopwareAccessToken: accessToken,
-        shopwareApiClient: {
-          timeout: moduleConfig.apiClientConfig?.timeout ?? "10000",
-        },
-      },
+    nuxt.options.runtimeConfig.public.shopware = defu(
+      nuxt.options.runtimeConfig.public.shopware || {},
+      options || {},
+    );
+
+    if (isConfigDeprecated(nuxt.options?.runtimeConfig?.public?.shopware)) {
+      logger.warn(
+        "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
+      );
+    }
+
+    addPlugin({
+      src: resolver.resolve("../plugin.ts"),
     });
 
     // TODO: define template only when file is not present in root directory
@@ -57,8 +61,10 @@ export type ShopwareNuxtOptions = {
    *
    * Default demo store: "https://demo-frontends.swstage.store/"
    */
-  shopwareEndpoint: string;
-  shopwareAccessToken: string;
+  endpoint?: string;
+  shopwareEndpoint?: string;
+  accessToken?: string;
+  shopwareAccessToken?: string;
   devStorefrontUrl?: string;
   apiClientConfig?: {
     timeout?: number | string;
@@ -80,6 +86,9 @@ declare module "@nuxt/schema" {
     shopware?: ShopwareNuxtOptions;
   }
 
+  interface RuntimeConfig {
+    shopware?: Pick<ShopwareNuxtOptions, "endpoint" | "shopwareEndpoint">;
+  }
   interface PublicRuntimeConfig {
     shopware: ShopwareNuxtOptions;
   }

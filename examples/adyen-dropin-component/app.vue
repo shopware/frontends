@@ -9,9 +9,7 @@ const {
 } = useRuntimeConfig();
 
 // useListing for further product search
-const { search, getElements } = useListing({
-  listingType: "productSearchListing",
-});
+const { search, getElements } = useProductSearchListing();
 // composable used to add to cart a product
 const { addProduct } = useCart();
 // configured apiClient instance in order to make a custom API call
@@ -76,7 +74,7 @@ const onPayButton = async (state: any) => {
 };
 </script>
 <template>
-  <div class="p-4">
+  <div class="p-4" test-id="test-wrapper">
     <ProgressBar :activeStep="activeStep" />
     <div class="messages">
       <div

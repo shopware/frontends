@@ -245,7 +245,16 @@ export type CmsElementProductSlider = CmsSlot & {
 
 // Sidebar Filter (Sidebar filter)
 
-type CmsSidebarFilterElementConfig = unknown;
+type CmsSidebarFilterElementConfig = {
+  boxLayout: ElementConfig<BoxLayout>;
+  content: ElementConfig<string>;
+  displayMode: ElementConfig<DisplayMode>;
+  media: ElementConfig<string>;
+  minHeight: ElementConfig<string | number>;
+  newTab: ElementConfig<boolean>;
+  url: ElementConfig<string>;
+  verticalAlign: ElementConfig<VerticalAlign>;
+};
 
 export type CmsElementSidebarFilter = CmsSlot & {
   type: "sidebar-filter";

@@ -186,7 +186,7 @@ function next() {
             :key="image.media.url"
           >
             <div
-              class="w-14 h-20 overflow-hidden cursor-pointer p-1 border-secondary-200 rounded transition duration-150 ease-in-out"
+              class="w-20 h-20 overflow-hidden cursor-pointer p-1 border-secondary-200 rounded transition duration-150 ease-in-out"
               :class="{
                 border: i !== currentIndex,
                 'border-indigo-500 border-3': i === currentIndex,
@@ -228,6 +228,7 @@ function next() {
         <CmsElementImage
           v-for="image of mediaGallery"
           :key="image.media.url"
+          :imageGallery="true"
           :content="{ data: image, config: props.content.config } as any"
         />
       </SwSlider>

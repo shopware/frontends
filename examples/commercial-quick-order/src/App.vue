@@ -155,7 +155,7 @@ watch(query, (value) => {
 });
 </script>
 <template>
-  <div>
+  <div test-id="test-wrapper">
     {{ csvFile?.file?.files }}
     <div class="w-full mb-2">
       <button

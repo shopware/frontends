@@ -1,0 +1,28 @@
+name: Stackblitz templates
+run-name: Playwright stackblitz templates 🚀
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '59 23 * * *'
+jobs:
+  run-code_examples-tests:
+    runs-on: ubuntu-latest
+    name: Playwright testing stackblitz templates
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - name: Install dependencies
+        run: npm ci
+      - name: Install playwright browsers
+        run: npx playwright install --with-deps
+      - name: Run tests
+        run: npx playwright test checkStackblitzTemplates.spec.ts --project=chromium
+      - name: try zip the test result folder
+        if: failure()
+        run: zip -r playwright-report.zip playwright-report/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report zip
+          path: playwright-report.zip
+          retention-days: 7

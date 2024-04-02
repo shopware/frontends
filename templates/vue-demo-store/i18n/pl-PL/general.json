@@ -18,8 +18,8 @@
     "noResults": "Nie znaleziono produktów",
     "resetFilters": "Zresetuj filtry",
     "result": "wynik | wyniki | wyników",
-    "resultsHeader": "Wynik wyszukiwania dla",
-    "see": "zobacz"
+    "see": "zobacz",
+    "resultsHeader": "Wynik wyszukiwania dla"
   },
   "messages": {
     "error": "Coś poszło nie tak, spróbuj ponownie później"

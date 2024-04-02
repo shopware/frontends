@@ -63,3 +63,37 @@ The HTTP status code 412 (Precondition Failed) usually means in the Shopware `st
 ## Access from origin 127.0.0.1:3000 has been blocked by CORS policy
 
 Depending on your server, you may need to set the `Access-Control-Allow-Origin` header to access your server from an external origin. And yes, your local development server is also an external origin in this case. Also, have a look at this [documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin) from MDN.
+
+## Proxy API requests
+
+If you're encountering issues related to Cross-Origin Resource Sharing (CORS) or if you wish to conceal the backend API URL, you can use Vite's proxy mechanism
+
+### Nuxt example
+
+Edit your `nuxt.config.ts` file and add:
+
+```
+  vite: {
+    server: {
+      proxy: {
+        "/store-api": {
+          target: "<backend url>",
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+    },
+  },
+```
+
+Modify the Shopware API endpoint to match your local frontend URL.
+
+```
+  {
+    ...
+      shopware: {
+          endpoint: "<frontends >store-api/",
+          ...
+      }
+  }
+```

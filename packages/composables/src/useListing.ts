@@ -4,6 +4,7 @@ import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from "#imports";
 import ContextError from "./helpers/ContextError";
 import type { Schemas, RequestParameters } from "#shopware";
+import { createSharedComposable } from "@vueuse/core";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -221,6 +222,19 @@ export function useListing(params?: {
       params?.defaultSearchCriteria || ({} as RequestParameters<"searchPage">), //getDefaults(),
   });
 }
+
+/**
+ * Temporary workaround over `useListing` to support shared data. This composable API will change in the future.
+ */
+export const useCategoryListing = createSharedComposable(() =>
+  useListing({ listingType: "categoryListing" }),
+);
+/**
+ * Temporary workaround over `useListing` to support shared data. This composable API will change in the future.
+ */
+export const useProductSearchListing = createSharedComposable(() =>
+  useListing({ listingType: "productSearchListing" }),
+);
 
 /**
  * Factory to create your own listing.
@@ -501,28 +515,28 @@ export function createListingComposable({
   };
 
   return {
-    getInitialListing,
-    setInitialListing,
-    initSearch,
-    search,
-    getCurrentListing,
-    getElements,
-    getSortingOrders,
-    getCurrentSortingOrder,
-    changeCurrentSortingOrder,
-    getCurrentPage,
     changeCurrentPage,
-    getTotal,
-    getTotalPagesCount,
-    getLimit,
-    getInitialFilters,
+    changeCurrentSortingOrder,
+    filtersToQuery,
     getAvailableFilters,
     getCurrentFilters,
-    setCurrentFilters,
-    loading: computed(() => loading.value),
+    getCurrentListing,
+    getCurrentPage,
+    getCurrentSortingOrder,
+    getElements,
+    getInitialFilters,
+    getInitialListing,
+    getLimit,
+    getSortingOrders,
+    getTotal,
+    getTotalPagesCount,
+    initSearch,
     loadMore,
+    loading: computed(() => loading.value),
     loadingMore: computed(() => loadingMore.value),
     resetFilters,
-    filtersToQuery,
+    search,
+    setCurrentFilters,
+    setInitialListing,
   };
 }

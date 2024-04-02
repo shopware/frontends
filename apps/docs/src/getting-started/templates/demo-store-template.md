@@ -70,10 +70,15 @@ The blank template is pre-configured to connect to a public Shopware backend, so
 
 In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and edit a configuration object with `shopware` as a key:
 
-```ts{7-8}
+```ts
 /* ... */
 export default defineNuxtConfig({
   /* ... */
+  shopware: {
+    endpoint: "https://your-business.shopware.store",
+    accessToken: "access-token-from-settings",
+  }
+  // or
   runtimeConfig: {
     public: {
       shopware: {

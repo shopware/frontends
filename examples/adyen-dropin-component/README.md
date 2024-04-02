@@ -45,6 +45,11 @@ There are three sections within `runtimeConfig`:
 
 ```js
 // ./nuxt.config.ts
+shopware: {
+  // your Shopware 6 instance endpoint and access key
+  endpoint: "http://localhost:8000",
+  accessToken: "SWSCCMR1DEXDTK0XRJVSD3DHMW",
+},
 ...
 runtimeConfig: {
     public: {
@@ -52,11 +57,6 @@ runtimeConfig: {
         // for demo purposes, the customer is logged in automatically, so please adjust the loginData to some of yours customer account
         username: "somecustomer@email.com",
         password: "somepassword",
-      },
-      shopware: {
-        // your Shopware 6 instance endpoint and access key
-        shopwareEndpoint: "http://localhost:8000",
-        shopwareAccessToken: "SWSCCMR1DEXDTK0XRJVSD3DHMW",
       },
       adyenCheckout: {
         environment: "test", // Change to 'live' for the live environment.

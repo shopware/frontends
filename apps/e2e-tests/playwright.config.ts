@@ -13,7 +13,7 @@ require("dotenv").config({ path: findEnv() });
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const newLocal = "http://localhost:3000";
+const newLocal = "http://127.0.0.1:8080";
 const baseURL = process.env.BASE_E2E_URL || newLocal;
 
 console.log("Running tests for: ", baseURL);
@@ -83,6 +83,13 @@ const config: PlaywrightTestConfig = {
     //   },
     // },
   ],
+  webServer: {
+    command: "npm start",
+    url: "http://127.0.0.1:8080",
+    reuseExistingServer: !process.env.CI,
+    stdout: "ignore",
+    stderr: "pipe",
+  },
 };
 
 export default config;

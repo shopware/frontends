@@ -30,8 +30,6 @@ test.describe.only("Add review", () => {
     await homePage.openCartPage();
     await page.waitForLoadState("networkidle");
     await productPage.fillReviewForm();
-    await expect(
-      page.getByText("Thank you for submitting your review"),
-    ).toHaveCount(1);
+    await expect(page.getByText("Review added successfully")).toHaveCount(1);
   });
 });

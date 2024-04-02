@@ -9,12 +9,10 @@ export default defineNuxtConfig({
     // TODO: replace with environment variables copied from Github once feature is supported
     api_client_id: "SWIARW9QA2DYOUX3OXJMRGX2UQ", // or import.meta.env.NUXT_SHOPWARE_ACCESS_KEY_ID when .env is defined
     api_client_secret: "dTRpT3ptZDlmMHZocDNrb2ZOODYxYWtIWnZtRTByUnBvRXh5M3Q", // or import.meta.env.NUXT_SHOPWARE_SECRET_ACCESS_KEY  when .env is defined
-    public: {
-      shopware: {
-        shopwareEndpoint: "https://demo-frontends.shopware.store/store-api",
-        shopwareAccessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-      },
-    },
+  },
+  shopware: {
+    endpoint: "https://demo-frontends.shopware.store/store-api",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
   modules: ["@shopware-pwa/nuxt3-module", "@nuxtjs/i18n"],
   typescript: {
