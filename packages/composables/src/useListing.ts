@@ -67,7 +67,9 @@ export type UseListingReturn = {
    * @returns
    */
   search(
-    criteria: RequestParameters<"searchPage">,
+    criteria:
+      | RequestParameters<"readProductListing">
+      | RequestParameters<"searchPage">,
     options?: {
       preventRouteChange?: boolean;
     },
@@ -198,7 +200,11 @@ export function useListing(params?: {
       }
     }
 
-    searchMethod = async (searchCriteria: RequestParameters<"searchPage">) => {
+    searchMethod = async (
+      searchCriteria: typeof listingType extends "productSearchListing"
+        ? RequestParameters<"searchPage">
+        : RequestParameters<"readProductListing">,
+    ) => {
       if (!resourceId) {
         throw new Error(
           "[useListing][search] Search category id does not exist.",
@@ -207,9 +213,9 @@ export function useListing(params?: {
       return apiClient.invoke(
         "readProductListing post /product-listing/{categoryId} sw-include-seo-urls",
         {
-          categoryId: resourceId,
           "sw-include-seo-urls": true,
           ...searchCriteria,
+          categoryId: resourceId,
         },
       );
     };
@@ -250,7 +256,9 @@ export function createListingComposable({
   listingKey,
 }: {
   searchMethod(
-    searchParams: RequestParameters<"searchPage">,
+    searchParams:
+      | RequestParameters<"readProductListing">
+      | RequestParameters<"searchPage">,
   ): Promise<Schemas["ProductListingResult"]>;
   searchDefaults: RequestParameters<"searchPage">;
   listingKey: string;

@@ -11,15 +11,15 @@ declare module "#shopware" {
     RequestReturnType as DefaultRequestReturnType,
   } from "@shopware/api-client";
 
-  type changedComponents = defaultComponents;
-  // example how to extend Cart schema:
-  // type changedComponents = defaultComponents & {
-  //   schemas: {
-  //     Cart: defaultComponents["schemas"]["Cart"] & {
-  //       myspecialfield: "hello field";
-  //     };
-  //   };
-  // };
+  type changedComponents = defaultComponents & {
+    schemas: {
+      SalesChannelContext: defaultComponents["schemas"]["SalesChannelContext"] & {
+        extensions: {
+          adyenData: unknown;
+        };
+      };
+    };
+  };
 
   export type operations = defaultOperations<changedComponents> & {
     readAdyenConfiguration: {
@@ -36,10 +36,38 @@ declare module "#shopware" {
         };
       };
     };
+    handlePaymentMethod: {
+      requestBody: {
+        content: {
+          "application/json": {
+            stateData?: string;
+          };
+        };
+      };
+    };
+    readAdyenPaymentStatus: {
+      requestBody: {
+        content: {
+          "application/json": {
+            orderId: string;
+          };
+        };
+      };
+      responses: {
+        200: {
+          content: {
+            "application/json": {
+              data: {};
+            };
+          };
+        };
+      };
+    };
   };
   export type operationPaths =
     | defaultOperationPaths
-    | "readAdyenConfiguration get /adyen/payment-methods";
+    | "readAdyenConfiguration get /adyen/payment-methods"
+    | "readAdyenPaymentStatus post /adyen/payment-status";
 
   export type Schemas = changedComponents["schemas"];
 

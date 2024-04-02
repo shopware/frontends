@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import "@adyen/adyen-web/dist/adyen.css";
-import type { SessionContext } from "@shopware-pwa/types";
 import {
   onMounted,
   useNuxtApp,
@@ -32,15 +31,9 @@ try {
   );
 }
 
-// adjust a SessionContext type to reflect actual one enhanced by Adyen add-on
-type AdyenEnhancedSessionContext = SessionContext & {
-  extensions: {
-    adyenData: unknown;
-  };
-};
 // init the AdyenCheckout instance
 const checkout = await nuxtApp.$adyenCheckout({
-  ...((sessionContext.value as AdyenEnhancedSessionContext)?.extensions
+  ...(sessionContext.value?.extensions
     ?.adyenData || adyenCheckout),
   paymentMethodsResponse: adyenConfigResponse?.data,
   paymentMethodsConfiguration: {

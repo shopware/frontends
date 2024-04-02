@@ -13,7 +13,7 @@ const { search, getElements } = useProductSearchListing();
 // composable used to add to cart a product
 const { addProduct } = useCart();
 // configured apiClient instance in order to make a custom API call
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 // current step for progress bar displaying <ProgressBar /> in a template
 const activeStep = ref(0);
 // container for keeping and displaying an incoming payment state from adyen
@@ -29,7 +29,7 @@ try {
   activeStep.value = 1;
   // search for a product to be added to cart
   await search({
-    query: "product",
+    search: "product",
     limit: 1,
   });
   // add to cart a found product
@@ -51,22 +51,20 @@ const onPayButton = async (state: any) => {
   const order = await createOrder();
   activeStep.value = 3;
   // send a state got from onPayButton handler to Shopware 6 API
-  await apiInstance.invoke.post("/store-api/handle-payment", {
+  await apiClient.invoke("handlePaymentMethod post /handle-payment", {
     orderId: order.id,
     finishUrl: "http://localhost:3000/success",
     errorUrl: "http://localhost:3000/failure?payment-failed",
-    // adyen specific data
-    stateData: JSON.stringify(state.data),
-  });
+    stateData: JSON.stringify(state.data)
+  })
+
   activeStep.value = 4;
 
   // check for current payment status after payment authorization attempt
-  const paymentStateResponse = await apiInstance.invoke.post(
-    "/store-api/adyen/payment-status",
-    {
-      orderId: order.id,
-    },
-  );
+
+  const paymentStateResponse = await apiClient.invoke("readAdyenPaymentStatus post /adyen/payment-status", {
+    orderId: order.id
+  });
 
   paymentState.value = paymentStateResponse.data;
 
