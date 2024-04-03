@@ -385,6 +385,9 @@ importers:
 
   examples/mollie-credit-card:
     devDependencies:
+      '@shopware-pwa/composables-next':
+        specifier: canary
+        version: link:../../packages/composables
       '@shopware-pwa/nuxt3-module':
         specifier: canary
         version: link:../../packages/nuxt3-module
