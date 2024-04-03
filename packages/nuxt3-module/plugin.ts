@@ -67,12 +67,12 @@ export default defineNuxtPlugin((NuxtApp) => {
 //     const languageId = getCookieLanguageId();
 
 //     const shopwareEndpoint =
-//       runtimeConfig?.shopware?.shopwareEndpoint ||
-//       runtimeConfig.public.shopware.shopwareEndpoint;
+//       runtimeConfig?.shopware?.endpoint ||
+//       runtimeConfig.public.shopware.endpoint;
 
 //     if (
 //       !shopwareEndpoint ||
-//       !runtimeConfig.public?.shopware?.shopwareAccessToken
+//       !runtimeConfig.public?.shopware?.accessToken
 //     ) {
 //       throw new Error(
 //         "Make sure that shopwareEndpoint and shopwareAccessToken are settled in the configuration",
@@ -81,7 +81,7 @@ export default defineNuxtPlugin((NuxtApp) => {
 
 //     const instance = createApiClientInstance(
 //       shopwareEndpoint,
-//       runtimeConfig.public.shopware.shopwareAccessToken,
+//       runtimeConfig.public.shopware.accessToken,
 //       getContextToken(isUserCookieContext),
 //       getLanguageId(isUserCookieContext),
 //     );
@@ -110,8 +110,8 @@ export default defineNuxtPlugin((NuxtApp) => {
 //     });
 
 //     const apiClient = createAPIClient<operations, operationPaths>({
-//       baseURL: runtimeConfig.public.shopware.shopwareEndpoint,
-//       accessToken: runtimeConfig.public.shopware.shopwareAccessToken,
+//       baseURL: runtimeConfig.public.shopware.endpoint,
+//       accessToken: runtimeConfig.public.shopware.accessToken,
 //       contextToken: Cookies.get("sw-context-token"),
 //       onContextChanged(newContextToken) {
 //         Cookies.set("sw-context-token", newContextToken, {
