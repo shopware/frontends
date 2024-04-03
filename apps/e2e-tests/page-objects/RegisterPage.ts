@@ -4,11 +4,14 @@ import { faker } from "@faker-js/faker";
 export class RegisterForm {
   // Define selectors
   readonly page: Page;
+  readonly accountType: Locator;
   readonly salutation: Locator;
   readonly firstName: Locator;
   readonly lastName: Locator;
   readonly emailAdrdress: Locator;
   readonly password: Locator;
+  readonly vatId: Locator;
+  readonly companyName: Locator;
   readonly street: Locator;
   readonly zipcode: Locator;
   readonly city: Locator;
@@ -19,11 +22,14 @@ export class RegisterForm {
   // Init selectors using constructor
   constructor(page: Page) {
     this.page = page;
+    this.accountType = page.getByTestId("registration-account-type-select");
     this.salutation = page.getByTestId("registration-salutation-select");
     this.firstName = page.getByTestId("registration-first-name-input");
     this.lastName = page.getByTestId("registration-last-name-input");
     this.emailAdrdress = page.getByTestId("registration-email-input");
     this.password = page.getByTestId("registration-password-input");
+    this.vatId = page.getByTestId("registration-vatid-input");
+    this.companyName = page.getByTestId("registration-company-input");
     this.street = page.getByTestId("registration-street-input");
     this.zipcode = page.getByTestId("registration-zipcode-input");
     this.city = page.getByTestId("registration-city-input");
@@ -52,6 +58,12 @@ export class RegisterForm {
     await this.city.type(city);
     await this.country.selectOption({ label: "Germany" });
     await this.countryState.selectOption({ label: "Bavaria" });
+  }
+
+  async fillCompanyData(companyName: string, vatId: string) {
+    await this.accountType.selectOption({ label: "Company" });
+    await this.companyName.type(companyName);
+    await this.vatId.type(vatId);
   }
 
   async submitRegistraionForm() {

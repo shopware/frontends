@@ -1,8 +1,5 @@
 export default defineNuxtConfig({
-  extends: [
-    "@shopware-pwa/composables-next/nuxt-layer",
-    "@shopware-pwa/cms-base",
-  ],
+  extends: ["@shopware-pwa/composables-next/nuxt-layer"],
   shopware: {
     // your Shopware 6 instance endpoint and access key
     endpoint: "https://demo-frontends.shopware.store",
