@@ -2,8 +2,8 @@
   "form": {
     "accountType": {
       "title": "Typ konta",
-      "private": "Osobą prywatną",
-      "business": "Klientem biznesowym"
+      "private": "Osoba prywatna",
+      "business": "Klient biznesowy"
     },
     "salutation": "Forma grzecznościowa",
     "chooseSalutation": "Wybierz formę grzecznościową...",
@@ -13,8 +13,8 @@
     "lastNamePlaceholder": "Wpisz nazwisko...",
     "country": "Kraj",
     "chooseCountry": "Wybierz kraj...",
-    "company": "Firmę",
-    "companyPlaceholder": "Wprowadź firmę...",
+    "company": "Firma",
+    "companyPlaceholder": "Wprowadź nazwę firmy...",
     "streetAddress": "Adres ulicy",
     "streetPlaceholder": "Wpisz ulicę...",
     "password": "Hasło",
