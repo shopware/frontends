@@ -1,4 +1,5 @@
-import { inject, provide, ref, unref } from "vue";
+import { ref, unref } from "vue";
+import { provideLocal, injectLocal } from "@vueuse/core";
 import type { Ref } from "vue";
 
 /**
@@ -20,8 +21,8 @@ export function useContext<T>(
 
   const _context: Ref<T> = isNewContext
     ? (ref(unref(params?.context)) as Ref<T>)
-    : (inject(injectionName, ref()) as Ref<T>);
-  provide(injectionName, _context);
+    : (injectLocal(injectionName, ref()) as Ref<T>);
+  provideLocal(injectionName, _context);
 
   /**
    * Used for global context to replace it with new Value. Used mainly for session context
