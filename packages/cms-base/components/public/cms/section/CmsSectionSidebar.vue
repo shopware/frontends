@@ -23,7 +23,7 @@ const { category } = useCategory();
         {{ getTranslatedProperty(category, "name") }}
       </h1>
     </div>
-    <div class="col-span-12 md:col-span-9 order-1 md:order-2">
+    <div class="col-span-12 md:col-span-7 lg:col-span-9 order-1 md:order-2">
       <CmsGenericBlock
         v-for="cmsBlock in mainBlocks"
         class="overflow-auto"
@@ -33,7 +33,7 @@ const { category } = useCategory();
     </div>
     <div
       :class="{
-        'align-top col-span-12 md:col-span-3 order-2 md:order-1':
+        'align-top col-span-12 md:col-span-5 lg:col-span-3 order-2 md:order-1':
           mobileBehavior !== 'hidden',
         'hidden md:block': mobileBehavior === 'hidden',
       }"

@@ -157,25 +157,25 @@ compareRouteQueryWithInitialListing();
       <div class="mt-6">
         <div
           v-if="!loading"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
+          class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8"
         >
           <SwProductCard
             v-for="product in getElements"
             :key="product.id"
             :product="product"
             :isProductListing="isProductListing"
-            class="p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 ease-in-out"
+            class="p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 ease-in-out w-full lg:w-3/7 2xl:w-7/24 mr-0 sm:mr-8 mb-8"
           />
         </div>
         <div
           v-if="loading"
           data-testid="loading"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
+          class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8"
         >
           <ProductCardSkeleton
             v-for="index in limit"
             :key="index"
-            class="w-full mb-8"
+            class="w-full mb-8 sm:w-3/7 lg:w-2/7 2xl:w-7/24 mr-0 sm:mr-8 mb-8"
           />
         </div>
         <div
