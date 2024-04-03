@@ -189,8 +189,6 @@ function buildImageSliderTrackStyle(
       height = childComponent?.children[0].children[0].clientHeight
         ? `${childComponent.clientHeight}px`
         : (height = `auto`);
-    } else if (displayModeValue.value === "contain") {
-      height = `${imageSliderTrack.value?.clientHeight}px`;
     }
     styleObj = {
       ...styleObj,

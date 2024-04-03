@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import "@adyen/adyen-web/dist/adyen.css";
-import type { SessionContext } from "@shopware-pwa/types";
 import {
   onMounted,
   useNuxtApp,
@@ -14,7 +13,7 @@ const emits = defineEmits<{
   payButtonClicked: [state: any];
 }>();
 
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 const { sessionContext } = useSessionContext();
 const {
   public: { adyenCheckout },
@@ -25,8 +24,8 @@ const nuxtApp = useNuxtApp();
 let adyenConfigResponse;
 // get the clientKey and environment settings from backend (will overwrite the corresponding settings from nuxt.config.ts)
 try {
-  adyenConfigResponse = await apiInstance.invoke.get(
-    "/store-api/adyen/payment-methods",
+  adyenConfigResponse = await apiClient.invoke(
+    "readAdyenConfiguration get /adyen/payment-methods",
   );
 } catch (error) {
   alert(
@@ -34,16 +33,9 @@ try {
   );
 }
 
-// adjust a SessionContext type to reflect actual one enhanced by Adyen add-on
-type AdyenEnhancedSessionContext = SessionContext & {
-  extensions: {
-    adyenData: unknown;
-  };
-};
 // init the AdyenCheckout instance
 const checkout = await nuxtApp.$adyenCheckout({
-  ...((sessionContext.value as AdyenEnhancedSessionContext)?.extensions
-    ?.adyenData || adyenCheckout),
+  ...(sessionContext.value?.extensions?.adyenData || adyenCheckout),
   paymentMethodsResponse: adyenConfigResponse?.data,
   paymentMethodsConfiguration: {
     card: {

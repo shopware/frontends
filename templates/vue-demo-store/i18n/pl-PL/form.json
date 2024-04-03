@@ -1,5 +1,10 @@
 {
   "form": {
+    "accountType": {
+      "title": "Typ konta",
+      "private": "Osoba prywatna",
+      "business": "Klient biznesowy"
+    },
     "salutation": "Forma grzecznościowa",
     "chooseSalutation": "Wybierz formę grzecznościową...",
     "firstName": "Imię",
@@ -8,6 +13,8 @@
     "lastNamePlaceholder": "Wpisz nazwisko...",
     "country": "Kraj",
     "chooseCountry": "Wybierz kraj...",
+    "company": "Firma",
+    "companyPlaceholder": "Wprowadź nazwę firmy...",
     "streetAddress": "Adres ulicy",
     "streetPlaceholder": "Wpisz ulicę...",
     "password": "Hasło",
@@ -17,6 +24,8 @@
     "email": "Adres e-mail",
     "emailPlaceholder": "Wpisz adres e-mail...",
     "confirmEmail": "Potwierdź e-mail",
+    "vatId": "Nr VAT",
+    "vatIdPlaceholder": "Wprowadź Nr VAT...",
     "city": "Miasto",
     "cityPlaceholder": "Wpisz miasto...",
     "postalCode": "Kod pocztowy",
