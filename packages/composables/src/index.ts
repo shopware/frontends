@@ -77,7 +77,6 @@ export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
 
     return {
       componentName,
-      componentNameToResolve,
       isResolved: resolvedComponent !== componentName,
       resolvedComponent:
         typeof resolvedComponent !== "string" ? resolvedComponent : undefined,
@@ -85,7 +84,6 @@ export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
   } catch (e) {
     return {
       componentName,
-      componentNameToResolve,
       resolvedComponent: undefined,
       resolved: false,
       error: (e as Error).message,

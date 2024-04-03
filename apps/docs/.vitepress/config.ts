@@ -78,10 +78,6 @@ export const sidebar = [
         text: "CMS",
         link: "/getting-started/cms/",
         items: [
-          {
-            text: "Custom Elements",
-            link: "/getting-started/cms/custom-elements",
-          },
           { text: "Content Pages", link: "/getting-started/cms/content-pages" },
           {
             text: "Customize Components",

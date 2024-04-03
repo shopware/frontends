@@ -9,12 +9,9 @@ const props = defineProps<{
 }>();
 
 const DynamicRender = () => {
-  const {
-    resolvedComponent,
-    componentName,
-    isResolved,
-    componentNameToResolve,
-  } = resolveCmsComponent(props.content);
+  const { resolvedComponent, componentName, isResolved } = resolveCmsComponent(
+    props.content,
+  );
   if (resolvedComponent) {
     if (!isResolved)
       return h("div", {}, "Problem resolving component: " + componentName);
@@ -28,8 +25,7 @@ const DynamicRender = () => {
       class: cssClasses,
     });
   }
-  console.error("Component not resolved: " + componentNameToResolve);
-  return h("div", {}, "");
+  return h("div", {}, "Loading...");
 };
 </script>
 
