@@ -24,7 +24,9 @@ const nuxtApp = useNuxtApp();
 let adyenConfigResponse;
 // get the clientKey and environment settings from backend (will overwrite the corresponding settings from nuxt.config.ts)
 try {
-  adyenConfigResponse = await apiClient.invoke("readAdyenConfiguration get /adyen/payment-methods")
+  adyenConfigResponse = await apiClient.invoke(
+    "readAdyenConfiguration get /adyen/payment-methods",
+  );
 } catch (error) {
   alert(
     "The project or API instance isn't configured properly. Please check the README.md to have it working correctly.",
@@ -33,8 +35,7 @@ try {
 
 // init the AdyenCheckout instance
 const checkout = await nuxtApp.$adyenCheckout({
-  ...(sessionContext.value?.extensions
-    ?.adyenData || adyenCheckout),
+  ...(sessionContext.value?.extensions?.adyenData || adyenCheckout),
   paymentMethodsResponse: adyenConfigResponse?.data,
   paymentMethodsConfiguration: {
     card: {

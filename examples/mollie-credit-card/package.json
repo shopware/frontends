@@ -1,32 +1,24 @@
 {
-  "name": "example-nuxt-mollie-frontends",
-  "version": "1.0.0",
-  "description": "Nuxt module for Mollie Payments",
-  "license": "MIT",
-  "type": "module",
+  "name": "example-mollie-credit-card",
+  "version": "0.0.9",
   "private": true,
-  "exports": {
-    ".": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/module.mjs",
-      "require": "./dist/module.cjs"
-    }
-  },
-  "main": "./dist/module.cjs",
-  "types": "./dist/types.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "dev": "nuxi dev playground"
-  },
-  "dependencies": {
-    "@nuxt/kit": "3.11.1"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@nuxt/schema": "3.11.1",
+    "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/composables-next": "canary",
-    "@types/node": "20.12.2",
-    "nuxt": "3.11.1"
+    "@types/node": "20.11.28",
+    "@vueuse/nuxt": "10.9.0",
+    "nuxt": "3.11.1",
+    "typescript": "5.4.2",
+    "vue": "3.4.21",
+    "vue-tsc": "2.0.6"
+  },
+  "engines": {
+    "node": "^18.17.x || ^20.x"
   }
 }

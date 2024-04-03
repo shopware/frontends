@@ -54,16 +54,19 @@ const onPayButton = async (state: any) => {
     orderId: order.id,
     finishUrl: "http://localhost:3000/success",
     errorUrl: "http://localhost:3000/failure?payment-failed",
-    stateData: JSON.stringify(state.data)
-  })
+    stateData: JSON.stringify(state.data),
+  });
 
   activeStep.value = 4;
 
   // check for current payment status after payment authorization attempt
 
-  const paymentStateResponse = await apiClient.invoke("readAdyenPaymentStatus post /adyen/payment-status", {
-    orderId: order.id
-  });
+  const paymentStateResponse = await apiClient.invoke(
+    "readAdyenPaymentStatus post /adyen/payment-status",
+    {
+      orderId: order.id,
+    },
+  );
 
   paymentState.value = paymentStateResponse.data;
 
