@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMollieCreditCard, useMollie, onMounted } from "#imports";
-import { MollieLocale } from "../../types";
+import type { MollieLocale } from "@/types";
 
 const props = defineProps<{
   locale?: MollieLocale;

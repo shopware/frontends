@@ -1,5 +1,5 @@
 import { useNuxtApp } from "#imports";
-import { CreateLocaleInstanceArgs } from "../../types";
+import type { CreateLocaleInstanceArgs } from "@/types";
 
 /**
  * Composable function to initialize mollie instance and get payment session token
