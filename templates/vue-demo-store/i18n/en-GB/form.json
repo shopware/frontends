@@ -1,5 +1,10 @@
 {
   "form": {
+    "accountType": {
+      "title": "Account type",
+      "private": "Private",
+      "business": "Company"
+    },
     "salutation": "Salutation",
     "chooseSalutation": "Choose salutation...",
     "firstName": "First name",
@@ -8,6 +13,8 @@
     "lastNamePlaceholder": "Enter last name...",
     "country": "Country",
     "chooseCountry": "Choose country...",
+    "company": "Company",
+    "companyPlaceholder": "Enter company...",
     "streetAddress": "Street address",
     "streetPlaceholder": "Enter street...",
     "password": "Password",
@@ -16,6 +23,8 @@
     "repeatPasswordPlaceholder": "Repeat Password",
     "email": "Email address",
     "emailPlaceholder": "Enter the email...",
+    "vatId": "VAT-ID",
+    "vatIdPlaceholder": "Enter VAT-ID...",
     "confirmEmail": "Confirm e-mail",
     "city": "City",
     "cityPlaceholder": "Enter city...",
