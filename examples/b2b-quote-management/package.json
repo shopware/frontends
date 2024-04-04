@@ -22,6 +22,6 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "@vueuse/core": "^10.8.0",
     "unocss": "0.58.5",
-    "vite": "^5.1.4"
+    "vite": "5.2.6"
   }
 }
