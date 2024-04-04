@@ -1,5 +1,5 @@
 import { useNuxtApp, ref } from "#imports";
-import { MollieElement } from "../../types";
+import type { MollieElement } from "@/types";
 
 /**
  * Composable function to mount and unmount Credit Card component

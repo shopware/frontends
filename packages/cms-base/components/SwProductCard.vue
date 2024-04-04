@@ -41,6 +41,7 @@ const props = withDefaults(
 type Translations = {
   product: {
     addedToWishlist: string;
+    removedFromTheWishlist: string;
     reason: string;
     cannotAddToWishlist: string;
     addedToCart: string;
@@ -52,6 +53,7 @@ type Translations = {
 let translations: Translations = {
   product: {
     addedToWishlist: "has been added to wishlist.",
+    removedFromTheWishlist: "has been removed from wishlist.",
     reason: "Reason",
     cannotAddToWishlist: "cannot be added to wishlist.",
     addedToCart: "has been added to cart.",
@@ -69,29 +71,32 @@ const { addToCart, isInCart, count } = useAddToCart(product);
 const { addToWishlist, removeFromWishlist, isInWishlist } = useProductWishlist(
   product.value.id,
 );
+const isLoading = ref(false);
 
 const toggleWishlistProduct = async () => {
-  if (!isInWishlist.value) {
-    try {
-      await addToWishlist();
-      return pushSuccess(
-        `${props.product?.translated?.name} ${translations.product.addedToWishlist}`,
+  isLoading.value = true;
+
+  try {
+    if (!isInWishlist.value) await addToWishlist();
+    else await removeFromWishlist();
+    pushSuccess(
+      `${props.product?.translated?.name} ${isLoading.value ? translations.product.addedToWishlist : translations.product.removedFromTheWishlist}`,
+    );
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      const reason = error.details.errors?.[0]?.detail
+        ? `${translations.product.reason}: ${error.details.errors?.[0]?.detail}`
+        : "";
+      return pushError(
+        `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
+        {
+          timeout: 5000,
+        },
       );
-    } catch (error) {
-      if (error instanceof ApiClientError) {
-        const reason = error.details.errors?.[0]?.detail
-          ? `${translations.product.reason}: ${error.details.errors?.[0]?.detail}`
-          : "";
-        return pushError(
-          `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
-          {
-            timeout: 5000,
-          },
-        );
-      }
     }
+  } finally {
+    isLoading.value = false;
   }
-  removeFromWishlist();
 };
 
 const addToCartProxy = async () => {
@@ -159,6 +164,7 @@ const srcPath = computed(() => {
     <button
       aria-label="Add to wishlist"
       type="button"
+      :disabled="isLoading"
       @click="toggleWishlistProduct"
       class="absolute bg-transparent top-2 right-2 hover:animate-count-infinite hover:animate-heart-beat"
       data-testid="product-box-toggle-wishlist-button"

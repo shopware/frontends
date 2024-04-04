@@ -1,5 +1,6 @@
 declare module "#shopware" {
   import type { createAPIClient } from "@shopware/api-client";
+  import type { PaymentMethod, StoredPaymentMethod } from "./adyen";
   import type {
     operationPaths as defaultOperationPaths,
     operations as defaultOperations,
@@ -10,70 +11,69 @@ declare module "#shopware" {
     RequestReturnType as DefaultRequestReturnType,
   } from "@shopware/api-client";
 
-  type changedComponents = defaultComponents;
-  // example how to extend Cart schema:
-  // type changedComponents = components & {
-  //   schemas: {
-  //     Cart: defaultComponents["schemas"]["Cart"] & {
-  //       myspecialfield: "hello field";
-  //     };
-  //   };
-  // };
-
-  type extendedPaths =
-    | "quickOrderProductSearch get /quick-order/product?search"
-    | "quickOrderLoadFile post /quick-order/load-file"
-    | defaultOperationPaths;
-
-  type extendedOperations = {
-    quickOrderProductSearch: {
-      parameters: {
-        query: {
-          /** Product search string  */
-          search: string;
+  type changedComponents = defaultComponents & {
+    schemas: {
+      SalesChannelContext: defaultComponents["schemas"]["SalesChannelContext"] & {
+        extensions: {
+          adyenData: unknown;
         };
       };
+    };
+  };
+
+  export type operations = defaultOperations<changedComponents> & {
+    readAdyenConfiguration: {
       responses: {
-        204: never;
-        400: never;
         200: {
           content: {
             "application/json": {
-              elements: any;
+              data: {
+                paymentMethods: PaymentMethod[];
+                storedPaymentMethods: StoredPaymentMethod[];
+              };
             };
           };
         };
       };
     };
-    quickOrderLoadFile: {
+    handlePaymentMethod: {
       requestBody: {
         content: {
           "application/json": {
-            formData: any;
+            stateData?: string;
+          };
+        };
+      };
+    };
+    readAdyenPaymentStatus: {
+      requestBody: {
+        content: {
+          "application/json": {
+            orderId: string;
           };
         };
       };
       responses: {
-        204: never;
-        400: never;
         200: {
           content: {
             "application/json": {
-              products: any;
+              data: {};
             };
           };
         };
       };
     };
-  } & defaultOperations<changedComponents>;
+  };
+  export type operationPaths =
+    | defaultOperationPaths
+    | "readAdyenConfiguration get /adyen/payment-methods"
+    | "readAdyenPaymentStatus post /adyen/payment-status";
 
-  export type operations = extendedOperations;
-  export type operationPaths = extendedPaths;
   export type Schemas = changedComponents["schemas"];
 
   // we're exporting our own Api Client definition as it depends on our own instance
   export type ApiClient = ReturnType<
-    typeof createAPIClient<extendedOperations, extendedPaths>
+    typeof createAPIClient<operations, operationPaths>
   >;
   export type RequestParameters<T extends keyof operations> =
     DefaultRequestParameters<T, operations>;
