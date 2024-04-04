@@ -4,7 +4,7 @@ This example should help get you started developing [Shopware Frontends](https:/
 
 ## Customization
 
-- edit [./app.vue](./src/App.vue) in order to change the current example
+- edit [./app.vue](./app.vue) in order to change the current example
 
 ## Project Setup
 
