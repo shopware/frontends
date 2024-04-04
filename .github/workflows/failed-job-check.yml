@@ -1,4 +1,4 @@
-name: Check for jobs failure
+name: Send notification for jobs failure
 on:
   workflow_run:
     workflows:
