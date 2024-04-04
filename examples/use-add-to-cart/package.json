@@ -1,22 +1,21 @@
 {
   "name": "example-use-add-to-cart",
-  "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@shopware-pwa/composables-next": "canary",
-    "@shopware/api-client": "canary",
-    "js-cookie": "3.0.5",
-    "vue": "3.4.21"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@types/node": "20.12.2",
-    "@vitejs/plugin-vue": "5.0.4",
-    "vite": "5.2.6"
+    "@shopware-pwa/composables-next": "canary",
+    "@shopware-pwa/nuxt3-module": "canary",
+    "@types/node": "20.11.28",
+    "@unocss/nuxt": "0.58.8",
+    "nuxt": "3.11.1",
+    "typescript": "5.4.2",
+    "vue": "3.4.21",
+    "vue-tsc": "2.0.6"
   }
 }

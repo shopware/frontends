@@ -1,13 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import {
-  useAddToCart,
-  usePrice,
-  useProductPrice,
-  useProductSearch,
-  useCart,
-} from "@shopware-pwa/composables-next/dist";
-
 const product = ref();
 
 const { search } = useProductSearch();
