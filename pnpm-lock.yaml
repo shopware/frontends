@@ -561,29 +561,31 @@ importers:
         version: 5.1.4(@types/node@20.11.17)
 
   examples/use-cart:
-    dependencies:
+    devDependencies:
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
-      '@shopware/api-client':
+      '@shopware-pwa/nuxt3-module':
         specifier: canary
-        version: link:../../packages/api-client-next
-      js-cookie:
-        specifier: 3.0.5
-        version: 3.0.5
-      vue:
-        specifier: 3.4.21
-        version: 3.4.21(typescript@5.4.3)
-    devDependencies:
+        version: link:../../packages/nuxt3-module
       '@types/node':
         specifier: ^20
         version: 20.11.17
-      '@vitejs/plugin-vue':
-        specifier: 5.0.4
-        version: 5.0.4(vite@5.1.4)(vue@3.4.21)
-      vite:
-        specifier: ^5.1.4
-        version: 5.1.4(@types/node@20.11.17)
+      '@unocss/nuxt':
+        specifier: 0.58.8
+        version: 0.58.8(postcss@8.4.38)
+      nuxt:
+        specifier: 3.11.1
+        version: 3.11.1(@types/node@20.11.17)(typescript@5.4.2)(vue-tsc@2.0.6)
+      typescript:
+        specifier: 5.4.2
+        version: 5.4.2
+      vue:
+        specifier: 3.4.21
+        version: 3.4.21(typescript@5.4.2)
+      vue-tsc:
+        specifier: 2.0.6
+        version: 2.0.6(typescript@5.4.2)
 
   examples/use-checkout:
     dependencies:
@@ -18815,8 +18817,8 @@ packages:
     dependencies:
       '@types/node': 20.11.30
       esbuild: 0.19.12
-      postcss: 8.4.38
-      rollup: 4.13.0
+      postcss: 8.4.35
+      rollup: 4.10.0
     optionalDependencies:
       fsevents: 2.3.3
 
