@@ -7,11 +7,11 @@
     "generate": "nuxt generate"
   },
   "devDependencies": {
-    "@adyen/adyen-web": "5.61.0",
+    "@adyen/adyen-web": "5.62.0",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
     "@unocss/nuxt": "0.58.8",
-    "nuxt": "3.11.1"
+    "nuxt": "3.11.2"
   }
 }
