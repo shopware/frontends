@@ -11,7 +11,7 @@
   "devDependencies": {
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/composables-next": "canary",
-    "@types/node": "20.11.28",
+    "@types/node": "20.12.4",
     "@vueuse/nuxt": "10.9.0",
     "nuxt": "3.11.1",
     "typescript": "5.4.2",
