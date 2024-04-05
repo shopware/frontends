@@ -16,7 +16,7 @@ overrides:
   semver: ^7.6.0
   sharp: ^0.33.2
   socks: ^2.8.1
-  undici: ^5.28.3
+  undici: ^5.28.4
   vite@4>docs: ^4.5.3
   vite@5: ^5.2.6
   yaml@2: ^2.3.4
@@ -4206,7 +4206,6 @@ packages:
       - vls
       - vti
       - vue-tsc
-    dev: true
 
   /@nuxt/vite-builder@3.11.1(@types/node@20.11.30)(eslint@8.57.0)(rollup@3.29.4)(typescript@5.4.3)(vue-tsc@2.0.7)(vue@3.4.21):
     resolution: {integrity: sha512-8DVK2Jb9xgfnvTfKr5mL3UDdAIrd3q3F4EmoVsXVKJe8NTt9LW38QdGwGViIQm9wzLDDEo0mgWF+n7WoGEH0xQ==}
@@ -7411,7 +7410,7 @@ packages:
       ts-morph: 12.0.0
       ts-node: 10.9.1(@types/node@20.11.30)(typescript@4.9.5)
       typescript: 4.9.5
-      undici: 5.28.3
+      undici: 5.28.4
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -7963,7 +7962,7 @@ packages:
       '@vueuse/core': 10.9.0(vue@3.4.21)
       '@vueuse/metadata': 10.9.0
       local-pkg: 0.5.0
-      nuxt: 3.11.1(@types/node@20.11.30)(eslint@8.57.0)(typescript@5.4.3)
+      nuxt: 3.11.1(@types/node@20.11.17)(typescript@5.4.3)(vue-tsc@2.0.7)
       vue-demi: 0.14.7(vue@3.4.21)
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -14734,7 +14733,6 @@ packages:
       - vti
       - vue-tsc
       - xml2js
-    dev: true
 
   /nuxt@3.11.1(@types/node@20.11.30)(eslint@8.57.0)(rollup@3.29.4)(typescript@5.4.3)(vue-tsc@2.0.7):
     resolution: {integrity: sha512-CsncE1dxP0cmOYT+PBdjMD0bOK8eZizG5tgNWUOJAAAtU45sO38maoBumYYL2kUpT/SC/dMP+831DAcVPvi9pQ==}
@@ -15088,7 +15086,7 @@ packages:
       fast-glob: 3.3.2
       js-yaml: 4.1.0
       supports-color: 9.4.0
-      undici: 5.28.3
+      undici: 5.28.4
       yargs-parser: 21.1.1
 
   /openapi3-ts@2.0.2:
@@ -18094,8 +18092,8 @@ packages:
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
-  /undici@5.28.3:
-    resolution: {integrity: sha512-3ItfzbrhDlINjaP0duwnNsKpDQk3acHI3gVJ1z4fmwMK31k5G9OVIAMLSIaP6w4FaGkaAkN6zaQO9LUvZ1t7VA==}
+  /undici@5.28.4:
+    resolution: {integrity: sha512-72RFADWFqKmUb2hmmvNODKL3p9hcB6Gt2DOQMis1SEBaV6a4MH8soBvzg+95CYhCKPFedut2JY9bMfrDl9D23g==}
     engines: {node: '>=14.0'}
     dependencies:
       '@fastify/busboy': 2.1.0
