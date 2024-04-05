@@ -22,6 +22,7 @@ const routePath = route.path.replace(`${locale.value}`, "").replace("//", "/");
 const { data: seoResult } = await useAsyncData(
   "cmsResponse" + routePath,
   async () => {
+    throw new Error("surprise surprise!");
     // For client links if the history state contains seo url information we can omit the api call
     if (process.client) {
       if (history.state?.routeName) {
