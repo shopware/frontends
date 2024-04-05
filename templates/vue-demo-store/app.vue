@@ -39,6 +39,8 @@ const localeFromHeader = headers?.["accept-language"]
   )
   .find(Boolean);
 
+throw new Error("The app is done.");
+
 usePrice({
   currencyCode: sessionContextData.value?.currency?.isoCode || "",
   localeCode: localeFromHeader,
