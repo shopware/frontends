@@ -42,7 +42,7 @@ jobs:
         npx playwright test -c examples.config.ts checkStackblitzTemplates.spec.ts
  on-failure:
     runs-on: macos-14
-    if: failure()
+    if: always()
     steps:
       - uses: ravsamhq/notify-slack-action@v2
         with:
