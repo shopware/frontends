@@ -9,7 +9,7 @@ on:
         Audit check,
       ]
     types: [completed]
-    branches: [main, prod]
+    branches: [main, prod, test/false-failure]
 
 jobs:
   on-failure:
