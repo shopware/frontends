@@ -13,12 +13,6 @@ describe("canUseQuoteActions", () => {
   });
 
   it("should return false", () => {
-    expect(
-      canUseQuoteActions({
-        stateMachineState: {
-          technicalName: "open",
-        },
-      }),
-    ).toEqual(false);
+    expect(canUseQuoteActions({})).toEqual(false);
   });
 });
