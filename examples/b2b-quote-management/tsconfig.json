@@ -1,0 +1,24 @@
+{
+  "include": [
+    "src/**/*",
+  ],
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./src/*" // set path `@/*` as alias of `src/*`
+      ],
+      "#shopware": ["./shopware.d.ts"]
+    },
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": [
+      "esnext",
+      "DOM"
+    ],
+    "types": [
+      "vite/client",
+      "./env.d.ts"
+    ]
+  }
+}
