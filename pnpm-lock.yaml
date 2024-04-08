@@ -939,6 +939,9 @@ importers:
       '@shopware-pwa/composables-next':
         specifier: workspace:*
         version: link:../composables
+      '@shopware-pwa/helpers-next':
+        specifier: workspace:*
+        version: link:../helpers
       '@shopware/api-client':
         specifier: workspace:*
         version: link:../api-client-next
