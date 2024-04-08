@@ -62,7 +62,7 @@ export default {
 </script>
 
 <template>
-  <ErrorsMaintain v-if="isMaintenanceMode" />
+  <ErrorsMaintainMode v-if="isMaintenanceMode" />
   <div
     v-else
     class="px-5 py-3 md:py-20 md:px-32 lg:px-24 lg:py-24 items-center flex justify-center flex-col-reverse lg:flex-row"

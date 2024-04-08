@@ -21,6 +21,7 @@ describe("isMaintenanceMode", () => {
       isMaintenanceMode([
         {
           status: "404",
+          code: "test",
           title: "Not Found",
         },
       ]),
