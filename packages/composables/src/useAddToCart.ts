@@ -44,6 +44,8 @@ export function useAddToCart(
   const quantity: Ref<number> = ref(1);
 
   async function addToCart(): Promise<Schemas["Cart"]> {
+    if (!_product.value.id) throw new Error("Product id is required");
+
     if (!quantity.value) quantity.value = 1;
     const addToCartResponse = await addProduct({
       id: _product.value.id,
