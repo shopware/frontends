@@ -25,6 +25,6 @@ describe("isMaintenanceMode", () => {
           title: "Not Found",
         },
       ]),
-    ).toBe(true);
+    ).toBe(false);
   });
 });
