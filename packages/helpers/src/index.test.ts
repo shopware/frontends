@@ -8,6 +8,7 @@ describe("helpers - test global API", () => {
         "_debounce": [Function],
         "_parseUrlQuery": [Function],
         "buildUrlPrefix": [Function],
+        "canUseQuoteActions": [Function],
         "downloadFile": [Function],
         "getBackgroundImageUrl": [Function],
         "getBiggestThumbnailUrl": [Function],

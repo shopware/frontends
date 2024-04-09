@@ -13,6 +13,7 @@ import SwMedia3D from "../../../SwMedia3D.vue";
 
 const props = defineProps<{
   content: CmsElementImage | CmsElementManufacturerLogo;
+  imageGallery?: boolean;
 }>();
 
 const { getUrlPrefix } = useUrlResolver();
@@ -57,6 +58,9 @@ const imageComputedContainerAttrs = computed(() => {
   <component
     v-if="imageAttrs.src"
     class="cms-element-image relative h-full w-full"
+    :class="{
+      'flex justify-center items-center': imageGallery,
+    }"
     :is="imageLink.url ? 'a' : 'div'"
     :style="containerStyle"
     v-bind="imageComputedContainerAttrs"
@@ -81,9 +85,11 @@ const imageComputedContainerAttrs = computed(() => {
       ref="imageElement"
       loading="lazy"
       :class="{
-        'h-full w-full': true,
+        'w-full h-full': !imageGallery,
+        'w-4/5': imageGallery,
         'absolute inset-0': ['cover', 'stretch'].includes(displayMode),
         'object-cover': displayMode === 'cover',
+        'object-contain': imageGallery,
       }"
       :alt="imageAttrs.alt"
       :src="srcPath"

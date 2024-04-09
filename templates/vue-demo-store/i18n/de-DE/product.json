@@ -21,7 +21,8 @@
       "submit": "Einreichen",
       "rating": "Ihre Bewertung"
     },
-    "reviewNoComments": "Noch keine Kommentare.",
+    "addReview": "Bewertung hinzufügen",
+    "noReviews": "Noch keine Bewertungen.",
     "reviewNotAccepted": "Ihre Bewertung wurde noch nicht genehmigt",
     "reviewFeedback": "Unser Feedback",
     "messages": {
