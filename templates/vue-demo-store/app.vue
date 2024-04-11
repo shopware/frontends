@@ -14,7 +14,11 @@ useHead({
     lang: "en",
   },
 });
+const { consume } = useBroadcastConsumer();
 
+const {
+  public: { broadcastChannelName },
+} = useRuntimeConfig();
 const { apiClient } = useShopwareContext();
 const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 sessionContextData.value = await apiClient.invoke("readContext get /context");
@@ -94,6 +98,13 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
 onMounted(() => {
   refreshCart();
   getWishlistProducts();
+});
+
+const { data } = useBroadcastChannel({
+  name: broadcastChannelName as string,
+});
+watch(data, () => {
+  if (data.value) consume(data.value as string);
 });
 </script>
 

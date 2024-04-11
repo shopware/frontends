@@ -11,6 +11,15 @@ const params = { to: to };
 
 useAuthGuardRedirection(params);
 
+const {
+  public: { broadcastChannelName },
+} = useRuntimeConfig();
+
+const { post, isSupported } = useBroadcastChannel({
+  name: broadcastChannelName as string,
+});
+const { actions } = useBroadcastConsumer();
+
 // Navigation for Account page
 const { loadNavigationElements } = useNavigation();
 const { logout } = useUser();
@@ -33,6 +42,9 @@ const { data: footerData } = await useAsyncData("mainFooterNavigation", () => {
 async function invokeLogout() {
   logout();
   router.push("/");
+  if (isSupported) {
+    await post(actions.loggedOut);
+  }
 }
 
 provide("swNavigation-footer-navigation", footerData);

@@ -5,6 +5,9 @@ export default defineNuxtConfig({
     "@shopware-pwa/cms-base",
   ],
   runtimeConfig: {
+    public: {
+      broadcastChannelName: "shopware-composable-frotends",
+    },
     shopware: {
       /**
        * SSR Shopware Endpoint

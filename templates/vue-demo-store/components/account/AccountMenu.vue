@@ -6,9 +6,22 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const isAccountMenuOpen = ref(false);
 
+const {
+  public: { broadcastChannelName },
+} = useRuntimeConfig();
+
+const { post, isSupported } = useBroadcastChannel({
+  name: broadcastChannelName as string,
+});
+const { actions } = useBroadcastConsumer();
+
 async function invokeLogout() {
   await logout();
   isAccountMenuOpen.value = false;
+
+  if (isSupported) {
+    await post(actions.loggedOut);
+  }
 }
 </script>
 <template>
