@@ -39,7 +39,7 @@ try {
     // setting a timeout here to ensure we are the last error message in terminal
     setTimeout(() => {
       console.error(
-        "Looks like your API connection is not working. Check your nuxt configuration (shopwareEndpoint and shopwareAccessToken). 🤞",
+        "Looks like your API connection is not working. Check your _nuxt.config.ts_ configuration (shopware.endpoint and shopware.accessToken). 🤞",
       );
       console.error(
         "For more help ➡️  https://frontends.shopware.com/resources/troubleshooting.html",
