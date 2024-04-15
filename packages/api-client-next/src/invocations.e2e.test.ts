@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createAPIClient } from ".";
-import type { operations } from "../api-types";
+import { createAPIClient } from "./createApiClient";
+import type { operations } from "../api-types/newApiTypes";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";

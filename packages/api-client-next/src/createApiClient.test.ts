@@ -11,7 +11,7 @@ import {
 } from "h3";
 import type { App } from "h3";
 import { createAPIClient } from "./createApiClient";
-import type { operations } from "../api-types";
+import type { operations } from "../api-types/newApiTypes";
 
 describe("createAPIClient", () => {
   const listeners: Listener[] = [];

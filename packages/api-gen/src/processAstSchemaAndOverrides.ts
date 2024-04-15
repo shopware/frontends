@@ -1,4 +1,4 @@
-import { generateFile } from "./generateFile";
+import { GenerationMap, generateFile } from "./generateFile";
 import { createVirtualFiles } from "./virtualFileCreator";
 import { transformOpenApiTypes } from "./transformOpenApiTypes";
 import { transformSchemaTypes } from "./transformSchemaTypes";
@@ -30,7 +30,10 @@ export async function processAstSchemaAndOverrides(
   const [oOperationsMap, oComponetsMap, oExistingTypes] =
     transformSchemaTypes(overridingSchema);
 
-  const operationsMap = defu(oOperationsMap, opMap);
+  const operationsMap: GenerationMap = defu(
+    oOperationsMap,
+    opMap as GenerationMap,
+  );
   const componentsMap = defu(oComponetsMap, opComponents);
   const existingTypes = opExistingTypes;
 

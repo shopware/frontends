@@ -25,8 +25,10 @@ export type Schemas = {
     /** The type of the current dynamic page */
     type: string;
   };
-  AccountNewsletterRecipientResult: components["schemas"]["Struct"] & {
-    status?: string;
+  AccountNewsletterRecipientResult: {
+    // TODO: [OpenAPI][AccountNewsletterRecipientResult] - update type definition
+    apiAlias: "account_newsletter_recipient";
+    status: "undefined" | "notSet" | "direct" | "optIn" | "optOut";
   };
   AclRole: {
     /** Format: date-time */
@@ -381,6 +383,30 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  CalculatedPrice: {
+    apiAlias: "calculated_price";
+    unitPrice: number;
+    quantity: number;
+    totalPrice: number;
+    calculatedTaxes: GenericRecord[];
+    taxRules: GenericRecord[];
+    referencePrice?: {
+      price: number;
+      referenceUnit: number;
+      unitName: string;
+    };
+    hasRange?: boolean;
+    listPrice: {
+      price: number;
+      discount: number;
+      percentage: number;
+      apiAlias: string;
+    } | null;
+    regulationPrice: null | {
+      price: number;
+    };
+    variantId?: string;
+  };
   Cart: components["schemas"]["ArrayStruct"] & {
     /** An affiliate tracking code */
     affiliateCode?: string;
@@ -388,12 +414,27 @@ export type Schemas = {
     campaignCode?: string;
     /** A comment that can be added to the cart. */
     customerComment?: string;
+    deliveries?: components["schemas"]["OrderDelivery"][]; // TODO: [OpenAPI][Cart] - `deliveries` is missing in schema
     /** A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers. */
-    errors?: {
-      key?: string;
-      level?: string;
-      message?: string;
-    }[];
+    errors: // TODO: [OpenAPI][Cart] - define errors properly, `key` and `message` should be required fields. `Errors` should be required field as well. Problem is that sometimes it's an array, and sometimes map object
+    | []
+      // | {
+      //     key: string;
+      //     code: string;
+      //     details: string;
+      //     level?: string;
+      //     message: string;
+      //   }[]
+      | Record<
+          string,
+          {
+            code: number;
+            key: string;
+            level: number;
+            message: string;
+            messageKey: string;
+          }
+        >;
     /** All items within the cart */
     lineItems?: components["schemas"]["LineItem"][];
     modified?: boolean;
@@ -429,13 +470,14 @@ export type Schemas = {
     items?: components["schemas"]["LineItem"][];
   };
   Category: {
+    apiAlias: "category"; // TODO: [OpenAPI][Category] - define apiAlias properly
     active?: boolean;
     afterCategoryId?: string;
     afterCategoryVersionId?: string;
-    breadcrumb?: readonly GenericRecord[];
+    breadcrumb: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
     /** Format: int64 */
-    childCount?: number;
-    children?: components["schemas"]["Category"][];
+    childCount: number; // TODO: [OpenAPI][Category] childCount field should be defined as required
+    children: components["schemas"]["Category"][]; // TODO: [OpenAPI][Category] - define children as required array
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
@@ -448,7 +490,7 @@ export type Schemas = {
     description?: string;
     displayNestedProducts: boolean;
     externalLink?: string;
-    id?: string;
+    id: string; // TODO: [OpenAPI][Category] - define id as required field
     internalLink?: string;
     keywords?: string;
     /** Format: int64 */
@@ -470,6 +512,7 @@ export type Schemas = {
     translated?: {
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
+      breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
       cmsPageId?: string;
       cmsPageVersionId?: string;
       customEntityTypeId?: string;
@@ -664,6 +707,7 @@ export type Schemas = {
     stateForMe?: components["schemas"]["StateForMe"];
   };
   CmsBlock: {
+    apiAlias: "cms_block"; // TODO: [OpenAPI][CmsBlock] - define apiAlias properly
     backgroundColor?: string;
     backgroundMedia?: components["schemas"]["Media"];
     backgroundMediaId?: string;
@@ -715,7 +759,7 @@ export type Schemas = {
     position: number;
     sectionId: string;
     sectionPosition?: string;
-    slots?: components["schemas"]["CmsSlot"][];
+    slots: components["schemas"]["CmsSlot"][]; // TODO: [OpenAPI][CmsBlock] - define slots as required array
     type: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -786,11 +830,12 @@ export type Schemas = {
     updatedAt?: string;
   };
   CmsSection: {
+    apiAlias: "cms_section"; // TODO: [OpenAPI][CmsSection] - define apiAlias properly
     backgroundColor?: string;
     backgroundMedia?: components["schemas"]["Media"];
     backgroundMediaId?: string;
     backgroundMediaMode?: string;
-    blocks?: components["schemas"]["CmsBlock"][];
+    blocks: components["schemas"]["CmsBlock"][]; // TODO: [OpenAPI][CmsSection] - define blocks as required array
     cmsPageVersionId?: string;
     /** Format: date-time */
     createdAt: string;
@@ -1026,16 +1071,31 @@ export type Schemas = {
       name: string;
       /** The type of aggregation */
       type: string;
+      /** Used to perform aggregations on the search result. For more information, see [Search Queries > Aggregations](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#aggregations) */
+      aggregation?: {
+        /** The field you want to aggregate over. */
+        field: string;
+        /** Give your aggregation an identifier, so you can find it easier */
+        name: string;
+        /** The type of aggregation */
+        type: string;
+      };
     }[];
+    includes?: GenericRecord; // TODO: [OpenAPI][Criteria] - define includes properly
     /** Used to fetch associations which are not fetched by default. */
     associations?: GenericRecord;
     /** Fields which should be returned in the search result. */
     fields?: string[];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
     filter?: {
+      // TODO: [OpenAPI][Criteria] - there can be different filters, for example `equalsAny` can have array as value
       field: string;
       type: string;
-      value: string;
+      value?: string | string[] | boolean;
+      parameters?: {
+        gte?: string;
+        lte?: string;
+      };
     }[];
     /** Perform groupings over certain fields */
     grouping?: string[];
@@ -1063,7 +1123,9 @@ export type Schemas = {
     "total-count-mode"?: "none" | "exact" | "next-pages";
   };
   CrossSellingElementCollection: {
-    crossSelling?: {
+    // TODO: [OpenAPI][CrossSellingElementCollection] - define CrossSellingElement instead of collection
+    crossSelling: {
+      // TODO: [OpenAPI][CrossSellingElementCollection] - define crossSelling as required
       active?: boolean;
       /** Format: int32 */
       limit?: number;
@@ -1076,7 +1138,7 @@ export type Schemas = {
       sortDirection?: string;
       type?: string;
     };
-    products?: components["schemas"]["Product"][];
+    products: components["schemas"]["Product"][]; // TODO: [OpenAPI][CrossSellingElementCollection] - define products array as required
     /** Format: int32 */
     total?: number;
   }[];
@@ -1213,8 +1275,8 @@ export type Schemas = {
   Customer: {
     accountType: string;
     active?: boolean;
-    activeBillingAddress?: components["schemas"]["CustomerAddress"];
-    activeShippingAddress?: components["schemas"]["CustomerAddress"];
+    activeBillingAddress: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][Customer] - define activeBillingAddress as required
+    activeShippingAddress: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][Customer] - define activeShippingAddress as required
     addresses?: components["schemas"]["CustomerAddress"][];
     affiliateCode?: string;
     birthday?: string;
@@ -1289,7 +1351,30 @@ export type Schemas = {
     vatIds?: string[];
   };
   CustomerAddress: {
-    qwe: string;
+    additionalAddressLine1?: string;
+    additionalAddressLine2?: string;
+    city: string;
+    company?: string;
+    country?: components["schemas"]["Country"];
+    countryId: string;
+    countryState?: components["schemas"]["CountryState"];
+    countryStateId?: string;
+    /** Format: date-time */
+    createdAt: string;
+    customerId: string;
+    customFields?: GenericRecord;
+    department?: string;
+    firstName: string;
+    id: string; // TODO: [OpenAPI][CustomerAddress] - make `id` required
+    lastName: string;
+    phoneNumber?: string;
+    salutation?: components["schemas"]["Salutation"];
+    salutationId?: string;
+    street: string;
+    title?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    zipcode?: string;
   };
   CustomerGroup: {
     /** Format: date-time */
@@ -1303,7 +1388,8 @@ export type Schemas = {
     registrationOnlyCompanyRegistration?: boolean;
     registrationSeoMetaDescription?: string;
     registrationTitle?: string;
-    translated?: {
+    // TODO: [OpenAPI][CustomerGroup] - make `translated` required
+    translated: {
       name?: string;
       registrationIntroduction?: string;
       registrationSeoMetaDescription?: string;
@@ -1371,7 +1457,11 @@ export type Schemas = {
     updatedAt?: string;
   };
   Document: {
-    config: GenericRecord;
+    // TODO: [OpenAPI][Document] - define config properly
+    config: {
+      name: string;
+      title: string;
+    };
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
@@ -1383,7 +1473,7 @@ export type Schemas = {
     documentType?: components["schemas"]["DocumentType"];
     documentTypeId: string;
     fileType: string;
-    id?: string;
+    id: string; // TODO: [OpenAPI][Document] - make `id` required
     order?: components["schemas"]["Order"];
     orderId: string;
     orderVersionId?: string;
@@ -1694,6 +1784,7 @@ export type Schemas = {
     salesChannelId?: string;
   };
   LandingPage: {
+    apiAlias: "landing_page"; // TODO: [OpenAPI][LandingPage] - add `apiAlias` definition to schema
     active?: boolean;
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
@@ -1876,15 +1967,55 @@ export type Schemas = {
   LineItem: {
     description?: string;
     good?: boolean;
-    id?: string;
+    id: string; // TODO: [OpenAPI][LineItem] - make `id` required
+    cover?: components["schemas"]["ProductMedia"]; // TODO: [OpenAPI][LineItem] - add `cover` definition to schema
+    deliveryInformation: {
+      // TODO: [OpenAPI][LineItem] - define `deliveryInformation` object and find out what's inside (`cart_delivery_information` entity)
+      stock: number;
+    };
     label?: string;
     modified?: boolean;
     /** Format: int32 */
-    quantity?: number;
+    quantity: number; // TODO: [OpenAPI][LineItem] - make `quantity` required
+    payload: {
+      // TODO: [OpenAPI][LineItem] - add `payload` definition to schema (find out what's inside)
+      options: Array<{
+        group: string;
+        option: string;
+        translated: {
+          [key: string]: string;
+        };
+      }>;
+      name?: string;
+    };
+    price: {
+      // TODO: [OpenAPI][LineItem] - define price object, also UNIFY price objects across responses
+      listPrice?: {
+        /** Format: float */
+        discount?: number;
+        /** Format: float */
+        percentage?: number;
+        /** Format: float */
+        price?: number;
+      };
+      /** Format: int64 */
+      quantity: number;
+      referencePrice?: GenericRecord;
+      regulationPrice?: {
+        /** Format: float */
+        price?: number;
+      };
+      taxRules?: GenericRecord;
+      /** Format: float */
+      totalPrice: number;
+      /** Format: float */
+      unitPrice: number;
+    };
     referencedId?: string;
     removable?: boolean;
     stackable?: boolean;
-    type?: string;
+    states: string[]; // TODO: [OpenAPI][LineItem] - add definition of `states` array, also union type of possible states
+    type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][LineItem] - define type as required and string union type -> see also #456
   };
   Locale: {
     code: string;
@@ -2020,14 +2151,20 @@ export type Schemas = {
         };
       };
     };
-    fileExtension?: string;
-    fileName?: string;
+    fileExtension: string; // TODO: [OpenAPI][Media] fileExtension field should be defined as required
+    fileName: string; // TODO: [OpenAPI][Media] fileName field should be defined as required
     /** Format: int64 */
     fileSize?: number;
     /** Runtime field, cannot be used as part of the criteria. */
     hasFile?: boolean;
     id?: string;
-    metaData?: GenericRecord;
+    // TODO: [OpenAPI][Media] metaData field should be defined properly
+    metaData?: {
+      /** Format: int64 */
+      height?: number;
+      /** Format: int64 */
+      width?: number;
+    };
     mimeType?: string;
     path?: string;
     private?: boolean;
@@ -2048,7 +2185,7 @@ export type Schemas = {
     /** Format: date-time */
     uploadedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
-    url?: string;
+    url: string; // TODO: [OpenAPI][Media] url field should be defined as required
   };
   MediaAiTag: {
     /** Format: date-time */
@@ -2100,7 +2237,7 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
-    url?: string;
+    url: string; // TODO: [OpenAPI][MediaThumbnail] url should be defined as required
     /** Format: int64 */
     width: number;
   };
@@ -2123,6 +2260,8 @@ export type Schemas = {
     term: string;
   }[];
   NavigationRouteResponse: components["schemas"]["Category"][];
+  NavigationType: // TODO: [OpenAPI][NavigationType] - add `NavigationType` definition to schema
+  "main-navigation" | "footer-navigation" | "service-navigation";
   NewsletterRecipient: {
     /** Format: date-time */
     createdAt: string;
@@ -2196,7 +2335,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     deepLinkCode?: string;
     deliveries?: components["schemas"]["OrderDelivery"][];
-    documents?: components["schemas"]["Document"][];
+    documents: components["schemas"]["Document"][]; // TODO: [OpenAPI][Order] - documents should be defined as required
     extensions?: {
       returns?: {
         data?: {
@@ -2229,12 +2368,12 @@ export type Schemas = {
         };
       };
     };
-    id?: string;
+    id: string; // TODO: [OpenAPI][Order] id field should be defined as required
     language?: components["schemas"]["Language"];
     languageId: string;
     lineItems?: components["schemas"]["OrderLineItem"][];
     orderCustomer?: components["schemas"]["OrderCustomer"];
-    orderDate?: string;
+    orderDate: string; // TODO: [OpenAPI][Order] orderDate field should be defined as required
     /** Format: date-time */
     orderDateTime: string;
     orderNumber?: string;
@@ -2280,7 +2419,7 @@ export type Schemas = {
     /** Format: float */
     shippingTotal?: number;
     source?: string;
-    stateMachineState?: components["schemas"]["StateMachineState"];
+    stateMachineState: components["schemas"]["StateMachineState"]; // TODO: [OpenAPI][Order] stateMachineState field should be defined as required
     tags?: components["schemas"]["Tag"][];
     taxStatus?: string;
     transactions?: components["schemas"]["OrderTransaction"][];
@@ -2303,7 +2442,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
-    id?: string;
+    id: string; // TODO: [OpenAPI][OrderAddress] id field should be defined as required
     lastName: string;
     phoneNumber?: string;
     salutation?: components["schemas"]["Salutation"];
@@ -2473,7 +2612,7 @@ export type Schemas = {
     parent?: components["schemas"]["OrderLineItem"];
     parentId?: string;
     parentVersionId?: string;
-    payload?: GenericRecord;
+    payload: components["schemas"]["Product"]; // TODO: [OpenAPI][OrderLineItem] define possible payloads for order line items
     /** Format: int64 */
     position: number;
     priceDefinition?: GenericRecord;
@@ -2499,8 +2638,8 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
-    media?: components["schemas"]["Media"];
+    id: string; // TODO: [OpenAPI][OrderLineItemDownload] id should be defined as required
+    media: components["schemas"]["Media"]; // TODO: [OpenAPI][OrderLineItemDownload] media should be defined as required
     mediaId: string;
     orderLineItem?: components["schemas"]["OrderLineItem"];
     orderLineItemId: string;
@@ -2613,7 +2752,11 @@ export type Schemas = {
     updatedAt?: string;
   };
   OrderRouteResponse: {
-    orders?: components["schemas"]["Order"][];
+    // TODO: [OpenAPI][OrderRouteResponse] - `orders` field should be required
+    orders: {
+      // TODO: [OpenAPI][OrderRouteResponse] orders field should be defined properly
+      elements: components["schemas"]["Order"][];
+    } & components["schemas"]["EntitySearchResult"];
     /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
     paymentChangeable?: GenericRecord;
   };
@@ -2808,7 +2951,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     description?: string;
     distinguishableName?: string;
-    id?: string;
+    id: string; // TODO: [OpenAPI][PaymentMethod] id should be defined as required
     media?: components["schemas"]["Media"];
     mediaId?: string;
     name: string;
@@ -3004,18 +3147,20 @@ export type Schemas = {
     }[];
   };
   Product: {
+    apiAlias: "product"; // TODO: [OpenAPI][Product] apiAlias field should be defined in schema as string literal
     active?: boolean;
     available?: boolean;
     /** Format: int64 */
     availableStock?: number;
-    calculatedCheapestPrice?: GenericRecord;
+    calculatedCheapestPrice?: schemas["CalculatedPrice"]; // TODO: [OpenAPI][Product] calculatedCheapestPrice field should be defined exactly what it is
     /**
      * Format: int64
      * Runtime field, cannot be used as part of the criteria.
      */
     calculatedMaxPurchase?: number;
-    calculatedPrice?: GenericRecord;
-    calculatedPrices?: GenericRecord[];
+    // TODO: [OpenAPI][Product] calculatedPrice field should be defined properly
+    calculatedPrice?: schemas["CalculatedPrice"];
+    calculatedPrices?: schemas["CalculatedPrice"][]; // TODO: [OpenAPI][Product] calculatedPrices field should be defined as an array and required!
     canonicalProduct?: components["schemas"]["Product"];
     canonicalProductId?: string;
     categories?: components["schemas"]["Category"][];
@@ -3075,7 +3220,7 @@ export type Schemas = {
     };
     /** Format: float */
     height?: number;
-    id?: string;
+    id: string; // TODO: [OpenAPI][Product] id field should be required in schema
     isCloseout?: boolean;
     /** Runtime field, cannot be used as part of the criteria. */
     isNew?: boolean;
@@ -3122,7 +3267,7 @@ export type Schemas = {
     restockTime?: number;
     /** Format: int64 */
     sales?: number;
-    seoCategory?: components["schemas"]["Category"];
+    seoCategory: components["schemas"]["Category"]; // TODO: [OpenAPI][Product] seoCategory field should be defined as required
     seoUrls?: components["schemas"]["SeoUrl"][];
     shippingFree?: boolean;
     sortedProperties?: GenericRecord;
@@ -3166,6 +3311,10 @@ export type Schemas = {
     unitId?: string;
     /** Format: date-time */
     updatedAt?: string;
+    // TODO: [OpenAPI][Product] variantListingConfig field should be defined in schema
+    variantListingConfig?: {
+      displayParent: boolean;
+    };
     versionId?: string;
     /** Format: float */
     weight?: number;
@@ -3221,7 +3370,7 @@ export type Schemas = {
   ProductDetailResponse: {
     /** List of property groups with their corresponding options and information on how to display them. */
     configurator?: components["schemas"]["PropertyGroup"][];
-    product?: components["schemas"]["Product"];
+    product: components["schemas"]["Product"]; // TODO: [OpenAPI][ProductDetailResponse] product field should be defined as required
   };
   ProductDownload: {
     /** Format: date-time */
@@ -3821,20 +3970,31 @@ export type Schemas = {
   };
   ProductListingResult: components["schemas"]["EntitySearchResult"] & {
     /** Contains the available sorting. These can be used to show a sorting select-box in the product listing. */
-    availableSortings?: GenericRecord[];
+    availableSortings?: Array<{
+      // TODO: [OpenAPI][ProductListingResult] availableSortings field should be defined properly
+      label: string;
+      translated: {
+        label: string;
+      };
+      key: string;
+      priority: number;
+      apiAlias: "product_sorting";
+    }>;
     /** Contains the state of the filters. These can be used to create listing filters. */
-    currentFilters?: {
-      manufacturer?: GenericRecord[];
+    currentFilters: {
+      // TODO: [OpenAPI][ProductListingResult] currentFilters field should be required
+      manufacturer?: string[]; // TODO: [OpenAPI][ProductListingResult] currentFilters.manufacturer field should be defined properly
       navigationId?: string;
       price?: {
         max?: number;
         min?: number;
       };
-      properties?: GenericRecord[];
+      properties?: string[]; // TODO: [OpenAPI][ProductListingResult] currentFilters.properties field should be defined properly
       rating?: number;
       "shipping-free"?: boolean;
+      search: string; // TODO: [OpenAPI][ProductListingResult] search field should be defined properly
     };
-    elements?: components["schemas"]["Product"][];
+    elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][ProductListingResult] elements field should be defined as required
     sorting?: string;
   };
   ProductManufacturer: {
@@ -3872,6 +4032,7 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
+    thumbnails?: Array<components["schemas"]["MediaThumbnail"]>; // TODO: [OpenAPI][Product] thumbnails field should be defined in ProductMedia
   };
   ProductPayload: {
     /** the id from the product which is used in the interaction */
@@ -3890,10 +4051,12 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    customerId?: string; // TODO: [OpenAPI][ProductReview] customerId field should be defined
+    externalUser?: string; // TODO: [OpenAPI][ProductReview] externalUser field should be defined
+    id: string; // TODO: [OpenAPI][ProductReview] id field should be defined as required
     languageId: string;
     /** Format: float */
-    points?: number;
+    points: number; // TODO: [OpenAPI][ProductReview] points field should be defined as required
     productId: string;
     productVersionId?: string;
     salesChannelId: string;
@@ -4063,12 +4226,16 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    group?: components["schemas"]["PropertyGroup"];
+    group: {
+      // components["schemas"]["PropertyGroup"]; // TODO: [OpenAPI][PropertyGroupOption] group field should be defined and required
+      name: string;
+    };
     groupId: string;
-    id?: string;
+    id: string; // TODO: [OpenAPI][PropertyGroupOption] id field should be required in schema
     media?: components["schemas"]["Media"];
     mediaId?: string;
     name: string;
+    option: string; // TODO: [OpenAPI][PropertyGroupOption] option field should be defined; defined as string (?)
     /** Format: int64 */
     position?: number;
     translated?: {
@@ -4514,6 +4681,7 @@ export type Schemas = {
       currencyId?: string;
       /** Format: int32 */
       currencyPrecision?: number;
+      languageIdChain?: string[]; // TODO: [OpenAPI][SalesChannelContext] languageIdChain field should be defined properly in context
       scope?: string;
       source?: string;
       taxState?: string;
@@ -4521,89 +4689,87 @@ export type Schemas = {
       versionId?: string;
     };
     /** Currency associated with the current user */
-    currency?: {
-      /** Format: int32 */
-      decimalPrecision?: number;
-      factor?: number;
-      isoCode?: string;
-      isSystemDefault?: boolean;
-      name?: string;
-      /** Format: int32 */
-      position?: number;
-      shortName?: string;
-      symbol?: string;
-    };
+    currency?: components["schemas"]["Currency"]; // TODO: [OpenAPI][SalesChannelContext] currency field should be defined reusing Currency schema
+    // currency?: {
+    //   /** Format: int32 */
+    //   decimalPrecision?: number;
+    //   factor?: number;
+    //   isoCode?: string;
+    //   isSystemDefault?: boolean;
+    //   name?: string;
+    //   /** Format: int32 */
+    //   position?: number;
+    //   shortName?: string;
+    //   symbol?: string;
+    // };
     /** Customer group of the current user */
     currentCustomerGroup?: {
       displayGross?: boolean;
       name?: string;
     };
-    /** Information about the current customer - `null` if the customer is not logged in */
-    customer?: {
-      active?: boolean;
-      activeBillingAddress?: components["schemas"]["CustomerAddress"];
-      activeShippingAddress?: components["schemas"]["CustomerAddress"];
-      affiliateCode?: string;
-      /** Format: int32 */
-      autoIncrement?: number;
-      /** Format: date-time */
-      birthday?: string;
-      campaignCode?: string;
-      company?: string;
-      customerNumber?: string;
-      defaultBillingAddress?: components["schemas"]["CustomerAddress"];
-      defaultBillingAddressId?: string;
-      defaultPaymentMethodId?: string;
-      defaultShippingAddress?: components["schemas"]["CustomerAddress"];
-      defaultShippingAddressId?: string;
-      /** Format: date-time */
-      doubleOptInConfirmDate?: string;
-      /** Format: date-time */
-      doubleOptInEmailSentDate?: string;
-      doubleOptInRegistration?: boolean;
-      email?: string;
-      /** Format: date-time */
-      firstLogin?: string;
-      firstName?: string;
-      groupId?: string;
-      guest?: boolean;
-      hash?: string;
-      languageId?: string;
-      /** Format: date-time */
-      lastLogin?: string;
-      lastName?: string;
-      /** Format: date-time */
-      lastOrderDate?: string;
-      lastPaymentMethodId?: string;
-      legacyEncoder?: string;
-      legacyPassword?: string;
-      newsletter?: boolean;
-      /** Format: int32 */
-      orderCount?: number;
-      password?: string;
-      remoteAddress?: string;
-      salesChannelId?: string;
-      salutationId?: string;
-      title?: string;
-    };
+    customer?: components["schemas"]["Customer"]; // TODO: [OpenAPI][SalesChannelContext] customer field should be defined reusing Customer schema
+    // customer?: {
+    //   active?: boolean;
+    //   affiliateCode?: string;
+    //   /** Format: int32 */
+    //   autoIncrement?: number;
+    //   /** Format: date-time */
+    //   birthday?: string;
+    //   campaignCode?: string;
+    //   company?: string;
+    //   customerNumber?: string;
+    //   defaultBillingAddressId?: string;
+    //   defaultPaymentMethodId?: string;
+    //   defaultShippingAddressId?: string;
+    //   /** Format: date-time */
+    //   doubleOptInConfirmDate?: string;
+    //   /** Format: date-time */
+    //   doubleOptInEmailSentDate?: string;
+    //   doubleOptInRegistration?: boolean;
+    //   email?: string;
+    //   /** Format: date-time */
+    //   firstLogin?: string;
+    //   firstName?: string;
+    //   groupId?: string;
+    //   guest?: boolean;
+    //   hash?: string;
+    //   languageId?: string;
+    //   /** Format: date-time */
+    //   lastLogin?: string;
+    //   lastName?: string;
+    //   /** Format: date-time */
+    //   lastOrderDate?: string;
+    //   lastPaymentMethodId?: string;
+    //   legacyEncoder?: string;
+    //   legacyPassword?: string;
+    //   newsletter?: boolean;
+    //   /** Format: int32 */
+    //   orderCount?: number;
+    //   password?: string;
+    //   remoteAddress?: string;
+    //   salesChannelId?: string;
+    //   salutationId?: string;
+    //   title?: string;
+    // };
     /** Fallback group if the default customer group is not applicable */
     fallbackCustomerGroup?: {
       displayGross?: boolean;
       name?: string;
     };
     /** Selected payment method */
-    paymentMethod?: {
-      active?: boolean;
-      availabilityRuleId?: string;
-      description?: string;
-      formattedHandlerIdentifier?: string;
-      handlerIdentifier?: string;
-      mediaId?: string;
-      name?: string;
-      pluginId?: string;
-      /** Format: int32 */
-      position?: number;
-    };
+    paymentMethod?: components["schemas"]["PaymentMethod"]; // TODO: [OpenAPI][SalesChannelContext] paymentMethod field should be defined properly reusing PaymentMethod schema
+    // paymentMethod?: {
+    //   active?: boolean;
+    //   availabilityRuleId?: string;
+    //   description?: string;
+    //   formattedHandlerIdentifier?: string;
+    //   handlerIdentifier?: string;
+    //   mediaId?: string;
+    //   name?: string;
+    //   pluginId?: string;
+    //   /** Format: int32 */
+    //   position?: number;
+    // };
     /** Information about the current sales channel */
     salesChannel?: {
       accessKey?: string;
@@ -4629,16 +4795,23 @@ export type Schemas = {
       shortName?: string;
       typeId?: string;
     };
-    /** Selected shipping method */
-    shippingMethod?: {
-      active?: boolean;
-      availabilityRuleId?: string;
-      deliveryTimeId?: string;
-      description?: string;
-      mediaId?: string;
-      name?: string;
-      trackingUrl?: string;
+    shippingLocation?: {
+      // TODO: [OpenAPI][SalesChannelContext] shippingLocation field should be defined properly
+      apiAlias: "cart_delivery_shipping_location";
+      country: components["schemas"]["Country"];
+      address: components["schemas"]["CustomerAddress"];
     };
+    /** Selected shipping method */
+    shippingMethod?: components["schemas"]["ShippingMethod"]; // TODO: [OpenAPI][SalesChannelContext] shippingMethod field should be defined properly reusing ShippingMethod schema
+    // shippingMethod?: {
+    //   active?: boolean;
+    //   availabilityRuleId?: string;
+    //   deliveryTimeId?: string;
+    //   description?: string;
+    //   mediaId?: string;
+    //   name?: string;
+    //   trackingUrl?: string;
+    // };
     /** Currently active tax rules and/or rates */
     taxRules?: {
       name?: string;
@@ -4729,16 +4902,19 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
+    /** Runtime field, cannot be used as part of the criteria. */
+    error?: string;
     foreignKey: string;
     id?: string;
     isCanonical?: boolean;
     isDeleted?: boolean;
     isModified?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    isValid?: boolean;
     languageId: string;
     pathInfo: string;
-    routeName: string;
+    routeName: // TODO: [OpenAPI][SeoUrl] routeName field should be defined as union type
+    | "frontend.navigation.page"
+      | "frontend.landing.page"
+      | "frontend.detail.page";
     salesChannelId?: string;
     seoPathInfo: string;
     /** Format: date-time */
@@ -4786,7 +4962,7 @@ export type Schemas = {
     deliveryTime?: components["schemas"]["DeliveryTime"];
     deliveryTimeId: string;
     description?: string;
-    id?: string;
+    id: string; // TODO: [OpenAPI][ShippingMethod] id field should be required in schema
     media?: components["schemas"]["Media"];
     mediaId?: string;
     name: string;
@@ -5068,8 +5244,8 @@ export type Schemas = {
   };
   Sitemap: components["schemas"]["ArrayStruct"] & {
     /** Format: date-time */
-    created?: string;
-    filename?: string;
+    created: string; // TODO: [OpenAPI][Sitemap] created field should be defined as required
+    filename: string; // TODO: [OpenAPI][Sitemap] filename field should be defined as required
   };
   Snippet: {
     /** Format: date-time */
@@ -6344,7 +6520,7 @@ export type Schemas = {
     updatedAt?: string;
   };
   WishlistLoadRouteResponse: {
-    products?: components["schemas"]["ProductListingResult"][];
+    products: components["schemas"]["ProductListingResult"]; // TODO: [OpenAPI][WishlistLoadRouteResponse] - products is listing result, not array
     wishlist?: {
       customerId?: string;
       salesChannelId?: string;
@@ -6457,29 +6633,14 @@ export type Schemas = {
   };
 };
 export type operations = {
-  "aaaCompletlyNewCustomOperation post /aaaaa/bbbbb":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        body: components["schemas"]["CustomerAddress"];
-        response: components["schemas"]["AdvancedSearchBoosting"];
-        responseCode: 201;
-      }
-    | {
-        contentType: "application/json2";
-        accept?: "application/json";
-        body: {
-          someting: boolean;
-        };
-        response: {
-          thisIs200Response: string;
-        };
-        responseCode: 200;
-      };
   "createCustomerAddress post /account/address": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["CustomerAddress"];
+    body: Omit<
+      // TODO: [OpenAPI][createCustomerAddress] - omit id while creating address
+      components["schemas"]["CustomerAddress"],
+      "id" | "createdAt"
+    >;
     response: components["schemas"]["CustomerAddress"];
     responseCode: 200;
   };
@@ -6492,12 +6653,7 @@ export type operations = {
   "updateCustomerAddress patch /account/address/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
-    /**
-     * We're testing overrides, assuming update address can only update the city
-     */
-    body: {
-      city: string;
-    };
+    body: components["schemas"]["CustomerAddress"];
     response: components["schemas"]["CustomerAddress"];
     responseCode: 200;
   };
@@ -6608,7 +6764,10 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     body: components["schemas"]["Criteria"];
-    response: components["schemas"]["CustomerAddress"][];
+    response: {
+      // TODO: [OpenAPI][listAddress] add proper response type as EntitySearchResult
+      elements: components["schemas"]["CustomerAddress"][];
+    } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
   "loginCustomer post /account/login": {
@@ -6649,7 +6808,10 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     body: components["schemas"]["Criteria"];
-    response: components["schemas"]["AccountNewsletterRecipientResult"][];
+    response: {
+      // TODO: [OpenAPI][readNewsletterRecipient] return type is not array
+      "application/json": components["schemas"]["AccountNewsletterRecipientResult"];
+    };
     responseCode: 200;
   };
   "sendRecoveryMail post /account/recovery-password": {
@@ -6691,7 +6853,10 @@ export type operations = {
       accountType?: string;
       /** Field can be used to store an affiliate tracking code */
       affiliateCode?: string;
-      billingAddress: components["schemas"]["CustomerAddress"];
+      billingAddress: Omit<
+        components["schemas"]["CustomerAddress"],
+        "createdAt" | "id" | "customerId" | "firstName" | "lastName"
+      >; // TODO: [OpenAPI][register] - omit id, createdAt, customerId, firstName, lastName while creating address (or better to reverse and pick required fields)
       /** Birthday day */
       birthdayDay?: number;
       /** Birthday month */
@@ -6757,22 +6922,26 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
-  "readCategory post /category/{navigationId}":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        body: components["schemas"]["Criteria"] &
-          components["schemas"]["ProductListingCriteria"];
-        response: components["schemas"]["Category"];
-        responseCode: 200;
-      }
-    | {
-        contentType: "application/xml";
-        accept?: "application/json";
-        body: components["schemas"]["ProductListingCriteria"];
-        response: components["schemas"]["Category"];
-        responseCode: 200;
-      };
+  "readCategory post /category/{navigationId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    header?: {
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
+    };
+    query?: {
+      /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
+      slots?: string;
+    };
+    path: {
+      /** Identifier of the category to be fetched */
+      navigationId: string;
+    };
+    body: components["schemas"]["Criteria"] &
+      components["schemas"]["ProductListingCriteria"];
+    response: components["schemas"]["Category"];
+    responseCode: 200;
+  };
   "readCart get /checkout/cart": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -6788,7 +6957,15 @@ export type operations = {
   "addLineItem post /checkout/cart/line-item": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["CartItems"];
+    body: {
+      // TODO: [OpenAPI][addLineItem] - add proper request body type with required fields
+      items: Array<{
+        id?: string; // TODO: [OpenAPI][addLineItem] - check if this is used at all?
+        referencedId: string;
+        quantity?: number;
+        type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][addLineItem] - add proper type -> see also #456
+      }>;
+    };
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
@@ -6801,7 +6978,13 @@ export type operations = {
   "updateLineItem patch /checkout/cart/line-item": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["CartItems"];
+    body: {
+      // TODO: [OpenAPI][updateLineItem] - add proper request body type with required fields
+      items: Array<{
+        id: string;
+        quantity: number;
+      }>;
+    };
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
@@ -7199,7 +7382,9 @@ export type operations = {
       /** Identifier of an order */
       orderId: string;
     };
-    response: never;
+    response: {
+      redirectUrl: string; // TODO: [OpenAPI][handlePaymentMethod] add proper response type
+    };
     responseCode: 200;
   };
   "readLandingPage post /landing-page/{landingPageId}": {
@@ -7218,13 +7403,21 @@ export type operations = {
     accept?: "application/json";
     body: components["schemas"]["Criteria"];
     response: {
-      elements?: components["schemas"]["Language"][];
+      elements: components["schemas"]["Language"][]; // TODO: [OpenAPI][readLanguages] add elements property as required
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
   "readNavigation post /navigation/{activeId}/{rootId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    path: {
+      /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
+      // TODO: [OpenAPI][readNavigation] add union type in definition
+      activeId: components["schemas"]["NavigationType"] | string;
+      /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
+      // TODO: [OpenAPI][readNavigation] add union type in definition
+      rootId: components["schemas"]["NavigationType"] | string;
+    };
     body: components["schemas"]["Criteria"] & {
       /** Return the categories as a tree or as a flat list. */
       buildTree?: GenericRecord[];
@@ -7304,7 +7497,7 @@ export type operations = {
   "orderDownloadFile get /order/download/{orderId}/{downloadId}": {
     contentType?: "application/json";
     accept: "application/octet-stream";
-    response: string;
+    response: Blob; // TODO: [OpenAPI][orderDownloadFile] add proper response type
     responseCode: 200;
   };
   "orderSetPayment post /order/payment": {
@@ -7324,7 +7517,7 @@ export type operations = {
     accept?: "application/json";
     body: {
       /** The identifier of the order to be canceled. */
-      orderId?: string;
+      orderId: string; // TODO: [OpenAPI][cancelOrder] add orderId as required field
     };
     response: components["schemas"]["StateMachineState"];
     responseCode: 200;
@@ -7348,9 +7541,11 @@ export type operations = {
   "readProduct post /product": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body: components["schemas"]["Criteria"] & {
+      ids?: string[]; // TODO: [OpenAPI][readProduct]: add `ids` as field to criteria - (is required?)
+    };
     response: {
-      elements?: components["schemas"]["Product"][];
+      elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
@@ -7363,6 +7558,13 @@ export type operations = {
   "readProductListing post /product-listing/{categoryId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    header?: {
+      "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readProductListing] - add sw-include-seo-urls to header parameters
+    };
+    path: {
+      /** Identifier of a category. */
+      categoryId: string;
+    };
     body: components["schemas"]["ProductListingCriteria"] &
       components["schemas"]["ProductListingFlags"];
     response: components["schemas"]["ProductListingResult"];
@@ -7371,6 +7573,10 @@ export type operations = {
   "readProductDetail post /product/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    path: {
+      /** Product ID */
+      productId: string; // TODO: [OpenAPI][readProductDetails]: add cmsAssociations to product detail parameters
+    };
     response: components["schemas"]["ProductDetailResponse"];
     responseCode: 200;
   };
@@ -7463,7 +7669,7 @@ export type operations = {
     accept?: "application/json";
     body: components["schemas"]["Criteria"];
     response: {
-      elements?: components["schemas"]["SeoUrl"][];
+      elements: components["schemas"]["SeoUrl"][]; // TODO: [OpenAPI][readSeoUrl]: response should be `EntitySearchResult` and elements should be required
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
@@ -7474,7 +7680,7 @@ export type operations = {
     response: {
       /** aggregation result */
       aggregations?: GenericRecord;
-      elements?: components["schemas"]["ShippingMethod"][];
+      elements: components["schemas"]["ShippingMethod"][]; // TODO: [OpenAPI][readShippingMethod]: response should be `EntitySearchResult` and elements should be required
       /** Total amount */
       total?: number;
     };

@@ -1,35 +1,35 @@
 import { Project } from "ts-morph";
 import { format } from "prettier";
 
+export type MethodDefinition = {
+  operationId: string;
+  headers: Record<string, string>;
+  body: {
+    contentType: string;
+    code: string;
+  }[];
+  responses: {
+    responseCode: number;
+    contentType: string;
+    code: string;
+  }[];
+};
+
 export type GenerationMap = {
-  [routePath: string]: {
-    [method: string]: {
-      operationId: string;
-      headers: Record<string, string>;
-      body: {
-        contentType: string;
-        code: string;
-      }[];
-      responses: {
-        responseCode: number;
-        contentType: string;
-        code: string;
-      }[];
-    };
-  };
+  [routePath: string]: MethodDefinition;
 };
 
 export type OverridesMap = Record<string, string>;
 
 export type TransformedElements = [
-  OverridesMap,
+  OverridesMap | GenerationMap,
   Record<string, string>,
   string[][],
 ];
 
 export async function generateFile(
   filepath: string,
-  operationsMap: OverridesMap,
+  operationsMap: OverridesMap | GenerationMap,
   existingTypes: string[][],
   schemasMap: Record<string, string>,
 ) {
@@ -50,17 +50,13 @@ export async function prepareFileContent({
   componentsMap,
 }: {
   filepath: string;
-  operationsMap: OverridesMap;
+  operationsMap: OverridesMap | GenerationMap;
   existingTypes: string[][];
   componentsMap: Record<string, string>;
 }) {
   const project = new Project({});
 
-  const overridesMap = {}; // TODO: remove
-
-  const combinedKeys = Object.keys(operationsMap).concat(
-    Object.keys(overridesMap),
-  );
+  const combinedKeys = Object.keys(operationsMap);
   const sortedMapKeys = combinedKeys.sort((a, b) => {
     const aValue = a.includes(" ") ? a.split(" ")[2] : a;
     const bValue = b.includes(" ") ? b.split(" ")[2] : b;
@@ -93,150 +89,140 @@ export async function prepareFileContent({
 
       writer.write("export type operations =").block(() => {
         for (const routePath of sortedMapKeys) {
-          if (overridesMap[routePath]) {
-            writer
-              .write(`"${routePath}"`)
-              .write(":")
-              .write(overridesMap[routePath]);
+          const method = operationsMap[routePath];
+
+          if (typeof method === "string") {
+            writer.write(`"${routePath}":`).write(method);
           } else {
-            const method = operationsMap[routePath];
+            const methodHeaders = { ...method.headers };
 
-            if (typeof method === "string") {
-              writer.write(`"${routePath}":`).write(method);
+            type RequestType = {
+              contentType?: string;
+              accept?: string;
+              headers: Record<string, string>;
+              body: string | null;
+              response: string;
+              responseCode: number;
+            };
+
+            const requests: RequestType[] = [];
+            if (!method.body.length) {
+              // no body definition
+              // requests.push({
+              //   headers: { ...methodHeaders },
+              //   body: null,
+              //   response: null,
+              // });
+              for (const response of method.responses) {
+                requests.push({
+                  contentType: defaultContentType,
+                  accept: response.contentType,
+                  headers: {
+                    ...methodHeaders,
+                  },
+                  body: null,
+                  response: response.code,
+                  responseCode: response.responseCode,
+                });
+              }
             } else {
-              const methodHeaders = { ...method.headers };
-
-              type RequestType = {
-                contentType?: string;
-                accept?: string;
-                headers: Record<string, string>;
-                body: unknown;
-                response: unknown;
-                responseCode: number;
-              };
-
-              const requests: RequestType[] = [];
-              if (!method.body.length) {
-                // no body definition
-                // requests.push({
-                //   headers: { ...methodHeaders },
-                //   body: null,
-                //   response: null,
-                // });
+              for (const body of method.body) {
+                // const isDefaultContentType =
+                //   body.contentType === defaultContentType;
                 for (const response of method.responses) {
                   requests.push({
-                    contentType: defaultContentType,
+                    contentType: body.contentType,
                     accept: response.contentType,
                     headers: {
                       ...methodHeaders,
                     },
-                    body: null,
+                    body: body.code,
                     response: response.code,
                     responseCode: response.responseCode,
                   });
                 }
-              } else {
-                for (const body of method.body) {
-                  // const isDefaultContentType =
-                  //   body.contentType === defaultContentType;
-                  for (const response of method.responses) {
-                    requests.push({
-                      contentType: body.contentType,
-                      accept: response.contentType,
-                      headers: {
-                        ...methodHeaders,
-                      },
-                      body: body.code,
-                      response: response.code,
-                      responseCode: response.responseCode,
-                    });
+              }
+            }
+
+            if (requests.length) {
+              const operationIdentifier = routePath; //`${method.operationId} ${methodName} ${routePath}`;
+
+              writer.write(`"${operationIdentifier}":`);
+              // .inlineBlock(() => {
+              // writer.write("request:");
+              requests.forEach((singleRequest, index) => {
+                writer.conditionalWrite(index > 0, "| ").block(() => {
+                  // add contentType
+                  const isDefaultContentType =
+                    singleRequest.contentType === defaultContentType;
+                  writer.writeLine(
+                    `contentType${isDefaultContentType ? "?" : ""}: "${singleRequest.contentType}",`,
+                  );
+
+                  const isDefaultAcceptType =
+                    singleRequest.accept === defaultAcceptType;
+                  writer.writeLine(
+                    `accept${isDefaultAcceptType ? "?" : ""}: "${singleRequest.accept}",`,
+                  );
+
+                  if (Object.keys(singleRequest.headers).length > 0) {
+                    writer
+                      .write("headers:")
+                      .inlineBlock(() => {
+                        for (const headerKey in singleRequest.headers) {
+                          writer.write(
+                            `${headerKey}: "${singleRequest.headers[headerKey]}",`,
+                          );
+                        }
+                      })
+                      .write(";")
+                      .newLine();
                   }
-                }
-              }
+                  if (singleRequest.body) {
+                    writer
+                      .write("body:")
+                      .write(singleRequest.body)
+                      // .write(";")
+                      .newLine();
+                    // writer
+                    //   .write(`"${body.contentType}":`)
+                    //   .write(body.code)
+                    //   .write(",");
+                  }
 
-              if (requests.length) {
-                const operationIdentifier = routePath; //`${method.operationId} ${methodName} ${routePath}`;
-
-                // do not generate method as was already overridden
-                if (!overridesMap[operationIdentifier]) {
-                  writer.write(`"${operationIdentifier}":`);
-                  // .inlineBlock(() => {
-                  // writer.write("request:");
-                  requests.forEach((singleRequest, index) => {
-                    writer.conditionalWrite(index > 0, "| ").block(() => {
-                      // add contentType
-                      const isDefaultContentType =
-                        singleRequest.contentType === defaultContentType;
-                      writer.writeLine(
-                        `contentType${isDefaultContentType ? "?" : ""}: "${singleRequest.contentType}",`,
-                      );
-
-                      const isDefaultAcceptType =
-                        singleRequest.accept === defaultAcceptType;
-                      writer.writeLine(
-                        `accept${isDefaultAcceptType ? "?" : ""}: "${singleRequest.accept}",`,
-                      );
-
-                      if (Object.keys(singleRequest.headers).length > 0) {
-                        writer
-                          .write("headers:")
-                          .inlineBlock(() => {
-                            for (const headerKey in singleRequest.headers) {
-                              writer.write(
-                                `${headerKey}: "${singleRequest.headers[headerKey]}",`,
-                              );
-                            }
-                          })
-                          .write(";")
-                          .newLine();
-                      }
-                      if (singleRequest.body) {
-                        writer
-                          .write("body:")
-                          .write(singleRequest.body)
-                          // .write(";")
-                          .newLine();
-                        // writer
-                        //   .write(`"${body.contentType}":`)
-                        //   .write(body.code)
-                        //   .write(",");
-                      }
-
-                      if (singleRequest.response) {
-                        writer
-                          .write("response:")
-                          .write(singleRequest.response)
-                          // .write(";")
-                          .newLine();
-                      }
-                      if (singleRequest.responseCode) {
-                        writer
-                          .write("responseCode:")
-                          .write(singleRequest.responseCode)
-                          .write(";")
-                          .newLine();
-                      }
-                    });
-                  });
-                  // writer.write("responses:").block(() => {
-                  //   for (const response of method.responses) {
-                  //     writer.write(`"${response.responseCode}":`).block(() => {
-                  //       writer.write(`contentType: "${response.contentType}",`);
-                  //       writer.write(`code: ${response.code},`);
-                  //     });
-                  //   }
-                  // });
-                  // })
-                  writer.write(";").newLine();
-                }
-              } else {
-                console.error(
-                  "No requests for method",
-                  routePath,
-                  // "method",
-                  // method,
-                );
-              }
+                  if (singleRequest.response) {
+                    writer
+                      .write("response:")
+                      .write(singleRequest.response)
+                      // .write(";")
+                      .newLine();
+                  }
+                  if (singleRequest.responseCode) {
+                    writer
+                      .write("responseCode:")
+                      .write(singleRequest.responseCode.toString())
+                      .write(";")
+                      .newLine();
+                  }
+                });
+              });
+              // writer.write("responses:").block(() => {
+              //   for (const response of method.responses) {
+              //     writer.write(`"${response.responseCode}":`).block(() => {
+              //       writer.write(`contentType: "${response.contentType}",`);
+              //       writer.write(`code: ${response.code},`);
+              //     });
+              //   }
+              // });
+              // })
+              writer.write(";").newLine();
+            } else {
+              console.error(
+                "No requests for method",
+                routePath,
+                // "method",
+                // method,
+              );
             }
           }
         }

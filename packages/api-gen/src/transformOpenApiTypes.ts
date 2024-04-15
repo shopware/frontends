@@ -5,7 +5,11 @@ import {
   getDeepPropertyCode,
   getTypePropertyNames,
 } from "./utils";
-import { OverridesMap, TransformedElements } from "./generateFile";
+import {
+  GenerationMap,
+  MethodDefinition,
+  TransformedElements,
+} from "./generateFile";
 
 export function transformOpenApiTypes(schema: string): TransformedElements {
   const {
@@ -14,7 +18,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
     sourceFiles: [sourceFile],
   } = createVirtualFiles([{ name: "_openApi.d.ts", content: schema }]);
 
-  let operationsMap: OverridesMap = {};
+  let operationsMap: GenerationMap = {};
   // let overridesMap: OverridesMap = {};
   let componentsMap: Record<string, string> = {};
 
@@ -54,8 +58,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
 
               const operationKey = `${operationId} ${restMethodName} ${currentPath}`;
 
-              const operationGenerationMap = {
-                // TODO add type from generationMap
+              const operationGenerationMap: MethodDefinition = {
                 body: [],
                 responses: [],
                 headers: {},
@@ -127,7 +130,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                         if (!contentNames.length) {
                           // on response there is no content
                           operationGenerationMap.responses.push({
-                            responseCode,
+                            responseCode: parseInt(responseCode),
                             contentType: "application/json", // TODO: use default content type
                             code: "never",
                           });
@@ -142,7 +145,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                             });
 
                             operationGenerationMap.responses.push({
-                              responseCode,
+                              responseCode: parseInt(responseCode),
                               contentType,
                               // code: typeChecker.typeToString(
                               //   code,

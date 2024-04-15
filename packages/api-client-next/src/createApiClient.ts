@@ -1,5 +1,5 @@
 import { FetchResponse, ofetch } from "ofetch";
-import type { operations } from "../../api-gen/apiTypes.d.ts";
+import type { operations } from "../../api-gen/apiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
 import { createHooks } from "hookable";
