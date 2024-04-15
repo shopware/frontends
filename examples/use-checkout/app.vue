@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
-import {
-  useCart,
-  useCheckout,
-  useSessionContext,
-} from "@shopware-pwa/composables-next/dist";
-import type { Error } from "@shopware-pwa/types";
-
 const {
   paymentMethods,
   shippingMethods,
@@ -33,14 +25,14 @@ const checkoutShippingMethod = computed({
   set: (value) => value && setShippingMethod({ id: value }),
 });
 
-const createOrderError = ref<Error[]>([]);
+const createOrderError = ref();
 
 const createOrderProxy = async () => {
   try {
-    const response = await createOrder();
+    await createOrder();
     refreshCart();
   } catch (error) {
-    createOrderError.value = (error as any).messages || [];
+    createOrderError.value = error;
   }
 };
 
@@ -142,14 +134,12 @@ onMounted(async () => {
         </span>
       </button>
     </div>
-    <div v-if="createOrderError.length" class="max-w-sm">
+    <div class="max-w-sm" v-if="createOrderError">
       <div
-        v-for="error in createOrderError"
-        :id="error.code"
-        class="p-4 mt-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+        class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
         role="alert"
       >
-        <span class="font-medium">{{ error.code }}</span> {{ error.detail }}
+        <span class="font-medium">{{ createOrderError }}</span>
       </div>
     </div>
   </div>

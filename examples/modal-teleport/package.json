@@ -14,7 +14,7 @@
     "@nuxtjs/eslint-config-typescript": "12.1.0",
     "@unocss/nuxt": "0.59.2",
     "@unocss/reset": "0.59.2",
-    "eslint": "9.0.0",
+    "eslint": "8.57.0",
     "nuxt": "3.11.2",
     "unocss": "0.59.2"
   },
