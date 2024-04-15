@@ -22,10 +22,6 @@ const props = defineProps<{
 </script>
 
 <template>
-  <pre>
-    {{ props.content }}
-</pre
-  >
   <div>
     <h2>Element!</h2>
     <div class="sw-cms-el-dailymotion">
