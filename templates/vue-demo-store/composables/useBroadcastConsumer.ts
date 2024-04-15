@@ -5,10 +5,18 @@ export type UseBroadcastConsumerReturn = {
   };
 };
 
+/**
+ * Registered actions names
+ */
 const actions = {
   loggedOut: "loggedOut",
 };
 
+/**
+ * Composable that contains the logic to consume broadcasted messages
+ *
+ * @returns {UseBroadcastConsumerReturn}
+ */
 export function useBroadcastConsumer(): UseBroadcastConsumerReturn {
   const { refreshSessionContext } = useSessionContext();
 

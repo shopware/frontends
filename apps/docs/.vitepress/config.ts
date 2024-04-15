@@ -136,6 +136,10 @@ export const sidebar = [
             text: "Custom Products extension",
             link: "/getting-started/features/custom-products",
           },
+          {
+            text: "Broadcasting",
+            link: "/getting-started/features/broadcasting",
+          },
         ],
       },
       {
