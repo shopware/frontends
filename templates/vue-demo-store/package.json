@@ -13,6 +13,7 @@
     "analyze": "nuxt analyze"
   },
   "dependencies": {
+    "@artmizu/nuxt-prometheus": "^2.2.1",
     "@shopware-pwa/cms-base": "canary",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/helpers-next": "canary",
