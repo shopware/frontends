@@ -1,14 +1,10 @@
-# login-form
+# useCheckout example
 
-This template should help get you started developing with Vue 3 in Vite.
+This example should help get you started developing [Shopware Frontends](https://github.com/shopware/frontends).
 
-## Recommended IDE Setup
+## Customization
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- edit [./app.vue](./app.vue) in order to change the current example
 
 ## Project Setup
 
