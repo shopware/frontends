@@ -27,11 +27,11 @@
     "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.6.3",
+    "@biomejs/biome": "1.6.4",
     "@changesets/changelog-github": "0.5.0",
     "@changesets/cli": "2.27.1",
-    "@microsoft/api-documenter": "7.24.1",
-    "@microsoft/api-extractor": "7.43.0",
+    "@microsoft/api-documenter": "7.24.2",
+    "@microsoft/api-extractor": "7.43.1",
     "@microsoft/tsdoc": "0.14.2",
     "@types/changelog-parser": "2.8.4",
     "changelog-parser": "3.0.1",
@@ -43,8 +43,8 @@
     "prettier": "3.2.5",
     "taze": "0.13.3",
     "turbo": "1.13.2",
-    "typedoc": "0.25.12",
-    "vercel": "33.6.2"
+    "typedoc": "0.25.13",
+    "vercel": "34.0.0"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"
@@ -54,24 +54,25 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.15.3",
+  "packageManager": "pnpm@8.15.7",
   "pnpm": {
     "overrides": {
       "@antfu/utils": "^0.7.7",
-      "@babel/traverse": "^7.23.9",
+      "@babel/traverse": "^7.24.1",
       "@types/node": "^20",
       "debug": "^4.3.4",
       "follow-redirects": "^1.15.6",
       "lodash": "^4.17.21",
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
-      "postcss": "^8.4.35",
+      "postcss": "^8.4.38",
       "semver": "^7.6.0",
-      "sharp": "^0.33.2",
-      "socks": "^2.8.1",
+      "sharp": "^0.33.3",
+      "socks": "^2.8.3",
+      "tar": "^6.2.1",
       "undici": "^5.28.4",
       "vite@4>docs": "^4.5.3",
-      "vite@5": "^5.2.6",
-      "yaml@2": "^2.3.4",
+      "vite@5": "^5.2.8",
+      "yaml@2": "^2.4.1",
       "zod": "^3.22.4"
     },
     "peerDependencyRules": {

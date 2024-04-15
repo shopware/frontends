@@ -39,7 +39,7 @@
     "find-in-files": "0.5.0",
     "fs-extra": "11.2.0",
     "ts-dox": "0.1.0",
-    "typedoc": "0.25.12",
+    "typedoc": "0.25.13",
     "vinyl": "3.0.0",
     "vite": "5.2.8"
   },
@@ -47,11 +47,11 @@
     "@shopware-pwa/types": "workspace:*",
     "@types/find-in-files": "0.5.3",
     "@types/fs-extra": "11.0.4",
-    "@types/node": "20.12.2",
+    "@types/node": "20.12.7",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
-    "typescript": "5.4.3",
+    "typescript": "5.4.5",
     "unbuild": "2.0.0",
-    "vitest": "1.4.0"
+    "vitest": "1.5.0"
   }
 }
