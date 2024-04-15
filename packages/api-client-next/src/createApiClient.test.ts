@@ -10,8 +10,8 @@ import {
   getHeaders,
 } from "h3";
 import type { App } from "h3";
-import { createAPIClient } from ".";
-import type { operationPaths, operations } from "../api-types";
+import { createAPIClient } from "./createApiClient";
+import type { operations } from "../api-types";
 
 describe("createAPIClient", () => {
   const listeners: Listener[] = [];
@@ -50,7 +50,7 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       baseURL,
     });
@@ -75,7 +75,7 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
@@ -103,7 +103,7 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       baseURL,
     });
@@ -140,7 +140,7 @@ describe("createAPIClient", () => {
       .fn()
       .mockImplementation((param: string) => {});
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
@@ -167,7 +167,7 @@ describe("createAPIClient", () => {
       .fn()
       .mockImplementation((param: string) => {});
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
@@ -190,7 +190,7 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       baseURL,
     });
@@ -215,7 +215,7 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
@@ -243,7 +243,7 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,

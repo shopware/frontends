@@ -1,0 +1,260 @@
+import { Project } from "ts-morph";
+import { format } from "prettier";
+
+export type GenerationMap = {
+  [routePath: string]: {
+    [method: string]: {
+      operationId: string;
+      headers: Record<string, string>;
+      body: {
+        contentType: string;
+        code: string;
+      }[];
+      responses: {
+        responseCode: number;
+        contentType: string;
+        code: string;
+      }[];
+    };
+  };
+};
+
+export type OverridesMap = Record<string, string>;
+
+export type TransformedElements = [
+  OverridesMap,
+  Record<string, string>,
+  string[][],
+];
+
+export async function generateFile(
+  filepath: string,
+  operationsMap: OverridesMap,
+  existingTypes: string[][],
+  schemasMap: Record<string, string>,
+) {
+  const project = await prepareFileContent({
+    filepath,
+    operationsMap,
+    existingTypes,
+    componentsMap: schemasMap,
+  });
+
+  await project.save();
+}
+
+export async function prepareFileContent({
+  filepath,
+  operationsMap,
+  existingTypes,
+  componentsMap,
+}: {
+  filepath: string;
+  operationsMap: OverridesMap;
+  existingTypes: string[][];
+  componentsMap: Record<string, string>;
+}) {
+  const project = new Project({});
+
+  const overridesMap = {}; // TODO: remove
+
+  const combinedKeys = Object.keys(operationsMap).concat(
+    Object.keys(overridesMap),
+  );
+  const sortedMapKeys = combinedKeys.sort((a, b) => {
+    const aValue = a.includes(" ") ? a.split(" ")[2] : a;
+    const bValue = b.includes(" ") ? b.split(" ")[2] : b;
+
+    return aValue.localeCompare(bValue);
+  });
+
+  const defaultContentType = "application/json";
+  const defaultAcceptType = "application/json";
+
+  const sortedSchemaKeys = Object.keys(componentsMap).sort();
+
+  const sourceFile = project.createSourceFile(
+    filepath,
+    (writer) => {
+      existingTypes.forEach((type) => {
+        writer.writeLine(type[1]);
+      });
+
+      // components
+      writer.write("export type components =").block(() => {
+        writer.writeLine("schemas: Schemas;");
+      });
+
+      writer.write("export type Schemas =").block(() => {
+        sortedSchemaKeys.forEach((key) => {
+          writer.write(`${key}:`).write(componentsMap[key]); //.write(";");
+        });
+      });
+
+      writer.write("export type operations =").block(() => {
+        for (const routePath of sortedMapKeys) {
+          if (overridesMap[routePath]) {
+            writer
+              .write(`"${routePath}"`)
+              .write(":")
+              .write(overridesMap[routePath]);
+          } else {
+            const method = operationsMap[routePath];
+
+            if (typeof method === "string") {
+              writer.write(`"${routePath}":`).write(method);
+            } else {
+              const methodHeaders = { ...method.headers };
+
+              type RequestType = {
+                contentType?: string;
+                accept?: string;
+                headers: Record<string, string>;
+                body: unknown;
+                response: unknown;
+                responseCode: number;
+              };
+
+              const requests: RequestType[] = [];
+              if (!method.body.length) {
+                // no body definition
+                // requests.push({
+                //   headers: { ...methodHeaders },
+                //   body: null,
+                //   response: null,
+                // });
+                for (const response of method.responses) {
+                  requests.push({
+                    contentType: defaultContentType,
+                    accept: response.contentType,
+                    headers: {
+                      ...methodHeaders,
+                    },
+                    body: null,
+                    response: response.code,
+                    responseCode: response.responseCode,
+                  });
+                }
+              } else {
+                for (const body of method.body) {
+                  // const isDefaultContentType =
+                  //   body.contentType === defaultContentType;
+                  for (const response of method.responses) {
+                    requests.push({
+                      contentType: body.contentType,
+                      accept: response.contentType,
+                      headers: {
+                        ...methodHeaders,
+                      },
+                      body: body.code,
+                      response: response.code,
+                      responseCode: response.responseCode,
+                    });
+                  }
+                }
+              }
+
+              if (requests.length) {
+                const operationIdentifier = routePath; //`${method.operationId} ${methodName} ${routePath}`;
+
+                // do not generate method as was already overridden
+                if (!overridesMap[operationIdentifier]) {
+                  writer.write(`"${operationIdentifier}":`);
+                  // .inlineBlock(() => {
+                  // writer.write("request:");
+                  requests.forEach((singleRequest, index) => {
+                    writer.conditionalWrite(index > 0, "| ").block(() => {
+                      // add contentType
+                      const isDefaultContentType =
+                        singleRequest.contentType === defaultContentType;
+                      writer.writeLine(
+                        `contentType${isDefaultContentType ? "?" : ""}: "${singleRequest.contentType}",`,
+                      );
+
+                      const isDefaultAcceptType =
+                        singleRequest.accept === defaultAcceptType;
+                      writer.writeLine(
+                        `accept${isDefaultAcceptType ? "?" : ""}: "${singleRequest.accept}",`,
+                      );
+
+                      if (Object.keys(singleRequest.headers).length > 0) {
+                        writer
+                          .write("headers:")
+                          .inlineBlock(() => {
+                            for (const headerKey in singleRequest.headers) {
+                              writer.write(
+                                `${headerKey}: "${singleRequest.headers[headerKey]}",`,
+                              );
+                            }
+                          })
+                          .write(";")
+                          .newLine();
+                      }
+                      if (singleRequest.body) {
+                        writer
+                          .write("body:")
+                          .write(singleRequest.body)
+                          // .write(";")
+                          .newLine();
+                        // writer
+                        //   .write(`"${body.contentType}":`)
+                        //   .write(body.code)
+                        //   .write(",");
+                      }
+
+                      if (singleRequest.response) {
+                        writer
+                          .write("response:")
+                          .write(singleRequest.response)
+                          // .write(";")
+                          .newLine();
+                      }
+                      if (singleRequest.responseCode) {
+                        writer
+                          .write("responseCode:")
+                          .write(singleRequest.responseCode)
+                          .write(";")
+                          .newLine();
+                      }
+                    });
+                  });
+                  // writer.write("responses:").block(() => {
+                  //   for (const response of method.responses) {
+                  //     writer.write(`"${response.responseCode}":`).block(() => {
+                  //       writer.write(`contentType: "${response.contentType}",`);
+                  //       writer.write(`code: ${response.code},`);
+                  //     });
+                  //   }
+                  // });
+                  // })
+                  writer.write(";").newLine();
+                }
+              } else {
+                console.error(
+                  "No requests for method",
+                  routePath,
+                  // "method",
+                  // method,
+                );
+              }
+            }
+          }
+        }
+      });
+    },
+    { overwrite: true },
+  );
+
+  // sourceFile.formatText({
+  //   indentSize: 2,
+  //   placeOpenBraceOnNewLineForFunctions: true,
+  // });
+
+  const x = sourceFile.getFullText();
+  const formatted = await format(x, {
+    parser: "typescript",
+  });
+  sourceFile.replaceWithText(formatted);
+
+  return project;
+}

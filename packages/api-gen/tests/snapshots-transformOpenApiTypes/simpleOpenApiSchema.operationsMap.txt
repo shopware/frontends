@@ -1,0 +1,48 @@
+{
+  "createCustomerAddress post /account/address": {
+    "body": [
+      {
+        "code": " components["schemas"]["CustomerAddress"];",
+        "contentType": "application/json",
+      },
+    ],
+    "headers": {},
+    "operationId": "createCustomerAddress",
+    "responses": [
+      {
+        "code": " components["schemas"]["CustomerAddress"];",
+        "contentType": "application/json",
+        "responseCode": "200",
+      },
+    ],
+  },
+  "deleteCustomerAddress delete /account/address/{addressId}": {
+    "body": [],
+    "headers": {},
+    "operationId": "deleteCustomerAddress",
+    "responses": [
+      {
+        "code": "never",
+        "contentType": "application/json",
+        "responseCode": "204",
+      },
+    ],
+  },
+  "updateCustomerAddress patch /account/address/{addressId}": {
+    "body": [
+      {
+        "code": " components["schemas"]["CustomerAddress"];",
+        "contentType": "application/json",
+      },
+    ],
+    "headers": {},
+    "operationId": "updateCustomerAddress",
+    "responses": [
+      {
+        "code": " components["schemas"]["CustomerAddress"];",
+        "contentType": "application/json",
+        "responseCode": "200",
+      },
+    ],
+  },
+}

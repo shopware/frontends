@@ -7,33 +7,9 @@ import c from "picocolors";
 import { format } from "prettier";
 import { patches } from "../patches";
 import semver from "semver";
+import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
 
 const config = dotenv.config().parsed || {};
-
-function replaceNameInRange(
-  str: string,
-  oldName: RegExp,
-  newName: string,
-  startIndex: number,
-) {
-  // Ensure valid indices
-  if (startIndex < 0 || startIndex > str.length) {
-    throw new Error("Invalid index range");
-  }
-
-  // Get the parts before and after the replacement range
-  const part1 = str.slice(0, startIndex);
-  const partToReplace = str.slice(startIndex);
-
-  // Replace the specific name within the range (case-insensitive)
-  const replacedPart = partToReplace.replace(
-    new RegExp(oldName, "gi"),
-    newName,
-  );
-
-  // Concatenate the parts to form the new string
-  return part1 + replacedPart;
-}
 
 export async function generate(args: { cwd: string; filename: string }) {
   try {
@@ -96,7 +72,6 @@ export async function generate(args: { cwd: string; filename: string }) {
         });
 
     const originalSchema = JSON.parse(readedContentFromFile);
-    const { paths } = originalSchema;
     console.log("schema", originalSchema.info);
 
     const address = resolve(fullInputFilePath);
@@ -188,92 +163,20 @@ export async function generate(args: { cwd: string; filename: string }) {
       },
     );
 
-    type MethodObject = {
-      operationId: string;
-      parameters: [
-        {
-          in: "query" | "header" | "path";
-          name: string;
-        },
-      ];
-    };
-
-    type OperationsMap = Record<
-      string,
-      {
-        path: string;
-        method: string;
-        queryParamNames: string[];
-        finalPath: string;
-      }
-    >;
-
-    // create map of paths
-    const operationsMap: OperationsMap = Object.keys(paths).reduce(
-      (acc, path) => {
-        const pathObject = paths[path];
-        const methods = Object.keys(pathObject);
-        for (const method of methods) {
-          const methodObject = pathObject[method] as MethodObject;
-          const { operationId } = methodObject;
-          const queryParamNames =
-            methodObject.parameters
-              ?.filter((param) => param.in === "query")
-              .map((param) => param.name) || [];
-
-          const headerParamNames =
-            methodObject.parameters
-              ?.filter((param) => param.in === "header")
-              .map((param) => param.name) || [];
-
-          let finalPath = `${operationId} ${method.toLocaleLowerCase()} ${path}`;
-          if (queryParamNames.length) {
-            finalPath += `?${queryParamNames.join(",")}`;
-          }
-          if (headerParamNames.length) {
-            finalPath += ` ${headerParamNames.join(",")}`;
-          }
-
-          acc[operationId] = {
-            path,
-            method,
-            queryParamNames,
-            finalPath,
-          };
-        }
-        return acc;
-      },
-      {} as OperationsMap,
-    );
-
-    const operationsSortedByPath = Object.values(operationsMap).sort((a, b) => {
-      if (a.path < b.path) return -1;
-      if (a.path > b.path) return 1;
-      return 0;
-    });
-
-    schema += `\n export type operationPaths = ${operationsSortedByPath
-      .map((el) => `"${(el as { finalPath: string }).finalPath}"`)
-      .join(" | ")};`;
+    schema += `\n
+    /**
+     * @deprecated this field is not needed anymore
+     */
+    export type operationPaths = string;`;
 
     // clean up
     // remove `@description ` tags
     schema = schema.replace(/@description /g, "");
+    writeFileSync(fullOutputFilePath, schema, {
+      encoding: "utf-8",
+    });
 
-    // add generic components definition
-    schema = schema.replace(
-      /export type operations =/g,
-      "export type operations<COMPONENTS extends Record<string, Record<string, unknown>> = components> =",
-    );
-
-    const operationsIndex = schema.indexOf("export type operations<");
-
-    schema = replaceNameInRange(
-      schema,
-      /components\[/,
-      "COMPONENTS[",
-      operationsIndex,
-    );
+    // const mod = parseModule(schema);
 
     schema = await format(schema, {
       // semi: false,
@@ -286,9 +189,25 @@ export async function generate(args: { cwd: string; filename: string }) {
       writeFileSync(fullOutputFilePath, schema, {
         encoding: "utf-8",
       });
+      // testIt(fullOutputFilePath);
+
+      // TODO: change overrides file name to param
+      // read file "myOverrides.ts" if exists
+      const fileExists = existsSync(join(args.cwd, "myOverrides.ts"));
+      let overridesSchema = "";
+      console.error("Overrides exist", fileExists);
+
+      if (fileExists) {
+        overridesSchema = readFileSync(join(args.cwd, "myOverrides.ts"), {
+          encoding: "utf-8",
+        });
+      }
+
+      await processAstSchemaAndOverrides(schema, overridesSchema);
     } else {
       throw new Error("Schema is not a string");
     }
+
     const stop = performance.now();
     const time = Math.round(stop - start);
     console.log(

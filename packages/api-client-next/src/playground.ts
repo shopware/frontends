@@ -4,12 +4,12 @@
 
 import { createAPIClient } from ".";
 import type { RequestParameters } from ".";
-import type { operationPaths, operations } from "../api-types";
+import type { operations } from "../api-types";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
-type extendedPaths = "qweqwe post /some/{addressId}/pathh" | operationPaths;
+// type extendedPaths = "qweqwe post /some/{addressId}/pathh" | operationPaths;
 type extendedOperations = {
   qweqwe: {
     parameters: {
@@ -24,7 +24,7 @@ type extendedOperations = {
   };
 } & operations;
 
-const apiInstance = createAPIClient<extendedOperations, extendedPaths>({
+const apiInstance = createAPIClient<extendedOperations>({
   baseURL,
   accessToken,
 });
@@ -49,9 +49,11 @@ async function testing() {
 // }
 
 // Define method with predefined path
-const readCart = (params: RequestParameters<"readCart", operations>) =>
-  apiInstance.invoke("readCart get /checkout/cart", params);
 
-async function test() {
-  const resp = await readCart({});
-}
+// TDODO: DO NOT REMOVE. FIX
+// const readCart = (params: RequestParameters<"readCart", operations>) =>
+//   apiInstance.invoke("readCart get /checkout/cart", params);
+
+// async function test() {
+//   const resp = await readCart({});
+// }

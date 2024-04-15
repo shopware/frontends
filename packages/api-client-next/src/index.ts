@@ -2,7 +2,7 @@ import { ofetch } from "ofetch";
 import type {
   operations as defaultOperations,
   paths as defaultPaths,
-} from "../api-types";
+} from "../api-types/storeApiTypes";
 import type {
   operations as defaultAdminOperations,
   paths as defaultAdminPaths,
@@ -79,7 +79,10 @@ export type RequestReturnType<
       "application/octet-stream"
     >;
 
-export function createAPIClient<
+export { createAPIClient } from "./createApiClient";
+
+// TODO remove after migration
+export function createAPIClientOld<
   OPERATIONS extends Operations = defaultOperations,
   PATHS = defaultPaths,
 >(params: {
