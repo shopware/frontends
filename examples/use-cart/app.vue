@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import {
-  usePrice,
-  useProductPrice,
-  useProductSearch,
-  useCart,
-} from "@shopware-pwa/composables-next/dist";
-
 const product = ref();
 
 const { search } = useProductSearch();
@@ -25,16 +17,20 @@ const {
 const { getFormattedPrice } = usePrice();
 const { unitPrice } = useProductPrice(product);
 
-const promotionCode = ref("SWFRONTENDS!");
+const promotionCode = ref("SWFRONTENDS");
 
 const proxyAddToCart = async (quantity: number = 1) => {
   await addProduct({ id: product.value?.id, quantity });
   refreshCart();
 };
 
-const changeItemQuantity = (e: Event) => {
+const changeItemQuantity = async (e: Event) => {
   const target = e.target as HTMLInputElement;
-  changeProductQuantity({ id: target.id, quantity: parseInt(target.value) });
+  await changeProductQuantity({
+    id: target.id,
+    quantity: parseInt(target.value),
+  });
+  refreshCart();
 };
 
 onMounted(async () => {
