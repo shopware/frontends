@@ -12,6 +12,7 @@
     "messages": {
       "addedToCart": "{p} został dodany do koszyka."
     },
-    "promotion": "promocja"
+    "promotion": "promocja",
+    "digital": "cyfrowy"
   }
 }

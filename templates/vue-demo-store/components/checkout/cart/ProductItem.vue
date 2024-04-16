@@ -28,6 +28,8 @@ const {
   itemQuantity,
   isPromotion,
   isRemovable,
+  isStackable,
+  isDigital,
   changeItemQuantity,
 } = useCartItem(cartItem);
 
@@ -93,9 +95,10 @@ const removeCartItem = async () => {
         <h3 class="text-base" data-testid="cart-product-name">
           {{ cartItem.label }}
           <span
-            v-if="isPromotion"
-            class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
-            >Promotion</span
+            v-if="isDigital"
+            data-testid="cart-product-digital-label"
+            class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"
+            >{{ $t("cart.digital") }}</span
           >
         </h3>
         <SharedPrice
@@ -116,7 +119,7 @@ const removeCartItem = async () => {
       </p>
     </div>
     <div
-      v-if="!isPromotion"
+      v-if="isStackable"
       class="flex flex-1 items-end justify-between text-sm"
     >
       <input
@@ -133,7 +136,7 @@ const removeCartItem = async () => {
       />
       <div class="flex">
         <button
-          v-if="!isPromotion && isRemovable"
+          v-if="isRemovable"
           type="button"
           class="font-medium text-dark bg-transparent"
           :class="{ 'text-secondary-500': isLoading }"

@@ -13,23 +13,16 @@ const props = withDefaults(
 
 const { cartItem } = toRefs(props);
 const CartItem = computed(() => {
-  switch(cartItem.value?.type) {
+  switch (cartItem.value?.type) {
     default:
-    case 'product': 
-      return defineAsyncComponent(
-          () => import("./cart/ProductItem.vue"),
-      );
-    case 'promotion':
-      return defineAsyncComponent(
-          () => import("./cart/PromotionItem.vue")
-      );
-    
+    case "product":
+      return defineAsyncComponent(() => import("./cart/ProductItem.vue"));
+    case "promotion":
+      return defineAsyncComponent(() => import("./cart/PromotionItem.vue"));
   }
-
-})
-
+});
 </script>
 
 <template>
-  <component :is="CartItem" :cartItem="cartItem" />
+  <component :is="CartItem" :cart-item="cartItem" />
 </template>

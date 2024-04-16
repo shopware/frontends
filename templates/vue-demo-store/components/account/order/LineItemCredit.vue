@@ -3,24 +3,15 @@ import type { Schemas } from "#shopware";
 defineProps<{
   lineItem: Schemas["OrderLineItem"];
 }>();
-
 </script>
-
-<script lang="ts">
-export default {
-  name: "AccountOrderLineItemCredit",
-};
-</script>
-
 <template>
   <div
-    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-3 sm:gap-y-10 gap-x-6 py-4 border-t border-secondary-200 text-secondary-400 sm:items-center"
+    class="flex flex-col sm:flex-row sm:grid grid-cols-5 gap-y-3 sm:gap-y-10 gap-x-1 py-4 border-t border-secondary-200 text-secondary-400 sm:items-center"
   >
-    <div
-      class="sm:flex items-center sm:items-start col-span-2 text-secondary-900"
-    >
-      <div class="w-26 i-carbon-percentage text-3xl text-center align-end">
-      </div>
+    <div class="sm:flex items-center col-span-2 text-secondary-900">
+      <div
+        class="w-26 i-carbon-percentage text-3xl text-center align-end"
+      ></div>
       <div class="my-5 text-center">
         {{ lineItem.label }}
       </div>
@@ -34,7 +25,7 @@ export default {
       <SharedPrice
         :value="lineItem.unitPrice"
         class="text-secondary-600 font-normal"
-        data-testid="order-item-unitprice"
+        data-testid="order-item-credit-unitprice"
       />
     </div>
     <div
@@ -45,9 +36,8 @@ export default {
       <SharedPrice
         :value="lineItem.totalPrice"
         class="text-secondary-600 font-normal"
-        data-testid="order-item-totalprice"
+        data-testid="order-item-credit-totalprice"
       />
     </div>
   </div>
-
 </template>

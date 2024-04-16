@@ -42,6 +42,14 @@ export type UseCartItemReturn = {
    */
   isRemovable: ComputedRef<boolean>;
   /**
+   * Determines if the current item's quantity can be changed
+   */
+  isStackable: ComputedRef<boolean>;
+  /**
+   * Determines if the current item is a digital product (to download)
+   */
+  isDigital: ComputedRef<boolean>;
+  /**
    * Stock information for the current item
    */
   itemStock: ComputedRef<number | undefined>;
@@ -108,6 +116,12 @@ export function useCartItem(
   const itemStock = computed<number>(
     () => cartItem.value.deliveryInformation.stock,
   );
+
+  const isDigital = computed(
+    () => !!cartItem.value.states?.includes("is-download"),
+  );
+
+  const isStackable = computed(() => !!cartItem.value.stackable);
 
   const itemType = computed(() => cartItem.value.type);
 
@@ -177,5 +191,7 @@ export function useCartItem(
     isProduct,
     isPromotion,
     isRemovable,
+    isStackable,
+    isDigital,
   };
 }

@@ -12,6 +12,7 @@
     "messages": {
       "addedToCart": "{p} wurde dem Warenkorb hinzugefügt."
     },
-    "promotion": "Promotion"
+    "promotion": "Promotion",
+    "digital": "digital"
   }
 }
