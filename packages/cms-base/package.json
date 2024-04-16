@@ -45,7 +45,7 @@
     "@vueuse/core": "10.9.0",
     "entities": "4.5.0",
     "html-to-ast": "0.0.6",
-    "vue": "3.4.21"
+    "vue": "3.4.23"
   },
   "devDependencies": {
     "@nuxt/schema": "3.11.2",
