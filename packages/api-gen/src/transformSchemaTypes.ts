@@ -47,7 +47,7 @@ export function transformSchemaTypes(schema: string): TransformedElements {
         });
       }
 
-      if (typeName === "schemas") {
+      if (typeName === "Schemas") {
         // const allSchemas = getDeepProperty({
         //   type,
         //   names: ["schemas"],

@@ -3,10 +3,10 @@ import { components as mainComponents } from "./apiSchema";
 // TODO: move this as example and remove this file
 
 export type components = mainComponents & {
-  schemas: schemas;
+  schemas: Schemas;
 };
 
-export type schemas = {
+export type Schemas = {
   CustomerAddress: {
     qwe: string;
   };

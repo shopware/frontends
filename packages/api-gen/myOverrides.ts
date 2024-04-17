@@ -13,7 +13,7 @@ export type components = mainComponents;
 //   schemas: schemas;
 // };
 
-export type schemas = {
+export type Schemas = {
   AccountNewsletterRecipientResult: {
     // TODO: [OpenAPI][AccountNewsletterRecipientResult] - update type definition
     apiAlias: "account_newsletter_recipient";
@@ -983,15 +983,15 @@ export type schemas = {
     available?: boolean;
     /** Format: int64 */
     availableStock?: number;
-    calculatedCheapestPrice?: schemas["CalculatedPrice"]; // TODO: [OpenAPI][Product] calculatedCheapestPrice field should be defined exactly what it is
+    calculatedCheapestPrice?: Schemas["CalculatedPrice"]; // TODO: [OpenAPI][Product] calculatedCheapestPrice field should be defined exactly what it is
     /**
      * Format: int64
      * Runtime field, cannot be used as part of the criteria.
      */
     calculatedMaxPurchase?: number;
     // TODO: [OpenAPI][Product] calculatedPrice field should be defined properly
-    calculatedPrice?: schemas["CalculatedPrice"];
-    calculatedPrices?: schemas["CalculatedPrice"][]; // TODO: [OpenAPI][Product] calculatedPrices field should be defined as an array and required!
+    calculatedPrice?: Schemas["CalculatedPrice"];
+    calculatedPrices?: Schemas["CalculatedPrice"][]; // TODO: [OpenAPI][Product] calculatedPrices field should be defined as an array and required!
     canonicalProduct?: components["schemas"]["Product"];
     canonicalProductId?: string;
     categories?: components["schemas"]["Category"][];
@@ -1632,10 +1632,10 @@ export type operations = {
     path: {
       /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
       // TODO: [OpenAPI][readNavigation] add union type in definition
-      activeId: components["schemas"]["NavigationType"] | string;
+      activeId: Schemas["NavigationType"] | string;
       /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
       // TODO: [OpenAPI][readNavigation] add union type in definition
-      rootId: components["schemas"]["NavigationType"] | string;
+      rootId: Schemas["NavigationType"] | string;
     };
     body: components["schemas"]["Criteria"] & {
       /** Return the categories as a tree or as a flat list. */

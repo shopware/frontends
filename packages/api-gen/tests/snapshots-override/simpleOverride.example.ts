@@ -1,10 +1,10 @@
 import { components as mainComponents } from "../snapshots-transformOpenApiTypes/simpleOpenApiSchema.result";
 
 export type components = mainComponents & {
-  schemas: schemas;
+  schemas: Schemas;
 };
 
-export type schemas = {
+export type Schemas = {
   CustomerAddress: {
     qwe: string;
   };
