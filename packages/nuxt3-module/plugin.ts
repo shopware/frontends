@@ -41,7 +41,6 @@ export default defineNuxtPlugin((NuxtApp) => {
     },
     onErrorHandler(response) {
       const error = isMaintenanceMode(response._data?.errors ?? []);
-      console.log("aaa", response._data?.errors);
       if (error) {
         throw createError({
           statusCode: 503,
