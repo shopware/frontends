@@ -22,7 +22,6 @@ export function getDeepProperty({
 
   const property = type.getProperty(currentName);
   if (!property) {
-    console.error("property not found", currentName);
     return undefined;
   }
 
@@ -58,11 +57,31 @@ export function getDeepPropertyCode({
   if (deepProperty) {
     const property = deepProperty.getProperty(currentName);
     if (!property) {
-      console.error("property not found", currentName);
       return undefined;
     }
     return property.valueDeclaration?.getText().replace(/^[^:]+:/, "");
   }
+}
 
-  console.error("Property not found", names);
+export function isOptional(symbol: ts.Symbol): boolean {
+  const declarations = symbol.getDeclarations();
+  if (!declarations) return false;
+
+  // Assuming the property has only one declaration
+  const declaration = declarations[0];
+
+  // Check if the declaration has a question token
+  if (
+    ts.isPropertySignature(declaration) &&
+    declaration.questionToken !== undefined
+  ) {
+    return true; // Property is optional
+  }
+
+  // If it's not a property signature, check if it's a parameter
+  if (ts.isParameter(declaration) && declaration.questionToken !== undefined) {
+    return true; // Parameter is optional
+  }
+
+  return false; // Property is required
 }

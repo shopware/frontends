@@ -6,25 +6,32 @@
         "contentType": "application/json",
       },
     ],
-    "headers": {},
+    "headers": undefined,
     "operationId": "createCustomerAddress",
+    "pathParams": undefined,
+    "query": undefined,
     "responses": [
       {
         "code": " components["schemas"]["CustomerAddress"];",
         "contentType": "application/json",
-        "responseCode": "200",
+        "responseCode": 200,
       },
     ],
   },
   "deleteCustomerAddress delete /account/address/{addressId}": {
     "body": [],
-    "headers": {},
+    "headers": undefined,
     "operationId": "deleteCustomerAddress",
+    "pathParams": " {
+        /** ID of the address to be deleted. */
+        addressId: string;
+      };",
+    "query": undefined,
     "responses": [
       {
         "code": "never",
         "contentType": "application/json",
-        "responseCode": "204",
+        "responseCode": 204,
       },
     ],
   },
@@ -35,13 +42,18 @@
         "contentType": "application/json",
       },
     ],
-    "headers": {},
+    "headers": undefined,
     "operationId": "updateCustomerAddress",
+    "pathParams": " {
+        /** Address ID */
+        addressId: string;
+      };",
+    "query": undefined,
     "responses": [
       {
         "code": " components["schemas"]["CustomerAddress"];",
         "contentType": "application/json",
-        "responseCode": "200",
+        "responseCode": 200,
       },
     ],
   },

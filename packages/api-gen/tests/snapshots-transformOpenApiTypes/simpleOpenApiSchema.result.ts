@@ -167,12 +167,20 @@ export type operations = {
   "deleteCustomerAddress delete /account/address/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** ID of the address to be deleted. */
+      addressId: string;
+    };
     response: never;
     responseCode: 204;
   };
   "updateCustomerAddress patch /account/address/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Address ID */
+      addressId: string;
+    };
     body: components["schemas"]["CustomerAddress"];
     response: components["schemas"]["CustomerAddress"];
     responseCode: 200;

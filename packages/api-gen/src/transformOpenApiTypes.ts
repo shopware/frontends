@@ -60,8 +60,10 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
 
               const operationGenerationMap: MethodDefinition = {
                 body: [],
+                query: undefined,
+                pathParams: undefined,
                 responses: [],
-                headers: {},
+                headers: undefined,
                 operationId: operationId!,
               };
 
@@ -159,6 +161,36 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                       }
                     }
                   });
+                }
+
+                // query parameters
+                const operationQueryParams = getDeepProperty({
+                  type: operation,
+                  names: ["parameters"],
+                  node,
+                  typeChecker,
+                });
+                if (operationQueryParams) {
+                  operationGenerationMap.query = getDeepPropertyCode({
+                    type: operationQueryParams,
+                    names: ["query"],
+                    node,
+                    typeChecker,
+                  })!;
+
+                  operationGenerationMap.pathParams = getDeepPropertyCode({
+                    type: operationQueryParams,
+                    names: ["path"],
+                    node,
+                    typeChecker,
+                  })!;
+
+                  operationGenerationMap.headers = getDeepPropertyCode({
+                    type: operationQueryParams,
+                    names: ["header"],
+                    node,
+                    typeChecker,
+                  })!;
                 }
               }
 

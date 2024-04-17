@@ -3,7 +3,9 @@ import { format } from "prettier";
 
 export type MethodDefinition = {
   operationId: string;
-  headers: Record<string, string>;
+  headers?: string;
+  query?: string;
+  pathParams?: string;
   body: {
     contentType: string;
     code: string;
@@ -94,12 +96,14 @@ export async function prepareFileContent({
           if (typeof method === "string") {
             writer.write(`"${routePath}":`).write(method);
           } else {
-            const methodHeaders = { ...method.headers };
+            const methodHeaders = method.headers;
 
             type RequestType = {
               contentType?: string;
               accept?: string;
-              headers: Record<string, string>;
+              headers?: string;
+              query?: string;
+              pathParams?: string;
               body: string | null;
               response: string;
               responseCode: number;
@@ -117,9 +121,9 @@ export async function prepareFileContent({
                 requests.push({
                   contentType: defaultContentType,
                   accept: response.contentType,
-                  headers: {
-                    ...methodHeaders,
-                  },
+                  headers: methodHeaders,
+                  query: method.query,
+                  pathParams: method.pathParams,
                   body: null,
                   response: response.code,
                   responseCode: response.responseCode,
@@ -133,9 +137,9 @@ export async function prepareFileContent({
                   requests.push({
                     contentType: body.contentType,
                     accept: response.contentType,
-                    headers: {
-                      ...methodHeaders,
-                    },
+                    headers: methodHeaders,
+                    query: method.query,
+                    pathParams: method.pathParams,
                     body: body.code,
                     response: response.code,
                     responseCode: response.responseCode,
@@ -165,19 +169,20 @@ export async function prepareFileContent({
                     `accept${isDefaultAcceptType ? "?" : ""}: "${singleRequest.accept}",`,
                   );
 
-                  if (Object.keys(singleRequest.headers).length > 0) {
-                    writer
-                      .write("headers:")
-                      .inlineBlock(() => {
-                        for (const headerKey in singleRequest.headers) {
-                          writer.write(
-                            `${headerKey}: "${singleRequest.headers[headerKey]}",`,
-                          );
-                        }
-                      })
-                      .write(";")
-                      .newLine();
+                  if (singleRequest.headers?.length) {
+                    // TODO: (low priority) check if all headers are optional and set headers as optional
+                    writer.write("headers:").write(singleRequest.headers);
                   }
+
+                  if (singleRequest.query) {
+                    // TODO: (low priority) check if all headers are optional and set headers as optional
+                    writer.write("query:").write(singleRequest.query);
+                  }
+
+                  if (singleRequest.pathParams) {
+                    writer.write("pathParams:").write(singleRequest.pathParams);
+                  }
+
                   if (singleRequest.body) {
                     writer
                       .write("body:")

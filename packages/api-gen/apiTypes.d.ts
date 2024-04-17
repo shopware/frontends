@@ -6647,12 +6647,20 @@ export type operations = {
   "deleteCustomerAddress delete /account/address/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** ID of the address to be deleted. */
+      addressId: string;
+    };
     response: never;
     responseCode: 204;
   };
   "updateCustomerAddress patch /account/address/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Address ID */
+      addressId: string;
+    };
     body: components["schemas"]["CustomerAddress"];
     response: components["schemas"]["CustomerAddress"];
     responseCode: 200;
@@ -6660,12 +6668,20 @@ export type operations = {
   "defaultBillingAddress patch /account/address/default-billing/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Address ID */
+      addressId: string;
+    };
     response: never;
     responseCode: 200;
   };
   "defaultShippingAddress patch /account/address/default-shipping/{addressId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Address ID */
+      addressId: string;
+    };
     response: never;
     responseCode: 200;
   };
@@ -6710,6 +6726,10 @@ export type operations = {
   "changePaymentMethod post /account/change-payment-method/{paymentMethodId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the desired default payment method */
+      paymentMethodId: string;
+    };
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
@@ -6904,6 +6924,10 @@ export type operations = {
   "generateJWTAppSystemAppServer post /app-system/{name}/generate-token": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Name of the app */
+      name: string;
+    };
     body: GenericRecord;
     response: {
       /** Format: date-time */
@@ -6972,6 +6996,10 @@ export type operations = {
   "removeLineItemDeprecated delete /checkout/cart/line-item": {
     contentType?: "application/json";
     accept?: "application/json";
+    query: {
+      /** A list of product identifiers. */
+      ids: string[];
+    };
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
@@ -7015,6 +7043,10 @@ export type operations = {
   "readCms post /cms/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the CMS page to be resolved */
+      id: string;
+    };
     body: {
       /** Resolves only the given slot identifiers. The identifiers have to be seperated by a `|` character. */
       slots?: string;
@@ -7192,6 +7224,9 @@ export type operations = {
   "readCountryState post /country-state/{countryId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      countryId: string;
+    };
     body: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["CountryState"][];
@@ -7210,6 +7245,10 @@ export type operations = {
   "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Customer group id */
+      customerGroupId: string;
+    };
     response: components["schemas"]["CustomerGroup"];
     responseCode: 200;
   };
@@ -7223,12 +7262,20 @@ export type operations = {
   "addProductOnWishlist post /customer/wishlist/add/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the product to be added. */
+      productId: string;
+    };
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
   "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** The identifier of the product to be removed from the wishlist. */
+      productId: string;
+    };
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
@@ -7245,6 +7292,10 @@ export type operations = {
   "download post /document/download/{documentId}/{deepLinkCode}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      documentId: string;
+      deepLinkCode: string;
+    };
     body: components["schemas"]["Criteria"];
     response: components["schemas"]["Document"];
     responseCode: 200;
@@ -7262,6 +7313,10 @@ export type operations = {
   "attendeeRespondInvitation patch /guided-shopping/appointment/{appointmentId}/attendee/respond-invitation": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** The appointment id you respond to */
+      appointmentId: string;
+    };
     body: {
       /**
        * The status you respond to
@@ -7277,6 +7332,10 @@ export type operations = {
   "getCalendarFile post /guided-shopping/appointment/{appointmentId}/download-ics": {
     contentType?: "application/json";
     accept: "text/calendar";
+    pathParams: {
+      /** The appointment id you want to get the calendar file */
+      appointmentId: string;
+    };
     body: {
       /** The token will be attached to the invitation response link in the invitation mail */
       token: string;
@@ -7287,6 +7346,10 @@ export type operations = {
   "joinAppointmentAsClient post /guided-shopping/appointment/{presentationPath}/join-as-client": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Presentation path */
+      presentationPath: string;
+    };
     response: components["schemas"]["JoinAppointmentResponse"];
     responseCode: 200;
   };
@@ -7300,18 +7363,34 @@ export type operations = {
   "getAttendeeProductCollection get /guided-shopping/appointment/collection/{alias}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** The alias of collection you want to get */
+      alias: "liked" | "disliked";
+    };
     response: components["schemas"]["AttendeeProductCollectionResponse"];
     responseCode: 200;
   };
   "attendeeProductCollectionAddProduct post /guided-shopping/appointment/collection/{alias}/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** The alias of collection you want to add */
+      alias: "liked" | "disliked";
+      /** The product id you want to add */
+      productId: string;
+    };
     response: never;
     responseCode: 204;
   };
   "attendeeProductCollectionRemoveProduct delete /guided-shopping/appointment/collection/{alias}/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** The alias of collection you want to remove */
+      alias: "liked" | "disliked";
+      /** The product id you want to remove */
+      productId: string;
+    };
     response: never;
     responseCode: 204;
   };
@@ -7330,6 +7409,12 @@ export type operations = {
   "getSlideData get /guided-shopping/appointment/presentation/{presentationCmsPageId}/slide/{sectionId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Presentation CMS page id for which the data is requested */
+      presentationCmsPageId: string;
+      /** CMS section id for which the data is requested */
+      sectionId: string;
+    };
     response: components["schemas"]["PresentationSlideData"];
     responseCode: 200;
   };
@@ -7364,6 +7449,12 @@ export type operations = {
   "resolveQuickviewPage get /guided-shopping/quickview/{productId}/{cmsPageLayoutId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** The product id */
+      productId: string;
+      /** The cms page id using as product quick view */
+      cmsPageLayoutId: string;
+    };
     response: {
       cmsPage?: components["schemas"]["CmsPage"];
       configurator?: components["schemas"]["PropertyGroup"][];
@@ -7390,6 +7481,10 @@ export type operations = {
   "readLandingPage post /landing-page/{landingPageId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the landing page. */
+      landingPageId: string;
+    };
     body: components["schemas"]["Criteria"] &
       ({
         /** Resolves only the given slot identifiers. The identifiers have to be seperated by a `|` character. */
@@ -7552,6 +7647,12 @@ export type operations = {
   "readProductExport get /product-export/{accessKey}/{fileName}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Access Key */
+      accessKey: string;
+      /** File Name */
+      fileName: string;
+    };
     response: never;
     responseCode: 200;
   };
@@ -7583,12 +7684,20 @@ export type operations = {
   "readProductCrossSellings post /product/{productId}/cross-selling": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Product ID */
+      productId: string;
+    };
     response: components["schemas"]["CrossSellingElementCollection"];
     responseCode: 200;
   };
   "searchProductVariantIds post /product/{productId}/find-variant": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Product ID */
+      productId: string;
+    };
     body: {
       /** The options parameter for the variant to find. */
       options: string[];
@@ -7601,6 +7710,10 @@ export type operations = {
   "saveProductReview post /product/{productId}/review": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the product which is reviewed. */
+      productId: string;
+    };
     body: {
       /** The content of review. */
       content: string;
@@ -7622,6 +7735,10 @@ export type operations = {
   "readProductReviews post /product/{productId}/reviews": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the product. */
+      productId: string;
+    };
     body: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["ProductReview"][];
@@ -7640,6 +7757,10 @@ export type operations = {
   "postScriptStoreApiRoute post /script/{hook}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Dynamic hook which used to build the hook name */
+      hook: string;
+    };
     response: never;
     responseCode: 200;
   };
@@ -7695,6 +7816,12 @@ export type operations = {
   "readApprovalRules get /store-api/approval-rule": {
     contentType?: "application/json";
     accept?: "application/json";
+    query: {
+      /** Page number */
+      p?: number;
+      /** Number of items per page */
+      limit?: number;
+    };
     response: {
       elements?: components["schemas"]["ApprovalRule"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7703,6 +7830,12 @@ export type operations = {
   "listApprovalRules post /store-api/approval-rule": {
     contentType?: "application/json";
     accept?: "application/json";
+    query: {
+      /** Page number */
+      p?: number;
+      /** Number of items per page */
+      limit?: number;
+    };
     body: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["ApprovalRule"][];
@@ -7712,12 +7845,20 @@ export type operations = {
   "readApprovalRule get /store-api/approval-rule/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the approval rule to be fetched */
+      id: string;
+    };
     response: components["schemas"]["ApprovalRule"];
     responseCode: 200;
   };
   "updateApprovalRule patch /store-api/approval-rule/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the approval rule to be updated */
+      id: string;
+    };
     body: {
       /** Active status of the approval rule */
       active?: boolean;
@@ -7781,18 +7922,30 @@ export type operations = {
   "readEmployee post /store-api/employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be fetched */
+      id: string;
+    };
     response: components["schemas"]["B2bEmployee"];
     responseCode: 200;
   };
   "deleteEmployee delete /store-api/employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be deleted */
+      id: string;
+    };
     response: never;
     responseCode: 204;
   };
   "updateEmployee patch /store-api/employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be updated */
+      id: string;
+    };
     body: {
       /** New email of the employee */
       email?: string;
@@ -7825,6 +7978,10 @@ export type operations = {
   "reinviteEmployee post /store-api/employee/reinvite/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be reinvited */
+      id: string;
+    };
     body: {
       /** URL of the storefront domain */
       storefrontUrl?: string;
@@ -7835,12 +7992,20 @@ export type operations = {
   "fetchPendingOrder post /store-api/pending-order/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the pending order to be fetched */
+      id: string;
+    };
     response: components["schemas"]["PendingOrder"];
     responseCode: 200;
   };
   "approvePendingOrder post /store-api/pending-order/{id}/approve": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the pending order to be approved */
+      id: string;
+    };
     body: {
       /** Message content */
       comment?: string;
@@ -7851,6 +8016,10 @@ export type operations = {
   "createOrderFromPendingOrder post /store-api/pending-order/{id}/checkout/order": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the pending order to be used to create a order */
+      id: string;
+    };
     body: {
       /** Message content */
       customerComment?: string;
@@ -7861,6 +8030,10 @@ export type operations = {
   "declinePendingOrder post /store-api/pending-order/{id}/decline": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the pending order to be declined */
+      id: string;
+    };
     body: {
       /** Message content */
       comment?: string;
@@ -7907,6 +8080,10 @@ export type operations = {
   "switchPaymentOrShippingMethod post /store-api/quote/{id}/configure": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be reinvited */
+      id: string;
+    };
     body: {
       /** Id of the payment method */
       paymentMethodId?: string;
@@ -7919,6 +8096,10 @@ export type operations = {
   "declineQuote post /store-api/quote/{id}/decline": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be reinvited */
+      id: string;
+    };
     body: {
       /** Message content */
       comment?: string;
@@ -7929,6 +8110,10 @@ export type operations = {
   "requestChangeQuote post /store-api/quote/{id}/request-change": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be reinvited */
+      id: string;
+    };
     body: {
       /** Message content */
       comment?: string;
@@ -7939,12 +8124,20 @@ export type operations = {
   "readQuote post /store-api/quote/detail/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be fetched */
+      id: string;
+    };
     response: components["schemas"]["Quote"];
     responseCode: 200;
   };
   "createOrderFromQuote post /store-api/quote/order/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be reinvited */
+      id: string;
+    };
     body: {
       /** Message content */
       customerComment?: string;
@@ -7992,18 +8185,30 @@ export type operations = {
   "readRole get /store-api/role/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the role to be fetched */
+      id: string;
+    };
     response: components["schemas"]["B2bComponentsRole"];
     responseCode: 200;
   };
   "deleteRole delete /store-api/role/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the role to be fetched */
+      id: string;
+    };
     response: never;
     responseCode: 204;
   };
   "updateRole patch /store-api/role/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    pathParams: {
+      /** Identifier of the role to be updated */
+      id: string;
+    };
     body: {
       /** Ability to set the role as default */
       isDefaultRole?: boolean;

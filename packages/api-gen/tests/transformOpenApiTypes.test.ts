@@ -26,12 +26,15 @@ describe("transformOpenApiTypes", async () => {
 
       expect(operationsMap).toMatchFileSnapshot(
         `./snapshots-transformOpenApiTypes/${exampleName}.operationsMap.txt`,
+        `${exampleName} does not match operationsMap`,
       );
       expect(componentsMap).toMatchFileSnapshot(
         `./snapshots-transformOpenApiTypes/${exampleName}.componentsMap.txt`,
+        `${exampleName} does not match componentsMap`,
       );
       expect(existingTypes).toMatchFileSnapshot(
         `./snapshots-transformOpenApiTypes/${exampleName}.existingTypes.txt`,
+        `${exampleName} does not match existingTypes`,
       );
 
       const project = await prepareFileContent({
