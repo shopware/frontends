@@ -14,14 +14,14 @@
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
     "primevue": "3.51.0",
-    "vue": "3.4.21",
-    "vue-router": "4.3.0"
+    "vue": "3.4.23",
+    "vue-router": "4.3.1"
   },
   "devDependencies": {
     "@types/node": "20.12.7",
     "@vitejs/plugin-vue": "5.0.4",
     "@vueuse/core": "10.9.0",
-    "unocss": "0.59.2",
-    "vite": "5.2.8"
+    "unocss": "0.59.3",
+    "vite": "5.2.9"
   }
 }

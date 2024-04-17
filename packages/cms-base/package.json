@@ -45,7 +45,7 @@
     "@vueuse/core": "10.9.0",
     "entities": "4.5.0",
     "html-to-ast": "0.0.6",
-    "vue": "3.4.21"
+    "vue": "3.4.23"
   },
   "devDependencies": {
     "@nuxt/schema": "3.11.2",
@@ -53,14 +53,14 @@
     "@vitest/coverage-v8": "1.5.0",
     "@vue/eslint-config-typescript": "13.0.0",
     "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "9.24.1",
+    "eslint-plugin-vue": "9.25.0",
     "nuxt": "3.11.2",
     "tsconfig": "workspace:*",
     "typescript": "5.4.5",
     "unbuild": "2.0.0",
     "vitest": "1.5.0",
     "vue-eslint-parser": "9.4.2",
-    "vue-router": "4.3.0",
+    "vue-router": "4.3.1",
     "vue-tsc": "2.0.13"
   }
 }
