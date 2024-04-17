@@ -44,7 +44,8 @@
       "orderNumber": "Order number",
       "totalAmount": "Total amount",
       "orderDate": "Order date",
-      "orderStatus": "Order status"
+      "orderStatus": "Order status",
+      "paymentMethod": "Payment method"
     },
     "personalData": {
       "infoBox": "Feel free to edit any of your details below so your account is always up to date",

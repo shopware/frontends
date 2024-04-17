@@ -42,7 +42,8 @@
       "orderNumber": "Bestellnummer",
       "totalAmount": "Gesamtbetrag",
       "orderDate": "Bestelldatum",
-      "orderStatus": "Bestellstatus"
+      "orderStatus": "Bestellstatus",
+      "paymentMethod": "Zahlungsmethode"
     },
     "personalData": {
       "infoBox": "Bearbeiten Sie Ihre Daten unten, damit Ihr Konto immer auf dem neuesten Stand ist.",

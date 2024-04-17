@@ -7,7 +7,7 @@ import type { Schemas } from "#shopware";
 /**
  * Data for api requests to fetch all necessary data
  */
-const orderAssociations: Schemas["Criteria"] = {
+const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
   associations: {
     lineItems: {
       associations: {
@@ -32,6 +32,7 @@ const orderAssociations: Schemas["Criteria"] = {
       sort: "-createdAt",
     },
   },
+  checkPromotion: true,
 };
 
 export type UseOrderDetailsReturn = {
@@ -135,6 +136,12 @@ export type UseOrderDetailsReturn = {
    * Get order documents
    */
   documents: ComputedRef<Schemas["Document"][]>;
+  /**
+   * Fetches all available payment methods
+   */
+  getPaymentMethods(): Promise<Schemas["PaymentMethod"][]>;
+
+  paymentChangeable: ComputedRef<boolean>;
 };
 
 /**
@@ -148,6 +155,7 @@ export function useOrderDetails(
 ): UseOrderDetailsReturn {
   const { apiClient } = useShopwareContext();
 
+  const paymentChangeableList: Ref<{ [key: string]: boolean } | []> = ref([]);
   const _sharedOrder = inject<Ref<Schemas["Order"] | undefined>>(
     "swOrderDetails",
     ref(),
@@ -201,6 +209,7 @@ export function useOrderDetails(
       params,
     );
     _sharedOrder.value = orderDetailsResponse.orders.elements?.[0] ?? null;
+    paymentChangeableList.value = orderDetailsResponse.paymentChangeable;
   }
 
   async function handlePayment(
@@ -263,6 +272,24 @@ export function useOrderDetails(
   const hasDocuments = computed(() => !!_sharedOrder.value?.documents.length);
   const documents = computed(() => _sharedOrder.value?.documents || []);
 
+  const paymentChangeable = computed(() => {
+    return Object.keys(paymentChangeableList.value).length
+      ? (paymentChangeableList.value as { [key: string]: boolean })[
+          orderId as string
+        ]
+      : false;
+  });
+
+  const getPaymentMethods = async () => {
+    const response = await apiClient.invoke(
+      "readPaymentMethod post /payment-method",
+      {
+        onlyAvailable: true,
+      },
+    );
+    return response?.elements || [];
+  };
+
   return {
     order: computed(() => _sharedOrder.value),
     status,
@@ -283,5 +310,7 @@ export function useOrderDetails(
     changePaymentMethod,
     getMediaFile,
     getDocumentFile,
+    paymentChangeable,
+    getPaymentMethods,
   };
 }
