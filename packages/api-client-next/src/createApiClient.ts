@@ -20,6 +20,21 @@ type RenameByT<T, U> = {
     : K]: K extends keyof U ? U[K] : never;
 };
 
+export type RequestReturnType<
+  CURRENT_OPERATION extends {
+    response: unknown;
+    responseCode: number;
+  },
+> = RenameByT<
+  { response: "data"; responseCode: "status" },
+  SimpleUnionPick<CURRENT_OPERATION, "response" | "responseCode">
+>;
+
+export type RequestParameters<CURRENT_OPERATION> = SimpleUnionOmit<
+  CURRENT_OPERATION,
+  "response" | "responseCode"
+>;
+
 export function createAPIClient<
   OPERATIONS extends Record<string, any> = operations,
   PATHS extends string | number | symbol = keyof OPERATIONS,
@@ -100,12 +115,16 @@ export function createAPIClient<
     ...params: SimpleUnionOmit<
       CURRENT_OPERATION,
       "response" | "responseCode"
-    > extends {
-      body: unknown;
-    }
+    > extends
+      | {
+          body: unknown;
+        }
+      | {
+          query: unknown;
+        }
       ? [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">]
       : [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">?]
-  ) {
+  ): Promise<RequestReturnType<CURRENT_OPERATION>> {
     const [name, method, requestPath] = pathParam.split(" ") as [
       string,
       string,
@@ -120,15 +139,10 @@ export function createAPIClient<
       headers: defaultHeaders as any,
     });
 
-    type ReturnType = SimpleUnionPick<
-      CURRENT_OPERATION,
-      "response" | "responseCode"
-    >;
-
     return {
       data: resp._data,
       status: resp.status,
-    } as RenameByT<{ response: "data"; responseCode: "status" }, ReturnType>;
+    } as RequestReturnType<CURRENT_OPERATION>;
   }
 
   return {
