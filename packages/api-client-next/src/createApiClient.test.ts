@@ -258,4 +258,53 @@ describe("createAPIClient", () => {
       }),
     );
   });
+
+  it("should trigger success callback", async () => {
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const successCallback = vi.fn().mockImplementation((param: string) => {});
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+      onSuccessHandler: successCallback,
+    });
+
+    await client.invoke("readContext get /context");
+    expect(successCallback).toHaveBeenCalled();
+  });
+
+  it("should trigger fail callback", async () => {
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        throw new Error("Api error");
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const errorCallback = vi.fn().mockImplementation((param: string) => {});
+
+    const client = createAPIClient<operations, operationPaths>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+      onErrorHandler: errorCallback,
+    });
+
+    try {
+      await client.invoke("readContext get /context");
+    } catch (e) {}
+
+    expect(errorCallback).toHaveBeenCalled();
+  });
 });

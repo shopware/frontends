@@ -44,6 +44,7 @@ describe("helpers - test global API", () => {
         ],
         "isCategory": [Function],
         "isLandingPage": [Function],
+        "isMaintenanceMode": [Function],
         "isProduct": [Function],
         "relativeUrlSlash": [Function],
         "urlIsAbsolute": [Function],

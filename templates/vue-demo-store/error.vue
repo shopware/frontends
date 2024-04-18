@@ -9,6 +9,10 @@ const props = defineProps<{
   };
 }>();
 
+const isMaintenanceMode = computed(() => {
+  return props.error.statusMessage === "MAINTENANCE_MODE";
+});
+
 let isFormattedError = true;
 let errMessage = "";
 let linkFormatter = (path: string | RouteObject) => path;
@@ -58,7 +62,9 @@ export default {
 </script>
 
 <template>
+  <ErrorsMaintainMode v-if="isMaintenanceMode" />
   <div
+    v-else
     class="px-5 py-3 md:py-20 md:px-32 lg:px-24 lg:py-24 items-center flex justify-center flex-col-reverse lg:flex-row"
   >
     <div class="flex flex-col items-center justify-center my-8">
