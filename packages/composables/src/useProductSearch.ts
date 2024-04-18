@@ -3,6 +3,11 @@ import type { Schemas } from "#shopware";
 import { cmsAssociations } from "./cms/cmsAssociations";
 import { defu } from "defu";
 
+type UseProductSearchReturnOptions = {
+  withCmsAssociations?: boolean;
+  criteria?: Partial<Schemas["Criteria"]>;
+};
+
 export type UseProductSearchReturn = {
   /**
    * Searches for a product by its id
@@ -12,10 +17,7 @@ export type UseProductSearchReturn = {
    */
   search: (
     productId: string,
-    options?: {
-      withCmsAssociations?: boolean;
-      criteria?: Partial<Schemas["Criteria"]>;
-    },
+    options?: UseProductSearchReturnOptions,
   ) => Promise<Schemas["ProductDetailResponse"]>;
 };
 
@@ -24,23 +26,12 @@ export type UseProductSearchReturn = {
  * @public
  * @category Navigation & Routing
  */
-export function useProductSearch(): {
-  search: (
-    productId: string,
-    options?: {
-      withCmsAssociations?: boolean;
-      criteria?: Partial<Schemas["Criteria"]>;
-    },
-  ) => Promise<Schemas["ProductDetailResponse"]>;
-} {
+export function useProductSearch(): UseProductSearchReturn {
   const { apiClient } = useShopwareContext();
 
   const search = async (
     productId: string,
-    options?: {
-      withCmsAssociations?: boolean;
-      criteria?: Partial<Schemas["Criteria"]>;
-    },
+    options?: UseProductSearchReturnOptions,
   ) => {
     const associations = defu(
       options?.withCmsAssociations ? cmsAssociations : {},

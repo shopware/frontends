@@ -53,5 +53,9 @@
     "passwordReset": "Passwort zurücksetzen",
     "search": "Suche",
     "wishlist": "Wunschliste"
+  },
+  "maintenance": {
+    "text": "Wir führen derzeit Wartungsarbeiten durch. Wir sind bald zurück.",
+    "title": "Wartung"
   }
 }

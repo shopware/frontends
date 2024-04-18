@@ -18,7 +18,17 @@ useBreadcrumbs([
 ]);
 
 await useAsyncData("getOrders", () => {
-  return loadOrders({ associations: { stateMachineState: {} } });
+  return loadOrders({
+    associations: {
+      stateMachineState: {},
+    },
+    sort: [
+      {
+        field: "createdAt",
+        order: "desc",
+      },
+    ],
+  });
 });
 </script>
 

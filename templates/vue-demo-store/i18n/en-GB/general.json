@@ -55,5 +55,9 @@
     "passwordReset": "Password reset",
     "search": "Search",
     "wishlist": "Wishlist"
+  },
+  "maintenance": {
+    "text": "We are currently performing maintenance. We will be back shortly.",
+    "title": "Maintenance"
   }
 }

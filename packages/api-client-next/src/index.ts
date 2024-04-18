@@ -1,4 +1,5 @@
 import { ofetch } from "ofetch";
+import type { FetchResponse } from "ofetch";
 import type {
   operations as defaultOperations,
   paths as defaultPaths,
@@ -91,6 +92,8 @@ export function createAPIClient<
   accessToken?: string;
   contextToken?: string;
   onContextChanged?: (newContextToken: string) => void;
+  onErrorHandler?: (response: FetchResponse<any>) => void;
+  onSuccessHandler?: (response: FetchResponse<any>) => void;
   defaultHeaders?: ClientHeaders;
 }) {
   const defaultHeaders = createHeaders({
@@ -105,6 +108,9 @@ export function createAPIClient<
     // async onRequest({ request, options }) {},
     // async onRequestError({ request, options, error }) {},
     async onResponse(context) {
+      if (params.onSuccessHandler) {
+        params.onSuccessHandler(context.response);
+      }
       if (
         context.response.headers.has("sw-context-token") &&
         defaultHeaders["sw-context-token"] !==
@@ -118,6 +124,9 @@ export function createAPIClient<
       }
     },
     async onResponseError({ request, response, options }) {
+      if (params.onErrorHandler) {
+        params.onErrorHandler(response);
+      }
       errorInterceptor(response);
     },
   });

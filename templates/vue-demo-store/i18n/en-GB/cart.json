@@ -11,6 +11,8 @@
     "emptyCartLabel": "Your cart is empty!",
     "messages": {
       "addedToCart": "{p} has been added to cart."
-    }
+    },
+    "promotion": "promotion",
+    "digital": "digital"
   }
 }
