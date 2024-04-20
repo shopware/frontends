@@ -4,10 +4,13 @@ import {
   // useCookie,
   useState,
   createShopwareContext,
+  createError,
 } from "#imports";
 import { ref } from "vue";
 import Cookies from "js-cookie";
 import { createAPIClient } from "@shopware/api-client";
+
+import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
 
 export default defineNuxtPlugin((NuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
@@ -35,6 +38,15 @@ export default defineNuxtPlugin((NuxtApp) => {
         path: "/",
         sameSite: "lax",
       });
+    },
+    onErrorHandler(response) {
+      const error = isMaintenanceMode(response._data?.errors ?? []);
+      if (error) {
+        throw createError({
+          statusCode: 503,
+          statusMessage: "MAINTENANCE_MODE",
+        });
+      }
     },
   });
 

@@ -140,6 +140,10 @@ export const sidebar = [
             text: "Broadcasting",
             link: "/getting-started/features/broadcasting",
           },
+          {
+            text: "Maintenance mode",
+            link: "/getting-started/features/maintenance-mode",
+          },
         ],
       },
       {

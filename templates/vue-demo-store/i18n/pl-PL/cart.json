@@ -11,6 +11,8 @@
     "emptyCartLabel": "Twój koszyk jest pusty!",
     "messages": {
       "addedToCart": "{p} został dodany do koszyka."
-    }
+    },
+    "promotion": "promocja",
+    "digital": "cyfrowy"
   }
 }
