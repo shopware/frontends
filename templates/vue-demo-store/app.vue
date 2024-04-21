@@ -100,11 +100,17 @@ onMounted(() => {
   getWishlistProducts();
 });
 
-const { data } = useBroadcastChannel({
+const { data } = useBroadcastChannel<
+  {
+    event: string;
+    data?: BroadcastDataType;
+  },
+  unknown
+>({
   name: broadcastChannelName as string,
 });
 watch(data, () => {
-  if (data.value) consume(data.value as string);
+  if (data.value) consume(data.value.event, data.value.data);
 });
 </script>
 

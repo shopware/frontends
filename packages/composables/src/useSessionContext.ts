@@ -74,6 +74,10 @@ export type UseSessionContextReturn = {
     address: Partial<Schemas["CustomerAddress"]>,
   ): Promise<void>;
   /**
+   * Patches the context with new context
+   */
+  updateContext(context: Schemas["SalesChannelContext"]): void;
+  /**
    * current context's country id
    */
   countryId: ComputedRef<string | undefined>;
@@ -220,6 +224,10 @@ export function useSessionContext(
     refreshSessionContext();
   };
 
+  const updateContext = (context: Schemas["SalesChannelContext"]) => {
+    _sessionContext.value = context;
+  };
+
   const countryId = computed(
     () => sessionContext.value?.shippingLocation?.country?.id,
   );
@@ -258,5 +266,6 @@ export function useSessionContext(
     languageId,
     languageIdChain,
     setCountry,
+    updateContext,
   };
 }

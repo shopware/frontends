@@ -168,7 +168,7 @@ export function useUser(): UseUserReturn {
   async function logout(): Promise<void> {
     await apiClient.invoke("logoutCustomer post /account/logout");
     await refreshSessionContext();
-    refreshCart();
+    await refreshCart();
   }
 
   async function refreshUser(params: Schemas["Criteria"] = {}): Promise<void> {
