@@ -52,13 +52,7 @@ useBreadcrumbs([
     path: "/wishlist",
   },
 ]);
-const limit = ref(
-  route.query.limit
-    ? Number(route.query.limit)
-    : // : props.content?.data?.listing?.limit
-      // ? Number(props.content?.data?.listing?.limit)
-      defaultLimit,
-);
+const limit = ref(route.query.limit ? Number(route.query.limit) : defaultLimit);
 const clearWishlistHandler = async () => {
   try {
     isLoading.value = true;
