@@ -17,7 +17,7 @@ describe("useWishlist - not logged in user", () => {
     const { vm } = useSetup(() => useWishlist());
 
     expect(vm.items.length).toBe(1);
-    expect(vm.count).toBe(1);
+    expect(vm.totalWishlistItemsCount).toBe(1);
     await vm.clearWishlist();
     await vm.getWishlistProducts();
     await vm.mergeWishlistProducts();
@@ -29,7 +29,7 @@ describe("useWishlist - logged in user", () => {
     const { vm } = useSetup(() => useWishlist());
 
     expect(vm.items.length).toBe(1);
-    expect(vm.count).toBe(1);
+    expect(vm.totalWishlistItemsCount).toBe(1);
     await vm.clearWishlist();
     await vm.getWishlistProducts();
     await vm.mergeWishlistProducts();

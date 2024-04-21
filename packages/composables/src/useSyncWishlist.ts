@@ -2,12 +2,15 @@ import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
 import { ApiClientError } from "@shopware/api-client";
+import type { RequestParameters } from "#shopware";
 
 export type UseSyncWishlistReturn = {
   /**
    * Get products from wishlist
    */
-  getWishlistProducts(): void;
+  getWishlistProducts(
+    defaultPaginationCriteria?: RequestParameters<"searchPage">,
+  ): void;
   /**
    * Merge products with wishlist already existing in API wishlist
    */
@@ -27,10 +30,11 @@ export type UseSyncWishlistReturn = {
   /**
    * Wishlist items count
    */
-  count: ComputedRef<number>;
+  totalWishlistItemsCount: Ref<number>;
 };
 
 const _wishlistItems: Ref<string[]> = ref([]);
+const totalWishlistItemsCount: Ref<number> = ref(15);
 
 /**
  * Composable to manage wishlist via API
@@ -39,7 +43,6 @@ const _wishlistItems: Ref<string[]> = ref([]);
  */
 export function useSyncWishlist(): UseSyncWishlistReturn {
   const { apiClient } = useShopwareContext();
-
   async function addToWishlistSync(id: string) {
     await apiClient.invoke(
       "addProductOnWishlist post /customer/wishlist/add/{productId}",
@@ -62,15 +65,18 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
    * Fetch wishlist items
    * Only for logged-in users
    */
-  async function getWishlistProducts() {
+  async function getWishlistProducts(
+    defaultSearchCriteria?: RequestParameters<"searchPage">,
+  ) {
     try {
       const response = await apiClient.invoke(
         "readCustomerWishlist post /customer/wishlist",
-        {},
+        { ...defaultSearchCriteria },
       );
       _wishlistItems.value = [
         ...response.products.elements.map((element) => element.id),
       ];
+      totalWishlistItemsCount.value = response.products.total!;
     } catch (e) {
       if (e instanceof ApiClientError) {
         // If 404 ignore printing error and reset wishlist
@@ -90,7 +96,6 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
   }
 
   const items = computed(() => _wishlistItems.value);
-  const count = computed(() => items.value.length);
 
   return {
     getWishlistProducts,
@@ -98,6 +103,6 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     removeFromWishlistSync,
     mergeWishlistProducts,
     items,
-    count,
+    totalWishlistItemsCount,
   };
 }
