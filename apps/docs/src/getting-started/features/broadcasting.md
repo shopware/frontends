@@ -32,10 +32,10 @@ const { data } = useBroadcastChannel({
 ## Event emitting
 
 ```ts
-const { post, isSupported } = useBroadcastChannel({
+const { isSupported } = useBroadcastChannel({
   name: broadcastChannelName as string,
 });
-const { actions } = useBroadcastConsumer();
+const { actions, post } = useBroadcastConsumer();
 
 async function invokeLogout() {
   await logout();
@@ -47,7 +47,7 @@ async function invokeLogout() {
 }
 ```
 
-If the Broadcast Channel API is supported in the user's browser (checked using `isSupported`), we broadcast a loggedOut event using the post function. This event can be listened for in other parts of the application (or in other tabs/windows of the same origin) to react to the user logging out.
+If the Broadcast Channel API is supported in the user's browser (checked using `isSupported` in ), we broadcast a loggedOut event using the post function. This event can be listened for in other parts of the application (or in other tabs/windows of the same origin) to react to the user logging out.
 
 This `invokeLogout` function would typically be called when the user clicks a "Log Out" button or link in the application.
 
