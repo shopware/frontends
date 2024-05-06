@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@paypal/paypal-js": "8.0.4",
+    "@paypal/paypal-js": "8.0.5",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/helpers-next": "canary",
     "@shopware/api-client": "canary",
@@ -19,8 +19,8 @@
   },
   "devDependencies": {
     "@shopware-pwa/types": "canary",
-    "@types/node": "20.11.30",
+    "@types/node": "20.12.7",
     "@vitejs/plugin-vue": "5.0.4",
-    "vite": "5.2.6"
+    "vite": "5.2.8"
   }
 }

@@ -9,6 +9,10 @@ const props = defineProps<{
   };
 }>();
 
+const isMaintenanceMode = computed(() => {
+  return props.error.statusMessage === "MAINTENANCE_MODE";
+});
+
 let isFormattedError = true;
 let errMessage = "";
 let linkFormatter = (path: string | RouteObject) => path;
@@ -35,7 +39,7 @@ try {
     // setting a timeout here to ensure we are the last error message in terminal
     setTimeout(() => {
       console.error(
-        "Looks like your API connection is not working. Check your nuxt configuration (shopwareEndpoint and shopwareAccessToken). 🤞",
+        "Looks like your API connection is not working. Check your _nuxt.config.ts_ configuration (shopware.endpoint and shopware.accessToken). 🤞",
       );
       console.error(
         "For more help ➡️  https://frontends.shopware.com/resources/troubleshooting.html",
@@ -58,7 +62,9 @@ export default {
 </script>
 
 <template>
+  <ErrorsMaintainMode v-if="isMaintenanceMode" />
   <div
+    v-else
     class="px-5 py-3 md:py-20 md:px-32 lg:px-24 lg:py-24 items-center flex justify-center flex-col-reverse lg:flex-row"
   >
     <div class="flex flex-col items-center justify-center my-8">

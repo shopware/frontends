@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 
 export const apiClient = createAPIClient<extendedOperations, extendedPaths>({
   baseURL: "https://demo-frontends.shopware.store/store-api",
+  apiType: "store-api",
   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   contextToken: Cookies.get("sw-context-token"),
   onContextChanged(newContextToken) {

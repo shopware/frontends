@@ -11,6 +11,8 @@
     "emptyCartLabel": "Ihr Warenkorb ist leer!",
     "messages": {
       "addedToCart": "{p} wurde dem Warenkorb hinzugefügt."
-    }
+    },
+    "promotion": "Promotion",
+    "digital": "digital"
   }
 }

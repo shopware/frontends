@@ -1,10 +1,10 @@
-import { inject, computed, ref, provide } from "vue";
+import { inject, computed, ref, provide, watch } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from "#imports";
 import ContextError from "./helpers/ContextError";
 import type { Schemas, RequestParameters } from "#shopware";
-import { createSharedComposable } from "@vueuse/core";
+import { createInjectionState, createSharedComposable } from "@vueuse/core";
 
 function isObject<T>(item: T): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
@@ -67,7 +67,9 @@ export type UseListingReturn = {
    * @returns
    */
   search(
-    criteria: RequestParameters<"searchPage">,
+    criteria:
+      | RequestParameters<"readProductListing">
+      | RequestParameters<"searchPage">,
     options?: {
       preventRouteChange?: boolean;
     },
@@ -185,21 +187,10 @@ export function useListing(params?: {
       });
     };
   } else {
-    let resourceId: undefined | string;
-
-    try {
-      const { category } = useCategory();
-      resourceId = category.value?.id;
-    } catch (error) {
-      if (error instanceof ContextError) {
-        resourceId = params?.categoryId;
-      } else {
-        console.error(error);
-      }
-    }
+    const { category } = useCategory();
 
     searchMethod = async (searchCriteria: RequestParameters<"searchPage">) => {
-      if (!resourceId) {
+      if (!category.value?.id) {
         throw new Error(
           "[useListing][search] Search category id does not exist.",
         );
@@ -207,9 +198,9 @@ export function useListing(params?: {
       return apiClient.invoke(
         "readProductListing post /product-listing/{categoryId} sw-include-seo-urls",
         {
-          categoryId: resourceId,
           "sw-include-seo-urls": true,
           ...searchCriteria,
+          categoryId: category.value.id,
         },
       );
     };
@@ -223,12 +214,35 @@ export function useListing(params?: {
   });
 }
 
+const [_createCategoryListingContext, _categoryListingContext] =
+  createInjectionState(
+    () => {
+      return useListing({ listingType: "categoryListing" });
+    },
+    {
+      injectionKey: "categoryListing",
+    },
+  );
+
+export const createCategoryListingContext = _createCategoryListingContext;
+
 /**
  * Temporary workaround over `useListing` to support shared data. This composable API will change in the future.
+ *
+ * You need to call `createCategoryListingContext` before this composable.
  */
-export const useCategoryListing = createSharedComposable(() =>
-  useListing({ listingType: "categoryListing" }),
-);
+export const useCategoryListing = () => {
+  const listingContext = _categoryListingContext();
+
+  if (!listingContext) {
+    throw new Error(
+      "[useCategoryListing] Please call `createCategoryListingContext` on the appropriate parent component",
+    );
+  }
+
+  return listingContext;
+};
+
 /**
  * Temporary workaround over `useListing` to support shared data. This composable API will change in the future.
  */
@@ -250,7 +264,9 @@ export function createListingComposable({
   listingKey,
 }: {
   searchMethod(
-    searchParams: RequestParameters<"searchPage">,
+    searchParams:
+      | RequestParameters<"readProductListing">
+      | RequestParameters<"searchPage">,
   ): Promise<Schemas["ProductListingResult"]>;
   searchDefaults: RequestParameters<"searchPage">;
   listingKey: string;

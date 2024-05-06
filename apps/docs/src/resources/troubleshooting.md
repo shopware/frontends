@@ -58,7 +58,18 @@ If you are using DDEV as a local environment with SSR = true (Nuxt config for ro
 
 ## 412 error page during local development?
 
-The HTTP status code 412 (Precondition Failed) usually means in the Shopware `store API` context that the specified `shopwareAccessToken` is incorrect or not correct for the specified `shopwareEndpoint`. Check your `nuxt.config.ts` file, if you do not see an error, please try connecting directly to your `store API` endpoint using an API client.
+The HTTP status code 412 (Precondition Failed) usually means in the Shopware `store API` context that the specified `accessToken` is incorrect or not correct for the specified `endpoint`. Check your `nuxt.config.ts` file, if you do not see an error, please try connecting directly to your `store API` endpoint using an API client.
+
+```ts
+// a part of nuxt.config.ts
+
+  shopware: {
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW", // access token for corresponding sales channel
+    endpoint: "https://demo-frontends.shopware.store/store-api/", // endpoint where store-api is available
+    devStorefrontUrl: "", // to simulate a storefrontUrl which is used in registration process and should cover the domain settings for a sales channel
+  },
+
+```
 
 ## Access from origin 127.0.0.1:3000 has been blocked by CORS policy
 

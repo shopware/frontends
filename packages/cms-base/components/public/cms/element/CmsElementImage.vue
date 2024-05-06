@@ -6,7 +6,9 @@ import type {
 import { useCmsElementImage, useUrlResolver } from "#imports";
 import { buildUrlPrefix } from "@shopware-pwa/helpers-next";
 import { useElementSize } from "@vueuse/core";
-import { computed, ref } from "vue";
+import { computed, ref, defineAsyncComponent } from "vue";
+import { isSpatial } from "../../../../helpers/media/isSpatial";
+import { ClientOnly } from "../../../../helpers/clientOnly";
 
 const props = defineProps<{
   content: CmsElementImage | CmsElementManufacturerLogo;
@@ -49,6 +51,13 @@ const imageComputedContainerAttrs = computed(() => {
   }
   return imageAttrsCopy;
 });
+
+const SwMedia3D = computed(() => {
+  if (isSpatial(props.content.data.media)) {
+    return defineAsyncComponent(() => import("../../../SwMedia3D.vue"));
+  }
+  return "";
+});
 </script>
 <template>
   <!-- TODO: using a tag only works with externalLink, need to improve this element to deal with both internalLink & externalLink -->
@@ -74,6 +83,9 @@ const imageComputedContainerAttrs = computed(() => {
       <source :src="imageAttrs.src" :type="mimeType" />
       Your browser does not support the video tag.
     </video>
+    <ClientOnly v-else-if="isSpatial(props.content.data.media)">
+      <component :is="SwMedia3D" :src="props.content.data.media.url" />
+    </ClientOnly>
     <img
       v-else
       ref="imageElement"

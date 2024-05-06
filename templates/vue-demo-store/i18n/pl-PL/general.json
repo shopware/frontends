@@ -55,5 +55,9 @@
     "passwordReset": "Resetowanie hasła",
     "search": "Wyszukiwanie",
     "wishlist": "Lista życzeń"
+  },
+  "maintenance": {
+    "text": "Aktualnie przeprowadzamy prace konserwacyjne. Wrócimy wkrótce.",
+    "title": "Konserwacja"
   }
 }

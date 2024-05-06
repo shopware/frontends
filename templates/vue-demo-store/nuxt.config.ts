@@ -13,11 +13,9 @@ export default defineNuxtConfig({
       // endpoint: "",
     },
     // public: {
-    //   shopware: {
-    //     endpoint: "https://demo-frontends.shopware.store/store-api/",
-    //     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-    //     devStorefrontUrl: "",
-    //   },
+    //   endpoint: "https://demo-frontends.shopware.store/store-api/",
+    //   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    //   devStorefrontUrl: "",
     // },
   },
   shopware: {
