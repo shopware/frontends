@@ -4,6 +4,7 @@ import {
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
+import { onKeyStroke, useActiveElement } from "@vueuse/core";
 type NavigationElement = Schemas["Category"] & {
   activeClass?: boolean;
 };
@@ -113,6 +114,86 @@ const updateActiveClass = (
     resetActiveClass.value = false;
   }
 };
+//#region - keyboard navigation (highliy connected to the HTML structure)
+const activeElement = useActiveElement();
+onKeyStroke("ArrowDown", (e) => {
+  // first child link
+  if (activeElement.value?.parentElement?.getElementsByTagName("a")[1]) {
+    e.preventDefault();
+    activeElement.value.parentElement.getElementsByTagName("a")[1].focus();
+    return;
+  }
+  // next child link
+  if (
+    activeElement.value?.parentElement?.nextElementSibling?.getElementsByTagName(
+      "a",
+    )[0]
+  ) {
+    e.preventDefault();
+    activeElement.value.parentElement.nextElementSibling
+      .getElementsByTagName("a")[0]
+      .focus();
+    return;
+  }
+  // next parent link
+  if (
+    activeElement.value?.parentElement?.parentElement?.parentElement?.parentElement?.nextElementSibling?.getElementsByTagName(
+      "a",
+    )[0]
+  ) {
+    e.preventDefault();
+    activeElement.value.parentElement.parentElement.parentElement.parentElement.nextElementSibling
+      .getElementsByTagName("a")[0]
+      .focus();
+    return;
+  }
+  // first parent link
+  if (document.getElementsByTagName("nav")[0].getElementsByTagName("a")[0]) {
+    e.preventDefault();
+    document
+      .getElementsByTagName("nav")[0]
+      .getElementsByTagName("a")[0]
+      .focus();
+    return;
+  }
+});
+
+onKeyStroke("ArrowUp", (e) => {
+  // previous child link
+  if (
+    activeElement.value?.parentElement?.previousElementSibling?.getElementsByTagName(
+      "a",
+    )[0]
+  ) {
+    e.preventDefault();
+    activeElement.value?.parentElement.previousElementSibling
+      .getElementsByTagName("a")[0]
+      .focus();
+    return;
+  }
+  // parent link
+  if (
+    activeElement.value?.parentElement?.parentElement?.parentElement
+      ?.previousElementSibling
+  ) {
+    e.preventDefault();
+    (
+      activeElement.value.parentElement.parentElement.parentElement
+        .previousElementSibling as HTMLElement
+    ).focus();
+    return;
+  }
+});
+
+onKeyStroke("Escape", () => {
+  currentMenuPosition.value = undefined;
+  document
+    .getElementsByTagName("header")[0]
+    .getElementsByTagName("a")[0]
+    .focus();
+});
+//#endregion - keyboard navigation
+
 // reset when route.path changes
 watch(
   () => route.path,
@@ -137,6 +218,7 @@ watch(
       :key="navigationElement.id"
       class="relative hover:bg-secondary-50 rounded-lg"
       @mouseover="currentMenuPosition = navigationElement.id"
+      @focusin="currentMenuPosition = navigationElement.id"
     >
       <NuxtLink
         role="menuitem"
@@ -169,11 +251,13 @@ watch(
           -->
       <client-only>
         <div
-          v-if="
-            currentMenuPosition === navigationElement.id &&
-            navigationElement?.children.length
-          "
+          v-if="navigationElement.children.length > 0"
           class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/6"
+          :class="{
+            visbile: currentMenuPosition === navigationElement.id,
+            hidden: currentMenuPosition !== navigationElement.id,
+          }"
+          @focusin="currentMenuPosition = navigationElement.id"
           @mouseleave="currentMenuPosition = undefined"
         >
           <div
