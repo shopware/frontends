@@ -175,6 +175,7 @@ export function useListing(params?: {
   defaultSearchCriteria?: RequestParameters<"searchPage">;
 }): UseListingReturn {
   const listingType = params?.listingType || "categoryListing";
+  let categoryId = params?.categoryId || null;
 
   // const { getDefaults } = useDefaults({ defaultsKey: contextName });
   const { apiClient } = useShopwareContext();
@@ -187,10 +188,12 @@ export function useListing(params?: {
       });
     };
   } else {
-    const { category } = useCategory();
-
+    if (!categoryId) {
+      const { category } = useCategory();
+      categoryId = category.value?.id;
+    }
     searchMethod = async (searchCriteria: RequestParameters<"searchPage">) => {
-      if (!category.value?.id) {
+      if (!categoryId) {
         throw new Error(
           "[useListing][search] Search category id does not exist.",
         );
@@ -200,7 +203,7 @@ export function useListing(params?: {
         {
           "sw-include-seo-urls": true,
           ...searchCriteria,
-          categoryId: category.value.id,
+          categoryId,
         },
       );
     };
