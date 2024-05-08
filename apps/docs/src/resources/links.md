@@ -21,6 +21,7 @@ Please tell us via [Community Slack](https://shopwarecommunity.slack.com/archive
 
 Sorted by date, newest first
 
+- [Multi-Page or Single-Page Variants Selection](https://www.brocksi.net/blog/variants-selection-multi-page-or-single-page/)
 - [Create a CI/CD Pipeline for Shopware Frontends](https://kiplingi.de/create-a-ci-cd-pipeline-for-shopware-frontends/)
 - [Gross and Net-Switch for B2B and B2C Shops built with Composable Frontends](https://dev.to/shopware/gross-and-net-switch-for-b2b-and-b2c-shops-built-with-composable-frontends-2b24)
 - [Komponentenbasierte Entwicklung mit dem Shopware Frontends Framework](https://sitegeist.de/blog/e-commerce/komponentenbasierte-entwicklung-mit-dem-shopware-frontends-framework.html)
@@ -38,6 +39,7 @@ Sorted by date, newest first
 
 Sorted by date, newest first
 
+- [Developer Brunch April 2024 - "Composable frontends"](https://www.youtube.com/watch?v=Tz-86f72cDk)
 - [Going Headless - One Page Shop mit Shopware & Nuxt 🚀 | shopware x synaigy Meetup](https://www.youtube.com/watch?v=RXaNWRMuea8)
 - [Performance Improvements Headless Shopware Frontends - Niklas Wolf, Mothership GmbH](https://www.youtube.com/watch?v=GhniPTMtIt8)
 - [Ein Microstore mit Shopware Frontends | Shopware Meetup der Mothership GmbH in München](https://www.youtube.com/watch?v=Dal-z94WLCk)

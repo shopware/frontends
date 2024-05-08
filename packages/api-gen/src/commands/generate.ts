@@ -140,6 +140,12 @@ export async function generate(args: { cwd: string; filename: string }) {
               ),
             };
           }
+          /**
+           * Blob type is used for binary data
+           */
+          if (schemaObject.format === "binary") {
+            return "Blob";
+          }
 
           /**
            * We're changing "object" declarations into "GenericRecord" to allow recursive types like `associations`
