@@ -30,6 +30,9 @@
       "removedFromWishlist": "{p} wurde aus der Wunschliste entfernt.",
       "addedToCart": "{p} wurde dem Warenkorb hinzugefügt.",
       "reviewAdded": "Vielen Dank für Ihre Bewertung"
+    },
+    "badges": {
+      "topseller": "Tipp"
     }
   }
 }
