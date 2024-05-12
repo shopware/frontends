@@ -10700,7 +10700,7 @@ export type operations = {
       /** An arbitrary binary file. */
       200: {
         content: {
-          "application/octet-stream": string;
+          "application/octet-stream": Blob;
         };
       };
     };
@@ -11569,7 +11569,7 @@ export type operations = {
            * Format: binary
            * Base-64 encoded image
            */
-          file?: string;
+          file?: Blob;
         };
       };
     };

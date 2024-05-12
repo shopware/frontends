@@ -8059,7 +8059,7 @@ export type operations = {
        * Format: binary
        * Base-64 encoded image
        */
-      file?: string;
+      file?: Blob;
     };
     response: components["schemas"]["SearchByImageSearchTermResponse"];
     responseCode: 200;
