@@ -1,4 +1,3 @@
-type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 type XOR<T, U> = T | U extends object
   ? (Without<T, U> & U) | (Without<U, T> & T)
@@ -19,12 +18,6 @@ export type components = {
   schemas: Schemas;
 };
 export type Schemas = {
-  AbstractDynamicPageOpenedPayload: {
-    /** @default true */
-    opened?: boolean;
-    /** The type of the current dynamic page */
-    type: string;
-  };
   AccountNewsletterRecipientResult: {
     // TODO: [OpenAPI][AccountNewsletterRecipientResult] - update type definition
     apiAlias: "account_newsletter_recipient";
@@ -205,43 +198,6 @@ export type Schemas = {
     priority?: number;
   };
   ArrayStruct: components["schemas"]["Struct"];
-  AttendeeProductCollectionLastSeenResponse: {
-    collection?: {
-      lastSeen?: string[];
-    };
-  };
-  AttendeeProductCollectionResponse: {
-    collection?:
-      | {
-          liked?: string[];
-        }
-      | {
-          disliked?: string[];
-        };
-  };
-  AttendeeRespondInvitationResponse: {
-    /**
-     * The invitation status that client responded to
-     * @enum {string}
-     */
-    answer?: "accepted" | "maybe" | "declined";
-    appointment?: {
-      /**
-       * Format: date-time
-       * The time the client can access the appointment
-       */
-      accessibleFrom?: string;
-      /**
-       * Format: date-time
-       * The time the appointment will be closed, the client can not access
-       */
-      accessibleTo?: string;
-      /** The appointment id */
-      id?: string;
-      /** The appointment status */
-      status?: ("started" | "ended") | null;
-    };
-  };
   B2bBusinessPartner: {
     /** Format: date-time */
     createdAt: string;
@@ -268,7 +224,7 @@ export type Schemas = {
     /** Format: float */
     amountTotal?: number;
     approvalRule?: components["schemas"]["B2bComponentsApprovalRule"];
-    approvalRuleId: string;
+    approvalRuleId?: string;
     billingAddress?: components["schemas"]["B2bComponentsPendingOrderAddress"];
     billingAddressId: string;
     country?: components["schemas"]["Country"];
@@ -279,6 +235,7 @@ export type Schemas = {
     currencyId: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
+    customFields?: GenericRecord;
     decidedBy?: components["schemas"]["B2bEmployee"];
     decidedById?: string;
     employee?: components["schemas"]["B2bEmployee"];
@@ -327,7 +284,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
-    id?: string;
+    id: string;
     lastName: string;
     pendingOrder?: components["schemas"]["B2bComponentsPendingOrder"];
     phoneNumber?: string;
@@ -343,9 +300,133 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     name: string;
     permissions?: GenericRecord[];
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  B2bComponentsShoppingList: {
+    active?: boolean;
+    /** Format: date-time */
+    createdAt: string;
+    createdById?: string;
+    customer?: components["schemas"]["Customer"];
+    customerId: string;
+    customFields?: GenericRecord;
+    employee?: components["schemas"]["B2bEmployee"];
+    employeeId?: string;
+    id: string;
+    lineItems?: components["schemas"]["B2bComponentsShoppingListLineItem"][];
+    name?: string;
+    price?: GenericRecord;
+    salesChannelId: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedById?: string;
+  };
+  B2bComponentsShoppingListJsonApi: components["schemas"]["resource"] & {
+    active?: boolean;
+    /** Format: date-time */
+    createdAt: string;
+    createdById?: string;
+    customerId: string;
+    customFields?: GenericRecord;
+    employeeId?: string;
+    id: string;
+    name?: string;
+    price?: GenericRecord;
+    relationships?: {
+      customer?: {
+        data?: {
+          /** @example 91ec1f9324753048c0096d036a694f86 */
+          id?: string;
+          /** @example customer */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-shopping-list/23cb3bfda723e05b43cb25a427ee5a25/customer
+           */
+          related?: string;
+        };
+      };
+      employee?: {
+        data?: {
+          /** @example fa5473530e4d1a5a1e1eb53d2fedb10c */
+          id?: string;
+          /** @example b2b_employee */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-shopping-list/23cb3bfda723e05b43cb25a427ee5a25/employee
+           */
+          related?: string;
+        };
+      };
+      lineItems?: {
+        data?: {
+          /** @example a042af1aa9f3853fe3cd7dabc065568f */
+          id?: string;
+          /** @example b2b_components_shopping_list_line_item */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-shopping-list/23cb3bfda723e05b43cb25a427ee5a25/lineItems
+           */
+          related?: string;
+        };
+      };
+    };
+    salesChannelId: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedById?: string;
+  };
+  B2bComponentsShoppingListLineItem: {
+    /** Format: date-time */
+    createdAt: string;
+    id: string;
+    price?: GenericRecord;
+    product?: components["schemas"]["Product"];
+    productId?: string;
+    productVersionId?: string;
+    /** Format: int64 */
+    quantity: number;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  B2bComponentsShoppingListLineItemJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    createdAt: string;
+    id: string;
+    price?: GenericRecord;
+    productId?: string;
+    productVersionId?: string;
+    /** Format: int64 */
+    quantity: number;
+    relationships?: {
+      product?: {
+        data?: {
+          /** @example f5bf48aa40cad7891eb709fcf1fde128 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-shopping-list-line-item/30d48c8d92682de24e11d3f72c5dd1ea/product
+           */
+          related?: string;
+        };
+      };
+    };
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -356,7 +437,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     email: string;
     firstName: string;
-    id?: string;
+    id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     lastName: string;
@@ -378,7 +459,7 @@ export type Schemas = {
     createdAt: string;
     dependencies?: string[];
     group: string;
-    id?: string;
+    id: string;
     name: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -466,7 +547,7 @@ export type Schemas = {
       paymentMethodId?: string;
     }[];
   };
-  CartItems: components["schemas"]["ArrayStruct"] & {
+  CartItems: {
     items?: components["schemas"]["LineItem"][];
   };
   Category: {
@@ -561,7 +642,7 @@ export type Schemas = {
     description?: string;
     displayNestedProducts: boolean;
     externalLink?: string;
-    id?: string;
+    id: string;
     internalLink?: string;
     keywords?: string;
     /** Format: int64 */
@@ -701,11 +782,6 @@ export type Schemas = {
      */
     visibleChildCount?: number;
   };
-  ClientPresentationStateResponse: {
-    stateForAll?: components["schemas"]["StateForAll"];
-    stateForClients?: components["schemas"]["StateForClients"];
-    stateForMe?: components["schemas"]["StateForMe"];
-  };
   CmsBlock: {
     apiAlias: "cms_block"; // TODO: [OpenAPI][CmsBlock] - define apiAlias properly
     backgroundColor?: string;
@@ -771,6 +847,8 @@ export type Schemas = {
     };
   };
   CmsPage: {
+    /** @enum {string} */
+    apiAlias: "cms_page";
     config?: {
       backgroundColor?: string;
     };
@@ -796,13 +874,14 @@ export type Schemas = {
         };
       };
     };
-    id?: string;
+    id: string;
     landingPages?: components["schemas"]["LandingPage"][];
     name?: string;
     previewMedia?: components["schemas"]["Media"];
     previewMediaId?: string;
-    sections?: components["schemas"]["CmsSection"][];
+    sections: components["schemas"]["CmsSection"][];
     translated?: {
+      apiAlias?: string;
       cssClass?: string;
       entity?: string;
       name?: string;
@@ -925,7 +1004,7 @@ export type Schemas = {
     defaultPostalCodePattern?: string;
     displayStateInRegistration?: boolean;
     forceStateInRegistration?: boolean;
-    id?: string;
+    id: string;
     iso?: string;
     iso3?: string;
     name: string;
@@ -972,7 +1051,7 @@ export type Schemas = {
     defaultPostalCodePattern?: string;
     displayStateInRegistration?: boolean;
     forceStateInRegistration?: boolean;
-    id?: string;
+    id: string;
     iso?: string;
     iso3?: string;
     name: string;
@@ -1016,7 +1095,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     name: string;
     /** Format: int64 */
     position?: number;
@@ -1035,7 +1114,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     name: string;
     /** Format: int64 */
     position?: number;
@@ -1047,20 +1126,6 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
-  };
-  CreateInteractionRequestBody: {
-    /**
-     * The time in seconds how long the interaction should be stored in the database
-     * @default -1
-     */
-    lifeTimeInSeconds?: number;
-    name: components["schemas"]["InteractionName"];
-    payload?: GenericRecord;
-    /**
-     * The time when the interaction was triggered
-     * @default now
-     */
-    triggeredAt?: string;
   };
   Criteria: {
     /** Used to perform aggregations on the search result. For more information, see [Search Queries > Aggregations](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#aggregations) */
@@ -1122,6 +1187,16 @@ export type Schemas = {
      */
     "total-count-mode"?: "none" | "exact" | "next-pages";
   };
+  CrossSellingElement: {
+    /** @enum {string} */
+    apiAlias: "cross_selling_element";
+    crossSelling: components["schemas"]["ProductCrossSelling"];
+    products: components["schemas"]["Product"][];
+    /** Format: uuid */
+    streamId?: string;
+    /** Format: int32 */
+    total: number;
+  };
   CrossSellingElementCollection: {
     // TODO: [OpenAPI][CrossSellingElementCollection] - define CrossSellingElement instead of collection
     crossSelling: {
@@ -1148,16 +1223,16 @@ export type Schemas = {
     customFields?: GenericRecord;
     /** Format: float */
     factor: number;
-    id?: string;
+    id: string;
     isoCode: string;
     /** Runtime field, cannot be used as part of the criteria. */
     isSystemDefault?: boolean;
     itemRounding: {
       /** Format: int64 */
-      decimals?: number;
+      decimals: number;
       /** Format: float */
-      interval?: number;
-      roundForNet?: boolean;
+      interval: number;
+      roundForNet: boolean;
     };
     name: string;
     /** Format: int64 */
@@ -1168,10 +1243,10 @@ export type Schemas = {
     taxFreeFrom?: number;
     totalRounding: {
       /** Format: int64 */
-      decimals?: number;
+      decimals: number;
       /** Format: float */
-      interval?: number;
-      roundForNet?: boolean;
+      interval: number;
+      roundForNet: boolean;
     };
     translated?: {
       isoCode?: string;
@@ -1195,16 +1270,16 @@ export type Schemas = {
     customFields?: GenericRecord;
     /** Format: float */
     factor: number;
-    id?: string;
+    id: string;
     isoCode: string;
     /** Runtime field, cannot be used as part of the criteria. */
     isSystemDefault?: boolean;
     itemRounding: {
       /** Format: int64 */
-      decimals?: number;
+      decimals: number;
       /** Format: float */
-      interval?: number;
-      roundForNet?: boolean;
+      interval: number;
+      roundForNet: boolean;
     };
     name: string;
     /** Format: int64 */
@@ -1215,10 +1290,10 @@ export type Schemas = {
     taxFreeFrom?: number;
     totalRounding: {
       /** Format: int64 */
-      decimals?: number;
+      decimals: number;
       /** Format: float */
-      interval?: number;
-      roundForNet?: boolean;
+      interval: number;
+      roundForNet: boolean;
     };
     translated?: {
       isoCode?: string;
@@ -1264,7 +1339,7 @@ export type Schemas = {
     customerGroup?: components["schemas"]["CustomerGroup"];
     customerGroupId?: string;
     customerId?: string;
-    id?: string;
+    id: string;
     price: GenericRecord;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -1425,14 +1500,14 @@ export type Schemas = {
     createdAt: string;
     customerId: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     /** Format: date-time */
     updatedAt?: string;
   };
   CustomerWishlistProduct: {
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
@@ -1442,7 +1517,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     /** Format: int64 */
     max: number;
     /** Format: int64 */
@@ -1494,7 +1569,7 @@ export type Schemas = {
     filenamePrefix?: string;
     filenameSuffix?: string;
     global: boolean;
-    id?: string;
+    id: string;
     logo?: components["schemas"]["Media"];
     logoId?: string;
     name: string;
@@ -1506,7 +1581,7 @@ export type Schemas = {
     createdAt: string;
     documentBaseConfigId: string;
     documentTypeId?: string;
-    id?: string;
+    id: string;
     salesChannelId?: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -1515,7 +1590,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     name: string;
     technicalName: string;
     translated?: {
@@ -1525,22 +1600,6 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  DynamicPageOpenedPayload: components["schemas"]["AbstractDynamicPageOpenedPayload"];
-  DynamicProductListingPageOpenedPayload: WithRequired<
-    {
-      /** Current page position in the pagination */
-      page: number;
-    } & components["schemas"]["AbstractDynamicPageOpenedPayload"],
-    "page"
-  >;
-  DynamicProductPageOpenedPayload: WithRequired<
-    {
-      /** the id from the product which is shown on the dynamic page */
-      productId: string;
-    } & components["schemas"]["AbstractDynamicPageOpenedPayload"],
-    "productId"
-  >;
-  EmptyPayload: Record<string, never>;
   EntitySearchResult: components["schemas"]["ArrayStruct"] & {
     /** Contains aggregated data. A simple example is the determination of the average price from a product search query. */
     aggregations?: GenericRecord[];
@@ -1579,135 +1638,6 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  GuideHoveredPayload: {
-    $hoveredElementId?: string | null;
-  };
-  GuidedShoppingAppointment: {
-    /** Format: date-time */
-    accessibleFrom?: string;
-    /** Format: date-time */
-    accessibleTo?: string;
-    active?: boolean;
-    attendeeRuleIds?: GenericRecord;
-    /** Format: date-time */
-    createdAt: string;
-    createdById: string;
-    customFields?: GenericRecord;
-    default?: boolean;
-    /** Format: date-time */
-    endedAt?: string;
-    guidedShoppingPresentationVersionId?: string;
-    guideUserId?: string;
-    id?: string;
-    isPreview?: boolean;
-    name: string;
-    presentationId?: string;
-    salesChannelDomainId: string;
-    /** Format: date-time */
-    startedAt?: string;
-    /** Format: date-time */
-    updatedAt?: string;
-    updatedById?: string;
-    videoAudioSettings?: string;
-    videoChat?: components["schemas"]["GuidedShoppingAppointmentVideoChat"];
-  };
-  GuidedShoppingAppointmentAttendee: {
-    /** Format: date-time */
-    attendeeSubmittedAt?: string;
-    /** Format: date-time */
-    createdAt: string;
-    id?: string;
-    /** Format: date-time */
-    joinedAt?: string;
-    /** Format: date-time */
-    lastActive?: string;
-    /** Format: date-time */
-    updatedAt?: string;
-  };
-  GuidedShoppingAppointmentVideoChat: {
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    id?: string;
-    name?: string;
-    startAsBroadcast?: boolean;
-    /** Format: date-time */
-    updatedAt?: string;
-    url?: string;
-  };
-  GuidedShoppingAttendeeProductCollection: {
-    attendeeId: string;
-    /** Format: date-time */
-    createdAt: string;
-    id?: string;
-    productId: string;
-    /** Format: date-time */
-    updatedAt?: string;
-  };
-  GuidedShoppingInteraction: {
-    /** Format: date-time */
-    createdAt: string;
-    id?: string;
-    /** Format: date-time */
-    updatedAt?: string;
-  };
-  GuidedShoppingPresentation: {
-    active?: boolean;
-    appointments?: components["schemas"]["GuidedShoppingAppointment"][];
-    cmsPages?: components["schemas"]["GuidedShoppingPresentationCmsPage"][];
-    /** Format: date-time */
-    createdAt: string;
-    createdById: string;
-    customFields?: GenericRecord;
-    id?: string;
-    name: string;
-    parent?: components["schemas"]["GuidedShoppingPresentation"];
-    parentId?: string;
-    parentVersionId?: string;
-    translated?: {
-      createdById?: string;
-      name?: string;
-      parentId?: string;
-      parentVersionId?: string;
-      updatedById?: string;
-      versionId?: string;
-    };
-    /** Format: date-time */
-    updatedAt?: string;
-    updatedById?: string;
-    versionId?: string;
-  };
-  GuidedShoppingPresentationCmsPage: {
-    cmsPage?: components["schemas"]["CmsPage"];
-    cmsPageId: string;
-    cmsPageVersionId?: string;
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    guidedShoppingPresentationVersionId?: string;
-    id?: string;
-    isInstantListing?: boolean;
-    pickedProductIds?: GenericRecord;
-    /** Format: int64 */
-    position?: number;
-    presentationId: string;
-    productId?: string;
-    productStreamId?: string;
-    productVersionId?: string;
-    title?: string;
-    translated?: {
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      guidedShoppingPresentationVersionId?: string;
-      presentationId?: string;
-      productId?: string;
-      productStreamId?: string;
-      productVersionId?: string;
-      title?: string;
-    };
-    /** Format: date-time */
-    updatedAt?: string;
-  };
   ImportExportFile: {
     /** Format: date-time */
     createdAt: string;
@@ -1736,52 +1666,6 @@ export type Schemas = {
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
-  };
-  InteractionName:
-    | "product.viewed"
-    | "dynamicPage.opened"
-    | "dynamicProductPage.opened"
-    | "dynamicPage.closed"
-    | "page.viewed"
-    | "attendee.product.collection.liked"
-    | "attendee.product.collection.disliked"
-    | "attendee.product.collection.removed"
-    | "remote.checkout.accepted"
-    | "remote.checkout.declined"
-    | "keep.alive"
-    | "quickview.opened"
-    | "quickview.closed"
-    | "dynamicProductListingPage.opened"
-    | "dynamicProductListingPage.loadedMore"
-    | "remote.checkout.denied"
-    | "guide.hovered"
-    | "broadcastMode.toggled";
-  JoinAppointmentResponse: {
-    /** The created Id for the attendee */
-    attendeeId?: string;
-    /** The appointment id */
-    id?: string;
-    /** To see if it's a preview appointment */
-    isPreview?: boolean;
-    /** The JWT mercure token to subscribe for updates */
-    JWTMercurePublisherToken?: string | null;
-    /** The JWT mercure token to publish updates */
-    JWTMercureSubscriberToken?: string | null;
-    /** The mercure hub url to connect for subscribing and updating */
-    mercureHubPublicUrl?: string | null;
-    /** The topic to which the attendee/guide can send updates */
-    mercurePublisherTopic?: string | null;
-    /** The topics to which the attendee/guide can subscribe for */
-    mercureSubscriberTopics?: string[];
-    /** The new context token will be used in the header (sw-context-token) for calling the other routes */
-    newContextToken?: string;
-    /**
-     * The type of the appointment
-     * @enum {string}
-     */
-    presentationGuideMode?: "self" | "guided";
-    /** The id of the current sales channel */
-    salesChannelId?: string;
   };
   LandingPage: {
     apiAlias: "landing_page"; // TODO: [OpenAPI][LandingPage] - add `apiAlias` definition to schema
@@ -1821,7 +1705,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     keywords?: string;
     metaDescription?: string;
     metaTitle?: string;
@@ -1879,7 +1763,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     locale?: components["schemas"]["Locale"];
     localeId: string;
     name: string;
@@ -1894,7 +1778,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     localeId: string;
     name: string;
     parentId?: string;
@@ -2017,12 +1901,26 @@ export type Schemas = {
     states: string[]; // TODO: [OpenAPI][LineItem] - add definition of `states` array, also union type of possible states
     type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][LineItem] - define type as required and string union type -> see also #456
   };
+  LineItemType:
+    | "product"
+    | "credit"
+    | "custom"
+    | "promotion"
+    | "discount"
+    | "container";
+  ListPrice: {
+    /** @enum {string} */
+    apiAlias: "cart_list_price";
+    discount?: number;
+    percentage?: number;
+    price?: number;
+  };
   Locale: {
     code: string;
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     name: string;
     territory: string;
     translated?: {
@@ -2082,7 +1980,7 @@ export type Schemas = {
     updatedAt?: string;
   };
   MailTemplateMedia: {
-    id?: string;
+    id: string;
     languageId: string;
     mailTemplateId: string;
     media?: components["schemas"]["Media"];
@@ -2094,7 +1992,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     name: string;
     technicalName: string;
     translated?: {
@@ -2109,7 +2007,7 @@ export type Schemas = {
     categoryVersionId?: string;
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     productId: string;
     productVersionId?: string;
     salesChannelId: string;
@@ -2121,7 +2019,7 @@ export type Schemas = {
     categoryVersionId?: string;
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     productId: string;
     productVersionId?: string;
     salesChannelId: string;
@@ -2190,7 +2088,7 @@ export type Schemas = {
   MediaAiTag: {
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     media?: components["schemas"]["Media"];
     tags?: GenericRecord[];
     translated?: Record<string, never>;
@@ -2247,7 +2145,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     /** Format: int64 */
     height: number;
-    id?: string;
+    id: string;
     /** Format: date-time */
     updatedAt?: string;
     /** Format: int64 */
@@ -2462,7 +2360,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     email: string;
     firstName: string;
-    id?: string;
+    id: string;
     lastName: string;
     salutation?: components["schemas"]["Salutation"];
     salutationId?: string;
@@ -2476,7 +2374,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     orderId: string;
     orderVersionId?: string;
     positions?: components["schemas"]["OrderDeliveryPosition"][];
@@ -2523,7 +2421,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     orderDeliveryId: string;
     orderDeliveryVersionId?: string;
     orderLineItemId: string;
@@ -2665,7 +2563,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     createdById?: string;
-    id?: string;
+    id: string;
     lineItems?: components["schemas"]["OrderReturnLineItem"][];
     orderId: string;
     orderVersionId?: string;
@@ -2719,7 +2617,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     orderLineItemId: string;
     orderLineItemVersionId?: string;
     orderReturnId: string;
@@ -2742,7 +2640,7 @@ export type Schemas = {
     content: string;
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     reasonKey: string;
     translated?: {
       content?: string;
@@ -2796,7 +2694,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     orderId: string;
     orderVersionId?: string;
     paymentMethod?: components["schemas"]["PaymentMethod"];
@@ -2835,7 +2733,7 @@ export type Schemas = {
     createdAt: string;
     customFields?: GenericRecord;
     externalReference?: string;
-    id?: string;
+    id: string;
     orderTransactionId: string;
     orderTransactionVersionId?: string;
     refunds?: components["schemas"]["OrderTransactionCaptureRefund"][];
@@ -2876,7 +2774,7 @@ export type Schemas = {
     createdAt: string;
     customFields?: GenericRecord;
     externalReference?: string;
-    id?: string;
+    id: string;
     positions?: components["schemas"]["OrderTransactionCaptureRefundPosition"][];
     reason?: string;
     stateId: string;
@@ -2914,7 +2812,7 @@ export type Schemas = {
     createdAt: string;
     customFields?: GenericRecord;
     externalReference?: string;
-    id?: string;
+    id: string;
     orderLineItem?: components["schemas"]["OrderLineItem"];
     orderLineItemId: string;
     orderLineItemVersionId?: string;
@@ -2934,12 +2832,6 @@ export type Schemas = {
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
-  };
-  PageViewedPayload: {
-    /** the id from the page which was viewed */
-    pageId: string;
-    /** the id from the section within the page which was viewed */
-    sectionId: string;
   };
   PaymentMethod: {
     active?: boolean;
@@ -2989,7 +2881,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     description?: string;
     distinguishableName?: string;
-    id?: string;
+    id: string;
     mediaId?: string;
     name: string;
     /** Format: int64 */
@@ -3071,80 +2963,6 @@ export type Schemas = {
     translated?: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
-  };
-  PresentationCmsPage: {
-    cmsPage?: components["schemas"]["CmsPage"];
-    /** The CMS page id the presentation using */
-    cmsPageId?: string;
-    /** The CMS page version id the presentation using */
-    cmsPageVersionId?: string;
-    /** Format: date-time */
-    createdAt?: string;
-    customFields?: GenericRecord | null;
-    guidedShoppingPresentationVersionId?: string;
-    /** The presentation cms page id */
-    id?: string;
-    /** True if this slide is an instant listing */
-    isInstantListing?: boolean;
-    /** The product id is assigned to presentation if it's product listing or instant listing */
-    pickedProductIds?: string[] | null;
-    /** The position of slide */
-    position?: number;
-    /** The presentation using this presentation cms page */
-    presentationId?: string;
-    /** The product id is assigned to presentation if it's product detail */
-    productId?: string | null;
-    /** The product stream id is assigned to presentation if it's product listing */
-    productStreamId?: string | null;
-    /** The title of presentation cms page */
-    title?: string | null;
-    translated?: {
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      guidedShoppingPresentationVersionId?: string;
-      presentationId?: string;
-    };
-    updatedAt?: string | null;
-  };
-  PresentationSlideData: OneOf<
-    [
-      {
-        configurator?: components["schemas"]["PropertyGroup"][];
-        product?: components["schemas"]["Product"];
-      },
-      {
-        category?: components["schemas"]["Category"];
-      },
-      null,
-    ]
-  >;
-  PresentationStructure: {
-    cmsPageResults?: {
-      cmsPage?: components["schemas"]["CmsPage"];
-      /** The presentation id */
-      resourceIdentifier?: string;
-      /**
-       * The type of presentation page
-       * @default frontend.presentation.page
-       */
-      resourceType?: string;
-    }[];
-    navigation?: {
-      /** The CMS page id */
-      cmsPageId?: string;
-      /** The presentation CMS page id */
-      groupId?: string;
-      /** The slide name */
-      groupName?: string;
-      /** The section id */
-      id?: string;
-      /** The slide position */
-      index?: number;
-      /** The section name */
-      name?: string | null;
-      /** @default [] */
-      notes?: components["schemas"]["CmsSlot"][];
-    }[];
   };
   Product: {
     apiAlias: "product"; // TODO: [OpenAPI][Product] apiAlias field should be defined in schema as string literal
@@ -3325,7 +3143,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     media?: components["schemas"]["Media"];
     mediaId?: string;
     option?: components["schemas"]["PropertyGroupOption"];
@@ -3342,7 +3160,7 @@ export type Schemas = {
     active?: boolean;
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     /** Format: int64 */
     limit?: number;
     name: string;
@@ -3376,7 +3194,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     media?: components["schemas"]["Media"];
     mediaId: string;
     /** Format: int64 */
@@ -3465,7 +3283,7 @@ export type Schemas = {
     };
     /** Format: float */
     height?: number;
-    id?: string;
+    id: string;
     isCloseout?: boolean;
     /** Runtime field, cannot be used as part of the criteria. */
     isNew?: boolean;
@@ -4002,7 +3820,7 @@ export type Schemas = {
     createdAt: string;
     customFields?: GenericRecord;
     description?: string;
-    id?: string;
+    id: string;
     link?: string;
     media?: components["schemas"]["Media"];
     mediaId?: string;
@@ -4034,10 +3852,6 @@ export type Schemas = {
     versionId?: string;
     thumbnails?: Array<components["schemas"]["MediaThumbnail"]>; // TODO: [OpenAPI][Product] thumbnails field should be defined in ProductMedia
   };
-  ProductPayload: {
-    /** the id from the product which is used in the interaction */
-    productId: string;
-  };
   ProductPrice: {
     /** Format: date-time */
     createdAt: string;
@@ -4068,7 +3882,7 @@ export type Schemas = {
   ProductReviewSummary: {
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     product?: components["schemas"]["Product"];
     productId: string;
     salesChannel?: components["schemas"]["SalesChannel"];
@@ -4124,7 +3938,7 @@ export type Schemas = {
     createdAt: string;
     customFields?: GenericRecord;
     description?: string;
-    id?: string;
+    id: string;
     name: string;
     translated?: {
       description?: string;
@@ -4205,7 +4019,7 @@ export type Schemas = {
     description?: string;
     displayType: string;
     filterable?: boolean;
-    id?: string;
+    id: string;
     name: string;
     options?: components["schemas"]["PropertyGroupOption"][];
     /** Format: int64 */
@@ -4269,14 +4083,12 @@ export type Schemas = {
     documents?: components["schemas"]["QuoteDocument"][];
     /** Format: date-time */
     expirationDate?: string;
-    id?: string;
+    id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     lineItems?: components["schemas"]["QuoteLineItem"][];
     orderId?: string;
     orderVersionId?: string;
-    /** Format: float */
-    originalPrice?: number;
     price?: {
       calculatedTaxes?: GenericRecord;
       /** Format: float */
@@ -4338,7 +4150,7 @@ export type Schemas = {
     createdById?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
-    id?: string;
+    id: string;
     quoteId: string;
     quoteVersionId?: string;
     /** Format: date-time */
@@ -4353,7 +4165,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     positions?: components["schemas"]["QuoteDeliveryPosition"][];
     quoteId: string;
     quoteVersionId?: string;
@@ -4394,7 +4206,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     price?: {
       calculatedTaxes?: GenericRecord;
       listPrice?: {
@@ -4445,7 +4257,7 @@ export type Schemas = {
     documentType?: components["schemas"]["DocumentType"];
     documentTypeId: string;
     fileType: string;
-    id?: string;
+    id: string;
     quote?: components["schemas"]["Quote"];
     quoteId: string;
     quoteVersionId?: string;
@@ -4478,7 +4290,7 @@ export type Schemas = {
       value?: number;
     };
     good?: boolean;
-    id?: string;
+    id: string;
     identifier: string;
     label: string;
     parent?: components["schemas"]["QuoteLineItem"];
@@ -4536,7 +4348,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
     quoteId: string;
@@ -4544,6 +4356,23 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
+  };
+  ReferencePrice: {
+    /** @enum {string} */
+    apiAlias?: "cart_price_reference";
+    hasRange: boolean;
+    listPrice: components["schemas"]["ListPrice"] | null;
+    price?: number;
+    purchaseUnit?: number;
+    referenceUnit?: number;
+    regulationPrice: {
+      /** @enum {string} */
+      apiAlias?: "cart_regulation_price";
+      price?: number;
+    } | null;
+    unitName: string;
+    /** Format: ^[0-9a-f]{32}$ */
+    variantId?: string | null;
   };
   Rule: {
     /** Format: date-time */
@@ -4625,7 +4454,7 @@ export type Schemas = {
     hreflangActive?: boolean;
     hreflangDefaultDomain?: components["schemas"]["SalesChannelDomain"];
     hreflangDefaultDomainId?: string;
-    id?: string;
+    id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     mailHeaderFooterId?: string;
@@ -4828,7 +4657,7 @@ export type Schemas = {
     currencyId: string;
     customFields?: GenericRecord;
     hreflangUseOnlyLocale?: boolean;
-    id?: string;
+    id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     salesChannelDefaultHreflang?: components["schemas"]["SalesChannel"];
@@ -4851,7 +4680,7 @@ export type Schemas = {
     createdAt: string;
     customFields?: GenericRecord;
     displayName: string;
-    id?: string;
+    id: string;
     letterName: string;
     salutationKey: string;
     translated?: {
@@ -4867,7 +4696,7 @@ export type Schemas = {
     createdAt: string;
     customFields?: GenericRecord;
     displayName: string;
-    id?: string;
+    id: string;
     letterName: string;
     salutationKey: string;
     translated?: {
@@ -4926,13 +4755,13 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
+    /** Runtime field, cannot be used as part of the criteria. */
+    error?: string;
     foreignKey: string;
-    id?: string;
+    id: string;
     isCanonical?: boolean;
     isDeleted?: boolean;
     isModified?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    isValid?: boolean;
     languageId: string;
     pathInfo: string;
     routeName: string;
@@ -4993,7 +4822,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     deliveryTimeId: string;
     description?: string;
-    id?: string;
+    id: string;
     mediaId?: string;
     name: string;
     /** Format: int64 */
@@ -5232,7 +5061,7 @@ export type Schemas = {
     createdAt: string;
     currencyPrice?: GenericRecord;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     /** Format: float */
     quantityEnd?: number;
     /** Format: float */
@@ -5269,57 +5098,20 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  StateForAll: {
-    accessibleFrom?: string | null;
-    accessibleTo?: string | null;
-    /** @default false */
-    allowUserActionsForGuide?: boolean;
-    /** @enum {string} */
-    appointmentMode?: "guided" | "self";
-    attendeeRestrictionType?: ("open" | "customer" | "rules") | null;
-    /** @default false */
-    broadcastMode?: boolean;
-    currentDynamicPage?: components["schemas"]["DynamicPageOpenedPayload"];
-    currentGuideProductId?: string | null;
-    currentPageId?: string | null;
-    currentSectionId?: string | null;
-    /** @default 0 */
-    currentSlideAlias?: number;
-    /** @default false */
-    ended?: boolean;
-    endedAt?: string | null;
-    /** @default [] */
-    extensions?: unknown[];
-    lastActiveGuideSection?: string | null;
-    productDetailDefaultPageId?: string | null;
-    productListingDefaultPageId?: string | null;
-    quickviewPageId?: string | null;
-    /** @default false */
-    running?: boolean;
-    /** @default false */
-    started?: boolean;
-    startedAt?: string | null;
-    /**
-     * @default none
-     * @enum {string}
-     */
-    videoAudioSettings?: "both" | "none" | "audio-only";
-    /** @default */
-    videoRoomUrl?: string;
+  SsoProvider: {
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    media?: components["schemas"]["Media"];
+    /** Format: date-time */
+    updatedAt?: string;
   };
-  StateForClients: {
-    /** @default [] */
-    extensions?: unknown[];
-    hoveredElementId?: string | null;
-    videoClientToken?: string | null;
-  };
-  StateForMe: {
-    attendeeName?: string | null;
-    attendeeSubmittedAt?: string | null;
-    /** @default [] */
-    extensions?: unknown[];
-    /** @default null */
-    guideCartPermissionsGranted?: boolean;
+  SsoProviderCustomer: {
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    /** Format: date-time */
+    updatedAt?: string;
   };
   StateMachine: {
     /** Format: date-time */
@@ -5377,7 +5169,7 @@ export type Schemas = {
     currencyId: string;
     customFields?: GenericRecord;
     dateInterval: string;
-    id?: string;
+    id: string;
     /** Format: int64 */
     initialExecutionCount: number;
     language?: components["schemas"]["Language"];
@@ -5422,7 +5214,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
-    id?: string;
+    id: string;
     lastName: string;
     phoneNumber?: string;
     salutation?: components["schemas"]["Salutation"];
@@ -5446,7 +5238,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     email: string;
     firstName: string;
-    id?: string;
+    id: string;
     lastName: string;
     salutation?: components["schemas"]["Salutation"];
     salutationId: string;
@@ -5462,7 +5254,7 @@ export type Schemas = {
     createdAt: string;
     cronInterval: string;
     dateInterval: string;
-    id?: string;
+    id: string;
     name: string;
     subscriptions?: components["schemas"]["Subscription"][];
     translated?: {
@@ -5484,7 +5276,7 @@ export type Schemas = {
     /** Format: float */
     discountPercentage?: number;
     discountPrice?: GenericRecord;
-    id?: string;
+    id: string;
     label?: string;
     /** Format: int64 */
     minimumExecutionCount?: number;
@@ -5516,7 +5308,7 @@ export type Schemas = {
     /** Format: float */
     discountPercentage?: number;
     discountPrice?: GenericRecord;
-    id?: string;
+    id: string;
     label?: string;
     /** Format: int64 */
     minimumExecutionCount?: number;
@@ -5571,7 +5363,7 @@ export type Schemas = {
     cmsBlockVersionId?: string;
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     inverted?: boolean;
     /** Format: date-time */
     updatedAt?: string;
@@ -5609,7 +5401,7 @@ export type Schemas = {
     cmsBlockVersionId?: string;
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5621,7 +5413,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     displayName?: string;
-    id?: string;
+    id: string;
     translated?: {
       cmsSectionId?: string;
       cmsSectionVersionId?: string;
@@ -5643,7 +5435,8 @@ export type Schemas = {
     easing: string;
     /** Format: int64 */
     easingDegree: number;
-    id?: string;
+    id: string;
+    nativeScrolling: boolean;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5657,7 +5450,7 @@ export type Schemas = {
     description?: string;
     displayName: string;
     exclusions?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"][];
-    id?: string;
+    id: string;
     internalName: string;
     media?: components["schemas"]["Media"];
     mediaId?: string;
@@ -5683,7 +5476,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     hash: string;
-    id?: string;
+    id: string;
     template?: components["schemas"]["SwagCustomizedProductsTemplate"];
     templateConfigurationShares?: components["schemas"]["SwagCustomizedProductsTemplateConfigurationShare"][];
     templateId: string;
@@ -5697,7 +5490,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     hash: string;
-    id?: string;
+    id: string;
     relationships?: {
       template?: {
         data?: {
@@ -5747,7 +5540,7 @@ export type Schemas = {
     conditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     name: string;
     template?: components["schemas"]["SwagCustomizedProductsTemplate"];
     templateId: string;
@@ -5759,7 +5552,7 @@ export type Schemas = {
   SwagCustomizedProductsTemplateExclusionCondition: {
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     templateExclusion?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"];
     templateExclusionId: string;
     templateExclusionOperator?: components["schemas"]["SwagCustomizedProductsTemplateExclusionOperator"];
@@ -5776,7 +5569,7 @@ export type Schemas = {
   SwagCustomizedProductsTemplateExclusionOperator: {
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     label: string;
     operator: string;
     templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
@@ -5797,7 +5590,7 @@ export type Schemas = {
     decisionTree?: GenericRecord;
     description?: string;
     displayName: string;
-    id?: string;
+    id: string;
     internalName: string;
     mediaId?: string;
     optionsAutoCollapse?: boolean;
@@ -5899,7 +5692,7 @@ export type Schemas = {
     createdAt: string;
     description?: string;
     displayName: string;
-    id?: string;
+    id: string;
     itemNumber?: string;
     oneTimeSurcharge?: boolean;
     /** Format: float */
@@ -5940,7 +5733,7 @@ export type Schemas = {
     createdAt: string;
     description?: string;
     displayName: string;
-    id?: string;
+    id: string;
     itemNumber?: string;
     oneTimeSurcharge?: boolean;
     /** Format: float */
@@ -6049,7 +5842,7 @@ export type Schemas = {
   SwagCustomizedProductsTemplateOptionPrice: {
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     /** Format: float */
     percentageSurcharge?: number;
     price?: GenericRecord;
@@ -6068,7 +5861,7 @@ export type Schemas = {
     createdAt: string;
     default?: boolean;
     displayName: string;
-    id?: string;
+    id: string;
     itemNumber?: string;
     oneTimeSurcharge?: boolean;
     /** Format: float */
@@ -6103,7 +5896,7 @@ export type Schemas = {
     createdAt: string;
     default?: boolean;
     displayName: string;
-    id?: string;
+    id: string;
     itemNumber?: string;
     oneTimeSurcharge?: boolean;
     /** Format: float */
@@ -6193,7 +5986,7 @@ export type Schemas = {
   SwagCustomizedProductsTemplateOptionValuePrice: {
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     /** Format: float */
     percentageSurcharge?: number;
     price?: GenericRecord;
@@ -6210,7 +6003,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customerId?: string;
-    id?: string;
+    id: string;
     orderId?: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -6308,17 +6101,37 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  SwagSocialShoppingCustomer: {
+  SwagPaypalTransactionReport: {
     /** Format: date-time */
     createdAt: string;
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
   };
+  SwagPaypalVaultTokenMapping: {
+    /** Format: date-time */
+    createdAt: string;
+    customer?: components["schemas"]["Customer"];
+    customerId: string;
+    id?: string;
+    paymentMethod?: components["schemas"]["PaymentMethod"];
+    paymentMethodId: string;
+    token?: components["schemas"]["SwagPaypalVaultToken"];
+    tokenId: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SwagSocialShoppingCustomer: {
+    /** Format: date-time */
+    createdAt: string;
+    id: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
   SwagSocialShoppingOrder: {
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -6343,7 +6156,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId?: string;
     /** Format: date-time */
@@ -6352,7 +6165,7 @@ export type Schemas = {
   Tag: {
     /** Format: date-time */
     createdAt: string;
-    id?: string;
+    id: string;
     name: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -6361,7 +6174,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     name: string;
     /**
      * Format: int64
@@ -6379,7 +6192,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     name: string;
     /** Format: int64 */
     priority: number;
@@ -6417,7 +6230,7 @@ export type Schemas = {
     customFields?: GenericRecord;
     description?: string;
     helpTexts?: GenericRecord;
-    id?: string;
+    id: string;
     labels?: GenericRecord;
     media?: components["schemas"]["Media"][];
     name: string;
@@ -6435,15 +6248,11 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  ToggleBroadcastModePayload: {
-    /** Status if the mode is toggled to active or inactive */
-    active: boolean;
-  };
   Unit: {
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    id?: string;
+    id: string;
     name: string;
     shortCode: string;
     translated?: {
@@ -6452,16 +6261,6 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
-  };
-  UpdateAttendeeRequestBody: {
-    /** Name of the attendee */
-    attendeeName: string;
-    /** The first time the attendee submit the update form */
-    attendeeSubmitted: boolean;
-    /** The permission for guide cart actions */
-    guideCartPermissionsGranted: boolean;
-    /** Id of the attendee in the video chat tool */
-    videoUserId: string;
   };
   User: {
     /** Format: date-time */
@@ -6633,6 +6432,72 @@ export type Schemas = {
   };
 };
 export type operations = {
+  "api-info get /_info/openapi3.json": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** Type of the api */
+      type?: "jsonapi" | "json";
+    };
+    response: {
+      components?: {
+        callbacks?: GenericRecord;
+        examples?: GenericRecord;
+        headers?: GenericRecord;
+        links?: GenericRecord;
+        parameters?: GenericRecord;
+        pathItems?: GenericRecord;
+        requestBodies?: GenericRecord;
+        responses?: GenericRecord;
+        schemas?: GenericRecord;
+        securitySchemes?: GenericRecord;
+      };
+      externalDocs?: {
+        description?: string;
+        /** Format: uri */
+        url: string;
+      };
+      info: {
+        contact?: {
+          /** Format: email */
+          email?: string;
+          name?: string;
+          /** Format: uri */
+          url?: string;
+        };
+        description?: string;
+        license?: {
+          identifier?: string;
+          name: string;
+          /** Format: uri */
+          url?: string;
+        };
+        summary?: string;
+        /** Format: uri */
+        termsOfService?: string;
+        title: string;
+        version: string;
+      };
+      jsonSchemaDialect?: string;
+      openapi: string;
+      paths?: GenericRecord;
+      security?: GenericRecord[];
+      servers?: {
+        url: string;
+      }[];
+      tags?: {
+        description?: string;
+        externalDocs?: {
+          description?: string;
+          /** Format: uri */
+          url: string;
+        };
+        name: string;
+      }[];
+      webhooks?: GenericRecord;
+    };
+    responseCode: 200;
+  };
   "createCustomerAddress post /account/address": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -6800,11 +6665,6 @@ export type operations = {
       username: string;
     };
     response: {
-      /**
-       * @deprecated
-       * Deprecated since v6.6.0.0. Please retrieve the context token from the response header instead.
-       */
-      contextToken?: string;
       /** Define the URL which browser will be redirected to */
       redirectUrl?: string;
     };
@@ -6814,11 +6674,6 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     response: {
-      /**
-       * @deprecated
-       * Deprecated since v6.6.0.0. Please retrieve the context token from the response header instead.
-       */
-      contextToken?: string;
       /** Define the URL which browser will be redirected to */
       redirectUrl?: string;
     };
@@ -6921,6 +6776,144 @@ export type operations = {
     response: never;
     responseCode: 200;
   };
+  "createShoppingList post /account/shopping-list": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      lineItems?: GenericRecord;
+      /** Shopping list name */
+      name: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "removeShoppingLists delete /account/shopping-list": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Shopping list ids */
+      ids: string[];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readShoppingList post /account/shopping-list/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    response: components["schemas"]["B2bComponentsShoppingList"];
+    responseCode: 200;
+  };
+  "updateShoppingList patch /account/shopping-list/{id}/change-name": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    body: {
+      /** Shopping list name */
+      name: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "duplicateShoppingList post /account/shopping-list/{id}/duplicate": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    body: {
+      /** Shopping list name */
+      name: string;
+    };
+    response: {
+      /** The generated id of the duplicated shopping list */
+      id?: string;
+    };
+    responseCode: 200;
+  };
+  "summaryShoppingList get /account/shopping-list/{id}/summary": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    response: {
+      price?: {
+        /**
+         * Format: float
+         * Net price of the cart
+         */
+        netPrice?: number;
+        /**
+         * Format: float
+         * Price for all line items in the cart
+         */
+        positionPrice?: number;
+        /** Tax calculation for the cart. One of `gross`, `net` or `tax-free` */
+        taxStatus?: string;
+        /**
+         * Format: float
+         * Total price of the cart, including shipping costs, discounts and taxes
+         */
+        totalPrice?: number;
+      };
+    };
+    responseCode: 200;
+  };
+  "addLineItems post /account/shopping-list/line-item/{id}/add": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    body: {
+      lineItems: GenericRecord;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateLineItems patch /account/shopping-list/line-item/{id}/change-quantity": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list line item to be fetched */
+      id: string;
+    };
+    body: {
+      /** new line item quantity */
+      quantity: number;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "removeLineItems delete /account/shopping-list/line-item/remove": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Line items ids */
+      ids: string[];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readShoppingLists post /account/shopping-lists": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["B2bComponentsShoppingList"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "generateJWTAppSystemAppServer post /app-system/{name}/generate-token": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -6935,6 +6928,103 @@ export type operations = {
       shopId?: string;
       token?: string;
     };
+    responseCode: 200;
+  };
+  "readApprovalRules get /approval-rule": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** Page number */
+      p?: number;
+      /** Number of items per page */
+      limit?: number;
+    };
+    response: {
+      elements?: components["schemas"]["ApprovalRule"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "listApprovalRules post /approval-rule": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query: {
+      /** Page number */
+      p?: number;
+      /** Number of items per page */
+      limit?: number;
+    };
+    body: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["ApprovalRule"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readApprovalRule get /approval-rule/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the approval rule to be fetched */
+      id: string;
+    };
+    response: components["schemas"]["ApprovalRule"];
+    responseCode: 200;
+  };
+  "updateApprovalRule patch /approval-rule/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the approval rule to be updated */
+      id: string;
+    };
+    body: {
+      /** Active status of the approval rule */
+      active?: boolean;
+      /** ID of the role that can approve the rule */
+      approvalRuleApprove?: string;
+      /** List of rules */
+      approvalRuleCondition?: {
+        /** Type of the rule */
+        type?: string;
+        /** Value */
+        value?: string;
+      };
+      /** Name of the approval rule */
+      approvalRuleName?: string;
+      /** ID of the role that is affected by the rule */
+      approvalRuleRole?: string;
+      /** Description of the approval rule */
+      description?: string;
+      /** Priority of the approval rule */
+      priority?: number;
+    };
+    response: components["schemas"]["ApprovalRule"];
+    responseCode: 200;
+  };
+  "createApprovalRule post /approval-rule/create": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Active status of the approval rule */
+      active?: boolean;
+      /** ID of the role that can approve the rule */
+      approvalRuleApprove?: string;
+      /** List of rules */
+      approvalRuleCondition?: {
+        /** Type of the rule */
+        type?: string;
+        /** Value */
+        value?: string;
+      };
+      /** Name of the approval rule */
+      approvalRuleName?: string;
+      /** ID of the role that is affected by the rule */
+      approvalRuleRole?: string;
+      /** Description of the approval rule */
+      description?: string;
+      /** Priority of the approval rule */
+      priority?: number;
+    };
+    response: components["schemas"]["ApprovalRule"];
     responseCode: 200;
   };
   "readCategoryList post /category": {
@@ -7093,125 +7183,33 @@ export type operations = {
     response: components["schemas"]["SalesChannelContext"];
     responseCode: 200;
   };
-  "updateContext patch /context":
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        body: {
-          /** Billing Address */
-          billingAddressId?: string;
-          /** Country */
-          countryId?: string;
-          /** Country State */
-          countryStateId?: string;
-          /** Currency */
-          currencyId?: string;
-          /** Language */
-          languageId?: string;
-          /** Payment Method */
-          paymentMethodId?: string;
-          /** Shipping Address */
-          shippingAddressId?: string;
-          /** Shipping Method */
-          shippingMethodId?: string;
-        };
-        response: {
-          /**
-           * @deprecated
-           * Deprecated since v6.6.0.0. Please retrieve the context token from the response header instead.
-           */
-          contextToken?: string;
-          /** Define the URL which browser will be redirected to */
-          redirectUrl?: string;
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType?: "application/json";
-        accept?: "application/json";
-        body: {
-          /** Billing Address */
-          billingAddressId?: string;
-          /** Country */
-          countryId?: string;
-          /** Country State */
-          countryStateId?: string;
-          /** Currency */
-          currencyId?: string;
-          /** Language */
-          languageId?: string;
-          /** Payment Method */
-          paymentMethodId?: string;
-          /** Shipping Address */
-          shippingAddressId?: string;
-          /** Shipping Method */
-          shippingMethodId?: string;
-        };
-        response: components["schemas"]["CrossSellingElementCollection"];
-        responseCode: 201;
-      }
-    | {
-        contentType?: "application/json";
-        accept: "application/xml";
-        body: {
-          /** Billing Address */
-          billingAddressId?: string;
-          /** Country */
-          countryId?: string;
-          /** Country State */
-          countryStateId?: string;
-          /** Currency */
-          currencyId?: string;
-          /** Language */
-          languageId?: string;
-          /** Payment Method */
-          paymentMethodId?: string;
-          /** Shipping Address */
-          shippingAddressId?: string;
-          /** Shipping Method */
-          shippingMethodId?: string;
-        };
-        response: components["schemas"]["PaymentMethod"];
-        responseCode: 201;
-      }
-    | {
-        contentType: "application/xml";
-        accept?: "application/json";
-        body: {
-          /** Currency */
-          currencyXmlId?: string;
-        };
-        response: {
-          /**
-           * @deprecated
-           * Deprecated since v6.6.0.0. Please retrieve the context token from the response header instead.
-           */
-          contextToken?: string;
-          /** Define the URL which browser will be redirected to */
-          redirectUrl?: string;
-        };
-        responseCode: 200;
-      }
-    | {
-        contentType: "application/xml";
-        accept?: "application/json";
-        body: {
-          /** Currency */
-          currencyXmlId?: string;
-        };
-        response: components["schemas"]["CrossSellingElementCollection"];
-        responseCode: 201;
-      }
-    | {
-        contentType: "application/xml";
-        accept: "application/xml";
-        body: {
-          /** Currency */
-          currencyXmlId?: string;
-        };
-        response: components["schemas"]["PaymentMethod"];
-        responseCode: 201;
-      };
+  "updateContext patch /context": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Billing Address */
+      billingAddressId?: string;
+      /** Country */
+      countryId?: string;
+      /** Country State */
+      countryStateId?: string;
+      /** Currency */
+      currencyId?: string;
+      /** Language */
+      languageId?: string;
+      /** Payment Method */
+      paymentMethodId?: string;
+      /** Shipping Address */
+      shippingAddressId?: string;
+      /** Shipping Method */
+      shippingMethodId?: string;
+    };
+    response: {
+      /** Define the URL which browser will be redirected to */
+      redirectUrl?: string;
+    };
+    responseCode: 200;
+  };
   "readCountry post /country": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -7300,166 +7298,83 @@ export type operations = {
     response: components["schemas"]["Document"];
     responseCode: 200;
   };
-  "guidedShoppingLoadAllProductIds post /guided-shopping/all-product-ids": {
+  "readEmployees post /employee": {
     contentType?: "application/json";
     accept?: "application/json";
     body: components["schemas"]["Criteria"];
     response: {
-      ids?: string[];
-      total?: number;
-    };
-    responseCode: 200;
-  };
-  "attendeeRespondInvitation patch /guided-shopping/appointment/{appointmentId}/attendee/respond-invitation": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** The appointment id you respond to */
-      appointmentId: string;
-    };
-    body: {
-      /**
-       * The status you respond to
-       * @enum {string}
-       */
-      invitationStatus?: "accepted" | "maybe" | "declined";
-      /** The token will be attached to the invitation response link in the invitation mail */
-      token: string;
-    };
-    response: components["schemas"]["AttendeeRespondInvitationResponse"];
-    responseCode: 200;
-  };
-  "getCalendarFile post /guided-shopping/appointment/{appointmentId}/download-ics": {
-    contentType?: "application/json";
-    accept: "text/calendar";
-    pathParams: {
-      /** The appointment id you want to get the calendar file */
-      appointmentId: string;
-    };
-    body: {
-      /** The token will be attached to the invitation response link in the invitation mail */
-      token: string;
-    };
-    response: unknown;
-    responseCode: 200;
-  };
-  "joinAppointmentAsClient post /guided-shopping/appointment/{presentationPath}/join-as-client": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Presentation path */
-      presentationPath: string;
-    };
-    response: components["schemas"]["JoinAppointmentResponse"];
-    responseCode: 200;
-  };
-  "updateAttendee patch /guided-shopping/appointment/attendee": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["UpdateAttendeeRequestBody"];
-    response: never;
-    responseCode: 204;
-  };
-  "getAttendeeProductCollection get /guided-shopping/appointment/collection/{alias}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** The alias of collection you want to get */
-      alias: "liked" | "disliked";
-    };
-    response: components["schemas"]["AttendeeProductCollectionResponse"];
-    responseCode: 200;
-  };
-  "attendeeProductCollectionAddProduct post /guided-shopping/appointment/collection/{alias}/{productId}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** The alias of collection you want to add */
-      alias: "liked" | "disliked";
-      /** The product id you want to add */
-      productId: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "attendeeProductCollectionRemoveProduct delete /guided-shopping/appointment/collection/{alias}/{productId}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** The alias of collection you want to remove */
-      alias: "liked" | "disliked";
-      /** The product id you want to remove */
-      productId: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "getLastSeenProducts get /guided-shopping/appointment/collection/last-seen": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    response: components["schemas"]["AttendeeProductCollectionLastSeenResponse"];
-    responseCode: 200;
-  };
-  "getPresentationStructure get /guided-shopping/appointment/presentation": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    response: components["schemas"]["PresentationStructure"];
-    responseCode: 200;
-  };
-  "getSlideData get /guided-shopping/appointment/presentation/{presentationCmsPageId}/slide/{sectionId}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Presentation CMS page id for which the data is requested */
-      presentationCmsPageId: string;
-      /** CMS section id for which the data is requested */
-      sectionId: string;
-    };
-    response: components["schemas"]["PresentationSlideData"];
-    responseCode: 200;
-  };
-  "getClientPresentationState get /guided-shopping/appointment/presentation/state": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    response: components["schemas"]["ClientPresentationStateResponse"];
-    responseCode: 200;
-  };
-  "addInteraction post /guided-shopping/interaction": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["CreateInteractionRequestBody"];
-    response: never;
-    responseCode: 200;
-  };
-  "guidedShoppingProductListing post /guided-shopping/product-listing": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["Criteria"] & {
-      /**
-       * Load interaction (like & dislike) to product of attendee. It will be added into product extensions named interaction
-       * @default false
-       */
-      interaction?: boolean;
-    };
-    response: {
-      elements?: components["schemas"]["Product"][];
+      elements?: components["schemas"]["B2bEmployee"][];
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
-  "resolveQuickviewPage get /guided-shopping/quickview/{productId}/{cmsPageLayoutId}": {
+  "readEmployee post /employee/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
     pathParams: {
-      /** The product id */
-      productId: string;
-      /** The cms page id using as product quick view */
-      cmsPageLayoutId: string;
+      /** Identifier of the employee to be fetched */
+      id: string;
     };
-    response: {
-      cmsPage?: components["schemas"]["CmsPage"];
-      configurator?: components["schemas"]["PropertyGroup"][];
-      product?: components["schemas"]["Product"];
+    response: components["schemas"]["B2bEmployee"];
+    responseCode: 200;
+  };
+  "deleteEmployee delete /employee/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be deleted */
+      id: string;
     };
+    response: never;
+    responseCode: 204;
+  };
+  "updateEmployee patch /employee/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be updated */
+      id: string;
+    };
+    body: {
+      /** New email of the employee */
+      email?: string;
+      /** New first name of the employee */
+      firstName?: string;
+      /** New last name of the employee */
+      lastName?: string;
+      /** New id of the role of the employee */
+      roleId?: string;
+    };
+    response: components["schemas"]["B2bEmployee"];
+    responseCode: 200;
+  };
+  "createEmployee post /employee/create": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Email of the new employee */
+      email: string;
+      /** First name of the new employee */
+      firstName: string;
+      /** Last name of the new employee */
+      lastName: string;
+      /** Id of the role of the new employee */
+      roleId?: string;
+    };
+    response: components["schemas"]["B2bEmployee"];
+    responseCode: 200;
+  };
+  "reinviteEmployee post /employee/reinvite/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the employee to be reinvited */
+      id: string;
+    };
+    body: {
+      /** URL of the storefront domain */
+      storefrontUrl?: string;
+    };
+    response: components["schemas"]["B2bEmployee"];
     responseCode: 200;
   };
   "handlePaymentMethod post /handle-payment": {
@@ -7500,6 +7415,16 @@ export type operations = {
     response: {
       elements: components["schemas"]["Language"][]; // TODO: [OpenAPI][readLanguages] add elements property as required
     } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readMedia post /media": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Identifier (UUID) of the media entity to be fetched. */
+      ids: string[];
+    };
+    response: components["schemas"]["Media"][];
     responseCode: 200;
   };
   "readNavigation post /navigation/{activeId}/{rootId}": {
@@ -7633,6 +7558,68 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "fetchPendingOrder post /pending-order/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the pending order to be fetched */
+      id: string;
+    };
+    response: components["schemas"]["PendingOrder"];
+    responseCode: 200;
+  };
+  "approvePendingOrder post /pending-order/{id}/approve": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the pending order to be approved */
+      id: string;
+    };
+    body: {
+      /** Message content */
+      comment?: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "createOrderFromPendingOrder post /pending-order/{id}/checkout/order": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the pending order to be used to create a order */
+      id: string;
+    };
+    body: {
+      /** Message content */
+      customerComment?: string;
+    };
+    response: components["schemas"]["Order"];
+    responseCode: 200;
+  };
+  "declinePendingOrder post /pending-order/{id}/decline": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the pending order to be declined */
+      id: string;
+    };
+    body: {
+      /** Message content */
+      comment?: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "requestOrderApproval post /pending-order/request": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Message content */
+      comment?: string;
+    };
+    response: components["schemas"]["PendingOrder"];
+    responseCode: 200;
+  };
   "readProduct post /product": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -7745,6 +7732,211 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
+  "searchByImageSearchTerm post /product/image-upload-search/search-term": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /**
+       * Format: binary
+       * Base-64 encoded image
+       */
+      file?: Blob;
+    };
+    response: components["schemas"]["SearchByImageSearchTermResponse"];
+    responseCode: 200;
+  };
+  "naturalLanguageSearchTerm post /product/natural-language/search-term": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /**
+       * Natural language query
+       * @example I'm looking for a present for my wife
+       */
+      query?: string;
+    };
+    response: components["schemas"]["NaturalLanguageSearchTermResponse"];
+    responseCode: 200;
+  };
+  "switchPaymentOrShippingMethod post /quote/{id}/configure": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be reinvited */
+      id: string;
+    };
+    body: {
+      /** Id of the payment method */
+      paymentMethodId?: string;
+      /** Id of the shipping method */
+      shippingMethodId?: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "declineQuote post /quote/{id}/decline": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be reinvited */
+      id: string;
+    };
+    body: {
+      /** Message content */
+      comment?: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "requestChangeQuote post /quote/{id}/request-change": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be reinvited */
+      id: string;
+    };
+    body: {
+      /** Message content */
+      comment?: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readQuote post /quote/detail/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be fetched */
+      id: string;
+    };
+    response: components["schemas"]["Quote"];
+    responseCode: 200;
+  };
+  "createOrderFromQuote post /quote/order/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote to be reinvited */
+      id: string;
+    };
+    body: {
+      /** Message content */
+      customerComment?: string;
+    };
+    response: components["schemas"]["Order"];
+    responseCode: 200;
+  };
+  "requestQuote post /quote/request": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Message content */
+      comment?: string;
+    };
+    response: components["schemas"]["Quote"];
+    responseCode: 200;
+  };
+  "readQuotes post /quotes": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["Quote"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readRoles get /role": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["B2bComponentsRole"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readRolesPOST post /role": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["B2bComponentsRole"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "readRole get /role/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the role to be fetched */
+      id: string;
+    };
+    response: components["schemas"]["B2bComponentsRole"];
+    responseCode: 200;
+  };
+  "deleteRole delete /role/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the role to be fetched */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateRole patch /role/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the role to be updated */
+      id: string;
+    };
+    body: {
+      /** Ability to set the role as default */
+      isDefaultRole?: boolean;
+      /** New name of the role */
+      name?: string;
+      /** New permissions of the role */
+      permissions?: string[];
+    };
+    response: components["schemas"]["B2bComponentsRole"];
+    responseCode: 200;
+  };
+  "createRole post /role/create": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Ability to set the new role as default */
+      isDefaultRole?: boolean;
+      /** Name of the new role */
+      name?: string;
+      /** Permissions of the new role */
+      permissions?: string[];
+    };
+    response: components["schemas"]["B2bComponentsRole"];
+    responseCode: 200;
+  };
+  "updateDefaultRoleId post /role/default": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Id of the roleId to be set as default */
+      id?: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readPermissions get /role/permissions": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      elements?: {
+        permissionDependencies?: string[];
+        permissionGroupName?: string;
+        permissionName?: string;
+      }[];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readSalutation post /salutation": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -7807,453 +7999,40 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "addShoppingListsToCart post /shopping-lists/add-to-cart": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Shopping list ids */
+      ids: string[];
+    };
+    response: never;
+    responseCode: 204;
+  };
   "readSitemap get /sitemap": {
     contentType?: "application/json";
     accept?: "application/json";
     response: components["schemas"]["Sitemap"][];
     responseCode: 200;
   };
-  "readApprovalRules get /store-api/approval-rule": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    query: {
-      /** Page number */
-      p?: number;
-      /** Number of items per page */
-      limit?: number;
-    };
-    response: {
-      elements?: components["schemas"]["ApprovalRule"][];
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
-  };
-  "listApprovalRules post /store-api/approval-rule": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    query: {
-      /** Page number */
-      p?: number;
-      /** Number of items per page */
-      limit?: number;
-    };
-    body: components["schemas"]["Criteria"];
-    response: {
-      elements?: components["schemas"]["ApprovalRule"][];
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
-  };
-  "readApprovalRule get /store-api/approval-rule/{id}": {
+  "auth post /sso/auth/{providerId}": {
     contentType?: "application/json";
     accept?: "application/json";
     pathParams: {
-      /** Identifier of the approval rule to be fetched */
-      id: string;
+      /** Identifier of the SSO provider used to authenticate */
+      providerId: string;
     };
-    response: components["schemas"]["ApprovalRule"];
-    responseCode: 200;
-  };
-  "updateApprovalRule patch /store-api/approval-rule/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the approval rule to be updated */
-      id: string;
-    };
-    body: {
-      /** Active status of the approval rule */
-      active?: boolean;
-      /** ID of the role that can approve the rule */
-      approvalRuleApprove?: string;
-      /** List of rules */
-      approvalRuleCondition?: {
-        /** Type of the rule */
-        type?: string;
-        /** Value */
-        value?: string;
-      };
-      /** Name of the approval rule */
-      approvalRuleName?: string;
-      /** ID of the role that is affected by the rule */
-      approvalRuleRole?: string;
-      /** Description of the approval rule */
-      description?: string;
-      /** Priority of the approval rule */
-      priority?: number;
-    };
-    response: components["schemas"]["ApprovalRule"];
-    responseCode: 200;
-  };
-  "createApprovalRule post /store-api/approval-rule/create": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** Active status of the approval rule */
-      active?: boolean;
-      /** ID of the role that can approve the rule */
-      approvalRuleApprove?: string;
-      /** List of rules */
-      approvalRuleCondition?: {
-        /** Type of the rule */
-        type?: string;
-        /** Value */
-        value?: string;
-      };
-      /** Name of the approval rule */
-      approvalRuleName?: string;
-      /** ID of the role that is affected by the rule */
-      approvalRuleRole?: string;
-      /** Description of the approval rule */
-      description?: string;
-      /** Priority of the approval rule */
-      priority?: number;
-    };
-    response: components["schemas"]["ApprovalRule"];
-    responseCode: 200;
-  };
-  "readEmployees post /store-api/employee": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["Criteria"];
-    response: {
-      elements?: components["schemas"]["B2bEmployee"][];
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
-  };
-  "readEmployee post /store-api/employee/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the employee to be fetched */
-      id: string;
-    };
-    response: components["schemas"]["B2bEmployee"];
-    responseCode: 200;
-  };
-  "deleteEmployee delete /store-api/employee/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the employee to be deleted */
-      id: string;
-    };
-    response: never;
+    response: components["schemas"]["SuccessResponse"];
     responseCode: 204;
   };
-  "updateEmployee patch /store-api/employee/{id}": {
+  "redirect post /sso/redirect/{providerId}": {
     contentType?: "application/json";
     accept?: "application/json";
     pathParams: {
-      /** Identifier of the employee to be updated */
-      id: string;
+      /** Identifier of the SSO provider used to authenticate */
+      providerId: string;
     };
-    body: {
-      /** New email of the employee */
-      email?: string;
-      /** New first name of the employee */
-      firstName?: string;
-      /** New last name of the employee */
-      lastName?: string;
-      /** New id of the role of the employee */
-      roleId?: string;
-    };
-    response: components["schemas"]["B2bEmployee"];
-    responseCode: 200;
-  };
-  "createEmployee post /store-api/employee/create": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** Email of the new employee */
-      email?: string;
-      /** First name of the new employee */
-      firstName?: string;
-      /** Last name of the new employee */
-      lastName?: string;
-      /** Id of the role of the new employee */
-      roleId?: string;
-    };
-    response: components["schemas"]["B2bEmployee"];
-    responseCode: 200;
-  };
-  "reinviteEmployee post /store-api/employee/reinvite/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the employee to be reinvited */
-      id: string;
-    };
-    body: {
-      /** URL of the storefront domain */
-      storefrontUrl?: string;
-    };
-    response: components["schemas"]["B2bEmployee"];
-    responseCode: 200;
-  };
-  "fetchPendingOrder post /store-api/pending-order/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the pending order to be fetched */
-      id: string;
-    };
-    response: components["schemas"]["PendingOrder"];
-    responseCode: 200;
-  };
-  "approvePendingOrder post /store-api/pending-order/{id}/approve": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the pending order to be approved */
-      id: string;
-    };
-    body: {
-      /** Message content */
-      comment?: string;
-    };
-    response: never;
+    response: components["schemas"]["SuccessResponse"];
     responseCode: 204;
-  };
-  "createOrderFromPendingOrder post /store-api/pending-order/{id}/checkout/order": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the pending order to be used to create a order */
-      id: string;
-    };
-    body: {
-      /** Message content */
-      customerComment?: string;
-    };
-    response: components["schemas"]["Order"];
-    responseCode: 200;
-  };
-  "declinePendingOrder post /store-api/pending-order/{id}/decline": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the pending order to be declined */
-      id: string;
-    };
-    body: {
-      /** Message content */
-      comment?: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "requestOrderApproval post /store-api/pending-order/request": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** Message content */
-      comment?: string;
-    };
-    response: components["schemas"]["PendingOrder"];
-    responseCode: 200;
-  };
-  "searchByImageSearchTerm post /store-api/product/image-upload-search/search-term": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /**
-       * Format: binary
-       * Base-64 encoded image
-       */
-      file?: Blob;
-    };
-    response: components["schemas"]["SearchByImageSearchTermResponse"];
-    responseCode: 200;
-  };
-  "naturalLanguageSearchTerm post /store-api/product/natural-language/search-term": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /**
-       * Natural language query
-       * @example I'm looking for a present for my wife
-       */
-      query?: string;
-    };
-    response: components["schemas"]["NaturalLanguageSearchTermResponse"];
-    responseCode: 200;
-  };
-  "switchPaymentOrShippingMethod post /store-api/quote/{id}/configure": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the quote to be reinvited */
-      id: string;
-    };
-    body: {
-      /** Id of the payment method */
-      paymentMethodId?: string;
-      /** Id of the shipping method */
-      shippingMethodId?: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "declineQuote post /store-api/quote/{id}/decline": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the quote to be reinvited */
-      id: string;
-    };
-    body: {
-      /** Message content */
-      comment?: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "requestChangeQuote post /store-api/quote/{id}/request-change": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the quote to be reinvited */
-      id: string;
-    };
-    body: {
-      /** Message content */
-      comment?: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "readQuote post /store-api/quote/detail/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the quote to be fetched */
-      id: string;
-    };
-    response: components["schemas"]["Quote"];
-    responseCode: 200;
-  };
-  "createOrderFromQuote post /store-api/quote/order/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the quote to be reinvited */
-      id: string;
-    };
-    body: {
-      /** Message content */
-      customerComment?: string;
-    };
-    response: components["schemas"]["Order"];
-    responseCode: 200;
-  };
-  "requestQuote post /store-api/quote/request": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** Message content */
-      comment?: string;
-    };
-    response: components["schemas"]["Quote"];
-    responseCode: 200;
-  };
-  "readQuotes post /store-api/quotes": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["Criteria"];
-    response: {
-      elements?: components["schemas"]["Quote"][];
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
-  };
-  "readRoles get /store-api/role": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["Criteria"];
-    response: {
-      elements?: components["schemas"]["B2bComponentsRole"][];
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
-  };
-  "readRolesPOST post /store-api/role": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["Criteria"];
-    response: {
-      elements?: components["schemas"]["B2bComponentsRole"][];
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
-  };
-  "readRole get /store-api/role/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the role to be fetched */
-      id: string;
-    };
-    response: components["schemas"]["B2bComponentsRole"];
-    responseCode: 200;
-  };
-  "deleteRole delete /store-api/role/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the role to be fetched */
-      id: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "updateRole patch /store-api/role/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the role to be updated */
-      id: string;
-    };
-    body: {
-      /** Ability to set the role as default */
-      isDefaultRole?: boolean;
-      /** New name of the role */
-      name?: string;
-      /** New permissions of the role */
-      permissions?: string[];
-    };
-    response: components["schemas"]["B2bComponentsRole"];
-    responseCode: 200;
-  };
-  "createRole post /store-api/role/create": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** Ability to set the new role as default */
-      isDefaultRole?: boolean;
-      /** Name of the new role */
-      name?: string;
-      /** Permissions of the new role */
-      permissions?: string[];
-    };
-    response: components["schemas"]["B2bComponentsRole"];
-    responseCode: 200;
-  };
-  "updateDefaultRoleId post /store-api/role/default": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** Id of the roleId to be set as default */
-      id?: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "readPermissions get /store-api/role/permissions": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    response: {
-      elements?: {
-        permissionDependencies?: string[];
-        permissionGroupName?: string;
-        permissionName?: string;
-      }[];
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
   };
 };

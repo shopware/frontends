@@ -2,12 +2,9 @@
  * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
  *
- * Shopware API version: 6.5.8.0
+ * Shopware API version: 6.6.0.0
  *
  */
-
-/** WithRequired type helpers */
-type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
 /** OneOf type helpers */
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
@@ -29,6 +26,13 @@ type GenericRecord =
   | { [key: string]: GenericRecord };
 
 export type paths = {
+  "/_info/openapi3.json": {
+    /**
+     * Get OpenAPI Specification
+     * Get information about the store API in OpenAPI format.
+     */
+    get: operations["api-info"];
+  };
   "/account/address": {
     /**
      * Create a new address for a customer
@@ -180,12 +184,111 @@ export type paths = {
      */
     post: operations["registerConfirm"];
   };
+  "/account/shopping-list": {
+    /**
+     * Create new shopping list
+     * This route is used to create a new shopping list from the store
+     */
+    post: operations["createShoppingList"];
+    /**
+     * Delete shopping lists
+     * This route is used to delete shopping lists
+     */
+    delete: operations["removeShoppingLists"];
+  };
+  "/account/shopping-list/{id}": {
+    /**
+     * Load one shopping list
+     * This route is used to load one shopping list
+     */
+    post: operations["readShoppingList"];
+  };
+  "/account/shopping-list/{id}/change-name": {
+    /**
+     * Update shopping list name
+     * This route is used to update shopping list name
+     */
+    patch: operations["updateShoppingList"];
+  };
+  "/account/shopping-list/{id}/duplicate": {
+    /**
+     * Duplicate new shopping list
+     * This route is used to duplicate a new shopping list from the store
+     */
+    post: operations["duplicateShoppingList"];
+  };
+  "/account/shopping-list/{id}/summary": {
+    /**
+     * Price summary for shopping list
+     * This route is used to get a price summary for shopping list
+     */
+    get: operations["summaryShoppingList"];
+  };
+  "/account/shopping-list/line-item/{id}/add": {
+    /**
+     * Add more product to shopping list
+     * This route is used to add more products to shopping list
+     */
+    post: operations["addLineItems"];
+  };
+  "/account/shopping-list/line-item/{id}/change-quantity": {
+    /**
+     * Update shopping list line item quantity
+     * This route is used to update shopping list line item quantity
+     */
+    patch: operations["updateLineItems"];
+  };
+  "/account/shopping-list/line-item/remove": {
+    /**
+     * Delete shopping list line items
+     * This route is used to delete shopping list line items
+     */
+    delete: operations["removeLineItems"];
+  };
+  "/account/shopping-lists": {
+    /**
+     * Load shopping lists
+     * This route is used to load all shopping lists
+     */
+    post: operations["readShoppingLists"];
+  };
   "/app-system/{name}/generate-token": {
     /**
      * Generate JWT token for app system backend
      * Generate JWT token for authenticated communication with the app server
      */
     post: operations["generateJWTAppSystemAppServer"];
+  };
+  "/approval-rule": {
+    /**
+     * Fetch a list of approval rules
+     * This route is used to load approval rules
+     */
+    get: operations["readApprovalRules"];
+    /**
+     * List all approval rules
+     * This route is used to list all approval rules from the store
+     */
+    post: operations["listApprovalRules"];
+  };
+  "/approval-rule/{id}": {
+    /**
+     * Fetch one approval rule by id
+     * This route is used to fetch a approval rule from the store by id
+     */
+    get: operations["readApprovalRule"];
+    /**
+     * Update a approval rule by id
+     * This route is used to update a approval rule from the store by id
+     */
+    patch: operations["updateApprovalRule"];
+  };
+  "/approval-rule/create": {
+    /**
+     * Create a new approval rule
+     * This route is used to create a new approval rule
+     */
+    post: operations["createApprovalRule"];
   };
   "/category": {
     /**
@@ -366,108 +469,43 @@ export type paths = {
      */
     post: operations["download"];
   };
-  "/guided-shopping/all-product-ids": {
+  "/employee": {
     /**
-     * Fetch product ids by criteria
-     * Fetches product ids for a given criteria.
+     * Fetch a list of employees
+     * This route is used to load employees
      */
-    post: operations["guidedShoppingLoadAllProductIds"];
+    post: operations["readEmployees"];
   };
-  "/guided-shopping/appointment/{appointmentId}/attendee/respond-invitation": {
+  "/employee/{id}": {
     /**
-     * Respond the appointment invitation
-     * Returns the appointment invitation status
+     * Fetch a one employee by id
+     * This route is used to fetch one employee by id
      */
-    patch: operations["attendeeRespondInvitation"];
+    post: operations["readEmployee"];
+    /**
+     * Delete an employee by id
+     * This route is used to delete one employee by id
+     */
+    delete: operations["deleteEmployee"];
+    /**
+     * Update a one employee by id
+     * This route is used to update one employee by id
+     */
+    patch: operations["updateEmployee"];
   };
-  "/guided-shopping/appointment/{appointmentId}/download-ics": {
+  "/employee/create": {
     /**
-     * Get the ics file to import to your calendar
-     * Returns the calendar file
+     * Create a single employee and returns the employee
+     * This route is used to create and return an employee
      */
-    post: operations["getCalendarFile"];
+    post: operations["createEmployee"];
   };
-  "/guided-shopping/appointment/{presentationPath}/join-as-client": {
+  "/employee/reinvite/{id}": {
     /**
-     * Join a meeting as a attendee
-     * Returns the client join appointment response.
+     * Reinvite employee by id
+     * This route is used to reinvite an employee via email by id
      */
-    post: operations["joinAppointmentAsClient"];
-  };
-  "/guided-shopping/appointment/attendee": {
-    /**
-     * Update attendee information
-     * Update attendee information
-     */
-    patch: operations["updateAttendee"];
-  };
-  "/guided-shopping/appointment/collection/{alias}": {
-    /**
-     * Get the product ids for the attendee in product collection with the matching alias
-     * Returns the product ids for the requesting attendee and matching alias
-     */
-    get: operations["getAttendeeProductCollection"];
-  };
-  "/guided-shopping/appointment/collection/{alias}/{productId}": {
-    /**
-     * Add a product to the attendee product list
-     * Add a product with the alias to the product list of the attendee
-     */
-    post: operations["attendeeProductCollectionAddProduct"];
-    /**
-     * Remove a product with the alias from the for the attendee product collection
-     * Removes the product with the matching alias from of the attendee product collection
-     */
-    delete: operations["attendeeProductCollectionRemoveProduct"];
-  };
-  "/guided-shopping/appointment/collection/last-seen": {
-    /**
-     * Get the last seen products for the current attendee
-     * Returns the the last seen products for the requesting client
-     */
-    get: operations["getLastSeenProducts"];
-  };
-  "/guided-shopping/appointment/presentation": {
-    /**
-     * Fetch presentation structure and flat navigation
-     * Resolves the presentation structure and navigation by using the attendeeContext information. There will be NO Slot-Data inside call store-api.guided-shopping.presentation-data for that
-     */
-    get: operations["getPresentationStructure"];
-  };
-  "/guided-shopping/appointment/presentation/{presentationCmsPageId}/slide/{sectionId}": {
-    /**
-     * Fetch resolved data for specific slide
-     * Gives the resolved slot-data for the given slide index (slot-config)
-     */
-    get: operations["getSlideData"];
-  };
-  "/guided-shopping/appointment/presentation/state": {
-    /**
-     * Get the current presentation state
-     * Returns the presentation state for all and the client
-     */
-    get: operations["getClientPresentationState"];
-  };
-  "/guided-shopping/interaction": {
-    /**
-     * Add a interaction to log
-     * Create a interaction log entry in a specific appointment
-     */
-    post: operations["addInteraction"];
-  };
-  "/guided-shopping/product-listing": {
-    /**
-     * Fetch a product listing by criteria
-     * Fetches a product listing for a given criteria. It also provides filters, sortings and property aggregations, analogous to the /product-listing endpoint.
-     */
-    post: operations["guidedShoppingProductListing"];
-  };
-  "/guided-shopping/quickview/{productId}/{cmsPageLayoutId}": {
-    /**
-     * Fetch a cms page for quickview with product data
-     * Takes a product identifier and returns the preconfigured quickview CMS layout (defined in SwagGuidedShopping.config.quickviewPageId ) hydrated with the product specific data
-     */
-    get: operations["resolveQuickviewPage"];
+    post: operations["reinviteEmployee"];
   };
   "/handle-payment": {
     /**
@@ -495,6 +533,13 @@ export type paths = {
      * Perform a filtered search for languages.
      */
     post: operations["readLanguages"];
+  };
+  "/media": {
+    /**
+     * Fetch and resolve Media Entities
+     * Fetch one or multiple Media Entities with the corresponding Identifier.
+     */
+    post: operations["readMedia"];
   };
   "/navigation/{activeId}/{rootId}": {
     /**
@@ -569,6 +614,41 @@ export type paths = {
     /** Loads all available payment methods */
     post: operations["readPaymentMethod"];
   };
+  "/pending-order/{id}": {
+    /**
+     * Fetch one pending order by id
+     * This route is used to fetch a pending order from the store by id
+     */
+    post: operations["fetchPendingOrder"];
+  };
+  "/pending-order/{id}/approve": {
+    /**
+     * Approve a pending order by id
+     * This route is used to approve a pending order from the store by id
+     */
+    post: operations["approvePendingOrder"];
+  };
+  "/pending-order/{id}/checkout/order": {
+    /**
+     * Create a order from a pending order
+     * This route is used to create a order from a pending order
+     */
+    post: operations["createOrderFromPendingOrder"];
+  };
+  "/pending-order/{id}/decline": {
+    /**
+     * Decline a pending order by id
+     * This route is used to decline a pending order from the store by id
+     */
+    post: operations["declinePendingOrder"];
+  };
+  "/pending-order/request": {
+    /**
+     * Request new order approval
+     * This route is used to request a new order approval
+     */
+    post: operations["requestOrderApproval"];
+  };
   "/product": {
     /**
      * Fetch a list of products
@@ -622,6 +702,123 @@ export type paths = {
      */
     post: operations["readProductReviews"];
   };
+  "/product/image-upload-search/search-term": {
+    /**
+     * Fetch product search terms by uploading an image.
+     * <b>Experimental until v6.7.0</b>
+     *
+     * Fetch product search terms by uploading an image.
+     */
+    post: operations["searchByImageSearchTerm"];
+  };
+  "/product/natural-language/search-term": {
+    /**
+     * Fetch search terms by natural language search query
+     * <b>Experimental until v6.7.0</b>
+     *
+     * Fetch search terms by natural search language query
+     */
+    post: operations["naturalLanguageSearchTerm"];
+  };
+  "/quote/{id}/configure": {
+    /**
+     * Change payment or shipping method
+     * This route is used to change a payment or shipping method when place a order
+     */
+    post: operations["switchPaymentOrShippingMethod"];
+  };
+  "/quote/{id}/decline": {
+    /**
+     * Decline a quote by id
+     * This route is used to decline a quote from the store by id
+     */
+    post: operations["declineQuote"];
+  };
+  "/quote/{id}/request-change": {
+    /**
+     * Request change a quote by id
+     * This route is used to request change a quote from the store by id
+     */
+    post: operations["requestChangeQuote"];
+  };
+  "/quote/detail/{id}": {
+    /**
+     * Fetch a one quote by id
+     * This route is used to fetch one quote by id
+     */
+    post: operations["readQuote"];
+  };
+  "/quote/order/{id}": {
+    /**
+     * Create a order from a quote
+     * This route is used to create a order from a quote
+     */
+    post: operations["createOrderFromQuote"];
+  };
+  "/quote/request": {
+    /**
+     * Request new quote
+     * This route is used to request a new quote from the store
+     */
+    post: operations["requestQuote"];
+  };
+  "/quotes": {
+    /**
+     * Fetch a list of quotes
+     * This route is used to load quotes
+     */
+    post: operations["readQuotes"];
+  };
+  "/role": {
+    /**
+     * Fetch a list of roles
+     * This route is used to load roles
+     */
+    get: operations["readRoles"];
+    /**
+     * Fetch a list of roles
+     * This route is used to load roles
+     */
+    post: operations["readRolesPOST"];
+  };
+  "/role/{id}": {
+    /**
+     * Fetch a one role by id
+     * This route is used to fetch one role by id
+     */
+    get: operations["readRole"];
+    /**
+     * Delete an role by id
+     * This route is used to delete one role by id
+     */
+    delete: operations["deleteRole"];
+    /**
+     * Update a one role by id
+     * This route is used to update one role by id
+     */
+    patch: operations["updateRole"];
+  };
+  "/role/create": {
+    /**
+     * Create a single role and returns the role
+     * This route is used to create and return an role
+     */
+    post: operations["createRole"];
+  };
+  "/role/default": {
+    /**
+     * Sets the default role Id for new employees
+     * This route is used to update the defaultRoleId for new employees
+     */
+    post: operations["updateDefaultRoleId"];
+  };
+  "/role/permissions": {
+    /**
+     * Fetch a available permissions
+     * This route is used to fetch all available permissions
+     */
+    get: operations["readPermissions"];
+  };
   "/salutation": {
     /**
      * Fetch salutations
@@ -661,6 +858,13 @@ export type paths = {
      */
     post: operations["readShippingMethod"];
   };
+  "/shopping-lists/add-to-cart": {
+    /**
+     * Add shopping lists to cart
+     * This route is used to add shopping lists to cart
+     */
+    post: operations["addShoppingListsToCart"];
+  };
   "/sitemap": {
     /**
      * Fetch sitemaps
@@ -668,226 +872,19 @@ export type paths = {
      */
     get: operations["readSitemap"];
   };
-  "/store-api/approval-rule": {
+  "/sso/auth/{providerId}": {
     /**
-     * Fetch a list of approval rules
-     * This route is used to load approval rules
+     * Authenticates via SSO
+     * Authenticates login via a given SSO provider ID
      */
-    get: operations["readApprovalRules"];
-    /**
-     * List all approval rules
-     * This route is used to list all approval rules from the store
-     */
-    post: operations["listApprovalRules"];
+    post: operations["auth"];
   };
-  "/store-api/approval-rule/{id}": {
+  "/sso/redirect/{providerId}": {
     /**
-     * Fetch one approval rule by id
-     * This route is used to fetch a approval rule from the store by id
+     * Redirects after authentication
+     * Redirects after authenticated login via a given SSO provider ID
      */
-    get: operations["readApprovalRule"];
-    /**
-     * Update a approval rule by id
-     * This route is used to update a approval rule from the store by id
-     */
-    patch: operations["updateApprovalRule"];
-  };
-  "/store-api/approval-rule/create": {
-    /**
-     * Create a new approval rule
-     * This route is used to create a new approval rule
-     */
-    post: operations["createApprovalRule"];
-  };
-  "/store-api/employee": {
-    /**
-     * Fetch a list of employees
-     * This route is used to load employees
-     */
-    post: operations["readEmployees"];
-  };
-  "/store-api/employee/{id}": {
-    /**
-     * Fetch a one employee by id
-     * This route is used to fetch one employee by id
-     */
-    post: operations["readEmployee"];
-    /**
-     * Delete an employee by id
-     * This route is used to delete one employee by id
-     */
-    delete: operations["deleteEmployee"];
-    /**
-     * Update a one employee by id
-     * This route is used to update one employee by id
-     */
-    patch: operations["updateEmployee"];
-  };
-  "/store-api/employee/create": {
-    /**
-     * Create a single employee and returns the employee
-     * This route is used to create and return an employee
-     */
-    post: operations["createEmployee"];
-  };
-  "/store-api/employee/reinvite/{id}": {
-    /**
-     * Reinvite employee by id
-     * This route is used to reinvite an employee via email by id
-     */
-    post: operations["reinviteEmployee"];
-  };
-  "/store-api/pending-order/{id}": {
-    /**
-     * Fetch one pending order by id
-     * This route is used to fetch a pending order from the store by id
-     */
-    post: operations["fetchPendingOrder"];
-  };
-  "/store-api/pending-order/{id}/approve": {
-    /**
-     * Approve a pending order by id
-     * This route is used to approve a pending order from the store by id
-     */
-    post: operations["approvePendingOrder"];
-  };
-  "/store-api/pending-order/{id}/checkout/order": {
-    /**
-     * Create a order from a pending order
-     * This route is used to create a order from a pending order
-     */
-    post: operations["createOrderFromPendingOrder"];
-  };
-  "/store-api/pending-order/{id}/decline": {
-    /**
-     * Decline a pending order by id
-     * This route is used to decline a pending order from the store by id
-     */
-    post: operations["declinePendingOrder"];
-  };
-  "/store-api/pending-order/request": {
-    /**
-     * Request new order approval
-     * This route is used to request a new order approval
-     */
-    post: operations["requestOrderApproval"];
-  };
-  "/store-api/product/image-upload-search/search-term": {
-    /**
-     * Fetch product search terms by uploading an image.
-     * <b>Experimental until v6.7.0</b>
-     *
-     * Fetch product search terms by uploading an image.
-     */
-    post: operations["searchByImageSearchTerm"];
-  };
-  "/store-api/product/natural-language/search-term": {
-    /**
-     * Fetch search terms by natural language search query
-     * <b>Experimental until v6.7.0</b>
-     *
-     * Fetch search terms by natural search language query
-     */
-    post: operations["naturalLanguageSearchTerm"];
-  };
-  "/store-api/quote/{id}/configure": {
-    /**
-     * Change payment or shipping method
-     * This route is used to change a payment or shipping method when place a order
-     */
-    post: operations["switchPaymentOrShippingMethod"];
-  };
-  "/store-api/quote/{id}/decline": {
-    /**
-     * Decline a quote by id
-     * This route is used to decline a quote from the store by id
-     */
-    post: operations["declineQuote"];
-  };
-  "/store-api/quote/{id}/request-change": {
-    /**
-     * Request change a quote by id
-     * This route is used to request change a quote from the store by id
-     */
-    post: operations["requestChangeQuote"];
-  };
-  "/store-api/quote/detail/{id}": {
-    /**
-     * Fetch a one quote by id
-     * This route is used to fetch one quote by id
-     */
-    post: operations["readQuote"];
-  };
-  "/store-api/quote/order/{id}": {
-    /**
-     * Create a order from a quote
-     * This route is used to create a order from a quote
-     */
-    post: operations["createOrderFromQuote"];
-  };
-  "/store-api/quote/request": {
-    /**
-     * Request new quote
-     * This route is used to request a new quote from the store
-     */
-    post: operations["requestQuote"];
-  };
-  "/store-api/quotes": {
-    /**
-     * Fetch a list of quotes
-     * This route is used to load quotes
-     */
-    post: operations["readQuotes"];
-  };
-  "/store-api/role": {
-    /**
-     * Fetch a list of roles
-     * This route is used to load roles
-     */
-    get: operations["readRoles"];
-    /**
-     * Fetch a list of roles
-     * This route is used to load roles
-     */
-    post: operations["readRolesPOST"];
-  };
-  "/store-api/role/{id}": {
-    /**
-     * Fetch a one role by id
-     * This route is used to fetch one role by id
-     */
-    get: operations["readRole"];
-    /**
-     * Delete an role by id
-     * This route is used to delete one role by id
-     */
-    delete: operations["deleteRole"];
-    /**
-     * Update a one role by id
-     * This route is used to update one role by id
-     */
-    patch: operations["updateRole"];
-  };
-  "/store-api/role/create": {
-    /**
-     * Create a single role and returns the role
-     * This route is used to create and return an role
-     */
-    post: operations["createRole"];
-  };
-  "/store-api/role/default": {
-    /**
-     * Sets the default role Id for new employees
-     * This route is used to update the defaultRoleId for new employees
-     */
-    post: operations["updateDefaultRoleId"];
-  };
-  "/store-api/role/permissions": {
-    /**
-     * Fetch a available permissions
-     * This route is used to fetch all available permissions
-     */
-    get: operations["readPermissions"];
+    post: operations["redirect"];
   };
 };
 
@@ -895,14 +892,11 @@ export type webhooks = Record<string, never>;
 
 export type components = {
   schemas: {
-    AbstractDynamicPageOpenedPayload: {
-      /** @default true */
-      opened?: boolean;
-      /** The type of the current dynamic page */
-      type: string;
-    };
-    AccountNewsletterRecipientResult: components["schemas"]["Struct"] & {
-      status?: string;
+    AccountNewsletterRecipientResult: {
+      /** @enum {string} */
+      apiAlias: "account_newsletter_recipient";
+      /** @enum {string} */
+      status: "undefined" | "notSet" | "direct" | "optIn" | "optOut";
     };
     /** Added since version: 6.0.0.0 */
     AclRole: {
@@ -1090,63 +1084,6 @@ export type components = {
       updatedAt?: string;
     };
     ArrayStruct: components["schemas"]["Struct"];
-    /**
-     * @example {
-     *   "collection": {
-     *     "lastSeen": [
-     *       "0015b3d83df441e490da7f6880a9c2da",
-     *       "60793d25cbab473f92c405ce0525f3ec"
-     *     ]
-     *   }
-     * }
-     */
-    AttendeeProductCollectionLastSeenResponse: {
-      collection?: {
-        lastSeen?: string[];
-      };
-    };
-    /**
-     * @example {
-     *   "collection": {
-     *     "liked": [
-     *       "0015b3d83df441e490da7f6880a9c2da",
-     *       "60793d25cbab473f92c405ce0525f3ec"
-     *     ]
-     *   }
-     * }
-     */
-    AttendeeProductCollectionResponse: {
-      collection?:
-        | {
-            liked?: string[];
-          }
-        | {
-            disliked?: string[];
-          };
-    };
-    AttendeeRespondInvitationResponse: {
-      /**
-       * The invitation status that client responded to
-       * @enum {string}
-       */
-      answer?: "accepted" | "maybe" | "declined";
-      appointment?: {
-        /**
-         * Format: date-time
-         * The time the client can access the appointment
-         */
-        accessibleFrom?: string;
-        /**
-         * Format: date-time
-         * The time the appointment will be closed, the client can not access
-         */
-        accessibleTo?: string;
-        /** The appointment id */
-        id?: string;
-        /** The appointment status */
-        status?: ("started" | "ended") | null;
-      };
-    };
     /** Members of the attributes object ("attributes") represent information about the resource object in which it's defined. */
     attributes: GenericRecord;
     B2bBusinessPartner: {
@@ -1177,7 +1114,7 @@ export type components = {
       /** Format: float */
       amountTotal?: number;
       approvalRule?: components["schemas"]["B2bComponentsApprovalRule"];
-      approvalRuleId: string;
+      approvalRuleId?: string;
       billingAddress?: components["schemas"]["B2bComponentsPendingOrderAddress"];
       billingAddressId: string;
       country?: components["schemas"]["Country"];
@@ -1188,6 +1125,7 @@ export type components = {
       currencyId: string;
       customer?: components["schemas"]["Customer"];
       customerId: string;
+      customFields?: GenericRecord;
       decidedBy?: components["schemas"]["B2bEmployee"];
       decidedById?: string;
       employee?: components["schemas"]["B2bEmployee"];
@@ -1237,7 +1175,7 @@ export type components = {
       customFields?: GenericRecord;
       department?: string;
       firstName: string;
-      id?: string;
+      id: string;
       lastName: string;
       pendingOrder?: components["schemas"]["B2bComponentsPendingOrder"];
       phoneNumber?: string;
@@ -1253,9 +1191,137 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       name: string;
       permissions?: GenericRecord[];
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    /** Added since version: 6.6.2.0 */
+    B2bComponentsShoppingList: {
+      active?: boolean;
+      /** Format: date-time */
+      createdAt: string;
+      createdById?: string;
+      customer?: components["schemas"]["Customer"];
+      customerId: string;
+      customFields?: GenericRecord;
+      employee?: components["schemas"]["B2bEmployee"];
+      employeeId?: string;
+      id: string;
+      lineItems?: components["schemas"]["B2bComponentsShoppingListLineItem"][];
+      name?: string;
+      price?: GenericRecord;
+      salesChannelId: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      updatedById?: string;
+    };
+    /** Added since version: 6.6.2.0 */
+    B2bComponentsShoppingListJsonApi: components["schemas"]["resource"] & {
+      active?: boolean;
+      /** Format: date-time */
+      createdAt: string;
+      createdById?: string;
+      customerId: string;
+      customFields?: GenericRecord;
+      employeeId?: string;
+      id: string;
+      name?: string;
+      price?: GenericRecord;
+      relationships?: {
+        customer?: {
+          data?: {
+            /** @example 91ec1f9324753048c0096d036a694f86 */
+            id?: string;
+            /** @example customer */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /b2b-components-shopping-list/23cb3bfda723e05b43cb25a427ee5a25/customer
+             */
+            related?: string;
+          };
+        };
+        employee?: {
+          data?: {
+            /** @example fa5473530e4d1a5a1e1eb53d2fedb10c */
+            id?: string;
+            /** @example b2b_employee */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /b2b-components-shopping-list/23cb3bfda723e05b43cb25a427ee5a25/employee
+             */
+            related?: string;
+          };
+        };
+        lineItems?: {
+          data?: {
+            /** @example a042af1aa9f3853fe3cd7dabc065568f */
+            id?: string;
+            /** @example b2b_components_shopping_list_line_item */
+            type?: string;
+          }[];
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /b2b-components-shopping-list/23cb3bfda723e05b43cb25a427ee5a25/lineItems
+             */
+            related?: string;
+          };
+        };
+      };
+      salesChannelId: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      updatedById?: string;
+    };
+    /** Added since version: 6.6.2.0 */
+    B2bComponentsShoppingListLineItem: {
+      /** Format: date-time */
+      createdAt: string;
+      id: string;
+      price?: GenericRecord;
+      product?: components["schemas"]["Product"];
+      productId?: string;
+      productVersionId?: string;
+      /** Format: int64 */
+      quantity: number;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    /** Added since version: 6.6.2.0 */
+    B2bComponentsShoppingListLineItemJsonApi: components["schemas"]["resource"] & {
+      /** Format: date-time */
+      createdAt: string;
+      id: string;
+      price?: GenericRecord;
+      productId?: string;
+      productVersionId?: string;
+      /** Format: int64 */
+      quantity: number;
+      relationships?: {
+        product?: {
+          data?: {
+            /** @example f5bf48aa40cad7891eb709fcf1fde128 */
+            id?: string;
+            /** @example product */
+            type?: string;
+          };
+          links?: {
+            /**
+             * Format: uri-reference
+             * @example /b2b-components-shopping-list-line-item/30d48c8d92682de24e11d3f72c5dd1ea/product
+             */
+            related?: string;
+          };
+        };
+      };
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -1266,7 +1332,7 @@ export type components = {
       customFields?: GenericRecord;
       email: string;
       firstName: string;
-      id?: string;
+      id: string;
       language?: components["schemas"]["Language"];
       languageId: string;
       lastName: string;
@@ -1288,10 +1354,35 @@ export type components = {
       createdAt: string;
       dependencies?: string[];
       group: string;
-      id?: string;
+      id: string;
       name: string;
       /** Format: date-time */
       updatedAt?: string;
+    };
+    /** Represents a product along with detailed information required to display a variant selection. */
+    CalculatedPrice: {
+      /** @enum {string} */
+      apiAlias: "calculated_price";
+      calculatedTaxes: {
+        /** @enum {string} */
+        apiAlias: "cart_tax_calculated";
+        price: number;
+        tax: number;
+        taxRate: number;
+      }[];
+      hasRange: boolean;
+      listPrice: components["schemas"]["ListPrice"] | null;
+      quantity: number;
+      referencePrice: components["schemas"]["ReferencePrice"] | null;
+      regulationPrice: {
+        /** @enum {string} */
+        apiAlias?: "cart_regulation_price";
+        price?: number;
+      } | null;
+      totalPrice: number;
+      unitPrice: number;
+      /** Format: ^[0-9a-f]{32}$ */
+      variantId?: string | null;
     };
     Cart: components["schemas"]["ArrayStruct"] & {
       /** An affiliate tracking code */
@@ -1337,7 +1428,7 @@ export type components = {
         paymentMethodId?: string;
       }[];
     };
-    CartItems: components["schemas"]["ArrayStruct"] & {
+    CartItems: {
       items?: components["schemas"]["LineItem"][];
     };
     /** Added since version: 6.0.0.0 */
@@ -1345,10 +1436,12 @@ export type components = {
       active?: boolean;
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
-      breadcrumb?: readonly GenericRecord[];
+      /** @enum {string} */
+      apiAlias?: "category";
+      breadcrumb: readonly string[];
       /** Format: int64 */
-      childCount?: number;
-      children?: components["schemas"]["Category"][];
+      childCount: number;
+      children: components["schemas"]["Category"][] | null;
       cmsPage?: components["schemas"]["CmsPage"];
       cmsPageId?: string;
       /** Runtime field, cannot be used as part of the criteria. */
@@ -1361,7 +1454,7 @@ export type components = {
       description?: string;
       displayNestedProducts: boolean;
       externalLink?: string;
-      id?: string;
+      id: string;
       internalLink?: string;
       keywords?: string;
       /** Format: int64 */
@@ -1380,9 +1473,10 @@ export type components = {
       productAssignmentType: string;
       seoUrls?: components["schemas"]["SeoUrl"][];
       tags?: components["schemas"]["Tag"][];
-      translated?: {
+      translated: {
         afterCategoryId?: string;
         afterCategoryVersionId?: string;
+        apiAlias?: string;
         cmsPageId?: string;
         cmsPageVersionId?: string;
         customEntityTypeId?: string;
@@ -1432,7 +1526,7 @@ export type components = {
       description?: string;
       displayNestedProducts: boolean;
       externalLink?: string;
-      id?: string;
+      id: string;
       internalLink?: string;
       keywords?: string;
       /** Format: int64 */
@@ -1572,54 +1666,10 @@ export type components = {
        */
       visibleChildCount?: number;
     };
-    /**
-     * @example {
-     *   "stateForAll": {
-     *     "currentGuideProductId": null,
-     *     "lastActiveGuideSection": null,
-     *     "currentPageId": null,
-     *     "currentSectionId": null,
-     *     "currentSlideAlias": 0,
-     *     "currentDynamicPage": null,
-     *     "started": false,
-     *     "running": false,
-     *     "ended": false,
-     *     "startedAt": null,
-     *     "endedAt": null,
-     *     "accessibleFrom": null,
-     *     "accessibleTo": null,
-     *     "appointmentMode": "guided",
-     *     "videoAudioSettings": "both",
-     *     "videoRoomUrl": "",
-     *     "attendeeRestrictionType": "open",
-     *     "productDetailDefaultPageId": "bea211b5099241719830df8026624f7f",
-     *     "quickviewPageId": "182d3f7f988044adbba449b70c8bc472",
-     *     "productListingDefaultPageId": "33e88c7994fa4cf79a1265e5105b93b2",
-     *     "allowUserActionsForGuide": true,
-     *     "broadcastMode": false,
-     *     "extensions": []
-     *   },
-     *   "stateForClients": {
-     *     "videoClientToken": null,
-     *     "hoveredElementId": null,
-     *     "extensions": []
-     *   },
-     *   "stateForMe": {
-     *     "attendeeName": " admin",
-     *     "guideCartPermissionsGranted": false,
-     *     "attendeeSubmittedAt": null,
-     *     "extensions": []
-     *   },
-     *   "apiAlias": "swag_guided_shopping_content_presentation_state_sales_channel_get_get_client_presentation_state_struct"
-     * }
-     */
-    ClientPresentationStateResponse: {
-      stateForAll?: components["schemas"]["StateForAll"];
-      stateForClients?: components["schemas"]["StateForClients"];
-      stateForMe?: components["schemas"]["StateForMe"];
-    };
     /** Added since version: 6.0.0.0 */
     CmsBlock: {
+      /** @enum {string} */
+      apiAlias: "cms_block";
       backgroundColor?: string;
       backgroundMedia?: components["schemas"]["Media"];
       backgroundMediaId?: string;
@@ -1671,7 +1721,7 @@ export type components = {
       position: number;
       sectionId: string;
       sectionPosition?: string;
-      slots?: components["schemas"]["CmsSlot"][];
+      slots: components["schemas"]["CmsSlot"][];
       type: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -1684,6 +1734,8 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     CmsPage: {
+      /** @enum {string} */
+      apiAlias: "cms_page";
       config?: {
         backgroundColor?: string;
       };
@@ -1709,13 +1761,14 @@ export type components = {
           };
         };
       };
-      id?: string;
+      id: string;
       landingPages?: components["schemas"]["LandingPage"][];
       name?: string;
       previewMedia?: components["schemas"]["Media"];
       previewMediaId?: string;
-      sections?: components["schemas"]["CmsSection"][];
+      sections: components["schemas"]["CmsSection"][];
       translated?: {
+        apiAlias?: string;
         cssClass?: string;
         entity?: string;
         name?: string;
@@ -1744,11 +1797,13 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     CmsSection: {
+      /** @enum {string} */
+      apiAlias: "cms_section";
       backgroundColor?: string;
       backgroundMedia?: components["schemas"]["Media"];
       backgroundMediaId?: string;
       backgroundMediaMode?: string;
-      blocks?: components["schemas"]["CmsBlock"][];
+      blocks: components["schemas"]["CmsBlock"][];
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
@@ -1840,7 +1895,7 @@ export type components = {
       defaultPostalCodePattern?: string;
       displayStateInRegistration?: boolean;
       forceStateInRegistration?: boolean;
-      id?: string;
+      id: string;
       iso?: string;
       iso3?: string;
       name: string;
@@ -1888,7 +1943,7 @@ export type components = {
       defaultPostalCodePattern?: string;
       displayStateInRegistration?: boolean;
       forceStateInRegistration?: boolean;
-      id?: string;
+      id: string;
       iso?: string;
       iso3?: string;
       name: string;
@@ -1933,7 +1988,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       name: string;
       /** Format: int64 */
       position?: number;
@@ -1953,7 +2008,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       name: string;
       /** Format: int64 */
       position?: number;
@@ -1965,20 +2020,6 @@ export type components = {
       };
       /** Format: date-time */
       updatedAt?: string;
-    };
-    CreateInteractionRequestBody: {
-      /**
-       * The time in seconds how long the interaction should be stored in the database
-       * @default -1
-       */
-      lifeTimeInSeconds?: number;
-      name: components["schemas"]["InteractionName"];
-      payload?: GenericRecord;
-      /**
-       * The time when the interaction was triggered
-       * @default now
-       */
-      triggeredAt?: string;
     };
     /** Search parameters. For more information, see our documentation on [Search Queries](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#structure) */
     Criteria: {
@@ -2026,24 +2067,17 @@ export type components = {
        */
       "total-count-mode"?: "none" | "exact" | "next-pages";
     };
-    CrossSellingElementCollection: {
-      crossSelling?: {
-        active?: boolean;
-        /** Format: int32 */
-        limit?: number;
-        name?: string;
-        /** Format: int32 */
-        position?: number;
-        productId?: string;
-        productStreamId?: string;
-        sortBy?: string;
-        sortDirection?: string;
-        type?: string;
-      };
-      products?: components["schemas"]["Product"][];
+    CrossSellingElement: {
+      /** @enum {string} */
+      apiAlias: "cross_selling_element";
+      crossSelling: components["schemas"]["ProductCrossSelling"];
+      products: components["schemas"]["Product"][];
+      /** Format: uuid */
+      streamId?: string;
       /** Format: int32 */
-      total?: number;
-    }[];
+      total: number;
+    };
+    CrossSellingElementCollection: components["schemas"]["CrossSellingElement"][];
     /** Added since version: 6.0.0.0 */
     Currency: {
       /** Format: date-time */
@@ -2051,16 +2085,16 @@ export type components = {
       customFields?: GenericRecord;
       /** Format: float */
       factor: number;
-      id?: string;
+      id: string;
       isoCode: string;
       /** Runtime field, cannot be used as part of the criteria. */
       isSystemDefault?: boolean;
       itemRounding: {
         /** Format: int64 */
-        decimals?: number;
+        decimals: number;
         /** Format: float */
-        interval?: number;
-        roundForNet?: boolean;
+        interval: number;
+        roundForNet: boolean;
       };
       name: string;
       /** Format: int64 */
@@ -2071,10 +2105,10 @@ export type components = {
       taxFreeFrom?: number;
       totalRounding: {
         /** Format: int64 */
-        decimals?: number;
+        decimals: number;
         /** Format: float */
-        interval?: number;
-        roundForNet?: boolean;
+        interval: number;
+        roundForNet: boolean;
       };
       translated?: {
         isoCode?: string;
@@ -2100,16 +2134,16 @@ export type components = {
       customFields?: GenericRecord;
       /** Format: float */
       factor: number;
-      id?: string;
+      id: string;
       isoCode: string;
       /** Runtime field, cannot be used as part of the criteria. */
       isSystemDefault?: boolean;
       itemRounding: {
         /** Format: int64 */
-        decimals?: number;
+        decimals: number;
         /** Format: float */
-        interval?: number;
-        roundForNet?: boolean;
+        interval: number;
+        roundForNet: boolean;
       };
       name: string;
       /** Format: int64 */
@@ -2120,10 +2154,10 @@ export type components = {
       taxFreeFrom?: number;
       totalRounding: {
         /** Format: int64 */
-        decimals?: number;
+        decimals: number;
         /** Format: float */
-        interval?: number;
-        roundForNet?: boolean;
+        interval: number;
+        roundForNet: boolean;
       };
       translated?: {
         isoCode?: string;
@@ -2194,7 +2228,7 @@ export type components = {
       groupId: string;
       guest?: boolean;
       hash?: string;
-      id?: string;
+      id: string;
       language?: components["schemas"]["Language"];
       languageId: string;
       /** Format: date-time */
@@ -2237,7 +2271,7 @@ export type components = {
       customFields?: GenericRecord;
       department?: string;
       firstName: string;
-      id?: string;
+      id: string;
       lastName: string;
       phoneNumber?: string;
       salutation?: components["schemas"]["Salutation"];
@@ -2254,14 +2288,14 @@ export type components = {
       createdAt: string;
       customFields?: GenericRecord;
       displayGross?: boolean;
-      id?: string;
+      id: string;
       name: string;
       registrationActive?: boolean;
       registrationIntroduction?: string;
       registrationOnlyCompanyRegistration?: boolean;
       registrationSeoMetaDescription?: string;
       registrationTitle?: string;
-      translated?: {
+      translated: {
         name?: string;
         registrationIntroduction?: string;
         registrationSeoMetaDescription?: string;
@@ -2300,7 +2334,7 @@ export type components = {
       createdAt: string;
       customerId: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -2308,7 +2342,7 @@ export type components = {
     CustomerWishlistProduct: {
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       productId: string;
       productVersionId?: string;
       /** Format: date-time */
@@ -2345,7 +2379,7 @@ export type components = {
       customerGroup?: components["schemas"]["CustomerGroup"];
       customerGroupId?: string;
       customerId?: string;
-      id?: string;
+      id: string;
       price: GenericRecord;
       product?: components["schemas"]["Product"];
       productId: string;
@@ -2362,7 +2396,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       /** Format: int64 */
       max: number;
       /** Format: int64 */
@@ -2378,7 +2412,10 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     Document: {
-      config: GenericRecord;
+      config: {
+        name: string;
+        title: string;
+      };
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
@@ -2390,7 +2427,7 @@ export type components = {
       documentType?: components["schemas"]["DocumentType"];
       documentTypeId: string;
       fileType: string;
-      id?: string;
+      id: string;
       order?: components["schemas"]["Order"];
       orderId: string;
       orderVersionId?: string;
@@ -2412,7 +2449,7 @@ export type components = {
       filenamePrefix?: string;
       filenameSuffix?: string;
       global: boolean;
-      id?: string;
+      id: string;
       logo?: components["schemas"]["Media"];
       logoId?: string;
       name: string;
@@ -2425,7 +2462,7 @@ export type components = {
       createdAt: string;
       documentBaseConfigId: string;
       documentTypeId?: string;
-      id?: string;
+      id: string;
       salesChannelId?: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -2435,7 +2472,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       name: string;
       technicalName: string;
       translated?: {
@@ -2445,22 +2482,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    DynamicPageOpenedPayload: components["schemas"]["AbstractDynamicPageOpenedPayload"];
-    DynamicProductListingPageOpenedPayload: WithRequired<
-      {
-        /** Current page position in the pagination */
-        page: number;
-      } & components["schemas"]["AbstractDynamicPageOpenedPayload"],
-      "page"
-    >;
-    DynamicProductPageOpenedPayload: WithRequired<
-      {
-        /** the id from the product which is shown on the dynamic page */
-        productId: string;
-      } & components["schemas"]["AbstractDynamicPageOpenedPayload"],
-      "productId"
-    >;
-    EmptyPayload: Record<string, never>;
     EntitySearchResult: components["schemas"]["ArrayStruct"] & {
       /** Contains aggregated data. A simple example is the determination of the average price from a product search query. */
       aggregations?: GenericRecord[];
@@ -2529,136 +2550,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    GuidedShoppingAppointment: {
-      /** Format: date-time */
-      accessibleFrom?: string;
-      /** Format: date-time */
-      accessibleTo?: string;
-      active?: boolean;
-      attendeeRuleIds?: GenericRecord;
-      /** Format: date-time */
-      createdAt: string;
-      createdById: string;
-      customFields?: GenericRecord;
-      default?: boolean;
-      /** Format: date-time */
-      endedAt?: string;
-      guidedShoppingPresentationVersionId?: string;
-      guideUserId?: string;
-      id?: string;
-      isPreview?: boolean;
-      name: string;
-      presentationId?: string;
-      salesChannelDomainId: string;
-      /** Format: date-time */
-      startedAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-      updatedById?: string;
-      videoAudioSettings?: string;
-      videoChat?: components["schemas"]["GuidedShoppingAppointmentVideoChat"];
-    };
-    GuidedShoppingAppointmentAttendee: {
-      /** Format: date-time */
-      attendeeSubmittedAt?: string;
-      /** Format: date-time */
-      createdAt: string;
-      id?: string;
-      /** Format: date-time */
-      joinedAt?: string;
-      /** Format: date-time */
-      lastActive?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    GuidedShoppingAppointmentVideoChat: {
-      /** Format: date-time */
-      createdAt: string;
-      customFields?: GenericRecord;
-      id?: string;
-      name?: string;
-      startAsBroadcast?: boolean;
-      /** Format: date-time */
-      updatedAt?: string;
-      url?: string;
-    };
-    GuidedShoppingAttendeeProductCollection: {
-      attendeeId: string;
-      /** Format: date-time */
-      createdAt: string;
-      id?: string;
-      productId: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    GuidedShoppingInteraction: {
-      /** Format: date-time */
-      createdAt: string;
-      id?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    GuidedShoppingPresentation: {
-      active?: boolean;
-      appointments?: components["schemas"]["GuidedShoppingAppointment"][];
-      cmsPages?: components["schemas"]["GuidedShoppingPresentationCmsPage"][];
-      /** Format: date-time */
-      createdAt: string;
-      createdById: string;
-      customFields?: GenericRecord;
-      id?: string;
-      name: string;
-      parent?: components["schemas"]["GuidedShoppingPresentation"];
-      parentId?: string;
-      parentVersionId?: string;
-      translated?: {
-        createdById?: string;
-        name?: string;
-        parentId?: string;
-        parentVersionId?: string;
-        updatedById?: string;
-        versionId?: string;
-      };
-      /** Format: date-time */
-      updatedAt?: string;
-      updatedById?: string;
-      versionId?: string;
-    };
-    /** Added since version: 6.0.0.0 */
-    GuidedShoppingPresentationCmsPage: {
-      cmsPage?: components["schemas"]["CmsPage"];
-      cmsPageId: string;
-      cmsPageVersionId?: string;
-      /** Format: date-time */
-      createdAt: string;
-      customFields?: GenericRecord;
-      guidedShoppingPresentationVersionId?: string;
-      id?: string;
-      isInstantListing?: boolean;
-      pickedProductIds?: GenericRecord;
-      /** Format: int64 */
-      position?: number;
-      presentationId: string;
-      productId?: string;
-      productStreamId?: string;
-      productVersionId?: string;
-      title?: string;
-      translated?: {
-        cmsPageId?: string;
-        cmsPageVersionId?: string;
-        guidedShoppingPresentationVersionId?: string;
-        presentationId?: string;
-        productId?: string;
-        productStreamId?: string;
-        productVersionId?: string;
-        title?: string;
-      };
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    GuideHoveredPayload: {
-      $hoveredElementId?: string | null;
-    };
     /** Added since version: 6.0.0.0 */
     ImportExportFile: {
       /** Format: date-time */
@@ -2697,77 +2588,6 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    /**
-     * the name/type of the interaction
-     * @enum {string}
-     */
-    InteractionName:
-      | "product.viewed"
-      | "dynamicPage.opened"
-      | "dynamicProductPage.opened"
-      | "dynamicPage.closed"
-      | "page.viewed"
-      | "attendee.product.collection.liked"
-      | "attendee.product.collection.disliked"
-      | "attendee.product.collection.removed"
-      | "remote.checkout.accepted"
-      | "remote.checkout.declined"
-      | "keep.alive"
-      | "quickview.opened"
-      | "quickview.closed"
-      | "dynamicProductListingPage.opened"
-      | "dynamicProductListingPage.loadedMore"
-      | "remote.checkout.denied"
-      | "guide.hovered"
-      | "broadcastMode.toggled";
-    /**
-     * Includes all data you will need to attend to a appointment.
-     * @example {
-     *   "mercureSubscriberTopics": [
-     *     "gs-guide-actions-2d2c358f1ca04098aacf12873c2eed82",
-     *     "gs-presentation-state-for-client-2d2c358f1ca04098aacf12873c2eed82",
-     *     "gs-presentation-state-for-all-2d2c358f1ca04098aacf12873c2eed82"
-     *   ],
-     *   "mercurePublisherTopic": "gs-client-actions-2d2c358f1ca04098aacf12873c2eed82",
-     *   "JWTMercureSubscriberToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InN1YnNjcmliZSI6WyJncy1ndWlkZS1hY3Rpb25zLTJkMmMzNThmMWNhMDQwOThhYWNmMTI4NzNjMmVlZDgyIiwiZ3MtcHJlc2VudGF0aW9uLXN0YXRlLWZvci1jbGllbnQtMmQyYzM1OGYxY2EwNDA5OGFhY2YxMjg3M2MyZWVkODIiLCJncy1wcmVzZW50YXRpb24tc3RhdGUtZm9yLWFsbC0yZDJjMzU4ZjFjYTA0MDk4YWFjZjEyODczYzJlZWQ4MiJdLCJwdWJsaXNoIjpbXX19.UUkrRCu9PT2FOhkxhWKLo8nUGzwI7l3zqVo74laI-D8",
-     *   "mercureHubPublicUrl": "http://localhost:8081/.well-known/mercure",
-     *   "JWTMercurePublisherToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZXJjdXJlIjp7InN1YnNjcmliZSI6W10sInB1Ymxpc2giOlsiZ3MtY2xpZW50LWFjdGlvbnMtMmQyYzM1OGYxY2EwNDA5OGFhY2YxMjg3M2MyZWVkODIiXX19.g5-_JrB2xdeByr40t7XnnK_qxqOclaY5MKBpTytdFmY",
-     *   "id": "2d2c358f1ca04098aacf12873c2eed82",
-     *   "newContextToken": "VR9yWqI2ovhNpdRFWbbn6Z5Fy4wUmDsm",
-     *   "attendeeId": "b6358241e4ad4a4e99d0f729d21d63be",
-     *   "salesChannelId": "4a791ec7f9ff46b2ad67ae2f562891d3",
-     *   "presentationGuideMode": "guided",
-     *   "isPreview": false,
-     *   "apiAlias": "swag_guided_shopping_content_appointment_struct_appointment_join_struct"
-     * }
-     */
-    JoinAppointmentResponse: {
-      /** The created Id for the attendee */
-      attendeeId?: string;
-      /** The appointment id */
-      id?: string;
-      /** To see if it's a preview appointment */
-      isPreview?: boolean;
-      /** The JWT mercure token to subscribe for updates */
-      JWTMercurePublisherToken?: string | null;
-      /** The JWT mercure token to publish updates */
-      JWTMercureSubscriberToken?: string | null;
-      /** The mercure hub url to connect for subscribing and updating */
-      mercureHubPublicUrl?: string | null;
-      /** The topic to which the attendee/guide can send updates */
-      mercurePublisherTopic?: string | null;
-      /** The topics to which the attendee/guide can subscribe for */
-      mercureSubscriberTopics?: string[];
-      /** The new context token will be used in the header (sw-context-token) for calling the other routes */
-      newContextToken?: string;
-      /**
-       * The type of the appointment
-       * @enum {string}
-       */
-      presentationGuideMode?: "self" | "guided";
-      /** The id of the current sales channel */
-      salesChannelId?: string;
-    };
     /** An object describing the server's implementation */
     jsonapi: {
       meta?: components["schemas"]["meta"];
@@ -2776,13 +2596,15 @@ export type components = {
     /** Added since version: 6.4.0.0 */
     LandingPage: {
       active?: boolean;
+      /** @enum {string} */
+      apiAlias: "landing_page";
       cmsPage?: components["schemas"]["CmsPage"];
       cmsPageId?: string;
       cmsPageVersionId?: string;
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       keywords?: string;
       metaDescription?: string;
       metaTitle?: string;
@@ -2790,6 +2612,7 @@ export type components = {
       seoUrls?: components["schemas"]["SeoUrl"][];
       slotConfig?: GenericRecord;
       translated?: {
+        apiAlias?: string;
         cmsPageId?: string;
         cmsPageVersionId?: string;
         keywords?: string;
@@ -2812,7 +2635,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       keywords?: string;
       metaDescription?: string;
       metaTitle?: string;
@@ -2871,7 +2694,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       locale?: components["schemas"]["Locale"];
       localeId: string;
       name: string;
@@ -2887,7 +2710,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       localeId: string;
       name: string;
       parentId?: string;
@@ -2960,16 +2783,23 @@ export type components = {
     LineItem: {
       description?: string;
       good?: boolean;
-      id?: string;
+      id: string;
       label?: string;
       modified?: boolean;
-      /** Format: int32 */
       quantity?: number;
       referencedId?: string;
       removable?: boolean;
       stackable?: boolean;
-      type?: string;
+      type: components["schemas"]["LineItemType"];
     };
+    /** @enum {string} */
+    LineItemType:
+      | "product"
+      | "credit"
+      | "custom"
+      | "promotion"
+      | "discount"
+      | "container";
     /** A link **MUST** be represented as either: a string containing the link's URL or a link object. */
     link: OneOf<
       [
@@ -2991,13 +2821,20 @@ export type components = {
       type: string;
     };
     links: GenericRecord;
+    ListPrice: {
+      /** @enum {string} */
+      apiAlias: "cart_list_price";
+      discount?: number;
+      percentage?: number;
+      price?: number;
+    };
     /** Added since version: 6.0.0.0 */
     Locale: {
       code: string;
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       name: string;
       territory: string;
       translated?: {
@@ -3061,7 +2898,7 @@ export type components = {
     };
     /** Added since version: 6.0.0.0 */
     MailTemplateMedia: {
-      id?: string;
+      id: string;
       languageId: string;
       mailTemplateId: string;
       media?: components["schemas"]["Media"];
@@ -3074,7 +2911,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       name: string;
       technicalName: string;
       translated?: {
@@ -3090,7 +2927,7 @@ export type components = {
       categoryVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       productId: string;
       productVersionId?: string;
       salesChannelId: string;
@@ -3103,7 +2940,7 @@ export type components = {
       categoryVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       productId: string;
       productVersionId?: string;
       salesChannelId: string;
@@ -3113,6 +2950,8 @@ export type components = {
     /** Added since version: 6.0.0.0 */
     Media: {
       alt?: string;
+      /** @enum {string} */
+      apiAlias: "media";
       config?: GenericRecord;
       /** Format: date-time */
       createdAt: string;
@@ -3134,21 +2973,22 @@ export type components = {
           };
         };
       };
-      fileExtension?: string;
-      fileName?: string;
+      fileExtension: string;
+      fileName: string;
       /** Format: int64 */
       fileSize?: number;
       /** Runtime field, cannot be used as part of the criteria. */
-      hasFile?: boolean;
-      id?: string;
+      hasFile: boolean;
+      id: string;
       metaData?: GenericRecord;
       mimeType?: string;
-      path?: string;
-      private?: boolean;
+      path: string;
+      private: boolean;
       thumbnails?: components["schemas"]["MediaThumbnail"][];
       title?: string;
       translated?: {
         alt?: string;
+        apiAlias?: string;
         fileExtension?: string;
         fileName?: string;
         mimeType?: string;
@@ -3162,12 +3002,12 @@ export type components = {
       /** Format: date-time */
       uploadedAt?: string;
       /** Runtime field, cannot be used as part of the criteria. */
-      url?: string;
+      url: string;
     };
     MediaAiTag: {
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       media?: components["schemas"]["Media"];
       tags?: GenericRecord[];
       translated?: Record<string, never>;
@@ -3213,13 +3053,13 @@ export type components = {
       customFields?: GenericRecord;
       /** Format: int64 */
       height: number;
-      id?: string;
+      id: string;
       mediaId: string;
       path?: string;
       /** Format: date-time */
       updatedAt?: string;
       /** Runtime field, cannot be used as part of the criteria. */
-      url?: string;
+      url: string;
       /** Format: int64 */
       width: number;
     };
@@ -3230,7 +3070,7 @@ export type components = {
       customFields?: GenericRecord;
       /** Format: int64 */
       height: number;
-      id?: string;
+      id: string;
       /** Format: date-time */
       updatedAt?: string;
       /** Format: int64 */
@@ -3245,6 +3085,11 @@ export type components = {
       term: string;
     }[];
     NavigationRouteResponse: components["schemas"]["Category"][];
+    /** @enum {string} */
+    NavigationType:
+      | "main-navigation"
+      | "footer-navigation"
+      | "service-navigation";
     /** Added since version: 6.0.0.0 */
     NewsletterRecipient: {
       /** Format: date-time */
@@ -3326,7 +3171,7 @@ export type components = {
       customFields?: GenericRecord;
       deepLinkCode?: string;
       deliveries?: components["schemas"]["OrderDelivery"][];
-      documents?: components["schemas"]["Document"][];
+      documents: components["schemas"]["Document"][];
       extensions?: {
         returns?: {
           data?: {
@@ -3359,12 +3204,12 @@ export type components = {
           };
         };
       };
-      id?: string;
+      id: string;
       language?: components["schemas"]["Language"];
       languageId: string;
       lineItems?: components["schemas"]["OrderLineItem"][];
       orderCustomer?: components["schemas"]["OrderCustomer"];
-      orderDate?: string;
+      orderDate: string;
       /** Format: date-time */
       orderDateTime: string;
       orderNumber?: string;
@@ -3410,7 +3255,7 @@ export type components = {
       /** Format: float */
       shippingTotal?: number;
       source?: string;
-      stateMachineState?: components["schemas"]["StateMachineState"];
+      stateMachineState: components["schemas"]["StateMachineState"];
       tags?: components["schemas"]["Tag"][];
       taxStatus?: string;
       transactions?: components["schemas"]["OrderTransaction"][];
@@ -3434,7 +3279,7 @@ export type components = {
       customFields?: GenericRecord;
       department?: string;
       firstName: string;
-      id?: string;
+      id: string;
       lastName: string;
       phoneNumber?: string;
       salutation?: components["schemas"]["Salutation"];
@@ -3455,7 +3300,7 @@ export type components = {
       customFields?: GenericRecord;
       email: string;
       firstName: string;
-      id?: string;
+      id: string;
       lastName: string;
       salutation?: components["schemas"]["Salutation"];
       salutationId?: string;
@@ -3470,7 +3315,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       orderId: string;
       orderVersionId?: string;
       positions?: components["schemas"]["OrderDeliveryPosition"][];
@@ -3518,7 +3363,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       orderDeliveryId: string;
       orderDeliveryVersionId?: string;
       orderLineItemId: string;
@@ -3599,7 +3444,7 @@ export type components = {
         };
       };
       good?: boolean;
-      id?: string;
+      id: string;
       identifier: string;
       label: string;
       orderDeliveryPositions?: components["schemas"]["OrderDeliveryPosition"][];
@@ -3635,8 +3480,8 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
-      media?: components["schemas"]["Media"];
+      id: string;
+      media: components["schemas"]["Media"];
       mediaId: string;
       orderLineItem?: components["schemas"]["OrderLineItem"];
       orderLineItemId: string;
@@ -3662,7 +3507,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       createdById?: string;
-      id?: string;
+      id: string;
       lineItems?: components["schemas"]["OrderReturnLineItem"][];
       orderId: string;
       orderVersionId?: string;
@@ -3716,7 +3561,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       orderLineItemId: string;
       orderLineItemVersionId?: string;
       orderReturnId: string;
@@ -3739,7 +3584,7 @@ export type components = {
       content: string;
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       reasonKey: string;
       translated?: {
         content?: string;
@@ -3791,7 +3636,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       orderId: string;
       orderVersionId?: string;
       paymentMethod?: components["schemas"]["PaymentMethod"];
@@ -3831,7 +3676,7 @@ export type components = {
       createdAt: string;
       customFields?: GenericRecord;
       externalReference?: string;
-      id?: string;
+      id: string;
       orderTransactionId: string;
       orderTransactionVersionId?: string;
       refunds?: components["schemas"]["OrderTransactionCaptureRefund"][];
@@ -3873,7 +3718,7 @@ export type components = {
       createdAt: string;
       customFields?: GenericRecord;
       externalReference?: string;
-      id?: string;
+      id: string;
       positions?: components["schemas"]["OrderTransactionCaptureRefundPosition"][];
       reason?: string;
       stateId: string;
@@ -3912,7 +3757,7 @@ export type components = {
       createdAt: string;
       customFields?: GenericRecord;
       externalReference?: string;
-      id?: string;
+      id: string;
       orderLineItem?: components["schemas"]["OrderLineItem"];
       orderLineItemId: string;
       orderLineItemVersionId?: string;
@@ -3932,12 +3777,6 @@ export type components = {
       id?: string;
       /** Format: date-time */
       updatedAt?: string;
-    };
-    PageViewedPayload: {
-      /** the id from the page which was viewed */
-      pageId: string;
-      /** the id from the section within the page which was viewed */
-      sectionId: string;
     };
     pagination: {
       /**
@@ -3972,7 +3811,7 @@ export type components = {
       customFields?: GenericRecord;
       description?: string;
       distinguishableName?: string;
-      id?: string;
+      id: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
@@ -4011,7 +3850,7 @@ export type components = {
       customFields?: GenericRecord;
       description?: string;
       distinguishableName?: string;
-      id?: string;
+      id: string;
       mediaId?: string;
       name: string;
       /** Format: int64 */
@@ -4095,1478 +3934,35 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    PresentationCmsPage: {
-      cmsPage?: components["schemas"]["CmsPage"];
-      /** The CMS page id the presentation using */
-      cmsPageId?: string;
-      /** The CMS page version id the presentation using */
-      cmsPageVersionId?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      customFields?: GenericRecord | null;
-      guidedShoppingPresentationVersionId?: string;
-      /** The presentation cms page id */
-      id?: string;
-      /** True if this slide is an instant listing */
-      isInstantListing?: boolean;
-      /** The product id is assigned to presentation if it's product listing or instant listing */
-      pickedProductIds?: string[] | null;
-      /** The position of slide */
-      position?: number;
-      /** The presentation using this presentation cms page */
-      presentationId?: string;
-      /** The product id is assigned to presentation if it's product detail */
-      productId?: string | null;
-      /** The product stream id is assigned to presentation if it's product listing */
-      productStreamId?: string | null;
-      /** The title of presentation cms page */
-      title?: string | null;
-      translated?: {
-        cmsPageId?: string;
-        cmsPageVersionId?: string;
-        guidedShoppingPresentationVersionId?: string;
-        presentationId?: string;
-      };
-      updatedAt?: string | null;
-    };
-    /**
-     * @example {
-     *   "extensions": {
-     *     "cmsPageRelation": {
-     *       "translated": {
-     *         "title": null
-     *       },
-     *       "createdAt": "2023-08-09T11:00:13.160+00:00",
-     *       "updatedAt": null,
-     *       "presentationId": "506cce706e914c1e8b083f05670d85c4",
-     *       "cmsPageId": "33e88c7994fa4cf79a1265e5105b93b2",
-     *       "title": null,
-     *       "productId": null,
-     *       "productStreamId": null,
-     *       "position": 2,
-     *       "isInstantListing": false,
-     *       "cmsPage": {
-     *         "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *         "translated": {
-     *           "name": "Default Guided Shopping product listing page",
-     *           "customFields": []
-     *         },
-     *         "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *         "updatedAt": null,
-     *         "name": "Default Guided Shopping product listing page",
-     *         "type": "presentation_product_list",
-     *         "entity": null,
-     *         "sections": [
-     *           {
-     *             "translated": [],
-     *             "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *             "updatedAt": null,
-     *             "type": "default",
-     *             "blocks": [
-     *               {
-     *                 "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "translated": [],
-     *                 "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                 "updatedAt": null,
-     *                 "type": "product-listing",
-     *                 "slots": [
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": {
-     *                         "filters": {
-     *                           "value": "manufacturer-filter,rating-filter,price-filter,shipping-free-filter,property-filter",
-     *                           "source": "static"
-     *                         },
-     *                         "boxLayout": {
-     *                           "value": "standard",
-     *                           "source": "static"
-     *                         },
-     *                         "showSorting": {
-     *                           "value": true,
-     *                           "source": "static"
-     *                         },
-     *                         "defaultSorting": {
-     *                           "value": "",
-     *                           "source": "static"
-     *                         },
-     *                         "useCustomSorting": {
-     *                           "value": false,
-     *                           "source": "static"
-     *                         },
-     *                         "availableSortings": {
-     *                           "value": [],
-     *                           "source": "static"
-     *                         },
-     *                         "propertyWhitelist": {
-     *                           "value": [],
-     *                           "source": "static"
-     *                         }
-     *                       },
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "product-listing",
-     *                     "slot": "content",
-     *                     "block": null,
-     *                     "blockId": "96ea8b9676a5461c9149d205d792ecf2",
-     *                     "config": {
-     *                       "filters": {
-     *                         "value": "manufacturer-filter,rating-filter,price-filter,shipping-free-filter,property-filter",
-     *                         "source": "static"
-     *                       },
-     *                       "boxLayout": {
-     *                         "value": "standard",
-     *                         "source": "static"
-     *                       },
-     *                       "showSorting": {
-     *                         "value": true,
-     *                         "source": "static"
-     *                       },
-     *                       "defaultSorting": {
-     *                         "value": "",
-     *                         "source": "static"
-     *                       },
-     *                       "useCustomSorting": {
-     *                         "value": false,
-     *                         "source": "static"
-     *                       },
-     *                       "availableSortings": {
-     *                         "value": [],
-     *                         "source": "static"
-     *                       },
-     *                       "propertyWhitelist": {
-     *                         "value": [],
-     *                         "source": "static"
-     *                       }
-     *                     },
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   }
-     *                 ],
-     *                 "sectionId": "2229e1f1208a4b8086baf7aec84f5e2c",
-     *                 "position": 0,
-     *                 "name": null,
-     *                 "sectionPosition": "main",
-     *                 "marginTop": "20px",
-     *                 "marginBottom": "20px",
-     *                 "marginLeft": "20px",
-     *                 "marginRight": "20px",
-     *                 "backgroundColor": null,
-     *                 "backgroundMediaId": null,
-     *                 "backgroundMedia": null,
-     *                 "backgroundMediaMode": "cover",
-     *                 "cssClass": null,
-     *                 "cmsSectionVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "visibility": null,
-     *                 "customFields": null,
-     *                 "apiAlias": "cms_block"
-     *               }
-     *             ],
-     *             "pageId": "33e88c7994fa4cf79a1265e5105b93b2",
-     *             "page": null,
-     *             "position": 0,
-     *             "sizingMode": "boxed",
-     *             "mobileBehavior": "wrap",
-     *             "backgroundColor": null,
-     *             "backgroundMediaId": null,
-     *             "backgroundMedia": null,
-     *             "backgroundMediaMode": "cover",
-     *             "cssClass": null,
-     *             "cmsPageVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *             "visibility": null,
-     *             "customFields": null,
-     *             "apiAlias": "cms_section"
-     *           }
-     *         ],
-     *         "translations": null,
-     *         "cssClass": null,
-     *         "config": null,
-     *         "previewMediaId": null,
-     *         "previewMedia": null,
-     *         "landingPages": null,
-     *         "id": "33e88c7994fa4cf79a1265e5105b93b2",
-     *         "customFields": null,
-     *         "apiAlias": "cms_page"
-     *       },
-     *       "pickedProductIds": null,
-     *       "guidedShoppingPresentationVersionId": "213769ba28dd4ee788bdb49dc9ce53d2",
-     *       "id": "4ee08e142ed046eb99681594f67599f1",
-     *       "customFields": null,
-     *       "cmsPageVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *       "apiAlias": "guided_shopping_presentation_cms_page"
-     *     }
-     *   },
-     *   "cmsPage": {
-     *     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *     "translated": {
-     *       "name": "Default Guided Shopping product listing page",
-     *       "customFields": []
-     *     },
-     *     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *     "updatedAt": null,
-     *     "name": "Default Guided Shopping product listing page",
-     *     "type": "presentation_product_list",
-     *     "entity": null,
-     *     "sections": [
-     *       {
-     *         "translated": [],
-     *         "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *         "updatedAt": null,
-     *         "type": "default",
-     *         "blocks": [
-     *           {
-     *             "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *             "translated": [],
-     *             "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *             "updatedAt": null,
-     *             "type": "product-listing",
-     *             "slots": [
-     *               {
-     *                 "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "translated": {
-     *                   "config": {
-     *                     "filters": {
-     *                       "value": "manufacturer-filter,rating-filter,price-filter,shipping-free-filter,property-filter",
-     *                       "source": "static"
-     *                     },
-     *                     "boxLayout": {
-     *                       "value": "standard",
-     *                       "source": "static"
-     *                     },
-     *                     "showSorting": {
-     *                       "value": true,
-     *                       "source": "static"
-     *                     },
-     *                     "defaultSorting": {
-     *                       "value": "",
-     *                       "source": "static"
-     *                     },
-     *                     "useCustomSorting": {
-     *                       "value": false,
-     *                       "source": "static"
-     *                     },
-     *                     "availableSortings": {
-     *                       "value": [],
-     *                       "source": "static"
-     *                     },
-     *                     "propertyWhitelist": {
-     *                       "value": [],
-     *                       "source": "static"
-     *                     }
-     *                   },
-     *                   "customFields": []
-     *                 },
-     *                 "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                 "updatedAt": null,
-     *                 "type": "product-listing",
-     *                 "slot": "content",
-     *                 "block": null,
-     *                 "blockId": "96ea8b9676a5461c9149d205d792ecf2",
-     *                 "config": {
-     *                   "filters": {
-     *                     "value": "manufacturer-filter,rating-filter,price-filter,shipping-free-filter,property-filter",
-     *                     "source": "static"
-     *                   },
-     *                   "boxLayout": {
-     *                     "value": "standard",
-     *                     "source": "static"
-     *                   },
-     *                   "showSorting": {
-     *                     "value": true,
-     *                     "source": "static"
-     *                   },
-     *                   "defaultSorting": {
-     *                     "value": "",
-     *                     "source": "static"
-     *                   },
-     *                   "useCustomSorting": {
-     *                     "value": false,
-     *                     "source": "static"
-     *                   },
-     *                   "availableSortings": {
-     *                     "value": [],
-     *                     "source": "static"
-     *                   },
-     *                   "propertyWhitelist": {
-     *                     "value": [],
-     *                     "source": "static"
-     *                   }
-     *                 },
-     *                 "fieldConfig": null,
-     *                 "translations": null,
-     *                 "data": {
-     *                   "listing": {
-     *                     "elements": [
-     *                       {
-     *                         "versionId": null,
-     *                         "translated": [],
-     *                         "createdAt": null,
-     *                         "updatedAt": null,
-     *                         "parentId": null,
-     *                         "childCount": null,
-     *                         "taxId": null,
-     *                         "manufacturerId": null,
-     *                         "unitId": null,
-     *                         "active": null,
-     *                         "displayGroup": null,
-     *                         "manufacturerNumber": null,
-     *                         "ean": null,
-     *                         "sales": null,
-     *                         "productNumber": null,
-     *                         "stock": null,
-     *                         "availableStock": null,
-     *                         "available": null,
-     *                         "deliveryTimeId": null,
-     *                         "deliveryTime": null,
-     *                         "restockTime": null,
-     *                         "isCloseout": null,
-     *                         "purchaseSteps": null,
-     *                         "maxPurchase": null,
-     *                         "minPurchase": null,
-     *                         "purchaseUnit": null,
-     *                         "referenceUnit": null,
-     *                         "shippingFree": null,
-     *                         "markAsTopseller": null,
-     *                         "weight": null,
-     *                         "width": null,
-     *                         "height": null,
-     *                         "length": null,
-     *                         "releaseDate": null,
-     *                         "categoryTree": null,
-     *                         "streamIds": null,
-     *                         "optionIds": null,
-     *                         "propertyIds": null,
-     *                         "name": null,
-     *                         "keywords": null,
-     *                         "description": null,
-     *                         "metaDescription": null,
-     *                         "metaTitle": null,
-     *                         "packUnit": null,
-     *                         "packUnitPlural": null,
-     *                         "tax": null,
-     *                         "manufacturer": null,
-     *                         "unit": null,
-     *                         "cover": null,
-     *                         "parent": null,
-     *                         "children": null,
-     *                         "media": null,
-     *                         "cmsPageId": null,
-     *                         "cmsPage": null,
-     *                         "translations": null,
-     *                         "categories": null,
-     *                         "properties": null,
-     *                         "options": null,
-     *                         "configuratorSettings": null,
-     *                         "categoriesRo": null,
-     *                         "coverId": null,
-     *                         "categoryIds": null,
-     *                         "productReviews": null,
-     *                         "ratingAverage": null,
-     *                         "mainCategories": null,
-     *                         "seoUrls": null,
-     *                         "crossSellings": null,
-     *                         "canonicalProductId": null,
-     *                         "canonicalProduct": null,
-     *                         "streams": null,
-     *                         "downloads": null,
-     *                         "states": [],
-     *                         "id": "a32702bb0b1443e3881c3b9a38c09169",
-     *                         "customFields": null,
-     *                         "apiAlias": "product"
-     *                       }
-     *                     ],
-     *                     "aggregations": [],
-     *                     "page": 1,
-     *                     "limit": null,
-     *                     "entity": "product",
-     *                     "total": 0,
-     *                     "states": [],
-     *                     "apiAlias": "dal_entity_search_result"
-     *                   },
-     *                   "apiAlias": "cms_product_listing"
-     *                 },
-     *                 "locked": false,
-     *                 "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "customFields": null,
-     *                 "apiAlias": "cms_slot"
-     *               }
-     *             ],
-     *             "sectionId": "2229e1f1208a4b8086baf7aec84f5e2c",
-     *             "position": 0,
-     *             "name": null,
-     *             "sectionPosition": "main",
-     *             "marginTop": "20px",
-     *             "marginBottom": "20px",
-     *             "marginLeft": "20px",
-     *             "marginRight": "20px",
-     *             "backgroundColor": null,
-     *             "backgroundMediaId": null,
-     *             "backgroundMedia": null,
-     *             "backgroundMediaMode": "cover",
-     *             "cssClass": null,
-     *             "cmsSectionVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *             "visibility": null,
-     *             "customFields": null,
-     *             "apiAlias": "cms_block"
-     *           }
-     *         ],
-     *         "pageId": "33e88c7994fa4cf79a1265e5105b93b2",
-     *         "page": null,
-     *         "position": 0,
-     *         "sizingMode": "boxed",
-     *         "mobileBehavior": "wrap",
-     *         "backgroundColor": null,
-     *         "backgroundMediaId": null,
-     *         "backgroundMedia": null,
-     *         "backgroundMediaMode": "cover",
-     *         "cssClass": null,
-     *         "cmsPageVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *         "visibility": null,
-     *         "customFields": null,
-     *         "apiAlias": "cms_section"
-     *       }
-     *     ],
-     *     "translations": null,
-     *     "cssClass": null,
-     *     "config": null,
-     *     "previewMediaId": null,
-     *     "previewMedia": null,
-     *     "landingPages": null,
-     *     "id": "33e88c7994fa4cf79a1265e5105b93b2",
-     *     "customFields": null,
-     *     "apiAlias": "cms_page"
-     *   },
-     *   "category": {
-     *     "versionId": null,
-     *     "translated": {
-     *       "breadcrumb": []
-     *     },
-     *     "createdAt": null,
-     *     "updatedAt": null,
-     *     "afterCategoryId": null,
-     *     "parentId": null,
-     *     "mediaId": null,
-     *     "name": null,
-     *     "breadcrumb": [],
-     *     "path": null,
-     *     "level": null,
-     *     "active": null,
-     *     "childCount": null,
-     *     "visibleChildCount": 0,
-     *     "displayNestedProducts": null,
-     *     "parent": null,
-     *     "children": null,
-     *     "translations": null,
-     *     "media": null,
-     *     "cmsPageId": null,
-     *     "cmsPageIdSwitched": false,
-     *     "cmsPage": null,
-     *     "linkType": null,
-     *     "linkNewTab": null,
-     *     "internalLink": null,
-     *     "externalLink": null,
-     *     "visible": null,
-     *     "type": null,
-     *     "productAssignmentType": null,
-     *     "description": null,
-     *     "metaTitle": null,
-     *     "metaDescription": null,
-     *     "keywords": null,
-     *     "seoUrls": null,
-     *     "customEntityTypeId": null,
-     *     "id": "34f21c5eb6d54a939f10973204aa5f08",
-     *     "customFields": null,
-     *     "apiAlias": "category"
-     *   },
-     *   "apiAlias": "pwa_page_result"
-     * }
-     */
-    PresentationSlideData: OneOf<
-      [
-        {
-          configurator?: components["schemas"]["PropertyGroup"][];
-          product?: components["schemas"]["Product"];
-        },
-        {
-          category?: components["schemas"]["Category"];
-        },
-        null,
-      ]
-    >;
-    /**
-     * @example {
-     *   "cmsPageResults": [
-     *     {
-     *       "resourceType": "frontend.presentation.page",
-     *       "resourceIdentifier": "45a2b8ad0bb544e48f61eab564a2171c",
-     *       "cmsPage": {
-     *         "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *         "translated": {
-     *           "name": "Default Guided Shopping product listing page",
-     *           "customFields": []
-     *         },
-     *         "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *         "updatedAt": "2023-08-10T04:30:28.668+00:00",
-     *         "name": "Default Guided Shopping product listing page",
-     *         "type": "presentation_product_list",
-     *         "entity": null,
-     *         "sections": [
-     *           {
-     *             "extensions": {
-     *               "translations": []
-     *             },
-     *             "translated": [],
-     *             "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *             "updatedAt": "2023-08-10T04:30:28.668+00:00",
-     *             "type": "default",
-     *             "blocks": [
-     *               {
-     *                 "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "translated": [],
-     *                 "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                 "updatedAt": "2023-08-10T04:30:28.667+00:00",
-     *                 "type": "product-listing",
-     *                 "slots": [
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": {
-     *                         "filters": {
-     *                           "value": "manufacturer-filter,rating-filter,price-filter,shipping-free-filter,property-filter",
-     *                           "source": "static"
-     *                         },
-     *                         "boxLayout": {
-     *                           "value": "standard",
-     *                           "source": "static"
-     *                         },
-     *                         "showSorting": {
-     *                           "value": true,
-     *                           "source": "static"
-     *                         },
-     *                         "defaultSorting": {
-     *                           "value": "",
-     *                           "source": "static"
-     *                         },
-     *                         "useCustomSorting": {
-     *                           "value": false,
-     *                           "source": "static"
-     *                         },
-     *                         "availableSortings": {
-     *                           "value": [],
-     *                           "source": "static"
-     *                         },
-     *                         "propertyWhitelist": {
-     *                           "value": [],
-     *                           "source": "static"
-     *                         }
-     *                       },
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "product-listing",
-     *                     "slot": "content",
-     *                     "block": null,
-     *                     "blockId": "96ea8b9676a5461c9149d205d792ecf2",
-     *                     "config": {
-     *                       "filters": {
-     *                         "value": "manufacturer-filter,rating-filter,price-filter,shipping-free-filter,property-filter",
-     *                         "source": "static"
-     *                       },
-     *                       "boxLayout": {
-     *                         "value": "standard",
-     *                         "source": "static"
-     *                       },
-     *                       "showSorting": {
-     *                         "value": true,
-     *                         "source": "static"
-     *                       },
-     *                       "defaultSorting": {
-     *                         "value": "",
-     *                         "source": "static"
-     *                       },
-     *                       "useCustomSorting": {
-     *                         "value": false,
-     *                         "source": "static"
-     *                       },
-     *                       "availableSortings": {
-     *                         "value": [],
-     *                         "source": "static"
-     *                       },
-     *                       "propertyWhitelist": {
-     *                         "value": [],
-     *                         "source": "static"
-     *                       }
-     *                     },
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   }
-     *                 ],
-     *                 "sectionId": "2229e1f1208a4b8086baf7aec84f5e2c",
-     *                 "position": 1,
-     *                 "name": null,
-     *                 "sectionPosition": "main",
-     *                 "marginTop": "20px",
-     *                 "marginBottom": "20px",
-     *                 "marginLeft": "20px",
-     *                 "marginRight": "20px",
-     *                 "backgroundColor": null,
-     *                 "backgroundMediaId": null,
-     *                 "backgroundMedia": null,
-     *                 "backgroundMediaMode": "cover",
-     *                 "cssClass": null,
-     *                 "cmsSectionVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "visibility": {
-     *                   "mobile": true,
-     *                   "tablet": true,
-     *                   "desktop": true
-     *                 },
-     *                 "customFields": null,
-     *                 "apiAlias": "cms_block"
-     *               }
-     *             ],
-     *             "pageId": "33e88c7994fa4cf79a1265e5105b93b2",
-     *             "page": null,
-     *             "position": 0,
-     *             "sizingMode": "boxed",
-     *             "mobileBehavior": "wrap",
-     *             "backgroundColor": null,
-     *             "backgroundMediaId": null,
-     *             "backgroundMedia": null,
-     *             "backgroundMediaMode": "cover",
-     *             "cssClass": null,
-     *             "cmsPageVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *             "visibility": {
-     *               "mobile": true,
-     *               "tablet": true,
-     *               "desktop": true
-     *             },
-     *             "customFields": null,
-     *             "apiAlias": "cms_section"
-     *           }
-     *         ],
-     *         "translations": null,
-     *         "cssClass": null,
-     *         "config": null,
-     *         "previewMediaId": null,
-     *         "previewMedia": null,
-     *         "landingPages": null,
-     *         "id": "33e88c7994fa4cf79a1265e5105b93b2",
-     *         "customFields": null,
-     *         "apiAlias": "cms_page"
-     *       },
-     *       "apiAlias": "pwa_page_result"
-     *     },
-     *     {
-     *       "resourceType": "frontend.presentation.page",
-     *       "resourceIdentifier": "45a2b8ad0bb544e48f61eab564a2171c",
-     *       "cmsPage": {
-     *         "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *         "translated": {
-     *           "name": "Default Guided Shopping product detail page",
-     *           "customFields": []
-     *         },
-     *         "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *         "updatedAt": null,
-     *         "name": "Default Guided Shopping product detail page",
-     *         "type": "presentation_product_detail",
-     *         "entity": null,
-     *         "sections": [
-     *           {
-     *             "extensions": {
-     *               "translations": []
-     *             },
-     *             "translated": [],
-     *             "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *             "updatedAt": null,
-     *             "type": "default",
-     *             "blocks": [
-     *               {
-     *                 "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "translated": [],
-     *                 "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                 "updatedAt": null,
-     *                 "type": "product-heading",
-     *                 "slots": [
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": [],
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "like",
-     *                     "slot": "right",
-     *                     "block": null,
-     *                     "blockId": "c0d3daba2e244122947438c28f776d41",
-     *                     "config": [],
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   },
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": {
-     *                         "content": {
-     *                           "value": "product.name",
-     *                           "source": "mapped"
-     *                         },
-     *                         "verticalAlign": {
-     *                           "value": null,
-     *                           "source": "static"
-     *                         }
-     *                       },
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "product-name",
-     *                     "slot": "left",
-     *                     "block": null,
-     *                     "blockId": "c0d3daba2e244122947438c28f776d41",
-     *                     "config": {
-     *                       "content": {
-     *                         "value": "product.name",
-     *                         "source": "mapped"
-     *                       },
-     *                       "verticalAlign": {
-     *                         "value": null,
-     *                         "source": "static"
-     *                       }
-     *                     },
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   }
-     *                 ],
-     *                 "sectionId": "f4aaa27972314e3c9b7f3bb35c7f8a10",
-     *                 "position": 0,
-     *                 "name": null,
-     *                 "sectionPosition": "main",
-     *                 "marginTop": "0",
-     *                 "marginBottom": "20px",
-     *                 "marginLeft": "0",
-     *                 "marginRight": "0",
-     *                 "backgroundColor": null,
-     *                 "backgroundMediaId": null,
-     *                 "backgroundMedia": null,
-     *                 "backgroundMediaMode": "cover",
-     *                 "cssClass": null,
-     *                 "cmsSectionVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "visibility": null,
-     *                 "customFields": null,
-     *                 "apiAlias": "cms_block"
-     *               },
-     *               {
-     *                 "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "translated": [],
-     *                 "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                 "updatedAt": null,
-     *                 "type": "image-gallery-big",
-     *                 "slots": [
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": {
-     *                         "zoom": {
-     *                           "value": true,
-     *                           "source": "static"
-     *                         },
-     *                         "minHeight": {
-     *                           "value": "430px",
-     *                           "source": "static"
-     *                         },
-     *                         "fullScreen": {
-     *                           "value": true,
-     *                           "source": "static"
-     *                         },
-     *                         "displayMode": {
-     *                           "value": "contain",
-     *                           "source": "static"
-     *                         },
-     *                         "sliderItems": {
-     *                           "value": "product.media",
-     *                           "source": "mapped"
-     *                         },
-     *                         "bigImageMode": {
-     *                           "value": true,
-     *                           "source": "static"
-     *                         },
-     *                         "verticalAlign": {
-     *                           "value": null,
-     *                           "source": "static"
-     *                         },
-     *                         "navigationDots": {
-     *                           "value": "inside",
-     *                           "source": "static"
-     *                         },
-     *                         "galleryPosition": {
-     *                           "value": "left",
-     *                           "source": "static"
-     *                         },
-     *                         "navigationArrows": {
-     *                           "value": "inside",
-     *                           "source": "static"
-     *                         }
-     *                       },
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "image-gallery",
-     *                     "slot": "imageGallery",
-     *                     "block": null,
-     *                     "blockId": "47cc4a3919794162982ea83f64a836fe",
-     *                     "config": {
-     *                       "zoom": {
-     *                         "value": true,
-     *                         "source": "static"
-     *                       },
-     *                       "minHeight": {
-     *                         "value": "430px",
-     *                         "source": "static"
-     *                       },
-     *                       "fullScreen": {
-     *                         "value": true,
-     *                         "source": "static"
-     *                       },
-     *                       "displayMode": {
-     *                         "value": "contain",
-     *                         "source": "static"
-     *                       },
-     *                       "sliderItems": {
-     *                         "value": "product.media",
-     *                         "source": "mapped"
-     *                       },
-     *                       "bigImageMode": {
-     *                         "value": true,
-     *                         "source": "static"
-     *                       },
-     *                       "verticalAlign": {
-     *                         "value": null,
-     *                         "source": "static"
-     *                       },
-     *                       "navigationDots": {
-     *                         "value": "inside",
-     *                         "source": "static"
-     *                       },
-     *                       "galleryPosition": {
-     *                         "value": "left",
-     *                         "source": "static"
-     *                       },
-     *                       "navigationArrows": {
-     *                         "value": "inside",
-     *                         "source": "static"
-     *                       }
-     *                     },
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   }
-     *                 ],
-     *                 "sectionId": "f4aaa27972314e3c9b7f3bb35c7f8a10",
-     *                 "position": 1,
-     *                 "name": null,
-     *                 "sectionPosition": "main",
-     *                 "marginTop": "20px",
-     *                 "marginBottom": "20px",
-     *                 "marginLeft": "20px",
-     *                 "marginRight": "20px",
-     *                 "backgroundColor": null,
-     *                 "backgroundMediaId": null,
-     *                 "backgroundMedia": null,
-     *                 "backgroundMediaMode": "cover",
-     *                 "cssClass": null,
-     *                 "cmsSectionVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "visibility": null,
-     *                 "customFields": null,
-     *                 "apiAlias": "cms_block"
-     *               },
-     *               {
-     *                 "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "translated": [],
-     *                 "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                 "updatedAt": null,
-     *                 "type": "text-two-column",
-     *                 "slots": [
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": {
-     *                         "product": {
-     *                           "value": null,
-     *                           "source": "static"
-     *                         },
-     *                         "alignment": {
-     *                           "value": null,
-     *                           "source": "static"
-     *                         }
-     *                       },
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "buy-box",
-     *                     "slot": "right",
-     *                     "block": null,
-     *                     "blockId": "095cd9a4eb49493aa95ea1e7a84a9503",
-     *                     "config": {
-     *                       "product": {
-     *                         "value": null,
-     *                         "source": "static"
-     *                       },
-     *                       "alignment": {
-     *                         "value": null,
-     *                         "source": "static"
-     *                       }
-     *                     },
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   },
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": {
-     *                         "product": {
-     *                           "value": null,
-     *                           "source": "static"
-     *                         },
-     *                         "alignment": {
-     *                           "value": null,
-     *                           "source": "static"
-     *                         }
-     *                       },
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "product-description-reviews",
-     *                     "slot": "left",
-     *                     "block": null,
-     *                     "blockId": "095cd9a4eb49493aa95ea1e7a84a9503",
-     *                     "config": {
-     *                       "product": {
-     *                         "value": null,
-     *                         "source": "static"
-     *                       },
-     *                       "alignment": {
-     *                         "value": null,
-     *                         "source": "static"
-     *                       }
-     *                     },
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   }
-     *                 ],
-     *                 "sectionId": "f4aaa27972314e3c9b7f3bb35c7f8a10",
-     *                 "position": 2,
-     *                 "name": null,
-     *                 "sectionPosition": "main",
-     *                 "marginTop": "20px",
-     *                 "marginBottom": "20px",
-     *                 "marginLeft": "20px",
-     *                 "marginRight": "20px",
-     *                 "backgroundColor": null,
-     *                 "backgroundMediaId": null,
-     *                 "backgroundMedia": null,
-     *                 "backgroundMediaMode": "cover",
-     *                 "cssClass": null,
-     *                 "cmsSectionVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "visibility": null,
-     *                 "customFields": null,
-     *                 "apiAlias": "cms_block"
-     *               },
-     *               {
-     *                 "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "translated": [],
-     *                 "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                 "updatedAt": null,
-     *                 "type": "cross-selling",
-     *                 "slots": [
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": {
-     *                         "product": {
-     *                           "value": null,
-     *                           "source": "static"
-     *                         },
-     *                         "boxLayout": {
-     *                           "value": "standard",
-     *                           "source": "static"
-     *                         },
-     *                         "elMinWidth": {
-     *                           "value": "300px",
-     *                           "source": "static"
-     *                         },
-     *                         "displayMode": {
-     *                           "value": "standard",
-     *                           "source": "static"
-     *                         }
-     *                       },
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "cross-selling",
-     *                     "slot": "content",
-     *                     "block": null,
-     *                     "blockId": "2d69edd4faab493baa056c81ea8d131f",
-     *                     "config": {
-     *                       "product": {
-     *                         "value": null,
-     *                         "source": "static"
-     *                       },
-     *                       "boxLayout": {
-     *                         "value": "standard",
-     *                         "source": "static"
-     *                       },
-     *                       "elMinWidth": {
-     *                         "value": "300px",
-     *                         "source": "static"
-     *                       },
-     *                       "displayMode": {
-     *                         "value": "standard",
-     *                         "source": "static"
-     *                       }
-     *                     },
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   }
-     *                 ],
-     *                 "sectionId": "f4aaa27972314e3c9b7f3bb35c7f8a10",
-     *                 "position": 3,
-     *                 "name": null,
-     *                 "sectionPosition": "main",
-     *                 "marginTop": "0",
-     *                 "marginBottom": "0",
-     *                 "marginLeft": "0",
-     *                 "marginRight": "0",
-     *                 "backgroundColor": null,
-     *                 "backgroundMediaId": null,
-     *                 "backgroundMedia": null,
-     *                 "backgroundMediaMode": "cover",
-     *                 "cssClass": null,
-     *                 "cmsSectionVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "visibility": null,
-     *                 "customFields": null,
-     *                 "apiAlias": "cms_block"
-     *               }
-     *             ],
-     *             "pageId": "bea211b5099241719830df8026624f7f",
-     *             "page": null,
-     *             "position": 0,
-     *             "sizingMode": "boxed",
-     *             "mobileBehavior": "wrap",
-     *             "backgroundColor": null,
-     *             "backgroundMediaId": null,
-     *             "backgroundMedia": null,
-     *             "backgroundMediaMode": "cover",
-     *             "cssClass": null,
-     *             "cmsPageVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *             "visibility": null,
-     *             "customFields": null,
-     *             "apiAlias": "cms_section"
-     *           }
-     *         ],
-     *         "translations": null,
-     *         "cssClass": null,
-     *         "config": null,
-     *         "previewMediaId": null,
-     *         "previewMedia": null,
-     *         "landingPages": null,
-     *         "id": "bea211b5099241719830df8026624f7f",
-     *         "customFields": null,
-     *         "apiAlias": "cms_page"
-     *       },
-     *       "apiAlias": "pwa_page_result"
-     *     },
-     *     {
-     *       "resourceType": "frontend.presentation.page",
-     *       "resourceIdentifier": "45a2b8ad0bb544e48f61eab564a2171c",
-     *       "cmsPage": {
-     *         "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *         "translated": {
-     *           "name": "Ended presentation page",
-     *           "customFields": []
-     *         },
-     *         "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *         "updatedAt": null,
-     *         "name": "Ended presentation page",
-     *         "type": "presentation_product_list",
-     *         "entity": null,
-     *         "sections": [
-     *           {
-     *             "extensions": {
-     *               "translations": []
-     *             },
-     *             "translated": [],
-     *             "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *             "updatedAt": null,
-     *             "type": "default",
-     *             "blocks": [
-     *               {
-     *                 "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "translated": [],
-     *                 "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                 "updatedAt": null,
-     *                 "type": "text-hero",
-     *                 "slots": [
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": {
-     *                         "content": {
-     *                           "value": "<h2 style=\"text-align: center;\">The live presentation ended</h2>\n                        <hr>\n                        <p style=\"text-align: center;\">Thank you for your attention!</p><p style=\"text-align: center;\">Below you can find all products wich were presented to you.</p>",
-     *                           "source": "static"
-     *                         },
-     *                         "verticalAlign": {
-     *                           "value": null,
-     *                           "source": "static"
-     *                         }
-     *                       },
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "text",
-     *                     "slot": "content",
-     *                     "block": null,
-     *                     "blockId": "c49b01e9c6624973b9cdd1992d3c009a",
-     *                     "config": {
-     *                       "content": {
-     *                         "value": "<h2 style=\"text-align: center;\">The live presentation ended</h2>\n                        <hr>\n                        <p style=\"text-align: center;\">Thank you for your attention!</p><p style=\"text-align: center;\">Below you can find all products wich were presented to you.</p>",
-     *                         "source": "static"
-     *                       },
-     *                       "verticalAlign": {
-     *                         "value": null,
-     *                         "source": "static"
-     *                       }
-     *                     },
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   }
-     *                 ],
-     *                 "sectionId": "0a5e89814463470684a734b975add4ed",
-     *                 "position": 0,
-     *                 "name": null,
-     *                 "sectionPosition": "main",
-     *                 "marginTop": "20px",
-     *                 "marginBottom": "20px",
-     *                 "marginLeft": "20px",
-     *                 "marginRight": "20px",
-     *                 "backgroundColor": null,
-     *                 "backgroundMediaId": null,
-     *                 "backgroundMedia": null,
-     *                 "backgroundMediaMode": "cover",
-     *                 "cssClass": null,
-     *                 "cmsSectionVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "visibility": null,
-     *                 "customFields": null,
-     *                 "apiAlias": "cms_block"
-     *               },
-     *               {
-     *                 "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "translated": [],
-     *                 "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                 "updatedAt": null,
-     *                 "type": "product-listing",
-     *                 "slots": [
-     *                   {
-     *                     "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "translated": {
-     *                       "config": {
-     *                         "filters": {
-     *                           "value": "manufacturer-filter,rating-filter,price-filter,shipping-free-filter,property-filter",
-     *                           "source": "static"
-     *                         },
-     *                         "boxLayout": {
-     *                           "value": "standard",
-     *                           "source": "static"
-     *                         },
-     *                         "showSorting": {
-     *                           "value": true,
-     *                           "source": "static"
-     *                         },
-     *                         "defaultSorting": {
-     *                           "value": "",
-     *                           "source": "static"
-     *                         },
-     *                         "useCustomSorting": {
-     *                           "value": false,
-     *                           "source": "static"
-     *                         },
-     *                         "availableSortings": {
-     *                           "value": [],
-     *                           "source": "static"
-     *                         },
-     *                         "propertyWhitelist": {
-     *                           "value": [],
-     *                           "source": "static"
-     *                         }
-     *                       },
-     *                       "customFields": []
-     *                     },
-     *                     "createdAt": "2023-08-03T17:24:09.000+00:00",
-     *                     "updatedAt": null,
-     *                     "type": "product-listing",
-     *                     "slot": "content",
-     *                     "block": null,
-     *                     "blockId": "0a13f5daa9be4e7b8ed5e3ecaba79fe6",
-     *                     "config": {
-     *                       "filters": {
-     *                         "value": "manufacturer-filter,rating-filter,price-filter,shipping-free-filter,property-filter",
-     *                         "source": "static"
-     *                       },
-     *                       "boxLayout": {
-     *                         "value": "standard",
-     *                         "source": "static"
-     *                       },
-     *                       "showSorting": {
-     *                         "value": true,
-     *                         "source": "static"
-     *                       },
-     *                       "defaultSorting": {
-     *                         "value": "",
-     *                         "source": "static"
-     *                       },
-     *                       "useCustomSorting": {
-     *                         "value": false,
-     *                         "source": "static"
-     *                       },
-     *                       "availableSortings": {
-     *                         "value": [],
-     *                         "source": "static"
-     *                       },
-     *                       "propertyWhitelist": {
-     *                         "value": [],
-     *                         "source": "static"
-     *                       }
-     *                     },
-     *                     "fieldConfig": null,
-     *                     "translations": null,
-     *                     "data": null,
-     *                     "locked": false,
-     *                     "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                     "customFields": null,
-     *                     "apiAlias": "cms_slot"
-     *                   }
-     *                 ],
-     *                 "sectionId": "0a5e89814463470684a734b975add4ed",
-     *                 "position": 1,
-     *                 "name": null,
-     *                 "sectionPosition": "main",
-     *                 "marginTop": "20px",
-     *                 "marginBottom": "20px",
-     *                 "marginLeft": "20px",
-     *                 "marginRight": "20px",
-     *                 "backgroundColor": null,
-     *                 "backgroundMediaId": null,
-     *                 "backgroundMedia": null,
-     *                 "backgroundMediaMode": "cover",
-     *                 "cssClass": null,
-     *                 "cmsSectionVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *                 "visibility": null,
-     *                 "customFields": null,
-     *                 "apiAlias": "cms_block"
-     *               }
-     *             ],
-     *             "pageId": "8ea80092faa744559409f3e9f7adcc6b",
-     *             "page": null,
-     *             "position": 0,
-     *             "sizingMode": "boxed",
-     *             "mobileBehavior": "wrap",
-     *             "backgroundColor": null,
-     *             "backgroundMediaId": null,
-     *             "backgroundMedia": null,
-     *             "backgroundMediaMode": "cover",
-     *             "cssClass": null,
-     *             "cmsPageVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *             "visibility": null,
-     *             "customFields": null,
-     *             "apiAlias": "cms_section"
-     *           }
-     *         ],
-     *         "translations": null,
-     *         "cssClass": null,
-     *         "config": null,
-     *         "previewMediaId": null,
-     *         "previewMedia": null,
-     *         "landingPages": null,
-     *         "id": "8ea80092faa744559409f3e9f7adcc6b",
-     *         "customFields": null,
-     *         "apiAlias": "cms_page"
-     *       },
-     *       "apiAlias": "pwa_page_result"
-     *     }
-     *   ],
-     *   "navigation": [
-     *     {
-     *       "groupName": "Default Guided Shopping product listing page",
-     *       "groupId": "468b0e34237a44ad8f8a8d5e0b72b78f",
-     *       "cmsPageId": "33e88c7994fa4cf79a1265e5105b93b2",
-     *       "name": null,
-     *       "id": "2229e1f1208a4b8086baf7aec84f5e2c",
-     *       "index": 1,
-     *       "notes": [
-     *         {
-     *           "extensions": {
-     *             "foreignKeys": {
-     *               "extensions": [],
-     *               "apiAlias": "cms_slot_foreign_keys_extension"
-     *             }
-     *           },
-     *           "_uniqueIdentifier": "de28c711c20b4ad0a54871d5a23109fc",
-     *           "versionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *           "translated": {
-     *             "config": {
-     *               "content": {
-     *                 "value": "<h2>Lorem Ipsum dolor sit amet</h2>\n                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, \n                sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, \n                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. \n                Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \n                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, \n                sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. \n                At vero eos et accusam et justo duo dolores et ea rebum. \n                Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>",
-     *                 "source": "static"
-     *               },
-     *               "verticalAlign": {
-     *                 "value": null,
-     *                 "source": "static"
-     *               }
-     *             },
-     *             "customFields": []
-     *           },
-     *           "createdAt": "2023-08-10T04:30:28.649+00:00",
-     *           "updatedAt": null,
-     *           "type": "notes",
-     *           "slot": "content",
-     *           "block": null,
-     *           "blockId": "978ca9beff6e4edca6d5263fac254e13",
-     *           "config": {
-     *             "content": {
-     *               "value": "<h2>Lorem Ipsum dolor sit amet</h2>\n                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, \n                sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, \n                sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. \n                Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \n                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, \n                sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. \n                At vero eos et accusam et justo duo dolores et ea rebum. \n                Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>",
-     *               "source": "static"
-     *             },
-     *             "verticalAlign": {
-     *               "value": null,
-     *               "source": "static"
-     *             }
-     *           },
-     *           "fieldConfig": null,
-     *           "translations": null,
-     *           "data": null,
-     *           "locked": false,
-     *           "cmsBlockVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-     *           "id": "de28c711c20b4ad0a54871d5a23109fc",
-     *           "customFields": null
-     *         }
-     *       ]
-     *     },
-     *     {
-     *       "groupName": "Default Guided Shopping product detail page",
-     *       "groupId": "52f1e61cd45945a0b72bd613d1268d65",
-     *       "cmsPageId": "bea211b5099241719830df8026624f7f",
-     *       "name": null,
-     *       "id": "f4aaa27972314e3c9b7f3bb35c7f8a10",
-     *       "index": 2,
-     *       "notes": []
-     *     },
-     *     {
-     *       "groupName": "Ended presentation page",
-     *       "groupId": "b073190abe03407993f41b8d5bc8ba57",
-     *       "cmsPageId": "8ea80092faa744559409f3e9f7adcc6b",
-     *       "name": null,
-     *       "id": "0a5e89814463470684a734b975add4ed",
-     *       "index": 3,
-     *       "notes": []
-     *     }
-     *   ],
-     *   "apiAlias": "pwa_page_result"
-     * }
-     */
-    PresentationStructure: {
-      cmsPageResults?: {
-        cmsPage?: components["schemas"]["CmsPage"];
-        /** The presentation id */
-        resourceIdentifier?: string;
-        /**
-         * The type of presentation page
-         * @default frontend.presentation.page
-         */
-        resourceType?: string;
-      }[];
-      navigation?: {
-        /** The CMS page id */
-        cmsPageId?: string;
-        /** The presentation CMS page id */
-        groupId?: string;
-        /** The slide name */
-        groupName?: string;
-        /** The section id */
-        id?: string;
-        /** The slide position */
-        index?: number;
-        /** The section name */
-        name?: string | null;
-        /** @default [] */
-        notes?: components["schemas"]["CmsSlot"][];
-      }[];
-    };
-    /** Added since version: 6.0.0.0 */
+    /** Represents a product along with detailed information required to display a variant selection. */
     Product: {
       active?: boolean;
+      /** @enum {string} */
+      apiAlias: "product";
       available?: boolean;
       /** Format: int64 */
       availableStock?: number;
-      calculatedCheapestPrice?: GenericRecord;
+      calculatedCheapestPrice?: components["schemas"]["CalculatedPrice"] & {
+        /** @enum {string} */
+        apiAlias?: "calculated_cheapest_price";
+        hasRange?: boolean;
+        listPrice?: components["schemas"]["ListPrice"] | null;
+        quantity?: number;
+        referencePrice?: components["schemas"]["ReferencePrice"] | null;
+        regulationPrice?: {
+          price: number;
+        } | null;
+        totalPrice?: number;
+        unitPrice?: number;
+        variantId?: string | null;
+      };
       /**
        * Format: int64
        * Runtime field, cannot be used as part of the criteria.
        */
       calculatedMaxPurchase?: number;
-      calculatedPrice?: GenericRecord;
-      calculatedPrices?: GenericRecord[];
+      calculatedPrice: components["schemas"]["CalculatedPrice"];
+      calculatedPrices: components["schemas"]["CalculatedPrice"][];
       canonicalProduct?: components["schemas"]["Product"];
       canonicalProductId?: string;
       categories?: components["schemas"]["Category"][];
@@ -5626,7 +4022,7 @@ export type components = {
       };
       /** Format: float */
       height?: number;
-      id?: string;
+      id: string;
       isCloseout?: boolean;
       /** Runtime field, cannot be used as part of the criteria. */
       isNew?: boolean;
@@ -5673,7 +4069,7 @@ export type components = {
       restockTime?: number;
       /** Format: int64 */
       sales?: number;
-      seoCategory?: components["schemas"]["Category"];
+      seoCategory: components["schemas"]["Category"];
       seoUrls?: components["schemas"]["SeoUrl"][];
       shippingFree?: boolean;
       sortedProperties?: GenericRecord;
@@ -5687,6 +4083,7 @@ export type components = {
       tax?: components["schemas"]["Tax"];
       taxId: string;
       translated?: {
+        apiAlias?: string;
         canonicalProductId?: string;
         cmsPageId?: string;
         cmsPageVersionId?: string;
@@ -5717,6 +4114,9 @@ export type components = {
       unitId?: string;
       /** Format: date-time */
       updatedAt?: string;
+      variantListingConfig?: {
+        displayParent?: boolean;
+      } | null;
       versionId?: string;
       /** Format: float */
       weight?: number;
@@ -5728,7 +4128,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
       option?: components["schemas"]["PropertyGroupOption"];
@@ -5746,7 +4146,7 @@ export type components = {
       active?: boolean;
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       /** Format: int64 */
       limit?: number;
       name: string;
@@ -5776,14 +4176,14 @@ export type components = {
     ProductDetailResponse: {
       /** List of property groups with their corresponding options and information on how to display them. */
       configurator?: components["schemas"]["PropertyGroup"][];
-      product?: components["schemas"]["Product"];
+      product: components["schemas"]["Product"];
     };
     /** Added since version: 6.4.19.0 */
     ProductDownload: {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       media?: components["schemas"]["Media"];
       mediaId: string;
       /** Format: int64 */
@@ -5875,7 +4275,7 @@ export type components = {
       };
       /** Format: float */
       height?: number;
-      id?: string;
+      id: string;
       isCloseout?: boolean;
       /** Runtime field, cannot be used as part of the criteria. */
       isNew?: boolean;
@@ -6381,21 +4781,40 @@ export type components = {
       "only-aggregations"?: string | null;
     };
     ProductListingResult: components["schemas"]["EntitySearchResult"] & {
+      /** @enum {string} */
+      apiAlias: "product_listing";
       /** Contains the available sorting. These can be used to show a sorting select-box in the product listing. */
-      availableSortings?: GenericRecord[];
-      /** Contains the state of the filters. These can be used to create listing filters. */
-      currentFilters?: {
-        manufacturer?: GenericRecord[];
-        navigationId?: string;
-        price?: {
-          max?: number;
-          min?: number;
+      availableSortings: {
+        /** @enum {string} */
+        apiAlias: "product_sorting";
+        key: string;
+        label: string;
+        priority: number;
+        translated: {
+          apiAlias?: string;
+          key?: string;
+          label?: string;
         };
-        properties?: GenericRecord[];
-        rating?: number;
-        "shipping-free"?: boolean;
+      }[];
+      /** Contains the state of the filters. These can be used to create listing filters. */
+      currentFilters: {
+        manufacturer: string[];
+        navigationId: string;
+        price: {
+          /** @default 0 */
+          max: number;
+          /** @default 0 */
+          min: number;
+        };
+        properties: string[];
+        rating: number | null;
+        search?: string;
+        /** @default false */
+        "shipping-free": boolean;
       };
-      elements?: components["schemas"]["Product"][];
+      elements: components["schemas"]["Product"][];
+      /** @enum {string} */
+      entity?: "product";
       sorting?: string;
     };
     /** Added since version: 6.0.0.0 */
@@ -6404,7 +4823,7 @@ export type components = {
       createdAt: string;
       customFields?: GenericRecord;
       description?: string;
-      id?: string;
+      id: string;
       link?: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
@@ -6425,20 +4844,17 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       media?: components["schemas"]["Media"];
       mediaId: string;
       /** Format: int64 */
       position?: number;
       productId: string;
       productVersionId?: string;
+      thumbnails?: components["schemas"]["MediaThumbnail"];
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
-    };
-    ProductPayload: {
-      /** the id from the product which is used in the interaction */
-      productId: string;
     };
     /** Added since version: 6.0.0.0 */
     ProductPrice: {
@@ -6455,10 +4871,10 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       languageId: string;
       /** Format: float */
-      points?: number;
+      points: number;
       productId: string;
       productVersionId?: string;
       salesChannelId: string;
@@ -6470,7 +4886,7 @@ export type components = {
     ProductReviewSummary: {
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       product?: components["schemas"]["Product"];
       productId: string;
       salesChannel?: components["schemas"]["SalesChannel"];
@@ -6531,7 +4947,7 @@ export type components = {
       createdAt: string;
       customFields?: GenericRecord;
       description?: string;
-      id?: string;
+      id: string;
       name: string;
       translated?: {
         description?: string;
@@ -6621,7 +5037,7 @@ export type components = {
       description?: string;
       displayType: string;
       filterable?: boolean;
-      id?: string;
+      id: string;
       name: string;
       options?: components["schemas"]["PropertyGroupOption"][];
       /** Format: int64 */
@@ -6643,12 +5059,13 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      group?: components["schemas"]["PropertyGroup"];
+      group: components["schemas"]["PropertyGroup"];
       groupId: string;
-      id?: string;
+      id: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
+      option: string;
       /** Format: int64 */
       position?: number;
       translated?: {
@@ -6656,6 +5073,7 @@ export type components = {
         groupId?: string;
         mediaId?: string;
         name?: string;
+        option?: string;
       };
       /** Format: date-time */
       updatedAt?: string;
@@ -6683,14 +5101,12 @@ export type components = {
       documents?: components["schemas"]["QuoteDocument"][];
       /** Format: date-time */
       expirationDate?: string;
-      id?: string;
+      id: string;
       language?: components["schemas"]["Language"];
       languageId: string;
       lineItems?: components["schemas"]["QuoteLineItem"][];
       orderId?: string;
       orderVersionId?: string;
-      /** Format: float */
-      originalPrice?: number;
       price?: {
         calculatedTaxes?: GenericRecord;
         /** Format: float */
@@ -6752,7 +5168,7 @@ export type components = {
       createdById?: string;
       customer?: components["schemas"]["Customer"];
       customerId?: string;
-      id?: string;
+      id: string;
       quoteId: string;
       quoteVersionId?: string;
       /** Format: date-time */
@@ -6768,7 +5184,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       positions?: components["schemas"]["QuoteDeliveryPosition"][];
       quoteId: string;
       quoteVersionId?: string;
@@ -6810,7 +5226,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       price?: {
         calculatedTaxes?: GenericRecord;
         listPrice?: {
@@ -6861,7 +5277,7 @@ export type components = {
       documentType?: components["schemas"]["DocumentType"];
       documentTypeId: string;
       fileType: string;
-      id?: string;
+      id: string;
       quote?: components["schemas"]["Quote"];
       quoteId: string;
       quoteVersionId?: string;
@@ -6895,7 +5311,7 @@ export type components = {
         value?: number;
       };
       good?: boolean;
-      id?: string;
+      id: string;
       identifier: string;
       label: string;
       parent?: components["schemas"]["QuoteLineItem"];
@@ -6954,7 +5370,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       paymentMethod?: components["schemas"]["PaymentMethod"];
       paymentMethodId: string;
       quoteId: string;
@@ -6962,6 +5378,23 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
       versionId?: string;
+    };
+    ReferencePrice: {
+      /** @enum {string} */
+      apiAlias?: "cart_price_reference";
+      hasRange: boolean;
+      listPrice: components["schemas"]["ListPrice"] | null;
+      price?: number;
+      purchaseUnit?: number;
+      referenceUnit?: number;
+      regulationPrice: {
+        /** @enum {string} */
+        apiAlias?: "cart_regulation_price";
+        price?: number;
+      } | null;
+      unitName: string;
+      /** Format: ^[0-9a-f]{32}$ */
+      variantId?: string | null;
     };
     /** A resource object **MAY** contain references to other resource objects ("relationships"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object. */
     relationshipLinks: {
@@ -7066,7 +5499,7 @@ export type components = {
       hreflangActive?: boolean;
       hreflangDefaultDomain?: components["schemas"]["SalesChannelDomain"];
       hreflangDefaultDomainId?: string;
-      id?: string;
+      id: string;
       language?: components["schemas"]["Language"];
       languageId: string;
       mailHeaderFooterId?: string;
@@ -7123,96 +5556,26 @@ export type components = {
         currencyId?: string;
         /** Format: int32 */
         currencyPrecision?: number;
+        languageIdChain?: string[];
         scope?: string;
         source?: string;
         taxState?: string;
         useCache?: boolean;
         versionId?: string;
       };
-      /** Currency associated with the current user */
-      currency?: {
-        /** Format: int32 */
-        decimalPrecision?: number;
-        factor?: number;
-        isoCode?: string;
-        isSystemDefault?: boolean;
-        name?: string;
-        /** Format: int32 */
-        position?: number;
-        shortName?: string;
-        symbol?: string;
-      };
+      currency?: components["schemas"]["Currency"];
       /** Customer group of the current user */
       currentCustomerGroup?: {
         displayGross?: boolean;
         name?: string;
       };
-      /** Information about the current customer - `null` if the customer is not logged in */
-      customer?: {
-        active?: boolean;
-        activeBillingAddress?: components["schemas"]["CustomerAddress"];
-        activeShippingAddress?: components["schemas"]["CustomerAddress"];
-        affiliateCode?: string;
-        /** Format: int32 */
-        autoIncrement?: number;
-        /** Format: date-time */
-        birthday?: string;
-        campaignCode?: string;
-        company?: string;
-        customerNumber?: string;
-        defaultBillingAddress?: components["schemas"]["CustomerAddress"];
-        defaultBillingAddressId?: string;
-        defaultPaymentMethodId?: string;
-        defaultShippingAddress?: components["schemas"]["CustomerAddress"];
-        defaultShippingAddressId?: string;
-        /** Format: date-time */
-        doubleOptInConfirmDate?: string;
-        /** Format: date-time */
-        doubleOptInEmailSentDate?: string;
-        doubleOptInRegistration?: boolean;
-        email?: string;
-        /** Format: date-time */
-        firstLogin?: string;
-        firstName?: string;
-        groupId?: string;
-        guest?: boolean;
-        hash?: string;
-        languageId?: string;
-        /** Format: date-time */
-        lastLogin?: string;
-        lastName?: string;
-        /** Format: date-time */
-        lastOrderDate?: string;
-        lastPaymentMethodId?: string;
-        legacyEncoder?: string;
-        legacyPassword?: string;
-        newsletter?: boolean;
-        /** Format: int32 */
-        orderCount?: number;
-        password?: string;
-        remoteAddress?: string;
-        salesChannelId?: string;
-        salutationId?: string;
-        title?: string;
-      };
+      customer?: components["schemas"]["Customer"];
       /** Fallback group if the default customer group is not applicable */
       fallbackCustomerGroup?: {
         displayGross?: boolean;
         name?: string;
       };
-      /** Selected payment method */
-      paymentMethod?: {
-        active?: boolean;
-        availabilityRuleId?: string;
-        description?: string;
-        formattedHandlerIdentifier?: string;
-        handlerIdentifier?: string;
-        mediaId?: string;
-        name?: string;
-        pluginId?: string;
-        /** Format: int32 */
-        position?: number;
-      };
+      paymentMethod?: components["schemas"]["PaymentMethod"];
       /** Information about the current sales channel */
       salesChannel?: {
         accessKey?: string;
@@ -7238,16 +5601,13 @@ export type components = {
         shortName?: string;
         typeId?: string;
       };
-      /** Selected shipping method */
-      shippingMethod?: {
-        active?: boolean;
-        availabilityRuleId?: string;
-        deliveryTimeId?: string;
-        description?: string;
-        mediaId?: string;
-        name?: string;
-        trackingUrl?: string;
+      shippingLocation?: {
+        address?: components["schemas"]["CustomerAddress"];
+        /** @enum {string} */
+        apiAlias?: "cart_delivery_shipping_location";
+        country?: components["schemas"]["Country"];
       };
+      shippingMethod?: components["schemas"]["ShippingMethod"];
       /** Currently active tax rules and/or rates */
       taxRules?: {
         name?: string;
@@ -7265,7 +5625,7 @@ export type components = {
       currencyId: string;
       customFields?: GenericRecord;
       hreflangUseOnlyLocale?: boolean;
-      id?: string;
+      id: string;
       language?: components["schemas"]["Language"];
       languageId: string;
       salesChannelDefaultHreflang?: components["schemas"]["SalesChannel"];
@@ -7290,7 +5650,7 @@ export type components = {
       createdAt: string;
       customFields?: GenericRecord;
       displayName: string;
-      id?: string;
+      id: string;
       letterName: string;
       salutationKey: string;
       translated?: {
@@ -7307,7 +5667,7 @@ export type components = {
       createdAt: string;
       customFields?: GenericRecord;
       displayName: string;
-      id?: string;
+      id: string;
       letterName: string;
       salutationKey: string;
       translated?: {
@@ -7345,16 +5705,20 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
+      /** Runtime field, cannot be used as part of the criteria. */
+      error?: string;
       foreignKey: string;
-      id?: string;
+      id: string;
       isCanonical?: boolean;
       isDeleted?: boolean;
       isModified?: boolean;
-      /** Runtime field, cannot be used as part of the criteria. */
-      isValid?: boolean;
       languageId: string;
       pathInfo: string;
-      routeName: string;
+      /** @enum {string} */
+      routeName:
+        | "frontend.navigation.page"
+        | "frontend.landing.page"
+        | "frontend.detail.page";
       salesChannelId?: string;
       seoPathInfo: string;
       /** Format: date-time */
@@ -7367,13 +5731,13 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
+      /** Runtime field, cannot be used as part of the criteria. */
+      error?: string;
       foreignKey: string;
-      id?: string;
+      id: string;
       isCanonical?: boolean;
       isDeleted?: boolean;
       isModified?: boolean;
-      /** Runtime field, cannot be used as part of the criteria. */
-      isValid?: boolean;
       languageId: string;
       pathInfo: string;
       routeName: string;
@@ -7405,7 +5769,7 @@ export type components = {
       deliveryTime?: components["schemas"]["DeliveryTime"];
       deliveryTimeId: string;
       description?: string;
-      id?: string;
+      id: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
       name: string;
@@ -7437,7 +5801,7 @@ export type components = {
       customFields?: GenericRecord;
       deliveryTimeId: string;
       description?: string;
-      id?: string;
+      id: string;
       mediaId?: string;
       name: string;
       /** Format: int64 */
@@ -7677,7 +6041,7 @@ export type components = {
       createdAt: string;
       currencyPrice?: GenericRecord;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       /** Format: float */
       quantityEnd?: number;
       /** Format: float */
@@ -7689,8 +6053,8 @@ export type components = {
     };
     Sitemap: components["schemas"]["ArrayStruct"] & {
       /** Format: date-time */
-      created?: string;
-      filename?: string;
+      created: string;
+      filename: string;
     };
     /** Added since version: 6.0.0.0 */
     Snippet: {
@@ -7716,57 +6080,20 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    StateForAll: {
-      accessibleFrom?: string | null;
-      accessibleTo?: string | null;
-      /** @default false */
-      allowUserActionsForGuide?: boolean;
-      /** @enum {string} */
-      appointmentMode?: "guided" | "self";
-      attendeeRestrictionType?: ("open" | "customer" | "rules") | null;
-      /** @default false */
-      broadcastMode?: boolean;
-      currentDynamicPage?: components["schemas"]["DynamicPageOpenedPayload"];
-      currentGuideProductId?: string | null;
-      currentPageId?: string | null;
-      currentSectionId?: string | null;
-      /** @default 0 */
-      currentSlideAlias?: number;
-      /** @default false */
-      ended?: boolean;
-      endedAt?: string | null;
-      /** @default [] */
-      extensions?: unknown[];
-      lastActiveGuideSection?: string | null;
-      productDetailDefaultPageId?: string | null;
-      productListingDefaultPageId?: string | null;
-      quickviewPageId?: string | null;
-      /** @default false */
-      running?: boolean;
-      /** @default false */
-      started?: boolean;
-      startedAt?: string | null;
-      /**
-       * @default none
-       * @enum {string}
-       */
-      videoAudioSettings?: "both" | "none" | "audio-only";
-      /** @default */
-      videoRoomUrl?: string;
+    SsoProvider: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      media?: components["schemas"]["Media"];
+      /** Format: date-time */
+      updatedAt?: string;
     };
-    StateForClients: {
-      /** @default [] */
-      extensions?: unknown[];
-      hoveredElementId?: string | null;
-      videoClientToken?: string | null;
-    };
-    StateForMe: {
-      attendeeName?: string | null;
-      attendeeSubmittedAt?: string | null;
-      /** @default [] */
-      extensions?: unknown[];
-      /** @default null */
-      guideCartPermissionsGranted?: boolean;
+    SsoProviderCustomer: {
+      /** Format: date-time */
+      createdAt: string;
+      id?: string;
+      /** Format: date-time */
+      updatedAt?: string;
     };
     /** Added since version: 6.0.0.0 */
     StateMachine: {
@@ -7828,7 +6155,7 @@ export type components = {
       currencyId: string;
       customFields?: GenericRecord;
       dateInterval: string;
-      id?: string;
+      id: string;
       /** Format: int64 */
       initialExecutionCount: number;
       language?: components["schemas"]["Language"];
@@ -7873,7 +6200,7 @@ export type components = {
       customFields?: GenericRecord;
       department?: string;
       firstName: string;
-      id?: string;
+      id: string;
       lastName: string;
       phoneNumber?: string;
       salutation?: components["schemas"]["Salutation"];
@@ -7897,7 +6224,7 @@ export type components = {
       customFields?: GenericRecord;
       email: string;
       firstName: string;
-      id?: string;
+      id: string;
       lastName: string;
       salutation?: components["schemas"]["Salutation"];
       salutationId: string;
@@ -7913,7 +6240,7 @@ export type components = {
       createdAt: string;
       cronInterval: string;
       dateInterval: string;
-      id?: string;
+      id: string;
       name: string;
       subscriptions?: components["schemas"]["Subscription"][];
       translated?: {
@@ -7935,7 +6262,7 @@ export type components = {
       /** Format: float */
       discountPercentage?: number;
       discountPrice?: GenericRecord;
-      id?: string;
+      id: string;
       label?: string;
       /** Format: int64 */
       minimumExecutionCount?: number;
@@ -7967,7 +6294,7 @@ export type components = {
       /** Format: float */
       discountPercentage?: number;
       discountPrice?: GenericRecord;
-      id?: string;
+      id: string;
       label?: string;
       /** Format: int64 */
       minimumExecutionCount?: number;
@@ -8031,7 +6358,7 @@ export type components = {
       cmsBlockVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       inverted?: boolean;
       /** Format: date-time */
       updatedAt?: string;
@@ -8069,7 +6396,7 @@ export type components = {
       cmsBlockVersionId?: string;
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -8081,7 +6408,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       displayName?: string;
-      id?: string;
+      id: string;
       translated?: {
         cmsSectionId?: string;
         cmsSectionVersionId?: string;
@@ -8103,7 +6430,8 @@ export type components = {
       easing: string;
       /** Format: int64 */
       easingDegree: number;
-      id?: string;
+      id: string;
+      nativeScrolling: boolean;
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -8117,7 +6445,7 @@ export type components = {
       description?: string;
       displayName: string;
       exclusions?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"][];
-      id?: string;
+      id: string;
       internalName: string;
       media?: components["schemas"]["Media"];
       mediaId?: string;
@@ -8143,7 +6471,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       hash: string;
-      id?: string;
+      id: string;
       template?: components["schemas"]["SwagCustomizedProductsTemplate"];
       templateConfigurationShares?: components["schemas"]["SwagCustomizedProductsTemplateConfigurationShare"][];
       templateId: string;
@@ -8157,7 +6485,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       hash: string;
-      id?: string;
+      id: string;
       relationships?: {
         template?: {
           data?: {
@@ -8207,7 +6535,7 @@ export type components = {
       conditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       name: string;
       template?: components["schemas"]["SwagCustomizedProductsTemplate"];
       templateId: string;
@@ -8219,7 +6547,7 @@ export type components = {
     SwagCustomizedProductsTemplateExclusionCondition: {
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       templateExclusion?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"];
       templateExclusionId: string;
       templateExclusionOperator?: components["schemas"]["SwagCustomizedProductsTemplateExclusionOperator"];
@@ -8236,7 +6564,7 @@ export type components = {
     SwagCustomizedProductsTemplateExclusionOperator: {
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       label: string;
       operator: string;
       templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
@@ -8257,7 +6585,7 @@ export type components = {
       decisionTree?: GenericRecord;
       description?: string;
       displayName: string;
-      id?: string;
+      id: string;
       internalName: string;
       mediaId?: string;
       optionsAutoCollapse?: boolean;
@@ -8359,7 +6687,7 @@ export type components = {
       createdAt: string;
       description?: string;
       displayName: string;
-      id?: string;
+      id: string;
       itemNumber?: string;
       oneTimeSurcharge?: boolean;
       /** Format: float */
@@ -8400,7 +6728,7 @@ export type components = {
       createdAt: string;
       description?: string;
       displayName: string;
-      id?: string;
+      id: string;
       itemNumber?: string;
       oneTimeSurcharge?: boolean;
       /** Format: float */
@@ -8509,7 +6837,7 @@ export type components = {
     SwagCustomizedProductsTemplateOptionPrice: {
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       /** Format: float */
       percentageSurcharge?: number;
       price?: GenericRecord;
@@ -8528,7 +6856,7 @@ export type components = {
       createdAt: string;
       default?: boolean;
       displayName: string;
-      id?: string;
+      id: string;
       itemNumber?: string;
       oneTimeSurcharge?: boolean;
       /** Format: float */
@@ -8563,7 +6891,7 @@ export type components = {
       createdAt: string;
       default?: boolean;
       displayName: string;
-      id?: string;
+      id: string;
       itemNumber?: string;
       oneTimeSurcharge?: boolean;
       /** Format: float */
@@ -8653,7 +6981,7 @@ export type components = {
     SwagCustomizedProductsTemplateOptionValuePrice: {
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       /** Format: float */
       percentageSurcharge?: number;
       price?: GenericRecord;
@@ -8670,7 +6998,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customerId?: string;
-      id?: string;
+      id: string;
       orderId?: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -8768,17 +7096,37 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    SwagSocialShoppingCustomer: {
+    SwagPaypalTransactionReport: {
       /** Format: date-time */
       createdAt: string;
       id?: string;
       /** Format: date-time */
       updatedAt?: string;
     };
+    SwagPaypalVaultTokenMapping: {
+      /** Format: date-time */
+      createdAt: string;
+      customer?: components["schemas"]["Customer"];
+      customerId: string;
+      id?: string;
+      paymentMethod?: components["schemas"]["PaymentMethod"];
+      paymentMethodId: string;
+      token?: components["schemas"]["SwagPaypalVaultToken"];
+      tokenId: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    SwagSocialShoppingCustomer: {
+      /** Format: date-time */
+      createdAt: string;
+      id: string;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
     SwagSocialShoppingOrder: {
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       /** Format: date-time */
       updatedAt?: string;
     };
@@ -8804,7 +7152,7 @@ export type components = {
       };
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       salesChannel?: components["schemas"]["SalesChannel"];
       salesChannelId?: string;
       /** Format: date-time */
@@ -8814,7 +7162,7 @@ export type components = {
     Tag: {
       /** Format: date-time */
       createdAt: string;
-      id?: string;
+      id: string;
       name: string;
       /** Format: date-time */
       updatedAt?: string;
@@ -8824,7 +7172,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       name: string;
       /**
        * Format: int64
@@ -8843,7 +7191,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       name: string;
       /** Format: int64 */
       priority: number;
@@ -8884,7 +7232,7 @@ export type components = {
       customFields?: GenericRecord;
       description?: string;
       helpTexts?: GenericRecord;
-      id?: string;
+      id: string;
       labels?: GenericRecord;
       media?: components["schemas"]["Media"][];
       name: string;
@@ -8902,16 +7250,12 @@ export type components = {
       /** Format: date-time */
       updatedAt?: string;
     };
-    ToggleBroadcastModePayload: {
-      /** Status if the mode is toggled to active or inactive */
-      active: boolean;
-    };
     /** Added since version: 6.0.0.0 */
     Unit: {
       /** Format: date-time */
       createdAt: string;
       customFields?: GenericRecord;
-      id?: string;
+      id: string;
       name: string;
       shortCode: string;
       translated?: {
@@ -8920,16 +7264,6 @@ export type components = {
       };
       /** Format: date-time */
       updatedAt?: string;
-    };
-    UpdateAttendeeRequestBody: {
-      /** Name of the attendee */
-      attendeeName: string;
-      /** The first time the attendee submit the update form */
-      attendeeSubmitted: boolean;
-      /** The permission for guide cart actions */
-      guideCartPermissionsGranted: boolean;
-      /** Id of the attendee in the video chat tool */
-      videoUserId: string;
     };
     /** Added since version: 6.0.0.0 */
     User: {
@@ -8994,7 +7328,7 @@ export type components = {
       updatedAt?: string;
     };
     WishlistLoadRouteResponse: {
-      products?: components["schemas"]["ProductListingResult"][];
+      products?: components["schemas"]["ProductListingResult"];
       wishlist?: {
         customerId?: string;
         salesChannelId?: string;
@@ -9042,13 +7376,70 @@ export type components = {
       };
       content: {
         "application/json": {
-          /**
-           * @deprecated
-           * Deprecated since v6.6.0.0. Please retrieve the context token from the response header instead.
-           */
-          contextToken?: string;
           /** Define the URL which browser will be redirected to */
           redirectUrl?: string;
+        };
+      };
+    };
+    /** Returns information about the store API. */
+    OpenApi3: {
+      content: {
+        "application/json": {
+          components?: {
+            callbacks?: GenericRecord;
+            examples?: GenericRecord;
+            headers?: GenericRecord;
+            links?: GenericRecord;
+            parameters?: GenericRecord;
+            pathItems?: GenericRecord;
+            requestBodies?: GenericRecord;
+            responses?: GenericRecord;
+            schemas?: GenericRecord;
+            securitySchemes?: GenericRecord;
+          };
+          externalDocs?: {
+            description?: string;
+            /** Format: uri */
+            url: string;
+          };
+          info: {
+            contact?: {
+              /** Format: email */
+              email?: string;
+              name?: string;
+              /** Format: uri */
+              url?: string;
+            };
+            description?: string;
+            license?: {
+              identifier?: string;
+              name: string;
+              /** Format: uri */
+              url?: string;
+            };
+            summary?: string;
+            /** Format: uri */
+            termsOfService?: string;
+            title: string;
+            version: string;
+          };
+          jsonSchemaDialect?: string;
+          openapi: string;
+          paths?: GenericRecord;
+          security?: GenericRecord[];
+          servers?: {
+            url: string;
+          }[];
+          tags?: {
+            description?: string;
+            externalDocs?: {
+              description?: string;
+              /** Format: uri */
+              url: string;
+            };
+            name: string;
+          }[];
+          webhooks?: GenericRecord;
         };
       };
     };
@@ -9069,6 +7460,21 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export type operations = {
+  /**
+   * Get OpenAPI Specification
+   * Get information about the store API in OpenAPI format.
+   */
+  "api-info": {
+    parameters: {
+      query?: {
+        /** Type of the api */
+        type?: "jsonapi" | "json";
+      };
+    };
+    responses: {
+      200: components["responses"]["OpenApi3"];
+    };
+  };
   /**
    * Create a new address for a customer
    * Creates a new address for a customer.
@@ -9572,6 +7978,256 @@ export type operations = {
     };
   };
   /**
+   * Create new shopping list
+   * This route is used to create a new shopping list from the store
+   */
+  createShoppingList: {
+    requestBody: {
+      content: {
+        "application/json": {
+          lineItems?: GenericRecord;
+          /** Shopping list name */
+          name: string;
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Delete shopping lists
+   * This route is used to delete shopping lists
+   */
+  removeShoppingLists: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Shopping list ids */
+          ids: string[];
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Load one shopping list
+   * This route is used to load one shopping list
+   */
+  readShoppingList: {
+    parameters: {
+      path: {
+        /** Identifier of the shopping list to be fetched */
+        id: string;
+      };
+    };
+    responses: {
+      /** Shopping list entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bComponentsShoppingList"];
+        };
+      };
+    };
+  };
+  /**
+   * Update shopping list name
+   * This route is used to update shopping list name
+   */
+  updateShoppingList: {
+    parameters: {
+      path: {
+        /** Identifier of the shopping list to be fetched */
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Shopping list name */
+          name: string;
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Duplicate new shopping list
+   * This route is used to duplicate a new shopping list from the store
+   */
+  duplicateShoppingList: {
+    parameters: {
+      path: {
+        /** Identifier of the shopping list to be fetched */
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Shopping list name */
+          name: string;
+        };
+      };
+    };
+    responses: {
+      /** The generated id of the duplicated shopping list */
+      200: {
+        content: {
+          "application/json": {
+            /** The generated id of the duplicated shopping list */
+            id?: string;
+          };
+        };
+      };
+    };
+  };
+  /**
+   * Price summary for shopping list
+   * This route is used to get a price summary for shopping list
+   */
+  summaryShoppingList: {
+    parameters: {
+      path: {
+        /** Identifier of the shopping list to be fetched */
+        id: string;
+      };
+    };
+    responses: {
+      /** Shopping list summary */
+      200: {
+        content: {
+          "application/json": {
+            price?: {
+              /**
+               * Format: float
+               * Net price of the cart
+               */
+              netPrice?: number;
+              /**
+               * Format: float
+               * Price for all line items in the cart
+               */
+              positionPrice?: number;
+              /** Tax calculation for the cart. One of `gross`, `net` or `tax-free` */
+              taxStatus?: string;
+              /**
+               * Format: float
+               * Total price of the cart, including shipping costs, discounts and taxes
+               */
+              totalPrice?: number;
+            };
+          };
+        };
+      };
+    };
+  };
+  /**
+   * Add more product to shopping list
+   * This route is used to add more products to shopping list
+   */
+  addLineItems: {
+    parameters: {
+      path: {
+        /** Identifier of the shopping list to be fetched */
+        id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": {
+          lineItems: GenericRecord;
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Update shopping list line item quantity
+   * This route is used to update shopping list line item quantity
+   */
+  updateLineItems: {
+    parameters: {
+      path: {
+        /** Identifier of the shopping list line item to be fetched */
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** new line item quantity */
+          quantity: number;
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Delete shopping list line items
+   * This route is used to delete shopping list line items
+   */
+  removeLineItems: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Line items ids */
+          ids: string[];
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Load shopping lists
+   * This route is used to load all shopping lists
+   */
+  readShoppingLists: {
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Entity search result containing shopping lists */
+      200: {
+        content: {
+          "application/json": {
+            elements?: components["schemas"]["B2bComponentsShoppingList"][];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /**
    * Generate JWT token for app system backend
    * Generate JWT token for authenticated communication with the app server
    */
@@ -9596,6 +8252,163 @@ export type operations = {
             shopId?: string;
             token?: string;
           };
+        };
+      };
+    };
+  };
+  /**
+   * Fetch a list of approval rules
+   * This route is used to load approval rules
+   */
+  readApprovalRules: {
+    parameters: {
+      query?: {
+        /** Page number */
+        p?: number;
+        /** Number of items per page */
+        limit?: number;
+      };
+    };
+    responses: {
+      /** Entity search result containing approval rules */
+      200: {
+        content: {
+          "application/json": {
+            elements?: components["schemas"]["ApprovalRule"][];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /**
+   * List all approval rules
+   * This route is used to list all approval rules from the store
+   */
+  listApprovalRules: {
+    parameters: {
+      query?: {
+        /** Page number */
+        p?: number;
+        /** Number of items per page */
+        limit?: number;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Entity search result containing approval rules */
+      200: {
+        content: {
+          "application/json": {
+            elements?: components["schemas"]["ApprovalRule"][];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch one approval rule by id
+   * This route is used to fetch a approval rule from the store by id
+   */
+  readApprovalRule: {
+    parameters: {
+      path: {
+        /** Identifier of the approval rule to be fetched */
+        id: string;
+      };
+    };
+    responses: {
+      /** Approval rule entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ApprovalRule"];
+        };
+      };
+    };
+  };
+  /**
+   * Update a approval rule by id
+   * This route is used to update a approval rule from the store by id
+   */
+  updateApprovalRule: {
+    parameters: {
+      path: {
+        /** Identifier of the approval rule to be updated */
+        id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Active status of the approval rule */
+          active?: boolean;
+          /** ID of the role that can approve the rule */
+          approvalRuleApprove?: string;
+          /** List of rules */
+          approvalRuleCondition?: {
+            /** Type of the rule */
+            type?: string;
+            /** Value */
+            value?: string;
+          };
+          /** Name of the approval rule */
+          approvalRuleName?: string;
+          /** ID of the role that is affected by the rule */
+          approvalRuleRole?: string;
+          /** Description of the approval rule */
+          description?: string;
+          /** Priority of the approval rule */
+          priority?: number;
+        };
+      };
+    };
+    responses: {
+      /** Approval rule entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ApprovalRule"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a new approval rule
+   * This route is used to create a new approval rule
+   */
+  createApprovalRule: {
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Active status of the approval rule */
+          active?: boolean;
+          /** ID of the role that can approve the rule */
+          approvalRuleApprove?: string;
+          /** List of rules */
+          approvalRuleCondition?: {
+            /** Type of the rule */
+            type?: string;
+            /** Value */
+            value?: string;
+          };
+          /** Name of the approval rule */
+          approvalRuleName?: string;
+          /** ID of the role that is affected by the rule */
+          approvalRuleRole?: string;
+          /** Description of the approval rule */
+          description?: string;
+          /** Priority of the approval rule */
+          priority?: number;
+        };
+      };
+    };
+    responses: {
+      /** Approval rule entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ApprovalRule"];
         };
       };
     };
@@ -9631,6 +8444,10 @@ export type operations = {
         /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
         slots?: string;
       };
+      header?: {
+        /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+        "sw-include-seo-urls"?: boolean;
+      };
       path: {
         /** Identifier of the category to be fetched */
         navigationId: string;
@@ -9640,7 +8457,6 @@ export type operations = {
       content: {
         "application/json": components["schemas"]["Criteria"] &
           components["schemas"]["ProductListingCriteria"];
-        "application/xml": components["schemas"]["ProductListingCriteria"];
       };
     };
     responses: {
@@ -9913,21 +8729,10 @@ export type operations = {
           /** Shipping Method */
           shippingMethodId?: string;
         };
-        "application/xml": {
-          /** Currency */
-          currencyXmlId?: string;
-        };
       };
     };
     responses: {
       200: components["responses"]["ContextTokenResponse"];
-      /** Cool cool cool */
-      201: {
-        content: {
-          "application/json": components["schemas"]["CrossSellingElementCollection"];
-          "application/xml": components["schemas"]["PaymentMethod"];
-        };
-      };
     };
   };
   /**
@@ -10148,300 +8953,150 @@ export type operations = {
     };
   };
   /**
-   * Fetch product ids by criteria
-   * Fetches product ids for a given criteria.
+   * Fetch a list of employees
+   * This route is used to load employees
    */
-  guidedShoppingLoadAllProductIds: {
+  readEmployees: {
     requestBody?: {
       content: {
         "application/json": components["schemas"]["Criteria"];
       };
     };
     responses: {
+      /** Entity search result containing employees */
       200: {
         content: {
           "application/json": {
-            ids?: string[];
-            total?: number;
-          };
-        };
-      };
-    };
-  };
-  /**
-   * Respond the appointment invitation
-   * Returns the appointment invitation status
-   */
-  attendeeRespondInvitation: {
-    parameters: {
-      path: {
-        /** The appointment id you respond to */
-        appointmentId: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": {
-          /**
-           * The status you respond to
-           * @enum {string}
-           */
-          invitationStatus?: "accepted" | "maybe" | "declined";
-          /** The token will be attached to the invitation response link in the invitation mail */
-          token: string;
-        };
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["AttendeeRespondInvitationResponse"];
-        };
-      };
-    };
-  };
-  /**
-   * Get the ics file to import to your calendar
-   * Returns the calendar file
-   */
-  getCalendarFile: {
-    parameters: {
-      path: {
-        /** The appointment id you want to get the calendar file */
-        appointmentId: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": {
-          /** The token will be attached to the invitation response link in the invitation mail */
-          token: string;
-        };
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "text/calendar": unknown;
-        };
-      };
-    };
-  };
-  /**
-   * Join a meeting as a attendee
-   * Returns the client join appointment response.
-   */
-  joinAppointmentAsClient: {
-    parameters: {
-      path: {
-        /** Presentation path */
-        presentationPath: string;
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["JoinAppointmentResponse"];
-        };
-      };
-    };
-  };
-  /**
-   * Update attendee information
-   * Update attendee information
-   */
-  updateAttendee: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UpdateAttendeeRequestBody"];
-      };
-    };
-    responses: {
-      204: {
-        content: never;
-      };
-    };
-  };
-  /**
-   * Get the product ids for the attendee in product collection with the matching alias
-   * Returns the product ids for the requesting attendee and matching alias
-   */
-  getAttendeeProductCollection: {
-    parameters: {
-      path: {
-        /** The alias of collection you want to get */
-        alias: "liked" | "disliked";
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["AttendeeProductCollectionResponse"];
-        };
-      };
-    };
-  };
-  /**
-   * Add a product to the attendee product list
-   * Add a product with the alias to the product list of the attendee
-   */
-  attendeeProductCollectionAddProduct: {
-    parameters: {
-      path: {
-        /** The alias of collection you want to add */
-        alias: "liked" | "disliked";
-        /** The product id you want to add */
-        productId: string;
-      };
-    };
-    responses: {
-      204: {
-        content: {};
-      };
-    };
-  };
-  /**
-   * Remove a product with the alias from the for the attendee product collection
-   * Removes the product with the matching alias from of the attendee product collection
-   */
-  attendeeProductCollectionRemoveProduct: {
-    parameters: {
-      path: {
-        /** The alias of collection you want to remove */
-        alias: "liked" | "disliked";
-        /** The product id you want to remove */
-        productId: string;
-      };
-    };
-    responses: {
-      204: {
-        content: {};
-      };
-    };
-  };
-  /**
-   * Get the last seen products for the current attendee
-   * Returns the the last seen products for the requesting client
-   */
-  getLastSeenProducts: {
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["AttendeeProductCollectionLastSeenResponse"];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch presentation structure and flat navigation
-   * Resolves the presentation structure and navigation by using the attendeeContext information. There will be NO Slot-Data inside call store-api.guided-shopping.presentation-data for that
-   */
-  getPresentationStructure: {
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["PresentationStructure"];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch resolved data for specific slide
-   * Gives the resolved slot-data for the given slide index (slot-config)
-   */
-  getSlideData: {
-    parameters: {
-      path: {
-        /** Presentation CMS page id for which the data is requested */
-        presentationCmsPageId: string;
-        /** CMS section id for which the data is requested */
-        sectionId: string;
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["PresentationSlideData"];
-        };
-      };
-    };
-  };
-  /**
-   * Get the current presentation state
-   * Returns the presentation state for all and the client
-   */
-  getClientPresentationState: {
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["ClientPresentationStateResponse"];
-        };
-      };
-    };
-  };
-  /**
-   * Add a interaction to log
-   * Create a interaction log entry in a specific appointment
-   */
-  addInteraction: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateInteractionRequestBody"];
-      };
-    };
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  /**
-   * Fetch a product listing by criteria
-   * Fetches a product listing for a given criteria. It also provides filters, sortings and property aggregations, analogous to the /product-listing endpoint.
-   */
-  guidedShoppingProductListing: {
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["Criteria"] & {
-          /**
-           * Load interaction (like & dislike) to product of attendee. It will be added into product extensions named interaction
-           * @default false
-           */
-          interaction?: boolean;
-        };
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": {
-            elements?: components["schemas"]["Product"][];
+            elements?: components["schemas"]["B2bEmployee"][];
           } & components["schemas"]["EntitySearchResult"];
         };
       };
     };
   };
   /**
-   * Fetch a cms page for quickview with product data
-   * Takes a product identifier and returns the preconfigured quickview CMS layout (defined in SwagGuidedShopping.config.quickviewPageId ) hydrated with the product specific data
+   * Fetch a one employee by id
+   * This route is used to fetch one employee by id
    */
-  resolveQuickviewPage: {
+  readEmployee: {
     parameters: {
       path: {
-        /** The product id */
-        productId: string;
-        /** The cms page id using as product quick view */
-        cmsPageLayoutId: string;
+        /** Identifier of the employee to be fetched */
+        id: string;
       };
     };
     responses: {
+      /** Employee entity */
       200: {
         content: {
-          "application/json": {
-            cmsPage?: components["schemas"]["CmsPage"];
-            configurator?: components["schemas"]["PropertyGroup"][];
-            product?: components["schemas"]["Product"];
-          };
+          "application/json": components["schemas"]["B2bEmployee"];
+        };
+      };
+    };
+  };
+  /**
+   * Delete an employee by id
+   * This route is used to delete one employee by id
+   */
+  deleteEmployee: {
+    parameters: {
+      path: {
+        /** Identifier of the employee to be deleted */
+        id: string;
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Update a one employee by id
+   * This route is used to update one employee by id
+   */
+  updateEmployee: {
+    parameters: {
+      path: {
+        /** Identifier of the employee to be updated */
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** New email of the employee */
+          email?: string;
+          /** New first name of the employee */
+          firstName?: string;
+          /** New last name of the employee */
+          lastName?: string;
+          /** New id of the role of the employee */
+          roleId?: string;
+        };
+      };
+    };
+    responses: {
+      /** Employee entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bEmployee"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a single employee and returns the employee
+   * This route is used to create and return an employee
+   */
+  createEmployee: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Email of the new employee */
+          email: string;
+          /** First name of the new employee */
+          firstName: string;
+          /** Last name of the new employee */
+          lastName: string;
+          /** Id of the role of the new employee */
+          roleId?: string;
+        };
+      };
+    };
+    responses: {
+      /** Employee entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bEmployee"];
+        };
+      };
+    };
+  };
+  /**
+   * Reinvite employee by id
+   * This route is used to reinvite an employee via email by id
+   */
+  reinviteEmployee: {
+    parameters: {
+      path: {
+        /** Identifier of the employee to be reinvited */
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** URL of the storefront domain */
+          storefrontUrl?: string;
+        };
+      };
+    };
+    responses: {
+      /** Employee entity */
+      200: {
+        content: {
+          "application/json": components["schemas"]["B2bEmployee"];
         };
       };
     };
@@ -10468,7 +9123,12 @@ export type operations = {
     responses: {
       /** Redirect to external payment provider */
       200: {
-        content: never;
+        content: {
+          "application/json": {
+            redirectUrl: string | null;
+            [key: string]: unknown;
+          };
+        };
       };
     };
   };
@@ -10521,10 +9181,33 @@ export type operations = {
       200: {
         content: {
           "application/json": {
-            elements?: components["schemas"]["Language"][];
+            elements: components["schemas"]["Language"][];
           } & components["schemas"]["EntitySearchResult"];
         };
       };
+    };
+  };
+  /**
+   * Fetch and resolve Media Entities
+   * Fetch one or multiple Media Entities with the corresponding Identifier.
+   */
+  readMedia: {
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Identifier (UUID) of the media entity to be fetched. */
+          ids: string[];
+        };
+      };
+    };
+    responses: {
+      /** The loaded MediaCollection containing the requested Media Entities. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Media"][];
+        };
+      };
+      404: components["responses"]["404"];
     };
   };
   /**
@@ -10545,9 +9228,9 @@ export type operations = {
       };
       path: {
         /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
-        activeId: string;
+        activeId: string | components["schemas"]["NavigationType"];
         /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
-        rootId: string;
+        rootId: string | components["schemas"]["NavigationType"];
       };
     };
     requestBody: {
@@ -10738,7 +9421,7 @@ export type operations = {
       content: {
         "application/json": {
           /** The identifier of the order to be canceled. */
-          orderId?: string;
+          orderId: string;
         };
       };
     };
@@ -10775,660 +9458,6 @@ export type operations = {
             /** Total amount */
             total?: number;
           };
-        };
-      };
-    };
-  };
-  /**
-   * Fetch a list of products
-   * List products that match the given criteria. For performance reasons a limit should always be set.
-   */
-  readProduct: {
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["Criteria"];
-      };
-    };
-    responses: {
-      /** Entity search result containing products */
-      200: {
-        content: {
-          "application/json": {
-            elements?: components["schemas"]["Product"][];
-          } & components["schemas"]["EntitySearchResult"];
-        };
-      };
-    };
-  };
-  /** Export product export */
-  readProductExport: {
-    parameters: {
-      path: {
-        /** Access Key */
-        accessKey: string;
-        /** File Name */
-        fileName: string;
-      };
-    };
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  /**
-   * Fetch a product listing by category
-   * Fetches a product listing for a specific category. It also provides filters, sortings and property aggregations, analogous to the /search endpoint.
-   */
-  readProductListing: {
-    parameters: {
-      path: {
-        /** Identifier of a category. */
-        categoryId: string;
-      };
-    };
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["ProductListingCriteria"] &
-          components["schemas"]["ProductListingFlags"];
-      };
-    };
-    responses: {
-      /** Returns a product listing containing all products and additional fields to display a listing. */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ProductListingResult"];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch a single product
-   * This route is used to load a single product with the corresponding details. In addition to loading the data, the best variant of the product is determined when a parent id is passed.
-   */
-  readProductDetail: {
-    parameters: {
-      path: {
-        /** Product ID */
-        productId: string;
-      };
-    };
-    responses: {
-      /** Product information along with variant groups and options */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ProductDetailResponse"];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch cross-selling groups of a product
-   * This route is used to load the cross sellings for a product. A product has several cross selling definitions in which several products are linked. The route returns the cross sellings together with the linked products
-   */
-  readProductCrossSellings: {
-    parameters: {
-      path: {
-        /** Product ID */
-        productId: string;
-      };
-    };
-    responses: {
-      /** Found cross sellings */
-      200: {
-        content: {
-          "application/json": components["schemas"]["CrossSellingElementCollection"];
-        };
-      };
-    };
-  };
-  /**
-   * Search for a matching variant by product options.
-   * Performs a search for product variants and returns the best matching variant.
-   */
-  searchProductVariantIds: {
-    parameters: {
-      path: {
-        /** Product ID */
-        productId: string;
-      };
-    };
-    requestBody?: {
-      content: {
-        "application/json": {
-          /** The options parameter for the variant to find. */
-          options: string[];
-          /** The id of the option group that has been switched. */
-          switchedGroup?: string;
-        };
-      };
-    };
-    responses: {
-      /** Returns an FoundCombination struct containing the ids matching the search. */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FindProductVariantRouteResponse"];
-        };
-      };
-    };
-  };
-  /**
-   * Save a product review
-   * Saves a review for a product. Reviews have to be activated in the settings.
-   */
-  saveProductReview: {
-    parameters: {
-      path: {
-        /** Identifier of the product which is reviewed. */
-        productId: string;
-      };
-    };
-    requestBody?: {
-      content: {
-        "application/json": {
-          /** The content of review. */
-          content: string;
-          /** The email address of the review author. If not set, the email of the customer is chosen. */
-          email?: string;
-          /** The name of the review author. If not set, the first name of the customer is chosen. */
-          name?: string;
-          /**
-           * Format: double
-           * The review rating for the product.
-           */
-          points: number;
-          /** The title of the review. */
-          title: string;
-        };
-      };
-    };
-    responses: {
-      /** Success response indicating the review was saved successfuly. */
-      200: {
-        content: never;
-      };
-    };
-  };
-  /**
-   * Fetch product reviews
-   * Perform a filtered search for product reviews.
-   */
-  readProductReviews: {
-    parameters: {
-      path: {
-        /** Identifier of the product. */
-        productId: string;
-      };
-    };
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["Criteria"];
-      };
-    };
-    responses: {
-      /** Entity search result containing product reviews */
-      200: {
-        content: {
-          "application/json": {
-            elements?: components["schemas"]["ProductReview"][];
-          } & components["schemas"]["EntitySearchResult"];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch salutations
-   * Perform a filtered search for salutations.
-   */
-  readSalutation: {
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["Criteria"];
-      };
-    };
-    responses: {
-      /** Entity search result containing salutations. */
-      200: {
-        content: {
-          "application/json": {
-            elements?: components["schemas"]["Salutation"][];
-          } & components["schemas"]["EntitySearchResult"];
-        };
-      };
-    };
-  };
-  /** Access point for different api logics which are provided by apps over script hooks */
-  postScriptStoreApiRoute: {
-    parameters: {
-      path: {
-        /** Dynamic hook which used to build the hook name */
-        hook: string;
-      };
-    };
-    responses: {
-      /** Returns different structures of results based on the called script. */
-      200: {
-        content: never;
-      };
-    };
-  };
-  /**
-   * Search for products
-   * Performs a search for products which can be used to display a product listing.
-   */
-  searchPage: {
-    requestBody?: {
-      content: {
-        "application/json": {
-          /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
-          search: string;
-        } & components["schemas"]["ProductListingCriteria"] &
-          components["schemas"]["ProductListingFlags"];
-      };
-    };
-    responses: {
-      /** Returns a product listing containing all products and additional fields to display a listing. */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ProductListingResult"];
-        };
-      };
-    };
-  };
-  /**
-   * Search for products (suggest)
-   * Can be used to implement search previews or suggestion listings, that don’t require any interaction.
-   */
-  searchSuggest: {
-    requestBody: {
-      content: {
-        "application/json": {
-          /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
-          search: string;
-        } & components["schemas"]["ProductListingFlags"];
-      };
-    };
-    responses: {
-      /**
-       * Returns a product listing containing all products and additional fields.
-       *
-       * Note: Aggregations, currentFilters and availableSortings are empty in this response. If you need them to display a listing, use the /search route instead.
-       */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ProductListingResult"];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch SEO routes
-   * Perform a filtered search for seo urls.
-   */
-  readSeoUrl: {
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["Criteria"];
-      };
-    };
-    responses: {
-      /** Entity search result containing seo urls. */
-      200: {
-        content: {
-          "application/json": {
-            elements?: components["schemas"]["SeoUrl"][];
-          } & components["schemas"]["EntitySearchResult"];
-        };
-      };
-      404: components["responses"]["404"];
-    };
-  };
-  /**
-   * Fetch shipping methods
-   * Perform a filtered search for shipping methods.
-   */
-  readShippingMethod: {
-    parameters: {
-      query?: {
-        /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
-        onlyAvailable?: boolean;
-      };
-    };
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["Criteria"];
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": {
-            /** aggregation result */
-            aggregations?: GenericRecord;
-            elements?: components["schemas"]["ShippingMethod"][];
-            /** Total amount */
-            total?: number;
-          };
-        };
-      };
-    };
-  };
-  /**
-   * Fetch sitemaps
-   * Fetches a list of compressed sitemap files, which are often used by search engines.
-   */
-  readSitemap: {
-    responses: {
-      /** Returns a list of available sitemaps. */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Sitemap"][];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch a list of approval rules
-   * This route is used to load approval rules
-   */
-  readApprovalRules: {
-    parameters: {
-      query?: {
-        /** Page number */
-        p?: number;
-        /** Number of items per page */
-        limit?: number;
-      };
-    };
-    responses: {
-      /** Entity search result containing approval rules */
-      200: {
-        content: {
-          "application/json": {
-            elements?: components["schemas"]["ApprovalRule"][];
-          } & components["schemas"]["EntitySearchResult"];
-        };
-      };
-    };
-  };
-  /**
-   * List all approval rules
-   * This route is used to list all approval rules from the store
-   */
-  listApprovalRules: {
-    parameters: {
-      query?: {
-        /** Page number */
-        p?: number;
-        /** Number of items per page */
-        limit?: number;
-      };
-    };
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["Criteria"];
-      };
-    };
-    responses: {
-      /** Entity search result containing approval rules */
-      200: {
-        content: {
-          "application/json": {
-            elements?: components["schemas"]["ApprovalRule"][];
-          } & components["schemas"]["EntitySearchResult"];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch one approval rule by id
-   * This route is used to fetch a approval rule from the store by id
-   */
-  readApprovalRule: {
-    parameters: {
-      path: {
-        /** Identifier of the approval rule to be fetched */
-        id: string;
-      };
-    };
-    responses: {
-      /** Approval rule entity */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ApprovalRule"];
-        };
-      };
-    };
-  };
-  /**
-   * Update a approval rule by id
-   * This route is used to update a approval rule from the store by id
-   */
-  updateApprovalRule: {
-    parameters: {
-      path: {
-        /** Identifier of the approval rule to be updated */
-        id: string;
-      };
-    };
-    requestBody?: {
-      content: {
-        "application/json": {
-          /** Active status of the approval rule */
-          active?: boolean;
-          /** ID of the role that can approve the rule */
-          approvalRuleApprove?: string;
-          /** List of rules */
-          approvalRuleCondition?: {
-            /** Type of the rule */
-            type?: string;
-            /** Value */
-            value?: string;
-          };
-          /** Name of the approval rule */
-          approvalRuleName?: string;
-          /** ID of the role that is affected by the rule */
-          approvalRuleRole?: string;
-          /** Description of the approval rule */
-          description?: string;
-          /** Priority of the approval rule */
-          priority?: number;
-        };
-      };
-    };
-    responses: {
-      /** Approval rule entity */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ApprovalRule"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a new approval rule
-   * This route is used to create a new approval rule
-   */
-  createApprovalRule: {
-    requestBody?: {
-      content: {
-        "application/json": {
-          /** Active status of the approval rule */
-          active?: boolean;
-          /** ID of the role that can approve the rule */
-          approvalRuleApprove?: string;
-          /** List of rules */
-          approvalRuleCondition?: {
-            /** Type of the rule */
-            type?: string;
-            /** Value */
-            value?: string;
-          };
-          /** Name of the approval rule */
-          approvalRuleName?: string;
-          /** ID of the role that is affected by the rule */
-          approvalRuleRole?: string;
-          /** Description of the approval rule */
-          description?: string;
-          /** Priority of the approval rule */
-          priority?: number;
-        };
-      };
-    };
-    responses: {
-      /** Approval rule entity */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ApprovalRule"];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch a list of employees
-   * This route is used to load employees
-   */
-  readEmployees: {
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["Criteria"];
-      };
-    };
-    responses: {
-      /** Entity search result containing employees */
-      200: {
-        content: {
-          "application/json": {
-            elements?: components["schemas"]["B2bEmployee"][];
-          } & components["schemas"]["EntitySearchResult"];
-        };
-      };
-    };
-  };
-  /**
-   * Fetch a one employee by id
-   * This route is used to fetch one employee by id
-   */
-  readEmployee: {
-    parameters: {
-      path: {
-        /** Identifier of the employee to be fetched */
-        id: string;
-      };
-    };
-    responses: {
-      /** Employee entity */
-      200: {
-        content: {
-          "application/json": components["schemas"]["B2bEmployee"];
-        };
-      };
-    };
-  };
-  /**
-   * Delete an employee by id
-   * This route is used to delete one employee by id
-   */
-  deleteEmployee: {
-    parameters: {
-      path: {
-        /** Identifier of the employee to be deleted */
-        id: string;
-      };
-    };
-    responses: {
-      /** No content response */
-      204: {
-        content: never;
-      };
-    };
-  };
-  /**
-   * Update a one employee by id
-   * This route is used to update one employee by id
-   */
-  updateEmployee: {
-    parameters: {
-      path: {
-        /** Identifier of the employee to be updated */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": {
-          /** New email of the employee */
-          email?: string;
-          /** New first name of the employee */
-          firstName?: string;
-          /** New last name of the employee */
-          lastName?: string;
-          /** New id of the role of the employee */
-          roleId?: string;
-        };
-      };
-    };
-    responses: {
-      /** Employee entity */
-      200: {
-        content: {
-          "application/json": components["schemas"]["B2bEmployee"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a single employee and returns the employee
-   * This route is used to create and return an employee
-   */
-  createEmployee: {
-    requestBody: {
-      content: {
-        "application/json": {
-          /** Email of the new employee */
-          email?: string;
-          /** First name of the new employee */
-          firstName?: string;
-          /** Last name of the new employee */
-          lastName?: string;
-          /** Id of the role of the new employee */
-          roleId?: string;
-        };
-      };
-    };
-    responses: {
-      /** Employee entity */
-      200: {
-        content: {
-          "application/json": components["schemas"]["B2bEmployee"];
-        };
-      };
-    };
-  };
-  /**
-   * Reinvite employee by id
-   * This route is used to reinvite an employee via email by id
-   */
-  reinviteEmployee: {
-    parameters: {
-      path: {
-        /** Identifier of the employee to be reinvited */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": {
-          /** URL of the storefront domain */
-          storefrontUrl?: string;
-        };
-      };
-    };
-    responses: {
-      /** Employee entity */
-      200: {
-        content: {
-          "application/json": components["schemas"]["B2bEmployee"];
         };
       };
     };
@@ -11551,6 +9580,212 @@ export type operations = {
       200: {
         content: {
           "application/json": components["schemas"]["PendingOrder"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch a list of products
+   * List products that match the given criteria. For performance reasons a limit should always be set.
+   */
+  readProduct: {
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Entity search result containing products */
+      200: {
+        content: {
+          "application/json": {
+            elements?: components["schemas"]["Product"][];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /** Export product export */
+  readProductExport: {
+    parameters: {
+      path: {
+        /** Access Key */
+        accessKey: string;
+        /** File Name */
+        fileName: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Fetch a product listing by category
+   * Fetches a product listing for a specific category. It also provides filters, sortings and property aggregations, analogous to the /search endpoint.
+   */
+  readProductListing: {
+    parameters: {
+      header?: {
+        /** Determines if the response must contain a SeoUrl entity for a product entity */
+        "sw-include-seo-urls"?: boolean;
+      };
+      path: {
+        /** Identifier of a category. */
+        categoryId: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["ProductListingCriteria"] &
+          components["schemas"]["ProductListingFlags"];
+      };
+    };
+    responses: {
+      /** Returns a product listing containing all products and additional fields to display a listing. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ProductListingResult"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch a single product
+   * This route is used to load a single product with the corresponding details. In addition to loading the data, the best variant of the product is determined when a parent id is passed.
+   */
+  readProductDetail: {
+    parameters: {
+      path: {
+        /** Product ID */
+        productId: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Product information along with variant groups and options */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ProductDetailResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch cross-selling groups of a product
+   * This route is used to load the cross sellings for a product. A product has several cross selling definitions in which several products are linked. The route returns the cross sellings together with the linked products
+   */
+  readProductCrossSellings: {
+    parameters: {
+      path: {
+        /** Product ID */
+        productId: string;
+      };
+    };
+    responses: {
+      /** Found cross sellings */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CrossSellingElementCollection"];
+        };
+      };
+    };
+  };
+  /**
+   * Search for a matching variant by product options.
+   * Performs a search for product variants and returns the best matching variant.
+   */
+  searchProductVariantIds: {
+    parameters: {
+      path: {
+        /** Product ID */
+        productId: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** The options parameter for the variant to find. */
+          options: string[];
+          /** The id of the option group that has been switched. */
+          switchedGroup?: string;
+        };
+      };
+    };
+    responses: {
+      /** Returns an FoundCombination struct containing the ids matching the search. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["FindProductVariantRouteResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Save a product review
+   * Saves a review for a product. Reviews have to be activated in the settings.
+   */
+  saveProductReview: {
+    parameters: {
+      path: {
+        /** Identifier of the product which is reviewed. */
+        productId: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** The content of review. */
+          content: string;
+          /** The email address of the review author. If not set, the email of the customer is chosen. */
+          email?: string;
+          /** The name of the review author. If not set, the first name of the customer is chosen. */
+          name?: string;
+          /**
+           * Format: double
+           * The review rating for the product.
+           */
+          points: number;
+          /** The title of the review. */
+          title: string;
+        };
+      };
+    };
+    responses: {
+      /** Success response indicating the review was saved successfuly. */
+      200: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Fetch product reviews
+   * Perform a filtered search for product reviews.
+   */
+  readProductReviews: {
+    parameters: {
+      path: {
+        /** Identifier of the product. */
+        productId: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Entity search result containing product reviews */
+      200: {
+        content: {
+          "application/json": {
+            elements?: components["schemas"]["ProductReview"][];
+          } & components["schemas"]["EntitySearchResult"];
         };
       };
     };
@@ -11954,6 +10189,217 @@ export type operations = {
               permissionName?: string;
             }[];
           } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch salutations
+   * Perform a filtered search for salutations.
+   */
+  readSalutation: {
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Entity search result containing salutations. */
+      200: {
+        content: {
+          "application/json": {
+            elements?: components["schemas"]["Salutation"][];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+    };
+  };
+  /** Access point for different api logics which are provided by apps over script hooks */
+  postScriptStoreApiRoute: {
+    parameters: {
+      path: {
+        /** Dynamic hook which used to build the hook name */
+        hook: string;
+      };
+    };
+    responses: {
+      /** Returns different structures of results based on the called script. */
+      200: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Search for products
+   * Performs a search for products which can be used to display a product listing.
+   */
+  searchPage: {
+    requestBody?: {
+      content: {
+        "application/json": {
+          /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
+          search: string;
+        } & components["schemas"]["ProductListingCriteria"] &
+          components["schemas"]["ProductListingFlags"];
+      };
+    };
+    responses: {
+      /** Returns a product listing containing all products and additional fields to display a listing. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ProductListingResult"];
+        };
+      };
+    };
+  };
+  /**
+   * Search for products (suggest)
+   * Can be used to implement search previews or suggestion listings, that don’t require any interaction.
+   */
+  searchSuggest: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
+          search: string;
+        } & components["schemas"]["ProductListingFlags"];
+      };
+    };
+    responses: {
+      /**
+       * Returns a product listing containing all products and additional fields.
+       *
+       * Note: Aggregations, currentFilters and availableSortings are empty in this response. If you need them to display a listing, use the /search route instead.
+       */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ProductListingResult"];
+        };
+      };
+    };
+  };
+  /**
+   * Fetch SEO routes
+   * Perform a filtered search for seo urls.
+   */
+  readSeoUrl: {
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      /** Entity search result containing seo urls. */
+      200: {
+        content: {
+          "application/json": {
+            elements: components["schemas"]["SeoUrl"][];
+          } & components["schemas"]["EntitySearchResult"];
+        };
+      };
+      404: components["responses"]["404"];
+    };
+  };
+  /**
+   * Fetch shipping methods
+   * Perform a filtered search for shipping methods.
+   */
+  readShippingMethod: {
+    parameters: {
+      query?: {
+        /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
+        onlyAvailable?: boolean;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["Criteria"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            /** aggregation result */
+            aggregations?: GenericRecord;
+            elements?: components["schemas"]["ShippingMethod"][];
+            /** Total amount */
+            total?: number;
+          };
+        };
+      };
+    };
+  };
+  /**
+   * Add shopping lists to cart
+   * This route is used to add shopping lists to cart
+   */
+  addShoppingListsToCart: {
+    requestBody: {
+      content: {
+        "application/json": {
+          /** Shopping list ids */
+          ids: string[];
+        };
+      };
+    };
+    responses: {
+      /** No content response */
+      204: {
+        content: never;
+      };
+    };
+  };
+  /**
+   * Fetch sitemaps
+   * Fetches a list of compressed sitemap files, which are often used by search engines.
+   */
+  readSitemap: {
+    responses: {
+      /** Returns a list of available sitemaps. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Sitemap"][];
+        };
+      };
+    };
+  };
+  /**
+   * Authenticates via SSO
+   * Authenticates login via a given SSO provider ID
+   */
+  auth: {
+    parameters: {
+      path: {
+        /** Identifier of the SSO provider used to authenticate */
+        providerId: string;
+      };
+    };
+    responses: {
+      /** Successfully authenticated */
+      204: {
+        content: {
+          "application/json": components["schemas"]["SuccessResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Redirects after authentication
+   * Redirects after authenticated login via a given SSO provider ID
+   */
+  redirect: {
+    parameters: {
+      path: {
+        /** Identifier of the SSO provider used to authenticate */
+        providerId: string;
+      };
+    };
+    responses: {
+      /** Successfully authenticated */
+      204: {
+        content: {
+          "application/json": components["schemas"]["SuccessResponse"];
         };
       };
     };
