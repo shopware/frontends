@@ -34,15 +34,10 @@ const emitUpdateActiveClass = (
 
 <template>
   <template
-    v-for="(childElement, index) in navigationElementChildren"
+    v-for="childElement in navigationElementChildren"
     :key="childElement.id"
   >
-    <div
-      :class="{
-        'sm:pb-0': index !== navigationElementChildren.length - 1,
-      }"
-      class="relative grid gap-6 bg-white px-3 py-2 sm:gap-6 sm:p-3"
-    >
+    <div class="relative grid gap-6 bg-white px-3 py-2">
       <NuxtLink
         :to="formatLink(getCategoryRoute(childElement))"
         :target="
