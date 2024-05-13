@@ -27,7 +27,7 @@ let translations: Translations = {
     reviews: "Reviews",
   },
 };
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const currentTab = ref<number>(1);
 const { product } = useProduct(props.content.data?.product);

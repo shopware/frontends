@@ -30,6 +30,16 @@
       "removedFromWishlist": "{p} wurde aus der Wunschliste entfernt.",
       "addedToCart": "{p} wurde dem Warenkorb hinzugefügt.",
       "reviewAdded": "Vielen Dank für Ihre Bewertung"
-    }
+    },
+    "to": "Bis",
+    "from": "Ab",
+    "pricesIncl": "Preise inkl. MwSt. zzgl. Versandkosten",
+    "pricesExcl": "Preise exkl. MwSt. zzgl. Versandkosten",
+    "deliveryTime": "Lieferzeit",
+    "days": "tage",
+    "noAvailable": "Nicht verfügbar",
+    "productNumber": "Artikelnummer",
+    "addedToCart": "in den Warenkorb gelegt",
+    "qty": "Menge"
   }
 }
