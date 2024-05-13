@@ -62,7 +62,7 @@ let translations: Translations = {
   },
 };
 
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { product } = toRefs(props);
 
