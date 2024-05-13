@@ -18,6 +18,9 @@ export default defineNuxtConfig({
     //   devStorefrontUrl: "",
     // },
   },
+  amazonPay: {
+    pubKey: "",
+  },
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     endpoint: "https://demo-frontends.shopware.store/store-api/",
@@ -77,6 +80,7 @@ export default defineNuxtConfig({
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
     "@nuxtjs/i18n",
+    "../../examples/amazon-pay/",
   ],
   // components: true,
   components: {
