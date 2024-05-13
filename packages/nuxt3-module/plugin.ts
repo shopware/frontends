@@ -37,6 +37,7 @@ export default defineNuxtPlugin((NuxtApp) => {
         expires: 365, // days
         path: "/",
         sameSite: "lax",
+        secure: shopwareEndpoint.startsWith("https://"),
       });
     },
     onErrorHandler(response) {
