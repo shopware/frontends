@@ -31,6 +31,9 @@
       "addedToCart": "{p} wurde dem Warenkorb hinzugefügt.",
       "reviewAdded": "Vielen Dank für Ihre Bewertung"
     },
+    "badges": {
+      "topseller": "Tipp"
+    },
     "to": "Bis",
     "from": "Ab",
     "pricesIncl": "Preise inkl. MwSt. zzgl. Versandkosten",
