@@ -31,6 +31,9 @@
       "addedToCart": "{p} has been added to cart.",
       "reviewAdded": "Thank you for submitting your review"
     },
+    "badges": {
+      "topseller": "Tip"
+    },
     "to": "To",
     "from": "From",
     "pricesIncl": "Prices incl. VAT plus shipping costs",
