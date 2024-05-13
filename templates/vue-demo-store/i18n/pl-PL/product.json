@@ -33,6 +33,16 @@
     },
     "badges": {
       "topseller": "Tip"
-    }
+    },
+    "to": "Do",
+    "from": "Od",
+    "pricesIncl": "Ceny zawierają VAT plus koszty wysyłki",
+    "pricesExcl": "Ceny nie zawierają VAT plus koszty wysyłki",
+    "deliveryTime": "Czas dostawy",
+    "days": "dni",
+    "noAvailable": "Produkt niedostępny",
+    "productNumber": "Numer produktu",
+    "addedToCart": "został dodany do koszyka",
+    "qty": "Ilość"
   }
 }

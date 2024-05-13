@@ -52,7 +52,7 @@ let translations: Translations = {
   },
 };
 
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { getConfigValue } = useCmsElementConfig(props.content);
 const alignment = computed(() => getConfigValue("alignment"));
