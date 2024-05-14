@@ -21,12 +21,27 @@ declare module "#shopware" {
   // };
 
   type extendedPaths =
-    | "payPalCreateOrder post /store-api/paypal/express/create-order?isPayPalExpressCheckout=1"
-    | "payPalPrepare post /store-api/paypal/express/prepare-checkout?isPayPalExpressCheckout=1"
-    | operationPaths;
-  type extendedOperations = {
+    | "payPalCreateOrder post /paypal/express/create-order"
+    | "payPalPrepare post /paypal/express/prepare-checkout"
+    | defaultOperationPaths;
+  type extendedOperations = defaultOperations<changedComponents> & {
+    handlePaymentMethod: {
+      parameters: {
+        query: {
+          isPayPalExpressCheckout?: boolean;
+          paypalOrderId?: string;
+        };
+      };
+    };
     payPalCreateOrder: {
       responses: {
+        200: {
+          content: {
+            "application/json": {
+              token: string;
+            };
+          };
+        };
         204: never;
         400: never;
       };
@@ -48,10 +63,10 @@ declare module "#shopware" {
         };
       };
     };
-  } & operations;
+  };
 
-  export type operations = defaultOperations<changedComponents>;
-  export type operationPaths = defaultOperationPaths;
+  export type operations = extendedOperations;
+  export type operationPaths = extendedPaths;
   export type Schemas = changedComponents["schemas"];
 
   // we're exporting our own Api Client definition as it depends on our own instance

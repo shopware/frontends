@@ -14,7 +14,6 @@ import {
   useProductSearch,
   useProductPrice,
   usePrice,
-  useShopwareContext,
   useAddToCart,
   useCart,
 } from "@shopware-pwa/composables-next/dist";
@@ -23,6 +22,7 @@ import {
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import { useRoute } from "vue-router";
+import { apiClient } from "./apiClient";
 
 const route = useRoute();
 
@@ -35,7 +35,6 @@ const { search } = useProductSearch();
 const { getFormattedPrice } = usePrice();
 const { paymentMethods, getPaymentMethods, createOrder } = useCheckout();
 const { setPaymentMethod } = useSessionContext();
-const { apiClient } = useShopwareContext();
 const { addToCart } = useAddToCart(productFound);
 const { refreshCart } = useCart();
 
@@ -82,9 +81,9 @@ const renderPaypalButtons = async () => {
         await addToCart();
 
         const response = await apiClient.invoke(
-          "payPalCreateOrder post /store-api/paypal/express/create-order?isPayPalExpressCheckout=1",
+          "payPalCreateOrder post /paypal/express/create-order",
         );
-        return response?.data?.token;
+        return response?.token;
       },
 
       // Finalize the transaction after payer approval
@@ -92,7 +91,7 @@ const renderPaypalButtons = async () => {
       onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
         console.warn("onApprove", data);
         const response = await apiClient.invoke(
-          "payPalPrepare post /store-api/paypal/express/prepare-checkout?isPayPalExpressCheckout=1",
+          "payPalPrepare post /paypal/express/prepare-checkout",
           {
             token: data.orderID,
           },
@@ -100,14 +99,18 @@ const renderPaypalButtons = async () => {
         orderCreated.value = await createOrder();
         refreshCart();
         const handlePaymentResponse = await apiClient.invoke(
-          "handlePaymentMethod post /store-api/handle-payment",
+          "handlePaymentMethod post /handle-payment",
           {
             orderId: orderCreated.value.id,
-            successUrl: `${window.location.origin}/ExpressCheckout?order=${orderCreated.value.id}&success=true`,
+            isPayPalExpressCheckout: true,
+            paypalOrderId: data.orderID,
           },
         );
-        redirectPaymentUrl.value = handlePaymentResponse?.data?.redirectUrl;
-        //
+
+        // call the /payment/finalize-transaction endpoint
+        await fetch(handlePaymentResponse?.redirectUrl);
+
+        // [navigate to success page]
       },
     })
     .render("#paypal-buttons");
@@ -141,8 +144,8 @@ onMounted(async () => {
     },
   });
 
-  if (orderResponse?.elements?.length) {
-    orderCreated.value = orderResponse.elements[0];
+  if (orderResponse.orders.elements.length) {
+    orderCreated.value = orderResponse.orders.elements[0];
   }
   isLoading.value = false;
 });
