@@ -14,6 +14,7 @@ const { formatLink } = useInternationalization(localePath);
 
 defineProps<{
   navigationElementChildren: Array<NavigationElement>;
+  lastElement?: boolean;
 }>();
 
 const emits = defineEmits<{
@@ -22,6 +23,7 @@ const emits = defineEmits<{
     navigationId: string,
     parentId: string | undefined,
   ): void;
+  (e: "focusoutLastElement", lastElement: boolean): void;
 }>();
 
 const emitUpdateActiveClass = (
@@ -34,7 +36,7 @@ const emitUpdateActiveClass = (
 
 <template>
   <template
-    v-for="childElement in navigationElementChildren"
+    v-for="(childElement, index) in navigationElementChildren"
     :key="childElement.id"
   >
     <div class="relative grid gap-6 bg-white px-3 py-2">
@@ -48,6 +50,13 @@ const emitUpdateActiveClass = (
         }"
         class="flex justify-between rounded-lg hover:bg-secondary-50 p-2"
         @click="emitUpdateActiveClass(childElement.id, childElement.parentId)"
+        @focusout="
+          $props.lastElement === true &&
+          navigationElementChildren &&
+          navigationElementChildren.length - 1 === index
+            ? emits('focusoutLastElement', true)
+            : null
+        "
       >
         <div
           class="flex flex-col flex-grow pl-2"
