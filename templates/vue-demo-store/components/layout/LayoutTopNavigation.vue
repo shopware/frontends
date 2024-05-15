@@ -117,13 +117,7 @@ const updateActiveClass = (
 //#region - keyboard navigation (highliy connected to the HTML structure)
 const activeElement = useActiveElement();
 onKeyStroke("ArrowDown", (e) => {
-  // first child link
-  if (activeElement.value?.parentElement?.getElementsByTagName("a")[1]) {
-    e.preventDefault();
-    activeElement.value.parentElement.getElementsByTagName("a")[1].focus();
-    return;
-  }
-  // next child link
+  // next parent link or next child link
   if (
     activeElement.value?.parentElement?.nextElementSibling?.getElementsByTagName(
       "a",
@@ -135,31 +129,10 @@ onKeyStroke("ArrowDown", (e) => {
       .focus();
     return;
   }
-  // next parent link
-  if (
-    activeElement.value?.parentElement?.parentElement?.parentElement?.parentElement?.nextElementSibling?.getElementsByTagName(
-      "a",
-    )[0]
-  ) {
-    e.preventDefault();
-    activeElement.value.parentElement.parentElement.parentElement.parentElement.nextElementSibling
-      .getElementsByTagName("a")[0]
-      .focus();
-    return;
-  }
-  // first parent link
-  if (document.getElementsByTagName("nav")[0].getElementsByTagName("a")[0]) {
-    e.preventDefault();
-    document
-      .getElementsByTagName("nav")[0]
-      .getElementsByTagName("a")[0]
-      .focus();
-    return;
-  }
 });
 
 onKeyStroke("ArrowUp", (e) => {
-  // previous child link
+  // previous parent link or previous child link
   if (
     activeElement.value?.parentElement?.previousElementSibling?.getElementsByTagName(
       "a",
@@ -171,26 +144,26 @@ onKeyStroke("ArrowUp", (e) => {
       .focus();
     return;
   }
-  // parent link
-  if (
-    activeElement.value?.parentElement?.parentElement?.parentElement
-      ?.previousElementSibling
-  ) {
-    e.preventDefault();
-    (
-      activeElement.value.parentElement.parentElement.parentElement
-        .previousElementSibling as HTMLElement
-    ).focus();
-    return;
-  }
 });
 
+function isFocusInsideNav() {
+  if (activeElement.value) {
+    const focusInsideMenu = document
+      .getElementsByTagName("nav")[0]
+      .contains(activeElement.value);
+    return focusInsideMenu;
+  }
+  return false;
+}
+
 onKeyStroke("Escape", () => {
-  currentMenuPosition.value = undefined;
-  document
-    .getElementsByTagName("header")[0]
-    .getElementsByTagName("a")[0]
-    .focus();
+  if (isFocusInsideNav()) {
+    currentMenuPosition.value = undefined;
+    document
+      .getElementsByTagName("header")[0]
+      .getElementsByTagName("a")[0]
+      .focus();
+  }
 });
 //#endregion - keyboard navigation
 
@@ -202,6 +175,7 @@ watch(
       resetNavigationActiveClass(navigationElements.value);
     }
     resetActiveClass.value = true;
+    currentMenuPosition.value = undefined;
   },
 );
 </script>
@@ -214,7 +188,7 @@ watch(
     role="menu"
   >
     <div
-      v-for="navigationElement in navigationElements"
+      v-for="(navigationElement, index) in navigationElements"
       :key="navigationElement.id"
       class="relative hover:bg-secondary-50 rounded-lg"
       @mouseover="currentMenuPosition = navigationElement.id"
@@ -266,7 +240,13 @@ watch(
             <template v-if="navigationElement.children.length > 0">
               <LayoutTopNavigationRecursive
                 :navigation-element-children="navigationElement.children"
+                :last-element="
+                  navigationElements
+                    ? navigationElements.length - 1 === index
+                    : false
+                "
                 @update-active-class="onUpdateActiveClass"
+                @focusout-last-element="currentMenuPosition = undefined"
               />
             </template>
             <div
