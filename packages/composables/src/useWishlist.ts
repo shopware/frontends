@@ -97,7 +97,7 @@ export function useWishlist(): UseWishlistReturn {
   };
 
   const getTotalPagesCount = computed(() =>
-    Math.ceil(totalWishlistItemsCount.value / +limit.value),
+    Math.ceil(totalWishlistItemsCount.value / limit.value),
   );
 
   const clearWishlist = async () => {

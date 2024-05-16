@@ -34,7 +34,7 @@ export type UseSyncWishlistReturn = {
 };
 
 const _wishlistItems: Ref<string[]> = ref([]);
-const totalWishlistItemsCount: Ref<number> = ref(15);
+const totalWishlistItemsCount: Ref<number> = ref(0);
 
 /**
  * Composable to manage wishlist via API

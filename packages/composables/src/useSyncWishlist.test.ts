@@ -38,7 +38,7 @@ describe("useSyncWishlist", () => {
         const { vm } = useSetup(() => useSyncWishlist());
 
         vm.getWishlistProducts();
-        expect(vm.totalWishlistItemsCount).toBe(15);
+        expect(vm.totalWishlistItemsCount).toBe(0);
         expect(vm.items.length).toBe(0);
       });
     });
