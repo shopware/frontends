@@ -195,10 +195,8 @@ function next() {
               @click="() => changeCover(i)"
             >
               <div v-if="isSpatial(image.media)" class="h-full relative">
-                <img
+                <CmsElementImageGallery3dPlaceholder
                   class="w-full h-full object-center"
-                  src="~/assets/3d.svg"
-                  alt="3d object"
                 />
                 <span
                   class="absolute bottom-0 text-sm bg-gray rounded px-1 text-white"
