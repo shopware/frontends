@@ -27,7 +27,7 @@ let translations: Translations = {
   },
 };
 
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const purchaseUnit = computed(() => props.product?.purchaseUnit);
 const unitName = computed(() => props.product?.unit?.translated?.name);

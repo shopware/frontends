@@ -47,6 +47,9 @@ type Translations = {
     addedToCart: string;
     addToCart: string;
     details: string;
+    badges: {
+      topseller: string;
+    };
   };
 };
 
@@ -59,10 +62,13 @@ let translations: Translations = {
     addedToCart: "has been added to cart.",
     addToCart: "Add to cart",
     details: "Details",
+    badges: {
+      topseller: "Tip",
+    },
   },
 };
 
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { product } = toRefs(props);
 
@@ -138,6 +144,13 @@ const srcPath = computed(() => {
         layoutType === 'image' ? 'h-80' : 'h-60',
       ]"
     >
+      <div class="absolute top-5 -left-1 z-10">
+        <span
+          v-if="product.markAsTopseller"
+          class="bg-[#FFBD5D] px-2.5 py-1.5 color-white text-xl"
+          >{{ translations.product.badges.topseller }}</span
+        >
+      </div>
       <RouterLink
         :to="buildUrlPrefix(getProductRoute(product), getUrlPrefix())"
         class="overflow-hidden"

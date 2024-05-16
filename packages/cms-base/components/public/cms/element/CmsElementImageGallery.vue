@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementImageGallery } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
+import { isSpatial } from "../../../../helpers/media/isSpatial";
 import SwSlider from "../../../SwSlider.vue";
 import { computed, onMounted, ref } from "vue";
 
@@ -193,7 +194,18 @@ function next() {
               }"
               @click="() => changeCover(i)"
             >
+              <div v-if="isSpatial(image.media)" class="h-full relative">
+                <CmsElementImageGallery3dPlaceholder
+                  class="w-full h-full object-center"
+                />
+                <span
+                  class="absolute bottom-0 text-sm bg-gray rounded px-1 text-white"
+                >
+                  3D</span
+                >
+              </div>
               <img
+                v-else
                 loading="lazy"
                 :src="image.media.url"
                 class="w-full h-full object-center object-cover"
