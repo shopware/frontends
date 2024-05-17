@@ -5,7 +5,8 @@ const props = defineProps<{
   orderId: string;
 }>();
 const isLoading = ref(false);
-
+const { pushSuccess, pushError } = useNotifications();
+const { t } = useI18n();
 const {
   loadOrderDetails,
   order,
@@ -15,6 +16,7 @@ const {
   paymentChangeable,
   getPaymentMethods,
   changePaymentMethod,
+  statusTechnicalName,
 } = await useOrderDetails(props.orderId);
 
 onMounted(() => {
@@ -31,8 +33,15 @@ const selectedPaymentMethod = computed({
   },
   async set(paymentMethodId: string) {
     isLoading.value = true;
-    await changePaymentMethod(paymentMethodId);
-    isLoading.value = false;
+    try {
+      await changePaymentMethod(paymentMethodId);
+      pushSuccess(t("account.messages.paymentMethodChanged"));
+    } catch (error) {
+      console.error(error);
+      pushError(t("messages.error"));
+    } finally {
+      isLoading.value = false;
+    }
   },
 });
 const paymentMethods = await getPaymentMethods();
@@ -45,11 +54,13 @@ export default {
 </script>
 
 <template>
-  <div v-if="paymentChangeable" class="px-2 py-4">
+  <div
+    v-if="paymentChangeable && statusTechnicalName === 'open'"
+    class="px-2 py-4"
+  >
     <h3 class="mb-5 text-secondary-400 text-base">
       {{ $t("account.order.paymentMethod") }}
     </h3>
-
     <ul class="pl-2">
       <li
         v-for="singlePaymentMethod in paymentMethods"
@@ -64,6 +75,8 @@ export default {
           type="radio"
           class="focus:ring-primary h-4 w-4 border-secondary-300"
           :data-testid="`checkout-payment-method-${singlePaymentMethod.id}`"
+          :checked="selectedPaymentMethod === singlePaymentMethod.id"
+          :disabled="isLoading"
         />
         <label
           :for="singlePaymentMethod.id"

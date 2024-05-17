@@ -41,9 +41,13 @@ export type UseOrderDetailsReturn = {
    */
   order: ComputedRef<Schemas["Order"] | undefined | null>;
   /**
-   * Order status (e.g. 'open', 'cancelled')
+   * Order status (e.g. 'Open', 'Cancelled')
    */
   status: ComputedRef<string | undefined>;
+  /**
+   * Order status technical name (e.g. 'open', 'cancelled')
+   */
+  statusTechnicalName: ComputedRef<string | undefined>;
   /**
    * Order total price
    */
@@ -188,6 +192,9 @@ export function useOrderDetails(
   const subtotal = computed(() => _sharedOrder.value?.price?.positionPrice);
   const total = computed(() => _sharedOrder.value?.price?.totalPrice);
   const status = computed(() => _sharedOrder.value?.stateMachineState?.name);
+  const statusTechnicalName = computed(
+    () => _sharedOrder.value?.stateMachineState?.technicalName,
+  );
 
   async function loadOrderDetails() {
     const mergedAssociations = defu(
@@ -202,6 +209,9 @@ export function useOrderDetails(
           value: orderId,
         },
       ],
+      associations: {
+        stateMachineState: {},
+      },
     }) as Schemas["Criteria"];
 
     const orderDetailsResponse = await apiClient.invoke(
@@ -293,6 +303,7 @@ export function useOrderDetails(
   return {
     order: computed(() => _sharedOrder.value),
     status,
+    statusTechnicalName,
     total,
     subtotal,
     shippingCosts,
