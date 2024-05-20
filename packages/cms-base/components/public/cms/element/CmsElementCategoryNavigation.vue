@@ -30,7 +30,7 @@ let translations: Translations = {
   },
 };
 
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const { category: activeCategory } = useCategory();
 const loading: Ref<boolean> = ref(true);

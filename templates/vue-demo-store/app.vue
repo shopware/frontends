@@ -56,7 +56,8 @@ const { refreshCart } = useCart();
 useNotifications();
 useAddress();
 
-const { locale, availableLocales, defaultLocale } = useI18n();
+const { locale, availableLocales, defaultLocale, localeProperties, messages } =
+  useI18n();
 const router = useRouter();
 const {
   getAvailableLanguages,
@@ -70,6 +71,7 @@ const { languageIdChain, refreshSessionContext } = useSessionContext();
 const { data: languages } = await useAsyncData("languages", async () => {
   return await getAvailableLanguages();
 });
+let languageToChangeId: string | null = null;
 
 if (languages.value?.elements.length && router.currentRoute.value.name) {
   storeLanguages.value = languages.value?.elements;
@@ -80,13 +82,26 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     defaultLocale,
   );
 
+  provide("cmsTranslations", messages.value[prefix ?? defaultLocale] ?? {});
+
   // Language set on the backend side
-  const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
-  // If languages are not the same, set one from prefix
-  if (sessionLanguage !== prefix) {
-    await changeLanguage(
-      getLanguageIdFromCode(prefix ? prefix : defaultLocale),
-    );
+  if (localeProperties.value.localeId) {
+    if (languageIdChain.value !== localeProperties.value.localeId) {
+      languageToChangeId = localeProperties.value.localeId;
+    }
+  } else {
+    const sessionLanguage = getLanguageCodeFromId(languageIdChain.value);
+
+    // If languages are not the same, set one from prefix
+    if (sessionLanguage !== prefix) {
+      languageToChangeId = getLanguageIdFromCode(
+        prefix ? prefix : defaultLocale,
+      );
+    }
+  }
+
+  if (languageToChangeId) {
+    await changeLanguage(languageToChangeId);
     await refreshSessionContext();
   }
 

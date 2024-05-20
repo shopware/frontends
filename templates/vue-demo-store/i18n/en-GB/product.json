@@ -30,6 +30,19 @@
       "removedFromWishlist": "{p} has been removed from wishlist.",
       "addedToCart": "{p} has been added to cart.",
       "reviewAdded": "Thank you for submitting your review"
-    }
+    },
+    "badges": {
+      "topseller": "Tip"
+    },
+    "to": "To",
+    "from": "From",
+    "pricesIncl": "Prices incl. VAT plus shipping costs",
+    "pricesExcl": "Prices excl. VAT plus shipping costs",
+    "deliveryTime": "Available, delivery time",
+    "days": "days",
+    "noAvailable": "No longer available",
+    "productNumber": "Product number",
+    "addedToCart": "has been added to cart.",
+    "qty": "Qty"
   }
 }

@@ -127,9 +127,10 @@ export default defineNuxtConfig({
         file: "pl-PL.ts",
       },
       {
-        code: "de-DE",
+        code: "testde",
         iso: "de-DE",
         file: "de-DE.ts",
+        localeId: "c19b753b5f2c4bea8ad15e00027802d4",
       },
     ],
   },
