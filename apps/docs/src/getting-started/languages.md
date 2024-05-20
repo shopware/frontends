@@ -124,3 +124,32 @@ If you want to test languages locally, and your local domain differs from what i
 ```
 NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=http://127.0.0.1:3000
 ```
+
+## localeId
+
+In more complex scenarios, such as when different prefixes are used on the backend and frontend, the `localeId` attribute can be utilized.
+
+```
+  i18n: {
+    strategy: "prefix_except_default",
+    defaultLocale: "en-GB",
+    detectBrowserLanguage: false,
+    langDir: "./i18n/src/langs/",
+    vueI18n: "./i18n/config",
+    locales: [
+      {
+        code: "en-GB",
+        iso: "en-GB",
+        file: "en-GB.ts",
+      },
+      {
+        code: "testde",
+        iso: "de-DE",
+        file: "de-DE.ts",
+        localeId: "c19b753b5f2c4bea8ad15e00027802d4",
+      },
+    ],
+  },
+```
+
+The `localeId` attribute corresponds to a specific language identifier, which can be located within the Shopware administrative panel. Additional information is available at this link: https://docs.shopware.com/en/shopware-6-en/settings/languages

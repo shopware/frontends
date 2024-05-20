@@ -35,7 +35,7 @@ let translations: Translations = {
     max: "Max",
   },
 };
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const prices = reactive<{ min: number; max: number }>({
   min: 0,
