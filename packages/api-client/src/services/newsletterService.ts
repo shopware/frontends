@@ -2,7 +2,9 @@ import { getStoreNewsletterConfirmEndpoint } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
 
 type NewsletterConfirmationParams = {
+  /** Email hash from the email received */
   em: string;
+  /** Hash from the email received */
   hash: string;
 };
 
