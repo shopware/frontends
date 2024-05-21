@@ -145,7 +145,7 @@ export async function getCustomerAddresses(
 type CustomerOrdersResponse = {
   apiAlias: "order-route-response-struct";
   orders: EntityResult<"order", Order>;
-  paymentChangeable: Array<unknown>;
+  paymentChangeable: { [key: string]: number } | [];
 };
 /**
  * Get all customer's orders

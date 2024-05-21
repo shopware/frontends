@@ -3367,7 +3367,7 @@ export type components = {
         elements: components["schemas"]["Order"][];
       } & components["schemas"]["EntitySearchResult"];
       /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
-      paymentChangeable?: GenericRecord;
+      paymentChangeable: { [key: string]: boolean } | []; // TODO: [OpenAPI][OrderRouteResponse] id should be defined as { [key: string]: boolean } | []
     };
     /** Added since version: 6.0.0.0 */
     OrderTag: {
