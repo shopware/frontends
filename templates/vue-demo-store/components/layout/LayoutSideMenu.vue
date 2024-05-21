@@ -46,9 +46,9 @@ const toggleCollapse = (navigationElement: Schemas["Category"]) => {
         <div class="i-carbon-close text-3xl" />
       </button>
     </div>
-    <div class="max-w-2xl">
-      <aside aria-label="Sidebar" class="flex flex-col">
-        <div class="w-full px-4 pb-4">
+    <div class="flex-1 flex flex-row overflow-y-hidden max-w-2xl w-full">
+      <aside aria-label="Sidebar" class="flex flex-col overflow-y-auto w-full">
+        <div class="px-4 pb-4">
           <LayoutStoreSearch @link-clicked="sideMenuController.close" />
         </div>
         <div class="overflow-y-auto">
