@@ -1,0 +1,48 @@
+import { describe, expect, it } from "vitest";
+import { useListing } from "./useListing";
+import { useSetup } from "./_test";
+import searchMock from "./mocks/Search";
+
+describe("useListing", () => {
+  it("invoke search", async () => {
+    const { vm, injections } = await useSetup(() =>
+      useListing({
+        listingType: "productSearchListing",
+      }),
+    );
+    await vm.search({
+      search: "",
+    });
+
+    injections.apiClient.invoke.mockResolvedValue(searchMock);
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("search"),
+      expect.objectContaining({}),
+    );
+
+    expect(vm.getCurrentPage).toBe(1);
+    expect(vm.getTotalPagesCount).toBe(0);
+    expect(vm.getLimit).toBe(10);
+  });
+
+  it('invoke "readQuotes"', async () => {
+    const { vm, injections } = await useSetup(() =>
+      useListing({
+        listingType: "categoryListing",
+        categoryId: "1234",
+      }),
+    );
+    await vm.search({
+      search: "",
+    });
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readProductListing"),
+      expect.objectContaining({
+        categoryId: "1234",
+        search: "",
+        "sw-include-seo-urls": true,
+      }),
+    );
+  });
+});
