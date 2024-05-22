@@ -63,9 +63,10 @@ const {
 } = useInternationalization();
 const { languageIdChain, refreshSessionContext } = useSessionContext();
 
-const {renderJsButton } = useAmazonPay();
+const { renderJsButton } = useAmazonPay();
+
 onMounted(() => {
-  renderJsButton('#amazon-button');
+  renderJsButton("#amazon-button");
 });
 
 const { data: languages } = await useAsyncData("languages", async () => {

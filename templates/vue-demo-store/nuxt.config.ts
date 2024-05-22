@@ -24,7 +24,7 @@ export default defineNuxtConfig({
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     endpoint: "https://demo-frontends.shopware.store/store-api/",
-    devStorefrontUrl: "",
+    devStorefrontUrl: "https://frontends-demo.vercel.app",
   },
   routeRules: {
     "/": {
@@ -80,7 +80,7 @@ export default defineNuxtConfig({
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
     "@nuxtjs/i18n",
-    "../../examples/amazon-pay/",
+    "./module/amazon-pay/",
   ],
   // components: true,
   components: {
@@ -95,6 +95,7 @@ export default defineNuxtConfig({
   vueuse: {
     ssrHandlers: true,
   },
+  debug: true,
   nitro: {
     compressPublicAssets: true,
   },
