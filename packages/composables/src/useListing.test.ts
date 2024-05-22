@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { useListing } from "./useListing";
 import { useSetup } from "./_test";
 import searchMock from "./mocks/Search";
+import ContextError from "./helpers/ContextError";
 
 describe("useListing", () => {
   it("invoke search", async () => {
@@ -44,5 +45,19 @@ describe("useListing", () => {
         "sw-include-seo-urls": true,
       }),
     );
+  });
+
+  it('invoke "readQuotes" - errors', async () => {
+    let error;
+    try {
+      await useSetup(() =>
+        useListing({
+          listingType: "categoryListing",
+        }),
+      );
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toEqual(new ContextError("Category"));
   });
 });
