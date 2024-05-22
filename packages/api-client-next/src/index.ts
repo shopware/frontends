@@ -80,10 +80,10 @@ export type RequestReturnType<
       "application/octet-stream"
     >;
 
-export { createAPIClient as createAPIClientNew } from "./createApiClient";
+export { createAPIClient } from "./createApiClient";
 
 // TODO remove after migration
-export function createAPIClient<
+export function createAPIClientOld<
   OPERATIONS extends Operations = defaultOperations,
   PATHS = defaultPaths,
 >(params: {

@@ -1,5 +1,5 @@
 import { useContext, useShopwareContext } from "#imports";
-import type { RequestReturnType, Schemas } from "#shopware";
+import type { RequestReturnType, Schemas, operations } from "#shopware";
 import type { Ref } from "vue";
 import { urlIsAbsolute } from "@shopware-pwa/helpers-next";
 
@@ -13,9 +13,11 @@ export type UseInternationalizationReturn = {
   /**
    * Get available languages from backend
    *
-   * @returns {Promise<RequestReturnType<"readLanguages">>} list of languages
+   * @returns {Promise<operations['readLanguages post /language']['body']>} list of languages
    */
-  getAvailableLanguages(): Promise<RequestReturnType<"readLanguages">>;
+  getAvailableLanguages(): Promise<
+    operations["readLanguages post /language"]["response"]
+  >;
   /**
    * Change current language
    *
@@ -24,7 +26,7 @@ export type UseInternationalizationReturn = {
    */
   changeLanguage(
     languageId: string,
-  ): Promise<RequestReturnType<"updateContext">>;
+  ): Promise<operations["updateContext patch /context"]["response"]>;
   /**
    * Get language code from backend language id
    *
@@ -92,20 +94,21 @@ export function useInternationalization(
   }
 
   async function getAvailableLanguages() {
-    const data = await apiClient.invoke("readLanguages post /language", {});
+    const { data } = await apiClient.invoke("readLanguages post /language");
     _storeLanguages.value = data.elements;
     return data;
   }
 
   async function changeLanguage(languageId: string) {
-    return await apiClient.invoke("updateContext patch /context", {
-      languageId,
+    const { data } = await apiClient.invoke("updateContext patch /context", {
+      body: { languageId },
     });
+    return data;
   }
 
   function getLanguageCodeFromId(languageId: string) {
     return (
-      _storeLanguages.value.find((element: any) => element?.id === languageId)
+      _storeLanguages.value.find((element) => element?.id === languageId)
         ?.translationCode?.code || ""
     );
   }
@@ -113,7 +116,7 @@ export function useInternationalization(
   function getLanguageIdFromCode(languageCode: string) {
     return (
       _storeLanguages.value.find(
-        (element: any) => element?.translationCode.code === languageCode,
+        (element) => element.translationCode?.code === languageCode,
       )?.id || ""
     );
   }

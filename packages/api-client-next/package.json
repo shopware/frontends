@@ -37,7 +37,7 @@
         "default": "./dist/index.mjs"
       }
     },
-    "./api-types": "./api-types/storeApiTypesCommerce.d.ts",
+    "./api-types": "./api-types/newApiTypes.d.ts",
     "./admin-api-types": "./admin-api-types/adminApiTypes.d.ts"
   },
   "scripts": {

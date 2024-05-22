@@ -198,39 +198,42 @@ export function useOrderDetails(
 
     const orderDetailsResponse = await apiClient.invoke(
       "readOrder post /order",
-      params,
+      {
+        body: params,
+      },
     );
-    _sharedOrder.value = orderDetailsResponse.orders.elements?.[0] ?? null;
+    _sharedOrder.value = orderDetailsResponse.data.orders.elements?.[0] ?? null;
   }
 
-  async function handlePayment(
-    finishUrl?: string,
-    errorUrl?: string,
-    paymentDetails?: unknown,
-  ) {
+  async function handlePayment(finishUrl?: string, errorUrl?: string) {
     const resp = await apiClient.invoke(
       "handlePaymentMethod post /handle-payment",
       {
-        orderId,
-        finishUrl,
-        errorUrl,
-        // paymentDetails?: unknown, TODO: is this necessary? If yes - add to schema, if no - remove
+        body: {
+          orderId,
+          finishUrl,
+          errorUrl,
+        },
       },
     );
 
-    paymentUrl.value = resp.redirectUrl;
+    paymentUrl.value = resp.data.redirectUrl;
   }
 
   async function cancel() {
     await apiClient.invoke("cancelOrder post /order/state/cancel", {
-      orderId: orderId,
+      body: {
+        orderId,
+      },
     });
     await loadOrderDetails();
   }
   async function changePaymentMethod(paymentMethodId: string) {
     await apiClient.invoke("orderSetPayment post /order/payment", {
-      orderId: orderId,
-      paymentMethodId: paymentMethodId,
+      body: {
+        orderId: orderId,
+        paymentMethodId: paymentMethodId,
+      },
     });
 
     await loadOrderDetails();
@@ -240,24 +243,29 @@ export function useOrderDetails(
     const response = await apiClient.invoke(
       "orderDownloadFile get /order/download/{orderId}/{downloadId}",
       {
-        orderId,
-        downloadId,
+        accept: "application/octet-stream",
+        pathParams: {
+          orderId,
+          downloadId,
+        },
       },
     );
 
-    return response;
+    return response.data;
   }
 
   async function getDocumentFile(documentId: string, deepLinkCode: string) {
     const response = await apiClient.invoke(
       "download post /document/download/{documentId}/{deepLinkCode}",
       {
-        documentId,
-        deepLinkCode,
+        pathParams: {
+          documentId,
+          deepLinkCode,
+        },
       },
     );
 
-    return response;
+    return response.data;
   }
 
   const hasDocuments = computed(() => !!_sharedOrder.value?.documents.length);

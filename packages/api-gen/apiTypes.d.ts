@@ -6108,6 +6108,20 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  SwagPaypalVaultToken: {
+    // TODO: [OpenAPI][SwagPaypalVaultToken] - add SwagPaypalVaultToken definition to schema
+    /** Format: date-time */
+    createdAt: string;
+    customer?: components["schemas"]["Customer"];
+    customerId: string;
+    id?: string;
+    identifier: string;
+    mainMapping?: components["schemas"]["SwagPaypalVaultTokenMapping"];
+    paymentMethod?: components["schemas"]["PaymentMethod"];
+    paymentMethodId: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
   SwagPaypalVaultTokenMapping: {
     /** Format: date-time */
     createdAt: string;
@@ -6682,11 +6696,8 @@ export type operations = {
   "readNewsletterRecipient post /account/newsletter-recipient": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
-    response: {
-      // TODO: [OpenAPI][readNewsletterRecipient] return type is not array
-      "application/json": components["schemas"]["AccountNewsletterRecipientResult"];
-    };
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readNewsletterRecipient] - body should be optional
+    response: components["schemas"]["AccountNewsletterRecipientResult"]; // TODO: [OpenAPI][readNewsletterRecipient] return type is not array
     responseCode: 200;
   };
   "sendRecoveryMail post /account/recovery-password": {
@@ -7047,7 +7058,7 @@ export type operations = {
       /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
       slots?: string;
     };
-    path: {
+    pathParams: {
       /** Identifier of the category to be fetched */
       navigationId: string;
     };
@@ -7253,7 +7264,7 @@ export type operations = {
   "readCustomerWishlist post /customer/wishlist": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readCustomerWishlist] - body should be optional
     response: components["schemas"]["WishlistLoadRouteResponse"];
     responseCode: 200;
   };
@@ -7294,7 +7305,7 @@ export type operations = {
       documentId: string;
       deepLinkCode: string;
     };
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][download] - body should be optional
     response: components["schemas"]["Document"];
     responseCode: 200;
   };
@@ -7411,7 +7422,7 @@ export type operations = {
   "readLanguages post /language": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readLanguages] - body should be optional
     response: {
       elements: components["schemas"]["Language"][]; // TODO: [OpenAPI][readLanguages] add elements property as required
     } & components["schemas"]["EntitySearchResult"];
@@ -7430,7 +7441,10 @@ export type operations = {
   "readNavigation post /navigation/{activeId}/{rootId}": {
     contentType?: "application/json";
     accept?: "application/json";
-    path: {
+    header?: {
+      "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readNavigation] - add sw-include-seo-urls to header parameters
+    };
+    pathParams: {
       /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
       // TODO: [OpenAPI][readNavigation] add union type in definition
       activeId: Schemas["NavigationType"] | string;
@@ -7517,7 +7531,11 @@ export type operations = {
   "orderDownloadFile get /order/download/{orderId}/{downloadId}": {
     contentType?: "application/json";
     accept: "application/octet-stream";
-    response: Blob; // TODO: [OpenAPI][orderDownloadFile] add proper response type
+    pathParams: {
+      orderId: string;
+      downloadId: string;
+    };
+    response: Blob;
     responseCode: 200;
   };
   "orderSetPayment post /order/payment": {
@@ -7649,7 +7667,7 @@ export type operations = {
     header?: {
       "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readProductListing] - add sw-include-seo-urls to header parameters
     };
-    path: {
+    pathParams: {
       /** Identifier of a category. */
       categoryId: string;
     };
@@ -7661,10 +7679,11 @@ export type operations = {
   "readProductDetail post /product/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
-    path: {
+    pathParams: {
       /** Product ID */
-      productId: string; // TODO: [OpenAPI][readProductDetails]: add cmsAssociations to product detail parameters
+      productId: string;
     };
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readProductDetail] - body should be optional
     response: components["schemas"]["ProductDetailResponse"];
     responseCode: 200;
   };
@@ -7726,7 +7745,7 @@ export type operations = {
       /** Identifier of the product. */
       productId: string;
     };
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readProductReviews] - body should be optional
     response: {
       elements?: components["schemas"]["ProductReview"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7809,6 +7828,7 @@ export type operations = {
       /** Identifier of the quote to be fetched */
       id: string;
     };
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readQuote] - body with the criteria should be defined
     response: components["schemas"]["Quote"];
     responseCode: 200;
   };
@@ -7839,7 +7859,7 @@ export type operations = {
   "readQuotes post /quotes": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"]; // TODO: make body optional
     response: {
       elements?: components["schemas"]["Quote"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7940,7 +7960,7 @@ export type operations = {
   "readSalutation post /salutation": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readSalutation] - body should be optional
     response: {
       elements?: components["schemas"]["Salutation"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7990,6 +8010,10 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     body: components["schemas"]["Criteria"];
+    query: {
+      /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
+      onlyAvailable?: boolean;
+    };
     response: {
       /** aggregation result */
       aggregations?: GenericRecord;

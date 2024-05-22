@@ -1,9 +1,8 @@
-import { inject, computed, ref, provide, watch } from "vue";
+import { inject, computed, ref, provide } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { getListingFilters } from "@shopware-pwa/helpers-next";
 import { useShopwareContext, useCategory } from "#imports";
-import ContextError from "./helpers/ContextError";
-import type { Schemas, RequestParameters } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 import { createInjectionState, createSharedComposable } from "@vueuse/core";
 
 function isObject<T>(item: T): boolean {
@@ -58,7 +57,7 @@ export type UseListingReturn = {
    * @returns
    */
   initSearch(
-    criteria: RequestParameters<"searchPage">,
+    criteria: operations["searchPage post /search"]["body"],
   ): Promise<Schemas["ProductListingResult"]>;
   /**
    * Searches for the listing based on the criteria
@@ -68,8 +67,8 @@ export type UseListingReturn = {
    */
   search(
     criteria:
-      | RequestParameters<"readProductListing">
-      | RequestParameters<"searchPage">,
+      | operations["readProductListing post /product-listing/{categoryId}"]["body"]
+      | operations["searchPage post /search"]["body"],
     options?: {
       preventRouteChange?: boolean;
     },
@@ -77,7 +76,9 @@ export type UseListingReturn = {
   /**
    * Loads more (next page) elements to the listing
    */
-  loadMore(criteria: RequestParameters<"searchPage">): Promise<void>;
+  loadMore(
+    criteria: operations["searchPage post /search"]["body"],
+  ): Promise<void>;
   /**
    * Listing that is currently set
    */
@@ -103,7 +104,7 @@ export type UseListingReturn = {
    */
   changeCurrentSortingOrder(
     order: string,
-    query?: RequestParameters<"searchPage">,
+    query?: operations["searchPage post /search"]["body"],
   ): Promise<void>;
   /**
    * Current page number
@@ -116,7 +117,7 @@ export type UseListingReturn = {
    */
   changeCurrentPage(
     page: number,
-    query?: RequestParameters<"searchPage">,
+    query?: operations["searchPage post /search"]["body"],
   ): Promise<void>;
   /**
    * Total number of elements found for the current search criteria
@@ -172,7 +173,7 @@ export type UseListingReturn = {
 export function useListing(params?: {
   listingType: ListingType;
   categoryId?: string;
-  defaultSearchCriteria?: RequestParameters<"searchPage">;
+  defaultSearchCriteria?: operations["searchPage post /search"]["body"];
 }): UseListingReturn {
   const listingType = params?.listingType || "categoryListing";
 
@@ -181,28 +182,38 @@ export function useListing(params?: {
 
   let searchMethod;
   if (listingType === "productSearchListing") {
-    searchMethod = async (searchCriteria: RequestParameters<"searchPage">) => {
-      return apiClient.invoke("searchPage post /search", {
-        ...searchCriteria,
+    searchMethod = async (
+      searchCriteria: operations["searchPage post /search"]["body"],
+    ) => {
+      const { data } = await apiClient.invoke("searchPage post /search", {
+        body: searchCriteria,
       });
+      return data;
     };
   } else {
     const { category } = useCategory();
 
-    searchMethod = async (searchCriteria: RequestParameters<"searchPage">) => {
+    searchMethod = async (
+      searchCriteria: operations["readProductListing post /product-listing/{categoryId}"]["body"],
+    ) => {
       if (!category.value?.id) {
         throw new Error(
           "[useListing][search] Search category id does not exist.",
         );
       }
-      return apiClient.invoke(
-        "readProductListing post /product-listing/{categoryId} sw-include-seo-urls",
+      const { data } = await apiClient.invoke(
+        "readProductListing post /product-listing/{categoryId}",
         {
-          "sw-include-seo-urls": true,
-          ...searchCriteria,
-          categoryId: category.value.id,
+          header: {
+            "sw-include-seo-urls": true,
+          },
+          pathParams: {
+            categoryId: category.value.id,
+          },
+          body: searchCriteria,
         },
       );
+      return data;
     };
   }
 
@@ -210,7 +221,8 @@ export function useListing(params?: {
     listingKey: listingType,
     searchMethod,
     searchDefaults:
-      params?.defaultSearchCriteria || ({} as RequestParameters<"searchPage">), //getDefaults(),
+      params?.defaultSearchCriteria ||
+      ({} as operations["searchPage post /search"]["body"]), //getDefaults(),
   });
 }
 
@@ -265,10 +277,10 @@ export function createListingComposable({
 }: {
   searchMethod(
     searchParams:
-      | RequestParameters<"readProductListing">
-      | RequestParameters<"searchPage">,
+      | operations["readProductListing post /product-listing/{categoryId}"]["body"]
+      | operations["searchPage post /search"]["body"],
   ): Promise<Schemas["ProductListingResult"]>;
-  searchDefaults: RequestParameters<"searchPage">;
+  searchDefaults: operations["searchPage post /search"]["body"];
   listingKey: string;
 }): UseListingReturn {
   const COMPOSABLE_NAME = "createListingComposable";
@@ -311,12 +323,12 @@ export function createListingComposable({
   };
 
   const initSearch = async (
-    criteria: RequestParameters<"searchPage">,
+    criteria: operations["searchPage post /search"]["body"],
   ): Promise<Schemas["ProductListingResult"]> => {
     loading.value = true;
     try {
       const searchCriteria = merge(
-        {} as RequestParameters<"searchPage">,
+        {} as operations["searchPage post /search"]["body"],
         searchDefaults,
         criteria,
       );
@@ -330,7 +342,7 @@ export function createListingComposable({
   };
 
   async function search(
-    criteria: RequestParameters<"searchPage">,
+    criteria: operations["searchPage post /search"]["body"],
     options?: {
       preventRouteChange?: boolean;
     },
@@ -338,7 +350,7 @@ export function createListingComposable({
     loading.value = true;
     try {
       const searchCriteria = merge(
-        {} as RequestParameters<"searchPage">,
+        {} as operations["searchPage post /search"]["body"],
         searchDefaults,
         criteria,
       );
@@ -353,7 +365,7 @@ export function createListingComposable({
   }
 
   const loadMore = async (
-    criteria?: RequestParameters<"searchPage">,
+    criteria?: operations["searchPage post /search"]["body"],
   ): Promise<void> => {
     loadingMore.value = true;
     try {
@@ -365,10 +377,10 @@ export function createListingComposable({
           };
 
       const searchCriteria = merge(
-        {} as RequestParameters<"searchPage">,
+        {} as operations["searchPage post /search"]["body"],
         searchDefaults,
         q,
-      ) as RequestParameters<"searchPage">;
+      ) as operations["searchPage post /search"]["body"];
       const result = await searchMethod(searchCriteria);
       _storeAppliedListing.value = {
         ...(getCurrentListing.value || {}),
@@ -412,7 +424,7 @@ export function createListingComposable({
   );
   async function changeCurrentSortingOrder(
     order: string,
-    query?: RequestParameters<"searchPage">,
+    query?: operations["searchPage post /search"]["body"],
   ) {
     await search(
       Object.assign(
@@ -428,7 +440,7 @@ export function createListingComposable({
 
   const changeCurrentPage = async (
     page: number,
-    query?: RequestParameters<"searchPage">,
+    query?: operations["searchPage post /search"]["body"],
   ) => {
     await search(
       Object.assign(
@@ -477,16 +489,12 @@ export function createListingComposable({
   });
 
   const setCurrentFilters = (filter: { code: string; value: any }) => {
-    const appliedFilters: RequestParameters<"searchPage"> = Object.assign(
-      {},
-      getCurrentFilters.value,
-      filter,
-      {
+    const appliedFilters: operations["searchPage post /search"]["body"] =
+      Object.assign({}, getCurrentFilters.value, filter, {
         query: getCurrentFilters.value?.search,
         manufacturer: getCurrentFilters.value?.manufacturer?.join("|"),
         properties: getCurrentFilters.value?.properties?.join("|"),
-      },
-    );
+      });
     if (_storeAppliedListing.value) {
       _storeAppliedListing.value.currentFilters = {
         ...appliedFilters,

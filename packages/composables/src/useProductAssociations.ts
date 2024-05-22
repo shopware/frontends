@@ -82,11 +82,11 @@ export function useProductAssociations(
       const response = await apiClient.invoke(
         "readProductCrossSellings post /product/{productId}/cross-selling",
         {
-          productId: product.value.id,
+          pathParams: { productId: product.value.id },
         },
       );
 
-      associations.value = response;
+      associations.value = response.data;
     } catch (error) {
       console.error(
         "[useProductAssociations][loadAssociations][error]:",

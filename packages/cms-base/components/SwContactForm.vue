@@ -137,8 +137,10 @@ const invokeSubmit = async () => {
     loading.value = true;
     try {
       await apiClient.invoke("sendContactMail post /contact-form", {
-        ...state,
-        navigationId: foreignKey.value,
+        body: {
+          ...state,
+          navigationId: foreignKey.value,
+        },
       });
       formSent.value = true;
     } catch (e) {

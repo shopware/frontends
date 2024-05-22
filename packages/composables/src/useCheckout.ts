@@ -1,7 +1,7 @@
 import { computed, ref, inject, provide } from "vue";
 import type { ComputedRef } from "vue";
 import { defu } from "defu";
-import type { Schemas, RequestParameters } from "#shopware";
+import type { Schemas, RequestParameters, operations } from "#shopware";
 import { useShopwareContext, useSessionContext } from "#imports";
 
 export type UseCheckoutReturn = {
@@ -29,7 +29,7 @@ export type UseCheckoutReturn = {
    * Creates order based on the current cart
    */
   createOrder(
-    params?: RequestParameters<"createOrder">,
+    params?: operations["createOrder post /checkout/order"]["body"],
   ): Promise<Schemas["Order"]>;
   /**
    * Shipping address for the current session
@@ -101,14 +101,18 @@ export function useCheckout(): UseCheckoutReturn {
       associations,
     );
     const response = await apiClient.invoke(
-      "readShippingMethod post /shipping-method?onlyAvailable",
+      "readShippingMethod post /shipping-method",
       {
-        ...mergedAssociations,
-        onlyAvailable: true,
+        body: {
+          ...mergedAssociations,
+        },
+        query: {
+          onlyAvailable: true,
+        },
       },
     );
     storeShippingMethods.value =
-      response.elements.sort(
+      response.data.elements.sort(
         (a: Schemas["ShippingMethod"], b: Schemas["ShippingMethod"]) =>
           (a.position ?? 0) - (b.position ?? 0),
       ) || [];
@@ -120,16 +124,20 @@ export function useCheckout(): UseCheckoutReturn {
     const response = await apiClient.invoke(
       "readPaymentMethod post /payment-method",
       {
-        onlyAvailable: true,
+        body: { onlyAvailable: true },
       },
     );
-    storePaymentMethods.value = response?.elements || [];
+    storePaymentMethods.value = response.data.elements || [];
     return paymentMethods;
   }
 
-  async function createOrder(params: RequestParameters<"createOrder"> = {}) {
-    const order = apiClient.invoke("createOrder post /checkout/order", params);
-    return order;
+  async function createOrder(
+    params: operations["createOrder post /checkout/order"]["body"] = {},
+  ) {
+    const order = await apiClient.invoke("createOrder post /checkout/order", {
+      body: params,
+    });
+    return order.data;
   }
 
   const shippingAddress = computed(

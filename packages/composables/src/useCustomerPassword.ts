@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 import type { UnwrapRef } from "vue";
 import { useShopwareContext } from "#imports";
-import type { RequestParameters } from "#shopware";
+import type { RequestParameters, operations } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 
@@ -14,13 +14,13 @@ export type UseCustomerPasswordReturn = {
    * Change customer's current password
    */
   updatePassword(
-    updatePasswordData: RequestParameters<"changePassword">,
+    updatePasswordData: operations["changePassword post /account/change-password"]["body"],
   ): Promise<boolean>;
   /**
    * Reset customer's password
    */
   resetPassword(
-    resetPasswordData: RequestParameters<"sendRecoveryMail">,
+    resetPasswordData: operations["sendRecoveryMail post /account/recovery-password"]["body"],
   ): Promise<boolean>;
 };
 
@@ -41,14 +41,13 @@ export function useCustomerPassword(): UseCustomerPasswordReturn {
   });
 
   async function updatePassword(
-    updatePasswordData: RequestParameters<"changePassword">,
+    updatePasswordData: operations["changePassword post /account/change-password"]["body"],
   ) {
     try {
       errors.updatePassword = [];
-      await apiClient.invoke(
-        "changePassword post /account/change-password",
-        updatePasswordData,
-      );
+      await apiClient.invoke("changePassword post /account/change-password", {
+        body: updatePasswordData,
+      });
     } catch (e) {
       if (e instanceof ApiClientError) {
         errors.updatePassword = e.details;
@@ -59,12 +58,12 @@ export function useCustomerPassword(): UseCustomerPasswordReturn {
   }
 
   async function resetPassword(
-    resetPasswordData: RequestParameters<"sendRecoveryMail">,
+    resetPasswordData: operations["sendRecoveryMail post /account/recovery-password"]["body"],
   ) {
     try {
       await apiClient.invoke(
         "sendRecoveryMail post /account/recovery-password",
-        resetPasswordData,
+        { body: resetPasswordData },
       );
     } catch (e) {
       if (e instanceof ApiClientError) {

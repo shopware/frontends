@@ -113,8 +113,8 @@ export function useSessionContext(
   const sessionContext = computed(() => _sessionContext.value);
   const refreshSessionContext = async () => {
     try {
-      const context = await apiClient.invoke("readContext get /context");
-      _sessionContext.value = context;
+      const { data } = await apiClient.invoke("readContext get /context");
+      _sessionContext.value = data;
     } catch (e) {
       console.error("[UseSessionContext][refreshSessionContext]", e);
     }
@@ -130,7 +130,7 @@ export function useSessionContext(
       );
     }
     await apiClient.invoke("updateContext patch /context", {
-      shippingMethodId: shippingMethod.id,
+      body: { shippingMethodId: shippingMethod.id },
     });
     await refreshSessionContext();
   };
@@ -145,7 +145,7 @@ export function useSessionContext(
       );
     }
     await apiClient.invoke("updateContext patch /context", {
-      paymentMethodId: paymentMethod.id,
+      body: { paymentMethodId: paymentMethod.id },
     });
     await refreshSessionContext();
   };
@@ -160,7 +160,9 @@ export function useSessionContext(
       return;
     }
     await apiClient.invoke("updateContext patch /context", {
-      currencyId: currency.id,
+      body: {
+        currencyId: currency.id,
+      },
     });
     await refreshSessionContext();
   };
@@ -170,14 +172,18 @@ export function useSessionContext(
       return;
     }
     await apiClient.invoke("updateContext patch /context", {
-      languageId: language.id,
+      body: {
+        languageId: language.id,
+      },
     });
     await refreshSessionContext();
   };
 
   const setCountry = async (countryId: string) => {
     await apiClient.invoke("updateContext patch /context", {
-      countryId,
+      body: {
+        countryId,
+      },
     });
     await refreshSessionContext();
   };
@@ -197,7 +203,9 @@ export function useSessionContext(
       );
     }
     await apiClient.invoke("updateContext patch /context", {
-      shippingAddressId: address.id,
+      body: {
+        shippingAddressId: address.id,
+      },
     });
     refreshSessionContext();
   };
@@ -215,7 +223,9 @@ export function useSessionContext(
       );
     }
     await apiClient.invoke("updateContext patch /context", {
-      billingAddressId: address.id,
+      body: {
+        billingAddressId: address.id,
+      },
     });
     refreshSessionContext();
   };

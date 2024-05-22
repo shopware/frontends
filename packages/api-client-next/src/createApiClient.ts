@@ -2,7 +2,7 @@ import { FetchResponse, ofetch } from "ofetch";
 import type { operations } from "../../api-gen/apiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
-import { createHooks } from "hookable";
+import { type Hookable, createHooks } from "hookable";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
@@ -34,6 +34,12 @@ export type RequestParameters<CURRENT_OPERATION> = SimpleUnionOmit<
   CURRENT_OPERATION,
   "response" | "responseCode"
 >;
+
+export type ApiClientHooks = Hookable<{
+  onContextChanged: (newContextToken: string) => void;
+  onResponseError: (response: FetchResponse<ResponseType>) => void;
+  onSuccessResponse: (response: FetchResponse<ResponseType>) => void;
+}>;
 
 export function createAPIClient<
   OPERATIONS extends Record<string, any> = operations,
@@ -151,6 +157,6 @@ export function createAPIClient<
      * Default headers used in every client request (if not overriden in specific request).
      */
     defaultHeaders,
-    hook: apiClientHooks.hook,
+    hook: apiClientHooks.hook as ApiClientHooks["hook"],
   };
 }

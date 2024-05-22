@@ -7,11 +7,7 @@ import type {
   operations as adminOperations,
   operationPaths as adminOperationPaths,
 } from "@shopware/api-client/admin-api-types";
-// TODO: change adminOperations to storeOperations after fixing NEXT-33506
-// import type {
-//   operations,
-//   operationPaths,
-// } from "@shopware/api-client/api-types";
+import type { operations } from "@shopware/api-client/api-types/newApiTypes";
 
 const config = dotenv.config().parsed || {};
 
@@ -85,17 +81,13 @@ export async function loadSchema(args: {
         },
       );
     } else {
-      // TODO: change adminOperations to storeOperations after fixing NEXT-33506
-      const apiClient = createAPIClient<adminOperations, adminOperationPaths>({
+      const apiClient = createAPIClient<operations>({
         baseURL: `${configUrl}/store-api`,
         accessToken: config.OPENAPI_ACCESS_KEY,
       });
-      apiJSON = await apiClient.invoke(
-        "api-info get /_info/openapi3.json?type",
-        {
-          type: "json",
-        },
-      );
+      apiJSON = await apiClient.invoke("api-info get /_info/openapi3.json", {
+        query: { type: "json" },
+      });
     }
 
     const formatted = await format(JSON.stringify(apiJSON), {

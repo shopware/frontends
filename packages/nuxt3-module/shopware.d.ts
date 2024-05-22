@@ -1,7 +1,6 @@
 declare module "#shopware" {
   import type { createAPIClient } from "@shopware/api-client";
   import type {
-    operationPaths as defaultOperationPaths,
     operations as defaultOperations,
     components as defaultComponents,
   } from "@shopware/api-client/api-types";
@@ -20,8 +19,7 @@ declare module "#shopware" {
   //   };
   // };
 
-  export type operations = defaultOperations<changedComponents>;
-  export type operationPaths = defaultOperationPaths;
+  export type operations = defaultOperations;
   export type Schemas = changedComponents["schemas"];
 
   // we're exporting our own Api Client definition as it depends on our own instance

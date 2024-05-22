@@ -32,22 +32,25 @@ export default defineNuxtPlugin((NuxtApp) => {
     baseURL: shopwareEndpoint,
     accessToken: shopwareAccessToken,
     contextToken: Cookies.get("sw-context-token"),
-    onContextChanged(newContextToken) {
-      Cookies.set("sw-context-token", newContextToken, {
-        expires: 365, // days
-        path: "/",
-        sameSite: "lax",
+  });
+
+  apiClient.hook("onContextChanged", (newContextToken) => {
+    Cookies.set("sw-context-token", newContextToken, {
+      expires: 365, // days
+      path: "/",
+      sameSite: "lax",
+    });
+  });
+
+  apiClient.hook("onResponseError", (response) => {
+    // @ts-expect-error TODO: check maintenance mode and fix typongs here
+    const error = isMaintenanceMode(response._data?.errors ?? []);
+    if (error) {
+      throw createError({
+        statusCode: 503,
+        statusMessage: "MAINTENANCE_MODE",
       });
-    },
-    onErrorHandler(response) {
-      const error = isMaintenanceMode(response._data?.errors ?? []);
-      if (error) {
-        throw createError({
-          statusCode: 503,
-          statusMessage: "MAINTENANCE_MODE",
-        });
-      }
-    },
+    }
   });
 
   NuxtApp.vueApp.provide("apiClient", apiClient);
