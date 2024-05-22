@@ -42,7 +42,8 @@
       "orderNumber": "Bestellnummer",
       "totalAmount": "Gesamtbetrag",
       "orderDate": "Bestelldatum",
-      "orderStatus": "Bestellstatus"
+      "orderStatus": "Bestellstatus",
+      "paymentMethod": "Zahlungsmethode"
     },
     "personalData": {
       "infoBox": "Bearbeiten Sie Ihre Daten unten, damit Ihr Konto immer auf dem neuesten Stand ist.",
@@ -58,7 +59,8 @@
       "loggedInSuccess": "Sie sind angemeldet",
       "personalDataUpdateSuccess": "Ihre Informationen wurden aktualisiert.",
       "paymentSetSuccessfully": "Standardzahlungsmethode erfolgreich festgelegt",
-      "signUpSuccess": "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Registrierung abzuschließen."
+      "signUpSuccess": "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Registrierung abzuschließen.",
+      "paymentMethodChanged": "Zahlungsmethode geändert"
     }
   }
 }

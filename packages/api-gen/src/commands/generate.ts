@@ -182,7 +182,9 @@ export async function generate(args: { cwd: string; filename: string }) {
             !(schemaObject as { properties?: object }).properties &&
             !(schemaObject as { items?: [] }).items &&
             !(schemaObject as { anyOf?: [] }).anyOf &&
-            !(schemaObject as { allOf?: [] }).allOf
+            !(schemaObject as { allOf?: [] }).allOf &&
+            !(schemaObject as { additionalProperties?: object })
+              .additionalProperties
           ) {
             return "GenericRecord";
           }
