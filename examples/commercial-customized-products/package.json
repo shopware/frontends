@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-types": "shopware-api-gen generate"
   },
   "dependencies": {
     "@shopware-pwa/composables-next": "canary",
@@ -17,6 +18,7 @@
   },
   "devDependencies": {
     "@types/node": "20.12.7",
+    "@shopware/api-gen": "canary",
     "@vitejs/plugin-vue": "5.0.4",
     "vite": "5.2.8"
   }

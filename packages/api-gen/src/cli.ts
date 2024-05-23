@@ -33,6 +33,17 @@ yargs(hideBin(process.argv))
           default: "apiSchema.json",
           describe: "name of the file to generate type from",
         })
+        .positional("default", {
+          type: "string",
+          default: "store",
+          describe:
+            "download default schema instead of instance, available values: store, admin",
+        })
+        .positional("debug", {
+          type: "boolean",
+          default: false,
+          describe: "show debug information and generate intermediate files",
+        })
         .help();
     },
     async (args) => generate(args),

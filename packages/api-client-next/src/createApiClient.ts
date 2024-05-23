@@ -117,7 +117,7 @@ export function createAPIClient<
       ? OPERATIONS[OPERATION_NAME]
       : never,
   >(
-    pathParam: OPERATION_NAME,
+    pathParam: OPERATION_NAME extends keyof OPERATIONS ? OPERATION_NAME : never,
     ...params: SimpleUnionOmit<
       CURRENT_OPERATION,
       "response" | "responseCode"

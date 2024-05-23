@@ -62,16 +62,12 @@ export type UseListingReturn = {
   /**
    * Searches for the listing based on the criteria
    * @param criteria
-   * @param options - `options.preventRouteChange` - if true, the route will not be changed
    * @returns
    */
   search(
     criteria:
       | operations["readProductListing post /product-listing/{categoryId}"]["body"]
       | operations["searchPage post /search"]["body"],
-    options?: {
-      preventRouteChange?: boolean;
-    },
   ): Promise<void>;
   /**
    * Loads more (next page) elements to the listing
@@ -283,8 +279,8 @@ export function createListingComposable({
   searchDefaults: operations["searchPage post /search"]["body"];
   listingKey: string;
 }): UseListingReturn {
-  const COMPOSABLE_NAME = "createListingComposable";
-  const contextName = COMPOSABLE_NAME;
+  // const COMPOSABLE_NAME = "createListingComposable";
+  // const contextName = COMPOSABLE_NAME;
 
   // const router = useRouter();
 
@@ -343,9 +339,6 @@ export function createListingComposable({
 
   async function search(
     criteria: operations["searchPage post /search"]["body"],
-    options?: {
-      preventRouteChange?: boolean;
-    },
   ) {
     loading.value = true;
     try {

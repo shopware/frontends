@@ -37,7 +37,7 @@
         "default": "./dist/index.mjs"
       }
     },
-    "./api-types": "./api-types/newApiTypes.d.ts",
+    "./api-types": "./api-types/apiTypes.d.ts",
     "./admin-api-types": "./admin-api-types/adminApiTypes.d.ts"
   },
   "scripts": {
@@ -48,7 +48,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --typecheck",
     "test:bench": "vitest bench",
-    "test:watch": "vitest --typecheck"
+    "test:watch": "vitest --typecheck",
+    "generate-types": "esno ../api-gen/src/cli.ts generate"
   },
   "devDependencies": {
     "@codspeed/vitest-plugin": "3.1.0",

@@ -22,6 +22,8 @@ export function transformSchemaTypes(schema: string): TransformedElements {
 
   let existingTypes: string[][] = [];
 
+  const skipTypeNames = ["operations", "Schemas", "components"];
+
   function traverseThroughFileNodes(node: ts.Node) {
     if (node.kind === ts.SyntaxKind.TypeAliasDeclaration) {
       const nodeText = node.getText(sourceFile);
@@ -70,8 +72,10 @@ export function transformSchemaTypes(schema: string): TransformedElements {
 
       if (
         !existingTypes.some((t) => t[0] === typeName) &&
-        // wrong types are parsed as code, irgore them
-        typeName.includes(" ")
+        !skipTypeNames.includes(typeName)
+        // &&
+        // wrong types are parsed as code, ignore them
+        // typeName.includes(" ")
       ) {
         existingTypes.push([typeName, nodeText]);
       }

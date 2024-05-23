@@ -24,7 +24,8 @@
     "dist"
   ],
   "bin": {
-    "api-gen": "bin/api-gen.mjs"
+    "api-gen": "bin/api-gen.mjs",
+    "shopware-api-gen": "bin/api-gen.mjs"
   },
   "scripts": {
     "build": "unbuild",

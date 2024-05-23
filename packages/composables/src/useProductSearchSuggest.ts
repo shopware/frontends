@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useProductSearchListing } from "#imports";
-import type { Schemas, RequestParameters, operations } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseProductSearchSuggestReturn = {
   /**
@@ -53,9 +53,7 @@ export function useProductSearchSuggest(): UseProductSearchSuggestReturn {
       ...additionalCriteria,
       search: searchTerm.value,
     };
-    return listingComposable.search(searchCriteria, {
-      preventRouteChange: true,
-    });
+    return listingComposable.search(searchCriteria);
   };
 
   return {

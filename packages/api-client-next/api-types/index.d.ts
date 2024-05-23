@@ -1,1 +1,1 @@
-export * from "./newApiTypes";
+export * from "./apiTypes";

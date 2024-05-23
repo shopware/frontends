@@ -1,7 +1,7 @@
 import { computed, ref, inject, provide } from "vue";
 import type { ComputedRef } from "vue";
 import { defu } from "defu";
-import type { Schemas, RequestParameters, operations } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 import { useShopwareContext, useSessionContext } from "#imports";
 
 export type UseCheckoutReturn = {

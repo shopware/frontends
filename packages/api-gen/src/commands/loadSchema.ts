@@ -1,4 +1,5 @@
 import { writeFileSync } from "node:fs";
+import { join } from "node:path";
 import * as dotenv from "dotenv";
 import c from "picocolors";
 import { format } from "prettier";
@@ -73,21 +74,27 @@ export async function loadSchema(args: {
           password: config.SHOPWARE_ADMIN_PASSWORD,
         },
       });
-      apiJSON = await adminClient.invoke(
+      const result = await adminClient.invoke(
         "api-info get /_info/openapi3.json?type",
         {
           // TODO: change to json once default content-type is changed NEXT-30635
           type: "jsonapi",
         },
       );
+      // @ts-expect-error it will be auto fixed once admin client migrated
+      apiJSON = result.data;
     } else {
       const apiClient = createAPIClient<operations>({
         baseURL: `${configUrl}/store-api`,
         accessToken: config.OPENAPI_ACCESS_KEY,
       });
-      apiJSON = await apiClient.invoke("api-info get /_info/openapi3.json", {
-        query: { type: "json" },
-      });
+      const result = await apiClient.invoke(
+        "api-info get /_info/openapi3.json",
+        {
+          query: { type: "json" },
+        },
+      );
+      apiJSON = result.data;
     }
 
     const formatted = await format(JSON.stringify(apiJSON), {
@@ -98,14 +105,17 @@ export async function loadSchema(args: {
 
     // const version = apiJSON?.info?.version;
 
-    writeFileSync(args.filename, content, {
+    const dir = args.cwd;
+    const filePath = join("api-types", args.filename);
+
+    writeFileSync(join(dir, filePath), content, {
       encoding: "utf-8",
     });
 
     console.log(
       c.green(
         `Schema file loaded from ${c.bold(downloadUrl)} and saved to ${c.bold(
-          args.filename,
+          filePath,
         )}`,
       ),
     );

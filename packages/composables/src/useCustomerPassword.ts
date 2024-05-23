@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 import type { UnwrapRef } from "vue";
 import { useShopwareContext } from "#imports";
-import type { RequestParameters, operations } from "#shopware";
+import type { operations } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 

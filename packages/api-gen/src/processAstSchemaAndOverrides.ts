@@ -1,17 +1,23 @@
-import { GenerationMap, generateFile } from "./generateFile";
+import {
+  GenerationMap,
+  TransformedElements,
+  generateFile,
+} from "./generateFile";
 import { createVirtualFiles } from "./virtualFileCreator";
-import { transformOpenApiTypes } from "./transformOpenApiTypes";
+// import { transformOpenApiTypes } from "./transformOpenApiTypes";
 import { transformSchemaTypes } from "./transformSchemaTypes";
 import { defu } from "defu";
+import { join } from "node:path";
 
 export async function processAstSchemaAndOverrides(
-  schema: string,
+  [opMap, opComponents, opExistingTypes]: TransformedElements,
   overridingSchema: string,
 ) {
   const {
     sourceFiles: [sourceFile, overridesSourceFile],
   } = createVirtualFiles([
-    { name: "_main.d.ts", content: schema },
+    // { name: "_main.d.ts", content: schema },
+    { name: "_main.d.ts", content: "" },
     { name: "_overrides.d.ts", content: overridingSchema },
   ]);
 
@@ -20,7 +26,7 @@ export async function processAstSchemaAndOverrides(
     return;
   }
 
-  const [opMap, opComponents, opExistingTypes] = transformOpenApiTypes(schema);
+  // const [opMap, opComponents, opExistingTypes] = transformOpenApiTypes(schema);
 
   if (!overridesSourceFile) {
     console.error("Overriding source file not found");
@@ -37,6 +43,6 @@ export async function processAstSchemaAndOverrides(
   const componentsMap = defu(oComponetsMap, opComponents);
   const existingTypes = opExistingTypes;
 
-  const filePath = "apiTypes.d.ts";
+  const filePath = join("api-types", "apiTypes.d.ts");
   generateFile(filePath, operationsMap, existingTypes, componentsMap);
 }

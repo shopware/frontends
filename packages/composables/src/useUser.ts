@@ -8,7 +8,7 @@ import {
   useContext,
 } from "#imports";
 import { syncRefs } from "@vueuse/core";
-import type { RequestParameters, Schemas, operations } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseUserReturn = {
   /**

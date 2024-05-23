@@ -1,4 +1,4 @@
-import { components as mainComponents } from "./apiSchema";
+import { components as mainComponents } from "./apiTypes";
 
 type GenericRecord =
   | never
@@ -1252,6 +1252,90 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  /** Added since version: 6.5.3.0 */
+  Quote: {
+    /** Format: float */
+    amountNet?: number;
+    /** Format: float */
+    amountTotal?: number;
+    comments?: components["schemas"]["QuoteComment"][];
+    /** Format: date-time */
+    createdAt: string;
+    createdById?: string;
+    currency?: components["schemas"]["Currency"];
+    currencyId: string;
+    customerId: string;
+    customFields?: GenericRecord;
+    deliveries?: components["schemas"]["QuoteDelivery"][];
+    discount?: {
+      type?: string;
+      /** Format: float */
+      value?: number;
+    };
+    documents?: components["schemas"]["QuoteDocument"][];
+    /** Format: date-time */
+    expirationDate?: string;
+    id: string;
+    language?: components["schemas"]["Language"];
+    languageId: string;
+    lineItems?: components["schemas"]["QuoteLineItem"][];
+    orderId?: string;
+    orderVersionId?: string;
+    // TODO: [OpenAPI][Quote] - price field should be defined properly
+    price: {
+      calculatedTaxes?: GenericRecord;
+      /** Format: float */
+      netPrice: number;
+      /** Format: float */
+      positionPrice: number;
+      /** Format: float */
+      rawTotal: number;
+      taxRules?: GenericRecord;
+      taxStatus: string;
+      /** Format: float */
+      totalPrice: number;
+    };
+    quoteNumber?: string;
+    salesChannelId: string;
+    /** Format: date-time */
+    sentAt?: string;
+    shippingCosts?: {
+      calculatedTaxes?: GenericRecord;
+      listPrice?: {
+        /** Format: float */
+        discount?: number;
+        /** Format: float */
+        percentage?: number;
+        /** Format: float */
+        price?: number;
+      };
+      /** Format: int64 */
+      quantity: number;
+      referencePrice?: GenericRecord;
+      regulationPrice?: {
+        /** Format: float */
+        price?: number;
+      };
+      taxRules?: GenericRecord;
+      /** Format: float */
+      totalPrice: number;
+      /** Format: float */
+      unitPrice: number;
+    };
+    stateId: string;
+    stateMachineState: components["schemas"]["StateMachineState"]; // TODO: [OpenAPI][Quote] stateMachineState field should be defined as required
+    /** Format: float */
+    subtotalNet?: number;
+    taxStatus?: string;
+    /** Format: float */
+    totalDiscount?: number;
+    transactions?: components["schemas"]["QuoteTransaction"][];
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedById?: string;
+    userId?: string;
+    versionId?: string;
+  };
   SalesChannelContext: components["schemas"]["ArrayStruct"] & {
     /** Core context with general configuration values and state */
     context?: {
@@ -1462,6 +1546,21 @@ export type Schemas = {
     /** Format: date-time */
     created: string; // TODO: [OpenAPI][Sitemap] created field should be defined as required
     filename: string; // TODO: [OpenAPI][Sitemap] filename field should be defined as required
+  };
+  StateMachineState: {
+    /** Format: date-time */
+    createdAt: string;
+    customFields?: GenericRecord;
+    id?: string;
+    name: string;
+    technicalName: string;
+    translated: {
+      // TODO: [OpenAPI][StateMachineState] translated field should be defined as required
+      name?: string;
+      technicalName?: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
   };
   SwagPaypalVaultToken: {
     // TODO: [OpenAPI][SwagPaypalVaultToken] - add SwagPaypalVaultToken definition to schema

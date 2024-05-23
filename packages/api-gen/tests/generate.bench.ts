@@ -27,6 +27,8 @@ describe("api-gen - generate", () => {
     await generate({
       cwd: __dirname,
       filename: "testSchema.json",
+      default: "",
+      debug: false,
     });
   });
 });
