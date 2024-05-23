@@ -128,6 +128,9 @@ export function createAPIClient<
       | {
           query: unknown;
         }
+      | {
+          pathParams: unknown;
+        }
       ? [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">]
       : [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">?]
   ): Promise<RequestReturnType<CURRENT_OPERATION>> {
@@ -137,9 +140,19 @@ export function createAPIClient<
       string,
     ];
 
+    // TODO: move to helper method and test
+    const pathParams: string[] =
+      requestPath
+        .match(/{[^}]+}/g)
+        //remove brackets
+        ?.map((param) => param.substring(1, param.length - 1)) || [];
+    const requestPathWithParams = pathParams.reduce((acc, paramName) => {
+      return acc.replace(`{${paramName}}`, params[0]?.pathParams?.[paramName]);
+    }, requestPath);
+
     const resp = await apiFetch.raw<
       SimpleUnionPick<CURRENT_OPERATION, "response">
-    >(requestPath, {
+    >(requestPathWithParams, {
       method,
       body: params[0]?.body,
       headers: defaultHeaders as any,
