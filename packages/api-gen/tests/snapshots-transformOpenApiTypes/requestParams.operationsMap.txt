@@ -5,6 +5,7 @@
         /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
         "sw-include-seo-urls"?: boolean;
       };",
+    "headersOptional": true,
     "operationId": "myRequestWithOptionalParams",
     "pathParams": " {
         /** Identifier of the product to be added. */
@@ -14,6 +15,7 @@
         /** A list of product identifiers. */
         ids?: string[];
       };",
+    "queryOptional": true,
     "responses": [
       {
         "code": " {
@@ -30,6 +32,7 @@
         /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
         "sw-include-seo-urls"?: boolean;
       };",
+    "headersOptional": true,
     "operationId": "myRequestWithParams",
     "pathParams": " {
         /** Identifier of the product to be added. */
@@ -39,6 +42,7 @@
         /** A list of product identifiers. */
         ids: string[];
       };",
+    "queryOptional": false,
     "responses": [
       {
         "code": " {

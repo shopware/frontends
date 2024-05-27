@@ -11,7 +11,7 @@ import {
 } from "h3";
 import type { App } from "h3";
 import { createAdminAPIClient } from ".";
-import type { operationPaths, operations } from "../admin-api-types";
+import type { operations } from "../api-types/adminApiTypes";
 
 describe("createAdminAPIClient", () => {
   const listeners: Listener[] = [];
@@ -61,7 +61,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "",
@@ -69,11 +69,8 @@ describe("createAdminAPIClient", () => {
         expirationTime: 0,
       },
     });
-    const res = await client.invoke(
-      "getOrderList get /order?limit,page,query",
-      {},
-    );
-    expect(res).toEqual({ orderResponse: 123 });
+    const res = await client.invoke("getOrderList get /order", {});
+    expect(res.data).toEqual({ orderResponse: 123 });
     expect(authEndpointSpy).toHaveBeenCalledWith({
       client_id: "administration",
       grant_type: "refresh_token",
@@ -108,7 +105,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "Bearer my-access-token",
@@ -116,12 +113,9 @@ describe("createAdminAPIClient", () => {
         expirationTime: Date.now() + 1000 * 60,
       },
     });
-    const res = await client.invoke(
-      "getOrderList get /order?limit,page,query",
-      {},
-    );
+    const res = await client.invoke("getOrderList get /order", {});
     expect(authHeaderSpy).toHaveBeenCalledWith("Bearer my-access-token");
-    expect(res).toEqual({ orderResponse: 123 });
+    expect(res.data).toEqual({ orderResponse: 123 });
     expect(authEndpointSpy).not.toHaveBeenCalled();
   });
 
@@ -154,7 +148,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
         grant_type: "client_credentials",
@@ -163,10 +157,7 @@ describe("createAdminAPIClient", () => {
       },
       onAuthChange: onAuthChangeSpy,
     });
-    const res = await client.invoke(
-      "getOrderList get /order?limit,page,query",
-      {},
-    );
+    const res = await client.invoke("getOrderList get /order", {});
     expect(authEndpointSpy).toHaveBeenCalledWith({
       client_id: "my-client-id",
       client_secret: "my-client-secret-token",
@@ -175,7 +166,7 @@ describe("createAdminAPIClient", () => {
     expect(authHeaderSpy).toHaveBeenCalledWith(
       "Bearer client-session-access-token",
     );
-    expect(res).toEqual({ orderResponse: 123 });
+    expect(res.data).toEqual({ orderResponse: 123 });
 
     expect(onAuthChangeSpy).toBeCalledWith({
       accessToken: "client-session-access-token",
@@ -204,7 +195,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
         grant_type: "client_credentials",
@@ -213,11 +204,8 @@ describe("createAdminAPIClient", () => {
       },
       onAuthChange: onAuthChangeSpy,
     });
-    const res = await client.invoke(
-      "getOrderList get /order?limit,page,query",
-      {},
-    );
-    expect(res).toEqual({ orderResponse: 123 });
+    const res = await client.invoke("getOrderList get /order", {});
+    expect(res.data).toEqual({ orderResponse: 123 });
 
     expect(onAuthChangeSpy).not.toHaveBeenCalled();
   });
@@ -248,7 +236,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "",
@@ -257,7 +245,7 @@ describe("createAdminAPIClient", () => {
       },
     });
     await expect(() =>
-      client.invoke("getOrderList get /order?limit,page,query", {}),
+      client.invoke("getOrderList get /order", {}),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       "[ApiClientError: Failed request]",
     );
@@ -281,7 +269,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "Bearer my-access-token",
@@ -290,7 +278,7 @@ describe("createAdminAPIClient", () => {
       },
     });
     await expect(() =>
-      client.invoke("getOrderList get /order?limit,page,query", {}),
+      client.invoke("getOrderList get /order", {}),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       "[ApiClientError: Failed request]",
     );
@@ -312,7 +300,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "Bearer my-access-token",
@@ -320,7 +308,7 @@ describe("createAdminAPIClient", () => {
         expirationTime: Date.now() + 1000 * 60,
       },
     });
-    await client.invoke("getOrderList get /order?limit,page,query", {});
+    await client.invoke("getOrderList get /order");
 
     expect(seoUrlheadersSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -342,7 +330,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "Bearer my-access-token",
@@ -351,7 +339,7 @@ describe("createAdminAPIClient", () => {
       },
     });
     client.defaultHeaders.Accept = "application/xml";
-    await client.invoke("getOrderList get /order?limit,page,query", {});
+    await client.invoke("getOrderList get /order", {});
 
     expect(seoUrlheadersSpy).toHaveBeenCalledWith(
       expect.objectContaining({

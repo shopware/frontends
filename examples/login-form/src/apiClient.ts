@@ -1,5 +1,5 @@
 import { createAPIClient } from "@shopware/api-client";
-import type { operations } from "@shopware/api-client/api-types/newApiTypes";
+import type { operations } from "@shopware/api-client/store-api-types";
 import Cookies from "js-cookie";
 
 export const apiClient = createAPIClient<operations>({

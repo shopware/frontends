@@ -4,6 +4,7 @@ import {
   getDeepProperty,
   getDeepPropertyCode,
   getTypePropertyNames,
+  isOptional,
 } from "./utils";
 import {
   GenerationMap,
@@ -171,12 +172,27 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                   typeChecker,
                 });
                 if (operationQueryParams) {
-                  operationGenerationMap.query = getDeepPropertyCode({
+                  const queryParam = getDeepProperty({
                     type: operationQueryParams,
                     names: ["query"],
                     node,
                     typeChecker,
-                  })!;
+                  });
+                  if (queryParam) {
+                    const allQueryParams = queryParam.getProperties(); //(queryParam);
+                    const areAllQueryParamsOptional = allQueryParams.every(
+                      (param) => isOptional(param),
+                    );
+                    operationGenerationMap.queryOptional =
+                      areAllQueryParamsOptional;
+
+                    operationGenerationMap.query = getDeepPropertyCode({
+                      type: operationQueryParams,
+                      names: ["query"],
+                      node,
+                      typeChecker,
+                    })!;
+                  }
 
                   operationGenerationMap.pathParams = getDeepPropertyCode({
                     type: operationQueryParams,
@@ -185,12 +201,27 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                     typeChecker,
                   })!;
 
-                  operationGenerationMap.headers = getDeepPropertyCode({
+                  const headersParam = getDeepProperty({
                     type: operationQueryParams,
                     names: ["header"],
                     node,
                     typeChecker,
-                  })!;
+                  });
+                  if (headersParam) {
+                    const allHeaders = headersParam.getProperties();
+                    const areAllHeadersOptional = allHeaders.every((param) =>
+                      isOptional(param),
+                    );
+                    operationGenerationMap.headersOptional =
+                      areAllHeadersOptional;
+
+                    operationGenerationMap.headers = getDeepPropertyCode({
+                      type: operationQueryParams,
+                      names: ["header"],
+                      node,
+                      typeChecker,
+                    })!;
+                  }
                 }
               }
 

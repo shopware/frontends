@@ -12,6 +12,7 @@ import { join } from "node:path";
 export async function processAstSchemaAndOverrides(
   [opMap, opComponents, opExistingTypes]: TransformedElements,
   overridingSchema: string,
+  type: "store" | "admin",
 ) {
   const {
     sourceFiles: [sourceFile, overridesSourceFile],
@@ -43,6 +44,6 @@ export async function processAstSchemaAndOverrides(
   const componentsMap = defu(oComponetsMap, opComponents);
   const existingTypes = opExistingTypes;
 
-  const filePath = join("api-types", "apiTypes.d.ts");
+  const filePath = join("api-types", `${type}ApiTypes.d.ts`);
   generateFile(filePath, operationsMap, existingTypes, componentsMap);
 }

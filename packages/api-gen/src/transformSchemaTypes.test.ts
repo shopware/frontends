@@ -57,6 +57,15 @@ describe("transformSchemaTypes", async () => {
       }
     `);
 
-    expect(existingTypes).toMatchInlineSnapshot(`[]`);
+    expect(existingTypes).toMatchInlineSnapshot(`
+      [
+        [
+          "any",
+          "export type components = mainComponents & {
+        schemas: Schemas;
+      };",
+        ],
+      ]
+    `);
   });
 });

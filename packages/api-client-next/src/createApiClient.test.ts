@@ -11,7 +11,7 @@ import {
 } from "h3";
 import type { App } from "h3";
 import { createAPIClient } from "./createApiClient";
-import type { operations } from "../api-types/newApiTypes";
+import type { operations } from "../api-types/storeApiTypes";
 
 describe("createAPIClient", () => {
   const listeners: Listener[] = [];
@@ -144,8 +144,8 @@ describe("createAPIClient", () => {
       accessToken: "123",
       contextToken: "456",
       baseURL,
-      onContextChanged: contextChangedMock,
     });
+    client.hook("onContextChanged", contextChangedMock);
 
     await client.invoke("readCart get /checkout/cart");
     expect(contextChangedMock).not.toHaveBeenCalled();
@@ -171,8 +171,9 @@ describe("createAPIClient", () => {
       accessToken: "123",
       contextToken: "456",
       baseURL,
-      onContextChanged: contextChangedMock,
     });
+
+    client.hook("onContextChanged", contextChangedMock);
 
     await client.invoke("readContext get /context");
     expect(contextChangedMock).not.toHaveBeenCalled();
@@ -308,5 +309,33 @@ describe("createAPIClient", () => {
     } catch (e) {}
 
     expect(errorCallback).toHaveBeenCalled();
+  });
+
+  it("should display deprecation message at the console when onContextChanged method is used", async () => {
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        setHeader(event, "sw-context-token", "789");
+        return {};
+      }),
+    );
+
+    const consoleErrorSpy = vi.spyOn(console, "error");
+    const contextChangedMock = vi
+      .fn()
+      .mockImplementation((param: string) => {});
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      baseURL,
+      accessToken: "123",
+      contextToken: "456",
+      onContextChanged: contextChangedMock,
+    });
+
+    await client.invoke("readContext get /context");
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 });

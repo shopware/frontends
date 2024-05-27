@@ -3,12 +3,12 @@
  */
 
 import { createAPIClient } from "./createApiClient";
-import type { operations } from "../api-types/newApiTypes";
+import type { operations } from "../api-types/storeApiTypes";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
-// type extendedPaths = "qweqwe post /some/{addressId}/pathh" | operationPaths;
+// type extendedPaths = "qweqwe post /some/{addressId}/pathh" ;
 type extendedOperations = {
   qweqwe: {
     parameters: {

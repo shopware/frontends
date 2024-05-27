@@ -1,6 +1,6 @@
 import { assertType, describe, it } from "vitest";
 import { createAPIClient } from "../createApiClient";
-import type { operations } from "../../../api-gen/apiTypes";
+import type { operations } from "../../api-types/storeApiTypes";
 import type { RequestReturnType, RequestParameters } from "../createApiClient";
 
 describe("createApiClient type checks", () => {
@@ -57,5 +57,14 @@ describe("createApiClient type checks", () => {
       "removeLineItemDeprecated delete /checkout/cart/line-item",
       params,
     );
+  });
+
+  it("should make query optional if all params inside are optional", async () => {
+    const apiInstance = createAPIClient<operations>({
+      baseURL: "",
+      accessToken: "",
+    });
+
+    await apiInstance.invoke("readApprovalRules get /approval-rule");
   });
 });

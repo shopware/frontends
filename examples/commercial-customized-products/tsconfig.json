@@ -4,14 +4,13 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    // "skipLibCheck": true,
     "types": ["vite/client", "./env.d.ts"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    // "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
 

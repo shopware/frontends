@@ -1,7 +1,5 @@
 {
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "paths": {
       "@/*": [
@@ -9,12 +7,9 @@
       ]
     },
     "esModuleInterop": true,
-    "lib": [
-      "esnext",
-      "DOM"
-    ],
-    "types": [
-      "vite/client"
-    ]
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "lib": ["esnext", "DOM"],
+    "types": ["vite/client"]
   }
 }

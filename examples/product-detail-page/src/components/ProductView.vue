@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineProps, ref } from "vue";
-import type { components } from "@shopware/api-client/api-types";
+import type { components } from "@shopware/api-client/store-api-types";
 import {
   getSmallestThumbnailUrl,
   getSrcSetForMedia,

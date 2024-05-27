@@ -1,8 +1,10 @@
-import { FetchResponse, ofetch } from "ofetch";
-import type { operations } from "../../api-gen/apiTypes";
+import { type FetchResponse, ofetch } from "ofetch";
+import type { operations } from "../../api-gen/api-types/apiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
 import { type Hookable, createHooks } from "hookable";
+import defu from "defu";
+import { createPathWithParams, getPathParams } from "./transformPathToQuery";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
@@ -129,6 +131,9 @@ export function createAPIClient<
           query: unknown;
         }
       | {
+          header: unknown;
+        }
+      | {
           pathParams: unknown;
         }
       ? [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">]
@@ -140,22 +145,21 @@ export function createAPIClient<
       string,
     ];
 
-    // TODO: move to helper method and test
-    const pathParams: string[] =
-      requestPath
-        .match(/{[^}]+}/g)
-        //remove brackets
-        ?.map((param) => param.substring(1, param.length - 1)) || [];
-    const requestPathWithParams = pathParams.reduce((acc, paramName) => {
-      return acc.replace(`{${paramName}}`, params[0]?.pathParams?.[paramName]);
-    }, requestPath);
+    const currentParams =
+      params[0] || ({} as RequestParameters<CURRENT_OPERATION>);
+
+    const requestPathWithParams = createPathWithParams(
+      requestPath,
+      currentParams.pathParams,
+    );
 
     const resp = await apiFetch.raw<
       SimpleUnionPick<CURRENT_OPERATION, "response">
     >(requestPathWithParams, {
       method,
-      body: params[0]?.body,
-      headers: defaultHeaders as any,
+      body: currentParams.body,
+      headers: defu(defaultHeaders, currentParams.header) as HeadersInit,
+      query: currentParams.query,
     });
 
     return {

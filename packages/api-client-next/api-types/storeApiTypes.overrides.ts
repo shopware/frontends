@@ -1,4 +1,4 @@
-import { components as mainComponents } from "./apiTypes";
+import { components as mainComponents } from "./storeApiTypes";
 
 type GenericRecord =
   | never
@@ -1547,6 +1547,7 @@ export type Schemas = {
     created: string; // TODO: [OpenAPI][Sitemap] created field should be defined as required
     filename: string; // TODO: [OpenAPI][Sitemap] filename field should be defined as required
   };
+  State: unknown; // TODO: [OpenAPI][State] - add State definition to schema, used in CartDelivery.location.state
   StateMachineState: {
     /** Format: date-time */
     createdAt: string;

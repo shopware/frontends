@@ -17,21 +17,25 @@ const config = dotenv.config().parsed || {};
 
 export async function generate(args: {
   cwd: string;
-  filename: string;
-  default: string;
+  filename?: string;
+  apiType: "store" | "admin";
   debug: boolean;
 }) {
+  const inputFilename = args.filename
+    ? args.filename
+    : `${args.apiType}ApiSchema.json`;
+
   try {
     const start = performance.now();
-    const outputFilename = args.filename.replace(".json", ".d.ts");
+    const outputFilename = inputFilename.replace(".json", ".d.ts");
 
-    const fullInputFilePath = join(args.cwd, "api-types", args.filename);
+    const fullInputFilePath = join(args.cwd, "api-types", inputFilename);
     const fullOutputFilePath = join(args.cwd, "api-types", outputFilename);
 
     //check if file exist
     const fileExist = existsSync(fullInputFilePath);
 
-    if (!fileExist && !args.default) {
+    if (!fileExist && !args.apiType) {
       console.log(
         c.yellow(
           `Schema file ${c.bold(
@@ -193,21 +197,26 @@ export async function generate(args: {
       // clean up
       // remove `@description ` tags
       schema = schema.replace(/@description /g, "");
-      writeFileSync(fullOutputFilePath, schema, {
-        encoding: "utf-8",
-      });
 
-      schema = await format(schema, {
-        // semi: false,
-        parser: "typescript",
-        // plugins: [tsParser],
-      });
-      schema = schema.trim();
+      if (args.debug) {
+        writeFileSync(fullOutputFilePath, schema, {
+          encoding: "utf-8",
+        });
+
+        schema = await format(schema, {
+          // semi: false,
+          parser: "typescript",
+          // plugins: [tsParser],
+        });
+        schema = schema.trim();
+      }
 
       processedSchemaAst = transformOpenApiTypes(schema);
     } else {
       console.log(
-        c.yellow(`Using default schema '${args.default}' as a base.`),
+        c.yellow(
+          `File ${c.bold(fullInputFilePath)} does not exist. Using default schema '${args.apiType}' as a base. to change that use param --apiType=admin or --apiType=store to pick the base schema.`,
+        ),
       );
 
       // TODO: change to main branch
@@ -228,22 +237,31 @@ export async function generate(args: {
 
       // TODO: change overrides file name to param
       // read file "storeApiTypes.overrides.ts" if exists
-      const fileExists = existsSync(
-        join(args.cwd, "api-types", "storeApiTypes.overrides.ts"),
+      const overridesFilepath = join(
+        args.cwd,
+        "api-types",
+        `${args.apiType}ApiTypes.overrides.ts`,
       );
+      const fileExists = existsSync(overridesFilepath);
       let overridesSchema = "";
-      console.error("Overrides exist", fileExists);
+      console.error(
+        "Overrides exist:",
+        fileExists,
+        "in file",
+        overridesFilepath,
+      );
 
       if (fileExists) {
-        overridesSchema = readFileSync(
-          join(args.cwd, "api-types", "storeApiTypes.overrides.ts"),
-          {
-            encoding: "utf-8",
-          },
-        );
+        overridesSchema = readFileSync(overridesFilepath, {
+          encoding: "utf-8",
+        });
       }
 
-      await processAstSchemaAndOverrides(processedSchemaAst, overridesSchema);
+      await processAstSchemaAndOverrides(
+        processedSchemaAst,
+        overridesSchema,
+        args.apiType,
+      );
     } else {
       throw new Error("Schema is not a string");
     }
@@ -252,7 +270,7 @@ export async function generate(args: {
     const time = Math.round(stop - start);
     console.log(
       c.green(
-        `Types generated in ${c.bold(fullOutputFilePath)} (took ${time}ms)`,
+        `Types generated in ${c.bold(join("api-types", `${args.apiType}ApiTypes.d.ts`))} (took ${time}ms)`,
       ),
     );
   } catch (error) {

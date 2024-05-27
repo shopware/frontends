@@ -1189,6 +1189,9 @@ importers:
       '@nuxtjs/i18n':
         specifier: 8.1.1
         version: 8.1.1(rollup@3.29.4)(vue@3.4.21)
+      '@shopware/api-gen':
+        specifier: canary
+        version: link:../../packages/api-gen
       '@vue/eslint-config-typescript':
         specifier: 13.0.0
         version: 13.0.0(eslint-plugin-vue@9.24.1)(eslint@8.57.0)(typescript@5.4.5)

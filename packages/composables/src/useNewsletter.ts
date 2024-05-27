@@ -56,7 +56,7 @@ export function useNewsletter(): UseNewsletterReturn {
       "storefrontUrl"
     >,
   ) {
-    const { data } = await apiClient.invoke(
+    const result = await apiClient.invoke(
       "subscribeToNewsletter post /newsletter/subscribe",
       {
         body: {
@@ -65,7 +65,7 @@ export function useNewsletter(): UseNewsletterReturn {
         },
       },
     );
-    return data;
+    return result.data;
   }
 
   async function newsletterUnsubscribe(email: string) {

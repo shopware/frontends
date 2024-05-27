@@ -3,11 +3,7 @@ declare module "#shopware" {
   import type {
     operations as defaultOperations,
     components as defaultComponents,
-  } from "@shopware/api-client/api-types";
-  import type {
-    RequestParameters as DefaultRequestParameters,
-    RequestReturnType as DefaultRequestReturnType,
-  } from "@shopware/api-client";
+  } from "@shopware/api-client/store-api-types";
 
   export type operations = defaultOperations;
   export type Schemas = defaultComponents["schemas"];

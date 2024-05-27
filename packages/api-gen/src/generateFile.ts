@@ -4,7 +4,9 @@ import { format } from "prettier";
 export type MethodDefinition = {
   operationId: string;
   headers?: string;
+  headersOptional?: boolean;
   query?: string;
+  queryOptional?: boolean;
   pathParams?: string;
   body: {
     contentType: string;
@@ -102,7 +104,9 @@ export async function prepareFileContent({
               contentType?: string;
               accept?: string;
               headers?: string;
+              headersOptional?: boolean;
               query?: string;
+              queryOptional?: boolean;
               pathParams?: string;
               body: string | null;
               response: string;
@@ -122,7 +126,9 @@ export async function prepareFileContent({
                   contentType: defaultContentType,
                   accept: response.contentType,
                   headers: methodHeaders,
+                  headersOptional: method.headersOptional,
                   query: method.query,
+                  queryOptional: method.queryOptional,
                   pathParams: method.pathParams,
                   body: null,
                   response: response.code,
@@ -138,7 +144,9 @@ export async function prepareFileContent({
                     contentType: body.contentType,
                     accept: response.contentType,
                     headers: methodHeaders,
+                    headersOptional: method.headersOptional,
                     query: method.query,
+                    queryOptional: method.queryOptional,
                     pathParams: method.pathParams,
                     body: body.code,
                     response: response.code,
@@ -170,17 +178,21 @@ export async function prepareFileContent({
                   );
 
                   if (singleRequest.headers?.length) {
-                    // TODO: (low priority) check if all headers are optional and set headers as optional
-                    writer.write("headers:").write(singleRequest.headers);
+                    writer
+                      .write(
+                        `headers${singleRequest.headersOptional ? "?" : ""}:`,
+                      )
+                      .write(singleRequest.headers);
                   }
 
                   if (singleRequest.query) {
-                    // TODO: (low priority) check if all headers are optional and set headers as optional
-                    writer.write("query:").write(singleRequest.query);
+                    writer
+                      .write(`query${singleRequest.queryOptional ? "?" : ""}:`)
+                      .write(singleRequest.query);
                   }
 
                   if (singleRequest.pathParams) {
-                    writer.write("pathParams:").write(singleRequest.pathParams);
+                    writer.write(`pathParams:`).write(singleRequest.pathParams);
                   }
 
                   if (singleRequest.body) {
