@@ -6,15 +6,17 @@ import LoginForm from "./components/LoginForm.vue";
 import AdminLoginForm from "./components/AdminLoginForm.vue";
 import { adminApiClient } from "./adminApiClient";
 import { ApiClientError } from "@shopware/api-client";
-import type { RequestReturnType } from "#shopware";
+import type { operations } from "#shopware";
 
-const productsResponse = ref<RequestReturnType<"readProduct">>();
+const productsResponse =
+  ref<operations["readProduct post /product"]["response"]>();
 
 onMounted(async () => {
   await apiClient.invoke("readContext get /context", {});
-  productsResponse.value = await apiClient.invoke("readProduct post /product", {
-    limit: 2,
+  const response = await apiClient.invoke("readProduct post /product", {
+    body: { limit: 2 },
   });
+  productsResponse.value = response.data;
   console.log(productsResponse.value);
 
   await getProducts();
@@ -22,12 +24,9 @@ onMounted(async () => {
 
 async function getProducts() {
   try {
-    const resp = await adminApiClient.invoke(
-      "getProductList get /product?limit,page,query",
-      {
-        limit: 2,
-      },
-    );
+    const resp = await adminApiClient.invoke("getProductList get /product", {
+      query: { limit: 2 },
+    });
   } catch (e) {
     if (e instanceof ApiClientError) {
       console.error("Problem with fetching ADMIN products", e);
