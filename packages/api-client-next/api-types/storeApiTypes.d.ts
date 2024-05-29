@@ -736,7 +736,8 @@ export type Schemas = {
     productAssignmentType: string;
     seoUrls?: components["schemas"]["SeoUrl"][];
     tags?: components["schemas"]["Tag"][];
-    translated?: {
+    // TODO: [OpenAPI][Category] - make `translated` required
+    translated: {
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
       breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
@@ -3315,7 +3316,8 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     tax?: components["schemas"]["Tax"];
     taxId: string;
-    translated?: {
+    // TODO: [OpenAPI][Product] translated field should be defined properly
+    translated: {
       canonicalProductId?: string;
       cmsPageId?: string;
       cmsPageVersionId?: string;
@@ -4271,7 +4273,8 @@ export type Schemas = {
     option: string; // TODO: [OpenAPI][PropertyGroupOption] option field should be defined; defined as string (?)
     /** Format: int64 */
     position?: number;
-    translated?: {
+    // TODO: [OpenAPI][PropertyGroupOption] translated field should be defined properly
+    translated: {
       colorHexCode?: string;
       groupId?: string;
       mediaId?: string;

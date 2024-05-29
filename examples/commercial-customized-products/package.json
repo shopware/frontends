@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "lint": "vue-tsc --noEmit",
     "preview": "vite preview",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
@@ -20,6 +21,7 @@
     "@types/node": "20.12.7",
     "@shopware/api-gen": "canary",
     "@vitejs/plugin-vue": "5.0.4",
-    "vite": "5.2.8"
+    "vite": "5.2.8",
+    "vue-tsc": "2.0.19"
   }
 }

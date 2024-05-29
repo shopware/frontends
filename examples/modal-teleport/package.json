@@ -5,6 +5,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "lint": "vue-tsc --noEmit",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "@vueuse/nuxt": "10.9.0",
-    "vue": "3.4.21"
+    "vue": "3.4.21",
+    "vue-tsc": "2.0.19"
   }
 }

@@ -36,7 +36,7 @@ export type UseAddToCartReturn = {
  * @category Cart & Checkout
  */
 export function useAddToCart(
-  product: Ref<Schemas["Product"]>,
+  product: Ref<Schemas["Product"] | undefined>,
 ): UseAddToCartReturn {
   const _product = computed(() => unref(product));
 
@@ -44,11 +44,11 @@ export function useAddToCart(
   const quantity: Ref<number> = ref(1);
 
   async function addToCart(): Promise<Schemas["Cart"]> {
-    if (!_product.value.id) throw new Error("Product id is required");
+    if (!_product.value?.id) throw new Error("Product id is required");
 
     if (!quantity.value) quantity.value = 1;
     const addToCartResponse = await addProduct({
-      id: _product.value.id,
+      id: _product.value?.id,
       quantity: quantity.value,
     });
     quantity.value = 1;

@@ -1,56 +1,80 @@
-import { components as coreComponents } from "./apiTypes";
+import type { components as coreComponents } from "./storeApiTypes";
 
 export type components = coreComponents & {
   schemas: Schemas;
 };
 
-// TODO(MD): Discover and define proper type, prefferably already existing in core
 export type Schemas = {
-  B2BProductDefinition: {
-    id: string;
-    quantity: number;
-    name: string;
-    productNumber: string;
-    translated: {
-      name?: string;
-    };
-    options: Array<{
+  AddToCartPayload: {
+    "customized-products-template": {
       id: string;
-      group: {
-        translated: {
-          name?: string;
+      options: {
+        [optionId: string]: {
+          media?: {
+            [filename: string]: {
+              id: string;
+              filename: string;
+            };
+          };
+          value: string | components["schemas"]["Media"][];
         };
       };
-      translated: {
-        name?: string;
-      };
-    }>;
-    calculatedPrice: {
-      unitPrice: number;
-      totalPrice: number;
     };
+    lineItems: {
+      [productId: string]: {
+        id: string;
+        type: string;
+        referencedId: string;
+        quantity: number;
+        stackable: boolean;
+        removable: boolean;
+      };
+    };
+  };
+  SwagCustomizedProductsTemplate: {
+    versionId: string;
+    translated: {
+      displayName: string;
+      description: string;
+    };
+    createdAt: string;
+    updatedAt: null | string;
+    internalName: string;
+    displayName: string;
+    description: string;
+    mediaId: null | string;
+    active: boolean;
+    stepByStep: boolean;
+    confirmInput: boolean;
+    optionsAutoCollapse: boolean;
+    decisionTree: unknown[];
+    translations: null | unknown;
+    media: null | components["schemas"];
+    products: null | components["schemas"]["Product"][];
+    exclusions: unknown[];
+    configurations: null | unknown;
+    id: string;
+    parentVersionId: string;
+    options: components["schemas"]["SwagCustomizedProductsTemplateOption"][];
+    apiAlias: "swag_customized_products_template";
   };
 };
 
 export type operations = {
-  "quickOrderProductSearch get /quick-order/product": {
+  "addCustomizedProductToCart post /checkout/customized-products/add-to-cart": {
     contentType?: "application/json";
     accept?: "application/json";
-    query: {
-      /** Product search string  */
-      search: string;
-    };
-    response: {
-      elements: components["schemas"]["B2BProductDefinition"][];
-    };
-    responseCode: 200;
+    body: components["schemas"]["AddToCartPayload"];
+    response: never;
+    responseCode: 204;
   };
-  "quickOrderLoadFile post /quick-order/load-file": {
+  "uploadCustomizedProductImage post /customized-products/upload": {
     contentType: "multipart/form-data";
     accept?: "application/json";
     body: FormData;
     response: {
-      products: components["schemas"]["B2BProductDefinition"][];
+      mediaId: string;
+      fileName: string;
     };
     responseCode: 200;
   };

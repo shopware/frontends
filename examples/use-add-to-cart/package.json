@@ -6,9 +6,12 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "lint": "vue-tsc --noEmit",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@shopware/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@types/node": "20.12.7",
@@ -16,6 +19,6 @@
     "nuxt": "3.11.2",
     "typescript": "5.4.5",
     "vue": "3.4.21",
-    "vue-tsc": "2.0.13"
+    "vue-tsc": "2.0.19"
   }
 }

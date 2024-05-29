@@ -30,6 +30,32 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  AddToCartPayload: {
+    "customized-products-template": {
+      id: string;
+      options: {
+        [optionId: string]: {
+          media?: {
+            [filename: string]: {
+              id: string;
+              filename: string;
+            };
+          };
+          value: string | components["schemas"]["Media"][];
+        };
+      };
+    };
+    lineItems: {
+      [productId: string]: {
+        id: string;
+        type: string;
+        referencedId: string;
+        quantity: number;
+        stackable: boolean;
+        removable: boolean;
+      };
+    };
+  };
   AdvancedSearchAction: {
     /** Format: date-time */
     createdAt: string;
@@ -301,30 +327,6 @@ export type Schemas = {
   };
   ArrayStruct: components["schemas"]["Struct"];
   Association: GenericRecord;
-  B2BProductDefinition: {
-    id: string;
-    quantity: number;
-    name: string;
-    productNumber: string;
-    translated: {
-      name?: string;
-    };
-    options: Array<{
-      id: string;
-      group: {
-        translated: {
-          name?: string;
-        };
-      };
-      translated: {
-        name?: string;
-      };
-    }>;
-    calculatedPrice: {
-      unitPrice: number;
-      totalPrice: number;
-    };
-  };
   B2bBusinessPartner: {
     /** Format: date-time */
     createdAt: string;
@@ -5729,35 +5731,31 @@ export type Schemas = {
     updatedAt?: string;
   };
   SwagCustomizedProductsTemplate: {
-    active?: boolean;
-    configurations?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"][];
-    confirmInput?: boolean;
-    /** Format: date-time */
-    createdAt: string;
-    decisionTree?: GenericRecord;
-    description?: string;
-    displayName: string;
-    exclusions?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"][];
-    id: string;
-    internalName: string;
-    media?: components["schemas"]["Media"];
-    mediaId?: string;
-    options?: components["schemas"]["SwagCustomizedProductsTemplateOption"][];
-    optionsAutoCollapse?: boolean;
-    parentVersionId?: string;
-    products?: components["schemas"]["Product"][];
-    stepByStep?: boolean;
-    translated?: {
-      description?: string;
-      displayName?: string;
-      internalName?: string;
-      mediaId?: string;
-      parentVersionId?: string;
-      versionId?: string;
+    versionId: string;
+    translated: {
+      displayName: string;
+      description: string;
     };
-    /** Format: date-time */
-    updatedAt?: string;
-    versionId?: string;
+    createdAt: string;
+    updatedAt: null | string;
+    internalName: string;
+    displayName: string;
+    description: string;
+    mediaId: null | string;
+    active: boolean;
+    stepByStep: boolean;
+    confirmInput: boolean;
+    optionsAutoCollapse: boolean;
+    decisionTree: unknown[];
+    translations: null | unknown;
+    media: null | components["schemas"];
+    products: null | components["schemas"]["Product"][];
+    exclusions: unknown[];
+    configurations: null | unknown;
+    id: string;
+    parentVersionId: string;
+    options: components["schemas"]["SwagCustomizedProductsTemplateOption"][];
+    apiAlias: "swag_customized_products_template";
   };
   SwagCustomizedProductsTemplateConfiguration: {
     configuration: GenericRecord;
@@ -7451,6 +7449,13 @@ export type operations = {
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
+  "addCustomizedProductToCart post /checkout/customized-products/add-to-cart": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["AddToCartPayload"];
+    response: never;
+    responseCode: 204;
+  };
   "createOrder post /checkout/order": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -7648,6 +7653,16 @@ export type operations = {
       productIds?: string[];
     };
     response: components["schemas"]["SuccessResponse"];
+    responseCode: 200;
+  };
+  "uploadCustomizedProductImage post /customized-products/upload": {
+    contentType: "multipart/form-data";
+    accept?: "application/json";
+    body: FormData;
+    response: {
+      mediaId: string;
+      fileName: string;
+    };
     responseCode: 200;
   };
   "download post /document/download/{documentId}/{deepLinkCode}": {
@@ -8159,27 +8174,6 @@ export type operations = {
       query?: string;
     };
     response: components["schemas"]["NaturalLanguageSearchTermResponse"];
-    responseCode: 200;
-  };
-  "quickOrderLoadFile post /quick-order/load-file": {
-    contentType: "multipart/form-data";
-    accept?: "application/json";
-    body: FormData;
-    response: {
-      products: components["schemas"]["B2BProductDefinition"][];
-    };
-    responseCode: 200;
-  };
-  "quickOrderProductSearch get /quick-order/product": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    query: {
-      /** Product search string  */
-      search: string;
-    };
-    response: {
-      elements: components["schemas"]["B2BProductDefinition"][];
-    };
     responseCode: 200;
   };
   "switchPaymentOrShippingMethod post /quote/{id}/configure": {

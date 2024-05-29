@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "vue-tsc",
+    "lint": "vue-tsc --noEmit",
     "preview": "vite preview",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineProps, ref } from "vue";
-import type { components } from "@shopware/api-client/store-api-types";
+import type { Schemas } from "#shopware";
 import {
   getSmallestThumbnailUrl,
   getSrcSetForMedia,
@@ -10,11 +10,11 @@ import {
   useProductPrice,
   usePrice,
   useProductAssociations,
-} from "@shopware-pwa/composables-next/dist";
+} from "@shopware-pwa/composables-next";
 import ProductCard from "./ProductCard.vue";
 
 const props = defineProps<{
-  product: components["schemas"]["Product"];
+  product: Schemas["Product"];
 }>();
 
 const product = computed(() => props.product);
@@ -64,9 +64,9 @@ const { getFormattedPrice } = usePrice({
   currencyCode: "EUR",
 });
 
-const productName = computed(() => product.value?.translated?.name);
+const productName = computed(() => product.value?.translated.name);
 const manufacturer = computed(() => product.value?.manufacturer?.name);
-const description = computed(() => product.value?.translated?.description);
+const description = computed(() => product.value?.translated.description);
 const productNumber = computed(() => product.value?.productNumber);
 const purchaseUnit = computed(() => product.value?.purchaseUnit);
 const unitName = computed(() => product.value?.unit?.name);
@@ -76,17 +76,17 @@ const unitName = computed(() => product.value?.unit?.name);
     <div class="xl:w-2/6 lg:w-2/5 w-80 md:block hidden">
       <img
         class="w-full"
-        :alt="`image of ${product?.translated?.name}`"
-        :src="getSmallestThumbnailUrl(product?.cover.media)"
-        :srcset="getSrcSetForMedia(product?.cover.media)"
+        :alt="`image of ${product?.translated.name}`"
+        :src="getSmallestThumbnailUrl(product?.cover?.media)"
+        :srcset="getSrcSetForMedia(product?.cover?.media)"
       />
     </div>
     <div class="md:hidden">
       <img
         class="w-full"
-        :alt="`image of ${product?.translated?.name}`"
-        :src="getSmallestThumbnailUrl(product?.cover.media)"
-        :srcset="getSrcSetForMedia(product?.cover.media)"
+        :alt="`image of ${product?.translated.name}`"
+        :src="getSmallestThumbnailUrl(product?.cover?.media)"
+        :srcset="getSrcSetForMedia(product?.cover?.media)"
       />
     </div>
     <div class="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6">
@@ -101,15 +101,15 @@ const unitName = computed(() => product.value?.unit?.name);
         </h1>
       </div>
       <div
-        v-if="product?.options?.length > 0"
+        v-if="product?.options?.length ?? 0 > 0"
         class="py-4 border-b border-gray-200 flex items-center justify-between"
       >
         <p class="text-base leading-4 text-gray-800 dark:text-gray-300">
-          {{ product?.options?.[0]?.group.translated?.name }}
+          {{ product?.options?.[0]?.group.name }}
         </p>
         <div class="flex items-center justify-center">
           <p class="text-sm leading-none text-gray-600 dark:text-gray-300">
-            {{ product?.options?.[0]?.translated?.name }}
+            {{ product?.options?.[0]?.translated.name }}
           </p>
         </div>
       </div>

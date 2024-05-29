@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import { useProductSearch, useCart } from "@shopware-pwa/composables-next/dist";
-import { useB2bQuoteManagement } from "@shopware-pwa/composables-next";
+import {
+  useProductSearch,
+  useCart,
+  useB2bQuoteManagement,
+} from "@shopware-pwa/composables-next";
 import Textarea from "primevue/textarea";
 import Button from "primevue/button";
 import Stepper from "primevue/stepper";

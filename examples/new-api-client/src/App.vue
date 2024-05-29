@@ -24,7 +24,7 @@ onMounted(async () => {
 
 async function getProducts() {
   try {
-    const resp = await adminApiClient.invoke("getProductList get /product", {
+    await adminApiClient.invoke("getProductList get /product", {
       query: { limit: 2 },
     });
   } catch (e) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { useProductSearch, useCart } from "@shopware-pwa/composables-next/dist";
+import { useProductSearch, useCart } from "@shopware-pwa/composables-next";
 import ProductBox from "@/components/ProductBox.vue";
 
 const product = ref();
