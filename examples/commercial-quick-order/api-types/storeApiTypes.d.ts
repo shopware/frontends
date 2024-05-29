@@ -106,6 +106,108 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  AggregationEntity: {
+    /** The entity definition e.g "product_manufacturer". */
+    definition: string;
+    /** The field you want to aggregate over. */
+    field: string;
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "entity";
+  };
+  AggregationFilter: {
+    filter: components["schemas"]["Filters"][];
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "filter";
+  };
+  AggregationHistogram: {
+    /** The field you want to aggregate over. */
+    field: string;
+    /** The format of the histogram */
+    format?: string;
+    /** The interval of the histogram */
+    interval?: number;
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /** The timezone of the histogram */
+    timeZone?: string;
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "histogram";
+  };
+  AggregationMetrics: {
+    field: string;
+    name: string;
+    /** @enum {string} */
+    type: "avg" | "count" | "max" | "min" | "stats" | "sum";
+  };
+  AggregationRange: {
+    /** The field you want to aggregate over. */
+    field: string;
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /** The ranges of the aggregation */
+    ranges: (
+      | {
+          /** The lower bound of the range */
+          from: number;
+          /** The upper bound of the range */
+          to: number;
+        }
+      | {
+          /** The lower bound of the range */
+          from: string;
+        }
+      | {
+          /** The upper bound of the range */
+          to: string;
+        }
+    )[];
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "range";
+  };
+  AggregationTerms: {
+    /** The field you want to aggregate over. */
+    field: string;
+    /** The number of terms to return */
+    limit?: number;
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /** Sorting the aggregation result. */
+    sort?: components["schemas"]["Sort"][];
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "terms";
+  };
+  Aggregations: (
+    | components["schemas"]["AggregationMetrics"]
+    | (components["schemas"]["AggregationEntity"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationFilter"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationTerms"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationHistogram"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationRange"] &
+        components["schemas"]["SubAggregations"])
+  )[];
   App: {
     /** Format: date-time */
     createdAt: string;
@@ -198,6 +300,7 @@ export type Schemas = {
     priority?: number;
   };
   ArrayStruct: components["schemas"]["Struct"];
+  Association: GenericRecord;
   B2BProductDefinition: {
     id: string;
     quantity: number;
@@ -570,6 +673,49 @@ export type Schemas = {
     transactions?: {
       paymentMethodId?: string;
     }[];
+  };
+  CartDelivery: {
+    deliveryDate?: {
+      /** Format: date-time */
+      earliest?: string;
+      /** Format: date-time */
+      latest?: string;
+    };
+    location?: {
+      address?: components["schemas"]["CustomerAddress"];
+      /** @enum {string} */
+      apiAlias?: "cart_delivery_shipping_location";
+      country?: components["schemas"]["Country"];
+      state?: components["schemas"]["State"];
+    };
+    positions?: components["schemas"]["CartDeliveryPosition"][];
+    shippingCosts?: components["schemas"]["CalculatedPrice"];
+    shippingMethod?: components["schemas"]["ShippingMethod"];
+  };
+  CartDeliveryPosition: {
+    deliveryDate?: {
+      /** Format: date-time */
+      earliest?: string;
+      /** Format: date-time */
+      latest?: string;
+    };
+    identifier?: string;
+    lineItem?: components["schemas"]["LineItem"];
+    price?: components["schemas"]["CalculatedPrice"];
+  };
+  CartError: {
+    items?: {
+      key?: string;
+      /**
+       * * `0` - notice,
+       * * `10` - warning,
+       * * `20` - error
+       * @enum {number}
+       */
+      level?: 0 | 10 | 20;
+      message?: string;
+      messageKey?: string;
+    };
   };
   CartItems: {
     items?: components["schemas"]["LineItem"][];
@@ -1475,6 +1621,37 @@ export type Schemas = {
     updatedAt?: string;
     zipcode?: string;
   };
+  CustomerAddressBody: {
+    additionalAddressLine1?: string;
+    additionalAddressLine2?: string;
+    city: string;
+    company?: string;
+    country?: components["schemas"]["Country"];
+    countryId: string;
+    countryState?: components["schemas"]["CountryState"];
+    countryStateId?: string;
+    customFields?: GenericRecord;
+    department?: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber?: string;
+    salutation?: components["schemas"]["Salutation"];
+    salutationId?: string;
+    street: string;
+    title?: string;
+    zipcode?: string;
+  };
+  CustomerAddressRead: {
+    country: components["schemas"]["Country"];
+    countryState?: components["schemas"]["CountryState"];
+    /** Format: date-time */
+    createdAt: string;
+    customerId: string;
+    id?: string;
+    salutation: components["schemas"]["Salutation"];
+    /** Format: date-time */
+    updatedAt: string | null;
+  };
   CustomerGroup: {
     /** Format: date-time */
     createdAt: string;
@@ -1536,6 +1713,25 @@ export type Schemas = {
     productVersionId?: string;
     /** Format: date-time */
     updatedAt?: string;
+  };
+  DeliveryInformation: {
+    /** @enum {string} */
+    apiAlias?: "cart_delivery_information";
+    deliveryTime?: {
+      /** @enum {string} */
+      apiAlias?: "cart_delivery_time";
+      max?: number;
+      min?: number;
+      name?: string;
+      unit?: string;
+    };
+    freeDelivery?: boolean;
+    height?: number;
+    length?: number;
+    restockTime?: number;
+    stock?: number;
+    weight?: number;
+    width?: number;
   };
   DeliveryTime: {
     /** Format: date-time */
@@ -1635,6 +1831,18 @@ export type Schemas = {
     /** The total number of found entities */
     total?: number;
   };
+  EqualsFilter: {
+    field: string;
+    /** @enum {string} */
+    type: "equals";
+    value: string | number | boolean | null;
+  };
+  Filters: (
+    | components["schemas"]["SimpleFilter"]
+    | components["schemas"]["EqualsFilter"]
+    | components["schemas"]["MultiNotFilter"]
+    | components["schemas"]["RangeFilter"]
+  )[];
   FindProductVariantRouteResponse: {
     foundCombination?: {
       options?: string[];
@@ -1684,6 +1892,7 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  Include: GenericRecord;
   Integration: {
     /** Format: date-time */
     createdAt: string;
@@ -1931,7 +2140,8 @@ export type Schemas = {
     | "custom"
     | "promotion"
     | "discount"
-    | "container";
+    | "container"
+    | "quantity";
   ListPrice: {
     /** @enum {string} */
     apiAlias: "cart_list_price";
@@ -2174,6 +2384,13 @@ export type Schemas = {
     updatedAt?: string;
     /** Format: int64 */
     width: number;
+  };
+  MultiNotFilter: {
+    /** @enum {string} */
+    operator: "AND" | "and" | "OR" | "or";
+    queries: components["schemas"]["Filters"];
+    /** @enum {string} */
+    type: "multi" | "not";
   };
   NaturalLanguageSearchTermResponse: {
     /** @enum {string} */
@@ -3259,6 +3476,7 @@ export type Schemas = {
     calculatedPrice?: GenericRecord;
     calculatedPrices?: GenericRecord[];
     canonicalProductId?: string;
+    canonicalProductVersionId?: string;
     categoryIds?: readonly string[];
     categoryTree?: readonly string[];
     /** Format: int64 */
@@ -3704,6 +3922,7 @@ export type Schemas = {
     taxId: string;
     translated?: {
       canonicalProductId?: string;
+      canonicalProductVersionId?: string;
       cmsPageId?: string;
       cmsPageVersionId?: string;
       coverId?: string;
@@ -4085,6 +4304,15 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  Query: {
+    query?:
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"];
+    score?: number;
+    [key: string]: unknown;
+  };
   Quote: {
     /** Format: float */
     amountNet?: number;
@@ -4113,7 +4341,8 @@ export type Schemas = {
     lineItems?: components["schemas"]["QuoteLineItem"][];
     orderId?: string;
     orderVersionId?: string;
-    price?: {
+    // TODO: [OpenAPI][Quote] - price field should be defined properly
+    price: {
       calculatedTaxes?: GenericRecord;
       /** Format: float */
       netPrice: number;
@@ -4154,7 +4383,7 @@ export type Schemas = {
       unitPrice: number;
     };
     stateId: string;
-    stateMachineState?: components["schemas"]["StateMachineState"];
+    stateMachineState: components["schemas"]["StateMachineState"]; // TODO: [OpenAPI][Quote] stateMachineState field should be defined as required
     /** Format: float */
     subtotalNet?: number;
     taxStatus?: string;
@@ -4380,6 +4609,17 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
+  };
+  RangeFilter: {
+    field: string;
+    parameters: {
+      gt?: number;
+      gte?: number;
+      lt?: number;
+      lte?: number;
+    };
+    /** @enum {string} */
+    type: "range";
   };
   ReferencePrice: {
     /** @enum {string} */
@@ -5095,6 +5335,12 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  SimpleFilter: {
+    field: string;
+    /** @enum {string} */
+    type: "contains" | "equalsAny" | "prefix" | "suffix";
+    value: string;
+  };
   Sitemap: components["schemas"]["ArrayStruct"] & {
     /** Format: date-time */
     created: string; // TODO: [OpenAPI][Sitemap] created field should be defined as required
@@ -5122,6 +5368,13 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  Sort: {
+    field: string;
+    naturalSorting?: boolean;
+    /** @enum {string} */
+    order: "ASC" | "DESC";
+    type?: string;
+  };
   SsoProvider: {
     /** Format: date-time */
     createdAt: string;
@@ -5137,6 +5390,7 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  State: unknown;
   StateMachine: {
     /** Format: date-time */
     createdAt: string;
@@ -5163,7 +5417,8 @@ export type Schemas = {
     id?: string;
     name: string;
     technicalName: string;
-    translated?: {
+    translated: {
+      // TODO: [OpenAPI][StateMachineState] translated field should be defined as required
       name?: string;
       technicalName?: string;
     };
@@ -5180,6 +5435,15 @@ export type Schemas = {
   Struct: {
     /** Alias which can be used to restrict response fields. For more information see [includes](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#includes-apialias). */
     apiAlias?: string;
+  };
+  SubAggregations: {
+    aggregation?:
+      | components["schemas"]["AggregationMetrics"]
+      | components["schemas"]["AggregationEntity"]
+      | components["schemas"]["AggregationFilter"]
+      | components["schemas"]["AggregationTerms"]
+      | components["schemas"]["AggregationHistogram"]
+      | components["schemas"]["AggregationRange"];
   };
   Subscription: {
     addresses?: components["schemas"]["SubscriptionAddress"][];
@@ -6286,6 +6550,7 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  TotalCountMode: "none" | "exact" | "next-pages";
   Unit: {
     /** Format: date-time */
     createdAt: string;
@@ -6443,6 +6708,24 @@ export type Schemas = {
      */
     prev?: string;
   };
+  priceDefinition: {
+    /** @enum {string} */
+    apiAlias?: "cart_price_quantity";
+    isCalculated?: boolean;
+    listPrice?: components["schemas"]["ListPrice"];
+    price?: number;
+    quantity?: number;
+    regulationPrice?: {
+      /** Format: float */
+      price?: number;
+    };
+    taxRules?: {
+      name?: string;
+      /** Format: float */
+      taxRate?: number;
+    }[];
+    type?: string;
+  };
   relationshipLinks: {
     related?: components["schemas"]["link"];
     self?: GenericRecord[] & components["schemas"]["link"];
@@ -6473,7 +6756,7 @@ export type operations = {
   "api-info get /_info/openapi3.json": {
     contentType?: "application/json";
     accept?: "application/json";
-    query: {
+    query?: {
       /** Type of the api */
       type?: "jsonapi" | "json";
     };
@@ -6564,8 +6847,9 @@ export type operations = {
       /** Address ID */
       addressId: string;
     };
-    body: components["schemas"]["CustomerAddress"];
-    response: components["schemas"]["CustomerAddress"];
+    body: components["schemas"]["CustomerAddressBody"];
+    response: components["schemas"]["CustomerAddress"] &
+      components["schemas"]["CustomerAddressRead"];
     responseCode: 200;
   };
   "defaultBillingAddress patch /account/address/default-billing/{addressId}": {
@@ -6968,7 +7252,7 @@ export type operations = {
   "readApprovalRules get /approval-rule": {
     contentType?: "application/json";
     accept?: "application/json";
-    query: {
+    query?: {
       /** Page number */
       p?: number;
       /** Number of items per page */
@@ -6982,7 +7266,7 @@ export type operations = {
   "listApprovalRules post /approval-rule": {
     contentType?: "application/json";
     accept?: "application/json";
-    query: {
+    query?: {
       /** Page number */
       p?: number;
       /** Number of items per page */
@@ -7065,6 +7349,10 @@ export type operations = {
   "readCategoryList post /category": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["Category"][];
@@ -7094,6 +7382,10 @@ export type operations = {
   "readCart get /checkout/cart": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
@@ -7121,6 +7413,10 @@ export type operations = {
   "removeLineItemDeprecated delete /checkout/cart/line-item": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     query: {
       /** A list of product identifiers. */
       ids: string[];
@@ -7144,6 +7440,10 @@ export type operations = {
   "removeLineItem post /checkout/cart/line-item/delete": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: {
       /** A list of product identifiers. */
       ids: [string, ...string[]];
@@ -7154,6 +7454,10 @@ export type operations = {
   "createOrder post /checkout/order": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: {
       /** The affiliate code can be used to track which referrer the customer came through. An example could be `Price-comparison-company-XY`. */
       affiliateCode?: string;
@@ -7168,6 +7472,10 @@ export type operations = {
   "readCms post /cms/{id}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       /** Identifier of the CMS page to be resolved */
       id: string;
@@ -7182,6 +7490,10 @@ export type operations = {
   "sendContactMail post /contact-form": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: {
       /** Type of the content management page */
       cmsPageType?: string;
@@ -7248,6 +7560,10 @@ export type operations = {
   "readCountry post /country": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["Country"][];
@@ -7257,6 +7573,10 @@ export type operations = {
   "readCountryState post /country-state/{countryId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       countryId: string;
     };
@@ -7269,6 +7589,10 @@ export type operations = {
   "readCurrency post /currency": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["Currency"][];
@@ -7278,6 +7602,10 @@ export type operations = {
   "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       /** Customer group id */
       customerGroupId: string;
@@ -7431,6 +7759,10 @@ export type operations = {
   "readLandingPage post /landing-page/{landingPageId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       /** Identifier of the landing page. */
       landingPageId: string;
@@ -7545,6 +7877,10 @@ export type operations = {
   "readOrder post /order": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: components["schemas"]["Criteria"] & {
       /** Check if the payment method of the order is still changeable. */
       checkPromotion?: boolean;
@@ -7555,6 +7891,10 @@ export type operations = {
   "orderDownloadFile get /order/download/{orderId}/{downloadId}": {
     contentType?: "application/json";
     accept: "application/octet-stream";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       orderId: string;
       downloadId: string;
@@ -7565,6 +7905,10 @@ export type operations = {
   "orderSetPayment post /order/payment": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: {
       /** The identifier of the order. */
       orderId: string;
@@ -7587,6 +7931,10 @@ export type operations = {
   "readPaymentMethod post /payment-method": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: components["schemas"]["Criteria"] & {
       /** List only available */
       onlyAvailable?: boolean;
@@ -7714,6 +8062,10 @@ export type operations = {
   "readProductCrossSellings post /product/{productId}/cross-selling": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       /** Product ID */
       productId: string;
@@ -7724,6 +8076,10 @@ export type operations = {
   "searchProductVariantIds post /product/{productId}/find-variant": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       /** Product ID */
       productId: string;
@@ -7740,6 +8096,10 @@ export type operations = {
   "saveProductReview post /product/{productId}/review": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       /** Identifier of the product which is reviewed. */
       productId: string;
@@ -8011,19 +8371,75 @@ export type operations = {
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
-  "postScriptStoreApiRoute post /script/{hook}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Dynamic hook which used to build the hook name */
-      hook: string;
-    };
-    response: never;
-    responseCode: 200;
-  };
+  "getScriptStoreApiRoute get /script/{hook}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Dynamic hook which used to build the hook name */
+          hook: string;
+        };
+        response: GenericRecord;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Dynamic hook which used to build the hook name */
+          hook: string;
+        };
+        response: GenericRecord;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Dynamic hook which used to build the hook name */
+          hook: string;
+        };
+        response: never;
+        responseCode: 204;
+      };
+  "postScriptStoreApiRoute post /script/{hook}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Dynamic hook which used to build the hook name */
+          hook: string;
+        };
+        response: GenericRecord;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Dynamic hook which used to build the hook name */
+          hook: string;
+        };
+        response: GenericRecord;
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Dynamic hook which used to build the hook name */
+          hook: string;
+        };
+        response: never;
+        responseCode: 204;
+      };
   "searchPage post /search": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: {
       /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
       search: string;
@@ -8035,6 +8451,10 @@ export type operations = {
   "searchSuggest post /search-suggest": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: {
       /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */
       search: string;
@@ -8081,6 +8501,10 @@ export type operations = {
   "readSitemap get /sitemap": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     response: components["schemas"]["Sitemap"][];
     responseCode: 200;
   };

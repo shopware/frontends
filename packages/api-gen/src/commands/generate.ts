@@ -221,7 +221,7 @@ export async function generate(args: {
 
       // TODO: change to main branch
       schema = await ofetch(
-        "https://raw.githubusercontent.com/shopware/frontends/feat/api-client-new-structure/packages/api-client-next/api-types/newApiTypes.d.ts",
+        "https://raw.githubusercontent.com/shopware/frontends/feat/api-client-new-structure/packages/api-client-next/api-types/storeApiTypes.d.ts",
       );
 
       processedSchemaAst = transformSchemaTypes(schema);

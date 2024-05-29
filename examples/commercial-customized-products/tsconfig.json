@@ -10,7 +10,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    // "isolatedModules": true,
+    "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
 
