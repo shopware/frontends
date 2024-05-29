@@ -15,7 +15,7 @@
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
     "@types/lru-cache": "7.10.10",
-    "@types/node": "20.12.7",
+    "@types/node": "20.12.12",
     "@vueuse/nuxt": "10.9.0",
     "nuxt": "3.11.2",
     "typescript": "5.4.5",
