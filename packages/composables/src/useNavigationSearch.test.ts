@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { useNavigationSearch } from "./useNavigationSearch";
 import { useSetup } from "./_test";
 

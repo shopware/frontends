@@ -28,12 +28,7 @@ const apiInstance = createAPIClient<extendedOperations>({
   accessToken,
 });
 
-async function testing() {
-  const myResponse = await apiInstance.invoke(
-    "readCart get /checkout/cart",
-    {},
-  );
-}
+apiInstance.invoke("readCart get /checkout/cart", {});
 
 // async function customOperation() {
 //   const resp = await apiInstance.invoke("qweqwe post /some/{addressId}/pathh", {

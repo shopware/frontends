@@ -38,11 +38,11 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should invoke /oauth/token request before any request if there's no session data", async () => {
-    const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           return {
             orderResponse: 123,
           };
@@ -79,8 +79,8 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should not invoke /oauth/token request before request if there's an active session", async () => {
-    const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
-    const authHeaderSpy = vi.fn().mockImplementation((param: string) => {});
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
+    const authHeaderSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
@@ -120,9 +120,9 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should invoke /oauth/token request before client based authentication", async () => {
-    const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
-    const authHeaderSpy = vi.fn().mockImplementation((param: string) => {});
-    const onAuthChangeSpy = vi.fn().mockImplementation((param: string) => {});
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
+    const authHeaderSpy = vi.fn().mockImplementation(() => {});
+    const onAuthChangeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
@@ -176,11 +176,11 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should not invoke onAuthChange if token response data does not contain session data", async () => {
-    const onAuthChangeSpy = vi.fn().mockImplementation((param: string) => {});
+    const onAuthChangeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           return {
             orderResponse: 123,
           };
@@ -188,7 +188,7 @@ describe("createAdminAPIClient", () => {
       )
       .use(
         "/oauth/token",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           return null;
         }),
       );
@@ -211,12 +211,12 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should throw error if /oauth token request fails and not to call desired endpoint at all", async () => {
-    const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
-    const orderEndpointSpy = vi.fn().mockImplementation((param: string) => {});
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
+    const orderEndpointSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           orderEndpointSpy();
           return {
             orderResponse: 123,
@@ -260,7 +260,7 @@ describe("createAdminAPIClient", () => {
   it("should throw error from the endpoint", async () => {
     const app = createApp().use(
       "/order",
-      eventHandler(async (event) => {
+      eventHandler(async () => {
         throw createError({
           status: 500,
         });
@@ -285,7 +285,7 @@ describe("createAdminAPIClient", () => {
   });
 
   it(`should by default include "Accept" header with "application/json" value`, async () => {
-    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const seoUrlheadersSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/order",
       eventHandler(async (event) => {
@@ -318,7 +318,7 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should change default headers", async () => {
-    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const seoUrlheadersSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/order",
       eventHandler(async (event) => {

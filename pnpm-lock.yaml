@@ -687,6 +687,9 @@ importers:
       '@faker-js/faker':
         specifier: 8.4.1
         version: 8.4.1
+      '@shopware/api-client':
+        specifier: workspace:*
+        version: link:../api-client-next
       '@vitest/coverage-v8':
         specifier: 1.5.0
         version: 1.5.0(vitest@1.5.0)

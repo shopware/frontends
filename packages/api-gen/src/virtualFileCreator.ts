@@ -32,7 +32,7 @@ export function createVirtualFiles(
         return defaultCompilerHost.getSourceFile(name, languageVersion);
       }
     },
-    writeFile: (filename, data) => {},
+    writeFile: () => {},
     getDefaultLibFileName: () => "lib.d.ts",
     useCaseSensitiveFileNames: () => false,
     getCanonicalFileName: (filename) => filename,

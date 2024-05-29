@@ -34,7 +34,7 @@ export async function processAstSchemaAndOverrides(
     return;
   }
   // recursivelyGetOverrides(overridesSourceFile);
-  const [oOperationsMap, oComponetsMap, oExistingTypes] =
+  const [oOperationsMap, oComponetsMap] =
     transformSchemaTypes(overridingSchema);
 
   const operationsMap: GenerationMap = defu(

@@ -1,15 +1,7 @@
 import ts from "typescript";
 import { createVirtualFiles } from "./virtualFileCreator";
-import {
-  getDeepProperty,
-  getDeepPropertyCode,
-  getTypePropertyNames,
-} from "./utils";
-import type {
-  GenerationMap,
-  OverridesMap,
-  TransformedElements,
-} from "./generateFile";
+import { getDeepPropertyCode, getTypePropertyNames } from "./utils";
+import type { OverridesMap, TransformedElements } from "./generateFile";
 
 export function transformSchemaTypes(schema: string): TransformedElements {
   const {

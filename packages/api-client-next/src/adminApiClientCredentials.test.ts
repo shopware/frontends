@@ -17,8 +17,8 @@ import type { operations } from "../api-types/adminApiTypes";
 describe("createAdminAPIClient - credentials", () => {
   const listeners: Listener[] = [];
   const consoleWarnSpy = vi.spyOn(console, "warn");
-  const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
-  const orderEndpointSpy = vi.fn().mockImplementation((param: string) => {});
+  const authEndpointSpy = vi.fn().mockImplementation(() => {});
+  const orderEndpointSpy = vi.fn().mockImplementation(() => {});
   let baseURL: string;
 
   async function createPortAndGetUrl(appToCreate: App) {
@@ -40,7 +40,7 @@ describe("createAdminAPIClient - credentials", () => {
     const app = createApp()
       .use(
         "/order",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           orderEndpointSpy();
           return {
             orderResponse: 123,

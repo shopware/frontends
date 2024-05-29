@@ -16,7 +16,7 @@ import type {
  * @public
  */
 export async function searchProducts(
-  criteria?: ShopwareSearchParams,
+  criteria?: ShopwareSearchParams & { query?: string },
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ProductListingResult> {
   const resp = await contextInstance.invoke.post(
@@ -40,7 +40,7 @@ export async function searchProducts(
  * @public
  */
 export async function searchSuggestedProducts(
-  criteria?: ShopwareSearchParams,
+  criteria?: ShopwareSearchParams & { query?: string },
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ProductListingResult> {
   const resp = await contextInstance.invoke.post(

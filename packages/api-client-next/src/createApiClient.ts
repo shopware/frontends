@@ -4,7 +4,7 @@ import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
 import { type Hookable, createHooks } from "hookable";
 import defu from "defu";
-import { createPathWithParams, getPathParams } from "./transformPathToQuery";
+import { createPathWithParams } from "./transformPathToQuery";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
@@ -99,7 +99,7 @@ export function createAPIClient<
         apiClientHooks.callHook("onContextChanged", newContextToken);
       }
     },
-    async onResponseError({ request, response, options }) {
+    async onResponseError({ response }) {
       apiClientHooks.callHook("onResponseError", response);
       errorInterceptor(response);
     },
@@ -139,7 +139,7 @@ export function createAPIClient<
       ? [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">]
       : [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">?]
   ): Promise<RequestReturnType<CURRENT_OPERATION>> {
-    const [name, method, requestPath] = pathParam.split(" ") as [
+    const [, method, requestPath] = pathParam.split(" ") as [
       string,
       string,
       string,
