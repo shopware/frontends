@@ -63,6 +63,7 @@
     },
     "messages": {
       "checkoutSignInSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up."
-    }
+    },
+    "switchNotAllowed": "It is not possible to switch to this payment method."
   }
 }
