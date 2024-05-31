@@ -11,7 +11,6 @@ export default defineNuxtConfig({
        * More here: https://frontends.shopware.com/getting-started/templates/custom-vue-project.html#shopware-endpoint-on-the-ssr-mode
        */
       // endpoint: "",
-      useUserContextInSSR: true,
     },
     // public: {
     //   endpoint: "https://demo-frontends.shopware.store/store-api/",
