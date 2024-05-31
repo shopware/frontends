@@ -2,14 +2,18 @@
 import { useRoute } from "#app";
 const route = useRoute();
 
-const { register, amazonSessionData } = useAmazonPay();
+const { register, amazonSessionData, pay } = useAmazonPay();
 
 const registerAmazonUserAndPay = async () => {
   await register(route.query.amazonCheckoutSessionId as string);
 
-  // Redirect to Amazon Pay
-  window.location.href = amazonSessionData.value.webCheckoutDetails.amazonPayRedirectUrl;
+  const response = await (await pay(route.query.amazonCheckoutSessionId as string)).json();
 
+  const redirectUrl = response.result?.webCheckoutDetails?.amazonPayRedirectUrl;
+  // Redirect to Amazon Pay
+  if (redirectUrl) {
+    window.location.href = redirectUrl;
+  }
 };
 
 

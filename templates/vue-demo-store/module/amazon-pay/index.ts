@@ -22,10 +22,7 @@ export default defineNuxtModule({
     const resolver = createResolver(import.meta.url);
     // add server plugin
     addPlugin({
-      src: resolver.resolve(
-        __dirname,
-        "./runtime/plugins/amazon-pay.server.ts",
-      ),
+      src: resolver.resolve(__dirname, "./runtime/plugins/amazon-pay.server"),
       mode: "server",
     });
     // add composables
@@ -52,10 +49,23 @@ export default defineNuxtModule({
       route: "/api/amazon-pay/pay",
     });
 
+    addServerHandler({
+      handler: resolver.resolve(
+        "./runtime/server/api/amazon-pay/complete.post",
+      ),
+      method: "post",
+      route: "/api/amazon-pay/complete",
+    });
+
     extendPages((pages) => {
       pages.push({
         path: "/checkout/amazon-pay",
         file: resolver.resolve(__dirname, "./pages/checkout-amazon-pay.vue"),
+      });
+
+      pages.push({
+        path: "/checkout/amazon-pay/complete",
+        file: resolver.resolve(__dirname, "./pages/complete.vue"),
       });
     });
   },

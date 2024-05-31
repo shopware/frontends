@@ -31,13 +31,13 @@ export default defineNuxtConfig({
       isr: 60 * 60 * 24,
     },
     "/checkout": {
-      ssr: false,
+      ssr: true,
       headers: {
         "Cache-Control": "no-cache, no-store, must-revalidate",
       },
     },
     "/checkout/**": {
-      ssr: false,
+      ssr: true,
     },
     "/login": {
       ssr: false,
@@ -80,7 +80,7 @@ export default defineNuxtConfig({
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
     "@nuxtjs/i18n",
-    "./module/amazon-pay/",
+    "./module/amazon-pay/index.ts",
   ],
   // components: true,
   components: {

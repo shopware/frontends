@@ -68,6 +68,9 @@ export default {
         <div class="pb-4 mb-8 justify-between text-secondary-900 font-medium">
           <CheckoutPromotionCode />
         </div>
+        <div class="pb-4 mb-8">
+          <AmazonPayButton/>
+        </div>
 
         <NuxtLink
           class="flex items-center justify-center rounded-md px-6 py-3 text-base font-medium text-white shadow-sm bg-primary hover:bg-dark"
@@ -77,6 +80,8 @@ export default {
           {{ $t("cart.checkout") }}
         </NuxtLink>
       </aside>
+
+
     </div>
   </div>
   <h1 v-else class="m-10 text-center text-2xl font-medium text-secondary-900">

@@ -23,7 +23,7 @@ export default defineEventHandler((event) => {
 
   const payload = {
     webCheckoutDetails: {
-      checkoutReviewReturnUrl: "https://frontends-demo.vercel.app",
+      checkoutReviewReturnUrl: "https://frontends-demo.vercel.app/checkout",
     },
     storeId: STORE_ID,
     scopes: ["name", "email", "phoneNumber", "billingAddress"],
@@ -38,18 +38,7 @@ export default defineEventHandler((event) => {
 
   return response
     .then(function (result) {
-      const payload2 = {
-        webCheckoutDetails: {
-          checkoutReviewReturnUrl: "https://frontends-demo.vercel.app",
-        },
-        storeId: STORE_ID,
-        scopes: ["name", "email", "phoneNumber", "billingAddress"],
-      };
-      const signature = testPayClient.generateButtonSignature(
-        payload2,
-        //headers,
-      );
-      //return result.data;
+      const signature = testPayClient.generateButtonSignature(payload);
       console.warn("step 2", result.data);
       return {
         result: {

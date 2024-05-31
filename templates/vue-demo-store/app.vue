@@ -63,11 +63,6 @@ const {
 } = useInternationalization();
 const { languageIdChain, refreshSessionContext } = useSessionContext();
 
-const { renderJsButton } = useAmazonPay();
-
-onMounted(() => {
-  renderJsButton("#amazon-button");
-});
 
 const { data: languages } = await useAsyncData("languages", async () => {
   return await getAvailableLanguages();
@@ -105,7 +100,6 @@ onMounted(() => {
 
 <template>
   <NuxtLayout>
-    <div id="amazon-button"></div>
     <NuxtPage />
   </NuxtLayout>
 </template>

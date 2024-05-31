@@ -1,23 +1,24 @@
 // @ts-nocheck
 import fs from "node:fs";
 import Client from "@amazonpay/amazon-pay-api-sdk-nodejs";
-import uuidv4 from "uuid/v4";
 import * as path from "node:path";
 
 import { z } from "zod";
 
 const paySchema = z.object({
   sessionId: z.string().uuid(),
+  orderNumber: z.string(),
+  orderId: z.string(),
+  chargeAmount: z.object({
+    amount: z.string(),
+    currencyCode: z.string(),
+  }),
 });
 
 export default defineEventHandler(async (event) => {
   const parsedBody = await readValidatedBody(event, (body) =>
     paySchema.safeParse(body),
   );
-
-  // return {
-  //   result: {},
-  // };
 
   if (!parsedBody.success) {
     throw createError({
@@ -44,22 +45,21 @@ export default defineEventHandler(async (event) => {
 
   const payload = {
     webCheckoutDetails: {
-      checkoutResultReturnUrl: "https://frontends-demo.vercel.app",
+      checkoutReviewReturnUrl: "https://frontends-demo.vercel.app/checkout",
+      checkoutResultReturnUrl:
+        "https://frontends-demo.vercel.app/checkout/success/" +
+        parsedBody.data.orderId,
     },
     paymentDetails: {
       paymentIntent: "AuthorizeWithCapture",
+      chargeAmount: parsedBody.data.chargeAmount,
       canHandlePendingAuthorization: false,
-      softDescriptor: "Descriptor",
-      chargeAmount: {
-        amount: "1",
-        currencyCode: "EUR",
-      },
     },
     merchantMetadata: {
-      merchantReferenceId: "Merchant reference ID",
-      merchantStoreName: "Merchant store name",
-      noteToBuyer: "Note to buyer",
-      customInformation: "Custom information",
+      merchantReferenceId: parsedBody.data.orderNumber,
+      merchantStoreName: "Frontends Demo Store",
+      noteToBuyer: "",
+      customInformation: "",
     },
   };
 
