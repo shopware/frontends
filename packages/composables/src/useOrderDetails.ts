@@ -7,7 +7,7 @@ import type { Schemas } from "#shopware";
 /**
  * Data for api requests to fetch all necessary data
  */
-const orderAssociations: Schemas["Criteria"] = {
+const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
   associations: {
     lineItems: {
       associations: {
@@ -32,6 +32,7 @@ const orderAssociations: Schemas["Criteria"] = {
       sort: "-createdAt",
     },
   },
+  checkPromotion: true,
 };
 
 export type UseOrderDetailsReturn = {
@@ -40,9 +41,13 @@ export type UseOrderDetailsReturn = {
    */
   order: ComputedRef<Schemas["Order"] | undefined | null>;
   /**
-   * Order status (e.g. 'open', 'cancelled')
+   * Order status (e.g. 'Open', 'Cancelled')
    */
   status: ComputedRef<string | undefined>;
+  /**
+   * Order status technical name (e.g. 'open', 'cancelled')
+   */
+  statusTechnicalName: ComputedRef<string | undefined>;
   /**
    * Order total price
    */
@@ -135,6 +140,12 @@ export type UseOrderDetailsReturn = {
    * Get order documents
    */
   documents: ComputedRef<Schemas["Document"][]>;
+  /**
+   * Fetches all available payment methods
+   */
+  getPaymentMethods(): Promise<Schemas["PaymentMethod"][]>;
+
+  paymentChangeable: ComputedRef<boolean>;
 };
 
 /**
@@ -148,6 +159,7 @@ export function useOrderDetails(
 ): UseOrderDetailsReturn {
   const { apiClient } = useShopwareContext();
 
+  const paymentChangeableList: Ref<{ [key: string]: boolean }> = ref({});
   const _sharedOrder = inject<Ref<Schemas["Order"] | undefined>>(
     "swOrderDetails",
     ref(),
@@ -180,6 +192,9 @@ export function useOrderDetails(
   const subtotal = computed(() => _sharedOrder.value?.price?.positionPrice);
   const total = computed(() => _sharedOrder.value?.price?.totalPrice);
   const status = computed(() => _sharedOrder.value?.stateMachineState?.name);
+  const statusTechnicalName = computed(
+    () => _sharedOrder.value?.stateMachineState?.technicalName,
+  );
 
   async function loadOrderDetails() {
     const mergedAssociations = defu(
@@ -194,6 +209,9 @@ export function useOrderDetails(
           value: orderId,
         },
       ],
+      associations: {
+        stateMachineState: {},
+      },
     }) as Schemas["Criteria"];
 
     const orderDetailsResponse = await apiClient.invoke(
@@ -203,6 +221,8 @@ export function useOrderDetails(
       },
     );
     _sharedOrder.value = orderDetailsResponse.data.orders.elements?.[0] ?? null;
+    paymentChangeableList.value =
+      orderDetailsResponse.data.paymentChangeable ?? {};
   }
 
   async function handlePayment(finishUrl?: string, errorUrl?: string) {
@@ -271,9 +291,28 @@ export function useOrderDetails(
   const hasDocuments = computed(() => !!_sharedOrder.value?.documents.length);
   const documents = computed(() => _sharedOrder.value?.documents || []);
 
+  const paymentChangeable = computed(() => {
+    return Object.keys(paymentChangeableList.value).length
+      ? (paymentChangeableList.value as { [key: string]: boolean })[
+          orderId as string
+        ]
+      : false;
+  });
+
+  const getPaymentMethods = async () => {
+    const response = await apiClient.invoke(
+      "readPaymentMethod post /payment-method",
+      {
+        body: { onlyAvailable: true },
+      },
+    );
+    return response.data.elements || [];
+  };
+
   return {
     order: computed(() => _sharedOrder.value),
     status,
+    statusTechnicalName,
     total,
     subtotal,
     shippingCosts,
@@ -291,5 +330,7 @@ export function useOrderDetails(
     changePaymentMethod,
     getMediaFile,
     getDocumentFile,
+    paymentChangeable,
+    getPaymentMethods,
   };
 }

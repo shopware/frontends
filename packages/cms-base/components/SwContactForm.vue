@@ -68,7 +68,7 @@ let translations: Translations = {
   },
 };
 
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);

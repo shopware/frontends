@@ -935,7 +935,7 @@ export type Schemas = {
       elements: components["schemas"]["Order"][];
     } & components["schemas"]["EntitySearchResult"];
     /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
-    paymentChangeable?: GenericRecord;
+    paymentChangeable?: { [key: string]: boolean }; // TODO: [OpenAPI][OrderRouteResponse] - define `paymentChangeable` object properly
   };
   /** Added since version: 6.0.0.0 */
   PaymentMethod: {
@@ -1897,6 +1897,18 @@ export type operations = {
     response: {
       elements?: components["schemas"]["Quote"][];
     } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "updateCustomerAddress patch /account/address/{addressId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Address ID */
+      addressId: string;
+    };
+    body: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][updateCustomerAddress] - body should be defined with id, as it's an update not create
+    response: components["schemas"]["CustomerAddress"] &
+      components["schemas"]["CustomerAddressRead"];
     responseCode: 200;
   };
 };

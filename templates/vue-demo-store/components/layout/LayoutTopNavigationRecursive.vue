@@ -14,6 +14,7 @@ const { formatLink } = useInternationalization(localePath);
 
 defineProps<{
   navigationElementChildren: Array<NavigationElement>;
+  lastElement?: boolean;
 }>();
 
 const emits = defineEmits<{
@@ -22,6 +23,7 @@ const emits = defineEmits<{
     navigationId: string,
     parentId: string | undefined,
   ): void;
+  (e: "focusoutLastElement", lastElement: boolean): void;
 }>();
 
 const emitUpdateActiveClass = (
@@ -37,12 +39,7 @@ const emitUpdateActiveClass = (
     v-for="(childElement, index) in navigationElementChildren"
     :key="childElement.id"
   >
-    <div
-      :class="{
-        'sm:pb-0': index !== navigationElementChildren.length - 1,
-      }"
-      class="relative grid gap-6 bg-white px-3 py-2 sm:gap-6 sm:p-3"
-    >
+    <div class="relative grid gap-6 bg-white px-3 py-2">
       <NuxtLink
         :to="formatLink(getCategoryRoute(childElement))"
         :target="
@@ -53,6 +50,13 @@ const emitUpdateActiveClass = (
         }"
         class="flex justify-between rounded-lg hover:bg-secondary-50 p-2"
         @click="emitUpdateActiveClass(childElement.id, childElement.parentId)"
+        @focusout="
+          $props.lastElement === true &&
+          navigationElementChildren &&
+          navigationElementChildren.length - 1 === index
+            ? emits('focusoutLastElement', true)
+            : null
+        "
       >
         <div
           class="flex flex-col flex-grow pl-2"

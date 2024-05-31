@@ -176,7 +176,8 @@ export async function generate(args: {
               !(schemaObject as { properties?: object }).properties &&
               !(schemaObject as { items?: [] }).items &&
               !(schemaObject as { anyOf?: [] }).anyOf &&
-              !(schemaObject as { allOf?: [] }).allOf
+              !(schemaObject as { allOf?: [] }).allOf &&
+              !(schemaObject as { additionalProperties?: object })
             ) {
               return "GenericRecord";
             }
@@ -197,6 +198,12 @@ export async function generate(args: {
       // clean up
       // remove `@description ` tags
       schema = schema.replace(/@description /g, "");
+
+      // fix 'any' type problem
+      schema = schema.replace(
+        "type OneOf<T extends any[]",
+        "type OneOf<T extends unknown[]",
+      );
 
       if (args.debug) {
         writeFileSync(fullOutputFilePath, schema, {
@@ -219,10 +226,21 @@ export async function generate(args: {
         ),
       );
 
-      // TODO: change to main branch
-      schema = await ofetch(
-        "https://raw.githubusercontent.com/shopware/frontends/feat/api-client-new-structure/packages/api-client-next/api-types/storeApiTypes.d.ts",
+      // resolve default schema from node_modules api-client
+      const link = resolve(
+        "node_modules/@shopware/api-client/api-types/storeApiTypes.d.ts",
       );
+      if (existsSync(link)) {
+        schema = readFileSync(link, {
+          encoding: "utf-8",
+        });
+      } else {
+        // falback from the github
+        // TODO: change to main branch
+        schema = await ofetch(
+          "https://raw.githubusercontent.com/shopware/frontends/feat/api-client-new-structure/packages/api-client-next/api-types/storeApiTypes.d.ts",
+        );
+      }
 
       processedSchemaAst = transformSchemaTypes(schema);
     }

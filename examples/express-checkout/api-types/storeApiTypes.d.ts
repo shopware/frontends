@@ -2,7 +2,7 @@ type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 type XOR<T, U> = T | U extends object
   ? (Without<T, U> & U) | (Without<U, T> & T)
   : T | U;
-type OneOf<T extends any[]> = T extends [infer Only]
+type OneOf<T extends unknown[]> = T extends [infer Only]
   ? Only
   : T extends [infer A, infer B, ...infer Rest]
     ? OneOf<[XOR<A, B>, ...Rest]>
@@ -300,11 +300,13 @@ export type Schemas = {
     priority?: number;
   };
   ArrayStruct: components["schemas"]["Struct"];
-  Association: GenericRecord;
+  Association: {
+    [key: string]: components["schemas"]["Criteria"];
+  };
   B2bBusinessPartner: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -338,7 +340,7 @@ export type Schemas = {
     currencyId: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     decidedBy?: components["schemas"]["B2bEmployee"];
     decidedById?: string;
     employee?: components["schemas"]["B2bEmployee"];
@@ -351,14 +353,14 @@ export type Schemas = {
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
     price?: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       /** Format: float */
       netPrice: number;
       /** Format: float */
       positionPrice: number;
       /** Format: float */
       rawTotal: number;
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       taxStatus: string;
       /** Format: float */
       totalPrice: number;
@@ -384,7 +386,7 @@ export type Schemas = {
     countryStateId?: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     department?: string;
     firstName: string;
     id: string;
@@ -402,10 +404,10 @@ export type Schemas = {
   B2bComponentsRole: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     name: string;
-    permissions?: GenericRecord[];
+    permissions?: Record<string, never>[];
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -416,13 +418,13 @@ export type Schemas = {
     createdById?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId?: string;
     id: string;
     lineItems?: components["schemas"]["B2bComponentsShoppingListLineItem"][];
     name?: string;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     salesChannelId: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -434,11 +436,11 @@ export type Schemas = {
     createdAt: string;
     createdById?: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     employeeId?: string;
     id: string;
     name?: string;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     relationships?: {
       customer?: {
         data?: {
@@ -495,7 +497,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id: string;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     product?: components["schemas"]["Product"];
     productId?: string;
     productVersionId?: string;
@@ -508,7 +510,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id: string;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     productId?: string;
     productVersionId?: string;
     /** Format: int64 */
@@ -537,7 +539,7 @@ export type Schemas = {
     active?: boolean;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     email: string;
     firstName: string;
     id: string;
@@ -736,7 +738,8 @@ export type Schemas = {
     productAssignmentType: string;
     seoUrls?: components["schemas"]["SeoUrl"][];
     tags?: components["schemas"]["Tag"][];
-    translated?: {
+    // TODO: [OpenAPI][Category] - make `translated` required
+    translated: {
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
       breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
@@ -774,7 +777,7 @@ export type Schemas = {
     active?: boolean;
     afterCategoryId?: string;
     afterCategoryVersionId?: string;
-    breadcrumb?: readonly GenericRecord[];
+    breadcrumb?: readonly Record<string, never>[];
     /** Format: int64 */
     childCount?: number;
     cmsPageId?: string;
@@ -784,7 +787,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customEntityTypeId?: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     description?: string;
     displayNestedProducts: boolean;
     externalLink?: string;
@@ -1001,7 +1004,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     cssClass?: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     entity?: string;
     extensions?: {
       swagCmsExtensionsScrollNavigationPageSettings?: {
@@ -1104,12 +1107,12 @@ export type Schemas = {
     block?: components["schemas"]["CmsBlock"];
     blockId: string;
     cmsBlockVersionId?: string;
-    config?: GenericRecord;
+    config?: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
-    data?: GenericRecord;
-    fieldConfig?: GenericRecord;
+    customFields?: Record<string, never>;
+    data?: Record<string, never>;
+    fieldConfig?: Record<string, never>;
     id?: string;
     locked?: boolean;
     slot: string;
@@ -1127,7 +1130,7 @@ export type Schemas = {
   };
   Country: {
     active?: boolean;
-    addressFormat: GenericRecord;
+    addressFormat: Record<string, never>;
     advancedPostalCodePattern?: string;
     checkAdvancedPostalCodePattern?: boolean;
     checkPostalCodePattern?: boolean;
@@ -1146,7 +1149,7 @@ export type Schemas = {
       currencyId: string;
       enabled: boolean;
     };
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     defaultPostalCodePattern?: string;
     displayStateInRegistration?: boolean;
     forceStateInRegistration?: boolean;
@@ -1174,7 +1177,7 @@ export type Schemas = {
   };
   CountryJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
-    addressFormat: GenericRecord;
+    addressFormat: Record<string, never>;
     advancedPostalCodePattern?: string;
     checkAdvancedPostalCodePattern?: boolean;
     checkPostalCodePattern?: boolean;
@@ -1193,7 +1196,7 @@ export type Schemas = {
       currencyId: string;
       enabled: boolean;
     };
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     defaultPostalCodePattern?: string;
     displayStateInRegistration?: boolean;
     forceStateInRegistration?: boolean;
@@ -1240,7 +1243,7 @@ export type Schemas = {
     countryId: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     name: string;
     /** Format: int64 */
@@ -1259,7 +1262,7 @@ export type Schemas = {
     countryId: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     name: string;
     /** Format: int64 */
@@ -1366,7 +1369,7 @@ export type Schemas = {
   Currency: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     /** Format: float */
     factor: number;
     id: string;
@@ -1413,7 +1416,7 @@ export type Schemas = {
   CurrencyJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     /** Format: float */
     factor: number;
     id: string;
@@ -1486,7 +1489,7 @@ export type Schemas = {
     customerGroupId?: string;
     customerId?: string;
     id: string;
-    price: GenericRecord;
+    price: Record<string, never>;
     product?: components["schemas"]["Product"];
     productId: string;
     productVersionId?: string;
@@ -1606,7 +1609,7 @@ export type Schemas = {
     countryId: string;
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     department?: string;
     firstName: string;
     lastName: string;
@@ -1676,7 +1679,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -1712,7 +1715,7 @@ export type Schemas = {
   DeliveryTime: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     /** Format: int64 */
     max: number;
@@ -1756,10 +1759,10 @@ export type Schemas = {
     updatedAt?: string;
   };
   DocumentBaseConfig: {
-    config?: GenericRecord;
+    config?: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     documentNumber?: string;
     documentTypeId: string;
     filenamePrefix?: string;
@@ -1785,7 +1788,7 @@ export type Schemas = {
   DocumentType: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     name: string;
     technicalName: string;
@@ -1798,7 +1801,7 @@ export type Schemas = {
   };
   EntitySearchResult: components["schemas"]["ArrayStruct"] & {
     /** Contains aggregated data. A simple example is the determination of the average price from a product search query. */
-    aggregations?: GenericRecord[];
+    aggregations?: Record<string, never>[];
     entity?: string;
     /** The actual limit. This is used for pagination and goes together with the page. */
     limit?: number;
@@ -1868,7 +1871,9 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  Include: GenericRecord;
+  Include: {
+    [key: string]: string[];
+  };
   Integration: {
     /** Format: date-time */
     createdAt: string;
@@ -1913,7 +1918,7 @@ export type Schemas = {
     cmsPageVersionId?: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     keywords?: string;
     metaDescription?: string;
@@ -1951,7 +1956,7 @@ export type Schemas = {
         };
       };
     };
-    slotConfig?: GenericRecord;
+    slotConfig?: Record<string, never>;
     translated?: {
       cmsPageId?: string;
       cmsPageVersionId?: string;
@@ -1971,7 +1976,7 @@ export type Schemas = {
     children?: components["schemas"]["Language"][];
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     locale?: components["schemas"]["Locale"];
     localeId: string;
@@ -1986,7 +1991,7 @@ export type Schemas = {
   LanguageJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     localeId: string;
     name: string;
@@ -2129,7 +2134,7 @@ export type Schemas = {
     code: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     name: string;
     territory: string;
@@ -2175,7 +2180,7 @@ export type Schemas = {
     contentPlain: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id?: string;
     mailTemplateType?: components["schemas"]["MailTemplateType"];
     media?: components["schemas"]["MailTemplateMedia"][];
@@ -2201,7 +2206,7 @@ export type Schemas = {
   MailTemplateType: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     name: string;
     technicalName: string;
@@ -2300,7 +2305,7 @@ export type Schemas = {
     createdAt: string;
     id: string;
     media?: components["schemas"]["Media"];
-    tags?: GenericRecord[];
+    tags?: Record<string, never>[];
     translated?: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
@@ -2352,7 +2357,7 @@ export type Schemas = {
   MediaThumbnailSize: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     /** Format: int64 */
     height: number;
     id: string;
@@ -2574,7 +2579,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customerNumber?: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     email: string;
     firstName: string;
     id: string;
@@ -2590,13 +2595,13 @@ export type Schemas = {
   OrderDelivery: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     orderId: string;
     orderVersionId?: string;
     positions?: components["schemas"]["OrderDeliveryPosition"][];
     shippingCosts?: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -2607,12 +2612,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -2637,14 +2642,14 @@ export type Schemas = {
   OrderDeliveryPosition: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     orderDeliveryId: string;
     orderDeliveryVersionId?: string;
     orderLineItemId: string;
     orderLineItemVersionId?: string;
     price?: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -2655,12 +2660,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -2785,14 +2790,14 @@ export type Schemas = {
     orderId: string;
     orderVersionId?: string;
     price?: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       /** Format: float */
       netPrice: number;
       /** Format: float */
       positionPrice: number;
       /** Format: float */
       rawTotal: number;
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       taxStatus: string;
       /** Format: float */
       totalPrice: number;
@@ -2801,7 +2806,7 @@ export type Schemas = {
     requestedAt: string;
     returnNumber: string;
     shippingCosts?: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -2812,12 +2817,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -2833,7 +2838,7 @@ export type Schemas = {
   OrderReturnLineItem: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     orderLineItemId: string;
     orderLineItemVersionId?: string;
@@ -2873,7 +2878,7 @@ export type Schemas = {
       elements: components["schemas"]["Order"][];
     } & components["schemas"]["EntitySearchResult"];
     /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
-    paymentChangeable?: GenericRecord;
+    paymentChangeable?: { [key: string]: boolean }; // TODO: [OpenAPI][OrderRouteResponse] - define `paymentChangeable` object properly
   };
   OrderTag: {
     id?: string;
@@ -2885,7 +2890,7 @@ export type Schemas = {
   };
   OrderTransaction: {
     amount: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -2896,12 +2901,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -2910,7 +2915,7 @@ export type Schemas = {
     captures?: components["schemas"]["OrderTransactionCapture"][];
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     orderId: string;
     orderVersionId?: string;
@@ -2924,7 +2929,7 @@ export type Schemas = {
   };
   OrderTransactionCapture: {
     amount: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -2935,12 +2940,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -2948,7 +2953,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     externalReference?: string;
     id: string;
     orderTransactionId: string;
@@ -2963,7 +2968,7 @@ export type Schemas = {
   };
   OrderTransactionCaptureRefund: {
     amount: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -2974,12 +2979,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -2989,7 +2994,7 @@ export type Schemas = {
     captureVersionId?: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     externalReference?: string;
     id: string;
     positions?: components["schemas"]["OrderTransactionCaptureRefundPosition"][];
@@ -3003,7 +3008,7 @@ export type Schemas = {
   };
   OrderTransactionCaptureRefundPosition: {
     amount: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -3014,12 +3019,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -3027,7 +3032,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     externalReference?: string;
     id: string;
     orderLineItem?: components["schemas"]["OrderLineItem"];
@@ -3095,7 +3100,7 @@ export type Schemas = {
     asynchronous?: boolean;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     description?: string;
     distinguishableName?: string;
     id: string;
@@ -3146,32 +3151,32 @@ export type Schemas = {
     amountNet?: number | null;
     amountTotal?: number | null;
     approvalRuleId?: string;
-    billingAddress?: GenericRecord;
-    cartPayload?: GenericRecord | string;
-    country?: GenericRecord;
+    billingAddress?: Record<string, unknown> | null;
+    cartPayload?: Record<string, never> | string;
+    country?: Record<string, unknown> | null;
     countryId?: string;
-    currency?: GenericRecord;
+    currency?: Record<string, unknown> | null;
     currencyId?: string;
     customerId?: string;
     decidedById?: string;
     employeeId?: string;
     /** Format: uuid */
     id?: string;
-    itemRounding?: GenericRecord;
-    language?: GenericRecord;
+    itemRounding?: Record<string, unknown> | null;
+    language?: Record<string, unknown> | null;
     languageId?: string;
     lineItemCount?: number;
     number?: string;
     originalPrice?: number | null;
     paymentMethodId?: string;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     reason?: string;
-    salesChannel?: GenericRecord;
+    salesChannel?: Record<string, unknown> | null;
     salesChannelId?: string;
     shippingMethodId?: string;
     stateId?: string;
     taxStatus?: string;
-    totalRounding?: GenericRecord;
+    totalRounding?: Record<string, unknown> | null;
   };
   Plugin: {
     /** Format: date-time */
@@ -3315,7 +3320,8 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     tax?: components["schemas"]["Tax"];
     taxId: string;
-    translated?: {
+    // TODO: [OpenAPI][Product] translated field should be defined properly
+    translated: {
       canonicalProductId?: string;
       cmsPageId?: string;
       cmsPageVersionId?: string;
@@ -3359,7 +3365,7 @@ export type Schemas = {
   ProductConfiguratorSetting: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     media?: components["schemas"]["Media"];
     mediaId?: string;
@@ -3410,7 +3416,7 @@ export type Schemas = {
   ProductDownload: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     media?: components["schemas"]["Media"];
     mediaId: string;
@@ -3443,14 +3449,14 @@ export type Schemas = {
     available?: boolean;
     /** Format: int64 */
     availableStock?: number;
-    calculatedCheapestPrice?: GenericRecord;
+    calculatedCheapestPrice?: Record<string, never>;
     /**
      * Format: int64
      * Runtime field, cannot be used as part of the criteria.
      */
     calculatedMaxPurchase?: number;
-    calculatedPrice?: GenericRecord;
-    calculatedPrices?: GenericRecord[];
+    calculatedPrice?: Record<string, never>;
+    calculatedPrices?: Record<string, never>[];
     canonicalProductId?: string;
     canonicalProductVersionId?: string;
     categoryIds?: readonly string[];
@@ -3462,7 +3468,7 @@ export type Schemas = {
     coverId?: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     deliveryTimeId?: string;
     description?: string;
     displayGroup?: string;
@@ -3889,7 +3895,7 @@ export type Schemas = {
     /** Format: int64 */
     sales?: number;
     shippingFree?: boolean;
-    sortedProperties?: GenericRecord;
+    sortedProperties?: Record<string, never>;
     states?: readonly string[];
     /** Format: int64 */
     stock: number;
@@ -4037,7 +4043,7 @@ export type Schemas = {
   ProductManufacturer: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     description?: string;
     id: string;
     link?: string;
@@ -4155,7 +4161,7 @@ export type Schemas = {
   ProductStream: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     description?: string;
     id: string;
     name: string;
@@ -4190,7 +4196,7 @@ export type Schemas = {
   Promotion: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id?: string;
     translated?: Record<string, never>;
     /** Format: date-time */
@@ -4234,7 +4240,7 @@ export type Schemas = {
   PropertyGroup: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     description?: string;
     displayType: string;
     filterable?: boolean;
@@ -4271,7 +4277,8 @@ export type Schemas = {
     option: string; // TODO: [OpenAPI][PropertyGroupOption] option field should be defined; defined as string (?)
     /** Format: int64 */
     position?: number;
-    translated?: {
+    // TODO: [OpenAPI][PropertyGroupOption] translated field should be defined properly
+    translated: {
       colorHexCode?: string;
       groupId?: string;
       mediaId?: string;
@@ -4393,13 +4400,13 @@ export type Schemas = {
   QuoteDelivery: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     positions?: components["schemas"]["QuoteDeliveryPosition"][];
     quoteId: string;
     quoteVersionId?: string;
     shippingCosts?: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -4410,12 +4417,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -4434,10 +4441,10 @@ export type Schemas = {
   QuoteDeliveryPosition: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     price?: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -4448,12 +4455,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -4475,10 +4482,10 @@ export type Schemas = {
   };
   QuoteDocument: {
     active?: boolean;
-    config: GenericRecord;
+    config: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     deepLinkCode: string;
     documentMediaFile?: components["schemas"]["Media"];
     documentMediaFileId?: string;
@@ -4511,7 +4518,7 @@ export type Schemas = {
     coverId?: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     description?: string;
     discount?: {
       type?: string;
@@ -4525,14 +4532,14 @@ export type Schemas = {
     parent?: components["schemas"]["QuoteLineItem"];
     parentId?: string;
     parentVersionId?: string;
-    payload?: GenericRecord;
+    payload?: Record<string, never>;
     /** Format: int64 */
     position: number;
-    priceDefinition?: GenericRecord;
+    priceDefinition?: Record<string, never>;
     productId?: string;
-    productPrice?: GenericRecord;
+    productPrice?: Record<string, never>;
     productVersionId?: string;
-    purchasePrice?: GenericRecord;
+    purchasePrice?: Record<string, never>;
     /** Format: int64 */
     quantity: number;
     quoteId: string;
@@ -4552,7 +4559,7 @@ export type Schemas = {
   };
   QuoteTransaction: {
     amount: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -4563,12 +4570,12 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
@@ -4576,7 +4583,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
@@ -4617,7 +4624,7 @@ export type Schemas = {
   Rule: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     description?: string;
     extensions?: {
       warehouseGroup?: {
@@ -4678,7 +4685,7 @@ export type Schemas = {
   };
   SalesChannel: {
     active?: boolean;
-    configuration?: GenericRecord;
+    configuration?: Record<string, never>;
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
@@ -4686,7 +4693,7 @@ export type Schemas = {
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     customerGroupId: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     domains?: components["schemas"]["SalesChannelDomain"][];
     footerCategory?: components["schemas"]["Category"];
     footerCategoryId?: string;
@@ -4895,7 +4902,7 @@ export type Schemas = {
     createdAt: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     hreflangUseOnlyLocale?: boolean;
     id: string;
     language?: components["schemas"]["Language"];
@@ -4918,7 +4925,7 @@ export type Schemas = {
   Salutation: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     displayName: string;
     id: string;
     letterName: string;
@@ -4934,7 +4941,7 @@ export type Schemas = {
   SalutationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     displayName: string;
     id: string;
     letterName: string;
@@ -4964,7 +4971,7 @@ export type Schemas = {
   SearchByImageSearchTermResponse: {
     /** @enum {string} */
     apiAlias: "product_image_upload_search_term";
-    extensions?: GenericRecord[];
+    extensions?: Record<string, never>[];
     term: string;
   }[];
   SeoUrl: {
@@ -4994,7 +5001,7 @@ export type Schemas = {
   SeoUrlJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     /** Runtime field, cannot be used as part of the criteria. */
     error?: string;
     foreignKey: string;
@@ -5015,7 +5022,7 @@ export type Schemas = {
   SeoUrlTemplate: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id?: string;
     isValid?: boolean;
     salesChannelId?: string;
@@ -5059,7 +5066,7 @@ export type Schemas = {
     active?: boolean;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     deliveryTimeId: string;
     description?: string;
     id: string;
@@ -5299,8 +5306,8 @@ export type Schemas = {
     calculationRuleId?: string;
     /** Format: date-time */
     createdAt: string;
-    currencyPrice?: GenericRecord;
-    customFields?: GenericRecord;
+    currencyPrice?: Record<string, never>;
+    customFields?: Record<string, never>;
     id: string;
     /** Format: float */
     quantityEnd?: number;
@@ -5325,7 +5332,7 @@ export type Schemas = {
   Snippet: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id?: string;
     setId: string;
     translationKey: string;
@@ -5336,7 +5343,7 @@ export type Schemas = {
   SnippetSet: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id?: string;
     iso: string;
     name: string;
@@ -5425,13 +5432,13 @@ export type Schemas = {
     addresses?: components["schemas"]["SubscriptionAddress"][];
     billingAddress?: components["schemas"]["SubscriptionAddress"];
     billingAddressId: string;
-    convertedOrder: GenericRecord;
+    convertedOrder: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
     cronInterval: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     dateInterval: string;
     id: string;
     /** Format: int64 */
@@ -5475,7 +5482,7 @@ export type Schemas = {
     countryStateId?: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     department?: string;
     firstName: string;
     id: string;
@@ -5499,7 +5506,7 @@ export type Schemas = {
     createdAt: string;
     customerId?: string;
     customerNumber?: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     email: string;
     firstName: string;
     id: string;
@@ -5539,7 +5546,7 @@ export type Schemas = {
     description?: string;
     /** Format: float */
     discountPercentage?: number;
-    discountPrice?: GenericRecord;
+    discountPrice?: Record<string, never>;
     id: string;
     label?: string;
     /** Format: int64 */
@@ -5571,7 +5578,7 @@ export type Schemas = {
     description?: string;
     /** Format: float */
     discountPercentage?: number;
-    discountPrice?: GenericRecord;
+    discountPrice?: Record<string, never>;
     id: string;
     label?: string;
     /** Format: int64 */
@@ -5710,7 +5717,7 @@ export type Schemas = {
     confirmInput?: boolean;
     /** Format: date-time */
     createdAt: string;
-    decisionTree?: GenericRecord;
+    decisionTree?: Record<string, never>;
     description?: string;
     displayName: string;
     exclusions?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"][];
@@ -5736,7 +5743,7 @@ export type Schemas = {
     versionId?: string;
   };
   SwagCustomizedProductsTemplateConfiguration: {
-    configuration: GenericRecord;
+    configuration: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
     hash: string;
@@ -5750,7 +5757,7 @@ export type Schemas = {
     versionId?: string;
   };
   SwagCustomizedProductsTemplateConfigurationJsonApi: components["schemas"]["resource"] & {
-    configuration: GenericRecord;
+    configuration: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
     hash: string;
@@ -5851,7 +5858,7 @@ export type Schemas = {
     confirmInput?: boolean;
     /** Format: date-time */
     createdAt: string;
-    decisionTree?: GenericRecord;
+    decisionTree?: Record<string, never>;
     description?: string;
     displayName: string;
     id: string;
@@ -5951,7 +5958,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateOption: {
     advancedSurcharge?: boolean;
-    calculatedPrice?: GenericRecord;
+    calculatedPrice?: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
     description?: string;
@@ -5964,7 +5971,7 @@ export type Schemas = {
     placeholder?: string;
     /** Format: int64 */
     position?: number;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionPrice"][];
     relativeSurcharge?: boolean;
     required?: boolean;
@@ -5985,14 +5992,14 @@ export type Schemas = {
       type?: string;
     };
     type: string;
-    typeProperties?: GenericRecord;
+    typeProperties?: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
     values?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"][];
   };
   SwagCustomizedProductsTemplateOptionJsonApi: components["schemas"]["resource"] & {
     advancedSurcharge?: boolean;
-    calculatedPrice?: GenericRecord;
+    calculatedPrice?: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
     description?: string;
@@ -6005,7 +6012,7 @@ export type Schemas = {
     placeholder?: string;
     /** Format: int64 */
     position?: number;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     relationships?: {
       prices?: {
         data?: {
@@ -6099,7 +6106,7 @@ export type Schemas = {
       type?: string;
     };
     type: string;
-    typeProperties?: GenericRecord;
+    typeProperties?: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -6109,7 +6116,7 @@ export type Schemas = {
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     rule?: components["schemas"]["Rule"];
     ruleId?: string;
     templateOption?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
@@ -6132,7 +6139,7 @@ export type Schemas = {
     percentageSurcharge?: number;
     /** Format: int64 */
     position: number;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionValuePrice"][];
     relativeSurcharge?: boolean;
     tax?: components["schemas"]["Tax"];
@@ -6151,7 +6158,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
-    value?: GenericRecord;
+    value?: Record<string, never>;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateOptionValueJsonApi: components["schemas"]["resource"] & {
@@ -6167,7 +6174,7 @@ export type Schemas = {
     percentageSurcharge?: number;
     /** Format: int64 */
     position: number;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     relationships?: {
       prices?: {
         data?: {
@@ -6244,7 +6251,7 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
-    value?: GenericRecord;
+    value?: Record<string, never>;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateOptionValuePrice: {
@@ -6253,7 +6260,7 @@ export type Schemas = {
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
-    price?: GenericRecord;
+    price?: Record<string, never>;
     rule?: components["schemas"]["Rule"];
     ruleId?: string;
     templateOptionValue?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"];
@@ -6430,7 +6437,7 @@ export type Schemas = {
   SystemConfig: {
     configurationKey: string;
     configurationValue: {
-      _value?: GenericRecord;
+      _value?: Record<string, never>;
     };
     /** Format: date-time */
     createdAt: string;
@@ -6451,7 +6458,7 @@ export type Schemas = {
   Tax: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     name: string;
     /**
@@ -6469,7 +6476,7 @@ export type Schemas = {
     appId?: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     name: string;
     /** Format: int64 */
@@ -6501,15 +6508,15 @@ export type Schemas = {
   Theme: {
     active: boolean;
     author: string;
-    baseConfig?: GenericRecord;
-    configValues?: GenericRecord;
+    baseConfig?: Record<string, never>;
+    configValues?: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     description?: string;
-    helpTexts?: GenericRecord;
+    helpTexts?: Record<string, never>;
     id: string;
-    labels?: GenericRecord;
+    labels?: Record<string, never>;
     media?: components["schemas"]["Media"][];
     name: string;
     parentThemeId?: string;
@@ -6530,7 +6537,7 @@ export type Schemas = {
   Unit: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id: string;
     name: string;
     shortCode: string;
@@ -6604,7 +6611,9 @@ export type Schemas = {
       salesChannelId?: string;
     };
   };
-  attributes: GenericRecord;
+  attributes: {
+    [key: string]: unknown;
+  };
   data: components["schemas"]["resource"] | components["schemas"]["resource"][];
   error: {
     /** An application-specific error code, expressed as a string value. */
@@ -6660,8 +6669,12 @@ export type Schemas = {
     meta?: components["schemas"]["meta"];
     type: string;
   };
-  links: GenericRecord;
-  meta: GenericRecord;
+  links: {
+    [key: string]: components["schemas"]["link"];
+  };
+  meta: {
+    [key: string]: unknown;
+  };
   pagination: {
     /**
      * Format: uri-reference
@@ -6704,7 +6717,7 @@ export type Schemas = {
   };
   relationshipLinks: {
     related?: components["schemas"]["link"];
-    self?: GenericRecord[] & components["schemas"]["link"];
+    self?: Record<string, never>[] & components["schemas"]["link"];
     [key: string]: unknown;
   };
   relationshipToMany: components["schemas"]["linkage"][];
@@ -6738,16 +6751,16 @@ export type operations = {
     };
     response: {
       components?: {
-        callbacks?: GenericRecord;
-        examples?: GenericRecord;
-        headers?: GenericRecord;
-        links?: GenericRecord;
-        parameters?: GenericRecord;
-        pathItems?: GenericRecord;
-        requestBodies?: GenericRecord;
-        responses?: GenericRecord;
-        schemas?: GenericRecord;
-        securitySchemes?: GenericRecord;
+        callbacks?: Record<string, never>;
+        examples?: Record<string, never>;
+        headers?: Record<string, never>;
+        links?: Record<string, never>;
+        parameters?: Record<string, never>;
+        pathItems?: Record<string, never>;
+        requestBodies?: Record<string, never>;
+        responses?: Record<string, never>;
+        schemas?: Record<string, never>;
+        securitySchemes?: Record<string, never>;
       };
       externalDocs?: {
         description?: string;
@@ -6777,8 +6790,8 @@ export type operations = {
       };
       jsonSchemaDialect?: string;
       openapi: string;
-      paths?: GenericRecord;
-      security?: GenericRecord[];
+      paths?: Record<string, never>;
+      security?: Record<string, never>[];
       servers?: {
         url: string;
       }[];
@@ -6791,7 +6804,7 @@ export type operations = {
         };
         name: string;
       }[];
-      webhooks?: GenericRecord;
+      webhooks?: Record<string, never>;
     };
     responseCode: 200;
   };
@@ -6823,7 +6836,7 @@ export type operations = {
       /** Address ID */
       addressId: string;
     };
-    body: components["schemas"]["CustomerAddressBody"];
+    body: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][updateCustomerAddress] - body should be defined with id, as it's an update not create
     response: components["schemas"]["CustomerAddress"] &
       components["schemas"]["CustomerAddressRead"];
     responseCode: 200;
@@ -7075,7 +7088,14 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     body: {
-      lineItems?: GenericRecord;
+      lineItems?: {
+        [key: string]: {
+          /** Product id */
+          id: string;
+          /** Quantity of the product */
+          quantity: number;
+        };
+      };
       /** Shopping list name */
       name: string;
     };
@@ -7171,7 +7191,14 @@ export type operations = {
       id: string;
     };
     body: {
-      lineItems: GenericRecord;
+      lineItems: {
+        [key: string]: {
+          /** Product id */
+          id: string;
+          /** Quantity of the product */
+          quantity: number;
+        };
+      };
     };
     response: never;
     responseCode: 204;
@@ -7216,7 +7243,7 @@ export type operations = {
       /** Name of the app */
       name: string;
     };
-    body: GenericRecord;
+    body: Record<string, never>;
     response: {
       /** Format: date-time */
       expires?: string;
@@ -7917,7 +7944,7 @@ export type operations = {
     };
     response: {
       /** aggregation result */
-      aggregations?: GenericRecord;
+      aggregations?: Record<string, never>;
       elements?: components["schemas"]["PaymentMethod"][];
       /** Total amount */
       total?: number;
@@ -8334,7 +8361,9 @@ export type operations = {
           /** Dynamic hook which used to build the hook name */
           hook: string;
         };
-        response: GenericRecord;
+        response: {
+          [key: string]: unknown;
+        } | null;
         responseCode: 200;
       }
     | {
@@ -8344,7 +8373,9 @@ export type operations = {
           /** Dynamic hook which used to build the hook name */
           hook: string;
         };
-        response: GenericRecord;
+        response: {
+          [key: string]: unknown;
+        } | null;
         responseCode: 200;
       }
     | {
@@ -8365,7 +8396,9 @@ export type operations = {
           /** Dynamic hook which used to build the hook name */
           hook: string;
         };
-        response: GenericRecord;
+        response: {
+          [key: string]: unknown;
+        } | null;
         responseCode: 200;
       }
     | {
@@ -8375,7 +8408,9 @@ export type operations = {
           /** Dynamic hook which used to build the hook name */
           hook: string;
         };
-        response: GenericRecord;
+        response: {
+          [key: string]: unknown;
+        } | null;
         responseCode: 200;
       }
     | {

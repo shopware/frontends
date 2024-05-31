@@ -33,7 +33,7 @@ let translations: Translations = {
     products: "Products",
   },
 };
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const {
   changeCurrentPage,

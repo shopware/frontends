@@ -97,6 +97,14 @@ const srcPath = computed(() => {
         layoutType === 'image' ? 'h-80' : 'h-60',
       ]"
     >
+      <div class="absolute top-5 -left-1 z-10">
+        <span
+          v-if="product.markAsTopseller"
+          class="bg-[#FFBD5D] px-2.5 py-1.5 color-white text-xl"
+        >
+          {{ $t("product.badges.topseller") }}
+        </span>
+      </div>
       <RouterLink
         :to="formatLink(getProductRoute(product))"
         class="overflow-hidden"
