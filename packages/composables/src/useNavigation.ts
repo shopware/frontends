@@ -54,7 +54,7 @@ export function useNavigation(params?: {
       const navigationResponse = await apiClient.invoke(
         "readNavigation post /navigation/{activeId}/{rootId}",
         {
-          header: {
+          headers: {
             "sw-include-seo-urls": true,
           },
           pathParams: {

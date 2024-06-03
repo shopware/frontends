@@ -237,7 +237,7 @@ export function createAdminAPIClient<
     >(requestPathWithParams, {
       method,
       body: params[0]?.body,
-      headers: defu(defaultHeaders, params[0]?.header) as HeadersInit,
+      headers: defu(defaultHeaders, params[0]?.headers) as HeadersInit,
       query: params[0]?.query,
     });
 

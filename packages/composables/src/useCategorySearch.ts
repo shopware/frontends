@@ -46,7 +46,7 @@ export function useCategorySearch(): UseCategorySearchReturn {
         pathParams: {
           navigationId: categoryId,
         },
-        header: {
+        headers: {
           "sw-include-seo-urls": true,
         },
         body: {

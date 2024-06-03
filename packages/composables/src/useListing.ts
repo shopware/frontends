@@ -200,7 +200,7 @@ export function useListing(params?: {
       const { data } = await apiClient.invoke(
         "readProductListing post /product-listing/{categoryId}",
         {
-          header: {
+          headers: {
             "sw-include-seo-urls": true,
           },
           pathParams: {

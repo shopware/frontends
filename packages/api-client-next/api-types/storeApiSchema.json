@@ -3,6 +3,10 @@
   "info": {
     "title": "Shopware Store API",
     "description": "This endpoint reference contains an overview of all endpoints comprising the Shopware Store API",
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/shopware/shopware/blob/trunk/LICENSE"
+    },
     "version": "6.6.0.0"
   },
   "servers": [{ "url": "https://demo-frontends.shopware.store/store-api" }],
@@ -684,6 +688,7 @@
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "orderId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "billingAddressId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "customerId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "employeeId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -739,6 +744,7 @@
             "format": "date-time",
             "readOnly": true
           },
+          "order": { "$ref": "#/components/schemas/Order" },
           "billingAddress": {
             "$ref": "#/components/schemas/B2bComponentsPendingOrderAddress"
           },
@@ -4266,13 +4272,69 @@
           "referencedId": { "type": "string" },
           "quantity": { "type": "integer", "format": "int64" },
           "label": { "type": "string" },
-          "payload": { "type": "object" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "categoryIds": {
+                "type": "array",
+                "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+                "readOnly": true
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "customFields": { "type": "object" },
+              "features": { "type": "array" },
+              "isCloseout": { "type": "boolean" },
+              "isNew": { "type": "boolean" },
+              "manufacturerId": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              "markAsTopseller": { "type": "boolean" },
+              "optionIds": {
+                "type": "array",
+                "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+                "readOnly": true
+              },
+              "options": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/PropertyGroupOption" }
+              },
+              "parentId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+              "productNumber": { "type": "string" },
+              "propertyIds": {
+                "type": "array",
+                "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+                "readOnly": true
+              },
+              "purchasePrices": { "type": "string" },
+              "releaseDate": { "type": "string", "format": "date-time" },
+              "stock": { "type": "integer", "format": "int64" },
+              "streamIds": {
+                "type": "array",
+                "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+                "readOnly": true
+              },
+              "tagIds": {
+                "type": "array",
+                "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+                "readOnly": true
+              },
+              "taxId": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
+            }
+          },
           "good": { "type": "boolean" },
           "removable": { "type": "boolean" },
           "stackable": { "type": "boolean" },
           "position": { "type": "integer", "format": "int64" },
           "states": { "type": "array", "items": { "type": "string" } },
-          "priceDefinition": { "type": "object" },
+          "priceDefinition": {
+            "type": "object",
+            "$ref": "#/components/schemas/PriceDefinition"
+          },
           "unitPrice": { "type": "number", "format": "float" },
           "totalPrice": { "type": "number", "format": "float" },
           "description": { "type": "string" },
@@ -4367,70 +4429,8 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/OrderLineItem" }
           },
-          "properties": {
-            "apiAlias": { "type": "string", "enum": ["order_line_item"] },
-            "extensions": { "type": "object" },
-            "payload": {
-              "type": "object",
-              "properties": {
-                "categoryIds": {
-                  "type": "array",
-                  "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-                  "readOnly": true
-                },
-                "createdAt": {
-                  "type": "string",
-                  "format": "date-time",
-                  "readOnly": true
-                },
-                "customFields": { "type": "object" },
-                "features": { "type": "array" },
-                "isCloseout": { "type": "boolean" },
-                "isNew": { "type": "boolean" },
-                "manufacturerId": {
-                  "type": "string",
-                  "pattern": "^[0-9a-f]{32}$"
-                },
-                "markAsTopseller": { "type": "boolean" },
-                "optionIds": {
-                  "type": "array",
-                  "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-                  "readOnly": true
-                },
-                "options": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PropertyGroupOption"
-                  }
-                },
-                "parentId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-                "productNumber": { "type": "string" },
-                "propertyIds": {
-                  "type": "array",
-                  "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-                  "readOnly": true
-                },
-                "purchasePrices": { "type": "string" },
-                "releaseDate": { "type": "string", "format": "date-time" },
-                "stock": { "type": "integer", "format": "int64" },
-                "streamIds": {
-                  "type": "array",
-                  "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-                  "readOnly": true
-                },
-                "tagIds": {
-                  "type": "array",
-                  "items": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-                  "readOnly": true
-                },
-                "taxId": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
-              }
-            },
-            "priceDefinition": {
-              "$ref": "#/components/schemas/PriceDefinition"
-            },
-            "translated": { "type": "object" }
-          }
+          "apiAlias": { "type": "string", "enum": ["order_line_item"] },
+          "translated": { "type": "object" }
         },
         "type": "object"
       },
@@ -10993,13 +10993,17 @@
                 }
               },
               "listPrice": {
-                "oneOf": [{ "$ref": "#/components/schemas/ListPrice" }],
-                "nullable": true
+                "oneOf": [
+                  { "$ref": "#/components/schemas/ListPrice" },
+                  { "type": "null" }
+                ]
               },
               "quantity": { "type": "number" },
               "referencePrice": {
-                "oneOf": [{ "$ref": "#/components/schemas/ReferencePrice" }],
-                "nullable": true
+                "oneOf": [
+                  { "$ref": "#/components/schemas/ReferencePrice" },
+                  { "type": "null" }
+                ]
               },
               "regulationPrice": {
                 "type": "object",
@@ -11040,7 +11044,6 @@
           },
           "referencedId": { "type": "string" },
           "removable": { "type": "boolean" },
-          "requirement": [],
           "stackable": { "type": "boolean" },
           "states": {
             "type": "array",
@@ -11087,7 +11090,7 @@
               },
               "country": { "$ref": "#/components/schemas/Country" },
               "address": { "$ref": "#/components/schemas/CustomerAddress" },
-              "state": { "$ref": "#/components/schemas/State" }
+              "state": { "$ref": "#/components/schemas/CountryState" }
             }
           },
           "positions": {
@@ -11098,7 +11101,7 @@
           "shippingMethod": { "$ref": "#/components/schemas/ShippingMethod" }
         }
       },
-      "priceDefinition": {
+      "PriceDefinition": {
         "type": "object",
         "properties": {
           "apiAlias": { "type": "string", "enum": ["cart_price_quantity"] },
@@ -15226,6 +15229,85 @@
           }
         },
         "security": [{ "ApiKey": [], "ContextToken": [] }]
+      }
+    },
+    "/checkout/gateway": {
+      "get": {
+        "tags": ["Gateway"],
+        "summary": "Call the checkout gateway",
+        "description": "Call the checkout gateway, which is used to manipulate certain aspects of the checkout process (e.g. available payment methods).",
+        "operationId": "checkoutGateway",
+        "responses": {
+          "200": {
+            "description": "Checkout gateway response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "paymentMethods": {
+                      "properties": {
+                        "total": {
+                          "description": "Total amount",
+                          "type": "integer"
+                        },
+                        "aggregations": {
+                          "description": "aggregation result",
+                          "type": "object"
+                        },
+                        "elements": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PaymentMethod"
+                          }
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "shippingMethods": {
+                      "properties": {
+                        "total": {
+                          "description": "Total amount",
+                          "type": "integer"
+                        },
+                        "aggregations": {
+                          "description": "aggregation result",
+                          "type": "object"
+                        },
+                        "elements": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/ShippingMethod"
+                          }
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "code": {
+                            "description": "Error code",
+                            "type": "string"
+                          },
+                          "detail": {
+                            "description": "Error detail",
+                            "type": "string"
+                          },
+                          "blocking": {
+                            "description": "If the error is blocking",
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [] }]
       }
     },
     "/cms/{id}": {

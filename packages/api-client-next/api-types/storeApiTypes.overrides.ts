@@ -1621,6 +1621,10 @@ export type operations = {
   "readProductDetail post /product/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
+    };
     pathParams: {
       /** Product ID */
       productId: string;
@@ -1681,7 +1685,7 @@ export type operations = {
   "readCategory post /category/{navigationId}": {
     contentType?: "application/json";
     accept?: "application/json";
-    header?: {
+    headers?: {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
     };
@@ -1754,7 +1758,7 @@ export type operations = {
   "readNavigation post /navigation/{activeId}/{rootId}": {
     contentType?: "application/json";
     accept?: "application/json";
-    header?: {
+    headers?: {
       "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readNavigation] - add sw-include-seo-urls to header parameters
     };
     pathParams: {
@@ -1819,7 +1823,7 @@ export type operations = {
   "readProductListing post /product-listing/{categoryId}": {
     contentType?: "application/json";
     accept?: "application/json";
-    header?: {
+    headers?: {
       "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readProductListing] - add sw-include-seo-urls to header parameters
     };
     pathParams: {

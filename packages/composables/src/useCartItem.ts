@@ -164,6 +164,9 @@ export function useCartItem(
       const result = await apiClient.invoke(
         "readProductDetail post /product/{productId}",
         {
+          headers: {
+            "sw-include-seo-urls": true,
+          },
           pathParams: { productId: cartItem.value.referencedId },
         },
       );

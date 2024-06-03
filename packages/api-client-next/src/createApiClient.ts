@@ -158,7 +158,7 @@ export function createAPIClient<
     >(requestPathWithParams, {
       method,
       body: currentParams.body,
-      headers: defu(defaultHeaders, currentParams.header) as HeadersInit,
+      headers: defu(defaultHeaders, currentParams.headers) as HeadersInit,
       query: currentParams.query,
     });
 

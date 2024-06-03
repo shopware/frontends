@@ -395,6 +395,8 @@ export type Schemas = {
     id?: string;
     language?: components["schemas"]["Language"];
     languageId: string;
+    order?: components["schemas"]["Order"];
+    orderId?: string;
     /** Format: float */
     originalPrice?: number;
     paymentMethod?: components["schemas"]["PaymentMethod"];
@@ -711,7 +713,7 @@ export type Schemas = {
       /** @enum {string} */
       apiAlias?: "cart_delivery_shipping_location";
       country?: components["schemas"]["Country"];
-      state?: components["schemas"]["State"];
+      state?: components["schemas"]["CountryState"];
     };
     positions?: components["schemas"]["CartDeliveryPosition"][];
     shippingCosts?: components["schemas"]["CalculatedPrice"];
@@ -3232,6 +3234,24 @@ export type Schemas = {
     translated?: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
+  };
+  PriceDefinition: {
+    /** @enum {string} */
+    apiAlias?: "cart_price_quantity";
+    isCalculated?: boolean;
+    listPrice?: components["schemas"]["ListPrice"];
+    price?: number;
+    quantity?: number;
+    regulationPrice?: {
+      /** Format: float */
+      price?: number;
+    };
+    taxRules?: {
+      name?: string;
+      /** Format: float */
+      taxRate?: number;
+    }[];
+    type?: string;
   };
   Product: {
     apiAlias: "product"; // TODO: [OpenAPI][Product] apiAlias field should be defined in schema as string literal
@@ -6683,24 +6703,6 @@ export type Schemas = {
      */
     prev?: string;
   };
-  priceDefinition: {
-    /** @enum {string} */
-    apiAlias?: "cart_price_quantity";
-    isCalculated?: boolean;
-    listPrice?: components["schemas"]["ListPrice"];
-    price?: number;
-    quantity?: number;
-    regulationPrice?: {
-      /** Format: float */
-      price?: number;
-    };
-    taxRules?: {
-      name?: string;
-      /** Format: float */
-      taxRate?: number;
-    }[];
-    type?: string;
-  };
   relationshipLinks: {
     related?: components["schemas"]["link"];
     self?: Record<string, never>[] & components["schemas"]["link"];
@@ -7372,7 +7374,7 @@ export type operations = {
   "readCategory post /category/{navigationId}": {
     contentType?: "application/json";
     accept?: "application/json";
-    header?: {
+    headers?: {
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
     };
@@ -7459,6 +7461,35 @@ export type operations = {
       ids: [string, ...string[]];
     };
     response: components["schemas"]["Cart"];
+    responseCode: 200;
+  };
+  "checkoutGateway get /checkout/gateway": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      errors?: {
+        /** If the error is blocking */
+        blocking?: boolean;
+        /** Error code */
+        code?: string;
+        /** Error detail */
+        detail?: string;
+      }[];
+      paymentMethods?: {
+        /** aggregation result */
+        aggregations?: Record<string, never>;
+        elements?: components["schemas"]["PaymentMethod"][];
+        /** Total amount */
+        total?: number;
+      };
+      shippingMethods?: {
+        /** aggregation result */
+        aggregations?: Record<string, never>;
+        elements?: components["schemas"]["ShippingMethod"][];
+        /** Total amount */
+        total?: number;
+      };
+    };
     responseCode: 200;
   };
   "createOrder post /checkout/order": {
@@ -7807,7 +7838,7 @@ export type operations = {
   "readNavigation post /navigation/{activeId}/{rootId}": {
     contentType?: "application/json";
     accept?: "application/json";
-    header?: {
+    headers?: {
       "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readNavigation] - add sw-include-seo-urls to header parameters
     };
     pathParams: {
@@ -8046,7 +8077,7 @@ export type operations = {
   "readProductListing post /product-listing/{categoryId}": {
     contentType?: "application/json";
     accept?: "application/json";
-    header?: {
+    headers?: {
       "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readProductListing] - add sw-include-seo-urls to header parameters
     };
     pathParams: {
@@ -8061,6 +8092,10 @@ export type operations = {
   "readProductDetail post /product/{productId}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
+    };
     pathParams: {
       /** Product ID */
       productId: string;
