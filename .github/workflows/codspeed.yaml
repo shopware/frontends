@@ -27,8 +27,6 @@ jobs:
           node-version: 20
           cache: "pnpm"
           cache-dependency-path: "**/pnpm-lock.yaml"
-      - name: install and build packages
-        run: pnpm --filter='./packages/**' --frozen-lockfile --config.dedupe-peer-dependents=false install
       - name: install
         run: pnpm install --frozen-lockfile --prefer-offline
       - name: Run benchmarks

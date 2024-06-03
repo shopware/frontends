@@ -3,10 +3,9 @@
   "name": "example-adyen-dropin-playground",
   "type": "module",
   "scripts": {
-    "dev": "nuxt dev",
-    "build": "nuxt build",
-    "lint": "vue-tsc --noEmit",
-    "postinstall": "nuxt prepare",
+    "dev": "nuxt prepare && nuxt dev",
+    "build": "nuxt prepare && nuxt build",
+    "lint": "nuxt prepare && vue-tsc --noEmit",
     "generate": "nuxt generate",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },

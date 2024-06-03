@@ -2,12 +2,11 @@
   "name": "example-modal-teleport",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
+    "build": "nuxt prepare && nuxt build",
+    "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
-    "lint": "vue-tsc --noEmit",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "lint": "nuxt prepare && vue-tsc --noEmit",
+    "preview": "nuxt preview"
   },
   "devDependencies": {
     "@nuxt/types": "2.17.3",
