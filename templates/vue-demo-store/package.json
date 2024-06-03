@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@iconify-json/carbon": "1.1.31",
-    "@nuxtjs/i18n": "8.1.1",
+    "@nuxtjs/i18n": "8.3.1",
     "@shopware/api-gen": "canary",
     "@vue/eslint-config-typescript": "13.0.0",
     "eslint-plugin-prettier": "5.1.3",

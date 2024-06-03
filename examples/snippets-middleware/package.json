@@ -10,7 +10,7 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@nuxtjs/i18n": "8.1.1",
+    "@nuxtjs/i18n": "8.3.1",
     "@shopware-pwa/cms-base": "canary",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
