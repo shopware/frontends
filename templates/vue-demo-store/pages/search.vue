@@ -25,16 +25,19 @@ useBreadcrumbs([
 ]);
 
 const createFiltersFromRoute = () => {
-  const filters: {
-    field: string;
-    type: string;
-    value?: string | string[] | boolean;
-    parameters?: {
-      gte?: string;
-      lte?: string;
-    };
-  }[] = [];
+  const filters: Schemas["Criteria"]["filter"] = [];
+  createPriceFilter(filters);
   for (const [key, value] of Object.entries(route.query)) {
+    if (
+      key === "p" ||
+      key === "limit" ||
+      key === "order" ||
+      key === "search" ||
+      key === "min-price" ||
+      key === "max-price"
+    ) {
+      continue;
+    }
     const currentValue = value as string;
     const allValues = currentValue.split("|");
     for (const value of allValues) {
@@ -50,17 +53,6 @@ const createFiltersFromRoute = () => {
           type: "equalsAny",
           field: "optionIds",
           value: value,
-        });
-      }
-      if (key === "price") {
-        const [min, max] = value.split("-");
-        filters.push({
-          type: "range",
-          field: "price",
-          parameters: {
-            gte: min,
-            lte: max,
-          },
         });
       }
       if (key === "rating") {
@@ -82,6 +74,45 @@ const createFiltersFromRoute = () => {
     }
   }
   return filters;
+};
+
+const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
+  const minPrice = !isNaN(Number(route.query["min-price"]))
+    ? (route.query["min-price"] as string)
+    : undefined;
+
+  const maxPrice = !isNaN(Number(route.query["max-price"]))
+    ? (route.query["max-price"] as string)
+    : undefined;
+
+  if (minPrice && maxPrice) {
+    filters?.push({
+      type: "range",
+      field: "price",
+      parameters: {
+        gte: minPrice,
+        lte: maxPrice,
+      },
+    });
+  }
+  if (minPrice && !maxPrice) {
+    filters?.push({
+      type: "range",
+      field: "price",
+      parameters: {
+        gte: minPrice,
+      },
+    });
+  }
+  if (!minPrice && maxPrice) {
+    filters?.push({
+      type: "range",
+      field: "price",
+      parameters: {
+        lte: maxPrice,
+      },
+    });
+  }
 };
 
 const limit = ref(route.query.limit ? Number(route.query.limit) : 12);
