@@ -21,6 +21,8 @@ To be sure about the version compatibility you can enable Node's [corepack](http
 
 ```sh
 # Install dependencies
+pnpm --filter='./packages/**' --config.dedupe-peer-dependents=false i
+## Then once first time packages are built run
 pnpm i
 
 # Build packages
