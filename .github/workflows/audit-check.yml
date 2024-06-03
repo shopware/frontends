@@ -17,6 +17,9 @@ jobs:
   init:
     name: Check audit
     timeout-minutes: 15
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     runs-on: macos-14
 
     steps:
