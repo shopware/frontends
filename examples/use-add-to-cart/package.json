@@ -13,6 +13,7 @@
   "devDependencies": {
     "@shopware/api-client": "canary",
     "@shopware-pwa/composables-next": "canary",
+    "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@types/node": "20.12.7",
     "@unocss/nuxt": "0.59.2",
