@@ -5,66 +5,65 @@ import {
   addPlugin,
   addServerHandler,
   createResolver,
+  installModule,
 } from "@nuxt/kit";
 import defu from "defu";
 
+/**
+ * Module options
+ */
 export type AmazonPayModuleOptions = {
-  // runtimeConfig: {
-  //   key: string;
-  // };
-  moduleOptions: {
-    storeId: string;
-    publicKeyId: string;
-    privateKeyPath: string;
-    region: "DE" | "UK" | "US";
-    merchantId: string;
-    sandbox: boolean;
-    algorithm: "AMZN-PAY-RSASSA-PSS-V2";
-    webCheckoutDetails: {
-      checkoutReviewReturnUrl: string;
-      checkoutResultReturnUrl: string;
-    };
-    shopwareAdminApi: {
-      endpoint: string;
-      credentials: {
-        client_id: string;
-        client_secret: string;
-      };
+  storeId: string;
+  publicKeyId: string;
+  privateKeyPath: string;
+  region: "DE" | "UK" | "US";
+  merchantId: string;
+  sandbox: boolean;
+  algorithm: "AMZN-PAY-RSASSA-PSS-V2";
+  webCheckoutDetails: {
+    checkoutReviewReturnUrl: string;
+    checkoutResultReturnUrl: string;
+  };
+  shopwareAdminApi: {
+    endpoint: string;
+    credentials: {
+      client_id: string;
+      client_secret: string;
     };
   };
 };
 
-declare module "nuxt/schema" {
+declare module "@nuxt/schema" {
   interface NuxtOptions {
-    amazonPay?: AmazonPayModuleOptions["moduleOptions"];
+    amazonPay?: AmazonPayModuleOptions;
   }
 
   interface NuxtConfig {
-    amazonPay?: AmazonPayModuleOptions["moduleOptions"];
+    amazonPay?: AmazonPayModuleOptions;
   }
 
   interface RuntimeConfig {
-    amazonPay: AmazonPayModuleOptions["moduleOptions"];
+    amazonPay: AmazonPayModuleOptions;
   }
   interface PublicRuntimeConfig {
     amazonPay: Pick<
-      AmazonPayModuleOptions["moduleOptions"],
+      AmazonPayModuleOptions,
       "merchantId" | "sandbox" | "webCheckoutDetails"
     >;
   }
 }
 
-export default defineNuxtModule<AmazonPayModuleOptions["moduleOptions"]>({
+export default defineNuxtModule<AmazonPayModuleOptions>({
   meta: {
     name: "@shopware/amazon-pay",
     configKey: "amazonPay",
   },
-  setup(options, nuxt) {
-    const moduleOptions = options || {};
+  async setup(options, nuxt) {
+    const moduleOptions = options;
 
-    nuxt.options.runtimeConfig.amazonPay = defu({}, moduleOptions);
+    nuxt.options.runtimeConfig.amazonPay = defu.default({}, moduleOptions);
     // copy options to public runtimeConfig
-    nuxt.options.runtimeConfig.public.amazonPay = defu(
+    nuxt.options.runtimeConfig.public.amazonPay = defu.default(
       {},
       {
         merchantId: moduleOptions.merchantId,
