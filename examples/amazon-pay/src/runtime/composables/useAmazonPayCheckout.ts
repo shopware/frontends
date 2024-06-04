@@ -155,7 +155,7 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
         {
           field: "orderNumber",
           type: "equals",
-          value: sessionData.merchantMetadata.merchantReferenceId,
+          value: sessionData.merchantMetadata?.merchantReferenceId,
         },
       ],
     });
