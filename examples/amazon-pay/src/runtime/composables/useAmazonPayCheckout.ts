@@ -1,3 +1,15 @@
+import {
+  useRoute,
+  useUser,
+  useCountries,
+  useSalutations,
+  useCart,
+  useCheckout,
+  useCustomerOrders,
+  useSessionContext,
+} from "#imports";
+import { computed, ref } from "vue";
+
 export function useAmazonPayCheckout(amazonSessionId?: string) {
   const route = useRoute();
 
@@ -32,6 +44,9 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
   };
 
   type AmazonPaySessionData = {
+    merchantMetadata?: {
+      merchantReferenceId: string;
+    };
     buyer: {
       name: string;
       email: string;

@@ -5,9 +5,8 @@ import {
   addPlugin,
   addServerHandler,
   createResolver,
-  installModule,
 } from "@nuxt/kit";
-import defu from "defu";
+import { defu } from "defu";
 
 /**
  * Module options
@@ -61,9 +60,9 @@ export default defineNuxtModule<AmazonPayModuleOptions>({
   async setup(options, nuxt) {
     const moduleOptions = options;
 
-    nuxt.options.runtimeConfig.amazonPay = defu.default({}, moduleOptions);
+    nuxt.options.runtimeConfig.amazonPay = defu({}, moduleOptions);
     // copy options to public runtimeConfig
-    nuxt.options.runtimeConfig.public.amazonPay = defu.default(
+    nuxt.options.runtimeConfig.public.amazonPay = defu(
       {},
       {
         merchantId: moduleOptions.merchantId,

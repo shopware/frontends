@@ -5,6 +5,7 @@ const { mount } = useAmazonPayButton("#amazon-pay-button", {
   buttonColor: "Gold",
   placement: "Cart",
   productType: "PayOnly",
+  locale: "en_GB",
 });
 
 onMounted(() => {

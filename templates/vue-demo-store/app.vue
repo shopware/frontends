@@ -63,7 +63,6 @@ const {
 } = useInternationalization();
 const { languageIdChain, refreshSessionContext } = useSessionContext();
 
-
 const { data: languages } = await useAsyncData("languages", async () => {
   return await getAvailableLanguages();
 });

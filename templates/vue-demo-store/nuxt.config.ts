@@ -99,7 +99,7 @@ export default defineNuxtConfig({
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
     "@nuxtjs/i18n",
-    "./module/amazon-pay/index.ts",
+    "../../examples/amazon-pay/src/module.ts",
   ],
   // components: true,
   components: {

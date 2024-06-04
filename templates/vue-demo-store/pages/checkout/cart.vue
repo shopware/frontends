@@ -69,7 +69,7 @@ export default {
           <CheckoutPromotionCode />
         </div>
         <div class="pb-4 mb-8">
-          <AmazonPayButton/>
+          <AmazonPayButton />
         </div>
 
         <NuxtLink
@@ -80,8 +80,6 @@ export default {
           {{ $t("cart.checkout") }}
         </NuxtLink>
       </aside>
-
-
     </div>
   </div>
   <h1 v-else class="m-10 text-center text-2xl font-medium text-secondary-900">
