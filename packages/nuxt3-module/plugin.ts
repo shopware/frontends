@@ -29,9 +29,9 @@ export default defineNuxtPlugin((NuxtApp) => {
   }
 
   const shouldUseSessionContextInServerRender =
-    process.server &&
-    (!!runtimeConfig.public?.shopware?.useUserContextInSSR ||
-      !!runtimeConfig?.shopware?.useUserContextInSSR);
+    !process.server ||
+    !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
+    !!runtimeConfig?.shopware?.useUserContextInSSR;
 
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
