@@ -26,7 +26,7 @@
     "@vueuse/nuxt": "10.9.0",
     "defu": "6.1.4",
     "requrl": "3.0.2",
-    "sitemap": "7.1.1",
+    "sitemap": "8.0.0",
     "vue": "3.4.21"
   },
   "devDependencies": {
