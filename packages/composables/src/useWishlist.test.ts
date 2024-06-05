@@ -4,7 +4,7 @@ import { useSyncWishlist } from "./useSyncWishlist";
 import { useUser } from "./useUser";
 import { useSetup } from "./_test";
 import { computed, ref } from "vue";
-import type { operations } from "#shopware";
+import type { Schemas } from "#shopware";
 
 vi.mock("./useLocalWishlist.ts", () => ({
   useLocalWishlist() {
@@ -109,7 +109,7 @@ describe("useWishlist - not logged in user", () => {
     const query = {
       limit: 1,
       p: 2,
-    } as operations["searchPage post /search"]["body"];
+    } as Schemas["Criteria"];
     vm.changeCurrentPage(2, query);
 
     expect(vm.getCurrentPage).toBe(2);

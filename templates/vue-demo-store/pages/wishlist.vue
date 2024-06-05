@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import type { Schemas, operations } from "#shopware";
+import type { Schemas } from "#shopware";
 import defu from "defu";
 import { useRoute, useRouter } from "vue-router";
 import SwPagination from "../../../packages/cms-base/components/SwPagination.vue";
@@ -90,10 +90,9 @@ const changeLimit = async (limit: Event) => {
     },
   });
   changeCurrentPage(defaultPage, {
-    search: route.query.search,
-    limit: route.query.limit,
-    p: route.query.p,
-  } as unknown as operations["searchPage post /search"]["body"]);
+    limit: +(route.query.limit || 15),
+    page: +(route.query.p || 1),
+  });
 };
 
 const changePage = async (page: number) => {
@@ -104,10 +103,7 @@ const changePage = async (page: number) => {
       limit: limit.value,
     },
   });
-  await changeCurrentPage(
-    page,
-    route.query as unknown as operations["searchPage post /search"]["body"],
-  );
+  await changeCurrentPage(page, route.query);
 };
 
 watch(

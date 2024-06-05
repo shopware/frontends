@@ -2,15 +2,13 @@ import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
 import { ApiClientError } from "@shopware/api-client";
-import type { operations } from "#shopware";
+import type { Schemas } from "#shopware";
 
 export type UseSyncWishlistReturn = {
   /**
    * Get products from wishlist
    */
-  getWishlistProducts(
-    defaultSearchCriteria?: operations["searchPage post /search"]["body"],
-  ): void;
+  getWishlistProducts(defaultSearchCriteria?: Schemas["Criteria"]): void;
   /**
    * Merge products with wishlist already existing in API wishlist
    */
@@ -66,7 +64,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
    * Only for logged-in users
    */
   async function getWishlistProducts(
-    defaultSearchCriteria?: operations["searchPage post /search"]["body"],
+    defaultSearchCriteria?: Schemas["Criteria"],
   ) {
     try {
       const response = await apiClient.invoke(
