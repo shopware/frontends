@@ -94,7 +94,6 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
       acceptedDataProtection: true,
       accountType: "private",
       salutationId: getNotSpecifiedSalutation(),
-      storefrontUrl: "https://frontends-demo.vercel.app",
       billingAddress: {
         salutationId: getNotSpecifiedSalutation(),
         countryId: mapCountryId(sessionData.billingAddress.countryCode),

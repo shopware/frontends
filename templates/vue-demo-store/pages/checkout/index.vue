@@ -7,7 +7,7 @@ export default {
 import { useVuelidate } from "@vuelidate/core";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
 import { customValidators } from "@/i18n/utils/i18n-validators";
-import type { RequestParameters } from "#shopware";
+import type { operations } from "#shopware";
 import { ApiClientError, type ApiError } from "@shopware/api-client";
 
 const { required, minLength, requiredIf, email } = customValidators();
@@ -132,7 +132,7 @@ const isCheckoutAvailable = computed(() => {
 
 const isUserSession = computed(() => isLoggedIn.value || isGuestSession.value);
 
-const state = reactive<RequestParameters<"register">>({
+const state = reactive<operations["register post /account/register"]["body"]>({
   salutationId: "",
   firstName: "",
   lastName: "",

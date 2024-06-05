@@ -1,12 +1,13 @@
-import type { RequestParameters } from "#shopware";
+import type { operations } from "#shopware";
 
 /**
  *
  * docs: https://shopware.stoplight.io/docs/store-api/storeapi.json/paths/~1account~1register/post
  *
- * @deprecated use {@link RequestParameters<'register'>} from "#shopware" import instead
+ * @deprecated use {@link operations["register post /account/register"]["body"]} from "#shopware" import instead
  */
-export type CustomerRegistrationParams = RequestParameters<"register">;
+export type CustomerRegistrationParams =
+  operations["register post /account/register"]["body"];
 // export type CustomerRegistrationParams = {
 //   salutationId: string;
 //   firstName: string;

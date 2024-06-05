@@ -33,7 +33,7 @@ let translations: Translations = {
     },
   },
 };
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 const currentTab = ref<number>(1);
 const { product } = useProduct(props.content.data?.product);
@@ -56,10 +56,10 @@ const fetchReviews = async () => {
   const reviewsResponse = await apiClient.invoke(
     "readProductReviews post /product/{productId}/reviews",
     {
-      productId: product.value.id,
+      pathParams: { productId: product.value.id },
     },
   );
-  reviews.value = reviewsResponse?.elements || [];
+  reviews.value = reviewsResponse.data.elements || [];
 };
 const handleReviewAdded = () => {
   reviewAdded.value = true;

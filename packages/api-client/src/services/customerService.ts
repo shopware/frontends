@@ -22,7 +22,6 @@ import type {
   Customer,
   CustomerAddress,
   CustomerRegistrationParams,
-  ContextTokenResponse,
   Order,
   EntityResult,
   ShopwareSearchParams,
@@ -71,7 +70,7 @@ export async function register(
 export async function login(
   parameters: { username?: string; password?: string } = {},
   contextInstance: ShopwareApiInstance = defaultInstance,
-): Promise<ContextTokenResponse> {
+): Promise<{ contextToken: string; apiAlias: "array_struct" }> {
   const resp = await contextInstance.invoke.post(
     getCustomerLoginEndpoint(),
     parameters,
@@ -145,7 +144,7 @@ export async function getCustomerAddresses(
 type CustomerOrdersResponse = {
   apiAlias: "order-route-response-struct";
   orders: EntityResult<"order", Order>;
-  paymentChangeable: Array<unknown>;
+  paymentChangeable: { [key: string]: number } | [];
 };
 /**
  * Get all customer's orders

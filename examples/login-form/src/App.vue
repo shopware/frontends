@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useUser } from "@shopware-pwa/composables-next/dist";
+import { useUser } from "@shopware-pwa/composables-next";
 import type { ApiError } from "@shopware/api-client";
 import { ApiClientError } from "@shopware/api-client";
 import { reactive, ref } from "vue";

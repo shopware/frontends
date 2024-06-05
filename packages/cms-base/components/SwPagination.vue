@@ -21,7 +21,7 @@ let translations: Translations = {
   },
 };
 
-translations = defu(translations, useCmsTranslations()) as Translations;
+translations = defu(useCmsTranslations(), translations) as Translations;
 
 defineEmits<{
   (e: "changePage", page: number): void;

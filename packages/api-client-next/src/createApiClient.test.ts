@@ -10,8 +10,8 @@ import {
   getHeaders,
 } from "h3";
 import type { App } from "h3";
-import { createAPIClient } from ".";
-import type { operationPaths, operations } from "../api-types";
+import { createAPIClient } from "./createApiClient";
+import type { operations } from "../api-types/storeApiTypes";
 
 describe("createAPIClient", () => {
   const listeners: Listener[] = [];
@@ -50,11 +50,11 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       baseURL,
     });
-    const res = await client.invoke("readCart get /checkout/cart");
+    await client.invoke("readCart get /checkout/cart");
     expect(seoUrlHeadersSpy).not.toHaveBeenCalledWith(
       expect.objectContaining({
         "sw-context-token": "",
@@ -75,12 +75,12 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
     });
-    const res = await client.invoke("readCart get /checkout/cart");
+    await client.invoke("readCart get /checkout/cart");
 
     expect(seoUrlHeadersSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -103,11 +103,11 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       baseURL,
     });
-    const res = await client.invoke("readCart get /checkout/cart");
+    await client.invoke("readCart get /checkout/cart");
 
     expect(seoUrlHeadersSpy).toHaveBeenCalledWith(undefined);
   });
@@ -136,16 +136,14 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const contextChangedMock = vi
-      .fn()
-      .mockImplementation((param: string) => {});
+    const contextChangedMock = vi.fn().mockImplementation(() => {});
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
-      onContextChanged: contextChangedMock,
     });
+    client.hook("onContextChanged", contextChangedMock);
 
     await client.invoke("readCart get /checkout/cart");
     expect(contextChangedMock).not.toHaveBeenCalled();
@@ -156,23 +154,22 @@ describe("createAPIClient", () => {
   it("should NOT invoke onContextChanged method when no context header is set in response", async () => {
     const app = createApp().use(
       "/context",
-      eventHandler(async (event) => {
+      eventHandler(async () => {
         return {};
       }),
     );
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const contextChangedMock = vi
-      .fn()
-      .mockImplementation((param: string) => {});
+    const contextChangedMock = vi.fn().mockImplementation(() => {});
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
-      onContextChanged: contextChangedMock,
     });
+
+    client.hook("onContextChanged", contextChangedMock);
 
     await client.invoke("readContext get /context");
     expect(contextChangedMock).not.toHaveBeenCalled();
@@ -190,7 +187,7 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       baseURL,
     });
@@ -215,7 +212,7 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
@@ -231,7 +228,7 @@ describe("createAPIClient", () => {
   });
 
   it("should change default headers", async () => {
-    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const seoUrlheadersSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/checkout/cart",
       eventHandler(async (event) => {
@@ -243,7 +240,7 @@ describe("createAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
@@ -262,21 +259,22 @@ describe("createAPIClient", () => {
   it("should trigger success callback", async () => {
     const app = createApp().use(
       "/context",
-      eventHandler(async (event) => {
+      eventHandler(async () => {
         return {};
       }),
     );
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const successCallback = vi.fn().mockImplementation((param: string) => {});
+    const successCallback = vi.fn().mockImplementation(() => {});
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
-      onSuccessHandler: successCallback,
     });
+
+    client.hook("onSuccessResponse", successCallback);
 
     await client.invoke("readContext get /context");
     expect(successCallback).toHaveBeenCalled();
@@ -285,26 +283,53 @@ describe("createAPIClient", () => {
   it("should trigger fail callback", async () => {
     const app = createApp().use(
       "/context",
-      eventHandler(async (event) => {
+      eventHandler(async () => {
         throw new Error("Api error");
       }),
     );
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const errorCallback = vi.fn().mockImplementation((param: string) => {});
+    const errorCallback = vi.fn().mockImplementation(() => {});
 
-    const client = createAPIClient<operations, operationPaths>({
+    const client = createAPIClient<operations>({
       accessToken: "123",
       contextToken: "456",
       baseURL,
-      onErrorHandler: errorCallback,
     });
+
+    client.hook("onResponseError", errorCallback);
 
     try {
       await client.invoke("readContext get /context");
     } catch (e) {}
 
     expect(errorCallback).toHaveBeenCalled();
+  });
+
+  it("should display deprecation message at the console when onContextChanged method is used", async () => {
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        setHeader(event, "sw-context-token", "789");
+        return {};
+      }),
+    );
+
+    const consoleErrorSpy = vi.spyOn(console, "error");
+    const contextChangedMock = vi.fn().mockImplementation(() => {});
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      baseURL,
+      accessToken: "123",
+      contextToken: "456",
+      onContextChanged: contextChangedMock,
+    });
+
+    await client.invoke("readContext get /context");
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 });

@@ -1,17 +1,15 @@
 import { describe, expect, test as baseTest } from "vitest";
 import { createAdminAPIClient } from ".";
-import type { operations, operationPaths } from "../admin-api-types";
+import type { operations } from "../api-types/adminApiTypes";
 
 const baseURL = "https://demo-frontends.shopware.store/store-api";
 
 const test = baseTest.extend<{
-  adminApiClient: ReturnType<
-    typeof createAdminAPIClient<operations, operationPaths>
-  >;
+  adminApiClient: ReturnType<typeof createAdminAPIClient<operations>>;
 }>({
   adminApiClient: async ({}, use) => {
     // setup the fixture before each test function
-    const adminApiClient = createAdminAPIClient<operations, operationPaths>({
+    const adminApiClient = createAdminAPIClient<operations>({
       baseURL,
     });
 

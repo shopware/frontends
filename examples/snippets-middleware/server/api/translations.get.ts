@@ -1,10 +1,5 @@
-// import type { Schemas } from "#shopware";
 import { createAdminAPIClient } from "@shopware/api-client";
-import type {
-  operationPaths,
-  operations,
-  components,
-} from "@shopware/api-client/admin-api-types";
+import type { operations } from "@shopware/api-client/admin-api-types";
 
 // import { LRUCache } from "lru-cache";
 
@@ -35,8 +30,8 @@ export default defineEventHandler(async (handler) => {
 
   // create an instance of the Shopware API client
   // using client credentials grant type
-  const client = createAdminAPIClient<operations, operationPaths>({
-    baseURL: `${useRuntimeConfig().public.shopware.shopwareEndpoint.replace("store-api", "api")}`,
+  const client = createAdminAPIClient<operations>({
+    baseURL: `${useRuntimeConfig().public.shopware.shopwareEndpoint?.replace("store-api", "api")}`,
     credentials: {
       grant_type: "client_credentials",
       client_id: useRuntimeConfig()?.api_client_id,
@@ -56,18 +51,21 @@ export default defineEventHandler(async (handler) => {
 
   try {
     // fetch snippetSetId for the given locale to use it in the next request
-    snippetSetResponse = await client.invoke(
+    const result = await client.invoke(
       "searchSnippetSet post /search/snippet-set",
       {
-        filter: [
-          {
-            type: "equals",
-            field: "iso",
-            value: localeParam || FALLBACK_LOCALE,
-          },
-        ],
+        body: {
+          filter: [
+            {
+              type: "equals",
+              field: "iso",
+              value: localeParam || FALLBACK_LOCALE,
+            },
+          ],
+        },
       },
     );
+    snippetSetResponse = result.data;
   } catch (error) {
     console.error("ERROR WHILE FETCHING snippets: ", error);
   }
@@ -86,18 +84,20 @@ export default defineEventHandler(async (handler) => {
   const snippetsFound = await client.invoke(
     "searchSnippet post /search/snippet",
     {
-      filter: [
-        {
-          type: "prefix",
-          field: "translationKey",
-          value: "frontends.",
-        },
-        {
-          type: "equals",
-          field: "setId",
-          value: snippetSetResponse.data?.[0]?.id,
-        },
-      ],
+      body: {
+        filter: [
+          {
+            type: "prefix",
+            field: "translationKey",
+            value: "frontends.",
+          },
+          {
+            type: "equals",
+            field: "setId",
+            value: snippetSetResponse.data?.[0]?.id,
+          },
+        ],
+      },
     },
   );
 
@@ -105,7 +105,7 @@ export default defineEventHandler(async (handler) => {
     {},
     // create an object with keys from translationKey and values from value
     // with removed frontends. prefix
-    ...(snippetsFound?.data?.map((snippet) => ({
+    ...(snippetsFound.data.data?.map((snippet) => ({
       [snippet.translationKey.replace("frontends.", "")]: snippet.value,
     })) || []),
   );

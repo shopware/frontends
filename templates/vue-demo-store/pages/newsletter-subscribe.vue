@@ -5,8 +5,10 @@ const error = ref(false);
 
 try {
   await apiClient.invoke("confirmNewsletter post /newsletter/confirm", {
-    em: route.query.em as string,
-    hash: route.query.hash as string,
+    body: {
+      em: route.query.em as string,
+      hash: route.query.hash as string,
+    },
   });
 } catch (e) {
   error.value = true;

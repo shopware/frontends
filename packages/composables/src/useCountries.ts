@@ -23,11 +23,13 @@ export function useCountries(): UseCountriesReturn {
 
   async function fetchCountries() {
     const result = await apiClient.invoke("readCountry post /country", {
-      associations: {
-        states: {},
+      body: {
+        associations: {
+          states: {},
+        },
       },
     });
-    _sharedCountried.value = result.elements;
+    _sharedCountried.value = result.data.elements;
   }
 
   const getCountries = computed(() => {

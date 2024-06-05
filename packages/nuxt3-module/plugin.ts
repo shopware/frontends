@@ -28,26 +28,37 @@ export default defineNuxtPlugin((NuxtApp) => {
     );
   }
 
+  const shouldUseSessionContextInServerRender =
+    !process.server ||
+    !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
+    !!runtimeConfig?.shopware?.useUserContextInSSR;
+
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
     accessToken: shopwareAccessToken,
-    contextToken: Cookies.get("sw-context-token"),
-    onContextChanged(newContextToken) {
-      Cookies.set("sw-context-token", newContextToken, {
-        expires: 365, // days
-        path: "/",
-        sameSite: "lax",
+    contextToken: shouldUseSessionContextInServerRender
+      ? Cookies.get("sw-context-token")
+      : "",
+  });
+
+  apiClient.hook("onContextChanged", (newContextToken) => {
+    Cookies.set("sw-context-token", newContextToken, {
+      expires: 365, // days
+      path: "/",
+      sameSite: "lax",
+      secure: shopwareEndpoint.startsWith("https://"),
+    });
+  });
+
+  apiClient.hook("onResponseError", (response) => {
+    // @ts-expect-error TODO: check maintenance mode and fix typongs here
+    const error = isMaintenanceMode(response._data?.errors ?? []);
+    if (error) {
+      throw createError({
+        statusCode: 503,
+        statusMessage: "MAINTENANCE_MODE",
       });
-    },
-    onErrorHandler(response) {
-      const error = isMaintenanceMode(response._data?.errors ?? []);
-      if (error) {
-        throw createError({
-          statusCode: 503,
-          statusMessage: "MAINTENANCE_MODE",
-        });
-      }
-    },
+    }
   });
 
   NuxtApp.vueApp.provide("apiClient", apiClient);
@@ -71,7 +82,7 @@ export default defineNuxtPlugin((NuxtApp) => {
 //   install(app, options) {
 //     const runtimeConfig = useRuntimeConfig();
 
-//     const isUserCookieContext =
+//     const shouldUseSessionContextInServerRender =
 //       !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
 //       !options.isServer;
 
@@ -94,8 +105,8 @@ export default defineNuxtPlugin((NuxtApp) => {
 //     const instance = createApiClientInstance(
 //       shopwareEndpoint,
 //       runtimeConfig.public.shopware.accessToken,
-//       getContextToken(isUserCookieContext),
-//       getLanguageId(isUserCookieContext),
+//       getContextToken(shouldUseSessionContextInServerRender),
+//       getLanguageId(shouldUseSessionContextInServerRender),
 //     );
 
 //     /**
@@ -104,7 +115,7 @@ export default defineNuxtPlugin((NuxtApp) => {
 //     instance.onConfigChange(({ config }) => {
 //       try {
 //         // only save cookies on client side render
-//         if (isUserCookieContext) {
+//         if (shouldUseSessionContextInServerRender) {
 //           contextToken.value = config.contextToken;
 //           languageId.value = config.languageId;
 //           setCookieContextToken(config.contextToken);
@@ -159,12 +170,12 @@ export default defineNuxtPlugin((NuxtApp) => {
 //   });
 // }
 
-// function getContextToken(isUserCookieContext) {
+// function getContextToken(shouldUseSessionContextInServerRender) {
 //   const contextToken = getCookieContextToken();
 //   // workaround for SSG case, where cookies contains additional dot in name, related: https://github.com/shopware/frontends/commit/ee5b8a71e1e016c973a7852efa3b85a136e6ea14
 //   const cookieContextToken = Cookies.get("sw-context-token");
 
-//   return isUserCookieContext ? contextToken.value || cookieContextToken : "";
+//   return shouldUseSessionContextInServerRender ? contextToken.value || cookieContextToken : "";
 // }
 
 // function getCookieLanguageId() {
@@ -183,12 +194,12 @@ export default defineNuxtPlugin((NuxtApp) => {
 //   });
 // }
 
-// function getLanguageId(isUserCookieContext) {
+// function getLanguageId(shouldUseSessionContextInServerRender) {
 //   const languageId = getCookieLanguageId();
 //   // workaround for SSG case, where cookies contains additional dot in name, related: https://github.com/shopware/frontends/commit/ee5b8a71e1e016c973a7852efa3b85a136e6ea14
 //   const cookieLanguageId = Cookies.get("sw-language-id");
 
-//   return isUserCookieContext ? languageId.value || cookieLanguageId : undefined;
+//   return shouldUseSessionContextInServerRender ? languageId.value || cookieLanguageId : undefined;
 // }
 
 // /**
