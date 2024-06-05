@@ -43,7 +43,10 @@ const { formatLink } = useInternationalization(localePath);
               :key="cartItem.id"
               class="flex py-6"
             >
-              <CheckoutCartItem :cart-item="cartItem" />
+              <CheckoutCartItem
+                :cart-item="cartItem"
+                :controller="controller"
+              />
             </li>
           </ul>
           <div v-else class="text-2xl text-center">
