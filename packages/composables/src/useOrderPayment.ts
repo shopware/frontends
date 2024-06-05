@@ -38,7 +38,7 @@ export type UseOrderPaymentReturn = {
      * additional payment details to provide
      */
     paymentDetails?: unknown,
-  ): Promise<void | unknown>;
+  ): Promise<undefined | unknown>;
   /**
    * Change a payment method for the order
    */
@@ -69,7 +69,7 @@ export function useOrderPayment(
   async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
-  ): Promise<void | unknown> {
+  ): Promise<undefined | unknown> {
     if (!order.value) {
       return;
     }

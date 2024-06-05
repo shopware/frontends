@@ -7,7 +7,7 @@ export type ShopwareContext = {
    * Shopware API instance
    * @deprecated use `apiClient` instead
    */
-  apiInstance: any;
+  apiInstance: unknown;
   devStorefrontUrl: string | null;
   /**
    * Shopware API client

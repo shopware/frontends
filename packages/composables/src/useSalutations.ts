@@ -26,7 +26,7 @@ export function useSalutations(): UseSalutationsReturn {
   const _salutations = inject("swSalutations", ref());
   provide("swSalutations", _salutations);
 
-  const error: Ref<any> = ref(null);
+  const error: Ref<unknown> = ref(null);
 
   const fetchSalutations = async (): Promise<void> => {
     try {

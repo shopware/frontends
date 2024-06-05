@@ -95,7 +95,7 @@ export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
 
 // TODO: handle defaults in app
 export function getDefaultApiParams(): {
-  [composableName: string]: any;
+  [composableName: string]: unknown;
 } {
   return {};
 }

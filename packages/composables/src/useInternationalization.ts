@@ -69,7 +69,7 @@ export type UseInternationalizationReturn = {
 
 export type RouteObject = {
   path: string;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 /**
@@ -78,7 +78,7 @@ export type RouteObject = {
  * @category Context & Language
  */
 export function useInternationalization(
-  pathResolver?: Function,
+  pathResolver?: (path: string) => string,
 ): UseInternationalizationReturn {
   const { devStorefrontUrl } = useShopwareContext();
   const { apiClient } = useShopwareContext();
