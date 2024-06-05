@@ -15,14 +15,14 @@
     "@shopware-pwa/helpers-next": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "primevue": "3.51.0",
+    "primevue": "3.52.0",
     "vue": "3.4.21",
     "vue-router": "4.3.0"
   },
   "devDependencies": {
     "@types/node": "20.12.7",
     "@shopware/api-gen": "canary",
-    "@vitejs/plugin-vue": "5.0.4",
+    "@vitejs/plugin-vue": "5.0.5",
     "@vueuse/core": "10.9.0",
     "unocss": "0.59.2",
     "vite": "5.2.8",
