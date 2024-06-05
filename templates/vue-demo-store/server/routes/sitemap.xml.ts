@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   const response = await apiClient.invoke("readSitemap get /sitemap");
   const smis = new SitemapIndexStream();
 
-  response.forEach((element) => {
+  response.data.forEach((element) => {
     sitemaps.push({
       url: element.filename,
     });

@@ -54,9 +54,6 @@ function _usePrice(params?: {
     );
   }
 
-  // TODO: make sure why there is no decimal precision in api response
-  const decimalPrecision = 2;
-
   function _setCurrencyCode(code: string) {
     currencyCode.value = code;
   }

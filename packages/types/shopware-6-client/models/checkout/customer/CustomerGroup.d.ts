@@ -10,7 +10,6 @@ export type CustomerGroup = {
   customFields: CustomFields;
   createdAt: string;
   updatedAt: null | string;
-  displayGross: boolean;
   registrationActive: boolean;
   registrationTitle: string;
   registrationIntroduction: string;

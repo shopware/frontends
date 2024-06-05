@@ -1,6 +1,6 @@
 ---
 "vue-demo-store": minor
-"@shopware-pwa/composables-next": patch
+"@shopware-pwa/composables-next": minor
 ---
 
-I have added a pagination for wishlist page. I made a changes to variable name to get the proper context of it.
+Added a pagination for the wishlist page. I made changes to the variable name to get the proper context of it.

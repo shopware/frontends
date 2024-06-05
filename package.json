@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "bump": "changeset version",
+    "postinstall": "pnpm run build --filter='./packages/*'",
     "changeset": "changeset",
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
@@ -24,14 +25,15 @@
     "versionReadme": "pnpx ts-node scripts/addChangelogBodyToReadmeFile.ts",
     "taze": "taze major -wr",
     "prepare": "husky",
+    "generate-types": "turbo run generate-types",
     "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "1.7.0",
     "@changesets/changelog-github": "0.5.0",
     "@changesets/cli": "2.27.1",
-    "@microsoft/api-documenter": "7.24.2",
-    "@microsoft/api-extractor": "7.43.1",
+    "@microsoft/api-documenter": "7.24.13",
+    "@microsoft/api-extractor": "7.45.1",
     "@microsoft/tsdoc": "0.14.2",
     "@types/changelog-parser": "2.8.4",
     "changelog-parser": "3.0.1",
@@ -54,7 +56,7 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.15.7",
+  "packageManager": "pnpm@9.1.4",
   "pnpm": {
     "overrides": {
       "@antfu/utils": "^0.7.7",

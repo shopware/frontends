@@ -51,10 +51,12 @@ const onPayButton = async (state: any) => {
   activeStep.value = 3;
   // send a state got from onPayButton handler to Shopware 6 API
   await apiClient.invoke("handlePaymentMethod post /handle-payment", {
-    orderId: order.id,
-    finishUrl: "http://localhost:3000/success",
-    errorUrl: "http://localhost:3000/failure?payment-failed",
-    stateData: JSON.stringify(state.data),
+    body: {
+      orderId: order.id,
+      finishUrl: "http://localhost:3000/success",
+      errorUrl: "http://localhost:3000/failure?payment-failed",
+      // stateData: JSON.stringify(state.data),
+    },
   });
 
   activeStep.value = 4;
@@ -64,7 +66,7 @@ const onPayButton = async (state: any) => {
   const paymentStateResponse = await apiClient.invoke(
     "readAdyenPaymentStatus post /adyen/payment-status",
     {
-      orderId: order.id,
+      body: { orderId: order.id },
     },
   );
 

@@ -8,8 +8,8 @@ import {
   useAddToCart,
   useProductPrice,
   usePrice,
-} from "@shopware-pwa/composables-next/dist";
-import type { components } from "@shopware/api-client/api-types";
+} from "@shopware-pwa/composables-next";
+import type { components } from "@shopware/api-client/store-api-types";
 const props = defineProps<{
   product: components["schemas"]["Product"];
 }>();

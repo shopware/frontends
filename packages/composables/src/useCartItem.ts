@@ -132,10 +132,10 @@ export function useCartItem(
   const isRemovable = computed(() => !!cartItem.value.removable);
 
   async function removeItem() {
-    const newCart = await apiClient.invoke(
+    const { data: newCart } = await apiClient.invoke(
       "removeLineItem post /checkout/cart/line-item/delete",
       {
-        ids: [cartItem.value.id],
+        body: { ids: [cartItem.value.id] },
       },
     );
     await refreshCart(newCart);
@@ -164,11 +164,14 @@ export function useCartItem(
       const result = await apiClient.invoke(
         "readProductDetail post /product/{productId}",
         {
-          productId: cartItem.value.referencedId,
+          headers: {
+            "sw-include-seo-urls": true,
+          },
+          pathParams: { productId: cartItem.value.referencedId },
         },
       );
 
-      return result.product;
+      return result.data.product;
     } catch (error) {
       console.error("[useCart][getProductItemsSeoUrlsData]", error);
     }

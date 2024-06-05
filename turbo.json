@@ -19,6 +19,10 @@
       "cache": false,
       "outputs": []
     },
+    "generate-types": {
+      "cache": false,
+      "outputs": []
+    },
     "test": {
       "dependsOn": ["^build"],
       "outputs": []

@@ -1,6 +1,14 @@
 type Category = { apiAlias: "category" };
 type LandingPage = { apiAlias: "landing_page" };
-type Product = { apiAlias: "product" };
+type Product = {
+  apiAlias: "product";
+  media?: {
+    thumbnails?: Array<{
+      width: number;
+      url: string;
+    }>;
+  };
+};
 type CmsPageResponse = {
   resourceType:
     | "frontend.navigation.page"

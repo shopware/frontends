@@ -50,12 +50,11 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
   const loadOrders = async (
     parameters: Schemas["Criteria"] = {},
   ): Promise<void> => {
-    const fetchedOrders = await apiClient.invoke(
-      "readOrder post /order",
-      parameters,
-    );
-    orders.value = fetchedOrders.orders.elements;
-    totalOrderItemsCount.value = fetchedOrders.orders.total!;
+    const fetchedOrders = await apiClient.invoke("readOrder post /order", {
+      body: parameters,
+    });
+    orders.value = fetchedOrders.data.orders.elements;
+    totalOrderItemsCount.value = fetchedOrders.data.orders.total!;
   };
 
   const changeCurrentPage = async (

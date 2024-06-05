@@ -1,21 +1,34 @@
 {
-  "include": [
-    "src/**/*"
-  ],
   "compilerOptions": {
-    "allowJs": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["vite/client", "./env.d.ts"],
+    "skipLibCheck": false,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Shopware config */
     "paths": {
-      "@/*": [
-        "./src/*" // set path `@/*` as alias of `src/*`
-      ]
+      "#imports": ["./imports.d.ts"],
+      "#shopware": ["./shopware.d.ts"],
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"]
     },
-    "esModuleInterop": true,
-    "lib": [
-      "esnext",
-      "DOM"
-    ],
-    "types": [
-      "vite/client"
-    ]
-  }
+    "rootDir": "."
+  },
+  "include": ["src/**/*", "./shopware.d.ts", "./imports.d.ts"]
 }

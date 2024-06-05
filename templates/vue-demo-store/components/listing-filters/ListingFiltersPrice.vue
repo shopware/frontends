@@ -33,9 +33,18 @@ let translations: Translations = {
   },
 };
 
+const route = useRoute();
+const minPrice = !isNaN(Number(route.query["min-price"]))
+  ? Number(route.query["min-price"])
+  : props.filter?.min || 0;
+
+const maxPrice = !isNaN(Number(route.query["max-price"]))
+  ? Number(route.query["max-price"])
+  : props.filter?.max || 0;
+
 const prices = reactive<{ min: number; max: number }>({
-  min: props.filter?.min || 0,
-  max: props.filter?.max || 0,
+  min: minPrice,
+  max: maxPrice,
 });
 
 const isFilterVisible = ref<boolean>(false);

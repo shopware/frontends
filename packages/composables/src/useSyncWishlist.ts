@@ -2,14 +2,14 @@ import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
 import { ApiClientError } from "@shopware/api-client";
-import type { RequestParameters } from "#shopware";
+import type { operations } from "#shopware";
 
 export type UseSyncWishlistReturn = {
   /**
    * Get products from wishlist
    */
   getWishlistProducts(
-    defaultPaginationCriteria?: RequestParameters<"searchPage">,
+    defaultSearchCriteria?: operations["searchPage post /search"]["body"],
   ): void;
   /**
    * Merge products with wishlist already existing in API wishlist
@@ -47,7 +47,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     await apiClient.invoke(
       "addProductOnWishlist post /customer/wishlist/add/{productId}",
       {
-        productId: id,
+        pathParams: { productId: id },
       },
     );
   }
@@ -56,7 +56,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     await apiClient.invoke(
       "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}",
       {
-        productId: id,
+        pathParams: { productId: id },
       },
     );
   }
@@ -66,17 +66,17 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
    * Only for logged-in users
    */
   async function getWishlistProducts(
-    defaultSearchCriteria?: RequestParameters<"searchPage">,
+    defaultSearchCriteria?: operations["searchPage post /search"]["body"],
   ) {
     try {
       const response = await apiClient.invoke(
         "readCustomerWishlist post /customer/wishlist",
-        { ...defaultSearchCriteria },
+        { body: defaultSearchCriteria },
       );
       _wishlistItems.value = [
-        ...response.products.elements.map((element) => element.id),
+        ...response.data.products.elements.map((element) => element.id),
       ];
-      totalWishlistItemsCount.value = response.products.total!;
+      totalWishlistItemsCount.value = response.data.products.total!;
     } catch (e) {
       if (e instanceof ApiClientError) {
         // If 404 ignore printing error and reset wishlist
@@ -90,7 +90,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     await apiClient.invoke(
       "mergeProductOnWishlist post /customer/wishlist/merge",
       {
-        productIds,
+        body: { productIds },
       },
     );
   }

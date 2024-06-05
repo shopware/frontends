@@ -69,7 +69,6 @@ export function useOrderPayment(
   async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
-    // paymentDetails?: unknown, // TODO: check if it's needed
   ): Promise<void | unknown> {
     if (!order.value) {
       return;
@@ -77,14 +76,15 @@ export function useOrderPayment(
     const resp = await apiClient.invoke(
       "handlePaymentMethod post /handle-payment",
       {
-        orderId: order.value.id,
-        errorUrl,
-        finishUrl,
-        // paymentDetails,
+        body: {
+          orderId: order.value.id,
+          errorUrl,
+          finishUrl,
+        },
       },
     );
 
-    paymentUrl.value = resp.redirectUrl;
+    paymentUrl.value = resp.data.redirectUrl;
 
     return resp;
   }
@@ -94,8 +94,10 @@ export function useOrderPayment(
       return;
     }
     await apiClient.invoke("orderSetPayment post /order/payment", {
-      orderId: order.value.id,
-      paymentMethodId,
+      body: {
+        orderId: order.value.id,
+        paymentMethodId,
+      },
     });
   }
 

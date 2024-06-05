@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import type { RequestParameters, Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 import defu from "defu";
 import { useRoute, useRouter } from "vue-router";
 import SwPagination from "../../../packages/cms-base/components/SwPagination.vue";
@@ -65,12 +65,12 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   isLoading.value = true;
 
   try {
-    const result = await apiClient.invoke("readProduct post /product", {
-      ids: itemIds || items.value,
+    const { data } = await apiClient.invoke("readProduct post /product", {
+      body: { ids: itemIds || items.value },
     });
 
-    if (result?.elements) {
-      products.value = result.elements;
+    if (data?.elements) {
+      products.value = data.elements;
     }
   } catch (error) {
     console.error("[wishlist][loadProductsByItemIds]", error);
@@ -90,9 +90,10 @@ const changeLimit = async (limit: Event) => {
     },
   });
   changeCurrentPage(defaultPage, {
+    search: route.query.search,
     limit: route.query.limit,
     p: route.query.p,
-  } as unknown as RequestParameters<"searchPage">);
+  } as unknown as operations["searchPage post /search"]["body"]);
 };
 
 const changePage = async (page: number) => {
@@ -105,7 +106,7 @@ const changePage = async (page: number) => {
   });
   await changeCurrentPage(
     page,
-    route.query as unknown as RequestParameters<"searchPage">,
+    route.query as unknown as operations["searchPage post /search"]["body"],
   );
 };
 

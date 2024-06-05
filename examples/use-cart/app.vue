@@ -113,13 +113,7 @@ onMounted(async () => {
             >
               {{ cartItem.label }}
 
-              <span v-if="cartItem.type == 'promotion'"
-                >(promotion
-                {{
-                  cartItem.priceDefinition?.percentage
-                    ? cartItem.priceDefinition?.percentage + "%"
-                    : ""
-                }})
+              <span v-if="cartItem.type == 'promotion'">
                 {{ getFormattedPrice(cartItem?.price?.totalPrice) }}
               </span>
               <div class="inline-flex items-center" v-else>

@@ -4,7 +4,7 @@
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
-import type { RequestParameters } from "#shopware";
+import type { operations } from "#shopware";
 
 export type UseWishlistReturn = {
   /**
@@ -30,7 +30,7 @@ export type UseWishlistReturn = {
    */
   changeCurrentPage(
     page: number,
-    query?: RequestParameters<"searchPage">,
+    query?: operations["searchPage post /search"]["body"],
   ): Promise<void>;
   /**
    * Current page number
@@ -79,7 +79,7 @@ export function useWishlist(): UseWishlistReturn {
         page: currentPage.value,
         limit: limit.value,
         p: currentPage.value,
-      } as unknown as RequestParameters<"searchPage">);
+      } as unknown as operations["searchPage post /search"]["body"]);
     } else {
       await getWishlistProductsLocal();
     }
@@ -87,7 +87,7 @@ export function useWishlist(): UseWishlistReturn {
 
   const changeCurrentPage = async (
     page: number,
-    query: RequestParameters<"searchPage">,
+    query: operations["searchPage post /search"]["body"],
   ) => {
     currentPage.value = page;
     if (query.limit) {
