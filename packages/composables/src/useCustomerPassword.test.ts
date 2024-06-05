@@ -16,8 +16,10 @@ describe("useCustomerPassword", () => {
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("sendRecoveryMail"),
       expect.objectContaining({
-        email: "test@test.test",
-        storefrontUrl: "http://test.test",
+        body: {
+          email: "test@test.test",
+          storefrontUrl: "http://test.test",
+        },
       }),
     );
   });
@@ -53,9 +55,11 @@ describe("useCustomerPassword", () => {
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("changePassword"),
       expect.objectContaining({
-        newPassword: "test",
-        newPasswordConfirm: "test",
-        password: "test",
+        body: {
+          newPassword: "test",
+          newPasswordConfirm: "test",
+          password: "test",
+        },
       }),
     );
   });

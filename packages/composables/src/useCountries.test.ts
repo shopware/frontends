@@ -7,7 +7,9 @@ describe("useCountries", () => {
   it("useCountries flow", async () => {
     const { vm, injections } = await useSetup(useCountries, {
       apiClient: {
-        invoke: vi.fn().mockResolvedValue(CountryMock),
+        invoke: vi.fn().mockResolvedValue({
+          data: CountryMock,
+        }),
       },
     });
     await vm.fetchCountries();
@@ -28,11 +30,13 @@ describe("useCountries", () => {
     const { vm } = await useSetup(useCountries, {
       apiClient: {
         invoke: vi.fn().mockResolvedValue({
-          elements: [
-            {
-              id: "test123",
-            },
-          ],
+          data: {
+            elements: [
+              {
+                id: "test123",
+              },
+            ],
+          },
         }),
       },
     });
@@ -47,7 +51,9 @@ describe("useCountries", () => {
     const { vm } = await useSetup(useCountries, {
       apiClient: {
         invoke: vi.fn().mockResolvedValue({
-          elements: null,
+          data: {
+            elements: null,
+          },
         }),
       },
     });
