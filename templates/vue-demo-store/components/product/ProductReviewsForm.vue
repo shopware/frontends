@@ -60,10 +60,14 @@ const invokeSend = async () => {
     await apiClient.invoke(
       "saveProductReview post /product/{productId}/review",
       {
-        productId: props.productId,
-        title: state.title,
-        content: state.review,
-        points: state.rating || 0,
+        pathParams: {
+          productId: props.productId,
+        },
+        body: {
+          title: state.title,
+          content: state.review,
+          points: state.rating || 0,
+        },
       },
     );
     reviewAdded.value = true;

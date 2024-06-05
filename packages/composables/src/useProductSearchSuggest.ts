@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useProductSearchListing } from "#imports";
-import type { Schemas, RequestParameters } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseProductSearchSuggestReturn = {
   /**
@@ -18,12 +18,14 @@ export type UseProductSearchSuggestReturn = {
    * @returns
    */
   search(
-    additionalCriteria?: Partial<RequestParameters<"searchPage">>,
+    additionalCriteria?: Partial<operations["searchPage post /search"]["body"]>,
   ): Promise<void>;
   /**
    * Loads more products for current search criteria
    */
-  loadMore(criteria: RequestParameters<"searchPage">): Promise<void>;
+  loadMore(
+    criteria: operations["searchPage post /search"]["body"],
+  ): Promise<void>;
   /**
    * Returns the product list found by the search
    */
@@ -45,15 +47,13 @@ export function useProductSearchSuggest(): UseProductSearchSuggestReturn {
   const listingComposable = useProductSearchListing();
 
   const search = async (
-    additionalCriteria = {} as RequestParameters<"searchPage">,
+    additionalCriteria = {} as operations["searchPage post /search"]["body"],
   ) => {
-    const searchCriteria: RequestParameters<"searchPage"> = {
+    const searchCriteria: operations["searchPage post /search"]["body"] = {
       ...additionalCriteria,
       search: searchTerm.value,
     };
-    return listingComposable.search(searchCriteria, {
-      preventRouteChange: true,
-    });
+    return listingComposable.search(searchCriteria);
   };
 
   return {

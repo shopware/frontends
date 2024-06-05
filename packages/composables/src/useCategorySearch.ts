@@ -40,16 +40,22 @@ export function useCategorySearch(): UseCategorySearchReturn {
     },
   ) {
     const associations = options?.withCmsAssociations ? cmsAssociations : {};
-    const result = apiClient.invoke(
-      "readCategory post /category/{navigationId}?slots sw-include-seo-urls",
+    const result = await apiClient.invoke(
+      "readCategory post /category/{navigationId}",
       {
-        navigationId: categoryId,
-        "sw-include-seo-urls": true,
-        associations,
-        ...options?.query,
+        pathParams: {
+          navigationId: categoryId,
+        },
+        headers: {
+          "sw-include-seo-urls": true,
+        },
+        body: {
+          associations,
+          ...options?.query,
+        },
       },
     );
-    return result;
+    return result.data;
   }
 
   async function advancedSearch(options: {
@@ -60,10 +66,12 @@ export function useCategorySearch(): UseCategorySearchReturn {
       ? cmsAssociations.associations
       : {};
     const result = await apiClient.invoke("readCategoryList post /category", {
-      associations,
-      ...options?.query,
+      body: {
+        associations,
+        ...options?.query,
+      },
     });
-    return result.elements ?? [];
+    return result.data.elements ?? [];
   }
 
   return {

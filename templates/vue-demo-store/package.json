@@ -3,14 +3,15 @@
   "version": "0.15.1",
   "private": true,
   "scripts": {
-    "dev": "nuxt dev",
-    "build": "nuxt build",
+    "dev": "nuxt prepare && nuxt dev",
+    "build": "nuxt prepare && nuxt build",
     "start": "nuxt start",
     "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
     "typecheck": "nuxt prepare && vue-tsc --noEmit",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "analyze": "nuxt analyze"
+    "analyze": "nuxt analyze",
+    "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
     "@shopware-pwa/cms-base": "canary",
@@ -19,25 +20,26 @@
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware-pwa/types": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "0.59.2",
+    "@unocss/nuxt": "0.60.4",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
-    "@vueuse/nuxt": "10.9.0",
+    "@vueuse/nuxt": "10.10.0",
     "defu": "6.1.4",
     "requrl": "3.0.2",
-    "sitemap": "7.1.1",
-    "vue": "3.4.21"
+    "sitemap": "8.0.0",
+    "vue": "3.4.27"
   },
   "devDependencies": {
-    "@iconify-json/carbon": "1.1.31",
-    "@nuxtjs/i18n": "8.1.1",
+    "@iconify-json/carbon": "1.1.34",
+    "@nuxtjs/i18n": "8.3.1",
+    "@shopware/api-gen": "canary",
     "@vue/eslint-config-typescript": "13.0.0",
     "eslint-plugin-prettier": "5.1.3",
     "eslint-plugin-vue": "9.24.1",
     "nuxt": "3.11.2",
     "typescript": "5.4.5",
-    "vue-eslint-parser": "9.4.2",
-    "vue-tsc": "2.0.13"
+    "vue-eslint-parser": "9.4.3",
+    "vue-tsc": "2.0.19"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"

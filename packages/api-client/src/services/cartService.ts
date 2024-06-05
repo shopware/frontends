@@ -3,7 +3,7 @@ import {
   getCheckoutCartLineItemEndpoint,
 } from "../endpoints";
 import { defaultInstance, ShopwareApiInstance } from "../apiService";
-import type { Cart, ContextTokenResponse, LineItem } from "@shopware-pwa/types";
+import type { Cart, LineItem } from "@shopware-pwa/types";
 
 /**
  * When no sw-context-token given then this method return an empty cart with the new sw-context-token.
@@ -22,7 +22,10 @@ import type { Cart, ContextTokenResponse, LineItem } from "@shopware-pwa/types";
  */
 export async function clearCart(
   contextInstance: ShopwareApiInstance = defaultInstance,
-): Promise<ContextTokenResponse> {
+): Promise<{
+  contextToken: string;
+  apiAlias: "array_struct";
+}> {
   const resp = await contextInstance.invoke.post(getCheckoutCartEndpoint());
   const contextToken = resp.data["sw-context-token"];
   return { contextToken, apiAlias: "array_struct" };

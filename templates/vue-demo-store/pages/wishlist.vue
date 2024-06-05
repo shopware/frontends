@@ -32,12 +32,12 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
   isLoading.value = true;
 
   try {
-    const result = await apiClient.invoke("readProduct post /product", {
-      ids: itemIds || items.value,
+    const { data } = await apiClient.invoke("readProduct post /product", {
+      body: { ids: itemIds || items.value },
     });
 
-    if (result?.elements) {
-      products.value = result.elements;
+    if (data?.elements) {
+      products.value = data.elements;
     }
   } catch (error) {
     console.error("[wishlist][loadProductsByItemIds]", error);

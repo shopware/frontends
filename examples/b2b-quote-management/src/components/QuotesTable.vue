@@ -2,8 +2,9 @@
 import { ref, onBeforeMount } from "vue";
 import { useB2bQuoteManagement, useUser } from "@shopware-pwa/composables-next";
 import Login from "./Login.vue";
+import type { Schemas } from "#shopware";
 
-const quotesList = ref([]);
+const quotesList = ref<Schemas["Quote"][]>([]);
 const { getQuoteList } = useB2bQuoteManagement();
 const { isLoggedIn } = useUser();
 

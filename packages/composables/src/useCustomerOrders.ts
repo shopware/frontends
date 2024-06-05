@@ -33,11 +33,10 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
   const loadOrders = async (
     parameters: Schemas["Criteria"] = {},
   ): Promise<void> => {
-    const fetchedOrders = await apiClient.invoke(
-      "readOrder post /order",
-      parameters,
-    );
-    orders.value = fetchedOrders.orders.elements;
+    const fetchedOrders = await apiClient.invoke("readOrder post /order", {
+      body: parameters,
+    });
+    orders.value = fetchedOrders.data.orders.elements;
   };
 
   const changeCurrentPage = async (pageNumber: number | string) =>

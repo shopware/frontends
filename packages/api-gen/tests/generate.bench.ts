@@ -1,7 +1,7 @@
 import { describe, bench, vi } from "vitest";
 import { generate } from "../src/commands/generate";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import testSchema from "./testSchema.json";
+import testSchema from "./api-types/testSchema.json";
 
 vi.mock("node:fs", async () => {
   return {
@@ -27,6 +27,8 @@ describe("api-gen - generate", () => {
     await generate({
       cwd: __dirname,
       filename: "testSchema.json",
+      apiType: "store",
+      debug: false,
     });
   });
 });

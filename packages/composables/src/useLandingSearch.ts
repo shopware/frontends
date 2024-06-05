@@ -1,6 +1,6 @@
 import { useShopwareContext } from "#imports";
 import { cmsAssociations } from "./cms/cmsAssociations";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseLandingSearchReturn = {
   /**
@@ -36,15 +36,20 @@ export function useLandingSearch(): {
       withCmsAssociations?: boolean;
     },
   ) => {
-    const associations = options?.withCmsAssociations && cmsAssociations;
+    const associations: operations["readLandingPage post /landing-page/{landingPageId}"]["body"]["associations"] =
+      options?.withCmsAssociations ? cmsAssociations : {};
     const result = await apiClient.invoke(
       "readLandingPage post /landing-page/{landingPageId}",
       {
-        landingPageId: navigationId,
-        ...associations,
+        pathParams: {
+          landingPageId: navigationId,
+        },
+        body: {
+          associations,
+        },
       },
     );
-    return result;
+    return result.data;
   };
 
   return {

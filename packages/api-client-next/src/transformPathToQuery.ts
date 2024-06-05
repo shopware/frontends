@@ -17,14 +17,8 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
   const [requestPath, queryParams] = pathDefinition.split("?");
 
   // get names in brackets
-  const pathParams: string[] =
-    requestPath
-      .match(/{[^}]+}/g)
-      //remove brackets
-      ?.map((param) => param.substring(1, param.length - 1)) || [];
-  const requestPathWithParams = pathParams.reduce((acc, paramName) => {
-    return acc.replace(`{${paramName}}`, params[paramName] as string);
-  }, requestPath);
+  const pathParams: string[] = getPathParams(pathDefinition);
+  const requestPathWithParams = createPathWithParams(requestPath, params);
 
   const queryParamNames = queryParams?.split(",") || [];
 
@@ -79,4 +73,23 @@ export function transformPathToQuery<T extends Record<string, unknown>>(
   }
 
   return [requestPathWithParams, returnOptions];
+}
+
+export function getPathParams(path: string): string[] {
+  const [requestPath] = path.split(" ");
+  const pathParams: string[] =
+    requestPath
+      .match(/{[^}]+}/g)
+      //remove brackets
+      ?.map((param) => param.substring(1, param.length - 1)) || [];
+  return pathParams;
+}
+
+export function createPathWithParams<T extends Record<string, unknown>>(
+  requestPath: string,
+  pathParams: T,
+): string {
+  return Object.keys(pathParams || {}).reduce((acc, paramName) => {
+    return acc.replace(`{${paramName}}`, pathParams[paramName] as string);
+  }, requestPath);
 }

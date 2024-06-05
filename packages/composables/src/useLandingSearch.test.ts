@@ -6,13 +6,13 @@ import { useSetup } from "./_test";
 describe("useLandingSearch", () => {
   it("mergeWishlistProducts", async () => {
     const { vm, injections } = useSetup(useLandingSearch);
-    injections.apiClient.invoke.mockResolvedValue(LandingPageMock);
+    injections.apiClient.invoke.mockResolvedValue({ data: LandingPageMock });
 
     const result = vm.search("test");
 
     expect(injections.apiClient.invoke).toBeCalledWith(
       expect.stringContaining("readLandingPage"),
-      expect.objectContaining({ landingPageId: "test" }),
+      expect.objectContaining({ pathParams: { landingPageId: "test" } }),
     );
     expect(result).resolves.toStrictEqual(LandingPageMock);
   });

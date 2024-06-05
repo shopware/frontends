@@ -1,10 +1,10 @@
-import { PaymentMethod } from "../models/checkout/payment/PaymentMethod";
-import { ShippingMethod } from "../models/checkout/shipping/ShippingMethod";
+// import { PaymentMethod } from "../models/checkout/payment/PaymentMethod";
+// import { ShippingMethod } from "../models/checkout/shipping/ShippingMethod";
 // import { ShippingAddress } from "../models/checkout/customer/ShippingAddress";
-import { Country } from "../models/system/country/Country";
+// import { Country } from "../models/system/country/Country";
 import { Currency } from "../models/system/currency/Currency";
 import { Language } from "../models/framework/language/Language";
-import { Category } from "../models/content/category/Category";
+// import { Category } from "../models/content/category/Category";
 // import { Customer } from "../models/checkout/customer/Customer";
 import { CustomFields } from "../models/common/CustomField";
 import type { Schemas } from "#shopware";
@@ -15,9 +15,9 @@ import type { Schemas } from "#shopware";
 //   redirectUrl?: string;
 // };
 /**
- * @deprecated use {@link Schemas['ContextTokenResponse']} from "#shopware" import instead
+ * @deprecated use {@link Schemas['SalesChannelContext']} from "#shopware" import instead
  */
-export type ContextTokenResponse = Schemas["ContextTokenResponse"];
+export type ContextTokenResponse = Schemas["SalesChannelContext"];
 
 export type SalesChannelDomain = {
   extensions: unknown;
@@ -38,52 +38,6 @@ export type SalesChannelDomain = {
   id: string;
   customFields: CustomFields;
   apiAlias: "sales_channel_domain";
-};
-
-export type SalesChannel = {
-  extensions: unknown;
-  _uniqueIdentifier: string;
-  versionId: null | string;
-  translated: {
-    [key: string]: string;
-  };
-  createdAt: string;
-  updatedAt: Date | string | null;
-  languageId: string;
-  currencyId: string;
-  paymentMethodId: string;
-  shippingMethodId: string;
-  countryId: string;
-  navigationCategoryId: string;
-  navigationCategoryVersionId: null | string;
-  navigationCategoryDepth: number;
-  footerCategoryId: null | string;
-  footerCategoryVersionId: null | string;
-  serviceCategoryId: null | string;
-  serviceCategoryVersionId: null | string;
-  name: string;
-  shortName: null | string;
-  configuration: unknown;
-  active: boolean;
-  maintenance: boolean;
-  taxCalculationType: "horizontal" | "vertical";
-  currency: Currency;
-  language: null | Language;
-  paymentMethod: null | PaymentMethod;
-  shippingMethod: null | ShippingMethod;
-  country: null | Country;
-  domains: SalesChannelDomain[];
-  navigationCategory: null | Category;
-  footerCategory: null | Category;
-  serviceCategory: null | Category;
-  mailHeaderFooterId: null | string;
-  customerGroupId: null | string;
-  hreflangActive: boolean;
-  hreflangDefaultDomainId: null | string;
-  hreflangDefaultDomain: null | SalesChannelDomain;
-  id: string;
-  customFields: null | CustomFields;
-  apiAlias: "sales_channel";
 };
 
 /**
