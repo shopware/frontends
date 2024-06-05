@@ -6,7 +6,7 @@ import { useSetup } from "./_test";
 describe("useNavigation", () => {
   it("should set the menu", async () => {
     const { vm, injections } = useSetup(useNavigation);
-    injections.apiClient.invoke.mockResolvedValue(Menu);
+    injections.apiClient.invoke.mockResolvedValue({ data: Menu });
 
     await vm.loadNavigationElements({
       depth: 3,

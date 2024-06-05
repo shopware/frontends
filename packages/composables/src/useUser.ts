@@ -8,7 +8,7 @@ import {
   useContext,
 } from "#imports";
 import { syncRefs } from "@vueuse/core";
-import type { RequestParameters, Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseUserReturn = {
   /**
@@ -23,7 +23,12 @@ export type UseUserReturn = {
    * @param params {@link CustomerRegistrationParams}
    * @returns {@link Customer} object on success
    */
-  register(params: RequestParameters<"register">): Promise<Schemas["Customer"]>;
+  register(
+    params: Omit<
+      operations["register post /account/register"]["body"],
+      "storefrontUrl"
+    >,
+  ): Promise<Schemas["Customer"]>;
   /**
    * Whole {@link Customer} object
    */
@@ -78,14 +83,16 @@ export type UseUserReturn = {
    * @returns
    */
   updatePersonalInfo(
-    personals: RequestParameters<"changeProfile">,
+    personals: operations["changeProfile post /account/change-profile"]["body"],
   ): Promise<void>;
   /**
    * Updates the user email
    * @param updateEmailData - {@link RequestParameters<'changeEmail'>}
    * @returns
    */
-  updateEmail(updateEmailData: RequestParameters<"changeEmail">): Promise<void>;
+  updateEmail(
+    updateEmailData: operations["changeEmail post /account/change-email"]["body"],
+  ): Promise<void>;
   /**
    * Sets the default payment method for given id
    * @param paymentMethodId
@@ -146,23 +153,30 @@ export function useUser(): UseUserReturn {
     password: string;
   }): Promise<void> {
     await apiClient.invoke("loginCustomer post /account/login", {
-      username,
-      password,
+      body: {
+        username,
+        password,
+      },
     });
     await refreshSessionContext();
     refreshCart();
   }
 
   async function register(
-    params: RequestParameters<"register">,
+    params: Omit<
+      operations["register post /account/register"]["body"],
+      "storefrontUrl"
+    >,
   ): Promise<Schemas["Customer"]> {
-    const customer = await apiClient.invoke("register post /account/register", {
-      ...params,
-      storefrontUrl: getStorefrontUrl(),
+    const { data } = await apiClient.invoke("register post /account/register", {
+      body: {
+        ...params,
+        storefrontUrl: getStorefrontUrl(),
+      },
     });
-    _user.value = customer;
+    _user.value = data;
     if (_user.value?.active) await refreshSessionContext();
-    return customer;
+    return data;
   }
 
   async function logout(): Promise<void> {
@@ -173,11 +187,11 @@ export function useUser(): UseUserReturn {
 
   async function refreshUser(params: Schemas["Criteria"] = {}): Promise<void> {
     try {
-      const user = await apiClient.invoke(
+      const response = await apiClient.invoke(
         "readCustomer post /account/customer",
-        params,
+        { body: params },
       );
-      _user.value = user;
+      _user.value = response.data;
     } catch (e) {
       _user.value = undefined;
       console.error("[useUser][refreshUser]", e);
@@ -186,50 +200,52 @@ export function useUser(): UseUserReturn {
 
   async function loadCountry(countryId: string): Promise<void> {
     const countries = await apiClient.invoke("readCountry post /country", {
-      filter: [
-        {
-          field: "id",
-          type: "equals",
-          value: countryId,
-        },
-      ],
+      body: {
+        filter: [
+          {
+            field: "id",
+            type: "equals",
+            value: countryId,
+          },
+        ],
+      },
     });
 
-    country.value = countries.elements?.[0] ?? null;
+    country.value = countries.data.elements?.[0] ?? null;
   }
 
   async function loadSalutation(salutationId: string): Promise<void> {
     const salutations = await apiClient.invoke(
       "readSalutation post /salutation",
       {
-        filter: [
-          {
-            field: "id",
-            type: "equals",
-            value: salutationId,
-          },
-        ],
+        body: {
+          filter: [
+            {
+              field: "id",
+              type: "equals",
+              value: salutationId,
+            },
+          ],
+        },
       },
     );
-    salutation.value = salutations.elements?.[0] ?? null;
+    salutation.value = salutations.data.elements?.[0] ?? null;
   }
 
   async function updatePersonalInfo(
-    personals: RequestParameters<"changeProfile">,
+    personals: operations["changeProfile post /account/change-profile"]["body"],
   ): Promise<void> {
-    await apiClient.invoke(
-      "changeProfile post /account/change-profile",
-      personals,
-    );
+    await apiClient.invoke("changeProfile post /account/change-profile", {
+      body: personals,
+    });
   }
 
   async function updateEmail(
-    updateEmailData: RequestParameters<"changeEmail">,
+    updateEmailData: operations["changeEmail post /account/change-email"]["body"],
   ): Promise<void> {
-    await apiClient.invoke(
-      "changeEmail post /account/change-email",
-      updateEmailData,
-    );
+    await apiClient.invoke("changeEmail post /account/change-email", {
+      body: updateEmailData,
+    });
   }
 
   async function setDefaultPaymentMethod(
@@ -238,7 +254,7 @@ export function useUser(): UseUserReturn {
     await apiClient.invoke(
       "changePaymentMethod post /account/change-payment-method/{paymentMethodId}",
       {
-        paymentMethodId,
+        pathParams: { paymentMethodId },
       },
     );
   }

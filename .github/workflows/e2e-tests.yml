@@ -8,6 +8,9 @@ jobs:
     name: Playwright testing deployment ${{ github.event.deployment_status.target_url }}
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && !contains(github.event.deployment_status.target_url, 'frontends-docs')
     runs-on: macos-14
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4

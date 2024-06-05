@@ -5,7 +5,7 @@ import {
   useProductPrice,
   useCart,
   useProduct,
-} from "@shopware-pwa/composables-next/dist";
+} from "@shopware-pwa/composables-next";
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
 
 import ProductCustomizedProductConfigurator from "@/components/ProductCustomizedProductConfigurator.vue";

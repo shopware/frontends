@@ -1,0 +1,56 @@
+{
+  "myRequestWithOptionalParams get /customer/wishlist/{productId}": {
+    "body": [],
+    "headers": " {
+        /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+        "sw-include-seo-urls"?: boolean;
+      };",
+    "headersOptional": true,
+    "operationId": "myRequestWithOptionalParams",
+    "pathParams": " {
+        /** Identifier of the product to be added. */
+        productId: string;
+      };",
+    "query": " {
+        /** A list of product identifiers. */
+        ids?: string[];
+      };",
+    "queryOptional": true,
+    "responses": [
+      {
+        "code": " {
+            success: boolean;
+          };",
+        "contentType": "application/json",
+        "responseCode": 200,
+      },
+    ],
+  },
+  "myRequestWithParams post /customer/wishlist/{productId}": {
+    "body": [],
+    "headers": " {
+        /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+        "sw-include-seo-urls"?: boolean;
+      };",
+    "headersOptional": true,
+    "operationId": "myRequestWithParams",
+    "pathParams": " {
+        /** Identifier of the product to be added. */
+        productId: string;
+      };",
+    "query": " {
+        /** A list of product identifiers. */
+        ids: string[];
+      };",
+    "queryOptional": false,
+    "responses": [
+      {
+        "code": " {
+            success: boolean;
+          };",
+        "contentType": "application/json",
+        "responseCode": 200,
+      },
+    ],
+  },
+}

@@ -47,11 +47,12 @@
     "metadata",
     "src",
     "composables",
-    "nuxt.config.ts"
+    "nuxt.config.ts",
+    "types"
   ],
   "scripts": {
     "build": "unbuild && pnpm build:types",
-    "build:types": "npx -p typescript tsc --project tsconfig.build.json",
+    "build:types": "npx -p typescript tsc",
     "dev": "unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
     "typecheck": "tsc --noEmit",

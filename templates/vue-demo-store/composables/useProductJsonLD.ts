@@ -1,4 +1,4 @@
-import type { components } from "@shopware/api-client/api-types";
+import type { Schemas } from "#shopware";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import { defu } from "defu";
 
@@ -7,7 +7,7 @@ type JsonLDObject = { [key: string]: JsonLDValue };
 type JsonLDValue = string | number | JsonLDObject | JsonLDValue[];
 
 export function useProductJsonLD(
-  product: components["schemas"]["Product"],
+  product: Schemas["Product"],
   additionalData: JsonLDObject = {},
 ): UseProductJsonLD {
   const { currencyCode } = usePrice();

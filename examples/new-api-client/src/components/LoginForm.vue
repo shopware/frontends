@@ -7,8 +7,10 @@ const password = ref("");
 
 const login = async () => {
   const session = await apiClient.invoke("loginCustomer post /account/login", {
-    username: username.value,
-    password: password.value,
+    body: {
+      username: username.value,
+      password: password.value,
+    },
   });
   console.log(session);
 };

@@ -1,10 +1,11 @@
 import type { CmsPageEntity } from "@shopware-pwa/types";
 import {
   getCategoryImageUrl,
-  getProductThumbnailUrl,
+  getSmallestThumbnailUrl,
   isLandingPage,
   isProduct,
 } from "@shopware-pwa/helpers-next";
+import type { Schemas } from "#shopware";
 
 export type UseCmsHeadReturn = void;
 
@@ -50,8 +51,8 @@ export function useCmsHead(
     return {
       name: "og:image",
       content: isProduct(unrefEntity)
-        ? getProductThumbnailUrl(unrefEntity)
-        : getCategoryImageUrl(unrefEntity),
+        ? getSmallestThumbnailUrl(unrefEntity.media)
+        : getCategoryImageUrl(unrefEntity as Schemas["Category"]),
     };
   });
 

@@ -1,8 +1,8 @@
-import { RequestParameters, createAPIClient } from "@shopware/api-client";
-import type { operationPaths, operations } from "#shopware";
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "#shopware";
 import Cookies from "js-cookie";
 
-export const apiClient = createAPIClient<operations, operationPaths>({
+export const apiClient = createAPIClient<operations>({
   baseURL: "https://demo-frontends.shopware.store/store-api",
   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   contextToken: Cookies.get("sw-context-token"),
@@ -17,11 +17,18 @@ export const apiClient = createAPIClient<operations, operationPaths>({
 });
 
 // predefine navigation loading method with depth settings
-export const readNavigation = (params: RequestParameters<"readNavigation">) =>
-  apiClient.invoke(
-    "readNavigation post /navigation/{activeId}/{rootId} sw-include-seo-urls",
-    {
+export const readNavigation = (
+  activeId: string,
+  rootId: string,
+  params: operations["readNavigation post /navigation/{activeId}/{rootId}"]["body"],
+) =>
+  apiClient.invoke("readNavigation post /navigation/{activeId}/{rootId}", {
+    pathParams: {
+      activeId,
+      rootId,
+    },
+    body: {
       depth: 2,
       ...params,
     },
-  );
+  });

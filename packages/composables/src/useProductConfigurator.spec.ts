@@ -26,7 +26,9 @@ describe("useProductConfigurator", () => {
   it("findVariantForSelectedOptions", async () => {
     const { vm, injections } = useSetup(useProductConfigurator);
     injections.apiClient.invoke.mockResolvedValue({
-      elements: [mockedProduct],
+      data: {
+        elements: [mockedProduct],
+      },
     });
 
     expect(

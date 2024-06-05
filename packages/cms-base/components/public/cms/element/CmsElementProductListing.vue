@@ -7,7 +7,7 @@ import { useCategoryListing } from "#imports";
 import { computed, ref, watch } from "vue";
 import { defu } from "defu";
 import { useRoute, useRouter } from "vue-router";
-import type { RequestParameters, Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{
   content: CmsElementProductListing;
@@ -68,7 +68,7 @@ watch(
       limit: defaultLimit,
       p: defaultPage,
       order: defaultOrder,
-    } as unknown as RequestParameters<"searchPage">);
+    } as unknown as operations["searchPage post /search"]["body"]);
   },
   { deep: true },
 );
@@ -83,7 +83,7 @@ const changePage = async (page: number) => {
   });
   await changeCurrentPage(
     page,
-    route.query as unknown as RequestParameters<"searchPage">,
+    route.query as unknown as operations["searchPage post /search"]["body"],
   );
 };
 
@@ -99,7 +99,7 @@ const changeLimit = async (limit: Event) => {
   });
   await changeCurrentPage(
     defaultPage,
-    route.query as unknown as RequestParameters<"searchPage">,
+    route.query as unknown as operations["searchPage post /search"]["body"],
   );
 };
 
@@ -139,7 +139,7 @@ const compareRouteQueryWithInitialListing = async () => {
     limit.value = limitQuery;
     await changeCurrentPage(
       pageQuery,
-      newQuery as unknown as RequestParameters<"searchPage">,
+      newQuery as unknown as operations["searchPage post /search"]["body"],
     );
   }
 };
