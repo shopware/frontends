@@ -51,7 +51,7 @@ const createFiltersFromRoute = () => {
       if (key === "properties") {
         filters.push({
           type: "equalsAny",
-          field: "optionIds",
+          field: "propertyIds",
           value: value,
         });
       }
@@ -148,6 +148,17 @@ const loadProducts = async (cacheKey: string) => {
             field: "parentId",
           },
         },
+        {
+          name: "property_ids_counter",
+          type: "terms",
+          field: "propertyIds",
+          /* this can be slow for large datasets, we have an internal task to ignore childs in the aggregation (terms_without_children), after that this can be removed, just here for showcase **/
+          aggregation: {
+            name: "parent_childs",
+            type: "terms",
+            field: "parentId",
+          },
+        },
       ],
     });
     return getCurrentListing.value;
@@ -232,7 +243,7 @@ type FilterAndAggregations = {
   apiAlias: string;
 };
 
-const addCountToFilterOptions = (
+const addCountToFilter = (
   filter: FilterAndAggregations,
   aggregation: FilterAndAggregations,
 ) => {
@@ -297,8 +308,11 @@ const addCountsToFilter = () => {
             }
           }
           if (filter.code === "properties") {
-            if (value[0] === "option_ids_counter") {
-              addCountToFilterOptions(filter, aggregation);
+            if (
+              value[0] === "option_ids_counter" ||
+              value[0] === "property_ids_counter"
+            ) {
+              addCountToFilter(filter, aggregation);
             }
           }
         }
