@@ -1,11 +1,3 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
-  "include": [
-    ".nuxt/**/*.ts",
-    "*.ts",
-    "*.vue",
-    "**/*.d.ts",
-    "**/*.vue",
-    "shopware.d.ts"
-  ]
+  "extends": "./.nuxt/tsconfig.json"
 }

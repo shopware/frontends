@@ -11,10 +11,10 @@ const { data: registrationResponse } = await useAsyncData(
     const response = await apiClient.invoke(
       "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}",
       {
-        customerGroupId: props.navigationId,
+        pathParams: { customerGroupId: props.navigationId },
       },
     );
-    return response || {};
+    return response.data || {};
   },
 );
 </script>

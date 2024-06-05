@@ -40,16 +40,18 @@ export function useNavigationSearch(): UseNavigationSearchReturn {
     // console.error("looking for path", normalizedPath);
 
     const seoResult = await apiClient.invoke("readSeoUrl post /seo-url", {
-      filter: [
-        {
-          type: "equals",
-          field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
-          value: normalizedPath,
-        },
-      ],
+      body: {
+        filter: [
+          {
+            type: "equals",
+            field: isTechnicalUrl ? "pathInfo" : "seoPathInfo",
+            value: normalizedPath,
+          },
+        ],
+      },
     });
 
-    return seoResult.elements?.[0];
+    return seoResult.data.elements?.[0];
   }
 
   return {

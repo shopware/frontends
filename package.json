@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "bump": "changeset version",
+    "postinstall": "pnpm run build --filter='./packages/*'",
     "changeset": "changeset",
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
@@ -24,6 +25,7 @@
     "versionReadme": "pnpx ts-node scripts/addChangelogBodyToReadmeFile.ts",
     "taze": "taze major -wr",
     "prepare": "husky",
+    "generate-types": "turbo run generate-types",
     "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts"
   },
   "devDependencies": {
@@ -54,7 +56,7 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@8.15.7",
+  "packageManager": "pnpm@9.1.4",
   "pnpm": {
     "overrides": {
       "@antfu/utils": "^0.7.7",

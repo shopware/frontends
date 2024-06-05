@@ -52,16 +52,22 @@ export function useNavigation(params?: {
   async function loadNavigationElements({ depth }: { depth: number }) {
     try {
       const navigationResponse = await apiClient.invoke(
-        "readNavigation post /navigation/{activeId}/{rootId} sw-include-seo-urls",
+        "readNavigation post /navigation/{activeId}/{rootId}",
         {
-          activeId: type,
-          rootId: type,
-          depth,
-          "sw-include-seo-urls": true,
+          headers: {
+            "sw-include-seo-urls": true,
+          },
+          pathParams: {
+            activeId: type,
+            rootId: type,
+          },
+          body: {
+            depth,
+          },
         },
       );
 
-      sharedElements.value = navigationResponse || [];
+      sharedElements.value = navigationResponse.data || [];
       return sharedElements.value;
     } catch (e) {
       sharedElements.value = [];

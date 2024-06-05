@@ -36,7 +36,11 @@ import { extractContextToken } from "../helpers/context";
 async function updateContext(
   params: UpdateContextParams,
   contextInstance: ShopwareApiInstance,
-): Promise<ContextTokenResponse> {
+): Promise<{
+  contextToken: string;
+  redirectUrl?: string;
+  apiAlias: "array_struct";
+}> {
   const resp = await contextInstance.invoke.patch(getContextEndpoint(), params);
   const contextToken = extractContextToken(resp);
   return {

@@ -1,27 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import {
-  useAddToCart,
-  usePrice,
-  useProductPrice,
-  useProductSearch,
-  useCart,
-  useProduct,
-} from "@shopware-pwa/composables-next/dist";
+import { useProductSearch, useCart } from "@shopware-pwa/composables-next";
 import ProductBox from "@/components/ProductBox.vue";
 
 const product = ref();
 
 const { search } = useProductSearch();
-const { addToCart } = useAddToCart(product);
 const { removeItem, cartItems, count, refreshCart } = useCart();
-const { getFormattedPrice } = usePrice();
-const { unitPrice } = useProductPrice(product);
-
-const proxyAddToCart = async () => {
-  await addToCart();
-  refreshCart();
-};
 
 onMounted(async () => {
   refreshCart();

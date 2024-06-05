@@ -44,11 +44,11 @@ export function useProductReviews(
     const fetchedReviews = await apiClient.invoke(
       "readProductReviews post /product/{productId}/reviews",
       {
-        productId: product.value.id,
-        ...parameters,
+        pathParams: { productId: product.value.id },
+        body: parameters,
       },
     );
-    productReviews.value = fetchedReviews.elements ?? [];
+    productReviews.value = fetchedReviews.data.elements ?? [];
   };
 
   const addReview = async (data: {
@@ -59,8 +59,8 @@ export function useProductReviews(
     await apiClient.invoke(
       "saveProductReview post /product/{productId}/review",
       {
-        productId: product.value.id,
-        ...data,
+        pathParams: { productId: product.value.id },
+        body: data,
       },
     );
   };

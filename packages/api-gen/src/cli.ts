@@ -30,8 +30,18 @@ yargs(hideBin(process.argv))
       return commonOptions(args)
         .positional("filename", {
           type: "string",
-          default: "apiSchema.json",
-          describe: "name of the file to generate type from",
+          describe:
+            "name of the file to generate type from. The default (based on apiType parameter) is 'storeApiSchema.json' or 'adminApiSchema.json'",
+        })
+        .option("apiType", {
+          choices: ["store", "admin"] as const,
+          demandOption: true,
+          describe: "type of the generated API. Values: store, admin",
+        })
+        .positional("debug", {
+          type: "boolean",
+          default: false,
+          describe: "show debug information and generate intermediate files",
         })
         .help();
     },
@@ -50,8 +60,8 @@ yargs(hideBin(process.argv))
         })
         .positional("filename", {
           type: "string",
-          default: "apiSchema.json",
-          describe: "name of the file to save schema",
+          describe:
+            "name of the file to save schema. The default (based on apiType parameter) is 'storeApiSchema.json' or 'adminApiSchema.json'",
         })
         .help();
     },

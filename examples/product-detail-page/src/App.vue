@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { useProductSearch } from "@shopware-pwa/composables-next/dist";
-import type { Product } from "@shopware-pwa/types";
+import { useProductSearch } from "@shopware-pwa/composables-next";
 import ProductView from "@/components/ProductView.vue";
+import type { Schemas } from "#shopware";
 
 const { search } = useProductSearch();
 
-const product = ref<Product>();
+const product = ref<Schemas["Product"]>();
 onMounted(async () => {
   const productResponse = await search("b2e974a54f8a48949a6397c72d2bffb5", {
     criteria: {
