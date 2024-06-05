@@ -12,13 +12,13 @@ import type { Listener } from "listhen";
 import { createApp, eventHandler, toNodeListener, readBody } from "h3";
 import type { App } from "h3";
 import { createAdminAPIClient } from ".";
-import type { operationPaths, operations } from "../admin-api-types";
+import type { operations } from "../api-types/adminApiTypes";
 
 describe("createAdminAPIClient - credentials", () => {
   const listeners: Listener[] = [];
   const consoleWarnSpy = vi.spyOn(console, "warn");
-  const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
-  const orderEndpointSpy = vi.fn().mockImplementation((param: string) => {});
+  const authEndpointSpy = vi.fn().mockImplementation(() => {});
+  const orderEndpointSpy = vi.fn().mockImplementation(() => {});
   let baseURL: string;
 
   async function createPortAndGetUrl(appToCreate: App) {
@@ -40,7 +40,7 @@ describe("createAdminAPIClient - credentials", () => {
     const app = createApp()
       .use(
         "/order",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           orderEndpointSpy();
           return {
             orderResponse: 123,
@@ -73,10 +73,10 @@ describe("createAdminAPIClient - credentials", () => {
   });
 
   it("should display warning before calling /oauth/token endpoint if neither credentials nor sessionData are passed", async () => {
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
     });
-    await client.invoke("getOrderList get /order?limit,page,query", {});
+    await client.invoke("getOrderList get /order");
 
     expect(consoleWarnSpy).toHaveBeenLastCalledWith(
       "[ApiClientWarning] No `credentials` or `sessionData` provided. Provide at least one of them to ensure authentication.",
@@ -89,7 +89,7 @@ describe("createAdminAPIClient - credentials", () => {
   });
 
   it("should use credentials when no session data available", async () => {
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
         grant_type: "password",
@@ -99,7 +99,7 @@ describe("createAdminAPIClient - credentials", () => {
         scopes: "write",
       },
     });
-    await client.invoke("getOrderList get /order?limit,page,query", {});
+    await client.invoke("getOrderList get /order");
 
     expect(consoleWarnSpy).not.toHaveBeenCalled();
     expect(authEndpointSpy).toHaveBeenCalledWith({
@@ -112,7 +112,7 @@ describe("createAdminAPIClient - credentials", () => {
   });
 
   it("should use token credentials when no session data available", async () => {
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
         grant_type: "client_credentials",
@@ -120,7 +120,7 @@ describe("createAdminAPIClient - credentials", () => {
         client_secret: "secret",
       },
     });
-    await client.invoke("getOrderList get /order?limit,page,query", {});
+    await client.invoke("getOrderList get /order");
 
     expect(consoleWarnSpy).not.toHaveBeenCalled();
     expect(authEndpointSpy).toHaveBeenCalledWith({
@@ -131,7 +131,7 @@ describe("createAdminAPIClient - credentials", () => {
   });
 
   it("should not use credentials when sessionData is available with refresh_token", async () => {
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
         grant_type: "password",
@@ -146,7 +146,7 @@ describe("createAdminAPIClient - credentials", () => {
         expirationTime: 0,
       },
     });
-    await client.invoke("getOrderList get /order?limit,page,query", {});
+    await client.invoke("getOrderList get /order");
 
     expect(consoleWarnSpy).not.toHaveBeenCalled();
     expect(authEndpointSpy).toHaveBeenCalledWith({
@@ -157,7 +157,7 @@ describe("createAdminAPIClient - credentials", () => {
   });
 
   it("should use credentials when it's token-based authentication and session expired", async () => {
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
         grant_type: "client_credentials",
@@ -169,7 +169,7 @@ describe("createAdminAPIClient - credentials", () => {
         expirationTime: 0,
       },
     });
-    await client.invoke("getOrderList get /order?limit,page,query", {});
+    await client.invoke("getOrderList get /order");
 
     expect(consoleWarnSpy).not.toHaveBeenCalled();
     expect(authEndpointSpy).toHaveBeenCalledWith({

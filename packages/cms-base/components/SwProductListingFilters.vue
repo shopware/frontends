@@ -11,7 +11,7 @@ import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { useCategoryListing } from "#imports";
 import { onClickOutside } from "@vueuse/core";
 import { useRoute, useRouter } from "vue-router";
-import type { RequestParameters } from "#shopware";
+import type { operations } from "#shopware";
 
 const props = defineProps<{
   content: CmsElementProductListing | CmsElementSidebarFilter;
@@ -82,20 +82,21 @@ const showResetFiltersButton = computed<boolean>(() => {
   return false;
 });
 
-const searchCriteriaForRequest: ComputedRef<RequestParameters<"searchPage">> =
-  computed(() => ({
-    // turn Set to array and then into string with | separator
-    manufacturer: [...sidebarSelectedFilters.manufacturer]?.join("|"),
-    // turn Set to array and then into string with | separator
-    properties: [...sidebarSelectedFilters.properties]?.join("|"),
-    "min-price": sidebarSelectedFilters["min-price"],
-    "max-price": sidebarSelectedFilters["max-price"],
-    order: getCurrentSortingOrder.value,
-    "shipping-free": sidebarSelectedFilters["shipping-free"],
-    rating: sidebarSelectedFilters["rating"],
-    search: "",
-    limit: route.query.limit ? Number(route.query.limit) : 15,
-  }));
+const searchCriteriaForRequest: ComputedRef<
+  operations["searchPage post /search"]["body"]
+> = computed(() => ({
+  // turn Set to array and then into string with | separator
+  manufacturer: [...sidebarSelectedFilters.manufacturer]?.join("|"),
+  // turn Set to array and then into string with | separator
+  properties: [...sidebarSelectedFilters.properties]?.join("|"),
+  "min-price": sidebarSelectedFilters["min-price"],
+  "max-price": sidebarSelectedFilters["max-price"],
+  order: getCurrentSortingOrder.value,
+  "shipping-free": sidebarSelectedFilters["shipping-free"],
+  rating: sidebarSelectedFilters["rating"],
+  search: "",
+  limit: route.query.limit ? Number(route.query.limit) : 15,
+}));
 
 for (const param in route.query) {
   if (sidebarSelectedFilters.hasOwnProperty(param)) {
@@ -163,7 +164,7 @@ const currentSortingOrder = computed({
     });
 
     await changeCurrentSortingOrder(order, {
-      ...(route.query as unknown as RequestParameters<"searchPage">),
+      ...(route.query as unknown as operations["searchPage post /search"]["body"]),
       limit: route.query.limit ? Number(route.query.limit) : 15,
     });
   },

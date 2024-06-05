@@ -24,7 +24,8 @@
     "dist"
   ],
   "bin": {
-    "api-gen": "bin/api-gen.mjs"
+    "api-gen": "bin/api-gen.mjs",
+    "shopware-api-gen": "bin/api-gen.mjs"
   },
   "scripts": {
     "build": "unbuild",
@@ -32,19 +33,19 @@
     "dev": "export NODE_ENV=development && unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --typecheck",
     "test:bench": "vitest bench",
-    "test:watch": "vitest"
+    "test:watch": "vitest --typecheck"
   },
   "devDependencies": {
     "@types/prettier": "3.0.0",
     "@types/yargs": "17.0.32",
-    "@vitest/coverage-v8": "1.5.0",
+    "@vitest/coverage-v8": "1.6.0",
     "eslint-config-shopware": "workspace:*",
     "picocolors": "1.0.0",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "1.5.0"
+    "vitest": "1.6.0"
   },
   "dependencies": {
     "@shopware/api-client": "workspace:*",
@@ -52,6 +53,7 @@
     "openapi-typescript": "6.7.5",
     "prettier": "3.2.5",
     "semver": "7.6.0",
+    "ts-morph": "22.0.0",
     "yargs": "17.7.2"
   }
 }

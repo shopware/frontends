@@ -89,17 +89,19 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
     ];
     try {
       const response = await apiClient.invoke("readProduct post /product", {
-        filter,
-        limit: 1,
-        includes: {
-          product: ["id", "translated", "productNumber", "seoUrls"],
-          seo_url: ["seoPathInfo"],
-        },
-        associations: {
-          seoUrls: {},
+        body: {
+          filter,
+          limit: 1,
+          includes: {
+            product: ["id", "translated", "productNumber", "seoUrls"],
+            seo_url: ["seoPathInfo"],
+          },
+          associations: {
+            seoUrls: {},
+          },
         },
       });
-      return response?.elements?.[0]; // return first matching product
+      return response.data.elements?.[0]; // return first matching product
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);
     }

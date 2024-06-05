@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref } from "vue";
-import { useProductSearch, useCart } from "@shopware-pwa/composables-next/dist";
-import { useB2bQuoteManagement } from "@shopware-pwa/composables-next";
+import { onBeforeMount, ref } from "vue";
+import {
+  useProductSearch,
+  useCart,
+  useB2bQuoteManagement,
+} from "@shopware-pwa/composables-next";
 import Textarea from "primevue/textarea";
 import Button from "primevue/button";
 import Stepper from "primevue/stepper";
@@ -13,7 +16,7 @@ const requestComment = ref("");
 const requested = ref(false);
 const { requestQuote } = useB2bQuoteManagement();
 const { search } = useProductSearch();
-const { cartItems, refreshCart, cart, addProduct } = useCart();
+const { cartItems, refreshCart, addProduct } = useCart();
 
 const proxyAddToCart = async (quantity: number = 1) => {
   await addProduct({ id: product.value?.id, quantity });
@@ -100,7 +103,7 @@ onBeforeMount(async () => {
       </template>
     </StepperPanel>
     <StepperPanel header="Request quote">
-      <template #content="{ prevCallback, nextCallback }">
+      <template #content="{ prevCallback }">
         <Message severity="info" :closable="false"
           >You can add comment to your requested quote</Message
         >

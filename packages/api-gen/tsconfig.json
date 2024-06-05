@@ -3,6 +3,6 @@
   "include": ["src", "tests"],
   "exclude": ["dist", "node_modules", "tests/**.d.ts"],
   "compilerOptions": {
-    "resolveJsonModule": true,
-  },
+    "resolveJsonModule": true
+  }
 }

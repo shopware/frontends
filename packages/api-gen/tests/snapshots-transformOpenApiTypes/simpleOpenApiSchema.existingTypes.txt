@@ -1,0 +1,12 @@
+[
+  [
+    "GenericRecord",
+    "type GenericRecord =
+  | never
+  | null
+  | string
+  | string[]
+  | number
+  | { [key: string]: GenericRecord };",
+  ],
+]

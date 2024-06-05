@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RequestParameters, Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 const route = useRoute();
 const router = useRouter();
 
@@ -184,7 +184,7 @@ const changePage = async (page: number) => {
   });
   await changeCurrentPage(
     page,
-    route.query as unknown as RequestParameters<"searchPage">,
+    route.query as unknown as operations["searchPage post /search"]["body"],
   );
 };
 const changeLimit = async (limit: Event) => {
@@ -199,7 +199,7 @@ const changeLimit = async (limit: Event) => {
   });
   await changeCurrentPage(
     1,
-    route.query as unknown as RequestParameters<"searchPage">,
+    route.query as unknown as operations["searchPage post /search"]["body"],
   );
 };
 

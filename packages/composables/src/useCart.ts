@@ -105,27 +105,29 @@ export function useCartFunction(): UseCartReturn {
       return newCart;
     }
 
-    const result = await apiClient.invoke("readCart get /checkout/cart");
-    _storeCart.value = result;
-    setCartErrors(result);
-    return result;
+    const { data } = await apiClient.invoke("readCart get /checkout/cart");
+    _storeCart.value = data;
+    setCartErrors(data);
+    return data;
   }
 
   async function addProduct(params: {
     id: string;
     quantity?: number;
   }): Promise<Schemas["Cart"]> {
-    const addToCartResult = await apiClient.invoke(
+    const { data: addToCartResult } = await apiClient.invoke(
       "addLineItem post /checkout/cart/line-item",
       {
-        items: [
-          {
-            id: params.id,
-            referencedId: params.id,
-            quantity: params.quantity,
-            type: "product",
-          },
-        ],
+        body: {
+          items: [
+            {
+              id: params.id,
+              referencedId: params.id,
+              quantity: params.quantity,
+              type: "product",
+            },
+          ],
+        },
       },
     );
     _storeCart.value = addToCartResult;
@@ -134,52 +136,56 @@ export function useCartFunction(): UseCartReturn {
   }
 
   async function removeItem(lineItem: Schemas["LineItem"]) {
-    const result = await apiClient.invoke(
+    const { data } = await apiClient.invoke(
       "removeLineItem post /checkout/cart/line-item/delete",
       {
-        ids: [lineItem.id],
+        body: { ids: [lineItem.id] },
       },
     );
-    _storeCart.value = result;
-    setCartErrors(result);
+    _storeCart.value = data;
+    setCartErrors(data);
   }
 
   async function changeProductQuantity(params: {
     id: string;
     quantity: number;
   }) {
-    const result = await apiClient.invoke(
+    const { data } = await apiClient.invoke(
       "updateLineItem patch /checkout/cart/line-item",
       {
-        items: [
-          {
-            id: params.id,
-            quantity: +params.quantity,
-          },
-        ],
+        body: {
+          items: [
+            {
+              id: params.id,
+              quantity: +params.quantity,
+            },
+          ],
+        },
       },
     );
-    _storeCart.value = result;
-    setCartErrors(result);
+    _storeCart.value = data;
+    setCartErrors(data);
 
-    return result;
+    return data;
   }
 
   async function submitPromotionCode(promotionCode: string) {
-    const result = await apiClient.invoke(
+    const { data } = await apiClient.invoke(
       "addLineItem post /checkout/cart/line-item",
       {
-        items: [
-          {
-            referencedId: promotionCode,
-            type: "promotion",
-          },
-        ],
+        body: {
+          items: [
+            {
+              referencedId: promotionCode,
+              type: "promotion",
+            },
+          ],
+        },
       },
     );
-    _storeCart.value = result;
-    setCartErrors(result);
-    return result;
+    _storeCart.value = data;
+    setCartErrors(data);
+    return data;
   }
 
   async function getProductItemsSeoUrlsData() {
@@ -188,11 +194,13 @@ export function useCartFunction(): UseCartReturn {
     }
 
     const result = await apiClient.invoke("readProduct post /product", {
-      ids: cartItems.value
-        .map(({ referencedId }) => referencedId)
-        .filter(String) as string[],
+      body: {
+        ids: cartItems.value
+          .map(({ referencedId }) => referencedId)
+          .filter(String) as string[],
+      },
     });
-    return result?.elements || [];
+    return result.data.elements;
   }
 
   const appliedPromotionCodes = computed(() => {
