@@ -19,8 +19,9 @@ export type components = {
 };
 export type Schemas = {
   AccountNewsletterRecipientResult: {
-    // TODO: [OpenAPI][AccountNewsletterRecipientResult] - update type definition
+    /** @enum {string} */
     apiAlias: "account_newsletter_recipient";
+    /** @enum {string} */
     status: "undefined" | "notSet" | "direct" | "optIn" | "optOut";
   };
   AclRole: {

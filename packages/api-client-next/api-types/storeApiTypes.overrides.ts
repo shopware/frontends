@@ -14,11 +14,6 @@ export type components = mainComponents;
 // };
 
 export type Schemas = {
-  AccountNewsletterRecipientResult: {
-    // TODO: [OpenAPI][AccountNewsletterRecipientResult] - update type definition
-    apiAlias: "account_newsletter_recipient";
-    status: "undefined" | "notSet" | "direct" | "optIn" | "optOut";
-  };
   // TODO: [OpenAPI][CalculatedPrice] - define CalculatedPrice with proper fields + define calculated_cheapest_price entity as well
   CalculatedPrice: {
     apiAlias: "calculated_price";
