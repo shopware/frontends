@@ -1,4 +1,4 @@
-import { createAPIClient } from "@shopware/api-client";
+import type { createAPIClient } from "@shopware/api-client";
 import type {
   operations as defaultOperations,
   components as defaultComponents,

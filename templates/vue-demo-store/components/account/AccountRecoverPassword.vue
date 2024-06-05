@@ -9,7 +9,8 @@ const isSuccess = ref(false);
 
 const formData = ref({
   email: "",
-  storefrontUrl: apiInstance.config.endpoint || "",
+  storefrontUrl:
+    (apiInstance as { config: { endpoint: string } }).config.endpoint || "",
 });
 
 const recoverPasswordErrors = computed(() =>
