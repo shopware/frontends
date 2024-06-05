@@ -228,8 +228,7 @@ export function useCartFunction(): UseCartReturn {
   const isEmpty = computed(() => count.value <= 0);
 
   const totalPrice = computed(() => {
-    const cartPrice =
-      cart.value && cart.value.price && cart.value.price.totalPrice;
+    const cartPrice = cart.value?.price?.totalPrice;
     return cartPrice || 0;
   });
 

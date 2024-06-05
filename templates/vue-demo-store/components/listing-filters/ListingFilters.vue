@@ -107,7 +107,7 @@ const clearFilters = async () => {
   await search({
     ...route.query,
     ...filtersToQuery(searchCriteriaForRequest.value),
-  } as operations["searchPage post /search"]["body"]);
+  });
   await router.push({
     query: {
       search: route.query.search,

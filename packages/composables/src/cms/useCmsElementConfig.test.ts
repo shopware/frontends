@@ -57,29 +57,31 @@ describe("useCmsElementConfig", () => {
         const { getConfigValue } = useCmsElementConfig(cmsElement);
 
         expect(getConfigValue("alignment")).toEqual("flex-start");
-      }),
-        it("should return undefined if config value is undefined", () => {
-          const { getConfigValue } = useCmsElementConfig({
-            config: {
-              alignment: {
-                value: undefined,
-              },
-            },
-          } as unknown as CmsElementBuyBox);
+      });
 
-          expect(getConfigValue("alignment")).toBeUndefined();
-        }),
-        it("should return undefined if config value is null", () => {
-          const { getConfigValue } = useCmsElementConfig({
-            config: {
-              boxLayout: {
-                value: null,
-              },
+      it("should return undefined if config value is undefined", () => {
+        const { getConfigValue } = useCmsElementConfig({
+          config: {
+            alignment: {
+              value: undefined,
             },
-          } as unknown as CmsElementImage);
+          },
+        } as unknown as CmsElementBuyBox);
 
-          expect(getConfigValue("boxLayout")).toEqual(null);
-        });
+        expect(getConfigValue("alignment")).toBeUndefined();
+      });
+
+      it("should return undefined if config value is null", () => {
+        const { getConfigValue } = useCmsElementConfig({
+          config: {
+            boxLayout: {
+              value: null,
+            },
+          },
+        } as unknown as CmsElementImage);
+
+        expect(getConfigValue("boxLayout")).toEqual(null);
+      });
 
       it("should return undefined if config value is null", () => {
         const cmsElement: CmsElementForm = {
