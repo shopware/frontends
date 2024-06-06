@@ -1,0 +1,16 @@
+{
+  "extends": "./.nuxt/tsconfig.json",
+  "exclude": [
+    "dist",
+    "node_modules",
+    "playground",
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#imports": [
+        "./imports.d.ts"
+      ]
+    }
+  }
+}
