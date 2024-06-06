@@ -252,8 +252,11 @@ const invokeSubmit = async () => {
   }
 };
 async function invokeLogout() {
-  await logout();
-  await push("/");
+  try {
+    await logout();
+  } finally {
+    await push("/");
+  }
 }
 
 const loginModalController = useModal();

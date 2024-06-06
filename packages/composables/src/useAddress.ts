@@ -82,6 +82,7 @@ export function useAddress(): UseAddressReturn {
           _storeCustomerAddresses.value = [];
         }
       }
+      throw error;
     }
   }
 

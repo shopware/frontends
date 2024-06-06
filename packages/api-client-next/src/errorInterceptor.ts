@@ -9,7 +9,7 @@ export type ApiError = {
     pointer?: string;
   };
   meta?: {
-    parameters?: Record<string, string>;
+    parameters?: Record<string, string> | [];
   };
 };
 
