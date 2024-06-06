@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { apiInstance } = useShopwareContext();
+const { apiClient } = useShopwareContext();
 const { user } = useUser();
 import type { MollieLocale } from "@/types";
 
@@ -15,9 +15,14 @@ const emits = defineEmits<{
 }>();
 
 const onCreditCardSubmit = async (token: string | undefined) => {
-  apiInstance.invoke.post(
-    `/store-api/script/mollie/creditcard/store-token/${user.value?.id}/${token}`,
-    {},
+  apiClient.invoke(
+    "mollieSubmitCreditCart post script/mollie/creditcard/store-token/{userId/{token}",
+    {
+      pathParams: {
+        userId: user.value!.id!,
+        token: token!,
+      },
+    },
   );
   emits("submit", token);
 };

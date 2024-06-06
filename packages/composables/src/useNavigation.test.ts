@@ -16,7 +16,7 @@ describe("useNavigation", () => {
       expect.anything(),
     );
     expect(vm.navigationElements).not.toBeNull();
-    expect(vm.navigationElements!.length).toBe(Menu.length);
+    expect(vm.navigationElements?.length).toBe(Menu.length);
   });
 
   it("menu is empty because of the error", async () => {

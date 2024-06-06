@@ -138,13 +138,15 @@ export type UseListingReturn = {
   /**
    * Filters that are currently set
    */
-  getCurrentFilters: ComputedRef<any>;
+  getCurrentFilters: ComputedRef<
+    Schemas["ProductListingResult"]["currentFilters"]
+  >;
   /**
    * Sets the filters to be applied for the listing
    * @param filters
    * @returns
    */
-  setCurrentFilters(filters: any): Promise<void>;
+  setCurrentFilters(filters: { code: string; value: unknown }): Promise<void>;
   /**
    * Indicates if the listing is being fetched
    */
@@ -160,7 +162,9 @@ export type UseListingReturn = {
   /**
    * Change selected filters to the query object
    */
-  filtersToQuery(filters: any): Record<string, any>;
+  filtersToQuery(
+    filters: Schemas["ProductListingCriteria"],
+  ): Record<string, unknown>;
 };
 
 /**
@@ -176,7 +180,14 @@ export function useListing(params?: {
   // const { getDefaults } = useDefaults({ defaultsKey: contextName });
   const { apiClient } = useShopwareContext();
 
-  let searchMethod;
+  let searchMethod: typeof listingType extends "productSearchListing"
+    ? (
+        searchParams: operations["readProductListing post /product-listing/{categoryId}"]["body"],
+      ) => Promise<Schemas["ProductListingResult"]>
+    : (
+        searchParams: operations["searchPage post /search"]["body"],
+      ) => Promise<Schemas["ProductListingResult"]>;
+
   if (listingType === "productSearchListing") {
     searchMethod = async (
       searchCriteria: operations["searchPage post /search"]["body"],
@@ -330,8 +341,6 @@ export function createListingComposable({
       );
       const result = await searchMethod(searchCriteria);
       return result;
-    } catch (e) {
-      throw e;
     } finally {
       loading.value = false;
     }
@@ -350,8 +359,6 @@ export function createListingComposable({
       const result = await searchMethod(searchCriteria);
 
       _storeAppliedListing.value = result;
-    } catch (e) {
-      throw e;
     } finally {
       loading.value = false;
     }
@@ -383,8 +390,6 @@ export function createListingComposable({
           ...(result.elements ?? []),
         ],
       } as Schemas["ProductListingResult"];
-    } catch (e) {
-      throw e;
     } finally {
       loadingMore.value = false;
     }
@@ -478,10 +483,11 @@ export function createListingComposable({
     //     currentFiltersResult[objectKey] = currentFilters[objectKey];
     //   },
     // );
-    return getCurrentListing.value?.currentFilters;
+    return getCurrentListing.value
+      ?.currentFilters as Schemas["ProductListingResult"]["currentFilters"];
   });
 
-  const setCurrentFilters = (filter: { code: string; value: any }) => {
+  const setCurrentFilters = (filter: { code: string; value: unknown }) => {
     const appliedFilters: operations["searchPage post /search"]["body"] =
       Object.assign({}, getCurrentFilters.value, filter, {
         query: getCurrentFilters.value?.search,
@@ -515,15 +521,17 @@ export function createListingComposable({
     return search({ search: getCurrentFilters.value?.search || "" });
   };
 
-  const filtersToQuery = (filters: any) => {
-    let queryObject: Record<string, any> = {};
+  const filtersToQuery = (filters: Schemas["ProductListingCriteria"]) => {
+    const queryObject: Record<string, unknown> = {};
 
     for (const filter in filters) {
-      if (filters[filter]) {
-        if (Array.isArray(filters[filter]) && filters[filter].length) {
-          queryObject[filter] = filters[filter].join("|");
-        } else if (!Array.isArray(filters[filter])) {
-          queryObject[filter] = filters[filter];
+      const currentFilter =
+        filters[filter as keyof Schemas["ProductListingCriteria"]];
+      if (currentFilter) {
+        if (Array.isArray(currentFilter) && currentFilter.length) {
+          queryObject[filter] = currentFilter.join("|");
+        } else if (!Array.isArray(currentFilter)) {
+          queryObject[filter] = currentFilter;
         }
       }
     }

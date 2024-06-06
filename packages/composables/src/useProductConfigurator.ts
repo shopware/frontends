@@ -65,12 +65,12 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   };
 
   // create a group -> optionId map
-  product.value.optionIds?.forEach((optionId: string) => {
+  for (const optionId of product.value.optionIds || []) {
     const optionGroupCode = findGroupCodeForOption(optionId);
     if (optionGroupCode) {
       selected.value[optionGroupCode] = optionId;
     }
-  });
+  }
 
   async function findVariantForSelectedOptions(options?: {
     [code: string]: string;

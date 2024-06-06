@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { useCmsElementImage } from "./useCmsElementImage";
+import type { CmsElementImage, CmsElementManufacturerLogo } from "../types";
 
 describe("useCmsElementImage", () => {
   describe("computed", () => {
@@ -11,7 +12,7 @@ describe("useCmsElementImage", () => {
               value: "100px",
             },
           },
-        } as any);
+        } as CmsElementImage);
 
         expect(containerStyle.value).toEqual({ minHeight: "100px" });
       });
@@ -25,7 +26,7 @@ describe("useCmsElementImage", () => {
               value: true,
             },
           },
-        } as any);
+        } as CmsElementImage);
 
         expect(anchorAttrs.value).toEqual({
           href: "https://shopware.com",
@@ -40,7 +41,7 @@ describe("useCmsElementImage", () => {
               value: "https://shopware.com",
             },
           },
-        } as any);
+        } as CmsElementImage);
 
         expect(anchorAttrs.value).toEqual({
           href: "https://shopware.com",
@@ -62,7 +63,7 @@ describe("useCmsElementImage", () => {
               value: true,
             },
           },
-        } as any);
+        } as CmsElementImage);
 
         expect(imageContainerAttrs.value).toEqual({
           href: "https://shopware.com/logo.png",
@@ -76,7 +77,7 @@ describe("useCmsElementImage", () => {
             newTab: true,
             url: "https://shopware.com/logo.png",
           },
-        } as any);
+        } as CmsElementImage);
 
         expect(imageLink.value).toEqual({
           newTab: true,
@@ -97,7 +98,7 @@ describe("useCmsElementImage", () => {
               ],
             },
           },
-        } as any);
+        } as CmsElementManufacturerLogo);
 
         expect(imageAttrs.value).toEqual({
           alt: "",
@@ -113,7 +114,7 @@ describe("useCmsElementImage", () => {
               value: "contain",
             },
           },
-        } as any);
+        } as CmsElementImage);
 
         expect(displayMode.value).toEqual("contain");
       });
@@ -121,7 +122,7 @@ describe("useCmsElementImage", () => {
       it("should return default displayMode", () => {
         const { displayMode } = useCmsElementImage({
           config: {},
-        } as any);
+        } as CmsElementImage);
 
         expect(displayMode.value).toEqual("initial");
       });

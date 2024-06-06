@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="ListingFilter extends { code: string }">
+import type { Schemas } from "#shopware";
 import ListingFiltersPrice from "./ListingFiltersPrice.vue";
 import ListingFiltersProperties from "./ListingFiltersProperties.vue";
 import ListingFiltersRating from "./ListingFiltersRating.vue";
@@ -13,9 +14,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   filter: ListingFilter;
-  selectedFilters: {
-    [key: string]: object;
-  };
+  selectedFilters?: Schemas["ProductListingResult"]["currentFilters"];
 }>();
 
 const cmsMap = () => {

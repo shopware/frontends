@@ -13,7 +13,7 @@ export function createShopwareContext(
   options: {
     // initialStore?: any;
     // shopwareDefaults: ApiDefaults;
-    apiInstance?: any;
+    apiInstance?: unknown;
     devStorefrontUrl?: string | null;
     enableDevtools?: boolean;
   },
@@ -35,8 +35,8 @@ export function createShopwareContext(
       },
     ) {
       shopwarePlugin._a = app;
-      (app as any).config.globalProperties.$shopware = shopwarePlugin;
-      (app as any).provide("shopware", shopwarePlugin);
+      app.config.globalProperties.$shopware = shopwarePlugin;
+      app.provide("shopware", shopwarePlugin);
       /* istanbul ignore else */
       if (options?.enableDevtools && typeof window !== "undefined") {
         // registerShopwareDevtools(app, shopwarePlugin);
@@ -52,5 +52,5 @@ export function createShopwareContext(
   if (options?.enableDevtools && typeof window !== "undefined") {
     // registerShopwareDevtools(app, shopwarePlugin);
   }
-  return shopwarePlugin as any;
+  return shopwarePlugin;
 }
