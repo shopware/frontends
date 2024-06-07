@@ -1,32 +1,39 @@
 <script setup lang="ts">
+import { ApiClientError } from "@shopware/api-client";
+
 const emits = defineEmits<{
   (e: "success"): void;
 }>();
 
-const { resetPassword, errors } = useCustomerPassword();
-const { apiInstance } = useShopwareContext();
+const { resetPassword } = useCustomerPassword();
 const isSuccess = ref(false);
+
+const config = useRuntimeConfig();
 
 const formData = ref({
   email: "",
-  storefrontUrl:
-    (apiInstance as { config: { endpoint: string } }).config.endpoint || "",
+  storefrontUrl: config.public.shopware.devStorefrontUrl!,
 });
 
+const errors = ref([]);
 const recoverPasswordErrors = computed(() =>
-  errors.resetPassword?.map(({ detail }) => detail).toString(),
+  errors.value?.map(({ detail }) => detail).toString(),
 );
 
 const invokeRecover = async (): Promise<void> => {
   try {
+    errors.value = [];
     const emailSent = await resetPassword(formData.value);
 
-    if (emailSent) {
+    if (emailSent.success) {
       isSuccess.value = true;
       emits("success");
     }
   } catch (error) {
-    console.error("error resend email", error);
+    console.error("[AccountRecoverPassword]", error);
+    if (error instanceof ApiClientError) {
+      errors.value = error.details?.errors || [];
+    }
   }
 };
 </script>
@@ -41,7 +48,7 @@ const invokeRecover = async (): Promise<void> => {
           {{ $t("recoveryPassword.header") }}
         </h2>
       </div>
-      <form v-if="!isSuccess" class="space-y-6" @submit.prevent="invokeRecover">
+      <form v-if="!isSuccess" class="space-y-3" @submit.prevent="invokeRecover">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="email-address" class="sr-only">{{
@@ -61,15 +68,12 @@ const invokeRecover = async (): Promise<void> => {
         </div>
 
         <slot name="error">
-          <div
-            v-if="recoverPasswordErrors.length"
-            class="flex items-center justify-between"
-          >
-            <div class="flex items-center">
-              <div
-                class="send-email-errors text-red-600 border-secondary-300 rounded"
-              >
-                {{ recoverPasswordErrors }}
+          <div class="min-h-20px">
+            <div v-if="recoverPasswordErrors?.length" class="flex">
+              <div class="text-sm">
+                <div class="text-red-600 border-secondary-300 rounded">
+                  {{ recoverPasswordErrors }}
+                </div>
               </div>
             </div>
           </div>

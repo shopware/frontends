@@ -570,9 +570,6 @@ importers:
         specifier: 3.4.27
         version: 3.4.27(typescript@5.4.5)
     devDependencies:
-      '@shopware-pwa/types':
-        specifier: canary
-        version: link:../../packages/types
       '@types/node':
         specifier: ^20
         version: 20.11.17
@@ -24941,7 +24938,7 @@ snapshots:
       browserslist: 4.23.0
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.16.0
-      es-module-lexer: 1.4.1
+      es-module-lexer: 1.5.3
       eslint-scope: 5.1.1
       events: 3.3.0
       glob-to-regexp: 0.4.1
