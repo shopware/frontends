@@ -30,7 +30,7 @@
     "vue": "3.4.27"
   },
   "devDependencies": {
-    "@iconify-json/carbon": "1.1.34",
+    "@iconify-json/carbon": "1.1.35",
     "@nuxtjs/i18n": "8.3.1",
     "@shopware/api-gen": "canary",
     "@vue/eslint-config-typescript": "13.0.0",
