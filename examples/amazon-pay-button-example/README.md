@@ -168,7 +168,7 @@ Once it's done, the order's transaction is marked as **paid** and Amazon Pay ser
 This is also the right place to add some additional security / anti fraud checks - [see the source code](./src/runtime/server/api/amazon-pay/complete.post.ts). 
 
 
-😇 Bypassing a backend
+## 😇 Bypassing a backend
 
 The main goal was to show how to do the standard plugin's jobs:
 - get the redirection URL to the payment gateway
