@@ -44,6 +44,12 @@ Also, there will be a step to define return URLs like: `checkoutReviewReturnUrl`
 
    run `pnpm i` command.
 
+   Note that if you are starting from scratches (not using this example as it is) you will probably need as minimum:
+   - [@shopware-pwa/nuxt3-module](https://www.npmjs.com/package/@shopware-pwa/nuxt3-module) - sets up your project to be Shopware 6 aware
+   - [@shopware-pwa/composables-next](https://www.npmjs.com/package/@shopware-pwa/composables-next) - installs all the dependencies for the logic layer
+   - [@shopware/api-client](https://www.npmjs.com/package/@shopware/api-client) - API client for your REST API Shopware 6 backend
+   - [@amazonpay/amazon-pay-api-sdk-nodejs](https://www.npmjs.com/package/@amazonpay/amazon-pay-api-sdk-nodejs) - nodejs client for Amazon Pay API
+
 1. Register the module in your Nuxt 3 project
 
 ```js

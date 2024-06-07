@@ -54,21 +54,6 @@ const {
 const { customerAddresses, loadCustomerAddresses } = useAddress();
 const isLoading = reactive<{ [key: string]: boolean }>({});
 
-const {
-  registerCustomerFromAmazonSession,
-  setAmazonPaymentMethod,
-  isAmazonPay,
-  createOrderAndCharge,
-} = useAmazonPayCheckout();
-onMounted(async () => {
-  if (isLoggedIn.value || isGuestSession.value) {
-    return;
-  }
-  // consider logging-out the user if they are logged in
-  await registerCustomerFromAmazonSession();
-  await setAmazonPaymentMethod();
-});
-
 watch([isLoggedIn, isGuestSession], ([isLogged, isLoggedGuest]) => {
   if (isLogged || isLoggedGuest) {
     loadCustomerAddresses();
@@ -214,19 +199,9 @@ const placeOrder = async () => {
   }
 
   isLoading["placeOrder"] = true;
-  if (isAmazonPay.value) {
-    const orderResponse = await createOrderAndCharge();
-    const redirectUrl =
-      orderResponse?.result?.webCheckoutDetails?.amazonPayRedirectUrl;
-    // Redirect to Amazon Pay
-    if (redirectUrl) {
-      window.location.href = redirectUrl;
-    }
-  } else {
-    const order = await createOrder();
-    isLoading["placeOrder"] = false;
-    await push("/checkout/success/" + order.id);
-  }
+  const order = await createOrder();
+  isLoading["placeOrder"] = false;
+  await push("/checkout/success/" + order.id);
 
   refreshCart();
 };

@@ -4,28 +4,6 @@ export default defineNuxtConfig({
     "@shopware-pwa/composables-next/nuxt-layer",
     "@shopware-pwa/cms-base",
   ],
-
-  amazonPay: {
-    storeId: "amzn1.application-oa2-client.53f60bb5f0744519acecb0765d37a9da",
-    publicKeyId: "AH4AOD5PWJCYBIAQKLNPBP77",
-    merchantId: "A2XEHS1UKQ4Q6H",
-    privateKeyPath: "./server/private.pem",
-    region: "DE",
-    sandbox: true,
-    algorithm: "AMZN-PAY-RSASSA-PSS-V2",
-    webCheckoutDetails: {
-      checkoutReviewReturnUrl: "https://frontends-demo.vercel.app/checkout",
-      checkoutResultReturnUrl:
-        "https://frontends-demo.vercel.app/checkout/success",
-    },
-    shopwareAdminApi: {
-      endpoint: "https://demo-frontends.shopware.store/api",
-      credentials: {
-        client_id: "SWIABTJARHBSTLD5SGS0BVVOZG",
-        client_secret: "QUhPMHlPbE1XVnc2eG5XN1NCRDhBRU55TEhWV05qQm50MEowTXU",
-      },
-    },
-  },
   runtimeConfig: {
     shopware: {
       /**
@@ -99,7 +77,6 @@ export default defineNuxtConfig({
     "@unocss/nuxt",
     "@shopware-pwa/nuxt3-module",
     "@nuxtjs/i18n",
-    "../../examples/amazon-pay/src/module.ts",
   ],
   // components: true,
   components: {
