@@ -53,7 +53,7 @@ export type UseCartReturn = {
   /**
    * Removes the provided LineItem from the cart
    */
-  removeItem(lineItem: Schemas["LineItem"]): Promise<void>;
+  removeItem(lineItem: Schemas["LineItem"]): Promise<Schemas["Cart"]>;
   /**
    * The total price of the cart (including calculated costs like shipping)
    */
@@ -144,6 +144,7 @@ export function useCartFunction(): UseCartReturn {
     );
     _storeCart.value = data;
     setCartErrors(data);
+    return data;
   }
 
   async function changeProductQuantity(params: {
