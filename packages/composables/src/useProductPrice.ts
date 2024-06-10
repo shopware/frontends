@@ -54,8 +54,9 @@ export type UseProductPriceReturn = {
 export function useProductPrice(
   product: Ref<Schemas["Product"] | undefined>,
 ): UseProductPriceReturn {
-  const _cheapest: ComputedRef<Schemas["CalculatedPrice"] | undefined> =
-    computed(() => product.value?.calculatedCheapestPrice);
+  const _cheapest: ComputedRef<
+    Schemas["Product"]["calculatedCheapestPrice"] | undefined
+  > = computed(() => product.value?.calculatedCheapestPrice);
 
   /**
    * calculatedPrices are used for product with tier prices
@@ -98,7 +99,9 @@ export function useProductPrice(
             return current.unitPrice < previous.unitPrice ? current : previous;
           },
         );
-        return lowest || _cheapest.value;
+        return (
+          lowest || (_cheapest.value as unknown as Schemas["CalculatedPrice"])
+        );
       }
       return _real.value;
     },

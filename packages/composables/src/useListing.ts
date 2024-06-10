@@ -497,9 +497,9 @@ export function createListingComposable({
     if (_storeAppliedListing.value) {
       _storeAppliedListing.value.currentFilters = {
         ...appliedFilters,
-        manufacturer: appliedFilters.manufacturer?.split("|"),
-        properties: appliedFilters.properties?.split("|"),
-      };
+        manufacturer: appliedFilters.manufacturer?.split("|") || [],
+        properties: appliedFilters.properties?.split("|") || [],
+      } as unknown as Schemas["ProductListingResult"]["currentFilters"];
     }
     return search(appliedFilters);
   };
@@ -516,7 +516,8 @@ export function createListingComposable({
     );
 
     if (_storeAppliedListing.value) {
-      _storeAppliedListing.value.currentFilters = defaultFilters;
+      _storeAppliedListing.value.currentFilters =
+        defaultFilters as unknown as Schemas["ProductListingResult"]["currentFilters"];
     }
     return search({ search: getCurrentFilters.value?.search || "" });
   };
