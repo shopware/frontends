@@ -92,7 +92,7 @@ export type UseOrderDetailsReturn = {
    * Get order object including additional associations.
    * useDefaults describes what order object should look like.
    */
-  loadOrderDetails(): Promise<void>;
+  loadOrderDetails(): Promise<Schemas["OrderRouteResponse"]>;
   /**
    * Handle payment for existing error.
    *
@@ -108,13 +108,15 @@ export type UseOrderDetailsReturn = {
    *
    * Action cannot be reverted.
    */
-  cancel(): Promise<void>;
+  cancel(): Promise<Schemas["StateMachineState"]>;
   /**
    * Changes the payment method for current cart.
    * @param paymentMethodId - ID of the payment method to be set
    * @returns
    */
-  changePaymentMethod(paymentMethodId: string): Promise<void>;
+  changePaymentMethod(
+    paymentMethodId: string,
+  ): Promise<Schemas["SuccessResponse"]>;
   /**
    * Get media content
    *
@@ -223,6 +225,7 @@ export function useOrderDetails(
     _sharedOrder.value = orderDetailsResponse.data.orders.elements?.[0] ?? null;
     paymentChangeableList.value =
       orderDetailsResponse.data.paymentChangeable ?? {};
+    return orderDetailsResponse.data;
   }
 
   async function handlePayment(finishUrl?: string, errorUrl?: string) {
@@ -241,22 +244,30 @@ export function useOrderDetails(
   }
 
   async function cancel() {
-    await apiClient.invoke("cancelOrder post /order/state/cancel", {
-      body: {
-        orderId,
+    const resp = await apiClient.invoke(
+      "cancelOrder post /order/state/cancel",
+      {
+        body: {
+          orderId,
+        },
       },
-    });
+    );
     await loadOrderDetails();
+    return resp.data;
   }
   async function changePaymentMethod(paymentMethodId: string) {
-    await apiClient.invoke("orderSetPayment post /order/payment", {
-      body: {
-        orderId: orderId,
-        paymentMethodId: paymentMethodId,
+    const response = await apiClient.invoke(
+      "orderSetPayment post /order/payment",
+      {
+        body: {
+          orderId: orderId,
+          paymentMethodId: paymentMethodId,
+        },
       },
-    });
+    );
 
     await loadOrderDetails();
+    return response.data;
   }
 
   async function getMediaFile(downloadId: string) {

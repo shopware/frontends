@@ -42,7 +42,9 @@ export type UseOrderPaymentReturn = {
   /**
    * Change a payment method for the order
    */
-  changePaymentMethod(paymentMethodId: string): Promise<void>;
+  changePaymentMethod(
+    paymentMethodId: string,
+  ): Promise<Schemas["SuccessResponse"] | undefined>;
 };
 
 /**
@@ -93,12 +95,16 @@ export function useOrderPayment(
     if (!order.value) {
       return;
     }
-    await apiClient.invoke("orderSetPayment post /order/payment", {
-      body: {
-        orderId: order.value.id,
-        paymentMethodId,
+    const response = await apiClient.invoke(
+      "orderSetPayment post /order/payment",
+      {
+        body: {
+          orderId: order.value.id,
+          paymentMethodId,
+        },
       },
-    });
+    );
+    return response.data;
   }
 
   return {

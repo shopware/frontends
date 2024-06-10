@@ -64,7 +64,7 @@ export type UseCartItemReturn = {
   /**
    * Removes the current item from the cart
    */
-  removeItem(): Promise<void>;
+  removeItem(): Promise<Schemas["Cart"]>;
   /**
    * Get SEO data for the current item
    *
@@ -139,6 +139,7 @@ export function useCartItem(
       },
     );
     await refreshCart(newCart);
+    return newCart;
   }
 
   async function changeItemQuantity(
