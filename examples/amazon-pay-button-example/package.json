@@ -20,9 +20,9 @@
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",
-    "dev": "nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "dev:playground": "nuxi dev playground",
+    "build:playground": "nuxi build playground",
+    "build": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "lint": "vue-tsc --noEmit"
   },
   "dependencies": {
