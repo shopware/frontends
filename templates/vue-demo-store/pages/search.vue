@@ -60,7 +60,7 @@ const createFiltersFromRoute = () => {
           type: "range",
           field: "ratingAverage",
           parameters: {
-            gte: value,
+            gte: +value,
           },
         });
       }
@@ -90,8 +90,8 @@ const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
       type: "range",
       field: "price",
       parameters: {
-        gte: minPrice,
-        lte: maxPrice,
+        gte: +minPrice,
+        lte: +maxPrice,
       },
     });
   }
@@ -100,7 +100,7 @@ const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
       type: "range",
       field: "price",
       parameters: {
-        gte: minPrice,
+        gte: +minPrice,
       },
     });
   }
@@ -109,7 +109,7 @@ const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
       type: "range",
       field: "price",
       parameters: {
-        lte: maxPrice,
+        lte: +maxPrice,
       },
     });
   }
