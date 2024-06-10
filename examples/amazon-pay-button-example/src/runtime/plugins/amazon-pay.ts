@@ -1,4 +1,5 @@
-import { defineNuxtPlugin, useServerHead } from "#imports";
+import { defineNuxtPlugin } from "#imports";
+import { useServerHead } from "@unhead/vue";
 
 export default defineNuxtPlugin({
   name: "amazon-pay-register",

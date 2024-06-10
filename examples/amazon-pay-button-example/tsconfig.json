@@ -6,13 +6,13 @@
     "playground",
   ],
   "compilerOptions": {
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
     "paths": {
       "#imports": [
         "./imports.d.ts"
-      ]
+      ],
+      "#shopware": [
+        "./shopware.d.ts"
+      ],
     }
   }
 }

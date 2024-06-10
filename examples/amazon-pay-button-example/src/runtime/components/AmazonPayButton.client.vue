@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from "#imports";
+import { onMounted } from "vue";
 import { useAmazonPayButton } from "../composables/useAmazonPayButton";
 const { mount } = useAmazonPayButton("#amazon-pay-button", {
   buttonColor: "Gold",
