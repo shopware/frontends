@@ -75,17 +75,20 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   async function findVariantForSelectedOptions(options?: {
     [code: string]: string;
   }): Promise<Schemas["Product"] | undefined> {
-    const filter = [
+    const filter: Schemas["Filters"] = [
       {
         type: "equals",
         field: "parentId",
         value: parentProductId.value as string,
       },
-      ...Object.values(options || selected.value).map((id) => ({
-        type: "equals",
-        field: "optionIds",
-        value: id as string,
-      })),
+      ...Object.values(options || selected.value).map(
+        (id) =>
+          ({
+            type: "equals",
+            field: "optionIds",
+            value: id as string,
+          }) as Schemas["EqualsFilter"],
+      ),
     ];
     try {
       const response = await apiClient.invoke("readProduct post /product", {

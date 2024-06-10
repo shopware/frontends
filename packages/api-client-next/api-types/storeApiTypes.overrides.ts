@@ -14,50 +14,19 @@ export type components = mainComponents;
 // };
 
 export type Schemas = {
-  // TODO: [OpenAPI][CalculatedPrice] - define CalculatedPrice with proper fields + define calculated_cheapest_price entity as well
-  CalculatedPrice: {
-    apiAlias: "calculated_price";
-    unitPrice: number;
-    quantity: number;
-    totalPrice: number;
-    calculatedTaxes: GenericRecord[];
-    taxRules: GenericRecord[];
-    referencePrice?: {
-      price: number;
-      referenceUnit: number;
-      unitName: string;
-    };
-    hasRange?: boolean;
-    listPrice: {
-      price: number;
-      discount: number;
-      percentage: number;
-      apiAlias: string;
-    } | null;
-    regulationPrice: null | {
-      price: number;
-    };
-    variantId?: string;
-  };
-  Cart: components["schemas"]["ArrayStruct"] & {
+  Cart: {
     /** An affiliate tracking code */
-    affiliateCode?: string;
+    affiliateCode?: string | null;
     /** A campaign tracking code */
-    campaignCode?: string;
+    campaignCode?: string | null;
     /** A comment that can be added to the cart. */
-    customerComment?: string;
-    deliveries?: components["schemas"]["OrderDelivery"][]; // TODO: [OpenAPI][Cart] - `deliveries` is missing in schema
+    customerComment?: string | null;
+    deliveries?: components["schemas"]["CartDelivery"][];
     /** A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers. */
-    errors: // TODO: [OpenAPI][Cart] - define errors properly, `key` and `message` should be required fields. `Errors` should be required field as well. Problem is that sometimes it's an array, and sometimes map object
-    | []
-      // | {
-      //     key: string;
-      //     code: string;
-      //     details: string;
-      //     level?: string;
-      //     message: string;
-      //   }[]
+    errors?:
+      | components["schemas"]["CartError"][]
       | Record<
+          // TODO: [OpenAPI][Cart] - errors should be defined properly, sometimes it's an object?
           string,
           {
             code: number;
@@ -72,42 +41,25 @@ export type Schemas = {
     modified?: boolean;
     /** Name of the cart - for example `guest-cart` */
     name?: string;
-    price?: {
-      /**
-       * Format: float
-       * Net price of the cart
-       */
-      netPrice?: number;
-      /**
-       * Format: float
-       * Price for all line items in the cart
-       */
-      positionPrice?: number;
-      /** Tax calculation for the cart. One of `gross`, `net` or `tax-free` */
-      taxStatus?: string;
-      /**
-       * Format: float
-       * Total price of the cart, including shipping costs, discounts and taxes
-       */
-      totalPrice?: number;
-    };
+    price?: components["schemas"]["CalculatedPrice"];
     /** Context token identifying the cart and the user session */
     token?: string;
     /** A list of all payment transactions associated with the current cart. */
     transactions?: {
+      amount?: components["schemas"]["CalculatedPrice"];
       paymentMethodId?: string;
     }[];
   };
-  /** Added since version: 6.0.0.0 */
   Category: {
-    apiAlias: "category"; // TODO: [OpenAPI][Category] - define apiAlias properly
     active?: boolean;
     afterCategoryId?: string;
     afterCategoryVersionId?: string;
-    breadcrumb: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
+    /** @enum {string} */
+    apiAlias: "category"; // TODO: [OpenAPI][Category] - apiAlias should be required
+    breadcrumb: string[]; // TODO: [OpenAPI][Category] - breadcrumb should be required
     /** Format: int64 */
-    childCount: number; // TODO: [OpenAPI][Category] childCount field should be defined as required
-    children: components["schemas"]["Category"][]; // TODO: [OpenAPI][Category] - define children as required array
+    childCount: number;
+    children: components["schemas"]["Category"][]; // TODO: [OpenAPI][Category] - children should be empty array not null if no children
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
@@ -116,11 +68,11 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     customEntityTypeId?: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     description?: string;
     displayNestedProducts: boolean;
     externalLink?: string;
-    id: string; // TODO: [OpenAPI][Category] - define id as required field
+    id: string;
     internalLink?: string;
     keywords?: string;
     /** Format: int64 */
@@ -139,11 +91,11 @@ export type Schemas = {
     productAssignmentType: string;
     seoUrls?: components["schemas"]["SeoUrl"][];
     tags?: components["schemas"]["Tag"][];
-    // TODO: [OpenAPI][Category] - make `translated` required
     translated: {
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
-      breadcrumb?: string[]; // TODO: [OpenAPI][Category] - define breadcrumb properly
+      breadcrumb: string[]; // TODO: [OpenAPI][Category] - breadcrumb should be translated?
+      apiAlias?: string;
       cmsPageId?: string;
       cmsPageVersionId?: string;
       customEntityTypeId?: string;
@@ -174,822 +126,75 @@ export type Schemas = {
      */
     visibleChildCount?: number;
   };
-  /** Added since version: 6.0.0.0 */
-  CmsBlock: {
-    apiAlias: "cms_block"; // TODO: [OpenAPI][CmsBlock] - define apiAlias properly
-    backgroundColor?: string;
-    backgroundMedia?: components["schemas"]["Media"];
-    backgroundMediaId?: string;
-    backgroundMediaMode?: string;
-    cmsSectionVersionId?: string;
-    /** Format: date-time */
-    createdAt: string;
-    cssClass?: string;
-    customFields?: GenericRecord;
-    extensions?: {
-      swagCmsExtensionsBlockRule?: {
-        data?: {
-          /** @example c426e9e5d9031b933f89682d49bb02b1 */
-          id?: string;
-          /** @example swag_cms_extensions_block_rule */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /cms-block/9c16ffe823ddccc710bfb336c2ef30b6/swagCmsExtensionsBlockRule
-           */
-          related?: string;
-        };
-      };
-      swagCmsExtensionsQuickview?: {
-        data?: {
-          /** @example fae098a43df8714eda5249176ffcf26c */
-          id?: string;
-          /** @example swag_cms_extensions_quickview */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /cms-block/9c16ffe823ddccc710bfb336c2ef30b6/swagCmsExtensionsQuickview
-           */
-          related?: string;
-        };
-      };
-    };
-    id?: string;
-    marginBottom?: string;
-    marginLeft?: string;
-    marginRight?: string;
-    marginTop?: string;
-    name?: string;
-    /** Format: int64 */
-    position: number;
-    sectionId: string;
-    sectionPosition?: string;
-    slots: components["schemas"]["CmsSlot"][]; // TODO: [OpenAPI][CmsBlock] - define slots as required array
-    type: string;
-    /** Format: date-time */
-    updatedAt?: string;
-    versionId?: string;
-    visibility?: {
-      desktop?: boolean;
-      mobile?: boolean;
-      tablet?: boolean;
-    };
-  };
-  /** Added since version: 6.0.0.0 */
-  CmsSection: {
-    apiAlias: "cms_section"; // TODO: [OpenAPI][CmsSection] - define apiAlias properly
-    backgroundColor?: string;
-    backgroundMedia?: components["schemas"]["Media"];
-    backgroundMediaId?: string;
-    backgroundMediaMode?: string;
-    blocks: components["schemas"]["CmsBlock"][]; // TODO: [OpenAPI][CmsSection] - define blocks as required array
-    cmsPageVersionId?: string;
-    /** Format: date-time */
-    createdAt: string;
-    cssClass?: string;
-    customFields?: GenericRecord;
-    extensions?: {
-      swagCmsExtensionsScrollNavigation?: {
-        data?: {
-          /** @example 425b8d6ec722d74191c6d39370af19dc */
-          id?: string;
-          /** @example swag_cms_extensions_scroll_navigation */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /cms-section/d08def49fa8924d6f4a32bdb448d5fba/swagCmsExtensionsScrollNavigation
-           */
-          related?: string;
-        };
-      };
-    };
-    id?: string;
-    mobileBehavior?: string;
-    name?: string;
-    page?: components["schemas"]["CmsPage"];
-    pageId: string;
-    /** Format: int64 */
-    position: number;
-    sizingMode?: string;
-    type: string;
-    /** Format: date-time */
-    updatedAt?: string;
-    visibility?: {
-      desktop?: boolean;
-      mobile?: boolean;
-      tablet?: boolean;
-    };
-  };
-  /** Search parameters. For more information, see our documentation on [Search Queries](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#structure) */
   Criteria: {
-    /** Used to perform aggregations on the search result. For more information, see [Search Queries > Aggregations](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#aggregations) */
-    aggregations?: {
-      /** The field you want to aggregate over. */
-      field: string;
-      /** Give your aggregation an identifier, so you can find it easier */
-      name: string;
-      /** The type of aggregation */
-      type: string;
-      /** Used to perform aggregations on the search result. For more information, see [Search Queries > Aggregations](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#aggregations) */
-      aggregation?: {
-        /** The field you want to aggregate over. */
-        field: string;
-        /** Give your aggregation an identifier, so you can find it easier */
-        name: string;
-        /** The type of aggregation */
-        type: string;
-      };
-    }[];
-    includes?: GenericRecord; // TODO: [OpenAPI][Criteria] - define includes properly
-    /** Used to fetch associations which are not fetched by default. */
-    associations?: GenericRecord;
+    aggregations?: components["schemas"]["Aggregations"];
+    /** Associations to include. For more information, see [Search Queries > Associations](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#associations) */
+    associations?: GenericRecord; // TODO: [OpenAPI][Criteria] - associations should be defined properly, it's not an array and not nested "Criteria"
     /** Fields which should be returned in the search result. */
     fields?: string[];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
-    filter?: {
-      // TODO: [OpenAPI][Criteria] - there can be different filters, for example `equalsAny` can have array as value
-      field: string;
-      type: string;
-      value?: string | string[] | boolean;
-      parameters?: {
-        gte?: string;
-        lte?: string;
-      };
-    }[];
+    filter?: (
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
+    )[];
     /** Perform groupings over certain fields */
     grouping?: string[];
+    /** List of ids to search for */
+    ids?: string[];
+    includes?: components["schemas"]["Include"];
     /** Number of items per result page */
     limit?: number;
     /** Search result page */
     page?: number;
     /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
-    "post-filter"?: {
-      field: string;
-      type: string;
-      value: string;
-    }[];
+    "post-filter"?: (
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
+    )[];
+    /** List of queries to restrict the search result. For more information, see [Search Queries > Query](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#query) */
+    query?: string; // components["schemas"]["Query"][]; TODO: [OpenAPI][Criteria] - query is probably only string
     /** Sorting in the search result. */
-    sort?: {
-      field: string;
-      naturalSorting?: boolean;
-      order?: string;
-    }[];
-    /**
-     * Whether the total for the total number of hits should be determined for the search query. none = disabled total count, exact = calculate exact total amount (slow), next-pages = calculate only for next page (fast)
-     * @default none
-     * @enum {string}
-     */
-    "total-count-mode"?: "none" | "exact" | "next-pages";
+    sort?: components["schemas"]["Sort"][];
+    /** Search term */
+    term?: string;
+    "total-count-mode"?: components["schemas"]["TotalCountMode"];
   };
-  CrossSellingElementCollection: {
-    // TODO: [OpenAPI][CrossSellingElementCollection] - define CrossSellingElement instead of collection
-    crossSelling: {
-      // TODO: [OpenAPI][CrossSellingElementCollection] - define crossSelling as required
-      active?: boolean;
-      /** Format: int32 */
-      limit?: number;
-      name?: string;
-      /** Format: int32 */
-      position?: number;
-      productId?: string;
-      productStreamId?: string;
-      sortBy?: string;
-      sortDirection?: string;
-      type?: string;
-    };
-    products: components["schemas"]["Product"][]; // TODO: [OpenAPI][CrossSellingElementCollection] - define products array as required
-    /** Format: int32 */
-    total?: number;
-  }[];
-  /** Added since version: 6.0.0.0 */
-  Customer: {
-    accountType: string;
-    active?: boolean;
-    activeBillingAddress: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][Customer] - define activeBillingAddress as required
-    activeShippingAddress: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][Customer] - define activeShippingAddress as required
-    addresses?: components["schemas"]["CustomerAddress"][];
-    affiliateCode?: string;
-    birthday?: string;
-    campaignCode?: string;
-    company?: string;
-    /** Format: date-time */
-    createdAt: string;
-    createdById?: string;
-    customerNumber: string;
-    customFields?: GenericRecord;
-    defaultBillingAddress?: components["schemas"]["CustomerAddress"];
-    defaultBillingAddressId: string;
-    defaultPaymentMethod?: components["schemas"]["PaymentMethod"];
-    defaultPaymentMethodId: string;
-    defaultShippingAddress?: components["schemas"]["CustomerAddress"];
-    defaultShippingAddressId: string;
-    /** Format: date-time */
-    doubleOptInConfirmDate?: string;
-    /** Format: date-time */
-    doubleOptInEmailSentDate?: string;
-    doubleOptInRegistration?: boolean;
-    email: string;
-    extensions?: {
-      specificFeatures?: {
-        data?: {
-          /** @example 5cfb6fcb7542e25892e1a35cd6a06c54 */
-          id?: string;
-          /** @example customer_specific_features */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /customer/ce26601dac0dea138b7295f02b7620a7/specificFeatures
-           */
-          related?: string;
-        };
-      };
-    };
-    /** Format: date-time */
-    firstLogin?: string;
-    firstName: string;
-    group?: components["schemas"]["CustomerGroup"];
-    groupId: string;
-    guest?: boolean;
-    hash?: string;
-    id?: string;
-    language?: components["schemas"]["Language"];
-    languageId: string;
-    /** Format: date-time */
-    lastLogin?: string;
-    lastName: string;
-    /** Format: date-time */
-    lastOrderDate?: string;
-    lastPaymentMethod?: components["schemas"]["PaymentMethod"];
-    lastPaymentMethodId?: string;
-    /** Format: int64 */
-    orderCount?: number;
-    /** Format: float */
-    orderTotalAmount?: number;
-    /** Format: int64 */
-    reviewCount?: number;
-    salesChannelId: string;
-    salutation?: components["schemas"]["Salutation"];
-    salutationId?: string;
-    tagIds?: readonly string[];
-    tags?: components["schemas"]["Tag"][];
-    title?: string;
-    /** Format: date-time */
-    updatedAt?: string;
-    updatedById?: string;
-    vatIds?: string[];
-  };
-  /** Added since version: 6.0.0.0 */
-  CustomerAddress: {
-    additionalAddressLine1?: string;
-    additionalAddressLine2?: string;
-    city: string;
-    company?: string;
-    country?: components["schemas"]["Country"];
-    countryId: string;
-    countryState?: components["schemas"]["CountryState"];
-    countryStateId?: string;
-    /** Format: date-time */
-    createdAt: string;
-    customerId: string;
-    customFields?: GenericRecord;
-    department?: string;
-    firstName: string;
-    id: string; // TODO: [OpenAPI][CustomerAddress] - make `id` required
-    lastName: string;
-    phoneNumber?: string;
-    salutation?: components["schemas"]["Salutation"];
-    salutationId?: string;
-    street: string;
-    title?: string;
-    /** Format: date-time */
-    updatedAt?: string;
-    zipcode?: string;
-  };
-  /** Added since version: 6.0.0.0 */
-  CustomerGroup: {
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    displayGross?: boolean;
-    id?: string;
-    name: string;
-    registrationActive?: boolean;
-    registrationIntroduction?: string;
-    registrationOnlyCompanyRegistration?: boolean;
-    registrationSeoMetaDescription?: string;
-    registrationTitle?: string;
-    // TODO: [OpenAPI][CustomerGroup] - make `translated` required
-    translated: {
-      name?: string;
-      registrationIntroduction?: string;
-      registrationSeoMetaDescription?: string;
-      registrationTitle?: string;
-    };
-    /** Format: date-time */
-    updatedAt?: string;
-  };
-  /** Added since version: 6.0.0.0 */
-  Document: {
-    // TODO: [OpenAPI][Document] - define config properly
-    config: {
-      name: string;
-      title: string;
-    };
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    deepLinkCode: string;
-    dependentDocuments?: components["schemas"]["Document"][];
-    documentMediaFile?: components["schemas"]["Media"];
-    documentMediaFileId?: string;
-    documentNumber?: string;
-    documentType?: components["schemas"]["DocumentType"];
-    documentTypeId: string;
-    fileType: string;
-    id: string; // TODO: [OpenAPI][Document] - make `id` required
-    order?: components["schemas"]["Order"];
-    orderId: string;
-    orderVersionId?: string;
-    referencedDocument?: components["schemas"]["Document"];
-    referencedDocumentId?: string;
-    sent?: boolean;
-    static?: boolean;
-    /** Format: date-time */
-    updatedAt?: string;
-  };
-  /** Added since version: 6.4.0.0 */
-  LandingPage: {
-    apiAlias: "landing_page"; // TODO: [OpenAPI][LandingPage] - add `apiAlias` definition to schema
-    active?: boolean;
-    cmsPage?: components["schemas"]["CmsPage"];
-    cmsPageId?: string;
-    cmsPageVersionId?: string;
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    id?: string;
-    keywords?: string;
-    metaDescription?: string;
-    metaTitle?: string;
-    name: string;
-    seoUrls?: components["schemas"]["SeoUrl"][];
-    slotConfig?: GenericRecord;
-    translated?: {
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      keywords?: string;
-      metaDescription?: string;
-      metaTitle?: string;
-      name?: string;
-      url?: string;
-      versionId?: string;
-    };
-    /** Format: date-time */
-    updatedAt?: string;
-    url: string;
-    versionId?: string;
-  };
-  LineItem: {
-    description?: string;
-    good?: boolean;
-    id: string; // TODO: [OpenAPI][LineItem] - make `id` required
-    cover?: components["schemas"]["ProductMedia"]; // TODO: [OpenAPI][LineItem] - add `cover` definition to schema
-    deliveryInformation: {
-      // TODO: [OpenAPI][LineItem] - define `deliveryInformation` object and find out what's inside (`cart_delivery_information` entity)
-      stock: number;
-    };
-    label?: string;
-    modified?: boolean;
-    /** Format: int32 */
-    quantity: number; // TODO: [OpenAPI][LineItem] - make `quantity` required
-    payload: {
-      // TODO: [OpenAPI][LineItem] - add `payload` definition to schema (find out what's inside)
-      options: Array<{
-        group: string;
-        option: string;
-        translated: {
-          [key: string]: string;
-        };
-      }>;
-      name?: string;
-    };
-    price: {
-      // TODO: [OpenAPI][LineItem] - define price object, also UNIFY price objects across responses
-      listPrice?: {
-        /** Format: float */
-        discount?: number;
-        /** Format: float */
-        percentage?: number;
-        /** Format: float */
-        price?: number;
-      };
-      /** Format: int64 */
-      quantity: number;
-      referencePrice?: GenericRecord;
-      regulationPrice?: {
-        /** Format: float */
-        price?: number;
-      };
-      taxRules?: GenericRecord;
-      /** Format: float */
-      totalPrice: number;
-      /** Format: float */
-      unitPrice: number;
-    };
-    referencedId?: string;
-    removable?: boolean;
-    stackable?: boolean;
-    states: string[]; // TODO: [OpenAPI][LineItem] - add definition of `states` array, also union type of possible states
-    type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][LineItem] - define type as required and string union type -> see also #456
-  };
-  /** Added since version: 6.0.0.0 */
-  Media: {
-    alt?: string;
-    config?: GenericRecord;
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    extensions?: {
-      mediaAiTag?: {
-        data?: {
-          /** @example 3c88197809d464216a8c40a8db191b38 */
-          id?: string;
-          /** @example media_ai_tag */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /media/3b563524fdb17b4a86590470d40bef74/mediaAiTag
-           */
-          related?: string;
-        };
-      };
-    };
-    fileExtension: string; // TODO: [OpenAPI][Media] fileExtension field should be defined as required
-    fileName: string; // TODO: [OpenAPI][Media] fileName field should be defined as required
-    /** Format: int64 */
-    fileSize?: number;
-    /** Runtime field, cannot be used as part of the criteria. */
-    hasFile?: boolean;
-    id?: string;
-    // TODO: [OpenAPI][Media] metaData field should be defined properly
-    metaData?: {
-      /** Format: int64 */
-      height?: number;
-      /** Format: int64 */
-      width?: number;
-    };
-    mimeType?: string;
-    path?: string;
-    private?: boolean;
-    thumbnails?: components["schemas"]["MediaThumbnail"][];
-    title?: string;
-    translated?: {
-      alt?: string;
-      fileExtension?: string;
-      fileName?: string;
-      mimeType?: string;
-      path?: string;
-      title?: string;
-      uploadedAt?: string;
-      url?: string;
-    };
-    /** Format: date-time */
-    updatedAt?: string;
-    /** Format: date-time */
-    uploadedAt?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
-    url: string; // TODO: [OpenAPI][Media] url field should be defined as required
-  };
-  /** Added since version: 6.0.0.0 */
-  MediaThumbnail: {
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    /** Format: int64 */
-    height: number;
-    id?: string;
-    mediaId: string;
-    path?: string;
-    /** Format: date-time */
-    updatedAt?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
-    url: string; // TODO: [OpenAPI][MediaThumbnail] url should be defined as required
-    /** Format: int64 */
-    width: number;
-  };
-  NavigationType: // TODO: [OpenAPI][NavigationType] - add `NavigationType` definition to schema
-  "main-navigation" | "footer-navigation" | "service-navigation";
-  /** Added since version: 6.0.0.0 */
-  Order: {
-    addresses?: components["schemas"]["OrderAddress"][];
-    affiliateCode?: string;
-    /** Format: float */
-    amountNet?: number;
-    /** Format: float */
-    amountTotal?: number;
-    billingAddress?: components["schemas"]["OrderAddress"];
-    billingAddressId: string;
-    billingAddressVersionId?: string;
-    campaignCode?: string;
-    /** Format: date-time */
-    createdAt: string;
-    createdById?: string;
-    currency?: components["schemas"]["Currency"];
-    /** Format: float */
-    currencyFactor: number;
-    currencyId: string;
-    customerComment?: string;
-    customFields?: GenericRecord;
-    deepLinkCode?: string;
-    deliveries?: components["schemas"]["OrderDelivery"][];
-    documents: components["schemas"]["Document"][]; // TODO: [OpenAPI][Order] - documents should be defined as required
-    extensions?: {
-      returns?: {
-        data?: {
-          /** @example 7fff84525c6516919851a9005373f87e */
-          id?: string;
-          /** @example order_return */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /order/a240fa27925a635b08dc28c9e4f9216d/returns
-           */
-          related?: string;
-        };
-      };
-      subscription?: {
-        data?: {
-          /** @example b48b13e73a6ac2a86dc54425dd24d9ff */
-          id?: string;
-          /** @example subscription */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /order/a240fa27925a635b08dc28c9e4f9216d/subscription
-           */
-          related?: string;
-        };
-      };
-    };
-    id: string; // TODO: [OpenAPI][Order] id field should be defined as required
-    language?: components["schemas"]["Language"];
-    languageId: string;
-    lineItems?: components["schemas"]["OrderLineItem"][];
-    orderCustomer?: components["schemas"]["OrderCustomer"];
-    orderDate: string; // TODO: [OpenAPI][Order] orderDate field should be defined as required
-    /** Format: date-time */
-    orderDateTime: string;
-    orderNumber?: string;
-    /** Format: float */
-    positionPrice?: number;
-    price?: {
-      calculatedTaxes?: GenericRecord;
-      /** Format: float */
-      netPrice: number;
-      /** Format: float */
-      positionPrice: number;
-      /** Format: float */
-      rawTotal: number;
-      taxRules?: GenericRecord;
-      taxStatus: string;
-      /** Format: float */
-      totalPrice: number;
-    };
-    salesChannelId: string;
-    shippingCosts?: {
-      calculatedTaxes?: GenericRecord;
-      listPrice?: {
-        /** Format: float */
-        discount?: number;
-        /** Format: float */
-        percentage?: number;
-        /** Format: float */
-        price?: number;
-      };
-      /** Format: int64 */
-      quantity: number;
-      referencePrice?: GenericRecord;
-      regulationPrice?: {
-        /** Format: float */
-        price?: number;
-      };
-      taxRules?: GenericRecord;
-      /** Format: float */
-      totalPrice: number;
-      /** Format: float */
-      unitPrice: number;
-    };
-    /** Format: float */
-    shippingTotal?: number;
-    source?: string;
-    stateMachineState: components["schemas"]["StateMachineState"]; // TODO: [OpenAPI][Order] stateMachineState field should be defined as required
-    tags?: components["schemas"]["Tag"][];
-    taxStatus?: string;
-    transactions?: components["schemas"]["OrderTransaction"][];
-    /** Format: date-time */
-    updatedAt?: string;
-    updatedById?: string;
-    versionId?: string;
-  };
-  /** Added since version: 6.0.0.0 */
-  OrderAddress: {
-    additionalAddressLine1?: string;
-    additionalAddressLine2?: string;
-    city: string;
-    company?: string;
-    country?: components["schemas"]["Country"];
-    countryId: string;
-    countryState?: components["schemas"]["CountryState"];
-    countryStateId?: string;
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    department?: string;
-    firstName: string;
-    id: string; // TODO: [OpenAPI][OrderAddress] id field should be defined as required
-    lastName: string;
-    phoneNumber?: string;
-    salutation?: components["schemas"]["Salutation"];
-    street: string;
-    title?: string;
-    /** Format: date-time */
-    updatedAt?: string;
-    vatId?: string;
-    versionId?: string;
-    zipcode?: string;
-  };
-  /** Added since version: 6.0.0.0 */
-  OrderLineItem: {
-    children: components["schemas"]["OrderLineItem"][];
-    cover?: components["schemas"]["Media"];
-    coverId?: string;
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    description?: string;
-    downloads?: components["schemas"]["OrderLineItemDownload"][];
-    extensions?: {
-      returns?: {
-        data?: {
-          /** @example 7fff84525c6516919851a9005373f87e */
-          id?: string;
-          /** @example order_return_line_item */
-          type?: string;
-        }[];
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /order-line-item/40b401ac0b29ac5c5c8ffce649fdef62/returns
-           */
-          related?: string;
-        };
-      };
-      state?: {
-        data?: {
-          /** @example 9ed39e2ea931586b6a985a6942ef573e */
-          id?: string;
-          /** @example state_machine_state */
-          type?: string;
-        };
-        links?: {
-          /**
-           * Format: uri-reference
-           * @example /order-line-item/40b401ac0b29ac5c5c8ffce649fdef62/state
-           */
-          related?: string;
-        };
-      };
-    };
-    good?: boolean;
-    id?: string;
-    identifier: string;
-    label: string;
-    orderDeliveryPositions?: components["schemas"]["OrderDeliveryPosition"][];
-    orderId: string;
-    orderVersionId?: string;
-    parent?: components["schemas"]["OrderLineItem"];
-    parentId?: string;
-    parentVersionId?: string;
-    payload: components["schemas"]["Product"]; // TODO: [OpenAPI][OrderLineItem] define possible payloads for order line items
-    /** Format: int64 */
-    position: number;
-    priceDefinition?: GenericRecord;
-    productId?: string;
-    productVersionId?: string;
-    /** Format: int64 */
-    quantity: number;
-    referencedId?: string;
-    removable?: boolean;
-    stackable?: boolean;
-    states: string[];
-    /** Format: float */
-    totalPrice?: number;
-    type?: string;
-    /** Format: float */
-    unitPrice?: number;
-    /** Format: date-time */
-    updatedAt?: string;
-    versionId?: string;
-  };
-  /** Added since version: 6.4.19.0 */
-  OrderLineItemDownload: {
-    accessGranted: boolean;
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    id: string; // TODO: [OpenAPI][OrderLineItemDownload] id should be defined as required
-    media: components["schemas"]["Media"]; // TODO: [OpenAPI][OrderLineItemDownload] media should be defined as required
-    mediaId: string;
-    orderLineItem?: components["schemas"]["OrderLineItem"];
-    orderLineItemId: string;
-    orderLineItemVersionId?: string;
-    /** Format: int64 */
-    position: number;
-    /** Format: date-time */
-    updatedAt?: string;
-    versionId?: string;
-  };
-  OrderRouteResponse: {
-    // TODO: [OpenAPI][OrderRouteResponse] - `orders` field should be required
-    orders: {
-      // TODO: [OpenAPI][OrderRouteResponse] orders field should be defined properly
-      elements: components["schemas"]["Order"][];
-    } & components["schemas"]["EntitySearchResult"];
-    /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
-    paymentChangeable?: { [key: string]: boolean }; // TODO: [OpenAPI][OrderRouteResponse] - define `paymentChangeable` object properly
-  };
-  /** Added since version: 6.0.0.0 */
-  PaymentMethod: {
-    active?: boolean;
-    afterOrderEnabled?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    asynchronous?: boolean;
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    description?: string;
-    distinguishableName?: string;
-    id: string; // TODO: [OpenAPI][PaymentMethod] id should be defined as required
-    media?: components["schemas"]["Media"];
-    mediaId?: string;
-    name: string;
-    /** Format: int64 */
-    position?: number;
-    /** Runtime field, cannot be used as part of the criteria. */
-    prepared?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    recurring?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    refundable?: boolean;
-    /** Runtime field, cannot be used as part of the criteria. */
-    shortName?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
-    synchronous?: boolean;
-    technicalName?: string;
-    translated?: {
-      description?: string;
-      distinguishableName?: string;
-      mediaId?: string;
-      name?: string;
-      shortName?: string;
-      technicalName?: string;
-    };
-    /** Format: date-time */
-    updatedAt?: string;
-  };
-  /** Added since version: 6.0.0.0 */
-  // TODO: [OpenAPI][Product] - null should be undefined by default to decrease payload size
   Product: {
-    apiAlias: "product"; // TODO: [OpenAPI][Product] apiAlias field should be defined in schema as string literal
     active?: boolean;
+    /** @enum {string} */
+    apiAlias: "product";
     available?: boolean;
     /** Format: int64 */
     availableStock?: number;
-    calculatedCheapestPrice?: Schemas["CalculatedPrice"]; // TODO: [OpenAPI][Product] calculatedCheapestPrice field should be defined exactly what it is
+    calculatedCheapestPrice?: {
+      // TODO: [OpenAPI][Product] - calculatedCheapestPrice should be defined as a separate entity
+      /** @enum {string} */
+      apiAlias?: "calculated_cheapest_price";
+      hasRange?: boolean;
+      listPrice?: components["schemas"]["ListPrice"] | null;
+      quantity?: number;
+      referencePrice?: components["schemas"]["ReferencePrice"] | null;
+      regulationPrice?: {
+        price: number;
+      } | null;
+      totalPrice?: number;
+      unitPrice?: number;
+      variantId?: string | null;
+    };
     /**
      * Format: int64
      * Runtime field, cannot be used as part of the criteria.
      */
     calculatedMaxPurchase?: number;
-    // TODO: [OpenAPI][Product] calculatedPrice field should be defined properly
-    calculatedPrice?: Schemas["CalculatedPrice"];
-    calculatedPrices?: Schemas["CalculatedPrice"][]; // TODO: [OpenAPI][Product] calculatedPrices field should be defined as an array and required!
+    calculatedPrice: components["schemas"]["CalculatedPrice"];
+    calculatedPrices: components["schemas"]["CalculatedPrice"][];
     canonicalProduct?: components["schemas"]["Product"];
     canonicalProductId?: string;
+    canonicalProductVersionId?: string;
     categories?: components["schemas"]["Category"][];
     categoriesRo?: components["schemas"]["Category"][];
     categoryIds?: readonly string[];
@@ -1006,7 +211,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     crossSellings?: components["schemas"]["ProductCrossSelling"][];
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     deliveryTime?: components["schemas"]["DeliveryTime"];
     deliveryTimeId?: string;
     description?: string;
@@ -1047,7 +252,7 @@ export type Schemas = {
     };
     /** Format: float */
     height?: number;
-    id: string; // TODO: [OpenAPI][Product] id field should be required in schema
+    id: string;
     isCloseout?: boolean;
     /** Runtime field, cannot be used as part of the criteria. */
     isNew?: boolean;
@@ -1094,10 +299,10 @@ export type Schemas = {
     restockTime?: number;
     /** Format: int64 */
     sales?: number;
-    seoCategory: components["schemas"]["Category"]; // TODO: [OpenAPI][Product] seoCategory field should be defined as required
+    seoCategory: components["schemas"]["Category"];
     seoUrls?: components["schemas"]["SeoUrl"][];
     shippingFree?: boolean;
-    sortedProperties?: GenericRecord;
+    sortedProperties?: Record<string, never>;
     states?: readonly string[];
     /** Format: int64 */
     stock: number;
@@ -1107,9 +312,11 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     tax?: components["schemas"]["Tax"];
     taxId: string;
-    // TODO: [OpenAPI][Product] translated field should be defined properly
     translated: {
+      // TODO: [OpenAPI][Product] - translated should be required
+      apiAlias?: string;
       canonicalProductId?: string;
+      canonicalProductVersionId?: string;
       cmsPageId?: string;
       cmsPageVersionId?: string;
       coverId?: string;
@@ -1139,69 +346,746 @@ export type Schemas = {
     unitId?: string;
     /** Format: date-time */
     updatedAt?: string;
-    // TODO: [OpenAPI][Product] variantListingConfig field should be defined in schema
     variantListingConfig?: {
-      displayParent: boolean;
-    };
+      displayParent?: boolean;
+    } | null;
     versionId?: string;
     /** Format: float */
     weight?: number;
     /** Format: float */
     width?: number;
   };
-  /** Represents a product along with detailed information required to display a variant selection. */
-  ProductDetailResponse: {
-    /** List of property groups with their corresponding options and information on how to display them. */
-    configurator?: components["schemas"]["PropertyGroup"][];
-    product: components["schemas"]["Product"]; // TODO: [OpenAPI][ProductDetailResponse] product field should be defined as required
-  };
-  ProductListingResult: components["schemas"]["EntitySearchResult"] & {
-    /** Contains the available sorting. These can be used to show a sorting select-box in the product listing. */
-    availableSortings?: Array<{
-      // TODO: [OpenAPI][ProductListingResult] availableSortings field should be defined properly
-      label: string;
-      translated: {
-        label: string;
+  ProductJsonApi: components["schemas"]["resource"] & {
+    active?: boolean;
+    available?: boolean;
+    /** Format: int64 */
+    availableStock?: number;
+    calculatedCheapestPrice?: Record<string, never>;
+    /**
+     * Format: int64
+     * Runtime field, cannot be used as part of the criteria.
+     */
+    calculatedMaxPurchase?: number;
+    calculatedPrice?: Record<string, never>;
+    calculatedPrices?: Record<string, never>[];
+    canonicalProductId?: string;
+    canonicalProductVersionId?: string;
+    categoryIds?: readonly string[];
+    categoryTree?: readonly string[];
+    /** Format: int64 */
+    childCount?: number;
+    cmsPageId?: string;
+    cmsPageVersionId?: string;
+    coverId?: string;
+    /** Format: date-time */
+    createdAt: string;
+    customFields?: Record<string, never>;
+    deliveryTimeId?: string;
+    description?: string;
+    displayGroup?: string;
+    ean?: string;
+    extensions?: {
+      reviewSummaries?: {
+        data?: {
+          /** @example c9c718522e64ffa5effb26cef94f4849 */
+          id?: string;
+          /** @example product_review_summary */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/reviewSummaries
+           */
+          related?: string;
+        };
       };
-      key: string;
-      priority: number;
-      apiAlias: "product_sorting";
-    }>;
-    /** Contains the state of the filters. These can be used to create listing filters. */
-    currentFilters: {
-      // TODO: [OpenAPI][ProductListingResult] currentFilters field should be required
-      manufacturer?: string[]; // TODO: [OpenAPI][ProductListingResult] currentFilters.manufacturer field should be defined properly
-      navigationId?: string;
-      price?: {
-        max?: number;
-        min?: number;
+      swagCustomizedProductsTemplate?: {
+        data?: {
+          /** @example 6e9fad30dd3cb84748a01bb8152f4769 */
+          id?: string;
+          /** @example swag_customized_products_template */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/swagCustomizedProductsTemplate
+           */
+          related?: string;
+        };
       };
-      properties?: string[]; // TODO: [OpenAPI][ProductListingResult] currentFilters.properties field should be defined properly
-      rating?: number;
-      "shipping-free"?: boolean;
-      search: string; // TODO: [OpenAPI][ProductListingResult] search field should be defined properly
     };
-    elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][ProductListingResult] elements field should be defined as required
-    sorting?: string;
+    /** Format: float */
+    height?: number;
+    id: string;
+    isCloseout?: boolean;
+    /** Runtime field, cannot be used as part of the criteria. */
+    isNew?: boolean;
+    keywords?: string;
+    /** Format: float */
+    length?: number;
+    manufacturerId?: string;
+    manufacturerNumber?: string;
+    markAsTopseller?: boolean;
+    /** Format: int64 */
+    maxPurchase?: number;
+    metaDescription?: string;
+    metaTitle?: string;
+    /** Format: int64 */
+    minPurchase?: number;
+    // TODO: [OpenAPI][ProductJsonApi] - add options definition
+    options: Array<{
+      group: string;
+      option: string;
+      translated: {
+        [key: string]: string;
+      };
+    }>;
+    name: string;
+    optionIds?: readonly string[];
+    packUnit?: string;
+    packUnitPlural?: string;
+    parentId?: string;
+    parentVersionId?: string;
+    productManufacturerVersionId?: string;
+    productMediaVersionId?: string;
+    productNumber: string;
+    propertyIds?: readonly string[];
+    /** Format: int64 */
+    purchaseSteps?: number;
+    /** Format: float */
+    purchaseUnit?: number;
+    /** Format: float */
+    ratingAverage?: number;
+    /** Format: float */
+    referenceUnit?: number;
+    relationships?: {
+      canonicalProduct?: {
+        data?: {
+          /** @example 023995a50b56c0de077323e958b2bbcd */
+          id?: string;
+          /** @example product */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/canonicalProduct
+           */
+          related?: string;
+        };
+      };
+      categories?: {
+        data?: {
+          /** @example b0b5ccb4a195a07fd3eed14affb8695f */
+          id?: string;
+          /** @example category */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/categories
+           */
+          related?: string;
+        };
+      };
+      categoriesRo?: {
+        data?: {
+          /** @example 7f0702d3a90d965b8c9158c451f43fdb */
+          id?: string;
+          /** @example category */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/categoriesRo
+           */
+          related?: string;
+        };
+      };
+      children?: {
+        data?: {
+          /** @example 268184c12df027f536154d099d497b31 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/children
+           */
+          related?: string;
+        };
+      };
+      cmsPage?: {
+        data?: {
+          /** @example 7b1460918b1abb93311108f3dc021c9b */
+          id?: string;
+          /** @example cms_page */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/cmsPage
+           */
+          related?: string;
+        };
+      };
+      configuratorSettings?: {
+        data?: {
+          /** @example c0827fee13725d41f1fd7e292243f5aa */
+          id?: string;
+          /** @example product_configurator_setting */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/configuratorSettings
+           */
+          related?: string;
+        };
+      };
+      cover?: {
+        data?: {
+          /** @example 41d0e299ca1abeb2094852da042165c7 */
+          id?: string;
+          /** @example product_media */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/cover
+           */
+          related?: string;
+        };
+      };
+      crossSellings?: {
+        data?: {
+          /** @example 89936e14544d1b403cecef938101b6b0 */
+          id?: string;
+          /** @example product_cross_selling */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/crossSellings
+           */
+          related?: string;
+        };
+      };
+      deliveryTime?: {
+        data?: {
+          /** @example 8c888ae25a7bd42057370e31f7e01044 */
+          id?: string;
+          /** @example delivery_time */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/deliveryTime
+           */
+          related?: string;
+        };
+      };
+      downloads?: {
+        data?: {
+          /** @example d07d50a751bc6ddf12bf3af0efee9b45 */
+          id?: string;
+          /** @example product_download */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/downloads
+           */
+          related?: string;
+        };
+      };
+      mainCategories?: {
+        data?: {
+          /** @example 1fb731fc4139cbb575429e28846f0c39 */
+          id?: string;
+          /** @example main_category */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/mainCategories
+           */
+          related?: string;
+        };
+      };
+      manufacturer?: {
+        data?: {
+          /** @example c2904bca62b22443d6cf5e9d89cab204 */
+          id?: string;
+          /** @example product_manufacturer */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/manufacturer
+           */
+          related?: string;
+        };
+      };
+      media?: {
+        data?: {
+          /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
+          id?: string;
+          /** @example product_media */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/media
+           */
+          related?: string;
+        };
+      };
+      options?: {
+        data?: {
+          /** @example 93da65a9fd0004d9477aeac024e08e15 */
+          id?: string;
+          /** @example property_group_option */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/options
+           */
+          related?: string;
+        };
+      };
+      parent?: {
+        data?: {
+          /** @example d0e45878043844ffc41aac437e86b602 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/parent
+           */
+          related?: string;
+        };
+      };
+      productReviews?: {
+        data?: {
+          /** @example 01e78541ea343ed72424a5222796a4cd */
+          id?: string;
+          /** @example product_review */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/productReviews
+           */
+          related?: string;
+        };
+      };
+      properties?: {
+        data?: {
+          /** @example 74693d2fc58b46bd06410f278e39aa71 */
+          id?: string;
+          /** @example property_group_option */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/properties
+           */
+          related?: string;
+        };
+      };
+      seoCategory?: {
+        data?: {
+          /** @example 9354d004d12e03d35ad8292bf0bb234d */
+          id?: string;
+          /** @example category */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/seoCategory
+           */
+          related?: string;
+        };
+      };
+      seoUrls?: {
+        data?: {
+          /** @example 5321b5a71127b8b98cdd4b068ad56c4c */
+          id?: string;
+          /** @example seo_url */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/seoUrls
+           */
+          related?: string;
+        };
+      };
+      streams?: {
+        data?: {
+          /** @example 2f6f4768f1c2d7c8f1f54823723f1a70 */
+          id?: string;
+          /** @example product_stream */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/streams
+           */
+          related?: string;
+        };
+      };
+      tags?: {
+        data?: {
+          /** @example d57ac45256849d9b13e2422d91580fb9 */
+          id?: string;
+          /** @example tag */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/tags
+           */
+          related?: string;
+        };
+      };
+      tax?: {
+        data?: {
+          /** @example 06565e5611f23fdf8cc43e5077b92b54 */
+          id?: string;
+          /** @example tax */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/tax
+           */
+          related?: string;
+        };
+      };
+      unit?: {
+        data?: {
+          /** @example 3e34bdebd9bd5edda27e8728904a2552 */
+          id?: string;
+          /** @example unit */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/unit
+           */
+          related?: string;
+        };
+      };
+    };
+    /** Format: date-time */
+    releaseDate?: string;
+    /** Format: int64 */
+    restockTime?: number;
+    /** Format: int64 */
+    sales?: number;
+    shippingFree?: boolean;
+    sortedProperties?: Record<string, never>;
+    states?: readonly string[];
+    /** Format: int64 */
+    stock: number;
+    streamIds?: readonly string[];
+    tagIds?: readonly string[];
+    taxId: string;
+    translated?: {
+      canonicalProductId?: string;
+      canonicalProductVersionId?: string;
+      cmsPageId?: string;
+      cmsPageVersionId?: string;
+      coverId?: string;
+      deliveryTimeId?: string;
+      description?: string;
+      displayGroup?: string;
+      ean?: string;
+      keywords?: string;
+      manufacturerId?: string;
+      manufacturerNumber?: string;
+      metaDescription?: string;
+      metaTitle?: string;
+      name?: string;
+      packUnit?: string;
+      packUnitPlural?: string;
+      parentId?: string;
+      parentVersionId?: string;
+      productManufacturerVersionId?: string;
+      productMediaVersionId?: string;
+      productNumber?: string;
+      releaseDate?: string;
+      taxId?: string;
+      unitId?: string;
+      versionId?: string;
+    };
+    unitId?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    versionId?: string;
+    /** Format: float */
+    weight?: number;
+    /** Format: float */
+    width?: number;
   };
-  /** Added since version: 6.0.0.0 */
+  CalculatedPrice: {
+    /** @enum {string} */
+    apiAlias: "calculated_price";
+    calculatedTaxes: {
+      /** @enum {string} */
+      apiAlias: "cart_tax_calculated";
+      price: number;
+      tax: number;
+      taxRate: number;
+    }[];
+    hasRange: boolean;
+    listPrice: components["schemas"]["ListPrice"] | null;
+    quantity: number;
+    positionPrice: number; // TODO: [OpenAPI][CalculatedPrice] - positionPrice should be added to definition
+    referencePrice: components["schemas"]["ReferencePrice"] | null;
+    regulationPrice: {
+      /** @enum {string} */
+      apiAlias?: "cart_regulation_price";
+      price?: number;
+    } | null;
+    /** Currently active tax rules and/or rates */
+    taxRules?: {
+      name?: string;
+      /** Format: float */
+      taxRate?: number;
+    }[];
+    totalPrice: number;
+    unitPrice: number;
+    /** Format: ^[0-9a-f]{32}$ */
+    variantId?: string | null;
+  };
+  DeliveryInformation: {
+    /** @enum {string} */
+    apiAlias?: "cart_delivery_information";
+    deliveryTime?: {
+      /** @enum {string} */
+      apiAlias?: "cart_delivery_time";
+      max?: number;
+      min?: number;
+      name?: string;
+      unit?: string;
+    };
+    freeDelivery?: boolean;
+    height?: number;
+    length?: number;
+    restockTime?: number;
+    stock: number; // TODO: [OpenAPI][DeliveryInformation] - stock should be required
+    weight?: number;
+    width?: number;
+  };
+  LineItem: {
+    children?: components["schemas"]["LineItem"][];
+    cover?: components["schemas"]["ProductMedia"];
+    dataContextHash?: string;
+    dataTimestamp?: string;
+    deliveryInformation: components["schemas"]["DeliveryInformation"]; // TODO: [OpenAPI][LineItem] - deliveryInformation should be required
+    description?: string;
+    good?: boolean;
+    id: string;
+    label?: string;
+    modified?: boolean;
+    modifiedByApp?: boolean;
+    payload: components["schemas"]["ProductJsonApi"]; // TODO: [OpenAPI][LineItem] - payload should be required
+    price?: {
+      /** @enum {string} */
+      apiAlias: "calculated_price";
+      calculatedTaxes?: {
+        /** @enum {string} */
+        apiAlias: "cart_tax_calculated";
+        price: number;
+        tax: number;
+        taxRate: number;
+      }[];
+      listPrice?: components["schemas"]["ListPrice"] | null;
+      quantity: number;
+      referencePrice?: components["schemas"]["ReferencePrice"] | null;
+      regulationPrice?: {
+        /** @enum {string} */
+        apiAlias?: "cart_regulation_price";
+        price?: number;
+      } | null;
+      /** Currently active tax rules and/or rates */
+      taxRules?: {
+        name?: string;
+        /** Format: float */
+        taxRate?: number;
+      }[];
+      totalPrice: number;
+      unitPrice: number;
+    };
+    priceDefinition?: components["schemas"]["PriceDefinition"];
+    quantity: number; // TODO: [OpenAPI][LineItem] - quantity should be required
+    quantityInformation?: {
+      maxPurchase?: number;
+      minPurchase?: number;
+      purchaseSteps?: number;
+    };
+    referencedId?: string;
+    removable?: boolean;
+    stackable?: boolean;
+    states: ("is-physical" | "is-download")[]; // TODO: [OpenAPI][LineItem] - states should be required
+    type: components["schemas"]["LineItemType"];
+    uniqueIdentifier?: string;
+  };
   ProductMedia: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
-    id?: string;
+    customFields?: Record<string, never>;
+    id: string;
     media?: components["schemas"]["Media"];
     mediaId: string;
     /** Format: int64 */
     position?: number;
     productId: string;
     productVersionId?: string;
+    thumbnails?: components["schemas"]["MediaThumbnail"][]; // TODO: [OpenAPI][ProductMedia] - thumbnails should probably be defined as an array
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
-    thumbnails?: Array<components["schemas"]["MediaThumbnail"]>; // TODO: [OpenAPI][Product] thumbnails field should be defined in ProductMedia
   };
-  /** Added since version: 6.0.0.0 */
+  Media: {
+    alt?: string;
+    /** @enum {string} */
+    apiAlias: "media";
+    config?: Record<string, never>;
+    /** Format: date-time */
+    createdAt: string;
+    customFields?: Record<string, never>;
+    extensions?: {
+      mediaAiTag?: {
+        data?: {
+          /** @example 3c88197809d464216a8c40a8db191b38 */
+          id?: string;
+          /** @example media_ai_tag */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /media/3b563524fdb17b4a86590470d40bef74/mediaAiTag
+           */
+          related?: string;
+        };
+      };
+    };
+    fileExtension: string;
+    fileName: string;
+    /** Format: int64 */
+    fileSize?: number;
+    /** Runtime field, cannot be used as part of the criteria. */
+    hasFile: boolean;
+    id: string;
+    // TODO: [OpenAPI][Media] metaData field should be defined properly
+    metaData?: {
+      /** Format: int64 */
+      height?: number;
+      /** Format: int64 */
+      width?: number;
+    };
+    mimeType?: string;
+    path: string;
+    private: boolean;
+    thumbnails?: components["schemas"]["MediaThumbnail"][];
+    title?: string;
+    translated?: {
+      alt?: string;
+      apiAlias?: string;
+      fileExtension?: string;
+      fileName?: string;
+      mimeType?: string;
+      path?: string;
+      title?: string;
+      uploadedAt?: string;
+      url?: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+    /** Format: date-time */
+    uploadedAt?: string;
+    /** Runtime field, cannot be used as part of the criteria. */
+    url: string;
+  };
+  OrderRouteResponse: {
+    orders: {
+      elements: components["schemas"]["Order"][]; // TODO: [OpenAPI][OrderRouteResponse] - there should be elements field defined for search result
+    } & components["schemas"]["EntitySearchResult"];
+    /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
+    paymentChangeable?: {
+      [key: string]: boolean;
+    };
+  };
+  ProductListingResult: components["schemas"]["EntitySearchResult"] & {
+    /** @enum {string} */
+    apiAlias: "product_listing";
+    /** Contains the available sorting. These can be used to show a sorting select-box in the product listing. */
+    availableSortings: {
+      /** @enum {string} */
+      apiAlias: "product_sorting";
+      key: string;
+      label: string;
+      priority: number;
+      translated: {
+        apiAlias?: string;
+        key?: string;
+        label?: string;
+      };
+    }[];
+    /** Contains the state of the filters. These can be used to create listing filters. */
+    currentFilters: {
+      manufacturer: string[];
+      navigationId: string;
+      price: {
+        /** @default 0 */
+        max: number;
+        /** @default 0 */
+        min: number;
+      };
+      properties: string[];
+      rating?: number; // TODO: [OpenAPI][ProductListingResult] - rating should be defined the same as in body of the request
+      search: string; // TODO: [OpenAPI][ProductListingResult] - search should be required as is required in body of the request, otherwise everywhere optional
+      /** @default false */
+      "shipping-free": boolean;
+    };
+    elements: components["schemas"]["Product"][];
+    /** @enum {string} */
+    entity?: "product";
+    sorting?: string;
+  };
   ProductReview: {
     comment?: string;
     content: string;
@@ -1210,10 +1094,10 @@ export type Schemas = {
     customFields?: GenericRecord;
     customerId?: string; // TODO: [OpenAPI][ProductReview] customerId field should be defined
     externalUser?: string; // TODO: [OpenAPI][ProductReview] externalUser field should be defined
-    id: string; // TODO: [OpenAPI][ProductReview] id field should be defined as required
+    id: string;
     languageId: string;
     /** Format: float */
-    points: number; // TODO: [OpenAPI][ProductReview] points field should be defined as required
+    points: number;
     productId: string;
     productVersionId?: string;
     salesChannelId: string;
@@ -1222,22 +1106,19 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  /** Added since version: 6.0.0.0 */
+  // /** Added since version: 6.0.0.0 */
   PropertyGroupOption: {
     colorHexCode?: string;
     /** Format: date-time */
     createdAt: string;
     customFields?: GenericRecord;
-    group: {
-      // components["schemas"]["PropertyGroup"]; // TODO: [OpenAPI][PropertyGroupOption] group field should be defined and required
-      name: string;
-    };
+    group: components["schemas"]["PropertyGroup"];
     groupId: string;
-    id: string; // TODO: [OpenAPI][PropertyGroupOption] id field should be required in schema
+    id: string;
     media?: components["schemas"]["Media"];
     mediaId?: string;
     name: string;
-    option: string; // TODO: [OpenAPI][PropertyGroupOption] option field should be defined; defined as string (?)
+    option: string;
     /** Format: int64 */
     position?: number;
     // TODO: [OpenAPI][PropertyGroupOption] translated field should be defined properly
@@ -1246,11 +1127,11 @@ export type Schemas = {
       groupId?: string;
       mediaId?: string;
       name?: string;
+      option?: string;
     };
     /** Format: date-time */
     updatedAt?: string;
   };
-  /** Added since version: 6.5.3.0 */
   Quote: {
     /** Format: float */
     amountNet?: number;
@@ -1334,218 +1215,6 @@ export type Schemas = {
     userId?: string;
     versionId?: string;
   };
-  SalesChannelContext: components["schemas"]["ArrayStruct"] & {
-    /** Core context with general configuration values and state */
-    context?: {
-      currencyFactor?: number;
-      currencyId?: string;
-      /** Format: int32 */
-      currencyPrecision?: number;
-      languageIdChain?: string[]; // TODO: [OpenAPI][SalesChannelContext] languageIdChain field should be defined properly in context
-      scope?: string;
-      source?: string;
-      taxState?: string;
-      useCache?: boolean;
-      versionId?: string;
-    };
-    /** Currency associated with the current user */
-    currency?: components["schemas"]["Currency"]; // TODO: [OpenAPI][SalesChannelContext] currency field should be defined reusing Currency schema
-    // currency?: {
-    //   /** Format: int32 */
-    //   decimalPrecision?: number;
-    //   factor?: number;
-    //   isoCode?: string;
-    //   isSystemDefault?: boolean;
-    //   name?: string;
-    //   /** Format: int32 */
-    //   position?: number;
-    //   shortName?: string;
-    //   symbol?: string;
-    // };
-    /** Customer group of the current user */
-    currentCustomerGroup?: {
-      displayGross?: boolean;
-      name?: string;
-    };
-    customer?: components["schemas"]["Customer"]; // TODO: [OpenAPI][SalesChannelContext] customer field should be defined reusing Customer schema
-    // customer?: {
-    //   active?: boolean;
-    //   affiliateCode?: string;
-    //   /** Format: int32 */
-    //   autoIncrement?: number;
-    //   /** Format: date-time */
-    //   birthday?: string;
-    //   campaignCode?: string;
-    //   company?: string;
-    //   customerNumber?: string;
-    //   defaultBillingAddressId?: string;
-    //   defaultPaymentMethodId?: string;
-    //   defaultShippingAddressId?: string;
-    //   /** Format: date-time */
-    //   doubleOptInConfirmDate?: string;
-    //   /** Format: date-time */
-    //   doubleOptInEmailSentDate?: string;
-    //   doubleOptInRegistration?: boolean;
-    //   email?: string;
-    //   /** Format: date-time */
-    //   firstLogin?: string;
-    //   firstName?: string;
-    //   groupId?: string;
-    //   guest?: boolean;
-    //   hash?: string;
-    //   languageId?: string;
-    //   /** Format: date-time */
-    //   lastLogin?: string;
-    //   lastName?: string;
-    //   /** Format: date-time */
-    //   lastOrderDate?: string;
-    //   lastPaymentMethodId?: string;
-    //   legacyEncoder?: string;
-    //   legacyPassword?: string;
-    //   newsletter?: boolean;
-    //   /** Format: int32 */
-    //   orderCount?: number;
-    //   password?: string;
-    //   remoteAddress?: string;
-    //   salesChannelId?: string;
-    //   salutationId?: string;
-    //   title?: string;
-    // };
-    /** Fallback group if the default customer group is not applicable */
-    fallbackCustomerGroup?: {
-      displayGross?: boolean;
-      name?: string;
-    };
-    /** Selected payment method */
-    paymentMethod?: components["schemas"]["PaymentMethod"]; // TODO: [OpenAPI][SalesChannelContext] paymentMethod field should be defined properly reusing PaymentMethod schema
-    // paymentMethod?: {
-    //   active?: boolean;
-    //   availabilityRuleId?: string;
-    //   description?: string;
-    //   formattedHandlerIdentifier?: string;
-    //   handlerIdentifier?: string;
-    //   mediaId?: string;
-    //   name?: string;
-    //   pluginId?: string;
-    //   /** Format: int32 */
-    //   position?: number;
-    // };
-    /** Information about the current sales channel */
-    salesChannel?: {
-      accessKey?: string;
-      active?: boolean;
-      analyticsId?: string;
-      countryId?: string;
-      currencyId?: string;
-      customerGroupId?: string;
-      footerCategoryId?: string;
-      hreflangActive?: boolean;
-      hreflangDefaultDomainId?: string;
-      languageId?: string;
-      mailHeaderFooterId?: string;
-      maintenance?: boolean;
-      maintenanceIpWhitelist?: string;
-      name?: string;
-      /** Format: int32 */
-      navigationCategoryDepth?: number;
-      navigationCategoryId?: string;
-      paymentMethodId?: string;
-      serviceCategoryId?: string;
-      shippingMethodId?: string;
-      shortName?: string;
-      typeId?: string;
-    };
-    shippingLocation?: {
-      // TODO: [OpenAPI][SalesChannelContext] shippingLocation field should be defined properly
-      apiAlias: "cart_delivery_shipping_location";
-      country: components["schemas"]["Country"];
-      address: components["schemas"]["CustomerAddress"];
-    };
-    /** Selected shipping method */
-    shippingMethod?: components["schemas"]["ShippingMethod"]; // TODO: [OpenAPI][SalesChannelContext] shippingMethod field should be defined properly reusing ShippingMethod schema
-    // shippingMethod?: {
-    //   active?: boolean;
-    //   availabilityRuleId?: string;
-    //   deliveryTimeId?: string;
-    //   description?: string;
-    //   mediaId?: string;
-    //   name?: string;
-    //   trackingUrl?: string;
-    // };
-    /** Currently active tax rules and/or rates */
-    taxRules?: {
-      name?: string;
-      /** Format: float */
-      taxRate?: number;
-    }[];
-    /** Context the user session */
-    token?: string;
-  };
-  /** Added since version: 6.0.0.0 */
-  SeoUrl: {
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    /** Runtime field, cannot be used as part of the criteria. */
-    error?: string;
-    foreignKey: string;
-    id?: string;
-    isCanonical?: boolean;
-    isDeleted?: boolean;
-    isModified?: boolean;
-    languageId: string;
-    pathInfo: string;
-    routeName: // TODO: [OpenAPI][SeoUrl] routeName field should be defined as union type
-    | "frontend.navigation.page"
-      | "frontend.landing.page"
-      | "frontend.detail.page";
-    salesChannelId?: string;
-    seoPathInfo: string;
-    /** Format: date-time */
-    updatedAt?: string;
-    /** Runtime field, cannot be used as part of the criteria. */
-    url?: string;
-  };
-  /** Added since version: 6.0.0.0 */
-  ShippingMethod: {
-    active?: boolean;
-    availabilityRule?: components["schemas"]["Rule"];
-    /** Format: date-time */
-    createdAt: string;
-    customFields?: GenericRecord;
-    deliveryTime?: components["schemas"]["DeliveryTime"];
-    deliveryTimeId: string;
-    description?: string;
-    id: string; // TODO: [OpenAPI][ShippingMethod] id field should be required in schema
-    media?: components["schemas"]["Media"];
-    mediaId?: string;
-    name: string;
-    /** Format: int64 */
-    position?: number;
-    prices?: components["schemas"]["ShippingMethodPrice"][];
-    tags?: components["schemas"]["Tag"][];
-    tax?: components["schemas"]["Tax"];
-    taxType: string;
-    technicalName?: string;
-    trackingUrl?: string;
-    translated?: {
-      deliveryTimeId?: string;
-      description?: string;
-      mediaId?: string;
-      name?: string;
-      taxType?: string;
-      technicalName?: string;
-      trackingUrl?: string;
-    };
-    /** Format: date-time */
-    updatedAt?: string;
-  };
-  Sitemap: components["schemas"]["ArrayStruct"] & {
-    /** Format: date-time */
-    created: string; // TODO: [OpenAPI][Sitemap] created field should be defined as required
-    filename: string; // TODO: [OpenAPI][Sitemap] filename field should be defined as required
-  };
-  State: unknown; // TODO: [OpenAPI][State] - add State definition to schema, used in CartDelivery.location.state
   StateMachineState: {
     /** Format: date-time */
     createdAt: string;
@@ -1576,7 +1245,7 @@ export type Schemas = {
     updatedAt?: string;
   };
   WishlistLoadRouteResponse: {
-    products: components["schemas"]["ProductListingResult"]; // TODO: [OpenAPI][WishlistLoadRouteResponse] - products is listing result, not array
+    products: components["schemas"]["ProductListingResult"]; // TODO: [OpenAPI][WishlistLoadRouteResponse] - products response should be defined as required
     wishlist?: {
       customerId?: string;
       salesChannelId?: string;
@@ -1588,12 +1257,9 @@ export type operations = {
   "createCustomerAddress post /account/address": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: Omit<
-      // TODO: [OpenAPI][createCustomerAddress] - omit id while creating address
-      components["schemas"]["CustomerAddress"],
-      "id" | "createdAt"
-    >;
-    response: components["schemas"]["CustomerAddress"];
+    body: components["schemas"]["CustomerAddressBody"]; // TODO: [OpenAPI][createCustomerAddress] - body should be defined without id on creation
+    response: components["schemas"]["CustomerAddress"] &
+      components["schemas"]["CustomerAddressRead"];
     responseCode: 200;
   };
   "listAddress post /account/list-address": {
@@ -1617,6 +1283,8 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
       "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
     };
@@ -1677,29 +1345,13 @@ export type operations = {
     response: components["schemas"]["Customer"];
     responseCode: 200;
   };
-  "readCategory post /category/{navigationId}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    headers?: {
-      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
-      "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
-    };
-    query?: {
-      /** Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character */
-      slots?: string;
-    };
-    pathParams: {
-      /** Identifier of the category to be fetched */
-      navigationId: string;
-    };
-    body: components["schemas"]["Criteria"] &
-      components["schemas"]["ProductListingCriteria"];
-    response: components["schemas"]["Category"];
-    responseCode: 200;
-  };
   "addLineItem post /checkout/cart/line-item": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: {
       // TODO: [OpenAPI][addLineItem] - add proper request body type with required fields
       items: Array<{
@@ -1715,6 +1367,10 @@ export type operations = {
   "updateLineItem patch /checkout/cart/line-item": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: {
       // TODO: [OpenAPI][updateLineItem] - add proper request body type with required fields
       items: Array<{
@@ -1744,51 +1400,23 @@ export type operations = {
   "readLanguages post /language": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readLanguages] - body should be optional
     response: {
       elements: components["schemas"]["Language"][]; // TODO: [OpenAPI][readLanguages] add elements property as required
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
-  "readNavigation post /navigation/{activeId}/{rootId}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    headers?: {
-      "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readNavigation] - add sw-include-seo-urls to header parameters
-    };
-    pathParams: {
-      /** Identifier of the active category in the navigation tree (if not used, just set to the same as rootId). */
-      // TODO: [OpenAPI][readNavigation] add union type in definition
-      activeId: Schemas["NavigationType"] | string;
-      /** Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree. */
-      // TODO: [OpenAPI][readNavigation] add union type in definition
-      rootId: Schemas["NavigationType"] | string;
-    };
-    body: components["schemas"]["Criteria"] & {
-      /** Return the categories as a tree or as a flat list. */
-      buildTree?: GenericRecord[];
-      /**
-       * Format: int32
-       * Determines the depth of fetched navigation levels.
-       */
-      depth?: number;
-    };
-    response: components["schemas"]["NavigationRouteResponse"];
-    responseCode: 200;
-  };
-  "cancelOrder post /order/state/cancel": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** The identifier of the order to be canceled. */
-      orderId: string; // TODO: [OpenAPI][cancelOrder] add orderId as required field
-    };
-    response: components["schemas"]["StateMachineState"];
-    responseCode: 200;
-  };
   "download post /document/download/{documentId}/{deepLinkCode}": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       documentId: string;
       deepLinkCode: string;
@@ -1800,6 +1428,10 @@ export type operations = {
   "readCustomerWishlist post /customer/wishlist": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readCustomerWishlist] - body should be optional
     response: components["schemas"]["WishlistLoadRouteResponse"];
     responseCode: 200;
@@ -1807,32 +1439,23 @@ export type operations = {
   "readProduct post /product": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"] & {
-      ids?: string[]; // TODO: [OpenAPI][readProduct]: add `ids` as field to criteria - (is required?)
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
     };
+    body: components["schemas"]["Criteria"];
     response: {
       elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
-  "readProductListing post /product-listing/{categoryId}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    headers?: {
-      "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readProductListing] - add sw-include-seo-urls to header parameters
-    };
-    pathParams: {
-      /** Identifier of a category. */
-      categoryId: string;
-    };
-    body: components["schemas"]["ProductListingCriteria"] &
-      components["schemas"]["ProductListingFlags"];
-    response: components["schemas"]["ProductListingResult"];
-    responseCode: 200;
-  };
   "readProductReviews post /product/{productId}/reviews": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     pathParams: {
       /** Identifier of the product. */
       productId: string;
@@ -1846,26 +1469,25 @@ export type operations = {
   "readSalutation post /salutation": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readSalutation] - body should be optional
     response: {
       elements?: components["schemas"]["Salutation"][];
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
-  "readSeoUrl post /seo-url": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["Criteria"];
-    response: {
-      elements: components["schemas"]["SeoUrl"][]; // TODO: [OpenAPI][readSeoUrl]: response should be `EntitySearchResult` and elements should be required
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
-  };
   "readShippingMethod post /shipping-method": {
     contentType?: "application/json";
     accept?: "application/json";
+    headers?: {
+      /** Instructs Shopware to return the response in the given language. */
+      "sw-language-id"?: string;
+    };
     body: components["schemas"]["Criteria"];
-    query: {
+    query?: {
       /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
       onlyAvailable?: boolean;
     };
@@ -1905,7 +1527,7 @@ export type operations = {
       /** Address ID */
       addressId: string;
     };
-    body: components["schemas"]["CustomerAddress"]; // TODO: [OpenAPI][updateCustomerAddress] - body should be defined with id, as it's an update not create
+    body: components["schemas"]["CustomerAddressBody"]; // TODO: [OpenAPI][updateCustomerAddress] - body should be defined without id on update as address exist
     response: components["schemas"]["CustomerAddress"] &
       components["schemas"]["CustomerAddressRead"];
     responseCode: 200;
