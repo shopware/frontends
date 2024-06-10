@@ -1,6 +1,6 @@
 # Toolset to manage Amazon Pay
 
-The example shows how to embed Amazon Pay button even without fully integrated backend (see 😇 **_Bypassing a backend_** chapter in the bottom to check what it is about).
+The example shows how to embed Amazon Pay button even without fully integrated backend (see 😇 **_Bypassing a plugin_** chapter in the bottom to check what it is about).
 
 ## Features
 
@@ -168,7 +168,7 @@ Once it's done, the order's transaction is marked as **paid** and Amazon Pay ser
 This is also the right place to add some additional security / anti fraud checks - [see the source code](./src/runtime/server/api/amazon-pay/complete.post.ts). 
 
 
-## 😇 Bypassing a backend
+## 😇 Bypassing a plugin
 
 The main goal was to show how to do the standard plugin's jobs:
 - get the redirection URL to the payment gateway
