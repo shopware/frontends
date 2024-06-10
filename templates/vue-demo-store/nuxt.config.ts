@@ -28,13 +28,13 @@ export default defineNuxtConfig({
       isr: 60 * 60 * 24,
     },
     "/checkout": {
-      ssr: true,
+      ssr: false,
       headers: {
         "Cache-Control": "no-cache, no-store, must-revalidate",
       },
     },
     "/checkout/**": {
-      ssr: true,
+      ssr: false,
     },
     "/login": {
       ssr: false,

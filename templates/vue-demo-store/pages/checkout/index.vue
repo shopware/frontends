@@ -202,7 +202,6 @@ const placeOrder = async () => {
   const order = await createOrder();
   isLoading["placeOrder"] = false;
   await push("/checkout/success/" + order.id);
-
   refreshCart();
 };
 
