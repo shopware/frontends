@@ -7,6 +7,13 @@ const props = defineProps<{
 
 const { search } = useProductSearch();
 
+const { apiClient } = useShopwareContext();
+
+apiClient.invoke("readCms post /cms/{id}", {
+  pathParams: { id: "YOUR_CMS_PAGE_ID" },
+  body: {},
+});
+
 const { data: productResponse } = await useAsyncData(
   "cmsProduct" + props.navigationId,
   async () => {

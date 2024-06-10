@@ -6,7 +6,8 @@
     "playground",
   ],
   "compilerOptions": {
-  "skipLibCheck": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "#imports": [
