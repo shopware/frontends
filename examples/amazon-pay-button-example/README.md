@@ -1,6 +1,6 @@
 # Toolset to manage Amazon Pay
 
-The example shows how to embed Amazon Pay button even without fully integrated backend (see 😇 **_Bypassing a plugin_** chapter in the bottom to check what it is about).
+The example shows how to embed Amazon Pay button even without fully integrated backend (see 😇 [**_Bypassing a plugin_**](#bypassing-a-plugin) chapter in the bottom to check what it is about).
 
 ## Features
 
@@ -17,12 +17,12 @@ The example shows how to embed Amazon Pay button even without fully integrated b
 - [Amazon Pay App](https://store.shopware.com/en/swag117522576433f/amazon-pay.html) installed in your shop
 - Some Nuxt.js project
 
-
 ## Setup
 
 ### Amazon
 
 Prepare your Amazon Pay integration, you will need:
+
 - storeId
 - publicKeyId
 - private key (do not version it!)
@@ -30,13 +30,11 @@ Prepare your Amazon Pay integration, you will need:
 
 Also, there will be a step to define return URLs like: `checkoutReviewReturnUrl` or `checkoutResultReturnUrl`. That URLs should match the routes in your nuxt application as you will be redirected there to proceed the amazon pay flow (redirection with `amazonCheckoutSessionId` query param).
 
-
 ### Backend
 
 - Make sure that Amazon Pay payment method is enabled and available in your sales channel.
 
-- Set up [Client Credentials](https://shopware.stoplight.io/docs/admin-api/8e1d78252fa6f-authentication#client-credentials) grant type for Admin API communication - **read and update rights for order transactions** 
-
+- Set up [Client Credentials](https://shopware.stoplight.io/docs/admin-api/8e1d78252fa6f-authentication#client-credentials) grant type for Admin API communication - **read and update rights for order transactions**
 
 ### Frontend: Nuxt 3 project
 
@@ -45,6 +43,7 @@ Also, there will be a step to define return URLs like: `checkoutReviewReturnUrl`
    run `pnpm i` command.
 
    Note that if you are starting from scratches (not using this example as it is) you will probably need as minimum:
+
    - [@shopware-pwa/nuxt3-module](https://www.npmjs.com/package/@shopware-pwa/nuxt3-module) - sets up your project to be Shopware 6 aware
    - [@shopware-pwa/composables-next](https://www.npmjs.com/package/@shopware-pwa/composables-next) - installs all the dependencies for the logic layer
    - [@shopware/api-client](https://www.npmjs.com/package/@shopware/api-client) - API client for your REST API Shopware 6 backend
@@ -92,7 +91,6 @@ export default defineNuxtConfig({
     },
   },
 });
-
 ```
 
 ## Use Amazon Pay component
@@ -102,7 +100,7 @@ Use `<AmazonPayButton />` component wherever you want as it's registered globall
 ## What to expect
 
 - If Amazon Pay script is loaded properly and the configuration is correct, you should see the rendered Amazon Pay button.
-- When you click the button, there will be redirection to the Amazon Pay gateway to sign in. 
+- When you click the button, there will be redirection to the Amazon Pay gateway to sign in.
 - Regardless the result, you will be redirected back to the URL defined your `nuxt.config` file, under `checkoutReviewReturnUrl` value.
 
 ## Capture the session and use the Amazon Pay data
@@ -121,7 +119,7 @@ const {
 // useAmazonPayCheckout function reads the query from the URL and finds the Amazon Pay checkout ID
 
 onMounted(async () => {
-// already logged-in? ignore further steps
+  // already logged-in? ignore further steps
   if (isLoggedIn.value || isGuestSession.value) {
     return;
   }
@@ -136,41 +134,39 @@ onMounted(async () => {
 
 Conditionally, if the Amazon Pay session is detected - create order using `createOrderAndCharge` function of `useAmazonPayCheckout` composable. Thanks to this, you will be redirected to the Amazon Pay gateway to complete the payment process.
 
-
 ```ts
 if (isAmazonPay.value) {
-    const orderResponse = await createOrderAndCharge();
-    const redirectUrl =
-      orderResponse?.result?.webCheckoutDetails?.amazonPayRedirectUrl;
-    // Redirect to Amazon Pay
-    if (redirectUrl) {
-      window.location.href = redirectUrl;
-    }
-  } else {
-    const order = await createOrder();
-    await push("/checkout/success/" + order.id);
+  const orderResponse = await createOrderAndCharge();
+  const redirectUrl =
+    orderResponse?.result?.webCheckoutDetails?.amazonPayRedirectUrl;
+  // Redirect to Amazon Pay
+  if (redirectUrl) {
+    window.location.href = redirectUrl;
   }
+} else {
+  const order = await createOrder();
+  await push("/checkout/success/" + order.id);
+}
 ```
+
 ## Complete the payment flow
 
 If the payment succeeds, you will be redirected back to the `checkoutResultReturnUrl` URL defined in `nuxt.config` file. Then you can read the session again to complete the payment:
 
 ```ts
-const {
-  complete
-} = useAmazonPayCheckout();
+const { complete } = useAmazonPayCheckout();
 
 await complete();
 ```
 
 Once it's done, the order's transaction is marked as **paid** and Amazon Pay service gets the same information.
 
-This is also the right place to add some additional security / anti fraud checks - [see the source code](./src/runtime/server/api/amazon-pay/complete.post.ts). 
+This is also the right place to add some additional security / anti fraud checks - [see the source code](./src/runtime/server/api/amazon-pay/complete.post.ts).
 
-
-## 😇 Bypassing a plugin
+## Bypassing a plugin
 
 The main goal was to show how to do the standard plugin's jobs:
+
 - get the redirection URL to the payment gateway
 - update the payment status
 - Capture the payment
