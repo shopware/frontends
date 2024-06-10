@@ -156,6 +156,9 @@ export function useCartItem(
    * @deprecated Method is not used anymore and the case should be solved on project level instead due to performance reasons.
    */
   async function getProductItemSeoUrlData() {
+    console.warn(
+      "[useCartItem][getProductItemSeoUrlData] is deprecated and will be removed in the next major release.",
+    );
     if (!cartItem.value.referencedId) {
       return;
     }
