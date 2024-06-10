@@ -1,6 +1,10 @@
 export default defineNuxtConfig({
   extends: ["@shopware-pwa/composables-next/nuxt-layer"],
   modules: ["@shopware-pwa/nuxt3-module", "../src/module"], // path to amazon-pay module
+  shopware: {
+    endpoint: "https://demo-frontends.shopware.store/store-api",
+    accessToken: "SWSCUJQXHJNQXKJAFVJFZLJQXH",
+  },
   amazonPay: {
     storeId:
       "YOUR STORE ID HERE (e.g. amzn1.application-oa2-client.0123456789abcdef...)", // from amazon pay panel
