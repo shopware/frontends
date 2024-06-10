@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { useAddress } from "./useAddress";
 import { useSetup } from "./_test";
-import type { RequestParameters, Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 
 const MOCKED_ADDRESS = {
   countryId: "6777d83705454d078fc9a7419296c7dc",
@@ -17,6 +17,7 @@ const MOCKED_ADDRESS = {
 describe("useAddress", () => {
   it("load customer address", async () => {
     const { vm, injections } = await useSetup(useAddress);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
     await vm.loadCustomerAddresses();
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -27,54 +28,61 @@ describe("useAddress", () => {
 
   it("create address", async () => {
     const { vm, injections } = await useSetup(useAddress);
-
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
     // Check types
-    await vm.createCustomerAddress(MOCKED_ADDRESS as any);
+    await vm.createCustomerAddress(
+      MOCKED_ADDRESS as Schemas["CustomerAddress"],
+    );
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("createCustomerAddress"),
-      expect.objectContaining(MOCKED_ADDRESS),
+      expect.objectContaining({ body: MOCKED_ADDRESS }),
     );
   });
 
   it("update address", async () => {
     const { vm, injections } = await useSetup(useAddress);
-
-    await vm.updateCustomerAddress(MOCKED_ADDRESS as any);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.updateCustomerAddress(
+      MOCKED_ADDRESS as Schemas["CustomerAddress"],
+    );
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("updateCustomerAddress"),
-      expect.objectContaining(MOCKED_ADDRESS),
+      expect.objectContaining({ body: MOCKED_ADDRESS }),
     );
   });
 
   it("delete address", async () => {
     const { vm, injections } = await useSetup(useAddress);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
     await vm.deleteCustomerAddress("address-id");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("deleteCustomerAddress"),
-      expect.objectContaining({ addressId: "address-id" }),
+      expect.objectContaining({ pathParams: { addressId: "address-id" } }),
     );
   });
 
   it("set default billing address", async () => {
     const { vm, injections } = await useSetup(useAddress);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
     await vm.setDefaultCustomerBillingAddress("address-id");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("defaultBillingAddress"),
-      expect.objectContaining({ addressId: "address-id" }),
+      expect.objectContaining({ pathParams: { addressId: "address-id" } }),
     );
   });
 
   it("set default shipping address", async () => {
     const { vm, injections } = await useSetup(useAddress);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
     await vm.setDefaultCustomerShippingAddress("address-id");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("defaultShippingAddress"),
-      expect.objectContaining({ addressId: "address-id" }),
+      expect.objectContaining({ pathParams: { addressId: "address-id" } }),
     );
   });
 
