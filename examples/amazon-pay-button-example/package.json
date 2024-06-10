@@ -19,11 +19,12 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build build",
-    "dev:playground": "nuxi dev playground",
-    "build:playground": "nuxi build playground",
-    "build": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "lint": "vue-tsc --noEmit"
+    "prepack": "pnpm run prepare && nuxt-module-build build",
+    "dev:playground": "pnpm run prepare && nuxi dev playground",
+    "build:playground": "pnpm run prepare && nuxi build playground",
+    "build": "pnpm run prepare && nuxt-module-build build --stub && nuxi prepare playground",
+    "lint": "pnpm run prepare && vue-tsc --noEmit",
+    "prepare": "nuxt-module-build prepare"
   },
   "dependencies": {
     "@nuxt/kit": "^3.11.2"
