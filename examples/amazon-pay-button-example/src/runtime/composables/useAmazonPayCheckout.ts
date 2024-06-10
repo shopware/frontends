@@ -164,6 +164,12 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
    */
   const complete = async () => {
     const sessionData = await getSessionData();
+    if (!sessionData.merchantMetadata?.merchantReferenceId) {
+      throw new Error(
+        "[useAmazonPayCheckout]: No order number found in session data",
+      );
+    }
+
     await loadOrders({
       associations: {
         transactions: {},
@@ -172,7 +178,7 @@ export function useAmazonPayCheckout(amazonSessionId?: string) {
         {
           field: "orderNumber",
           type: "equals",
-          value: sessionData.merchantMetadata?.merchantReferenceId,
+          value: sessionData.merchantMetadata.merchantReferenceId,
         },
       ],
     });
