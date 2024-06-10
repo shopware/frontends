@@ -12,7 +12,7 @@ const { params } = useRoute();
 const router = useRouter();
 const orderId = params.id as string;
 const { isLoggedIn, isGuestSession } = useUser();
-if (!isLoggedIn.value || !isGuestSession.value) {
+if (!isLoggedIn.value && !isGuestSession.value) {
   router.push("/");
 }
 const {

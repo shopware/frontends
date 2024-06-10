@@ -68,6 +68,7 @@ export default {
         <div class="pb-4 mb-8 justify-between text-secondary-900 font-medium">
           <CheckoutPromotionCode />
         </div>
+
         <NuxtLink
           class="flex items-center justify-center rounded-md px-6 py-3 text-base font-medium text-white shadow-sm bg-primary hover:bg-dark"
           data-testid="cart-checkout-link"
