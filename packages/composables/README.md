@@ -8,14 +8,12 @@
 
 Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://frontends.shopware.com/getting-started/page-elements/navigation.html).
 
-[👉 Composables Reference](https://frontends.shopware.com/packages/composables.html)
-
 ## Features
 
 - `createShopwareContext` method to create a Vue 3 plugin to install
 - State management
 - Logic for UI
-- Communication with Store-API via [api-client](https://www.npmjs.com/package/@shopware-pwa/api-client) package
+- Communication with Store-API via [api-client](https://www.npmjs.com/package/@shopware/api-client) package
 
 ## Setup
 
