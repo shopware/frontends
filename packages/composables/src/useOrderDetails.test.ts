@@ -75,4 +75,37 @@ describe("useOrderDetails", () => {
       }),
     );
   });
+
+  it("getMediaFile", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.getMediaFile("file-123");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("orderDownloadFile"),
+      expect.objectContaining({
+        accept: "application/octet-stream",
+        pathParams: {
+          orderId: "123-test",
+          downloadId: "file-123",
+        },
+      }),
+    );
+  });
+
+  it("getDocumentFile", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.getDocumentFile("file-123", "code-123");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("download"),
+      expect.objectContaining({
+        pathParams: {
+          documentId: "file-123",
+          deepLinkCode: "code-123",
+        },
+      }),
+    );
+  });
 });
