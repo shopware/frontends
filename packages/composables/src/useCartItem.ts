@@ -64,7 +64,7 @@ export type UseCartItemReturn = {
   /**
    * Removes the current item from the cart
    */
-  removeItem(): Promise<void>;
+  removeItem(): Promise<Schemas["Cart"]>;
   /**
    * Get SEO data for the current item
    *
@@ -139,6 +139,7 @@ export function useCartItem(
       },
     );
     await refreshCart(newCart);
+    return newCart;
   }
 
   async function changeItemQuantity(
@@ -156,6 +157,9 @@ export function useCartItem(
    * @deprecated Method is not used anymore and the case should be solved on project level instead due to performance reasons.
    */
   async function getProductItemSeoUrlData() {
+    console.warn(
+      "[useCartItem][getProductItemSeoUrlData] is deprecated and will be removed in the next major release.",
+    );
     if (!cartItem.value.referencedId) {
       return;
     }

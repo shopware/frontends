@@ -64,19 +64,25 @@ export type UseUserReturn = {
   /**
    * Fetches the user data from the API
    */
-  refreshUser(): Promise<void>;
+  refreshUser(params?: Schemas["Criteria"]): Promise<Schemas["Customer"]>;
   /**
    * Logs out the user
    */
-  logout(): Promise<void>;
+  logout(): Promise<
+    operations["logoutCustomer post /account/logout"]["response"]
+  >;
   /**
    * Loads the {@link Country} of the user
    */
-  loadCountry(countryId: string): Promise<void>;
+  loadCountry(
+    countryId: string,
+  ): Promise<operations["readCountry post /country"]["response"]>;
   /**
    * Loads the {@link Salutation} for given id
    */
-  loadSalutation(salutationId: string): Promise<void>;
+  loadSalutation(
+    salutationId: string,
+  ): Promise<operations["readSalutation post /salutation"]["response"]>;
   /**
    * Updates the user profile data
    * @param personals {@link RequestParameters<'changeProfile'>}
@@ -179,26 +185,36 @@ export function useUser(): UseUserReturn {
     return data;
   }
 
-  async function logout(): Promise<void> {
-    await apiClient.invoke("logoutCustomer post /account/logout");
+  async function logout(): Promise<
+    operations["logoutCustomer post /account/logout"]["response"]
+  > {
+    const response = await apiClient.invoke(
+      "logoutCustomer post /account/logout",
+    );
     await refreshSessionContext();
     refreshCart();
+    return response.data;
   }
 
-  async function refreshUser(params: Schemas["Criteria"] = {}): Promise<void> {
+  async function refreshUser(
+    params: Schemas["Criteria"] = {},
+  ): Promise<Schemas["Customer"]> {
     try {
       const response = await apiClient.invoke(
         "readCustomer post /account/customer",
         { body: params },
       );
       _user.value = response.data;
+      return response.data;
     } catch (e) {
       _user.value = undefined;
-      console.error("[useUser][refreshUser]", e);
+      throw e;
     }
   }
 
-  async function loadCountry(countryId: string): Promise<void> {
+  async function loadCountry(
+    countryId: string,
+  ): Promise<operations["readCountry post /country"]["response"]> {
     const countries = await apiClient.invoke("readCountry post /country", {
       body: {
         filter: [
@@ -212,9 +228,12 @@ export function useUser(): UseUserReturn {
     });
 
     country.value = countries.data.elements?.[0] ?? null;
+    return countries.data;
   }
 
-  async function loadSalutation(salutationId: string): Promise<void> {
+  async function loadSalutation(
+    salutationId: string,
+  ): Promise<operations["readSalutation post /salutation"]["response"]> {
     const salutations = await apiClient.invoke(
       "readSalutation post /salutation",
       {
@@ -230,6 +249,7 @@ export function useUser(): UseUserReturn {
       },
     );
     salutation.value = salutations.data.elements?.[0] ?? null;
+    return salutations.data;
   }
 
   async function updatePersonalInfo(

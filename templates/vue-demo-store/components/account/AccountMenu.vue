@@ -7,8 +7,11 @@ const { formatLink } = useInternationalization(localePath);
 const isAccountMenuOpen = ref(false);
 
 async function invokeLogout() {
-  await logout();
-  isAccountMenuOpen.value = false;
+  try {
+    await logout();
+  } finally {
+    isAccountMenuOpen.value = false;
+  }
 }
 </script>
 <template>
@@ -28,7 +31,18 @@ async function invokeLogout() {
           <AccountLoginForm
             @close="loginModalController.close"
             @success="loginModalController.close"
-          />
+          >
+            <div class="flex items-center justify-end">
+              <div class="text-sm">
+                <NuxtLink
+                  :to="formatLink(`/account/recover`)"
+                  class="font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  {{ $t("recoveryPassword.forgotPassword") }}
+                </NuxtLink>
+              </div>
+            </div>
+          </AccountLoginForm>
         </SharedModal>
         <div v-if="isLoggedIn">
           <div

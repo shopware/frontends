@@ -25,7 +25,7 @@ await useAsyncData("getOrders", () => {
     sort: [
       {
         field: "createdAt",
-        order: "desc",
+        order: "DESC",
       },
     ],
   });
