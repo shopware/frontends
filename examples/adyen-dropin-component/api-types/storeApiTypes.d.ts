@@ -631,8 +631,10 @@ export type Schemas = {
     }[];
     hasRange: boolean;
     listPrice: components["schemas"]["ListPrice"] | null;
+    netPrice: number; // TODO: [OpenAPI][CalculatedPrice] - netPrice should be added to definition
     quantity: number;
     positionPrice: number; // TODO: [OpenAPI][CalculatedPrice] - positionPrice should be added to definition
+    rawTotal: number; // TODO: [OpenAPI][CalculatedPrice] - rawTotal should be added to definition
     referencePrice: components["schemas"]["ReferencePrice"] | null;
     regulationPrice: {
       /** @enum {string} */
@@ -645,6 +647,7 @@ export type Schemas = {
       /** Format: float */
       taxRate?: number;
     }[];
+    taxStatus: "net" | "tax-free"; // TODO: [OpenAPI][CalculatedPrice] - taxStatus should be defined and properly typed
     totalPrice: number;
     unitPrice: number;
     /** Format: ^[0-9a-f]{32}$ */
@@ -677,7 +680,7 @@ export type Schemas = {
     modified?: boolean;
     /** Name of the cart - for example `guest-cart` */
     name?: string;
-    price?: components["schemas"]["CalculatedPrice"];
+    price: components["schemas"]["CalculatedPrice"]; // TODO: [OpenAPI][Cart] - price should be required
     /** Context token identifying the cart and the user session */
     token?: string;
     /** A list of all payment transactions associated with the current cart. */
@@ -2502,19 +2505,7 @@ export type Schemas = {
     orderNumber?: string;
     /** Format: float */
     positionPrice?: number;
-    price?: {
-      calculatedTaxes?: Record<string, never>;
-      /** Format: float */
-      netPrice: number;
-      /** Format: float */
-      positionPrice: number;
-      /** Format: float */
-      rawTotal: number;
-      taxRules?: Record<string, never>;
-      taxStatus: string;
-      /** Format: float */
-      totalPrice: number;
-    };
+    price: components["schemas"]["CalculatedPrice"]; // TODO: [OpenAPI][Order] - price should be required and point to calculated price
     salesChannelId: string;
     shippingCosts?: {
       calculatedTaxes?: Record<string, never>;
@@ -6946,7 +6937,7 @@ export type operations = {
   "readCustomer post /account/customer": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readCustomer] - body should be optional
     response: components["schemas"]["Customer"];
     responseCode: 200;
   };
@@ -6969,7 +6960,7 @@ export type operations = {
   "listAddress post /account/list-address": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][listAddress] - body should be optional
     response: {
       // TODO: [OpenAPI][listAddress] add proper response type as EntitySearchResult
       elements: components["schemas"]["CustomerAddress"][];

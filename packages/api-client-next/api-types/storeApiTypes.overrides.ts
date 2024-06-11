@@ -41,7 +41,7 @@ export type Schemas = {
     modified?: boolean;
     /** Name of the cart - for example `guest-cart` */
     name?: string;
-    price?: components["schemas"]["CalculatedPrice"];
+    price: components["schemas"]["CalculatedPrice"]; // TODO: [OpenAPI][Cart] - price should be required
     /** Context token identifying the cart and the user session */
     token?: string;
     /** A list of all payment transactions associated with the current cart. */
@@ -870,8 +870,10 @@ export type Schemas = {
     }[];
     hasRange: boolean;
     listPrice: components["schemas"]["ListPrice"] | null;
+    netPrice: number; // TODO: [OpenAPI][CalculatedPrice] - netPrice should be added to definition
     quantity: number;
     positionPrice: number; // TODO: [OpenAPI][CalculatedPrice] - positionPrice should be added to definition
+    rawTotal: number; // TODO: [OpenAPI][CalculatedPrice] - rawTotal should be added to definition
     referencePrice: components["schemas"]["ReferencePrice"] | null;
     regulationPrice: {
       /** @enum {string} */
@@ -884,6 +886,7 @@ export type Schemas = {
       /** Format: float */
       taxRate?: number;
     }[];
+    taxStatus: "net" | "tax-free"; // TODO: [OpenAPI][CalculatedPrice] - taxStatus should be defined and properly typed
     totalPrice: number;
     unitPrice: number;
     /** Format: ^[0-9a-f]{32}$ */
@@ -1040,6 +1043,109 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     url: string;
   };
+  Order: {
+    addresses?: components["schemas"]["OrderAddress"][];
+    affiliateCode?: string;
+    /** Format: float */
+    amountNet?: number;
+    /** Format: float */
+    amountTotal?: number;
+    billingAddress?: components["schemas"]["OrderAddress"];
+    billingAddressId: string;
+    billingAddressVersionId?: string;
+    campaignCode?: string;
+    /** Format: date-time */
+    createdAt: string;
+    createdById?: string;
+    currency?: components["schemas"]["Currency"];
+    /** Format: float */
+    currencyFactor: number;
+    currencyId: string;
+    customerComment?: string;
+    customFields?: Record<string, never>;
+    deepLinkCode?: string;
+    deliveries?: components["schemas"]["OrderDelivery"][];
+    documents: components["schemas"]["Document"][];
+    extensions?: {
+      returns?: {
+        data?: {
+          /** @example 7fff84525c6516919851a9005373f87e */
+          id?: string;
+          /** @example order_return */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/returns
+           */
+          related?: string;
+        };
+      };
+      subscription?: {
+        data?: {
+          /** @example b48b13e73a6ac2a86dc54425dd24d9ff */
+          id?: string;
+          /** @example subscription */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/subscription
+           */
+          related?: string;
+        };
+      };
+    };
+    id: string;
+    language?: components["schemas"]["Language"];
+    languageId: string;
+    lineItems?: components["schemas"]["OrderLineItem"][];
+    orderCustomer?: components["schemas"]["OrderCustomer"];
+    orderDate: string;
+    /** Format: date-time */
+    orderDateTime: string;
+    orderNumber?: string;
+    /** Format: float */
+    positionPrice?: number;
+    price: components["schemas"]["CalculatedPrice"]; // TODO: [OpenAPI][Order] - price should be required and point to calculated price
+    salesChannelId: string;
+    shippingCosts?: {
+      calculatedTaxes?: Record<string, never>;
+      listPrice?: {
+        /** Format: float */
+        discount?: number;
+        /** Format: float */
+        percentage?: number;
+        /** Format: float */
+        price?: number;
+      };
+      /** Format: int64 */
+      quantity: number;
+      referencePrice?: Record<string, never>;
+      regulationPrice?: {
+        /** Format: float */
+        price?: number;
+      };
+      taxRules?: Record<string, never>;
+      /** Format: float */
+      totalPrice: number;
+      /** Format: float */
+      unitPrice: number;
+    };
+    /** Format: float */
+    shippingTotal?: number;
+    source?: string;
+    stateMachineState: components["schemas"]["StateMachineState"];
+    tags?: components["schemas"]["Tag"][];
+    taxStatus?: string;
+    transactions?: components["schemas"]["OrderTransaction"][];
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedById?: string;
+    versionId?: string;
+  };
   OrderRouteResponse: {
     orders: {
       elements: components["schemas"]["Order"][]; // TODO: [OpenAPI][OrderRouteResponse] - there should be elements field defined for search result
@@ -1131,6 +1237,51 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
+  };
+  SalesChannelContext: components["schemas"]["ArrayStruct"] & {
+    /** Core context with general configuration values and state */
+    context?: {
+      currencyFactor?: number;
+      currencyId?: string;
+      /** Format: int32 */
+      currencyPrecision?: number;
+      languageIdChain?: string[];
+      scope?: string;
+      source?: string;
+      taxState?: string;
+      useCache?: boolean;
+      versionId?: string;
+    };
+    currency?: components["schemas"]["Currency"];
+    /** Customer group of the current user */
+    currentCustomerGroup?: {
+      displayGross?: boolean;
+      name?: string;
+    };
+    customer?: components["schemas"]["Customer"];
+    /** Fallback group if the default customer group is not applicable */
+    fallbackCustomerGroup?: {
+      displayGross?: boolean;
+      name?: string;
+    };
+    paymentMethod?: components["schemas"]["PaymentMethod"];
+    /** Information about the current sales channel */
+    salesChannel: components["schemas"]["SalesChannel"]; // TODO: [OpenAPI][SalesChannelContext] - salesChannel should be required and points to entity
+    shippingLocation?: {
+      address?: components["schemas"]["CustomerAddress"];
+      /** @enum {string} */
+      apiAlias?: "cart_delivery_shipping_location";
+      country?: components["schemas"]["Country"];
+    };
+    shippingMethod?: components["schemas"]["ShippingMethod"];
+    /** Currently active tax rules and/or rates */
+    taxRules?: {
+      name?: string;
+      /** Format: float */
+      taxRate?: number;
+    }[];
+    /** Context the user session */
+    token?: string;
   };
   Quote: {
     /** Format: float */
@@ -1265,7 +1416,7 @@ export type operations = {
   "listAddress post /account/list-address": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][listAddress] - body should be optional
     response: {
       // TODO: [OpenAPI][listAddress] add proper response type as EntitySearchResult
       elements: components["schemas"]["CustomerAddress"][];
@@ -1423,6 +1574,13 @@ export type operations = {
     };
     body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][download] - body should be optional
     response: components["schemas"]["Document"];
+    responseCode: 200;
+  };
+  "readCustomer post /account/customer": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readCustomer] - body should be optional
+    response: components["schemas"]["Customer"];
     responseCode: 200;
   };
   "readCustomerWishlist post /customer/wishlist": {
