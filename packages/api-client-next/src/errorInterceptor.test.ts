@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ApiError, ApiClientError, errorInterceptor } from "./errorInterceptor";
+import { ApiError, ApiClientError, errorInterceptor } from "./ApiError";
 import { FetchResponse } from "ofetch";
 
 describe("errorInterceptor", () => {

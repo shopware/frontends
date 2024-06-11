@@ -1,5 +1,5 @@
 import { describe, it, assertType } from "vitest";
-import { createAPIClient } from "../createApiClient";
+import { createAPIClient } from "../createAPIClient";
 
 type operations = {
   "myCustomOperation post /my/custom/operation":

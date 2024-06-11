@@ -10,7 +10,7 @@ import {
   getHeaders,
 } from "h3";
 import type { App } from "h3";
-import { createAPIClient } from "./createApiClient";
+import { createAPIClient } from "./createAPIClient";
 import type { operations } from "../api-types/storeApiTypes";
 
 describe("createAPIClient", () => {

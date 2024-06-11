@@ -21,11 +21,11 @@
     "vue": "3.4.27"
   },
   "devDependencies": {
-    "@shopware-pwa/typer": "workspace:*",
     "@types/markdown-it": "14.1.1",
     "@types/node": "20.12.7",
     "@vitejs/plugin-vue": "5.0.5",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "unplugin-export-collector": "^0.4.3"
   },
   "pnpm": {
     "peerDependencyRules": {
