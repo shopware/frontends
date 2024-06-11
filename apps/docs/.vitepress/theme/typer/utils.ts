@@ -88,5 +88,5 @@ export function prepareGithubPermalink({
   path: string;
   line?: number;
 }) {
-  return `<span style="font-size:0.8em">source: </span><a style="font-size:0.8em;margin-top:0px;" href="https://github.com/${project}/tree/main/${path}#L${line}" target="_blank">${label}</a>\n\n`;
+  return `<a style="position:relative;top:-25px;font-size:0.8em;margin:0;" href="https://github.com/${project}/tree/main/${path}#L${line}" target="_blank">${label}</a>\n`;
 }

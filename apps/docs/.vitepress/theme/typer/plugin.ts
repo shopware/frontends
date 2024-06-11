@@ -72,13 +72,20 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
           astJson;
         let availableTypes = astJson.types || {};
         if (functionDefinition.signature) {
-          API += `\n\n### \`${exportedOne}\`<span style="padding-left:10px;color:gray;font-size:0.7em">${functionDefinition.kind}</span>\n\n`;
+          API += `\n\n### \`${exportedOne}\`\n\n`;
 
           API += normalizeString(functionDefinition.summary);
 
           API += getWrappedCodeBlock(
             normalizeString(functionDefinition.signature),
           );
+
+          API += prepareGithubPermalink({
+            label: "source code",
+            path: functionDefinition?.location?.file.replace("../../", ""),
+            project: "shopware/frontends",
+            line: functionDefinition?.location?.line + 1,
+          });
 
           if (availableTypes[functionDefinition?.returnType]?.signature) {
             API += getToggleContainer(
@@ -88,18 +95,11 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
               `<span style="color:#9f6c0f;font-size:0.8em;cursor:pointer;">expand ${functionDefinition?.returnType}</span>`,
             );
           }
-
-          API += prepareGithubPermalink({
-            label: functionDefinition?.location?.file.replace("../../", ""),
-            path: functionDefinition?.location?.file.replace("../../", ""),
-            project: "shopware/frontends",
-            line: functionDefinition?.location?.line + 1,
-          });
         }
       }
 
       // place it before the changelog
-      code = replacer(code, API, "AUTO GENERATED CHANGELOG", "head");
+      code = replacer(code, API, "", "tail");
 
       return code;
     },
