@@ -5,6 +5,7 @@ import path from "path";
 // names of the directories that should not be tested in StackBlitz context in case of more complex setup
 // in that case an example should be tested manually
 const IGNORE_CHECK_EXAMPLES = [
+  "amazon-pay-button-example",
   "mollie-credit-card",
   "adyen-dropin-component",
   "commercial-quick-order",
@@ -35,7 +36,7 @@ fs.readdirSync(directoryPath)
         }, exampleName),
       ]);
       expect(page.url()).toContain(
-        `https://stackblitz.com/github/${exampleName}`,
+        `https://stackblitz.com/github/${exampleName}`
       );
       expect(await page.title()).toContain("Frontends");
       await page
