@@ -47,7 +47,7 @@
     "@shopware-pwa/types": "workspace:*",
     "@types/find-in-files": "0.5.3",
     "@types/fs-extra": "11.0.4",
-    "@types/node": "20.12.7",
+    "@types/node": "20.14.2",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "5.4.5",
