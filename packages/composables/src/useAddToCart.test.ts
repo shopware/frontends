@@ -30,4 +30,9 @@ describe("useB2bQuoteManagement", () => {
     expect(vm.count).toBe(1);
     expect(vm.isInCart).toBe(true);
   });
+
+  it("add product to cart - empty cart", async () => {
+    const { vm } = await useSetup(() => useAddToCart(ref()));
+    await expect(vm.addToCart()).rejects.toThrow();
+  });
 });
