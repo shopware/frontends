@@ -23,3 +23,8 @@
 .group .VPSidebarGroup .VPSidebarGroup h2.title-text {
     font-size: 11px;
 }
+
+h1 + p > a {
+    display: inline-block;
+    margin-right: 10px;
+}
