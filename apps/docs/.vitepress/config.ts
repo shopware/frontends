@@ -274,7 +274,6 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
   // srcExclude: ["tutorial/**/description.md"], In case we need something to be excluded
   scrollOffset: "header",
   ignoreDeadLinks: true, // remove once MR #294 is merged
-  base: "/frontends-docs/",
   head: [
     [
       "link",
@@ -366,7 +365,6 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       },
     },
     build: {
-      assetsDir: "/frontends-docs",
       minify: "terser",
       chunkSizeWarningLimit: Infinity,
       ssr: false,
