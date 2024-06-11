@@ -15,11 +15,11 @@
     "@unocss/nuxt": "0.60.4",
     "@unocss/reset": "0.60.4",
     "eslint": "8.57.0",
-    "nuxt": "3.11.2",
+    "nuxt": "3.12.1",
     "unocss": "0.60.4"
   },
   "dependencies": {
-    "@vueuse/nuxt": "10.10.0",
+    "@vueuse/nuxt": "10.10.1",
     "vue": "3.4.27",
     "vue-tsc": "2.0.19"
   }
