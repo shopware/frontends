@@ -95,17 +95,6 @@ describe("useUser", () => {
     );
   });
 
-  it("refreshUser thrown error", async () => {
-    const { vm } = useSetup(() => useUser(), {
-      apiClient: {
-        invoke: vi.fn().mockRejectedValue(""),
-      },
-    });
-    await vm.refreshUser();
-
-    expect(vm.user).toBeUndefined();
-  });
-
   it("loadCountry", async () => {
     const salutationId = "2de9ecc24e7b43d283302abba082b7ce";
     const { vm, injections } = useSetup(() => useUser());

@@ -79,7 +79,7 @@ export function useNotifications(): UseNotificationsReturn {
   }
 
   function geterateId() {
-    return new Date().getTime();
+    return +`${new Date().getTime()}${Math.random() * 1000}`;
   }
 
   async function pushNotification(
