@@ -274,7 +274,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
   // srcExclude: ["tutorial/**/description.md"], In case we need something to be excluded
   scrollOffset: "header",
   ignoreDeadLinks: true, // remove once MR #294 is merged
-
+  base: "/frontends-docs/",
   head: [
     [
       "link",
@@ -358,15 +358,18 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       __VUE_OPTIONS_API__: false,
     },
     server: {
-      host: true,
+      host: false,
+
       fs: {
         // for when developing with locally linked theme
         allow: ["../.."],
       },
     },
     build: {
+      assetsDir: "/frontends-docs",
       minify: "terser",
       chunkSizeWarningLimit: Infinity,
+      ssr: false,
     },
     json: {
       stringify: true,
