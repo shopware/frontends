@@ -222,7 +222,8 @@ export function useOrderDetails(
         body: params,
       },
     );
-    _sharedOrder.value = orderDetailsResponse.data.orders.elements?.[0] ?? null;
+    _sharedOrder.value =
+      orderDetailsResponse.data.orders?.elements?.[0] ?? null;
     paymentChangeableList.value =
       orderDetailsResponse.data.paymentChangeable ?? {};
     return orderDetailsResponse.data;
