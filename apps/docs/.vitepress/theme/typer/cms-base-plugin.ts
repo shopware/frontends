@@ -40,8 +40,8 @@ export async function CmsBaseReference(): Promise<Plugin> {
 
         API += `### \`${component.name.replace(".vue", "")}\`\n\n`;
         API += prepareGithubPermalink({
-          label: `see source code of ${component.name}`,
-          path: `${component.path.split("frontends/").pop()}/${component.name}`,
+          label: `source code`,
+          path: `${component.path.split("frontends/").pop().replace("/vercel/path0/", "")}/${component.name}`,
           project: "shopware/frontends",
         });
         try {
