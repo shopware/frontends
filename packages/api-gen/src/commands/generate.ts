@@ -228,7 +228,7 @@ export async function generate(args: {
 
       // resolve default schema from node_modules api-client
       const link = resolve(
-        "node_modules/@shopware/api-client/api-types/storeApiTypes.d.ts",
+        `node_modules/@shopware/api-client/api-types/${args.apiType}ApiTypes.d.ts`,
       );
       if (existsSync(link)) {
         schema = readFileSync(link, {
@@ -238,7 +238,7 @@ export async function generate(args: {
         // falback from the github
         // TODO: change to main branch
         schema = await ofetch(
-          "https://raw.githubusercontent.com/shopware/frontends/feat/api-client-new-structure/packages/api-client-next/api-types/storeApiTypes.d.ts",
+          `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client-next/api-types/${args.apiType}ApiTypes.d.ts`,
         );
       }
 
