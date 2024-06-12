@@ -11,19 +11,19 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
-    "@paypal/paypal-js": "8.0.5",
+    "@paypal/paypal-js": "8.1.0",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/helpers-next": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
     "vue": "3.4.27",
-    "vue-router": "4.3.2"
+    "vue-router": "4.3.3"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
     "@types/node": "20.12.7",
     "@vitejs/plugin-vue": "5.0.5",
-    "vite": "5.2.12",
+    "vite": "5.2.13",
     "vue-tsc": "2.0.21"
   }
 }
