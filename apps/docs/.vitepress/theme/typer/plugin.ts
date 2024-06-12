@@ -11,6 +11,7 @@ import {
 import { readFileSync, existsSync } from "node:fs";
 import { expCollector } from "unplugin-export-collector/core";
 import { extract } from "ts-dox";
+import { findSync } from "find-in-files";
 
 export async function ReadmeBasedReference(): Promise<Plugin> {
   return {
@@ -44,7 +45,7 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
         resolve(`../../packages/${packageName}/src/index.ts`),
       );
 
-      const exportedList = await expCollector(
+      let exportedList: string[] = await expCollector(
         resolve(`../../packages/${packageName}/src/index.ts`),
       );
 
@@ -63,17 +64,35 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
                 `../../packages/${packageName}/src/${exportedOne.replace("Function", "")}.ts`,
               ),
             );
-          } catch (error) {}
+          } catch (error) {
+            try {
+              const definitionFound = await findSync(
+                `function\ ${exportedOne}`,
+                resolve(`../../packages/${packageName}/src`),
+                ".ts$",
+              );
+              if (Object.keys(definitionFound)?.length) {
+                astJson = extract(resolve(Object.keys(definitionFound)[0]));
+              }
+            } catch (error) {}
+          }
         }
 
         let functionDefinition =
           astJson.functions?.[exportedOne] ||
           astJson.types[exportedOne] ||
           astJson;
-        let availableTypes = astJson.types || {};
-        if (functionDefinition.signature) {
-          API += `\n\n### \`${exportedOne}\`\n\n`;
 
+        let availableTypes = astJson.types || {};
+
+        if (functionDefinition.signature && functionDefinition.isExported) {
+          API += `\n\n### \`${exportedOne}\`\n\n`;
+          if (typeof functionDefinition.docs.deprecated === "string") {
+            API +=
+              `\n<span style="font-size:0.8em;">⚠️ deprecated - ` +
+              functionDefinition.docs.deprecated +
+              "</span>\n\n";
+          }
           API += normalizeString(functionDefinition.summary);
 
           API += getWrappedCodeBlock(
