@@ -62,6 +62,7 @@
       "@antfu/utils": "^0.7.7",
       "@babel/traverse": "^7.24.1",
       "@types/node": "^20",
+      "braces": "^3.0.3",
       "debug": "^4.3.4",
       "follow-redirects": "^1.15.6",
       "lodash": "^4.17.21",
