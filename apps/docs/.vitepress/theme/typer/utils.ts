@@ -51,7 +51,7 @@ export function getToggleContainer(
 <summary> ${title} </summary>
   ${contents}
 </details>
-`;
+\n`;
 }
 
 const tableHeader = `

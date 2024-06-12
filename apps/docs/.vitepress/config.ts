@@ -1,10 +1,10 @@
 import { defineConfigWithTheme } from "vitepress";
 import type { Config as ThemeConfig } from "vitepress-shopware-docs";
 import baseConfig from "vitepress-shopware-docs/config";
-import { ReadmeBasedReference } from "./theme/typer/plugin";
 import nav from "./navigation";
-import { resolve } from "node:path";
 import { SearchPlugin } from "vitepress-plugin-search";
+import { CmsBaseReference } from "./theme/typer/cms-base-plugin";
+import { ReadmeBasedReference } from "./theme/typer/plugin";
 
 export const sidebar = [
   {
@@ -372,7 +372,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
     json: {
       stringify: true,
     },
-    plugins: [SearchPlugin(), ReadmeBasedReference()],
+    plugins: [SearchPlugin(), ReadmeBasedReference(), CmsBaseReference()],
   },
   vue: {
     reactivityTransform: true,
