@@ -76,11 +76,14 @@ export async function getSessionContext(
  * @category Context
  * @public
  */
-export function setCurrentShippingAddress(
+export async function setCurrentShippingAddress(
   shippingAddressId: string,
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
-  return updateContext({ shippingAddressId }, contextInstance);
+  return (await updateContext(
+    { shippingAddressId },
+    contextInstance,
+  )) as unknown as ContextTokenResponse;
 }
 
 /**
@@ -93,11 +96,14 @@ export function setCurrentShippingAddress(
  * @category Context
  * @public
  */
-export function setCurrentBillingAddress(
+export async function setCurrentBillingAddress(
   billingAddressId: string,
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
-  return updateContext({ billingAddressId }, contextInstance);
+  return (await updateContext(
+    { billingAddressId },
+    contextInstance,
+  )) as unknown as ContextTokenResponse;
 }
 
 /**
@@ -134,7 +140,10 @@ export async function setCurrentCurrency(
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { currencyId: newCurrencyID };
-  const resp = await updateContext(params, contextInstance);
+  const resp = (await updateContext(
+    params,
+    contextInstance,
+  )) as unknown as ContextTokenResponse;
 
   return resp;
 }
@@ -173,7 +182,10 @@ export async function setCurrentLanguage(
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { languageId: newLanguageId };
-  const resp = await updateContext(params, contextInstance);
+  const resp = (await updateContext(
+    params,
+    contextInstance,
+  )) as unknown as ContextTokenResponse;
 
   return resp;
 }
@@ -194,7 +206,10 @@ export async function setCurrentCountry(
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { countryId: newCountryId };
-  const resp = await updateContext(params, contextInstance);
+  const resp = (await updateContext(
+    params,
+    contextInstance,
+  )) as unknown as ContextTokenResponse;
 
   return resp;
 }
@@ -303,7 +318,10 @@ export async function setCurrentPaymentMethod(
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { paymentMethodId: newPaymentMethodId };
-  const resp = await updateContext(params, contextInstance);
+  const resp = (await updateContext(
+    params,
+    contextInstance,
+  )) as unknown as ContextTokenResponse;
 
   return resp;
 }
@@ -370,7 +388,10 @@ export async function setCurrentShippingMethod(
   contextInstance: ShopwareApiInstance = defaultInstance,
 ): Promise<ContextTokenResponse> {
   const params = { shippingMethodId: newShippingMethodId };
-  const resp = await updateContext(params, contextInstance);
+  const resp = (await updateContext(
+    params,
+    contextInstance,
+  )) as unknown as ContextTokenResponse;
 
   return resp;
 }
