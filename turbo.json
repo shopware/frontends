@@ -40,6 +40,7 @@
       "persistent": true
     },
     "test:e2e": {
+      "cache": false,
       "outputs": []
     }
   }
