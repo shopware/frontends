@@ -20,4 +20,23 @@ describe("useInternationalization", () => {
 
     expect(vm.getStorefrontUrl()).toBe("http://localhost:3000");
   });
+
+  it("getAvailableLanguages", async () => {
+    const { vm, injections } = useSetup(useInternationalization);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    vm.getAvailableLanguages();
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readLanguages"),
+    );
+  });
+
+  it("changeLanguage", async () => {
+    const { vm, injections } = useSetup(useInternationalization);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    vm.changeLanguage("test-id");
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("updateContext"),
+      expect.objectContaining({ body: { languageId: "test-id" } }),
+    );
+  });
 });

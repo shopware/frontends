@@ -1,7 +1,7 @@
 import { FetchResponse, ofetch } from "ofetch";
 import type { operations } from "../api-types/adminApiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
-import { errorInterceptor } from "./ApiError";
+import { errorInterceptor } from "./errorInterceptor";
 import { type Hookable, createHooks } from "hookable";
 import defu from "defu";
 import { createPathWithParams } from "./transformPathToQuery";

@@ -38,4 +38,9 @@ describe("usePrice", () => {
     });
     expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot('"2,55 $"');
   });
+
+  it("getFormattedPrice", () => {
+    const { vm } = useSetup(usePrice);
+    expect(vm.getFormattedPrice(undefined)).toBe("");
+  });
 });

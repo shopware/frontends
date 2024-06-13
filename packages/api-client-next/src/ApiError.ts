@@ -76,9 +76,3 @@ export class ApiClientError<
     this.headers = response.headers;
   }
 }
-
-export function errorInterceptor<T extends { errors: Array<ApiError> }>(
-  response: FetchResponse<T>,
-) {
-  throw new ApiClientError(response);
-}
