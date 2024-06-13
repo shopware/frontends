@@ -9,8 +9,9 @@ import { ReadmeBasedReference } from "./theme/typer/plugin";
 export const sidebar = [
   {
     text: "SHOPWARE FRONTENDS",
+    link: "/",
     items: [
-      { text: "Overview", link: "/" },
+      { text: "Overview", link: "/", chevron: false, },
       { text: "Why Shopware Frontends", link: "/why-shopware-frontends" },
     ],
   },
@@ -245,6 +246,7 @@ export const sidebar = [
   },
   {
     text: "PACKAGE REFERENCE",
+        collapsed: true,
     link: "/packages/",
     items: [
       {
@@ -336,7 +338,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
 
   themeConfig: {
     nav,
-    sidebar,
+    sidebar: sidebar,
     algolia: {
       indexName: "",
       appId: "",
