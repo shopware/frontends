@@ -12,6 +12,11 @@ import { readFileSync, existsSync } from "node:fs";
 import { expCollector } from "unplugin-export-collector/core";
 import { extract } from "ts-dox";
 import { findSync } from "find-in-files";
+import { BlockList } from "net";
+
+const packagesMap = {
+  "api-client": "api-client-next"
+}
 
 export async function ReadmeBasedReference(): Promise<Plugin> {
   return {
@@ -20,7 +25,8 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
     async transform(code, id) {
       if (!id.match(/\.md\b/)) return null;
       const [pkg, fileName] = id.split("/").slice(-2);
-      const packageName = fileName.replace(/\.md$/, "");
+      const packageDirName = fileName.replace(/\.md$/, "");
+      const packageName = packagesMap[packageDirName] || packageDirName;
 
       if (
         pkg !== "packages" ||

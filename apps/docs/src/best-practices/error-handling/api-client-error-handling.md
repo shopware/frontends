@@ -68,4 +68,4 @@ Look at this `invokeSubmit` function from `templates/vue-demo-store/pages/regist
 Before some request is sent the form get's validated and if it is valid, we will send the register request. The `await register(state);` part is coming from the composable `useUser()`, you see at the top of the script setup. So the request is surrounded by a try/catch/finally (see also [axios errors handling](https://axios-http.com/docs/handling_errors)) so it is possible to react if there is some error coming back from the request. If we got an error we will push a message to a composable called `useNotifications()` that will display a nice message to the user of the website.
 
 **API Client Reference**
-<PageRef page="../../packages/api-client-next" title="API Client Reference" sub="Package reference with all services" />
+<PageRef page="../../packages/api-client" title="API Client Reference" sub="Package reference with all services" />

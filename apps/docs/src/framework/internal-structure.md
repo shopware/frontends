@@ -33,7 +33,7 @@ This section deals with the different packages and their abstractions. It is sor
 
 The API client provides a common interface to access the Shopware API. It can be used standalone in any JavaScript project.
 
-<PageRef page="../packages/api-client-next" title="API Client Reference" sub="Package reference with all services" />
+<PageRef page="../packages/api-client" title="API Client Reference" sub="Package reference with all services" />
 
 ## helpers
 

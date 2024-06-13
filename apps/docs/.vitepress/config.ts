@@ -249,7 +249,7 @@ export const sidebar = [
     items: [
       {
         text: "API Client",
-        link: "/packages/api-client-next",
+        link: "/packages/api-client",
       },
       { text: "Composables", link: "/packages/composables" },
       { text: "CMS Base", link: "/packages/cms-base" },
