@@ -316,7 +316,7 @@ describe("createAPIClient", () => {
       }),
     );
 
-    const consoleErrorSpy = vi.spyOn(console, "error");
+    const consoleErrorSpy = vi.spyOn(console, "warn");
     const contextChangedMock = vi.fn().mockImplementation(() => {});
 
     const baseURL = await createPortAndGetUrl(app);
