@@ -37,16 +37,16 @@
     "@microsoft/tsdoc": "0.15.0",
     "@types/changelog-parser": "2.8.4",
     "changelog-parser": "3.0.1",
-    "dotenv-cli": "7.4.1",
+    "dotenv-cli": "7.4.2",
     "esno": "4.7.0",
     "globby": "14.0.1",
     "husky": "9.0.11",
-    "lint-staged": "15.2.2",
+    "lint-staged": "15.2.7",
     "prettier": "3.3.2",
-    "taze": "0.13.6",
-    "turbo": "1.13.2",
+    "taze": "0.13.8",
+    "turbo": "2.0.3",
     "typedoc": "0.25.13",
-    "vercel": "34.0.0"
+    "vercel": "34.2.7"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"
