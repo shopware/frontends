@@ -91,7 +91,7 @@ export function createAPIClient<
         ) as string;
         defaultHeaders["sw-context-token"] = newContextToken;
         if (params.onContextChanged) {
-          console.error(
+          console.warn(
             "DEPRECATED: onContextChanged is deprecated. Use apiClient.hook('contextChanged', handler) instead",
           );
           params.onContextChanged?.(newContextToken);
