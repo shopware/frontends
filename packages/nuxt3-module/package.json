@@ -41,7 +41,7 @@
     "test": "echo \"Warn: no test specified yet\""
   },
   "dependencies": {
-    "@nuxt/kit": "3.12.1",
+    "@nuxt/kit": "3.11.2",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
@@ -49,9 +49,9 @@
     "js-cookie": "3.0.5"
   },
   "devDependencies": {
-    "@nuxt/schema": "3.12.1",
+    "@nuxt/schema": "3.11.2",
     "eslint-config-shopware": "workspace:*",
-    "nuxt": "3.12.1",
+    "nuxt": "3.11.2",
     "tsconfig": "workspace:*",
     "typescript": "5.4.5",
     "unbuild": "2.0.0"
