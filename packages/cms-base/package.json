@@ -36,7 +36,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@nuxt/kit": "3.11.2",
+    "@nuxt/kit": "3.12.1",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
@@ -51,14 +51,14 @@
     "vue": "3.4.27"
   },
   "devDependencies": {
-    "@nuxt/schema": "3.11.2",
+    "@nuxt/schema": "3.12.1",
     "@shopware-pwa/types": "workspace:*",
     "@types/three": "^0.165.0",
     "@vitest/coverage-v8": "1.6.0",
     "@vue/eslint-config-typescript": "13.0.0",
     "eslint-config-shopware": "workspace:*",
     "eslint-plugin-vue": "9.24.1",
-    "nuxt": "3.11.2",
+    "nuxt": "3.12.1",
     "tsconfig": "workspace:*",
     "typescript": "5.4.5",
     "unbuild": "2.0.0",
