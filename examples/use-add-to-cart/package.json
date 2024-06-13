@@ -14,9 +14,9 @@
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
-    "@types/node": "20.12.7",
+    "@types/node": "20.14.2",
     "@unocss/nuxt": "0.61.0",
-    "nuxt": "3.12.1",
+    "nuxt": "3.11.2",
     "typescript": "5.4.5",
     "vue": "3.4.27",
     "vue-tsc": "2.0.21"
