@@ -19,7 +19,7 @@
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
     "test:bench": "turbo run test:bench -- --run",
-    "test:e2e": "turbo run test:e2e",
+    "test:e2e": "turbo run test:e2e -- --reporter=line",
     "format": "prettier --write \"**/*.{ts,tsx,md,vue}\"",
     "version": "changeset version",
     "postversion": "pnpm run versionReadme",
