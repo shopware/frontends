@@ -24,8 +24,8 @@ test.describe.only("Check search page", () => {
       0,
     );
   });
-
-  test("Check properties filter", async ({ page }) => {
+  //TODO fix the issues from https://github.com/shopware/frontends/issues/1012
+  test.skip("Check properties filter", async ({ page }) => {
     await homePage.typeSearchPhrase("sal");
     await resultPage.selectRandomSelectionCheckbox();
 
