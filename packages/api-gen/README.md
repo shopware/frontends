@@ -174,6 +174,7 @@ Prepare your config file named **api-gen.config.json**:
     "COMPONENTS_API_ALIAS" // you have description on autocompletion what specific rule does, this one for example ensures correctness of the apiAlias field
   ]
 }
+```
 
 <!-- AUTO GENERATED CHANGELOG -->
 
@@ -189,4 +190,3 @@ Full changelog for stable version is available [here](https://github.com/shopwar
 
   - Changed dependency _openapi-typescript_ from **^6.7.0** to **^6.7.1**
   - Changed dependency _prettier_ from **^3.0.3** to **^3.1.0**
-```
