@@ -150,6 +150,32 @@ SHOPWARE_ADMIN_USERNAME="my@username.com"
 SHOPWARE_ADMIN_PASSWORD="my-password"
 ```
 
+### `validateJson`
+
+This command allow to validate the output JSON file of your instance. You can configure which rules should be applied, we provide you with the schema configuration file, so you can easily modify it.
+
+options:
+
+```bash
+pnpx @shopware/api-gen validateJson --help
+
+# validate JSON file
+pnpx @shopware/api-gen validateJson --apiType=store
+```
+
+this searches for `api-types/storeApiTypes.json` file and validates it. Use [loadSchema](#loadSchema) command first to fetch your JSON file.
+
+Prepare your config file named **api-gen.config.json**:
+
+```JSON
+{
+  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
+  "rules": [
+    "COMPONENTS_API_ALIAS" // you have description on autocompletion what specific rule does, this one for example ensures correctness of the apiAlias field
+  ]
+}
+```
+
 <!-- AUTO GENERATED CHANGELOG -->
 
 ## Changelog
