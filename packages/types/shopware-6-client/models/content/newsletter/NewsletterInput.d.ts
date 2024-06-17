@@ -1,9 +1,10 @@
-import type { RequestParameters } from "#shopware";
+import type { operations } from "#shopware";
 
 /**
- * @deprecated use `RequestParameters<"subscribeToNewsletter">` from "#shopware" import instead
+ * @deprecated use `operations["subscribeToNewsletter post /newsletter/subscribe"]["body"]` from "#shopware" import instead
  */
-export type NewsletterInput = RequestParameters<"subscribeToNewsletter">;
+export type NewsletterInput =
+  operations["subscribeToNewsletter post /newsletter/subscribe"]["body"];
 // export type NewsletterInput = {
 //   email: string;
 //   option: "subscribe" | "unsubscribe";

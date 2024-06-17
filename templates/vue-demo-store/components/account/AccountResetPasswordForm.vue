@@ -42,9 +42,11 @@ const invokeReset = async (): Promise<void> => {
       await apiClient.invoke(
         "recoveryPassword post /account/recovery-password-confirm",
         {
-          hash: hashQuery,
-          newPassword: state.password.newPasswordConfirm,
-          newPasswordConfirm: state.password.newPasswordConfirm,
+          body: {
+            hash: hashQuery,
+            newPassword: state.password.newPasswordConfirm,
+            newPasswordConfirm: state.password.newPasswordConfirm,
+          },
         },
       );
     }

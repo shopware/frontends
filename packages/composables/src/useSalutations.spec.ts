@@ -9,7 +9,9 @@ describe("useSalutations", () => {
     const { vm, injections } = useSetup(useSalutations, {
       apiClient: {
         invoke: vi.fn().mockResolvedValue({
-          elements: Salutations,
+          data: {
+            elements: Salutations,
+          },
         }),
       },
     });

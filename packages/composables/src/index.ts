@@ -95,7 +95,10 @@ export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
 
 // TODO: handle defaults in app
 export function getDefaultApiParams(): {
-  [composableName: string]: any;
+  [composableName: string]: unknown;
 } {
+  console.error(
+    "[@shopware-pwa/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
+  );
   return {};
 }

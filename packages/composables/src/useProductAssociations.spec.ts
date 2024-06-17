@@ -51,7 +51,7 @@ describe("useProductAssociations", () => {
         },
       ),
     );
-    injections.apiClient.invoke.mockResolvedValue(mockedCrossSelling);
+    injections.apiClient.invoke.mockResolvedValue({ data: mockedCrossSelling });
 
     await vm.loadAssociations({
       method: "post",
@@ -79,7 +79,7 @@ describe("useProductAssociations", () => {
         },
       ),
     );
-    injections.apiClient.invoke.mockResolvedValue(mockedCrossSelling);
+    injections.apiClient.invoke.mockResolvedValue({ data: mockedCrossSelling });
 
     await vm.loadAssociations({
       method: "post",

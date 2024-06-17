@@ -27,7 +27,7 @@ export function useContext<T>(
   /**
    * Used for global context to replace it with new Value. Used mainly for session context
    */
-  if (!!params?.replace) {
+  if (params?.replace) {
     _context.value = unref(params.replace);
   }
 

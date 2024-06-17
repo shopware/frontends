@@ -4,6 +4,7 @@ import {
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
+import { onKeyStroke, useActiveElement } from "@vueuse/core";
 type NavigationElement = Schemas["Category"] & {
   activeClass?: boolean;
 };
@@ -113,6 +114,59 @@ const updateActiveClass = (
     resetActiveClass.value = false;
   }
 };
+//#region - keyboard navigation (highliy connected to the HTML structure)
+const activeElement = useActiveElement();
+onKeyStroke("ArrowDown", (e) => {
+  // next parent link or next child link
+  if (
+    activeElement.value?.parentElement?.nextElementSibling?.getElementsByTagName(
+      "a",
+    )[0]
+  ) {
+    e.preventDefault();
+    activeElement.value.parentElement.nextElementSibling
+      .getElementsByTagName("a")[0]
+      .focus();
+    return;
+  }
+});
+
+onKeyStroke("ArrowUp", (e) => {
+  // previous parent link or previous child link
+  if (
+    activeElement.value?.parentElement?.previousElementSibling?.getElementsByTagName(
+      "a",
+    )[0]
+  ) {
+    e.preventDefault();
+    activeElement.value?.parentElement.previousElementSibling
+      .getElementsByTagName("a")[0]
+      .focus();
+    return;
+  }
+});
+
+function isFocusInsideNav() {
+  if (activeElement.value) {
+    const focusInsideMenu = document
+      .getElementsByTagName("nav")[0]
+      .contains(activeElement.value);
+    return focusInsideMenu;
+  }
+  return false;
+}
+
+onKeyStroke("Escape", () => {
+  if (isFocusInsideNav()) {
+    currentMenuPosition.value = undefined;
+    document
+      .getElementsByTagName("header")[0]
+      .getElementsByTagName("a")[0]
+      .focus();
+  }
+});
+//#endregion - keyboard navigation
+
 // reset when route.path changes
 watch(
   () => route.path,
@@ -121,6 +175,7 @@ watch(
       resetNavigationActiveClass(navigationElements.value);
     }
     resetActiveClass.value = true;
+    currentMenuPosition.value = undefined;
   },
 );
 </script>
@@ -133,10 +188,11 @@ watch(
     role="menu"
   >
     <div
-      v-for="navigationElement in navigationElements"
+      v-for="(navigationElement, index) in navigationElements"
       :key="navigationElement.id"
       class="relative hover:bg-secondary-50 rounded-lg"
       @mouseover="currentMenuPosition = navigationElement.id"
+      @focusin="currentMenuPosition = navigationElement.id"
     >
       <NuxtLink
         role="menuitem"
@@ -169,11 +225,13 @@ watch(
           -->
       <client-only>
         <div
-          v-if="
-            currentMenuPosition === navigationElement.id &&
-            navigationElement?.children.length
-          "
+          v-if="navigationElement.children.length > 0"
           class="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md xl:max-w-screen-sm sm:px-0 lg:ml-0 lg:left-1/4 lg:-translate-x-1/6"
+          :class="{
+            visbile: currentMenuPosition === navigationElement.id,
+            hidden: currentMenuPosition !== navigationElement.id,
+          }"
+          @focusin="currentMenuPosition = navigationElement.id"
           @mouseleave="currentMenuPosition = undefined"
         >
           <div
@@ -182,7 +240,13 @@ watch(
             <template v-if="navigationElement.children.length > 0">
               <LayoutTopNavigationRecursive
                 :navigation-element-children="navigationElement.children"
+                :last-element="
+                  navigationElements
+                    ? navigationElements.length - 1 === index
+                    : false
+                "
                 @update-active-class="onUpdateActiveClass"
+                @focusout-last-element="currentMenuPosition = undefined"
               />
             </template>
             <div

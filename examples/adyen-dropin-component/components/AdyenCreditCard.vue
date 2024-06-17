@@ -1,12 +1,5 @@
 <script setup lang="ts">
 import "@adyen/adyen-web/dist/adyen.css";
-import {
-  onMounted,
-  useNuxtApp,
-  useSessionContext,
-  useShopwareContext,
-  useRuntimeConfig,
-} from "#imports";
 
 const emits = defineEmits<{
   // to inform the upper levels of an app that payButton was clicked (that means it was validated by Adyen and we can proceed)
@@ -25,7 +18,12 @@ let adyenConfigResponse;
 // get the clientKey and environment settings from backend (will overwrite the corresponding settings from nuxt.config.ts)
 try {
   adyenConfigResponse = await apiClient.invoke(
-    "readAdyenConfiguration get /adyen/payment-methods",
+    "readAdyenConfiguration post /adyen/payment-status",
+    {
+      body: {
+        orderId: "123",
+      },
+    },
   );
 } catch (error) {
   alert(

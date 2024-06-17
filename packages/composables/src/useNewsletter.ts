@@ -1,15 +1,18 @@
 import { useShopwareContext, useInternationalization } from "#imports";
 import { ref, computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
-import type { RequestParameters, Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseNewsletterReturn = {
   /**
    * Subscribes the user to the newsletter
-   * @param params {@link RequestParameters<"subscribeToNewsletter">}
+   * @param params {@link operations['subscribeToNewsletter post /newsletter/subscribe']['body']}
    */
   newsletterSubscribe(
-    params: Omit<RequestParameters<"subscribeToNewsletter">, "storefrontUrl">,
+    params: Omit<
+      operations["subscribeToNewsletter post /newsletter/subscribe"]["body"],
+      "storefrontUrl"
+    >,
   ): Promise<void>;
   /**
    * Removes the email from the newsletter
@@ -19,7 +22,7 @@ export type UseNewsletterReturn = {
   /**
    * Get newsletter status from the API call
    */
-  getNewsletterStatus(): Promise<void>;
+  getNewsletterStatus(): Promise<Schemas["AccountNewsletterRecipientResult"]>;
   /**
    * Indicates if the user is subscribed to the newsletter
    *
@@ -48,36 +51,38 @@ export function useNewsletter(): UseNewsletterReturn {
     ref<Schemas["AccountNewsletterRecipientResult"]["status"]>("undefined");
 
   async function newsletterSubscribe(
-    params: Omit<RequestParameters<"subscribeToNewsletter">, "storefrontUrl">,
+    params: Omit<
+      operations["subscribeToNewsletter post /newsletter/subscribe"]["body"],
+      "storefrontUrl"
+    >,
   ) {
-    return await apiClient.invoke(
+    const result = await apiClient.invoke(
       "subscribeToNewsletter post /newsletter/subscribe",
       {
-        ...params,
-        storefrontUrl: getStorefrontUrl(),
+        body: {
+          ...params,
+          storefrontUrl: getStorefrontUrl(),
+        },
       },
     );
+    return result.data;
   }
 
   async function newsletterUnsubscribe(email: string) {
-    return await apiClient.invoke(
+    await apiClient.invoke(
       "unsubscribeToNewsletter post /newsletter/unsubscribe",
       {
-        email,
+        body: { email },
       },
     );
   }
 
   async function getNewsletterStatus() {
-    try {
-      const response = await apiClient.invoke(
-        "readNewsletterRecipient post /account/newsletter-recipient",
-        {},
-      );
-      newsletterStatus.value = response.status;
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await apiClient.invoke(
+      "readNewsletterRecipient post /account/newsletter-recipient",
+    );
+    newsletterStatus.value = response.data.status;
+    return response.data;
   }
 
   const isNewsletterSubscriber = computed(

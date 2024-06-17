@@ -52,10 +52,11 @@ export type UseProductPriceReturn = {
  * @category Product
  */
 export function useProductPrice(
-  product: Ref<Schemas["Product"]>,
+  product: Ref<Schemas["Product"] | undefined>,
 ): UseProductPriceReturn {
-  const _cheapest: ComputedRef<Schemas["CalculatedPrice"] | undefined> =
-    computed(() => product.value?.calculatedCheapestPrice);
+  const _cheapest: ComputedRef<
+    Schemas["Product"]["calculatedCheapestPrice"] | undefined
+  > = computed(() => product.value?.calculatedCheapestPrice);
 
   /**
    * calculatedPrices are used for product with tier prices
@@ -84,7 +85,7 @@ export function useProductPrice(
 
   const displayFromVariants: ComputedRef<number | false | undefined> = computed(
     () =>
-      !!product.value.parentId &&
+      !!product.value?.parentId &&
       product.value?.calculatedCheapestPrice?.hasRange &&
       _real?.value?.unitPrice !== _cheapest?.value?.unitPrice &&
       _cheapest?.value?.unitPrice,
@@ -98,7 +99,9 @@ export function useProductPrice(
             return current.unitPrice < previous.unitPrice ? current : previous;
           },
         );
-        return lowest || _cheapest.value;
+        return (
+          lowest || (_cheapest.value as unknown as Schemas["CalculatedPrice"])
+        );
       }
       return _real.value;
     },
@@ -119,7 +122,7 @@ export function useProductPrice(
   );
 
   const regulationPrice: ComputedRef<number | undefined> = computed(
-    () => product.value.calculatedPrice?.regulationPrice?.price,
+    () => product.value?.calculatedPrice?.regulationPrice?.price,
   );
 
   const tierPrices = computed(() => getProductTierPrices(product.value));

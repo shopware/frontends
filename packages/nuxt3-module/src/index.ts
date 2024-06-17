@@ -87,7 +87,10 @@ declare module "@nuxt/schema" {
   }
 
   interface RuntimeConfig {
-    shopware?: Pick<ShopwareNuxtOptions, "endpoint" | "shopwareEndpoint">;
+    shopware?: Pick<
+      ShopwareNuxtOptions,
+      "endpoint" | "shopwareEndpoint" | "useUserContextInSSR"
+    >;
   }
   interface PublicRuntimeConfig {
     shopware: ShopwareNuxtOptions;

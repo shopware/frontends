@@ -1,27 +1,23 @@
-import { reactive } from "vue";
-import type { UnwrapRef } from "vue";
 import { useShopwareContext } from "#imports";
-import type { RequestParameters } from "#shopware";
-import { ApiClientError } from "@shopware/api-client";
-import type { ApiError } from "@shopware/api-client";
+import type { operations } from "#shopware";
 
 export type UseCustomerPasswordReturn = {
-  errors: UnwrapRef<{
-    resetPassword: ApiError[];
-    updatePassword: ApiError[];
-  }>;
   /**
    * Change customer's current password
    */
   updatePassword(
-    updatePasswordData: RequestParameters<"changePassword">,
-  ): Promise<boolean>;
+    updatePasswordData: operations["changePassword post /account/change-password"]["body"],
+  ): Promise<
+    operations["changePassword post /account/change-password"]["response"]
+  >;
   /**
    * Reset customer's password
    */
   resetPassword(
-    resetPasswordData: RequestParameters<"sendRecoveryMail">,
-  ): Promise<boolean>;
+    resetPasswordData: operations["sendRecoveryMail post /account/recovery-password"]["body"],
+  ): Promise<
+    operations["sendRecoveryMail post /account/recovery-password"]["response"]
+  >;
 };
 
 /**
@@ -32,52 +28,30 @@ export type UseCustomerPasswordReturn = {
 export function useCustomerPassword(): UseCustomerPasswordReturn {
   const { apiClient } = useShopwareContext();
 
-  const errors: UnwrapRef<{
-    resetPassword: ApiError[];
-    updatePassword: ApiError[];
-  }> = reactive({
-    resetPassword: [],
-    updatePassword: [],
-  });
-
   async function updatePassword(
-    updatePasswordData: RequestParameters<"changePassword">,
+    updatePasswordData: operations["changePassword post /account/change-password"]["body"],
   ) {
-    try {
-      errors.updatePassword = [];
-      await apiClient.invoke(
-        "changePassword post /account/change-password",
-        updatePasswordData,
-      );
-    } catch (e) {
-      if (e instanceof ApiClientError) {
-        errors.updatePassword = e.details;
-      }
-      return false;
-    }
-    return true;
+    const response = await apiClient.invoke(
+      "changePassword post /account/change-password",
+      {
+        body: updatePasswordData,
+      },
+    );
+    return response.data;
   }
 
   async function resetPassword(
-    resetPasswordData: RequestParameters<"sendRecoveryMail">,
+    resetPasswordData: operations["sendRecoveryMail post /account/recovery-password"]["body"],
   ) {
-    try {
-      await apiClient.invoke(
-        "sendRecoveryMail post /account/recovery-password",
-        resetPasswordData,
-      );
-    } catch (e) {
-      if (e instanceof ApiClientError) {
-        errors.resetPassword = e.details;
-      }
-      return false;
-    }
-    return true;
+    const response = await apiClient.invoke(
+      "sendRecoveryMail post /account/recovery-password",
+      { body: resetPasswordData },
+    );
+    return response.data;
   }
 
   return {
     updatePassword,
     resetPassword,
-    errors,
   };
 }

@@ -2,24 +2,25 @@
   "name": "example-modal-teleport",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
+    "build": "nuxt prepare && nuxt build",
+    "dev": "nuxt prepare && nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "lint": "nuxt prepare && vue-tsc --noEmit",
+    "preview": "nuxt preview"
   },
   "devDependencies": {
     "@nuxt/types": "2.17.3",
     "@nuxt/typescript-build": "3.0.2",
     "@nuxtjs/eslint-config-typescript": "12.1.0",
-    "@unocss/nuxt": "0.59.2",
-    "@unocss/reset": "0.59.2",
+    "@unocss/nuxt": "0.61.0",
+    "@unocss/reset": "0.61.0",
     "eslint": "8.57.0",
     "nuxt": "3.11.2",
-    "unocss": "0.59.2"
+    "unocss": "0.61.0"
   },
   "dependencies": {
-    "@vueuse/nuxt": "10.9.0",
-    "vue": "3.4.21"
+    "@vueuse/nuxt": "10.11.0",
+    "vue": "3.4.27",
+    "vue-tsc": "2.0.21"
   }
 }

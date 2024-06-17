@@ -3,13 +3,10 @@ import { createShopwareContext } from "@shopware-pwa/composables-next/dist";
 import Cookies from "js-cookie";
 
 import { createAPIClient } from "@shopware/api-client";
-import type {
-  operationPaths,
-  operations,
-} from "@shopware/api-client/api-types";
+import type { operations } from "@shopware/api-client/store-api-types";
 
 export default (app: App) => {
-  const apiInstance = createAPIClient<operations, operationPaths>({
+  const apiInstance = createAPIClient<operations>({
     baseURL:
       import.meta.env.API_URL ||
       "https://demo-frontends.shopware.store/store-api",

@@ -20,10 +20,11 @@ export function useUrlResolver() {
     const urlPrefix = getUrlPrefix();
 
     switch (true) {
-      case navigationPattern.test(url):
+      case navigationPattern.test(url): {
         // Remove first lang segment of the URL
         const newUrl = url.split("/").slice(1);
         return newUrl ? `${buildUrlPrefix(newUrl.join("/"), urlPrefix)}` : url;
+      }
       default:
         return url;
     }

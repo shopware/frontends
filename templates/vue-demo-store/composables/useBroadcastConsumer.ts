@@ -78,7 +78,7 @@ export function useBroadcastConsumer(): UseBroadcastConsumerReturn {
     if (isSupported.value) {
       post(actions.refreshSession, {
         sessionContext: sessionContext.value,
-        cart: cart,
+        cart: cart.value,
       });
     }
   };

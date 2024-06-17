@@ -10,14 +10,30 @@ import { defaultInstance, ShopwareApiInstance } from "../apiService";
  * @public
  */
 export interface ContactFormData {
-  salutationId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  subject: string;
+  cmsPageType?: string;
+  /** The message of the contact form */
   comment: string;
+  /** Email address */
+  email: string;
+  /** Entity name for slot config */
+  entityName?: string;
+  /** Firstname. This field may be required depending on the system settings. */
+  firstName?: string;
+  /** Lastname. This field may be required depending on the system settings. */
+  lastName?: string;
+  /**
+   * Identifier of the navigation page. Can be used to override the configuration.
+   * Take a look at the settings of a category containing a concact form in the administration.
+   */
   navigationId?: string;
+  /** Phone. This field may be required depending on the system settings. */
+  phone?: string;
+  /** Identifier of the salutation. Use `/api/salutation` endpoint to fetch possible values. */
+  salutationId: string;
+  /** Identifier of the cms element */
+  slotId?: string;
+  /** The subject of the contact form. */
+  subject: string;
 }
 
 /**
@@ -41,15 +57,30 @@ export async function sendContactForm(
  * @public
  */
 export interface NewsletterSubscribeData {
-  email: string;
-  salutationId?: string;
-  firstName?: string;
-  lastName?: string;
-  street?: string;
+  /** City */
   city?: string;
-  zipCode?: string;
-  option: "direct" | "subscribe" | "confirmSubscribe" | "unsubscribe";
+  /** Custom field data that should be added to the subscription. */
+  customFields?: string;
+  /** Email address that will receive the confirmation and the newsletter. */
+  email: string;
+  /** First name */
+  firstName?: string;
+  /** Identifier of the language. */
+  languageId?: string;
+  /** Last name */
+  lastName?: string;
+  /** Defines what should be done. */
+  option: string;
+  /** Identifier of the salutation. */
+  salutationId?: string;
+  /** Url of the storefront of the shop. This will be used for generating the link to the /newsletter/confirm inside the confirm email. */
   storefrontUrl: string;
+  /** Street */
+  street?: string;
+  /** Zip code */
+  tags?: string;
+  /** Zip code */
+  zipCode?: string;
 }
 /**
  * Subscribes to newsletter
