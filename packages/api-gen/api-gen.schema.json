@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "rules": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "anyOf": [
+          {
+            "const": "COMPONENTS_API_ALIAS",
+            "description": "Enforce proper apiAlias fields on components"
+          }
+        ]
+      }
+    }
+  },
+  "required": ["rules"]
+}
