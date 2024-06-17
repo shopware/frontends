@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RequestParameters } from "#shopware";
+import type { operations } from "#shopware";
 import ListingFilter from "./ListingFilter.vue";
 import { computed, provide, reactive } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
@@ -36,19 +36,20 @@ const searchSelectedFilters: UnwrapNestedRefs<{
 });
 /* eslint-enable */
 
-const searchCriteriaForRequest: ComputedRef<RequestParameters<"searchPage">> =
-  computed(() => ({
-    // turn Set to array and then into string with | separator
-    manufacturer: [...searchSelectedFilters.manufacturer]?.join("|"),
-    // turn Set to array and then into string with | separator
-    properties: [...searchSelectedFilters.properties]?.join("|"),
-    "min-price": searchSelectedFilters["min-price"],
-    "max-price": searchSelectedFilters["max-price"],
-    order: getCurrentSortingOrder.value,
-    "shipping-free": searchSelectedFilters["shipping-free"],
-    rating: searchSelectedFilters["rating"],
-    search: "",
-  }));
+const searchCriteriaForRequest: ComputedRef<
+  operations["searchPage post /search"]["body"]
+> = computed(() => ({
+  // turn Set to array and then into string with | separator
+  manufacturer: [...searchSelectedFilters.manufacturer]?.join("|"),
+  // turn Set to array and then into string with | separator
+  properties: [...searchSelectedFilters.properties]?.join("|"),
+  "min-price": searchSelectedFilters["min-price"],
+  "max-price": searchSelectedFilters["max-price"],
+  order: getCurrentSortingOrder.value,
+  "shipping-free": searchSelectedFilters["shipping-free"],
+  rating: searchSelectedFilters["rating"],
+  search: "",
+}));
 
 for (const param in route.query) {
   if (searchSelectedFilters.hasOwnProperty(param)) {
@@ -106,7 +107,7 @@ const clearFilters = async () => {
   await search({
     ...route.query,
     ...filtersToQuery(searchCriteriaForRequest.value),
-  } as RequestParameters<"searchPage">);
+  });
   await router.push({
     query: {
       search: route.query.search,
@@ -119,7 +120,7 @@ async function invokeCleanFilters() {
   clearFilters();
   await search({
     ...route.query,
-  } as unknown as RequestParameters<"searchPage">);
+  } as unknown as operations["searchPage post /search"]["body"]);
 }
 
 const selectedOptionIds = computed(() => [

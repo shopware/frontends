@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, it, assertType } from "vitest";
-import type { components } from "../../api-types";
+import type { Schemas } from "../../api-types/storeApiTypes";
 
-type Criteria = components["schemas"]["Criteria"];
+type Criteria = Schemas["Criteria"];
 
 describe("Criteria type", () => {
   it("Associations", () => {

@@ -6,6 +6,7 @@ import {
   useUser,
 } from "@shopware-pwa/composables-next";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
+import { Schemas } from "#shopware";
 
 const { apiClient } = useShopwareContext();
 // for initialize the session and get the current currency
@@ -29,7 +30,7 @@ const ITEMS_CACHE = ref(new Map());
 // store for locally selected items (to be added to the shopping cart later on)
 const chosenItems = ref(new Map());
 // container for product search response
-const items = ref([]);
+const items = ref<Schemas["B2BProductDefinition"][]>([]);
 // indicates whether there are any items found in API
 const hasItemsFound = computed(() => !!items.value.length);
 // search query for suggest search parameter
@@ -60,12 +61,12 @@ const showToastMessage = (message: string) => {
 // used in suggest search bar
 const search = async (phrase: string) => {
   const response = await apiClient.invoke(
-    `quickOrderProductSearch get /quick-order/product?search`,
+    `quickOrderProductSearch get /quick-order/product`,
     {
-      search: phrase,
+      query: { search: phrase },
     },
   );
-  items.value = response?.elements;
+  items.value = response.data.elements;
   forceCloseSuggest.value = false;
 };
 
@@ -78,7 +79,7 @@ const onClearListClick = () => {
 // add item to the chosenItems list
 // or increment a quantity if already exists
 // if the item comes from a file upload, assign quantity value from csv
-const onItemClick = (item) => {
+const onItemClick = (item: Schemas["B2BProductDefinition"]) => {
   if (chosenItems.value.has(item.id)) {
     chosenItems.value.set(
       item.id,
@@ -103,12 +104,15 @@ const onAddToCartClick = async () => {
   );
 
   await apiClient.invoke("addLineItem post /checkout/cart/line-item", {
-    items: lineItemsPayload as Array<{
-      id?: string;
-      referencedId: string;
-      quantity?: number;
-      type: "product" | "promotion" | "custom" | "credit";
-    }>,
+    body: {
+      // TODO(MD): fix types in component and avoid this cast
+      items: lineItemsPayload as Array<{
+        id?: string;
+        referencedId: string;
+        quantity?: number;
+        type: "product" | "promotion" | "custom" | "credit";
+      }>,
+    },
   });
 
   chosenItems.value = new Map();
@@ -116,8 +120,9 @@ const onAddToCartClick = async () => {
 };
 
 // set the new quantity value for a given item
-const onItemQtyChange = (event, itemId: string) => {
-  const value = event.target.value;
+const onItemQtyChange = (event: Event, itemId: string) => {
+  const target = event.target as HTMLInputElement;
+  const value = target.value;
   chosenItems.value.set(itemId, +value);
   showToastMessage("The quantity has been changed.");
 };
@@ -125,17 +130,23 @@ const onItemQtyChange = (event, itemId: string) => {
 // detects if someone uploads a file
 // then send it to the quick-order endpoint (from commercial b2b extension)
 // iterate over items found (products from API) and add them to the store (chosenItems Map)
-const onCsvFileChange = async (event) => {
-  const file = event.target.files[0];
+const onCsvFileChange = async (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const files = target.files!;
+  const file = files[0];
   const formData = new FormData();
   formData.append("file", file);
-  const headers = { "Content-Type": "multipart/form-data" };
+  // const headers = { "Content-Type": "multipart/form-data" };
+
   const foundProductsResponse = await apiClient.invoke(
     `quickOrderLoadFile post /quick-order/load-file`,
-    { formData },
+    {
+      contentType: "multipart/form-data",
+      body: formData,
+    },
   );
 
-  for (const item of foundProductsResponse.products) {
+  for (const item of foundProductsResponse.data.products) {
     onItemClick(item);
   }
 
@@ -281,7 +292,7 @@ watch(query, (value) => {
                   scope="row"
                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {{ item.translated?.name || item.name }}
+                  {{ item.translated.name || item.name }}
                 </th>
                 <td class="px-6 py-4">{{ item.productNumber }}</td>
                 <td class="px-6 py-4">
@@ -289,13 +300,13 @@ watch(query, (value) => {
                     v-for="option in item.options"
                     :key="option.id"
                     class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300"
-                    >{{ option?.group.translated?.name }}:
-                    {{ option?.translated?.name }}</span
+                    >{{ option.group.translated.name }}:
+                    {{ option.translated.name }}</span
                   >
                 </td>
 
                 <td class="px-6 py-4">
-                  {{ item?.calculatedPrice?.totalPrice }} {{ currency?.symbol }}
+                  {{ item.calculatedPrice.totalPrice }} {{ currency?.symbol }}
                 </td>
               </tr>
             </tbody>
@@ -337,7 +348,7 @@ watch(query, (value) => {
                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {{
-                    ITEMS_CACHE.get(item)?.translated?.name ||
+                    ITEMS_CACHE.get(item)?.translated.name ||
                     ITEMS_CACHE.get(item)?.name
                   }}
                 </th>
@@ -349,8 +360,8 @@ watch(query, (value) => {
                     v-for="option in ITEMS_CACHE.get(item)?.options"
                     :key="option.id"
                     class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300"
-                    >{{ option?.group.translated?.name }}:
-                    {{ option?.translated?.name }}</span
+                    >{{ option?.group.translated.name }}:
+                    {{ option?.translated.name }}</span
                   >
                 </td>
 

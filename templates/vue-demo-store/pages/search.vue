@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RequestParameters, Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 const route = useRoute();
 const router = useRouter();
 
@@ -25,16 +25,19 @@ useBreadcrumbs([
 ]);
 
 const createFiltersFromRoute = () => {
-  const filters: {
-    field: string;
-    type: string;
-    value?: string | string[] | boolean;
-    parameters?: {
-      gte?: string;
-      lte?: string;
-    };
-  }[] = [];
+  const filters: Schemas["Criteria"]["filter"] = [];
+  createPriceFilter(filters);
   for (const [key, value] of Object.entries(route.query)) {
+    if (
+      key === "p" ||
+      key === "limit" ||
+      key === "order" ||
+      key === "search" ||
+      key === "min-price" ||
+      key === "max-price"
+    ) {
+      continue;
+    }
     const currentValue = value as string;
     const allValues = currentValue.split("|");
     for (const value of allValues) {
@@ -48,19 +51,8 @@ const createFiltersFromRoute = () => {
       if (key === "properties") {
         filters.push({
           type: "equalsAny",
-          field: "optionIds",
+          field: "propertyIds",
           value: value,
-        });
-      }
-      if (key === "price") {
-        const [min, max] = value.split("-");
-        filters.push({
-          type: "range",
-          field: "price",
-          parameters: {
-            gte: min,
-            lte: max,
-          },
         });
       }
       if (key === "rating") {
@@ -68,7 +60,7 @@ const createFiltersFromRoute = () => {
           type: "range",
           field: "ratingAverage",
           parameters: {
-            gte: value,
+            gte: +value,
           },
         });
       }
@@ -82,6 +74,45 @@ const createFiltersFromRoute = () => {
     }
   }
   return filters;
+};
+
+const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
+  const minPrice = !isNaN(Number(route.query["min-price"]))
+    ? (route.query["min-price"] as string)
+    : undefined;
+
+  const maxPrice = !isNaN(Number(route.query["max-price"]))
+    ? (route.query["max-price"] as string)
+    : undefined;
+
+  if (minPrice && maxPrice) {
+    filters?.push({
+      type: "range",
+      field: "price",
+      parameters: {
+        gte: +minPrice,
+        lte: +maxPrice,
+      },
+    });
+  }
+  if (minPrice && !maxPrice) {
+    filters?.push({
+      type: "range",
+      field: "price",
+      parameters: {
+        gte: +minPrice,
+      },
+    });
+  }
+  if (!minPrice && maxPrice) {
+    filters?.push({
+      type: "range",
+      field: "price",
+      parameters: {
+        lte: +maxPrice,
+      },
+    });
+  }
 };
 
 const limit = ref(route.query.limit ? Number(route.query.limit) : 12);
@@ -117,6 +148,17 @@ const loadProducts = async (cacheKey: string) => {
             field: "parentId",
           },
         },
+        {
+          name: "property_ids_counter",
+          type: "terms",
+          field: "propertyIds",
+          /* this can be slow for large datasets, we have an internal task to ignore childs in the aggregation (terms_without_children), after that this can be removed, just here for showcase **/
+          aggregation: {
+            name: "parent_childs",
+            type: "terms",
+            field: "parentId",
+          },
+        },
       ],
     });
     return getCurrentListing.value;
@@ -142,7 +184,7 @@ const changePage = async (page: number) => {
   });
   await changeCurrentPage(
     page,
-    route.query as unknown as RequestParameters<"searchPage">,
+    route.query as unknown as operations["searchPage post /search"]["body"],
   );
 };
 const changeLimit = async (limit: Event) => {
@@ -157,7 +199,7 @@ const changeLimit = async (limit: Event) => {
   });
   await changeCurrentPage(
     1,
-    route.query as unknown as RequestParameters<"searchPage">,
+    route.query as unknown as operations["searchPage post /search"]["body"],
   );
 };
 
@@ -201,7 +243,7 @@ type FilterAndAggregations = {
   apiAlias: string;
 };
 
-const addCountToFilterOptions = (
+const addCountToFilter = (
   filter: FilterAndAggregations,
   aggregation: FilterAndAggregations,
 ) => {
@@ -266,8 +308,11 @@ const addCountsToFilter = () => {
             }
           }
           if (filter.code === "properties") {
-            if (value[0] === "option_ids_counter") {
-              addCountToFilterOptions(filter, aggregation);
+            if (
+              value[0] === "option_ids_counter" ||
+              value[0] === "property_ids_counter"
+            ) {
+              addCountToFilter(filter, aggregation);
             }
           }
         }

@@ -1,7 +1,7 @@
 import { ref, computed, inject, provide } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
-import type { RequestParameters, Schemas } from "#shopware";
+import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 
@@ -13,7 +13,7 @@ export type UseAddressReturn = {
   /**
    * Loads the addresses that are available under `customerAddresses` property
    */
-  loadCustomerAddresses(): Promise<void>;
+  loadCustomerAddresses(): Promise<Schemas["CustomerAddress"][]>;
   /**
    * Allows to create new address for a current customer
    */
@@ -67,48 +67,59 @@ export function useAddress(): UseAddressReturn {
    */
   async function loadCustomerAddresses(
     parameters: Schemas["Criteria"] = {},
-  ): Promise<void> {
+  ): Promise<Schemas["CustomerAddress"][]> {
     try {
       const result = await apiClient.invoke(
         "listAddress post /account/list-address",
-        parameters,
+        {
+          body: parameters,
+        },
       );
-      _storeCustomerAddresses.value = result.elements;
+      _storeCustomerAddresses.value = result.data.elements;
     } catch (error) {
       if (error instanceof ApiClientError) {
         if (error.status === 403) {
           _storeCustomerAddresses.value = [];
         }
       }
+      throw error;
     }
+    return _storeCustomerAddresses.value;
   }
 
   /**
    * Add new customer address
    */
   async function createCustomerAddress(
-    customerAddress: RequestParameters<"createCustomerAddress">,
+    customerAddress: Schemas["CustomerAddress"],
   ): Promise<Schemas["CustomerAddress"]> {
     const result = await apiClient.invoke(
       "createCustomerAddress post /account/address",
-      customerAddress,
+      {
+        body: customerAddress,
+      },
     );
-    return result;
+    return result.data;
   }
 
   /**
    * Update customer address
    */
   async function updateCustomerAddress(
-    customerAddress: RequestParameters<"updateCustomerAddress">,
+    customerAddress: Schemas["CustomerAddress"],
   ): Promise<Schemas["CustomerAddress"]> {
-    customerAddress.addressId = customerAddress.id;
+    // customerAddress.addressId = customerAddress.id;
 
     const result = await apiClient.invoke(
       "updateCustomerAddress patch /account/address/{addressId}",
-      customerAddress,
+      {
+        pathParams: {
+          addressId: customerAddress.id,
+        },
+        body: customerAddress,
+      },
     );
-    return result;
+    return result.data;
   }
 
   /**
@@ -117,7 +128,7 @@ export function useAddress(): UseAddressReturn {
   async function deleteCustomerAddress(addressId: string): Promise<void> {
     await apiClient.invoke(
       "deleteCustomerAddress delete /account/address/{addressId}",
-      { addressId },
+      { pathParams: { addressId } },
     );
   }
 
@@ -127,12 +138,15 @@ export function useAddress(): UseAddressReturn {
   async function setDefaultCustomerBillingAddress(
     addressId: string,
   ): Promise<string> {
-    return await apiClient.invoke(
+    const result = await apiClient.invoke(
       "defaultBillingAddress patch /account/address/default-billing/{addressId}",
       {
-        addressId,
+        pathParams: {
+          addressId,
+        },
       },
     );
+    return result.data;
   }
 
   /**
@@ -141,12 +155,13 @@ export function useAddress(): UseAddressReturn {
   async function setDefaultCustomerShippingAddress(
     addressId: string,
   ): Promise<string> {
-    return await apiClient.invoke(
+    const result = await apiClient.invoke(
       "defaultShippingAddress patch /account/address/default-shipping/{addressId}",
       {
-        addressId,
+        pathParams: { addressId },
       },
     );
+    return result.data;
   }
 
   /**

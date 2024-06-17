@@ -7,7 +7,7 @@ export type ShopwareContext = {
    * Shopware API instance
    * @deprecated use `apiClient` instead
    */
-  apiInstance: any;
+  apiInstance: unknown;
   devStorefrontUrl: string | null;
   /**
    * Shopware API client
@@ -19,7 +19,7 @@ export type ShopwareContext = {
  * @public
  * @category Context & Language
  */
-export function useShopwareContext() {
+export function useShopwareContext(): ShopwareContext {
   const shopwareContext = inject<ShopwareContext | null>("shopware", null);
 
   const apiClient = inject<ApiClient>("apiClient");

@@ -13,7 +13,7 @@ export type ShippingMethodPrice = {
   quantityEnd: number | null;
   price?: number;
   shippingMethod?: ShippingMethodPrice | null;
-  customFields: CustomField | null;
+  customFields: CustomFields | null;
   rule?: Rule | null;
   currency?: Currency | null;
   calculationRuleId: string | null;

@@ -43,7 +43,6 @@ export type OrderLineItem = {
   orderVersionId: string;
   productVersionId: string;
   parentVersionId: string;
-  customFields: unknown;
   id: string;
   apiAlias: "order_line_item";
 };

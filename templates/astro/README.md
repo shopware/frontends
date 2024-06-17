@@ -21,7 +21,7 @@ In order to have a different API connected to the app, change two lines of code 
 // src/entrypoints/_shopware.ts
 
 export default (app: App) => {
-   const apiInstance = createAPIClient<operations, operationPaths>({
+   const apiInstance = createAPIClient<operations>({
     baseURL:
       import.meta.env.API_URL ||
       "https://demo-frontends.shopware.store/store-api", // CHANGE here or in .env.* file

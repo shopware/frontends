@@ -92,7 +92,7 @@ export type UseOrderDetailsReturn = {
    * Get order object including additional associations.
    * useDefaults describes what order object should look like.
    */
-  loadOrderDetails(): Promise<void>;
+  loadOrderDetails(): Promise<Schemas["OrderRouteResponse"]>;
   /**
    * Handle payment for existing error.
    *
@@ -108,13 +108,15 @@ export type UseOrderDetailsReturn = {
    *
    * Action cannot be reverted.
    */
-  cancel(): Promise<void>;
+  cancel(): Promise<Schemas["StateMachineState"]>;
   /**
    * Changes the payment method for current cart.
    * @param paymentMethodId - ID of the payment method to be set
    * @returns
    */
-  changePaymentMethod(paymentMethodId: string): Promise<void>;
+  changePaymentMethod(
+    paymentMethodId: string,
+  ): Promise<Schemas["SuccessResponse"]>;
   /**
    * Get media content
    *
@@ -159,7 +161,7 @@ export function useOrderDetails(
 ): UseOrderDetailsReturn {
   const { apiClient } = useShopwareContext();
 
-  const paymentChangeableList: Ref<{ [key: string]: boolean } | []> = ref([]);
+  const paymentChangeableList: Ref<{ [key: string]: boolean }> = ref({});
   const _sharedOrder = inject<Ref<Schemas["Order"] | undefined>>(
     "swOrderDetails",
     ref(),
@@ -216,67 +218,86 @@ export function useOrderDetails(
 
     const orderDetailsResponse = await apiClient.invoke(
       "readOrder post /order",
-      params,
+      {
+        body: params,
+      },
     );
-    _sharedOrder.value = orderDetailsResponse.orders.elements?.[0] ?? null;
-    paymentChangeableList.value = orderDetailsResponse.paymentChangeable;
+    _sharedOrder.value =
+      orderDetailsResponse.data.orders?.elements?.[0] ?? null;
+    paymentChangeableList.value =
+      orderDetailsResponse.data.paymentChangeable ?? {};
+    return orderDetailsResponse.data;
   }
 
-  async function handlePayment(
-    finishUrl?: string,
-    errorUrl?: string,
-    paymentDetails?: unknown,
-  ) {
+  async function handlePayment(finishUrl?: string, errorUrl?: string) {
     const resp = await apiClient.invoke(
       "handlePaymentMethod post /handle-payment",
       {
-        orderId,
-        finishUrl,
-        errorUrl,
-        // paymentDetails?: unknown, TODO: is this necessary? If yes - add to schema, if no - remove
+        body: {
+          orderId,
+          finishUrl,
+          errorUrl,
+        },
       },
     );
 
-    paymentUrl.value = resp.redirectUrl;
+    paymentUrl.value = resp.data.redirectUrl;
   }
 
   async function cancel() {
-    await apiClient.invoke("cancelOrder post /order/state/cancel", {
-      orderId: orderId,
-    });
+    const resp = await apiClient.invoke(
+      "cancelOrder post /order/state/cancel",
+      {
+        body: {
+          orderId,
+        },
+      },
+    );
     await loadOrderDetails();
+    return resp.data;
   }
   async function changePaymentMethod(paymentMethodId: string) {
-    await apiClient.invoke("orderSetPayment post /order/payment", {
-      orderId: orderId,
-      paymentMethodId: paymentMethodId,
-    });
+    const response = await apiClient.invoke(
+      "orderSetPayment post /order/payment",
+      {
+        body: {
+          orderId: orderId,
+          paymentMethodId: paymentMethodId,
+        },
+      },
+    );
 
     await loadOrderDetails();
+    return response.data;
   }
 
   async function getMediaFile(downloadId: string) {
     const response = await apiClient.invoke(
       "orderDownloadFile get /order/download/{orderId}/{downloadId}",
       {
-        orderId,
-        downloadId,
+        accept: "application/octet-stream",
+        pathParams: {
+          orderId,
+          downloadId,
+        },
       },
     );
 
-    return response;
+    return response.data;
   }
 
   async function getDocumentFile(documentId: string, deepLinkCode: string) {
     const response = await apiClient.invoke(
       "download post /document/download/{documentId}/{deepLinkCode}",
       {
-        documentId,
-        deepLinkCode,
+        pathParams: {
+          documentId,
+          deepLinkCode,
+        },
       },
     );
 
-    return response;
+    return response.data;
   }
 
   const hasDocuments = computed(() => !!_sharedOrder.value?.documents.length);
@@ -294,10 +315,10 @@ export function useOrderDetails(
     const response = await apiClient.invoke(
       "readPaymentMethod post /payment-method",
       {
-        onlyAvailable: true,
+        body: { onlyAvailable: true },
       },
     );
-    return response?.elements || [];
+    return response.data.elements || [];
   };
 
   return {

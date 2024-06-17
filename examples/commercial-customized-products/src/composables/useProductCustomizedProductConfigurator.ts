@@ -14,8 +14,7 @@ export type UseProductCustomizedProductConfiguratorReturn = {
    * Assigned template of the product
    */
   customizedProduct: ComputedRef<
-    | Schemas["Product"]["extensions"]["swagCustomizedProductsTemplate"]
-    | undefined
+    Schemas["SwagCustomizedProductsTemplate"] | undefined
   >;
   /**
    * State of the product selected options
@@ -60,7 +59,9 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     productsState.value[product.value.id] = {};
   }
   const customizedProduct = computed(
-    () => product.value?.extensions?.swagCustomizedProductsTemplate,
+    () =>
+      product.value?.extensions
+        ?.swagCustomizedProductsTemplate as Schemas["SwagCustomizedProductsTemplate"],
   );
 
   const isActive = computed<boolean>(() => !!customizedProduct.value?.active);
@@ -70,9 +71,9 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     /**
      * Payload for adding product to cart
      */
-    const payload = {
+    const payload: Schemas["AddToCartPayload"] = {
       "customized-products-template": {
-        id: customizedProduct.value?.id,
+        id: customizedProduct.value.id,
         options: Object.assign(
           {},
           ...Object.entries(state.value).map(([id, value]) => ({
@@ -102,7 +103,7 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
 
     await apiClient.invoke(
       "addCustomizedProductToCart post /checkout/customized-products/add-to-cart",
-      payload,
+      { body: payload },
     );
     refreshCart();
   };
@@ -114,13 +115,16 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     formData.append("optionId", optionId);
     const addedMediaResponse = await apiClient.invoke(
       "uploadCustomizedProductImage post /customized-products/upload",
-      formData,
+      {
+        contentType: "multipart/form-data",
+        body: formData,
+      },
     );
 
     state.value[optionId] = {
       media: {
-        id: addedMediaResponse?.mediaId,
-        filename: addedMediaResponse?.fileName,
+        id: addedMediaResponse.data.mediaId,
+        filename: addedMediaResponse.data.fileName,
       },
     };
   };

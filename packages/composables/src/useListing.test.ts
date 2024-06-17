@@ -48,7 +48,7 @@ describe("useListing", () => {
   });
 
   it('invoke "readQuotes" - errors', async () => {
-    let error;
+    let error: unknown | null = null;
     try {
       await useSetup(() =>
         useListing({

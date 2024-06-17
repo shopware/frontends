@@ -38,11 +38,13 @@ export type UseOrderPaymentReturn = {
      * additional payment details to provide
      */
     paymentDetails?: unknown,
-  ): Promise<void | unknown>;
+  ): Promise<undefined | unknown>;
   /**
    * Change a payment method for the order
    */
-  changePaymentMethod(paymentMethodId: string): Promise<void>;
+  changePaymentMethod(
+    paymentMethodId: string,
+  ): Promise<Schemas["SuccessResponse"] | undefined>;
 };
 
 /**
@@ -69,22 +71,22 @@ export function useOrderPayment(
   async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
-    // paymentDetails?: unknown, // TODO: check if it's needed
-  ): Promise<void | unknown> {
+  ): Promise<undefined | unknown> {
     if (!order.value) {
       return;
     }
     const resp = await apiClient.invoke(
       "handlePaymentMethod post /handle-payment",
       {
-        orderId: order.value.id,
-        errorUrl,
-        finishUrl,
-        // paymentDetails,
+        body: {
+          orderId: order.value.id,
+          errorUrl,
+          finishUrl,
+        },
       },
     );
 
-    paymentUrl.value = resp.redirectUrl;
+    paymentUrl.value = resp.data.redirectUrl;
 
     return resp;
   }
@@ -93,10 +95,16 @@ export function useOrderPayment(
     if (!order.value) {
       return;
     }
-    await apiClient.invoke("orderSetPayment post /order/payment", {
-      orderId: order.value.id,
-      paymentMethodId,
-    });
+    const response = await apiClient.invoke(
+      "orderSetPayment post /order/payment",
+      {
+        body: {
+          orderId: order.value.id,
+          paymentMethodId,
+        },
+      },
+    );
+    return response.data;
   }
 
   return {

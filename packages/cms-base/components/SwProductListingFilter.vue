@@ -10,7 +10,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   filter: ListingFilter;
-  selectedFilters: {
+  selectedFilters?: {
     [key: string]: any;
   };
 }>();

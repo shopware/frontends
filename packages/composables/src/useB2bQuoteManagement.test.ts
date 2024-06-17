@@ -7,26 +7,30 @@ import { useSetup } from "./_test";
 describe("useB2bQuoteManagement", () => {
   it("getQuoteList", async () => {
     const { vm, injections } = useSetup(useB2bQuoteManagement);
+    injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
+
     await vm.getQuoteList();
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readQuotes"),
-      expect.objectContaining({}),
     );
   });
 
   it("getQuote", async () => {
     const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
     await vm.getQuote("test-12");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readQuote"),
       expect.objectContaining({
-        id: "test-12",
-        associations: {
-          lineItems: {},
-          comments: {},
-          stateMachineState: {},
+        pathParams: { id: "test-12" },
+        body: {
+          associations: {
+            lineItems: {},
+            comments: {},
+            stateMachineState: {},
+          },
         },
       }),
     );
@@ -34,75 +38,87 @@ describe("useB2bQuoteManagement", () => {
 
   it("declineQuote", async () => {
     const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
     await vm.declineQuote("test-12", "test-comment");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("declineQuote"),
       expect.objectContaining({
-        id: "test-12",
-        comment: "test-comment",
+        pathParams: { id: "test-12" },
+        body: { comment: "test-comment" },
       }),
     );
   });
 
   it("requestChangeQuote", async () => {
     const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
     await vm.requestChangeQuote("test-12", "test-comment");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("requestChangeQuote"),
       expect.objectContaining({
-        id: "test-12",
-        comment: "test-comment",
+        pathParams: { id: "test-12" },
+        body: {
+          comment: "test-comment",
+        },
       }),
     );
   });
 
   it("changeShippingMethod", async () => {
     const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
     await vm.changeShippingMethod("test-12", "test-method");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("switchPaymentOrShippingMethod"),
       expect.objectContaining({
-        id: "test-12",
+        pathParams: { id: "test-12" },
       }),
     );
   });
 
   it("changePaymentMethod", async () => {
     const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
     await vm.changePaymentMethod("test-12", "test-method");
+
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("switchPaymentOrShippingMethod"),
       expect.objectContaining({
-        id: "test-12",
+        pathParams: { id: "test-12" },
       }),
     );
   });
 
   it("requestQuote", async () => {
     const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
     await vm.requestQuote("comment");
+
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("requestQuote"),
       expect.objectContaining({
-        comment: "comment",
+        body: { comment: "comment" },
       }),
     );
   });
 
   it("createOrderFromQuote", async () => {
     const { vm, injections } = useSetup(() => useB2bQuoteManagement());
+    injections.apiClient.invoke.mockResolvedValue({ data: null });
     await vm.createOrderFromQuote("test-12", "test-comment");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("createOrderFromQuote"),
       expect.objectContaining({
-        id: "test-12",
-        customerComment: "test-comment",
+        pathParams: { id: "test-12" },
+        body: { customerComment: "test-comment" },
       }),
     );
   });

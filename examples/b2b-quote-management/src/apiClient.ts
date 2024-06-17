@@ -1,8 +1,8 @@
 import { createAPIClient } from "@shopware/api-client";
-import type { extendedPaths, extendedOperations } from "#shopware";
+import type { operations } from "#shopware";
 import Cookies from "js-cookie";
 
-export const apiClient = createAPIClient<extendedOperations, extendedPaths>({
+export const apiClient = createAPIClient<operations>({
   baseURL: "https://demo-frontends.shopware.store/store-api",
   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   contextToken: Cookies.get("sw-context-token"),
