@@ -14,7 +14,7 @@ require("dotenv").config({ path: findEnv() });
  * See https://playwright.dev/docs/test-configuration.
  */
 const newLocal = "http://127.0.0.1:8080";
-const baseURL = process.env.BASE_E2E_URL || newLocal;
+const baseURL = process.env.PLAYWRIGHT_TEST_BASE_URL || newLocal;
 
 console.log("Running tests for: ", baseURL);
 
@@ -50,7 +50,7 @@ const config: PlaywrightTestConfig = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "retain-on-failure",
     testIdAttribute: "data-testid",
-    baseURL: process.env.BASE_E2E_URL ?? "http://127.0.0.1:8080",
+    baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL ?? "http://127.0.0.1:8080",
   },
 
   /* Configure projects for major browsers */
