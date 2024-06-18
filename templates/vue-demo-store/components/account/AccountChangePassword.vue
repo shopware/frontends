@@ -49,6 +49,7 @@ const $v = useVuelidate(rules, state);
 
 const invokeChange = async (): Promise<void> => {
   loadingData.value = true;
+  isSuccess.value = false;
   try {
     errors.value = [];
     const isFormCorrect = await $v.value.$validate();

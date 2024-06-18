@@ -18,6 +18,7 @@
     "requiredIf": "Wartość jest wymagana",
     "requiredUnless": "Wartość jest wymagana",
     "sameAs": "Wartość musi być równa wartości {otherName}",
-    "url": "Wartość nie jest prawidłowym adresem URL"
+    "url": "Wartość nie jest prawidłowym adresem URL",
+    "newPasswordConfirm": "Hasła nie są takie same"
   }
 }
