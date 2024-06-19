@@ -168,12 +168,6 @@ const loadProducts = async (cacheKey: string) => {
 };
 let productSearch = await loadProducts(cacheKey.value);
 
-watch(cacheKey, async (newCacheKey) => {
-  productSearch = await loadProducts(newCacheKey);
-  setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
-  addCountsToFilter();
-});
-
 const changePage = async (page: number) => {
   await router.push({
     query: {
