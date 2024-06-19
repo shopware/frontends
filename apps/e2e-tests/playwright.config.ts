@@ -50,7 +50,7 @@ const config: PlaywrightTestConfig = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "retain-on-failure",
     testIdAttribute: "data-testid",
-    baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL ?? "http://127.0.0.1:8080",
+    baseURL: process.env.BASE_E2E_URL,
   },
 
   /* Configure projects for major browsers */
