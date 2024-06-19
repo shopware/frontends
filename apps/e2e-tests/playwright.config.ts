@@ -14,7 +14,7 @@ require("dotenv").config({ path: findEnv() });
  * See https://playwright.dev/docs/test-configuration.
  */
 const newLocal = "http://127.0.0.1:8080";
-const baseURL = process.env.PLAYWRIGHT_TEST_BASE_URL || newLocal;
+const baseURL = process.env.BASE_E2E_URL || newLocal;
 
 console.log("Running tests for: ", baseURL);
 
