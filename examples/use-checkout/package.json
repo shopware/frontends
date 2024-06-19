@@ -13,7 +13,7 @@
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
-    "@types/node": "20.14.2",
+    "@types/node": "20.14.5",
     "@unocss/nuxt": "0.61.0",
     "nuxt": "3.11.2",
     "typescript": "5.4.5",

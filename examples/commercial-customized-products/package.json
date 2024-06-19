@@ -18,7 +18,7 @@
     "vue": "3.4.27"
   },
   "devDependencies": {
-    "@types/node": "20.14.2",
+    "@types/node": "20.14.5",
     "@shopware/api-gen": "canary",
     "@vitejs/plugin-vue": "5.0.5",
     "vite": "5.2.13",
