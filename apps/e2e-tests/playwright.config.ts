@@ -13,7 +13,6 @@ require("dotenv").config({ path: findEnv() });
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-console.log("process.env", process.env);
 
 const newLocal = "http://127.0.0.1:8080";
 const baseURL = process.env.BASE_E2E_URL || newLocal;
