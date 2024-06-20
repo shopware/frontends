@@ -93,6 +93,56 @@ export type operations = {
 
 <!-- /automd -->
 
+> [!IMPORTANT]  
+> Overriding components or operations in the TS files requires you to have a full object definitions!
+
+### Partial overrides
+
+There is a possiblity to add patches (partial overrides) to the schema. Partial overrides are applied directly to the JSON schema, so the syntax needs to be correct. It can then be used by the backend CI tool to validate and apply these patches directly to the schema to fix inconsistencies.
+
+By default CLI is fetching the patches from the api-client repository, but you can provide your own patches file by adding a path to the `api-gen.config.json` file.
+Example:
+
+```json
+{
+  "patches": "./api-types/storeApiTypes.overrides.json"
+}
+```
+
+and then inside the `storeApiTypes.overrides.json` file you can add your patches:
+
+```json
+{
+  "components": {
+    "Cart": [
+      {
+        "required": ["price"]
+      },
+      {
+        "required": ["errors"]
+      }
+    ]
+  }
+}
+```
+
+you apply this as 2 independent patches, or combine it as a single patch without array:
+
+```json
+{
+  "components": {
+    "Cart": {
+      "required": ["price", "errors"]
+    }
+  }
+}
+```
+
+Creating multiple patches is useful when you want to apply different changes to the same object, which can also be corrected on the backend side independently. This way specific patches are becoming outdated and you get the notification that you can remove them safely.
+
+> [!NOTE]  
+> Check our current default patches to see more examples: [source](https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client-next/api-types/storeApiSchema.overrides.json).
+
 ## Commands
 
 ### add shortcut to your `package.json` scripts
@@ -172,7 +222,8 @@ Prepare your config file named **api-gen.config.json**:
   "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
   "rules": [
     "COMPONENTS_API_ALIAS" // you have description on autocompletion what specific rule does, this one for example ensures correctness of the apiAlias field
-  ]
+  ],
+  //"patches": "./api-types/storeApiTypes.overrides.json" // -> path to your overrides file, default is fetched from api-client repository
 }
 ```
 
