@@ -1,5 +1,5 @@
 import { describe, it, assertType } from "vitest";
-import type { RequestParameters } from "../createAdminApiClient";
+import type { RequestParameters } from "../createApiClient";
 
 import type { operations } from "../../api-types/adminApiTypes";
 

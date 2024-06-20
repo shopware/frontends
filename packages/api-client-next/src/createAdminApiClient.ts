@@ -1,10 +1,12 @@
-import { FetchResponse, ofetch } from "ofetch";
+import { ofetch } from "ofetch";
+import type { FetchOptions, FetchResponse } from "ofetch";
 import type { operations } from "../api-types/adminApiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
 import { type Hookable, createHooks } from "hookable";
 import defu from "defu";
 import { createPathWithParams } from "./transformPathToQuery";
+import type { InvokeParameters } from "./createApiClient";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
@@ -38,11 +40,6 @@ export type RequestReturnType<
 > = RenameByT<
   { response: "data"; responseCode: "status" },
   SimpleUnionPick<CURRENT_OPERATION, "response" | "responseCode">
->;
-
-export type RequestParameters<CURRENT_OPERATION> = SimpleUnionOmit<
-  CURRENT_OPERATION,
-  "response" | "responseCode"
 >;
 
 function createAuthorizationHeader(token: string) {
@@ -218,8 +215,8 @@ export function createAdminAPIClient<
       | {
           pathParams: unknown;
         }
-      ? [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">]
-      : [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">?]
+      ? [InvokeParameters<CURRENT_OPERATION>]
+      : [InvokeParameters<CURRENT_OPERATION>?]
   ): Promise<RequestReturnType<CURRENT_OPERATION>> {
     const [, method, requestPath] = pathParam.split(" ") as [
       string,
@@ -232,9 +229,14 @@ export function createAdminAPIClient<
       params[0]?.pathParams,
     );
 
+    const fetchOptions: FetchOptions<"json"> = {
+      ...(params[0]?.fetchOptions || {}),
+    };
+
     const resp = await apiFetch.raw<
       SimpleUnionPick<CURRENT_OPERATION, "response">
     >(requestPathWithParams, {
+      ...fetchOptions,
       method,
       body: params[0]?.body,
       headers: defu(defaultHeaders, params[0]?.headers) as HeadersInit,
