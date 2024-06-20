@@ -5,13 +5,18 @@ import type { OpenAPI3 } from "openapi-typescript";
 import * as dotenv from "dotenv";
 import c from "picocolors";
 import { format } from "prettier";
-import { patches } from "../patches";
-import semver from "semver";
 import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
 import { ofetch } from "ofetch";
 import { TransformedElements } from "../generateFile";
 import { transformSchemaTypes } from "../transformSchemaTypes";
 import { transformOpenApiTypes } from "../transformOpenApiTypes";
+import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
+import json5 from "json5";
+import {
+  displayPatchingSummary,
+  loadApiGenConfig,
+  loadJsonOverrides,
+} from "../jsonOverrideUtils";
 
 const config = dotenv.config().parsed || {};
 
@@ -56,54 +61,42 @@ export async function generate(args: {
       const schemaFile = readFileSync(fullInputFilePath, {
         encoding: "utf-8",
       });
-      let schemaForPatching = JSON.parse(schemaFile) as OpenAPI3;
+      const schemaForPatching = json5.parse(schemaFile) as OpenAPI3;
       const version = schemaForPatching?.info?.version;
 
-      const allPatches: Array<keyof typeof patches> = []; // Object.keys(patches) as Array<keyof typeof patches>;
-      const semverVersion = version.slice(2);
-      const patchesToApply = allPatches.filter((patch) => {
-        return semver.satisfies(semverVersion, patch);
+      const configJSON = await loadApiGenConfig({
+        silent: true, // we allow to not have the config file in this command
       });
-      for (const patchName of patchesToApply) {
-        schemaForPatching = patches[patchName].patch(schemaForPatching);
-      }
+      const jsonOverrides = await loadJsonOverrides(configJSON?.patches);
 
-      if (patchesToApply.length) {
-        patchesToApply.length &&
-          console.log("Applied", patchesToApply.length, "patches");
+      const {
+        patchedSchema,
+        todosToFix,
+        outdatedPatches,
+        alreadyApliedPatches,
+      } = patchJsonSchema({
+        openApiSchema: schemaForPatching,
+        jsonOverrides,
+      });
 
-        const formatted = await format(JSON.stringify(schemaForPatching), {
-          semi: false,
-          parser: "json",
-        });
-        const content = formatted.trim();
-        writeFileSync(fullInputFilePath, content, {
-          encoding: "utf-8",
-        });
-      }
-
-      const readedContentFromFile = !patchesToApply.length
-        ? schemaFile
-        : readFileSync(fullInputFilePath, {
-            encoding: "utf-8",
-          });
-
-      const originalSchema = JSON.parse(readedContentFromFile);
+      const originalSchema = json5.parse(schemaFile);
       console.log("schema", originalSchema.info);
 
-      const address = resolve(fullInputFilePath);
-      schema = await openapiTS(
-        // new URL(SCHEMA_FILENAME, import.meta.url),
-        address,
-        {
-          version: +(config.OPENAPI_VERSION || 3),
-          exportType: true,
-          // pathParamsAsTypes: true,
-          // rawSchema: false,
-          additionalProperties: false,
-          alphabetize: true,
-          supportArrayLength: true,
-          commentHeader: `/**
+      displayPatchingSummary({
+        todosToFix,
+        outdatedPatches,
+        alreadyApliedPatches,
+      });
+
+      schema = await openapiTS(patchedSchema, {
+        version: +(config.OPENAPI_VERSION || 3),
+        exportType: true,
+        // pathParamsAsTypes: true,
+        // rawSchema: false,
+        additionalProperties: false,
+        alphabetize: true,
+        supportArrayLength: true,
+        commentHeader: `/**
  * This file is auto-generated. Do not make direct changes to the file. 
  * Instead override it in your shopware.d.ts file.
  * 
@@ -111,83 +104,88 @@ export async function generate(args: {
  * 
  */
 `,
-          /**
-           * GenericRecord is used for types like associations
-           */
-          inject: `
+        /**
+         * GenericRecord is used for types like associations
+         */
+        inject: `
             type GenericRecord = never | null | string | string[] | number | { [key: string]: GenericRecord };
             `,
 
-          transform(schemaObject) {
-            /**
-             * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
-             */
-            if (
-              "type" in schemaObject &&
-              "properties" in schemaObject &&
-              schemaObject.type === "object" &&
-              !!schemaObject?.properties?.translated
-            ) {
-              const notAllowedKeys = [
-                "id",
-                "createdAt",
-                "updatedAt",
-                "translated",
-              ];
-              const stringFields = Object.keys(schemaObject.properties).filter(
-                (key) => {
-                  if (notAllowedKeys.includes(key)) return false;
-                  const property = schemaObject.properties?.[key];
-                  return (
-                    !!property &&
-                    "type" in property &&
-                    property.type === "string"
-                  );
-                },
-              );
+        transform(schemaObject) {
+          /**
+           * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
+           */
+          if (
+            "type" in schemaObject &&
+            "properties" in schemaObject &&
+            schemaObject.type === "object" &&
+            !!schemaObject?.properties?.translated
+          ) {
+            const notAllowedKeys = [
+              "id",
+              "createdAt",
+              "updatedAt",
+              "translated",
+            ];
+            const stringFields = Object.keys(schemaObject.properties).filter(
+              (key) => {
+                if (notAllowedKeys.includes(key)) return false;
+                const property = schemaObject.properties?.[key];
+                return (
+                  !!property && "type" in property && property.type === "string"
+                );
+              },
+            );
 
-              schemaObject.properties.translated = {
+            const stringProperties = stringFields.reduce(
+              (acc, key) => {
+                acc[key] = {
+                  type: "string",
+                };
+                return acc;
+              },
+              {} as Record<string, { type: "string" }>,
+            );
+
+            schemaObject.properties.translated = extendedDefu(
+              {
+                additionalProperties: "_DELETE_",
+              },
+              schemaObject.properties.translated,
+              {
                 type: "object",
-                properties: stringFields.reduce(
-                  (acc, key) => {
-                    acc[key] = {
-                      type: "string",
-                    };
-                    return acc;
-                  },
-                  {} as Record<string, { type: "string" }>,
-                ),
-              };
-            }
-            /**
-             * Blob type is used for binary data
-             */
-            if (schemaObject.format === "binary") {
-              return "Blob";
-            }
+                properties: stringProperties,
+              },
+            );
+          }
+          /**
+           * Blob type is used for binary data
+           */
+          if (schemaObject.format === "binary") {
+            return "Blob";
+          }
 
-            /**
-             * We're changing "object" declarations into "GenericRecord" to allow recursive types like `associations`
-             */
-            if (
-              // for object types
-              (schemaObject as { type: string }).type === "object" &&
-              // without properties, items, anyOf, allOf
-              !(schemaObject as { properties?: object }).properties &&
-              !(schemaObject as { items?: [] }).items &&
-              !(schemaObject as { anyOf?: [] }).anyOf &&
-              !(schemaObject as { allOf?: [] }).allOf &&
-              !(schemaObject as { additionalProperties?: object })
-            ) {
-              return "GenericRecord";
-            }
-            // transform(schemaObject, metadata) {
-            // if ("format" in schemaObject && schemaObject.format === "date-time") {
-            //   return "Date";
-            // }
-          },
+          /**
+           * We're changing "object" declarations into "GenericRecord" to allow recursive types like `associations`
+           */
+          // if (
+          //   // for object types
+          //   (schemaObject as { type: string }).type === "object" &&
+          //   // without properties, items, anyOf, allOf
+          //   !(schemaObject as { properties?: object }).properties &&
+          //   !(schemaObject as { items?: [] }).items &&
+          //   !(schemaObject as { anyOf?: [] }).anyOf &&
+          //   !(schemaObject as { allOf?: [] }).allOf &&
+          //   !(schemaObject as { additionalProperties?: object })
+          // ) {
+          //   return "GenericRecord";
+          // }
+          // transform(schemaObject, metadata) {
+          // if ("format" in schemaObject && schemaObject.format === "date-time") {
+          //   return "Date";
+          // }
         },
-      );
+      });
 
       schema += `\n
     /**

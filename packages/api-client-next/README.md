@@ -35,6 +35,8 @@ bun install @shopware/api-client
 
 <!-- /automd -->
 
+## Store API client setup
+
 Recommended practice is to create a separate module file. For example `src/apiClient.ts`, and import it whenever you need to use API Client.
 
 ```typescript
@@ -152,6 +154,47 @@ async function loadProducts() {
   });
 }
 ```
+
+### Fetch features
+
+The new API client is leveraging [ofetch](https://github.com/unjs/ofetch) library, which has built in support for AbortController, timeout and other features.
+
+Example usage of AbortController to cancell your request:
+
+```typescript
+const controller = new AbortController();
+
+const request = client.invoke("readContext get /context", {
+  fetchOptions: {
+    signal: controller.signal,
+  },
+});
+
+controller.abort(); // At this point client will throw an error with the information, that the request has been cancelled
+```
+
+Other example of using `fetchOptions` for setting the timeout:
+
+```typescript
+const request = client.invoke("readContext get /context", {
+  fetchOptions: {
+    timeout: 5000, // 5 seconds
+  },
+});
+```
+
+All exposed options available under `fetchOptions` are:
+
+- `cache`
+- `duplex`
+- `keepalive`
+- `priority`
+- `redirect`
+- `retry`
+- `retryDelay`
+- `retryStatusCodes`
+- `signal`
+- `timeout`
 
 ### Predefining methods
 

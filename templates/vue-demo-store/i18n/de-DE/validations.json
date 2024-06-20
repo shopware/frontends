@@ -18,6 +18,7 @@
     "requiredIf": "Der Wert ist erforderlich",
     "requiredUnless": "Der Wert ist erforderlich",
     "sameAs": "Der Wert muss dem Wert {otherName} entsprechen",
-    "url": "Der Wert ist keine gültige URL-Adresse"
+    "url": "Der Wert ist keine gültige URL-Adresse",
+    "newPasswordConfirm": "Die Passwörter stimmen nicht überein"
   }
 }

@@ -302,7 +302,7 @@ export type Schemas = {
   };
   ArrayStruct: components["schemas"]["Struct"];
   Association: {
-    [key: string]: components["schemas"]["Criteria"];
+    [key: string]: components["schemas"]["Association"];
   };
   B2bBusinessPartner: {
     /** Format: date-time */
@@ -584,10 +584,10 @@ export type Schemas = {
     }[];
     hasRange: boolean;
     listPrice: components["schemas"]["ListPrice"] | null;
-    netPrice: number; // TODO: [OpenAPI][CalculatedPrice] - netPrice should be added to definition
+    netPrice: number;
+    positionPrice: number;
     quantity: number;
-    positionPrice: number; // TODO: [OpenAPI][CalculatedPrice] - positionPrice should be added to definition
-    rawTotal: number; // TODO: [OpenAPI][CalculatedPrice] - rawTotal should be added to definition
+    rawTotal: number;
     referencePrice: components["schemas"]["ReferencePrice"] | null;
     regulationPrice: {
       /** @enum {string} */
@@ -600,7 +600,8 @@ export type Schemas = {
       /** Format: float */
       taxRate?: number;
     }[];
-    taxStatus: "net" | "tax-free"; // TODO: [OpenAPI][CalculatedPrice] - taxStatus should be defined and properly typed
+    /** @enum {string} */
+    taxStatus: "net" | "tax-free";
     totalPrice: number;
     unitPrice: number;
     /** Format: ^[0-9a-f]{32}$ */
@@ -617,23 +618,21 @@ export type Schemas = {
     /** A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers. */
     errors?:
       | components["schemas"]["CartError"][]
-      | Record<
-          // TODO: [OpenAPI][Cart] - errors should be defined properly, sometimes it's an object?
-          string,
-          {
+      | {
+          [key: string]: {
             code: number;
             key: string;
             level: number;
             message: string;
             messageKey: string;
-          }
-        >;
+          };
+        };
     /** All items within the cart */
     lineItems?: components["schemas"]["LineItem"][];
     modified?: boolean;
     /** Name of the cart - for example `guest-cart` */
     name?: string;
-    price: components["schemas"]["CalculatedPrice"]; // TODO: [OpenAPI][Cart] - price should be required
+    price: components["schemas"]["CalculatedPrice"];
     /** Context token identifying the cart and the user session */
     token?: string;
     /** A list of all payment transactions associated with the current cart. */
@@ -693,11 +692,11 @@ export type Schemas = {
     afterCategoryId?: string;
     afterCategoryVersionId?: string;
     /** @enum {string} */
-    apiAlias: "category"; // TODO: [OpenAPI][Category] - apiAlias should be required
-    breadcrumb: string[]; // TODO: [OpenAPI][Category] - breadcrumb should be required
+    apiAlias: "category";
+    breadcrumb: string[];
     /** Format: int64 */
     childCount: number;
-    children: components["schemas"]["Category"][]; // TODO: [OpenAPI][Category] - children should be empty array not null if no children
+    children: components["schemas"]["Category"][];
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
@@ -732,8 +731,8 @@ export type Schemas = {
     translated: {
       afterCategoryId?: string;
       afterCategoryVersionId?: string;
-      breadcrumb: string[]; // TODO: [OpenAPI][Category] - breadcrumb should be translated?
       apiAlias?: string;
+      breadcrumb: string[];
       cmsPageId?: string;
       cmsPageVersionId?: string;
       customEntityTypeId?: string;
@@ -1272,7 +1271,7 @@ export type Schemas = {
   Criteria: {
     aggregations?: components["schemas"]["Aggregations"];
     /** Associations to include. For more information, see [Search Queries > Associations](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#associations) */
-    associations?: GenericRecord; // TODO: [OpenAPI][Criteria] - associations should be defined properly, it's not an array and not nested "Criteria"
+    associations?: components["schemas"]["Association"];
     /** Fields which should be returned in the search result. */
     fields?: string[];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
@@ -1298,8 +1297,8 @@ export type Schemas = {
       | components["schemas"]["MultiNotFilter"]
       | components["schemas"]["RangeFilter"]
     )[];
-    /** List of queries to restrict the search result. For more information, see [Search Queries > Query](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#query) */
-    query?: string; // components["schemas"]["Query"][]; TODO: [OpenAPI][Criteria] - query is probably only string
+    /** The query string to search for */
+    query?: string;
     /** Sorting in the search result. */
     sort?: components["schemas"]["Sort"][];
     /** Search term */
@@ -1660,7 +1659,7 @@ export type Schemas = {
     height?: number;
     length?: number;
     restockTime?: number;
-    stock: number; // TODO: [OpenAPI][DeliveryInformation] - stock should be required
+    stock: number;
     weight?: number;
     width?: number;
   };
@@ -2020,14 +2019,14 @@ export type Schemas = {
     cover?: components["schemas"]["ProductMedia"];
     dataContextHash?: string;
     dataTimestamp?: string;
-    deliveryInformation: components["schemas"]["DeliveryInformation"]; // TODO: [OpenAPI][LineItem] - deliveryInformation should be required
+    deliveryInformation: components["schemas"]["DeliveryInformation"];
     description?: string;
     good?: boolean;
     id: string;
     label?: string;
     modified?: boolean;
     modifiedByApp?: boolean;
-    payload: components["schemas"]["ProductJsonApi"]; // TODO: [OpenAPI][LineItem] - payload should be required
+    payload: components["schemas"]["ProductJsonApi"];
     price?: {
       /** @enum {string} */
       apiAlias: "calculated_price";
@@ -2056,7 +2055,7 @@ export type Schemas = {
       unitPrice: number;
     };
     priceDefinition?: components["schemas"]["PriceDefinition"];
-    quantity: number; // TODO: [OpenAPI][LineItem] - quantity should be required
+    quantity: number;
     quantityInformation?: {
       maxPurchase?: number;
       minPurchase?: number;
@@ -2065,7 +2064,7 @@ export type Schemas = {
     referencedId?: string;
     removable?: boolean;
     stackable?: boolean;
-    states: ("is-physical" | "is-download")[]; // TODO: [OpenAPI][LineItem] - states should be required
+    states: ("is-physical" | "is-download")[];
     type: components["schemas"]["LineItemType"];
     uniqueIdentifier?: string;
   };
@@ -2227,7 +2226,6 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     hasFile: boolean;
     id: string;
-    // TODO: [OpenAPI][Media] metaData field should be defined properly
     metaData?: {
       /** Format: int64 */
       height?: number;
@@ -2458,7 +2456,7 @@ export type Schemas = {
     orderNumber?: string;
     /** Format: float */
     positionPrice?: number;
-    price: components["schemas"]["CalculatedPrice"]; // TODO: [OpenAPI][Order] - price should be required and point to calculated price
+    price: components["schemas"]["CalculatedPrice"];
     salesChannelId: string;
     shippingCosts?: {
       calculatedTaxes?: Record<string, never>;
@@ -2861,7 +2859,7 @@ export type Schemas = {
   };
   OrderRouteResponse: {
     orders: {
-      elements: components["schemas"]["Order"][]; // TODO: [OpenAPI][OrderRouteResponse] - there should be elements field defined for search result
+      elements: components["schemas"]["Order"][];
     } & components["schemas"]["EntitySearchResult"];
     /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
     paymentChangeable?: {
@@ -3200,7 +3198,6 @@ export type Schemas = {
     /** Format: int64 */
     availableStock?: number;
     calculatedCheapestPrice?: {
-      // TODO: [OpenAPI][Product] - calculatedCheapestPrice should be defined as a separate entity
       /** @enum {string} */
       apiAlias?: "calculated_cheapest_price";
       hasRange?: boolean;
@@ -3342,7 +3339,6 @@ export type Schemas = {
     tax?: components["schemas"]["Tax"];
     taxId: string;
     translated: {
-      // TODO: [OpenAPI][Product] - translated should be required
       apiAlias?: string;
       canonicalProductId?: string;
       canonicalProductVersionId?: string;
@@ -3545,14 +3541,6 @@ export type Schemas = {
     metaTitle?: string;
     /** Format: int64 */
     minPurchase?: number;
-    // TODO: [OpenAPI][ProductJsonApi] - add options definition
-    options: Array<{
-      group: string;
-      option: string;
-      translated: {
-        [key: string]: string;
-      };
-    }>;
     name: string;
     optionIds?: readonly string[];
     packUnit?: string;
@@ -3968,6 +3956,15 @@ export type Schemas = {
     weight?: number;
     /** Format: float */
     width?: number;
+  } & {
+    options: {
+      group: string;
+      option: string;
+      translated: {
+        group: string;
+        option: string;
+      };
+    }[];
   };
   ProductKeywordDictionary: {
     id?: string;
@@ -4054,7 +4051,7 @@ export type Schemas = {
       translated: {
         apiAlias?: string;
         key?: string;
-        label?: string;
+        label: string;
       };
     }[];
     /** Contains the state of the filters. These can be used to create listing filters. */
@@ -4110,7 +4107,7 @@ export type Schemas = {
     position?: number;
     productId: string;
     productVersionId?: string;
-    thumbnails?: components["schemas"]["MediaThumbnail"][]; // TODO: [OpenAPI][ProductMedia] - thumbnails should probably be defined as an array
+    thumbnails?: components["schemas"]["MediaThumbnail"][];
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
@@ -4127,9 +4124,9 @@ export type Schemas = {
     content: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
-    customerId?: string; // TODO: [OpenAPI][ProductReview] customerId field should be defined
-    externalUser?: string; // TODO: [OpenAPI][ProductReview] externalUser field should be defined
+    customerId?: string;
+    customFields?: Record<string, never>;
+    externalUser?: string;
     id: string;
     languageId: string;
     /** Format: float */
@@ -4302,7 +4299,7 @@ export type Schemas = {
     colorHexCode?: string;
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     group: components["schemas"]["PropertyGroup"];
     groupId: string;
     id: string;
@@ -4312,7 +4309,6 @@ export type Schemas = {
     option: string;
     /** Format: int64 */
     position?: number;
-    // TODO: [OpenAPI][PropertyGroupOption] translated field should be defined properly
     translated: {
       colorHexCode?: string;
       groupId?: string;
@@ -4344,7 +4340,7 @@ export type Schemas = {
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     customerId: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     deliveries?: components["schemas"]["QuoteDelivery"][];
     discount?: {
       type?: string;
@@ -4360,16 +4356,15 @@ export type Schemas = {
     lineItems?: components["schemas"]["QuoteLineItem"][];
     orderId?: string;
     orderVersionId?: string;
-    // TODO: [OpenAPI][Quote] - price field should be defined properly
     price: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       /** Format: float */
       netPrice: number;
       /** Format: float */
       positionPrice: number;
       /** Format: float */
       rawTotal: number;
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       taxStatus: string;
       /** Format: float */
       totalPrice: number;
@@ -4379,7 +4374,7 @@ export type Schemas = {
     /** Format: date-time */
     sentAt?: string;
     shippingCosts?: {
-      calculatedTaxes?: GenericRecord;
+      calculatedTaxes?: Record<string, never>;
       listPrice?: {
         /** Format: float */
         discount?: number;
@@ -4390,19 +4385,19 @@ export type Schemas = {
       };
       /** Format: int64 */
       quantity: number;
-      referencePrice?: GenericRecord;
+      referencePrice?: Record<string, never>;
       regulationPrice?: {
         /** Format: float */
         price?: number;
       };
-      taxRules?: GenericRecord;
+      taxRules?: Record<string, never>;
       /** Format: float */
       totalPrice: number;
       /** Format: float */
       unitPrice: number;
     };
     stateId: string;
-    stateMachineState: components["schemas"]["StateMachineState"]; // TODO: [OpenAPI][Quote] stateMachineState field should be defined as required
+    stateMachineState: components["schemas"]["StateMachineState"];
     /** Format: float */
     subtotalNet?: number;
     taxStatus?: string;
@@ -5330,12 +5325,11 @@ export type Schemas = {
   StateMachineState: {
     /** Format: date-time */
     createdAt: string;
-    customFields?: GenericRecord;
+    customFields?: Record<string, never>;
     id?: string;
     name: string;
     technicalName: string;
     translated: {
-      // TODO: [OpenAPI][StateMachineState] translated field should be defined as required
       name?: string;
       technicalName?: string;
     };
@@ -6539,7 +6533,7 @@ export type Schemas = {
     updatedAt?: string;
   };
   WishlistLoadRouteResponse: {
-    products: components["schemas"]["ProductListingResult"]; // TODO: [OpenAPI][WishlistLoadRouteResponse] - products response should be defined as required
+    products: components["schemas"]["ProductListingResult"];
     wishlist?: {
       customerId?: string;
       salesChannelId?: string;
@@ -6727,7 +6721,7 @@ export type operations = {
   "createCustomerAddress post /account/address": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["CustomerAddressBody"]; // TODO: [OpenAPI][createCustomerAddress] - body should be defined without id on creation
+    body: components["schemas"]["CustomerAddressBody"];
     response: components["schemas"]["CustomerAddress"] &
       components["schemas"]["CustomerAddressRead"];
     responseCode: 200;
@@ -6749,7 +6743,7 @@ export type operations = {
       /** Address ID */
       addressId: string;
     };
-    body: components["schemas"]["CustomerAddressBody"]; // TODO: [OpenAPI][updateCustomerAddress] - body should be defined without id on update as address exist
+    body: components["schemas"]["CustomerAddressBody"];
     response: components["schemas"]["CustomerAddress"] &
       components["schemas"]["CustomerAddressRead"];
     responseCode: 200;
@@ -6849,7 +6843,7 @@ export type operations = {
   "readCustomer post /account/customer": {
     contentType?: "application/json";
     accept?: "application/json";
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readCustomer] - body should be optional
+    body?: components["schemas"]["Criteria"];
     response: components["schemas"]["Customer"];
     responseCode: 200;
   };
@@ -6872,9 +6866,8 @@ export type operations = {
   "listAddress post /account/list-address": {
     contentType?: "application/json";
     accept?: "application/json";
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][listAddress] - body should be optional
+    body?: components["schemas"]["Criteria"];
     response: {
-      // TODO: [OpenAPI][listAddress] add proper response type as EntitySearchResult
       elements: components["schemas"]["CustomerAddress"][];
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
@@ -6906,8 +6899,8 @@ export type operations = {
   "readNewsletterRecipient post /account/newsletter-recipient": {
     contentType?: "application/json";
     accept?: "application/json";
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readNewsletterRecipient] - body should be optional
-    response: components["schemas"]["AccountNewsletterRecipientResult"]; // TODO: [OpenAPI][readNewsletterRecipient] return type is not array
+    body?: components["schemas"]["Criteria"];
+    response: components["schemas"]["AccountNewsletterRecipientResult"];
     responseCode: 200;
   };
   "sendRecoveryMail post /account/recovery-password": {
@@ -7143,7 +7136,7 @@ export type operations = {
   "readShoppingLists post /account/shopping-lists": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsShoppingList"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7156,7 +7149,7 @@ export type operations = {
       /** Name of the app */
       name: string;
     };
-    body: Record<string, never>;
+    body?: Record<string, never>;
     response: {
       /** Format: date-time */
       expires?: string;
@@ -7188,7 +7181,7 @@ export type operations = {
       /** Number of items per page */
       limit?: number;
     };
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["ApprovalRule"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7269,7 +7262,7 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["Category"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7519,7 +7512,7 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["Country"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7535,7 +7528,7 @@ export type operations = {
     pathParams: {
       countryId: string;
     };
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["CountryState"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7548,7 +7541,7 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["Currency"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7575,7 +7568,7 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readCustomerWishlist] - body should be optional
+    body?: components["schemas"]["Criteria"];
     response: components["schemas"]["WishlistLoadRouteResponse"];
     responseCode: 200;
   };
@@ -7620,14 +7613,14 @@ export type operations = {
       documentId: string;
       deepLinkCode: string;
     };
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][download] - body should be optional
+    body?: components["schemas"]["Criteria"];
     response: components["schemas"]["Document"];
     responseCode: 200;
   };
   "readEmployees post /employee": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bEmployee"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -7715,7 +7708,7 @@ export type operations = {
       orderId: string;
     };
     response: {
-      redirectUrl: string; // TODO: [OpenAPI][handlePaymentMethod] add proper response type
+      redirectUrl: string;
     };
     responseCode: 200;
   };
@@ -7745,9 +7738,9 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readLanguages] - body should be optional
+    body?: components["schemas"]["Criteria"];
     response: {
-      elements: components["schemas"]["Language"][]; // TODO: [OpenAPI][readLanguages] add elements property as required
+      elements: components["schemas"]["Language"][];
     } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
@@ -7937,7 +7930,7 @@ export type operations = {
       /** Identifier of the pending order to be approved */
       id: string;
     };
-    body: {
+    body?: {
       /** Message content */
       comment?: string;
     };
@@ -7951,7 +7944,7 @@ export type operations = {
       /** Identifier of the pending order to be used to create a order */
       id: string;
     };
-    body: {
+    body?: {
       /** Message content */
       customerComment?: string;
     };
@@ -7965,7 +7958,7 @@ export type operations = {
       /** Identifier of the pending order to be declined */
       id: string;
     };
-    body: {
+    body?: {
       /** Message content */
       comment?: string;
     };
@@ -7975,7 +7968,7 @@ export type operations = {
   "requestOrderApproval post /pending-order/request": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: {
+    body?: {
       /** Message content */
       comment?: string;
     };
@@ -7989,7 +7982,7 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements: components["schemas"]["Product"][]; // TODO: [OpenAPI][readProduct]: add elements property as required
     } & components["schemas"]["EntitySearchResult"];
@@ -8032,13 +8025,13 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
       /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
-      "sw-include-seo-urls"?: boolean; // TODO: [OpenAPI][readCategory] - add header to the parameters
+      "sw-include-seo-urls"?: boolean;
     };
     pathParams: {
       /** Product ID */
       productId: string;
     };
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readProductDetail] - body should be optional
+    body?: components["schemas"]["Criteria"];
     response: components["schemas"]["ProductDetailResponse"];
     responseCode: 200;
   };
@@ -8048,6 +8041,8 @@ export type operations = {
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean;
     };
     pathParams: {
       /** Product ID */
@@ -8116,7 +8111,7 @@ export type operations = {
       /** Identifier of the product. */
       productId: string;
     };
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readProductReviews] - body should be optional
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["ProductReview"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -8171,7 +8166,7 @@ export type operations = {
       /** Identifier of the quote to be reinvited */
       id: string;
     };
-    body: {
+    body?: {
       /** Message content */
       comment?: string;
     };
@@ -8185,7 +8180,7 @@ export type operations = {
       /** Identifier of the quote to be reinvited */
       id: string;
     };
-    body: {
+    body?: {
       /** Message content */
       comment?: string;
     };
@@ -8199,7 +8194,7 @@ export type operations = {
       /** Identifier of the quote to be fetched */
       id: string;
     };
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readQuote] - body with the criteria should be defined
+    body?: components["schemas"]["Criteria"];
     response: components["schemas"]["Quote"];
     responseCode: 200;
   };
@@ -8210,7 +8205,7 @@ export type operations = {
       /** Identifier of the quote to be reinvited */
       id: string;
     };
-    body: {
+    body?: {
       /** Message content */
       customerComment?: string;
     };
@@ -8220,7 +8215,7 @@ export type operations = {
   "requestQuote post /quote/request": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: {
+    body?: {
       /** Message content */
       comment?: string;
     };
@@ -8230,7 +8225,7 @@ export type operations = {
   "readQuotes post /quotes": {
     contentType?: "application/json";
     accept?: "application/json";
-    body?: components["schemas"]["Criteria"]; // TODO: make body optional
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["Quote"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -8239,7 +8234,6 @@ export type operations = {
   "readRoles get /role": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsRole"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -8248,7 +8242,7 @@ export type operations = {
   "readRolesPOST post /role": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsRole"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -8335,7 +8329,7 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body?: components["schemas"]["Criteria"]; // TODO: [OpenAPI][readSalutation] - body should be optional
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["Salutation"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -8447,7 +8441,7 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["Criteria"];
+    body?: components["schemas"]["Criteria"];
     response: {
       elements: components["schemas"]["SeoUrl"][];
     } & components["schemas"]["EntitySearchResult"];
@@ -8460,14 +8454,14 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: components["schemas"]["Criteria"];
     query?: {
       /** List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule. */
       onlyAvailable?: boolean;
     };
+    body?: components["schemas"]["Criteria"];
     response: {
       /** aggregation result */
-      aggregations?: GenericRecord;
+      aggregations?: Record<string, never>;
       elements: components["schemas"]["ShippingMethod"][]; // TODO: [OpenAPI][readShippingMethod]: response should be `EntitySearchResult` and elements should be required
       /** Total amount */
       total?: number;

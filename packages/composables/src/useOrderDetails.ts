@@ -29,7 +29,6 @@ const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
       associations: {
         paymentMethod: {},
       },
-      sort: "-createdAt",
     },
   },
   checkPromotion: true,
