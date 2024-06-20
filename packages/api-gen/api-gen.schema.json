@@ -4,7 +4,14 @@
   "properties": {
     "$schema": {
       "type": "string",
-      "format": "uri"
+      "anyOf": [
+        {
+          "format": "url"
+        },
+        {
+          "format": "file-path"
+        }
+      ]
     },
     "rules": {
       "type": "array",
@@ -17,6 +24,18 @@
           }
         ]
       }
+    },
+    "patches": {
+      "type": "string",
+      "description": "Path to a file containing patches to apply to the schema",
+      "anyOf": [
+        {
+          "format": "url"
+        },
+        {
+          "format": "file-path"
+        }
+      ]
     }
   },
   "required": ["rules"]

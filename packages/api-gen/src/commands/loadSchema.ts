@@ -6,6 +6,7 @@ import { format } from "prettier";
 import { createAdminAPIClient, createAPIClient } from "@shopware/api-client";
 import type { operations as adminOperations } from "@shopware/api-client/admin-api-types";
 import type { operations } from "@shopware/api-client/store-api-types";
+import json5 from "json5";
 
 const config = dotenv.config().parsed || {};
 
@@ -94,7 +95,7 @@ export async function loadSchema(args: {
       apiJSON = result.data;
     }
 
-    const formatted = await format(JSON.stringify(apiJSON), {
+    const formatted = await format(json5.stringify(apiJSON), {
       semi: false,
       parser: "json",
     });
