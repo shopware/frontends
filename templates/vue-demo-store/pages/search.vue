@@ -209,6 +209,8 @@ const currentSortingOrder = computed({
         order,
       },
     });
+
+    await loadProducts(cacheKey.value);
   },
 });
 
