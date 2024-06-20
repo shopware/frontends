@@ -151,7 +151,7 @@ export type operations = {
   "createCustomerAddress post /account/address": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["CustomerAddress"];
+    body?: components["schemas"]["CustomerAddress"];
     response: components["schemas"]["CustomerAddress"];
     responseCode: 200;
   };

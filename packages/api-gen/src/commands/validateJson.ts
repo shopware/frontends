@@ -3,6 +3,14 @@ import c from "picocolors";
 import { readFileSync } from "node:fs";
 import type { ObjectSubtype, OpenAPI3 } from "openapi-typescript";
 import { validationRules } from "../validation-rules";
+import { patchJsonSchema } from "../patchJsonSchema";
+import {
+  API_GEN_CONFIG_FILENAME,
+  displayPatchingSummary,
+  loadApiGenConfig,
+  loadJsonOverrides,
+} from "../jsonOverrideUtils";
+import json5 from "json5";
 
 export async function validateJson(args: {
   cwd: string;
@@ -20,7 +28,7 @@ export async function validateJson(args: {
 
   let fileContentAsJson: OpenAPI3;
   try {
-    fileContentAsJson = JSON.parse(fileContent) as OpenAPI3;
+    fileContentAsJson = json5.parse(fileContent) as OpenAPI3;
   } catch (error) {
     console.error(
       c.red(
@@ -32,38 +40,24 @@ export async function validateJson(args: {
   }
 
   // load config
-  let configJSON: { rules: string[] };
-  try {
-    const config = await readFileSync("api-gen.config.json", {
-      // TODO: use c12 library for that
-      // name: "api-gen", // file should be "api-gen.config.json"
-      encoding: "utf-8",
-    });
-    configJSON = JSON.parse(config);
-  } catch (error) {
-    console.error(
-      c.red(
-        `Error while parsing config file api-gen.config.json. Check whether the file is correct JSON file.\n`,
-      ),
-      error,
-    );
+  const configJSON = await loadApiGenConfig();
+  if (!configJSON) {
     process.exit(1);
   }
 
-  const rulesToProcess = (configJSON?.rules || []) as Array<
-    keyof typeof validationRules
-  >;
+  const rulesToProcess = configJSON.rules || [];
 
   if (!rulesToProcess.length) {
     console.error(
       c.red(
-        `No rules to process. Check your ${c.bold("api-gen.config.json")} file.`,
+        `No rules to process. Check your ${c.bold(API_GEN_CONFIG_FILENAME)} file.`,
       ),
     );
     process.exit(1);
   }
 
   const errors: string[] = [];
+  const jsonOverrides = await loadJsonOverrides(configJSON.patches);
 
   Object.entries(fileContentAsJson.components?.schemas || {}).forEach(
     (schema) => {
@@ -73,7 +67,7 @@ export async function validateJson(args: {
             c.red(
               `Validation rule ${c.bold(
                 ruleName,
-              )} is not implemented. Check your ${c.bold("api-gen.config.json")} file.`,
+              )} is not implemented. Check your ${c.bold(API_GEN_CONFIG_FILENAME)} file.`,
             ),
           );
           process.exit(1);
@@ -89,11 +83,21 @@ export async function validateJson(args: {
     },
   );
 
+  const { alreadyApliedPatches, todosToFix, outdatedPatches } = patchJsonSchema(
+    {
+      openApiSchema: fileContentAsJson,
+      jsonOverrides,
+    },
+  );
+
+  displayPatchingSummary({
+    todosToFix,
+    errors,
+    outdatedPatches,
+    alreadyApliedPatches,
+  });
+
   if (errors.length) {
-    console.error(c.red("Errors found:"));
-    errors.forEach((error) => {
-      console.error(`\n<==== ${c.red("ERROR")}:\n${error}\n====>\n\n`);
-    });
     console.error(
       c.red(`Validation failed with ${c.bold(errors.length)} errors.`),
     );
