@@ -180,7 +180,7 @@ describe("createAPIClient", () => {
       "/checkout/cart",
       eventHandler(async () => {
         throw createError({
-          status: 500,
+          statusCode: 500,
         });
       }),
     );
@@ -284,7 +284,7 @@ describe("createAPIClient", () => {
     const app = createApp().use(
       "/context",
       eventHandler(async () => {
-        throw new Error("Api error");
+        throw createError({ status: 500 });
       }),
     );
 
@@ -300,9 +300,11 @@ describe("createAPIClient", () => {
 
     client.hook("onResponseError", errorCallback);
 
-    try {
-      await client.invoke("readContext get /context");
-    } catch (e) {}
+    await expect(
+      client.invoke("readContext get /context"),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[ApiClientError: Failed request]`,
+    );
 
     expect(errorCallback).toHaveBeenCalled();
   });
@@ -316,7 +318,9 @@ describe("createAPIClient", () => {
       }),
     );
 
-    const consoleErrorSpy = vi.spyOn(console, "warn");
+    const consoleErrorSpy = vi
+      .spyOn(console, "warn")
+      .mockImplementationOnce(() => {});
     const contextChangedMock = vi.fn().mockImplementation(() => {});
 
     const baseURL = await createPortAndGetUrl(app);
@@ -331,5 +335,40 @@ describe("createAPIClient", () => {
     await client.invoke("readContext get /context");
 
     expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  it("should allow to abort request", async () => {
+    const app = createApp().use(
+      "/context",
+      eventHandler(async () => {
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(createError({ status: 408 }));
+          }, 1000 * 2);
+        });
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      baseURL,
+      accessToken: "123",
+      contextToken: "456",
+    });
+
+    const controller = new AbortController();
+
+    const request = client.invoke("readContext get /context", {
+      fetchOptions: {
+        signal: controller.signal,
+      },
+    });
+
+    controller.abort();
+
+    expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[FetchError: [GET] "${baseURL}context": <no response> This operation was aborted]`,
+    );
   });
 });

@@ -1,4 +1,4 @@
-import { type FetchResponse, ofetch } from "ofetch";
+import { type FetchResponse, ofetch, FetchOptions } from "ofetch";
 import type { operations } from "../api-types/storeApiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
@@ -36,6 +36,22 @@ export type RequestParameters<CURRENT_OPERATION> = SimpleUnionOmit<
   CURRENT_OPERATION,
   "response" | "responseCode"
 >;
+export type InvokeParameters<CURRENT_OPERATION> =
+  RequestParameters<CURRENT_OPERATION> & {
+    fetchOptions?: Pick<
+      FetchOptions<"json">,
+      | "cache"
+      | "duplex"
+      | "keepalive"
+      | "priority"
+      | "redirect"
+      | "retry"
+      | "retryDelay"
+      | "retryStatusCodes"
+      | "signal"
+      | "timeout"
+    >;
+  };
 
 export type ApiClientHooks = Hookable<{
   onContextChanged: (newContextToken: string) => void;
@@ -136,8 +152,8 @@ export function createAPIClient<
       | {
           pathParams: unknown;
         }
-      ? [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">]
-      : [SimpleUnionOmit<CURRENT_OPERATION, "response" | "responseCode">?]
+      ? [InvokeParameters<CURRENT_OPERATION>]
+      : [InvokeParameters<CURRENT_OPERATION>?]
   ): Promise<RequestReturnType<CURRENT_OPERATION>> {
     const [, method, requestPath] = pathParam.split(" ") as [
       string,
@@ -146,16 +162,21 @@ export function createAPIClient<
     ];
 
     const currentParams =
-      params[0] || ({} as RequestParameters<CURRENT_OPERATION>);
+      params[0] || ({} as InvokeParameters<CURRENT_OPERATION>);
 
     const requestPathWithParams = createPathWithParams(
       requestPath,
       currentParams.pathParams,
     );
 
+    const fetchOptions: FetchOptions<"json"> = {
+      ...(currentParams.fetchOptions || {}),
+    };
+
     const resp = await apiFetch.raw<
       SimpleUnionPick<CURRENT_OPERATION, "response">
     >(requestPathWithParams, {
+      ...fetchOptions,
       method,
       body: currentParams.body,
       headers: defu(defaultHeaders, currentParams.headers) as HeadersInit,
