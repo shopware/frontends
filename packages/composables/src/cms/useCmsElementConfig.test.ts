@@ -84,7 +84,7 @@ describe("useCmsElementConfig", () => {
       });
 
       it("should return undefined if config value is null", () => {
-        const cmsElement: CmsElementForm = {
+        const cmsElement = {
           type: "form",
           slot: "qwe",
           config: {
@@ -135,7 +135,7 @@ describe("useCmsElementConfig", () => {
           blockId: "123",
           fieldConfig: [],
           apiAlias: "cms_slot",
-        };
+        } as unknown as CmsElementForm;
         const { getConfigValue } = useCmsElementConfig(cmsElement);
         expect(getConfigValue("defaultMailReceiver")).toEqual(false);
         expect(getConfigValue("mailReceiver")).toEqual(["first", "second"]);

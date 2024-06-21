@@ -97,18 +97,15 @@ importers:
 
   apps/docs:
     dependencies:
-      '@shopware-pwa/api-client':
-        specifier: workspace:*
-        version: link:../../packages/api-client
       '@shopware-pwa/composables-next':
         specifier: workspace:*
         version: link:../../packages/composables
       '@shopware-pwa/helpers-next':
         specifier: workspace:*
         version: link:../../packages/helpers
-      '@shopware-pwa/types':
+      '@shopware/api-client':
         specifier: workspace:*
-        version: link:../../packages/types
+        version: link:../../packages/api-client-next
       flexsearch:
         specifier: 0.7.43
         version: 0.7.43
@@ -936,9 +933,6 @@ importers:
       '@nuxt/schema':
         specifier: 3.11.2
         version: 3.11.2(rollup@4.18.0)
-      '@shopware-pwa/types':
-        specifier: workspace:*
-        version: link:../types
       '@types/three':
         specifier: ^0.165.0
         version: 0.165.0
@@ -1000,9 +994,6 @@ importers:
       '@nuxt/kit':
         specifier: 3.11.2
         version: 3.11.2(rollup@4.18.0)
-      '@shopware-pwa/types':
-        specifier: workspace:*
-        version: link:../types
       '@vitest/coverage-v8':
         specifier: 1.6.0
         version: 1.6.0(vitest@1.6.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.7)(happy-dom@14.12.3)(terser@5.31.1))
@@ -1202,9 +1193,6 @@ importers:
       '@shopware-pwa/nuxt3-module':
         specifier: canary
         version: link:../../packages/nuxt3-module
-      '@shopware-pwa/types':
-        specifier: canary
-        version: link:../../packages/types
       '@shopware/api-client':
         specifier: canary
         version: link:../../packages/api-client-next

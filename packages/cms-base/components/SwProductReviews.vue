@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Product, ProductReview } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { useProductReviews, useCmsTranslations } from "#imports";
 import { computed, onMounted, ref, toRefs } from "vue";
 import { defu } from "defu";
 
 const props = defineProps<{
-  product: Product;
-  reviews?: ProductReview[];
+  product: Schemas["Product"];
+  reviews?: Schemas["ProductReview"][];
 }>();
 
 type Translations = {
@@ -34,7 +34,7 @@ onMounted(async () => {
   shouldLoadReviews && (await loadProductReviews());
   loadingReviews.value = false;
 });
-const reviewsList = computed<ProductReview[]>(
+const reviewsList = computed<Schemas["ProductReview"][]>(
   () => reviews?.value || productReviews.value || [],
 );
 

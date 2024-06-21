@@ -40,7 +40,7 @@ const toggleTabs = (tabNumber: number) => {
   currentTab.value = tabNumber;
 };
 
-const reviews = computed(() => props.content.data.reviews?.elements);
+const reviews = computed(() => props.content.data.reviews.elements);
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 {
   "name": "@shopware-pwa/api-client",
   "version": "0.7.0",
-  "description": "Shopware Store API client",
+  "description": "[DEPRECATED] use @shopware/api-client instead",
   "author": "Shopware",
   "type": "module",
   "repository": {

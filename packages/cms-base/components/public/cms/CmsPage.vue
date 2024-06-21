@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { CmsPage, CmsSection } from "@shopware-pwa/types";
 import { pascalCase } from "scule";
 import {
   getCmsLayoutConfiguration,
@@ -10,7 +9,7 @@ import { computed, h, resolveComponent } from "vue";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
-  content: CmsPage | Schemas["CmsPage"];
+  content: Schemas["CmsPage"];
 }>();
 
 const { routeName } = useNavigationContext();
@@ -18,8 +17,8 @@ if (routeName.value === "frontend.navigation.page") {
   createCategoryListingContext();
 }
 
-const cmsSections = computed<CmsSection[]>(() => {
-  return (props.content?.sections as unknown as CmsSection[]) || [];
+const cmsSections = computed<Schemas["CmsSection"][]>(() => {
+  return props.content?.sections || [];
 });
 
 const DynamicRender = () => {

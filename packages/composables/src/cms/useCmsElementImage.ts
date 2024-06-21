@@ -3,7 +3,7 @@ import type {
   CmsElementImage,
   DisplayMode,
   CmsElementManufacturerLogo,
-} from "../index";
+} from "../types";
 import { computed } from "vue";
 import type {
   ComputedRef,
@@ -31,7 +31,7 @@ export type UseCmsElementImage = {
   imageLink: ComputedRef<{ newTab: boolean; url: string }>;
   displayMode: ComputedRef<DisplayMode>;
   isVideoElement: ComputedRef<boolean>;
-  mimeType: ComputedRef<string>;
+  mimeType: ComputedRef<string | undefined>;
 };
 
 /**

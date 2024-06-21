@@ -1,11 +1,11 @@
-import type { CmsBlock, CmsSection, SectionType } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 export type CmsSectionBlock<
-  TYPE extends SectionType,
+  TYPE extends Schemas["CmsSection"]["type"],
   SECTION_POSITIONS,
-> = CmsSection & {
+> = Schemas["CmsSection"] & {
   type: TYPE;
-  blocks: Array<CmsBlock & { sectionPosition: SECTION_POSITIONS }>;
+  blocks: Array<Schemas["CmsBlock"] & { sectionPosition: SECTION_POSITIONS }>;
 };
 
 // Section Default can have only one container for blocks: main (full page)

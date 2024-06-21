@@ -9,10 +9,9 @@
     "serve": "vitepress serve"
   },
   "dependencies": {
-    "@shopware-pwa/api-client": "workspace:*",
+    "@shopware/api-client": "workspace:*",
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
-    "@shopware-pwa/types": "workspace:*",
     "flexsearch": "0.7.43",
     "markdown-it": "14.1.0",
     "vitepress": "1.0.0-beta.7",
