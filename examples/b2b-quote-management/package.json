@@ -17,7 +17,7 @@
     "js-cookie": "3.0.5",
     "primevue": "3.52.0",
     "vue": "3.4.27",
-    "vue-router": "4.3.3"
+    "vue-router": "4.4.0"
   },
   "devDependencies": {
     "@types/node": "20.14.2",
