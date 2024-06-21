@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@types/markdown-it": "14.1.1",
-    "@types/node": "20.14.2",
+    "@types/node": "20.14.7",
     "@vitejs/plugin-vue": "5.0.5",
     "find-in-files": "0.5.0",
     "ts-dox": "0.1.0",
