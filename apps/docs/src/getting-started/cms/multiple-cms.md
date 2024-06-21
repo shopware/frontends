@@ -2,19 +2,20 @@
 head:
   - - meta
     - name: og:title
-      content: Integrations - Multi CMS - Shopware Frontends
+      content: Multiple CMS - Shopware Frontends
   - - meta
     - name: og:description
-      content: "Multi CMS instance"
+      content: "Multiple content management systems (CMS)"
   - - meta
     - name: og:image
-      content: "https://frontends-og-image.vercel.app/Multi%20CMS?fontSize=150px"
+      content: "https://frontends-og-image.vercel.app/Multiple%20CMS?fontSize=150px"
 ---
 
-# Multi CMS
+# Multiple content management systems (CMS)
 
-Adding a New CMS Instance in Conjunction with Shopware CMS
-This documentation segment guides users through the process of incorporating an additional CMS instance and use it seamlessly with the Shopware CMS.
+Add another [CMS system](../../resources/integrations/index.md), but still use the Shopware Shopping Experiences as a fallback.
+
+This documentation guides users through the process of incorporating an additional CMS instance and use it seamlessly with the Shopware Shopping Experiences.
 
 :::warning
 This example is written for the vue-demo-store template
@@ -22,7 +23,7 @@ This example is written for the vue-demo-store template
 
 ## Adding middleware
 
-Add middleware injection to the main routing resolver file.
+All you need to do is adding a middleware injection to the main routing resolver file.
 
 `templates/vue-demo-store/pages/[...all].vue`
 
@@ -108,3 +109,7 @@ function render() {
     return h("div", {}, "Loading...");
 }
 ```
+
+You see that the `cmsPageRendererComponent` is returned before the regular `cmsPageView` is resolved. But only if the `cmsPageRendererComponent` is not null and **no** routeName aka componentName is found. Further details can be found in the comments in the code above.
+
+Also, you can find a complete example here at [Strapi CMS Integration](../../resources/integrations/cms/strapi.md).

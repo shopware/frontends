@@ -12,3 +12,4 @@ Everything related to CMS ([Shopping Experiences](../../framework/shopping-exper
 <PageRef page="create-blocks" title="Create Blocks" sub="In this chapter you will learn how to create CMS blocks." />
 <PageRef page="create-elements" title="Create Elements" sub="In this chapter you will learn how to create CMS elements." />
 <PageRef page="overwriting-cms" title="Overwrite CMS blocks in Nuxt 3 APP" sub="Example how to overwrite the product card." />
+<PageRef page="multiple-cms" title="Multiple content management systems (CMS)" sub="How to integrate a 3rd party CMS system." />
