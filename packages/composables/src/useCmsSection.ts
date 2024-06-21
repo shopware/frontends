@@ -1,4 +1,4 @@
-import type { CmsBlock, CmsSection } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -7,13 +7,13 @@ type UseCmsSectionType = {
   /**
    * CMS section
    */
-  section: CmsSection;
+  section: Schemas["CmsSection"];
   /**
    * Position of the section
    */
   getPositionContent(
-    position: ArrayElement<CmsSection["blocks"]>["sectionPosition"],
-  ): Array<CmsBlock>;
+    position: ArrayElement<Schemas["CmsSection"]["blocks"]>["sectionPosition"],
+  ): Array<Schemas["CmsBlock"]>;
 };
 
 /**
@@ -21,7 +21,7 @@ type UseCmsSectionType = {
  * @public
  * @category CMS (Shopping Experiences)
  */
-export function useCmsSection<SECTION_TYPE extends CmsSection>(
+export function useCmsSection<SECTION_TYPE extends Schemas["CmsSection"]>(
   content: SECTION_TYPE,
 ): UseCmsSectionType {
   function getPositionContent(
@@ -29,7 +29,7 @@ export function useCmsSection<SECTION_TYPE extends CmsSection>(
   ) {
     return content.blocks.filter(
       (block) => block.sectionPosition === position,
-    ) as Array<CmsBlock>;
+    ) as Array<Schemas["CmsBlock"]>;
   }
 
   return {

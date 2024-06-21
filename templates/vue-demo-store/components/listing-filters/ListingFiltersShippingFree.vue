@@ -4,29 +4,18 @@
   generic="
     ListingFilter extends {
       id: string;
-      code: string;
+      code: keyof Schemas['ProductListingResult']['currentFilters'];
       label: string;
       name: string;
     }
   "
 >
-import type {
-  AggregationFilterEntity,
-  EntitiesAggregation,
-  MaxAggregation,
-  PriceAggregation,
-} from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { computed } from "vue";
 
 const props = defineProps<{
   filter: ListingFilter;
-  selectedFilters: {
-    [key: string]:
-      | EntitiesAggregation<AggregationFilterEntity>
-      | PriceAggregation
-      | MaxAggregation
-      | number;
-  };
+  selectedFilters: Schemas["ProductListingResult"]["currentFilters"];
 }>();
 
 const emits = defineEmits<{

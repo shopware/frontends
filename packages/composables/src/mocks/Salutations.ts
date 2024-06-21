@@ -1,6 +1,6 @@
-import type { Salutation } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
-const salutations: Salutation[] = [
+const salutations: Schemas["Salutation"][] = [
   {
     translated: {
       displayName: "Mr.",
@@ -46,6 +46,6 @@ const salutations: Salutation[] = [
     id: "b84038d62c3f4d66b3bc626df7fa949e",
     apiAlias: "salutation",
   },
-] as unknown as Salutation[];
+] as unknown as Schemas["Salutation"][];
 
 export default salutations;

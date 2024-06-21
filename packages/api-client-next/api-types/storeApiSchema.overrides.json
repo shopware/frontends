@@ -66,6 +66,22 @@
         }
       }
     ],
+    "CartError": [
+      {
+        "required": ["key", "level", "message", "messageKey"],
+        "properties": {
+          "items": "_DELETE_",
+          "key": { "type": "string" },
+          "level": {
+            "type": "number",
+            "enum": [0, 10, 20],
+            "description": "* `0` - notice,\n* `10` - warning,\n* `20` - error"
+          },
+          "message": { "type": "string" },
+          "messageKey": { "type": "string" }
+        }
+      }
+    ],
     "Category": [
       {
         "required": ["apiAlias"]
@@ -90,6 +106,33 @@
           "translated": {
             "required": ["breadcrumb"]
           }
+        }
+      }
+    ],
+    "CmsSection": [
+      {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["default", "sidebar"]
+          }
+        }
+      }
+    ],
+    "CmsSlot": [
+      {
+        "required": ["apiAlias"],
+        "properties": {
+          "apiAlias": {
+            "type": "string",
+            "enum": ["cms_slot"]
+          }
+        }
+      },
+      {
+        "properties": {
+          "config": "_DELETE_",
+          "data": "_DELETE_"
         }
       }
     ],
@@ -272,6 +315,9 @@
             "items": { "$ref": "#/components/schemas/MediaThumbnail" }
           }
         }
+      },
+      {
+        "required": ["media"]
       }
     ],
     "ProductReview": [

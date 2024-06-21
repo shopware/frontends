@@ -10,7 +10,6 @@ export default defineBuildConfig({
     "scule",
     "@shopware/api-client",
     "@shopware-pwa/helpers-next",
-    "@shopware-pwa/types",
     "@vueuse/core",
   ],
   alias: {

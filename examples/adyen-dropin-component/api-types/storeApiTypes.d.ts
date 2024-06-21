@@ -718,18 +718,16 @@ export type Schemas = {
     price?: components["schemas"]["CalculatedPrice"];
   };
   CartError: {
-    items?: {
-      key?: string;
-      /**
-       * * `0` - notice,
-       * * `10` - warning,
-       * * `20` - error
-       * @enum {number}
-       */
-      level?: 0 | 10 | 20;
-      message?: string;
-      messageKey?: string;
-    };
+    key: string;
+    /**
+     * * `0` - notice,
+     * * `10` - warning,
+     * * `20` - error
+     * @enum {number}
+     */
+    level: 0 | 10 | 20;
+    message: string;
+    messageKey: string;
   };
   CartItems: {
     items?: components["schemas"]["LineItem"][];
@@ -1133,7 +1131,8 @@ export type Schemas = {
     /** Format: int64 */
     position: number;
     sizingMode?: string;
-    type: string;
+    /** @enum {string} */
+    type: "default" | "sidebar";
     /** Format: date-time */
     updatedAt?: string;
     visibility?: {
@@ -1143,19 +1142,20 @@ export type Schemas = {
     };
   };
   CmsSlot: {
+    /** @enum {string} */
+    apiAlias: "cms_slot";
     block?: components["schemas"]["CmsBlock"];
     blockId: string;
     cmsBlockVersionId?: string;
-    config?: Record<string, never>;
     /** Format: date-time */
     createdAt: string;
     customFields?: Record<string, never>;
-    data?: Record<string, never>;
     fieldConfig?: Record<string, never>;
     id?: string;
     locked?: boolean;
     slot: string;
     translated?: {
+      apiAlias?: string;
       blockId?: string;
       cmsBlockVersionId?: string;
       slot?: string;
@@ -4148,7 +4148,7 @@ export type Schemas = {
     createdAt: string;
     customFields?: Record<string, never>;
     id: string;
-    media?: components["schemas"]["Media"];
+    media: components["schemas"]["Media"];
     mediaId: string;
     /** Format: int64 */
     position?: number;

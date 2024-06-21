@@ -1,8 +1,8 @@
-import type { CmsBlock, CmsSlot } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
-type BlockType<SLOT_NAMES> = CmsBlock & {
+type BlockType<SLOT_NAMES> = Schemas["CmsBlock"] & {
   slots: Array<
-    CmsSlot & {
+    Schemas["CmsSlot"] & {
       slot: SLOT_NAMES;
     }
   >;

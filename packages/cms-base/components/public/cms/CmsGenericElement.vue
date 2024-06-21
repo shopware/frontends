@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { CmsSlot } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { getCmsLayoutConfiguration } from "@shopware-pwa/helpers-next";
 import { resolveCmsComponent } from "@shopware-pwa/composables-next";
 import { h } from "vue";
 
 const props = defineProps<{
-  content: CmsSlot;
+  content: Schemas["CmsSlot"];
 }>();
 
 const DynamicRender = () => {
