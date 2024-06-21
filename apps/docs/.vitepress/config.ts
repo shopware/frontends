@@ -11,7 +11,7 @@ export const sidebar = [
     text: "SHOPWARE FRONTENDS",
     link: "/",
     items: [
-      { text: "Overview", link: "/", chevron: false, },
+      { text: "Overview", link: "/", chevron: false },
       { text: "Why Shopware Frontends", link: "/why-shopware-frontends" },
     ],
   },
@@ -211,7 +211,8 @@ export const sidebar = [
       { text: "Deployment", link: "/best-practices/deployment" },
       {
         text: "Error Handling",
-        link: "/best-practices/error-handling",
+        link: "/packages/api-client.html#error-handling",
+        // TODO: remove this subpages after 2024-08
         items: [
           {
             text: "API Client Error Handling",
@@ -246,7 +247,7 @@ export const sidebar = [
   },
   {
     text: "PACKAGE REFERENCE",
-        collapsed: true,
+    collapsed: true,
     link: "/packages/",
     items: [
       {
