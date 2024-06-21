@@ -1,7 +1,7 @@
 import { assertType, describe, it } from "vitest";
-import { createAPIClient } from "../createApiClient";
+import { createAPIClient } from "../createAPIClient";
 import type { operations } from "../../api-types/storeApiTypes";
-import type { RequestReturnType, RequestParameters } from "../createApiClient";
+import type { RequestReturnType, RequestParameters } from "../createAPIClient";
 
 describe("createApiClient type checks", () => {
   it(`should allow not passing params when endpoint does not require "body"`, async () => {

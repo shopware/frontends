@@ -36,7 +36,7 @@ fs.readdirSync(directoryPath)
         }, exampleName),
       ]);
       expect(page.url()).toContain(
-        `https://stackblitz.com/github/${exampleName}`
+        `https://stackblitz.com/github/${exampleName}`,
       );
       expect(await page.title()).toContain("Frontends");
       await page

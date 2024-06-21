@@ -1,3 +1,0 @@
-# checkoutService
-
-<!-- PLACEHOLDER_DESCRIPTION -->
