@@ -1,6 +1,6 @@
 import { inject } from "vue";
 import { useCmsElementConfig } from "../index";
-import type { CmsElementProductBox, BoxLayout } from "../index";
+import type { CmsElementProductBox, BoxLayout } from "../types";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import type { Schemas } from "#shopware";

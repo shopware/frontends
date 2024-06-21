@@ -5,7 +5,6 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/composables?label=package%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acomposables)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-
 Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://frontends.shopware.com/getting-started/page-elements/navigation.html).
 
 ## Features
@@ -21,23 +20,34 @@ Install npm packages (composables & api-client):
 
 ```bash
 # Using pnpm
-pnpm add @shopware-pwa/composables-next @shopware-pwa/api-client
+pnpm add @shopware-pwa/composables-next @shopware/api-client @shopware/api-gen
 
 # Using yarn
-yarn add @shopware-pwa/composables-next @shopware-pwa/api-client
+yarn add @shopware-pwa/composables-next @shopware/api-client @shopware/api-gen
 
 # Using npm
-npm i @shopware-pwa/composables-next @shopware-pwa/api-client
+npm i @shopware-pwa/composables-next @shopware/api-client @shopware/api-gen
 ```
 
-Initialize the [api-client](https://www.npmjs.com/package/@shopware-pwa/api-client) instance:
+Now generate your types ysing the [CLI](https://www.npmjs.com/package/@shopware/api-gen):
+
+```bash
+pnpm shopware-api-gen generate --apiType=store
+```
+
+Initialize the [api-client](https://www.npmjs.com/package/@shopware/api-client) instance:
 
 ```js
-import { createInstance } from "@shopware-pwa/api-client";
-const apiInstance = createInstance({
-  endpoint: "https://your-api-instance.com",
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "#shopware";
+
+export const apiClient = createAPIClient<operations>({
+  baseURL: "https://your-api-instance.com",
   accessToken: "your-sales-channel-access-token",
 });
+
+// and then provide it in the Vue app
+app.provide("apiClient", apiClient);
 ```
 
 Now, we can create a Vue 3 plugin to install a Shopware context in an app:
@@ -46,7 +56,6 @@ Now, we can create a Vue 3 plugin to install a Shopware context in an app:
 // app variable in type of App
 
 const shopwareContext = createShopwareContext(app, {
-  apiInstance, // apiInstance from previous step
   devStorefrontUrl: "https://your-sales-channel-configured-domain.com",
 });
 // register a plugin in a Vue instance
@@ -95,26 +104,32 @@ npm i js-cookie
 
 Let's get back to the step where the `api-client` was initialized:
 
-```js
-import { createInstance } from "@shopware-pwa/api-client";
+<!-- automd:file src="../../examples/b2b-quote-management/src/apiClient.ts" code -->
+
+```ts [apiClient.ts]
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "#shopware";
 import Cookies from "js-cookie";
 
-const apiInstance = createInstance({
-  endpoint: "https://your-api-instance.com",
-  accessToken: "your-sales-channel-access-token",
-  contextToken: Cookies.get("sw-context-token"), // get the context token if exists in the cookies
+const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
+
+export const apiClient = createAPIClient<operations>({
+  baseURL: shopwareEndpoint,
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  contextToken: Cookies.get("sw-context-token"),
 });
 
-// callback to detect a `sw-context-token` in the response
-apiInstance.onConfigChange(({ config }) => {
-  // set the context-token in the cookie
-  Cookies.set("sw-context-token", config.contextToken || "", {
+apiClient.hook("onContextChanged", (newContextToken) => {
+  Cookies.set("sw-context-token", newContextToken, {
     expires: 365, // days
     path: "/",
     sameSite: "lax",
+    secure: shopwareEndpoint.startsWith("https://"),
   });
 });
 ```
+
+<!-- /automd -->
 
 Thanks to this, the session will be kept to the corresponding `sw-context-token` saved in the cookie, so it can be reachable also in the SSR. Check the example to see it in action:
 
@@ -150,4 +165,4 @@ Full changelog for stable version is available [here](https://github.com/shopwar
 
 - Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831)]:
   - @shopware-pwa/helpers-next@0.5.1
-  - @shopware-pwa/api-client@0.7.0
+  - @shopware/api-client@0.7.0

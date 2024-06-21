@@ -48,22 +48,6 @@ The result of the `resolvePath` function is a reduced `SeoUrl` object, which you
 
 This is all information you need to resolve the route to a page, or rather an entity.
 
-### 💡 Typescript autocompletion
-
-In routing, a bit of IDE support can go a long way, so follow these steps to get autocompletion within your project.
-
-```bash
-npm install -D @shopware-pwa/types
-```
-
-and use
-
-```ts
-import type { SeoUrl } from "@shopware-pwa/types";
-```
-
-in your components or composables.
-
 ## Resolve a route to a page
 
 There are three different type of routes that Shopware natively supports. When there are extensions active in your store, there can be more. The three types are:
@@ -77,7 +61,7 @@ Depending on which type of route you have, the way of fetching the page data is 
 Possibly, the easiest approach is to set up a catch-all component, that resolves the route and then renders the correct page component. This is how it could look like:
 
 ```ts
-import type { SeoUrl } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 import {
   useNavigation,
@@ -86,7 +70,7 @@ import {
   useCategorySearch,
 } from "@shopware-pwa/composables-next";
 
-const seoResult: SeoUrl | null = await resolvePath(route.path);
+const seoResult: Schemas["SeoUrl"] | null = await resolvePath(route.path);
 
 const { routeName, foreignKey } = useNavigationContext(ref(seoResult));
 

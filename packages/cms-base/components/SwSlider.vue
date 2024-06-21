@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SliderElementConfig } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
-import type { CmsSlot } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import {
   computed,
   onBeforeUnmount,
@@ -33,7 +33,7 @@ const props = withDefaults(
 
 const { getConfigValue } = useCmsElementConfig({
   config: props.config,
-} as CmsSlot & {
+} as Schemas["CmsSlot"] & {
   config: SliderElementConfig;
 });
 

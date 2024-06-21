@@ -112,10 +112,9 @@ There are few functions that could be used to extract some crucial information a
 Example how to work with Product's main image:
 
 ```ts
-import type { Product } from "@shopware-pwa/types";
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 
-const coverUrl = getMainImageUrl(product as Product);
+const coverUrl = getMainImageUrl(product);
 // coverUrl is now an URL to the resource (or undefined)
 ```
 
@@ -125,10 +124,10 @@ Having additional information about resized images (see `thumbnails` array in `M
 
 ```vue{8}
 <script>
-import type { Product, Media } from "@shopware-pwa/types";
-const product: Product = {} // an object omitted
+import type { Schemas } from "#shopware";
+const product: Schemas['Product'] = {} // an object omitted
 // get the cover media image (main image for a product)
-const coverMedia = product.cover?.media as Media
+const coverMedia = product.cover?.media
 // prepare `srcset` string for available thumbnails
 // let the breakpoints be for every width range
 const srcset = coverMedia?.thumbnails?.map((thumb) => `${thumb.url} ${thumb.width}w`).join(", ")

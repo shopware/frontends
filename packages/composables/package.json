@@ -70,7 +70,6 @@
   },
   "devDependencies": {
     "@nuxt/kit": "3.11.2",
-    "@shopware-pwa/types": "workspace:*",
     "@vitest/coverage-v8": "1.6.0",
     "@vue/test-utils": "2.4.6",
     "eslint-config-shopware": "workspace:*",
