@@ -1,7 +1,7 @@
 {
   "name": "@shopware-pwa/api-client",
   "version": "0.7.0",
-  "description": "Shopware Store API client",
+  "description": "[DEPRECATED] use @shopware/api-client instead",
   "author": "Shopware",
   "type": "module",
   "repository": {
@@ -44,7 +44,7 @@
     "@shopware/api-client": "workspace:*",
     "@vitest/coverage-v8": "1.6.0",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "14.12.0",
+    "happy-dom": "14.12.3",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "1.6.0"

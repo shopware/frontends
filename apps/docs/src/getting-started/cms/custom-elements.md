@@ -66,9 +66,9 @@ Lets create new component `components/cms/element/CmsElementDailymotion.vue`
 ```vue
 // components/cms/element/CmsElementDailymotion.vue
 <script setup lang="ts">
-import type { CmsSlot } from "@shopware-pwa/types";
+import type { Schemas } from "#showpare";
 
-type CmsElementDailymotion = CmsSlot & {
+type CmsElementDailymotion = Schemas["CmsSlot"] & {
   type: "dailymotion" | typeof String;
   slot: typeof String;
   config: CmsElementDailymotionConfig;

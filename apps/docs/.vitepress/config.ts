@@ -1,16 +1,17 @@
 import { defineConfigWithTheme } from "vitepress";
 import type { Config as ThemeConfig } from "vitepress-shopware-docs";
 import baseConfig from "vitepress-shopware-docs/config";
-import { TsFunctionDescription, TsFunctionsList } from "@shopware-pwa/typer";
 import nav from "./navigation";
-import { resolve } from "node:path";
 import { SearchPlugin } from "vitepress-plugin-search";
+import { CmsBaseReference } from "./theme/typer/cms-base-plugin";
+import { ReadmeBasedReference } from "./theme/typer/plugin";
 
 export const sidebar = [
   {
     text: "SHOPWARE FRONTENDS",
+    link: "/",
     items: [
-      { text: "Overview", link: "/" },
+      { text: "Overview", link: "/", chevron: false },
       { text: "Why Shopware Frontends", link: "/why-shopware-frontends" },
     ],
   },
@@ -214,7 +215,8 @@ export const sidebar = [
       { text: "Deployment", link: "/best-practices/deployment" },
       {
         text: "Error Handling",
-        link: "/best-practices/error-handling",
+        link: "/packages/api-client.html#error-handling",
+        // TODO: remove this subpages after 2024-08
         items: [
           {
             text: "API Client Error Handling",
@@ -249,24 +251,16 @@ export const sidebar = [
   },
   {
     text: "PACKAGE REFERENCE",
+    collapsed: true,
     link: "/packages/",
     items: [
-      { text: "Composables", link: "/packages/composables" },
       {
         text: "API Client",
         link: "/packages/api-client",
-        items: [
-          {
-            text: "Associations",
-            link: "/packages/api-client/docs/associations",
-          },
-          {
-            text: "Storefront URL",
-            link: "/packages/api-client/docs/storefront-url",
-          },
-        ],
       },
-      { text: "Types", link: "/packages/types" },
+      { text: "Composables", link: "/packages/composables" },
+      { text: "CMS Base", link: "/packages/cms-base" },
+      { text: "Nuxt3 Module", link: "/packages/nuxt3-module" },
       { text: "Helpers", link: "/packages/helpers" },
     ],
   },
@@ -287,7 +281,6 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
   // srcExclude: ["tutorial/**/description.md"], In case we need something to be excluded
   scrollOffset: "header",
   ignoreDeadLinks: true, // remove once MR #294 is merged
-
   head: [
     [
       "link",
@@ -350,7 +343,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
 
   themeConfig: {
     nav,
-    sidebar,
+    sidebar: sidebar,
     algolia: {
       indexName: "",
       appId: "",
@@ -371,7 +364,8 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       __VUE_OPTIONS_API__: false,
     },
     server: {
-      host: true,
+      host: false,
+
       fs: {
         // for when developing with locally linked theme
         allow: ["../.."],
@@ -380,44 +374,12 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
     build: {
       minify: "terser",
       chunkSizeWarningLimit: Infinity,
+      ssr: false,
     },
     json: {
       stringify: true,
     },
-    plugins: [
-      SearchPlugin(),
-      TsFunctionsList(),
-      TsFunctionDescription({
-        rootDir: resolve(__dirname, "../../../"),
-        dirs: [
-          {
-            autogenExampleAlias: "api-client",
-            functions: resolve(
-              __dirname,
-              "../../../packages/api-client/src/services",
-            ),
-            types: resolve(
-              __dirname,
-              "../../../packages/types/shopware-6-client/",
-            ),
-          },
-          {
-            functions: resolve(__dirname, "../../../packages/composables/src/"),
-            types: resolve(
-              __dirname,
-              "../../../packages/types/shopware-6-client/",
-            ),
-          },
-          {
-            functions: resolve(__dirname, "../../../packages/helpers/src/"),
-            types: resolve(
-              __dirname,
-              "../../../packages/types/shopware-6-client/",
-            ),
-          },
-        ],
-      }),
-    ],
+    plugins: [SearchPlugin(), ReadmeBasedReference(), CmsBaseReference()],
   },
   vue: {
     reactivityTransform: true,

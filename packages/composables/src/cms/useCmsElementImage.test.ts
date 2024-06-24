@@ -98,7 +98,7 @@ describe("useCmsElementImage", () => {
               ],
             },
           },
-        } as CmsElementManufacturerLogo);
+        } as unknown as CmsElementManufacturerLogo);
 
         expect(imageAttrs.value).toEqual({
           alt: "",

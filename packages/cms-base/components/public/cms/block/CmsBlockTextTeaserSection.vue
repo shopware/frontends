@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsBlockTextTeaserSection } from "@shopware-pwa/composables-next";
 
-const props = defineProps<{
+defineProps<{
   content: CmsBlockTextTeaserSection;
 }>();
 </script>
@@ -9,7 +9,7 @@ const props = defineProps<{
   <div class="container mx-auto flex pt-6 pb-6">
     <CmsGenericElement
       v-for="(slot, i) in content.slots"
-      :key="slot._uniqueIdentifier"
+      :key="slot.id"
       :content="slot"
       class="cms-block-text-teaser-section flex"
       :class="{

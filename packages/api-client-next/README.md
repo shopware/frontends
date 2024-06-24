@@ -2,8 +2,8 @@
 
 [![](https://img.shields.io/npm/v/@shopware/api-client?color=blue&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCA0ODggNTUzIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDM5LjA0MSAxMjkuNTkzTDI1OC43NjkgMzEuMzA3NkMyNDQuOTE1IDIzLjc1NDEgMjI4LjExNiAyNC4wMDkzIDIxNC40OTcgMzEuOTgwMkw0Ny4yNjkgMTI5Ljg1OEMzMy40NzYzIDEzNy45MzEgMjUgMTUyLjcxMyAyNSAxNjguNjk1VjM4OC40NjZDMjUgNDA0LjczMiAzMy43Nzg1IDQxOS43MzIgNDcuOTYwMiA0MjcuNjk5TDIxNS4xNzggNTIxLjYzNkMyMjguNDUxIDUyOS4wOTIgMjQ0LjU5MyA1MjkuMzMyIDI1OC4wODIgNTIyLjI3NEw0MzguMzY0IDQyNy45MzRDNDUzLjIwMSA0MjAuMTcgNDYyLjUgNDA0LjgwOSA0NjIuNSAzODguMDYzVjE2OS4xMDJDNDYyLjUgMTUyLjYzMiA0NTMuNTAyIDEzNy40NzcgNDM5LjA0MSAxMjkuNTkzWiIgc3Ryb2tlPSJ1cmwoI3BhaW50MF9saW5lYXJfMTUzXzY5MjY1KSIgc3Ryb2tlLXdpZHRoPSI1MCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzE1M182OTI2NSIgeDE9Ii0xNi4yOTg5IiB5MT0iMTY1LjM0OSIgeDI9IjI3Ni40MTIiIHkyPSItODkuMzIzNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDA4NUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0MwRTJGNSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==)](https://npmjs.com/package/@shopware/api-client)
 [![](https://img.shields.io/github/package-json/v/shopware/frontends?color=blue&filename=packages%2Fapi-client-next%2Fpackage.json&label=frontends/api-client&logo=github)](https://github.com/shopware/frontends/tree/main/packages/api-client-next)
-![](https://img.shields.io/github/license/shopware/frontends?color=blue)
 [![](https://img.shields.io/github/issues/shopware/frontends/api-client?label=package%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Aapi-client)
+[![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
 Dynamic and fully typed API Client for Shopware 6. Usable in any JavaScript and TypeScript project.
 You can use types generated from your custom API instance to have autocompletion and type safety.
@@ -34,6 +34,8 @@ bun install @shopware/api-client
 ```
 
 <!-- /automd -->
+
+## Store API client setup
 
 Recommended practice is to create a separate module file. For example `src/apiClient.ts`, and import it whenever you need to use API Client.
 
@@ -152,6 +154,47 @@ async function loadProducts() {
   });
 }
 ```
+
+### Fetch features
+
+The new API client is leveraging [ofetch](https://github.com/unjs/ofetch) library, which has built in support for AbortController, timeout and other features.
+
+Example usage of AbortController to cancell your request:
+
+```typescript
+const controller = new AbortController();
+
+const request = client.invoke("readContext get /context", {
+  fetchOptions: {
+    signal: controller.signal,
+  },
+});
+
+controller.abort(); // At this point client will throw an error with the information, that the request has been cancelled
+```
+
+Other example of using `fetchOptions` for setting the timeout:
+
+```typescript
+const request = client.invoke("readContext get /context", {
+  fetchOptions: {
+    timeout: 5000, // 5 seconds
+  },
+});
+```
+
+All exposed options available under `fetchOptions` are:
+
+- `cache`
+- `duplex`
+- `keepalive`
+- `priority`
+- `redirect`
+- `retry`
+- `retryDelay`
+- `retryStatusCodes`
+- `signal`
+- `timeout`
 
 ### Predefining methods
 

@@ -2,6 +2,7 @@ import { describe, bench, vi } from "vitest";
 import { generate } from "../src/commands/generate";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import testSchema from "./api-types/testSchema.json";
+import json5 from "json5";
 
 vi.mock("node:fs", async () => {
   return {
@@ -18,7 +19,7 @@ vi.mock("prettier", async () => {
 });
 vi.mocked(writeFileSync).mockReturnValue();
 vi.mocked(existsSync).mockReturnValue(true);
-vi.mocked(readFileSync).mockReturnValue(JSON.stringify(testSchema));
+vi.mocked(readFileSync).mockReturnValue(json5.stringify(testSchema));
 const consoleWarnSpy = vi.spyOn(console, "log");
 consoleWarnSpy.mockImplementation(() => {});
 
