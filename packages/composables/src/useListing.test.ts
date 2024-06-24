@@ -11,6 +11,7 @@ describe("useListing", () => {
         listingType: "productSearchListing",
       }),
     );
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
     await vm.search({
       search: "",
     });
@@ -34,15 +35,22 @@ describe("useListing", () => {
         categoryId: "1234",
       }),
     );
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
     await vm.search({
       search: "",
     });
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readProductListing"),
       expect.objectContaining({
-        categoryId: "1234",
-        search: "",
-        "sw-include-seo-urls": true,
+        body: {
+          search: "",
+        },
+        headers: {
+          "sw-include-seo-urls": true,
+        },
+        pathParams: {
+          categoryId: "1234",
+        },
       }),
     );
   });
