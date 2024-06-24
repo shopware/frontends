@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 
-const props = defineProps<{
+defineProps<{
   content: Schemas["CmsBlock"];
 }>();
 </script>

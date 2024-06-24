@@ -316,7 +316,7 @@ defineExpose({
       }"
     >
       <div
-        v-for="(dot, i) of childrenRaw"
+        v-for="(_, i) of childrenRaw"
         :key="`dot-${i}`"
         :class="{
           'w-5 h-5 rounded-full cursor-pointer': true,
@@ -324,7 +324,7 @@ defineExpose({
           'bg-gray-500/50': i !== activeSlideIndex,
         }"
         @click="() => goToSlide(i)"
-      />
+      ></div>
     </div>
   </div>
 </template>
