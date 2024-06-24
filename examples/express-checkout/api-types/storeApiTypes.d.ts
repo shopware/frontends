@@ -7699,6 +7699,10 @@ export type operations = {
   "handlePaymentMethod post /handle-payment": {
     contentType?: "application/json";
     accept?: "application/json";
+    query?: {
+      isPayPalExpressCheckout?: boolean;
+      paypalOrderId?: string;
+    };
     body: {
       /** URL to which the client should be redirected after erroneous payment */
       errorUrl?: string;
@@ -7911,6 +7915,23 @@ export type operations = {
       /** Total amount */
       total?: number;
     };
+    responseCode: 200;
+  };
+  "payPalCreateOrder post /paypal/express/create-order": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      token: string;
+    };
+    responseCode: 200;
+  };
+  "payPalPrepare post /paypal/express/prepare-checkout": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      token: string;
+    };
+    response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
   "fetchPendingOrder post /pending-order/{id}": {
@@ -8507,28 +8528,5 @@ export type operations = {
     };
     response: components["schemas"]["SuccessResponse"];
     responseCode: 204;
-  };
-  "payPalCreateOrder post /store-api/paypal/express/create-order": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    query: {
-      isPayPalExpressCheckout: "1";
-    };
-    response: {
-      token: string;
-    };
-    responseCode: 200;
-  };
-  "payPalPrepare post /store-api/paypal/express/prepare-checkout": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    query: {
-      isPayPalExpressCheckout: "1";
-    };
-    body: {
-      token: string;
-    };
-    response: components["schemas"]["SuccessResponse"];
-    responseCode: 200;
   };
 };

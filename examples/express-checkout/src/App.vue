@@ -8,7 +8,6 @@ import {
   useProductSearch,
   useProductPrice,
   usePrice,
-  useShopwareContext,
   useAddToCart,
   useCart,
 } from "@shopware-pwa/composables-next";
@@ -17,6 +16,7 @@ import {
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import { useRoute } from "vue-router";
+import { apiClient } from "./apiClient";
 
 const route = useRoute();
 
@@ -29,7 +29,6 @@ const { search } = useProductSearch();
 const { getFormattedPrice } = usePrice();
 const { paymentMethods, getPaymentMethods, createOrder } = useCheckout();
 const { setPaymentMethod } = useSessionContext();
-const { apiClient } = useShopwareContext();
 const { addToCart } = useAddToCart(productFound);
 const { refreshCart } = useCart();
 
@@ -73,12 +72,7 @@ const renderPaypalButtons = async () => {
         await addToCart();
 
         const response = await apiClient.invoke(
-          "payPalCreateOrder post /store-api/paypal/express/create-order",
-          {
-            query: {
-              isPayPalExpressCheckout: "1",
-            },
-          },
+          "payPalCreateOrder post /paypal/express/create-order",
         );
         return response.data.token;
       },
@@ -88,11 +82,8 @@ const renderPaypalButtons = async () => {
       onApprove: async (data: OnApproveData) => {
         console.warn("onApprove", data);
         await apiClient.invoke(
-          "payPalPrepare post /store-api/paypal/express/prepare-checkout",
+          "payPalPrepare post /paypal/express/prepare-checkout",
           {
-            query: {
-              isPayPalExpressCheckout: "1",
-            },
             body: { token: data.orderID },
           },
         );
@@ -101,14 +92,21 @@ const renderPaypalButtons = async () => {
         const handlePaymentResponse = await apiClient.invoke(
           "handlePaymentMethod post /handle-payment",
           {
+            query: {
+              isPayPalExpressCheckout: true,
+              paypalOrderId: data.orderID,
+            },
             body: {
               orderId: orderCreated.value.id,
               finishUrl: `${window.location.origin}/ExpressCheckout?order=${orderCreated.value.id}&success=true`,
             },
           },
         );
-        redirectPaymentUrl.value = handlePaymentResponse?.data?.redirectUrl;
-        //
+
+        // call the /payment/finalize-transaction endpoint
+        await fetch(handlePaymentResponse.data.redirectUrl);
+
+        // [navigate to success page]
       },
     })
     .render("#paypal-buttons");
