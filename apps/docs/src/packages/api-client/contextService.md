@@ -1,3 +1,0 @@
-# contextService
-
-<!-- PLACEHOLDER_DESCRIPTION -->

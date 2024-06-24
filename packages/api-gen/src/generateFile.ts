@@ -12,6 +12,7 @@ export type MethodDefinition = {
     contentType: string;
     code: string;
   }[];
+  bodyOptional?: boolean;
   responses: {
     responseCode: number;
     contentType: string;
@@ -109,6 +110,7 @@ export async function prepareFileContent({
               queryOptional?: boolean;
               pathParams?: string;
               body: string | null;
+              bodyOptional?: boolean;
               response: string;
               responseCode: number;
             };
@@ -131,6 +133,7 @@ export async function prepareFileContent({
                   queryOptional: method.queryOptional,
                   pathParams: method.pathParams,
                   body: null,
+                  bodyOptional: method.bodyOptional,
                   response: response.code,
                   responseCode: response.responseCode,
                 });
@@ -149,6 +152,7 @@ export async function prepareFileContent({
                     queryOptional: method.queryOptional,
                     pathParams: method.pathParams,
                     body: body.code,
+                    bodyOptional: method.bodyOptional,
                     response: response.code,
                     responseCode: response.responseCode,
                   });
@@ -197,7 +201,7 @@ export async function prepareFileContent({
 
                   if (singleRequest.body) {
                     writer
-                      .write("body:")
+                      .write(`body${singleRequest.bodyOptional ? "?" : ""}:`)
                       .write(singleRequest.body)
                       // .write(";")
                       .newLine();

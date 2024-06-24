@@ -304,7 +304,7 @@ export type operations = {
         addressId: string;
       };
     };
-    requestBody?: {
+    requestBody: {
       content: {
         "application/json": components["schemas"]["CustomerAddress"];
       };

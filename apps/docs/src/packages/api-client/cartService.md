@@ -1,3 +1,0 @@
-# cartService
-
-<!-- PLACEHOLDER_DESCRIPTION -->

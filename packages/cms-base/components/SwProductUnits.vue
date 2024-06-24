@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import SwSharedPrice from "./SwSharedPrice.vue";
 import { computed } from "vue";
@@ -7,7 +7,7 @@ import { defu } from "defu";
 
 const props = withDefaults(
   defineProps<{
-    product: Product;
+    product: Schemas["Product"];
     showContent?: boolean;
   }>(),
   {

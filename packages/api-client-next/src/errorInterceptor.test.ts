@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { ApiError, ApiClientError, errorInterceptor } from "./errorInterceptor";
-import { FetchResponse } from "ofetch";
+import type { ApiError } from "./ApiError";
+import { ApiClientError } from "./ApiError";
+import type { FetchResponse } from "ofetch";
+import { errorInterceptor } from "./errorInterceptor";
 
 describe("errorInterceptor", () => {
   it("should extract different error messages from response to match snapshot", async () => {

@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "anyOf": [
+        {
+          "format": "url"
+        },
+        {
+          "format": "file-path"
+        }
+      ]
+    },
+    "rules": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "anyOf": [
+          {
+            "const": "COMPONENTS_API_ALIAS",
+            "description": "Enforce proper apiAlias fields on components"
+          }
+        ]
+      }
+    },
+    "patches": {
+      "type": "string",
+      "description": "Path to a file containing patches to apply to the schema",
+      "anyOf": [
+        {
+          "format": "url"
+        },
+        {
+          "format": "file-path"
+        }
+      ]
+    }
+  },
+  "required": ["rules"]
+}

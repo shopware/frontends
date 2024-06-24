@@ -1,4 +1,4 @@
-import type { CmsBlock } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -7,12 +7,12 @@ export type UseCmsBlockReturn = {
   /**
    * Cms block content
    */
-  block: CmsBlock;
+  block: Schemas["CmsBlock"];
   /**
    * Get slot content by slot name (identifier)
    * @example getSlotContent("main")
    */
-  getSlotContent(slotName: string): ArrayElement<CmsBlock["slots"]>;
+  getSlotContent(slotName: string): ArrayElement<Schemas["CmsBlock"]["slots"]>;
 };
 
 /**
@@ -20,7 +20,7 @@ export type UseCmsBlockReturn = {
  * @public
  * @category CMS (Shopping Experiences)
  */
-export function useCmsBlock<BLOCK_TYPE extends CmsBlock>(
+export function useCmsBlock<BLOCK_TYPE extends Schemas["CmsBlock"]>(
   content: BLOCK_TYPE,
 ): UseCmsBlockReturn {
   function getSlotContent(slotName: ArrayElement<BLOCK_TYPE["slots"]>["slot"]) {

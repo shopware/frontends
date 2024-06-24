@@ -7,23 +7,37 @@ export type components = coreComponents & {
 export type Schemas = {};
 
 export type operations = {
-  "payPalCreateOrder post /store-api/paypal/express/create-order": {
+  "handlePaymentMethod post /handle-payment": {
     contentType?: "application/json";
     accept?: "application/json";
-    query: {
-      isPayPalExpressCheckout: "1";
+    query?: {
+      isPayPalExpressCheckout?: boolean;
+      paypalOrderId?: string;
     };
+    body: {
+      /** URL to which the client should be redirected after erroneous payment */
+      errorUrl?: string;
+      /** URL to which the client should be redirected after successful payment */
+      finishUrl?: string;
+      /** Identifier of an order */
+      orderId: string;
+    };
+    response: {
+      redirectUrl: string;
+    };
+    responseCode: 200;
+  };
+  "payPalCreateOrder post /paypal/express/create-order": {
+    contentType?: "application/json";
+    accept?: "application/json";
     response: {
       token: string;
     };
     responseCode: 200;
   };
-  "payPalPrepare post /store-api/paypal/express/prepare-checkout": {
+  "payPalPrepare post /paypal/express/prepare-checkout": {
     contentType?: "application/json";
     accept?: "application/json";
-    query: {
-      isPayPalExpressCheckout: "1";
-    };
     body: {
       token: string;
     };

@@ -23,3 +23,16 @@
 .group .VPSidebarGroup .VPSidebarGroup h2.title-text {
     font-size: 11px;
 }
+
+h1 + p > a {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.vt-doc h3 > code + a.header-anchor {
+    float:none;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    top: -30px;
+}

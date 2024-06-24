@@ -1,5 +1,4 @@
-export { createAPIClient } from "./createApiClient";
-export { createAdminAPIClient } from "./createAdminApiClient";
-
-export { ApiClientError } from "./errorInterceptor";
-export type { ApiError } from "./errorInterceptor";
+export { createAPIClient } from "./createAPIClient";
+export { createAdminAPIClient } from "./createAdminAPIClient";
+export { ApiClientError } from "./ApiError";
+export type { ApiError } from "./ApiError";

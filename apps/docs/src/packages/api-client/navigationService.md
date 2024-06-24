@@ -1,3 +1,0 @@
-# navigationService
-
-<!-- PLACEHOLDER_DESCRIPTION -->

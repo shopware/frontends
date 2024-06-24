@@ -1,3 +1,0 @@
-# searchService
-
-<!-- PLACEHOLDER_DESCRIPTION -->

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SliderElementConfig } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
-import type { CmsSlot } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import {
   computed,
   onBeforeUnmount,
@@ -33,7 +33,7 @@ const props = withDefaults(
 
 const { getConfigValue } = useCmsElementConfig({
   config: props.config,
-} as CmsSlot & {
+} as Schemas["CmsSlot"] & {
   config: SliderElementConfig;
 });
 
@@ -316,7 +316,7 @@ defineExpose({
       }"
     >
       <div
-        v-for="(dot, i) of childrenRaw"
+        v-for="(_, i) of childrenRaw"
         :key="`dot-${i}`"
         :class="{
           'w-5 h-5 rounded-full cursor-pointer': true,
@@ -324,7 +324,7 @@ defineExpose({
           'bg-gray-500/50': i !== activeSlideIndex,
         }"
         @click="() => goToSlide(i)"
-      />
+      ></div>
     </div>
   </div>
 </template>

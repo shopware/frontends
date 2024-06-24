@@ -3,13 +3,13 @@ import {
   useProductPrice,
   useCmsTranslations,
 } from "@shopware-pwa/composables-next";
-import type { Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import SwSharedPrice from "./SwSharedPrice.vue";
-import { computed, toRefs } from "vue";
+import { toRefs } from "vue";
 import { defu } from "defu";
 
 const props = defineProps<{
-  product: Product;
+  product: Schemas["Product"];
 }>();
 
 type Translations = {
