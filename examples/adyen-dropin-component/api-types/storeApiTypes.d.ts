@@ -657,6 +657,8 @@ export type Schemas = {
   Cart: {
     /** An affiliate tracking code */
     affiliateCode?: string | null;
+    /** @enum {string} */
+    apiAlias: "cart";
     /** A campaign tracking code */
     campaignCode?: string | null;
     /** A comment that can be added to the cart. */

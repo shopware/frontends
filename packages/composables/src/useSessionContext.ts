@@ -76,7 +76,7 @@ export type UseSessionContextReturn = {
   /**
    * Patches the context with new context
    */
-  updateContext(context: Schemas["SalesChannelContext"]): void;
+  setContext(context: Schemas["SalesChannelContext"]): void;
   /**
    * current context's country id
    */
@@ -234,7 +234,7 @@ export function useSessionContext(
     refreshSessionContext();
   };
 
-  const updateContext = (context: Schemas["SalesChannelContext"]) => {
+  const setContext = (context: Schemas["SalesChannelContext"]) => {
     _sessionContext.value = context;
   };
 
@@ -276,6 +276,6 @@ export function useSessionContext(
     languageId,
     languageIdChain,
     setCountry,
-    updateContext,
+    setContext,
   };
 }

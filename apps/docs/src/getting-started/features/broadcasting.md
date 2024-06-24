@@ -25,7 +25,7 @@ The `useBroadcastChannel` composable returns an object that contains a data prop
 
 ```ts
 const { data } = useBroadcastChannel({
-  name: broadcastChannelName as string,
+  name: broadcastChannelName,
 });
 ```
 
@@ -33,7 +33,7 @@ const { data } = useBroadcastChannel({
 
 ```ts
 const { isSupported } = useBroadcastChannel({
-  name: broadcastChannelName as string,
+  name: broadcastChannelName,
 });
 const { actions, post } = useBroadcastConsumer();
 

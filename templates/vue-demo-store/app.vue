@@ -14,15 +14,13 @@ useHead({
     lang: "en",
   },
 });
-const { consume } = useBroadcastConsumer();
 
-const {
-  public: { broadcastChannelName },
-} = useRuntimeConfig();
 const { apiClient } = useShopwareContext();
 const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 const contextResponse = await apiClient.invoke("readContext get /context");
 sessionContextData.value = contextResponse.data;
+
+useBroadcastChannelSync();
 
 // If you enable runtimeConfig.shopware.useUserContextInSSR, then you can use this code to share session between server and client.
 // const { data: sessionContextData } = await useAsyncData(
@@ -114,19 +112,6 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
 onMounted(() => {
   refreshCart();
   getWishlistProducts();
-});
-
-const { data } = useBroadcastChannel<
-  {
-    event: string;
-    data?: BroadcastDataType;
-  },
-  unknown
->({
-  name: broadcastChannelName as string,
-});
-watch(data, () => {
-  if (data.value) consume(data.value.event, data.value.data);
 });
 </script>
 

@@ -11,8 +11,6 @@ const params = { to: to };
 
 useAuthGuardRedirection(params);
 
-const { refreshSession } = useBroadcastConsumer();
-
 // Navigation for Account page
 const { loadNavigationElements } = useNavigation();
 const { logout } = useUser();
@@ -35,7 +33,6 @@ const { data: footerData } = await useAsyncData("mainFooterNavigation", () => {
 async function invokeLogout() {
   logout();
   router.push("/");
-  refreshSession();
 }
 
 provide("swNavigation-footer-navigation", footerData);
