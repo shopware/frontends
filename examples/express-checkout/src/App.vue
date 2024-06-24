@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
-import {
-  CreateOrderActions,
-  CreateOrderData,
-  loadScript,
-  OnApproveActions,
-  OnApproveData,
-} from "@paypal/paypal-js";
+import { loadScript, OnApproveData } from "@paypal/paypal-js";
 import { onMounted, ref, computed, watch } from "vue";
 import {
   useCheckout,
@@ -16,7 +10,7 @@ import {
   usePrice,
   useAddToCart,
   useCart,
-} from "@shopware-pwa/composables-next/dist";
+} from "@shopware-pwa/composables-next";
 import {
   getSmallestThumbnailUrl,
   getTranslatedProperty,
@@ -67,10 +61,7 @@ const renderPaypalButtons = async () => {
       onError(err) {
         console.warn("[PayPal > App.vue][onError]", err);
       },
-      createOrder: async (
-        data: CreateOrderData,
-        actions: CreateOrderActions,
-      ) => {
+      createOrder: async () => {
         if (!paypalMethod.value) {
           return "";
         }
@@ -83,17 +74,17 @@ const renderPaypalButtons = async () => {
         const response = await apiClient.invoke(
           "payPalCreateOrder post /paypal/express/create-order",
         );
-        return response?.token;
+        return response.data.token;
       },
 
       // Finalize the transaction after payer approval
       // Will be called if the payment process is approved by paypal
-      onApprove: async (data: OnApproveData, actions: OnApproveActions) => {
+      onApprove: async (data: OnApproveData) => {
         console.warn("onApprove", data);
-        const response = await apiClient.invoke(
+        await apiClient.invoke(
           "payPalPrepare post /paypal/express/prepare-checkout",
           {
-            token: data.orderID,
+            body: { token: data.orderID },
           },
         );
         orderCreated.value = await createOrder();
@@ -101,14 +92,19 @@ const renderPaypalButtons = async () => {
         const handlePaymentResponse = await apiClient.invoke(
           "handlePaymentMethod post /handle-payment",
           {
-            orderId: orderCreated.value.id,
-            isPayPalExpressCheckout: true,
-            paypalOrderId: data.orderID,
+            query: {
+              isPayPalExpressCheckout: true,
+              paypalOrderId: data.orderID,
+            },
+            body: {
+              orderId: orderCreated.value.id,
+              finishUrl: `${window.location.origin}/ExpressCheckout?order=${orderCreated.value.id}&success=true`,
+            },
           },
         );
 
         // call the /payment/finalize-transaction endpoint
-        await fetch(handlePaymentResponse?.redirectUrl);
+        await fetch(handlePaymentResponse.data.redirectUrl);
 
         // [navigate to success page]
       },
@@ -137,15 +133,17 @@ onMounted(async () => {
     return;
   }
   const orderResponse = await apiClient.invoke("readOrder post /order", {
-    filter: [{ type: "equals", field: "id", value: orderId }],
-    associations: {
-      transactions: { associations: { paymentMethod: {} } },
-      addresses: {},
+    body: {
+      filter: [{ type: "equals", field: "id", value: orderId }],
+      associations: {
+        transactions: { associations: { paymentMethod: {} } },
+        addresses: {},
+      },
     },
   });
 
-  if (orderResponse.orders.elements.length) {
-    orderCreated.value = orderResponse.orders.elements[0];
+  if (orderResponse.data.orders.elements.length) {
+    orderCreated.value = orderResponse.data.orders.elements[0];
   }
   isLoading.value = false;
 });
@@ -175,7 +173,7 @@ onMounted(async () => {
         <a href="#">
           <img
             class="p-8 rounded-t-lg"
-            :src="getSmallestThumbnailUrl(productFound.cover.media)"
+            :src="getSmallestThumbnailUrl(productFound?.cover?.media)"
             alt="product image"
           />
         </a>

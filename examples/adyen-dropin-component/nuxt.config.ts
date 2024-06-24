@@ -24,7 +24,7 @@ export default defineNuxtConfig({
   css: [
     "@unocss/reset/tailwind-compat.css", // needed to reset styles see https://unocss.dev/guide/style-reset (@unocss/reset)
   ],
-  modules: ["@unocss/nuxt", "@shopware-pwa/nuxt3-module"],
+  modules: ["@vueuse/nuxt", "@unocss/nuxt", "@shopware-pwa/nuxt3-module"],
   devtools: { enabled: true },
   telemetry: false,
 });

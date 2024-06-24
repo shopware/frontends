@@ -1,5 +1,5 @@
 import { createAPIClient } from "@shopware/api-client";
-import type { operationPaths, operations } from "#shopware";
+import type { operations } from "#shopware";
 
 const runtimeConfig = useRuntimeConfig();
 
@@ -10,7 +10,7 @@ const shopwareAccessToken =
   runtimeConfig.public?.shopware?.accessToken ??
   runtimeConfig.public?.shopware?.shopwareAccessToken;
 
-const apiClient = createAPIClient<operations, operationPaths>({
+const apiClient = createAPIClient<operations>({
   accessToken: shopwareAccessToken,
   baseURL: shopwareEndpoint,
 });

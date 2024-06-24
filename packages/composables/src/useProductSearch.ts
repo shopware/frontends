@@ -40,11 +40,14 @@ export function useProductSearch(): UseProductSearchReturn {
     const result = await apiClient.invoke(
       "readProductDetail post /product/{productId}",
       {
-        productId,
-        ...associations,
+        headers: {
+          "sw-include-seo-urls": true,
+        },
+        pathParams: { productId },
+        body: associations,
       },
     );
-    return result;
+    return result.data;
   };
 
   return {

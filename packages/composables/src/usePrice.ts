@@ -54,9 +54,6 @@ function _usePrice(params?: {
     );
   }
 
-  // TODO: make sure why there is no decimal precision in api response
-  const decimalPrecision = 2;
-
   function _setCurrencyCode(code: string) {
     currencyCode.value = code;
   }
@@ -86,7 +83,7 @@ function _usePrice(params?: {
   watch(
     () => sessionContext.value?.currency,
     (newCurrency) => {
-      if (!!newCurrency)
+      if (newCurrency)
         update({
           // locale code is read only once on SSR because it's unavailable in the context
           currencyCode: newCurrency?.isoCode,

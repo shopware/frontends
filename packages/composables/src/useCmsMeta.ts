@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
-import type { CmsPageEntity } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 export type UseCmsMetaReturn = {
   /**
@@ -17,7 +17,9 @@ export type UseCmsMetaReturn = {
 /**
  * TODO: remove parameter and use reactive state of cmsResponse provided by useCms composable
  */
-export function useCmsMeta(entity: CmsPageEntity): UseCmsMetaReturn {
+export function useCmsMeta(
+  entity: Schemas["Category"] | Schemas["Product"] | Schemas["LandingPage"],
+): UseCmsMetaReturn {
   const meta = computed(() => {
     const entries = [];
     const keywords = getTranslatedProperty(entity, "keywords");

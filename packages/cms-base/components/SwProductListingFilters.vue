@@ -10,8 +10,8 @@ import type {
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { useCategoryListing } from "#imports";
 import { onClickOutside } from "@vueuse/core";
-import { useRoute, useRouter } from "vue-router";
-import type { RequestParameters } from "#shopware";
+import { type LocationQueryRaw, useRoute, useRouter } from "vue-router";
+import type { Schemas, operations } from "#shopware";
 
 const props = defineProps<{
   content: CmsElementProductListing | CmsElementSidebarFilter;
@@ -82,17 +82,19 @@ const showResetFiltersButton = computed<boolean>(() => {
   return false;
 });
 
-const searchCriteriaForRequest: ComputedRef<RequestParameters<"searchPage">> =
+const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
   computed(() => ({
     // turn Set to array and then into string with | separator
-    manufacturer: [...sidebarSelectedFilters.manufacturer]?.join("|"),
+    manufacturer: [...(sidebarSelectedFilters.manufacturer as string[])]?.join(
+      "|",
+    ),
     // turn Set to array and then into string with | separator
-    properties: [...sidebarSelectedFilters.properties]?.join("|"),
-    "min-price": sidebarSelectedFilters["min-price"],
-    "max-price": sidebarSelectedFilters["max-price"],
-    order: getCurrentSortingOrder.value,
-    "shipping-free": sidebarSelectedFilters["shipping-free"],
-    rating: sidebarSelectedFilters["rating"],
+    properties: [...(sidebarSelectedFilters.properties as string[])]?.join("|"),
+    "min-price": sidebarSelectedFilters["min-price"] as number,
+    "max-price": sidebarSelectedFilters["max-price"] as number,
+    order: getCurrentSortingOrder.value as string,
+    "shipping-free": sidebarSelectedFilters["shipping-free"] as boolean,
+    rating: sidebarSelectedFilters["rating"] as number,
     search: "",
     limit: route.query.limit ? Number(route.query.limit) : 15,
   }));
@@ -139,7 +141,7 @@ const executeSearch = async () => {
   const query = filtersToQuery(searchCriteriaForRequest.value);
   delete query.limit; // this will remove limit from the url query but still use it in the search
   await router.push({
-    query,
+    query: query as LocationQueryRaw,
   });
 };
 
@@ -163,7 +165,7 @@ const currentSortingOrder = computed({
     });
 
     await changeCurrentSortingOrder(order, {
-      ...(route.query as unknown as RequestParameters<"searchPage">),
+      ...(route.query as unknown as operations["searchPage post /search"]["body"]),
       limit: route.query.limit ? Number(route.query.limit) : 15,
     });
   },

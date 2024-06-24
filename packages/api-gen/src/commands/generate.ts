@@ -1,52 +1,46 @@
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { resolve, join, dirname } from "node:path";
 import openapiTS from "openapi-typescript";
 import type { OpenAPI3 } from "openapi-typescript";
 import * as dotenv from "dotenv";
 import c from "picocolors";
 import { format } from "prettier";
-import { patches } from "../patches";
-import semver from "semver";
+import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
+import { ofetch } from "ofetch";
+import { TransformedElements } from "../generateFile";
+import { transformSchemaTypes } from "../transformSchemaTypes";
+import { transformOpenApiTypes } from "../transformOpenApiTypes";
+import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
+import json5 from "json5";
+import {
+  displayPatchingSummary,
+  loadApiGenConfig,
+  loadJsonOverrides,
+} from "../jsonOverrideUtils";
 
 const config = dotenv.config().parsed || {};
 
-function replaceNameInRange(
-  str: string,
-  oldName: RegExp,
-  newName: string,
-  startIndex: number,
-) {
-  // Ensure valid indices
-  if (startIndex < 0 || startIndex > str.length) {
-    throw new Error("Invalid index range");
-  }
+export async function generate(args: {
+  cwd: string;
+  filename?: string;
+  apiType: "store" | "admin";
+  debug: boolean;
+}) {
+  const inputFilename = args.filename
+    ? args.filename
+    : `${args.apiType}ApiSchema.json`;
 
-  // Get the parts before and after the replacement range
-  const part1 = str.slice(0, startIndex);
-  const partToReplace = str.slice(startIndex);
-
-  // Replace the specific name within the range (case-insensitive)
-  const replacedPart = partToReplace.replace(
-    new RegExp(oldName, "gi"),
-    newName,
-  );
-
-  // Concatenate the parts to form the new string
-  return part1 + replacedPart;
-}
-
-export async function generate(args: { cwd: string; filename: string }) {
   try {
     const start = performance.now();
-    const outputFilename = args.filename.replace(".json", ".d.ts");
+    const outputFilename = inputFilename.replace(".json", ".d.ts");
 
-    const fullInputFilePath = join(args.cwd, args.filename);
-    const fullOutputFilePath = join(args.cwd, outputFilename);
+    const fullInputFilePath = join(args.cwd, "api-types", inputFilename);
+    const fullOutputFilePath = join(args.cwd, "api-types", outputFilename);
 
     //check if file exist
     const fileExist = existsSync(fullInputFilePath);
 
-    if (!fileExist) {
+    if (!fileExist && !args.apiType) {
       console.log(
         c.yellow(
           `Schema file ${c.bold(
@@ -59,51 +53,42 @@ export async function generate(args: { cwd: string; filename: string }) {
       process.exit(1);
     }
 
-    // Apply patches
-    const schemaFile = readFileSync(fullInputFilePath, {
-      encoding: "utf-8",
-    });
-    let schemaForPatching = JSON.parse(schemaFile) as OpenAPI3;
-    const version = schemaForPatching?.info?.version;
+    let schema: string = "";
+    let processedSchemaAst: TransformedElements;
 
-    const allPatches: Array<keyof typeof patches> = []; // Object.keys(patches) as Array<keyof typeof patches>;
-    const semverVersion = version.slice(2);
-    const patchesToApply = allPatches.filter((patch) => {
-      return semver.satisfies(semverVersion, patch);
-    });
-    for (const patchName of patchesToApply) {
-      schemaForPatching = patches[patchName].patch(schemaForPatching);
-    }
-
-    if (patchesToApply.length) {
-      patchesToApply.length &&
-        console.log("Applied", patchesToApply.length, "patches");
-
-      const formatted = await format(JSON.stringify(schemaForPatching), {
-        semi: false,
-        parser: "json",
-      });
-      const content = formatted.trim();
-      writeFileSync(fullInputFilePath, content, {
+    if (fileExist) {
+      // Apply patches
+      const schemaFile = readFileSync(fullInputFilePath, {
         encoding: "utf-8",
       });
-    }
+      const schemaForPatching = json5.parse(schemaFile) as OpenAPI3;
+      const version = schemaForPatching?.info?.version;
 
-    const readedContentFromFile = !patchesToApply.length
-      ? schemaFile
-      : readFileSync(fullInputFilePath, {
-          encoding: "utf-8",
-        });
+      const configJSON = await loadApiGenConfig({
+        silent: true, // we allow to not have the config file in this command
+      });
+      const jsonOverrides = await loadJsonOverrides(configJSON?.patches);
 
-    const originalSchema = JSON.parse(readedContentFromFile);
-    const { paths } = originalSchema;
-    console.log("schema", originalSchema.info);
+      const {
+        patchedSchema,
+        todosToFix,
+        outdatedPatches,
+        alreadyApliedPatches,
+      } = patchJsonSchema({
+        openApiSchema: schemaForPatching,
+        jsonOverrides,
+      });
 
-    const address = resolve(fullInputFilePath);
-    let schema = await openapiTS(
-      // new URL(SCHEMA_FILENAME, import.meta.url),
-      address,
-      {
+      const originalSchema = json5.parse(schemaFile);
+      console.log("schema", originalSchema.info);
+
+      displayPatchingSummary({
+        todosToFix,
+        outdatedPatches,
+        alreadyApliedPatches,
+      });
+
+      schema = await openapiTS(patchedSchema, {
         version: +(config.OPENAPI_VERSION || 3),
         exportType: true,
         // pathParamsAsTypes: true,
@@ -152,18 +137,26 @@ export async function generate(args: { cwd: string; filename: string }) {
               },
             );
 
-            schemaObject.properties.translated = {
-              type: "object",
-              properties: stringFields.reduce(
-                (acc, key) => {
-                  acc[key] = {
-                    type: "string",
-                  };
-                  return acc;
-                },
-                {} as Record<string, { type: "string" }>,
-              ),
-            };
+            const stringProperties = stringFields.reduce(
+              (acc, key) => {
+                acc[key] = {
+                  type: "string",
+                };
+                return acc;
+              },
+              {} as Record<string, { type: "string" }>,
+            );
+
+            schemaObject.properties.translated = extendedDefu(
+              {
+                additionalProperties: "_DELETE_",
+              },
+              schemaObject.properties.translated,
+              {
+                type: "object",
+                properties: stringProperties,
+              },
+            );
           }
           /**
            * Blob type is used for binary data
@@ -175,131 +168,125 @@ export async function generate(args: { cwd: string; filename: string }) {
           /**
            * We're changing "object" declarations into "GenericRecord" to allow recursive types like `associations`
            */
-          if (
-            // for object types
-            (schemaObject as { type: string }).type === "object" &&
-            // without properties, items, anyOf, allOf
-            !(schemaObject as { properties?: object }).properties &&
-            !(schemaObject as { items?: [] }).items &&
-            !(schemaObject as { anyOf?: [] }).anyOf &&
-            !(schemaObject as { allOf?: [] }).allOf
-          ) {
-            return "GenericRecord";
-          }
+          // if (
+          //   // for object types
+          //   (schemaObject as { type: string }).type === "object" &&
+          //   // without properties, items, anyOf, allOf
+          //   !(schemaObject as { properties?: object }).properties &&
+          //   !(schemaObject as { items?: [] }).items &&
+          //   !(schemaObject as { anyOf?: [] }).anyOf &&
+          //   !(schemaObject as { allOf?: [] }).allOf &&
+          //   !(schemaObject as { additionalProperties?: object })
+          // ) {
+          //   return "GenericRecord";
+          // }
           // transform(schemaObject, metadata) {
           // if ("format" in schemaObject && schemaObject.format === "date-time") {
           //   return "Date";
           // }
         },
-      },
-    );
+      });
 
-    type MethodObject = {
-      operationId: string;
-      parameters: [
-        {
-          in: "query" | "header" | "path";
-          name: string;
-        },
-      ];
-    };
+      schema += `\n
+    /**
+     * @deprecated this field is not needed anymore
+     */
+    export type operationPaths = string;`;
 
-    type OperationsMap = Record<
-      string,
-      {
-        path: string;
-        method: string;
-        queryParamNames: string[];
-        finalPath: string;
+      // clean up
+      // remove `@description ` tags
+      schema = schema.replace(/@description /g, "");
+
+      // fix 'any' type problem
+      schema = schema.replace(
+        "type OneOf<T extends any[]",
+        "type OneOf<T extends unknown[]",
+      );
+
+      if (args.debug) {
+        writeFileSync(fullOutputFilePath, schema, {
+          encoding: "utf-8",
+        });
+
+        schema = await format(schema, {
+          // semi: false,
+          parser: "typescript",
+          // plugins: [tsParser],
+        });
+        schema = schema.trim();
       }
-    >;
 
-    // create map of paths
-    const operationsMap: OperationsMap = Object.keys(paths).reduce(
-      (acc, path) => {
-        const pathObject = paths[path];
-        const methods = Object.keys(pathObject);
-        for (const method of methods) {
-          const methodObject = pathObject[method] as MethodObject;
-          const { operationId } = methodObject;
-          const queryParamNames =
-            methodObject.parameters
-              ?.filter((param) => param.in === "query")
-              .map((param) => param.name) || [];
+      processedSchemaAst = transformOpenApiTypes(schema);
+    } else {
+      console.log(
+        c.yellow(
+          `File ${c.bold(fullInputFilePath)} does not exist. Using default schema '${args.apiType}' as a base. to change that use param --apiType=admin or --apiType=store to pick the base schema.`,
+        ),
+      );
 
-          const headerParamNames =
-            methodObject.parameters
-              ?.filter((param) => param.in === "header")
-              .map((param) => param.name) || [];
+      // resolve default schema from node_modules api-client
+      const link = resolve(
+        `node_modules/@shopware/api-client/api-types/${args.apiType}ApiTypes.d.ts`,
+      );
+      if (existsSync(link)) {
+        schema = readFileSync(link, {
+          encoding: "utf-8",
+        });
+      } else {
+        // falback from the github
+        // TODO: change to main branch
+        schema = await ofetch(
+          `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client-next/api-types/${args.apiType}ApiTypes.d.ts`,
+        );
+      }
 
-          let finalPath = `${operationId} ${method.toLocaleLowerCase()} ${path}`;
-          if (queryParamNames.length) {
-            finalPath += `?${queryParamNames.join(",")}`;
-          }
-          if (headerParamNames.length) {
-            finalPath += ` ${headerParamNames.join(",")}`;
-          }
-
-          acc[operationId] = {
-            path,
-            method,
-            queryParamNames,
-            finalPath,
-          };
-        }
-        return acc;
-      },
-      {} as OperationsMap,
-    );
-
-    const operationsSortedByPath = Object.values(operationsMap).sort((a, b) => {
-      if (a.path < b.path) return -1;
-      if (a.path > b.path) return 1;
-      return 0;
-    });
-
-    schema += `\n export type operationPaths = ${operationsSortedByPath
-      .map((el) => `"${(el as { finalPath: string }).finalPath}"`)
-      .join(" | ")};`;
-
-    // clean up
-    // remove `@description ` tags
-    schema = schema.replace(/@description /g, "");
-
-    // add generic components definition
-    schema = schema.replace(
-      /export type operations =/g,
-      "export type operations<COMPONENTS extends Record<string, Record<string, unknown>> = components> =",
-    );
-
-    const operationsIndex = schema.indexOf("export type operations<");
-
-    schema = replaceNameInRange(
-      schema,
-      /components\[/,
-      "COMPONENTS[",
-      operationsIndex,
-    );
-
-    schema = await format(schema, {
-      // semi: false,
-      parser: "typescript",
-      // plugins: [tsParser],
-    });
-    schema = schema.trim();
+      processedSchemaAst = transformSchemaTypes(schema);
+    }
 
     if (typeof schema === "string") {
-      writeFileSync(fullOutputFilePath, schema, {
-        encoding: "utf-8",
-      });
+      if (args.debug) {
+        mkdirSync(dirname(fullOutputFilePath), { recursive: true });
+        writeFileSync(fullOutputFilePath, schema, {
+          encoding: "utf-8",
+        });
+      }
+
+      // TODO: change overrides file name to param
+      // read file "storeApiTypes.overrides.ts" if exists
+      const overridesFilepath = join(
+        args.cwd,
+        "api-types",
+        `${args.apiType}ApiTypes.overrides.ts`,
+      );
+      const fileExists = existsSync(overridesFilepath);
+      let overridesSchema = "";
+      console.error(
+        "Overrides exist:",
+        fileExists,
+        "in file",
+        overridesFilepath,
+      );
+
+      if (fileExists) {
+        overridesSchema = readFileSync(overridesFilepath, {
+          encoding: "utf-8",
+        });
+      }
+
+      await processAstSchemaAndOverrides(
+        processedSchemaAst,
+        overridesSchema,
+        args.apiType,
+      );
     } else {
       throw new Error("Schema is not a string");
     }
+
     const stop = performance.now();
     const time = Math.round(stop - start);
     console.log(
       c.green(
-        `Types generated in ${c.bold(fullOutputFilePath)} (took ${time}ms)`,
+        `Types generated in ${c.bold(join("api-types", `${args.apiType}ApiTypes.d.ts`))} (took ${time}ms)`,
       ),
     );
   } catch (error) {

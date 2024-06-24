@@ -44,7 +44,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     await apiClient.invoke(
       "addProductOnWishlist post /customer/wishlist/add/{productId}",
       {
-        productId: id,
+        pathParams: { productId: id },
       },
     );
   }
@@ -53,7 +53,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     await apiClient.invoke(
       "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}",
       {
-        productId: id,
+        pathParams: { productId: id },
       },
     );
   }
@@ -66,10 +66,9 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     try {
       const response = await apiClient.invoke(
         "readCustomerWishlist post /customer/wishlist",
-        {},
       );
       _wishlistItems.value = [
-        ...response.products.elements.map((element) => element.id),
+        ...response.data.products.elements.map((element) => element.id),
       ];
     } catch (e) {
       if (e instanceof ApiClientError) {
@@ -84,7 +83,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     await apiClient.invoke(
       "mergeProductOnWishlist post /customer/wishlist/merge",
       {
-        productIds,
+        body: { productIds },
       },
     );
   }

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { CmsBlock } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { computed } from "vue";
 
 const props = defineProps<{
-  content: CmsBlock;
+  content: Schemas["CmsBlock"];
 }>();
 
 const elementType = computed(() =>

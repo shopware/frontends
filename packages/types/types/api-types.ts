@@ -1,25 +1,19 @@
-import { createAPIClient } from "@shopware/api-client";
-import type {
-  RequestParameters as DefaultRequestParameters,
-  RequestReturnType as DefaultRequestReturnType,
-} from "@shopware/api-client";
-import type {
-  operationPaths as defaultOperationPaths,
-  operations as defaultOperations,
-  components as defaultComponents,
-} from "@shopware/api-client/api-types";
+declare module "#shopware" {
+  import type { createAPIClient } from "@shopware/api-client";
 
-export type operations = defaultOperations<defaultComponents>;
-export type operationPaths = defaultOperationPaths;
+  // for default types
+  export type operations =
+    import("@shopware/api-client/store-api-types").operations;
+  // or for locally generated types
+  // export type operations = import("./api-types/storeApiTypes").operations;
 
-export type Schemas = defaultComponents["schemas"];
+  // for default types
+  export type Schemas =
+    import("@shopware/api-client/store-api-types").components["schemas"];
+  // or for locally generated types
+  // export type Schemas =
+  //   import("./api-types/storeApiTypes").components["schemas"];
 
-export type ApiClient = ReturnType<
-  typeof createAPIClient<operations, operationPaths>
->;
-
-export type RequestParameters<T extends keyof operations> =
-  DefaultRequestParameters<T, operations>;
-
-export type RequestReturnType<T extends keyof operations> =
-  DefaultRequestReturnType<T, operations>;
+  // we're exporting our own Api Client definition as it depends on our own instance
+  export type ApiClient = ReturnType<typeof createAPIClient<operations>>;
+}

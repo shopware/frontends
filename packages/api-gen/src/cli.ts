@@ -5,6 +5,7 @@ import { hideBin } from "yargs/helpers";
 import { generate } from "./commands/generate";
 import packageJson from "../package.json";
 import { loadSchema } from "./commands/loadSchema";
+import { validateJson } from "./commands/validateJson";
 
 export interface CommonOptions {
   cwd: string;
@@ -30,8 +31,18 @@ yargs(hideBin(process.argv))
       return commonOptions(args)
         .positional("filename", {
           type: "string",
-          default: "apiSchema.json",
-          describe: "name of the file to generate type from",
+          describe:
+            "name of the file to generate type from. The default (based on apiType parameter) is 'storeApiSchema.json' or 'adminApiSchema.json'",
+        })
+        .option("apiType", {
+          choices: ["store", "admin"] as const,
+          demandOption: true,
+          describe: "type of the generated API. Values: store, admin",
+        })
+        .positional("debug", {
+          type: "boolean",
+          default: false,
+          describe: "show debug information and generate intermediate files",
         })
         .help();
     },
@@ -50,12 +61,32 @@ yargs(hideBin(process.argv))
         })
         .positional("filename", {
           type: "string",
-          default: "apiSchema.json",
-          describe: "name of the file to save schema",
+          describe:
+            "name of the file to save schema. The default (based on apiType parameter) is 'storeApiSchema.json' or 'adminApiSchema.json'",
         })
         .help();
     },
     async (args) => loadSchema(args),
+  )
+  .command(
+    "validateJson",
+    "Validate JSON schema with the ruleset",
+    (args) => {
+      return commonOptions(args)
+        .option("apiType", {
+          describe:
+            "Type of the API schema to load. It can be 'store' or 'admin'",
+          default: "store",
+          choices: ["store", "admin"],
+        })
+        .positional("filename", {
+          type: "string",
+          describe:
+            "name of the schema json file. The default (based on apiType parameter) is 'storeApiSchema.json' or 'adminApiSchema.json'",
+        })
+        .help();
+    },
+    async (args) => validateJson(args),
   )
   .showHelpOnFail(false)
   .alias("h", "help")

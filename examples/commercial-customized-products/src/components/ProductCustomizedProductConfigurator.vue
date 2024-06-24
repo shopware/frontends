@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useProductCustomizedProductConfigurator } from "@/composables/useProductCustomizedProductConfigurator";
-import { useSessionContext } from "@shopware-pwa/composables-next/dist";
+import { useSessionContext } from "@shopware-pwa/composables-next";
 const { customizedProduct, state, handleFileUpload } =
   useProductCustomizedProductConfigurator();
 const { currency } = useSessionContext();
 
 const customizedProductOptions = computed(() => {
-  const options = customizedProduct.value?.options.map((option) => ({
+  const options = customizedProduct.value?.options?.map((option) => ({
     ...option,
     // prepend options by "No selection"
     values: [
@@ -17,7 +17,7 @@ const customizedProductOptions = computed(() => {
         value: null,
         price: [{ gross: "0" }],
       },
-      ...option.values,
+      ...(option.values || []),
     ],
   }));
 
@@ -39,7 +39,9 @@ const removeUploadedImage = (optionId: string) => {
     <hr />
     <div class="flex flex-col">
       <div v-for="option in customizedProductOptions" :key="option.id">
-        <span class="dark:text-white">{{ option.translated.displayName }}</span>
+        <span class="dark:text-white">{{
+          option.translated?.displayName
+        }}</span>
         <div
           v-if="['select', 'colorselect', 'imageselect'].includes(option.type)"
           :id="option.id"
@@ -58,11 +60,11 @@ const removeUploadedImage = (optionId: string) => {
               :key="value.id"
               :value="value.id"
               class="p-2"
-              :style="{ 'background-color': value.value?._value }"
+              :style="{ 'background-color': value.value?.toString() }"
             >
               {{ value.displayName }}
-              <span v-if="+(value.price?.[0] as any)?.gross > 0"
-                >+{{ (value?.price?.[0] as any)?.gross }}
+              <span v-if="+(value.price as any)?.gross > 0"
+                >+{{ (value?.price as any)?.gross }}
                 {{ currency?.symbol }}</span
               >
             </option>

@@ -1,4 +1,4 @@
-import type { CmsSlot } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import type { ElementConfig } from "../types";
 
 /**
@@ -7,7 +7,7 @@ import type { ElementConfig } from "../types";
  * @category CMS (Shopping Experiences)
  */
 export function useCmsElementConfig<
-  T extends CmsSlot & {
+  T extends Schemas["CmsSlot"] & {
     config: T["config"] extends {
       [key in infer X extends keyof T["config"]]: ElementConfig<unknown>;
     }

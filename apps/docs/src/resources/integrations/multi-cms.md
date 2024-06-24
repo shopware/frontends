@@ -34,7 +34,7 @@ import {
   useNavigationContext,
   useNavigationSearch,
 } from "@shopware-pwa/composables-next";
-import type { SeoUrl } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 const { clearBreadcrumbs } = useBreadcrumbs();
 
 const NOT_FOUND_COMPONENT = "errors/RoutingNotFound";
@@ -70,7 +70,7 @@ const { data: seoResult } = await useAsyncData(
 );
 
 const { routeName, foreignKey } = useNavigationContext(
-  seoResult as Ref<SeoUrl>,
+  seoResult as Ref<Schemas['SeoUrl']>,
 );
 
 /**

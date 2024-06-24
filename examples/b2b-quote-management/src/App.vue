@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
-import {
-  useSessionContext,
-  useShopwareContext,
-  useUser,
-} from "@shopware-pwa/composables-next";
+import { useSessionContext } from "@shopware-pwa/composables-next";
 
 const { refreshSessionContext } = useSessionContext();
-const chosenQuote = ref(null);
 refreshSessionContext();
 </script>
 <template>

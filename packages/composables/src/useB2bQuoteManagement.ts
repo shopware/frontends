@@ -43,8 +43,8 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * @returns {Promise<Schemas["Quote"][]>}
    */
   const getQuoteList = async () => {
-    const response = await apiClient.invoke("readQuotes post /quotes", {});
-    return response?.elements ?? [];
+    const response = await apiClient.invoke("readQuotes post /quotes");
+    return response.data.elements ?? [];
   };
 
   /**
@@ -57,15 +57,19 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
     const response = await apiClient.invoke(
       "readQuote post /quote/detail/{id}",
       {
-        id: quoteId,
-        associations: {
-          lineItems: {},
-          comments: {},
-          stateMachineState: {},
+        pathParams: {
+          id: quoteId,
+        },
+        body: {
+          associations: {
+            lineItems: {},
+            comments: {},
+            stateMachineState: {},
+          },
         },
       },
     );
-    return response;
+    return response.data;
   };
 
   /**
@@ -75,12 +79,16 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * @param {string} comment
    * @returns {Promise<void>}
    */
-  const declineQuote = (quoteId: string, comment: string) => {
-    return apiClient.invoke("declineQuote post /quote/{id}/decline", {
-      id: quoteId,
-      comment,
+  async function declineQuote(quoteId: string, comment: string) {
+    await apiClient.invoke("declineQuote post /quote/{id}/decline", {
+      pathParams: {
+        id: quoteId,
+      },
+      body: {
+        comment,
+      },
     });
-  };
+  }
 
   /**
    * Request change of the quote
@@ -89,15 +97,17 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * @param {string} comment
    * @returns {Promise<void>}
    */
-  const requestChangeQuote = (quoteId: string, comment: string) => {
-    return apiClient.invoke(
+  async function requestChangeQuote(quoteId: string, comment: string) {
+    await apiClient.invoke(
       "requestChangeQuote post /quote/{id}/request-change",
       {
-        id: quoteId,
-        comment,
+        pathParams: {
+          id: quoteId,
+        },
+        body: { comment },
       },
     );
-  };
+  }
 
   /**
    * Quote is built from the cart.
@@ -109,9 +119,9 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
   const requestQuote = async (comment: string) => {
     const response = await apiClient.invoke(
       "requestQuote post /quote/request",
-      { comment },
+      { body: { comment } },
     );
-    return response;
+    return response.data;
   };
 
   /**
@@ -121,7 +131,7 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    *
    * @returns {Promise<void>}
    */
-  const changePaymentShippingMethod = (params: {
+  const changePaymentShippingMethod = async (params: {
     quoteId: string;
     paymentMethodId?: string;
     shippingMethodId?: string;
@@ -131,17 +141,16 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
       shippingMethodId?: string;
     } = {};
 
-    if (params.paymentMethodId)
-      body["paymentMethodId"] = params.paymentMethodId;
+    if (params.paymentMethodId) body.paymentMethodId = params.paymentMethodId;
 
     if (params.shippingMethodId)
-      body["shippingMethodId"] = params.shippingMethodId;
+      body.shippingMethodId = params.shippingMethodId;
 
-    return apiClient.invoke(
+    await apiClient.invoke(
       "switchPaymentOrShippingMethod post /quote/{id}/configure",
       {
-        id: params.quoteId,
-        ...body,
+        pathParams: { id: params.quoteId },
+        body,
       },
     );
   };
@@ -153,9 +162,12 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * @param shippingMethodId
    * @returns {Promise<void>}
    */
-  const changeShippingMethod = (quoteId: string, shippingMethodId: string) => {
-    return changePaymentShippingMethod({ quoteId, shippingMethodId });
-  };
+  async function changeShippingMethod(
+    quoteId: string,
+    shippingMethodId: string,
+  ) {
+    await changePaymentShippingMethod({ quoteId, shippingMethodId });
+  }
 
   /**
    * Proxy method that changes payment method
@@ -164,9 +176,9 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    * @param paymentMethodId
    * @returns {Promise<void>}
    */
-  const changePaymentMethod = (quoteId: string, paymentMethodId: string) => {
-    return changePaymentShippingMethod({ quoteId, paymentMethodId });
-  };
+  async function changePaymentMethod(quoteId: string, paymentMethodId: string) {
+    await changePaymentShippingMethod({ quoteId, paymentMethodId });
+  }
 
   /**
    * Create order from quote
@@ -180,12 +192,12 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
     const response = await apiClient.invoke(
       "createOrderFromQuote post /quote/order/{id}",
       {
-        id: quoteId,
-        customerComment: comment,
+        pathParams: { id: quoteId },
+        body: { customerComment: comment },
       },
     );
 
-    return response;
+    return response.data;
   };
 
   return {

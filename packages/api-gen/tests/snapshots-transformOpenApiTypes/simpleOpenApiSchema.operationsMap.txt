@@ -1,0 +1,62 @@
+{
+  "createCustomerAddress post /account/address": {
+    "body": [
+      {
+        "code": " components["schemas"]["CustomerAddress"];",
+        "contentType": "application/json",
+      },
+    ],
+    "bodyOptional": true,
+    "headers": undefined,
+    "operationId": "createCustomerAddress",
+    "pathParams": undefined,
+    "query": undefined,
+    "responses": [
+      {
+        "code": " components["schemas"]["CustomerAddress"];",
+        "contentType": "application/json",
+        "responseCode": 200,
+      },
+    ],
+  },
+  "deleteCustomerAddress delete /account/address/{addressId}": {
+    "body": [],
+    "headers": undefined,
+    "operationId": "deleteCustomerAddress",
+    "pathParams": " {
+        /** ID of the address to be deleted. */
+        addressId: string;
+      };",
+    "query": undefined,
+    "responses": [
+      {
+        "code": "never",
+        "contentType": "application/json",
+        "responseCode": 204,
+      },
+    ],
+  },
+  "updateCustomerAddress patch /account/address/{addressId}": {
+    "body": [
+      {
+        "code": " components["schemas"]["CustomerAddress"];",
+        "contentType": "application/json",
+      },
+    ],
+    "bodyOptional": false,
+    "headers": undefined,
+    "operationId": "updateCustomerAddress",
+    "pathParams": " {
+        /** Address ID */
+        addressId: string;
+      };",
+    "query": undefined,
+    "responses": [
+      {
+        "code": " components["schemas"]["CustomerAddress"];",
+        "contentType": "application/json",
+        "responseCode": 200,
+      },
+    ],
+  },
+}

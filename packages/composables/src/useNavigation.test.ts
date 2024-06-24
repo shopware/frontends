@@ -6,7 +6,7 @@ import { useSetup } from "./_test";
 describe("useNavigation", () => {
   it("should set the menu", async () => {
     const { vm, injections } = useSetup(useNavigation);
-    injections.apiClient.invoke.mockResolvedValue(Menu);
+    injections.apiClient.invoke.mockResolvedValue({ data: Menu });
 
     await vm.loadNavigationElements({
       depth: 3,
@@ -16,7 +16,7 @@ describe("useNavigation", () => {
       expect.anything(),
     );
     expect(vm.navigationElements).not.toBeNull();
-    expect(vm.navigationElements!.length).toBe(Menu.length);
+    expect(vm.navigationElements?.length).toBe(Menu.length);
   });
 
   it("menu is empty because of the error", async () => {

@@ -11,7 +11,7 @@ import {
 } from "h3";
 import type { App } from "h3";
 import { createAdminAPIClient } from ".";
-import type { operationPaths, operations } from "../admin-api-types";
+import type { operations } from "../api-types/adminApiTypes";
 
 describe("createAdminAPIClient", () => {
   const listeners: Listener[] = [];
@@ -38,11 +38,11 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should invoke /oauth/token request before any request if there's no session data", async () => {
-    const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           return {
             orderResponse: 123,
           };
@@ -61,7 +61,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "",
@@ -69,11 +69,8 @@ describe("createAdminAPIClient", () => {
         expirationTime: 0,
       },
     });
-    const res = await client.invoke(
-      "getOrderList get /order?limit,page,query",
-      {},
-    );
-    expect(res).toEqual({ orderResponse: 123 });
+    const res = await client.invoke("getOrderList get /order", {});
+    expect(res.data).toEqual({ orderResponse: 123 });
     expect(authEndpointSpy).toHaveBeenCalledWith({
       client_id: "administration",
       grant_type: "refresh_token",
@@ -82,8 +79,8 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should not invoke /oauth/token request before request if there's an active session", async () => {
-    const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
-    const authHeaderSpy = vi.fn().mockImplementation((param: string) => {});
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
+    const authHeaderSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
@@ -108,7 +105,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "Bearer my-access-token",
@@ -116,19 +113,16 @@ describe("createAdminAPIClient", () => {
         expirationTime: Date.now() + 1000 * 60,
       },
     });
-    const res = await client.invoke(
-      "getOrderList get /order?limit,page,query",
-      {},
-    );
+    const res = await client.invoke("getOrderList get /order", {});
     expect(authHeaderSpy).toHaveBeenCalledWith("Bearer my-access-token");
-    expect(res).toEqual({ orderResponse: 123 });
+    expect(res.data).toEqual({ orderResponse: 123 });
     expect(authEndpointSpy).not.toHaveBeenCalled();
   });
 
   it("should invoke /oauth/token request before client based authentication", async () => {
-    const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
-    const authHeaderSpy = vi.fn().mockImplementation((param: string) => {});
-    const onAuthChangeSpy = vi.fn().mockImplementation((param: string) => {});
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
+    const authHeaderSpy = vi.fn().mockImplementation(() => {});
+    const onAuthChangeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
@@ -154,7 +148,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
         grant_type: "client_credentials",
@@ -163,10 +157,7 @@ describe("createAdminAPIClient", () => {
       },
       onAuthChange: onAuthChangeSpy,
     });
-    const res = await client.invoke(
-      "getOrderList get /order?limit,page,query",
-      {},
-    );
+    const res = await client.invoke("getOrderList get /order", {});
     expect(authEndpointSpy).toHaveBeenCalledWith({
       client_id: "my-client-id",
       client_secret: "my-client-secret-token",
@@ -175,7 +166,7 @@ describe("createAdminAPIClient", () => {
     expect(authHeaderSpy).toHaveBeenCalledWith(
       "Bearer client-session-access-token",
     );
-    expect(res).toEqual({ orderResponse: 123 });
+    expect(res.data).toEqual({ orderResponse: 123 });
 
     expect(onAuthChangeSpy).toBeCalledWith({
       accessToken: "client-session-access-token",
@@ -185,11 +176,11 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should not invoke onAuthChange if token response data does not contain session data", async () => {
-    const onAuthChangeSpy = vi.fn().mockImplementation((param: string) => {});
+    const onAuthChangeSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           return {
             orderResponse: 123,
           };
@@ -197,14 +188,14 @@ describe("createAdminAPIClient", () => {
       )
       .use(
         "/oauth/token",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           return null;
         }),
       );
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       credentials: {
         grant_type: "client_credentials",
@@ -213,22 +204,19 @@ describe("createAdminAPIClient", () => {
       },
       onAuthChange: onAuthChangeSpy,
     });
-    const res = await client.invoke(
-      "getOrderList get /order?limit,page,query",
-      {},
-    );
-    expect(res).toEqual({ orderResponse: 123 });
+    const res = await client.invoke("getOrderList get /order", {});
+    expect(res.data).toEqual({ orderResponse: 123 });
 
     expect(onAuthChangeSpy).not.toHaveBeenCalled();
   });
 
   it("should throw error if /oauth token request fails and not to call desired endpoint at all", async () => {
-    const authEndpointSpy = vi.fn().mockImplementation((param: string) => {});
-    const orderEndpointSpy = vi.fn().mockImplementation((param: string) => {});
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
+    const orderEndpointSpy = vi.fn().mockImplementation(() => {});
     const app = createApp()
       .use(
         "/order",
-        eventHandler(async (event) => {
+        eventHandler(async () => {
           orderEndpointSpy();
           return {
             orderResponse: 123,
@@ -248,7 +236,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "",
@@ -257,7 +245,7 @@ describe("createAdminAPIClient", () => {
       },
     });
     await expect(() =>
-      client.invoke("getOrderList get /order?limit,page,query", {}),
+      client.invoke("getOrderList get /order", {}),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       "[ApiClientError: Failed request]",
     );
@@ -272,7 +260,7 @@ describe("createAdminAPIClient", () => {
   it("should throw error from the endpoint", async () => {
     const app = createApp().use(
       "/order",
-      eventHandler(async (event) => {
+      eventHandler(async () => {
         throw createError({
           status: 500,
         });
@@ -281,7 +269,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "Bearer my-access-token",
@@ -290,14 +278,14 @@ describe("createAdminAPIClient", () => {
       },
     });
     await expect(() =>
-      client.invoke("getOrderList get /order?limit,page,query", {}),
+      client.invoke("getOrderList get /order", {}),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       "[ApiClientError: Failed request]",
     );
   });
 
   it(`should by default include "Accept" header with "application/json" value`, async () => {
-    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const seoUrlheadersSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/order",
       eventHandler(async (event) => {
@@ -312,7 +300,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "Bearer my-access-token",
@@ -320,7 +308,7 @@ describe("createAdminAPIClient", () => {
         expirationTime: Date.now() + 1000 * 60,
       },
     });
-    await client.invoke("getOrderList get /order?limit,page,query", {});
+    await client.invoke("getOrderList get /order");
 
     expect(seoUrlheadersSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -330,7 +318,7 @@ describe("createAdminAPIClient", () => {
   });
 
   it("should change default headers", async () => {
-    const seoUrlheadersSpy = vi.fn().mockImplementation((param: string) => {});
+    const seoUrlheadersSpy = vi.fn().mockImplementation(() => {});
     const app = createApp().use(
       "/order",
       eventHandler(async (event) => {
@@ -342,7 +330,7 @@ describe("createAdminAPIClient", () => {
 
     const baseURL = await createPortAndGetUrl(app);
 
-    const client = createAdminAPIClient<operations, operationPaths>({
+    const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
         accessToken: "Bearer my-access-token",
@@ -351,12 +339,48 @@ describe("createAdminAPIClient", () => {
       },
     });
     client.defaultHeaders.Accept = "application/xml";
-    await client.invoke("getOrderList get /order?limit,page,query", {});
+    await client.invoke("getOrderList get /order", {});
 
     expect(seoUrlheadersSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         accept: "application/xml",
       }),
+    );
+  });
+
+  it("should allow to abort request", async () => {
+    const app = createApp().use(
+      "/order",
+      eventHandler(async () => {
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(createError({ status: 408 }));
+          }, 1000 * 2);
+        });
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer my-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: Date.now() + 1000 * 60,
+      },
+    });
+
+    const controller = new AbortController();
+    const request = client.invoke("getOrderList get /order", {
+      fetchOptions: {
+        signal: controller.signal,
+      },
+    });
+    controller.abort();
+
+    expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[FetchError: [GET] "${baseURL}order": <no response> This operation was aborted]`,
     );
   });
 });

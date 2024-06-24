@@ -5,6 +5,7 @@ import path from "path";
 // names of the directories that should not be tested in StackBlitz context in case of more complex setup
 // in that case an example should be tested manually
 const IGNORE_CHECK_EXAMPLES = [
+  "amazon-pay-button-example",
   "mollie-credit-card",
   "adyen-dropin-component",
   "commercial-quick-order",

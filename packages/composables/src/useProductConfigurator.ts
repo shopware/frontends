@@ -65,41 +65,46 @@ export function useProductConfigurator(): UseProductConfiguratorReturn {
   };
 
   // create a group -> optionId map
-  product.value.optionIds?.forEach((optionId: string) => {
+  for (const optionId of product.value.optionIds || []) {
     const optionGroupCode = findGroupCodeForOption(optionId);
     if (optionGroupCode) {
       selected.value[optionGroupCode] = optionId;
     }
-  });
+  }
 
   async function findVariantForSelectedOptions(options?: {
     [code: string]: string;
   }): Promise<Schemas["Product"] | undefined> {
-    const filter = [
+    const filter: Schemas["Filters"] = [
       {
         type: "equals",
         field: "parentId",
         value: parentProductId.value as string,
       },
-      ...Object.values(options || selected.value).map((id) => ({
-        type: "equals",
-        field: "optionIds",
-        value: id as string,
-      })),
+      ...Object.values(options || selected.value).map(
+        (id) =>
+          ({
+            type: "equals",
+            field: "optionIds",
+            value: id as string,
+          }) as Schemas["EqualsFilter"],
+      ),
     ];
     try {
       const response = await apiClient.invoke("readProduct post /product", {
-        filter,
-        limit: 1,
-        includes: {
-          product: ["id", "translated", "productNumber", "seoUrls"],
-          seo_url: ["seoPathInfo"],
-        },
-        associations: {
-          seoUrls: {},
+        body: {
+          filter,
+          limit: 1,
+          includes: {
+            product: ["id", "translated", "productNumber", "seoUrls"],
+            seo_url: ["seoPathInfo"],
+          },
+          associations: {
+            seoUrls: {},
+          },
         },
       });
-      return response?.elements?.[0]; // return first matching product
+      return response.data.elements?.[0]; // return first matching product
     } catch (e) {
       console.error("SwProductDetails:findVariantForSelectedOptions", e);
     }

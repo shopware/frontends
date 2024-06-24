@@ -40,21 +40,20 @@
     "@shopware-pwa/composables-next": "workspace:*",
     "@shopware-pwa/helpers-next": "workspace:*",
     "@shopware/api-client": "workspace:*",
-    "@tresjs/cientos": "3.8.0",
-    "@tresjs/core": "3.8.0",
+    "@tresjs/cientos": "3.9.0",
+    "@tresjs/core": "4.0.2",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
-    "@vueuse/core": "10.9.0",
+    "@vueuse/core": "10.11.0",
     "entities": "4.5.0",
     "html-to-ast": "0.0.6",
-    "three": "^0.162.0",
-    "vue": "3.4.21"
+    "three": "^0.165.0",
+    "vue": "3.4.27"
   },
   "devDependencies": {
     "@nuxt/schema": "3.11.2",
-    "@shopware-pwa/types": "workspace:*",
-    "@types/three": "^0.162.0",
-    "@vitest/coverage-v8": "1.5.0",
+    "@types/three": "^0.165.0",
+    "@vitest/coverage-v8": "1.6.0",
     "@vue/eslint-config-typescript": "13.0.0",
     "eslint-config-shopware": "workspace:*",
     "eslint-plugin-vue": "9.24.1",
@@ -62,9 +61,9 @@
     "tsconfig": "workspace:*",
     "typescript": "5.4.5",
     "unbuild": "2.0.0",
-    "vitest": "1.5.0",
-    "vue-eslint-parser": "9.4.2",
-    "vue-router": "4.3.0",
-    "vue-tsc": "2.0.13"
+    "vitest": "1.6.0",
+    "vue-eslint-parser": "9.4.3",
+    "vue-router": "4.3.3",
+    "vue-tsc": "2.0.21"
   }
 }

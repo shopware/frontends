@@ -36,16 +36,18 @@ export function useProductAssociations(
   if (!product.value)
     throw new Error("[useProductAssociations]: Product is not provided.");
 
+  // @ts-ignore: temporary until fixed or removed
   const association = options.associationContext;
 
   const { apiClient } = useShopwareContext();
   const isLoading = ref(false);
   const associations = ref<Schemas["CrossSellingElementCollection"]>([]);
 
-  const loadAssociations = async (params: {
-    method?: "post" | "get";
-    searchParams: Schemas["Criteria"];
-  }) => {
+  // params: {
+  // method?: "post" | "get";
+  // searchParams: Schemas["Criteria"];
+  // }
+  const loadAssociations = async () => {
     isLoading.value = true;
     // const method = params.method || "get";
     try {
@@ -82,11 +84,11 @@ export function useProductAssociations(
       const response = await apiClient.invoke(
         "readProductCrossSellings post /product/{productId}/cross-selling",
         {
-          productId: product.value.id,
+          pathParams: { productId: product.value.id },
         },
       );
 
-      associations.value = response;
+      associations.value = response.data;
     } catch (error) {
       console.error(
         "[useProductAssociations][loadAssociations][error]:",

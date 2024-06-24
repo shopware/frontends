@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { customValidators } from "@/i18n/utils/i18n-validators";
+import { ApiClientError } from "@shopware/api-client";
 
 const { required, minLength, sameAs } = customValidators();
 const emits = defineEmits<{
   (e: "success"): void;
 }>();
 
-const { updatePassword, errors } = useCustomerPassword();
+const { updatePassword } = useCustomerPassword();
 const { user, refreshUser } = useUser();
 
+const errors = ref([]);
 const userErrorMessages = computed(() =>
-  errors.updatePassword?.map(({ detail }) => detail).toString(),
+  errors.value?.map(({ detail }) => detail).toString(),
 );
 
 const isSuccess = ref(false);
@@ -47,7 +49,9 @@ const $v = useVuelidate(rules, state);
 
 const invokeChange = async (): Promise<void> => {
   loadingData.value = true;
+  isSuccess.value = false;
   try {
+    errors.value = [];
     const isFormCorrect = await $v.value.$validate();
 
     if (isFormCorrect) {
@@ -71,8 +75,11 @@ const invokeChange = async (): Promise<void> => {
     } else {
       return;
     }
-  } catch (err) {
-    console.error("error change password", err);
+  } catch (error) {
+    console.error("[AccountChangePassword]", error);
+    if (error instanceof ApiClientError) {
+      errors.value = error.details?.errors || [];
+    }
   } finally {
     loadingData.value = false;
   }
@@ -103,13 +110,6 @@ const invokeChange = async (): Promise<void> => {
       data-testid="account-change-password-form"
       @submit.prevent="invokeChange"
     >
-      <div
-        v-if="userErrorMessages.length"
-        class="text-red-600 focus:ring-primary border-secondary-300 rounded"
-      >
-        {{ userErrorMessages }}
-      </div>
-
       <div class="mt-4 space-y-4 lg:mt-5 md:space-y-5">
         <div>
           <label
@@ -196,6 +196,15 @@ const invokeChange = async (): Promise<void> => {
         >
           {{ $t("changePassword.form.changePassword") }}
         </button>
+      </div>
+
+      <div class="min-h-30px">
+        <div
+          v-if="userErrorMessages?.length"
+          class="text-red-600 text-sm focus:ring-primary border-secondary-300 rounded"
+        >
+          {{ userErrorMessages }}
+        </div>
       </div>
     </form>
   </div>

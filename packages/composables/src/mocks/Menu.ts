@@ -1,6 +1,6 @@
-import type { StoreNavigationElement } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
-const Menu: StoreNavigationElement[] = [
+const Menu: Schemas["Category"][] = [
   {
     extensions: {
       search: {
@@ -593,6 +593,6 @@ const Menu: StoreNavigationElement[] = [
     id: "162cd978ddaa498790e70be6dc75d089",
     apiAlias: "category",
   },
-] as unknown as StoreNavigationElement[];
+] as unknown as Schemas["Category"][];
 
 export default Menu;
