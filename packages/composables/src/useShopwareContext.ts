@@ -3,11 +3,6 @@ import ContextError from "./helpers/ContextError";
 import type { ApiClient } from "#shopware";
 
 export type ShopwareContext = {
-  /**
-   * Shopware API instance
-   * @deprecated use `apiClient` instead
-   */
-  apiInstance: unknown;
   devStorefrontUrl: string | null;
   /**
    * Shopware API client
@@ -30,10 +25,6 @@ export function useShopwareContext(): ShopwareContext {
   }
 
   return {
-    /**
-     * @deprecated use `apiClient` instead
-     */
-    apiInstance: shopwareContext.apiInstance,
     apiClient,
     devStorefrontUrl: shopwareContext.devStorefrontUrl,
   };

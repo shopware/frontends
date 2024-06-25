@@ -155,8 +155,8 @@ describe("createAdminAPIClient", () => {
         client_id: "my-client-id",
         client_secret: "my-client-secret-token",
       },
-      onAuthChange: onAuthChangeSpy,
     });
+    client.hook("onAuthChange", onAuthChangeSpy);
     const res = await client.invoke("getOrderList get /order", {});
     expect(authEndpointSpy).toHaveBeenCalledWith({
       client_id: "my-client-id",
@@ -202,8 +202,8 @@ describe("createAdminAPIClient", () => {
         client_id: "my-client-id",
         client_secret: "my-client-secret-token",
       },
-      onAuthChange: onAuthChangeSpy,
     });
+    client.hook("onAuthChange", onAuthChangeSpy);
     const res = await client.invoke("getOrderList get /order", {});
     expect(res.data).toEqual({ orderResponse: 123 });
 
@@ -345,6 +345,42 @@ describe("createAdminAPIClient", () => {
       expect.objectContaining({
         accept: "application/xml",
       }),
+    );
+  });
+
+  it("should allow to abort request", async () => {
+    const app = createApp().use(
+      "/order",
+      eventHandler(async () => {
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(createError({ status: 408 }));
+          }, 1000 * 2);
+        });
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer my-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: Date.now() + 1000 * 60,
+      },
+    });
+
+    const controller = new AbortController();
+    const request = client.invoke("getOrderList get /order", {
+      fetchOptions: {
+        signal: controller.signal,
+      },
+    });
+    controller.abort();
+
+    expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[FetchError: [GET] "${baseURL}order": <no response> This operation was aborted]`,
     );
   });
 });

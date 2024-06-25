@@ -82,6 +82,13 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                   node,
                   typeChecker,
                 });
+
+                const requestBodyProp = operation.getProperty("requestBody");
+                if (requestBodyProp) {
+                  operationGenerationMap.bodyOptional =
+                    isOptional(requestBodyProp);
+                }
+
                 if (operationRequestBodyContent) {
                   const contentTypes = getTypePropertyNames(
                     operationRequestBodyContent,

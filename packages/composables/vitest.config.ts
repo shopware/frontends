@@ -8,11 +8,17 @@ export default defineConfig({
       enabled: true,
       // "100": true, // TODO: our goal ;)
       thresholds: {
-        statements: 92,
+        statements: 94,
         branches: 80,
-        functions: 80,
+        functions: 82,
         lines: 92,
       },
+      exclude: [
+        "**/temp/**",
+        "**/devtools/**",
+        "**/.eslintrc.cjs",
+        "**/nuxt.config.ts",
+      ],
     },
     alias: {
       "#imports": resolve(__dirname, "./src/index.ts"),

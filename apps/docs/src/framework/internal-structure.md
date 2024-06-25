@@ -28,22 +28,12 @@ This section deals with the different packages and their abstractions. It is sor
 ## api-client
 
 <div class="flex mt--4 mb-4 gap-2">
-    <img src="../.assets/framework-icons/typescript.png" alt="This package depends on Typescript" title="This package depends on Typescript" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware-pwa/api-client" target="_blank">@shopware-pwa/api-client</a>
+    <img src="../.assets/framework-icons/typescript.png" alt="This package depends on Typescript" title="This package depends on Typescript" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware/api-client" target="_blank">@shopware/api-client</a>
 </div>
 
 The API client provides a common interface to access the Shopware API. It can be used standalone in any JavaScript project.
 
 <PageRef page="../packages/api-client" title="API Client Reference" sub="Package reference with all services" />
-
-## types
-
-<div class="flex mt--4 mb-4 gap-2">
-    <img src="../.assets/framework-icons/typescript.png" alt="This package depends on Typescript" title="This package depends on Typescript" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware-pwa/types" target="_blank">@shopware-pwa/types</a>
-</div>
-
-The types package contains TypeScript types for all Shopware objects and API endpoints.
-
-<PageRef page="../packages/types" title="Types Reference" sub="Package reference with all types" />
 
 ## helpers
 

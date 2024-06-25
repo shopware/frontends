@@ -1,3 +1,0 @@
-# productService
-
-<!-- PLACEHOLDER_DESCRIPTION -->

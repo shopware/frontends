@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsSlot } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import type {
   CmsBlockImageTextGallery,
   CmsElementImage,
@@ -22,7 +22,9 @@ const rightImageContent = getSlotContent("right-image") as CmsElementImage;
 const centerImageContent = getSlotContent("center-image") as CmsElementImage;
 
 // TODO: useRouter
-function onImageClick(slotContent: Omit<CmsSlot, "data"> & { data: any }) {
+function onImageClick(
+  slotContent: Omit<Schemas["CmsSlot"], "data"> & { data: any },
+) {
   if (slotContent.data?.url) {
     if (slotContent.data?.newTab) {
       window.open(slotContent.data.url);

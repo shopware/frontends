@@ -42,6 +42,7 @@
     "@types/yargs": "17.0.32",
     "@vitest/coverage-v8": "1.6.0",
     "eslint-config-shopware": "workspace:*",
+    "json5": "2.2.3",
     "picocolors": "1.0.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
@@ -52,7 +53,6 @@
     "ofetch": "1.3.4",
     "openapi-typescript": "6.7.6",
     "prettier": "3.3.2",
-    "semver": "7.6.2",
     "ts-morph": "22.0.0",
     "yargs": "17.7.2"
   }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getBiggestThumbnailUrl } from "./image";
+import { getBiggestThumbnailUrl } from "./getBiggestThumbnailUrl";
 
 describe("getBiggestThumbnailUrl", () => {
   it("should return undefined if media is undefined", () => {

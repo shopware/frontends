@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getSmallestThumbnailUrl } from "./image";
+import { getSmallestThumbnailUrl } from "./getSmallestThumbnailUrl";
 
 describe("getSmallestThumbnailUrl", () => {
   it("should return undefined if media is undefined", () => {

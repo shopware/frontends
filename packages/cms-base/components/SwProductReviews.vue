@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Product, ProductReview } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { useProductReviews, useCmsTranslations } from "#imports";
 import { computed, onMounted, ref, toRefs } from "vue";
 import { defu } from "defu";
 
 const props = defineProps<{
-  product: Product;
-  reviews?: ProductReview[];
+  product: Schemas["Product"];
+  reviews?: Schemas["ProductReview"][];
 }>();
 
 type Translations = {
@@ -34,7 +34,7 @@ onMounted(async () => {
   shouldLoadReviews && (await loadProductReviews());
   loadingReviews.value = false;
 });
-const reviewsList = computed<ProductReview[]>(
+const reviewsList = computed<Schemas["ProductReview"][]>(
   () => reviews?.value || productReviews.value || [],
 );
 
@@ -71,11 +71,11 @@ const formatDate = (date: string) =>
         class="cms-block-product-description-reviews__reviews-rating inline-flex items-center mt-2"
       >
         <div
-          v-for="value in review.points"
+          v-for="_ in review.points"
           class="w-5 h-5 i-carbon-star-filled"
         ></div>
         <div
-          v-for="value in 5 - (review.points || 0)"
+          v-for="_ in 5 - (review.points || 0)"
           class="w-5 h-5 i-carbon-star"
         ></div>
         <div

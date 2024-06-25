@@ -1,5 +1,5 @@
 import { useCartItem } from "./useCartItem";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useSetup } from "./_test";
 import { ref } from "vue";
 import type { Ref } from "vue";
@@ -8,7 +8,24 @@ import Cart from "./mocks/Cart";
 
 const lineItem = Cart.lineItems[0];
 
+const removeItemSpy = vi.fn();
+const changeProductQuantitySpy = vi.fn();
+vi.mock("./useCart.ts", async () => {
+  return {
+    useCart: () => {
+      return {
+        removeItem: removeItemSpy,
+        changeProductQuantity: changeProductQuantitySpy,
+      };
+    },
+  };
+});
+
 describe("useCartItem", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("init cart item", () => {
     const { vm } = useSetup(() =>
       useCartItem(ref(lineItem) as unknown as Ref<Schemas["LineItem"]>),
@@ -28,37 +45,82 @@ describe("useCartItem", () => {
     expect(vm.itemOptions).toStrictEqual([]);
   });
 
-  it("remove item", () => {
-    const { vm, injections } = useSetup(() =>
-      useCartItem(ref(lineItem) as unknown as Ref<Schemas["LineItem"]>),
-    );
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    vm.removeItem();
-
-    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("removeLineItem"),
-      expect.objectContaining({
-        body: {
-          ids: [lineItem.id],
+  it("should show item options", async () => {
+    const payload = {
+      options: [
+        {
+          group: "test",
+          option: "test",
+          translated: {
+            group: "test",
+            option: "test",
+          },
         },
-      }),
+      ],
+    } as Schemas["ProductJsonApi"];
+
+    const { vm } = useSetup(() =>
+      useCartItem(
+        ref({
+          type: "product",
+          payload,
+        } as Schemas["LineItem"]),
+      ),
     );
+
+    expect(vm.itemOptions).toStrictEqual(payload.options);
   });
 
-  it("get product item seo url data", () => {
-    const { vm, injections } = useSetup(() =>
+  it("should show default empty options", async () => {
+    const payload = {} as Schemas["ProductJsonApi"];
+
+    const { vm } = useSetup(() =>
+      useCartItem(
+        ref({
+          type: "product",
+          payload,
+        } as Schemas["LineItem"]),
+      ),
+    );
+
+    expect(vm.itemOptions).toStrictEqual([]);
+  });
+
+  it("should remove item from the cart", async () => {
+    const { vm } = useSetup(() =>
       useCartItem(ref(lineItem) as unknown as Ref<Schemas["LineItem"]>),
     );
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    vm.getProductItemSeoUrlData();
+    const mockedResponse = {
+      test: 123,
+    };
+    removeItemSpy.mockResolvedValueOnce(mockedResponse);
+    const result = await vm.removeItem();
 
-    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readProductDetail"),
-      expect.objectContaining({
-        pathParams: {
-          productId: lineItem.id,
-        },
-      }),
+    expect(removeItemSpy).toHaveBeenCalledWith(lineItem);
+    expect(result).toEqual(mockedResponse);
+  });
+
+  it("should change item quantity", async () => {
+    const { vm } = useSetup(() =>
+      useCartItem(ref(lineItem) as unknown as Ref<Schemas["LineItem"]>),
     );
+    const mockedResponse = {
+      test: 123,
+    };
+    changeProductQuantitySpy.mockResolvedValueOnce(mockedResponse);
+    const result = await vm.changeItemQuantity(5);
+
+    expect(changeProductQuantitySpy).toHaveBeenCalledWith({
+      quantity: 5,
+      id: lineItem.id,
+    });
+    expect(result).toEqual(mockedResponse);
+
+    // @ts-expect-error it should not be allowed by typescript, but still should work properly
+    vm.changeItemQuantity("6");
+    expect(changeProductQuantitySpy).toHaveBeenCalledWith({
+      quantity: 6,
+      id: lineItem.id,
+    });
   });
 });

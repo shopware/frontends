@@ -10,7 +10,7 @@ import {
   getHeaders,
 } from "h3";
 import type { App } from "h3";
-import { createAPIClient } from "./createApiClient";
+import { createAPIClient } from "./createAPIClient";
 import type { operations } from "../api-types/storeApiTypes";
 
 describe("createAPIClient", () => {
@@ -180,7 +180,7 @@ describe("createAPIClient", () => {
       "/checkout/cart",
       eventHandler(async () => {
         throw createError({
-          status: 500,
+          statusCode: 500,
         });
       }),
     );
@@ -284,7 +284,7 @@ describe("createAPIClient", () => {
     const app = createApp().use(
       "/context",
       eventHandler(async () => {
-        throw new Error("Api error");
+        throw createError({ status: 500 });
       }),
     );
 
@@ -300,24 +300,26 @@ describe("createAPIClient", () => {
 
     client.hook("onResponseError", errorCallback);
 
-    try {
-      await client.invoke("readContext get /context");
-    } catch (e) {}
+    await expect(
+      client.invoke("readContext get /context"),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[ApiClientError: Failed request]`,
+    );
 
     expect(errorCallback).toHaveBeenCalled();
   });
 
-  it("should display deprecation message at the console when onContextChanged method is used", async () => {
+  it("should allow to abort request", async () => {
     const app = createApp().use(
       "/context",
-      eventHandler(async (event) => {
-        setHeader(event, "sw-context-token", "789");
-        return {};
+      eventHandler(async () => {
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(createError({ status: 408 }));
+          }, 1000 * 2);
+        });
       }),
     );
-
-    const consoleErrorSpy = vi.spyOn(console, "warn");
-    const contextChangedMock = vi.fn().mockImplementation(() => {});
 
     const baseURL = await createPortAndGetUrl(app);
 
@@ -325,11 +327,20 @@ describe("createAPIClient", () => {
       baseURL,
       accessToken: "123",
       contextToken: "456",
-      onContextChanged: contextChangedMock,
     });
 
-    await client.invoke("readContext get /context");
+    const controller = new AbortController();
 
-    expect(consoleErrorSpy).toHaveBeenCalled();
+    const request = client.invoke("readContext get /context", {
+      fetchOptions: {
+        signal: controller.signal,
+      },
+    });
+
+    controller.abort();
+
+    expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
+      `[FetchError: [GET] "${baseURL}context": <no response> This operation was aborted]`,
+    );
   });
 });

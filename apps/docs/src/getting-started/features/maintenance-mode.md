@@ -17,25 +17,20 @@ You can activate the maintenance mode of your store by selecting your sales chan
 
 ## Detecting maintenance mode via API
 
-Maintenance mode is returned as an error from all of the endpoints. We can detect it by using `onErrorHandler` callback function in `createAPIClient` init api method.
+Maintenance mode is returned as an error from all of the endpoints. We can detect it by using `onResponseError` hook.
 
 ```ts
+import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
+
 const apiClient = createAPIClient({
   baseURL: shopwareEndpoint,
   accessToken: shopwareAccessToken,
   contextToken: Cookies.get("sw-context-token"),
-  onContextChanged(newContextToken) {
-    Cookies.set("sw-context-token", newContextToken, {
-      expires: 365, // days
-      path: "/",
-      sameSite: "lax",
-    });
-  },
-  onErrorHandler(response) {
-    const error = response._data?.errors?.find((element) => {
-      return element.code === "FRAMEWORK__API_SALES_CHANNEL_MAINTENANCE_MODE";
-    });
-  },
+});
+
+apiClient.hook("onResponseError", (response) => {
+  const error = isMaintenanceMode(response._data?.errors ?? []);
+  // do proper reaction to maintenance mode
 });
 ```
 
@@ -50,18 +45,17 @@ This example is for Nuxt 3 apps
 Every error thrown within the application is automatically caught and the `error.vue` page is displayed.
 
 ```ts
-    onErrorHandler(response) {
-      const error = response._data?.errors?.find((element) => {
-        return element.code === "FRAMEWORK__API_SALES_CHANNEL_MAINTENANCE_MODE";
-      });
+import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
 
-      if (error) {
-        throw createError({
-          statusCode: 503,
-          statusMessage: "MAINTENANCE_MODE",
-        });
-      }
-    },
+apiClient.hook("onResponseError", (response) => {
+  const error = isMaintenanceMode(response._data?.errors ?? []);
+  if (error) {
+    throw createError({
+      statusCode: 503,
+      statusMessage: "MAINTENANCE_MODE",
+    });
+  }
+});
 ```
 
 ### Displaying maintenance mode page
