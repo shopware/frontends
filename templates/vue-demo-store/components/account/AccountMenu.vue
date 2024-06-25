@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { onClickOutside } from "@vueuse/core";
+
 const { isLoggedIn, logout, user } = useUser();
+const accountMenu = ref(null);
 
 const loginModalController = useModal();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const isAccountMenuOpen = ref(false);
+
+onClickOutside(accountMenu, () => (isAccountMenuOpen.value = false));
 
 async function invokeLogout() {
   try {
@@ -85,6 +90,7 @@ async function invokeLogout() {
               >
                 <div
                   v-if="isAccountMenuOpen"
+                  ref="accountMenu"
                   :class="[isAccountMenuOpen ? 'block' : 'hidden']"
                   class="z-20 origin-top-right absolute right-0 top-2 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                   role="menu"

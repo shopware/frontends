@@ -438,7 +438,7 @@ In the present case, we could use the product's thumbnail or use the translated 
 ```ts
 // part of <script setup> section
 import {
-  getProductThumbnailUrl,
+  getSmallestThumbnailUrl,
   getProductUrl,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
@@ -446,7 +446,7 @@ import {
 
 ```html
 <img
-  :src="getProductThumbnailUrl(product)"
+  :src="getSmallestThumbnailUrl(product)"
   width="100"
   height="100"
   :alt="product.name"

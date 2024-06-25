@@ -67,10 +67,6 @@ export type UseCartReturn = {
    */
   subtotal: ComputedRef<number>;
   /**
-   * @deprecated - use product related methods to fetch an item's URL instead
-   */
-  getProductItemsSeoUrlsData(): Promise<Partial<Schemas["Product"]>[]>;
-  /**
    * `true` if the cart contains no items
    */
   isEmpty: ComputedRef<boolean>;
@@ -189,21 +185,6 @@ export function useCartFunction(): UseCartReturn {
     return data;
   }
 
-  async function getProductItemsSeoUrlsData() {
-    if (!cartItems.value.length) {
-      return [];
-    }
-
-    const result = await apiClient.invoke("readProduct post /product", {
-      body: {
-        ids: cartItems.value
-          .map(({ referencedId }) => referencedId)
-          .filter(String) as string[],
-      },
-    });
-    return result.data.elements;
-  }
-
   const appliedPromotionCodes = computed(() => {
     return cartItems.value.filter(
       (cartItem: Schemas["LineItem"]) => cartItem.type === "promotion",
@@ -293,7 +274,6 @@ export function useCartFunction(): UseCartReturn {
     totalPrice,
     shippingTotal,
     subtotal,
-    getProductItemsSeoUrlsData,
     isEmpty,
     isVirtualCart,
     consumeCartErrors,

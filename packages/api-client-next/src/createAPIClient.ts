@@ -2,7 +2,7 @@ import { type FetchResponse, ofetch, FetchOptions } from "ofetch";
 import type { operations } from "../api-types/storeApiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
-import { type Hookable, createHooks } from "hookable";
+import { createHooks } from "hookable";
 import defu from "defu";
 import { createPathWithParams } from "./transformPathToQuery";
 
@@ -53,28 +53,19 @@ export type InvokeParameters<CURRENT_OPERATION> =
     >;
   };
 
-export type ApiClientHooks = Hookable<{
+export type ApiClientHooks = {
   onContextChanged: (newContextToken: string) => void;
   onResponseError: (response: FetchResponse<ResponseType>) => void;
   onSuccessResponse: <T>(response: FetchResponse<T>) => void;
-}>;
+};
 
 export function createAPIClient<
   OPERATIONS extends Record<string, any> = operations,
   PATHS extends string | number | symbol = keyof OPERATIONS,
 >(params: {
   baseURL?: string;
-  /**
-   * @deprecated this method is only for store-api, for admin API use `createAdminAPIClient`. Remove this param
-   */
-  apiType?: "store-api" | "admin-api";
   accessToken?: string;
   contextToken?: string;
-  /**
-   *
-   * @deprecated use `apiClient.hook("contextChanged". handler)` instead
-   */
-  onContextChanged?: (newContextToken: string) => void;
   defaultHeaders?: ClientHeaders;
 }) {
   const defaultHeaders = createHeaders({
@@ -85,11 +76,7 @@ export function createAPIClient<
   });
 
   // Create a hookable instance
-  const apiClientHooks = createHooks<{
-    onContextChanged: (newContextToken: string) => void;
-    onResponseError: (response: FetchResponse<ResponseType>) => void;
-    onSuccessResponse: (response: FetchResponse<ResponseType>) => void;
-  }>();
+  const apiClientHooks = createHooks<ApiClientHooks>();
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
@@ -106,12 +93,6 @@ export function createAPIClient<
           "sw-context-token",
         ) as string;
         defaultHeaders["sw-context-token"] = newContextToken;
-        if (params.onContextChanged) {
-          console.warn(
-            "DEPRECATED: onContextChanged is deprecated. Use apiClient.hook('contextChanged', handler) instead",
-          );
-          params.onContextChanged?.(newContextToken);
-        }
         apiClientHooks.callHook("onContextChanged", newContextToken);
       }
     },
@@ -195,6 +176,6 @@ export function createAPIClient<
      * Default headers used in every client request (if not overriden in specific request).
      */
     defaultHeaders,
-    hook: apiClientHooks.hook as ApiClientHooks["hook"],
+    hook: apiClientHooks.hook,
   };
 }

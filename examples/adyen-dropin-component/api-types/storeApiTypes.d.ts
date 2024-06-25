@@ -7653,9 +7653,7 @@ export type operations = {
       "sw-language-id"?: string;
     };
     body?: components["schemas"]["Criteria"];
-    response: {
-      elements?: components["schemas"]["Currency"][];
-    } & components["schemas"]["EntitySearchResult"];
+    response: components["schemas"]["Currency"][];
     responseCode: 200;
   };
   "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}": {
