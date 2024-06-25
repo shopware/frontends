@@ -48,13 +48,6 @@ const createFiltersFromRoute = () => {
           value: value,
         });
       }
-      if (key === "properties") {
-        filters.push({
-          type: "equalsAny",
-          field: "propertyIds",
-          value: value,
-        });
-      }
       if (key === "rating") {
         filters.push({
           type: "range",
@@ -74,6 +67,21 @@ const createFiltersFromRoute = () => {
     }
   }
   return filters;
+};
+
+const createPropertiesFromRoute = () => {
+  const properties: string[] = [];
+  for (const [key, value] of Object.entries(route.query)) {
+    const currentValue = value as string;
+    const allValues = currentValue.split("|");
+    for (const value of allValues) {
+      if (key === "properties") {
+        properties.push(value);
+      }
+    }
+  }
+
+  return properties.join("|");
 };
 
 const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
@@ -120,9 +128,11 @@ const cacheKey = computed(() => `productSearch-${JSON.stringify(route.query)}`);
 const loadProducts = async (cacheKey: string) => {
   const { data: productSearch } = await useAsyncData(cacheKey, async () => {
     const filters = createFiltersFromRoute();
+    const properties = createPropertiesFromRoute();
     await search({
       search: route.query.search as string,
       filter: filters,
+      properties: properties,
       limit: limit.value,
       order: route.query.order ? (route.query.order as string) : "name-asc",
       aggregations: [
@@ -168,12 +178,6 @@ const loadProducts = async (cacheKey: string) => {
 };
 let productSearch = await loadProducts(cacheKey.value);
 
-watch(cacheKey, async (newCacheKey) => {
-  productSearch = await loadProducts(newCacheKey);
-  setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
-  addCountsToFilter();
-});
-
 const changePage = async (page: number) => {
   await router.push({
     query: {
@@ -215,6 +219,8 @@ const currentSortingOrder = computed({
         order,
       },
     });
+
+    await loadProducts(cacheKey.value);
   },
 });
 

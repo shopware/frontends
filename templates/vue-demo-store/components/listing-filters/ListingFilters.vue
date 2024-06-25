@@ -84,16 +84,15 @@ const onOptionSelectToggle = async ({
       searchSelectedFilters[code]?.add(value);
     }
   }
-
-  await search({
-    ...searchCriteriaForRequest.value,
-    ...route.query,
-  });
   await router.push({
     query: {
       search: route.query.search,
       ...filtersToQuery(searchCriteriaForRequest.value),
     },
+  });
+  await search({
+    ...searchCriteriaForRequest.value,
+    ...route.query,
   });
 };
 
@@ -104,10 +103,6 @@ const clearFilters = async () => {
   searchSelectedFilters["max-price"] = undefined;
   searchSelectedFilters["rating"] = undefined;
   searchSelectedFilters["shipping-free"] = undefined;
-  await search({
-    ...route.query,
-    ...filtersToQuery(searchCriteriaForRequest.value),
-  });
   await router.push({
     query: {
       search: route.query.search,
@@ -117,10 +112,11 @@ const clearFilters = async () => {
 };
 
 async function invokeCleanFilters() {
-  clearFilters();
+  await clearFilters();
   await search({
     ...route.query,
-  } as unknown as operations["searchPage post /search"]["body"]);
+    ...filtersToQuery(searchCriteriaForRequest.value),
+  });
 }
 
 const selectedOptionIds = computed(() => [
