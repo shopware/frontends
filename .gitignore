@@ -49,3 +49,8 @@ yarn-error.log*
 .env 
 temp
 .temp
+
+
+# shopware api types
+storeApiTypes.d.ts
+adminApiTypes.d.ts
