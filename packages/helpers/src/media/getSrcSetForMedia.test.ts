@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getSrcSetForMedia } from "./image";
+import { getSrcSetForMedia } from "./getSrcSetForMedia";
 
 describe("getSrcSetForMedia", () => {
   it("should return an empty string if media is undefined", () => {

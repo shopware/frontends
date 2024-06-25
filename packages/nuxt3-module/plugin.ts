@@ -65,7 +65,6 @@ export default defineNuxtPlugin((NuxtApp) => {
 
   // Shopware context
   const shopwareContext = createShopwareContext(NuxtApp.vueApp, {
-    apiInstance: null,
     enableDevtools: true,
     devStorefrontUrl: runtimeConfig.public.shopware?.devStorefrontUrl || null,
   });

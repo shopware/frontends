@@ -65,14 +65,6 @@ export type UseCartItemReturn = {
    * Removes the current item from the cart
    */
   removeItem(): Promise<Schemas["Cart"]>;
-  /**
-   * Get SEO data for the current item
-   *
-   * @deprecated
-   */
-  getProductItemSeoUrlData(): Promise<
-    Schemas["ProductDetailResponse"]["product"] | undefined
-  >;
 };
 
 /**
@@ -153,40 +145,9 @@ export function useCartItem(
     return result;
   }
 
-  /**
-   * @deprecated Method is not used anymore and the case should be solved on project level instead due to performance reasons.
-   */
-  async function getProductItemSeoUrlData() {
-    console.warn(
-      "[useCartItem][getProductItemSeoUrlData] is deprecated and will be removed in the next major release.",
-    );
-    if (!cartItem.value.referencedId) {
-      return;
-    }
-
-    try {
-      const result = await apiClient.invoke(
-        "readProductDetail post /product/{productId}",
-        {
-          headers: {
-            "sw-include-seo-urls": true,
-          },
-          pathParams: { productId: cartItem.value.referencedId },
-        },
-      );
-
-      return result.data.product;
-    } catch (error) {
-      console.error("[useCart][getProductItemsSeoUrlsData]", error);
-    }
-
-    return;
-  }
-
   return {
     changeItemQuantity,
     removeItem,
-    getProductItemSeoUrlData,
     itemRegularPrice,
     itemSpecialPrice,
     itemTotalPrice,
