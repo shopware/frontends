@@ -422,6 +422,37 @@
         }
       }
     },
+    "/currency": {
+      "post": [
+        {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "allOf": "_DELETE_"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Currency" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "/quote/detail/{id}": {
       "post": [
         {
