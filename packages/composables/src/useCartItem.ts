@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
-import { useShopwareContext, useCart } from "#imports";
+import { useCart } from "#imports";
 import type { Schemas } from "#shopware";
 
 export type UseCartItemReturn = {
@@ -79,8 +79,7 @@ export function useCartItem(
     throw new Error("[useCartItem] mandatory cartItem argument is missing.");
   }
 
-  const { apiClient } = useShopwareContext();
-  const { refreshCart, changeProductQuantity } = useCart();
+  const { changeProductQuantity, removeItem: cartRemoveItem } = useCart();
 
   const itemQuantity = computed(() => cartItem.value.quantity);
   const itemImageThumbnailUrl = computed(() => getMainImageUrl(cartItem.value));
@@ -124,14 +123,7 @@ export function useCartItem(
   const isRemovable = computed(() => !!cartItem.value.removable);
 
   async function removeItem() {
-    const { data: newCart } = await apiClient.invoke(
-      "removeLineItem post /checkout/cart/line-item/delete",
-      {
-        body: { ids: [cartItem.value.id] },
-      },
-    );
-    await refreshCart(newCart);
-    return newCart;
+    return await cartRemoveItem(cartItem.value);
   }
 
   async function changeItemQuantity(

@@ -142,6 +142,10 @@ export const sidebar = [
             link: "/getting-started/features/custom-products",
           },
           {
+            text: "Broadcasting",
+            link: "/getting-started/features/broadcasting",
+          },
+          {
             text: "Maintenance mode",
             link: "/getting-started/features/maintenance-mode",
           },

@@ -610,6 +610,8 @@ export type Schemas = {
   Cart: {
     /** An affiliate tracking code */
     affiliateCode?: string | null;
+    /** @enum {string} */
+    apiAlias: "cart";
     /** A campaign tracking code */
     campaignCode?: string | null;
     /** A comment that can be added to the cart. */
@@ -4781,7 +4783,9 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  SalesChannelContext: components["schemas"]["ArrayStruct"] & {
+  SalesChannelContext: {
+    /** @enum {string} */
+    apiAlias: "sales_channel_context";
     /** Core context with general configuration values and state */
     context?: {
       currencyFactor?: number;
@@ -4808,8 +4812,7 @@ export type Schemas = {
       name?: string;
     };
     paymentMethod?: components["schemas"]["PaymentMethod"];
-    /** Information about the current sales channel */
-    salesChannel: components["schemas"]["SalesChannel"]; // TODO: [OpenAPI][SalesChannelContext] - salesChannel should be required and points to entity
+    salesChannel: components["schemas"]["SalesChannel"];
     shippingLocation?: {
       address?: components["schemas"]["CustomerAddress"];
       /** @enum {string} */

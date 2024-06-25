@@ -56,7 +56,7 @@ export type InvokeParameters<CURRENT_OPERATION> =
 export type ApiClientHooks = {
   onContextChanged: (newContextToken: string) => void;
   onResponseError: (response: FetchResponse<ResponseType>) => void;
-  onSuccessResponse: (response: FetchResponse<ResponseType>) => void;
+  onSuccessResponse: <T>(response: FetchResponse<T>) => void;
 };
 
 export function createAPIClient<

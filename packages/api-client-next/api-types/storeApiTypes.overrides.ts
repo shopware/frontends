@@ -43,51 +43,6 @@ export type Schemas = {
     entity?: "product";
     sorting?: string;
   };
-  SalesChannelContext: components["schemas"]["ArrayStruct"] & {
-    /** Core context with general configuration values and state */
-    context?: {
-      currencyFactor?: number;
-      currencyId?: string;
-      /** Format: int32 */
-      currencyPrecision?: number;
-      languageIdChain?: string[];
-      scope?: string;
-      source?: string;
-      taxState?: string;
-      useCache?: boolean;
-      versionId?: string;
-    };
-    currency?: components["schemas"]["Currency"];
-    /** Customer group of the current user */
-    currentCustomerGroup?: {
-      displayGross?: boolean;
-      name?: string;
-    };
-    customer?: components["schemas"]["Customer"];
-    /** Fallback group if the default customer group is not applicable */
-    fallbackCustomerGroup?: {
-      displayGross?: boolean;
-      name?: string;
-    };
-    paymentMethod?: components["schemas"]["PaymentMethod"];
-    /** Information about the current sales channel */
-    salesChannel: components["schemas"]["SalesChannel"]; // TODO: [OpenAPI][SalesChannelContext] - salesChannel should be required and points to entity
-    shippingLocation?: {
-      address?: components["schemas"]["CustomerAddress"];
-      /** @enum {string} */
-      apiAlias?: "cart_delivery_shipping_location";
-      country?: components["schemas"]["Country"];
-    };
-    shippingMethod?: components["schemas"]["ShippingMethod"];
-    /** Currently active tax rules and/or rates */
-    taxRules?: {
-      name?: string;
-      /** Format: float */
-      taxRate?: number;
-    }[];
-    /** Context the user session */
-    token?: string;
-  };
   SwagPaypalVaultToken: {
     // TODO: [OpenAPI][SwagPaypalVaultToken] - add SwagPaypalVaultToken definition to schema
     /** Format: date-time */

@@ -60,6 +60,15 @@ watch([isLoggedIn, isGuestSession], ([isLogged, isLoggedGuest]) => {
   }
 });
 
+/**
+ * Broadcast channel logout refresh
+ */
+watch(isLoggedIn, async (newValue, oldValue) => {
+  if (!newValue && oldValue) {
+    location.reload();
+  }
+});
+
 const selectedShippingMethod = computed({
   get(): string {
     return shippingMethod.value?.id || "";
