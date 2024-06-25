@@ -105,7 +105,7 @@ importers:
         version: link:../../packages/helpers
       '@shopware/api-client':
         specifier: workspace:*
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       flexsearch:
         specifier: 0.7.43
         version: 0.7.43
@@ -179,7 +179,7 @@ importers:
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@shopware/api-gen':
         specifier: canary
         version: link:../../packages/api-gen
@@ -219,7 +219,7 @@ importers:
         version: link:../../packages/composables
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@types/node':
         specifier: ^20
         version: 20.14.2
@@ -243,7 +243,7 @@ importers:
         version: link:../../packages/helpers
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -286,7 +286,7 @@ importers:
         version: link:../../packages/composables
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -317,7 +317,7 @@ importers:
         version: link:../../packages/helpers
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -348,7 +348,7 @@ importers:
         version: link:../../packages/composables
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -416,7 +416,7 @@ importers:
         version: link:../../packages/helpers
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -450,7 +450,7 @@ importers:
         version: link:../../packages/composables
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -518,7 +518,7 @@ importers:
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@shopware/api-gen':
         specifier: canary
         version: link:../../packages/api-gen
@@ -545,7 +545,7 @@ importers:
     dependencies:
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -579,7 +579,7 @@ importers:
         version: link:../../packages/helpers
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -607,7 +607,7 @@ importers:
         version: link:../../packages/composables
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -644,7 +644,7 @@ importers:
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@types/lru-cache':
         specifier: 7.10.10
         version: 7.10.10
@@ -682,7 +682,7 @@ importers:
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@types/node':
         specifier: ^20
         version: 20.11.17
@@ -712,7 +712,7 @@ importers:
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@types/node':
         specifier: ^20
         version: 20.11.17
@@ -745,7 +745,7 @@ importers:
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@types/node':
         specifier: ^20
         version: 20.11.17
@@ -766,43 +766,6 @@ importers:
         version: 2.0.21(typescript@5.5.2)
 
   packages/api-client:
-    dependencies:
-      '@shopware-pwa/types':
-        specifier: workspace:*
-        version: link:../types
-      axios:
-        specifier: 0.27.2
-        version: 0.27.2
-      query-string:
-        specifier: 9.0.0
-        version: 9.0.0
-    devDependencies:
-      '@faker-js/faker':
-        specifier: 8.4.1
-        version: 8.4.1
-      '@shopware/api-client':
-        specifier: workspace:*
-        version: link:../api-client-next
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.7)(happy-dom@14.12.3)(terser@5.31.1))
-      eslint-config-shopware:
-        specifier: workspace:*
-        version: link:../eslint-config-shopware
-      happy-dom:
-        specifier: 14.12.3
-        version: 14.12.3
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
-      unbuild:
-        specifier: 2.0.0
-        version: 2.0.0(typescript@5.5.2)
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.7)(happy-dom@14.12.3)(terser@5.31.1)
-
-  packages/api-client-next:
     dependencies:
       defu:
         specifier: 6.1.4
@@ -839,11 +802,48 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.7)(happy-dom@14.12.3)(terser@5.31.1)
 
+  packages/api-client-old:
+    dependencies:
+      '@shopware-pwa/types':
+        specifier: workspace:*
+        version: link:../types
+      axios:
+        specifier: 0.27.2
+        version: 0.27.2
+      query-string:
+        specifier: 9.0.0
+        version: 9.0.0
+    devDependencies:
+      '@faker-js/faker':
+        specifier: 8.4.1
+        version: 8.4.1
+      '@shopware/api-client':
+        specifier: workspace:*
+        version: link:../api-client
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.7)(happy-dom@14.12.3)(terser@5.31.1))
+      eslint-config-shopware:
+        specifier: workspace:*
+        version: link:../eslint-config-shopware
+      happy-dom:
+        specifier: 14.12.3
+        version: 14.12.3
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      unbuild:
+        specifier: 2.0.0
+        version: 2.0.0(typescript@5.5.2)
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.7)(happy-dom@14.12.3)(terser@5.31.1)
+
   packages/api-gen:
     dependencies:
       '@shopware/api-client':
         specifier: workspace:*
-        version: link:../api-client-next
+        version: link:../api-client
       ofetch:
         specifier: 1.3.4
         version: 1.3.4
@@ -901,7 +901,7 @@ importers:
         version: link:../helpers
       '@shopware/api-client':
         specifier: workspace:*
-        version: link:../api-client-next
+        version: link:../api-client
       '@tresjs/cientos':
         specifier: 3.9.0
         version: 3.9.0(@tresjs/core@4.0.2(three@0.165.0)(vue@3.4.27(typescript@5.5.2)))(three@0.165.0)(tweakpane@4.0.3)(vue@3.4.27(typescript@5.5.2))
@@ -980,7 +980,7 @@ importers:
         version: link:../helpers
       '@shopware/api-client':
         specifier: workspace:*
-        version: link:../api-client-next
+        version: link:../api-client
       '@vueuse/core':
         specifier: 10.11.0
         version: 10.11.0(vue@3.4.27(typescript@5.5.2))
@@ -1071,7 +1071,7 @@ importers:
         version: link:../helpers
       '@shopware/api-client':
         specifier: workspace:*
-        version: link:../api-client-next
+        version: link:../api-client
       defu:
         specifier: 6.1.4
         version: 6.1.4
@@ -1104,7 +1104,7 @@ importers:
     dependencies:
       '@shopware/api-client':
         specifier: workspace:*
-        version: link:../api-client-next
+        version: link:../api-client
     devDependencies:
       eslint-config-shopware:
         specifier: workspace:*
@@ -1126,7 +1126,7 @@ importers:
         version: link:../../packages/composables
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@vitejs/plugin-vue':
         specifier: 5.0.5
         version: 5.0.5(vite@5.2.12(@types/node@20.14.7)(terser@5.31.1))(vue@3.4.27(typescript@5.5.2))
@@ -1159,7 +1159,7 @@ importers:
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@types/node':
         specifier: ^20
         version: 20.11.17
@@ -1195,7 +1195,7 @@ importers:
         version: link:../../packages/nuxt3-module
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       '@unocss/nuxt':
         specifier: 0.61.0
         version: 0.61.0(rollup@4.18.0)(vite@5.2.12(@types/node@20.14.7)(terser@5.31.1))(webpack@5.91.0(@swc/core@1.5.28))
@@ -1259,7 +1259,7 @@ importers:
         version: link:../../packages/composables
       '@shopware/api-client':
         specifier: canary
-        version: link:../../packages/api-client-next
+        version: link:../../packages/api-client
       js-cookie:
         specifier: 3.0.5
         version: 3.0.5
@@ -1818,6 +1818,9 @@ packages:
     peerDependencies:
       vite: ^5.2.8
       vitest: '>=1.2.2'
+    peerDependenciesMeta:
+      vite:
+        optional: true
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -5038,9 +5041,6 @@ packages:
 
   axios@0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
-
-  axios@1.6.2:
-    resolution: {integrity: sha512-7i24Ri4pmDRfJTR7LDBhsOTtcm+9kjX5WiY1X3wIisx6G9So3pfMkEiU7emUBe46oceVImccTEM3k6C5dbVW8A==}
 
   axios@1.7.2:
     resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
@@ -8336,10 +8336,6 @@ packages:
   node-forge@1.3.1:
     resolution: {integrity: sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==}
     engines: {node: '>= 6.13.0'}
-
-  node-gyp-build@4.7.1:
-    resolution: {integrity: sha512-wTSrZ+8lsRRa3I3H8Xr65dLWSgCvY2l4AOnaeKdPA9TB/WYMPaTcrzf3rXvFoVvjKNVnu0CcWSx54qq9GKRUYg==}
-    hasBin: true
 
   node-gyp-build@4.8.1:
     resolution: {integrity: sha512-OSs33Z9yWr148JZcbZd5WiAXhh/n9z8TxQcdMhIOlpN9AhWpLfvVFO73+m77bBABQMaY9XSvIa+qk0jlI7Gcaw==}
@@ -12056,18 +12052,19 @@ snapshots:
 
   '@codspeed/core@3.1.0':
     dependencies:
-      axios: 1.6.2
+      axios: 1.7.2
       find-up: 6.3.0
       form-data: 4.0.0
-      node-gyp-build: 4.7.1
+      node-gyp-build: 4.8.1
     transitivePeerDependencies:
       - debug
 
   '@codspeed/vitest-plugin@3.1.0(vite@5.2.12(@types/node@20.14.7)(terser@5.31.1))(vitest@1.6.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.7)(happy-dom@14.12.3)(terser@5.31.1))':
     dependencies:
       '@codspeed/core': 3.1.0
-      vite: 5.2.12(@types/node@20.14.7)(terser@5.31.1)
       vitest: 1.6.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.7)(happy-dom@14.12.3)(terser@5.31.1)
+    optionalDependencies:
+      vite: 5.2.12(@types/node@20.14.7)(terser@5.31.1)
     transitivePeerDependencies:
       - debug
 
@@ -17198,14 +17195,6 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.6.2:
-    dependencies:
-      follow-redirects: 1.15.6
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-
   axios@1.7.2:
     dependencies:
       follow-redirects: 1.15.6
@@ -21043,8 +21032,6 @@ snapshots:
       encoding: 0.1.13
 
   node-forge@1.3.1: {}
-
-  node-gyp-build@4.7.1: {}
 
   node-gyp-build@4.8.1: {}
 

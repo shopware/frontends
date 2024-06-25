@@ -49,7 +49,7 @@ export async function loadJsonOverrides(
 ): Promise<OverridesSchema | undefined> {
   const pathToResolve =
     path ||
-    "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client-next/api-types/storeApiSchema.overrides.json";
+    "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/storeApiSchema.overrides.json";
 
   try {
     if (isURL(pathToResolve)) {

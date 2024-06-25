@@ -141,7 +141,7 @@ you apply this as 2 independent patches, or combine it as a single patch without
 Creating multiple patches is useful when you want to apply different changes to the same object, which can also be corrected on the backend side independently. This way specific patches are becoming outdated and you get the notification that you can remove them safely.
 
 > [!NOTE]  
-> Check our current default patches to see more examples: [source](https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client-next/api-types/storeApiSchema.overrides.json).
+> Check our current default patches to see more examples: [source](https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/storeApiSchema.overrides.json).
 
 ## Commands
 

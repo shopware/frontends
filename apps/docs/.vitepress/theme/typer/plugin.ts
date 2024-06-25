@@ -15,7 +15,7 @@ import { findSync } from "find-in-files";
 import { BlockList } from "net";
 
 const packagesMap = {
-  "api-client": "api-client-next",
+  // "api-client": "api-client-next",
 };
 
 export async function ReadmeBasedReference(): Promise<Plugin> {
