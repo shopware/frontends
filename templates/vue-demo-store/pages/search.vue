@@ -48,13 +48,6 @@ const createFiltersFromRoute = () => {
           value: value,
         });
       }
-      // if (key === "properties") {
-      //   filters.push({
-      //     type: "equalsAny",
-      //     field: "propertyIds",
-      //     value: value,
-      //   });
-      // }
       if (key === "rating") {
         filters.push({
           type: "range",
