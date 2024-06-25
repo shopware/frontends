@@ -88,7 +88,7 @@ export function useCartItem(
   }
 
   const { apiClient } = useShopwareContext();
-  const { refreshCart, changeProductQuantity } = useCart();
+  const { changeProductQuantity, removeItem: cartRemoveItem } = useCart();
 
   const itemQuantity = computed(() => cartItem.value.quantity);
   const itemImageThumbnailUrl = computed(() => getMainImageUrl(cartItem.value));
@@ -132,14 +132,7 @@ export function useCartItem(
   const isRemovable = computed(() => !!cartItem.value.removable);
 
   async function removeItem() {
-    const { data: newCart } = await apiClient.invoke(
-      "removeLineItem post /checkout/cart/line-item/delete",
-      {
-        body: { ids: [cartItem.value.id] },
-      },
-    );
-    await refreshCart(newCart);
-    return newCart;
+    return await cartRemoveItem(cartItem.value);
   }
 
   async function changeItemQuantity(

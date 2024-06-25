@@ -6,14 +6,11 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const isAccountMenuOpen = ref(false);
 
-const { refreshSession } = useBroadcastConsumer();
-
 async function invokeLogout() {
   try {
     await logout();
   } finally {
     isAccountMenuOpen.value = false;
-    refreshSession();
   }
 }
 </script>
