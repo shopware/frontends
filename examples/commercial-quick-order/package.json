@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "vue-tsc --noEmit",
     "preview": "vite preview",
-    "generate-types": "shopware-api-gen generate --apiType=store"
+    "generate-types": "shopware-api-gen generate --apiType=store",
+    "postinstall": "pnpm run generate-types"
   },
   "dependencies": {
     "@shopware-pwa/composables-next": "canary",

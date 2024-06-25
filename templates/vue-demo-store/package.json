@@ -11,7 +11,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "analyze": "nuxt analyze",
-    "generate-types": "shopware-api-gen generate --apiType=store"
+    "generate-types": "shopware-api-gen generate --apiType=store",
+    "postinstall": "pnpm run generate-types"
   },
   "dependencies": {
     "@shopware-pwa/cms-base": "canary",
