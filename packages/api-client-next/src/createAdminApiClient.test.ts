@@ -155,8 +155,8 @@ describe("createAdminAPIClient", () => {
         client_id: "my-client-id",
         client_secret: "my-client-secret-token",
       },
-      onAuthChange: onAuthChangeSpy,
     });
+    client.hook("onAuthChange", onAuthChangeSpy);
     const res = await client.invoke("getOrderList get /order", {});
     expect(authEndpointSpy).toHaveBeenCalledWith({
       client_id: "my-client-id",
@@ -202,8 +202,8 @@ describe("createAdminAPIClient", () => {
         client_id: "my-client-id",
         client_secret: "my-client-secret-token",
       },
-      onAuthChange: onAuthChangeSpy,
     });
+    client.hook("onAuthChange", onAuthChangeSpy);
     const res = await client.invoke("getOrderList get /order", {});
     expect(res.data).toEqual({ orderResponse: 123 });
 

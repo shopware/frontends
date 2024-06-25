@@ -11,9 +11,6 @@ import type { App, EffectScope } from "vue";
 export function createShopwareContext(
   app: App,
   options: {
-    // initialStore?: any;
-    // shopwareDefaults: ApiDefaults;
-    apiInstance?: unknown;
     devStorefrontUrl?: string | null;
     enableDevtools?: boolean;
   },
@@ -44,7 +41,6 @@ export function createShopwareContext(
     },
     _a: app,
     _e: scope,
-    apiInstance: options.apiInstance,
     devStorefrontUrl: options.devStorefrontUrl,
     state,
   });

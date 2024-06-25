@@ -17,27 +17,48 @@ Go to [Documentation > Requirements](https://frontends.shopware.com/framework/re
 
 In order to have a different API connected to the app, change two lines of code in [./src/entrypoints/\_shopware.ts](./src/entrypoints/_shopware.ts):
 
-```js
-// src/entrypoints/_shopware.ts
+<!-- automd:file src="./src/entrypoints/_shopware.ts" code -->
+
+```ts [_shopware.ts]
+import type { App } from "vue";
+import { createShopwareContext } from "@shopware-pwa/composables-next/dist";
+import Cookies from "js-cookie";
+
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "@shopware/api-client/store-api-types";
 
 export default (app: App) => {
-   const apiInstance = createAPIClient<operations>({
-    baseURL:
-      import.meta.env.API_URL ||
-      "https://demo-frontends.shopware.store/store-api", // CHANGE here or in .env.* file
+  const shopwareEndpoint =
+    import.meta.env.API_URL ||
+    "https://demo-frontends.shopware.store/store-api";
+
+  const apiClient = createAPIClient<operations>({
+    baseURL: shopwareEndpoint,
     accessToken:
-      import.meta.env.API_ACCESS_TOKEN || "SWSCBHFSNTVMAWNZDNFKSHLAYW", // CHANGE here or in .env.* file
+      import.meta.env.API_ACCESS_TOKEN || "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     contextToken: Cookies.get("sw-context-token"),
-    onContextChanged(newContextToken: string) {
-      Cookies.set("sw-context-token", newContextToken, {
-        expires: 365, // days
-        path: "/",
-        sameSite: "lax",
-      });
-    },
   });
+
+  apiClient.hook("onContextChanged", (newContextToken) => {
+    Cookies.set("sw-context-token", newContextToken, {
+      expires: 365, // days
+      path: "/",
+      sameSite: "lax",
+      secure: shopwareEndpoint.startsWith("https://"),
+    });
+  });
+
+  // create a Shopware context plugin and inject it to the Vue app
+  const shopwareContext = createShopwareContext(app, {
+    devStorefrontUrl: null,
+  });
+  // register a plugin
+  app.provide("apiClient", apiClient);
+  app.use(shopwareContext);
 };
 ```
+
+<!-- /automd -->
 
 ## Customize
 

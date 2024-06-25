@@ -4,11 +4,7 @@ import { defineComponent, h } from "vue";
 import { defu } from "defu";
 
 type Injections = {
-  shopware: {
-    apiInstance: {
-      config: Record<string, unknown>;
-    };
-  };
+  shopware: unknown;
   apiClient: {
     invoke: ReturnType<typeof vi.fn>;
   };
@@ -16,11 +12,7 @@ type Injections = {
 
 export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {
   const defaultInjections: Injections = {
-    shopware: {
-      apiInstance: {
-        config: {},
-      },
-    },
+    shopware: {},
     apiClient: { invoke: customMocks?.apiClient?.invoke ?? vi.fn() },
   };
 

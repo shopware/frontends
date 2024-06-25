@@ -44,21 +44,4 @@ describe("useCartItem", () => {
       }),
     );
   });
-
-  it("get product item seo url data", () => {
-    const { vm, injections } = useSetup(() =>
-      useCartItem(ref(lineItem) as unknown as Ref<Schemas["LineItem"]>),
-    );
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    vm.getProductItemSeoUrlData();
-
-    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readProductDetail"),
-      expect.objectContaining({
-        pathParams: {
-          productId: lineItem.id,
-        },
-      }),
-    );
-  });
 });
