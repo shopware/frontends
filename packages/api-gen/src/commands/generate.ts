@@ -236,7 +236,7 @@ export async function generate(args: {
         // falback from the github
         // TODO: change to main branch
         schema = await ofetch(
-          `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client-next/api-types/${args.apiType}ApiTypes.d.ts`,
+          `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${args.apiType}ApiTypes.d.ts`,
         );
       }
 
