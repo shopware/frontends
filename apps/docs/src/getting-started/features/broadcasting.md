@@ -17,56 +17,78 @@ The Broadcast Channel API allows simple communication between browsing contexts 
 
 For Vue app we are recommending to use `useBroadcastChannel` from `VueUse` [package](https://vueuse.org/core/useBroadcastChannel/)
 
-## Channel initialization
+## Synchronizing changes between tabs
 
-`useBroadcastChannel` is called with an object that has a name property. The name property is the name of the channel we want to create or connect to.
+In our demo store template we provide example of usage broadcasting for synchronizing changes between tabs.
+We rely on the data fetched by the API client and send them to broadcast channel for synchronization.
+This way:
 
-The `useBroadcastChannel` composable returns an object that contains a data property. This data property is updated whenever a message is received on the channel. You can use this data property in your component to react to incoming messages.
+- session data
+- cart data
+  are synchronized between tabs.
 
-```ts
-const { data } = useBroadcastChannel({
-  name: broadcastChannelName,
-});
-```
+<!-- automd:file src="../../../../../templates/vue-demo-store/composables/useBroadcastChannelSync.ts" code -->
 
-## Event emitting
+```ts [useBroadcastChannelSync.ts]
+import type { Schemas } from "#shopware";
 
-```ts
-const { isSupported } = useBroadcastChannel({
-  name: broadcastChannelName,
-});
-const { actions, post } = useBroadcastConsumer();
+export function useSyncChannel<Entity>(
+  name: string,
+): [Ref<Entity | undefined>, (data: Entity) => void] {
+  const { data, post } = useBroadcastChannel<Entity, Entity>({
+    name,
+  });
 
-async function invokeLogout() {
-  await logout();
-  isAccountMenuOpen.value = false;
-
-  if (isSupported) {
-    await post("loggedOut");
-  }
+  return [data, post];
 }
+
+function isEntity<T extends { apiAlias: string }>(
+  data: T,
+  apiAlias: T["apiAlias"],
+): data is T {
+  return data?.apiAlias === apiAlias;
+}
+
+/**
+ * Sync basic state like session/cart data between tabs
+ */
+export const useBroadcastChannelSync = createSharedComposable(() => {
+  const { apiClient } = useShopwareContext();
+
+  // Synchronize CART data
+  const { refreshCart } = useCart();
+  const [cartData, notifyCartDataChanged] =
+    useSyncChannel<Schemas["Cart"]>("shopware-cart");
+  watch([cartData], () => {
+    refreshCart(cartData.value);
+  });
+
+  // Synchronize SESSION data
+  const { setContext } = useSessionContext();
+  const [sessionData, notifySessionDataChanged] = useSyncChannel<
+    Schemas["SalesChannelContext"]
+  >("shopware-session-data");
+  watch([sessionData], () => {
+    setContext(sessionData.value!);
+  });
+
+  // Listen for API responses and update the shared state
+  apiClient.hook("onSuccessResponse", (response) => {
+    // for cart
+    if (isEntity<Schemas["Cart"]>(<Schemas["Cart"]>response._data, "cart")) {
+      notifyCartDataChanged(<Schemas["Cart"]>response._data);
+    }
+    // for session data
+    else if (
+      isEntity<Schemas["SalesChannelContext"]>(
+        <Schemas["SalesChannelContext"]>response._data,
+        "sales_channel_context",
+      )
+    ) {
+      notifySessionDataChanged(<Schemas["SalesChannelContext"]>response._data);
+    }
+  });
+});
 ```
 
-If the Broadcast Channel API is supported in the user's browser (checked using `isSupported` in ), we broadcast a loggedOut event using the post function. This event can be listened for in other parts of the application (or in other tabs/windows of the same origin) to react to the user logging out.
-
-This `invokeLogout` function would typically be called when the user clicks a "Log Out" button or link in the application.
-
-## Event consuming (logout example)
-
-```ts
-const consume = async (operation: string) => {
-  switch (operation) {
-    case "loggedOut":
-      try {
-        await refreshSessionContext();
-      } catch (error) {
-        console.error("[useBroadcastConsumer][consume]", error);
-      }
-      break;
-  }
-};
-```
-
-In the code snippet above, we use a switch statement to handle different types of operations. In this case, we only handle the loggedOut operation. When a loggedOut operation is received, the `refreshSessionContext ` function is called.
-
-This consume function would typically be called whenever a message is received on the broadcast channel. The operation in the message would be passed to the consume function, which would then handle the operation accordingly.
+<!-- /automd -->
