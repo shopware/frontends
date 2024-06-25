@@ -309,34 +309,6 @@ describe("createAPIClient", () => {
     expect(errorCallback).toHaveBeenCalled();
   });
 
-  it("should display deprecation message at the console when onContextChanged method is used", async () => {
-    const app = createApp().use(
-      "/context",
-      eventHandler(async (event) => {
-        setHeader(event, "sw-context-token", "789");
-        return {};
-      }),
-    );
-
-    const consoleErrorSpy = vi
-      .spyOn(console, "warn")
-      .mockImplementationOnce(() => {});
-    const contextChangedMock = vi.fn().mockImplementation(() => {});
-
-    const baseURL = await createPortAndGetUrl(app);
-
-    const client = createAPIClient<operations>({
-      baseURL,
-      accessToken: "123",
-      contextToken: "456",
-      onContextChanged: contextChangedMock,
-    });
-
-    await client.invoke("readContext get /context");
-
-    expect(consoleErrorSpy).toHaveBeenCalled();
-  });
-
   it("should allow to abort request", async () => {
     const app = createApp().use(
       "/context",

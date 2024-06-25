@@ -3,7 +3,7 @@ import type { FetchOptions, FetchResponse } from "ofetch";
 import type { operations } from "../api-types/adminApiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
-import { type Hookable, createHooks } from "hookable";
+import { createHooks } from "hookable";
 import defu from "defu";
 import { createPathWithParams } from "./transformPathToQuery";
 import type { InvokeParameters } from "./createAPIClient";
@@ -48,11 +48,11 @@ function createAuthorizationHeader(token: string) {
   return `Bearer ${token}`;
 }
 
-export type ApiClientHooks = Hookable<{
-  onContextChanged: (newContextToken: string) => void;
+export type AdminApiClientHooks = {
+  onAuthChange: (authData: AdminSessionData) => void;
   onResponseError: (response: FetchResponse<ResponseType>) => void;
   onSuccessResponse: (response: FetchResponse<ResponseType>) => void;
-}>;
+};
 
 export function createAdminAPIClient<
   OPERATIONS extends Record<string, any> = operations,
@@ -65,11 +65,6 @@ export function createAdminAPIClient<
    */
   credentials?: OPERATIONS["token"]["body"];
   sessionData?: AdminSessionData;
-  /**
-   *
-   * @deprecated use `apiClient.hook("contextChanged". handler)` instead
-   */
-  onAuthChange?: (params: AdminSessionData) => void;
   defaultHeaders?: ClientHeaders;
 }) {
   const isTokenBasedAuth =
@@ -87,11 +82,7 @@ export function createAdminAPIClient<
   });
 
   // Create a hookable instance
-  const apiClientHooks = createHooks<{
-    onAuthChange: (authData: AdminSessionData) => void;
-    onResponseError: (response: FetchResponse<ResponseType>) => void;
-    onSuccessResponse: (response: FetchResponse<ResponseType>) => void;
-  }>();
+  const apiClientHooks = createHooks<AdminApiClientHooks>();
 
   function getSessionData() {
     return { ...sessionData };
@@ -120,7 +111,6 @@ export function createAdminAPIClient<
         refreshToken: responseData.refresh_token,
         expirationTime: Date.now() + responseData.expires_in * 1000,
       });
-      params.onAuthChange?.(dataCopy);
       apiClientHooks.callHook("onAuthChange", dataCopy);
     }
   }
@@ -267,6 +257,6 @@ export function createAdminAPIClient<
     /**
      * Available hooks for the client.
      */
-    hook: apiClientHooks.hook as ApiClientHooks["hook"],
+    hook: apiClientHooks.hook,
   };
 }
