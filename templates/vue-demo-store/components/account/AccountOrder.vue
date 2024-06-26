@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 
+defineOptions({
+  name: "AccountOrder",
+});
+
 const props = defineProps<{
   order: Schemas["Order"];
 }>();
@@ -15,12 +19,6 @@ const orderDate = computed(() =>
     (typeof navigator !== "undefined" && navigator.language) || "en-US",
   ),
 );
-</script>
-
-<script lang="ts">
-export default {
-  name: "AccountOrder",
-};
 </script>
 
 <template>

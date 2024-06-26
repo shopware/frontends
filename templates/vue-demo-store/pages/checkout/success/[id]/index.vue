@@ -1,12 +1,10 @@
-<script lang="ts">
-export default {
-  name: "CheckoutSuccessPage",
-};
-</script>
-
 <script setup lang="ts">
 import { watchDebounced } from "@vueuse/core";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+
+defineOptions({
+  name: "CheckoutSuccessPage",
+});
 
 const { params } = useRoute();
 const router = useRouter();

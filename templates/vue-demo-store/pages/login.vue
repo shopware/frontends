@@ -1,4 +1,8 @@
 <script setup lang="ts">
+defineOptions({
+  name: "LoginPage",
+});
+
 const { push } = useRouter();
 const { isLoggedIn } = useUser();
 
@@ -19,12 +23,6 @@ useBreadcrumbs([
     path: "/login",
   },
 ]);
-</script>
-
-<script lang="ts">
-export default {
-  name: "LoginPage",
-};
 </script>
 
 <template>

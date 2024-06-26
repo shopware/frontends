@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 
+defineOptions({
+  name: "AccountOrderDetails",
+});
+
 const props = defineProps<{
   orderId: string;
 }>();
@@ -45,12 +49,6 @@ const selectedPaymentMethod = computed({
   },
 });
 const paymentMethods = await getPaymentMethods();
-</script>
-
-<script lang="ts">
-export default {
-  name: "AccountOrderDetails",
-};
 </script>
 
 <template>

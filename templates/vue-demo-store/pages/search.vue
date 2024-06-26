@@ -3,6 +3,10 @@ import type { Schemas, operations } from "#shopware";
 const route = useRoute();
 const router = useRouter();
 
+defineOptions({
+  name: "SearchResultPage",
+});
+
 const {
   changeCurrentPage,
   getCurrentListing,
@@ -345,12 +349,6 @@ const openFilters = () => {
 onMounted(() => {
   openFilters();
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: "SearchResultPage",
-};
 </script>
 
 <template>

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { RouteObject } from "@shopware-pwa/composables-next";
 
+defineOptions({
+  name: "ErrorPage",
+});
+
 const props = defineProps<{
   error: {
     statusCode: number;
@@ -53,12 +57,6 @@ try {
 
 const statusCode = isFormattedError ? props.error.statusCode : "Error";
 const errorMessage = isFormattedError ? errMessage : props.error.message;
-</script>
-
-<script lang="ts">
-export default {
-  name: "ErrorPage",
-};
 </script>
 
 <template>

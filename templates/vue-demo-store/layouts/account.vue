@@ -1,13 +1,11 @@
-<script lang="ts">
-export default {
-  name: "AccountLayout",
-};
-</script>
-
 <script setup lang="ts">
 const route = useRoute();
 const to = route.query.to as string;
 const params = { to: to };
+
+defineOptions({
+  name: "AccountLayout",
+});
 
 useAuthGuardRedirection(params);
 
