@@ -1,11 +1,9 @@
-<script lang="ts">
-export default {
-  name: "WishlistPage",
-};
-</script>
-
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
+
+defineOptions({
+  name: "WishlistPage",
+});
 
 const { items, clearWishlist } = useWishlist();
 const { apiClient } = useShopwareContext();

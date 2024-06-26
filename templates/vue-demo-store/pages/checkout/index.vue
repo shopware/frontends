@@ -1,8 +1,3 @@
-<script lang="ts">
-export default {
-  name: "CheckoutPage",
-};
-</script>
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
@@ -12,6 +7,9 @@ import { ApiClientError, type ApiError } from "@shopware/api-client";
 
 const { required, minLength, requiredIf, email } = customValidators();
 
+defineOptions({
+  name: "CheckoutPage",
+});
 definePageMeta({
   layout: "checkout",
 });

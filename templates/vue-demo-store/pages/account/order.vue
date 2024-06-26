@@ -1,4 +1,7 @@
 <script setup lang="ts">
+defineOptions({
+  name: "OrderHistory",
+});
 definePageMeta({
   layout: "account",
 });
@@ -30,12 +33,6 @@ await useAsyncData("getOrders", () => {
     ],
   });
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: "OrderHistory",
-};
 </script>
 
 <template>

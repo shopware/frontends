@@ -15,8 +15,6 @@ import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
 export default defineNuxtPlugin((NuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
   const shopwareEndpoint =
-    runtimeConfig.shopware?.endpoint ??
-    runtimeConfig.shopware?.shopwareEndpoint ??
     runtimeConfig.public?.shopware?.endpoint ??
     runtimeConfig.public?.shopware?.shopwareEndpoint;
   const shopwareAccessToken =
