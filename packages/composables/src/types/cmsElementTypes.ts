@@ -72,6 +72,7 @@ export type CmsElementImage = Schemas["CmsSlot"] & {
 
 // Image Slider
 export type SliderElementConfig = {
+  minWidth?: ElementConfig<string>;
   minHeight: ElementConfig<string | number>;
   verticalAlign?: ElementConfig<VerticalAlign>;
   displayMode?: ElementConfig<"standard" | "cover" | "contain">;
