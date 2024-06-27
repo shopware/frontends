@@ -88,7 +88,7 @@ const srcPath = computed(() => {
 
 <template>
   <div
-    class="sw-product-card group relative max-w-full inline-block max-w-sm bg-white border border-secondary-200 rounded-md shadow transform transition duration-300 hover:scale-101"
+    class="test-class sw-product-card group relative max-w-full inline-block max-w-sm bg-white border border-secondary-200 rounded-md shadow transform transition duration-300 hover:scale-101"
     data-testid="product-box"
   >
     <div
