@@ -50,6 +50,7 @@ const crossSellCollections = computed(() => {
 const { width } = useElementSize(crossSellContainer);
 const slidesToShow = computed(() => {
   const minWidth = +(config.value.minWidth?.value.replace(/\D+/g, "") || 0);
+  console.log("test", minWidth);
   return Math.floor(width.value / (minWidth * 1.2));
 });
 
