@@ -13,17 +13,17 @@ Documentation specific for this package: [api-client](https://frontends.shopware
 
 ## Changelog
 
-Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
+Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client-old/CHANGELOG.md)
 
-### Latest changes: 0.7.0
+### Latest changes: 1.0.0
 
-### Minor Changes
+### Major Changes
 
-- [#453](https://github.com/shopware/frontends/pull/453) [`f5adaeba`](https://github.com/shopware/frontends/commit/f5adaeba6dec11422e0c02d92aba8caf56017af5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add cms endpoint
-
-- [#435](https://github.com/shopware/frontends/pull/435) [`a4483ed8`](https://github.com/shopware/frontends/commit/a4483ed8bf9370e87aedeb81846fe9d31880b3e0) Thanks [@patzick](https://github.com/patzick)! - Changed types imports to `import type {...} from "..."`
+- [#871](https://github.com/shopware/frontends/pull/871) [`1566f7a`](https://github.com/shopware/frontends/commit/1566f7a3962c511b5c72e12a4a5db40c4aa5d198) Thanks [@patzick](https://github.com/patzick)! - Read more about new major release: https://github.com/shopware/frontends/discussions/965
 
 ### Patch Changes
 
-- Updated dependencies [[`2e80139c`](https://github.com/shopware/frontends/commit/2e80139c6fa0bace77d385cfaffa30c4811f8831), [`43510a10`](https://github.com/shopware/frontends/commit/43510a108d351aca361e460844b2cddd29f889b5)]:
-  - @shopware-pwa/types@0.6.0
+- [#931](https://github.com/shopware/frontends/pull/931) [`3cc3d5e`](https://github.com/shopware/frontends/commit/3cc3d5e7b67522f8f7f1d9bed639f18d3e384239) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Adjust formsService types
+
+- Updated dependencies [[`1566f7a`](https://github.com/shopware/frontends/commit/1566f7a3962c511b5c72e12a4a5db40c4aa5d198), [`543a8e1`](https://github.com/shopware/frontends/commit/543a8e1fb3b391a0238f329e0ead30b8322016ec)]:
+  - @shopware-pwa/types@1.0.0

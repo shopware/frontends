@@ -2,7 +2,7 @@
   "name": "shopware-astro",
   "private": true,
   "type": "module",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
