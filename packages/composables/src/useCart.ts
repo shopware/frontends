@@ -140,7 +140,6 @@ export function useCartFunction(): UseCartReturn {
   async function addProducts(
     items: operations["addLineItem post /checkout/cart/line-item"]["body"]["items"],
   ): Promise<Schemas["Cart"]> {
-    console.log("zzzzzzzz");
     const { data: addToCartResult } = await apiClient.invoke(
       "addLineItem post /checkout/cart/line-item",
       {
