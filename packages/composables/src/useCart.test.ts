@@ -46,7 +46,7 @@ describe("useCart", () => {
           items: [
             {
               type: itemsMock.items[0].type,
-              id: itemsMock.items[0].id,
+              id: itemsMock.items[0].referencedId,
               referencedId: itemsMock.items[0].referencedId,
               quantity: itemsMock.items[0].quantity,
             },
