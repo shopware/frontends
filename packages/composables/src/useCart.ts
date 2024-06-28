@@ -2,7 +2,7 @@ import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { useContext, useShopwareContext } from "#imports";
 import { createSharedComposable } from "@vueuse/core";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 /**
  * Composable to manage cart
@@ -18,6 +18,12 @@ export type UseCartReturn = {
     id: string;
     quantity?: number;
   }): Promise<Schemas["Cart"]>;
+  /**
+   * Add products by array of items
+   */
+  addProducts(
+    items: operations["addLineItem post /checkout/cart/line-item"]["body"]["items"],
+  ): Promise<Schemas["Cart"]>;
   /**
    * Adds a promotion code to the cart
    */
@@ -123,6 +129,23 @@ export function useCartFunction(): UseCartReturn {
               type: "product",
             },
           ],
+        },
+      },
+    );
+    _storeCart.value = addToCartResult;
+    setCartErrors(addToCartResult);
+    return addToCartResult;
+  }
+
+  async function addProducts(
+    items: operations["addLineItem post /checkout/cart/line-item"]["body"]["items"],
+  ): Promise<Schemas["Cart"]> {
+    console.log("zzzzzzzz");
+    const { data: addToCartResult } = await apiClient.invoke(
+      "addLineItem post /checkout/cart/line-item",
+      {
+        body: {
+          items,
         },
       },
     );
@@ -263,6 +286,7 @@ export function useCartFunction(): UseCartReturn {
 
   return {
     addProduct,
+    addProducts,
     addPromotionCode: submitPromotionCode,
     appliedPromotionCodes,
     cart,
