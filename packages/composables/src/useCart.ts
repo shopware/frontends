@@ -113,6 +113,10 @@ export function useCartFunction(): UseCartReturn {
     return data;
   }
 
+  /**
+   *
+   * @deprecated Use `addProducts` instead
+   */
   async function addProduct(params: {
     id: string;
     quantity?: number;
@@ -137,6 +141,12 @@ export function useCartFunction(): UseCartReturn {
     return addToCartResult;
   }
 
+  /**
+   * Add multiple products to the cart
+   *
+   * @param {operations["addLineItem post /checkout/cart/line-item"]["body"]["items"]} items
+   * @returns
+   */
   async function addProducts(
     items: operations["addLineItem post /checkout/cart/line-item"]["body"]["items"],
   ): Promise<Schemas["Cart"]> {
@@ -195,7 +205,7 @@ export function useCartFunction(): UseCartReturn {
         body: {
           items: [
             {
-              referencedId: promotionCode,
+              id: promotionCode,
               type: "promotion",
             },
           ],

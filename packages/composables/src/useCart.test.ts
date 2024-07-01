@@ -1,41 +1,45 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach, vi } from "vitest";
 import { useCart } from "./useCart";
 import { useSetup } from "./_test";
 import type { operations } from "#shopware";
 
 describe("useCart", () => {
-  it("adding products", async () => {
-    const { vm, injections } = useSetup(useCart);
-    injections.apiClient.invoke.mockResolvedValue({
-      data: {},
-    });
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-    const itemsMock: operations["addLineItem post /checkout/cart/line-item"]["body"] =
-      {
-        items: [
-          {
-            id: "01893ed931d571718e8138e7df7d68d1",
-            quantity: 1,
-            referencedId: "e05e9340aff4484f9009646dfd572df9",
-            type: "product",
-          },
-          {
-            id: "01893ed931d571718e8138e7dfda5264",
-            quantity: 1,
-            referencedId: "482ce99edecd4579ab1a2c1807bf27d7",
-            type: "product",
-          },
-          {
-            id: "01893ed931d571718e8138e7dffd39c6",
-            quantity: 2,
-            referencedId: "b369bdcbfd0846acbbd8657b8dd18787",
-            type: "product",
-          },
-        ],
-      };
+  const itemsMock: operations["addLineItem post /checkout/cart/line-item"]["body"] =
+    {
+      items: [
+        {
+          id: "01893ed931d571718e8138e7df7d68d1",
+          quantity: 1,
+          referencedId: "e05e9340aff4484f9009646dfd572df9",
+          type: "product",
+        },
+        {
+          id: "01893ed931d571718e8138e7dfda5264",
+          quantity: 1,
+          referencedId: "482ce99edecd4579ab1a2c1807bf27d7",
+          type: "product",
+        },
+        {
+          id: "01893ed931d571718e8138e7dffd39c6",
+          quantity: 2,
+          referencedId: "b369bdcbfd0846acbbd8657b8dd18787",
+          type: "product",
+        },
+      ],
+    };
 
+  const { vm, injections } = useSetup(useCart);
+  injections.apiClient.invoke.mockResolvedValue({
+    data: {},
+  });
+
+  it("add single product", async () => {
     await vm.addProduct({
-      id: itemsMock.items[0].referencedId,
+      id: itemsMock.items[0].referencedId as string,
       quantity: itemsMock.items[0].quantity,
     });
 
@@ -54,12 +58,41 @@ describe("useCart", () => {
         },
       }),
     );
+  });
 
+  it("refresh the cart", async () => {
+    await vm.refreshCart();
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCart"),
+    );
+  });
+
+  it("add set of products", async () => {
     await vm.addProducts(itemsMock.items);
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("addLineItem"),
       expect.objectContaining({
         body: itemsMock,
+      }),
+    );
+  });
+
+  it("change product quantity", async () => {
+    await vm.changeProductQuantity({
+      id: itemsMock.items[0].referencedId as string,
+      quantity: 4,
+    });
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("updateLineItem"),
+      expect.objectContaining({
+        body: {
+          items: [
+            {
+              id: itemsMock.items[0].referencedId,
+              quantity: 4,
+            },
+          ],
+        },
       }),
     );
   });

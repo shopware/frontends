@@ -16,10 +16,10 @@ const requestComment = ref("");
 const requested = ref(false);
 const { requestQuote } = useB2bQuoteManagement();
 const { search } = useProductSearch();
-const { cartItems, refreshCart, addProduct } = useCart();
+const { cartItems, refreshCart, addProducts } = useCart();
 
 const proxyAddToCart = async (quantity: number = 1) => {
-  await addProduct({ id: product.value?.id, quantity });
+  await addProducts([{ id: product.value?.id, quantity, type: "product" }]);
   refreshCart();
 };
 const handleCreateQuote = async () => {
