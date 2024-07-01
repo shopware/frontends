@@ -7,19 +7,21 @@ const props = withDefaults(
   defineProps<{
     cartItem: Schemas["LineItem"];
     maxQty?: number;
+    controller: ReturnType<typeof useModal>;
   }>(),
   {
     maxQty: 100,
   },
 );
 
-const { cartItem } = toRefs(props);
+const { cartItem, controller } = toRefs(props);
 
 const isLoading = ref(false);
 const { getErrorsCodes } = useCartNotification();
 const { refreshCart } = useCart();
 const { pushError } = useNotifications();
 const { t } = useI18n();
+const router = useRouter();
 
 const {
   itemOptions,
@@ -32,6 +34,11 @@ const {
   isDigital,
   changeItemQuantity,
 } = useCartItem(cartItem);
+
+const navigateToItemDetailPage = (id: string) => {
+  controller.value.close();
+  router.push(`/detail/${id}`);
+};
 
 const quantity = ref();
 syncRefs(itemQuantity, quantity);
@@ -92,7 +99,11 @@ const removeCartItem = async () => {
       <div
         class="flex flex-col lg:flex-row justify-between text-base font-medium text-secondary-900"
       >
-        <h3 class="text-base" data-testid="cart-product-name">
+        <h3
+          class="text-base cursor-pointer"
+          data-testid="cart-product-name"
+          @click="navigateToItemDetailPage(cartItem.id)"
+        >
           {{ cartItem.label }}
           <span
             v-if="isDigital"
