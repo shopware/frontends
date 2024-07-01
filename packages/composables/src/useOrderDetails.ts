@@ -23,6 +23,7 @@ const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
     deliveries: {
       associations: {
         shippingMethod: {},
+        shippingOrderAddress: {},
       },
     },
     transactions: {
@@ -192,7 +193,9 @@ export function useOrderDetails(
   const shippingCosts = computed(() => _sharedOrder.value?.shippingTotal);
   const subtotal = computed(() => _sharedOrder.value?.price?.positionPrice);
   const total = computed(() => _sharedOrder.value?.price?.totalPrice);
-  const status = computed(() => _sharedOrder.value?.stateMachineState?.name);
+  const status = computed(
+    () => _sharedOrder.value?.stateMachineState?.translated?.name,
+  );
   const statusTechnicalName = computed(
     () => _sharedOrder.value?.stateMachineState?.technicalName,
   );

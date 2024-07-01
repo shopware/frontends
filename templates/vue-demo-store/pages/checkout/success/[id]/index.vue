@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { watchDebounced } from "@vueuse/core";
-import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 
 defineOptions({
   name: "CheckoutSuccessPage",
@@ -18,6 +17,7 @@ const {
   shippingAddress,
   billingAddress,
   shippingMethod,
+  status,
   order,
   subtotal,
   total,
@@ -116,7 +116,7 @@ const formatDate = (date: Date | string) =>
                 {{ formatDate(order.orderDate) }}
               </div>
               <div class="text-secondary-600">
-                {{ getTranslatedProperty(state, "name") }}
+                {{ status }}
               </div>
               <button
                 class="hidden sm:block justify-self-end text-dark cursor-pointer"
