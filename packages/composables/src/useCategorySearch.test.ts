@@ -45,4 +45,27 @@ describe("useCategorySearch", () => {
       }),
     );
   });
+
+  it("advanced search method", () => {
+    const { vm, injections } = useSetup(useCategorySearch);
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {},
+    });
+
+    vm.advancedSearch({
+      query: {
+        limit: 10,
+      },
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCategoryList"),
+      expect.objectContaining({
+        body: {
+          associations: {},
+          limit: 10,
+        },
+      }),
+    );
+  });
 });

@@ -43,7 +43,8 @@
       "totalAmount": "Gesamtbetrag",
       "orderDate": "Bestelldatum",
       "orderStatus": "Bestellstatus",
-      "paymentMethod": "Zahlungsmethode"
+      "paymentMethod": "Zahlungsmethode",
+      "repeatOrder": "Bestellung wiederholen"
     },
     "personalData": {
       "infoBox": "Bearbeiten Sie Ihre Daten unten, damit Ihr Konto immer auf dem neuesten Stand ist.",
@@ -60,7 +61,8 @@
       "personalDataUpdateSuccess": "Ihre Informationen wurden aktualisiert.",
       "paymentSetSuccessfully": "Standardzahlungsmethode erfolgreich festgelegt",
       "signUpSuccess": "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Registrierung abzuschließen.",
-      "paymentMethodChanged": "Zahlungsmethode geändert"
+      "paymentMethodChanged": "Zahlungsmethode geändert",
+      "productsAdded": "Produkte hinzugefügt"
     }
   }
 }

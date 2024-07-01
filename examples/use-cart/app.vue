@@ -11,7 +11,7 @@ const {
   subtotal,
   shippingTotal,
   changeProductQuantity,
-  addProduct,
+  addProducts,
   addPromotionCode,
 } = useCart();
 const { getFormattedPrice } = usePrice();
@@ -20,7 +20,7 @@ const { unitPrice } = useProductPrice(product);
 const promotionCode = ref("SWFRONTENDS");
 
 const proxyAddToCart = async (quantity: number = 1) => {
-  await addProduct({ id: product.value?.id, quantity });
+  await addProducts([{ id: product.value?.id, quantity, type: "product" }]);
   refreshCart();
 };
 

@@ -11,7 +11,7 @@ const {
 // useListing for further product search
 const { search, getElements } = useProductSearchListing();
 // composable used to add to cart a product
-const { addProduct } = useCart();
+const { addProducts } = useCart();
 // configured apiClient instance in order to make a custom API call
 const { apiClient } = useShopwareContext();
 // current step for progress bar displaying <ProgressBar /> in a template
@@ -33,10 +33,13 @@ try {
     limit: 1,
   });
   // add to cart a found product
-  await addProduct({
-    id: getElements.value.pop()?.id as string,
-    quantity: 1,
-  });
+  await addProducts([
+    {
+      id: getElements.value.pop()?.id as string,
+      quantity: 1,
+      type: "product",
+    },
+  ]);
   activeStep.value = 2;
 } catch (error) {
   console.error(

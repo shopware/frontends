@@ -107,8 +107,8 @@ const onAddToCartClick = async () => {
     body: {
       // TODO(MD): fix types in component and avoid this cast
       items: lineItemsPayload as Array<{
-        id?: string;
-        referencedId: string;
+        id: string;
+        referencedId?: string;
         quantity?: number;
         type: "product" | "promotion" | "custom" | "credit";
       }>,
