@@ -194,6 +194,9 @@ export function useListing(params?: {
       searchCriteria: operations["searchPage post /search"]["body"],
     ) => {
       const { data } = await apiClient.invoke("searchPage post /search", {
+        headers: {
+          "sw-include-seo-urls": true,
+        },
         body: searchCriteria,
       });
       return data;
