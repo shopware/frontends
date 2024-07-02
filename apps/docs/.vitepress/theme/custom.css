@@ -29,6 +29,7 @@ h1 + p > a {
     margin-right: 10px;
 }
 
+.vt-doc h2,
 .vt-doc h3 {
     margin-bottom: auto;
 }
@@ -41,18 +42,7 @@ h1 + p > a {
     top: -30px;
 }
 
-.vt-doc h2 {
-    margin-bottom: auto;
-}
-
-.vt-doc h2 > a.header-anchor {
-    float:none;
-    width: 100%;
-    position: relative;
-    display: inline-block;
-    top: -30px;
-}
-
+.vt-doc h2 > a.header-anchor,
 .vt-doc h3 > a.header-anchor {
     float:none;
     width: 100%;
