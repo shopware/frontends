@@ -34,14 +34,10 @@ h1 + p > a {
     margin-bottom: auto;
 }
 
-.vt-doc h3 > code + a.header-anchor {
-    float:none;
-    width: 100%;
-    position: relative;
-    display: inline-block;
-    top: -30px;
-}
-
+/**
+*   Fix for anchor position
+*/
+.vt-doc h3 > code + a.header-anchor,
 .vt-doc h2 > a.header-anchor,
 .vt-doc h3 > a.header-anchor {
     float:none;
