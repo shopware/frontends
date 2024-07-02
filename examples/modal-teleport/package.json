@@ -9,18 +9,18 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@nuxt/types": "2.17.4",
+    "@nuxt/types": "2.18.1",
     "@nuxt/typescript-build": "3.0.2",
     "@nuxtjs/eslint-config-typescript": "12.1.0",
     "@unocss/nuxt": "0.61.0",
     "@unocss/reset": "0.61.0",
-    "eslint": "8.57.0",
+    "eslint": "9.6.0",
     "nuxt": "3.12.2",
     "unocss": "0.61.0"
   },
   "dependencies": {
     "@vueuse/nuxt": "10.11.0",
-    "vue": "3.4.30",
-    "vue-tsc": "2.0.22"
+    "vue": "3.4.31",
+    "vue-tsc": "2.0.24"
   }
 }
