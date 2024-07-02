@@ -2,4 +2,4 @@
 "@shopware-pwa/composables-next": patch
 ---
 
-Adding stateMachineState as default association to useOrderDetails composable
+`useOrderDetails` - Adding `stateMachineState` as the default association to the composable
