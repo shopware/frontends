@@ -166,7 +166,7 @@ To achieve this, you can use `useCart` composable which expose `addProduct` meth
 
 ```ts
 // part of <script setup> section
-const { addProducts } = useCart();
+const { addProduct } = useCart();
 ```
 
 Utilize the method in a template:
@@ -174,11 +174,7 @@ Utilize the method in a template:
 ```html
 <!-- part of <template> -->
 <div>price: {{ product?.calculatedPrice?.unitPrice }} $</div>
-<button @click="addProducts([{
-      referencedId: product.id,
-      quantity: 1,
-      type: "product",
-}])">Add to cart</button>
+<button @click="addProduct(product)">Add to cart</button>
 ```
 
 Now, when the customer clicks the `Add to cart` button, a proper request is sent to the API. The cart is then refreshed and is up to date in the entire application.

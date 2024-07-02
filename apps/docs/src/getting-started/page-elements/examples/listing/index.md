@@ -31,14 +31,12 @@ onMounted(() => {
   search();
 });
 
-const addProductAndRefresh = async (product) => {
-  await addProducts([
-    { id: product.id, quantity: 1, type: "product" },
-  ]);
+const addProductAndRefresh = async ({ id }) => {
+  await addProduct({ id });
   refreshCart();
 };
 
-const { addProducts, refreshCart } = useCart();
+const { addProduct, refreshCart } = useCart();
 </script>
 
 <template>
@@ -59,11 +57,7 @@ const { addProducts, refreshCart } = useCart();
         <div class="h-36 py-5 font-light flex flex-col justify-between">
           <h3
             class="text-xl line-clamp-1 mb-2 group-hover:text-gray-800"
-            @click="addProducts([{
-              id: product.id,
-              quantity: 1,
-              type: "product"
-            }])"
+            @click="addProduct({ id: product.id })"
           >
             {{ getTranslatedProperty(product, "name") }}
           </h3>

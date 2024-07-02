@@ -8,7 +8,7 @@ describe("useB2bQuoteManagement", () => {
   vi.mock("./useCart.ts", () => ({
     useCart() {
       return {
-        addProducts: () => ({}),
+        addProduct: () => ({}),
         cartItems: {
           value: [
             {
