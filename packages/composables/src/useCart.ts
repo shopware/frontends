@@ -113,32 +113,17 @@ export function useCartFunction(): UseCartReturn {
     return data;
   }
 
-  /**
-   *
-   * @deprecated Use `addProducts` instead
-   */
   async function addProduct(params: {
     id: string;
     quantity?: number;
   }): Promise<Schemas["Cart"]> {
-    const { data: addToCartResult } = await apiClient.invoke(
-      "addLineItem post /checkout/cart/line-item",
+    return addProducts([
       {
-        body: {
-          items: [
-            {
-              id: params.id,
-              referencedId: params.id,
-              quantity: params.quantity,
-              type: "product",
-            },
-          ],
-        },
+        id: params.id,
+        quantity: params.quantity,
+        type: "product",
       },
-    );
-    _storeCart.value = addToCartResult;
-    setCartErrors(addToCartResult);
-    return addToCartResult;
+    ]);
   }
 
   /**
