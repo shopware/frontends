@@ -1,5 +1,13 @@
 # docs
 
+## 1.7.1
+
+### Patch Changes
+
+- Updated dependencies [[`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d), [`1954022`](https://github.com/shopware/frontends/commit/19540220d87788eed08991d35aaaead2e18564e5), [`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d)]:
+  - @shopware/api-client@1.0.1
+  - @shopware-pwa/composables-next@1.0.1
+
 ## 1.7.0
 
 ### Minor Changes
