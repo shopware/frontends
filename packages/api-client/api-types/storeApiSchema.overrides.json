@@ -669,6 +669,19 @@
       "get": {
         "requestBody": "_DELETE_"
       }
+    },
+    "/search": {
+      "post": {
+        "parameters": [
+          {
+            "name": "sw-include-seo-urls",
+            "in": "header",
+            "description": "Instructs Shopware to try and resolve SEO URLs for the given navigation item",
+            "required": false,
+            "schema": { "type": "boolean" }
+          }
+        ]
+      }
     }
   }
 }
