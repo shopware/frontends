@@ -21,7 +21,7 @@ const {
   getPaymentMethods,
   changePaymentMethod,
   statusTechnicalName,
-} = await useOrderDetails(props.orderId);
+} = useOrderDetails(props.orderId);
 
 onMounted(() => {
   loadOrderDetails();
