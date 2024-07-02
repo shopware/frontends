@@ -1,5 +1,11 @@
 # @shopware/api-client
 
+## 1.0.1
+
+### Patch Changes
+
+- [#1078](https://github.com/shopware/frontends/pull/1078) [`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d) Thanks [@patzick](https://github.com/patzick)! - Patch for missing `sw-include-seo-url` in OpenAPI schema.
+
 ## 1.0.0
 
 ### Major Changes
