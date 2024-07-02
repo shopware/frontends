@@ -1,5 +1,16 @@
 # @shopware-pwa/composables-next
 
+## 1.0.1
+
+### Patch Changes
+
+- [#1076](https://github.com/shopware/frontends/pull/1076) [`1954022`](https://github.com/shopware/frontends/commit/19540220d87788eed08991d35aaaead2e18564e5) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - `useOrderDetails` - Adding `stateMachineState` as the default association to the composable
+
+- [#1078](https://github.com/shopware/frontends/pull/1078) [`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d) Thanks [@patzick](https://github.com/patzick)! - `useListing` - reverted usage of the `sw-include-swo-urls` header in the search request
+
+- Updated dependencies [[`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d)]:
+  - @shopware/api-client@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
