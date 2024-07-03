@@ -36,7 +36,7 @@ The composable is a main place to keep the logic related to _custom product_ fea
 :::warning
 Works only if the `useProduct` is fulfilled and the product data is known. Typically on Product Details Page, when the product context is provided.
 
-Visit the [useProduct](../../packages/composables/useProduct) reference to see more details.
+Visit the [useProduct](../../packages/composables.html#useproduct) reference to see more details.
 :::
 
 ```ts
