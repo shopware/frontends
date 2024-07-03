@@ -45,7 +45,7 @@ if you followed the previous chapter on [routing](../routing.md). The `data` val
 
 The `cms-base` package has an opinionated style of components and is based on Tailwind.css. If you want to override components or add custom ones, you can build them right into your project or import them as a separate package.
 
-<PageRef page="customize-components" title="Customize Components" sub="Customize CMS components (Shopping Experiences)" />
+<PageRef page="customize-components.html" title="Customize Components" sub="Customize CMS components (Shopping Experiences)" />
 
 ## Use custom components
 

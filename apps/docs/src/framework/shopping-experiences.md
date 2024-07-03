@@ -47,4 +47,4 @@ export default defineNuxtConfig({
 
 ## How to build Pages, Elements and Blocks?
 
-<PageRef page="../getting-started/cms/index" title="BUILDGING > CMS" sub="See the buliding chapter about CMS." />
+<PageRef page="../getting-started/cms/" title="BUILDGING > CMS" sub="See the buliding chapter about CMS." />

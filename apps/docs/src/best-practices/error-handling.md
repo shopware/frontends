@@ -21,4 +21,4 @@ Deprecated. This doc is based on the old API client. Use The [new API client](/p
 
 How to for error handling in different areas and different cases with examples.
 
-<PageRef page="./error-handling/api-client-error-handling" title="API Client" sub="Example how to handle API errors with the API Client" />
+<PageRef page="./error-handling/api-client-error-handling.html" title="API Client" sub="Example how to handle API errors with the API Client" />
