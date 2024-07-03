@@ -62,9 +62,8 @@ const handleReorder = async () => {
       }
 
       acc.push({
-        id: lineItem.id,
+        id: lineItem.productId || lineItem.identifier,
         quantity: lineItem.quantity,
-        referencedId: lineItem.referencedId || lineItem.id,
         type: "product",
       });
 
