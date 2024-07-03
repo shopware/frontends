@@ -45,6 +45,6 @@ It also comes with TypeScript support.
 
 ## Template/UI
 
-You can decide to start from scratch and use no template at all, but we recommend looking at our [Templates](./getting-started/templates.md) which are based on **Nuxt.js** and **Tailwind CSS**.
+You can decide to start from scratch and use no template at all, but we recommend looking at our [Templates](./getting-started/templates.html) which are based on **Nuxt.js** and **Tailwind CSS**.
 
 <PageRef title="Internal Structure" sub="Details about the internal structure of Shopware Frontends" page="/framework/internal-structure.html" />

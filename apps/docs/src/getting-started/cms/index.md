@@ -6,7 +6,7 @@ nav:
 
 # CMS
 
-Everything related to CMS ([Shopping Experiences](../../framework/shopping-experiences.md)).
+Everything related to CMS ([Shopping Experiences](../../framework/shopping-experiences.html)).
 <PageRef page="content-pages.html" title="Create content pages" sub="In this chapter you will learn how to display content pages with data from Shopware's own CMS." />
 <PageRef page="customize-components.html" title="Customize Components" sub="In order to customize a component, you need to override it." />
 <PageRef page="create-blocks.html" title="Create Blocks" sub="In this chapter you will learn how to create CMS blocks." />

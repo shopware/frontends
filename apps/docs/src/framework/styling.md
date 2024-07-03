@@ -15,7 +15,7 @@ nav:
 
 # Styling
 
-Shopware Frontends [Demo Store Template](./../getting-started/templates.md) applies a utility-first styling approach based on [unocss](https://github.com/unocss/unocss). You can either follow this approach or use [custom styling](#use-a-custom-css-framework).
+Shopware Frontends [Demo Store Template](./../getting-started/templates.html) applies a utility-first styling approach based on [unocss](https://github.com/unocss/unocss). You can either follow this approach or use [custom styling](#use-a-custom-css-framework).
 
 ## Utility CSS
 
@@ -25,7 +25,7 @@ Unocss supports multiple CSS frameworks, including
 - Windy CSS
 - Bootstrap
 
-This means you can use utilities like `mt-10` or `bg-gray-100` in all of your components along with styles like `col-md-3`. Note, that the [Demo Store Template](./../getting-started/templates.md) applies only Tailwind CSS syntax and does not mix any of the approaches.
+This means you can use utilities like `mt-10` or `bg-gray-100` in all of your components along with styles like `col-md-3`. Note, that the [Demo Store Template](./../getting-started/templates.html) applies only Tailwind CSS syntax and does not mix any of the approaches.
 
 Unocss will analyse your components and generate a CSS file that contains only the utility classes used in the implementation.
 
@@ -117,11 +117,11 @@ Similar to viewport breakpoints, you can also use state variants with prefixes:
 
 ## Use a custom CSS Framework
 
-If you want to use a different CSS framework or fully custom styling, it's recommended to use the [Blank Template](./../getting-started/templates/blank-template.md) as a starting point. It has no pre-installed CSS framework and you can install you own.
+If you want to use a different CSS framework or fully custom styling, it's recommended to use the [Blank Template](./../getting-started/templates/blank-template.html) as a starting point. It has no pre-installed CSS framework and you can install you own.
 
 ### Remove unocss from the Demo Store Template
 
-However, it's also possible to remove unocss from the [Demo Store Template](./../getting-started/templates/demo-store-template.md). This might be applicable when you want to make use of the component structure and logic that's already provided by the template.
+However, it's also possible to remove unocss from the [Demo Store Template](./../getting-started/templates/demo-store-template.html). This might be applicable when you want to make use of the component structure and logic that's already provided by the template.
 
 Remove the `unocss` dependency from the `package.json` file
 

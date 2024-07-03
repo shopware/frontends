@@ -304,6 +304,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
   ignoreDeadLinks: true, // remove once MR #294 is merged
   rewrites: {
     "installation.md": "getting-started/templates/demo-store-template",
+    "installation.html": "getting-started/templates/demo-store-template",
   },
   head: [
     [
