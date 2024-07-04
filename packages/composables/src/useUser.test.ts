@@ -95,11 +95,25 @@ describe("useUser", () => {
     );
   });
 
+  it("refreshUser - error", async () => {
+    const { vm } = useSetup(() => useUser(), {
+      apiClient: {
+        invoke: vi.fn().mockImplementation(() => {
+          throw new Error("error test");
+        }),
+      },
+    });
+
+    expect(async () => {
+      await vm.refreshUser();
+    }).rejects.toThrowError();
+  });
+
   it("loadCountry", async () => {
-    const salutationId = "2de9ecc24e7b43d283302abba082b7ce";
+    const countryId = "2de9ecc24e7b43d283302abba082b7ce";
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    await vm.loadCountry(salutationId);
+    await vm.loadCountry(countryId);
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readCountry"),
@@ -109,12 +123,25 @@ describe("useUser", () => {
             {
               field: "id",
               type: "equals",
-              value: salutationId,
+              value: countryId,
             },
           ],
         },
       }),
     );
+
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        elements: [
+          {
+            name: "Poland",
+            id: "2de9ecc24e",
+          },
+        ],
+      },
+    });
+    await vm.loadCountry(countryId);
+    expect(vm.country).toEqual({ name: "Poland", id: "2de9ecc24e" });
   });
 
   it("updatePersonalInfo", async () => {
@@ -179,7 +206,7 @@ describe("useUser", () => {
   it("loadSalutation", async () => {
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    vm.loadSalutation("test");
+    await vm.loadSalutation("test");
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readSalutation"),
@@ -195,5 +222,12 @@ describe("useUser", () => {
         },
       }),
     );
+
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [{ id: "test", name: "test" }] },
+    });
+    await vm.loadSalutation("test");
+
+    expect(vm.salutation).toEqual({ id: "test", name: "test" });
   });
 });

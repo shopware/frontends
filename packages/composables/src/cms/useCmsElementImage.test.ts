@@ -49,7 +49,7 @@ describe("useCmsElementImage", () => {
         });
       });
 
-      it("should return imageContainerAttrs", () => {
+      it("should return imageContainerAttrs - absolute link", () => {
         const { imageContainerAttrs } = useCmsElementImage({
           data: {
             newTab: true,
@@ -71,6 +71,30 @@ describe("useCmsElementImage", () => {
           rel: "noopener noreferrer",
         });
       });
+
+      it("should return imageContainerAttrs", () => {
+        const { imageContainerAttrs } = useCmsElementImage({
+          data: {
+            newTab: true,
+            url: "/logo.png",
+          },
+          config: {
+            url: {
+              value: "https://shopware.com",
+            },
+            newTab: {
+              value: true,
+            },
+          },
+        } as CmsElementImage);
+
+        expect(imageContainerAttrs.value).toEqual({
+          href: "/logo.png",
+          target: "blank",
+          rel: "noopener noreferrer",
+        });
+      });
+
       it("should return imageLink", () => {
         const { imageLink } = useCmsElementImage({
           data: {
@@ -125,6 +149,30 @@ describe("useCmsElementImage", () => {
         } as CmsElementImage);
 
         expect(displayMode.value).toEqual("initial");
+      });
+
+      it("should return isVideoElement", () => {
+        const { isVideoElement } = useCmsElementImage({
+          data: {
+            media: {
+              mimeType: "video",
+            },
+          },
+        } as CmsElementImage);
+
+        expect(isVideoElement.value).toBeTruthy();
+      });
+
+      it("should return mimeType", () => {
+        const { mimeType } = useCmsElementImage({
+          data: {
+            media: {
+              mimeType: "image/png",
+            },
+          },
+        } as CmsElementImage);
+
+        expect(mimeType.value).toEqual("image/png");
       });
     });
   });

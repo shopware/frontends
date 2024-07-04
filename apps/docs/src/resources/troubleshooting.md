@@ -28,7 +28,7 @@ Currently you should use the default **Storefront SalesChannel type**. This soun
 - Update the `nuxt dev` command in your `package.json`.  
   It should look like this: `NODE_TLS_REJECT_UNAUTHORIZED=0 nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem`
 - Now run your project with `npm run dev` or `pnpm run dev` from your project root.
-- Your browser may ask you to accept the risk when you visit https://localhost:3000. This is because it is a self-signed certificate.
+- Your browser may ask you to accept the risk when you visit `https://localhost:3000`. This is because it is a self-signed certificate.
 
 ### Option 2: Vite plugin
 
@@ -50,7 +50,7 @@ Currently you should use the default **Storefront SalesChannel type**. This soun
   // ...
   ```
 - Start your dev server with `pnpm run dev`
-- Your browser may ask you to accept the risk when you visit https://localhost:3000. This is because it is a self-signed certificate.
+- Your browser may ask you to accept the risk when you visit `https://localhost:3000`. This is because it is a self-signed certificate.
 
 ## SSR throws error in local environment with DDEV?
 

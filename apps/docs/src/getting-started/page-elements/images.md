@@ -107,7 +107,7 @@ While a file is uploaded, it's been automatically resized for the current config
 
 ## Helpers
 
-There are few functions that could be used to extract some crucial information about the media in short way. Browse [Helpers > Media](../packages/helpers.html#Media) category to see them all.
+There are few functions that could be used to extract some crucial information about the media in short way. For example [getMainImageUrl](../../packages/helpers.html#getmainimageurl) or [getMedia](../../packages/helpers.html#getmedia).
 
 Example how to work with Product's main image:
 
@@ -155,4 +155,4 @@ The `src` attribute points to the main image URL (not resized) as a fallback.
 
 As long as `thumbnails` array is fulfilled, the same strategy can be applied when we work with every `media` object for each entity available in Shopware 6.
 
-<PageRef page="../../best-practices/images" title="Best Practices" sub="Best Practices to work with images" />
+<PageRef page="../../best-practices/images.html" title="Best Practices" sub="Best Practices to work with images" />
