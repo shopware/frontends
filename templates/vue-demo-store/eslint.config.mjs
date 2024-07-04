@@ -39,15 +39,5 @@ export default [
         },
       },
     },
-    rules: {
-      "vue/multi-word-component-names": [
-        "error",
-        {
-          ignores: ["checkout"],
-        },
-      ],
-
-      "vue/no-setup-props-destructure": "off",
-    },
   },
 ];

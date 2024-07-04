@@ -175,9 +175,9 @@ const srcPath = computed(() => {
       aria-label="Add to wishlist"
       type="button"
       :disabled="isLoading"
-      @click="toggleWishlistProduct"
       class="absolute bg-transparent top-2 right-2 hover:animate-count-infinite hover:animate-heart-beat"
       data-testid="product-box-toggle-wishlist-button"
+      @click="toggleWishlistProduct"
     >
       <client-only>
         <div
@@ -228,13 +228,13 @@ const srcPath = computed(() => {
         <button
           v-if="!fromPrice"
           type="button"
-          @click="addToCartProxy"
           class="w-full justify-center my-8 md-m-0 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 flex"
           :class="{
             'text-white bg-blue-600 hover:bg-blue-700': !isInCart,
             'text-gray-600 bg-gray-100': isInCart,
           }"
           data-testid="add-to-cart-button"
+          @click="addToCartProxy"
         >
           {{ translations.product.addToCart }}
           <div v-if="isInCart" class="flex ml-2">

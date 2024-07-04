@@ -45,8 +45,8 @@ const reviews = computed(() => props.content.data.reviews.elements);
 
 <template>
   <div
-    class="cms-block-product-description-reviews flex flex-wrap"
     v-if="product"
+    class="cms-block-product-description-reviews flex flex-wrap"
   >
     <div class="w-full">
       <ul

@@ -85,8 +85,8 @@ const toggleTab = (index: number) => {
       >
         <SwProductCard
           v-for="product of crossSellCollections[currentTabIndex].products"
-          class="w-[300px]"
           :key="product.id"
+          class="w-[300px]"
           :product="product"
           :layout-type="getConfigValue('boxLayout')"
           :display-mode="getConfigValue('displayMode')"

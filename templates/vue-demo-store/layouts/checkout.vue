@@ -1,5 +1,8 @@
-<script setup lang="ts"></script>
-
+<script setup lang="ts">
+defineOptions({
+  name: "CheckoutLayout",
+});
+</script>
 <template>
   <div>
     <LayoutCheckoutHeader />

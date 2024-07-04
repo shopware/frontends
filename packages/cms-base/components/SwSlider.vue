@@ -250,8 +250,8 @@ defineExpose({
     }"
   >
     <div
-      class="overflow-hidden h-full"
       ref="imageSlider"
+      class="overflow-hidden h-full"
       :style="imageSliderStyle"
     >
       <div
