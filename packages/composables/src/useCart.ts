@@ -2,7 +2,7 @@ import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { useContext, useShopwareContext } from "#imports";
 import { createSharedComposable } from "@vueuse/core";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 /**
  * Composable to manage cart
@@ -18,6 +18,12 @@ export type UseCartReturn = {
     id: string;
     quantity?: number;
   }): Promise<Schemas["Cart"]>;
+  /**
+   * Add products by array of items
+   */
+  addProducts(
+    items: operations["addLineItem post /checkout/cart/line-item"]["body"]["items"],
+  ): Promise<Schemas["Cart"]>;
   /**
    * Adds a promotion code to the cart
    */
@@ -111,18 +117,29 @@ export function useCartFunction(): UseCartReturn {
     id: string;
     quantity?: number;
   }): Promise<Schemas["Cart"]> {
+    return addProducts([
+      {
+        id: params.id,
+        quantity: params.quantity,
+        type: "product",
+      },
+    ]);
+  }
+
+  /**
+   * Add multiple products to the cart
+   *
+   * @param {operations["addLineItem post /checkout/cart/line-item"]["body"]["items"]} items
+   * @returns
+   */
+  async function addProducts(
+    items: operations["addLineItem post /checkout/cart/line-item"]["body"]["items"],
+  ): Promise<Schemas["Cart"]> {
     const { data: addToCartResult } = await apiClient.invoke(
       "addLineItem post /checkout/cart/line-item",
       {
         body: {
-          items: [
-            {
-              id: params.id,
-              referencedId: params.id,
-              quantity: params.quantity,
-              type: "product",
-            },
-          ],
+          items,
         },
       },
     );
@@ -173,7 +190,7 @@ export function useCartFunction(): UseCartReturn {
         body: {
           items: [
             {
-              referencedId: promotionCode,
+              id: promotionCode,
               type: "promotion",
             },
           ],
@@ -263,6 +280,7 @@ export function useCartFunction(): UseCartReturn {
 
   return {
     addProduct,
+    addProducts,
     addPromotionCode: submitPromotionCode,
     appliedPromotionCodes,
     cart,

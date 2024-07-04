@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { useSetup } from "./_test";
 import { useCategorySearch } from "./useCategorySearch";
+import { cmsAssociations } from "./cms/cmsAssociations";
 
 describe("useCategorySearch", () => {
   it("search method", () => {
@@ -40,6 +41,30 @@ describe("useCategorySearch", () => {
       expect.objectContaining({
         body: {
           associations: {},
+          limit: 10,
+        },
+      }),
+    );
+  });
+
+  it("advanced search method - with Cms Associations", () => {
+    const { vm, injections } = useSetup(useCategorySearch);
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {},
+    });
+
+    vm.advancedSearch({
+      query: {
+        limit: 10,
+      },
+      withCmsAssociations: true,
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCategoryList"),
+      expect.objectContaining({
+        body: {
+          ...cmsAssociations,
           limit: 10,
         },
       }),
