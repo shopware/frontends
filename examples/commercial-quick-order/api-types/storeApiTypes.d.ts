@@ -8457,6 +8457,8 @@ export type operations = {
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
+      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
+      "sw-include-seo-urls"?: boolean;
     };
     body: {
       /** Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag. */

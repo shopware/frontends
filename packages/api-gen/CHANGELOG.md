@@ -1,5 +1,20 @@
 # @shopware/api-gen
 
+## 1.0.2
+
+### Patch Changes
+
+- [#1082](https://github.com/shopware/frontends/pull/1082) [`db42df4`](https://github.com/shopware/frontends/commit/db42df4aef6fcb5113d058fa5821274b58077407) Thanks [@patzick](https://github.com/patzick)! - `COMPONENTS_API_ALIAS` rule - additional message suggesting that the schema component name might be incorrect
+
+- [#1082](https://github.com/shopware/frontends/pull/1082) [`db42df4`](https://github.com/shopware/frontends/commit/db42df4aef6fcb5113d058fa5821274b58077407) Thanks [@patzick](https://github.com/patzick)! - Correct api overrides load, depending on the apiType
+
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d)]:
+  - @shopware/api-client@1.0.1
+
 ## 1.0.0
 
 ### Major Changes

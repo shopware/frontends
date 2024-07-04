@@ -57,7 +57,10 @@ export async function validateJson(args: {
   }
 
   const errors: string[] = [];
-  const jsonOverrides = await loadJsonOverrides(configJSON.patches);
+  const jsonOverrides = await loadJsonOverrides({
+    path: configJSON.patches,
+    apiType: args.apiType,
+  });
 
   Object.entries(fileContentAsJson.components?.schemas || {}).forEach(
     (schema) => {
