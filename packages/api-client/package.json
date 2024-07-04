@@ -57,6 +57,7 @@
     "@codspeed/vitest-plugin": "3.1.0",
     "@types/prettier": "3.0.0",
     "@vitest/coverage-v8": "1.6.0",
+    "eslint": "9.6.0",
     "eslint-config-shopware": "workspace:*",
     "prettier": "3.3.2",
     "tsconfig": "workspace:*",

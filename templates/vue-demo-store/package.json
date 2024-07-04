@@ -35,6 +35,7 @@
     "@nuxtjs/i18n": "8.3.1",
     "@shopware/api-gen": "canary",
     "@vue/eslint-config-typescript": "13.0.0",
+    "eslint": "9.6.0",
     "eslint-plugin-prettier": "5.1.3",
     "eslint-plugin-vue": "9.24.1",
     "nuxt": "3.12.2",

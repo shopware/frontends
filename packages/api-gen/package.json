@@ -41,6 +41,7 @@
     "@types/prettier": "3.0.0",
     "@types/yargs": "17.0.32",
     "@vitest/coverage-v8": "1.6.0",
+    "eslint": "9.6.0",
     "eslint-config-shopware": "workspace:*",
     "json5": "2.2.3",
     "picocolors": "1.0.1",

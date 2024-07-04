@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@nuxt/schema": "3.12.2",
+    "eslint": "9.6.0",
     "eslint-config-shopware": "workspace:*",
     "nuxt": "3.12.2",
     "tsconfig": "workspace:*",

@@ -40,7 +40,7 @@ export function getOptionsFromNode(
       response.class = classNames;
     }
     if (attrs && Object.keys(attrs).length > 0) {
-      response.attrs = attrs.attrs;
+      response.attrs = attrs as unknown as Record<string, string>;
     }
     if (href) {
       response.attrs.href = resolveUrl(href);
