@@ -8,10 +8,10 @@ export default defineConfig({
       enabled: true,
       // "100": true, // TODO: our goal ;)
       thresholds: {
-        statements: 96,
+        statements: 97,
         branches: 81,
-        functions: 88,
-        lines: 96,
+        functions: 89,
+        lines: 97,
       },
       exclude: [
         "**/temp/**",
