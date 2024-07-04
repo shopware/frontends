@@ -26,7 +26,7 @@ In this chapter you will learn how to
 
 ## Quick reference
 
-- [useB2bQuoteManagement](/packages/composables/useB2bQuoteManagement) is a composable used for a quote management
+- [useB2bQuoteManagement](../../packages/composables.html#useb2bquotemanagement) is a composable used for a quote management
 
 ## Request new quote
 

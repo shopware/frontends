@@ -84,5 +84,5 @@ By design, the URL can point also to the Product or Landing Page.
 In order to resolve an entity assigned to each category path, utilize a [composable](../../../../packages/composables.html#usenavigation) dedicated for expected entity:
 
 1. `search` from `useNavigationSearch` to find entity type.
-2. use [dedicated composable](../../../../getting-started/routing.html#resolve-a-route-to-a-page) to process page resolving.
+2. use [dedicated composable](../../../routing.html#resolve-a-route-to-a-page) to process page resolving.
    :::
