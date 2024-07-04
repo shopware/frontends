@@ -83,7 +83,7 @@ export type UseCartReturn = {
 /**
  * Cart management logic.
  *
- * Used as [Shared](https://frontends.shopware.com/framework/shared-composables.html) Composable `useCart`
+ * Used as [Shared](https://frontends.shopware.com/framework/composables/shared-composables.html) Composable `useCart`
  */
 export function useCartFunction(): UseCartReturn {
   const { apiClient } = useShopwareContext();
