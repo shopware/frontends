@@ -42,5 +42,15 @@ describe("useSyncWishlist", () => {
         expect(vm.items.length).toBe(0);
       });
     });
+
+    describe("getWishlistProducts - error", () => {
+      it("getWishlistProducts", () => {
+        const { vm } = useSetup(() => useSyncWishlist());
+
+        vm.getWishlistProducts();
+        expect(vm.count).toBe(0);
+        expect(vm.items.length).toBe(0);
+      });
+    });
   });
 });
