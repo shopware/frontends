@@ -1,8 +1,15 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useNotifications } from "./useNotifications";
 import { useSetup } from "./_test";
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 describe("useNotifications", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("notification flow", async () => {
     const { vm } = useSetup(useNotifications);
 
@@ -22,7 +29,7 @@ describe("useNotifications", () => {
     const { vm } = useSetup(useNotifications);
 
     vm.pushError("Error message", { timeout: 100 });
-    await sleep(110);
+    vi.runAllTimers();
     expect(vm.notifications.length).toBe(0);
   });
 });
