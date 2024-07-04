@@ -29,8 +29,8 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "eslint": "eslint components/**/*.vue* --fix --max-warnings=0",
-    "lint": "pnpm run eslint && pnpm run typecheck",
+    "eslint": "eslint --fix --max-warnings=0",
+    "lint": "pnpm run eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -51,6 +51,8 @@
     "vue": "3.4.30"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.6.0",
     "@nuxt/schema": "3.12.2",
     "@types/three": "^0.165.0",
     "@vitest/coverage-v8": "1.6.0",

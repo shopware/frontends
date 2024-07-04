@@ -235,12 +235,12 @@ function next() {
       <SwSlider
         ref="imageSlider"
         :config="props.content.config"
-        @changeSlide="handleChangeSlide"
+        @change-slide="handleChangeSlide"
       >
         <CmsElementImage
           v-for="image of mediaGallery"
           :key="image.media.url"
-          :imageGallery="true"
+          :image-gallery="true"
           :content="{ data: image, config: props.content.config } as any"
         />
       </SwSlider>

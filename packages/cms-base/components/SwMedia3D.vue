@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { TresCanvas } from "@tresjs/core";
 // @ts-expect-error TODO: fix missing useGLTF import
-import { OrbitControls, useAnimations, useGLTF } from "@tresjs/cientos";
+import { OrbitControls, useGLTF } from "@tresjs/cientos";
 import { BasicShadowMap, SRGBColorSpace, NoToneMapping } from "three";
 
 const props = defineProps<{
@@ -18,9 +18,7 @@ const gl = {
   windowSize: false,
 };
 
-const { scene: model, animations } = await useGLTF(props.src);
-
-const { actions } = useAnimations(animations, model);
+const { scene: model } = await useGLTF(props.src);
 </script>
 <template>
   <TresCanvas v-bind="gl">

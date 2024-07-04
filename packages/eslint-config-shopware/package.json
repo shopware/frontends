@@ -2,13 +2,23 @@
   "name": "eslint-config-shopware",
   "version": "0.0.9",
   "private": true,
-  "main": "index.js",
+  "type": "module",
+  "main": "index.cjs",
+  "module": "index.mjs",
+  "exports": {
+    "import": "./index.mjs",
+    "require": "./index.cjs"
+  },
   "license": "MIT",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "7.6.0",
     "@typescript-eslint/parser": "7.6.0",
-    "eslint": "8.57.0",
+    "eslint": "9.6.0",
     "eslint-config-prettier": "9.1.0",
     "typescript": "5.4.5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.6.0"
   }
 }

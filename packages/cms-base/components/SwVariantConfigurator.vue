@@ -6,6 +6,7 @@ import type { ComputedRef } from "vue";
 import { defu } from "defu";
 import { useProductConfigurator } from "#imports";
 import { useRouter } from "vue-router";
+import type { Schemas } from "#shopware";
 
 const props = withDefaults(
   defineProps<{
@@ -31,7 +32,7 @@ let translations: Translations = {
 translations = defu(useCmsTranslations(), translations) as Translations;
 
 const emit = defineEmits<{
-  (e: "change", selected: any): void;
+  (e: "change", selected: Partial<Schemas["Product"]> | undefined): void;
 }>();
 const isLoading = ref<boolean>();
 const router = useRouter();
@@ -42,7 +43,7 @@ const {
   findVariantForSelectedOptions,
 } = useProductConfigurator();
 
-const selectedOptions: ComputedRef<any> = computed(() =>
+const selectedOptions: ComputedRef = computed(() =>
   Object.values(unref(getSelectedOptions)),
 );
 const isOptionSelected = (optionId: string) =>

@@ -6,10 +6,10 @@ const props = defineProps<{
   content: CmsBlockCrossSelling;
 }>();
 const { getSlotContent } = useCmsBlock(props.content);
-const content = getSlotContent("content");
+const slotContent = getSlotContent("content");
 </script>
 <template>
   <div class="cms-block-cross-selling">
-    <CmsGenericElement :content="content" />
+    <CmsGenericElement :content="slotContent" />
   </div>
 </template>

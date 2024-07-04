@@ -64,8 +64,8 @@ const border = computed(() => getConfigValue("border"));
       <SwSlider
         :config="config"
         gap="1.25rem"
-        :slidesToShow="slidesToShow"
-        :slidesToScroll="1"
+        :slides-to-show="slidesToShow"
+        :slides-to-scroll="1"
         :autoplay="autoplay"
       >
         <SwProductCard
@@ -73,8 +73,8 @@ const border = computed(() => getConfigValue("border"));
           class="h-full"
           :key="product.id"
           :product="product"
-          :layoutType="getConfigValue('boxLayout')"
-          :displayMode="getConfigValue('displayMode')"
+          :layout-type="getConfigValue('boxLayout')"
+          :display-mode="getConfigValue('displayMode')"
         />
       </SwSlider>
     </div>

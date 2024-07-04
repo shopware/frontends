@@ -4,6 +4,7 @@ import { required, email, minLength } from "@vuelidate/validators";
 import type { CmsElementForm } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
 import {
   useCmsElementConfig,
   useNavigationContext,
@@ -72,7 +73,13 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);
-const errorMessages = ref<any[]>([]);
+
+type ErrorMessages = ApiClientError<{
+  errors: ApiError[];
+}>;
+
+const errorMessages = ref<ErrorMessages[]>([]);
+
 const { getSalutations } = useSalutations();
 const { foreignKey } = useNavigationContext();
 const { apiClient } = useShopwareContext();
@@ -125,7 +132,7 @@ const rules = computed(() => ({
   },
   checkbox: {
     required,
-    isTrue: (value: any) => value === true,
+    isTrue: (value: boolean) => value === true,
   },
 }));
 

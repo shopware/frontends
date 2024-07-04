@@ -73,10 +73,12 @@ const formatDate = (date: string) =>
         <div
           v-for="_ in review.points"
           class="w-5 h-5 i-carbon-star-filled"
+          :key="`filled-star-${_}`"
         ></div>
         <div
           v-for="_ in 5 - (review.points || 0)"
           class="w-5 h-5 i-carbon-star"
+          :key="`empty-star-${_}`"
         ></div>
         <div
           class="cms-block-product-description-reviews__reviews-title font-semibold ml-2"
