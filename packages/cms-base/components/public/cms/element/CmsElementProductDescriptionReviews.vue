@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import xss from "xss";
 import type { CmsElementProductDescriptionReviews } from "@shopware-pwa/composables-next";
 import {
   getTranslatedProperty,
@@ -33,7 +34,7 @@ const currentTab = ref<number>(1);
 const { product } = useProduct(props.content.data?.product);
 
 const description = computed(() =>
-  getTranslatedProperty(product.value, "description"),
+  xss(getTranslatedProperty(product.value, "description")),
 );
 
 const toggleTabs = (tabNumber: number) => {
@@ -93,6 +94,7 @@ const reviews = computed(() => props.content.data.reviews.elements);
               <p class="text-xl font-bold mt-3">
                 {{ getProductName({ product }) }}
               </p>
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <div class="mt-2" v-html="description"></div>
             </div>
             <div
