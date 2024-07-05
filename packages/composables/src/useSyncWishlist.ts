@@ -28,7 +28,7 @@ export type UseSyncWishlistReturn = {
   /**
    * Wishlist items count
    */
-  totalWishlistItemsCount: Ref<number>;
+  count: ComputedRef<number>;
 };
 
 const _wishlistItems: Ref<string[]> = ref([]);
@@ -94,6 +94,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
   }
 
   const items = computed(() => _wishlistItems.value);
+  const count = computed(() => totalWishlistItemsCount.value);
 
   return {
     getWishlistProducts,
@@ -101,6 +102,6 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     removeFromWishlistSync,
     mergeWishlistProducts,
     items,
-    totalWishlistItemsCount,
+    count,
   };
 }

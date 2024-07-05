@@ -6,6 +6,17 @@ import { useSetup } from "./_test";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
+const getMockedUser = (
+  isLoggedIn: boolean,
+  isGuestSession: boolean,
+  canSyncWishlist: boolean,
+) =>
+  ({
+    isLoggedIn: ref(isLoggedIn),
+    isGuestSession: ref(isGuestSession),
+    canSyncWishlist: ref(canSyncWishlist),
+  }) as ReturnType<typeof useUser>;
+
 vi.mock("./useLocalWishlist.ts", () => ({
   useLocalWishlist() {
     return {
@@ -32,7 +43,7 @@ vi.mock("./useLocalWishlist.ts", () => ({
         ],
       },
       clearWishlist: () => undefined,
-      totalWishlistItemsCount: ref(17),
+      count: ref(17),
     };
   },
 }));
@@ -42,19 +53,16 @@ vi.mock("./useUser");
 
 describe("useWishlist - not logged in user", () => {
   it("mergeWishlistProducts", () => {
-    vi.mocked(useUser).mockReturnValue({
-      isLoggedIn: computed(() => false),
-      isGuestSession: computed(() => true),
-      // @ts-ignore
-      canSyncWishlist: { value: false },
-    });
+    vi.mocked(useUser).mockReturnValue(getMockedUser(false, true, false));
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => undefined,
-      // @ts-ignore
-      items: { value: ["test1"] },
+      items: computed((): string[] => {
+        return ["test1"];
+      }),
+      addToWishlistSync: () => undefined,
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
-      totalWishlistItemsCount: ref(17),
+      count: computed(() => 17),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -63,24 +71,21 @@ describe("useWishlist - not logged in user", () => {
     vm.mergeWishlistProducts();
 
     expect(vm.items.length).toBe(17);
-    expect(vm.totalWishlistItemsCount).toBe(17);
+    expect(vm.count).toBe(17);
     expect(vm.getTotalPagesCount).toBe(2);
   });
 
   it("getWishlistProducts", async () => {
-    vi.mocked(useUser).mockReturnValue({
-      isLoggedIn: computed(() => false),
-      isGuestSession: computed(() => true),
-      // @ts-ignore
-      canSyncWishlist: { value: false },
-    });
+    vi.mocked(useUser).mockReturnValue(getMockedUser(false, true, false));
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => undefined,
-      // @ts-ignore
-      items: { value: ["test1"] },
+      items: computed((): string[] => {
+        return ["test1"];
+      }),
+      addToWishlistSync: () => undefined,
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
-      totalWishlistItemsCount: ref(15),
+      count: computed(() => 15),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -118,21 +123,16 @@ describe("useWishlist - not logged in user", () => {
 
 describe("useWishlist - logged in user", () => {
   it("mergeWishlistProducts", () => {
-    // Mock the useUser composable
-    vi.mocked(useUser).mockReturnValue({
-      isLoggedIn: computed(() => true),
-      isGuestSession: computed(() => false),
-      // @ts-ignore
-      canSyncWishlist: { value: true },
-    });
-    // Mock the useSyncWishlist composable
+    vi.mocked(useUser).mockReturnValue(getMockedUser(true, false, true));
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => undefined,
-      // @ts-ignore
-      items: { value: ["local-testId333"] },
+      items: computed((): string[] => {
+        return ["local-testId333"];
+      }),
+      addToWishlistSync: () => undefined,
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
-      totalWishlistItemsCount: ref(15),
+      count: computed(() => 15),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -141,16 +141,11 @@ describe("useWishlist - logged in user", () => {
     vm.mergeWishlistProducts();
 
     expect(vm.items.length).toBe(1);
-    expect(vm.totalWishlistItemsCount).toBe(15);
+    expect(vm.count).toBe(15);
   });
 
   it("getWishlistProducts", () => {
-    vi.mocked(useUser).mockReturnValue({
-      isLoggedIn: computed(() => true),
-      isGuestSession: computed(() => false),
-      // @ts-ignore
-      canSyncWishlist: { value: true },
-    });
+    vi.mocked(useUser).mockReturnValue(getMockedUser(true, false, true));
     const { vm } = useSetup(() => useWishlist());
     vm.getWishlistProducts();
 

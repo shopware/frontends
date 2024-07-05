@@ -12,9 +12,10 @@ definePageMeta({
 const {
   orders,
   loadOrders,
+  loadTotalOrdersCount,
   changeCurrentPage,
-  getTotalPagesCount,
-  getCurrentPage,
+  totalPages,
+  currentPage,
 } = useCustomerOrders();
 const { t } = useI18n();
 const route = useRoute();
@@ -24,19 +25,23 @@ const defaultLimit = 15;
 const defaultPage = 1;
 
 type Translations = {
-  listing: {
-    noProducts: string;
+  account: {
+    noOrders: string;
     perPage: string;
-    product: string;
-    products: string;
+    order: {
+      order: string;
+      orders: string;
+    };
   };
 };
 let translations: Translations = {
-  listing: {
-    noProducts: "No products found 😔",
+  account: {
+    noOrders: "No orders found 😔",
     perPage: "Per Page:",
-    product: "Product",
-    products: "Products",
+    order: {
+      order: "Order",
+      orders: "Orders",
+    },
   },
 };
 
@@ -74,11 +79,13 @@ const changePage = async (page: number) => {
       limit: limit.value,
     },
   });
-  await changeCurrentPage(page, +limit);
+  await changeCurrentPage(page, Number(limit.value));
 };
 
 await useAsyncData("getOrders", () => {
   return loadOrders({
+    limit: limit.value,
+    page: route.query.p ? Number(route.query.p) : defaultPage,
     associations: {
       stateMachineState: {},
     },
@@ -90,6 +97,10 @@ await useAsyncData("getOrders", () => {
     ],
   });
 });
+
+await useAsyncData("getTotalOrders", async () => {
+  loadTotalOrdersCount();
+});
 </script>
 
 <template>
@@ -98,20 +109,23 @@ await useAsyncData("getOrders", () => {
       {{ $t("account.orderHistoryHeader") }}
     </h1>
     <AccountOrder v-for="order in orders" :key="order.id" :order="order" />
+    <div v-if="orders.length === 0" class="text-center text-secondary-600">
+      {{ translations.account.noOrders }}
+    </div>
     <div
       class="grid grid-cols-1 lg:flex lg:justify-center lg- gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
     >
       <div class="text-center place-self-center">
         <SwPagination
-          :total="getTotalPagesCount"
-          :current="Number(getCurrentPage)"
+          :total="totalPages(limit)"
+          :current="Number(currentPage)"
           @change-page="changePage"
         />
       </div>
       <div class="text-center place-self-center mt-2 lg:mt-0">
         <div class="inline-block align-top text-center md:text-left">
           <label for="limit" class="inline mr-4">{{
-            translations.listing.perPage
+            translations.account.perPage
           }}</label>
           <select
             id="limit"
@@ -120,10 +134,16 @@ await useAsyncData("getOrders", () => {
             class="inline appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
             @change="changeLimit"
           >
-            <option :value="1">1 {{ translations.listing.product }}</option>
-            <option :value="15">15 {{ translations.listing.products }}</option>
-            <option :value="30">30 {{ translations.listing.products }}</option>
-            <option :value="45">45 {{ translations.listing.products }}</option>
+            <option :value="1">1 {{ translations.account.order.order }}</option>
+            <option :value="15">
+              15 {{ translations.account.order.orders }}
+            </option>
+            <option :value="30">
+              30 {{ translations.account.order.orders }}
+            </option>
+            <option :value="45">
+              45 {{ translations.account.order.orders }}
+            </option>
           </select>
           <div
             class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"

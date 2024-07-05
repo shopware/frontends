@@ -40,7 +40,7 @@ export type UseWishlistReturn = {
   /**
    * total wishlist items count
    */
-  totalWishlistItemsCount: Ref<number>;
+  count: Ref<number>;
 };
 
 /**
@@ -49,10 +49,7 @@ export type UseWishlistReturn = {
  * @category Wishlist
  */
 export function useWishlist(): UseWishlistReturn {
-  const { isLoggedIn, isGuestSession } = useUser();
-  const canSyncWishlist = computed(
-    () => isLoggedIn.value && !isGuestSession.value,
-  );
+  const { canSyncWishlist } = useUser();
   const {
     getWishlistProducts: getWishlistProductsLocal,
     items: itemsLocal,
@@ -64,7 +61,7 @@ export function useWishlist(): UseWishlistReturn {
     items: itemsSync,
     mergeWishlistProducts: mergeWishlistProductsSync,
     removeFromWishlistSync,
-    totalWishlistItemsCount,
+    count,
   } = useSyncWishlist();
 
   const currentPage = ref<number>(1);
@@ -93,7 +90,7 @@ export function useWishlist(): UseWishlistReturn {
   };
 
   const getTotalPagesCount = computed(() =>
-    Math.ceil(totalWishlistItemsCount.value / limit.value),
+    Math.ceil(count.value / limit.value),
   );
 
   const clearWishlist = async () => {
@@ -127,6 +124,6 @@ export function useWishlist(): UseWishlistReturn {
     changeCurrentPage,
     getCurrentPage,
     getTotalPagesCount,
-    totalWishlistItemsCount,
+    count,
   };
 }

@@ -19,7 +19,7 @@ describe("useSyncWishlist", () => {
         vm.getWishlistProducts();
         vm.removeFromWishlistSync("some-id");
         // Mocked value
-        expect(vm.totalWishlistItemsCount).toBe(vm.totalWishlistItemsCount);
+        expect(vm.count).toBe(vm.count);
       });
     });
 
@@ -38,7 +38,7 @@ describe("useSyncWishlist", () => {
         const { vm } = useSetup(() => useSyncWishlist());
 
         vm.getWishlistProducts();
-        expect(vm.totalWishlistItemsCount).toBe(0);
+        expect(vm.count).toBe(0);
         expect(vm.items.length).toBe(0);
       });
     });

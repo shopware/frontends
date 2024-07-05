@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { count } = useCart();
-const { totalWishlistItemsCount: wishlistCount } = useWishlist();
+const { count: wishlistCount } = useWishlist();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
