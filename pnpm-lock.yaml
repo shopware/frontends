@@ -1250,12 +1250,6 @@ importers:
         specifier: 3.4.30
         version: 3.4.30(typescript@5.5.2)
     devDependencies:
-      '@eslint/eslintrc':
-        specifier: ^3.1.0
-        version: 3.1.0
-      '@eslint/js':
-        specifier: ^9.6.0
-        version: 9.6.0
       '@iconify-json/carbon':
         specifier: 1.1.36
         version: 1.1.36
