@@ -19,7 +19,7 @@ In order to display information of a product there is a `Product` object needed,
 - Images
 - ...
 
-To achieve that, you can utilize methods available within `composables` package (or directly via API client package named `@shopware-pwa/api-client`). In this example we will use [useProductSearch](../../../packages/composables/useProductSearch.md).
+To achieve that, you can utilize methods available within `composables` package (or directly via API client package named `@shopware/api-client`). In this example we will use [useProductSearch](../../../packages/composables.html#useproductsearch).
 
 :::info Associations
 Keep in mind that not every field, or inner object of the `Product` entity is available automatically.
@@ -29,7 +29,7 @@ Some of relations need to be assigned explicitly by [associations](https://shopw
 The `useProductSearch` allows us to `search` in the product's collection:
 
 ```ts
-import type { Product, PropertyGroup } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { useProductSearch } from "@shopware-pwa/composables-next";
 
 const { search } = useProductSearch();
@@ -39,9 +39,9 @@ const productResponse = await search("some-product-id", {
 });
 
 // object that keeps a Product entity
-const product: Product = productResponse.product;
+const product: Schemas["Product"] = productResponse.product;
 // object with variants configuration
-const propertyGroups: PropertyGroup[] = productResponse.configurator;
+const propertyGroups: Schemas["PropertyGroup"][] = productResponse.configurator;
 ```
 
 Thanks to this, in the response we are able to access `Product` and `configurator` object. The latter is responsible for keeping related variants information to be used for more complex products.
@@ -66,7 +66,7 @@ const productNumber = computed(() => product.value?.productNumber);
 
 Each product can have additional resource loaded asynchronously like Cross-Sells, or Customer Reviews.
 
-Thanks to [useProductAssociations](../../../packages/composables/useProductAssociations.md) composable, you can load it providing the product you are on:
+Thanks to [useProductAssociations](../../../packages/composables.html#useproductassociations) composable, you can load it providing the product you are on:
 
 ```js
 const { loadAssociations, isLoading, productAssociations } =

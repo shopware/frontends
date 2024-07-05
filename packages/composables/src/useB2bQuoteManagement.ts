@@ -131,7 +131,7 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
    *
    * @returns {Promise<void>}
    */
-  const changePaymentShippingMethod = (params: {
+  const changePaymentShippingMethod = async (params: {
     quoteId: string;
     paymentMethodId?: string;
     shippingMethodId?: string;
@@ -141,13 +141,12 @@ export function useB2bQuoteManagement(): UseB2bQuoteManagement {
       shippingMethodId?: string;
     } = {};
 
-    if (params.paymentMethodId)
-      body["paymentMethodId"] = params.paymentMethodId;
+    if (params.paymentMethodId) body.paymentMethodId = params.paymentMethodId;
 
     if (params.shippingMethodId)
-      body["shippingMethodId"] = params.shippingMethodId;
+      body.shippingMethodId = params.shippingMethodId;
 
-    return apiClient.invoke(
+    await apiClient.invoke(
       "switchPaymentOrShippingMethod post /quote/{id}/configure",
       {
         pathParams: { id: params.quoteId },

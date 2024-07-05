@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "my-module-playground",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "generate": "nuxi generate"
+  },
+  "dependencies": {
+    "@shopware-pwa/composables-next": "canary",
+    "@shopware-pwa/nuxt3-module": "canary",
+    "nuxt": "3.12.2"
+  }
+}

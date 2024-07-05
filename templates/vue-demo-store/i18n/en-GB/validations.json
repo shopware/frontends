@@ -18,6 +18,7 @@
     "requiredIf": "The value is required",
     "requiredUnless": "The value is required",
     "sameAs": "The value must be equal to the {otherName} value",
-    "url": "The value is not a valid URL address"
+    "url": "The value is not a valid URL address",
+    "newPasswordConfirm": "The passwords needs to be the same"
   }
 }

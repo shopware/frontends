@@ -13,7 +13,7 @@ head:
 
 # Work with routing
 
-In the [building a navigation](./page-elements/navigation.md) chapter you have already learned how to create a menu structure for your frontend. In this chapter you will learn how to resolve the paths of each menu item, so that users can navigate the store. Specifically, you will learn how to
+In the [building a navigation](./page-elements/navigation.html) chapter you have already learned how to create a menu structure for your frontend. In this chapter you will learn how to resolve the paths of each menu item, so that users can navigate the store. Specifically, you will learn how to
 
 - Resolve a path string to a route configuration
 - Resolve a route configuration to its page or entity
@@ -48,22 +48,6 @@ The result of the `resolvePath` function is a reduced `SeoUrl` object, which you
 
 This is all information you need to resolve the route to a page, or rather an entity.
 
-### 💡 Typescript autocompletion
-
-In routing, a bit of IDE support can go a long way, so follow these steps to get autocompletion within your project.
-
-```bash
-npm install -D @shopware-pwa/types
-```
-
-and use
-
-```ts
-import type { SeoUrl } from "@shopware-pwa/types";
-```
-
-in your components or composables.
-
 ## Resolve a route to a page
 
 There are three different type of routes that Shopware natively supports. When there are extensions active in your store, there can be more. The three types are:
@@ -77,7 +61,7 @@ Depending on which type of route you have, the way of fetching the page data is 
 Possibly, the easiest approach is to set up a catch-all component, that resolves the route and then renders the correct page component. This is how it could look like:
 
 ```ts
-import type { SeoUrl } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 import {
   useNavigation,
@@ -86,7 +70,7 @@ import {
   useCategorySearch,
 } from "@shopware-pwa/composables-next";
 
-const seoResult: SeoUrl | null = await resolvePath(route.path);
+const seoResult: Schemas["SeoUrl"] | null = await resolvePath(route.path);
 
 const { routeName, foreignKey } = useNavigationContext(ref(seoResult));
 
@@ -138,7 +122,7 @@ Thankfully, we do not need to do that in every case. Only the first request (han
 
 To create speaking links for products or categories, you must know the `seoPathInfo` from the `seoURLs` object. In some situations, you only have the ID of the product or category and then you may need to make an additional call to get the speaking link. This call costs time and can be omitted.
 
-We have created two new helper functions that can be used to avoid these extra calls. Just use [getCategoryRoute](../packages/helpers/getCategoryRoute) and [getProductRoute](../packages/helpers/getProductRoute) from helpers package. Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
+We have created two new helper functions that can be used to avoid these extra calls. Just use [getCategoryRoute](../packages/helpers.html#getcategoryroute) and [getProductRoute](../packages/helpers.html#getproductroute) from helpers package. Use them in combination of `RouterLink` or `NuxtLink` in Vue.js or Nuxt.js projects.
 
 ##### Example getCategoryRoute with NuxtLink
 
@@ -182,5 +166,5 @@ To check it out on a code level have a look at the `[...all].vue` file in the de
 
 ## Next steps
 
-<PageRef page="cms/content-pages" title="Create content pages" sub="Integrate routing and Shopping Experiences" />
-<PageRef page="e-commerce/product-listing" title="Create a product listing" sub="Display a list of products" />
+<PageRef page="cms/content-pages.html" title="Create content pages" sub="Integrate routing and Shopping Experiences" />
+<PageRef page="e-commerce/product-listing.html" title="Create a product listing" sub="Display a list of products" />

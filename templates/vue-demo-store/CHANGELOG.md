@@ -1,5 +1,132 @@
 # vue-demo-store
 
+## 1.0.0
+
+### Major Changes
+
+- [#871](https://github.com/shopware/frontends/pull/871) [`1566f7a`](https://github.com/shopware/frontends/commit/1566f7a3962c511b5c72e12a4a5db40c4aa5d198) Thanks [@patzick](https://github.com/patzick)! - Read more about new major release: https://github.com/shopware/frontends/discussions/965
+
+- [#1063](https://github.com/shopware/frontends/pull/1063) [`9e4df78`](https://github.com/shopware/frontends/commit/9e4df780174c4f2ca920b20aa752ae2b40e6655c) Thanks [@patzick](https://github.com/patzick)! - Updated Nuxt to `3.12.x` - this breaks layouts when two `<script` tags are inside page component. Use `defineOptions` to name your component for devtools: https://vuejs.org/api/sfc-script-setup#defineoptions otherwise Layouts might not work properly.
+
+### Minor Changes
+
+- [#933](https://github.com/shopware/frontends/pull/933) [`04ac2ad`](https://github.com/shopware/frontends/commit/04ac2ada522c881bb06565c332baf5f2cf08643d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added possibility to change payment method for existing orders
+
+- [#793](https://github.com/shopware/frontends/pull/793) [`82d465e`](https://github.com/shopware/frontends/commit/82d465e80c31fb9d2ab5fd8812576731e2500342) Thanks [@florianliebig](https://github.com/florianliebig)! - Add Account Type to register form & company name + VAT-ID fields
+
+- [#517](https://github.com/shopware/frontends/pull/517) [`f7797e8`](https://github.com/shopware/frontends/commit/f7797e8eb8cc72d425e568f3abedeb174e703de5) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Adding all colors to uno.config.ts to show that they can changed via config.
+
+  Changes in detail:
+
+  - blue is now covered by primary.
+  - gray and slate are now covered by secondary.
+  - brand-primary is now primary (default).
+  - brand-light is now light (default).
+  - brand-dark is now dark (default).
+  - Added also other colors to config like yellow, green, indigo and white.
+
+- [#1047](https://github.com/shopware/frontends/pull/1047) [`ddce862`](https://github.com/shopware/frontends/commit/ddce86217ee33e77061cdc30324da7e2a4a85ac6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added closing account menu after clicking outside
+
+- [#463](https://github.com/shopware/frontends/pull/463) [`543a8e1`](https://github.com/shopware/frontends/commit/543a8e1fb3b391a0238f329e0ead30b8322016ec) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add api error resolver for:
+
+  - Login page
+  - Account registration
+  - Update product qty (cart)
+
+  Add `useApiErrorsResolver` composable
+
+- [#857](https://github.com/shopware/frontends/pull/857) [`864616f`](https://github.com/shopware/frontends/commit/864616f0c9e1cbe11e434b9a04a35ff9520bcb3c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add maintenance mode page
+
+- [#917](https://github.com/shopware/frontends/pull/917) [`4beeb8b`](https://github.com/shopware/frontends/commit/4beeb8b6798b05f4c1eefafe82efe037f29b4b7f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `markAsTopseller` badge
+
+- [#529](https://github.com/shopware/frontends/pull/529) [`4dce006`](https://github.com/shopware/frontends/commit/4dce006460611e59fed084511ca9ecb814f95cf1) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Use product ID instead the product object in the wishlist composable
+
+- [#897](https://github.com/shopware/frontends/pull/897) [`033867b`](https://github.com/shopware/frontends/commit/033867bd2e5ce343e2b8cc71794a95ab7b1c2923) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `localeId` as an option to change the language
+
+- [#611](https://github.com/shopware/frontends/pull/611) [`4593318`](https://github.com/shopware/frontends/commit/459331829b0159eeafdb55564f6b2859595814b0) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add regulation price to the product card
+
+- [#531](https://github.com/shopware/frontends/pull/531) [`f99d49c`](https://github.com/shopware/frontends/commit/f99d49c97f32cd4b0a4344a74dcf6e523f089d0b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add JSON-LD for a product page
+
+- [#571](https://github.com/shopware/frontends/pull/571) [`67654fc`](https://github.com/shopware/frontends/commit/67654fc8ed2768892668dd42a2d367205e42cbf3) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add product review form on the product card
+
+- [#897](https://github.com/shopware/frontends/pull/897) [`033867b`](https://github.com/shopware/frontends/commit/033867bd2e5ce343e2b8cc71794a95ab7b1c2923) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add missing product translations
+
+- [#545](https://github.com/shopware/frontends/pull/545) [`6664aa2`](https://github.com/shopware/frontends/commit/6664aa2aa48ec63fc053ad024a03940113e17956) Thanks [@itscark](https://github.com/itscark)! - Fix visibility classes
+
+- [#978](https://github.com/shopware/frontends/pull/978) [`479357c`](https://github.com/shopware/frontends/commit/479357c74d40c99218eb22ccd4089357ffab5872) Thanks [@patzick](https://github.com/patzick)! - `useCustomerPassword` and `loadCustomerAddresses` inside `useAddress` are now throwing api errors on invocation. The `errors` object has been removed from the composable to make consistent error handling across the composables. This change is breaking and requires you to update your implementation of the composables.
+
+  Example of error handling for resseting password:
+
+  ```typescript
+  const {
+    resetPassword,
+    // errors --> removed from the API
+  } = useCustomerPassword();
+
+  const errors = ref([]);
+
+  const invokeRecover = async (): Promise<void> => {
+    try {
+      errors.value = [];
+      const emailSent = await resetPassword(formData.value);
+
+      if (emailSent.success) {
+        // here we know that email was sent
+      }
+    } catch (error) {
+      console.error("[AccountRecoverPassword]", error);
+      if (error instanceof ApiClientError) {
+        errors.value = error.details?.errors || [];
+      }
+    }
+  };
+  ```
+
+### Patch Changes
+
+- [#514](https://github.com/shopware/frontends/pull/514) [`e6ea89c`](https://github.com/shopware/frontends/commit/e6ea89cf460177e43f2333870d67c8fe72874e1a) Thanks [@mkucmus](https://github.com/mkucmus)! - @nuxtjs/i18n module upgrade
+
+- [#1028](https://github.com/shopware/frontends/pull/1028) [`6c20fd4`](https://github.com/shopware/frontends/commit/6c20fd43e9ce3c2c5ad328c51bde75ea0692e27a) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Removed duplicated search requests
+
+  - Added `properties` as a search request parameter
+
+- [#478](https://github.com/shopware/frontends/pull/478) [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@unocss/nuxt_ from **^0.57.6** to **^0.57.7**
+  - Changed dependency _vue_ from **^3.3.8** to **^3.3.9**
+
+- [#1023](https://github.com/shopware/frontends/pull/1023) [`0027cdd`](https://github.com/shopware/frontends/commit/0027cdd2a943f141ca5b12f30fbdb210299829ed) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added missing `same password` error message
+
+  - Changed the success message block to reset after each click on the main button
+
+- [#640](https://github.com/shopware/frontends/pull/640) [`eef5f3d`](https://github.com/shopware/frontends/commit/eef5f3d56cdaafc4da3b9f497ca83087ec97855e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Change the minimum node 18 version to 18.17.x
+
+- [#508](https://github.com/shopware/frontends/pull/508) [`a92941e`](https://github.com/shopware/frontends/commit/a92941ed59313fe85d5bbe204c2930d8a1a106b1) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Hide digital product link if link cannot be downloaded
+
+- [#488](https://github.com/shopware/frontends/pull/488) [`3ebe003`](https://github.com/shopware/frontends/commit/3ebe0031f0e2f41492232b4a3afed44dd41a48e8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix category external link
+
+- [#1042](https://github.com/shopware/frontends/pull/1042) [`53e7177`](https://github.com/shopware/frontends/commit/53e71770ad741bb558f193a95cae6bcc025a047f) Thanks [@patzick](https://github.com/patzick)! - Completely removed dependency to the deprecated `@shopware-pwa/types` package
+
+- [#1046](https://github.com/shopware/frontends/pull/1046) [`57d8075`](https://github.com/shopware/frontends/commit/57d8075bcb3d973414776f5d85e00ce67c6b6902) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Disable checkout button for empty cart
+
+- [#768](https://github.com/shopware/frontends/pull/768) [`789b2b5`](https://github.com/shopware/frontends/commit/789b2b55939efef47010500ecbf614840703c284) Thanks [@mkucmus](https://github.com/mkucmus)! - Allow to provide devStorerontUrl from .env
+
+- [#805](https://github.com/shopware/frontends/pull/805) [`815acda`](https://github.com/shopware/frontends/commit/815acdaab3f68644d5e2a71c5bc44ef9f9e5423e) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - Remove ProductStatic and all related components, fix ReviewForm in demo-store
+
+- [#873](https://github.com/shopware/frontends/pull/873) [`99ad5e9`](https://github.com/shopware/frontends/commit/99ad5e99652771ea7cd5e1395708a878cca980f5) Thanks [@mkucmus](https://github.com/mkucmus)! - Separate components for order (product, custom, discount, promotion) and cart (product, promotion) item types
+
+- [#664](https://github.com/shopware/frontends/pull/664) [`af2bc19`](https://github.com/shopware/frontends/commit/af2bc19063d967bd1d13b388ddf430d97ae8445a) Thanks [@rebewp](https://github.com/rebewp)! - Changed usage of env variables to be able to adjust their naming to only include shopware once.
+  After merging, ENV Variables with names including _*SHOPWARE_SHOPWARE*_ still work.
+
+- [#620](https://github.com/shopware/frontends/pull/620) [`7535a51`](https://github.com/shopware/frontends/commit/7535a51562adaea4be1afc93a7b9d1e84a777b73) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Switch off telemetry
+
+- Updated dependencies [[`38a3853`](https://github.com/shopware/frontends/commit/38a385374a99d114c4ed3477f14c9e06dedb0dcd), [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622), [`2343012`](https://github.com/shopware/frontends/commit/2343012ad552b06557e6715055b3abc534fa2fae), [`f1b2a30`](https://github.com/shopware/frontends/commit/f1b2a307de58e0f296edab3222b7cd5684104347), [`2ade07a`](https://github.com/shopware/frontends/commit/2ade07ad51944eebb7d1962c36823875cd5e959e), [`fc262dd`](https://github.com/shopware/frontends/commit/fc262dd3a93338353394c03faf7fee36a0c36511), [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622), [`1566f7a`](https://github.com/shopware/frontends/commit/1566f7a3962c511b5c72e12a4a5db40c4aa5d198), [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715), [`801420a`](https://github.com/shopware/frontends/commit/801420aedcd8f43159862dfdb31eb9240d8d7fe2), [`823aa9b`](https://github.com/shopware/frontends/commit/823aa9b4626c8931d2bea1399e825162c44fd45c), [`4dce006`](https://github.com/shopware/frontends/commit/4dce006460611e59fed084511ca9ecb814f95cf1), [`c729e70`](https://github.com/shopware/frontends/commit/c729e7014c70d7f71edf5297104065d18e482e04), [`bebae42`](https://github.com/shopware/frontends/commit/bebae42e58e3dd47f13bf166b0fb0d8ac9a416e3), [`f7797e8`](https://github.com/shopware/frontends/commit/f7797e8eb8cc72d425e568f3abedeb174e703de5), [`782ef4d`](https://github.com/shopware/frontends/commit/782ef4d417dce6e6d60992bd54f876aa4bc5f45d), [`033867b`](https://github.com/shopware/frontends/commit/033867bd2e5ce343e2b8cc71794a95ab7b1c2923), [`9643e56`](https://github.com/shopware/frontends/commit/9643e56dafba9282b75c12c96b2afb3a4738f86e), [`1583a7a`](https://github.com/shopware/frontends/commit/1583a7ae0d68b72fb362b625e1634e03bad68110), [`97d2859`](https://github.com/shopware/frontends/commit/97d2859e4dcbdc563200f2f64d1a20880b675d87), [`864616f`](https://github.com/shopware/frontends/commit/864616f0c9e1cbe11e434b9a04a35ff9520bcb3c), [`d60d062`](https://github.com/shopware/frontends/commit/d60d0620c7114a2f26bb2faf24241e2cbabc8798), [`a92941e`](https://github.com/shopware/frontends/commit/a92941ed59313fe85d5bbe204c2930d8a1a106b1), [`da77b65`](https://github.com/shopware/frontends/commit/da77b6560f1f658df4093bc332d81bf03cff957f), [`aa97efe`](https://github.com/shopware/frontends/commit/aa97efe0131024fb3d61cf0d8df6c44eccc62e70), [`487d991`](https://github.com/shopware/frontends/commit/487d991f2cda0fbf637502597b20dd931498fe6a), [`3c40741`](https://github.com/shopware/frontends/commit/3c407411cf9ce7ad18df9e9647c70972da4509e0), [`013a1d6`](https://github.com/shopware/frontends/commit/013a1d6f88377686cfc1a85903a0c48d8fda67f5), [`53e7177`](https://github.com/shopware/frontends/commit/53e71770ad741bb558f193a95cae6bcc025a047f), [`99ad5e9`](https://github.com/shopware/frontends/commit/99ad5e99652771ea7cd5e1395708a878cca980f5), [`c729e70`](https://github.com/shopware/frontends/commit/c729e7014c70d7f71edf5297104065d18e482e04), [`04ac2ad`](https://github.com/shopware/frontends/commit/04ac2ada522c881bb06565c332baf5f2cf08643d), [`e2c225f`](https://github.com/shopware/frontends/commit/e2c225f1d69a5d523f3c1e6c90449ee28f98b2f2), [`89a97a4`](https://github.com/shopware/frontends/commit/89a97a45ae4a58616e41f63e9884a2a67f0a6ce8), [`c729e70`](https://github.com/shopware/frontends/commit/c729e7014c70d7f71edf5297104065d18e482e04), [`815acda`](https://github.com/shopware/frontends/commit/815acdaab3f68644d5e2a71c5bc44ef9f9e5423e), [`ead7415`](https://github.com/shopware/frontends/commit/ead74155470be9714125fa59fbf7f8e78b62e91c), [`864616f`](https://github.com/shopware/frontends/commit/864616f0c9e1cbe11e434b9a04a35ff9520bcb3c), [`8f0b468`](https://github.com/shopware/frontends/commit/8f0b46850a0b89667934c551431306f7d765f86b), [`f8266a0`](https://github.com/shopware/frontends/commit/f8266a0bba4f6d2195dd128e177933e6e61478ff), [`97b5949`](https://github.com/shopware/frontends/commit/97b5949da2663700aa4047c4927b4a5f192cee74), [`05ca5b6`](https://github.com/shopware/frontends/commit/05ca5b68f098bc8969c2c50e270b19b00938513c), [`af2bc19`](https://github.com/shopware/frontends/commit/af2bc19063d967bd1d13b388ddf430d97ae8445a), [`7a3a92c`](https://github.com/shopware/frontends/commit/7a3a92c3ee1a337e752adbcfa5057d30064eed7c), [`6664aa2`](https://github.com/shopware/frontends/commit/6664aa2aa48ec63fc053ad024a03940113e17956), [`479357c`](https://github.com/shopware/frontends/commit/479357c74d40c99218eb22ccd4089357ffab5872), [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715), [`f6b194e`](https://github.com/shopware/frontends/commit/f6b194e97f7bafb291a6c8b2397ed1412fd003e9), [`6b54268`](https://github.com/shopware/frontends/commit/6b54268049ae9b1b3d311b9a122f43a752a2b715)]:
+  - @shopware-pwa/composables-next@1.0.0
+  - @shopware-pwa/cms-base@1.0.0
+  - @shopware/api-client@1.0.0
+  - @shopware-pwa/nuxt3-module@1.0.0
+  - @shopware-pwa/helpers-next@1.0.0
+
 ## 0.15.1
 
 ### Patch Changes

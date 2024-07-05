@@ -1,9 +1,8 @@
-<script lang="ts">
-export default {
-  name: "CheckoutSuccessUnpaidPage",
-};
-</script>
 <script setup lang="ts">
+defineOptions({
+  name: "CheckoutSuccessUnpaidPage",
+});
+
 const { params } = useRoute();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);

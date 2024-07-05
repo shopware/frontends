@@ -1,16 +1,13 @@
 <script setup lang="ts">
+defineOptions({
+  name: "CartPage",
+});
 definePageMeta({ layout: "checkout" });
 
 const { cartItems, subtotal, totalPrice, shippingTotal } = useCart();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 const hasItems = computed(() => cartItems.value.length > 0);
-</script>
-
-<script lang="ts">
-export default {
-  name: "CartPage",
-};
 </script>
 
 <template>

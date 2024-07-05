@@ -21,6 +21,10 @@ const config = computed<SliderElementConfig>(() => ({
     value: "300px",
     source: "static",
   },
+  minWidth: {
+    value: "300px",
+    source: "static",
+  },
   displayMode: {
     value: "contain",
     source: "static",
@@ -45,7 +49,7 @@ const crossSellCollections = computed(() => {
 
 const { width } = useElementSize(crossSellContainer);
 const slidesToShow = computed(() => {
-  const minWidth = +getConfigValue("elMinWidth").replace(/\D+/g, "");
+  const minWidth = +(config.value.minWidth?.value.replace(/\D+/g, "") || 0);
   return Math.floor(width.value / (minWidth * 1.2));
 });
 

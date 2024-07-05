@@ -2,7 +2,7 @@ import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { useContext, useShopwareContext } from "#imports";
 import { createSharedComposable } from "@vueuse/core";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 /**
  * Composable to manage cart
@@ -18,6 +18,12 @@ export type UseCartReturn = {
     id: string;
     quantity?: number;
   }): Promise<Schemas["Cart"]>;
+  /**
+   * Add products by array of items
+   */
+  addProducts(
+    items: operations["addLineItem post /checkout/cart/line-item"]["body"]["items"],
+  ): Promise<Schemas["Cart"]>;
   /**
    * Adds a promotion code to the cart
    */
@@ -53,7 +59,7 @@ export type UseCartReturn = {
   /**
    * Removes the provided LineItem from the cart
    */
-  removeItem(lineItem: Schemas["LineItem"]): Promise<void>;
+  removeItem(lineItem: Schemas["LineItem"]): Promise<Schemas["Cart"]>;
   /**
    * The total price of the cart (including calculated costs like shipping)
    */
@@ -66,10 +72,6 @@ export type UseCartReturn = {
    * The total price of all cart items
    */
   subtotal: ComputedRef<number>;
-  /**
-   * @deprecated - use product related methods to fetch an item's URL instead
-   */
-  getProductItemsSeoUrlsData(): Promise<Partial<Schemas["Product"]>[]>;
   /**
    * `true` if the cart contains no items
    */
@@ -87,7 +89,7 @@ export type UseCartReturn = {
 /**
  * Cart management logic.
  *
- * Used as [Shared](https://frontends.shopware.com/framework/shared-composables.html) Composable `useCart`
+ * Used as [Shared](https://frontends.shopware.com/framework/composables/shared-composables.html) Composable `useCart`
  */
 export function useCartFunction(): UseCartReturn {
   const { apiClient } = useShopwareContext();
@@ -115,18 +117,29 @@ export function useCartFunction(): UseCartReturn {
     id: string;
     quantity?: number;
   }): Promise<Schemas["Cart"]> {
+    return addProducts([
+      {
+        id: params.id,
+        quantity: params.quantity,
+        type: "product",
+      },
+    ]);
+  }
+
+  /**
+   * Add multiple products to the cart
+   *
+   * @param {operations["addLineItem post /checkout/cart/line-item"]["body"]["items"]} items
+   * @returns
+   */
+  async function addProducts(
+    items: operations["addLineItem post /checkout/cart/line-item"]["body"]["items"],
+  ): Promise<Schemas["Cart"]> {
     const { data: addToCartResult } = await apiClient.invoke(
       "addLineItem post /checkout/cart/line-item",
       {
         body: {
-          items: [
-            {
-              id: params.id,
-              referencedId: params.id,
-              quantity: params.quantity,
-              type: "product",
-            },
-          ],
+          items,
         },
       },
     );
@@ -144,6 +157,7 @@ export function useCartFunction(): UseCartReturn {
     );
     _storeCart.value = data;
     setCartErrors(data);
+    return data;
   }
 
   async function changeProductQuantity(params: {
@@ -176,7 +190,7 @@ export function useCartFunction(): UseCartReturn {
         body: {
           items: [
             {
-              referencedId: promotionCode,
+              id: promotionCode,
               type: "promotion",
             },
           ],
@@ -186,21 +200,6 @@ export function useCartFunction(): UseCartReturn {
     _storeCart.value = data;
     setCartErrors(data);
     return data;
-  }
-
-  async function getProductItemsSeoUrlsData() {
-    if (!cartItems.value.length) {
-      return [];
-    }
-
-    const result = await apiClient.invoke("readProduct post /product", {
-      body: {
-        ids: cartItems.value
-          .map(({ referencedId }) => referencedId)
-          .filter(String) as string[],
-      },
-    });
-    return result.data.elements;
   }
 
   const appliedPromotionCodes = computed(() => {
@@ -228,8 +227,7 @@ export function useCartFunction(): UseCartReturn {
   const isEmpty = computed(() => count.value <= 0);
 
   const totalPrice = computed(() => {
-    const cartPrice =
-      cart.value && cart.value.price && cart.value.price.totalPrice;
+    const cartPrice = cart.value?.price?.totalPrice;
     return cartPrice || 0;
   });
 
@@ -282,6 +280,7 @@ export function useCartFunction(): UseCartReturn {
 
   return {
     addProduct,
+    addProducts,
     addPromotionCode: submitPromotionCode,
     appliedPromotionCodes,
     cart,
@@ -293,7 +292,6 @@ export function useCartFunction(): UseCartReturn {
     totalPrice,
     shippingTotal,
     subtotal,
-    getProductItemsSeoUrlsData,
     isEmpty,
     isVirtualCart,
     consumeCartErrors,

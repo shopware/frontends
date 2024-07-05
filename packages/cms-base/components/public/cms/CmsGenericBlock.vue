@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CmsBlock } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import {
   getCmsLayoutConfiguration,
   getBackgroundImageUrl,
@@ -8,7 +8,7 @@ import { resolveCmsComponent } from "@shopware-pwa/composables-next";
 import { h } from "vue";
 
 const props = defineProps<{
-  content: CmsBlock;
+  content: Schemas["CmsBlock"];
 }>();
 
 const DynamicRender = () => {

@@ -1,9 +1,3 @@
-<script lang="ts">
-export default {
-  name: "WishlistPage",
-};
-</script>
-
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 import defu from "defu";
@@ -38,6 +32,9 @@ const {
   getCurrentPage,
   getTotalPagesCount,
 } = useWishlist();
+defineOptions({
+  name: "WishlistPage",
+});
 const { apiClient } = useShopwareContext();
 const products = ref<Schemas["Product"][]>([]);
 const isLoading = ref(false);

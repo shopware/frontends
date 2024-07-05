@@ -2,15 +2,19 @@ import { createAPIClient } from "@shopware/api-client";
 import type { operations } from "#shopware";
 import Cookies from "js-cookie";
 
+const shopwareEndpoint = import.meta.env.VITE_DEMO_API_URL;
+
 export const apiClient = createAPIClient<operations>({
-  baseURL: import.meta.env.VITE_DEMO_API_URL,
+  baseURL: shopwareEndpoint,
   accessToken: import.meta.env.VITE_DEMO_API_ACCESS_TOKEN,
   contextToken: Cookies.get("sw-context-token"),
-  onContextChanged(newContextToken) {
-    Cookies.set("sw-context-token", newContextToken, {
-      expires: 365, // days
-      path: "/",
-      sameSite: "lax",
-    });
-  },
+});
+
+apiClient.hook("onContextChanged", (newContextToken) => {
+  Cookies.set("sw-context-token", newContextToken, {
+    expires: 365, // days
+    path: "/",
+    sameSite: "lax",
+    secure: shopwareEndpoint.startsWith("https://"),
+  });
 });

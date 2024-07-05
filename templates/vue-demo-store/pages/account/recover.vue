@@ -1,9 +1,8 @@
-<script lang="ts">
-export default {
-  name: "RecoverPassword",
-};
-</script>
 <script setup lang="ts">
+defineOptions({
+  name: "RecoverPassword",
+});
+
 const { t } = useI18n();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);

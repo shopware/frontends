@@ -22,7 +22,7 @@ export type UseNewsletterReturn = {
   /**
    * Get newsletter status from the API call
    */
-  getNewsletterStatus(): Promise<void>;
+  getNewsletterStatus(): Promise<Schemas["AccountNewsletterRecipientResult"]>;
   /**
    * Indicates if the user is subscribed to the newsletter
    *
@@ -78,14 +78,11 @@ export function useNewsletter(): UseNewsletterReturn {
   }
 
   async function getNewsletterStatus() {
-    try {
-      const response = await apiClient.invoke(
-        "readNewsletterRecipient post /account/newsletter-recipient",
-      );
-      newsletterStatus.value = response.data.status;
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await apiClient.invoke(
+      "readNewsletterRecipient post /account/newsletter-recipient",
+    );
+    newsletterStatus.value = response.data.status;
+    return response.data;
   }
 
   const isNewsletterSubscriber = computed(

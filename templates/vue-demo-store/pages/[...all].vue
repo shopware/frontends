@@ -1,15 +1,13 @@
-<script lang="ts">
-export default {
-  name: "PageResolver",
-};
-</script>
-
 <script setup lang="ts">
 import { resolveComponent } from "vue";
 import type { Ref } from "vue";
 import { pascalCase } from "scule";
 import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { Schemas } from "#shopware";
+
+defineOptions({
+  name: "PageResolver",
+});
 
 const { clearBreadcrumbs } = useBreadcrumbs();
 

@@ -1,6 +1,10 @@
 <script setup lang="ts">
+defineOptions({
+  name: "LoginPage",
+});
+
 const { push } = useRouter();
-const { logout, isLoggedIn } = useUser();
+const { isLoggedIn } = useUser();
 
 const redirectAfterLogin = (path = "/account") => push(path);
 const localePath = useLocalePath();
@@ -10,8 +14,6 @@ onBeforeMount(async () => {
   if (process.client && isLoggedIn.value) {
     // redirect to account page if user is logged in
     navigateTo({ path: "/account" });
-  } else {
-    await logout(); // if you do a hard reload on the login page, you will be logged out
   }
 });
 
@@ -21,12 +23,6 @@ useBreadcrumbs([
     path: "/login",
   },
 ]);
-</script>
-
-<script lang="ts">
-export default {
-  name: "LoginPage",
-};
 </script>
 
 <template>

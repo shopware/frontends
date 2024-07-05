@@ -5,8 +5,6 @@ describe("helpers - test global API", () => {
   it("global API should match snapshot", () => {
     expect(helpers).toMatchInlineSnapshot(`
       {
-        "_debounce": [Function],
-        "_parseUrlQuery": [Function],
         "buildUrlPrefix": [Function],
         "canUseQuoteActions": [Function],
         "downloadFile": [Function],
@@ -30,7 +28,6 @@ describe("helpers - test global API", () => {
         "getProductRatingAverage": [Function],
         "getProductReviews": [Function],
         "getProductRoute": [Function],
-        "getProductThumbnailUrl": [Function],
         "getProductTierPrices": [Function],
         "getProductUrl": [Function],
         "getShippingMethodDeliveryTime": [Function],

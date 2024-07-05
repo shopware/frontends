@@ -4,7 +4,7 @@
 Just copy the code snippet and paste it into your project. Sometimes it's useful to create a new component and use it in a higher level component like a page or a layout.
 :::
 
-See also the [complete guide](../../../getting-started/e-commerce/product-detail-page) about the product detail page from the BUILDING section.
+See also the [complete guide](../../../e-commerce/product-detail-page.html) about the product detail page from the BUILDING section.
 
 ## Simple Product Detail Page
 
@@ -20,15 +20,13 @@ Path: `templates/vue-demo-store/components/product/ProductStatic.vue`
 
 ```vue
 <script setup lang="ts">
-import type { Product, ProductReview } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import {
   getProductRoute,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
-import { getProductReviews } from "@shopware-pwa/api-client";
 import type { Ref } from "vue";
 
-const reviews: Ref<ProductReview[]> = ref([]);
 const router = useRouter();
 
 const { search } = useProductSearch();
@@ -46,15 +44,10 @@ const { product } = useProduct(
   productResponse.value?.product,
   productResponse.value?.configurator,
 );
+const { loadProductReviews, productReviews } = useProductReviews(product);
 
-const { apiInstance } = useShopwareContext();
 onMounted(async () => {
-  const reviewsResponse = await getProductReviews(
-    product.value.id,
-    undefined,
-    apiInstance,
-  );
-  reviews.value = reviewsResponse?.elements || [];
+  await loadProductReviews();
 });
 
 const productName = computed(() =>
@@ -69,7 +62,7 @@ const description = computed(() =>
 );
 const properties = computed(() => product.value?.properties || []);
 
-const handleVariantChange = (val: Product) => {
+const handleVariantChange = (val: Schemas["Product"]) => {
   const newRoute = getProductRoute(val);
   router.push(newRoute);
 };
@@ -154,14 +147,14 @@ const handleVariantChange = (val: Product) => {
               </div>
             </div>
 
-            <div v-if="reviews?.length" class="mt-10">
+            <div v-if="productReviews?.length" class="mt-10">
               <h3 class="text-sm font-medium text-gray-900">
                 {{ $t("product.reviews") }}
               </h3>
-              <div v-if="reviews?.length" class="mt-4">
+              <div v-if="productReviews?.length" class="mt-4">
                 <ul role="list" class="pl-4 list-disc text-sm space-y-2">
                   <li
-                    v-for="review in reviews"
+                    v-for="review in productReviews"
                     :key="review.id"
                     class="text-gray-400"
                   >

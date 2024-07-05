@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
+
+defineOptions({
+  name: "AccountOrderLineItem",
+});
+
 const props = defineProps<{
   lineItem: Schemas["OrderLineItem"];
 }>();
@@ -19,11 +24,6 @@ const LineItemType = computed(() => {
       return defineAsyncComponent(() => import("./order/LineItemCustom.vue"));
   }
 });
-</script>
-<script lang="ts">
-export default {
-  name: "AccountOrderLineItem",
-};
 </script>
 <template>
   <LineItemType :line-item="lineItem" />

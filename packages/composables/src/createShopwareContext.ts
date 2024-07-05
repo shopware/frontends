@@ -11,9 +11,6 @@ import type { App, EffectScope } from "vue";
 export function createShopwareContext(
   app: App,
   options: {
-    // initialStore?: any;
-    // shopwareDefaults: ApiDefaults;
-    apiInstance?: any;
     devStorefrontUrl?: string | null;
     enableDevtools?: boolean;
   },
@@ -28,23 +25,13 @@ export function createShopwareContext(
   });
 
   const shopwarePlugin = markRaw({
-    install(
-      app: App,
-      options?: {
-        enableDevtools: boolean;
-      },
-    ) {
+    install(app: App) {
       shopwarePlugin._a = app;
-      (app as any).config.globalProperties.$shopware = shopwarePlugin;
-      (app as any).provide("shopware", shopwarePlugin);
-      /* istanbul ignore else */
-      if (options?.enableDevtools && typeof window !== "undefined") {
-        // registerShopwareDevtools(app, shopwarePlugin);
-      }
+      app.config.globalProperties.$shopware = shopwarePlugin;
+      app.provide("shopware", shopwarePlugin);
     },
     _a: app,
     _e: scope,
-    apiInstance: options.apiInstance,
     devStorefrontUrl: options.devStorefrontUrl,
     state,
   });
@@ -52,5 +39,5 @@ export function createShopwareContext(
   if (options?.enableDevtools && typeof window !== "undefined") {
     // registerShopwareDevtools(app, shopwarePlugin);
   }
-  return shopwarePlugin as any;
+  return shopwarePlugin;
 }

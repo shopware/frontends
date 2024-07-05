@@ -2,19 +2,17 @@
 
 [![](https://img.shields.io/npm/v/@shopware-pwa/composables-next?color=blue&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCA0ODggNTUzIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDM5LjA0MSAxMjkuNTkzTDI1OC43NjkgMzEuMzA3NkMyNDQuOTE1IDIzLjc1NDEgMjI4LjExNiAyNC4wMDkzIDIxNC40OTcgMzEuOTgwMkw0Ny4yNjkgMTI5Ljg1OEMzMy40NzYzIDEzNy45MzEgMjUgMTUyLjcxMyAyNSAxNjguNjk1VjM4OC40NjZDMjUgNDA0LjczMiAzMy43Nzg1IDQxOS43MzIgNDcuOTYwMiA0MjcuNjk5TDIxNS4xNzggNTIxLjYzNkMyMjguNDUxIDUyOS4wOTIgMjQ0LjU5MyA1MjkuMzMyIDI1OC4wODIgNTIyLjI3NEw0MzguMzY0IDQyNy45MzRDNDUzLjIwMSA0MjAuMTcgNDYyLjUgNDA0LjgwOSA0NjIuNSAzODguMDYzVjE2OS4xMDJDNDYyLjUgMTUyLjYzMiA0NTMuNTAyIDEzNy40NzcgNDM5LjA0MSAxMjkuNTkzWiIgc3Ryb2tlPSJ1cmwoI3BhaW50MF9saW5lYXJfMTUzXzY5MjY1KSIgc3Ryb2tlLXdpZHRoPSI1MCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzE1M182OTI2NSIgeDE9Ii0xNi4yOTg5IiB5MT0iMTY1LjM0OSIgeDI9IjI3Ni40MTIiIHkyPSItODkuMzIzNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDA4NUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0MwRTJGNSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==)](https://npmjs.com/package/@shopware-pwa/composables-next)
 [![](https://img.shields.io/github/package-json/v/shopware/frontends?color=blue&filename=packages%2Fcomposables%2Fpackage.json&label=frontends/composables&logo=github)](https://github.com/shopware/frontends/tree/main/packages/composables)
-![](https://img.shields.io/github/license/shopware/frontends?color=blue)
 [![](https://img.shields.io/github/issues/shopware/frontends/composables?label=package%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acomposables)
+[![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
 Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://frontends.shopware.com/getting-started/page-elements/navigation.html).
-
-[👉 Composables Reference](https://frontends.shopware.com/packages/composables.html)
 
 ## Features
 
 - `createShopwareContext` method to create a Vue 3 plugin to install
 - State management
 - Logic for UI
-- Communication with Store-API via [api-client](https://www.npmjs.com/package/@shopware-pwa/api-client) package
+- Communication with Store-API via [api-client](https://www.npmjs.com/package/@shopware/api-client) package
 
 ## Setup
 
@@ -22,23 +20,34 @@ Install npm packages (composables & api-client):
 
 ```bash
 # Using pnpm
-pnpm add @shopware-pwa/composables-next @shopware-pwa/api-client
+pnpm add @shopware-pwa/composables-next @shopware/api-client @shopware/api-gen
 
 # Using yarn
-yarn add @shopware-pwa/composables-next @shopware-pwa/api-client
+yarn add @shopware-pwa/composables-next @shopware/api-client @shopware/api-gen
 
 # Using npm
-npm i @shopware-pwa/composables-next @shopware-pwa/api-client
+npm i @shopware-pwa/composables-next @shopware/api-client @shopware/api-gen
 ```
 
-Initialize the [api-client](https://www.npmjs.com/package/@shopware-pwa/api-client) instance:
+Now generate your types ysing the [CLI](https://www.npmjs.com/package/@shopware/api-gen):
+
+```bash
+pnpm shopware-api-gen generate --apiType=store
+```
+
+Initialize the [api-client](https://www.npmjs.com/package/@shopware/api-client) instance:
 
 ```js
-import { createInstance } from "@shopware-pwa/api-client";
-const apiInstance = createInstance({
-  endpoint: "https://your-api-instance.com",
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "#shopware";
+
+export const apiClient = createAPIClient<operations>({
+  baseURL: "https://your-api-instance.com",
   accessToken: "your-sales-channel-access-token",
 });
+
+// and then provide it in the Vue app
+app.provide("apiClient", apiClient);
 ```
 
 Now, we can create a Vue 3 plugin to install a Shopware context in an app:
@@ -47,7 +56,6 @@ Now, we can create a Vue 3 plugin to install a Shopware context in an app:
 // app variable in type of App
 
 const shopwareContext = createShopwareContext(app, {
-  apiInstance, // apiInstance from previous step
   devStorefrontUrl: "https://your-sales-channel-configured-domain.com",
 });
 // register a plugin in a Vue instance
@@ -96,26 +104,32 @@ npm i js-cookie
 
 Let's get back to the step where the `api-client` was initialized:
 
-```js
-import { createInstance } from "@shopware-pwa/api-client";
+<!-- automd:file src="../../examples/b2b-quote-management/src/apiClient.ts" code -->
+
+```ts [apiClient.ts]
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "#shopware";
 import Cookies from "js-cookie";
 
-const apiInstance = createInstance({
-  endpoint: "https://your-api-instance.com",
-  accessToken: "your-sales-channel-access-token",
-  contextToken: Cookies.get("sw-context-token"), // get the context token if exists in the cookies
+const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
+
+export const apiClient = createAPIClient<operations>({
+  baseURL: shopwareEndpoint,
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  contextToken: Cookies.get("sw-context-token"),
 });
 
-// callback to detect a `sw-context-token` in the response
-apiInstance.onConfigChange(({ config }) => {
-  // set the context-token in the cookie
-  Cookies.set("sw-context-token", config.contextToken || "", {
+apiClient.hook("onContextChanged", (newContextToken) => {
+  Cookies.set("sw-context-token", newContextToken, {
     expires: 365, // days
     path: "/",
     sameSite: "lax",
+    secure: shopwareEndpoint.startsWith("https://"),
   });
 });
 ```
+
+<!-- /automd -->
 
 Thanks to this, the session will be kept to the corresponding `sw-context-token` saved in the cookie, so it can be reachable also in the SSR. Check the example to see it in action:
 
@@ -137,18 +151,13 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 0.14.1
+### Latest changes: 1.0.1
 
 ### Patch Changes
 
-- [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+- [#1076](https://github.com/shopware/frontends/pull/1076) [`1954022`](https://github.com/shopware/frontends/commit/19540220d87788eed08991d35aaaead2e18564e5) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - `useOrderDetails` - Adding `stateMachineState` as the default association to the composable
 
-  - Changed dependency _@vueuse/core_ from **^10.5.0** to **^10.6.1**
+- [#1078](https://github.com/shopware/frontends/pull/1078) [`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d) Thanks [@patzick](https://github.com/patzick)! - `useListing` - reverted usage of the `sw-include-swo-urls` header in the search request
 
-- [#467](https://github.com/shopware/frontends/pull/467) [`0e031efe`](https://github.com/shopware/frontends/commit/0e031efe7a3c0249a5e883c85ec87542ab07a4c0) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
-
-  - Changed dependency _scule_ from **^1.0.0** to **^1.1.0**
-
-- Updated dependencies [[`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831)]:
-  - @shopware-pwa/helpers-next@0.5.1
-  - @shopware-pwa/api-client@0.7.0
+- Updated dependencies [[`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d)]:
+  - @shopware/api-client@1.0.1

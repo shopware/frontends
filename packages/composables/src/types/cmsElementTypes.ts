@@ -1,15 +1,4 @@
 import type { Schemas } from "#shopware";
-import type {
-  CmsSlot,
-  CrossSelling,
-  EntityResult,
-  Media,
-  Product,
-  ProductListingResult,
-  ProductMedia,
-  ProductReview,
-  Salutation,
-} from "@shopware-pwa/types";
 import type { CSSProperties } from "vue";
 
 export type SourceType = "static" | "mapped";
@@ -42,7 +31,7 @@ type ElementFieldConfig = {
 };
 
 // Text
-export type CmsElementText = CmsSlot & {
+export type CmsElementText = Schemas["CmsSlot"] & {
   type: "text" | typeof String;
   slot: typeof String;
   config: TextElementConfig;
@@ -69,7 +58,7 @@ type ImageElementConfig = {
   verticalAlign: ElementConfig<VerticalAlign>;
 };
 
-export type CmsElementImage = CmsSlot & {
+export type CmsElementImage = Schemas["CmsSlot"] & {
   type: "image";
   config: ImageElementConfig;
   data: {
@@ -77,12 +66,13 @@ export type CmsElementImage = CmsSlot & {
     url: string;
     newTab: boolean;
     apiAlias: "cms_image";
-    media: Media;
+    media: Schemas["Media"];
   };
 };
 
 // Image Slider
 export type SliderElementConfig = {
+  minWidth?: ElementConfig<string>;
   minHeight: ElementConfig<string | number>;
   verticalAlign?: ElementConfig<VerticalAlign>;
   displayMode?: ElementConfig<"standard" | "cover" | "contain">;
@@ -102,7 +92,7 @@ type ImageSliderElementConfig = ImageElementConfig &
     >;
   };
 
-export type CmsElementImageSlider = CmsSlot & {
+export type CmsElementImageSlider = Schemas["CmsSlot"] & {
   type: "image-slider";
   config: ImageSliderElementConfig;
   data: {
@@ -111,7 +101,7 @@ export type CmsElementImageSlider = CmsSlot & {
     sliderItems: {
       url: string;
       newTab: boolean;
-      media: Media;
+      media: Schemas["Media"];
       mediaId: string;
       apiAlias: "cms_image_slider_item";
     }[];
@@ -128,7 +118,7 @@ type ImageGalleryElementConfig = ImageSliderElementConfig & {
   zoom: ElementConfig<boolean>;
 };
 
-export type CmsElementImageGallery = CmsSlot & {
+export type CmsElementImageGallery = Schemas["CmsSlot"] & {
   type: "image-gallery";
   config: ImageGalleryElementConfig;
   data: {
@@ -139,10 +129,10 @@ export type CmsElementImageGallery = CmsSlot & {
       | {
           url: null | string;
           newTab: boolean;
-          media: Media;
+          media: Schemas["Media"];
           apiAlias: "cms_image_slider_item";
         }
-      | ProductMedia
+      | Schemas["ProductMedia"]
     >;
   };
 };
@@ -161,14 +151,14 @@ type YouTubeVideoElementConfig = {
   needsConfirmation: ElementConfig<boolean>;
   advancePrivacyMode: ElementConfig<boolean>;
 };
-export type CmsElementYoutubeVideo = CmsSlot & {
+export type CmsElementYoutubeVideo = Schemas["CmsSlot"] & {
   type: "youtube-video";
   config: YouTubeVideoElementConfig;
   data: {
     mediaId: string | null;
     url: null | string;
     newTab: null | boolean;
-    media: null | Media;
+    media: null | Schemas["Media"];
     apiAlias: "cms_image";
   };
 };
@@ -189,14 +179,14 @@ type VimeoVideoElementConfig = {
   needsConfirmation: ElementConfig<boolean>;
 };
 
-export type CmsElementVimeoVideo = CmsSlot & {
+export type CmsElementVimeoVideo = Schemas["CmsSlot"] & {
   type: "vimeo-video";
   config: VimeoVideoElementConfig;
   data: {
     mediaId: string | null; // actually a CmsElementImage data, consider unify this
     url: null | string;
     newTab: null | boolean;
-    media: null | Media;
+    media: null | Schemas["Media"];
     apiAlias: "cms_image";
   };
 };
@@ -208,12 +198,12 @@ type ProductBoxElementConfig = {
   product: ElementConfig<string>;
 };
 
-export type CmsElementProductBox = CmsSlot & {
+export type CmsElementProductBox = Schemas["CmsSlot"] & {
   type: "product-box";
   config: ProductBoxElementConfig;
   data: {
     productId: string;
-    product: Product;
+    product: Schemas["Product"];
     apiAlias: "cms_product_box";
   };
 };
@@ -234,12 +224,12 @@ type ProductSliderElementConfig = {
   productStreamSorting: ElementConfig<string>;
 };
 
-export type CmsElementProductSlider = CmsSlot & {
+export type CmsElementProductSlider = Schemas["CmsSlot"] & {
   type: "product-slider";
   config: ProductSliderElementConfig;
   data: {
     apiAlias: "cms_product_slider";
-    products: Product[];
+    products: Schemas["Product"][];
   };
 };
 
@@ -256,7 +246,7 @@ type CmsSidebarFilterElementConfig = {
   verticalAlign: ElementConfig<VerticalAlign>;
 };
 
-export type CmsElementSidebarFilter = CmsSlot & {
+export type CmsElementSidebarFilter = Schemas["CmsSlot"] & {
   type: "sidebar-filter";
   config: CmsSidebarFilterElementConfig;
 };
@@ -273,12 +263,12 @@ type CmsProductListingElementConfig = {
   propertyWhitelist: ElementConfig<string[]>;
 };
 
-export type CmsElementProductListing = CmsSlot & {
+export type CmsElementProductListing = Schemas["CmsSlot"] & {
   type: "product-listing";
   config: CmsProductListingElementConfig;
   data: {
     apiAlias: "cms_product_listing";
-    listing: ProductListingResult;
+    listing: Schemas["ProductListingResult"];
   };
 };
 
@@ -286,7 +276,7 @@ export type CmsElementProductListing = CmsSlot & {
 
 type CategoryNavigationElementConfig = unknown;
 
-export type CmsElementCategoryNavigation = CmsSlot & {
+export type CmsElementCategoryNavigation = Schemas["CmsSlot"] & {
   type: "category-navigation";
   config: CategoryNavigationElementConfig;
 };
@@ -296,14 +286,16 @@ type ProductDescriptionReviewsElementConfig = {
   alignment: ElementConfig<VerticalAlign>;
 };
 
-export type CmsElementProductDescriptionReviews = CmsSlot & {
+export type CmsElementProductDescriptionReviews = Schemas["CmsSlot"] & {
   type: "product-description-reviews";
   config: ProductDescriptionReviewsElementConfig;
   data: {
     productId: null | string;
     ratingSuccess: boolean;
-    product?: Product;
-    reviews: EntityResult<"product_review", ProductReview>;
+    product?: Schemas["Product"];
+    reviews: {
+      elements: Schemas["ProductReview"][];
+    };
     apiAlias: "cms_product_description_reviews";
   };
 };
@@ -312,15 +304,15 @@ export type CmsElementProductDescriptionReviews = CmsSlot & {
 
 type BuyBoxElementConfig = ProductDescriptionReviewsElementConfig;
 // buy box has the same interface in data as product description reviews! unify later
-export type CmsElementBuyBox = CmsSlot & {
+export type CmsElementBuyBox = Schemas["CmsSlot"] & {
   type: "buy-box";
   config: BuyBoxElementConfig;
   data: {
     configuratorSettings: Schemas["PropertyGroup"][] | null;
     productId: null | string;
     ratingSuccess: boolean;
-    product?: Product;
-    reviews: EntityResult<"product_review", ProductReview>;
+    product?: Schemas["Product"];
+    reviews: Schemas["ProductReview"][];
     apiAlias: "cms_product_description_reviews";
   };
 };
@@ -335,12 +327,12 @@ type CrossSellingElementConfig = {
   displayMode: ElementConfig<DisplayMode>;
 };
 
-export type CmsElementCrossSelling = CmsSlot & {
+export type CmsElementCrossSelling = Schemas["CmsSlot"] & {
   type: "cross-selling";
   config: CrossSellingElementConfig;
   data: {
     apiAlias: "cms_cross_selling";
-    crossSellings: CrossSelling;
+    crossSellings: Schemas["CrossSellingElement"][];
   };
 };
 
@@ -354,14 +346,14 @@ type FormElementConfig = {
   defaultMailReceiver: ElementConfig<boolean>;
 };
 
-export type CmsElementForm = CmsSlot & {
+export type CmsElementForm = Schemas["CmsSlot"] & {
   type: "form";
   config: FormElementConfig;
-  data: Salutation[];
+  data: Schemas["Salutation"][];
 };
 
 // Product Name
-export type CmsElementProductName = CmsSlot & {
+export type CmsElementProductName = Schemas["CmsSlot"] & {
   type: "product-name";
   config: TextElementConfig;
   fieldConfig: ElementFieldConfig[];
@@ -375,7 +367,7 @@ export type CmsElementProductName = CmsSlot & {
 };
 
 // Manufacturer Logo
-export type CmsElementManufacturerLogo = CmsSlot & {
+export type CmsElementManufacturerLogo = Schemas["CmsSlot"] & {
   type: "manufacturer-logo";
   config: ImageElementConfig;
   data: {
@@ -383,6 +375,6 @@ export type CmsElementManufacturerLogo = CmsSlot & {
     url: string;
     newTab: boolean;
     apiAlias: "cms_manufacturer_logo";
-    media: Media;
+    media: Schemas["Media"];
   };
 };

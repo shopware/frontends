@@ -17,6 +17,7 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
     "test:bench": "turbo run test:bench -- --run",
     "test:e2e": "turbo run test:e2e",
     "format": "prettier --write \"**/*.{ts,tsx,md,vue}\"",
@@ -29,24 +30,24 @@
     "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.0",
+    "@biomejs/biome": "1.8.1",
     "@changesets/changelog-github": "0.5.0",
-    "@changesets/cli": "2.27.1",
-    "@microsoft/api-documenter": "7.24.13",
-    "@microsoft/api-extractor": "7.45.1",
-    "@microsoft/tsdoc": "0.14.2",
+    "@changesets/cli": "2.27.7",
+    "@microsoft/api-documenter": "7.25.3",
+    "@microsoft/api-extractor": "7.47.0",
+    "@microsoft/tsdoc": "0.15.0",
     "@types/changelog-parser": "2.8.4",
     "changelog-parser": "3.0.1",
-    "dotenv-cli": "7.4.1",
+    "dotenv-cli": "7.4.2",
     "esno": "4.7.0",
     "globby": "14.0.1",
     "husky": "9.0.11",
-    "lint-staged": "15.2.2",
-    "prettier": "3.2.5",
-    "taze": "0.13.6",
-    "turbo": "1.13.2",
-    "typedoc": "0.25.13",
-    "vercel": "34.0.0"
+    "lint-staged": "15.2.7",
+    "prettier": "3.3.2",
+    "taze": "0.13.8",
+    "turbo": "2.0.4",
+    "typedoc": "0.26.2",
+    "vercel": "34.2.7"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"
@@ -56,26 +57,28 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@9.1.4",
+  "packageManager": "pnpm@9.4.0",
   "pnpm": {
     "overrides": {
-      "@antfu/utils": "^0.7.7",
-      "@babel/traverse": "^7.24.1",
+      "@antfu/utils": "^0.7.10",
+      "@babel/traverse": "^7.24.7",
       "@types/node": "^20",
-      "debug": "^4.3.4",
+      "braces": "^3.0.3",
+      "debug": "^4.3.5",
       "follow-redirects": "^1.15.6",
       "lodash": "^4.17.21",
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
       "postcss": "^8.4.38",
-      "semver": "^7.6.0",
-      "sharp": "^0.33.3",
+      "semver": "^7.6.2",
+      "sharp": "^0.33.4",
       "socks": "^2.8.3",
-      "tar": "^6.2.1",
-      "undici": "^5.28.4",
+      "tar": "^7.4.0",
+      "undici": "^6.19.2",
       "vite@4>docs": "^4.5.3",
-      "vite@5": "^5.2.8",
-      "yaml@2": "^2.4.1",
-      "zod": "^3.22.4"
+      "vite@5": "^5.3.1",
+      "ws": "^8.17.1",
+      "yaml@2": "^2.4.5",
+      "zod": "^3.23.8"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
@@ -84,12 +87,6 @@
         "react-dom"
       ]
     },
-    "patchedDependencies": {
-      "@changesets/apply-release-plan@6.1.3": "patches/@changesets__apply-release-plan@6.1.3.patch",
-      "@changesets/apply-release-plan@6.1.4": "patches/@changesets__apply-release-plan@6.1.4.patch",
-      "@changesets/apply-release-plan@7.0.0": "patches/@changesets__apply-release-plan@7.0.0.patch"
-    },
-    "allowNonAppliedPatches": true,
     "auditConfig": {
       "ignoreCves": [
         "CVE-2023-26115",

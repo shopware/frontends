@@ -3,6 +3,10 @@ import type { Schemas, operations } from "#shopware";
 const route = useRoute();
 const router = useRouter();
 
+defineOptions({
+  name: "SearchResultPage",
+});
+
 const {
   changeCurrentPage,
   getCurrentListing,
@@ -48,19 +52,12 @@ const createFiltersFromRoute = () => {
           value: value,
         });
       }
-      if (key === "properties") {
-        filters.push({
-          type: "equalsAny",
-          field: "propertyIds",
-          value: value,
-        });
-      }
       if (key === "rating") {
         filters.push({
           type: "range",
           field: "ratingAverage",
           parameters: {
-            gte: value,
+            gte: +value,
           },
         });
       }
@@ -74,6 +71,21 @@ const createFiltersFromRoute = () => {
     }
   }
   return filters;
+};
+
+const createPropertiesFromRoute = () => {
+  const properties: string[] = [];
+  for (const [key, value] of Object.entries(route.query)) {
+    const currentValue = value as string;
+    const allValues = currentValue.split("|");
+    for (const value of allValues) {
+      if (key === "properties") {
+        properties.push(value);
+      }
+    }
+  }
+
+  return properties.join("|");
 };
 
 const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
@@ -90,8 +102,8 @@ const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
       type: "range",
       field: "price",
       parameters: {
-        gte: minPrice,
-        lte: maxPrice,
+        gte: +minPrice,
+        lte: +maxPrice,
       },
     });
   }
@@ -100,7 +112,7 @@ const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
       type: "range",
       field: "price",
       parameters: {
-        gte: minPrice,
+        gte: +minPrice,
       },
     });
   }
@@ -109,7 +121,7 @@ const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
       type: "range",
       field: "price",
       parameters: {
-        lte: maxPrice,
+        lte: +maxPrice,
       },
     });
   }
@@ -120,9 +132,11 @@ const cacheKey = computed(() => `productSearch-${JSON.stringify(route.query)}`);
 const loadProducts = async (cacheKey: string) => {
   const { data: productSearch } = await useAsyncData(cacheKey, async () => {
     const filters = createFiltersFromRoute();
+    const properties = createPropertiesFromRoute();
     await search({
       search: route.query.search as string,
       filter: filters,
+      properties: properties,
       limit: limit.value,
       order: route.query.order ? (route.query.order as string) : "name-asc",
       aggregations: [
@@ -168,12 +182,6 @@ const loadProducts = async (cacheKey: string) => {
 };
 let productSearch = await loadProducts(cacheKey.value);
 
-watch(cacheKey, async (newCacheKey) => {
-  productSearch = await loadProducts(newCacheKey);
-  setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
-  addCountsToFilter();
-});
-
 const changePage = async (page: number) => {
   await router.push({
     query: {
@@ -215,6 +223,8 @@ const currentSortingOrder = computed({
         order,
       },
     });
+
+    await loadProducts(cacheKey.value);
   },
 });
 
@@ -339,12 +349,6 @@ const openFilters = () => {
 onMounted(() => {
   openFilters();
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: "SearchResultPage",
-};
 </script>
 
 <template>

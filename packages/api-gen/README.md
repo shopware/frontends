@@ -93,6 +93,56 @@ export type operations = {
 
 <!-- /automd -->
 
+> [!IMPORTANT]  
+> Overriding components or operations in the TS files requires you to have a full object definitions!
+
+### Partial overrides
+
+There is a possiblity to add patches (partial overrides) to the schema. Partial overrides are applied directly to the JSON schema, so the syntax needs to be correct. It can then be used by the backend CI tool to validate and apply these patches directly to the schema to fix inconsistencies.
+
+By default CLI is fetching the patches from the api-client repository, but you can provide your own patches file by adding a path to the `api-gen.config.json` file.
+Example:
+
+```json
+{
+  "patches": "./api-types/storeApiTypes.overrides.json"
+}
+```
+
+and then inside the `storeApiTypes.overrides.json` file you can add your patches:
+
+```json
+{
+  "components": {
+    "Cart": [
+      {
+        "required": ["price"]
+      },
+      {
+        "required": ["errors"]
+      }
+    ]
+  }
+}
+```
+
+you apply this as 2 independent patches, or combine it as a single patch without array:
+
+```json
+{
+  "components": {
+    "Cart": {
+      "required": ["price", "errors"]
+    }
+  }
+}
+```
+
+Creating multiple patches is useful when you want to apply different changes to the same object, which can also be corrected on the backend side independently. This way specific patches are becoming outdated and you get the notification that you can remove them safely.
+
+> [!NOTE]  
+> Check our current default patches to see more examples: [source](https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/storeApiSchema.overrides.json).
+
 ## Commands
 
 ### add shortcut to your `package.json` scripts
@@ -150,17 +200,43 @@ SHOPWARE_ADMIN_USERNAME="my@username.com"
 SHOPWARE_ADMIN_PASSWORD="my-password"
 ```
 
+### `validateJson`
+
+This command allow to validate the output JSON file of your instance. You can configure which rules should be applied, we provide you with the schema configuration file, so you can easily modify it.
+
+options:
+
+```bash
+pnpx @shopware/api-gen validateJson --help
+
+# validate JSON file
+pnpx @shopware/api-gen validateJson --apiType=store
+```
+
+this searches for `api-types/storeApiTypes.json` file and validates it. Use [loadSchema](#loadSchema) command first to fetch your JSON file.
+
+Prepare your config file named **api-gen.config.json**:
+
+```JSON
+{
+  "$schema": "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-gen/api-gen.schema.json",
+  "rules": [
+    "COMPONENTS_API_ALIAS" // you have description on autocompletion what specific rule does, this one for example ensures correctness of the apiAlias field
+  ],
+  //"patches": "./api-types/storeApiTypes.overrides.json" // -> path to your overrides file, default is fetched from api-client repository
+}
+```
+
 <!-- AUTO GENERATED CHANGELOG -->
 
 ## Changelog
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 0.1.1
+### Latest changes: 1.0.2
 
 ### Patch Changes
 
-- [#462](https://github.com/shopware/frontends/pull/462) [`c3aa09ee`](https://github.com/shopware/frontends/commit/c3aa09ee9e73c23b79bf9c1b3e5e63d7d39f1550) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+- [#1082](https://github.com/shopware/frontends/pull/1082) [`db42df4`](https://github.com/shopware/frontends/commit/db42df4aef6fcb5113d058fa5821274b58077407) Thanks [@patzick](https://github.com/patzick)! - `COMPONENTS_API_ALIAS` rule - additional message suggesting that the schema component name might be incorrect
 
-  - Changed dependency _openapi-typescript_ from **^6.7.0** to **^6.7.1**
-  - Changed dependency _prettier_ from **^3.0.3** to **^3.1.0**
+- [#1082](https://github.com/shopware/frontends/pull/1082) [`db42df4`](https://github.com/shopware/frontends/commit/db42df4aef6fcb5113d058fa5821274b58077407) Thanks [@patzick](https://github.com/patzick)! - Correct api overrides load, depending on the apiType

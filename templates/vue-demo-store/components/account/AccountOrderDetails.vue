@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
+
+defineOptions({
+  name: "AccountOrderDetails",
+});
 
 const props = defineProps<{
   orderId: string;
@@ -18,7 +22,8 @@ const {
   changePaymentMethod,
   statusTechnicalName,
 } = await useOrderDetails(props.orderId);
-
+const { addProducts } = useCart();
+const addingProducts = ref(false);
 onMounted(() => {
   loadOrderDetails();
 });
@@ -45,11 +50,38 @@ const selectedPaymentMethod = computed({
   },
 });
 const paymentMethods = await getPaymentMethods();
-</script>
 
-<script lang="ts">
-export default {
-  name: "AccountOrderDetails",
+const handleReorder = async () => {
+  if (!order.value?.lineItems) {
+    return;
+  }
+  const items = order.value?.lineItems?.reduce(
+    (acc, lineItem) => {
+      if (lineItem.type !== "product" || lineItem.good === false) {
+        return acc;
+      }
+
+      acc.push({
+        id: lineItem.productId || lineItem.identifier,
+        quantity: lineItem.quantity,
+        type: "product",
+      });
+
+      return acc;
+    },
+    [] as operations["addLineItem post /checkout/cart/line-item"]["body"]["items"],
+  );
+
+  try {
+    addingProducts.value = true;
+    await addProducts(items);
+    pushSuccess(t("account.messages.productsAdded"));
+  } catch (error) {
+    console.error(error);
+    pushError(t("messages.error"));
+  } finally {
+    addingProducts.value = false;
+  }
 };
 </script>
 
@@ -117,5 +149,8 @@ export default {
       :line-item="lineItem"
     />
     <AccountOrderDownloads v-if="hasDocuments" :documents="documents" />
+    <button class="mt-10 p-3" :disabled="addingProducts" @click="handleReorder">
+      {{ $t("account.order.repeatOrder") }}
+    </button>
   </div>
 </template>

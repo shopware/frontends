@@ -2,6 +2,9 @@
 import { useRoute, useRouter } from "vue-router";
 import SwPagination from "../../../../packages/cms-base/components/SwPagination.vue";
 
+defineOptions({
+  name: "OrderHistory",
+});
 definePageMeta({
   layout: "account",
 });
@@ -82,17 +85,11 @@ await useAsyncData("getOrders", () => {
     sort: [
       {
         field: "createdAt",
-        order: "desc",
+        order: "DESC",
       },
     ],
   });
 });
-</script>
-
-<script lang="ts">
-export default {
-  name: "OrderHistory",
-};
 </script>
 
 <template>

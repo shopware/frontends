@@ -9,6 +9,7 @@ import type { Schemas } from "#shopware";
  */
 const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
   associations: {
+    stateMachineState: {},
     lineItems: {
       associations: {
         cover: {},
@@ -23,13 +24,14 @@ const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
     deliveries: {
       associations: {
         shippingMethod: {},
+        stateMachineState: {},
       },
     },
     transactions: {
       associations: {
         paymentMethod: {},
+        stateMachineState: {},
       },
-      sort: "-createdAt",
     },
   },
   checkPromotion: true,
@@ -92,7 +94,7 @@ export type UseOrderDetailsReturn = {
    * Get order object including additional associations.
    * useDefaults describes what order object should look like.
    */
-  loadOrderDetails(): Promise<void>;
+  loadOrderDetails(): Promise<Schemas["OrderRouteResponse"]>;
   /**
    * Handle payment for existing error.
    *
@@ -108,13 +110,15 @@ export type UseOrderDetailsReturn = {
    *
    * Action cannot be reverted.
    */
-  cancel(): Promise<void>;
+  cancel(): Promise<Schemas["StateMachineState"]>;
   /**
    * Changes the payment method for current cart.
    * @param paymentMethodId - ID of the payment method to be set
    * @returns
    */
-  changePaymentMethod(paymentMethodId: string): Promise<void>;
+  changePaymentMethod(
+    paymentMethodId: string,
+  ): Promise<Schemas["SuccessResponse"]>;
   /**
    * Get media content
    *
@@ -201,7 +205,7 @@ export function useOrderDetails(
       orderAssociations,
       associations ? associations : {},
     );
-    const params = defu(mergedAssociations, {
+    const params = {
       filter: [
         {
           type: "equals",
@@ -209,10 +213,8 @@ export function useOrderDetails(
           value: orderId,
         },
       ],
-      associations: {
-        stateMachineState: {},
-      },
-    }) as Schemas["Criteria"];
+      associations: mergedAssociations.associations,
+    } as Schemas["Criteria"];
 
     const orderDetailsResponse = await apiClient.invoke(
       "readOrder post /order",
@@ -220,9 +222,11 @@ export function useOrderDetails(
         body: params,
       },
     );
-    _sharedOrder.value = orderDetailsResponse.data.orders.elements?.[0] ?? null;
+    _sharedOrder.value =
+      orderDetailsResponse.data.orders?.elements?.[0] ?? null;
     paymentChangeableList.value =
       orderDetailsResponse.data.paymentChangeable ?? {};
+    return orderDetailsResponse.data;
   }
 
   async function handlePayment(finishUrl?: string, errorUrl?: string) {
@@ -241,22 +245,30 @@ export function useOrderDetails(
   }
 
   async function cancel() {
-    await apiClient.invoke("cancelOrder post /order/state/cancel", {
-      body: {
-        orderId,
+    const resp = await apiClient.invoke(
+      "cancelOrder post /order/state/cancel",
+      {
+        body: {
+          orderId,
+        },
       },
-    });
+    );
     await loadOrderDetails();
+    return resp.data;
   }
   async function changePaymentMethod(paymentMethodId: string) {
-    await apiClient.invoke("orderSetPayment post /order/payment", {
-      body: {
-        orderId: orderId,
-        paymentMethodId: paymentMethodId,
+    const response = await apiClient.invoke(
+      "orderSetPayment post /order/payment",
+      {
+        body: {
+          orderId: orderId,
+          paymentMethodId: paymentMethodId,
+        },
       },
-    });
+    );
 
     await loadOrderDetails();
+    return response.data;
   }
 
   async function getMediaFile(downloadId: string) {

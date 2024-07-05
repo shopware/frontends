@@ -1,12 +1,14 @@
 import { computed, ref, onMounted, inject, provide } from "vue";
 import type { ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseCountriesReturn = {
   mountedCallback(): Promise<void>;
   getCountries: ComputedRef<Schemas["Country"][]>;
-  fetchCountries(): Promise<void>;
+  fetchCountries(): Promise<
+    operations["readCountry post /country"]["response"]
+  >;
   getStatesForCountry(countryId: string): Schemas["CountryState"][] | null;
 };
 
@@ -30,6 +32,7 @@ export function useCountries(): UseCountriesReturn {
       },
     });
     _sharedCountried.value = result.data.elements;
+    return result.data;
   }
 
   const getCountries = computed(() => {

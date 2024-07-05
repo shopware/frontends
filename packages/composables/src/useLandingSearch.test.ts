@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { useLandingSearch } from "./useLandingSearch";
 import LandingPageMock from "./mocks/LandingPage";
 import { useSetup } from "./_test";
+import { cmsAssociations } from "./cms/cmsAssociations";
 
 describe("useLandingSearch", () => {
   it("mergeWishlistProducts", async () => {
@@ -15,5 +16,15 @@ describe("useLandingSearch", () => {
       expect.objectContaining({ pathParams: { landingPageId: "test" } }),
     );
     expect(result).resolves.toStrictEqual(LandingPageMock);
+
+    vm.search("test", { withCmsAssociations: true });
+
+    expect(injections.apiClient.invoke).toBeCalledWith(
+      expect.stringContaining("readLandingPage"),
+      expect.objectContaining({
+        pathParams: { landingPageId: "test" },
+        body: { associations: cmsAssociations },
+      }),
+    );
   });
 });

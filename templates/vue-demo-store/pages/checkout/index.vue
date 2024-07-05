@@ -1,8 +1,3 @@
-<script lang="ts">
-export default {
-  name: "CheckoutPage",
-};
-</script>
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
 import { getShippingMethodDeliveryTime } from "@shopware-pwa/helpers-next";
@@ -12,6 +7,9 @@ import { ApiClientError, type ApiError } from "@shopware/api-client";
 
 const { required, minLength, requiredIf, email } = customValidators();
 
+defineOptions({
+  name: "CheckoutPage",
+});
 definePageMeta({
   layout: "checkout",
 });
@@ -57,6 +55,15 @@ const isLoading = reactive<{ [key: string]: boolean }>({});
 watch([isLoggedIn, isGuestSession], ([isLogged, isLoggedGuest]) => {
   if (isLogged || isLoggedGuest) {
     loadCustomerAddresses();
+  }
+});
+
+/**
+ * Broadcast channel logout refresh
+ */
+watch(isLoggedIn, async (newValue, oldValue) => {
+  if (!newValue && oldValue) {
+    location.reload();
   }
 });
 
@@ -252,8 +259,11 @@ const invokeSubmit = async () => {
   }
 };
 async function invokeLogout() {
-  await logout();
-  await push("/");
+  try {
+    await logout();
+  } finally {
+    await push("/");
+  }
 }
 
 const loginModalController = useModal();

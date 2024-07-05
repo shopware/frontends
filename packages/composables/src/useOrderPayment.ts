@@ -38,11 +38,13 @@ export type UseOrderPaymentReturn = {
      * additional payment details to provide
      */
     paymentDetails?: unknown,
-  ): Promise<void | unknown>;
+  ): Promise<undefined | unknown>;
   /**
    * Change a payment method for the order
    */
-  changePaymentMethod(paymentMethodId: string): Promise<void>;
+  changePaymentMethod(
+    paymentMethodId: string,
+  ): Promise<Schemas["SuccessResponse"] | undefined>;
 };
 
 /**
@@ -69,7 +71,7 @@ export function useOrderPayment(
   async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
-  ): Promise<void | unknown> {
+  ): Promise<undefined | unknown> {
     if (!order.value) {
       return;
     }
@@ -93,12 +95,16 @@ export function useOrderPayment(
     if (!order.value) {
       return;
     }
-    await apiClient.invoke("orderSetPayment post /order/payment", {
-      body: {
-        orderId: order.value.id,
-        paymentMethodId,
+    const response = await apiClient.invoke(
+      "orderSetPayment post /order/payment",
+      {
+        body: {
+          orderId: order.value.id,
+          paymentMethodId,
+        },
       },
-    });
+    );
+    return response.data;
   }
 
   return {

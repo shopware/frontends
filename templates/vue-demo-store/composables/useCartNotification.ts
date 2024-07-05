@@ -1,11 +1,10 @@
 import type { Schemas } from "#shopware";
-import type { CartError } from "@shopware-pwa/types";
 
 const successCodes = ["promotion-discount-added"];
 
 export type useCartNotificationReturn = {
   codeErrorsNotification(): void;
-  getErrorsCodes(): CartError[];
+  getErrorsCodes(): Schemas["CartError"][];
 };
 
 /**
@@ -44,12 +43,15 @@ export function useCartNotification(): useCartNotificationReturn {
     const errors: Schemas["Cart"]["errors"] = consumeCartErrors();
     if (!errors || Array.isArray(errors)) return [];
 
-    return Object.keys(errors).reduce((acc, element) => {
-      if (!successCodes.includes(errors[element].messageKey))
-        acc.push(errors[element]);
+    return Object.keys(errors).reduce(
+      (acc, element) => {
+        if (!successCodes.includes(errors[element].messageKey))
+          acc.push(errors[element] as Schemas["CartError"]);
 
-      return acc;
-    }, [] as CartError[]);
+        return acc;
+      },
+      [] as Schemas["CartError"][],
+    );
   };
 
   return {

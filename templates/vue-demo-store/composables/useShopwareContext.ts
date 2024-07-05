@@ -10,10 +10,6 @@ export function useShopwareContext() {
     throw new Error("Critical error. Shopware context is not provided.");
 
   return {
-    /**
-     * @deprecated use `apiClient` instead
-     */
-    apiInstance: shopwareContext.apiInstance,
     apiClient,
     devStorefrontUrl: shopwareContext.devStorefrontUrl,
   };

@@ -1,9 +1,8 @@
-<script lang="ts">
-export default {
-  name: "DefaultLayout",
-};
-</script>
 <script setup lang="ts">
+defineOptions({
+  name: "DefaultLayout",
+});
+
 // Navigation for default theme (depth 1 is 2 level navi, depth 2 is 3 level navi, and so on)
 const { loadNavigationElements } = useNavigation();
 const { data } = useAsyncData("mainNavigation", () => {
