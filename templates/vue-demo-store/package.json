@@ -7,7 +7,7 @@
     "build": "nuxt prepare && nuxt build",
     "start": "nuxt start",
     "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
-    "typecheck": "nuxt prepare && vue-tsc --noEmit",
+    "typecheck": "nuxt prepare && nuxi typecheck",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "analyze": "nuxt analyze",
