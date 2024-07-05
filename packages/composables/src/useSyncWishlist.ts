@@ -74,7 +74,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
       _wishlistItems.value = [
         ...response.data.products.elements.map((element) => element.id),
       ];
-      totalWishlistItemsCount.value = response.data.products.total!;
+      totalWishlistItemsCount.value = response.data.products.total ?? 0;
     } catch (e) {
       if (e instanceof ApiClientError) {
         // If 404 ignore printing error and reset wishlist

@@ -54,7 +54,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
       body: parameters,
     });
     orders.value = fetchedOrders.data.orders.elements;
-    totalOrderItemsCount.value = fetchedOrders.data.orders.total!;
+    totalOrderItemsCount.value = fetchedOrders.data.orders.total ?? 0;
   };
 
   const changeCurrentPage = async (
