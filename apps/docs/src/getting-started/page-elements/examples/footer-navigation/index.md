@@ -85,4 +85,4 @@ In order to resolve an entity assigned to each category path, utilize a [composa
 
 1. `search` from `useNavigationSearch` to find entity type.
 2. use [dedicated composable](../../../routing.html#resolve-a-route-to-a-page) to process page resolving.
-   :::
+:::
