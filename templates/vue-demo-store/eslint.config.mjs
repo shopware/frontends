@@ -13,6 +13,14 @@ const compat = new FlatCompat({
   allConfig: js.configs.all,
 });
 
+console.warn("github env:", import.meta.env?.GITHUB_ENV);
+
+// DO NOT USE PRETTIER IN GITHUB ACTIONS
+const USE_PRETTIER =
+  typeof import.meta.env?.GITHUB_ENV !== "string"
+    ? compat.extends("plugin:prettier/recommended", "prettier")
+    : [];
+
 export default [
   ...pluginVue.configs["flat/recommended"],
   {
@@ -24,7 +32,7 @@ export default [
       "**/.nuxt/",
     ],
   },
-  ...compat.extends("plugin:prettier/recommended", "prettier"),
+  ...USE_PRETTIER,
   {
     languageOptions: {
       parser: parser,
