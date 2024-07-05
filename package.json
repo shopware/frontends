@@ -15,7 +15,7 @@
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
     "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint -vv --concurrency=50%",
+    "lint": "turbo run lint -vvv",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
     "test:bench": "turbo run test:bench -- --run",
