@@ -30,7 +30,7 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "eslint": "eslint --fix --max-warnings=0",
-    "lint": "pnpm run eslint",
+    "lint": "pnpm run eslint && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
