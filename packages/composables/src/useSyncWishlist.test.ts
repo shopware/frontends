@@ -1,6 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { useSyncWishlist } from "./useSyncWishlist";
 import { useSetup } from "./_test";
+import { ApiClientError } from "@shopware/api-client";
+import type { FetchResponse } from "ofetch";
 
 describe("useSyncWishlist", () => {
   describe("methods", () => {
@@ -45,9 +47,24 @@ describe("useSyncWishlist", () => {
 
     describe("getWishlistProducts - error", () => {
       it("getWishlistProducts", () => {
-        const { vm } = useSetup(() => useSyncWishlist());
+        const { vm } = useSetup(() => useSyncWishlist(), {
+          apiClient: {
+            invoke: vi.fn().mockImplementation(() => {
+              throw new ApiClientError({
+                _data: {
+                  errors: [
+                    {
+                      title: "Test error",
+                    },
+                  ],
+                },
+              } as unknown as FetchResponse<{
+                errors: Array<{ title: string }>;
+              }>);
+            }),
+          },
+        });
 
-        vm.getWishlistProducts();
         expect(vm.count).toBe(0);
         expect(vm.items.length).toBe(0);
       });
