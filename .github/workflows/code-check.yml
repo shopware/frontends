@@ -36,7 +36,7 @@ jobs:
 
   build:
     name: Build
-    timeout-minutes: 15
+    timeout-minutes: 20
     needs: init
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
