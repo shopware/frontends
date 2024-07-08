@@ -13,7 +13,6 @@ nav:
   position: 10
 ---
 
-# Adyen Integration
 
 [<img src="../../../.assets/payment-icons/adyen.png" alt="Adyen Logo" class="mb-8 h-20" />](https://docs.adyen.com/)
 
