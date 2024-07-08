@@ -2,8 +2,6 @@ import parser from "vue-eslint-parser";
 import pluginVue from "eslint-plugin-vue";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
-console.warn("github env:", import.meta.env?.GITHUB_ENV);
-
 // DO NOT USE PRETTIER IN GITHUB ACTIONS
 const USE_PRETTIER =
   typeof import.meta.env?.GITHUB_ENV !== "string"
