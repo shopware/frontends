@@ -15,7 +15,7 @@
     "build": "dotenv -- turbo run build ",
     "generate": "turbo run generate",
     "dev": "turbo run dev --parallel",
-    "lint": "TURBO_TELEMETRY_DISABLED=1 DO_NOT_TRACK=1 turbo run lint -vvv",
+    "lint": "TURBO_TELEMETRY_DISABLED=1 DO_NOT_TRACK=1 turbo run lint -vvv --concurrency=1",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
     "test:bench": "turbo run test:bench -- --run",
