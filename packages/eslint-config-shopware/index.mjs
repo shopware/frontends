@@ -1,4 +1,4 @@
-import tseslint from "typescript-eslint";
+import tsEslint from "typescript-eslint";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default [
@@ -6,7 +6,7 @@ export default [
     ignores: ["**/dist/", "**/node_modules/"],
   },
   eslintPluginPrettierRecommended,
-  ...tseslint.configs.recommended,
+  ...tsEslint.configs.recommended,
   {
     languageOptions: {
       globals: {},
