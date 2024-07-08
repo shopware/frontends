@@ -83,7 +83,6 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
       ];
       totalWishlistItemsCount.value = response.data.products.total ?? 0;
       _currentPage.value = response.data.products.page ?? 1;
-      console.log("currentPage", currentPage.value);
     } catch (e) {
       if (e instanceof ApiClientError) {
         // If 404 ignore printing error and reset wishlist
