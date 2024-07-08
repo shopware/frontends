@@ -31,6 +31,7 @@ const {
   changeCurrentPage,
   getCurrentPage,
   getTotalPagesCount,
+  canSyncWishlist,
 } = useWishlist();
 defineOptions({
   name: "WishlistPage",
@@ -106,7 +107,6 @@ const changePage = async (page: number) => {
 watch(
   items,
   (items, oldItems) => {
-    console.log(items);
     if (items.length !== oldItems?.length) {
       products.value = products.value.filter(({ id }) => items.includes(id));
     }
@@ -178,6 +178,7 @@ watch(
     </div>
   </div>
   <div
+    v-if="canSyncWishlist && products.length > 0"
     class="grid grid-cols-1 lg:flex lg:justify-center lg- gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
   >
     <div class="text-center place-self-center">

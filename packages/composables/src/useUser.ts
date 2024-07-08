@@ -34,10 +34,6 @@ export type UseUserReturn = {
    */
   user: ComputedRef<Schemas["Customer"] | undefined>;
   /**
-   * Indicates if the wishlist can be synced
-   */
-  canSyncWishlist: ComputedRef<boolean>;
-  /**
    * Indicates if the user is logged in
    */
   isLoggedIn: ComputedRef<boolean>;
@@ -154,10 +150,6 @@ export function useUser(): UseUserReturn {
   const country: Ref<Schemas["Country"] | null> = ref(null);
   const salutation: Ref<Schemas["Salutation"] | null> = ref(null);
   const user = computed(() => _user.value);
-
-  const canSyncWishlist = computed(
-    () => isLoggedIn.value && !isGuestSession.value,
-  );
 
   async function login({
     username,
@@ -305,7 +297,6 @@ export function useUser(): UseUserReturn {
     login,
     register,
     user,
-    canSyncWishlist,
     isLoggedIn,
     isCustomerSession,
     isGuestSession,

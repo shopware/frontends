@@ -41,6 +41,10 @@ export type UseWishlistReturn = {
    * total wishlist items count
    */
   count: Ref<number>;
+  /**
+   * Indicates if the wishlist can be synced
+   */
+  canSyncWishlist: ComputedRef<boolean>;
 };
 
 /**
@@ -49,7 +53,10 @@ export type UseWishlistReturn = {
  * @category Wishlist
  */
 export function useWishlist(): UseWishlistReturn {
-  const { canSyncWishlist } = useUser();
+  const { isLoggedIn, isGuestSession } = useUser();
+  const canSyncWishlist = computed(
+    () => isLoggedIn.value && !isGuestSession.value,
+  );
   const {
     getWishlistProducts: getWishlistProductsLocal,
     items: itemsLocal,
@@ -61,14 +68,13 @@ export function useWishlist(): UseWishlistReturn {
     items: itemsSync,
     mergeWishlistProducts: mergeWishlistProductsSync,
     removeFromWishlistSync,
-    count,
   } = useSyncWishlist();
 
   const currentPage = ref<number>(1);
   const limit = ref<number>(15);
 
   const getWishlistProducts = async () => {
-    if (canSyncWishlist.value) {
+    if (await canSyncWishlist.value) {
       await getWishlistProductsSync({
         page: currentPage.value,
         limit: limit.value,
@@ -86,8 +92,13 @@ export function useWishlist(): UseWishlistReturn {
     if (query.limit) {
       limit.value = +query.limit;
     }
-    await getWishlistProductsSync({ ...query, page });
+    await getWishlistProducts();
   };
+
+  const items = computed(() =>
+    canSyncWishlist.value ? itemsSync.value : itemsLocal.value,
+  );
+  const count = ref<number>(items.value.length);
 
   const getTotalPagesCount = computed(() =>
     Math.ceil(count.value / limit.value),
@@ -110,10 +121,6 @@ export function useWishlist(): UseWishlistReturn {
     await getWishlistProductsSync();
   };
 
-  const items = computed(() =>
-    canSyncWishlist.value ? itemsSync.value : itemsLocal.value,
-  );
-
   const getCurrentPage = computed(() => currentPage.value);
 
   return {
@@ -125,5 +132,6 @@ export function useWishlist(): UseWishlistReturn {
     getCurrentPage,
     getTotalPagesCount,
     count,
+    canSyncWishlist,
   };
 }

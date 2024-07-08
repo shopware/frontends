@@ -6,15 +6,10 @@ import { useSetup } from "./_test";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
 
-const getMockedUser = (
-  isLoggedIn: boolean,
-  isGuestSession: boolean,
-  canSyncWishlist: boolean,
-) =>
+const getMockedUser = (isLoggedIn: boolean, isGuestSession: boolean) =>
   ({
     isLoggedIn: ref(isLoggedIn),
     isGuestSession: ref(isGuestSession),
-    canSyncWishlist: ref(canSyncWishlist),
   }) as ReturnType<typeof useUser>;
 
 vi.mock("./useLocalWishlist.ts", () => ({
@@ -53,7 +48,7 @@ vi.mock("./useUser");
 
 describe("useWishlist - not logged in user", () => {
   it("mergeWishlistProducts", () => {
-    vi.mocked(useUser).mockReturnValue(getMockedUser(false, true, false));
+    vi.mocked(useUser).mockReturnValue(getMockedUser(false, true));
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => undefined,
       items: computed((): string[] => {
@@ -76,7 +71,7 @@ describe("useWishlist - not logged in user", () => {
   });
 
   it("getWishlistProducts", async () => {
-    vi.mocked(useUser).mockReturnValue(getMockedUser(false, true, false));
+    vi.mocked(useUser).mockReturnValue(getMockedUser(false, true));
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => undefined,
       items: computed((): string[] => {
@@ -123,16 +118,32 @@ describe("useWishlist - not logged in user", () => {
 
 describe("useWishlist - logged in user", () => {
   it("mergeWishlistProducts", () => {
-    vi.mocked(useUser).mockReturnValue(getMockedUser(true, false, true));
+    vi.mocked(useUser).mockReturnValue(getMockedUser(true, false));
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => undefined,
       items: computed((): string[] => {
-        return ["local-testId333"];
+        return [
+          "local-test-1",
+          "local-test-2",
+          "local-test-3",
+          "local-test-4",
+          "local-test-5",
+          "local-test-6",
+          "local-test-7",
+          "local-test-8",
+          "local-test-9",
+          "local-test-10",
+          "local-test-11",
+          "local-test-12",
+          "local-test-13",
+          "local-test-14",
+          "local-test-15",
+        ];
       }),
       addToWishlistSync: () => undefined,
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
-      count: computed(() => 15),
+      count: computed(() => 0),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -140,15 +151,31 @@ describe("useWishlist - logged in user", () => {
     vm.getWishlistProducts();
     vm.mergeWishlistProducts();
 
-    expect(vm.items.length).toBe(1);
+    expect(vm.items.length).toBe(15);
     expect(vm.count).toBe(15);
   });
 
   it("getWishlistProducts", () => {
-    vi.mocked(useUser).mockReturnValue(getMockedUser(true, false, true));
+    vi.mocked(useUser).mockReturnValue(getMockedUser(true, false));
     const { vm } = useSetup(() => useWishlist());
     vm.getWishlistProducts();
 
-    expect(vm.items).toEqual(["local-testId333"]);
+    expect(vm.items).toEqual([
+      "local-test-1",
+      "local-test-2",
+      "local-test-3",
+      "local-test-4",
+      "local-test-5",
+      "local-test-6",
+      "local-test-7",
+      "local-test-8",
+      "local-test-9",
+      "local-test-10",
+      "local-test-11",
+      "local-test-12",
+      "local-test-13",
+      "local-test-14",
+      "local-test-15",
+    ]);
   });
 });
