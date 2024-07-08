@@ -9,8 +9,8 @@ export default defineConfig({
       // "100": true, // TODO: our goal ;)
       thresholds: {
         statements: 97,
-        branches: 81,
-        functions: 89,
+        branches: 84,
+        functions: 90,
         lines: 97,
       },
       exclude: [

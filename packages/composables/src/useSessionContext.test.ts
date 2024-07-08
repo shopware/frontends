@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { useSessionContext } from "./useSessionContext";
 import { useSetup } from "./_test";
 
 describe("useSessionContext", () => {
+  const consoleErrorSpy = vi.spyOn(console, "error");
   it("setLanguage", () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -38,6 +39,19 @@ describe("useSessionContext", () => {
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readContext"),
     );
+  });
+
+  it("refreshSessionContext - error", async () => {
+    const { vm } = useSetup(() => useSessionContext(), {
+      apiClient: {
+        invoke: vi.fn().mockImplementation(() => {
+          throw new Error("error test");
+        }),
+      },
+    });
+    consoleErrorSpy.mockImplementation(() => {});
+    await vm.refreshSessionContext();
+    expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
   });
 
   it("setShippingMethod", async () => {
