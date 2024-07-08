@@ -18,8 +18,10 @@ export async function ReadmeLoader(): Promise<Plugin> {
 
         const filePath = resolve(__dirname, path);
 
-        if (!existsSync(filePath)) {
-          throw new Error(`File ${filePath} does not exist`);
+        if (!existsSync(filePath) || !filePath.endsWith(".md")) {
+          throw new Error(
+            `File ${filePath} does not exist or it's not a markdown file.`,
+          );
         }
 
         const content = readFileSync(filePath, "utf-8");
