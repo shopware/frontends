@@ -2,7 +2,7 @@
  * Template composable
  */
 import { computed, ref } from "vue";
-import type { ComputedRef, Ref } from "vue";
+import type { ComputedRef } from "vue";
 import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -37,7 +37,7 @@ export type UseWishlistReturn = {
   /**
    * total wishlist items count
    */
-  count: Ref<number>;
+  count: ComputedRef<number>;
   /**
    * Indicates if the wishlist can be synced
    */
