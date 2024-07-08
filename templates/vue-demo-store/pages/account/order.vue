@@ -9,14 +9,8 @@ definePageMeta({
   layout: "account",
 });
 
-const {
-  orders,
-  loadOrders,
-  loadTotalOrdersCount,
-  changeCurrentPage,
-  totalPages,
-  currentPage,
-} = useCustomerOrders();
+const { orders, loadOrders, changeCurrentPage, totalPages, currentPage } =
+  useCustomerOrders();
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -96,10 +90,6 @@ await useAsyncData("getOrders", () => {
       },
     ],
   });
-});
-
-await useAsyncData("getTotalOrders", async () => {
-  loadTotalOrdersCount();
 });
 </script>
 

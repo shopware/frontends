@@ -28,7 +28,7 @@ translations = defu(translations, useCmsTranslations()) as Translations;
 const {
   items,
   clearWishlist,
-  changeCurrentPage,
+  getWishlistProducts,
   getCurrentPage,
   getTotalPagesCount,
   canSyncWishlist,
@@ -79,29 +79,26 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
 
 const changeLimit = async (limit: Event) => {
   const select = limit.target as HTMLSelectElement;
+  const query = {
+    ...route.query,
+    limit: Number(select.value),
+    p: defaultPage,
+  };
 
   await router.push({
-    query: {
-      ...route.query,
-      limit: select.value,
-      p: defaultPage,
-    },
+    query: query,
   });
-  changeCurrentPage(defaultPage, {
-    limit: +(route.query.limit || 15),
-    page: +(route.query.p || 1),
-  });
+  await getWishlistProducts(defaultPage, query);
 };
 
 const changePage = async (page: number) => {
   await router.push({
     query: {
-      ...route.query,
-      p: page,
+      page: page,
       limit: limit.value,
     },
   });
-  await changeCurrentPage(page, route.query);
+  await getWishlistProducts(page, route.query);
 };
 
 watch(
@@ -118,6 +115,26 @@ watch(
   {
     immediate: true,
   },
+);
+
+const initalRoute = defu(route);
+watch(
+  () => route,
+  (newRoute) => {
+    if (initalRoute.path !== newRoute.path) {
+      return;
+    }
+    if (Object.keys(newRoute.query).length > 0) {
+      return;
+    }
+    // this fires to reset the page when query are removed/empty on client side navigation for the same page (without hard reload)
+    getWishlistProducts(defaultPage, {
+      limit: defaultLimit,
+      page: defaultPage,
+    });
+    limit.value = defaultLimit;
+  },
+  { deep: true },
 );
 </script>
 
@@ -183,8 +200,8 @@ watch(
   >
     <div class="text-center place-self-center">
       <SwPagination
-        :total="getTotalPagesCount"
-        :current="Number(getCurrentPage)"
+        :total="Number(getTotalPagesCount(limit).value)"
+        :current="Number(getCurrentPage().value)"
         @change-page="changePage"
       />
     </div>

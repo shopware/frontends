@@ -8,7 +8,9 @@ export type UseSyncWishlistReturn = {
   /**
    * Get products from wishlist
    */
-  getWishlistProducts(defaultSearchCriteria?: Schemas["Criteria"]): void;
+  getWishlistProducts(
+    defaultSearchCriteria?: Schemas["Criteria"],
+  ): Promise<void>;
   /**
    * Merge products with wishlist already existing in API wishlist
    */
@@ -29,9 +31,14 @@ export type UseSyncWishlistReturn = {
    * Wishlist items count
    */
   count: ComputedRef<number>;
+  /**
+   * Current page number
+   */
+  currentPage: Ref<number>;
 };
 
 const _wishlistItems: Ref<string[]> = ref([]);
+const _currentPage: Ref<number> = ref(1);
 const totalWishlistItemsCount: Ref<number> = ref(0);
 
 /**
@@ -69,12 +76,14 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     try {
       const response = await apiClient.invoke(
         "readCustomerWishlist post /customer/wishlist",
-        { body: defaultSearchCriteria },
+        { body: { ...defaultSearchCriteria, "total-count-mode": "exact" } },
       );
       _wishlistItems.value = [
         ...response.data.products.elements.map((element) => element.id),
       ];
       totalWishlistItemsCount.value = response.data.products.total ?? 0;
+      _currentPage.value = response.data.products.page ?? 1;
+      console.log("currentPage", currentPage.value);
     } catch (e) {
       if (e instanceof ApiClientError) {
         // If 404 ignore printing error and reset wishlist
@@ -95,6 +104,7 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
 
   const items = computed(() => _wishlistItems.value);
   const count = computed(() => totalWishlistItemsCount.value);
+  const currentPage = computed(() => _currentPage.value);
 
   return {
     getWishlistProducts,
@@ -103,5 +113,6 @@ export function useSyncWishlist(): UseSyncWishlistReturn {
     mergeWishlistProducts,
     items,
     count,
+    currentPage,
   };
 }

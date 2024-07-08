@@ -22,10 +22,6 @@ export type UseCustomerOrdersReturn = {
    */
   loadOrders(parameters?: Schemas["Criteria"]): Promise<void>;
   /**
-   * Fetches the total orders list and assigns the result to the `totalOrderItemsCount` property
-   */
-  loadTotalOrdersCount(parameters?: Schemas["Criteria"]): Promise<void>;
-  /**
    * Current page number
    */
   currentPage: ComputedRef<number>;
@@ -53,17 +49,9 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
     parameters: Schemas["Criteria"] = {},
   ): Promise<void> => {
     const fetchedOrders = await apiClient.invoke("readOrder post /order", {
-      body: parameters,
+      body: { ...parameters, "total-count-mode": "exact" },
     });
     orders.value = fetchedOrders.data.orders.elements;
-  };
-
-  const loadTotalOrdersCount = async (
-    parameters: Schemas["Criteria"] = {},
-  ): Promise<void> => {
-    const fetchedOrders = await apiClient.invoke("readOrder post /order", {
-      body: parameters,
-    });
     totalOrderItemsCount.value = fetchedOrders.data.orders.total ?? 0;
   };
 
@@ -85,7 +73,6 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
     orders,
     changeCurrentPage,
     loadOrders,
-    loadTotalOrdersCount,
     currentPage,
     totalPages,
   };

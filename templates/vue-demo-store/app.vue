@@ -111,7 +111,10 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
 
 onMounted(() => {
   refreshCart();
-  getWishlistProducts();
+  const route = useRoute();
+  const limit = ref(route.query.limit ? Number(route.query.limit) : 15);
+  const page = ref(route.query.p ? Number(route.query.p) : 1);
+  getWishlistProducts(page.value, { limit: limit.value });
 });
 </script>
 

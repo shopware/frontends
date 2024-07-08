@@ -50,7 +50,7 @@ describe("useWishlist - not logged in user", () => {
   it("mergeWishlistProducts", () => {
     vi.mocked(useUser).mockReturnValue(getMockedUser(false, true));
     vi.mocked(useSyncWishlist).mockReturnValue({
-      getWishlistProducts: () => undefined,
+      getWishlistProducts: () => new Promise<void>((resolve) => resolve()),
       items: computed((): string[] => {
         return ["test1"];
       }),
@@ -58,6 +58,7 @@ describe("useWishlist - not logged in user", () => {
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
       count: computed(() => 17),
+      currentPage: ref(1),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -67,13 +68,13 @@ describe("useWishlist - not logged in user", () => {
 
     expect(vm.items.length).toBe(17);
     expect(vm.count).toBe(17);
-    expect(vm.getTotalPagesCount).toBe(2);
+    expect(vm.getTotalPagesCount().value).toBe(2);
   });
 
   it("getWishlistProducts", async () => {
     vi.mocked(useUser).mockReturnValue(getMockedUser(false, true));
     vi.mocked(useSyncWishlist).mockReturnValue({
-      getWishlistProducts: () => undefined,
+      getWishlistProducts: () => new Promise<void>((resolve) => resolve()),
       items: computed((): string[] => {
         return ["test1"];
       }),
@@ -81,6 +82,7 @@ describe("useWishlist - not logged in user", () => {
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
       count: computed(() => 15),
+      currentPage: ref(1),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -110,9 +112,9 @@ describe("useWishlist - not logged in user", () => {
       limit: 1,
       p: 2,
     } as Schemas["Criteria"];
-    vm.changeCurrentPage(2, query);
+    vm.getWishlistProducts(2, query);
 
-    expect(vm.getCurrentPage).toBe(2);
+    expect(vm.getCurrentPage().value).toBe(2);
   });
 });
 
@@ -120,7 +122,7 @@ describe("useWishlist - logged in user", () => {
   it("mergeWishlistProducts", () => {
     vi.mocked(useUser).mockReturnValue(getMockedUser(true, false));
     vi.mocked(useSyncWishlist).mockReturnValue({
-      getWishlistProducts: () => undefined,
+      getWishlistProducts: () => new Promise<void>((resolve) => resolve()),
       items: computed((): string[] => {
         return [
           "local-test-1",
@@ -143,7 +145,8 @@ describe("useWishlist - logged in user", () => {
       addToWishlistSync: () => undefined,
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
-      count: computed(() => 0),
+      count: computed(() => 15),
+      currentPage: ref(1),
     });
     const { vm } = useSetup(() => useWishlist());
 
