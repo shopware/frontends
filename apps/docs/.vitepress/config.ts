@@ -5,6 +5,7 @@ import nav from "./navigation";
 import { SearchPlugin } from "vitepress-plugin-search";
 import { CmsBaseReference } from "./theme/typer/cms-base-plugin";
 import { ReadmeBasedReference } from "./theme/typer/plugin";
+import { ReadmeLoader } from "./theme/typer/readme-loader";
 
 export const sidebar = [
   {
@@ -443,7 +444,12 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
     json: {
       stringify: true,
     },
-    plugins: [SearchPlugin(), ReadmeBasedReference(), CmsBaseReference()],
+    plugins: [
+      SearchPlugin(),
+      ReadmeBasedReference(),
+      CmsBaseReference(),
+      ReadmeLoader(),
+    ],
   },
   vue: {
     reactivityTransform: true,

@@ -16,3 +16,6 @@ nav:
 # mollie Integration
 
 [<img src="../../../.assets/payment-icons/mollie.webp" alt="mollie Logo" class="mb-8 h-20" />](https://docs.mollie.com/)
+
+
+<!-- load: ../../../../../examples/mollie-credit-card/README.md -->
