@@ -36,12 +36,12 @@ jobs:
 
   build:
     name: Build
-    timeout-minutes: 15
+    timeout-minutes: 20
     needs: init
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    runs-on: macos-14
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out code
