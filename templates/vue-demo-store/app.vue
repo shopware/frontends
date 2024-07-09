@@ -111,10 +111,8 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
 
 onMounted(() => {
   refreshCart();
-  const route = useRoute();
-  const limit = ref(route.query.limit ? Number(route.query.limit) : 15);
-  const page = ref(route.query.p ? Number(route.query.p) : 1);
-  getWishlistProducts(page.value, { limit: limit.value });
+  // this request is needed to show the wishlist heart on every category page without any limit / page
+  getWishlistProducts();
 });
 </script>
 

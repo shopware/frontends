@@ -136,6 +136,19 @@ watch(
   },
   { deep: true },
 );
+
+onMounted(() => {
+  const route = useRoute();
+  const limit = ref(
+    route.query.limit ? Number(route.query.limit) : defaultLimit,
+  );
+  const page = ref(route.query.p ? Number(route.query.p) : defaultPage);
+  // this request is needed to start with the first page and the current limit or default limit for the pagination on wishlist page
+  getWishlistProducts(page.value, {
+    limit: limit.value,
+    page: page.value,
+  });
+});
 </script>
 
 <template>

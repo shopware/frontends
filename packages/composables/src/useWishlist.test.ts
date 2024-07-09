@@ -58,17 +58,17 @@ describe("useWishlist - not logged in user", () => {
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
       count: computed(() => 17),
-      currentPage: ref(1),
+      currentPage: ref(2),
     });
     const { vm } = useSetup(() => useWishlist());
 
     vm.clearWishlist();
-    vm.getWishlistProducts();
+    vm.getWishlistProducts(2, { limit: 15 });
     vm.mergeWishlistProducts();
 
     expect(vm.items.length).toBe(17);
     expect(vm.count).toBe(17);
-    expect(vm.getTotalPagesCount().value).toBe(2);
+    expect(Number(vm.getTotalPagesCount(15).value)).toBe(2);
   });
 
   it("getWishlistProducts", async () => {
@@ -82,7 +82,7 @@ describe("useWishlist - not logged in user", () => {
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
       count: computed(() => 15),
-      currentPage: ref(1),
+      currentPage: ref(2),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -114,7 +114,7 @@ describe("useWishlist - not logged in user", () => {
     } as Schemas["Criteria"];
     vm.getWishlistProducts(2, query);
 
-    expect(vm.getCurrentPage().value).toBe(2);
+    expect(Number(vm.getCurrentPage().value)).toBe(2);
   });
 });
 
