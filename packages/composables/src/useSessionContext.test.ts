@@ -1,6 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { useSessionContext } from "./useSessionContext";
 import { useSetup } from "./_test";
+import type { Schemas } from "#shopware";
+
+const consoleErrorSpy = vi.spyOn(console, "error");
+consoleErrorSpy.mockImplementation(() => {});
 
 describe("useSessionContext", () => {
   const consoleErrorSpy = vi.spyOn(console, "error");
@@ -15,6 +19,15 @@ describe("useSessionContext", () => {
           languageId: "test",
         },
       }),
+    );
+  });
+
+  it("setLanguage - no id", () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    vm.setLanguage({ id: "" });
+    expect(injections.apiClient.invoke).not.toHaveBeenCalledWith(
+      expect.stringContaining("updateContext"),
     );
   });
 
@@ -68,6 +81,15 @@ describe("useSessionContext", () => {
     );
   });
 
+  it("setShippingMethod - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
+    expect(vm.setShippingMethod({ id: undefined })).rejects.toThrowError(
+      "You need to provide shipping method id in order to set shipping method.",
+    );
+  });
+
   it("setPaymentMethod", async () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -79,6 +101,15 @@ describe("useSessionContext", () => {
           paymentMethodId: "test",
         },
       }),
+    );
+  });
+
+  it("setPaymentMethod - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
+    expect(vm.setPaymentMethod({ id: "" })).rejects.toThrowError(
+      "You need to provide payment method id in order to set payment method.",
     );
   });
 
@@ -96,6 +127,13 @@ describe("useSessionContext", () => {
     );
   });
 
+  it("setCurrency - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    vm.setCurrency({ id: "" });
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
   it("setActiveShippingAddress", async () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -107,6 +145,14 @@ describe("useSessionContext", () => {
           shippingAddressId: "test",
         },
       }),
+    );
+  });
+
+  it("setActiveShippingAddress - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    expect(vm.setActiveShippingAddress({ id: "" })).rejects.toThrowError(
+      "You need to provide address id in order to set the address.",
     );
   });
 
@@ -122,5 +168,54 @@ describe("useSessionContext", () => {
         },
       }),
     );
+  });
+
+  it("setActiveBillingAddress - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    expect(vm.setActiveBillingAddress({ id: "" })).rejects.toThrowError(
+      "You need to provide address id in order to set the address.",
+    );
+  });
+
+  it("setContext", () => {
+    const { vm } = useSetup(() => useSessionContext());
+    vm.setContext({
+      countryId: "test",
+    } as unknown as Schemas["SalesChannelContext"]);
+    expect(vm.sessionContext).toStrictEqual({
+      countryId: "test",
+    });
+    expect(vm.activeShippingAddress).toBe(null);
+  });
+
+  it("activeShippingAddress - active address", () => {
+    const { vm } = useSetup(() => useSessionContext());
+    vm.setContext({
+      customer: {
+        activeShippingAddress: {
+          city: "test",
+        },
+      },
+    } as unknown as Schemas["SalesChannelContext"]);
+
+    expect(vm.activeShippingAddress).toStrictEqual({
+      city: "test",
+    });
+  });
+
+  it("activeShippingAddress - shipping location", () => {
+    const { vm } = useSetup(() => useSessionContext());
+    vm.setContext({
+      shippingLocation: {
+        address: {
+          city: "test",
+        },
+      },
+    } as unknown as Schemas["SalesChannelContext"]);
+
+    expect(vm.activeShippingAddress).toStrictEqual({
+      city: "test",
+    });
   });
 });
