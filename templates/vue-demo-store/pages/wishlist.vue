@@ -82,7 +82,7 @@ const changeLimit = async (limit: Event) => {
   const query = {
     ...route.query,
     limit: Number(select.value),
-    p: defaultPage,
+    page: defaultPage,
   };
 
   await router.push({
