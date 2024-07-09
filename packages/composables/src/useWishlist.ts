@@ -5,6 +5,7 @@ import { computed, ref } from "vue";
 import type { ComputedRef } from "vue";
 import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
 import type { Schemas } from "#shopware";
+import { defu } from "defu";
 
 export type UseWishlistReturn = {
   /**
@@ -65,7 +66,7 @@ export function useWishlist(): UseWishlistReturn {
     items: itemsSync,
     mergeWishlistProducts: mergeWishlistProductsSync,
     removeFromWishlistSync,
-    count,
+    count: countSync,
     currentPage,
   } = useSyncWishlist();
 
@@ -75,16 +76,16 @@ export function useWishlist(): UseWishlistReturn {
     page?: number,
     query?: Schemas["Criteria"],
   ) => {
-    currentPage.value = page ?? 1;
-    if (query?.limit) {
-      limit.value = query?.limit || 15;
+    const wishlistQuery = {} as Schemas["Criteria"];
+    if (page) {
+      wishlistQuery.page = page;
+    }
+    if (query) {
+      defu(wishlistQuery, query);
     }
 
     if (canSyncWishlist.value) {
-      await getWishlistProductsSync({
-        page: page,
-        limit: limit.value,
-      });
+      await getWishlistProductsSync(query);
     } else {
       getWishlistProductsLocal();
     }
@@ -121,6 +122,13 @@ export function useWishlist(): UseWishlistReturn {
   const getCurrentPage = () => {
     return computed(() => currentPage.value);
   };
+
+  const count = computed(() => {
+    if (canSyncWishlist.value) {
+      return countSync.value;
+    }
+    return items.value.length;
+  });
 
   return {
     mergeWishlistProducts,
