@@ -39,6 +39,7 @@
     "503": "Serwer jest teraz bardzo zajęty"
   },
   "setup": {
+    "check_console": "Sprawdź console log żeby sprawdzić szczegóły 🖵",
     "problems": "Problemy podczas konfiguracji? 😬",
     "support_start": "Sprawdź",
     "support_page": "strona rozwiązywania problemów",

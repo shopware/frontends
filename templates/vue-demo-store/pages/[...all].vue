@@ -34,6 +34,15 @@ const { data: seoResult } = await useAsyncData(
   },
 );
 
+if (!seoResult.value?.foreignKey) {
+  console.error("[...all].vue:", `No data found in API for ${routePath}`);
+
+  throw createError({
+    statusCode: 404,
+    statusMessage: `No data fetched from API for ${routePath}`,
+  });
+}
+
 const { routeName, foreignKey } = useNavigationContext(
   seoResult as Ref<Schemas["SeoUrl"]>,
 );
