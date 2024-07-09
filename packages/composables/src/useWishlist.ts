@@ -18,7 +18,6 @@ export type UseWishlistReturn = {
   getWishlistProducts(
     page?: number,
     query?: Schemas["Criteria"],
-    onWishlistPage?: boolean,
   ): Promise<void>;
   /**
    * Clear wishlist
