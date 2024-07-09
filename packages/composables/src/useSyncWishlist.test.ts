@@ -5,6 +5,8 @@ import { ApiClientError } from "@shopware/api-client";
 import type { FetchResponse } from "ofetch";
 
 describe("useSyncWishlist", () => {
+  const consoleErrorSpy = vi.spyOn(console, "error");
+  consoleErrorSpy.mockImplementation(() => {});
   describe("methods", () => {
     describe("addToWishlist", () => {
       it("wishlist add product", () => {
@@ -46,11 +48,12 @@ describe("useSyncWishlist", () => {
     });
 
     describe("getWishlistProducts - error", () => {
-      it("getWishlistProducts", () => {
+      it("getWishlistProducts", async () => {
         const { vm } = useSetup(() => useSyncWishlist(), {
           apiClient: {
             invoke: vi.fn().mockImplementation(() => {
               throw new ApiClientError({
+                status: 500,
                 _data: {
                   errors: [
                     {
@@ -64,7 +67,8 @@ describe("useSyncWishlist", () => {
             }),
           },
         });
-
+        vm.getWishlistProducts();
+        expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
         expect(vm.count).toBe(0);
         expect(vm.items.length).toBe(0);
       });
