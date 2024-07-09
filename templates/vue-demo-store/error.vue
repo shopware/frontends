@@ -40,6 +40,8 @@ try {
     errorMessageMap[props.error.statusCode as keyof typeof errorMessageMap] ||
     props.error.message;
 
+  console.error("[error.vue]:", props.error?.message);
+
   if (props.error.statusCode === 412) {
     // setting a timeout here to ensure we are the last error message in terminal
     setTimeout(() => {
