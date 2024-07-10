@@ -49,4 +49,4 @@ The `cms-base` package has an opinionated style of components and is based on Ta
 
 ## Use custom components
 
-If you use custom components and not the cms-base package, you have to ensure the correct rendering of the page. You also need to re-create all components that the Shopware CMS uses. For the creation of custom components - such as elements or blocks, you can follow the instructions given in [Shopping Experiences](../../framework/shopping-experiences.html) and benefit from typehinting and the `useCms*` composables.
+If you use custom components and not the cms-base package, you have to ensure the correct rendering of the page. You also need to re-create all components that the Shopware CMS uses. For the creation of custom components - such as elements or blocks, you can follow the instructions given in [Shopping Experiences](/framework/shopping-experiences.html) and benefit from typehinting and the `useCms*` composables.

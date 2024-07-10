@@ -49,7 +49,7 @@ Each CMS page contains the `Category` with `breadcrumb` array, which contains a 
 breadcrumb: ["Home", "Main navigation ", "Summer Party"]
 ```
 
-we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](../../packages/helpers.html#getcategorybreadcrumbs) helper, and then pass it to [useBreadcrumbs](../../packages/composables.html#usebreadcrumbs) composable.
+we can convert current `string` array to the `Breadcrumb` object using [getCategoryBreadcrumbs](/packages/helpers.html#getcategorybreadcrumbs) helper, and then pass it to [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) composable.
 
 ```ts
 import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
@@ -74,7 +74,7 @@ onBeforeRouteLeave(() => {
 
 ## Displaying Breadcrumbs
 
-Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](../../packages/composables.html#usebreadcrumbs) composable.
+Breadcrumbs are stored in sharable variable `breadcrumbs` in [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) composable.
 
 ```vue
 <script setup lang="ts">
