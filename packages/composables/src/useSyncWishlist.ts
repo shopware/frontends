@@ -34,7 +34,7 @@ export type UseSyncWishlistReturn = {
   /**
    * Current page number
    */
-  currentPage: Ref<number>;
+  currentPage: ComputedRef<number>;
 };
 
 const _wishlistItems: Ref<string[]> = ref([]);

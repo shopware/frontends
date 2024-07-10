@@ -64,7 +64,7 @@ export function useWishlist(): UseWishlistReturn {
     mergeWishlistProducts: mergeWishlistProductsSync,
     removeFromWishlistSync,
     count: countSync,
-    currentPage: currentPageSync,
+    currentPage,
   } = useSyncWishlist();
 
   const limit = ref<number>(15);
@@ -107,8 +107,6 @@ export function useWishlist(): UseWishlistReturn {
     }
     await getWishlistProductsSync();
   };
-
-  const currentPage = computed(() => currentPageSync.value);
 
   const count = computed(() => {
     if (canSyncWishlist.value) {
