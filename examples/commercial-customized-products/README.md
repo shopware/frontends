@@ -61,6 +61,15 @@ Available methods and properties provided by the composable function:
 
 Investigate more in the [component's source](https://github.com/shopware/frontends/blob/main/examples/commercial-customized-products/src/components/ProductCustomizedProductConfigurator.vue).
 
+## Run for development
+
+```sh
+pnpm dev
+```
+
+or...
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/examples/commercial-customized-products?file=README.md)
 
 
 ## Resources
