@@ -15,10 +15,7 @@ export type UseWishlistReturn = {
   /**
    * Get products list added to wishlist
    */
-  getWishlistProducts(
-    page?: number,
-    query?: Schemas["Criteria"],
-  ): Promise<void>;
+  getWishlistProducts(query?: Schemas["Criteria"]): Promise<void>;
   /**
    * Clear wishlist
    */
@@ -30,11 +27,11 @@ export type UseWishlistReturn = {
   /**
    * Current page number
    */
-  getCurrentPage(): ComputedRef<number>;
+  currentPage: ComputedRef<number>;
   /**
    * total pages count
    */
-  getTotalPagesCount(limit?: number): ComputedRef<number>;
+  totalPagesCount: ComputedRef<number>;
   /**
    * total wishlist items count
    */
@@ -67,21 +64,18 @@ export function useWishlist(): UseWishlistReturn {
     mergeWishlistProducts: mergeWishlistProductsSync,
     removeFromWishlistSync,
     count: countSync,
-    currentPage,
+    currentPage: currentPageSync,
   } = useSyncWishlist();
 
   const limit = ref<number>(15);
 
-  const getWishlistProducts = async (
-    page?: number,
-    query?: Schemas["Criteria"],
-  ) => {
+  const getWishlistProducts = async (query?: Schemas["Criteria"]) => {
     const wishlistQuery = {} as Schemas["Criteria"];
-    if (page) {
-      wishlistQuery.page = page;
-    }
     if (query) {
       defu(wishlistQuery, query);
+    }
+    if (query?.limit) {
+      limit.value = query.limit;
     }
 
     if (canSyncWishlist.value) {
@@ -95,12 +89,7 @@ export function useWishlist(): UseWishlistReturn {
     canSyncWishlist.value ? itemsSync.value : itemsLocal.value,
   );
 
-  const getTotalPagesCount = (currentLimit?: number) => {
-    const pagesCount = currentLimit
-      ? Math.ceil(count.value / currentLimit)
-      : Math.ceil(count.value / limit.value);
-    return computed(() => pagesCount);
-  };
+  const totalPagesCount = computed(() => Math.ceil(count.value / limit.value));
 
   const clearWishlist = async () => {
     if (canSyncWishlist.value) {
@@ -119,9 +108,7 @@ export function useWishlist(): UseWishlistReturn {
     await getWishlistProductsSync();
   };
 
-  const getCurrentPage = () => {
-    return computed(() => currentPage.value);
-  };
+  const currentPage = computed(() => currentPageSync.value);
 
   const count = computed(() => {
     if (canSyncWishlist.value) {
@@ -135,8 +122,8 @@ export function useWishlist(): UseWishlistReturn {
     getWishlistProducts,
     clearWishlist,
     items,
-    getCurrentPage,
-    getTotalPagesCount,
+    currentPage,
+    totalPagesCount,
     count,
     canSyncWishlist,
   };

@@ -109,10 +109,15 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   provide("urlPrefix", prefix);
 }
 
+if (import.meta.client) {
+  // getting the wishlist products should not block SSR
+  if (!(router.currentRoute.value.name as string).includes("wishlist")) {
+    getWishlistProducts(); // initial page loading
+  }
+}
+
 onMounted(() => {
   refreshCart();
-  // this request is needed to show the wishlist heart on every category page without any limit / page
-  getWishlistProducts();
 });
 </script>
 

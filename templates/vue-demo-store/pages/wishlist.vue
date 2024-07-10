@@ -29,8 +29,8 @@ const {
   items,
   clearWishlist,
   getWishlistProducts,
-  getCurrentPage,
-  getTotalPagesCount,
+  currentPage,
+  totalPagesCount,
   canSyncWishlist,
 } = useWishlist();
 defineOptions({
@@ -88,7 +88,7 @@ const changeLimit = async (limit: Event) => {
   await router.push({
     query: query,
   });
-  await getWishlistProducts(defaultPage, query);
+  await getWishlistProducts(query);
 };
 
 const changePage = async (page: number) => {
@@ -98,7 +98,7 @@ const changePage = async (page: number) => {
       limit: limit.value,
     },
   });
-  await getWishlistProducts(page, route.query);
+  await getWishlistProducts(route.query);
 };
 
 watch(
@@ -122,13 +122,14 @@ watch(
   () => route,
   (newRoute) => {
     if (initalRoute.path !== newRoute.path) {
+      getWishlistProducts(); // update wishlist items when you leave wishlist page
       return;
     }
     if (Object.keys(newRoute.query).length > 0) {
       return;
     }
     // this fires to reset the page when query are removed/empty on client side navigation for the same page (without hard reload)
-    getWishlistProducts(defaultPage, {
+    getWishlistProducts({
       limit: defaultLimit,
       page: defaultPage,
     });
@@ -142,9 +143,9 @@ onMounted(() => {
   const limit = ref(
     route.query.limit ? Number(route.query.limit) : defaultLimit,
   );
-  const page = ref(route.query.p ? Number(route.query.p) : defaultPage);
+  const page = ref(route.query.page ? Number(route.query.page) : defaultPage);
   // this request is needed to start with the first page and the current limit or default limit for the pagination on wishlist page
-  getWishlistProducts(page.value, {
+  getWishlistProducts({
     limit: limit.value,
     page: page.value,
   });
@@ -213,8 +214,8 @@ onMounted(() => {
   >
     <div class="text-center place-self-center">
       <SwPagination
-        :total="Number(getTotalPagesCount(limit).value)"
-        :current="Number(getCurrentPage().value)"
+        :total="Number(totalPagesCount)"
+        :current="currentPage"
         @change-page="changePage"
       />
     </div>
