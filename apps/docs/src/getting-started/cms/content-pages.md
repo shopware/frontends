@@ -31,7 +31,7 @@ See [install the package](../../framework/shopping-experiences.html#install-the-
 
 ### Render the page
 
-Now, you can import all components from the `@shopware-pwa/cms-base` package and use them in your templates. The most straightforward way to render a page is to use the `CmsPage` component. It takes a `content` prop and resolves all subordinate sections, blocks and elements automatically. Put the following code in your catch-all component that also handles the [routing logic](../routing.md#resolve-a-route-to-a-page).
+Now, you can import all components from the `@shopware-pwa/cms-base` package and use them in your templates. The most straightforward way to render a page is to use the `CmsPage` component. It takes a `content` prop and resolves all subordinate sections, blocks and elements automatically. Put the following code in your catch-all component that also handles the [routing logic](/getting-started/routing.html#resolve-a-route-to-a-page).
 
 ```vue-html
 <CmsPage v-if="data" :content="data.cmsPage"/>

@@ -112,4 +112,4 @@ function render() {
 
 You see that the `cmsPageRendererComponent` is returned before the regular `cmsPageView` is resolved. But only if the `cmsPageRendererComponent` is not null and **no** routeName aka componentName is found. Further details can be found in the comments in the code above.
 
-Also, you can find a complete example here at [Strapi CMS Integration](../../resources/integrations/cms/strapi.md).
+Also, you can find a complete example here at [Strapi CMS Integration](/resources/integrations/cms/strapi.html).

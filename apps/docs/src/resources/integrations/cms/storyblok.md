@@ -19,7 +19,7 @@ nav:
 [<img src="../../../.assets/cms-icons/storyblok.dark.svg" alt="Storyblok Logo" class="mb-8 h-20 block dark:hidden" />](https://www.storyblok.com/docs/guide/introduction)
 
 Storyblok is a headless CMS that can be easily integrated into any Nuxt 3 application.
-On this page we explain the basics of how to integrate it into our [vue-blank template](../../../getting-started/templates/blank-template.html).
+On this page we explain the basics of how to integrate it into our [vue-blank template](/getting-started/templates/blank-template.html).
 
 ## Step by step guide
 

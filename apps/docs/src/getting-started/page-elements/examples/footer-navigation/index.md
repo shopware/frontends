@@ -10,7 +10,7 @@ Just copy the code snippet and paste it into your project. Sometimes it's useful
 
 Implementing Footer navigation can be described in few steps:
 
-1. Use [useNavigation](../../../../packages/composables.html#usenavigation) composable to `loadNavigationElements` to display a navigation configured in admin panel.
+1. Use [useNavigation](/packages/composables.html#usenavigation) composable to `loadNavigationElements` to display a navigation configured in admin panel.
 2. Iterate over `navigationElements` array of categories and display them.
 3. Add some static links next-to dynamic ones if needed.
 4. Resolve URLs and implement dedicated pages for it.
@@ -84,5 +84,5 @@ By design, the URL can point also to the Product or Landing Page.
 In order to resolve an entity assigned to each category path, utilize a [composable](../../../../packages/composables.html#usenavigation) dedicated for expected entity:
 
 1. `search` from `useNavigationSearch` to find entity type.
-2. use [dedicated composable](../../../routing.html#resolve-a-route-to-a-page) to process page resolving.
+2. use [dedicated composable](/getting-started/routing.html#resolve-a-route-to-a-page) to process page resolving.
    :::
