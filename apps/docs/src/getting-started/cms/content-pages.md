@@ -15,7 +15,7 @@ nav:
 
 # Create content pages
 
-In this chapter you will learn how to display content pages with data from Shopware's own CMS. It is based on the mechanism of routing and fetching page content described in the [previous chapter](../routing.html). The case of building fully custom components from scratch will be covered as well. Specifically, you will learn how to
+In this chapter you will learn how to display content pages with data from Shopware's own CMS. It is based on the mechanism of routing and fetching page content described in the [previous chapter](/getting-started/routing.html). The case of building fully custom components from scratch will be covered as well. Specifically, you will learn how to
 
 - Render a content page using the cms-base package
 - Render a content page using custom components

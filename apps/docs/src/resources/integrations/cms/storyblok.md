@@ -184,7 +184,7 @@ On this page we explain the basics of how to integrate it into our [vue-blank te
 
     <img src="../../../.assets/integrations/storyblok/storyblok-content-edit-home-page.png" alt="Storyblok content edit home page screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
 
-11. Now start you local dev server and open [this page](http://localhost:3000/storyblok/home).  
+11. Now start you local dev server and open `http://localhost:3000/storyblok/home`.  
     You should see a page looking like the screen below.
     <img src="../../../.assets/integrations/storyblok/storyblok-home-page-in-nuxt.png" alt="Storyblok  home page in nuxt screenshot" class="border-1px border-#eeeeee rounded-md shadow-md my-8 hover:shadow-2xl hover:scale-105 transition duration-200" />
 

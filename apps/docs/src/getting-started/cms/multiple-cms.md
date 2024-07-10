@@ -13,7 +13,7 @@ head:
 
 # Multiple content management systems (CMS)
 
-Add another [CMS system](../../resources/integrations/index.md), but still use the Shopware Shopping Experiences as a fallback.
+Add another [CMS system](/resources/integrations/cms/), but still use the Shopware Shopping Experiences as a fallback.
 
 This documentation guides users through the process of incorporating an additional CMS instance and use it seamlessly with the Shopware Shopping Experiences.
 

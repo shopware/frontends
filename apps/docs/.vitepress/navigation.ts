@@ -1,10 +1,10 @@
 const nav = [
   {
-    link: "https://developer.shopware.com/docs/guides/plugins/apps",
+    link: "https://developer.shopware.com/docs/guides/plugins/apps/",
     text: "Apps",
   },
   {
-    link: "https://developer.shopware.com/docs/guides/plugins/themes",
+    link: "https://developer.shopware.com/docs/guides/plugins/themes/",
     text: "Themes",
   },
   {
