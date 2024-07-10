@@ -22,8 +22,8 @@ In this chapter you will learn how to
 
 ### Quick reference
 
-- [useBreadcrumbs](../../packages/composables.html#usebreadcrumbs) is a composable used for a breadcrumbs management with sharable state
-- [getCategoryBreadcrumbs](../../packages/helpers.html#getcategorybreadcrumbs) is a helper used for converting `Category` to the `Breadcrumb` object
+- [useBreadcrumbs](/packages/composables.html#usebreadcrumbs) is a composable used for a breadcrumbs management with sharable state
+- [getCategoryBreadcrumbs](/packages/helpers.html#getcategorybreadcrumbs) is a helper used for converting `Category` to the `Breadcrumb` object
 
 ## Building breadcrumbs for a static page
 

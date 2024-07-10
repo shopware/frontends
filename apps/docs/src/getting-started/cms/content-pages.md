@@ -27,7 +27,7 @@ Using the cms-base package, you don't have to implement any CMS components by yo
 ### Install the package
 
 Depending on which template you are using you need to install the package first.  
-See [install the package](../../framework/shopping-experiences.html#install-the-package).
+See [install the package](/framework/shopping-experiences.html#install-the-package).
 
 ### Render the page
 
@@ -38,7 +38,7 @@ Now, you can import all components from the `@shopware-pwa/cms-base` package and
 ```
 
 :::warning This will only work
-if you followed the previous chapter on [routing](../routing.html). The `data` value in this example is a reactive reference to either a product, a category or a landing page response. If you are not sure how to get the data otherwise, check that chapter and see how the data is fetched.
+if you followed the previous chapter on [routing](/getting-started/routing.html). The `data` value in this example is a reactive reference to either a product, a category or a landing page response. If you are not sure how to get the data otherwise, check that chapter and see how the data is fetched.
 :::
 
 ### Customize components
