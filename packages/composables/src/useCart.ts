@@ -190,7 +190,7 @@ export function useCartFunction(): UseCartReturn {
         body: {
           items: [
             {
-              id: promotionCode,
+              referencedId: promotionCode,
               type: "promotion",
             },
           ],

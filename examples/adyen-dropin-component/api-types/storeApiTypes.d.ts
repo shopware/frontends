@@ -7426,8 +7426,12 @@ export type operations = {
     };
     body: {
       // TODO: [OpenAPI][addLineItem] - add proper request body type with required fields
+      /**
+       * Id - is used to add products to the cart.
+       * referencedId - is used to add promotions to the cart or create new line of the same item
+       */
       items: Array<{
-        id: string; // TODO: [OpenAPI][addLineItem] - check if this is used at all?
+        id?: string; // TODO: [OpenAPI][addLineItem] - check if this is used at all?
         referencedId?: string;
         quantity?: number;
         type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][addLineItem] - add proper type -> see also #456
