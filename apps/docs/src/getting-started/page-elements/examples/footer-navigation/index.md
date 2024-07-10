@@ -75,13 +75,13 @@ loadNavigationElements({
 </style>
 ```
 
-[getCategoryUrl](../../../../packages/helpers.html#getcategoryurl) method imported from `helpers-next` package can extract a SEO Url or technical URL for given category.
+[getCategoryUrl](/packages/helpers.html#getcategoryurl) method imported from `helpers-next` package can extract a SEO Url or technical URL for given category.
 
 :::warning
 `getCategoryUrl` returns absolute path for corresponding category, which means you will get for example `/some-category/some-subcategory` and not the entire URL including domain.
 
 By design, the URL can point also to the Product or Landing Page.
-In order to resolve an entity assigned to each category path, utilize a [composable](../../../../packages/composables.html#usenavigation) dedicated for expected entity:
+In order to resolve an entity assigned to each category path, utilize a [composable](/packages/composables.html#usenavigation) dedicated for expected entity:
 
 1. `search` from `useNavigationSearch` to find entity type.
 2. use [dedicated composable](/getting-started/routing.html#resolve-a-route-to-a-page) to process page resolving.
