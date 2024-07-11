@@ -8,15 +8,18 @@ head:
       content: "In this chapter you will learn how to integrate Strapi (CMS)."
   - - meta
     - name: og:image
-      content: "https://frontends-og-image.vercel.app/Strapi%Integration.png?fontSize=120px"
+      content: "https://frontends-og-image.vercel.app/Strapi%20Integration.png?fontSize=120px"
 nav:
-  position: 60
+  position: 20
 ---
 
-# Strapi integration
+# Strapi Integration
 
-[Strapi](https://strapi.io/) is a headless CMS that can be integrated with the Composable Frontends.
-This example requires Nuxt 3 instance
+[<img src="../../../.assets/cms-icons/Strapi.full.logo.light.png" alt="Strapi Logo" class="mb-8 h-20 hidden dark:block" />](https://docs.strapi.io/dev-docs/intro)
+[<img src="../../../.assets/cms-icons/Strapi.full.logo.dark.png" alt="Strapi Logo" class="mb-8 h-20 block dark:hidden" />](https://docs.strapi.io/dev-docs/intro)
+
+Strapi is a headless CMS that can be integrated with the Composable Frontends.
+This example requires NUXT 3 instance.
 
 ### How to install
 
@@ -94,7 +97,7 @@ Now we can add our component to the layout.
 ## Fetching and displaying pages
 
 :::warning
-This example is written for the vue-demo-store template and assuming that you [implemented multi CMS middleware](/resources/integrations/multi-cms.html)
+This example is written for the vue-demo-store template and assuming that you [implemented Multiple CMS middleware](/getting-started/cms/multiple-cms.html#adding-middleware)
 :::
 
 Create new collection type `Page` on the Stripe admin site with fields:

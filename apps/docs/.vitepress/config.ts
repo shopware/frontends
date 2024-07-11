@@ -5,6 +5,7 @@ import nav from "./navigation";
 import { SearchPlugin } from "vitepress-plugin-search";
 import { CmsBaseReference } from "./theme/typer/cms-base-plugin";
 import { ReadmeBasedReference } from "./theme/typer/plugin";
+import { ReadmeLoader } from "./theme/typer/readme-loader";
 
 export const sidebar = [
   {
@@ -109,6 +110,10 @@ export const sidebar = [
             text: "Overwriting CMS",
             link: "/getting-started/cms/overwriting-cms.html",
           },
+          {
+            text: "Multiple CMS",
+            link: "/getting-started/cms/multiple-cms.html",
+          },
         ],
       },
       {
@@ -116,11 +121,11 @@ export const sidebar = [
         link: "/getting-started/e-commerce/",
         items: [
           {
-            text: "Product listing",
+            text: "Product Listing",
             link: "/getting-started/e-commerce/product-listing.html",
           },
           {
-            text: "Product detail page",
+            text: "Product Detail Page",
             link: "/getting-started/e-commerce/product-detail-page.html",
           },
           { text: "Prices", link: "/getting-started/e-commerce/prices.html" },
@@ -132,10 +137,6 @@ export const sidebar = [
           {
             text: "Payments",
             link: "/getting-started/e-commerce/payments.html",
-          },
-          {
-            text: "Custome Payment",
-            link: "/getting-started/e-commerce/custom-payment.html",
           },
           {
             text: "JSON-LD",
@@ -217,16 +218,6 @@ export const sidebar = [
           },
         ],
       },
-      {
-        text: "B2B",
-        link: "/getting-started/b2b/",
-        items: [
-          {
-            text: "Quote Management",
-            link: "/getting-started/b2b/quote-management.html",
-          },
-        ],
-      },
     ],
   },
   {
@@ -262,10 +253,55 @@ export const sidebar = [
         link: "/resources/integrations/",
         items: [
           {
-            text: "Multi CMS instance",
-            link: "/resources/integrations/multi-cms.html",
+            text: "CMS",
+            link: "/resources/integrations/cms/",
+            items: [
+              {
+                text: "Storyblok",
+                link: "/resources/integrations/cms/storyblok.html",
+              },
+              {
+                text: "Strapi",
+                link: "/resources/integrations/cms/strapi.html",
+              },
+            ],
           },
-          { text: "Strapi", link: "/resources/integrations/strapi/" },
+          {
+            text: "Commercial",
+            link: "/resources/integrations/commercial/",
+            items: [
+              {
+                text: "B2B Quick Order",
+                link: "/resources/integrations/commercial/b2b-quick-order.html",
+              },
+              {
+                text: "B2B Quote Management",
+                link: "/resources/integrations/commercial/b2b-quote-management.html",
+              },
+              {
+                text: "Custom Products",
+                link: "/resources/integrations/commercial/custom-products.html",
+              },
+            ],
+          },
+          {
+            text: "Payments",
+            link: "/resources/integrations/payments/",
+            items: [
+              {
+                text: "Adyen",
+                link: "/resources/integrations/payments/adyen.html",
+              },
+              {
+                text: "mollie",
+                link: "/resources/integrations/payments/mollie.html",
+              },
+              {
+                text: "Paypal Express",
+                link: "/resources/integrations/payments/paypal-express.html",
+              },
+            ],
+          },
         ],
       },
     ],
@@ -302,10 +338,6 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
   // srcExclude: ["tutorial/**/description.md"], In case we need something to be excluded
   scrollOffset: "header",
   ignoreDeadLinks: true, // remove once MR #294 is merged
-  rewrites: {
-    "installation.md": "getting-started/templates/demo-store-template",
-    "installation.html": "getting-started/templates/demo-store-template",
-  },
   head: [
     [
       "link",
@@ -404,7 +436,12 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
     json: {
       stringify: true,
     },
-    plugins: [SearchPlugin(), ReadmeBasedReference(), CmsBaseReference()],
+    plugins: [
+      SearchPlugin(),
+      ReadmeBasedReference(),
+      CmsBaseReference(),
+      ReadmeLoader(),
+    ],
   },
   vue: {
     reactivityTransform: true,
