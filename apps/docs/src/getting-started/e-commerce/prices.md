@@ -293,7 +293,7 @@ const defaultPrice = computed(() => {
 
 ## useProductPrice composable
 
-See dedicated [Composables > useProductPrice](../../packages/composables.html#useproductprice) page to check the details of the helper function.
+See dedicated [Composables > useProductPrice](/packages/composables.html#useproductprice) page to check the details of the helper function.
 
 ### Product listing
 

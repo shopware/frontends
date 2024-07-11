@@ -13,7 +13,7 @@ head:
 
 # Multiple content management systems (CMS)
 
-Add another [CMS system](../../resources/integrations/index.md), but still use the Shopware Shopping Experiences as a fallback.
+Add another [CMS system](/resources/integrations/cms/), but still use the Shopware Shopping Experiences as a fallback.
 
 This documentation guides users through the process of incorporating an additional CMS instance and use it seamlessly with the Shopware Shopping Experiences.
 
@@ -112,4 +112,4 @@ function render() {
 
 You see that the `cmsPageRendererComponent` is returned before the regular `cmsPageView` is resolved. But only if the `cmsPageRendererComponent` is not null and **no** routeName aka componentName is found. Further details can be found in the comments in the code above.
 
-Also, you can find a complete example here at [Strapi CMS Integration](../../resources/integrations/cms/strapi.md).
+Also, you can find a complete example here at [Strapi CMS Integration](/resources/integrations/cms/strapi.html).
