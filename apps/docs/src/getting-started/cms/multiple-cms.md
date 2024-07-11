@@ -57,7 +57,7 @@ const { data: seoResult } = await useAsyncData(
   "cmsResponse" + routePath,
   async () => {
     // For client links if the history state contains seo url information we can omit the api call
-    if (process.client) {
+    if (import.meta.client) {
       if (history.state?.routeName) {
         return {
           routeName: history.state?.routeName,
