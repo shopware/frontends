@@ -11,7 +11,7 @@ const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
 onBeforeMount(async () => {
-  if (process.client && isLoggedIn.value) {
+  if (import.meta.client && isLoggedIn.value) {
     // redirect to account page if user is logged in
     navigateTo({ path: "/account" });
   }

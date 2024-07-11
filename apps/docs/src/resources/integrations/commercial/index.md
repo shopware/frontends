@@ -17,7 +17,7 @@ nav:
 
 Here you will find all integration documents for the commercial features of Rise, Evolve and Beyond Plans for Shopware.
 
-- [B2B Quick-Order](b2b-quick-order)
-- [B2B Quote-Management](b2b-quote-management)
-- [Custom Products](custom-products)
-- [Digital Sales Rooms](digital-sales-rooms)
+- [B2B Quick-Order](b2b-quick-order.html)
+- [B2B Quote-Management](b2b-quote-management.html)
+- [Custom Products](custom-products.html)
+- [Digital Sales Rooms](digital-sales-rooms.html)
