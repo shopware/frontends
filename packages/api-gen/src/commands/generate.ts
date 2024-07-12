@@ -100,11 +100,11 @@ export async function generate(args: {
         alphabetize: true,
         supportArrayLength: true,
         commentHeader: `/**
- * This file is auto-generated. Do not make direct changes to the file. 
+ * This file is auto-generated. Do not make direct changes to the file.
  * Instead override it in your shopware.d.ts file.
- * 
+ *
  * Shopware API version: ${version}
- * 
+ *
  */
 `,
         /**
@@ -171,19 +171,19 @@ export async function generate(args: {
           /**
            * We're changing "object" declarations into "GenericRecord" to allow recursive types like `associations`
            */
-          // if (
-          //   // for object types
-          //   (schemaObject as { type: string }).type === "object" &&
-          //   // without properties, items, anyOf, allOf
-          //   !(schemaObject as { properties?: object }).properties &&
-          //   !(schemaObject as { items?: [] }).items &&
-          //   !(schemaObject as { anyOf?: [] }).anyOf &&
-          //   !(schemaObject as { allOf?: [] }).allOf &&
-          //   !(schemaObject as { additionalProperties?: object })
-          // ) {
-          //   return "GenericRecord";
-          // }
-          // transform(schemaObject, metadata) {
+          if (
+            // for object types
+            (schemaObject as { type: string }).type === "object" &&
+            // without properties, items, anyOf, allOf
+            !(schemaObject as { properties?: object }).properties &&
+            !(schemaObject as { items?: [] }).items &&
+            !(schemaObject as { anyOf?: [] }).anyOf &&
+            !(schemaObject as { allOf?: [] }).allOf &&
+            !(schemaObject as { additionalProperties?: object }).additionalProperties
+          ) {
+            return "GenericRecord";
+          }
+          // transform(schemaObject) {
           // if ("format" in schemaObject && schemaObject.format === "date-time") {
           //   return "Date";
           // }
