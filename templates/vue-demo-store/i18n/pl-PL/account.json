@@ -44,7 +44,9 @@
       "orderDate": "Data zamówienia",
       "orderStatus": "Status zamówienia",
       "paymentMethod": "Metoda płatności",
-      "repeatOrder": "Powtórz zamówienie"
+      "repeatOrder": "Powtórz zamówienie",
+      "order": "zamówienie",
+      "orders": "Zamówienia"
     },
     "personalData": {
       "infoBox": "Edytuj swoje dane poniżej, aby twoje konto zawsze było aktualne",
