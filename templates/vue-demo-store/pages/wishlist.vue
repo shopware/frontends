@@ -2,7 +2,6 @@
 import type { Schemas } from "#shopware";
 import defu from "defu";
 import { useRoute, useRouter } from "vue-router";
-import SwPagination from "../../../packages/cms-base/components/SwPagination.vue";
 
 const defaultLimit = 15;
 const defaultPage = 1;

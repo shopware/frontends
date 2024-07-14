@@ -13,10 +13,7 @@ export type UseCustomerOrdersReturn = {
    *
    * In order to change a page with additional parameters please use `loadOrders` method.
    */
-  changeCurrentPage(
-    pageNumber: number | string,
-    limit: number | string,
-  ): Promise<void>;
+  changeCurrentPage(pageNumber: number | string): Promise<void>;
   /**
    * Fetches the orders list and assigns the result to the `orders` property
    */
@@ -28,7 +25,11 @@ export type UseCustomerOrdersReturn = {
   /**
    * total pages
    */
-  totalPages(limit: number): number;
+  totalPages: ComputedRef<number>;
+  /**
+   * Limit of orders per page
+   */
+  limit: Ref<number>;
 };
 
 /**
@@ -42,32 +43,37 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
   const orders: Ref<Schemas["Order"][]> = ref([]);
 
   const currentPaginationPage = ref<number>(1);
+  const limit = ref<number>(15);
 
   const totalOrderItemsCount: Ref<number> = ref(0);
+
+  const currentParams = ref<Schemas["Criteria"]>({});
 
   const loadOrders = async (
     parameters: Schemas["Criteria"] = {},
   ): Promise<void> => {
+    const params = {
+      ...parameters,
+      limit: limit.value,
+    };
+    currentParams.value = params;
     const fetchedOrders = await apiClient.invoke("readOrder post /order", {
-      body: { ...parameters, "total-count-mode": "exact" },
+      body: { ...params, "total-count-mode": "exact" },
     });
     orders.value = fetchedOrders.data.orders.elements;
     totalOrderItemsCount.value = fetchedOrders.data.orders.total ?? 0;
   };
 
-  const changeCurrentPage = async (
-    pageNumber: number,
-    currentLimit: number,
-  ) => {
-    await loadOrders({ page: pageNumber, limit: currentLimit });
+  const changeCurrentPage = async (pageNumber: number) => {
+    await loadOrders({ ...currentParams.value, page: pageNumber });
     currentPaginationPage.value = pageNumber;
   };
 
   const currentPage = computed(() => currentPaginationPage.value);
 
-  const totalPages = (limit: number) => {
-    return Math.ceil(totalOrderItemsCount.value / limit);
-  };
+  const totalPages = computed(() => {
+    return Math.ceil(totalOrderItemsCount.value / limit.value);
+  });
 
   return {
     orders,
@@ -75,5 +81,6 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
     loadOrders,
     currentPage,
     totalPages,
+    limit,
   };
 }

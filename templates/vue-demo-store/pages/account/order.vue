@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import SwPagination from "../../../../packages/cms-base/components/SwPagination.vue";
 
 defineOptions({
   name: "OrderHistory",
@@ -9,8 +8,14 @@ definePageMeta({
   layout: "account",
 });
 
-const { orders, loadOrders, changeCurrentPage, totalPages, currentPage } =
-  useCustomerOrders();
+const {
+  orders,
+  loadOrders,
+  changeCurrentPage,
+  totalPages,
+  currentPage,
+  limit,
+} = useCustomerOrders();
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -50,19 +55,20 @@ useBreadcrumbs([
   },
 ]);
 
-const limit = ref(route.query.limit ? Number(route.query.limit) : defaultLimit);
+limit.value = route.query.limit ? Number(route.query.limit) : defaultLimit;
 
-const changeLimit = async (limit: Event) => {
-  const select = limit.target as HTMLSelectElement;
+const changeLimit = async (ev: Event) => {
+  const select = ev.target as HTMLSelectElement;
+  limit.value = +select.value;
 
   await router.push({
     query: {
       ...route.query,
-      limit: select.value,
       p: defaultPage,
+      limit: select.value,
     },
   });
-  changeCurrentPage(+route.query.p!, +route.query.limit!);
+  changeCurrentPage(+route.query.p!);
 };
 
 const changePage = async (page: number) => {
@@ -70,10 +76,9 @@ const changePage = async (page: number) => {
     query: {
       ...route.query,
       p: page,
-      limit: limit.value,
     },
   });
-  await changeCurrentPage(page, Number(limit.value));
+  await changeCurrentPage(page);
 };
 
 await useAsyncData("getOrders", () => {
@@ -107,7 +112,7 @@ await useAsyncData("getOrders", () => {
     >
       <div class="text-center place-self-center">
         <SwPagination
-          :total="totalPages(limit)"
+          :total="totalPages"
           :current="Number(currentPage)"
           @change-page="changePage"
         />

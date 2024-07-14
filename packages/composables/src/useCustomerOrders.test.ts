@@ -20,7 +20,8 @@ describe("useCustomerOrders", () => {
     injections.apiClient.invoke.mockResolvedValue({
       data: { orders: { elements: [] } },
     });
-    vm.changeCurrentPage(2, 3);
+    vm.limit = 3;
+    vm.changeCurrentPage(2);
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readOrder"),
       expect.objectContaining({
