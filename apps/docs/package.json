@@ -26,7 +26,7 @@
     "find-in-files": "0.5.0",
     "ts-dox": "0.1.0",
     "typescript": "5.5.3",
-    "unplugin-export-collector": "0.4.3",
+    "unplugin-export-collector": "0.5.0",
     "vinyl": "3.0.0"
   },
   "pnpm": {

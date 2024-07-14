@@ -42,7 +42,7 @@
     "globby": "14.0.2",
     "husky": "9.0.11",
     "lint-staged": "15.2.7",
-    "prettier": "3.3.2",
+    "prettier": "3.3.3",
     "taze": "0.15.0",
     "turbo": "2.0.6",
     "typedoc": "0.26.4",
