@@ -8,7 +8,7 @@ export default defineConfig({
   write: true,
   // run `npm install` or `yarn install` right after bumping
   install: false,
-  mode: "major",
+  mode: "minor",
   // override with different bumping mode for each package
   packageMode: {
     axios: "ignore",
