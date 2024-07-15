@@ -213,7 +213,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -221,7 +220,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -239,7 +237,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -247,7 +244,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -269,7 +265,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -731,7 +726,6 @@ export type Schemas = {
     translated: {
       afterCategoryId: string;
       afterCategoryVersionId: string;
-      apiAlias: string;
       breadcrumb: string[];
       cmsPageId: string;
       cmsPageVersionId: string;
@@ -1021,7 +1015,6 @@ export type Schemas = {
     previewMediaId?: string;
     sections: components["schemas"]["CmsSection"][];
     translated: {
-      apiAlias: string;
       cssClass: string;
       entity: string;
       name: string;
@@ -1110,7 +1103,6 @@ export type Schemas = {
     locked?: boolean;
     slot: string;
     translated: {
-      apiAlias: string;
       blockId: string;
       cmsBlockVersionId: string;
       slot: string;
@@ -1819,7 +1811,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -1851,7 +1842,6 @@ export type Schemas = {
     seoUrls?: components["schemas"]["SeoUrl"][];
     slotConfig?: Record<string, never>;
     translated: {
-      apiAlias: string;
       cmsPageId: string;
       cmsPageVersionId: string;
       keywords: string;
@@ -2241,7 +2231,6 @@ export type Schemas = {
     title?: string;
     translated: {
       alt: string;
-      apiAlias: string;
       fileExtension: string;
       fileName: string;
       mimeType: string;
@@ -2263,7 +2252,6 @@ export type Schemas = {
     id: string;
     media?: components["schemas"]["Media"];
     tags?: Record<string, never>[];
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -2366,7 +2354,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -2388,7 +2375,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -2719,7 +2705,6 @@ export type Schemas = {
     /** Format: float */
     totalPrice?: number;
     translated: {
-      apiAlias: string;
       coverId: string;
       description: string;
       identifier: string;
@@ -3170,7 +3155,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -3341,7 +3325,6 @@ export type Schemas = {
     tax?: components["schemas"]["Tax"];
     taxId: string;
     translated: {
-      apiAlias: string;
       canonicalProductId: string;
       canonicalProductVersionId: string;
       cmsPageId: string;
@@ -3460,7 +3443,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -4235,7 +4217,6 @@ export type Schemas = {
     createdAt: string;
     customFields?: Record<string, never>;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -4850,7 +4831,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5312,7 +5292,6 @@ export type Schemas = {
     id?: string;
     states?: components["schemas"]["StateMachineState"][];
     transitions?: components["schemas"]["StateMachineTransition"][];
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5576,7 +5555,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5584,7 +5562,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5592,7 +5569,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -6432,7 +6408,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };

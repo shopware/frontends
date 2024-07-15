@@ -129,6 +129,7 @@ export async function generate(args: {
               "createdAt",
               "updatedAt",
               "translated",
+              "apiAlias",
             ];
             const stringFields = Object.keys(schemaObject.properties).filter(
               (key) => {
@@ -140,27 +141,33 @@ export async function generate(args: {
               },
             );
 
-            const stringProperties = stringFields.reduce(
-              (acc, key) => {
-                acc[key] = {
-                  type: "string",
-                };
-                return acc;
-              },
-              {} as Record<string, { type: "string" }>,
-            );
-
-            schemaObject.properties.translated = extendedDefu(
-              {
-                additionalProperties: "_DELETE_",
-              },
-              schemaObject.properties.translated,
-              {
-                type: "object",
-                properties: stringProperties,
-                required: stringFields,
-              },
-            );
+            const stringProperties = stringFields
+              .filter((fieldKey) => !notAllowedKeys.includes(fieldKey))
+              .reduce(
+                (acc, key) => {
+                  acc[key] = {
+                    type: "string",
+                  };
+                  return acc;
+                },
+                {} as Record<string, { type: "string" }>,
+              );
+            if (Object.keys(stringProperties).length === 0) {
+              delete schemaObject.properties.translated;
+            } else {
+              schemaObject.properties.translated = extendedDefu(
+                {
+                  additionalProperties: "_DELETE_",
+                },
+                schemaObject.properties.translated,
+                {
+                  type: "object",
+                  properties: stringProperties,
+                  required: stringFields,
+                },
+              );
+            }
+            
           }
           /**
            * Blob type is used for binary data
