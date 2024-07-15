@@ -12,14 +12,14 @@
     "@shopware-pwa/composables-next": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "vue": "3.4.30"
+    "vue": "3.4.31"
   },
   "devDependencies": {
-    "@types/node": "20.14.8",
+    "@types/node": "20.14.10",
     "@vitejs/plugin-vue": "5.0.5",
-    "typescript": "5.5.2",
-    "vite": "5.3.1",
-    "vue-tsc": "2.0.22"
+    "typescript": "5.5.3",
+    "vite": "5.3.3",
+    "vue-tsc": "2.0.26"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"

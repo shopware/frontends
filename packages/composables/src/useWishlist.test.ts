@@ -4,6 +4,7 @@ import { useSyncWishlist } from "./useSyncWishlist";
 import { useUser } from "./useUser";
 import { useSetup } from "./_test";
 import { computed, ref } from "vue";
+import type { Schemas } from "#shopware";
 
 const getMockedUser = (isLoggedIn: boolean, isGuestSession: boolean) =>
   ({
@@ -11,20 +12,30 @@ const getMockedUser = (isLoggedIn: boolean, isGuestSession: boolean) =>
     isGuestSession: ref(isGuestSession),
   }) as ReturnType<typeof useUser>;
 
-const generateTestProducts = (count: number) => {
-  const products = [];
-  for (let i = 1; i <= count; i++) {
-    products.push(`local-testId-${i}`);
-  }
-  return products;
-};
-
 vi.mock("./useLocalWishlist.ts", () => ({
   useLocalWishlist() {
     return {
       getWishlistProducts: () => undefined,
       items: {
-        value: generateTestProducts(17),
+        value: [
+          "local-testId-1",
+          "local-testId-2",
+          "local-testId-3",
+          "local-testId-4",
+          "local-testId-5",
+          "local-testId-6",
+          "local-testId-7",
+          "local-testId-8",
+          "local-testId-9",
+          "local-testId-10",
+          "local-testId-11",
+          "local-testId-12",
+          "local-testId-13",
+          "local-testId-14",
+          "local-testId-15",
+          "local-testId-16",
+          "local-testId-17",
+        ],
       },
       clearWishlist: () => undefined,
       count: ref(17),
@@ -47,15 +58,17 @@ describe("useWishlist - not logged in user", () => {
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
       count: computed(() => 17),
+      currentPage: computed(() => 2),
     });
     const { vm } = useSetup(() => useWishlist());
 
     vm.clearWishlist();
-    vm.getWishlistProducts();
+    vm.getWishlistProducts({ page: 2, limit: 15 });
     vm.mergeWishlistProducts();
 
     expect(vm.items.length).toBe(17);
     expect(vm.count).toBe(17);
+    expect(Number(vm.totalPagesCount)).toBe(2);
   });
 
   it("getWishlistProducts", async () => {
@@ -69,12 +82,39 @@ describe("useWishlist - not logged in user", () => {
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
       count: computed(() => 15),
+      currentPage: computed(() => 2),
     });
     const { vm } = useSetup(() => useWishlist());
 
     vm.getWishlistProducts();
 
-    expect(vm.items).toEqual(generateTestProducts(17));
+    expect(vm.items).toEqual([
+      "local-testId-1",
+      "local-testId-2",
+      "local-testId-3",
+      "local-testId-4",
+      "local-testId-5",
+      "local-testId-6",
+      "local-testId-7",
+      "local-testId-8",
+      "local-testId-9",
+      "local-testId-10",
+      "local-testId-11",
+      "local-testId-12",
+      "local-testId-13",
+      "local-testId-14",
+      "local-testId-15",
+      "local-testId-16",
+      "local-testId-17",
+    ]);
+
+    const query = {
+      limit: 1,
+      page: 2,
+    } as Schemas["Criteria"];
+    vm.getWishlistProducts(query);
+
+    expect(Number(vm.currentPage)).toBe(2);
   });
 });
 
@@ -84,12 +124,29 @@ describe("useWishlist - logged in user", () => {
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => new Promise<void>((resolve) => resolve()),
       items: computed((): string[] => {
-        return generateTestProducts(15);
+        return [
+          "local-test-1",
+          "local-test-2",
+          "local-test-3",
+          "local-test-4",
+          "local-test-5",
+          "local-test-6",
+          "local-test-7",
+          "local-test-8",
+          "local-test-9",
+          "local-test-10",
+          "local-test-11",
+          "local-test-12",
+          "local-test-13",
+          "local-test-14",
+          "local-test-15",
+        ];
       }),
       addToWishlistSync: () => undefined,
       mergeWishlistProducts: () => undefined,
       removeFromWishlistSync: () => undefined,
       count: computed(() => 15),
+      currentPage: computed(() => 1),
     });
     const { vm } = useSetup(() => useWishlist());
 
@@ -106,6 +163,22 @@ describe("useWishlist - logged in user", () => {
     const { vm } = useSetup(() => useWishlist());
     vm.getWishlistProducts();
 
-    expect(vm.items).toEqual(generateTestProducts(15));
+    expect(vm.items).toEqual([
+      "local-test-1",
+      "local-test-2",
+      "local-test-3",
+      "local-test-4",
+      "local-test-5",
+      "local-test-6",
+      "local-test-7",
+      "local-test-8",
+      "local-test-9",
+      "local-test-10",
+      "local-test-11",
+      "local-test-12",
+      "local-test-13",
+      "local-test-14",
+      "local-test-15",
+    ]);
   });
 });
