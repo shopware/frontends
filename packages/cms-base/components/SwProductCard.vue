@@ -86,7 +86,7 @@ const toggleWishlistProduct = async () => {
     if (!isInWishlist.value) await addToWishlist();
     else await removeFromWishlist();
     pushSuccess(
-      `${props.product?.translated?.name} ${isLoading.value ? translations.product.addedToWishlist : translations.product.removedFromTheWishlist}`,
+      `${props.product?.translated.name} ${isLoading.value ? translations.product.addedToWishlist : translations.product.removedFromTheWishlist}`,
     );
   } catch (error) {
     if (error instanceof ApiClientError) {
@@ -94,7 +94,7 @@ const toggleWishlistProduct = async () => {
         ? `${translations.product.reason}: ${error.details.errors?.[0]?.detail}`
         : "";
       return pushError(
-        `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
+        `${props.product?.translated.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
         {
           timeout: 5000,
         },
@@ -108,7 +108,7 @@ const toggleWishlistProduct = async () => {
 const addToCartProxy = async () => {
   await addToCart();
   pushSuccess(
-    `${props.product?.translated?.name} ${translations.product.addedToCart}`,
+    `${props.product?.translated.name} ${translations.product.addedToCart}`,
   );
 };
 
