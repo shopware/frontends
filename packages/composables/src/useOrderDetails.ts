@@ -194,7 +194,7 @@ export function useOrderDetails(
   const subtotal = computed(() => _sharedOrder.value?.price?.positionPrice);
   const total = computed(() => _sharedOrder.value?.price?.totalPrice);
   const status = computed(
-    () => _sharedOrder.value?.stateMachineState?.translated?.name,
+    () => _sharedOrder.value?.stateMachineState?.translated.name,
   );
   const statusTechnicalName = computed(
     () => _sharedOrder.value?.stateMachineState?.technicalName,
