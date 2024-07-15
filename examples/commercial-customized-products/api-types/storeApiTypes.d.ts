@@ -239,7 +239,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -247,7 +246,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -265,7 +263,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -273,7 +270,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -295,7 +291,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -1842,7 +1837,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -2284,7 +2278,6 @@ export type Schemas = {
     id: string;
     media?: components["schemas"]["Media"];
     tags?: Record<string, never>[];
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -2387,7 +2380,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -2409,7 +2401,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -3190,7 +3181,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -3479,7 +3469,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -4254,7 +4243,6 @@ export type Schemas = {
     createdAt: string;
     customFields?: Record<string, never>;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -4869,7 +4857,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5331,7 +5318,6 @@ export type Schemas = {
     id?: string;
     states?: components["schemas"]["StateMachineState"][];
     transitions?: components["schemas"]["StateMachineTransition"][];
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5595,7 +5581,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5603,7 +5588,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -5611,7 +5595,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -6447,7 +6430,6 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id?: string;
-    translated: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
