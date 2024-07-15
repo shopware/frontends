@@ -5,8 +5,8 @@
 export function getShippingMethodDeliveryTime<
   T extends {
     deliveryTime?: {
-      translated?: {
-        name?: string;
+      translated: {
+        name: string;
       };
     };
   },

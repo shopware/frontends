@@ -4,10 +4,10 @@
  */
 export function getCategoryBreadcrumbs<
   T extends {
-    translated?: {
-      breadcrumb?: string[];
+    translated: {
+      breadcrumb: string[];
     };
-    breadcrumb?: string[];
+    breadcrumb: string[];
   },
 >(
   category: T,
