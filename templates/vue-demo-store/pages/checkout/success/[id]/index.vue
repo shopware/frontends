@@ -189,7 +189,7 @@ const formatDate = (date: Date | string) =>
                   {{ $t("checkout.paymentMethodLabel") }}
                 </div>
                 <div class="pt-2 text-secondary-600">
-                  <div>{{ paymentMethod?.translated?.name }}</div>
+                  <div>{{ paymentMethod?.translated.name }}</div>
                 </div>
               </div>
               <div v-if="shippingMethod" class="w-auto md:w-1/2">
@@ -197,7 +197,7 @@ const formatDate = (date: Date | string) =>
                   {{ $t("checkout.shippingMethodLabel") }}
                 </div>
                 <div class="pt-2 text-secondary-600">
-                  <div>{{ shippingMethod?.translated?.name }}</div>
+                  <div>{{ shippingMethod?.translated.name }}</div>
                   <div v-if="shippingMethod?.deliveryTime">
                     {{ $t("checkout.takesUpTo") }}
                     {{ shippingMethod.deliveryTime?.name }}

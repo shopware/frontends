@@ -12,7 +12,7 @@ const props = withDefaults(
 );
 
 const purchaseUnit = computed(() => props.product?.purchaseUnit);
-const unitName = computed(() => props.product?.unit?.translated?.name);
+const unitName = computed(() => props.product?.unit?.translated.name);
 const referencePrice = computed(
   () => props.product?.calculatedPrice?.referencePrice?.price,
 );

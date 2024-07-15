@@ -72,13 +72,13 @@ onMounted(async () => {
           <label
             :for="`paymentMethod-${paymentMethod.id}`"
             class="font-medium text-gray-900 dark:text-gray-300"
-            >{{ paymentMethod.translated?.name }}</label
+            >{{ paymentMethod.translated.name }}</label
           >
           <p
             :id="`paymentMethod-${paymentMethod.id}-text`"
             class="text-xs font-normal text-gray-500 dark:text-gray-300"
           >
-            {{ paymentMethod.translated?.description }}
+            {{ paymentMethod.translated.description }}
           </p>
         </div>
       </div>
@@ -111,13 +111,13 @@ onMounted(async () => {
           <label
             :for="`shippingMethod-${shippingMethod.id}`"
             class="font-medium text-gray-900 dark:text-gray-300"
-            >{{ shippingMethod.translated?.name }}</label
+            >{{ shippingMethod.translated.name }}</label
           >
           <p
             :id="`shippingMethod-${shippingMethod.id}-text`"
             class="text-xs font-normal text-gray-500 dark:text-gray-300"
           >
-            {{ shippingMethod.translated?.description }}
+            {{ shippingMethod.translated.description }}
           </p>
         </div>
       </div>
