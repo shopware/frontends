@@ -121,6 +121,9 @@ export async function generate(args: {
             schemaObject.type === "object" &&
             !!schemaObject?.properties?.translated
           ) {
+
+            schemaObject.required?.push("translated");
+
             const notAllowedKeys = [
               "id",
               "createdAt",
@@ -155,6 +158,7 @@ export async function generate(args: {
               {
                 type: "object",
                 properties: stringProperties,
+                required: stringFields,
               },
             );
           }
