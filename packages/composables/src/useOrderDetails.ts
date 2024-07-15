@@ -163,7 +163,8 @@ export function useOrderDetails(
 ): UseOrderDetailsReturn {
   const { apiClient } = useShopwareContext();
 
-  const paymentChangeableList: Ref<{ [key: string]: boolean }> = ref({});
+  const paymentChangeableList: Ref<{ [key: string]: boolean | undefined }> =
+    ref({});
   const _sharedOrder = inject<Ref<Schemas["Order"] | undefined>>(
     "swOrderDetails",
     ref(),

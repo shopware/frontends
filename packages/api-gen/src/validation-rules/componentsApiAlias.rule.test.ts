@@ -202,6 +202,7 @@ describe("componentsApiAlias.rule", async () => {
 
   it("should display diff wihout additional message when names are proper", async () => {
     const componentName = "CmsBlockResult";
+    // @ts-expect-error TODO: wait for the fix in openapi-typescript for enum type
     const body = {
       type: "object",
       required: ["apiAlias"],
