@@ -20,7 +20,7 @@ export function getCategoryBreadcrumbs<
   },
 ) {
   const breadcrumbs =
-    category?.translated.breadcrumb || category?.breadcrumb || [];
+    category?.translated?.breadcrumb || category?.breadcrumb || [];
   const startIndex = options?.startIndex || 0;
   if (breadcrumbs.length <= startIndex) return [];
   return breadcrumbs.slice(startIndex).map((element) => {
