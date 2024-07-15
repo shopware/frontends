@@ -48,6 +48,13 @@ export async function generateFile(
   await project.save();
 }
 
+export function getFilteredValue(value?: string) {
+  if (value?.trim() === "never;") {
+    return undefined;
+  }
+  return value;
+}
+
 export async function prepareFileContent({
   filepath,
   operationsMap,
@@ -99,7 +106,7 @@ export async function prepareFileContent({
           if (typeof method === "string") {
             writer.write(`"${routePath}":`).write(method);
           } else {
-            const methodHeaders = method.headers;
+            const methodHeaders = getFilteredValue(method.headers);
 
             type RequestType = {
               contentType?: string;
@@ -129,9 +136,9 @@ export async function prepareFileContent({
                   accept: response.contentType,
                   headers: methodHeaders,
                   headersOptional: method.headersOptional,
-                  query: method.query,
+                  query: getFilteredValue(method.query),
                   queryOptional: method.queryOptional,
-                  pathParams: method.pathParams,
+                  pathParams: getFilteredValue(method.pathParams),
                   body: null,
                   bodyOptional: method.bodyOptional,
                   response: response.code,
@@ -148,9 +155,9 @@ export async function prepareFileContent({
                     accept: response.contentType,
                     headers: methodHeaders,
                     headersOptional: method.headersOptional,
-                    query: method.query,
+                    query: getFilteredValue(method.query),
                     queryOptional: method.queryOptional,
-                    pathParams: method.pathParams,
+                    pathParams: getFilteredValue(method.pathParams),
                     body: body.code,
                     bodyOptional: method.bodyOptional,
                     response: response.code,
@@ -237,13 +244,6 @@ export async function prepareFileContent({
               // });
               // })
               writer.write(";").newLine();
-            } else {
-              console.error(
-                "No requests for method",
-                routePath,
-                // "method",
-                // method,
-              );
             }
           }
         }

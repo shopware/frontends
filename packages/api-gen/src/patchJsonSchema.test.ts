@@ -120,6 +120,48 @@ describe("patchJsonSchema", () => {
         }
       `);
     });
+
+    it("should add new component if there was none before", async () => {
+      const { patchedSchema } = patchJsonSchema({
+        openApiSchema: json5.parse(`{
+          components: {
+            schemas: {
+            },
+          },
+        }`),
+        jsonOverrides: json5.parse(`{
+          components: {
+            CalculatedPrice: [
+              {
+                type: "object",
+                properties: { netPrice: { type: "number" } },
+                required: ["netPrice"],
+              },
+            ],
+          },
+        }`),
+      });
+
+      expect(patchedSchema).toMatchInlineSnapshot(`
+        {
+          "components": {
+            "schemas": {
+              "CalculatedPrice": {
+                "properties": {
+                  "netPrice": {
+                    "type": "number",
+                  },
+                },
+                "required": [
+                  "netPrice",
+                ],
+                "type": "object",
+              },
+            },
+          },
+        }
+      `);
+    });
   });
 
   describe("paths", () => {

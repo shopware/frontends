@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { resolve, join, dirname } from "node:path";
-import openapiTS from "openapi-typescript";
+import openapiTS, { astToString } from "openapi-typescript";
 import type { OpenAPI3 } from "openapi-typescript";
 import * as dotenv from "dotenv";
 import c from "picocolors";
@@ -17,8 +17,14 @@ import {
   loadApiGenConfig,
   loadJsonOverrides,
 } from "../jsonOverrideUtils";
+import ts from "typescript";
 
 const config = dotenv.config().parsed || {};
+
+const BLOB = ts.factory.createTypeReferenceNode(
+  ts.factory.createIdentifier("Blob"),
+); // `Blob`
+const NULL = ts.factory.createLiteralTypeNode(ts.factory.createNull()); // `null`
 
 export async function generate(args: {
   cwd: string;
@@ -62,7 +68,7 @@ export async function generate(args: {
         encoding: "utf-8",
       });
       const schemaForPatching = json5.parse(schemaFile) as OpenAPI3;
-      const version = schemaForPatching?.info?.version;
+      // const version = schemaForPatching?.info?.version;
 
       const configJSON = await loadApiGenConfig({
         silent: true, // we allow to not have the config file in this command
@@ -91,28 +97,30 @@ export async function generate(args: {
         alreadyApliedPatches,
       });
 
-      schema = await openapiTS(patchedSchema, {
+      const astSchema = await openapiTS(patchedSchema, {
         version: +(config.OPENAPI_VERSION || 3),
         exportType: true,
         // pathParamsAsTypes: true,
         // rawSchema: false,
         additionalProperties: false,
         alphabetize: true,
-        supportArrayLength: true,
-        commentHeader: `/**
- * This file is auto-generated. Do not make direct changes to the file. 
- * Instead override it in your shopware.d.ts file.
- * 
- * Shopware API version: ${version}
- * 
- */
-`,
+        arrayLength: true,
+        // turn off requiring fields with declared default values
+        defaultNonNullable: false,
+        //         commentHeader: `/**
+        //  * This file is auto-generated. Do not make direct changes to the file.
+        //  * Instead override it in your shopware.d.ts file.
+        //  *
+        //  * Shopware API version: ${version}
+        //  *
+        //  */
+        // `,
         /**
          * GenericRecord is used for types like associations
          */
-        inject: `
-            type GenericRecord = never | null | string | string[] | number | { [key: string]: GenericRecord };
-            `,
+        // inject: `
+        //     type GenericRecord = never | null | string | string[] | number | { [key: string]: GenericRecord };
+        //     `,
 
         transform(schemaObject) {
           /**
@@ -150,6 +158,7 @@ export async function generate(args: {
               {} as Record<string, { type: "string" }>,
             );
 
+            // @ts-expect-error - we know that schemaObject has properties
             schemaObject.properties.translated = extendedDefu(
               {
                 additionalProperties: "_DELETE_",
@@ -165,8 +174,14 @@ export async function generate(args: {
            * Blob type is used for binary data
            */
           if (schemaObject.format === "binary") {
-            return "Blob";
+            return schemaObject.nullable
+              ? ts.factory.createUnionTypeNode([BLOB, NULL])
+              : BLOB;
           }
+
+          // if (schemaObject.additionalProperties) {
+          //   console.error("schema propers", schemaObject.additionalProperties);
+          // }
 
           /**
            * We're changing "object" declarations into "GenericRecord" to allow recursive types like `associations`
@@ -189,6 +204,8 @@ export async function generate(args: {
           // }
         },
       });
+
+      schema = astToString(astSchema);
 
       schema += `\n
     /**
