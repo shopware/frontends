@@ -9,5 +9,5 @@ export function getLanguageName<
     translationCode?: { translated?: { name?: string } };
   },
 >(language: T): string {
-  return language.translationCode?.translated?.name || "";
+  return language.translationCode?.translated.name || "";
 }

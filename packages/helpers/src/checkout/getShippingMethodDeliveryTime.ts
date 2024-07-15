@@ -11,5 +11,5 @@ export function getShippingMethodDeliveryTime<
     };
   },
 >(shippingMethod: T) {
-  return shippingMethod.deliveryTime?.translated?.name;
+  return shippingMethod.deliveryTime?.translated.name;
 }
