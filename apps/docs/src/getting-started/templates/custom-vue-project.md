@@ -36,7 +36,7 @@ pnpm add js-cookie
 For CMS components, you can add a package that contains ready-to-use components.
 You can read more about CMS pages here:
 
-<PageRef page="../cms/content-pages" title="Create content pages" sub="Render a content page using components" />
+<PageRef page="../cms/content-pages.html" title="Create content pages" sub="Render a content page using components" />
 
 ```bash
 pnpm add @shopware-pwa/cms-base
@@ -261,4 +261,4 @@ const instance = createInstance({
 
 After your setup, you can follow our building guides to get started with Shopware Frontends
 
-<PageRef page="../../getting-started/page-elements/navigation" title="Getting Started - Navigation" sub="Let's implement a store navigation" />
+<PageRef page="../../getting-started/page-elements/navigation.html" title="Getting Started - Navigation" sub="Let's implement a store navigation" />

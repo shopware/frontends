@@ -11,7 +11,7 @@ export function useAuthGuardRedirection(params?: { to: string }) {
   watch(
     isLoggedIn,
     (isLoggedIn) => {
-      if (process.client && !isLoggedIn) {
+      if (import.meta.client && !isLoggedIn) {
         if (!params?.to) {
           router.push({ path: "/" });
           pushInfo(

@@ -67,7 +67,10 @@ export async function generate(args: {
       const configJSON = await loadApiGenConfig({
         silent: true, // we allow to not have the config file in this command
       });
-      const jsonOverrides = await loadJsonOverrides(configJSON?.patches);
+      const jsonOverrides = await loadJsonOverrides({
+        path: configJSON?.patches,
+        apiType: args.apiType,
+      });
 
       const {
         patchedSchema,

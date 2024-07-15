@@ -106,15 +106,15 @@ const { cartItems, totalPrice, count } = useCart();
 
 Find a table of commonly used properties of cart items below:
 
-| Property       | Description                                                                                                                         |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `id`           | The unique identifier of the cart item                                                                                              |
-| `referencedId` | Depends on `item.type`<br>`product`: ID of the referenced product<br>`promotion`: Promotion code if applicable                      |
-| `label`        | The label of the cart item                                                                                                          |
-| `price`        | `totalPrice`: The total price of the cart item (can be negative)<br>`unitPrice`: Price per unit<br>[More about Prices](./prices.md) |
-| `quantity`     | The quantity of units of the cart item                                                                                              |
-| `type`         | The type of the cart item - `product` or `promotion`                                                                                |
-| `cover`        | The cover image of the cart item                                                                                                    |
+| Property       | Description                                                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`           | The unique identifier of the cart item                                                                                                |
+| `referencedId` | Depends on `item.type`<br>`product`: ID of the referenced product<br>`promotion`: Promotion code if applicable                        |
+| `label`        | The label of the cart item                                                                                                            |
+| `price`        | `totalPrice`: The total price of the cart item (can be negative)<br>`unitPrice`: Price per unit<br>[More about Prices](./prices.html) |
+| `quantity`     | The quantity of units of the cart item                                                                                                |
+| `type`         | The type of the cart item - `product` or `promotion`                                                                                  |
+| `cover`        | The cover image of the cart item                                                                                                      |
 
 ## Change the quantity of a cart item
 

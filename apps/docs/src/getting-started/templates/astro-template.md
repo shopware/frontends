@@ -41,4 +41,4 @@ If the customization isn't enough, visit `src/entrypoints/_shopware.ts` file and
 
 ## What next?
 
-<PageRef page="../navigation" title="Build your first component" sub="Now that your blank template is set up, let's build a store" />
+<PageRef page="../page-elements/navigation.html" title="Build your first component" sub="Now that your astro template is set up, let's work with the main navigation." />

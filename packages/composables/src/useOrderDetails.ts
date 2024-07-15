@@ -9,6 +9,7 @@ import type { Schemas } from "#shopware";
  */
 const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
   associations: {
+    stateMachineState: {},
     lineItems: {
       associations: {
         cover: {},
@@ -24,11 +25,13 @@ const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
       associations: {
         shippingMethod: {},
         shippingOrderAddress: {},
+        stateMachineState: {},
       },
     },
     transactions: {
       associations: {
         paymentMethod: {},
+        stateMachineState: {},
       },
     },
   },
@@ -205,7 +208,7 @@ export function useOrderDetails(
       orderAssociations,
       associations ? associations : {},
     );
-    const params = defu(mergedAssociations, {
+    const params = {
       filter: [
         {
           type: "equals",
@@ -213,10 +216,8 @@ export function useOrderDetails(
           value: orderId,
         },
       ],
-      associations: {
-        stateMachineState: {},
-      },
-    }) as Schemas["Criteria"];
+      associations: mergedAssociations.associations,
+    } as Schemas["Criteria"];
 
     const orderDetailsResponse = await apiClient.invoke(
       "readOrder post /order",

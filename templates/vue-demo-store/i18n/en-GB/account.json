@@ -45,7 +45,10 @@
       "totalAmount": "Total amount",
       "orderDate": "Order date",
       "orderStatus": "Order status",
-      "paymentMethod": "Payment method"
+      "paymentMethod": "Payment method",
+      "repeatOrder": "Repeat order",
+      "order": "Order",
+      "orders": "Orders"
     },
     "personalData": {
       "infoBox": "Feel free to edit any of your details below so your account is always up to date",
@@ -62,7 +65,8 @@
       "personalDataUpdateSuccess": "Your information has been updated.",
       "paymentSetSuccessfully": "Set default payment method successfully",
       "signUpSuccess": "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.",
-      "paymentMethodChanged": "Payment method changed successfully"
+      "paymentMethodChanged": "Payment method changed successfully",
+      "productsAdded": "Products added to cart"
     }
   }
 }

@@ -1,5 +1,5 @@
 import c from "picocolors";
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import json5 from "json5";
 import { validationRules } from "./validation-rules";
 import { ofetch } from "ofetch";
@@ -44,17 +44,28 @@ function isURL(str: string) {
   return str.startsWith("http");
 }
 
-export async function loadJsonOverrides(
-  path?: string,
-): Promise<OverridesSchema | undefined> {
-  const pathToResolve =
-    path ||
-    "https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/storeApiSchema.overrides.json";
+export async function loadJsonOverrides({
+  path,
+  apiType,
+}: {
+  path?: string;
+  apiType: string;
+}): Promise<OverridesSchema | undefined> {
+  const localPath = `./api-types/${apiType}ApiSchema.overrides.json`;
+
+  const fallbackPath = existsSync(localPath)
+    ? localPath
+    : `https://raw.githubusercontent.com/shopware/frontends/main/packages/api-client/api-types/${apiType}ApiSchema.overrides.json`;
+
+  const pathToResolve = path || fallbackPath;
+  console.log("Loading overrides from:", pathToResolve);
 
   try {
     if (isURL(pathToResolve)) {
-      const response = await ofetch(pathToResolve);
-      return response.data;
+      const response = await ofetch(pathToResolve, {
+        responseType: "json",
+      });
+      return response;
     } else {
       const jsonOverridesFile = await readFileSync(pathToResolve, {
         encoding: "utf-8",

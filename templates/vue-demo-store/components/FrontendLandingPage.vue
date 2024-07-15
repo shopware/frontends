@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const { search } = useLandingSearch();
 
-const { data: landingResponse } = await useAsyncData(
+const { data: landingResponse, error } = await useAsyncData(
   "cmsLanding" + props.navigationId,
   async () => {
     const landingPage = await search(props.navigationId, {
@@ -18,10 +18,13 @@ const { data: landingResponse } = await useAsyncData(
   },
 );
 
-if (typeof landingResponse?.value !== null) {
-  const landingPage = landingResponse as Ref<Schemas["LandingPage"]>;
-  useCmsHead(landingPage, { mainShopTitle: "Shopware Frontends Demo Store" });
+if (!landingResponse?.value) {
+  console.error("[FrontendLandingPage.vue]", error.value?.message);
+  throw error.value;
 }
+
+const landingPage = landingResponse as Ref<Schemas["LandingPage"]>;
+useCmsHead(landingPage, { mainShopTitle: "Shopware Frontends Demo Store" });
 </script>
 
 <template>

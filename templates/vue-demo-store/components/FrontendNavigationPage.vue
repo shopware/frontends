@@ -12,7 +12,7 @@ const props = defineProps<{
 const { search } = useCategorySearch();
 const route = useRoute();
 
-const { data: categoryResponse } = await useAsyncData(
+const { data: categoryResponse, error } = await useAsyncData(
   "cmsNavigation" + props.navigationId,
   async () => {
     const category = await search(props.navigationId, {
@@ -24,12 +24,17 @@ const { data: categoryResponse } = await useAsyncData(
     return category;
   },
 );
-if (categoryResponse.value) {
-  const breadcrumbs = getCategoryBreadcrumbs(categoryResponse.value, {
-    startIndex: 2,
-  });
-  useBreadcrumbs(breadcrumbs);
+
+if (!categoryResponse.value) {
+  console.error("[FrontendNavigationPage.vue]", error.value?.message);
+  throw error.value;
 }
+
+const breadcrumbs = getCategoryBreadcrumbs(categoryResponse.value, {
+  startIndex: 2,
+});
+
+useBreadcrumbs(breadcrumbs);
 
 const { category } = useCategory(categoryResponse as Ref<Schemas["Category"]>);
 useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });

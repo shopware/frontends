@@ -123,4 +123,4 @@ However, if there are no plugin-specific endpoints to interact with, the `handle
 
 See what can be achieved on Express Checkout example for PayPal provider.
 
-<PageRef page="custom-payment" title="Custom Payment with PayPal" sub="Custom payment flow based on PayPal Express Checkout." />
+<PageRef page="../../../resources/integrations/payments/" title="Payment Integrations" sub="See also all our Payment Integrations." />

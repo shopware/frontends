@@ -83,11 +83,17 @@ const toggleWishlistProduct = async () => {
   isLoading.value = true;
 
   try {
-    if (!isInWishlist.value) await addToWishlist();
-    else await removeFromWishlist();
-    pushSuccess(
-      `${props.product?.translated.name} ${isLoading.value ? translations.product.addedToWishlist : translations.product.removedFromTheWishlist}`,
-    );
+    if (!isInWishlist.value) {
+      await addToWishlist();
+      pushSuccess(
+        `${props.product?.translated.name} ${translations.product.addedToWishlist}`,
+      );
+    } else {
+      await removeFromWishlist();
+      pushError(
+        `${props.product?.translated.name} ${translations.product.removedFromTheWishlist}`,
+      );
+    }
   } catch (error) {
     if (error instanceof ApiClientError) {
       const reason = error.details.errors?.[0]?.detail

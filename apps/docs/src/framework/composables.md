@@ -17,6 +17,6 @@ nav:
 
 The section on composables describes context composables, shared composables and how to overwrite composables.
 
-<PageRef page="./composables/context-composables" title="Context Composables" sub="Context composables allow for a more granular way of sharing state between components." />
-<PageRef page="./composables/shared-composables" title="Shared Composables" sub="Sometimes we want only one instance of a specific composable to be shared between all components." />
-<PageRef page="./composables/overwriting-composables" title="Overwriting Composables" sub="Replace and overwrite almost any part of the composables package in order to achieve highly customized solution." />
+<PageRef page="./composables/context-composables.html" title="Context Composables" sub="Context composables allow for a more granular way of sharing state between components." />
+<PageRef page="./composables/shared-composables.html" title="Shared Composables" sub="Sometimes we want only one instance of a specific composable to be shared between all components." />
+<PageRef page="./composables/overwriting-composables.html" title="Overwriting Composables" sub="Replace and overwrite almost any part of the composables package in order to achieve highly customized solution." />
