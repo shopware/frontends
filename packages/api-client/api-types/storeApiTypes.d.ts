@@ -583,12 +583,12 @@ export type Schemas = {
       taxRate: number;
     }[];
     hasRange: boolean;
-    listPrice: components["schemas"]["ListPrice"] | null;
+    listPrice: components["schemas"]["CartListPrice"] | null;
     netPrice: number;
     positionPrice: number;
     quantity: number;
     rawTotal: number;
-    referencePrice: components["schemas"]["ReferencePrice"] | null;
+    referencePrice: components["schemas"]["CartPriceReference"] | null;
     regulationPrice: {
       /** @enum {string} */
       apiAlias?: "cart_regulation_price";
@@ -2039,9 +2039,9 @@ export type Schemas = {
         tax: number;
         taxRate: number;
       }[];
-      listPrice?: components["schemas"]["ListPrice"] | null;
+      listPrice?: components["schemas"]["CartListPrice"] | null;
       quantity: number;
-      referencePrice?: components["schemas"]["ReferencePrice"] | null;
+      referencePrice?: components["schemas"]["CartPriceReference"] | null;
       regulationPrice?: {
         /** @enum {string} */
         apiAlias?: "cart_regulation_price";
@@ -2078,7 +2078,7 @@ export type Schemas = {
     | "discount"
     | "container"
     | "quantity";
-  ListPrice: {
+  CartListPrice: {
     /** @enum {string} */
     apiAlias: "cart_list_price";
     discount?: number;
@@ -3178,7 +3178,7 @@ export type Schemas = {
     /** @enum {string} */
     apiAlias?: "cart_price_quantity";
     isCalculated?: boolean;
-    listPrice?: components["schemas"]["ListPrice"];
+    listPrice?: components["schemas"]["CartListPrice"];
     price?: number;
     quantity?: number;
     regulationPrice?: {
@@ -3203,9 +3203,9 @@ export type Schemas = {
       /** @enum {string} */
       apiAlias?: "calculated_cheapest_price";
       hasRange?: boolean;
-      listPrice?: components["schemas"]["ListPrice"] | null;
+      listPrice?: components["schemas"]["CartListPrice"] | null;
       quantity?: number;
-      referencePrice?: components["schemas"]["ReferencePrice"] | null;
+      referencePrice?: components["schemas"]["CartPriceReference"] | null;
       regulationPrice?: {
         price: number;
       } | null;
@@ -4637,11 +4637,11 @@ export type Schemas = {
     /** @enum {string} */
     type: "range";
   };
-  ReferencePrice: {
+  CartPriceReference: {
     /** @enum {string} */
     apiAlias?: "cart_price_reference";
     hasRange: boolean;
-    listPrice: components["schemas"]["ListPrice"] | null;
+    listPrice: components["schemas"]["CartListPrice"] | null;
     price?: number;
     purchaseUnit?: number;
     referenceUnit?: number;
