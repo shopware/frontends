@@ -170,6 +170,7 @@
         "required": ["stock"]
       }
     ],
+    // This is refactored to CartListPrice
     "ListPrice": {
       "type": "object",
       "description": "",
@@ -361,6 +362,7 @@
         "required": ["translated"]
       }
     ],
+    // this is refactored to CartPriceReference, change in overrides
     "ReferencePrice": {
       "type": "object",
       "properties": {
