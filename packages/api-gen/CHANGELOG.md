@@ -1,5 +1,15 @@
 # @shopware/api-gen
 
+## 1.0.3
+
+### Patch Changes
+
+- [#1113](https://github.com/shopware/frontends/pull/1113) [`65212d1`](https://github.com/shopware/frontends/commit/65212d11bb8d0af10f97454a46e7671ff16ebc7a) Thanks [@patzick](https://github.com/patzick)! - Parse Json5 responses when using default overrides
+
+- [#1112](https://github.com/shopware/frontends/pull/1112) [`2065d00`](https://github.com/shopware/frontends/commit/2065d00998cd84fb6e2f51d7f793eb178e0865e4) Thanks [@patzick](https://github.com/patzick)! - Fixed adding missing components in overrides. Used when component name is overriden and no component definition is provided for it.
+
+- [#1103](https://github.com/shopware/frontends/pull/1103) [`c9a4965`](https://github.com/shopware/frontends/commit/c9a49659e77842a4b098d5b9cc6606f4158893fd) Thanks [@trimethylpentan](https://github.com/trimethylpentan)! - Re-enabled generation for `GenericRecord`s for openAPI objects
+
 ## 1.0.2
 
 ### Patch Changes

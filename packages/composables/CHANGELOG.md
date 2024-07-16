@@ -1,5 +1,17 @@
 # @shopware-pwa/composables-next
 
+## 1.1.0
+
+### Minor Changes
+
+- [#1071](https://github.com/shopware/frontends/pull/1071) [`f9d2735`](https://github.com/shopware/frontends/commit/f9d27353ec6383cb22cdece0469f8fdd13250958) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - `useCart` - new `addProducts` function that allows adding a set of products to the cart
+
+- [#893](https://github.com/shopware/frontends/pull/893) [`d95751e`](https://github.com/shopware/frontends/commit/d95751ecde443a033f17def838bcc25aeba6951e) Thanks [@khanSoliheen](https://github.com/khanSoliheen)! - - `useWishList`:
+  - Added `getCurrentPage` and `getTotalPagesCount` to the returned object
+  - Changed `getWishlistProducts` to accept `page` and `query` as optional parameters
+  - `useSyncWishList`:
+    - Changed `getWishlistProducts`, added Parameter to pass default criterias
+
 ## 1.0.1
 
 ### Patch Changes
