@@ -1,5 +1,5 @@
 ---
-"@shopware/api-gen": minor
+"@shopware/api-gen": patch
 ---
 
-Re-enabled generation for GenericRecords for openAPI objects
+Re-enabled generation for `GenericRecord`s for openAPI objects
