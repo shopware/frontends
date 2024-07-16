@@ -46,7 +46,9 @@
       "orderDate": "Order date",
       "orderStatus": "Order status",
       "paymentMethod": "Payment method",
-      "repeatOrder": "Repeat order"
+      "repeatOrder": "Repeat order",
+      "order": "Order",
+      "orders": "Orders"
     },
     "personalData": {
       "infoBox": "Feel free to edit any of your details below so your account is always up to date",

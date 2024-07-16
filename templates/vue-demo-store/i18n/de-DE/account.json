@@ -44,7 +44,9 @@
       "orderDate": "Bestelldatum",
       "orderStatus": "Bestellstatus",
       "paymentMethod": "Zahlungsmethode",
-      "repeatOrder": "Bestellung wiederholen"
+      "repeatOrder": "Bestellung wiederholen",
+      "order": "Bestellung",
+      "orders": "Bestellungen"
     },
     "personalData": {
       "infoBox": "Bearbeiten Sie Ihre Daten unten, damit Ihr Konto immer auf dem neuesten Stand ist.",

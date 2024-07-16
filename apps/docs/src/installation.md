@@ -1,3 +1,15 @@
+---
+head:
+  - - meta
+    - name: og:title
+      content: Installation
+  - - meta
+    - name: og:description
+      content: "Shopware Frontends is a framework for building custom, cloud-native Shopware Storefronts."
+nav:
+  hidden: true
+---
+
 <script setup>
 import stackblitzIcon from '.assets/framework-icons/stackblitz.png';
 </script>

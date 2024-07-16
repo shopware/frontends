@@ -39,6 +39,7 @@
     "503": "Server is really busy right now"
   },
   "setup": {
+    "check_console": "Check the console log to see the details 🖵",
     "problems": "Problems during setup? 😬",
     "support_start": "Checkout the",
     "support_page": "troubleshooting page",

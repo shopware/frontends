@@ -112,7 +112,7 @@ export const sidebar = [
           },
           {
             text: "Multiple CMS",
-            link: "/getting-started/cms/multiple-cms",
+            link: "/getting-started/cms/multiple-cms.html",
           },
         ],
       },
@@ -137,10 +137,6 @@ export const sidebar = [
           {
             text: "Payments",
             link: "/getting-started/e-commerce/payments.html",
-          },
-          {
-            text: "Custom Payment",
-            link: "/getting-started/e-commerce/custom-payment.html",
           },
           {
             text: "JSON-LD",
@@ -342,10 +338,6 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
   // srcExclude: ["tutorial/**/description.md"], In case we need something to be excluded
   scrollOffset: "header",
   ignoreDeadLinks: true, // remove once MR #294 is merged
-  rewrites: {
-    "installation.md": "getting-started/templates/demo-store-template",
-    "installation.html": "getting-started/templates/demo-store-template",
-  },
   head: [
     [
       "link",

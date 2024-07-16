@@ -13,4 +13,4 @@ nav:
   position: 30
 ---
 
-# Custom Products
+<!-- load: ../../../../../examples/commercial-customized-products/README.md -->
