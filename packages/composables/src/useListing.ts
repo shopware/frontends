@@ -210,11 +210,6 @@ export function useListing(params?: {
     searchMethod = async (
       searchCriteria: operations["readProductListing post /product-listing/{categoryId}"]["body"],
     ) => {
-      if (!categoryId) {
-        throw new Error(
-          "[useListing][search] Search category id does not exist.",
-        );
-      }
       const { data } = await apiClient.invoke(
         "readProductListing post /product-listing/{categoryId}",
         {
@@ -222,7 +217,7 @@ export function useListing(params?: {
             "sw-include-seo-urls": true,
           },
           pathParams: {
-            categoryId,
+            categoryId: categoryId as string, // null exception in useCategory,
           },
           body: searchCriteria,
         },
