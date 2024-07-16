@@ -7,7 +7,7 @@ const props = defineProps<{
 
 const { search } = useProductSearch();
 
-const { data: productResponse } = await useAsyncData(
+const { data: productResponse, error } = await useAsyncData(
   "cmsProduct" + props.navigationId,
   async () => {
     const productResponse = await search(props.navigationId, {
@@ -18,8 +18,8 @@ const { data: productResponse } = await useAsyncData(
 );
 
 if (!productResponse.value) {
-  console.error("No product found for navigationId: " + props.navigationId);
-  throw new Error("No product found for navigationId: " + props.navigationId);
+  console.error("[FrontendDetailPage.vue]", error.value?.message);
+  throw error.value;
 }
 
 useProductJsonLD(productResponse.value.product);

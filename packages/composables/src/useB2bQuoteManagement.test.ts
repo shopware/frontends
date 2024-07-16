@@ -7,10 +7,22 @@ import { useSetup } from "./_test";
 describe("useB2bQuoteManagement", () => {
   it("getQuoteList", async () => {
     const { vm, injections } = useSetup(useB2bQuoteManagement);
-    injections.apiClient.invoke.mockResolvedValue({ data: { elements: [] } });
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: [{ id: "test-1" }] },
+    });
 
     await vm.getQuoteList();
 
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readQuotes"),
+    );
+  });
+
+  it("getQuoteList - no elements", async () => {
+    const { vm, injections } = useSetup(useB2bQuoteManagement);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
+    expect(await vm.getQuoteList()).toStrictEqual([]);
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readQuotes"),
     );

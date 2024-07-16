@@ -37,6 +37,7 @@
     "503": "Der Server ist derzeit sehr beschäftigt"
   },
   "setup": {
+    "check_console": "Im Konsolenprotokoll finden Sie die Details 🖵",
     "problems": "Probleme beim aufsetzen? 😬",
     "support_start": "Schau mal auf die",
     "support_page": "Troubleshooting-Seite",

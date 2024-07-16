@@ -1,7 +1,8 @@
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { useCart } from "./useCart";
 import { useSetup } from "./_test";
-import type { operations } from "#shopware";
+import type { operations, Schemas } from "#shopware";
+import Cart from "./mocks/Cart";
 
 describe("useCart", () => {
   beforeEach(() => {
@@ -66,6 +67,12 @@ describe("useCart", () => {
     );
   });
 
+  it("refresh the cart - new cart", async () => {
+    expect(await vm.refreshCart(Cart as unknown as Schemas["Cart"])).toEqual(
+      Cart,
+    );
+  });
+
   it("add set of products", async () => {
     await vm.addProducts(itemsMock.items);
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
@@ -91,6 +98,20 @@ describe("useCart", () => {
               quantity: 4,
             },
           ],
+        },
+      }),
+    );
+  });
+
+  it("remove item", async () => {
+    await vm.removeItem({
+      id: "01893ed931d571718e8138e7df7d68d1",
+    } as Schemas["LineItem"]);
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("removeLineItem"),
+      expect.objectContaining({
+        body: {
+          ids: ["01893ed931d571718e8138e7df7d68d1"],
         },
       }),
     );

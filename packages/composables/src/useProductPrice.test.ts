@@ -39,4 +39,28 @@ describe("useProductPrice", () => {
     expect(vm.displayFrom).toBe(true);
     expect(vm.displayFromVariants).toBe(20);
   });
+
+  it("displayFrom", () => {
+    const { vm } = useSetup(() =>
+      useProductPrice(
+        ref(
+          Object.assign(
+            { ...productTierPrices.product },
+            {
+              parentId: null,
+              variantListingConfig: {
+                displayParent: true,
+              },
+              calculatedPrices: undefined,
+              listPrice: {
+                percentage: 100,
+              },
+            },
+          ) as unknown as Schemas["Product"],
+        ),
+      ),
+    );
+    expect(vm.displayFrom).toBe(false);
+    expect(vm.isListPrice).toBe(false);
+  });
 });

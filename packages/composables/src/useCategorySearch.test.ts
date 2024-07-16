@@ -24,6 +24,31 @@ describe("useCategorySearch", () => {
     );
   });
 
+  it("search method - with cms associations ", () => {
+    const { vm, injections } = useSetup(useCategorySearch);
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {},
+    });
+    vm.search("categoryId", {
+      withCmsAssociations: true,
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readCategory"),
+      expect.objectContaining({
+        pathParams: {
+          navigationId: "categoryId",
+        },
+        headers: {
+          "sw-include-seo-urls": true,
+        },
+        body: {
+          associations: cmsAssociations,
+        },
+      }),
+    );
+  });
+
   it("advanced search method", () => {
     const { vm, injections } = useSetup(useCategorySearch);
     injections.apiClient.invoke.mockResolvedValue({

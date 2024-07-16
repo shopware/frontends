@@ -1,9 +1,11 @@
 /**
  * Template composable
  */
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { ComputedRef } from "vue";
 import { useUser, useLocalWishlist, useSyncWishlist } from "#imports";
+import type { Schemas } from "#shopware";
+import { defu } from "defu";
 
 export type UseWishlistReturn = {
   /**
@@ -13,7 +15,7 @@ export type UseWishlistReturn = {
   /**
    * Get products list added to wishlist
    */
-  getWishlistProducts(): void;
+  getWishlistProducts(query?: Schemas["Criteria"]): Promise<void>;
   /**
    * Clear wishlist
    */
@@ -23,9 +25,21 @@ export type UseWishlistReturn = {
    */
   items: ComputedRef<string[]>;
   /**
-   * Wishlist items count
+   * Current page number
+   */
+  currentPage: ComputedRef<number>;
+  /**
+   * total pages count
+   */
+  totalPagesCount: ComputedRef<number>;
+  /**
+   * total wishlist items count
    */
   count: ComputedRef<number>;
+  /**
+   * Indicates if the wishlist can be synced
+   */
+  canSyncWishlist: ComputedRef<boolean>;
 };
 
 /**
@@ -38,7 +52,6 @@ export function useWishlist(): UseWishlistReturn {
   const canSyncWishlist = computed(
     () => isLoggedIn.value && !isGuestSession.value,
   );
-
   const {
     getWishlistProducts: getWishlistProductsLocal,
     items: itemsLocal,
@@ -50,15 +63,33 @@ export function useWishlist(): UseWishlistReturn {
     items: itemsSync,
     mergeWishlistProducts: mergeWishlistProductsSync,
     removeFromWishlistSync,
+    count: countSync,
+    currentPage,
   } = useSyncWishlist();
 
-  const getWishlistProducts = async () => {
+  const limit = ref<number>(15);
+
+  const getWishlistProducts = async (query?: Schemas["Criteria"]) => {
+    const wishlistQuery = {} as Schemas["Criteria"];
+    if (query) {
+      defu(wishlistQuery, query);
+    }
+    if (query?.limit) {
+      limit.value = query.limit;
+    }
+
     if (canSyncWishlist.value) {
-      await getWishlistProductsSync();
+      await getWishlistProductsSync(query);
     } else {
-      await getWishlistProductsLocal();
+      getWishlistProductsLocal();
     }
   };
+
+  const items = computed(() =>
+    canSyncWishlist.value ? itemsSync.value : itemsLocal.value,
+  );
+
+  const totalPagesCount = computed(() => Math.ceil(count.value / limit.value));
 
   const clearWishlist = async () => {
     if (canSyncWishlist.value) {
@@ -74,19 +105,24 @@ export function useWishlist(): UseWishlistReturn {
       await mergeWishlistProductsSync(itemsLocal.value);
       clearWishlist();
     }
-    getWishlistProductsSync();
+    await getWishlistProductsSync();
   };
 
-  const items = computed(() =>
-    canSyncWishlist.value ? itemsSync.value : itemsLocal.value,
-  );
-  const count = computed(() => items.value.length);
+  const count = computed(() => {
+    if (canSyncWishlist.value) {
+      return countSync.value;
+    }
+    return items.value.length;
+  });
 
   return {
     mergeWishlistProducts,
     getWishlistProducts,
     clearWishlist,
     items,
+    currentPage,
+    totalPagesCount,
     count,
+    canSyncWishlist,
   };
 }
