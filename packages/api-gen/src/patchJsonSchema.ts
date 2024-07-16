@@ -84,6 +84,18 @@ export function patchJsonSchema({
       });
     }
   });
+
+  // finds not existing components and add them, mostly for backwards compatibility
+  Object.entries(jsonOverrides?.components || {}).forEach((schema) => {
+    if (!openApiSchema.components?.schemas?.[schema[0]]) {
+      const patches = Array.isArray(schema[1]) ? schema[1] : [schema[1]];
+      patches.forEach((patch: JSON) => {
+        patchedSchema.components.schemas[schema[0]] = patch;
+        appliedPatches++;
+      });
+    }
+  });
+
   Object.entries(openApiSchema?.paths || {}).forEach((pathObject) => {
     const pathName = pathObject[0];
     Object.entries(pathObject[1]).forEach((singlePath) => {
