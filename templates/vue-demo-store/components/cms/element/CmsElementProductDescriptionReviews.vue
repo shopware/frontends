@@ -29,7 +29,7 @@ let translations: Translations = {
     description: "Description",
     reviews: "Reviews",
     messages: {
-      reviewAdded: "Review added successfully",
+      reviewAdded: "Thank you for submitting your review",
     },
   },
 };

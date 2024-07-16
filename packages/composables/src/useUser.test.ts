@@ -74,6 +74,30 @@ describe("useUser", () => {
     );
   });
 
+  it("register function with refresh", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        active: true,
+        id: "test123",
+        guest: false,
+      },
+    });
+
+    await vm.register(REGISTRATION_DATA);
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("register"),
+      expect.objectContaining({
+        body: {
+          ...REGISTRATION_DATA,
+          storefrontUrl: "http://localhost:3000", // This is the default value from the useInternationalization
+        },
+      }),
+    );
+    expect(vm.isLoggedIn).toBe(true);
+  });
+
   it("logout", async () => {
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });

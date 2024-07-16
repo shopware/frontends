@@ -6,7 +6,7 @@ describe("useCheckout", () => {
   it("getShippingMethods - empty", async () => {
     const { vm, injections } = useSetup(useCheckout);
     injections.apiClient.invoke.mockResolvedValue({
-      data: { elements: [] },
+      data: { elements: undefined },
     });
 
     await vm.getShippingMethods();
@@ -58,7 +58,7 @@ describe("useCheckout", () => {
   it("getPaymentMethods", async () => {
     const { vm, injections } = useSetup(useCheckout);
     injections.apiClient.invoke.mockResolvedValue({
-      data: { elements: [] },
+      data: { elements: [{ id: "1" }] },
     });
 
     await vm.getPaymentMethods();
@@ -67,6 +67,25 @@ describe("useCheckout", () => {
       expect.stringContaining("readPaymentMethod"),
       expect.objectContaining({}),
     );
+    await vm.getPaymentMethods({
+      forceReload: false,
+    });
+    expect(vm.paymentMethods).toEqual([{ id: "1" }]);
+  });
+
+  it("getPaymentMethods - empty", async () => {
+    const { vm, injections } = useSetup(useCheckout);
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { elements: undefined },
+    });
+
+    await vm.getPaymentMethods();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readPaymentMethod"),
+      expect.objectContaining({}),
+    );
+    expect(vm.paymentMethods).toEqual([]);
   });
 
   it("createOrder", async () => {

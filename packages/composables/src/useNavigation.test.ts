@@ -29,4 +29,18 @@ describe("useNavigation", () => {
     });
     expect(vm.navigationElements?.length).toBe(0);
   });
+
+  it("should set the menu - empty return", async () => {
+    const { vm, injections } = useSetup(useNavigation);
+    injections.apiClient.invoke.mockResolvedValue({ data: undefined });
+
+    await vm.loadNavigationElements({
+      depth: 3,
+    });
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readNavigation"),
+      expect.anything(),
+    );
+    expect(vm.navigationElements).toStrictEqual([]);
+  });
 });

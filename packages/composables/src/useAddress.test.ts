@@ -1,7 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { useAddress } from "./useAddress";
 import { useSetup } from "./_test";
 import type { Schemas } from "#shopware";
+import { ApiClientError } from "@shopware/api-client";
+import type { FetchResponse } from "ofetch";
 
 const MOCKED_ADDRESS = {
   countryId: "6777d83705454d078fc9a7419296c7dc",
@@ -24,6 +26,29 @@ describe("useAddress", () => {
       expect.stringContaining("listAddress"),
       expect.objectContaining({}),
     );
+  });
+
+  it("load customer address - error", async () => {
+    const { vm } = await useSetup(useAddress, {
+      apiClient: {
+        invoke: vi.fn().mockImplementation(() => {
+          throw new ApiClientError({
+            status: 403,
+            _data: {
+              errors: [
+                {
+                  code: "TEST",
+                  status: 403,
+                  detail: "Forbidden",
+                },
+              ],
+            },
+          } as unknown as FetchResponse<{ errors: Array<{ title: string }> }>);
+        }),
+      },
+    });
+
+    await expect(vm.loadCustomerAddresses()).rejects.toThrowError();
   });
 
   it("create address", async () => {

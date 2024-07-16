@@ -17,4 +17,19 @@ describe("resolveCmsComponent", () => {
     const result = getDefaultApiParams();
     expect(result).toEqual({});
   });
+
+  it("cms section component", () => {
+    const result = resolveCmsComponent({
+      apiAlias: "cms_section",
+    } as unknown as Schemas["CmsBlock"]);
+    expect(result.isResolved).toBe(true);
+  });
+
+  it("cms custom component", () => {
+    const result = resolveCmsComponent({
+      apiAlias: "cms_custom",
+    } as unknown as Schemas["CmsBlock"]);
+
+    expect(result.isResolved).toBe(true);
+  });
 });
