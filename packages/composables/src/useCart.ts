@@ -120,7 +120,7 @@ export function useCartFunction(): UseCartReturn {
     return addProducts([
       {
         id: params.id,
-        quantity: params.quantity,
+        quantity: params.quantity ?? 0,
         type: "product",
       },
     ]);

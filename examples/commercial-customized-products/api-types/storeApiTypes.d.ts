@@ -7339,17 +7339,22 @@ export type operations = {
       "sw-language-id"?: string;
     };
     body: {
-      // TODO: [OpenAPI][addLineItem] - add proper request body type with required fields
-      /**
-       * Id - is used to add products to the cart.
-       * referencedId - is used to add promotions to the cart or create new line of the same item
-       */
-      items: Array<{
-        id?: string; // TODO: [OpenAPI][addLineItem] - check if this is used at all?
-        referencedId?: string;
-        quantity?: number;
-        type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][addLineItem] - add proper type -> see also #456
-      }>;
+      items: (
+        | {
+            id: string;
+            quantity: number;
+            referencedId?: string;
+            /** @enum {string} */
+            type: "product" | "custom" | "credit" | "discount" | "container";
+          }
+        | {
+            id?: string;
+            quantity?: number;
+            referencedId: string;
+            /** @enum {string} */
+            type: "promotion";
+          }
+      )[];
     };
     response: components["schemas"]["Cart"];
     responseCode: 200;

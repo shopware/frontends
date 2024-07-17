@@ -106,12 +106,22 @@ const onAddToCartClick = async () => {
   await apiClient.invoke("addLineItem post /checkout/cart/line-item", {
     body: {
       // TODO(MD): fix types in component and avoid this cast
-      items: lineItemsPayload as Array<{
-        id: string;
-        referencedId?: string;
-        quantity?: number;
-        type: "product" | "promotion" | "custom" | "credit";
-      }>,
+      items: lineItemsPayload as Array<
+        | {
+            id: string;
+            quantity: number;
+            referencedId?: string;
+            /** @enum {string} */
+            type: "product" | "custom" | "credit" | "discount" | "container";
+          }
+        | {
+            id?: string;
+            quantity?: number;
+            referencedId: string;
+            /** @enum {string} */
+            type: "promotion";
+          }
+      >,
     },
   });
 
