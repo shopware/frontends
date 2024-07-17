@@ -40,11 +40,11 @@ importers:
         specifier: 2.27.7
         version: 2.27.7
       '@microsoft/api-documenter':
-        specifier: 7.25.4
-        version: 7.25.4(@types/node@20.14.9)
+        specifier: 7.25.5
+        version: 7.25.5(@types/node@20.14.9)
       '@microsoft/api-extractor':
-        specifier: 7.47.0
-        version: 7.47.0(@types/node@20.14.9)
+        specifier: 7.47.1
+        version: 7.47.1(@types/node@20.14.9)
       '@microsoft/tsdoc':
         specifier: 0.15.0
         version: 0.15.0
@@ -153,8 +153,8 @@ importers:
         version: 14.1.1
     devDependencies:
       '@playwright/test':
-        specifier: 1.45.1
-        version: 1.45.1
+        specifier: 1.45.2
+        version: 1.45.2
 
   examples/adyen-dropin-component:
     devDependencies:
@@ -2744,15 +2744,15 @@ packages:
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
     hasBin: true
 
-  '@microsoft/api-documenter@7.25.4':
-    resolution: {integrity: sha512-hGERhz4L11zni1ifapBK3zhHFcX1QIGoTf0WzoCC0mI2IXfWDJ5ToYMZTPO6qPmn3ElrZtSWcoaHVkaRz16Q/Q==}
+  '@microsoft/api-documenter@7.25.5':
+    resolution: {integrity: sha512-m+PF6Du4jxHInSXZ9FaTRancNR6eIO7TJ/g+3pZE7O20z5Y5R8JaW6qkzfqHcC3E/IOISusyZAGxu5TwMGP/gw==}
     hasBin: true
 
-  '@microsoft/api-extractor-model@7.29.2':
-    resolution: {integrity: sha512-hAYajOjQan3uslhKJRwvvHIdLJ+ZByKqdSsJ/dgHFxPtEbdKpzMDO8zuW4K5gkSMYl5D0LbNwxkhxr51P2zsmw==}
+  '@microsoft/api-extractor-model@7.29.3':
+    resolution: {integrity: sha512-kEWjLr2ygL3ku9EGyjeTnL2S5IxyH9NaF1k1UoI0Nzwr4xEJBSWCVsWuF2+0lPUrRPA6mTY95fR264SJ5ETKQA==}
 
-  '@microsoft/api-extractor@7.47.0':
-    resolution: {integrity: sha512-LT8yvcWNf76EpDC+8/ArTVSYePvuDQ+YbAUrsTcpg3ptiZ93HIcMCozP/JOxDt+rrsFfFHcpfoselKfPyRI0GQ==}
+  '@microsoft/api-extractor@7.47.1':
+    resolution: {integrity: sha512-xfChgcNU5EBx5jayyOdl48xSP3na46TAPvnOZxvqfWOXUKa4Lz+iWiCZPTOgjw8NcrrD9a420cl6rSVYGwj5EA==}
     hasBin: true
 
   '@microsoft/tsdoc-config@0.17.0':
@@ -3093,8 +3093,8 @@ packages:
     resolution: {integrity: sha512-Zwq5OCzuwJC2jwqmpEQt7Ds1DTi6BWSwoGkbb1n9pO3hzb35BoJELx7c0T23iDkBGkh2e7tvOtjF3tr3OaQHDQ==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@playwright/test@1.45.1':
-    resolution: {integrity: sha512-Wo1bWTzQvGA7LyKGIZc8nFSTFf2TkthGIFBR+QVNilvwouGzFd4PYukZe3rvf5PSqjHi1+1NyKSDZKcQWETzaA==}
+  '@playwright/test@1.45.2':
+    resolution: {integrity: sha512-JxG9eq92ET75EbVi3s+4sYbcG7q72ECeZNbdBlaMkGcNbiDQ4cAi8U2QP5oKkOx+1gpaiL1LDStmzCaEM1Z6fQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -3403,8 +3403,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@rushstack/node-core-library@5.4.1':
-    resolution: {integrity: sha512-WNnwdS8r9NZ/2K3u29tNoSRldscFa7SxU0RT+82B6Dy2I4Hl2MeCSKm4EXLXPKeNzLGvJ1cqbUhTLviSF8E6iA==}
+  '@rushstack/node-core-library@5.5.0':
+    resolution: {integrity: sha512-Cl3MYQ74Je5Y/EngMxcA3SpHjGZ/022nKbAO1aycGfQ+7eKyNCBu0oywj5B1f367GCzuHBgy+3BlVLKysHkXZw==}
     peerDependencies:
       '@types/node': ^20
     peerDependenciesMeta:
@@ -3414,16 +3414,16 @@ packages:
   '@rushstack/rig-package@0.5.2':
     resolution: {integrity: sha512-mUDecIJeH3yYGZs2a48k+pbhM6JYwWlgjs2Ca5f2n1G2/kgdgP9D/07oglEGf6mRyXEnazhEENeYTSNDRCwdqA==}
 
-  '@rushstack/terminal@0.13.0':
-    resolution: {integrity: sha512-Ou44Q2s81BqJu3dpYedAX54am9vn245F0HzqVrfJCMQk5pGgoKKOBOjkbfZC9QKcGNaECh6pwH2s5noJt7X6ew==}
+  '@rushstack/terminal@0.13.1':
+    resolution: {integrity: sha512-RfJcpEYfCzEM/8dgRm4xVs8g4x+AdGdZZGa+XmZRWEKbKkVJSHxKmoe5z0f8gFNip0bnlxNavB9cxNaTSY/JRQ==}
     peerDependencies:
       '@types/node': ^20
     peerDependenciesMeta:
       '@types/node':
         optional: true
 
-  '@rushstack/ts-command-line@4.22.0':
-    resolution: {integrity: sha512-Qj28t6MO3HRgAZ72FDeFsrpdE6wBWxF3VENgvrXh7JF2qIT+CrXiOJIesW80VFZB9QwObSpkB1ilx794fGQg6g==}
+  '@rushstack/ts-command-line@4.22.1':
+    resolution: {integrity: sha512-wU/igKNFRPmQvxiRAM9lEx/5xcFRK72zBp+fbykPKIm83bOmVE0WWQ+ZhX/pcJJqQiodcr0DDzOMw4O8SwpMSQ==}
 
   '@s3xysteak/utils@0.6.1':
     resolution: {integrity: sha512-sEhpx8WAg276SYFYusy0HUKvdCZA7yvTQEC4fJTWIwRXIGBnDnRXk696srahNCsTGsAcOSHcd1QD6/jFRLBOYQ==}
@@ -8553,13 +8553,13 @@ packages:
   pkg-types@1.1.3:
     resolution: {integrity: sha512-+JrgthZG6m3ckicaOB74TwQ+tBWsFl3qVQg7mN8ulwSOElJ7gBhKzj2VkCPnZ4NlF6kEquYU+RIYNVAvzd54UA==}
 
-  playwright-core@1.45.1:
-    resolution: {integrity: sha512-LF4CUUtrUu2TCpDw4mcrAIuYrEjVDfT1cHbJMfwnE2+1b8PZcFzPNgvZCvq2JfQ4aTjRCCHw5EJ2tmr2NSzdPg==}
+  playwright-core@1.45.2:
+    resolution: {integrity: sha512-ha175tAWb0dTK0X4orvBIqi3jGEt701SMxMhyujxNrgd8K0Uy5wMSwwcQHtyB4om7INUkfndx02XnQ2p6dvLDw==}
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.45.1:
-    resolution: {integrity: sha512-Hjrgae4kpSQBr98nhCj3IScxVeVUixqj+5oyif8TdIn2opTCPEzqAqNMeK42i3cWDCVu9MI+ZsGWw+gVR4ISBg==}
+  playwright@1.45.2:
+    resolution: {integrity: sha512-ReywF2t/0teRvNBpfIgh5e4wnrI/8Su8ssdo5XsQKpjxJj+jspm00jSoz9BTg91TT0c9HRjXO7LBNVrgYj9X0g==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -12435,35 +12435,35 @@ snapshots:
       - encoding
       - supports-color
 
-  '@microsoft/api-documenter@7.25.4(@types/node@20.14.9)':
+  '@microsoft/api-documenter@7.25.5(@types/node@20.14.9)':
     dependencies:
-      '@microsoft/api-extractor-model': 7.29.2(@types/node@20.14.9)
+      '@microsoft/api-extractor-model': 7.29.3(@types/node@20.14.9)
       '@microsoft/tsdoc': 0.15.0
-      '@rushstack/node-core-library': 5.4.1(@types/node@20.14.9)
-      '@rushstack/terminal': 0.13.0(@types/node@20.14.9)
-      '@rushstack/ts-command-line': 4.22.0(@types/node@20.14.9)
+      '@rushstack/node-core-library': 5.5.0(@types/node@20.14.9)
+      '@rushstack/terminal': 0.13.1(@types/node@20.14.9)
+      '@rushstack/ts-command-line': 4.22.1(@types/node@20.14.9)
       js-yaml: 3.13.1
       resolve: 1.22.8
     transitivePeerDependencies:
       - '@types/node'
 
-  '@microsoft/api-extractor-model@7.29.2(@types/node@20.14.9)':
+  '@microsoft/api-extractor-model@7.29.3(@types/node@20.14.9)':
     dependencies:
       '@microsoft/tsdoc': 0.15.0
       '@microsoft/tsdoc-config': 0.17.0
-      '@rushstack/node-core-library': 5.4.1(@types/node@20.14.9)
+      '@rushstack/node-core-library': 5.5.0(@types/node@20.14.9)
     transitivePeerDependencies:
       - '@types/node'
 
-  '@microsoft/api-extractor@7.47.0(@types/node@20.14.9)':
+  '@microsoft/api-extractor@7.47.1(@types/node@20.14.9)':
     dependencies:
-      '@microsoft/api-extractor-model': 7.29.2(@types/node@20.14.9)
+      '@microsoft/api-extractor-model': 7.29.3(@types/node@20.14.9)
       '@microsoft/tsdoc': 0.15.0
       '@microsoft/tsdoc-config': 0.17.0
-      '@rushstack/node-core-library': 5.4.1(@types/node@20.14.9)
+      '@rushstack/node-core-library': 5.5.0(@types/node@20.14.9)
       '@rushstack/rig-package': 0.5.2
-      '@rushstack/terminal': 0.13.0(@types/node@20.14.9)
-      '@rushstack/ts-command-line': 4.22.0(@types/node@20.14.9)
+      '@rushstack/terminal': 0.13.1(@types/node@20.14.9)
+      '@rushstack/ts-command-line': 4.22.1(@types/node@20.14.9)
       lodash: 4.17.21
       minimatch: 3.0.8
       resolve: 1.22.8
@@ -13353,9 +13353,9 @@ snapshots:
 
   '@pkgr/core@0.1.0': {}
 
-  '@playwright/test@1.45.1':
+  '@playwright/test@1.45.2':
     dependencies:
-      playwright: 1.45.1
+      playwright: 1.45.2
 
   '@polka/url@1.0.0-next.25': {}
 
@@ -13637,7 +13637,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.18.0':
     optional: true
 
-  '@rushstack/node-core-library@5.4.1(@types/node@20.14.9)':
+  '@rushstack/node-core-library@5.5.0(@types/node@20.14.9)':
     dependencies:
       ajv: 8.13.0
       ajv-draft-04: 1.0.0(ajv@8.13.0)
@@ -13655,16 +13655,16 @@ snapshots:
       resolve: 1.22.8
       strip-json-comments: 3.1.1
 
-  '@rushstack/terminal@0.13.0(@types/node@20.14.9)':
+  '@rushstack/terminal@0.13.1(@types/node@20.14.9)':
     dependencies:
-      '@rushstack/node-core-library': 5.4.1(@types/node@20.14.9)
+      '@rushstack/node-core-library': 5.5.0(@types/node@20.14.9)
       supports-color: 8.1.1
     optionalDependencies:
       '@types/node': 20.14.9
 
-  '@rushstack/ts-command-line@4.22.0(@types/node@20.14.9)':
+  '@rushstack/ts-command-line@4.22.1(@types/node@20.14.9)':
     dependencies:
-      '@rushstack/terminal': 0.13.0(@types/node@20.14.9)
+      '@rushstack/terminal': 0.13.1(@types/node@20.14.9)
       '@types/argparse': 1.0.38
       argparse: 1.0.10
       string-argv: 0.3.2
@@ -20804,11 +20804,11 @@ snapshots:
       mlly: 1.7.1
       pathe: 1.1.2
 
-  playwright-core@1.45.1: {}
+  playwright-core@1.45.2: {}
 
-  playwright@1.45.1:
+  playwright@1.45.2:
     dependencies:
-      playwright-core: 1.45.1
+      playwright-core: 1.45.2
     optionalDependencies:
       fsevents: 2.3.2
 
