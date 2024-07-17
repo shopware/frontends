@@ -1,5 +1,5 @@
 ---
-"eslint-config-shopware": minor
+"eslint-config-shopware": major
 ---
 
 - Migrate config to the new Flat format
