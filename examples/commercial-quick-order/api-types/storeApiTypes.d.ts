@@ -1865,16 +1865,15 @@ export type Schemas = {
     name: string;
     seoUrls?: components["schemas"]["SeoUrl"][];
     slotConfig?: GenericRecord;
-    translated?: {
-      apiAlias?: string;
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      keywords?: string;
-      metaDescription?: string;
-      metaTitle?: string;
-      name?: string;
-      url?: string;
-      versionId?: string;
+    translated: {
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      keywords: string;
+      metaDescription: string;
+      metaTitle: string;
+      name: string;
+      url: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -1926,15 +1925,15 @@ export type Schemas = {
       };
     };
     slotConfig?: GenericRecord;
-    translated?: {
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      keywords?: string;
-      metaDescription?: string;
-      metaTitle?: string;
-      name?: string;
-      url?: string;
-      versionId?: string;
+    translated: {
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      keywords: string;
+      metaDescription: string;
+      metaTitle: string;
+      name: string;
+      url: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -2277,7 +2276,6 @@ export type Schemas = {
     id: string;
     media?: components["schemas"]["Media"];
     tags?: GenericRecord[];
-    translated?: Record<string, never>;
     /** Format: date-time */
     updatedAt?: string;
   };
