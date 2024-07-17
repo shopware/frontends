@@ -99,7 +99,7 @@ onMounted(async () => {
               :for="paymentMethod.id"
               class="ml-3 block text-sm font-medium text-secondary-700"
             >
-              {{ paymentMethod.translated?.name }}
+              {{ paymentMethod.translated.name }}
             </label>
           </div>
           <button
