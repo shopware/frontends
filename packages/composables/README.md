@@ -151,13 +151,14 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.0.1
+### Latest changes: 1.1.0
 
-### Patch Changes
+### Minor Changes
 
-- [#1076](https://github.com/shopware/frontends/pull/1076) [`1954022`](https://github.com/shopware/frontends/commit/19540220d87788eed08991d35aaaead2e18564e5) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - `useOrderDetails` - Adding `stateMachineState` as the default association to the composable
+- [#1071](https://github.com/shopware/frontends/pull/1071) [`f9d2735`](https://github.com/shopware/frontends/commit/f9d27353ec6383cb22cdece0469f8fdd13250958) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - `useCart` - new `addProducts` function that allows adding a set of products to the cart
 
-- [#1078](https://github.com/shopware/frontends/pull/1078) [`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d) Thanks [@patzick](https://github.com/patzick)! - `useListing` - reverted usage of the `sw-include-swo-urls` header in the search request
-
-- Updated dependencies [[`19f2800`](https://github.com/shopware/frontends/commit/19f28003cf937bcb630257cb7cfd2bd131b7cf9d)]:
-  - @shopware/api-client@1.0.1
+- [#893](https://github.com/shopware/frontends/pull/893) [`d95751e`](https://github.com/shopware/frontends/commit/d95751ecde443a033f17def838bcc25aeba6951e) Thanks [@khanSoliheen](https://github.com/khanSoliheen)! - - `useWishList`:
+  - Added `getCurrentPage` and `getTotalPagesCount` to the returned object
+  - Changed `getWishlistProducts` to accept `page` and `query` as optional parameters
+  - `useSyncWishList`:
+    - Changed `getWishlistProducts`, added Parameter to pass default criterias

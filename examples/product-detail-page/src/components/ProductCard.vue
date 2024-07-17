@@ -26,7 +26,7 @@ const { addToCart } = useAddToCart(product);
   >
     <img
       class="p-8 rounded-t-lg"
-      :alt="`image of ${product?.translated?.name}`"
+      :alt="`image of ${product?.translated.name}`"
       :src="getSmallestThumbnailUrl(product?.cover?.media)"
       :srcset="getSrcSetForMedia(product?.cover?.media)"
     />
@@ -35,7 +35,7 @@ const { addToCart } = useAddToCart(product);
       <h5
         class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mb-4"
       >
-        {{ product?.translated?.name }}
+        {{ product?.translated.name }}
       </h5>
       <div class="flex items-center justify-between">
         <span class="text-3xl font-bold text-gray-900 dark:text-white">{{

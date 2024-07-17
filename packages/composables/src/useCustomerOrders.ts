@@ -1,5 +1,5 @@
-import { ref } from "vue";
-import type { Ref } from "vue";
+import { ref, computed } from "vue";
+import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -18,6 +18,18 @@ export type UseCustomerOrdersReturn = {
    * Fetches the orders list and assigns the result to the `orders` property
    */
   loadOrders(parameters?: Schemas["Criteria"]): Promise<void>;
+  /**
+   * Current page number
+   */
+  currentPage: ComputedRef<number>;
+  /**
+   * total pages
+   */
+  totalPages: ComputedRef<number>;
+  /**
+   * Limit of orders per page
+   */
+  limit: Ref<number>;
 };
 
 /**
@@ -30,21 +42,45 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
 
   const orders: Ref<Schemas["Order"][]> = ref([]);
 
+  const currentPaginationPage = ref<number>(1);
+  const limit = ref<number>(15);
+
+  const totalOrderItemsCount: Ref<number> = ref(0);
+
+  const currentParams = ref<Schemas["Criteria"]>({});
+
   const loadOrders = async (
     parameters: Schemas["Criteria"] = {},
   ): Promise<void> => {
+    const params = {
+      ...parameters,
+      limit: limit.value,
+    };
+    currentParams.value = params;
     const fetchedOrders = await apiClient.invoke("readOrder post /order", {
-      body: parameters,
+      body: { ...params, "total-count-mode": "exact" },
     });
     orders.value = fetchedOrders.data.orders.elements;
+    totalOrderItemsCount.value = fetchedOrders.data.orders.total ?? 0;
   };
 
-  const changeCurrentPage = async (pageNumber: number | string) =>
-    await loadOrders({ page: +pageNumber });
+  const changeCurrentPage = async (pageNumber: number) => {
+    await loadOrders({ ...currentParams.value, page: pageNumber });
+    currentPaginationPage.value = pageNumber;
+  };
+
+  const currentPage = computed(() => currentPaginationPage.value);
+
+  const totalPages = computed(() => {
+    return Math.ceil(totalOrderItemsCount.value / limit.value);
+  });
 
   return {
     orders,
     changeCurrentPage,
     loadOrders,
+    currentPage,
+    totalPages,
+    limit,
   };
 }

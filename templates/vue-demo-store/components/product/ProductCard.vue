@@ -38,7 +38,7 @@ const toggleWishlistProduct = async () => {
       await addToWishlist();
       return pushSuccess(
         t(`product.messages.addedToWishlist`, {
-          p: props.product?.translated?.name,
+          p: props.product?.translated.name,
         }),
       );
     } catch (error) {
@@ -47,7 +47,7 @@ const toggleWishlistProduct = async () => {
           ? `Reason: ${error.details.errors?.[0]?.detail}`
           : "";
         return pushError(
-          `${props.product?.translated?.name} cannot be added to wishlist.\n${reason}`,
+          `${props.product?.translated.name} cannot be added to wishlist.\n${reason}`,
           {
             timeout: 5000,
           },
@@ -65,7 +65,7 @@ const addToCartProxy = async () => {
     pushError(t(`errors.${element.messageKey}`, { ...element }));
   });
   pushSuccess(
-    t(`cart.messages.addedToCart`, { p: props.product?.translated?.name }),
+    t(`cart.messages.addedToCart`, { p: props.product?.translated.name }),
   );
 };
 
@@ -188,8 +188,10 @@ const srcPath = computed(() => {
           :class="{
             'text-white bg-primary-600 hover:bg-primary-700': !isInCart,
             'text-secondary-600 bg-secondary-100': isInCart,
+            'opacity-50 cursor-not-allowed': !product.available,
           }"
           data-testid="add-to-cart-button"
+          :disabled="!product.available"
           @click="addToCartProxy"
         >
           {{ $t("product.addToCart") }}

@@ -64,6 +64,7 @@ export async function loadJsonOverrides({
     if (isURL(pathToResolve)) {
       const response = await ofetch(pathToResolve, {
         responseType: "json",
+        parseResponse: json5.parse,
       });
       return response;
     } else {

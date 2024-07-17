@@ -81,7 +81,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     defaultLocale,
   );
 
-  provide("cmsTranslations", messages.value[prefix ?? defaultLocale] ?? {});
+  provide("cmsTranslations", messages.value[prefix || defaultLocale] ?? {});
 
   // Language set on the backend side
   if (localeProperties.value.localeId) {
@@ -109,9 +109,15 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   provide("urlPrefix", prefix);
 }
 
+if (import.meta.client) {
+  // getting the wishlist products should not block SSR
+  if (!(router.currentRoute.value.name as string).includes("wishlist")) {
+    getWishlistProducts(); // initial page loading
+  }
+}
+
 onMounted(() => {
   refreshCart();
-  getWishlistProducts();
 });
 </script>
 

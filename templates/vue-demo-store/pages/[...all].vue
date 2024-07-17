@@ -21,7 +21,7 @@ const { data: seoResult } = await useAsyncData(
   "cmsResponse" + routePath,
   async () => {
     // For client links if the history state contains seo url information we can omit the api call
-    if (process.client) {
+    if (import.meta.client) {
       if (history.state?.routeName) {
         return {
           routeName: history.state?.routeName,
@@ -33,6 +33,15 @@ const { data: seoResult } = await useAsyncData(
     return seoUrl;
   },
 );
+
+if (!seoResult.value?.foreignKey) {
+  console.error("[...all].vue:", `No data found in API for ${routePath}`);
+
+  throw createError({
+    statusCode: 404,
+    statusMessage: `No data fetched from API for ${routePath}`,
+  });
+}
 
 const { routeName, foreignKey } = useNavigationContext(
   seoResult as Ref<Schemas["SeoUrl"]>,

@@ -112,7 +112,7 @@ export function useCheckout(): UseCheckoutReturn {
       },
     );
     storeShippingMethods.value =
-      response.data.elements.sort(
+      response.data.elements?.sort(
         (a: Schemas["ShippingMethod"], b: Schemas["ShippingMethod"]) =>
           (a.position ?? 0) - (b.position ?? 0),
       ) || [];

@@ -52,7 +52,7 @@ const showSuggest = computed(() => {
   return typingQuery.value.length >= 3 && active.value;
 });
 
-if (process.client) {
+if (import.meta.client) {
   onClickOutside(searchContainer, () => {
     active.value = false;
   });
