@@ -233,10 +233,12 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.0.2
+### Latest changes: 1.0.3
 
 ### Patch Changes
 
-- [#1082](https://github.com/shopware/frontends/pull/1082) [`db42df4`](https://github.com/shopware/frontends/commit/db42df4aef6fcb5113d058fa5821274b58077407) Thanks [@patzick](https://github.com/patzick)! - `COMPONENTS_API_ALIAS` rule - additional message suggesting that the schema component name might be incorrect
+- [#1113](https://github.com/shopware/frontends/pull/1113) [`65212d1`](https://github.com/shopware/frontends/commit/65212d11bb8d0af10f97454a46e7671ff16ebc7a) Thanks [@patzick](https://github.com/patzick)! - Parse Json5 responses when using default overrides
 
-- [#1082](https://github.com/shopware/frontends/pull/1082) [`db42df4`](https://github.com/shopware/frontends/commit/db42df4aef6fcb5113d058fa5821274b58077407) Thanks [@patzick](https://github.com/patzick)! - Correct api overrides load, depending on the apiType
+- [#1112](https://github.com/shopware/frontends/pull/1112) [`2065d00`](https://github.com/shopware/frontends/commit/2065d00998cd84fb6e2f51d7f793eb178e0865e4) Thanks [@patzick](https://github.com/patzick)! - Fixed adding missing components in overrides. Used when component name is overriden and no component definition is provided for it.
+
+- [#1103](https://github.com/shopware/frontends/pull/1103) [`c9a4965`](https://github.com/shopware/frontends/commit/c9a49659e77842a4b098d5b9cc6606f4158893fd) Thanks [@trimethylpentan](https://github.com/trimethylpentan)! - Re-enabled generation for `GenericRecord`s for openAPI objects

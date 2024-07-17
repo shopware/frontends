@@ -81,7 +81,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     defaultLocale,
   );
 
-  provide("cmsTranslations", messages.value[prefix ?? defaultLocale] ?? {});
+  provide("cmsTranslations", messages.value[prefix || defaultLocale] ?? {});
 
   // Language set on the backend side
   if (localeProperties.value.localeId) {

@@ -2,13 +2,7 @@ import { inject } from "vue";
 import { buildUrlPrefix } from "@shopware-pwa/helpers-next";
 
 export function useUrlResolver() {
-  const getUrlPrefix = () => {
-    try {
-      return inject("urlPrefix", "");
-    } catch ($error) {
-      return "";
-    }
-  };
+  const getUrlPrefix = () => inject("urlPrefix", "");
 
   const resolveUrl = (url: string) => {
     // @see: https://codeql.github.com/codeql-query-help/javascript/js-polynomial-redos/
@@ -19,15 +13,15 @@ export function useUrlResolver() {
     const navigationPattern = /[a-zA-Z0-9]+\/navigation\/[a-zA-Z0-9]+/;
     const urlPrefix = getUrlPrefix();
 
-    switch (true) {
-      case navigationPattern.test(url): {
-        // Remove first lang segment of the URL
-        const newUrl = url.split("/").slice(1);
-        return newUrl ? `${buildUrlPrefix(newUrl.join("/"), urlPrefix)}` : url;
+    if (navigationPattern.test(url)) {
+      const newUrl = url.split("/").slice(1);
+
+      if (newUrl.length > 0) {
+        return `${buildUrlPrefix(newUrl.join("/"), urlPrefix)}`;
       }
-      default:
-        return url;
     }
+
+    return url;
   };
 
   return {

@@ -9,6 +9,7 @@ const props = defineProps<{
   orderId: string;
 }>();
 const isLoading = ref(false);
+const { getErrorsCodes } = useCartNotification();
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
 const {
@@ -22,7 +23,7 @@ const {
   changePaymentMethod,
   statusTechnicalName,
 } = await useOrderDetails(props.orderId);
-const { addProducts } = useCart();
+const { addProducts, count } = useCart();
 const addingProducts = ref(false);
 onMounted(() => {
   loadOrderDetails();
@@ -74,8 +75,16 @@ const handleReorder = async () => {
 
   try {
     addingProducts.value = true;
+    const itemsBefore = count.value;
     await addProducts(items);
-    pushSuccess(t("account.messages.productsAdded"));
+
+    getErrorsCodes()?.forEach((element) => {
+      pushError(t(`errors.${element.messageKey}`, { ...element }));
+    });
+
+    if (itemsBefore < count.value) {
+      pushSuccess(t("account.messages.productsAdded"));
+    }
   } catch (error) {
     console.error(error);
     pushError(t("messages.error"));

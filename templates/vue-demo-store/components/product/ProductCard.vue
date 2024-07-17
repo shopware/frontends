@@ -188,8 +188,10 @@ const srcPath = computed(() => {
           :class="{
             'text-white bg-primary-600 hover:bg-primary-700': !isInCart,
             'text-secondary-600 bg-secondary-100': isInCart,
+            'opacity-50 cursor-not-allowed': !product.available,
           }"
           data-testid="add-to-cart-button"
+          :disabled="!product.available"
           @click="addToCartProxy"
         >
           {{ $t("product.addToCart") }}

@@ -170,6 +170,17 @@
         "required": ["stock"]
       }
     ],
+    "ListPrice": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "discount": { "type": "number" },
+        "percentage": { "type": "number" },
+        "price": { "type": "number" },
+        "apiAlias": { "type": "string", "enum": ["cart_list_price"] }
+      },
+      "required": ["apiAlias"]
+    },
     "LineItem": [
       {
         "required": ["deliveryInformation"]
@@ -350,6 +361,48 @@
         "required": ["translated"]
       }
     ],
+    "ReferencePrice": {
+      "type": "object",
+      "properties": {
+        "purchaseUnit": { "type": "number" },
+        "referenceUnit": { "type": "number" },
+        "unitName": { "type": "string" },
+        "price": { "type": "number" },
+        "apiAlias": { "type": "string", "enum": ["cart_price_reference"] },
+        "listPrice": {
+          "oneOf": [
+            { "$ref": "#/components/schemas/ListPrice" },
+            { "type": "null" }
+          ]
+        },
+        "regulationPrice": {
+          "type": "object",
+          "properties": {
+            "price": { "type": "number" },
+            "apiAlias": {
+              "type": "string",
+              "enum": ["cart_regulation_price"]
+            }
+          },
+          "nullable": true
+        },
+        "hasRange": { "type": "boolean" },
+        "variantId": {
+          "type": "string",
+          "format": "^[0-9a-f]{32}$",
+          "nullable": true
+        }
+      },
+      "required": [
+        "hasRange",
+        "regulationPrice",
+        "listPrice",
+        "calculatedTaxes",
+        "totalPrice",
+        "quantity",
+        "unitName"
+      ]
+    },
     "SalesChannelContext": [
       {
         "allOf": "_DELETE_"

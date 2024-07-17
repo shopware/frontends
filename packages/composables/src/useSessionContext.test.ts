@@ -1,8 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { useSessionContext } from "./useSessionContext";
 import { useSetup } from "./_test";
+import type { Schemas } from "#shopware";
+
+const consoleErrorSpy = vi.spyOn(console, "error");
+consoleErrorSpy.mockImplementation(() => {});
 
 describe("useSessionContext", () => {
+  const consoleErrorSpy = vi.spyOn(console, "error");
   it("setLanguage", () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -14,6 +19,15 @@ describe("useSessionContext", () => {
           languageId: "test",
         },
       }),
+    );
+  });
+
+  it("setLanguage - no id", () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    vm.setLanguage({ id: "" });
+    expect(injections.apiClient.invoke).not.toHaveBeenCalledWith(
+      expect.stringContaining("updateContext"),
     );
   });
 
@@ -40,6 +54,19 @@ describe("useSessionContext", () => {
     );
   });
 
+  it("refreshSessionContext - error", async () => {
+    const { vm } = useSetup(() => useSessionContext(), {
+      apiClient: {
+        invoke: vi.fn().mockImplementation(() => {
+          throw new Error("error test");
+        }),
+      },
+    });
+    consoleErrorSpy.mockImplementation(() => {});
+    await vm.refreshSessionContext();
+    expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+  });
+
   it("setShippingMethod", async () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -51,6 +78,15 @@ describe("useSessionContext", () => {
           shippingMethodId: "test",
         },
       }),
+    );
+  });
+
+  it("setShippingMethod - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
+    expect(vm.setShippingMethod({ id: undefined })).rejects.toThrowError(
+      "You need to provide shipping method id in order to set shipping method.",
     );
   });
 
@@ -68,6 +104,15 @@ describe("useSessionContext", () => {
     );
   });
 
+  it("setPaymentMethod - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
+    expect(vm.setPaymentMethod({ id: "" })).rejects.toThrowError(
+      "You need to provide payment method id in order to set payment method.",
+    );
+  });
+
   it("setCurrency", async () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -80,6 +125,13 @@ describe("useSessionContext", () => {
         },
       }),
     );
+  });
+
+  it("setCurrency - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    vm.setCurrency({ id: "" });
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
   it("setActiveShippingAddress", async () => {
@@ -96,6 +148,14 @@ describe("useSessionContext", () => {
     );
   });
 
+  it("setActiveShippingAddress - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    expect(vm.setActiveShippingAddress({ id: "" })).rejects.toThrowError(
+      "You need to provide address id in order to set the address.",
+    );
+  });
+
   it("setActiveBillingAddress", async () => {
     const { vm, injections } = useSetup(() => useSessionContext());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
@@ -108,5 +168,54 @@ describe("useSessionContext", () => {
         },
       }),
     );
+  });
+
+  it("setActiveBillingAddress - error", async () => {
+    const { vm, injections } = useSetup(() => useSessionContext());
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    expect(vm.setActiveBillingAddress({ id: "" })).rejects.toThrowError(
+      "You need to provide address id in order to set the address.",
+    );
+  });
+
+  it("setContext", () => {
+    const { vm } = useSetup(() => useSessionContext());
+    vm.setContext({
+      countryId: "test",
+    } as unknown as Schemas["SalesChannelContext"]);
+    expect(vm.sessionContext).toStrictEqual({
+      countryId: "test",
+    });
+    expect(vm.activeShippingAddress).toBe(null);
+  });
+
+  it("activeShippingAddress - active address", () => {
+    const { vm } = useSetup(() => useSessionContext());
+    vm.setContext({
+      customer: {
+        activeShippingAddress: {
+          city: "test",
+        },
+      },
+    } as unknown as Schemas["SalesChannelContext"]);
+
+    expect(vm.activeShippingAddress).toStrictEqual({
+      city: "test",
+    });
+  });
+
+  it("activeShippingAddress - shipping location", () => {
+    const { vm } = useSetup(() => useSessionContext());
+    vm.setContext({
+      shippingLocation: {
+        address: {
+          city: "test",
+        },
+      },
+    } as unknown as Schemas["SalesChannelContext"]);
+
+    expect(vm.activeShippingAddress).toStrictEqual({
+      city: "test",
+    });
   });
 });
