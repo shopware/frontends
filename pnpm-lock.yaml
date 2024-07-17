@@ -925,6 +925,9 @@ importers:
       vue:
         specifier: 3.4.31
         version: 3.4.31(typescript@5.5.3)
+      xss:
+        specifier: 1.0.15
+        version: 1.0.15
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.1.0
@@ -977,9 +980,6 @@ importers:
       vue-tsc:
         specifier: 2.0.26
         version: 2.0.26(typescript@5.5.3)
-      xss:
-        specifier: 1.0.15
-        version: 1.0.15
 
   packages/composables:
     dependencies:
