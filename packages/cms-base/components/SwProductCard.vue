@@ -86,12 +86,12 @@ const toggleWishlistProduct = async () => {
     if (!isInWishlist.value) {
       await addToWishlist();
       pushSuccess(
-        `${props.product?.translated?.name} ${translations.product.addedToWishlist}`,
+        `${props.product?.translated.name} ${translations.product.addedToWishlist}`,
       );
     } else {
       await removeFromWishlist();
       pushError(
-        `${props.product?.translated?.name} ${translations.product.removedFromTheWishlist}`,
+        `${props.product?.translated.name} ${translations.product.removedFromTheWishlist}`,
       );
     }
   } catch (error) {
@@ -100,7 +100,7 @@ const toggleWishlistProduct = async () => {
         ? `${translations.product.reason}: ${error.details.errors?.[0]?.detail}`
         : "";
       return pushError(
-        `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
+        `${props.product?.translated.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
         {
           timeout: 5000,
         },
@@ -114,7 +114,7 @@ const toggleWishlistProduct = async () => {
 const addToCartProxy = async () => {
   await addToCart();
   pushSuccess(
-    `${props.product?.translated?.name} ${translations.product.addedToCart}`,
+    `${props.product?.translated.name} ${translations.product.addedToCart}`,
   );
 };
 

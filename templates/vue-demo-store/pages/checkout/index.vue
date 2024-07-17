@@ -645,7 +645,7 @@ const addAddressModalController = useModal();
               >
                 <div class="flex justify-between">
                   <div>
-                    {{ singleShippingMethod.translated?.name }}
+                    {{ singleShippingMethod.translated.name }}
                     <span
                       v-if="getShippingMethodDeliveryTime(singleShippingMethod)"
                       >({{
@@ -653,7 +653,7 @@ const addAddressModalController = useModal();
                       }})</span
                     >
                     <span
-                      v-if="singleShippingMethod.translated?.description"
+                      v-if="singleShippingMethod.translated.description"
                       class="italic text-sm text-secondary-500 block"
                     >
                       {{ singleShippingMethod.translated.description }}</span
@@ -713,10 +713,10 @@ const addAddressModalController = useModal();
                 <div class="flex justify-between">
                   <div>
                     <span>
-                      {{ singlePaymentMethod.translated?.name }}
+                      {{ singlePaymentMethod.translated.name }}
                     </span>
                     <span
-                      v-if="singlePaymentMethod.translated?.description"
+                      v-if="singlePaymentMethod.translated.description"
                       class="italic text-sm text-secondary-500 block"
                     >
                       {{ singlePaymentMethod.translated.description }}</span

@@ -31,7 +31,7 @@ const { data: registrationResponse } = await useAsyncData(
       class="text-lg font-normal text-secondary-500 lg:text-xl dark:text-secondary-400y-400"
     >
       <p class="px-6 sm:px-4 mb-6">
-        {{ registrationResponse?.translated?.registrationIntroduction }}
+        {{ registrationResponse?.translated.registrationIntroduction }}
       </p>
       <AccountRegisterForm :customer-group-id="registrationResponse?.id" />
     </div>

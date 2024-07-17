@@ -81,7 +81,7 @@ const toggle = () => {
                 loading="lazy"
                 class="ml-2 h-4 w-4"
                 :src="option.media.url"
-                :alt="option.media.translated?.alt || ''"
+                :alt="option.media.translated.alt || ''"
                 :class="{
                   'border-blue border-2': selectedOptionIds?.includes(
                     option.id,

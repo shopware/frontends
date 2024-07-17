@@ -1,5 +1,17 @@
 # vue-demo-store
 
+## 1.1.0
+
+### Minor Changes
+
+- [#893](https://github.com/shopware/frontends/pull/893) [`d95751e`](https://github.com/shopware/frontends/commit/d95751ecde443a033f17def838bcc25aeba6951e) Thanks [@khanSoliheen](https://github.com/khanSoliheen)! - Added a pagination for the order history page and wishlist page.
+
+- [#1071](https://github.com/shopware/frontends/pull/1071) [`f9d2735`](https://github.com/shopware/frontends/commit/f9d27353ec6383cb22cdece0469f8fdd13250958) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `Repeat order` possibility
+
+### Patch Changes
+
+- [#1094](https://github.com/shopware/frontends/pull/1094) [`ac62181`](https://github.com/shopware/frontends/commit/ac621814077246ba0d31ae7e0f55303868f48ed9) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Disable add to cart button when product is out of stock
+
 ## 1.0.0
 
 ### Major Changes

@@ -38,7 +38,7 @@ loadNavigationElements({
             <h2
               class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"
             >
-              {{ category.translated?.name }}
+              {{ category.translated.name }}
             </h2>
             <ul
               class="text-gray-500 dark:text-gray-400 font-medium"
@@ -52,7 +52,7 @@ loadNavigationElements({
                 <a
                   :href="getCategoryRoute(childCategory)"
                   class="hover:underline"
-                  >{{ childCategory.translated?.name }}</a
+                  >{{ childCategory.translated.name }}</a
                 >
               </li>
             </ul>

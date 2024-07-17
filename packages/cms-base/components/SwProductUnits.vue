@@ -30,7 +30,7 @@ let translations: Translations = {
 translations = defu(useCmsTranslations(), translations) as Translations;
 
 const purchaseUnit = computed(() => props.product?.purchaseUnit);
-const unitName = computed(() => props.product?.unit?.translated?.name);
+const unitName = computed(() => props.product?.unit?.translated.name);
 const referencePrice = computed(
   () => props.product?.calculatedPrice?.referencePrice?.price,
 );

@@ -36,7 +36,7 @@ const proxyAddToCart = async () => {
       <h5
         class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white"
       >
-        {{ product?.translated?.name }}
+        {{ product?.translated.name }}
       </h5>
 
       <div class="flex flex-col items-center justify-between mt-4">
