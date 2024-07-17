@@ -126,10 +126,10 @@ const handleReorder = async () => {
           <div class="flex justify-between">
             <div>
               <span>
-                {{ singlePaymentMethod.translated?.name }}
+                {{ singlePaymentMethod.translated.name }}
               </span>
               <span
-                v-if="singlePaymentMethod.translated?.description"
+                v-if="singlePaymentMethod.translated.description"
                 class="italic text-sm text-secondary-500 block"
               >
                 {{ singlePaymentMethod.translated.description }}</span

@@ -34,7 +34,7 @@ const { addToCart, quantity } = useAddToCart(product);
 const addToCartProxy = async () => {
   await addToCart();
   pushSuccess(
-    `${props.product?.translated?.name} ${translations.product.addedToCart}`,
+    `${props.product?.translated.name} ${translations.product.addedToCart}`,
   );
 };
 </script>

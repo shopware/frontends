@@ -55,9 +55,9 @@ Having source of the data, you can display all you need in your Vue.js template:
 ```js
 import { computed } from "vue";
 ...
-const productName = computed(() => product.value?.translated?.name);
+const productName = computed(() => product.value?.translated.name);
 const manufacturer = computed(() => product.value?.manufacturer?.name);
-const description = computed(() => product.value?.translated?.description);
+const description = computed(() => product.value?.translated.description);
 const productNumber = computed(() => product.value?.productNumber);
 ...
 ```
