@@ -2,4 +2,4 @@
 "@shopware/api-client": patch
 ---
 
-Update schemas' translated properties as required
+Update default schemas' `translated` properties as required
