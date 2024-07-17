@@ -2,4 +2,4 @@
 "@shopware-pwa/helpers-next": patch
 ---
 
-Removed optional chaining for translated properties. Expecting a different argument's type for `getLanguageName` and `getShippingMethodDeliveryTime` methods.
+Removed optional chaining for translated properties. Expecting a different argument type for the `getLanguageName` and `getShippingMethodDeliveryTime` methods.
