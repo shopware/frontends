@@ -2,4 +2,4 @@
 "@shopware/api-gen": patch
 ---
 
-Set translated proeprty as required in provided schemas
+Set `translated` property as required in provided schemas
