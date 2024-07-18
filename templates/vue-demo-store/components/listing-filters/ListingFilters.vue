@@ -16,7 +16,6 @@ const route = useRoute();
 const router = useRouter();
 
 // @ToDo: clean up the "any" inside searchSelectedFilters
-/* eslint-disable */
 const searchSelectedFilters: UnwrapNestedRefs<{
   [key: string]: any;
 }> = reactive<{
@@ -34,7 +33,6 @@ const searchSelectedFilters: UnwrapNestedRefs<{
   rating: undefined,
   "shipping-free": undefined,
 });
-/* eslint-enable */
 
 const searchCriteriaForRequest: ComputedRef<
   operations["searchPage post /search"]["body"]

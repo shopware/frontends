@@ -4,6 +4,7 @@ import { required, email, minLength } from "@vuelidate/validators";
 import type { CmsElementForm } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
 import {
   useCmsElementConfig,
   useNavigationContext,
@@ -72,7 +73,13 @@ translations = defu(useCmsTranslations(), translations) as Translations;
 
 const loading = ref<boolean>();
 const formSent = ref<boolean>(false);
-const errorMessages = ref<any[]>([]);
+
+type ErrorMessages = ApiClientError<{
+  errors: ApiError[];
+}>;
+
+const errorMessages = ref<ErrorMessages[]>([]);
+
 const { getSalutations } = useSalutations();
 const { foreignKey } = useNavigationContext();
 const { apiClient } = useShopwareContext();
@@ -125,7 +132,7 @@ const rules = computed(() => ({
   },
   checkbox: {
     required,
-    isTrue: (value: any) => value === true,
+    isTrue: (value: boolean) => value === true,
   },
 }));
 
@@ -172,6 +179,7 @@ const invokeSubmit = async () => {
           <label for="salutation">{{ translations.form.salutation }} *</label>
           <select
             id="salutation"
+            v-model="state.salutationId"
             name="salutation"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
@@ -179,7 +187,6 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            v-model="state.salutationId"
             @blur="$v.salutationId.$touch()"
           >
             <option disabled selected value="">
@@ -204,6 +211,7 @@ const invokeSubmit = async () => {
           <label for="first-name">{{ translations.form.firstName }} *</label>
           <input
             id="first-name"
+            v-model="state.firstName"
             name="first-name"
             type="text"
             autocomplete="first-name"
@@ -213,9 +221,8 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.firstName.$touch()"
-            v-model="state.firstName"
             :placeholder="translations.form.firstNamePlaceholder"
+            @blur="$v.firstName.$touch()"
           />
           <span
             v-if="$v.firstName.$error"
@@ -228,18 +235,18 @@ const invokeSubmit = async () => {
           <label for="last-name">{{ translations.form.lastName }} *</label>
           <input
             id="last-name"
+            v-model="state.lastName"
             name="last-name"
             type="text"
             autocomplete="last-name"
-            v-model="state.lastName"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.lastName.$error
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.lastName.$touch()"
             :placeholder="translations.form.lastNamePlaceholder"
+            @blur="$v.lastName.$touch()"
           />
           <span
             v-if="$v.lastName.$error"
@@ -252,6 +259,7 @@ const invokeSubmit = async () => {
           <label for="email-address">{{ translations.form.email }} *</label>
           <input
             id="email-address"
+            v-model="state.email"
             name="email"
             type="email"
             autocomplete="email"
@@ -260,10 +268,9 @@ const invokeSubmit = async () => {
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            v-model="state.email"
-            @blur="$v.email.$touch()"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :placeholder="translations.form.emailPlaceholder"
+            @blur="$v.email.$touch()"
           />
           <span
             v-if="$v.email.$error"
@@ -276,11 +283,10 @@ const invokeSubmit = async () => {
           <label for="phone">{{ translations.form.phone }} *</label>
           <input
             id="phone"
+            v-model="state.phone"
             name="phone"
             type="text"
             autocomplete="phone"
-            v-model="state.phone"
-            @blur="$v.phone.$touch()"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.phone.$error
@@ -288,6 +294,7 @@ const invokeSubmit = async () => {
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             :placeholder="translations.form.phonePlaceholder"
+            @blur="$v.phone.$touch()"
           />
           <span
             v-if="$v.phone.$error"
@@ -300,11 +307,10 @@ const invokeSubmit = async () => {
           <label for="subject">{{ translations.form.subject }} *</label>
           <input
             id="subject"
+            v-model="state.subject"
             name="subject"
             type="text"
             autocomplete="subject"
-            v-model="state.subject"
-            @blur="$v.subject.$touch()"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.subject.$error
@@ -312,6 +318,7 @@ const invokeSubmit = async () => {
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
             :placeholder="translations.form.subjectPlaceholder"
+            @blur="$v.subject.$touch()"
           />
           <span
             v-if="$v.subject.$error"
@@ -324,11 +331,10 @@ const invokeSubmit = async () => {
           <label for="comment">{{ translations.form.comment }} *</label>
           <textarea
             id="comment"
+            v-model="state.comment"
             name="comment"
             type="text"
             autocomplete="comment"
-            @blur="$v.comment.$touch()"
-            v-model="state.comment"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.comment.$error
@@ -337,6 +343,7 @@ const invokeSubmit = async () => {
             ]"
             :placeholder="translations.form.commentPlaceholder"
             rows="5"
+            @blur="$v.comment.$touch()"
           />
           <span
             v-if="$v.comment.$error"
@@ -350,9 +357,9 @@ const invokeSubmit = async () => {
           <div class="flex gap-3 items-start">
             <input
               id="privacy"
+              v-model="state.checkbox"
               name="privacy"
               type="checkbox"
-              v-model="state.checkbox"
               class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
               :class="[
                 $v.checkbox.$error ? 'border-red-600' : 'border-gray-300',

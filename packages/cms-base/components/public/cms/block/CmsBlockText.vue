@@ -8,8 +8,8 @@ const props = defineProps<{
 
 const { getSlotContent } = useCmsBlock(props.content);
 
-const content = getSlotContent("content");
+const slotContent = getSlotContent("content");
 </script>
 <template>
-  <CmsGenericElement :content="content" />
+  <CmsGenericElement :content="slotContent" />
 </template>

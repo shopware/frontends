@@ -29,7 +29,7 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "eslint": "eslint components/**/*.vue* --fix --max-warnings=0",
+    "eslint": "eslint --fix --max-warnings=0",
     "lint": "pnpm run eslint && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -48,13 +48,13 @@
     "entities": "5.0.0",
     "html-to-ast": "0.0.6",
     "three": "0.166.1",
-    "vue": "3.4.31"
+    "vue": "3.4.31",
+    "xss": "1.0.15"
   },
   "devDependencies": {
     "@nuxt/schema": "3.12.2",
     "@types/three": "0.166.0",
     "@vitest/coverage-v8": "1.6.0",
-    "@vue/eslint-config-typescript": "13.0.0",
     "eslint-config-shopware": "workspace:*",
     "eslint-plugin-vue": "9.27.0",
     "nuxt": "3.12.2",

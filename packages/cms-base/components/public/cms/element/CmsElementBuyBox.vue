@@ -104,7 +104,7 @@ const restockTime = computed(() => product.value?.restockTime);
           }"
           :value="unitPrice"
         />
-        <div class="text-xs flex text-secondary-500" v-if="regulationPrice">
+        <div v-if="regulationPrice" class="text-xs flex text-secondary-500">
           {{ translations.product.previously }}
           <SwSharedPrice class="ml-1" :value="regulationPrice" />
         </div>

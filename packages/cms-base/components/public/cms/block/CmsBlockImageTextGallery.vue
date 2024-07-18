@@ -23,7 +23,12 @@ const centerImageContent = getSlotContent("center-image") as CmsElementImage;
 
 // TODO: useRouter
 function onImageClick(
-  slotContent: Omit<Schemas["CmsSlot"], "data"> & { data: any },
+  slotContent: Schemas["CmsSlot"] & {
+    data: {
+      url?: string;
+      newTab?: boolean;
+    };
+  },
 ) {
   if (slotContent.data?.url) {
     if (slotContent.data?.newTab) {
@@ -43,8 +48,8 @@ function onImageClick(
       <div class="cms-block-image-text-gallery__container__column">
         <CmsElementImage
           :content="leftImageContent"
-          :style="{ cursor: (leftImageContent.data as any)?.url && 'pointer' }"
-          @click.native="onImageClick(leftImageContent as any)"
+          :style="{ cursor: leftImageContent.data?.url && 'pointer' }"
+          @click="onImageClick(leftImageContent)"
         />
         <CmsElementText
           :content="leftTextContent"
@@ -55,9 +60,9 @@ function onImageClick(
         <CmsElementImage
           :content="centerImageContent"
           :style="{
-            cursor: (centerImageContent.data as any)?.url && 'pointer',
+            cursor: centerImageContent.data?.url && 'pointer',
           }"
-          @click.native="onImageClick(centerImageContent as any)"
+          @click="onImageClick(centerImageContent)"
         />
         <CmsElementText
           :content="centerTextContent"
@@ -67,8 +72,8 @@ function onImageClick(
       <div class="cms-block-image-text-gallery__container__column">
         <CmsElementImage
           :content="rightImageContent"
-          :style="{ cursor: (rightImageContent.data as any)?.url && 'pointer' }"
-          @click.native="onImageClick(rightImageContent as any)"
+          :style="{ cursor: rightImageContent.data?.url && 'pointer' }"
+          @click="onImageClick(rightImageContent)"
         />
         <CmsElementText
           :content="rightTextContent"

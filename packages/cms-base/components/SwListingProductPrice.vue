@@ -53,8 +53,8 @@ const {
       <div class="h-6"><!-- placeholder --></div>
     </template>
     <SwSharedPrice
-      class="text-xl text-gray-900 basis-2/6 justify-end"
       v-if="displayFromVariants"
+      class="text-xl text-gray-900 basis-2/6 justify-end"
       :value="displayFromVariants"
     >
       <template #beforePrice
