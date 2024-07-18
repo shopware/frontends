@@ -40,9 +40,14 @@ updates:
           - '@typescript-eslint/*'
           - 'eslint-*'
           - 'globals'
-      maintenance:
+      types:
+        update-types:
+          - "minor"
         patterns:
           - '@types/node'
+        
+      maintenance:
+        patterns:
           - 'dotenv-cli'
           - 'turbo*'
           - 'vercel'
