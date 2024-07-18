@@ -51,6 +51,12 @@ describe("useLocalWishlist", () => {
         vm.getWishlistProducts();
         expect(vm.count).toBe(1);
       });
+      it("getWishlistProducts with items localStorage", () => {
+        const { vm } = useSetup(useLocalWishlist);
+        localStorage.removeItem("sw-wishlist-items");
+        vm.getWishlistProducts();
+        expect(vm.count).toBe(1);
+      });
     });
   });
 });

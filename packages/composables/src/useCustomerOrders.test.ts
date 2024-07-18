@@ -13,6 +13,7 @@ describe("useCustomerOrders", () => {
       expect.stringContaining("readOrder"),
       expect.objectContaining({}),
     );
+    expect(vm.totalPages).toBe(0);
   });
 
   it("changeCurrentPage", async () => {
