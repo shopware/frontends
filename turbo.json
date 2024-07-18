@@ -17,7 +17,8 @@
     },
     "lint": {
       "cache": false,
-      "outputs": []
+      "outputs": [],
+      "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "generate-types": {
       "cache": false,

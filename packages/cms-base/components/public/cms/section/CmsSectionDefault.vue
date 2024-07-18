@@ -13,8 +13,8 @@ const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(props.content);
   <div class="cms-section-default" :class="cssClasses" :styles="layoutStyles">
     <CmsGenericBlock
       v-for="cmsBlock in content.blocks"
-      class="overflow-auto"
       :key="cmsBlock.id"
+      class="overflow-auto"
       :content="cmsBlock"
     />
   </div>

@@ -51,7 +51,7 @@ onBeforeMount(async () => {
           ></th>
         </tr>
       </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
+      <tbody class="divide-y divide-gray-200">
         <tr v-for="quote in quotesList" :key="quote.id">
           <td class="px-6 py-4 whitespace-nowrap">{{ quote.quoteNumber }}</td>
           <td class="px-6 py-4 whitespace-nowrap">{{ quote.createdAt }}</td>

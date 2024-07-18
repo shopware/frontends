@@ -53,8 +53,8 @@ const {
 const sidebarSelectedFilters: UnwrapNestedRefs<{
   [key: string]: any;
 }> = reactive<{
-  manufacturer: Set<any>;
-  properties: Set<any>;
+  manufacturer: Set<string>;
+  properties: Set<string>;
   "min-price": string | number | undefined;
   "max-price": string | number | undefined;
   rating: string | number | undefined;
@@ -121,7 +121,7 @@ const onOptionSelectToggle = async ({
   value,
 }: {
   code: string;
-  value: any;
+  value: string;
 }) => {
   if (!["properties", "manufacturer"].includes(code)) {
     sidebarSelectedFilters[code] = value;
@@ -260,8 +260,8 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
             class="mb-2 w-full"
           >
             <SwProductListingFilter
-              @selectFilterValue="onOptionSelectToggle"
-              :selectedFilters="getCurrentFilters"
+              @select-filter-value="onOptionSelectToggle"
+              :selected-filters="getCurrentFilters"
               :filter="filter"
               class="relative"
             />

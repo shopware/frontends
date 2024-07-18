@@ -3,8 +3,14 @@ name: CI
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - "apps/**"
+      - "**.md"
   pull_request:
     types: [opened, synchronize]
+    paths-ignore:
+      - "apps/**"
+      - "**.md"
 
 jobs:
   init:
@@ -68,6 +74,9 @@ jobs:
           NITRO_PRESET: vercel
 
       - name: Lint
+        env:
+          TURBO_TELEMETRY_DISABLED: 1
+          DO_NOT_TRACK: 1
         run: pnpm lint
 
   test:

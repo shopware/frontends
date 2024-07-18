@@ -8,10 +8,10 @@
   >
     <defs>
       <g
+        id="icons-default-placeholder"
         fill="none"
         fill-rule="evenodd"
         opacity=".65"
-        id="icons-default-placeholder"
       >
         <rect
           width="333.061"

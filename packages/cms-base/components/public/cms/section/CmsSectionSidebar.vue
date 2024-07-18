@@ -26,8 +26,8 @@ const { category } = useCategory();
     <div class="col-span-12 md:col-span-7 lg:col-span-9 order-1 md:order-2">
       <CmsGenericBlock
         v-for="cmsBlock in mainBlocks"
-        class="overflow-auto"
         :key="cmsBlock.id"
+        class="overflow-auto"
         :content="cmsBlock"
       />
     </div>
@@ -40,8 +40,8 @@ const { category } = useCategory();
     >
       <CmsGenericBlock
         v-for="cmsBlock in sidebarBlocks"
-        class="overflow-auto"
         :key="cmsBlock.id"
+        class="overflow-auto"
         :content="cmsBlock"
       />
     </div>

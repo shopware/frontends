@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsBlockTextTeaser } from "@shopware-pwa/composables-next";
 
-const props = defineProps<{
+defineProps<{
   content: CmsBlockTextTeaser;
 }>();
 </script>

@@ -32,10 +32,6 @@ updates:
           - '@changesets/*'
           - 'changelog-parser'
           - '*/changelog-parser'
-      api-extractor:
-        patterns:
-          - '@microsoft/*'
-          - 'typedoc'
       eslint:
         patterns:
           - 'eslint'
@@ -44,9 +40,14 @@ updates:
           - '@typescript-eslint/*'
           - 'eslint-*'
           - 'globals'
-      maintenance:
+      types:
+        update-types:
+          - "minor"
         patterns:
           - '@types/node'
+        
+      maintenance:
+        patterns:
           - 'dotenv-cli'
           - 'turbo*'
           - 'vercel'
@@ -54,7 +55,6 @@ updates:
           - 'globby'
           - 'husky'
           - 'lint-staged'
-          - 'taze'
           - 'pnpm'
       tests:
         patterns:

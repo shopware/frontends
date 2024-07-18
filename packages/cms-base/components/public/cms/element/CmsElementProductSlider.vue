@@ -57,24 +57,24 @@ const border = computed(() => getConfigValue("border"));
 </script>
 <template>
   <div ref="productSlider" class="cms-element-product-slider">
-    <h3 class="mb-5 text-lg font-bold text-secondary-700" v-if="title">
+    <h3 v-if="title" class="mb-5 text-lg font-bold text-secondary-700">
       {{ title }}
     </h3>
     <div :class="{ 'py-5 border border-secondary-300': border }">
       <SwSlider
         :config="config"
         gap="1.25rem"
-        :slidesToShow="slidesToShow"
-        :slidesToScroll="1"
+        :slides-to-show="slidesToShow"
+        :slides-to-scroll="1"
         :autoplay="autoplay"
       >
         <SwProductCard
           v-for="product of products"
-          class="h-full"
           :key="product.id"
+          class="h-full"
           :product="product"
-          :layoutType="getConfigValue('boxLayout')"
-          :displayMode="getConfigValue('displayMode')"
+          :layout-type="getConfigValue('boxLayout')"
+          :display-mode="getConfigValue('displayMode')"
         />
       </SwSlider>
     </div>
