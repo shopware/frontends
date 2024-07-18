@@ -12,7 +12,6 @@ on:
       - "apps/**"
       - "**.md"
 
-
 jobs:
   init:
     name: Init dependencies
