@@ -1,5 +1,6 @@
 import { createResponseInterceptor, errorInterceptor } from ".";
 import { faker } from "@faker-js/faker";
+import { ShopwareApiError } from "@shopware-pwa/types";
 import { describe, expect, it, beforeEach, vi } from "vitest";
 
 describe("apiInterceptors", () => {
@@ -44,7 +45,7 @@ describe("apiInterceptors", () => {
   describe("errorInterceptor", () => {
     it("error should have undefined statusCode and message if no data exist in response", async () => {
       try {
-        await errorInterceptor({ response: {} } as any);
+        await errorInterceptor({ response: {} } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -56,7 +57,7 @@ describe("apiInterceptors", () => {
       try {
         await errorInterceptor({
           response: { status: 404, data: { errors: null } },
-        } as any);
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -68,7 +69,7 @@ describe("apiInterceptors", () => {
       try {
         await errorInterceptor({
           response: { status: 404, data: null },
-        } as any);
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -84,7 +85,7 @@ describe("apiInterceptors", () => {
             status: 404,
             data: { errors: [{ detail: "Resource not found" }] },
           },
-        } as any);
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -99,7 +100,7 @@ describe("apiInterceptors", () => {
             status: 404,
             data: { errors: [{ detail: "Resource not found" }] },
           },
-        } as any);
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -119,7 +120,7 @@ describe("apiInterceptors", () => {
               ],
             },
           },
-        } as any);
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -142,7 +143,7 @@ describe("apiInterceptors", () => {
               ],
             },
           },
-        } as any);
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -155,7 +156,9 @@ describe("apiInterceptors", () => {
     });
     it("should return empty array in case of 400 and no errors in the content", async () => {
       try {
-        await errorInterceptor({ response: { status: 400 } } as any);
+        await errorInterceptor({
+          response: { status: 400 },
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -175,7 +178,7 @@ describe("apiInterceptors", () => {
               ],
             },
           },
-        } as any);
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -188,7 +191,9 @@ describe("apiInterceptors", () => {
     });
     it("should recognize the timeout rejection in axios specific case (timeout in config reached)", async () => {
       try {
-        await errorInterceptor({ message: "timeout of 5ms" } as any);
+        await errorInterceptor({
+          message: "timeout of 5ms",
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -209,7 +214,9 @@ describe("apiInterceptors", () => {
     });
     it("should recognize the Network error rejection in axios specific case (there is no internet connection - offline mode is on)", async () => {
       try {
-        await errorInterceptor({ message: "Network Error" } as any);
+        await errorInterceptor({
+          message: "Network Error",
+        } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
       } catch (e) {
@@ -237,7 +244,7 @@ describe("apiInterceptors", () => {
               errors: [],
             },
           },
-        } as any);
+        } as ShopwareApiError);
       } catch (error) {
         expect(error).toStrictEqual({
           statusCode: 403,
@@ -249,7 +256,7 @@ describe("apiInterceptors", () => {
       try {
         await errorInterceptor({
           message: "timeout of 5ms",
-        } as any);
+        } as ShopwareApiError);
       } catch (error) {
         expect(error).toStrictEqual({
           messages: [
@@ -271,7 +278,7 @@ describe("apiInterceptors", () => {
 
     it("it should not fail when api is unreachable", async () => {
       try {
-        await errorInterceptor({} as any);
+        await errorInterceptor({} as ShopwareApiError);
       } catch (error) {
         expect(error).toStrictEqual({
           statusCode: 500,

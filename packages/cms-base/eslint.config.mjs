@@ -1,10 +1,13 @@
 import shopwareConfig from "eslint-config-shopware";
 import pluginVue from "eslint-plugin-vue";
 import parser from "vue-eslint-parser";
-import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import eslintConfigPrettier from "eslint-config-prettier";
 
 export default [
-  eslintPluginPrettierRecommended,
+  {
+    name: "prettier:recommended",
+    ...eslintConfigPrettier,
+  },
   ...pluginVue.configs["flat/recommended"],
   ...shopwareConfig,
   {

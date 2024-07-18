@@ -18,11 +18,7 @@
     "lint": {
       "cache": false,
       "outputs": [],
-      "passThroughEnv": [
-        "TURBO_TELEMETRY_DISABLED",
-        "DO_NOT_TRACK",
-        "GITHUB_ENV"
-      ]
+      "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "generate-types": {
       "cache": false,

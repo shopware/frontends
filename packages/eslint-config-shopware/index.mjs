@@ -1,35 +1,24 @@
 import tsEslint from "typescript-eslint";
-import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import eslintConfigPrettier from "eslint-config-prettier";
 
 export default [
   {
-    ignores: ["**/dist/", "**/node_modules/"],
-  },
-  eslintPluginPrettierRecommended,
-  ...tsEslint.configs.recommended,
-  {
-    languageOptions: {
-      globals: {},
-      ecmaVersion: "latest",
-      sourceType: "module",
-    },
-
-    settings: {
-      next: {
-        rootDir: ["apps/*/", "packages/*/"],
-      },
-    },
-
-    rules: {
-      "@next/next/no-html-link-for-pages": "off",
-      "react/jsx-key": "off",
-    },
+    name: "ignore-build-outputs",
+    ignores: [
+      "**/dist/",
+      "**/node_modules/",
+      "**/.output/",
+      "**/.turbo/",
+      "**/.vercel/",
+      "**/.nuxt/",
+      "**/.next/",
+      "**/coverage/",
+      "**/temp/",
+    ],
   },
   {
-    files: ["**/*.spec.ts", "**/*.test.ts"],
-
-    rules: {
-      "@typescript-eslint/no-explicit-any": "off",
-    },
+    name: "prettier:recommended",
+    ...eslintConfigPrettier,
   },
+  ...tsEslint.configs.strict,
 ];

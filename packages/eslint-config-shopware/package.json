@@ -12,9 +12,10 @@
   "license": "MIT",
   "dependencies": {
     "eslint": "9.6.0",
-    "typescript": "5.5.3"
+    "eslint-config-prettier": "9.1.0",
+    "typescript-eslint": "7.16.1"
   },
   "devDependencies": {
-    "typescript-eslint": "7.15.0"
+    "typescript": "5.5.3"
   }
 }
