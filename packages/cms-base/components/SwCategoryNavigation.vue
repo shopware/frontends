@@ -37,7 +37,7 @@ function getHighlightCategory(navigationElement: Schemas["Category"]) {
       <SwCategoryNavigation
         v-if="navigationElement.children"
         :elements="navigationElement.children"
-        :activeCategory="props.activeCategory"
+        :active-category="props.activeCategory"
         :level="props.level + 1"
       />
     </li>

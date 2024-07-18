@@ -2,7 +2,7 @@
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import { defu } from "defu";
 
-const props = defineProps<{
+defineProps<{
   total: number;
   current: number;
 }>();

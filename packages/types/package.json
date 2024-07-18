@@ -18,6 +18,7 @@
   },
   "license": "MIT",
   "types": "index.d.ts",
+  "type": "module",
   "main": "index.js",
   "module": "index.mjs",
   "exports": {

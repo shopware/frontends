@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
+import type { ValidationRuleWithoutParams } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import type { CmsElementForm } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { ApiClientError, type ApiError } from "@shopware/api-client";
+import { ApiClientError } from "@shopware/api-client";
+import type { ApiError } from "@shopware/api-client";
 import { useCmsElementConfig, useNewsletter, useSalutations } from "#imports";
 import { computed, reactive, ref } from "vue";
 import { defu } from "defu";
@@ -85,15 +87,36 @@ const state = reactive({
   checkbox: false,
 });
 
+type Rules = {
+  email: {
+    required: ValidationRuleWithoutParams;
+    email: ValidationRuleWithoutParams;
+  };
+  checkbox: {
+    required: ValidationRuleWithoutParams;
+    isTrue: (value: boolean) => boolean;
+  };
+  firstName: {
+    required: ValidationRuleWithoutParams;
+    minLength: number;
+  };
+  lastName: {
+    required: ValidationRuleWithoutParams;
+    minLength: number;
+  };
+  salutationId: {
+    required: ValidationRuleWithoutParams;
+  };
+};
 const rules = computed(() => {
-  let temp: any = {
+  let temp: Partial<Rules> = {
     email: {
       required,
       email,
     },
     checkbox: {
       required,
-      isTrue: (value: any) => value === true,
+      isTrue: (value: boolean) => value === true,
     },
   };
   if (state.option === "subscribe") {
@@ -165,9 +188,9 @@ const invokeSubmit = async () => {
           <label for="option">{{ translations.form.action }} *</label>
           <select
             id="option"
+            v-model="state.option"
             name="option"
             class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
-            v-model="state.option"
           >
             <option
               v-for="subscription in subscriptionOptions"
@@ -182,39 +205,39 @@ const invokeSubmit = async () => {
           <label for="email-address">{{ translations.form.email }} *</label>
           <input
             id="email-address"
+            v-model="state.email"
             name="email"
             type="email"
             autocomplete="email"
             :class="[
-              $v.email.$error
+              $v.email?.$error
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            v-model="state.email"
-            @blur="$v.email.$touch()"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :placeholder="translations.form.emailPlaceholder"
+            @blur="$v.email?.$touch()"
           />
           <span
-            v-if="$v.email.$error"
+            v-if="$v.email?.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.email.$errors[0].$message }}
+            {{ $v.email?.$errors[0].$message }}
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
           <label for="salutation">{{ translations.form.salutation }} *</label>
           <select
             id="salutation"
+            v-model="state.salutationId"
             name="salutation"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
-              $v.salutationId.$error
+              $v.salutationId?.$error
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            v-model="state.salutationId"
-            @blur="$v.salutationId.$touch()"
+            @blur="$v.salutationId?.$touch()"
           >
             <option disabled selected value="">
               {{ translations.form.salutationPlaceholder }}
@@ -228,58 +251,58 @@ const invokeSubmit = async () => {
             </option>
           </select>
           <span
-            v-if="$v.salutationId.$error"
+            v-if="$v.salutationId?.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.salutationId.$errors[0].$message }}
+            {{ $v.salutationId?.$errors[0].$message }}
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
           <label for="first-name">{{ translations.form.firstName }} *</label>
           <input
             id="first-name"
+            v-model="state.firstName"
             name="first-name"
             type="text"
             autocomplete="first-name"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
-              $v.firstName.$error
+              $v.firstName?.$error
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.firstName.$touch()"
-            v-model="state.firstName"
             :placeholder="translations.form.firstNamePlaceholder"
+            @blur="$v.firstName?.$touch()"
           />
           <span
-            v-if="$v.firstName.$error"
+            v-if="$v.firstName?.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.firstName.$errors[0].$message }}
+            {{ $v.firstName?.$errors[0].$message }}
           </span>
         </div>
         <div v-if="state.option === 'subscribe'" class="col-span-4">
           <label for="last-name">{{ translations.form.lastName }} *</label>
           <input
             id="last-name"
+            v-model="state.lastName"
             name="last-name"
             type="text"
             autocomplete="last-name"
-            v-model="state.lastName"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
-              $v.lastName.$error
+              $v.lastName?.$error
                 ? 'border-red-600 focus:border-red-600'
                 : 'border-gray-300 focus:border-indigo-500',
             ]"
-            @blur="$v.lastName.$touch()"
             :placeholder="translations.form.lastNamePlaceholder"
+            @blur="$v.lastName?.$touch()"
           />
           <span
-            v-if="$v.lastName.$error"
+            v-if="$v.lastName?.$error"
             class="pt-1 text-sm text-red-600 focus:ring-brand-primary border-gray-300"
           >
-            {{ $v.lastName.$errors[0].$message }}
+            {{ $v.lastName?.$errors[0].$message }}
           </span>
         </div>
         <div class="col-span-12">
@@ -287,17 +310,17 @@ const invokeSubmit = async () => {
           <div class="flex gap-3 items-start">
             <input
               id="privacy"
+              v-model="state.checkbox"
               name="privacy"
               type="checkbox"
-              v-model="state.checkbox"
               class="mt-1 focus:ring-indigo-500 h-4 w-4 border text-indigo-600 rounded"
               :class="[
-                $v.checkbox.$error ? 'border-red-600' : 'border-gray-300',
+                $v.checkbox?.$error ? 'border-red-600' : 'border-gray-300',
               ]"
             />
             <div>
               <label
-                :class="[$v.checkbox.$error ? 'text-red-600' : '']"
+                :class="[$v.checkbox?.$error ? 'text-red-600' : '']"
                 for="privacy"
               >
                 {{ translations.form.privacyLabel }}

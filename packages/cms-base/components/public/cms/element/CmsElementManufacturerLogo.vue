@@ -2,7 +2,7 @@
 import type { CmsElementManufacturerLogo } from "@shopware-pwa/composables-next";
 import CmsElementImage from "./CmsElementImage.vue";
 
-const props = defineProps<{
+defineProps<{
   content: CmsElementManufacturerLogo;
 }>();
 </script>

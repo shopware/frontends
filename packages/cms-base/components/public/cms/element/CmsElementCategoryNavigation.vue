@@ -96,7 +96,7 @@ onMounted(async () => {
       <SwCategoryNavigation
         :level="0"
         :elements="categoryNavigation"
-        :activeCategory="activeCategory"
+        :active-category="activeCategory"
       />
     </div>
     <div v-if="loading">

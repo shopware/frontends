@@ -3,10 +3,11 @@ import type { CmsElementText } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig, useUrlResolver } from "#imports";
 import { computed, getCurrentInstance, h } from "vue";
 import { decodeHTML } from "entities";
-import type { CSSProperties } from "vue";
+import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
 import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";
 import type { NodeObject } from "../../../../helpers/html-to-vue/getOptionsFromNode";
 import { renderHtml } from "../../../../helpers/html-to-vue/renderToHtml";
+type RawChildren = string | number | boolean | VNode | VNodeArrayChildren;
 
 const props = defineProps<{
   content: CmsElementText;
@@ -38,7 +39,11 @@ const CmsTextRender = () => {
             !node.attrs?.class?.match(/btn\s?/)
           );
         },
-        renderer(node: any, children: any, createElement: any) {
+        renderer(
+          node: NodeObject,
+          children: RawChildren[],
+          createElement: typeof h,
+        ) {
           return createElement(
             "a",
             {
@@ -58,7 +63,11 @@ const CmsTextRender = () => {
             node.attrs?.class?.match(/btn\s?/)
           );
         },
-        renderer(node: NodeObject, children: any, createElement: any) {
+        renderer(
+          node: NodeObject,
+          children: RawChildren[],
+          createElement: typeof h,
+        ) {
           let _class = "";
           if (node?.attrs?.class) {
             const btnClass =
@@ -83,7 +92,11 @@ const CmsTextRender = () => {
         conditions(node: NodeObject) {
           return node.type === "tag" && node.name === "font";
         },
-        renderer(node: NodeObject, children: any, createElement: any) {
+        renderer(
+          node: NodeObject,
+          children: RawChildren[],
+          createElement: typeof h,
+        ) {
           // convert from <font color="#ce0000">Headline 1</font> to <span style="color:#ce0000">Headline 1</span>
           let newStyle = null;
           const styleColor = node?.attrs?.color;
@@ -107,7 +120,11 @@ const CmsTextRender = () => {
         conditions(node: NodeObject) {
           return node.type === "tag" && node.name === "img";
         },
-        renderer(node: any, children: any, createElement: any) {
+        renderer(
+          node: NodeObject,
+          children: RawChildren[],
+          createElement: typeof h,
+        ) {
           return createElement(
             "img",
             getOptionsFromNode(node, resolveUrl)?.attrs,

@@ -6,6 +6,7 @@ import type { ComputedRef } from "vue";
 import { defu } from "defu";
 import { useProductConfigurator } from "#imports";
 import { useRouter } from "vue-router";
+import type { Schemas } from "#shopware";
 
 const props = withDefaults(
   defineProps<{
@@ -31,7 +32,7 @@ let translations: Translations = {
 translations = defu(useCmsTranslations(), translations) as Translations;
 
 const emit = defineEmits<{
-  (e: "change", selected: any): void;
+  (e: "change", selected: Partial<Schemas["Product"]> | undefined): void;
 }>();
 const isLoading = ref<boolean>();
 const router = useRouter();
@@ -42,7 +43,7 @@ const {
   findVariantForSelectedOptions,
 } = useProductConfigurator();
 
-const selectedOptions: ComputedRef<any> = computed(() =>
+const selectedOptions: ComputedRef = computed(() =>
   Object.values(unref(getSelectedOptions)),
 );
 const isOptionSelected = (optionId: string) =>
@@ -91,18 +92,18 @@ const onHandleChange = async () => {
         </legend>
         <div class="flex gap-3">
           <label
+            v-for="option in optionGroup.options"
+            :key="option.id"
             data-testid="product-variant"
             class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer"
             :class="{
               'border-3 border-indigo-600': isOptionSelected(option.id),
             }"
-            v-for="option in optionGroup.options"
-            :key="option.id"
             @click="handleChange(optionGroup.name, option.id, onHandleChange)"
           >
             <p
-              data-testid="product-variant-text"
               :id="`${option.id}-choice-label`"
+              data-testid="product-variant-text"
             >
               {{ option.name }}
             </p>

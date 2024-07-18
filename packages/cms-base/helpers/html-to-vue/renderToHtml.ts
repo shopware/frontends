@@ -4,12 +4,13 @@
 
 import { generateAST, rectifyAST } from "./ast";
 import { renderer } from "./renderer";
+import { h, type ComponentInternalInstance } from "vue";
 
 type DefaultConfig = {
   container: {
     type: string;
   };
-  extraComponentsMap: any;
+  extraComponentsMap: Record<string, unknown>;
   renderAnyway: boolean;
   textTransformer: (text: string) => string;
 };
@@ -26,8 +27,8 @@ const defaultConfig: DefaultConfig = {
 export function renderHtml(
   html: string,
   config: Partial<DefaultConfig>,
-  createElement: any,
-  context: any,
+  createElement: typeof h,
+  context: ComponentInternalInstance | null,
   resolveUrl: (url: string) => string,
 ) {
   const mergedConfig = Object.assign(defaultConfig, config);
