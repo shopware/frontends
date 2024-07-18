@@ -40,7 +40,6 @@
     "@shopware/api-client": "workspace:*"
   },
   "devDependencies": {
-    "eslint": "9.6.0",
     "eslint-config-shopware": "workspace:*",
     "tsconfig": "workspace:*"
   }

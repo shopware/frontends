@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "1.6.0",
-    "eslint": "9.6.0",
     "happy-dom": "14.12.3",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
