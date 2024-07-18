@@ -28,7 +28,7 @@ const successToastMessage = ref("");
 // store for received items (from API via search or file-upload action)
 const ITEMS_CACHE = ref(new Map());
 // store for locally selected items (to be added to the shopping cart later on)
-const chosenItems = ref(new Map());
+const chosenItems = ref(new Map<string, number>());
 // container for product search response
 const items = ref<Schemas["B2BProductDefinition"][]>([]);
 // indicates whether there are any items found in API
@@ -83,7 +83,7 @@ const onItemClick = (item: Schemas["B2BProductDefinition"]) => {
   if (chosenItems.value.has(item.id)) {
     chosenItems.value.set(
       item.id,
-      chosenItems.value.get(item.id) + (item.quantity || 1),
+      (chosenItems.value.get(item.id) ?? 0) + (item.quantity || 1),
     );
   } else {
     ITEMS_CACHE.value.set(item.id, item);
@@ -95,23 +95,18 @@ const onItemClick = (item: Schemas["B2BProductDefinition"]) => {
 };
 
 const onAddToCartClick = async () => {
-  const lineItemsPayload = Array.from(chosenItems.value.entries()).map(
-    ([productId, quantity]) => ({
-      referencedId: productId,
-      quantity,
+  const lineItemsPayload =
+    Array.from(chosenItems.value.entries()).map(([productId, quantity]) => ({
+      id: productId,
+      quantity: quantity ?? 0,
       type: "product",
-    }),
-  );
+    })) || null;
+
+  if (lineItemsPayload) return;
 
   await apiClient.invoke("addLineItem post /checkout/cart/line-item", {
     body: {
-      // TODO(MD): fix types in component and avoid this cast
-      items: lineItemsPayload as Array<{
-        id: string;
-        referencedId?: string;
-        quantity?: number;
-        type: "product" | "promotion" | "custom" | "credit";
-      }>,
+      items: lineItemsPayload,
     },
   });
 
