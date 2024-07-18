@@ -3,8 +3,14 @@ name: CI
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - "apps/**"
+      - "**.md"
   pull_request:
     types: [opened, synchronize]
+    paths-ignore:
+      - "apps/**"
+      - "**.md"
 
 jobs:
   init:

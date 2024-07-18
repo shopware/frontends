@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - "main" # or "master"
+    paths:
+      - packages/api-**/*.ts
   pull_request:
+    paths:
+      - packages/api-**/*.ts
   # `workflow_dispatch` allows CodSpeed to trigger backtest
   # performance analysis in order to generate initial data.
   workflow_dispatch:
