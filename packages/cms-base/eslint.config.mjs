@@ -1,21 +1,10 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
 import shopwareConfig from "eslint-config-shopware";
 import pluginVue from "eslint-plugin-vue";
 import parser from "vue-eslint-parser";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default [
-  ...compat.extends("plugin:prettier/recommended", "prettier"),
+  eslintPluginPrettierRecommended,
   ...pluginVue.configs["flat/recommended"],
   ...shopwareConfig,
   {
