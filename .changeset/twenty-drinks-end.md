@@ -2,4 +2,4 @@
 "@shopware-pwa/composables-next": patch
 ---
 
-Fixed adding promotion code
+`useCart` - Fixed adding promotion code
