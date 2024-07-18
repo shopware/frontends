@@ -163,7 +163,7 @@ compareRouteQueryWithInitialListing();
             v-for="product in getElements"
             :key="product.id"
             :product="product"
-            :isProductListing="isProductListing"
+            :is-product-listing="isProductListing"
             class="p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 ease-in-out w-full lg:w-3/7 2xl:w-7/24 mr-0 sm:mr-8 mb-8"
           />
         </div>
@@ -185,7 +185,7 @@ compareRouteQueryWithInitialListing();
             <SwPagination
               :total="getTotalPagesCount"
               :current="Number(getCurrentPage)"
-              @changePage="changePage"
+              @change-page="changePage"
             />
           </div>
           <div class="text-center place-self-center mt-2 lg:mt-0">

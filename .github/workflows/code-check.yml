@@ -68,6 +68,9 @@ jobs:
           NITRO_PRESET: vercel
 
       - name: Lint
+        env:
+          TURBO_TELEMETRY_DISABLED: 1
+          DO_NOT_TRACK: 1
         run: pnpm lint
 
   test:
