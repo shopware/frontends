@@ -11,11 +11,12 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
+    "@primevue/themes": "^4.0.0",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/helpers-next": "canary",
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
-    "primevue": "3.52.0",
+    "primevue": "4.0.0",
     "vue": "3.4.31",
     "vue-router": "4.4.0"
   },

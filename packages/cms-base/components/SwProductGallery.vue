@@ -26,7 +26,7 @@ watch(
       data: {
         sliderItems: media,
       },
-    } as any;
+    } as CmsElementImageGallery;
   },
   {
     immediate: true,

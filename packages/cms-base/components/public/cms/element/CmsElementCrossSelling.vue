@@ -79,17 +79,17 @@ const toggleTab = (index: number) => {
         v-if="crossSellCollections.length"
         :config="config"
         gap="1.25rem"
-        :slidesToShow="slidesToShow"
-        :slidesToScroll="1"
+        :slides-to-show="slidesToShow"
+        :slides-to-scroll="1"
         :autoplay="false"
       >
         <SwProductCard
           v-for="product of crossSellCollections[currentTabIndex].products"
-          class="w-[300px]"
           :key="product.id"
+          class="w-[300px]"
           :product="product"
-          :layoutType="getConfigValue('boxLayout')"
-          :displayMode="getConfigValue('displayMode')"
+          :layout-type="getConfigValue('boxLayout')"
+          :display-mode="getConfigValue('displayMode')"
         />
       </SwSlider>
     </transition>

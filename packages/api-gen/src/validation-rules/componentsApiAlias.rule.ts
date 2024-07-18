@@ -2,7 +2,7 @@ import { snakeCase, pascalCase } from "scule";
 import { equals } from "@vitest/expect";
 import { diff } from "@vitest/utils/diff";
 import c from "picocolors";
-import type { ObjectSubtype, StringSubtype } from "openapi-typescript";
+import type { ObjectSubtype } from "openapi-typescript";
 
 export default (componentName: string, body: ObjectSubtype) => {
   // aliast needs to be in snake case. Examples:
@@ -11,7 +11,7 @@ export default (componentName: string, body: ObjectSubtype) => {
   const properAliasDefinition = {
     type: "string",
     enum: [snakeCase(componentName)],
-  } as StringSubtype;
+  };
 
   const bodyValue = body.properties?.apiAlias as ObjectSubtype;
 
@@ -24,7 +24,7 @@ export default (componentName: string, body: ObjectSubtype) => {
   if (!result) {
     let additionalMessage = "";
     const bodyEnumValue = bodyValue?.enum?.[0] as string | undefined;
-    if (bodyEnumValue && properAliasDefinition.enum![0] !== bodyEnumValue) {
+    if (bodyEnumValue && properAliasDefinition.enum[0] !== bodyEnumValue) {
       additionalMessage = `It's also possible, that the schema component name is not correct and apiApias is proper. In that case schema component name should be ${c.bold(pascalCase(bodyEnumValue))}. Confirm proper solution with the source code.`;
     }
 

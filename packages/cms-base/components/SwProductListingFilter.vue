@@ -34,7 +34,7 @@ const cmsMap = () => {
     <component
       :is="cmsMap()"
       :filter="filter"
-      :selectedFilters="selectedFilters"
+      :selected-filters="selectedFilters"
       @select-value="emit('selectFilterValue', $event)"
     />
   </div>

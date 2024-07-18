@@ -23,6 +23,6 @@ const FormComponent = computed(() => {
 </script>
 <template>
   <div class="cms-element-form">
-    <component :content="content" :is="FormComponent" />
+    <component :is="FormComponent" :content="content" />
   </div>
 </template>

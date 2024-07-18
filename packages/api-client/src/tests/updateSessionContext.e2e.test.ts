@@ -105,7 +105,7 @@ describe("updateSessionContext", () => {
       );
 
       const currentLanguageId =
-        sessionResponse.data.context!.languageIdChain![0];
+        sessionResponse.data.context?.languageIdChain?.[0];
       expect(currentLanguageId).toEqual("2fbb5fe2e29a4d70aa5854ce7ce3e20b");
 
       const availableLanguages = await apiInstance.invoke(
@@ -118,7 +118,7 @@ describe("updateSessionContext", () => {
 
       await apiInstance.invoke("updateContext patch /context", {
         body: {
-          languageId: differentLanguage!.id,
+          languageId: differentLanguage?.id,
         },
       });
 
@@ -126,7 +126,7 @@ describe("updateSessionContext", () => {
         "readContext get /context",
       );
       const updatedLanguageId =
-        updatedSessionContext.data.context!.languageIdChain![0];
+        updatedSessionContext.data.context?.languageIdChain?.[0];
       expect(updatedLanguageId).toEqual(differentLanguage?.id);
     });
 
@@ -141,7 +141,7 @@ describe("updateSessionContext", () => {
       );
 
       const currentLanguageId =
-        sessionResponse.data.context!.languageIdChain![0];
+        sessionResponse.data.context?.languageIdChain?.[0];
       expect(currentLanguageId).toEqual("2fbb5fe2e29a4d70aa5854ce7ce3e20b");
 
       const firstProductResponse = await apiInstance.invoke(
@@ -166,7 +166,7 @@ describe("updateSessionContext", () => {
 
       await apiInstance.invoke("updateContext patch /context", {
         body: {
-          languageId: differentLanguage!.id,
+          languageId: differentLanguage?.id,
         },
       });
 

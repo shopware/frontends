@@ -1,4 +1,5 @@
 import { getOptionsFromNode } from "./getOptionsFromNode";
+import type { NodeObject } from "./getOptionsFromNode";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("getOptionsFromNode", () => {
@@ -12,7 +13,10 @@ describe("getOptionsFromNode", () => {
   });
 
   it("should return empty object if node is undefined", () => {
-    const options = getOptionsFromNode(undefined, urlResolverMock);
+    const options = getOptionsFromNode(
+      undefined as unknown as NodeObject,
+      urlResolverMock,
+    );
 
     expect(options).toEqual({
       attrs: {},
@@ -28,7 +32,10 @@ describe("getOptionsFromNode", () => {
       },
     };
 
-    const options = getOptionsFromNode(node, urlResolverMock);
+    const options = getOptionsFromNode(
+      node as unknown as NodeObject,
+      urlResolverMock,
+    );
 
     expect(options).toEqual({
       style: "color: red",
@@ -43,7 +50,10 @@ describe("getOptionsFromNode", () => {
       attrs: {},
     };
 
-    const options = getOptionsFromNode(node, urlResolverMock);
+    const options = getOptionsFromNode(
+      node as unknown as NodeObject,
+      urlResolverMock,
+    );
 
     expect(options).toEqual({
       attrs: {},
@@ -55,7 +65,10 @@ describe("getOptionsFromNode", () => {
       attrs: undefined,
     };
 
-    const options = getOptionsFromNode(node, urlResolverMock);
+    const options = getOptionsFromNode(
+      node as unknown as NodeObject,
+      urlResolverMock,
+    );
 
     expect(options).toEqual({
       attrs: {},
@@ -69,7 +82,10 @@ describe("getOptionsFromNode", () => {
       },
     };
 
-    const options = getOptionsFromNode(node, urlResolverMock);
+    const options = getOptionsFromNode(
+      node as unknown as NodeObject,
+      urlResolverMock,
+    );
 
     expect(options.attrs.href).toEqual("resolved-url/path/to/page");
   });
@@ -82,7 +98,10 @@ describe("getOptionsFromNode", () => {
       },
     };
 
-    const options = getOptionsFromNode(node, urlResolverMock);
+    const options = getOptionsFromNode(
+      node as unknown as NodeObject,
+      urlResolverMock,
+    );
 
     expect(options.attrs.href).toEqual("resolved-url/path/to/page");
     expect(options.attrs["data-test"]).toEqual("test");
@@ -97,7 +116,10 @@ describe("getOptionsFromNode", () => {
 
     const consoleErrorSpy = vi.spyOn(console, "error");
 
-    const options = getOptionsFromNode(node, undefined as any);
+    const options = getOptionsFromNode(
+      node as unknown as NodeObject,
+      undefined as any,
+    );
 
     expect(options).toEqual({
       attrs: {},
