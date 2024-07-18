@@ -643,6 +643,77 @@
         }
       ]
     },
+    "/checkout/cart/line-item": {
+      "post": [
+        {
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["items"],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "required": ["id", "type", "quantity"],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "referencedId": {
+                                "type": "string"
+                              },
+                              "quantity": {
+                                "type": "number"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "product",
+                                  "custom",
+                                  "credit",
+                                  "discount",
+                                  "container"
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "type": "object",
+                            "required": ["referencedId", "type"],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "referencedId": {
+                                "type": "string"
+                              },
+                              "quantity": {
+                                "type": "number"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": ["promotion"]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "$ref": "_DELETE_"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "/quote/detail/{id}": {
       "post": [
         {

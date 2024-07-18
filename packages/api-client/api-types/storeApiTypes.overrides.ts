@@ -109,25 +109,6 @@ export type operations = {
     response: components["schemas"]["Customer"];
     responseCode: 200;
   };
-  "addLineItem post /checkout/cart/line-item": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    headers?: {
-      /** Instructs Shopware to return the response in the given language. */
-      "sw-language-id"?: string;
-    };
-    body: {
-      // TODO: [OpenAPI][addLineItem] - add proper request body type with required fields
-      items: Array<{
-        id: string; // TODO: [OpenAPI][addLineItem] - check if this is used at all?
-        referencedId?: string;
-        quantity?: number;
-        type: "product" | "promotion" | "custom" | "credit"; // TODO: [OpenAPI][addLineItem] - add proper type -> see also #456
-      }>;
-    };
-    response: components["schemas"]["Cart"];
-    responseCode: 200;
-  };
   "updateLineItem patch /checkout/cart/line-item": {
     contentType?: "application/json";
     accept?: "application/json";
