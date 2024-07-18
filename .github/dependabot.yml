@@ -32,10 +32,6 @@ updates:
           - '@changesets/*'
           - 'changelog-parser'
           - '*/changelog-parser'
-      api-extractor:
-        patterns:
-          - '@microsoft/*'
-          - 'typedoc'
       eslint:
         patterns:
           - 'eslint'
@@ -54,7 +50,6 @@ updates:
           - 'globby'
           - 'husky'
           - 'lint-staged'
-          - 'taze'
           - 'pnpm'
       tests:
         patterns:
