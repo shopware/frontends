@@ -8,8 +8,11 @@ import {
 import Textarea from "primevue/textarea";
 import Button from "primevue/button";
 import Stepper from "primevue/stepper";
-import StepperPanel from "primevue/stepperpanel";
+import StepPanels from "primevue/steppanels";
+import StepList from "primevue/steplist";
 import Message from "primevue/message";
+import StepPanel from "primevue/steppanel";
+import Step from "primevue/step";
 
 const product = ref();
 const requestComment = ref("");
@@ -33,10 +36,14 @@ onBeforeMount(async () => {
 });
 </script>
 <template>
-  <Stepper>
-    <StepperPanel header="Add product to the basket">
-      <template #content="{ nextCallback }">
-        <Message severity="warn" :closable="false"
+  <Stepper value="1">
+    <StepList>
+      <Step value="1">Add product to the basket</Step>
+      <Step value="2">Request quote</Step>
+    </StepList>
+    <StepPanels>
+      <StepPanel v-slot="{ activateCallback }" value="1">
+        <Message class="mb-5" severity="warn" :closable="false"
           >Quote can be requested only for not empty cart</Message
         >
         <template v-if="!cartItems.length">
@@ -97,13 +104,11 @@ onBeforeMount(async () => {
             label="Next"
             icon="pi pi-arrow-right"
             iconPos="right"
-            @click="nextCallback"
+            @click="activateCallback('2')"
           />
         </div>
-      </template>
-    </StepperPanel>
-    <StepperPanel header="Request quote">
-      <template #content="{ prevCallback }">
+      </StepPanel>
+      <StepPanel v-slot="{ activateCallback }" value="2">
         <Message severity="info" :closable="false"
           >You can add comment to your requested quote</Message
         >
@@ -124,10 +129,10 @@ onBeforeMount(async () => {
             label="Back"
             severity="secondary"
             icon="pi pi-arrow-left"
-            @click="prevCallback"
+            @click="activateCallback('1')"
           />
         </div>
-      </template>
-    </StepperPanel>
+      </StepPanel>
+    </StepPanels>
   </Stepper>
 </template>

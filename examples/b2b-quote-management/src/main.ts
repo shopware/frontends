@@ -7,8 +7,9 @@ import Quote from "./components/Quote.vue";
 import QuotesTable from "./components/QuotesTable.vue";
 import RequestQuote from "./components/RequestQuote.vue";
 import PrimeVue from "primevue/config";
-import "primevue/resources/themes/aura-light-green/theme.css";
+import Aura from "@primevue/themes/aura";
 import "virtual:uno.css";
+import "./assets/main.css";
 
 const routes = [
   { path: "/", component: App, name: "home" },
@@ -28,5 +29,9 @@ const shopwareContext = createShopwareContext(app, {});
 app.provide("apiClient", apiClient);
 app.use(shopwareContext);
 app.use(router);
-app.use(PrimeVue);
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+  },
+});
 app.mount("#app");
