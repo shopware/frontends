@@ -37,19 +37,13 @@
     "dotenv-cli": "7.4.2",
     "esno": "4.7.0",
     "globby": "14.0.2",
-    "husky": "9.0.11",
-    "lint-staged": "15.2.7",
+    "husky": "9.1.1",
     "prettier": "3.3.3",
-    "turbo": "2.0.6",
-    "vercel": "34.4.0"
+    "turbo": "2.0.7",
+    "vercel": "35.0.3"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,md,mdx,js,jsx,vue}": [
-      "prettier --write"
-    ]
   },
   "packageManager": "pnpm@9.5.0",
   "pnpm": {

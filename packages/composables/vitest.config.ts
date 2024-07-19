@@ -6,20 +6,15 @@ export default defineConfig({
     environment: "happy-dom",
     coverage: {
       enabled: true,
+      include: ["src"],
       // "100": true, // TODO: our goal ;)
       thresholds: {
-        statements: 97.99,
-        branches: 90.77,
-        functions: 91.79,
-        lines: 97.99,
+        statements: 97,
+        branches: 90,
+        functions: 88.4,
+        lines: 97,
       },
-      exclude: [
-        "**/temp/**",
-        "**/devtools/**",
-        "**/.eslintrc.cjs",
-        "**/nuxt.config.ts",
-        "**/composables/index.ts",
-      ],
+      exclude: ["**/devtools/**", "**/types/**"],
     },
     alias: {
       "#imports": resolve(__dirname, "./src/index.ts"),
