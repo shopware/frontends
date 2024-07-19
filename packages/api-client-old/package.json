@@ -37,17 +37,17 @@
     "dev": "export NODE_ENV=development && unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --segfault-retry=3"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@faker-js/faker": "8.4.1",
     "@shopware/api-client": "workspace:*",
-    "@vitest/coverage-v8": "1.6.0",
+    "@vitest/coverage-v8": "2.0.3",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "14.12.3",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "1.6.0"
+    "vitest": "2.0.3"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",
