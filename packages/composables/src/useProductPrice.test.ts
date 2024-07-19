@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import { useProductPrice } from "./useProductPrice";
 import { ref } from "vue";
 import mockedProduct from "./mocks/Product";
@@ -7,6 +7,9 @@ import productTierPrices from "./mocks/ProductTierPrices";
 import type { Schemas } from "#shopware";
 
 describe("useProductPrice", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
   it("product price are displayed - standard product", () => {
     const { vm } = useSetup(() => useProductPrice(ref(mockedProduct)));
 
@@ -47,14 +50,53 @@ describe("useProductPrice", () => {
           Object.assign(
             { ...productTierPrices.product },
             {
-              parentId: null,
+              calculatedPrices: null,
               variantListingConfig: {
                 displayParent: true,
               },
-              calculatedPrices: undefined,
-              listPrice: {
-                percentage: 100,
-              },
+            },
+          ) as unknown as Schemas["Product"],
+        ),
+      ),
+    );
+    expect(vm.displayFrom).toBe(false);
+    expect(vm.isListPrice).toBe(false);
+  });
+
+  it("isListPrice", () => {
+    const { vm } = useSetup(() =>
+      useProductPrice(
+        ref(
+          Object.assign(
+            { ...productTierPrices.product },
+            {
+              listPrice: 80,
+              calculatedPrices: [
+                {
+                  unitPrice: 10,
+                },
+                {
+                  unitPrice: 20,
+                },
+              ],
+            },
+          ) as unknown as Schemas["Product"],
+        ),
+      ),
+    );
+    expect(vm.displayFrom).toBe(true);
+    expect(vm.isListPrice).toBe(false);
+  });
+
+  it("isListPrice - 2", () => {
+    const { vm } = useSetup(() =>
+      useProductPrice(
+        ref(
+          Object.assign(
+            { ...productTierPrices.product },
+            {
+              listPrice: 80,
+              calculatedPrices: [],
             },
           ) as unknown as Schemas["Product"],
         ),
