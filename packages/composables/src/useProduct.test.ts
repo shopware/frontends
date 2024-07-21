@@ -10,9 +10,15 @@ describe("useProduct", () => {
     expect(vm.product).toStrictEqual(mockedProduct);
   });
 
-  it("should return undefined configurator object", () => {
+  it("changeVariant - should merge the current product with the new variant data", () => {
     const { vm } = useSetup(() => useProduct(mockedProduct));
+    expect(vm.changeVariant()).toBeUndefined();
+  });
 
-    expect(vm.configurator).toBe(undefined);
+  it("changeVariant - empty", () => {
+    const { vm } = useSetup(useProduct);
+
+    vm.changeVariant(Object.assign({ ...mockedProduct }, { id: "new-id" }));
+    expect(vm.product.id).toBe("new-id");
   });
 });

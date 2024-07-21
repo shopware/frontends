@@ -32,5 +32,49 @@ describe("useOrderPayment", () => {
     expect(vm.activeTransaction).toEqual(
       Order.orders.elements[0].transactions[0],
     );
+
+    vm.changePaymentMethod("test");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("orderSetPayment"),
+      expect.objectContaining({
+        body: {
+          orderId: "018c6832f1a1731db276839b3f251fc2",
+          paymentMethodId: "test",
+        },
+      }),
+    );
+  });
+
+  it("empty order", async () => {
+    const { vm } = useSetup(() =>
+      useOrderPayment(
+        computed(() => null) as unknown as ComputedRef<Schemas["Order"]>,
+      ),
+    );
+    expect(vm.changePaymentMethod("test")).resolves.toBeUndefined();
+    expect(vm.handlePayment()).resolves.toBeUndefined();
+  });
+
+  it("isAsynchronous", () => {
+    const { vm } = useSetup(() =>
+      useOrderPayment(
+        computed(() =>
+          Object.assign(Order.orders.elements[0], {
+            transactions: [
+              {
+                paymentMethod: {
+                  active: true,
+                  asynchronous: true,
+                  afterOrderEnabled: true,
+                },
+              },
+            ],
+          }),
+        ) as unknown as ComputedRef<Schemas["Order"]>,
+      ),
+    );
+
+    expect(vm.isAsynchronous).toBe(true);
   });
 });

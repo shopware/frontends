@@ -123,4 +123,32 @@ describe("useCartItem", () => {
       id: lineItem.id,
     });
   });
+
+  it("itemSpecialPrice", () => {
+    const { vm } = useSetup(() =>
+      useCartItem(
+        ref(
+          Object.assign(
+            { ...lineItem },
+            {
+              price: {
+                listPrice: {
+                  price: 10,
+                },
+                unitPrice: 5,
+              },
+            },
+          ),
+        ) as unknown as Ref<Schemas["LineItem"]>,
+      ),
+    );
+    expect(vm.itemSpecialPrice).toBe(5);
+  });
+
+  it("should throw an error if cartItem is not provided", () => {
+    // To discuss do we need context error or shall we change the composable parameter to be mandatory
+    expect(() =>
+      useCartItem(null as unknown as Ref<Schemas["LineItem"]>),
+    ).toThrow("[useCartItem] mandatory cartItem argument is missing.");
+  });
 });

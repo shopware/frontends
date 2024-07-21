@@ -73,7 +73,7 @@ export type UseListingReturn = {
    * Loads more (next page) elements to the listing
    */
   loadMore(
-    criteria: operations["searchPage post /search"]["body"],
+    criteria?: operations["searchPage post /search"]["body"],
   ): Promise<void>;
   /**
    * Listing that is currently set

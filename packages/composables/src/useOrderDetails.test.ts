@@ -108,4 +108,27 @@ describe("useOrderDetails", () => {
       }),
     );
   });
+
+  it("getPaymentMethods", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    await vm.getPaymentMethods();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readPaymentMethod"),
+      expect.objectContaining({
+        body: {
+          onlyAvailable: true,
+        },
+      }),
+    );
+  });
+
+  it("paymentChangeable", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test", {}));
+    injections.apiClient.invoke.mockResolvedValue({ data: Order });
+    expect(vm.paymentChangeable).toEqual(false);
+    await vm.loadOrderDetails();
+    expect(vm.paymentChangeable).toEqual(true);
+  });
 });

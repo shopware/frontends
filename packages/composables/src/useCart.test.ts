@@ -71,6 +71,9 @@ describe("useCart", () => {
     expect(await vm.refreshCart(Cart as unknown as Schemas["Cart"])).toEqual(
       Cart,
     );
+    expect(vm.shippingTotal).toBe(0);
+    expect(vm.subtotal).toBe(16.11);
+    expect(vm.isVirtualCart).toBe(false);
   });
 
   it("add set of products", async () => {
@@ -115,5 +118,77 @@ describe("useCart", () => {
         },
       }),
     );
+  });
+
+  it("submitPromotionCode", async () => {
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        lineItems: [
+          {
+            type: "promotion",
+            payload: {
+              code: "3a64e872ca404522a2c5d43ebc751e6b",
+            },
+          },
+          {
+            type: "product",
+            good: true,
+            quantity: 1,
+            id: "e05e9340aff4484f9009646dfd572df9",
+          },
+        ],
+      },
+    });
+
+    await vm.addPromotionCode("PROMO_CODE");
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("addLineItem"),
+      expect.objectContaining({
+        body: {
+          items: [
+            {
+              referencedId: "PROMO_CODE",
+              type: "promotion",
+            },
+          ],
+        },
+      }),
+    );
+
+    expect(vm.appliedPromotionCodes).toEqual([
+      {
+        type: "promotion",
+        payload: {
+          code: "3a64e872ca404522a2c5d43ebc751e6b",
+        },
+      },
+    ]);
+    expect(vm.count).toBe(1);
+    expect(vm.totalPrice).toBe(0);
+  });
+
+  it("cart errors", async () => {
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        errors: [
+          {
+            status: 400,
+            code: "CHECKOUT__CART_ITEM_NOT_FOUND",
+            detail: "Line item not found",
+          },
+        ],
+      },
+    });
+    await vm.refreshCart();
+
+    expect(vm.consumeCartErrors()).toEqual({
+      "0": {
+        status: 400,
+        code: "CHECKOUT__CART_ITEM_NOT_FOUND",
+        detail: "Line item not found",
+      },
+    });
+
+    expect(vm.consumeCartErrors()).toEqual(null);
   });
 });
