@@ -42,12 +42,12 @@
   "devDependencies": {
     "@faker-js/faker": "8.4.1",
     "@shopware/api-client": "workspace:*",
-    "@vitest/coverage-v8": "2.0.3",
+    "@vitest/coverage-v8": "2.0.4",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "14.12.3",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.0.3"
+    "vitest": "2.0.4"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",
