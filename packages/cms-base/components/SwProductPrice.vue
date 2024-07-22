@@ -13,7 +13,9 @@ const props = defineProps<{
 type Translations = {
   product: {
     amount: string;
-    price: string;
+    price: {
+      [key: string]: string;
+    };
     to: string;
     from: string;
   };
@@ -22,7 +24,11 @@ type Translations = {
 let translations: Translations = {
   product: {
     amount: "Amount",
-    price: "Price",
+    price: {
+      label: "Price",
+      to: "To",
+      from: "From",
+    },
     to: "To",
     from: "From",
   },
@@ -66,7 +72,7 @@ const { getFormattedPrice } = usePrice();
             <th
               class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-600 dark:text-slate-200 text-left"
             >
-              {{ translations.product.price }}
+              {{ translations.product.price.label }}
             </th>
           </tr>
         </thead>
@@ -76,9 +82,9 @@ const { getFormattedPrice } = usePrice();
               class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 font-medium text-slate-500 dark:text-slate-400"
             >
               <span v-if="index < tierPrices.length - 1">{{
-                translations.product.to
+                translations.product.price.to
               }}</span
-              ><span v-else>{{ translations.product.from }}</span>
+              ><span v-else>{{ translations.product.price.from }}</span>
               {{ tierPrice.quantity }}
             </td>
             <td
