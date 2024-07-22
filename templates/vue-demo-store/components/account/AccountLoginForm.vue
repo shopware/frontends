@@ -46,8 +46,8 @@ const invokeLogin = async (): Promise<void> => {
   }
 };
 
-const emailImputElement = ref();
-useFocus(emailImputElement, { initialValue: true });
+const emailInputElement = ref();
+useFocus(emailInputElement, { initialValue: true });
 </script>
 <template>
   <div
@@ -82,7 +82,7 @@ useFocus(emailImputElement, { initialValue: true });
             }}</label>
             <input
               id="email-address"
-              ref="emailImputElement"
+              ref="emailInputElement"
               v-model="formData.username"
               name="email"
               type="email"
