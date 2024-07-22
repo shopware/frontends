@@ -39,6 +39,9 @@ describe("useCart", () => {
   });
 
   it("add single product", async () => {
+    expect(vm.cartItems).toEqual([]);
+    expect(vm.totalPrice).toBe(0);
+    expect(vm.subtotal).toBe(0);
     await vm.addProduct({
       id: itemsMock.items[0].referencedId as string,
       quantity: itemsMock.items[0].quantity,
@@ -58,6 +61,25 @@ describe("useCart", () => {
         },
       }),
     );
+
+    await vm.addProduct({
+      id: itemsMock.items[0].referencedId as string,
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("addLineItem"),
+      expect.objectContaining({
+        body: {
+          items: [
+            {
+              type: itemsMock.items[0].type,
+              id: itemsMock.items[0].referencedId,
+              quantity: 0,
+            },
+          ],
+        },
+      }),
+    );
   });
 
   it("refresh the cart", async () => {
@@ -71,9 +93,11 @@ describe("useCart", () => {
     expect(await vm.refreshCart(Cart as unknown as Schemas["Cart"])).toEqual(
       Cart,
     );
+
     expect(vm.shippingTotal).toBe(0);
     expect(vm.subtotal).toBe(16.11);
     expect(vm.isVirtualCart).toBe(false);
+    expect(vm.totalPrice).toBe(16.11);
   });
 
   it("add set of products", async () => {
@@ -180,7 +204,7 @@ describe("useCart", () => {
       },
     });
     await vm.refreshCart();
-
+    await vm.addProducts(itemsMock.items);
     expect(vm.consumeCartErrors()).toEqual({
       "0": {
         status: 400,

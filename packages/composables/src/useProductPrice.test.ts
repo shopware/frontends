@@ -88,18 +88,36 @@ describe("useProductPrice", () => {
     expect(vm.isListPrice).toBe(false);
   });
 
-  it("isListPrice - 2", () => {
+  it("isListPrice - 3", () => {
     const { vm } = useSetup(() =>
       useProductPrice(
-        ref(
-          Object.assign(
-            { ...productTierPrices.product },
+        ref({
+          calculatedPrices: [
             {
-              listPrice: 80,
-              calculatedPrices: [],
+              listPrice: {
+                percentage: 10,
+              },
             },
-          ) as unknown as Schemas["Product"],
-        ),
+          ],
+        } as unknown as Schemas["Product"]),
+      ),
+    );
+    expect(vm.displayFrom).toBe(false);
+    expect(vm.isListPrice).toBe(true);
+  });
+
+  it("displayFrom - second variant", async () => {
+    const { vm } = useSetup(() =>
+      useProductPrice(
+        ref({
+          variantListingConfig: {
+            displayParent: true,
+          },
+          parentId: null,
+          calculatedCheapestPrice: {
+            hasRange: true,
+          },
+        } as unknown as Schemas["Product"]),
       ),
     );
     expect(vm.displayFrom).toBe(false);

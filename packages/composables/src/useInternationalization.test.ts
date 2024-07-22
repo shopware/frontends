@@ -50,12 +50,26 @@ describe("useInternationalization", () => {
     expect(vm.getLanguageCodeFromId("test-id")).toBe("test-code");
   });
 
+  it("getLanguageCodeFromId -  no translationCode", async () => {
+    const { vm } = useSetup(useInternationalization);
+    vm.languages = [{ id: "test-id" }] as Schemas["Language"][];
+    expect(vm.getLanguageCodeFromId("test-id")).toBe("");
+  });
+
   it("getLanguageIdFromCode", async () => {
     const { vm } = useSetup(useInternationalization);
     vm.languages = [
       { id: "test-id", translationCode: { code: "test-code" } },
     ] as Schemas["Language"][];
     expect(vm.getLanguageIdFromCode("test-code")).toBe("test-id");
+  });
+
+  it("getLanguageIdFromCode - no id", async () => {
+    const { vm } = useSetup(useInternationalization);
+    vm.languages = [
+      { translationCode: { code: "test-code" } },
+    ] as Schemas["Language"][];
+    expect(vm.getLanguageIdFromCode("test-code")).toBe("");
   });
 
   it("should return the storefront url with the devStorefrontUrl", async () => {
@@ -97,9 +111,35 @@ describe("useInternationalization", () => {
         shopware: { devStorefrontUrl: "http://dev-storefront.test" },
       },
     );
-
+    expect(vm.getStorefrontUrl()).toBe("http://dev-storefront.test");
     expect(vm.replaceToDevStorefront("http://localhost:3000/test")).toBe(
       "http://dev-storefront.test/test",
     );
+  });
+
+  it("getStorefrontUrl without devStorefrontUrl and window", async () => {
+    vi.spyOn(window, "location", "get").mockImplementation(
+      () => ({}) as Location,
+    );
+    const { vm } = useSetup(
+      () => useInternationalization((element) => element),
+      {
+        shopware: { devStorefrontUrl: null },
+      },
+    );
+
+    expect(vm.getStorefrontUrl()).toBe("");
+  });
+
+  it("pathResolver absolute path", async () => {
+    const { vm } = useSetup(() =>
+      useInternationalization((element) => element),
+    );
+    expect(vm.formatLink("http://www.test.test")).toBe("http://www.test.test");
+  });
+
+  it("pathResolver without resolver", async () => {
+    const { vm } = useSetup(() => useInternationalization());
+    expect(vm.formatLink("test")).toBe("test");
   });
 });

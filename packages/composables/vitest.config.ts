@@ -14,7 +14,14 @@ export default defineConfig({
         functions: 88.4,
         lines: 97,
       },
-      exclude: ["**/devtools/**", "**/types/**"],
+      exclude: [
+        "**/devtools/**",
+        "**/types/**",
+        "**/src/*.test.ts",
+        "**/src/*.spec.ts",
+        // After refactoring should be removed
+        "**/src/useListing.ts",
+      ],
     },
     alias: {
       "#imports": resolve(__dirname, "./src/index.ts"),

@@ -55,17 +55,24 @@ describe("useProductConfigurator", () => {
     );
   });
 
-  it("product - no options", () => {
+  it("product - with options", () => {
     vi.mocked(useProduct).mockReturnValue({
       configurator: ref(null),
       product: ref({
-        options: null,
+        options: [
+          {
+            id: "cc02c6cf39ad43d5856a25f8928490bf",
+          },
+          {
+            id: "aa02c6cf39ad43d5856a25f8928490bf",
+          },
+        ],
       }),
     } as unknown as ReturnType<typeof useProduct>);
 
     const { vm } = useSetup(useProductConfigurator);
 
-    expect(vm.isLoadingOptions).toBe(false);
+    expect(vm.isLoadingOptions).toBe(true);
     expect(vm.getOptionGroups).toStrictEqual([]);
   });
 });

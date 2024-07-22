@@ -1,6 +1,15 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { useNavigationSearch } from "./useNavigationSearch";
 import { useSetup } from "./_test";
+import { useSessionContext } from "./useSessionContext";
+import { ref } from "vue";
+
+vi.mock("./useSessionContext.ts");
+const sessionContext = ref();
+
+vi.mocked(useSessionContext).mockReturnValue({
+  sessionContext,
+} as unknown as ReturnType<typeof useSessionContext>);
 
 const mockedResponse = {
   translated: [],
@@ -84,5 +93,19 @@ describe("useNavigationSearch", () => {
       }
     `);
     expect(injections.apiClient.invoke).not.toHaveBeenCalled();
+  });
+
+  it("resolvePath with categoryId", async () => {
+    const { vm } = useSetup(useNavigationSearch);
+    sessionContext.value = {
+      salesChannel: {
+        navigationCategoryId: "categoryIdTest",
+      },
+    };
+
+    expect(await vm.resolvePath("/")).toStrictEqual({
+      foreignKey: "categoryIdTest",
+      routeName: "frontend.navigation.page",
+    });
   });
 });

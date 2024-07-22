@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import { useProductAssociations } from "./useProductAssociations";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import mockedProduct from "./mocks/Product";
 import mockedCrossSelling from "./mocks/CrossSellingResponse";
 import { useSetup } from "./_test";
+import type { ComputedRef } from "vue";
+import type { Schemas } from "#shopware";
 
 describe("useProductAssociations", () => {
   console.error = vi.fn();
@@ -87,5 +89,19 @@ describe("useProductAssociations", () => {
     });
 
     expect(vm.productAssociations).toStrictEqual(mockedCrossSelling);
+  });
+
+  it("init without product", () => {
+    expect(() =>
+      useSetup(() =>
+        useProductAssociations(
+          // Api case
+          ref(null) as unknown as ComputedRef<Schemas["Product"]>,
+          {
+            associationContext: "cross-selling",
+          },
+        ),
+      ),
+    ).toThrowError("[useProductAssociations]: Product is not provided.");
   });
 });

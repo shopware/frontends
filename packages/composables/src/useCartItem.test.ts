@@ -144,6 +144,20 @@ describe("useCartItem", () => {
     );
     expect(vm.itemSpecialPrice).toBe(5);
   });
+  it("itemRegularPrice from listPrice", () => {
+    const { vm } = useSetup(() =>
+      useCartItem(
+        ref({
+          price: {
+            listPrice: {
+              price: 10,
+            },
+          },
+        }) as unknown as Ref<Schemas["LineItem"]>,
+      ),
+    );
+    expect(vm.itemRegularPrice).toBe(10);
+  });
 
   it("should throw an error if cartItem is not provided", () => {
     // To discuss do we need context error or shall we change the composable parameter to be mandatory
