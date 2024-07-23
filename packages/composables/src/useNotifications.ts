@@ -93,7 +93,7 @@ export function useNotifications(): UseNotificationsReturn {
     const messageId = geterateId();
     _notifications.value.push({
       id: messageId,
-      type: options.type || "info",
+      type: options.type as NotificationType,
       message,
     });
     if (!persistent) {

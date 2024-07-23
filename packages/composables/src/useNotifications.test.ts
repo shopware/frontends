@@ -35,8 +35,22 @@ describe("useNotifications", () => {
   });
 
   it("injected empty swNotifications", () => {
-    const { vm } = useSetup(useNotifications);
+    const { vm } = useSetup(useNotifications, {
+      swNotifications: { value: null },
+    });
 
     expect(vm.notifications).toEqual([]);
+    vm.removeOne(2332);
+    expect(vm.notifications).toEqual([]);
+    vm.pushSuccess("test");
+  });
+
+  it("injected empty swNotifications and push success", () => {
+    const { vm } = useSetup(useNotifications, {
+      swNotifications: { value: null },
+    });
+
+    vm.pushSuccess("test");
+    expect(vm.notifications.length).toBe(1);
   });
 });
