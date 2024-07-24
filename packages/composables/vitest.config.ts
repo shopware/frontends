@@ -7,12 +7,11 @@ export default defineConfig({
     coverage: {
       enabled: true,
       include: ["src"],
-      // "100": true, // TODO: our goal ;)
       thresholds: {
-        statements: 97,
-        branches: 90,
-        functions: 88.4,
-        lines: 97,
+        statements: 100,
+        branches: 100,
+        functions: 100,
+        lines: 100,
       },
       exclude: [
         "**/devtools/**",
