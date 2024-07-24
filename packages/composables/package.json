@@ -75,7 +75,7 @@
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "14.12.3",
     "tsconfig": "workspace:*",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "unbuild": "2.0.0",
     "vitest": "2.0.4",
     "vue": "3.4.33"
