@@ -16,6 +16,6 @@
     "typescript-eslint": "7.16.1"
   },
   "devDependencies": {
-    "typescript": "5.5.3"
+    "typescript": "5.5.4"
   }
 }

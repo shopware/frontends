@@ -53,7 +53,7 @@
     "eslint-config-shopware": "workspace:*",
     "nuxt": "3.12.4",
     "tsconfig": "workspace:*",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "unbuild": "2.0.0"
   }
 }
