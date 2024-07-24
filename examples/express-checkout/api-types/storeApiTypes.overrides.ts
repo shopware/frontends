@@ -21,6 +21,8 @@ export type operations = {
       finishUrl?: string;
       /** Identifier of an order */
       orderId: string;
+      /** Payment details */
+      paymentDetails?: Record<string, unknown>;
     };
     response: {
       redirectUrl: string;

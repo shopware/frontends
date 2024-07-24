@@ -71,6 +71,7 @@ export function useOrderPayment(
   async function handlePayment(
     finishUrl?: string,
     errorUrl?: string,
+    paymentDetails?: Record<string, unknown>,
   ): Promise<undefined | unknown> {
     if (!order.value) {
       return;
@@ -82,6 +83,7 @@ export function useOrderPayment(
           orderId: order.value.id,
           errorUrl,
           finishUrl,
+          paymentDetails,
         },
       },
     );

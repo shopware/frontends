@@ -7730,6 +7730,9 @@ export type operations = {
       finishUrl?: string;
       /** Identifier of an order */
       orderId: string;
+      paymentDetails?: {
+        [key: string]: unknown;
+      };
     };
     response: {
       redirectUrl: string;

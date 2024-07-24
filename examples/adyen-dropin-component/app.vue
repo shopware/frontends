@@ -49,15 +49,17 @@ const onPayButton = async (state: any) => {
   // when user clicks "Pay" button in a drop-in component, create an order based on current session (automatically logged in user & product added to cart)
   const order = await createOrder();
   activeStep.value = 3;
+  const computedOrder = computed(() => order);
+  const { handlePayment } = useOrderPayment(computedOrder);
+
   // send a state got from onPayButton handler to Shopware 6 API
-  await apiClient.invoke("handlePaymentMethod post /handle-payment", {
-    body: {
-      orderId: order.id,
-      finishUrl: "http://localhost:3000/success",
-      errorUrl: "http://localhost:3000/failure?payment-failed",
-      // stateData: JSON.stringify(state.data),
+  await handlePayment(
+    "http://localhost:3000/success",
+    "http://localhost:3000/failure?payment-failed",
+    {
+      stateData: JSON.stringify(state.data),
     },
-  });
+  );
 
   activeStep.value = 4;
 

@@ -740,6 +740,22 @@
     "/handle-payment": {
       "post": [
         {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "paymentDetails": {
+                      "type": "object",
+                      "additionalProperties": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "responses": {
             "200": {
               "content": {
