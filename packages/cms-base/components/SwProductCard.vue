@@ -132,7 +132,7 @@ function roundUp(num: number) {
 const srcPath = computed(() => {
   return `${getSmallestThumbnailUrl(
     product.value?.cover?.media,
-  )}?&height=${roundUp(height.value)}&fit=crop`;
+  )}?&height=${roundUp(height.value)}&fit=cover`;
 });
 </script>
 

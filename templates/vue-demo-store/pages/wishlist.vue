@@ -212,7 +212,7 @@ onMounted(() => {
     class="grid grid-cols-1 lg:flex lg:justify-center lg- gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 lg:p-8"
   >
     <div class="text-center place-self-center">
-      <SwPagination
+      <SharedPagination
         :total="Number(totalPagesCount)"
         :current="currentPage"
         @change-page="changePage"
