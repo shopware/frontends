@@ -71,23 +71,7 @@ export function useProductPrice(
     Schemas["CalculatedPrice"]["referencePrice"] | undefined
   > = computed(() => _real?.value?.referencePrice);
 
-  // const _displayParent: ComputedRef<boolean> = computed(
-  //   () =>
-  //     !!product.value?.variantListingConfig?.displayParent &&
-  //     product.value?.parentId === null,
-  // );
-
   const displayFrom: ComputedRef<boolean> = computed(() => {
-    // Change me mind:
-    //  `!!(_displayParent.value && displayFromVariants.value)` will never return true
-    // - _displayParent.value expects `product.value?.parentId === null`
-    // - displayFromVariants.value expects `!!product.value?.parentId`
-
-    // return (
-    //   (product.value?.calculatedPrices?.length ?? 0) > 1 ||
-    //   !!(_displayParent.value && displayFromVariants.value)
-    // );
-
     return (product.value?.calculatedPrices?.length ?? 0) > 1;
   });
 
@@ -108,12 +92,6 @@ export function useProductPrice(
         return product.value?.calculatedPrices?.reduce((previous, current) => {
           return current.unitPrice < previous.unitPrice ? current : previous;
         });
-
-        // Change my mind:
-        // There is no possibility to return _cheapest.value because of the getProductTierPrices that is iterating over calculatedPrices
-        // return (
-        //   lowest || (_cheapest.value as unknown as Schemas["CalculatedPrice"])
-        // );
       }
       return _real.value;
     },
