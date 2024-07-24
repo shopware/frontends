@@ -22,7 +22,7 @@
   "devDependencies": {
     "@types/markdown-it": "14.1.1",
     "@types/node": "20.14.10",
-    "@vitejs/plugin-vue": "5.0.5",
+    "@vitejs/plugin-vue": "5.1.0",
     "find-in-files": "0.5.0",
     "ts-dox": "0.1.0",
     "typescript": "5.5.3",

@@ -64,6 +64,6 @@
     "vitest": "2.0.3",
     "vue-eslint-parser": "9.4.3",
     "vue-router": "4.4.0",
-    "vue-tsc": "2.0.26"
+    "vue-tsc": "2.0.28"
   }
 }
