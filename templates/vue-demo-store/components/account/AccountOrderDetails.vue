@@ -158,7 +158,12 @@ const handleReorder = async () => {
       :line-item="lineItem"
     />
     <AccountOrderDownloads v-if="hasDocuments" :documents="documents" />
-    <button class="mt-10 p-3" :disabled="addingProducts" @click="handleReorder">
+    <button
+      class="mt-10 p-3"
+      data-testid="order-repeat-button"
+      :disabled="addingProducts"
+      @click="handleReorder"
+    >
       {{ $t("account.order.repeatOrder") }}
     </button>
   </div>
