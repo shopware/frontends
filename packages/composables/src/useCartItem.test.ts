@@ -160,9 +160,9 @@ describe("useCartItem", () => {
   });
 
   it("should throw an error if cartItem is not provided", () => {
-    // To discuss do we need context error or shall we change the composable parameter to be mandatory
     expect(() =>
-      useCartItem(null as unknown as Ref<Schemas["LineItem"]>),
+      // @ts-expect-error we deliberately pass null to invoke error
+      useCartItem(null),
     ).toThrow("[useCartItem] mandatory cartItem argument is missing.");
   });
 });

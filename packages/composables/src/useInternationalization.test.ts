@@ -56,6 +56,11 @@ describe("useInternationalization", () => {
     expect(vm.getLanguageCodeFromId("test-id")).toBe("");
   });
 
+  it("getLanguageCodeFromId - no languages", async () => {
+    const { vm } = useSetup(useInternationalization);
+    expect(() => vm.getLanguageCodeFromId("test-id")).toThrowError();
+  });
+
   it("getLanguageIdFromCode", async () => {
     const { vm } = useSetup(useInternationalization);
     vm.languages = [
@@ -70,6 +75,11 @@ describe("useInternationalization", () => {
       { translationCode: { code: "test-code" } },
     ] as Schemas["Language"][];
     expect(vm.getLanguageIdFromCode("test-code")).toBe("");
+  });
+
+  it("getLanguageIdFromCode - no languages", async () => {
+    const { vm } = useSetup(useInternationalization);
+    expect(vm.getLanguageIdFromCode("test-code")).toThrowError();
   });
 
   it("should return the storefront url with the devStorefrontUrl", async () => {

@@ -191,7 +191,7 @@ describe("useCart", () => {
     expect(vm.totalPrice).toBe(0);
   });
 
-  it("cart errors", async () => {
+  it("handle api cart error", async () => {
     injections.apiClient.invoke.mockResolvedValue({
       data: {
         errors: [

@@ -8,7 +8,7 @@ type Injections = {
   apiClient: {
     invoke: ReturnType<typeof vi.fn>;
   };
-  [key: string]: unknown;
+  swNotifications?: unknown;
 };
 
 export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {

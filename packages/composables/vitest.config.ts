@@ -8,17 +8,14 @@ export default defineConfig({
       enabled: true,
       include: ["src"],
       thresholds: {
-        statements: 100,
-        branches: 100,
-        functions: 100,
-        lines: 100,
+        100: true,
       },
       exclude: [
         "**/devtools/**",
         "**/types/**",
         "**/src/*.test.ts",
         "**/src/*.spec.ts",
-        // After refactoring should be removed
+        // After refactoring should be removed - https://github.com/shopware/frontends/issues/1057
         "**/src/useListing.ts",
       ],
     },

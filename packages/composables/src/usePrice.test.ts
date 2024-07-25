@@ -31,7 +31,7 @@ describe("usePrice", () => {
     expect(vm.getFormattedPrice(2.55)).toMatchInlineSnapshot('"$2.55"');
   });
 
-  it('"should use navigator language if locale is not provided ', () => {
+  it("should use navigator language if locale is not provided", () => {
     vi.spyOn(global, "navigator", "get").mockImplementation(
       () => currentNavigator,
     );

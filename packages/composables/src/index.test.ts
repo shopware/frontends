@@ -37,7 +37,7 @@ describe("resolveCmsComponent", () => {
     expect(result.isResolved).toBe(true);
   });
 
-  it("mocked resolveComponent", () => {
+  it("component should not be resolved because of the error", () => {
     vi.spyOn(vue, "resolveComponent").mockImplementation(() => {
       throw new Error("error");
     });
@@ -45,6 +45,6 @@ describe("resolveCmsComponent", () => {
       apiAlias: "cms_custom",
     } as unknown as Schemas["CmsBlock"]);
 
-    expect(result.isResolved).toBe(undefined);
+    expect(result.isResolved).toBe(false);
   });
 });

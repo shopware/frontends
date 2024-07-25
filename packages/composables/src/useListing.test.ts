@@ -140,7 +140,7 @@ describe("useListing", () => {
     );
   });
 
-  it("useCategoryListing - error", async () => {
+  it("useCategoryListing - error is thrown when listingContext was not provided in parent tree", async () => {
     expect(() => useSetup(useCategoryListing)).toThrowError();
   });
 

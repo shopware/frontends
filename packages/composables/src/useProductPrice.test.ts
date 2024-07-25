@@ -43,7 +43,7 @@ describe("useProductPrice", () => {
     expect(vm.displayFromVariants).toBe(20);
   });
 
-  it("displayFrom", () => {
+  it("displayFrom should be false if displayParent is true", () => {
     const { vm } = useSetup(() =>
       useProductPrice(
         ref(
@@ -63,7 +63,7 @@ describe("useProductPrice", () => {
     expect(vm.isListPrice).toBe(false);
   });
 
-  it("isListPrice", () => {
+  it("isListPrice should be false with more than one calculatedPrices value", () => {
     const { vm } = useSetup(() =>
       useProductPrice(
         ref(
@@ -88,7 +88,7 @@ describe("useProductPrice", () => {
     expect(vm.isListPrice).toBe(false);
   });
 
-  it("isListPrice - 3", () => {
+  it("isListPrice should be true with one calculatedPrices value", () => {
     const { vm } = useSetup(() =>
       useProductPrice(
         ref({

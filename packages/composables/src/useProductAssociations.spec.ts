@@ -4,8 +4,6 @@ import { computed, ref } from "vue";
 import mockedProduct from "./mocks/Product";
 import mockedCrossSelling from "./mocks/CrossSellingResponse";
 import { useSetup } from "./_test";
-import type { ComputedRef } from "vue";
-import type { Schemas } from "#shopware";
 
 describe("useProductAssociations", () => {
   console.error = vi.fn();
@@ -91,12 +89,12 @@ describe("useProductAssociations", () => {
     expect(vm.productAssociations).toStrictEqual(mockedCrossSelling);
   });
 
-  it("init without product", () => {
+  it("init without product should throw an error", () => {
     expect(() =>
       useSetup(() =>
         useProductAssociations(
-          // Api case
-          ref(null) as unknown as ComputedRef<Schemas["Product"]>,
+          // @ts-expect-error if API returns null we want to be prepared for it
+          ref(null),
           {
             associationContext: "cross-selling",
           },
