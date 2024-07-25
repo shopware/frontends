@@ -6,7 +6,7 @@ import ContextError from "./helpers/ContextError";
 import type { Schemas } from "#shopware";
 
 describe("useListing", () => {
-  it("invoke search", async () => {
+  it("should invoke search", async () => {
     const { vm, injections } = await useSetup(() =>
       useListing({
         listingType: "productSearchListing",
@@ -29,7 +29,7 @@ describe("useListing", () => {
     expect(vm.getLimit).toBe(10);
   });
 
-  it('invoke "readQuotes"', async () => {
+  it('should invoke "readQuotes"', async () => {
     const { vm, injections } = await useSetup(() =>
       useListing({
         listingType: "categoryListing",
@@ -56,7 +56,7 @@ describe("useListing", () => {
     );
   });
 
-  it('invoke "readQuotes" - errors', async () => {
+  it("should handle context error", async () => {
     let error: unknown | null = null;
     try {
       await useSetup(() =>
@@ -70,7 +70,7 @@ describe("useListing", () => {
     expect(error).toEqual(new ContextError("Category"));
   });
 
-  it("setCurrentFilters", async () => {
+  it("should set current filters", async () => {
     const { vm, injections } = await useSetup(() =>
       useListing({
         listingType: "categoryListing",

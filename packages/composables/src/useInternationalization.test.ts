@@ -23,7 +23,7 @@ describe("useInternationalization", () => {
     expect(vm.getStorefrontUrl()).toBe("http://localhost:3000");
   });
 
-  it("getAvailableLanguages", async () => {
+  it("should invoke getting available languages", async () => {
     const { vm, injections } = useSetup(useInternationalization);
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
     vm.getAvailableLanguages();
@@ -32,7 +32,7 @@ describe("useInternationalization", () => {
     );
   });
 
-  it("changeLanguage", async () => {
+  it("should invoke change language", async () => {
     const { vm, injections } = useSetup(useInternationalization);
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
     vm.changeLanguage("test-id");

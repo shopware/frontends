@@ -11,7 +11,7 @@ describe("useNotifications", () => {
     vi.restoreAllMocks();
   });
 
-  it("notification flow", async () => {
+  it("should trigger sample notification flow", async () => {
     const { vm } = useSetup(useNotifications);
 
     vm.pushError("Error message");

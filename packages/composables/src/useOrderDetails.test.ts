@@ -28,7 +28,7 @@ describe("useOrderDetails", () => {
     );
   });
 
-  it("handlePayment", async () => {
+  it("should handle setting the order payment", async () => {
     const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
     await vm.handlePayment();
@@ -45,7 +45,7 @@ describe("useOrderDetails", () => {
     );
   });
 
-  it("cancel", async () => {
+  it("should cancel the order", async () => {
     const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
     await vm.cancel();

@@ -7,7 +7,7 @@ import type { Schemas } from "#shopware";
 import Order from "./mocks/Order";
 
 describe("useOrderPayment", () => {
-  it("handlePayment", async () => {
+  it("should handle the order payment", async () => {
     const { vm, injections } = useSetup(() =>
       useOrderPayment(
         computed(() => Order.orders.elements[0]) as unknown as ComputedRef<

@@ -3,7 +3,7 @@ import { useCustomerOrders } from "./useCustomerOrders";
 import { useSetup } from "./_test";
 
 describe("useCustomerOrders", () => {
-  it("changeLanguage", async () => {
+  it("should inovke load orders", async () => {
     const { vm, injections } = useSetup(useCustomerOrders);
     injections.apiClient.invoke.mockResolvedValue({
       data: { orders: { elements: [] } },
@@ -16,7 +16,7 @@ describe("useCustomerOrders", () => {
     expect(vm.totalPages).toBe(0);
   });
 
-  it("changeCurrentPage", async () => {
+  it("should invoke change page", async () => {
     const { vm, injections } = useSetup(useCustomerOrders);
     injections.apiClient.invoke.mockResolvedValue({
       data: { orders: { elements: [] } },
