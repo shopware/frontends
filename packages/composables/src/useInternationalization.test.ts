@@ -79,7 +79,7 @@ describe("useInternationalization", () => {
 
   it("getLanguageIdFromCode - no languages", async () => {
     const { vm } = useSetup(useInternationalization);
-    expect(vm.getLanguageIdFromCode("test-code")).toThrowError();
+    expect(() => vm.getLanguageIdFromCode("test-code")).toThrowError();
   });
 
   it("should return the storefront url with the devStorefrontUrl", async () => {
