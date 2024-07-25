@@ -25,7 +25,7 @@
     "@vitejs/plugin-vue": "5.0.5",
     "find-in-files": "0.5.0",
     "ts-dox": "0.1.0",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "unplugin-export-collector": "0.5.0",
     "vinyl": "3.0.0"
   },

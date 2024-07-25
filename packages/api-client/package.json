@@ -54,14 +54,14 @@
     "generate-admin-types": "esno ../api-gen/src/cli.ts generate --apiType=admin"
   },
   "devDependencies": {
-    "@codspeed/vitest-plugin": "3.1.0",
+    "@codspeed/vitest-plugin": "3.1.1",
     "@types/prettier": "3.0.0",
-    "@vitest/coverage-v8": "2.0.3",
+    "@vitest/coverage-v8": "2.0.4",
     "eslint-config-shopware": "workspace:*",
     "prettier": "3.3.3",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.0.3"
+    "vitest": "2.0.4"
   },
   "dependencies": {
     "defu": "6.1.4",

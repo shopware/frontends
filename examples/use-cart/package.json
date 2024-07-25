@@ -17,7 +17,7 @@
     "@unocss/nuxt": "0.61.5",
     "@vueuse/nuxt": "10.11.0",
     "nuxt": "3.12.4",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "vue": "3.4.33",
     "vue-tsc": "2.0.26"
   }

@@ -37,7 +37,7 @@
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-vue": "9.27.0",
     "nuxt": "3.12.4",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "vue-eslint-parser": "9.4.3"
   },
   "engines": {
