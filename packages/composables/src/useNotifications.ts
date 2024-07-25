@@ -84,7 +84,7 @@ export function useNotifications(): UseNotificationsReturn {
 
   async function pushNotification(
     message: string,
-    options: NotificationOptions,
+    options: Required<Pick<NotificationOptions, "type">> & NotificationOptions,
   ) {
     const timeout = options.timeout || 2500;
     const persistent = !!options.persistent;
