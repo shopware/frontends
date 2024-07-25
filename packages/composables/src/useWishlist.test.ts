@@ -47,7 +47,7 @@ vi.mock("./useSyncWishlist.ts");
 vi.mock("./useUser");
 
 describe("useWishlist - not logged in user", () => {
-  it("mergeWishlistProducts", () => {
+  it("should merge wishlist products", () => {
     vi.mocked(useUser).mockReturnValue(getMockedUser(false, true));
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => new Promise<void>((resolve) => resolve()),
@@ -69,7 +69,7 @@ describe("useWishlist - not logged in user", () => {
     expect(Number(vm.totalPagesCount)).toBe(2);
   });
 
-  it("getWishlistProducts", async () => {
+  it("should get wishlist products", async () => {
     vi.mocked(useUser).mockReturnValue(getMockedUser(false, true));
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => new Promise<void>((resolve) => resolve()),
@@ -115,7 +115,7 @@ describe("useWishlist - not logged in user", () => {
 });
 
 describe("useWishlist - logged in user", () => {
-  it("mergeWishlistProducts", () => {
+  it("should merge wishlist products", () => {
     vi.mocked(useUser).mockReturnValue(getMockedUser(true, false));
     vi.mocked(useSyncWishlist).mockReturnValue({
       getWishlistProducts: () => new Promise<void>((resolve) => resolve()),
@@ -154,7 +154,7 @@ describe("useWishlist - logged in user", () => {
     expect(vm.count).toBe(15);
   });
 
-  it("getWishlistProducts", () => {
+  it("should get wishlist products", () => {
     vi.mocked(useUser).mockReturnValue(getMockedUser(true, false));
     const { vm } = useSetup(() => useWishlist());
     vm.getWishlistProducts();

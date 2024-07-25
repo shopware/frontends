@@ -13,7 +13,7 @@ describe("useSyncWishlist", () => {
   consoleErrorSpy.mockImplementation(() => {});
   describe("methods", () => {
     describe("addToWishlist", () => {
-      it("wishlist add product", () => {
+      it("should add product to the wishlist", () => {
         const { vm } = useSetup(() => useSyncWishlist());
 
         expect(vm.addToWishlistSync("some-id")).resolves.toBe(undefined);
@@ -21,7 +21,7 @@ describe("useSyncWishlist", () => {
     });
 
     describe("removeFromWishlist", () => {
-      it("wishlist remove", () => {
+      it("should remove product from the wishlist", () => {
         const { vm } = useSetup(() => useSyncWishlist());
 
         vm.getWishlistProducts();
@@ -32,7 +32,7 @@ describe("useSyncWishlist", () => {
     });
 
     describe("mergeWishlistProducts", () => {
-      it("wishlist remove", () => {
+      it("should sync wishlist", () => {
         const { vm } = useSetup(() => useSyncWishlist());
 
         expect(vm.mergeWishlistProducts(["test1", "test2"])).resolves.toEqual(
@@ -42,7 +42,7 @@ describe("useSyncWishlist", () => {
     });
 
     describe("getWishlistProducts", () => {
-      it("getWishlistProducts", async () => {
+      it("should get wishlist products", async () => {
         const { vm, injections } = useSetup(() => useSyncWishlist());
         injections.apiClient.invoke.mockResolvedValue({
           data: {
@@ -88,7 +88,7 @@ describe("useSyncWishlist", () => {
     });
 
     describe("getWishlistProducts - error", () => {
-      it("getWishlistProducts", async () => {
+      it("should handle error after fetching product wishlist", async () => {
         const { vm } = useSetup(() => useSyncWishlist(), {
           apiClient: {
             invoke: vi.fn().mockImplementation(() => {
