@@ -1,5 +1,5 @@
 ---
-"vue-demo-store": minor
+"vue-demo-store": patch
 ---
 
 Add data-testid for pagination
