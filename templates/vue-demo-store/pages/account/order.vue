@@ -118,15 +118,22 @@ await useAsyncData("getOrders", () => {
         />
       </div>
       <div class="text-center place-self-center mt-2 lg:mt-0">
-        <div class="inline-block align-top text-center md:text-left">
-          <label for="limit" class="inline mr-4">{{
-            translations.account.perPage
-          }}</label>
+        <div
+          class="inline-block align-top text-center md:text-left"
+          data-testid="order-pagination-limit-box"
+        >
+          <label
+            for="limit"
+            class="inline mr-4"
+            data-testid="order-pagination-limit-label"
+            >{{ translations.account.perPage }}</label
+          >
           <select
             id="limit"
             v-model="limit"
             name="limitchoices"
             class="inline appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            data-testid="order-pagination-limit-select"
             @change="changeLimit"
           >
             <option :value="1">1 {{ translations.account.order.order }}</option>
