@@ -46,7 +46,7 @@ describe("useOrderPayment", () => {
     );
   });
 
-  it("empty order", async () => {
+  it("should not invoke API calls for empty order", async () => {
     const { vm } = useSetup(() =>
       useOrderPayment(
         computed(() => null) as unknown as ComputedRef<Schemas["Order"]>,
@@ -56,7 +56,7 @@ describe("useOrderPayment", () => {
     expect(vm.handlePayment()).resolves.toBeUndefined();
   });
 
-  it("isAsynchronous", () => {
+  it("should be a asynchronous payment", () => {
     const { vm } = useSetup(() =>
       useOrderPayment(
         computed(() =>

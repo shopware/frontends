@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import { ref } from "vue";
 import { usePrice } from "./usePrice";
 import { useSetup } from "./_test";
@@ -8,9 +8,12 @@ const currentNavigator = global.navigator;
 vi.mock("./useSessionContext.ts");
 const sessionContext = ref();
 
-vi.mocked(useSessionContext).mockReturnValue({
-  sessionContext,
-} as unknown as ReturnType<typeof useSessionContext>);
+beforeEach(() => {
+  vi.clearAllMocks();
+  vi.mocked(useSessionContext).mockReturnValue({
+    sessionContext,
+  } as unknown as ReturnType<typeof useSessionContext>);
+});
 
 describe("usePrice", () => {
   it("should be defined", () => {
