@@ -1144,6 +1144,7 @@ const Order = {
   },
   paymentChangeable: {
     "018c6832f1a1731db276839b3f251fc2": true,
+    "123-test": true,
   },
 };
 

@@ -71,37 +71,27 @@ export function useProductPrice(
     Schemas["CalculatedPrice"]["referencePrice"] | undefined
   > = computed(() => _real?.value?.referencePrice);
 
-  const _displayParent: ComputedRef<boolean> = computed(
-    () =>
-      !!product.value?.variantListingConfig?.displayParent &&
-      product.value?.parentId === null,
-  );
-
-  const displayFrom: ComputedRef<boolean> = computed(
-    () =>
-      (product.value?.calculatedPrices?.length ?? 0) > 1 ||
-      !!(_displayParent.value && displayFromVariants.value),
-  );
+  const displayFrom: ComputedRef<boolean> = computed(() => {
+    return (product.value?.calculatedPrices?.length ?? 0) > 1;
+  });
 
   const displayFromVariants: ComputedRef<number | false | undefined> = computed(
-    () =>
-      !!product.value?.parentId &&
-      product.value?.calculatedCheapestPrice?.hasRange &&
-      _real?.value?.unitPrice !== _cheapest?.value?.unitPrice &&
-      _cheapest?.value?.unitPrice,
+    () => {
+      return (
+        !!product.value?.parentId &&
+        product.value?.calculatedCheapestPrice?.hasRange &&
+        _real?.value?.unitPrice !== _cheapest?.value?.unitPrice &&
+        _cheapest?.value?.unitPrice
+      );
+    },
   );
 
   const _price: ComputedRef<Schemas["CalculatedPrice"] | undefined> = computed(
     () => {
       if (displayFrom.value && getProductTierPrices(product.value).length > 1) {
-        const lowest = product.value?.calculatedPrices?.reduce(
-          (previous, current) => {
-            return current.unitPrice < previous.unitPrice ? current : previous;
-          },
-        );
-        return (
-          lowest || (_cheapest.value as unknown as Schemas["CalculatedPrice"])
-        );
+        return product.value?.calculatedPrices?.reduce((previous, current) => {
+          return current.unitPrice < previous.unitPrice ? current : previous;
+        });
       }
       return _real.value;
     },
@@ -117,9 +107,9 @@ export function useProductPrice(
     () => _price.value,
   );
 
-  const isListPrice: ComputedRef<boolean> = computed(
-    () => !!_price.value?.listPrice?.percentage,
-  );
+  const isListPrice: ComputedRef<boolean> = computed(() => {
+    return !!_price.value?.listPrice?.percentage;
+  });
 
   const regulationPrice: ComputedRef<number | undefined> = computed(
     () => product.value?.calculatedPrice?.regulationPrice?.price,

@@ -32,6 +32,7 @@ describe("useProductWishlist", () => {
       const { vm } = useSetup(() => useProductWishlist("test3"));
 
       expect(vm.removeFromWishlist()).resolves.toEqual(undefined);
+      expect(vm.isInWishlist).toEqual(false);
     });
   });
 
@@ -50,9 +51,14 @@ describe("useProductWishlist", () => {
     });
 
     it("removeFromWishlist", () => {
+      vi.mocked(useUser).mockReturnValue({
+        isLoggedIn: ref(true),
+        isGuestSession: ref(false),
+      } as ReturnType<typeof useUser>);
       const { vm } = useSetup(() => useProductWishlist("test3"));
 
       expect(vm.removeFromWishlist()).resolves.toEqual(undefined);
+      expect(vm.isInWishlist).toEqual(false);
     });
   });
 });

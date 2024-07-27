@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useNotifications } from "./useNotifications";
 import { useSetup } from "./_test";
+
 describe("useNotifications", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -10,7 +11,7 @@ describe("useNotifications", () => {
     vi.restoreAllMocks();
   });
 
-  it("notification flow", async () => {
+  it("should trigger sample notification flow", async () => {
     const { vm } = useSetup(useNotifications);
 
     vm.pushError("Error message");
@@ -31,5 +32,25 @@ describe("useNotifications", () => {
     vm.pushError("Error message", { timeout: 100 });
     vi.runAllTimers();
     expect(vm.notifications.length).toBe(0);
+  });
+
+  it("injected empty swNotifications", () => {
+    const { vm } = useSetup(useNotifications, {
+      swNotifications: { value: null },
+    });
+
+    expect(vm.notifications).toEqual([]);
+    vm.removeOne(2332);
+    expect(vm.notifications).toEqual([]);
+    vm.pushSuccess("test");
+  });
+
+  it("injected empty swNotifications and push success", () => {
+    const { vm } = useSetup(useNotifications, {
+      swNotifications: { value: null },
+    });
+
+    vm.pushSuccess("test");
+    expect(vm.notifications.length).toBe(1);
   });
 });

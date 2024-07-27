@@ -123,4 +123,46 @@ describe("useCartItem", () => {
       id: lineItem.id,
     });
   });
+
+  it("itemSpecialPrice", () => {
+    const { vm } = useSetup(() =>
+      useCartItem(
+        ref(
+          Object.assign(
+            { ...lineItem },
+            {
+              price: {
+                listPrice: {
+                  price: 10,
+                },
+                unitPrice: 5,
+              },
+            },
+          ),
+        ) as unknown as Ref<Schemas["LineItem"]>,
+      ),
+    );
+    expect(vm.itemSpecialPrice).toBe(5);
+  });
+  it("itemRegularPrice from listPrice", () => {
+    const { vm } = useSetup(() =>
+      useCartItem(
+        ref({
+          price: {
+            listPrice: {
+              price: 10,
+            },
+          },
+        }) as unknown as Ref<Schemas["LineItem"]>,
+      ),
+    );
+    expect(vm.itemRegularPrice).toBe(10);
+  });
+
+  it("should throw an error if cartItem is not provided", () => {
+    expect(() =>
+      // @ts-expect-error we deliberately pass null to invoke error
+      useCartItem(null),
+    ).toThrow("[useCartItem] mandatory cartItem argument is missing.");
+  });
 });

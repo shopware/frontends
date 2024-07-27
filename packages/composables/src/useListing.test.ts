@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { useListing } from "./useListing";
+import { useListing, useCategoryListing } from "./useListing";
 import { useSetup } from "./_test";
 import searchMock from "./mocks/Search";
 import ContextError from "./helpers/ContextError";
+import type { Schemas } from "#shopware";
 
 describe("useListing", () => {
-  it("invoke search", async () => {
+  it("should invoke search", async () => {
     const { vm, injections } = await useSetup(() =>
       useListing({
         listingType: "productSearchListing",
@@ -28,7 +29,7 @@ describe("useListing", () => {
     expect(vm.getLimit).toBe(10);
   });
 
-  it('invoke "readQuotes"', async () => {
+  it('should invoke "readQuotes"', async () => {
     const { vm, injections } = await useSetup(() =>
       useListing({
         listingType: "categoryListing",
@@ -55,7 +56,7 @@ describe("useListing", () => {
     );
   });
 
-  it('invoke "readQuotes" - errors', async () => {
+  it("should handle context error", async () => {
     let error: unknown | null = null;
     try {
       await useSetup(() =>
@@ -69,7 +70,7 @@ describe("useListing", () => {
     expect(error).toEqual(new ContextError("Category"));
   });
 
-  it("setCurrentFilters", async () => {
+  it("should set current filters", async () => {
     const { vm, injections } = await useSetup(() =>
       useListing({
         listingType: "categoryListing",
@@ -137,5 +138,113 @@ describe("useListing", () => {
         },
       }),
     );
+  });
+
+  it("useCategoryListing - error is thrown when listingContext was not provided in parent tree", async () => {
+    expect(() => useSetup(useCategoryListing)).toThrowError();
+  });
+
+  it("setInitialListing", async () => {
+    const { vm } = await useSetup(() =>
+      useListing({
+        listingType: "categoryListing",
+        categoryId: "1234",
+      }),
+    );
+
+    vm.setInitialListing({
+      apiAlias: "product_listing",
+    } as Schemas["ProductListingResult"]);
+
+    expect(vm.getInitialListing).toEqual({ apiAlias: "product_listing" });
+  });
+
+  it("initSearch", () => {
+    const { vm, injections } = useSetup(() =>
+      useListing({ listingType: "productSearchListing" }),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+    vm.initSearch({
+      search: "test",
+    });
+
+    expect(vm.getCurrentPage).toBe(1);
+    expect(vm.getTotalPagesCount).toBe(0);
+    expect(vm.getLimit).toBe(10);
+  });
+
+  it("loadMore", async () => {
+    const { vm, injections } = await useSetup(() =>
+      useListing({
+        listingType: "productSearchListing",
+      }),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: { page: 1 } });
+    await vm.loadMore();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("search"),
+      expect.objectContaining({
+        body: {
+          p: 2,
+        },
+        headers: {
+          "sw-include-seo-urls": true,
+        },
+      }),
+    );
+  });
+
+  it("changeCurrentSortingOrder", async () => {
+    const { vm, injections } = await useSetup(() =>
+      useListing({
+        listingType: "productSearchListing",
+      }),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: { page: 1 } });
+    vm.changeCurrentSortingOrder("test");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("search"),
+      expect.objectContaining({
+        body: {
+          order: "test",
+        },
+        headers: {
+          "sw-include-seo-urls": true,
+        },
+      }),
+    );
+  });
+
+  it("changeCurrentPage", async () => {
+    const { vm, injections } = await useSetup(() =>
+      useListing({
+        listingType: "productSearchListing",
+      }),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: { page: 1 } });
+    vm.changeCurrentPage(2);
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("search"),
+      expect.objectContaining({
+        body: {
+          page: 2,
+        },
+        headers: {
+          "sw-include-seo-urls": true,
+        },
+      }),
+    );
+  });
+
+  it("getAvailableFilters", async () => {
+    const { vm } = await useSetup(() =>
+      useListing({
+        listingType: "productSearchListing",
+      }),
+    );
+    expect(vm.getAvailableFilters).toEqual([]);
   });
 });

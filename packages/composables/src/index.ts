@@ -90,6 +90,7 @@ export function resolveCmsComponent(
       componentNameToResolve,
       resolvedComponent: undefined,
       resolved: false,
+      isResolved: false,
       error: (e as Error).message,
     };
   }

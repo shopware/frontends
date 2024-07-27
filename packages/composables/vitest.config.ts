@@ -7,14 +7,17 @@ export default defineConfig({
     coverage: {
       enabled: true,
       include: ["src"],
-      // "100": true, // TODO: our goal ;)
       thresholds: {
-        statements: 97,
-        branches: 90,
-        functions: 88.4,
-        lines: 97,
+        100: true,
       },
-      exclude: ["**/devtools/**"],
+      exclude: [
+        "**/devtools/**",
+        "**/types/**",
+        "**/src/*.test.ts",
+        "**/src/*.spec.ts",
+        // After refactoring should be removed - https://github.com/shopware/frontends/issues/1057
+        "**/src/useListing.ts",
+      ],
     },
     alias: {
       "#imports": resolve(__dirname, "./src/index.ts"),

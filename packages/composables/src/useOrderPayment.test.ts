@@ -7,7 +7,7 @@ import type { Schemas } from "#shopware";
 import Order from "./mocks/Order";
 
 describe("useOrderPayment", () => {
-  it("handlePayment", async () => {
+  it("should handle the order payment", async () => {
     const { vm, injections } = useSetup(() =>
       useOrderPayment(
         computed(() => Order.orders.elements[0]) as unknown as ComputedRef<
@@ -32,5 +32,49 @@ describe("useOrderPayment", () => {
     expect(vm.activeTransaction).toEqual(
       Order.orders.elements[0].transactions[0],
     );
+
+    vm.changePaymentMethod("test");
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("orderSetPayment"),
+      expect.objectContaining({
+        body: {
+          orderId: "018c6832f1a1731db276839b3f251fc2",
+          paymentMethodId: "test",
+        },
+      }),
+    );
+  });
+
+  it("should not invoke API calls for empty order", async () => {
+    const { vm } = useSetup(() =>
+      useOrderPayment(
+        computed(() => null) as unknown as ComputedRef<Schemas["Order"]>,
+      ),
+    );
+    expect(vm.changePaymentMethod("test")).resolves.toBeUndefined();
+    expect(vm.handlePayment()).resolves.toBeUndefined();
+  });
+
+  it("should be a asynchronous payment", () => {
+    const { vm } = useSetup(() =>
+      useOrderPayment(
+        computed(() =>
+          Object.assign(Order.orders.elements[0], {
+            transactions: [
+              {
+                paymentMethod: {
+                  active: true,
+                  asynchronous: true,
+                  afterOrderEnabled: true,
+                },
+              },
+            ],
+          }),
+        ) as unknown as ComputedRef<Schemas["Order"]>,
+      ),
+    );
+
+    expect(vm.isAsynchronous).toBe(true);
   });
 });

@@ -35,6 +35,7 @@ export function useProduct(
     // TODO link docs with composables context usage
     throw new ContextError("Product");
   }
+
   const _configurator = useContext("configurator", {
     context: product && configurator,
   });

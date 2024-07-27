@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { useProductAssociations } from "./useProductAssociations";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import mockedProduct from "./mocks/Product";
 import mockedCrossSelling from "./mocks/CrossSellingResponse";
 import { useSetup } from "./_test";
@@ -87,5 +87,19 @@ describe("useProductAssociations", () => {
     });
 
     expect(vm.productAssociations).toStrictEqual(mockedCrossSelling);
+  });
+
+  it("init without product should throw an error", () => {
+    expect(() =>
+      useSetup(() =>
+        useProductAssociations(
+          // @ts-expect-error if API returns null we want to be prepared for it
+          ref(null),
+          {
+            associationContext: "cross-selling",
+          },
+        ),
+      ),
+    ).toThrowError("[useProductAssociations]: Product is not provided.");
   });
 });

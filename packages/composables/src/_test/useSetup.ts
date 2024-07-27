@@ -8,6 +8,7 @@ type Injections = {
   apiClient: {
     invoke: ReturnType<typeof vi.fn>;
   };
+  swNotifications?: unknown;
 };
 
 export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {
@@ -16,7 +17,7 @@ export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {
     apiClient: { invoke: customMocks?.apiClient?.invoke ?? vi.fn() },
   };
 
-  const compoment = defineComponent({
+  const component = defineComponent({
     setup,
     render() {
       return h("div", []);
@@ -28,7 +29,7 @@ export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {
     customMocks || {},
   ) as Injections;
 
-  const wrapper = shallowMount(compoment, {
+  const wrapper = shallowMount(component, {
     global: {
       provide: injections,
     },

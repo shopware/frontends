@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import { useProductPrice } from "./useProductPrice";
 import { ref } from "vue";
 import mockedProduct from "./mocks/Product";
@@ -7,6 +7,9 @@ import productTierPrices from "./mocks/ProductTierPrices";
 import type { Schemas } from "#shopware";
 
 describe("useProductPrice", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
   it("product price are displayed - standard product", () => {
     const { vm } = useSetup(() => useProductPrice(ref(mockedProduct)));
 
@@ -40,24 +43,81 @@ describe("useProductPrice", () => {
     expect(vm.displayFromVariants).toBe(20);
   });
 
-  it("displayFrom", () => {
+  it("displayFrom should be false if displayParent is true", () => {
     const { vm } = useSetup(() =>
       useProductPrice(
         ref(
           Object.assign(
             { ...productTierPrices.product },
             {
-              parentId: null,
+              calculatedPrices: null,
               variantListingConfig: {
                 displayParent: true,
-              },
-              calculatedPrices: undefined,
-              listPrice: {
-                percentage: 100,
               },
             },
           ) as unknown as Schemas["Product"],
         ),
+      ),
+    );
+    expect(vm.displayFrom).toBe(false);
+    expect(vm.isListPrice).toBe(false);
+  });
+
+  it("isListPrice should be false with more than one calculatedPrices value", () => {
+    const { vm } = useSetup(() =>
+      useProductPrice(
+        ref(
+          Object.assign(
+            { ...productTierPrices.product },
+            {
+              listPrice: 80,
+              calculatedPrices: [
+                {
+                  unitPrice: 10,
+                },
+                {
+                  unitPrice: 20,
+                },
+              ],
+            },
+          ) as unknown as Schemas["Product"],
+        ),
+      ),
+    );
+    expect(vm.displayFrom).toBe(true);
+    expect(vm.isListPrice).toBe(false);
+  });
+
+  it("isListPrice should be true with one calculatedPrices value", () => {
+    const { vm } = useSetup(() =>
+      useProductPrice(
+        ref({
+          calculatedPrices: [
+            {
+              listPrice: {
+                percentage: 10,
+              },
+            },
+          ],
+        } as unknown as Schemas["Product"]),
+      ),
+    );
+    expect(vm.displayFrom).toBe(false);
+    expect(vm.isListPrice).toBe(true);
+  });
+
+  it("displayFrom - second variant", async () => {
+    const { vm } = useSetup(() =>
+      useProductPrice(
+        ref({
+          variantListingConfig: {
+            displayParent: true,
+          },
+          parentId: null,
+          calculatedCheapestPrice: {
+            hasRange: true,
+          },
+        } as unknown as Schemas["Product"]),
       ),
     );
     expect(vm.displayFrom).toBe(false);
