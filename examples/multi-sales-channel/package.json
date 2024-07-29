@@ -1,0 +1,27 @@
+{
+  "name": "example-multi-sales-channel",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt prepare && nuxt build",
+    "dev": "nuxt prepare && nuxt dev",
+    "lint": "nuxt prepare && vue-tsc --noEmit",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@nuxtjs/i18n": "^8.3.1",
+    "@shopware-pwa/composables-next": "canary",
+    "@shopware/api-client": "canary",
+    "@shopware/api-gen": "canary",
+    "@types/node": "^20.14.9",
+    "nuxt": "^3.12.2",
+    "typescript": "^5.5.3",
+    "vue": "^3.4.31",
+    "vue-tsc": "^2.0.24"
+  },
+  "engines": {
+    "node": "^18.17.x || ^20.x"
+  }
+}
