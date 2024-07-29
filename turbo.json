@@ -3,17 +3,11 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        "dist/**",
-        ".nuxt/**",
-        ".output/**",
-        ".vercel/**",
-        ".vitepress/dist/**"
-      ]
+      "outputs": ["dist/**", ".output/**", ".vercel/**", ".vitepress/dist/**"]
     },
     "generate": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".nuxt/**", ".output/**", ".vercel/**"]
+      "outputs": ["dist/**", ".output/**", ".vercel/**"]
     },
     "lint": {
       "cache": false,
