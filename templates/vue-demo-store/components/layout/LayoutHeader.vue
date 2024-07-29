@@ -50,12 +50,14 @@ const sidebarController = useModal();
               <div
                 class="w-7 h-7 i-carbon-favorite text-secondary-600 hover:text-primary hover:animate-count-infinite hover:animate-heart-beat"
               />
-              <span
-                v-if="wishlistCount"
-                class="text-3 font-sm text-white absolute bg-red-600 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
-              >
-                {{ wishlistCount }}
-              </span>
+              <ClientOnly>
+                <span
+                  v-if="wishlistCount"
+                  class="text-3 font-sm text-white absolute bg-red-600 rounded-full min-w-5 min-h-5 top-0 right-0 leading-5"
+                >
+                  {{ wishlistCount }}
+                </span>
+              </ClientOnly>
             </NuxtLink>
           </div>
           <!-- Cart -->
