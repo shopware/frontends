@@ -9,7 +9,6 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "3.0.2",
     "@nuxtjs/eslint-config-typescript": "12.1.0",
     "@unocss/nuxt": "0.61.8",
     "@unocss/reset": "0.61.8",
