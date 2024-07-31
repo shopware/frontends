@@ -19,14 +19,14 @@
     "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "0.61.5",
+    "@unocss/nuxt": "0.61.8",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/nuxt": "10.11.0",
     "defu": "6.1.4",
     "requrl": "3.0.2",
     "sitemap": "8.0.0",
-    "vue": "3.4.33"
+    "vue": "3.4.35"
   },
   "devDependencies": {
     "@iconify-json/carbon": "1.1.36",

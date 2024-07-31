@@ -17,12 +17,12 @@
     "vitepress": "1.0.0-beta.7",
     "vitepress-plugin-search": "1.0.4-alpha.22",
     "vitepress-shopware-docs": "0.3.0-beta.44",
-    "vue": "3.4.33"
+    "vue": "3.4.35"
   },
   "devDependencies": {
     "@types/markdown-it": "14.1.1",
     "@types/node": "20.14.10",
-    "@vitejs/plugin-vue": "5.0.5",
+    "@vitejs/plugin-vue": "5.1.1",
     "find-in-files": "0.5.0",
     "ts-dox": "0.1.0",
     "typescript": "5.5.4",
