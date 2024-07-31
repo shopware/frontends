@@ -56,6 +56,7 @@ type ImageElementConfig = {
   displayMode: ElementConfig<DisplayMode>;
   minHeight: ElementConfig<string | number>;
   verticalAlign: ElementConfig<VerticalAlign>;
+  horizontalAlign: ElementConfig<VerticalAlign>;
 };
 
 export type CmsElementImage = Schemas["CmsSlot"] & {
