@@ -1,11 +1,18 @@
-# Commercial Features: Quick orders
+# B2B Quick Order
 
 This example should help get you started developing [Shopware Frontends](https://github.com/shopware/frontends) & Quick Order from [Commercial Features](https://docs.shopware.com/en/shopware-6-en/commercial-features/b2b-components)
+
+⚠️ The implementation does not require an API Schema defined on the Quick Order extension side. The required definitions are added in `./api-types/storeApiTypes.overrides.ts`. However, when any extension has it implemented - that will land right into base OpenAPI schema -> like here `api-types/storeApiTypes.d` as a result of [api-gen](https://www.npmjs.com/package/@shopware/api-gen) command.
 
 ## Customization
 
 - edit [./src/App.vue](./src/App.vue) in order to change the current example's logic, look & feel.
 - edit [./src/main.js](./src/main.js) in order to adjust Shopware Frontends plugin
+
+## Overview of example
+
+- `./api-types/storeApiTypes.overrides.ts` file contains the additional definitions to make sure an `api-client` knows the schemas and operations added by an extension
+- `./src/App.vue` containing a logic for: searching and adding items, uploading a csv file with a specific format. See the comments left there.
 
 ## Project Setup
 
