@@ -289,6 +289,10 @@ export const sidebar = [
             link: "/resources/integrations/payments/",
             items: [
               {
+                text: "Amazon Pay",
+                link: "/resources/integrations/payments/amazon-pay.html",
+              },
+              {
                 text: "Adyen",
                 link: "/resources/integrations/payments/adyen.html",
               },
