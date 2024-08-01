@@ -1,4 +1,4 @@
-# B2B Features: Quick orders
+# B2B Quick Order
 
 This example should help get you started developing [Shopware Frontends](https://github.com/shopware/frontends) & Quick Order from [Commercial Features](https://docs.shopware.com/en/shopware-6-en/commercial-features/b2b-components)
 
