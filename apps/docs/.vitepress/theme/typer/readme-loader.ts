@@ -28,7 +28,7 @@ export async function ReadmeLoader(): Promise<Plugin> {
         let content =
           "\n\n" +
           ":::warning Autoloaded\n" +
-          "This page is loaded from an external markdown file. \n\nIn case of any issues or dead links, please \n" +
+          "This page is generated from an external markdown file. \n\nIn case of any issues or dead links, please \n" +
           prepareGithubPermalink({
             path,
             label: "visit the source file.",
