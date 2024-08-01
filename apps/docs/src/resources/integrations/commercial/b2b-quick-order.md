@@ -13,4 +13,4 @@ nav:
   position: 10
 ---
 
-# B2B Quick-Order
+<!-- load: ../../../../../examples/commercial-quick-order/README.md -->
