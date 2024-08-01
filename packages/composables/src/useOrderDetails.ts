@@ -7,7 +7,7 @@ import type { Schemas } from "#shopware";
 /**
  * Data for api requests to fetch all necessary data
  */
-const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
+export const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
   associations: {
     stateMachineState: {},
     lineItems: {
