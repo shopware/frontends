@@ -1,5 +1,13 @@
 # @shopware-pwa/helpers-next
 
+## 1.0.1
+
+### Patch Changes
+
+- [#1074](https://github.com/shopware/frontends/pull/1074) [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4) Thanks [@mkucmus](https://github.com/mkucmus)! - Removed optional chaining for translated properties. Expecting a different argument type for the `getLanguageName` and `getShippingMethodDeliveryTime` methods.
+
+- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Migrate eslint config to flat format
+
 ## 1.0.0
 
 ### Major Changes

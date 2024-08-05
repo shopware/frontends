@@ -15,9 +15,11 @@ Documentation specific for this package: [api-client](https://frontends.shopware
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client-old/CHANGELOG.md)
 
-### Latest changes: 1.0.1
+### Latest changes: 1.0.2
 
 ### Patch Changes
 
-- Updated dependencies []:
-  - @shopware-pwa/types@1.0.1
+- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Migrate eslint config to flat format
+
+- Updated dependencies [[`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6)]:
+  - @shopware-pwa/types@1.0.2
