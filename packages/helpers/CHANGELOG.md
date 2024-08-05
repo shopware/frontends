@@ -1,5 +1,16 @@
 # @shopware-pwa/helpers-next
 
+## 1.0.2
+
+### Patch Changes
+
+- [#1191](https://github.com/shopware/frontends/pull/1191) [`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128) Thanks [@mkucmus](https://github.com/mkucmus)! - Prevent from getting an incorrect srcset format when img url is not set.
+
+  before when there were no urls for 400w and 800w:
+  `src="image1.jpg 100w, 400w, 800w"`
+
+  now only the entry with an URL defined is returned
+
 ## 1.0.1
 
 ### Patch Changes
