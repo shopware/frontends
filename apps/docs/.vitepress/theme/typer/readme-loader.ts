@@ -30,7 +30,7 @@ export async function ReadmeLoader(): Promise<Plugin> {
           readFileSync(filePath, "utf-8") +
           "\n\n---\n\n" +
           ":::info Auto-generated\n" +
-          "This page is generated from an external markdown file. \n\nIn case of any issues or dead links, please \n" +
+          "This page is generated from an external markdown file. \nIn case of any issues or dead links, please \n" +
           prepareGithubPermalink({
             path,
             label: "visit the source file.",
