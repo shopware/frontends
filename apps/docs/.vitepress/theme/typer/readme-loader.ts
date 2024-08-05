@@ -26,8 +26,10 @@ export async function ReadmeLoader(): Promise<Plugin> {
         }
 
         let content =
-          "\n\n" +
-          ":::warning Autoloaded\n" +
+          "\n:::\n" +
+          readFileSync(filePath, "utf-8") +
+          "\n\n---\n\n" +
+          ":::info Auto-generated\n" +
           "This page is generated from an external markdown file. \n\nIn case of any issues or dead links, please \n" +
           prepareGithubPermalink({
             path,
@@ -35,8 +37,6 @@ export async function ReadmeLoader(): Promise<Plugin> {
             project: "shopware/frontends",
             inlineStyle: "",
           }) +
-          "\n:::\n" +
-          readFileSync(filePath, "utf-8") +
           "\n\n";
 
         code = code.replace(pattern, content);
