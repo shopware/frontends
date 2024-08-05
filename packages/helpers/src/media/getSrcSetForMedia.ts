@@ -20,7 +20,8 @@ export function getSrcSetForMedia<
 
   return media.thumbnails
     .map((thumbnail) => {
-      return thumbnail.url ? `${thumbnail.url} ${thumbnail.width}w` :undefined;
-    }).filter(value => !!value)
+      return thumbnail.url ? `${thumbnail.url} ${thumbnail.width}w` : undefined;
+    })
+    .filter((value) => !!value)
     .join(", ");
 }
