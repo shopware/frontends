@@ -10,6 +10,6 @@
   "dependencies": {
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
-    "nuxt": "3.12.2"
+    "nuxt": "3.12.4"
   }
 }
