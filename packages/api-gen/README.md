@@ -233,12 +233,13 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.0.3
+### Latest changes: 1.0.4
 
 ### Patch Changes
 
-- [#1113](https://github.com/shopware/frontends/pull/1113) [`65212d1`](https://github.com/shopware/frontends/commit/65212d11bb8d0af10f97454a46e7671ff16ebc7a) Thanks [@patzick](https://github.com/patzick)! - Parse Json5 responses when using default overrides
+- [#1074](https://github.com/shopware/frontends/pull/1074) [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4) Thanks [@mkucmus](https://github.com/mkucmus)! - Set `translated` property as required in provided schemas
 
-- [#1112](https://github.com/shopware/frontends/pull/1112) [`2065d00`](https://github.com/shopware/frontends/commit/2065d00998cd84fb6e2f51d7f793eb178e0865e4) Thanks [@patzick](https://github.com/patzick)! - Fixed adding missing components in overrides. Used when component name is overriden and no component definition is provided for it.
+- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Migrate eslint config to flat format
 
-- [#1103](https://github.com/shopware/frontends/pull/1103) [`c9a4965`](https://github.com/shopware/frontends/commit/c9a49659e77842a4b098d5b9cc6606f4158893fd) Thanks [@trimethylpentan](https://github.com/trimethylpentan)! - Re-enabled generation for `GenericRecord`s for openAPI objects
+- Updated dependencies [[`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6), [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4)]:
+  - @shopware/api-client@1.0.2
