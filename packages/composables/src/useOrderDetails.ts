@@ -1,42 +1,8 @@
 import { computed, ref, inject, provide } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { defu } from "defu";
-import { useShopwareContext } from "#imports";
+import { useDefaultOrderAssociations, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
-
-/**
- * Data for api requests to fetch all necessary data
- */
-const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } = {
-  associations: {
-    stateMachineState: {},
-    lineItems: {
-      associations: {
-        cover: {},
-        downloads: {
-          associations: {
-            media: {},
-          },
-        },
-      },
-    },
-    addresses: {},
-    deliveries: {
-      associations: {
-        shippingMethod: {},
-        shippingOrderAddress: {},
-        stateMachineState: {},
-      },
-    },
-    transactions: {
-      associations: {
-        paymentMethod: {},
-        stateMachineState: {},
-      },
-    },
-  },
-  checkPromotion: true,
-};
 
 export type UseOrderDetailsReturn = {
   /**
@@ -170,6 +136,8 @@ export function useOrderDetails(
     ref(),
   );
   provide("swOrderDetails", _sharedOrder);
+
+  const orderAssociations = useDefaultOrderAssociations();
 
   const paymentMethod = computed(
     () => _sharedOrder.value?.transactions?.[0]?.paymentMethod,
