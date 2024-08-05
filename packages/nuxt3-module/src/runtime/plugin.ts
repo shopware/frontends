@@ -10,12 +10,7 @@ import Cookies from "js-cookie";
 import { createAPIClient } from "@shopware/api-client";
 import { getCookie } from "h3";
 import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
-import { ApiClient } from "#shopware";
-// declare module "#app" {
-//   interface NuxtApp {
-//     $shopwareApiInstance: ApiClient;
-//   }
-// }
+import type { ApiClient } from "#shopware";
 
 export default defineNuxtPlugin((NuxtApp) => {
   const runtimeConfig = useRuntimeConfig();

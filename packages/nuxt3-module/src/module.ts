@@ -11,7 +11,7 @@ import {
 import { addCustomTab } from "@nuxt/devtools-kit";
 import { defu } from "defu";
 import { isConfigDeprecated } from "./utils";
-import { ApiClient } from "#shopware";
+import type { ApiClient } from "#shopware";
 const MODULE_ID = "@shopware/nuxt3";
 
 export default defineNuxtModule<ShopwareNuxtOptions>({
@@ -35,7 +35,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     }
 
     addPlugin({
-      src: resolver.resolve("../plugin.ts"),
+      src: resolver.resolve("./runtime/plugin.ts"),
     });
 
     // TODO: define template only when file is not present in root directory
@@ -96,16 +96,10 @@ declare module "@nuxt/schema" {
   interface PublicRuntimeConfig {
     shopware: ShopwareNuxtOptions;
   }
+}
+
+declare module "#app" {
   interface NuxtApp {
     $shopwareApiInstance: ApiClient;
   }
-  // interface NuxtApp {
-  //   $shopwareApiInstance: ApiClient;
-  // }
 }
-
-// declare module "#app" {
-//   interface NuxtApp {
-//     $shopwareApiInstance: ApiClient;
-//   }
-// }

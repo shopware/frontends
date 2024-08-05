@@ -18,12 +18,12 @@
   },
   "license": "MIT",
   "main": "./index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/module.mjs",
+  "types": "./dist/module.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "types": "./dist/module.d.ts",
+      "import": "./dist/module.mjs",
       "require": "./index.cjs"
     }
   },
@@ -36,7 +36,7 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "lint": "eslint plugin.ts src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "echo \"Warn: no test specified yet\""
   },
@@ -51,6 +51,7 @@
   "devDependencies": {
     "@nuxt/schema": "3.12.4",
     "eslint-config-shopware": "workspace:*",
+    "@nuxt/module-builder": "^0.8.1",
     "nuxt": "3.12.4",
     "tsconfig": "workspace:*",
     "typescript": "5.5.4",
