@@ -1,7 +1,6 @@
 import {
   defineNuxtPlugin,
   useRuntimeConfig,
-  // useCookie,
   useState,
   createShopwareContext,
   createError,
@@ -9,8 +8,14 @@ import {
 import { ref } from "vue";
 import Cookies from "js-cookie";
 import { createAPIClient } from "@shopware/api-client";
-
+import { getCookie } from "h3";
 import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
+import { ApiClient } from "#shopware";
+// declare module "#app" {
+//   interface NuxtApp {
+//     $shopwareApiInstance: ApiClient;
+//   }
+// }
 
 export default defineNuxtPlugin((NuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
@@ -35,7 +40,9 @@ export default defineNuxtPlugin((NuxtApp) => {
     baseURL: shopwareEndpoint,
     accessToken: shopwareAccessToken,
     contextToken: shouldUseSessionContextInServerRender
-      ? Cookies.get("sw-context-token")
+      ? Cookies.get("sw-context-token") ||
+        (NuxtApp.ssrContext &&
+          getCookie(NuxtApp.ssrContext?.event, "sw-context-token"))
       : "",
   });
 
@@ -73,6 +80,12 @@ export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.vueApp.provide("swSessionContext", sessionContextData);
   // in case someone tries to use it in nuxt specific code like middleware
   useState("swSessionContext", () => sessionContextData);
+
+  return {
+    provide: {
+      shopwareApiInstance: apiClient as ApiClient,
+    },
+  };
 });
 
 // const ShopwarePlugin = {

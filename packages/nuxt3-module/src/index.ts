@@ -11,6 +11,7 @@ import {
 import { addCustomTab } from "@nuxt/devtools-kit";
 import { defu } from "defu";
 import { isConfigDeprecated } from "./utils";
+import { ApiClient } from "#shopware";
 const MODULE_ID = "@shopware/nuxt3";
 
 export default defineNuxtModule<ShopwareNuxtOptions>({
@@ -95,4 +96,16 @@ declare module "@nuxt/schema" {
   interface PublicRuntimeConfig {
     shopware: ShopwareNuxtOptions;
   }
+  interface NuxtApp {
+    $shopwareApiInstance: ApiClient;
+  }
+  // interface NuxtApp {
+  //   $shopwareApiInstance: ApiClient;
+  // }
 }
+
+// declare module "#app" {
+//   interface NuxtApp {
+//     $shopwareApiInstance: ApiClient;
+//   }
+// }
