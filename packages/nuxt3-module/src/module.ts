@@ -35,7 +35,7 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     }
 
     addPlugin({
-      src: resolver.resolve("./runtime/plugin.ts"),
+      src: resolver.resolve("./runtime/plugin"),
     });
 
     // TODO: define template only when file is not present in root directory

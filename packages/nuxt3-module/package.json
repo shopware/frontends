@@ -29,12 +29,13 @@
   },
   "files": [
     "dist",
-    "plugin.ts",
+    "./runtime/plugin.js",
     "shopware.d.ts",
     "index.cjs"
   ],
   "scripts": {
     "build": "unbuild",
+    "prepack": "nuxt-module-build build",
     "dev": "unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
