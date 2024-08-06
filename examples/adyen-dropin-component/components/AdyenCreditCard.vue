@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import "@adyen/adyen-web/dist/adyen.css";
+import { Dropin } from "@adyen/adyen-web"
+import '@adyen/adyen-web/styles/adyen.css';
 
 const emits = defineEmits<{
   // to inform the upper levels of an app that payButton was clicked (that means it was validated by Adyen and we can proceed)
@@ -35,13 +36,14 @@ try {
 const checkout = await nuxtApp.$adyenCheckout({
   ...(sessionContext.value?.extensions?.adyenData || adyenCheckout),
   paymentMethodsResponse: adyenConfigResponse?.data,
-  paymentMethodsConfiguration: {
-    card: {
-      hasHolderName: true,
-      holderNameRequired: true,
-      billingAddressRequired: false,
-    },
-  },
+  
+  // paymentMethodsConfiguration: {
+  //   card: {
+  //     hasHolderName: true,
+  //     holderNameRequired: true,
+  //     billingAddressRequired: false,
+  //   },
+  // },
   async onSubmit(state, element) {
     // emit the payButtonClicked event with a current state coming from Adyen checkout instance
     emits("payButtonClicked", state);
@@ -49,7 +51,7 @@ const checkout = await nuxtApp.$adyenCheckout({
 });
 onMounted(async () => {
   // Create an instance of the Component and mount it to the container you created.
-  checkout.create("dropin").mount("#adyen-credit-card");
+  new Dropin(checkout).mount("#adyen-credit-card");
 });
 </script>
 <template>

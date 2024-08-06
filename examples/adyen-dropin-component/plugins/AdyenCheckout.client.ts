@@ -1,5 +1,5 @@
 import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
-import AdyenCheckout from "@adyen/adyen-web";
+import { AdyenCheckout } from "@adyen/adyen-web";
 import { defu } from "defu";
 
 export default defineNuxtPlugin(async () => {
