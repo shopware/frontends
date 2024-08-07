@@ -1,5 +1,5 @@
 import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
-import AdyenCheckout from "@adyen/adyen-web";
+import { AdyenCheckout, type CoreConfiguration } from "@adyen/adyen-web";
 import { defu } from "defu";
 
 export default defineNuxtPlugin(async () => {
@@ -11,12 +11,14 @@ export default defineNuxtPlugin(async () => {
   }
 
   // factory for creating AdyenCheckout instance by providing its credentials and parameters - use the default one from runtime config instead
-  const getInstance = async (
-    createInstanceParams: Parameters<typeof AdyenCheckout>[0],
-  ) => {
+  const getInstance = async (createInstanceParams: CoreConfiguration) => {
     return await AdyenCheckout(
       // merge configs
-      defu({}, runtimeConfig?.public?.adyenCheckout, createInstanceParams),
+      defu(
+        {},
+        runtimeConfig?.public.adyenCheckout as CoreConfiguration,
+        createInstanceParams,
+      ),
     );
   };
 

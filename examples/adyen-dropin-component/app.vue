@@ -4,9 +4,7 @@ const { createOrder } = useCheckout();
 const { refreshSessionContext } = useSessionContext();
 
 // get the login data from nuxt.config.ts
-const {
-  public: { loginData },
-} = useRuntimeConfig();
+const config = useRuntimeConfig();
 
 // useListing for further product search
 const { search, getElements } = useProductSearchListing();
@@ -24,7 +22,7 @@ try {
   // auto log-in
 
   await login({
-    ...loginData,
+    ...config?.public?.loginData,
   });
   activeStep.value = 1;
   // search for a product to be added to cart
