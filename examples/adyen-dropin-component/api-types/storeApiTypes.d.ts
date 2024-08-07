@@ -135,7 +135,7 @@ export type Schemas = {
     /**
      * The funding source of the payment method.
      */
-    fundingSource?: string;
+    fundingSource?: "debit" | "credit";
     /**
      * The group where this payment method belongs to.
      */
@@ -4843,7 +4843,9 @@ export type Schemas = {
       name?: string;
     };
     /** Selected payment method */
-    paymentMethod?: components["schemas"]["PaymentMethod"]; // TODO: [OpenAPI][SalesChannelContext] paymentMethod field should be defined properly reusing PaymentMethod schema
+    paymentMethod?: components["schemas"]["PaymentMethod"] & {
+      fundingSource: components["schemas"]["AdyenPaymentMethod"]["fundingSource"];
+    }; // TODO: [OpenAPI][SalesChannelContext] paymentMethod field should be defined properly reusing PaymentMethod schema
     /** Information about the current sales channel */
     salesChannel?: {
       accessKey?: string;
@@ -5411,6 +5413,7 @@ export type Schemas = {
      * Mapped from 'storedPaymentMethod.id'
      */
     storedPaymentMethodId?: string;
+    id: string;
   };
   Struct: {
     /** Alias which can be used to restrict response fields. For more information see [includes](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#includes-apialias). */

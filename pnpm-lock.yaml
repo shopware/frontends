@@ -141,8 +141,8 @@ importers:
   examples/adyen-dropin-component:
     devDependencies:
       '@adyen/adyen-web':
-        specifier: 5.66.1
-        version: 5.66.1
+        specifier: 6.0.1
+        version: 6.0.1
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
@@ -1259,8 +1259,11 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
 
-  '@adyen/adyen-web@5.66.1':
-    resolution: {integrity: sha512-VAXK4hZrK5YyHQC/fLqBe/iArwmJj8KMfLD67s6rLPpsBKvKFGglJNB7CkoBUjN0KLCQ/1rSx+IlBnC33sJIxw==}
+  '@adyen/adyen-web@6.0.1':
+    resolution: {integrity: sha512-48GG6lNWft3y/VH81i/GmCTqJolhTpcu7uv/qJ159BZK/Hkj81tFImyMk2/gRzFoETVgRxZHcT7eCn6/6g4iUg==}
+
+  '@adyen/bento-design-tokens@1.10.0':
+    resolution: {integrity: sha512-ZaWLGTLLW0bh69mu9ibGMaZ2DXkrB07XU3gc5Mt1fTZgNDAnCsdfJ/Wq7BxW3zYhtQLU69oz0QayZ3RDKTlHEA==}
 
   '@algolia/autocomplete-core@1.9.3':
     resolution: {integrity: sha512-009HdfugtGCdC4JdXUbVJClA0q0zh24yyePn+KUGk3rP7j8FEe/m5Yo/z65gn6nP/cM39PxpzqKrL7A6fP6PPw==}
@@ -1661,14 +1664,6 @@ packages:
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
-
-  '@babel/runtime-corejs3@7.20.6':
-    resolution: {integrity: sha512-tqeujPiuEfcH067mx+7otTQWROVMKHXEaOQcAeNV5dDdbPWvPcFA8/W9LXw2NfjNmOetqLl03dfnG2WALPlsRQ==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/runtime@7.24.4':
-    resolution: {integrity: sha512-dkxf7+hn8mFBwKjs9bvBlArzLVxVbS8usaPUDd5p2a9JCL9tB8OaOVN1isD4+Xyk4ns89/xeOmbQvgdK7IIVdA==}
-    engines: {node: '>=6.9.0'}
 
   '@babel/runtime@7.24.7':
     resolution: {integrity: sha512-UwgBRMjJP+xv857DCngvqXI3Iq6J4v0wXmwc6sapg+zyhbwmQX67LUEFrkK5tbyJ30jGuG3ZvWpBiB9LCy1kWw==}
@@ -3976,8 +3971,8 @@ packages:
   '@tweenjs/tween.js@23.1.2':
     resolution: {integrity: sha512-kMCNaZCJugWI86xiEHaY338CU5JpD0B97p1j1IKNn/Zto8PgACjQx0UxbHjmOcLl/dDOBnItwD07KmCs75pxtQ==}
 
-  '@types/applepayjs@14.0.6':
-    resolution: {integrity: sha512-nyq2+UXJL7rtcaWRtD3Tr028YTtthVFe0Y1vBhm34b+gmFdNi3VFDTsVbIxii3OgyD3CHskICZJd0tEhanqrFg==}
+  '@types/applepayjs@14.0.8':
+    resolution: {integrity: sha512-Yzf5OSitdS+/G8cjaAkPJ0+pBOEf9Vik1XUCdw6ul7Qh6Xb18wTlG/sWA5jKIme3x4fbyTGlSd4mfkvdtP9mRw==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -4015,8 +4010,8 @@ packages:
   '@types/flexsearch@0.7.3':
     resolution: {integrity: sha512-HXwADeHEP4exXkCIwy2n1+i0f1ilP1ETQOH5KDOugjkTFZPntWo0Gr8stZOaebkxsdx+k0X/K6obU/+it07ocg==}
 
-  '@types/googlepay@0.7.3':
-    resolution: {integrity: sha512-X8r8QhVklu/7gJqXgzpOLe7BWFTC/l7fzTHtdi/bw5OBDo3Blk/qPTivq9n0K4AV12pMP5m6yTgOlihsh+KFrQ==}
+  '@types/googlepay@0.7.6':
+    resolution: {integrity: sha512-5003wG+qvf4Ktf1hC9IJuRakNzQov00+Xf09pAWGJLpdOjUrq0SSLCpXX7pwSeTG9r5hrdzq1iFyZcW7WVyr4g==}
 
   '@types/har-format@1.2.10':
     resolution: {integrity: sha512-o0J30wqycjF5miWDKYKKzzOU1ZTLuA42HZ4HE7/zqTOc/jTLdQ5NhYWvsRQo45Nfi1KHoRdNhteSI4BAxTF1Pg==}
@@ -5402,6 +5397,9 @@ packages:
   classnames@2.3.2:
     resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
 
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
+
   clean-regexp@1.0.0:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
     engines: {node: '>=4'}
@@ -5575,9 +5573,6 @@ packages:
 
   copy-to-clipboard@3.3.3:
     resolution: {integrity: sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==}
-
-  core-js-pure@3.26.1:
-    resolution: {integrity: sha512-VVXcDpp/xJ21KdULRq/lXdLzQAtX7+37LzpyfFM973il0tWSsDEoyzG38G14AjTpK9VTfiNM9jnFauq/CpaWGQ==}
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -8760,11 +8755,11 @@ packages:
   potpack@1.0.2:
     resolution: {integrity: sha512-choctRBIV9EMT9WGAZHn3V7t0Z2pMQyl0EZE6pFc/6ml3ssw7Dlf/oAOvFwjm1HVsqfQN8GfeFyJ+d8tRzqueQ==}
 
-  preact@10.13.2:
-    resolution: {integrity: sha512-q44QFLhOhty2Bd0Y46fnYW0gD/cbVM9dUVtNTDKPcdXSMA7jfY+Jpd6rk3GB0lcQss0z5s/6CmVP0Z/hV+g6pw==}
-
   preact@10.17.1:
     resolution: {integrity: sha512-X9BODrvQ4Ekwv9GURm9AKAGaomqXmip7NQTZgY7gcNmr7XE83adOMJvd3N42id1tMFU7ojiynRsYnY6/BRFxLA==}
+
+  preact@10.22.1:
+    resolution: {integrity: sha512-jRYbDDgMpIb5LHq3hkI0bbl+l/TQ9UnkdQ0ww+lp+4MMOdqaUYdFc5qeyP+IV8FAd/2Em7drVPeKdQxsiWCf/A==}
 
   preferred-pm@3.1.3:
     resolution: {integrity: sha512-MkXsENfftWSRpzCzImcp4FRsCc3y1opwB73CfCNWyzMqArju2CrlMHlqB7VexKiPEOjGMbttv1r9fSCn5S610w==}
@@ -9006,9 +9001,6 @@ packages:
   redis-parser@3.0.0:
     resolution: {integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==}
     engines: {node: '>=4'}
-
-  regenerator-runtime@0.13.11:
-    resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
 
   regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
@@ -10890,15 +10882,15 @@ snapshots:
 
   '@aashutoshrathi/word-wrap@1.2.6': {}
 
-  '@adyen/adyen-web@5.66.1':
+  '@adyen/adyen-web@6.0.1':
     dependencies:
-      '@babel/runtime': 7.24.4
-      '@babel/runtime-corejs3': 7.20.6
-      '@types/applepayjs': 14.0.6
-      '@types/googlepay': 0.7.3
-      classnames: 2.3.2
-      core-js-pure: 3.26.1
-      preact: 10.13.2
+      '@adyen/bento-design-tokens': 1.10.0
+      '@types/applepayjs': 14.0.8
+      '@types/googlepay': 0.7.6
+      classnames: 2.5.1
+      preact: 10.22.1
+
+  '@adyen/bento-design-tokens@1.10.0': {}
 
   '@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.6.0)':
     dependencies:
@@ -11535,15 +11527,6 @@ snapshots:
       '@babel/plugin-transform-typescript': 7.24.7(@babel/core@7.25.2)
     transitivePeerDependencies:
       - supports-color
-
-  '@babel/runtime-corejs3@7.20.6':
-    dependencies:
-      core-js-pure: 3.26.1
-      regenerator-runtime: 0.13.11
-
-  '@babel/runtime@7.24.4':
-    dependencies:
-      regenerator-runtime: 0.14.1
 
   '@babel/runtime@7.24.7':
     dependencies:
@@ -14145,7 +14128,7 @@ snapshots:
       '@stoplight/react-error-boundary': 2.0.0(react-dom@18.2.0(react@17.0.2))(react@17.0.2)
       '@stoplight/types': 13.15.0
       '@stoplight/yaml': 4.2.3
-      classnames: 2.3.2
+      classnames: 2.5.1
       httpsnippet-lite: 3.0.5
       jotai: 1.3.9(@babel/core@7.25.2)(@babel/template@7.25.0)(react-query@3.39.3(react-dom@18.2.0(react@17.0.2))(react@17.0.2))(react@17.0.2)
       json-schema: 0.4.0
@@ -14289,7 +14272,7 @@ snapshots:
       '@stoplight/mosaic-code-viewer': 1.41.0(react-dom@18.2.0(react@17.0.2))(react@17.0.2)
       '@stoplight/react-error-boundary': 2.0.0(react-dom@18.2.0(react@17.0.2))(react@17.0.2)
       '@types/json-schema': 7.0.15
-      classnames: 2.3.2
+      classnames: 2.5.1
       fnv-plus: 1.3.1
       jotai: 1.13.1(@babel/core@7.25.2)(@babel/template@7.25.0)(react@17.0.2)
       lodash: 4.17.21
@@ -14648,7 +14631,7 @@ snapshots:
 
   '@tweenjs/tween.js@23.1.2': {}
 
-  '@types/applepayjs@14.0.6': {}
+  '@types/applepayjs@14.0.8': {}
 
   '@types/babel__core@7.20.5':
     dependencies:
@@ -14695,7 +14678,7 @@ snapshots:
 
   '@types/flexsearch@0.7.3': {}
 
-  '@types/googlepay@0.7.3': {}
+  '@types/googlepay@0.7.6': {}
 
   '@types/har-format@1.2.10': {}
 
@@ -17090,6 +17073,8 @@ snapshots:
 
   classnames@2.3.2: {}
 
+  classnames@2.5.1: {}
+
   clean-regexp@1.0.0:
     dependencies:
       escape-string-regexp: 1.0.5
@@ -17235,8 +17220,6 @@ snapshots:
   copy-to-clipboard@3.3.3:
     dependencies:
       toggle-selection: 1.0.6
-
-  core-js-pure@3.26.1: {}
 
   core-util-is@1.0.3: {}
 
@@ -21477,9 +21460,9 @@ snapshots:
 
   potpack@1.0.2: {}
 
-  preact@10.13.2: {}
-
   preact@10.17.1: {}
+
+  preact@10.22.1: {}
 
   preferred-pm@3.1.3:
     dependencies:
@@ -21765,8 +21748,6 @@ snapshots:
   redis-parser@3.0.0:
     dependencies:
       redis-errors: 1.2.0
-
-  regenerator-runtime@0.13.11: {}
 
   regenerator-runtime@0.14.1: {}
 
@@ -24208,7 +24189,7 @@ snapshots:
       '@webassemblyjs/wasm-parser': 1.12.1
       acorn: 8.12.1
       acorn-import-assertions: 1.9.0(acorn@8.12.1)
-      browserslist: 4.23.3
+      browserslist: 4.23.2
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.17.1
       es-module-lexer: 1.5.4
@@ -24239,7 +24220,7 @@ snapshots:
       '@webassemblyjs/wasm-parser': 1.12.1
       acorn: 8.12.1
       acorn-import-assertions: 1.9.0(acorn@8.12.1)
-      browserslist: 4.23.3
+      browserslist: 4.23.2
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.17.1
       es-module-lexer: 1.5.4
