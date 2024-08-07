@@ -1,10 +1,12 @@
 export default defineNuxtConfig({
   extends: ["@shopware-pwa/composables-next/nuxt-layer"],
+
   shopware: {
     // your Shopware 6 instance endpoint and access key
-    endpoint: "https://demo-frontends.shopware.store",
+    endpoint: "https://demo-frontends.shopware.store/store-api",
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   },
+
   runtimeConfig: {
     public: {
       loginData: {
@@ -21,10 +23,13 @@ export default defineNuxtConfig({
       },
     },
   },
+
   css: [
     "@unocss/reset/tailwind-compat.css", // needed to reset styles see https://unocss.dev/guide/style-reset (@unocss/reset)
   ],
+
   modules: ["@vueuse/nuxt", "@unocss/nuxt", "@shopware-pwa/nuxt3-module"],
   devtools: { enabled: true },
   telemetry: false,
+  compatibilityDate: "2024-08-06",
 });
