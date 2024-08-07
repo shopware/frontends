@@ -2,6 +2,7 @@
 import type { Plugin } from "vite";
 import { resolve } from "path";
 import { readFileSync, existsSync } from "node:fs";
+import { prepareGithubPermalink } from "./utils";
 
 export async function ReadmeLoader(): Promise<Plugin> {
   return {
@@ -24,7 +25,20 @@ export async function ReadmeLoader(): Promise<Plugin> {
           );
         }
 
-        const content = readFileSync(filePath, "utf-8");
+        let content =
+          "\n:::\n" +
+          readFileSync(filePath, "utf-8") +
+          "\n\n---\n\n" +
+          ":::info Auto-generated\n" +
+          "This page is generated from an external markdown file. \nIn case of any issues or dead links, please \n" +
+          prepareGithubPermalink({
+            path,
+            label: "visit the source file.",
+            project: "shopware/frontends",
+            inlineStyle: "",
+          }) +
+          "\n\n";
+
         code = code.replace(pattern, content);
       }
 

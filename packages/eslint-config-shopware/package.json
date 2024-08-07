@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-shopware",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "main": "index.cjs",

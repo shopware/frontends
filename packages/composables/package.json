@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/composables-next",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Shopware Frontends composables for Vue",
   "author": "Shopware",
   "repository": {
@@ -70,14 +70,14 @@
   },
   "devDependencies": {
     "@nuxt/kit": "3.12.4",
-    "@vitest/coverage-v8": "2.0.4",
+    "@vitest/coverage-v8": "2.0.5",
     "@vue/test-utils": "2.4.6",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "14.12.3",
     "tsconfig": "workspace:*",
     "typescript": "5.5.4",
     "unbuild": "2.0.0",
-    "vitest": "2.0.4",
-    "vue": "3.4.35"
+    "vitest": "2.0.5",
+    "vue": "3.4.36"
   }
 }

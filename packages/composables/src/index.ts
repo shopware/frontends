@@ -33,6 +33,7 @@ export * from "./useContext";
 export * from "./useCountries";
 export * from "./useCustomerOrders";
 export * from "./useCustomerPassword";
+export * from "./useDefaultOrderAssociations";
 export * from "./useInternationalization";
 export * from "./useLandingSearch";
 export * from "./useListing";

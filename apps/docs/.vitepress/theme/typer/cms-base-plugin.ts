@@ -9,8 +9,7 @@ import {
   prepareGithubPermalink,
   replacer,
 } from "./utils";
-import { readdirSync } from "node:fs";
-import { readFileSync } from "fs";
+import { readdirSync, readFileSync } from "node:fs";
 
 export async function CmsBaseReference(): Promise<Plugin> {
   return {

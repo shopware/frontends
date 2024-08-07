@@ -1,5 +1,30 @@
 # @shopware-pwa/composables-next
 
+## 1.2.0
+
+### Minor Changes
+
+- [#1194](https://github.com/shopware/frontends/pull/1194) [`aa8f5a4`](https://github.com/shopware/frontends/commit/aa8f5a4d2eabce1d6119e31af8c7479911d7b07b) Thanks [@patzick](https://github.com/patzick)! - New `useDefaultOrderAssociations` composable to be used or overriden separately in user project. This composable just returns default associations object.
+
+### Patch Changes
+
+- Updated dependencies [[`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128)]:
+  - @shopware-pwa/helpers-next@1.0.2
+
+## 1.1.1
+
+### Patch Changes
+
+- [#1074](https://github.com/shopware/frontends/pull/1074) [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4) Thanks [@mkucmus](https://github.com/mkucmus)! - `useOrderDetails` - Load shipping address for the order details. Ivoking a `loadOrderDetails` method now will fetch also a `shippingOrderAddress` association.
+
+- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Migrate eslint config to flat format
+
+- [#1099](https://github.com/shopware/frontends/pull/1099) [`3bde5fe`](https://github.com/shopware/frontends/commit/3bde5fe6d4a9c31d380defc05a7903cf99cb8136) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useCart` - Fixed adding promotion code
+
+- Updated dependencies [[`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4), [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6), [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4)]:
+  - @shopware-pwa/helpers-next@1.0.1
+  - @shopware/api-client@1.0.2
+
 ## 1.1.0
 
 ### Minor Changes

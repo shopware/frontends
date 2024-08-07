@@ -17,15 +17,15 @@
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
     "primevue": "4.0.2",
-    "vue": "3.4.35",
-    "vue-router": "4.4.0"
+    "vue": "3.4.36",
+    "vue-router": "4.4.3"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
     "@types/node": "20.14.10",
-    "@vitejs/plugin-vue": "5.1.1",
+    "@vitejs/plugin-vue": "5.1.2",
     "@vueuse/core": "10.11.0",
-    "unocss": "0.61.8",
+    "unocss": "0.61.9",
     "vite": "5.3.5",
     "vue-tsc": "2.0.29"
   }

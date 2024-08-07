@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/cms-base",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Vue CMS support for Shopware",
   "author": "Shopware",
   "repository": {
@@ -48,22 +48,22 @@
     "entities": "5.0.0",
     "html-to-ast": "0.0.6",
     "three": "0.166.1",
-    "vue": "3.4.35",
+    "vue": "3.4.36",
     "xss": "1.0.15"
   },
   "devDependencies": {
     "@nuxt/schema": "3.12.4",
     "@types/three": "0.166.0",
-    "@vitest/coverage-v8": "2.0.4",
+    "@vitest/coverage-v8": "2.0.5",
     "eslint-config-shopware": "workspace:*",
     "eslint-plugin-vue": "9.27.0",
     "nuxt": "3.12.4",
     "tsconfig": "workspace:*",
     "typescript": "5.5.4",
     "unbuild": "2.0.0",
-    "vitest": "2.0.4",
+    "vitest": "2.0.5",
     "vue-eslint-parser": "9.4.3",
-    "vue-router": "4.4.0",
+    "vue-router": "4.4.3",
     "vue-tsc": "2.0.29"
   }
 }

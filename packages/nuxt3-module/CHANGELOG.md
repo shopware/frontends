@@ -1,5 +1,24 @@
 # @shopware-pwa/nuxt3-module
 
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128), [`aa8f5a4`](https://github.com/shopware/frontends/commit/aa8f5a4d2eabce1d6119e31af8c7479911d7b07b)]:
+  - @shopware-pwa/helpers-next@1.0.2
+  - @shopware-pwa/composables-next@1.2.0
+
+## 1.0.3
+
+### Patch Changes
+
+- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Migrate eslint config to flat format
+
+- Updated dependencies [[`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4), [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4), [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6), [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4), [`3bde5fe`](https://github.com/shopware/frontends/commit/3bde5fe6d4a9c31d380defc05a7903cf99cb8136)]:
+  - @shopware-pwa/helpers-next@1.0.1
+  - @shopware-pwa/composables-next@1.1.1
+  - @shopware/api-client@1.0.2
+
 ## 1.0.2
 
 ### Patch Changes

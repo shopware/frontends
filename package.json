@@ -37,10 +37,10 @@
     "dotenv-cli": "7.4.2",
     "esno": "4.7.0",
     "globby": "14.0.2",
-    "husky": "9.1.2",
+    "husky": "9.1.4",
     "prettier": "3.3.3",
-    "turbo": "2.0.9",
-    "vercel": "35.2.1"
+    "turbo": "2.0.11",
+    "vercel": "35.2.3"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"

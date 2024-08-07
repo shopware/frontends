@@ -13,14 +13,15 @@ export function getSrcSetForMedia<
       url: string;
     }>;
   },
->(media?: T): string {
+>(media?: T): string | undefined {
   if (!media?.thumbnails?.length) {
-    return "";
+    return;
   }
 
   return media.thumbnails
     .map((thumbnail) => {
-      return `${thumbnail.url} ${thumbnail.width}w`;
+      return thumbnail.url ? `${thumbnail.url} ${thumbnail.width}w` : undefined;
     })
+    .filter((value) => !!value)
     .join(", ");
 }

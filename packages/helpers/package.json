@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/helpers-next",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Shopware helpers for accessing API data",
   "author": "Shopware",
   "type": "module",
@@ -42,10 +42,10 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "2.0.4",
+    "@vitest/coverage-v8": "2.0.5",
     "happy-dom": "14.12.3",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.0.4"
+    "vitest": "2.0.5"
   }
 }

@@ -82,11 +82,13 @@ export function prepareGithubPermalink({
   project,
   path,
   line,
+  inlineStyle,
 }: {
   label: string;
   project: string;
   path: string;
   line?: number;
+  inlineStyle?: string;
 }) {
-  return `<a style="position:relative;top:-25px;font-size:0.8em;margin:0;" href="https://github.com/${project}/tree/main/${path}#L${line}" target="_blank">${label}</a>\n`;
+  return `<a style="${inlineStyle ?? "position:relative;top:-25px;font-size:0.8em;margin:0;"}" href="https://github.com/${project ?? "shopware/frontends"}/tree/main/${path.replaceAll("../", "")}#L${line ?? 1}" target="_blank">${label}</a>\n`;
 }

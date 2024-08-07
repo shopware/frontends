@@ -1,5 +1,18 @@
 # vue-demo-store
 
+## 1.1.1
+
+### Patch Changes
+
+- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Migrate eslint config to flat format
+
+- [#1148](https://github.com/shopware/frontends/pull/1148) [`7c38102`](https://github.com/shopware/frontends/commit/7c38102be299756ac1c2dd690d9ace6044f35206) Thanks [@mkucmus](https://github.com/mkucmus)! - Change resizing mode of Shopware CDN from `crop` to `cover` mode for image of product within `SwProductCart` component
+
+- [#1147](https://github.com/shopware/frontends/pull/1147) [`f022b44`](https://github.com/shopware/frontends/commit/f022b44a0902eae2f5a60b27068f832f07d56782) Thanks [@mkucmus](https://github.com/mkucmus)! - Use actual pagination component for wishlist and orders list within a template.
+  `SwPagination` -> `SharedPagination`.
+
+- [#1162](https://github.com/shopware/frontends/pull/1162) [`4066556`](https://github.com/shopware/frontends/commit/4066556d6cb61d098c6e7f41d66f745e6b66a234) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add data-testid for pagination
+
 ## 1.1.0
 
 ### Minor Changes

@@ -151,14 +151,13 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.1.0
+### Latest changes: 1.2.0
 
 ### Minor Changes
 
-- [#1071](https://github.com/shopware/frontends/pull/1071) [`f9d2735`](https://github.com/shopware/frontends/commit/f9d27353ec6383cb22cdece0469f8fdd13250958) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - `useCart` - new `addProducts` function that allows adding a set of products to the cart
+- [#1194](https://github.com/shopware/frontends/pull/1194) [`aa8f5a4`](https://github.com/shopware/frontends/commit/aa8f5a4d2eabce1d6119e31af8c7479911d7b07b) Thanks [@patzick](https://github.com/patzick)! - New `useDefaultOrderAssociations` composable to be used or overriden separately in user project. This composable just returns default associations object.
 
-- [#893](https://github.com/shopware/frontends/pull/893) [`d95751e`](https://github.com/shopware/frontends/commit/d95751ecde443a033f17def838bcc25aeba6951e) Thanks [@khanSoliheen](https://github.com/khanSoliheen)! - - `useWishList`:
-  - Added `getCurrentPage` and `getTotalPagesCount` to the returned object
-  - Changed `getWishlistProducts` to accept `page` and `query` as optional parameters
-  - `useSyncWishList`:
-    - Changed `getWishlistProducts`, added Parameter to pass default criterias
+### Patch Changes
+
+- Updated dependencies [[`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128)]:
+  - @shopware-pwa/helpers-next@1.0.2

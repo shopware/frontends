@@ -81,9 +81,10 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base/CHANGELOG.md)
 
-### Latest changes: 1.0.2
+### Latest changes: 1.0.4
 
 ### Patch Changes
 
-- Updated dependencies [[`f9d2735`](https://github.com/shopware/frontends/commit/f9d27353ec6383cb22cdece0469f8fdd13250958), [`d95751e`](https://github.com/shopware/frontends/commit/d95751ecde443a033f17def838bcc25aeba6951e)]:
-  - @shopware-pwa/composables-next@1.1.0
+- Updated dependencies [[`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128), [`aa8f5a4`](https://github.com/shopware/frontends/commit/aa8f5a4d2eabce1d6119e31af8c7479911d7b07b)]:
+  - @shopware-pwa/helpers-next@1.0.2
+  - @shopware-pwa/composables-next@1.2.0

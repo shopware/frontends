@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/api-client",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "[DEPRECATED] use @shopware/api-client instead",
   "author": "Shopware",
   "type": "module",
@@ -42,16 +42,16 @@
   "devDependencies": {
     "@faker-js/faker": "8.4.1",
     "@shopware/api-client": "workspace:*",
-    "@vitest/coverage-v8": "2.0.4",
+    "@vitest/coverage-v8": "2.0.5",
     "eslint-config-shopware": "workspace:*",
     "happy-dom": "14.12.3",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.0.4"
+    "vitest": "2.0.5"
   },
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",
-    "axios": "0.27.2",
+    "axios": "0.28.0",
     "query-string": "9.0.0"
   }
 }

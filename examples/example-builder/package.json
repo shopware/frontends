@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@stackblitz/sdk": "latest",
-    "vue": "3.4.35",
-    "vue-router": "4.4.0"
+    "vue": "3.4.36",
+    "vue-router": "4.4.3"
   },
   "devDependencies": {
     "@types/node": "20.14.10",
-    "@vitejs/plugin-vue": "5.1.1",
+    "@vitejs/plugin-vue": "5.1.2",
     "typescript": "5.5.4",
     "vite": "5.3.5",
     "vue-tsc": "2.0.29"
