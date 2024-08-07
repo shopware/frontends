@@ -19,7 +19,6 @@ export default defineNuxtConfig({
     // },
   },
   shopware: {
-    useUserContextInSSR: false,
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     endpoint: "https://demo-frontends.shopware.store/store-api/",
     devStorefrontUrl: "",
