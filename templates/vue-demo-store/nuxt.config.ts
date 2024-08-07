@@ -27,7 +27,6 @@ export default defineNuxtConfig({
   debug: true,
   routeRules: {
     "/": {
-      appMiddleware: ["auth"],
       isr: 60 * 60 * 24,
     },
     "/checkout": {
