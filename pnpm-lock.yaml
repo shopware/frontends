@@ -1046,6 +1046,9 @@ importers:
         specifier: 3.0.5
         version: 3.0.5
     devDependencies:
+      '@nuxt/module-builder':
+        specifier: ^0.8.1
+        version: 0.8.1(@nuxt/kit@3.12.4(magicast@0.3.4)(rollup@4.19.2))(nuxi@3.12.0)(typescript@5.5.4)
       '@nuxt/schema':
         specifier: 3.12.4
         version: 3.12.4(rollup@4.19.2)
