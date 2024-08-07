@@ -33,7 +33,7 @@ export type Schemas = {
     /**
      * The funding source of the payment method.
      */
-    fundingSource: "debit" | "credit" | undefined;
+    fundingSource?: "debit" | "credit";
     /**
      * The group where this payment method belongs to.
      */
