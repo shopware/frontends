@@ -19,12 +19,11 @@ export default defineNuxtConfig({
     // },
   },
   shopware: {
-    useUserContextInSSR: true,
+    useUserContextInSSR: false,
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     endpoint: "https://demo-frontends.shopware.store/store-api/",
     devStorefrontUrl: "",
   },
-  debug: true,
   routeRules: {
     "/": {
       isr: 60 * 60 * 24,
@@ -134,5 +133,4 @@ export default defineNuxtConfig({
     ],
   },
   telemetry: false,
-  compatibilityDate: "2024-08-02",
 });
