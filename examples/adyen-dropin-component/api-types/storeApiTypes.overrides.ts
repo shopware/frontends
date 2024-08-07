@@ -97,7 +97,7 @@ export type Schemas = {
     };
     /** Selected payment method */
     paymentMethod?: components["schemas"]["PaymentMethod"] & {
-      fundingSource: "debit" | "credit" | undefined;
+      fundingSource: components["schemas"]["AdyenPaymentMethod"]["fundingSource"]
     }; // TODO: [OpenAPI][SalesChannelContext] paymentMethod field should be defined properly reusing PaymentMethod schema
     /** Information about the current sales channel */
     salesChannel?: {
