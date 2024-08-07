@@ -36,14 +36,6 @@ try {
 const checkout = await nuxtApp.$adyenCheckout({
   ...(sessionContext.value?.extensions?.adyenData || adyenCheckout),
   paymentMethodsResponse: adyenConfigResponse?.data,
-  
-  // paymentMethodsConfiguration: {
-  //   card: {
-  //     hasHolderName: true,
-  //     holderNameRequired: true,
-  //     billingAddressRequired: false,
-  //   },
-  // },
   async onSubmit(state, element) {
     // emit the payButtonClicked event with a current state coming from Adyen checkout instance
     emits("payButtonClicked", state);
