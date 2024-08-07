@@ -48,7 +48,7 @@
     "entities": "5.0.0",
     "html-to-ast": "0.0.6",
     "three": "0.166.1",
-    "vue": "3.4.35",
+    "vue": "3.4.36",
     "xss": "1.0.15"
   },
   "devDependencies": {
@@ -63,7 +63,7 @@
     "unbuild": "2.0.0",
     "vitest": "2.0.5",
     "vue-eslint-parser": "9.4.3",
-    "vue-router": "4.4.2",
+    "vue-router": "4.4.3",
     "vue-tsc": "2.0.29"
   }
 }
