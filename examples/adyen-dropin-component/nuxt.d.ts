@@ -1,16 +1,18 @@
-import type { CoreConfiguration, AdyenCheckout } from "@adyen/adyen-web";
-
+import type { CoreConfiguration } from "@adyen/adyen-web";
+import { AdyenCheckout } from "@adyen/adyen-web";
 declare module "nuxt/schema" {
-  interface NuxtApp {
-    $adyenCheckout: ReturnType<typeof AdyenCheckout>;
-  }
-
   interface PublicRuntimeConfig {
     loginData: {
       username: string;
       password: string;
     };
     adyenCheckout: CoreConfiguration;
+  }
+}
+
+declare module "#app" {
+  interface NuxtApp {
+    $adyenCheckout: typeof AdyenCheckout;
   }
 }
 
