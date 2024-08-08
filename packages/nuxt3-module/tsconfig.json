@@ -6,7 +6,12 @@
     "target": "esnext",
     "module": "esnext",
     "paths": {
-      "#imports": ["./imports.d.ts"]
+      "#imports": [
+        "./imports.d.ts"
+      ],
+      "#app": [
+        "./node_modules/nuxt/dist/app"
+      ],
     }
   }
 }
