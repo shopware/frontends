@@ -44,11 +44,11 @@
     "@tresjs/core": "4.2.0",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
-    "@vueuse/core": "10.11.0",
+    "@vueuse/core": "10.11.1",
     "entities": "5.0.0",
     "html-to-ast": "0.0.6",
     "three": "0.166.1",
-    "vue": "3.4.36",
+    "vue": "3.4.37",
     "xss": "1.0.15"
   },
   "devDependencies": {
