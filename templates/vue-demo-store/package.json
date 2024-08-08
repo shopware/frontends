@@ -22,11 +22,11 @@
     "@unocss/nuxt": "0.61.9",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
-    "@vueuse/nuxt": "10.11.0",
+    "@vueuse/nuxt": "10.11.1",
     "defu": "6.1.4",
     "requrl": "3.0.2",
     "sitemap": "8.0.0",
-    "vue": "3.4.36"
+    "vue": "3.4.37"
   },
   "devDependencies": {
     "@iconify-json/carbon": "1.1.37",
