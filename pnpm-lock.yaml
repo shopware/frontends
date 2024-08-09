@@ -873,10 +873,10 @@ importers:
         version: link:../api-client
       '@tresjs/cientos':
         specifier: 3.9.0
-        version: 3.9.0(@tresjs/core@4.2.0(three@0.166.1)(vue@3.4.37(typescript@5.5.4)))(three@0.166.1)(tweakpane@4.0.3)(vue@3.4.37(typescript@5.5.4))
+        version: 3.9.0(@tresjs/core@4.2.5(three@0.166.1)(vue@3.4.37(typescript@5.5.4)))(three@0.166.1)(tweakpane@4.0.3)(vue@3.4.37(typescript@5.5.4))
       '@tresjs/core':
-        specifier: 4.2.0
-        version: 4.2.0(three@0.166.1)(vue@3.4.37(typescript@5.5.4))
+        specifier: 4.2.5
+        version: 4.2.5(three@0.166.1)(vue@3.4.37(typescript@5.5.4))
       '@vuelidate/core':
         specifier: 2.0.3
         version: 2.0.3(vue@3.4.37(typescript@5.5.4))
@@ -3846,8 +3846,8 @@ packages:
       tweakpane: '>=3.0.0'
       vue: '>=3.3'
 
-  '@tresjs/core@4.2.0':
-    resolution: {integrity: sha512-aXKCUPeoE+O2+Oadd5gDA/OGVrXWm7nJpGfYJ3xJIUqW5UjIamZDZticNJe2qU+BpZwQlh8HgjxIQsjFWCftyw==}
+  '@tresjs/core@4.2.5':
+    resolution: {integrity: sha512-JRBQVORwUv0VGLaYHQL2Y0psJXgVckbluVMq+MEEseq6cm35OXVy6XlmjPUUPBIpSk2KGs6tgpFJMo6EnIr+Eg==}
     peerDependencies:
       three: '>=0.133'
       vue: '>=3.4'
@@ -14155,9 +14155,9 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@tresjs/cientos@3.9.0(@tresjs/core@4.2.0(three@0.166.1)(vue@3.4.37(typescript@5.5.4)))(three@0.166.1)(tweakpane@4.0.3)(vue@3.4.37(typescript@5.5.4))':
+  '@tresjs/cientos@3.9.0(@tresjs/core@4.2.5(three@0.166.1)(vue@3.4.37(typescript@5.5.4)))(three@0.166.1)(tweakpane@4.0.3)(vue@3.4.37(typescript@5.5.4))':
     dependencies:
-      '@tresjs/core': 4.2.0(three@0.166.1)(vue@3.4.37(typescript@5.5.4))
+      '@tresjs/core': 4.2.5(three@0.166.1)(vue@3.4.37(typescript@5.5.4))
       '@vueuse/core': 10.11.1(vue@3.4.37(typescript@5.5.4))
       camera-controls: 2.8.3(three@0.166.1)
       stats-gl: 2.2.8
@@ -14172,7 +14172,7 @@ snapshots:
       - '@vue/composition-api'
       - react
 
-  '@tresjs/core@4.2.0(three@0.166.1)(vue@3.4.37(typescript@5.5.4))':
+  '@tresjs/core@4.2.5(three@0.166.1)(vue@3.4.37(typescript@5.5.4))':
     dependencies:
       '@alvarosabu/utils': 3.2.0
       '@vue/devtools-api': 6.6.3
