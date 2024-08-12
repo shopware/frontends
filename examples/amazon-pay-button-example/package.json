@@ -36,7 +36,7 @@
     "@nuxt/schema": "3.12.4",
     "@shopware-pwa/composables-next": "canary",
     "@shopware/api-client": "canary",
-    "@types/node": "20.14.10",
+    "@types/node": "22.2.0",
     "nuxt": "3.12.4",
     "typescript": "5.5.4",
     "vue-tsc": "2.0.29"
