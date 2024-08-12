@@ -9,7 +9,7 @@ Improvements within a nuxt module and the plugin:
 - adds corresponding types
 
 ```ts
-const { $shopwareApiInstance } = useNuxtApp();
+const { $shopwareApiClient } = useNuxtApp();
 
-await $shopwareApiInstance.invoke("readContext get /context");
+await $shopwareApiClient.invoke("readContext get /context");
 ```

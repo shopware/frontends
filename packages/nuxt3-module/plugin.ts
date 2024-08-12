@@ -14,7 +14,13 @@ import type { ApiClient } from "#shopware";
 
 declare module "#app" {
   interface NuxtApp {
-    $shopwareApiInstance: ApiClient;
+    $shopwareApiClient: ApiClient;
+  }
+}
+
+declare module "vue" {
+  interface ComponentCustomProperties {
+    $shopwareApiClient: ApiClient;
   }
 }
 
@@ -32,14 +38,21 @@ export default defineNuxtPlugin((NuxtApp) => {
     );
   }
 
-  const serverContextToken = !!NuxtApp.ssrContext
+  const shouldUseSessionContextInServerRender =
+    !NuxtApp.ssrContext ||
+    !!runtimeConfig.public?.shopware?.useUserContextInSSR ||
+    !!runtimeConfig?.shopware?.useUserContextInSSR;
+
+  const contextTokenFromCookie = !!NuxtApp.ssrContext
     ? getCookie(NuxtApp.ssrContext?.event, "sw-context-token")
     : Cookies.get("sw-context-token");
 
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
     accessToken: shopwareAccessToken,
-    contextToken: serverContextToken,
+    contextToken: shouldUseSessionContextInServerRender
+      ? contextTokenFromCookie
+      : "",
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {
@@ -79,7 +92,7 @@ export default defineNuxtPlugin((NuxtApp) => {
 
   return {
     provide: {
-      shopwareApiInstance: apiClient as ApiClient,
+      shopwareApiClient: apiClient as ApiClient,
     },
   };
 });
