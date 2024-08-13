@@ -1,11 +1,16 @@
+import { useCart } from "#imports";
+
 export type UseCartErrorParamsResolver = {
-  params: any | { name: string; quantity: number };
+  params: ErrorObjectParam | { name: string; quantity: number | null } | null;
   messageKey: string;
 };
 
 export type ErrorObjectParam = {
   messageKey: string;
   key: string;
+  message?: string;
+  code?: number;
+  level?: number;
 };
 
 export function useCartErrorParamsResolver(
@@ -28,8 +33,8 @@ export function useCartErrorParamsResolver(
     const product = getItem(productId);
 
     return {
-      name: product.label || "",
-      quantity: product.quantityInformation?.maxPurchase || "",
+      name: product?.label || "",
+      quantity: product?.quantityInformation?.maxPurchase || null,
     };
   };
 
@@ -38,6 +43,7 @@ export function useCartErrorParamsResolver(
       params = buildProductStockReached();
       if (!params.name || !params.quantity) {
         messageKey = "product-stock-reached-empty";
+        params = null;
       }
       break;
     default:
