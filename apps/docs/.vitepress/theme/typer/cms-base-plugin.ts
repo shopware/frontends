@@ -43,7 +43,7 @@ export async function CmsBaseReference(): Promise<Plugin> {
           path: `${component.path.split("frontends/").pop().replace("/vercel/path0/", "")}/${component.name}`,
           project: "shopware/frontends",
         });
-        
+
         try {
           //try to load associated readme
           const readme = readFileSync(
@@ -52,7 +52,7 @@ export async function CmsBaseReference(): Promise<Plugin> {
           );
           if (readme) {
             API += "\n\n";
-            API += `\n${readme.toString()}\n`;
+            API += `\n${readme.toString()}\n---`;
           }
         } catch (error) {}
       }
@@ -60,6 +60,7 @@ export async function CmsBaseReference(): Promise<Plugin> {
 
       // place it before the changelog
       code = replacer(code, API, "", "tail");
+
 
       return code;
     },
