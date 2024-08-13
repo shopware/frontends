@@ -44,11 +44,6 @@ export async function CmsBaseReference(): Promise<Plugin> {
           project: "shopware/frontends",
         });
         
-        (API +=
-          "\n\n" +
-          `${component.path}/${component.name.replace(".vue", ".md")}`),
-          +"\n\n";
-
         try {
           //try to load associated readme
           const readme = readFileSync(
@@ -59,9 +54,7 @@ export async function CmsBaseReference(): Promise<Plugin> {
             API += "\n\n";
             API += `\n${readme.toString()}\n`;
           }
-        } catch (error) {
-          API += "\n\n" + error.toString() + "\n";
-        }
+        } catch (error) {}
       }
       API += "\n\n";
 
