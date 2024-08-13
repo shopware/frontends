@@ -5,7 +5,7 @@
 Improvements within a nuxt module and the plugin:
 
 - properly loading a `sw-context-token` cookie in SSR
-- exposing an API client instance provided in a nuxt plugin
+- exposing an [API client](https://www.npmjs.com/package/@shopware/api-client) instance provided in a nuxt plugin
 - adds corresponding types
 
 ```ts
