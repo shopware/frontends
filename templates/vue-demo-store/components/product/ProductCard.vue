@@ -60,13 +60,17 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
+  const errors = getErrorsCodes();
 
-  getErrorsCodes()?.forEach((element) => {
-    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  errors?.forEach((element) => {
+    const { messageKey, params } = useCartErrorParamsResolver(element);
+    pushError(t(`errors.${messageKey}`, params));
   });
-  pushSuccess(
-    t(`cart.messages.addedToCart`, { p: props.product?.translated.name }),
-  );
+
+  if (!errors.length)
+    pushSuccess(
+      t(`cart.messages.addedToCart`, { p: props.product?.translated.name }),
+    );
 };
 
 const fromPrice = getProductFromPrice(props.product);

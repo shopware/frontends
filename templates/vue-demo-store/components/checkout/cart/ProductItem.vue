@@ -54,11 +54,9 @@ const updateQuantity = async (quantityInput: number | undefined) => {
     }
   }
 
-  // Make sure that qty is the same as it is in the response
-  quantity.value = itemQuantity.value;
-
   getErrorsCodes()?.forEach((element) => {
-    pushError(t(`errors.${element.messageKey}`, { ...element }));
+    const { messageKey, params } = useCartErrorParamsResolver(element);
+    pushError(t(`errors.${messageKey}`, params));
   });
 
   isLoading.value = false;

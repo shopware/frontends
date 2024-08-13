@@ -84,6 +84,7 @@ export type UseCartReturn = {
    * Get cart errors
    */
   consumeCartErrors(): Schemas["Cart"]["errors"];
+  getItem(id: string): Schemas["LineItem"] | undefined;
 };
 
 /**
@@ -278,6 +279,10 @@ export function useCartFunction(): UseCartReturn {
     return errors;
   };
 
+  const getItem = (id: string) => {
+    return cartItems.value.find((item) => item.id === id);
+  };
+
   return {
     addProduct,
     addProducts,
@@ -295,6 +300,7 @@ export function useCartFunction(): UseCartReturn {
     isEmpty,
     isVirtualCart,
     consumeCartErrors,
+    getItem,
   };
 }
 
