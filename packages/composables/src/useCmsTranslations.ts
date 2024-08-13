@@ -6,7 +6,16 @@ export function useCmsTranslations() {
 
 export function useCmsTranslate() {
   return {
-    cmsT: (key: string, params: any) => {
+    /**
+     * Replace text placeholder with param value
+     *
+     * @param {string} key
+     * @param {{ [key: string]: string }} params
+     * @returns {string}
+     */
+    cmsT: (key: string, params?: { [key: string]: string }) => {
+      if (!params) return key;
+
       let translatedText = key;
       for (const param in params) {
         const placeholder = `{${param}}`;
