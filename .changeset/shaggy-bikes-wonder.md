@@ -5,10 +5,11 @@
 Improvements within a nuxt module and the plugin:
 
 - properly loading a `sw-context-token` cookie in SSR
-- registering an API client instance provided as a Nuxt plugin
+- exposing an API client instance provided in a nuxt plugin
 - adds corresponding types
 
 ```ts
+// works also in a route middleware
 const { $shopwareApiClient } = useNuxtApp();
 
 await $shopwareApiClient.invoke("readContext get /context");
