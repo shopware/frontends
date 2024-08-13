@@ -44,19 +44,23 @@ export async function CmsBaseReference(): Promise<Plugin> {
           project: "shopware/frontends",
         });
         
-        API += "\n\n" + component.path + "\n\n";
+        (API +=
+          "\n\n" +
+          `${component.path}/${component.name.replace(".vue", ".md")}`),
+          +"\n\n";
+
         try {
           //try to load associated readme
           const readme = readFileSync(
-            `${component.path.split("frontends/").pop().replace("/vercel/path0/", "")}/${component.name.replace(".vue", ".md")}`,
+            `${component.path}/${component.name.replace(".vue", ".md")}`,
             "utf8",
           );
           if (readme) {
             API += "\n\n";
             API += `\n${readme.toString()}\n`;
           }
-        } catch {
-          //console.log("No readme found for", error);
+        } catch (error) {
+          API += "\n\n" + error.toString() + "\n";
         }
       }
       API += "\n\n";
