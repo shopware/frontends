@@ -43,10 +43,12 @@ export async function CmsBaseReference(): Promise<Plugin> {
           path: `${component.path.split("frontends/").pop().replace("/vercel/path0/", "")}/${component.name}`,
           project: "shopware/frontends",
         });
+        
+        API += "\n\n" + component.path + "\n\n";
         try {
           //try to load associated readme
           const readme = readFileSync(
-            `${component.path}/${component.name.replace(".vue", ".md")}`,
+            `${component.path.split("frontends/").pop().replace("/vercel/path0/", "")}/${component.name.replace(".vue", ".md")}`,
             "utf8",
           );
           if (readme) {
