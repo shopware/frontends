@@ -37,12 +37,13 @@ export async function CmsBaseReference(): Promise<Plugin> {
         if (component.isDirectory() || !component.name.endsWith(".vue"))
           continue;
 
-        API += `### \`${component.name.replace(".vue", "")}\`\n\n`;
+        API += `### \`${component.name.replace(".vue", "")}\`\n`;
         API += prepareGithubPermalink({
           label: `source code`,
           path: `${component.path.split("frontends/").pop().replace("/vercel/path0/", "")}/${component.name}`,
           project: "shopware/frontends",
         });
+
         try {
           //try to load associated readme
           const readme = readFileSync(
@@ -50,12 +51,12 @@ export async function CmsBaseReference(): Promise<Plugin> {
             "utf8",
           );
           if (readme) {
-            API += "\n\n";
+            // API += "\n\n";
             API += `\n${readme.toString()}\n`;
           }
-        } catch {
-          //console.log("No readme found for", error);
-        }
+        } catch (error) {}
+
+        API += "\n\n---\n";
       }
       API += "\n\n";
 
