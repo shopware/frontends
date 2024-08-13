@@ -52,7 +52,8 @@ export async function CmsBaseReference(): Promise<Plugin> {
           );
           if (readme) {
             API += "\n\n";
-            API += `\n${readme.toString()}\n---`;
+            API += `\n${readme.toString()}\n`;
+            API += "\n\n---\n\n";
           }
         } catch (error) {}
       }
