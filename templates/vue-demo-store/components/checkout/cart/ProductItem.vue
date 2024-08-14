@@ -56,7 +56,7 @@ const updateQuantity = async (quantityInput: number | undefined) => {
 
   getErrorsCodes()?.forEach((element) => {
     const { messageKey, params } = useCartErrorParamsResolver(element);
-    pushError(t(`errors.${messageKey}`, params));
+    pushError(t(`errors.${messageKey}`, params as Record<string, unknown>));
   });
 
   isLoading.value = false;

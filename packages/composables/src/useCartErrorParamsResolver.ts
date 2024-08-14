@@ -1,7 +1,7 @@
 import { useCart } from "#imports";
 
 export type UseCartErrorParamsResolver = {
-  params: ErrorObjectParam | { name: string; quantity: number | null } | null;
+  params: { [key: string]: string | number | null } | null;
   messageKey: string;
 };
 

@@ -10,17 +10,24 @@ export function useCmsTranslate() {
      * Replace text placeholder with param value
      *
      * @param {string} key
-     * @param {{ [key: string]: string }} params
+     * @param {} params
      * @returns {string}
      */
-    cmsT: (key: string, params?: { [key: string]: string }) => {
+    cmsT: (
+      key: string,
+      params?: { [key: string]: string | number | null } | null,
+    ) => {
       if (!params) return key;
 
       let translatedText = key;
       for (const param in params) {
         const placeholder = `{${param}}`;
         const paramValue = params[param];
-        translatedText = translatedText.replace(placeholder, paramValue);
+        if (paramValue)
+          translatedText = translatedText.replace(
+            placeholder,
+            paramValue?.toString(),
+          );
       }
       return translatedText;
     },

@@ -26,13 +26,13 @@ export function useCartNotification(): useCartNotificationReturn {
     const errors: Schemas["Cart"]["errors"] = consumeCartErrors();
     if (!errors || Array.isArray(errors)) return;
 
-    Object.keys(errors).forEach((element) => {
+    for (const element of Object.keys(errors)) {
       if (successCodes.includes(errors[element].messageKey)) {
         pushSuccess(errors[element].message);
       } else {
         pushError(errors[element].message);
       }
-    });
+    }
   };
 
   /**

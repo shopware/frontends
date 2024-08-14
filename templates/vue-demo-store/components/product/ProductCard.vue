@@ -64,7 +64,7 @@ const addToCartProxy = async () => {
 
   errors?.forEach((element) => {
     const { messageKey, params } = useCartErrorParamsResolver(element);
-    pushError(t(`errors.${messageKey}`, params));
+    pushError(t(`errors.${messageKey}`, params as Record<string, unknown>));
   });
 
   if (!errors.length)
