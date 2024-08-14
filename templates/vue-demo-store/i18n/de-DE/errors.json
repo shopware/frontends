@@ -1,5 +1,6 @@
 {
   "errors": {
+    "promotions-on-cart-price-zero-error": "Promotionen sind für den Warenkorb ausgeschlossen, da der Preis des Warenkorbs null ist",
     "product-stock-reached": "Das Produkt {name} ist nur noch {quantity} mal verfügbar",
     "product-stock-reached-empty": "Diese Menge kann nicht hinzugefügt werden",
     "product-out-of-stock": "Das Produkt {name} ist nicht mehr verfügbar",
