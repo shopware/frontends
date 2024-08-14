@@ -129,6 +129,7 @@ describe("Settings", () => {
 
     it("should show console warning when no callback methods are connected", () => {
       const apiInstance = _createInstance();
+      // @ts-expect-error for older axios version
       apiInstance.update({ contextToken: "xxx" }, { url: "/some-url" });
       expect(consoleWarnSpy).toBeCalledWith(
         '[shopware-6-api] After calling API method /some-url there is no "onConfigChange" listener. See https://shopware-pwa-docs.vuestorefront.io/landing/fundamentals/security.html#context-awareness',
