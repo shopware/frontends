@@ -8,7 +8,7 @@
     "shipping-method-changed": "Die Versandart {oldShippingMethodName} ist für Ihren aktuellen Warenkorb nicht verfügbar, die Versandart wurde auf {newShippingMethodName} geändert.",
     "payment-method-blocked": "Die Zahlungsart {name} ist für Ihren aktuellen Warenkorb gesperrt.",
     "payment-method-changed": "Die Zahlungsart {oldPaymentMethodName} ist für Ihren aktuellen Warenkorb nicht verfügbar, die Zahlungsart wurde auf {newPaymentMethodName} geändert.",
-    "promotion-not-found": "Der Gutschein-Code {code} existiert nicht.",
+    "promotion-not-found": "Der Gutschein-Code {promotionCode} existiert nicht.",
     "promotion-not-eligible": "Der Gutschein-Code wurde gespeichert, aber nicht auf den Warenkorb angewendet, da die Voraussetzungen dafür nicht zutreffen. Sobald die Voraussetzungen zutreffen, wird er automatisch hinzugefügt.",
     "promotion-excluded": "Mindestens ein Rabatt wurde wegen Konflikten mit anderen Rabatten aus dem Warenkorb entfernt. Sobald die Bedingungen wieder zutreffen, wird der Rabatt automatisch hinzugefügt.",
     "auto-promotion-not-found": "Die Rabattaktion {name} ist nicht länger gültig!",
