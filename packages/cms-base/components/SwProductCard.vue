@@ -17,12 +17,17 @@ import {
   useNotifications,
   useProductWishlist,
   useUrlResolver,
+  useCartNotification,
+  useCartErrorParamsResolver,
+  useCmsTranslate,
 } from "#imports";
 import { useElementSize } from "@vueuse/core";
 import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 
 const { pushSuccess, pushError } = useNotifications();
+const { getErrorsCodes } = useCartNotification();
+const { cmsT } = useCmsTranslate();
 
 const props = withDefaults(
   defineProps<{
@@ -51,6 +56,9 @@ type Translations = {
       topseller: string;
     };
   };
+  errors: {
+    [key: string]: string;
+  };
 };
 
 let translations: Translations = {
@@ -65,6 +73,10 @@ let translations: Translations = {
     badges: {
       topseller: "Tip",
     },
+  },
+  errors: {
+    "product-stock-reached":
+      "The product {name} is only available {quantity} times",
   },
 };
 
@@ -113,9 +125,16 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
-  pushSuccess(
-    `${props.product?.translated.name} ${translations.product.addedToCart}`,
-  );
+  const errors = getErrorsCodes();
+  errors?.forEach((element) => {
+    const { messageKey, params } = useCartErrorParamsResolver(element);
+    pushError(cmsT(translations.errors[messageKey], params));
+  });
+
+  if (!errors.length)
+    pushSuccess(
+      `${props.product?.translated.name} ${translations.product.addedToCart}`,
+    );
 };
 
 const fromPrice = getProductFromPrice(props.product);
