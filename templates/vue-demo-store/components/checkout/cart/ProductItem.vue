@@ -3,25 +3,27 @@ import type { Schemas } from "#shopware";
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
 import { ApiClientError } from "@shopware/api-client";
 
+const miniCartModal = useMiniCartModal();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+
 const props = withDefaults(
   defineProps<{
     cartItem: Schemas["LineItem"];
     maxQty?: number;
-    controller: ReturnType<typeof useModal>;
   }>(),
   {
     maxQty: 100,
   },
 );
 
-const { cartItem, controller } = toRefs(props);
+const { cartItem } = toRefs(props);
 
 const isLoading = ref(false);
 const { getErrorsCodes } = useCartNotification();
 const { refreshCart } = useCart();
 const { pushError } = useNotifications();
 const { t } = useI18n();
-const router = useRouter();
 
 const {
   itemOptions,
@@ -34,11 +36,6 @@ const {
   isDigital,
   changeItemQuantity,
 } = useCartItem(cartItem);
-
-const navigateToItemDetailPage = (id: string) => {
-  controller.value.close();
-  router.push(`/detail/${id}`);
-};
 
 const quantity = ref();
 syncRefs(itemQuantity, quantity);
@@ -99,19 +96,21 @@ const removeCartItem = async () => {
       <div
         class="flex flex-col lg:flex-row justify-between text-base font-medium text-secondary-900"
       >
-        <h3
-          class="text-base cursor-pointer"
-          data-testid="cart-product-name"
-          @click="navigateToItemDetailPage(cartItem.id)"
+        <NuxtLink
+          :to="formatLink(`/detail/${cartItem.id}`)"
+          class="flex items-center px-5 py-3 text-base font-normal text-secondary-900 break-all hover:bg-secondary-100"
+          @click="miniCartModal.close"
         >
-          {{ cartItem.label }}
-          <span
-            v-if="isDigital"
-            data-testid="cart-product-digital-label"
-            class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"
-            >{{ $t("cart.digital") }}</span
-          >
-        </h3>
+          <h3 class="text-base cursor-pointer" data-testid="cart-product-name">
+            {{ cartItem.label }}
+            <span
+              v-if="isDigital"
+              data-testid="cart-product-digital-label"
+              class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"
+              >{{ $t("cart.digital") }}</span
+            >
+          </h3>
+        </NuxtLink>
         <SharedPrice
           v-if="itemTotalPrice"
           :value="itemTotalPrice"

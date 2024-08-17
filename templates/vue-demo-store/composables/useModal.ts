@@ -20,3 +20,4 @@ export function useModal() {
 }
 
 export const useSideMenuModal = createSharedComposable(useModal);
+export const useMiniCartModal = createSharedComposable(useModal);

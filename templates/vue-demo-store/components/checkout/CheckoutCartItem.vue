@@ -5,15 +5,13 @@ const props = withDefaults(
   defineProps<{
     cartItem: Schemas["LineItem"];
     maxQty?: number;
-    // eslint-disable-next-line vue/require-default-prop
-    controller?: ReturnType<typeof useModal>;
   }>(),
   {
     maxQty: 100,
   },
 );
 
-const { cartItem, controller } = toRefs(props);
+const { cartItem } = toRefs(props);
 const CartItem = computed(() => {
   switch (cartItem.value?.type) {
     default:
@@ -26,5 +24,5 @@ const CartItem = computed(() => {
 </script>
 
 <template>
-  <component :is="CartItem" :cart-item="cartItem" :controller="controller" />
+  <component :is="CartItem" :cart-item="cartItem" />
 </template>
