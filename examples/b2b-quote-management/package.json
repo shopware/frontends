@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@types/node": "20.14.10",
+    "@types/node": "22.4.1",
     "@vitejs/plugin-vue": "5.1.2",
     "@vueuse/core": "10.11.1",
     "unocss": "0.61.9",
