@@ -45,11 +45,11 @@ async function invokeResetPassword() {
           >
             <div class="flex items-center justify-end">
               <div class="text-sm">
-                <span
-                  class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
-                  @click="invokeResetPassword"
-                  >{{ $t("recoveryPassword.forgotPassword") }}</span
+                <NuxtLink
+                  class="font-medium text-indigo-600 hover:text-indigo-500"
+                  @click.stop="invokeResetPassword"
                 >
+                </NuxtLink>
               </div>
             </div>
           </AccountLoginForm>
