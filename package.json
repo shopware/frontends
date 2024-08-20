@@ -39,8 +39,8 @@
     "globby": "14.0.2",
     "husky": "9.1.4",
     "prettier": "3.3.3",
-    "turbo": "2.0.12",
-    "vercel": "35.2.3"
+    "turbo": "2.0.14",
+    "vercel": "36.0.0"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"
