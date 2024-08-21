@@ -18,7 +18,7 @@ export * from "./types";
 export * from "./cms";
 export * from "./createShopwareContext";
 export * from "./useAddToCart";
-export * from "./useAddress";
+export * from "./useAddress/useAddress";
 export * from "./useBreadcrumbs";
 export * from "./useCart";
 export * from "./useCartItem";

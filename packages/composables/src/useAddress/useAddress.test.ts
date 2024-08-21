@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { useAddress } from "./useAddress";
-import { useSetup } from "./_test";
+import { useSetup } from "../_test";
 import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 import type { FetchResponse } from "ofetch";
