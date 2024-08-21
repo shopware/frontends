@@ -8,6 +8,7 @@ import {
   getWrappedCodeBlock,
   prepareGithubPermalink,
   replacer,
+  normalizeString,
 } from "./utils";
 import { readdirSync, readFileSync } from "node:fs";
 
@@ -20,23 +21,43 @@ export async function ComposablesBuilder(): Promise<Plugin> {
 
       const [pkg, type, fileName] = id.split("/").slice(-3);
 
+      const composableName = fileName.replace(".md", "");
+
       if (pkg !== "packages" || type !== "composables") {
         return code;
       }
+
+      // Build name
+      code = code.replace("{{NAME}}", composableName);
 
       let astJson = "";
 
       try {
         astJson = extract(
           resolve(
-            `../../packages/composables/src/${fileName.replace(".md", "")}/${fileName.replace("md", "ts")}`,
+            `../../packages/composables/src/${composableName}/${composableName}.ts`,
           ),
         );
       } catch (e) {
         console.error(e);
+        return code;
       }
 
-      return `# ${fileName.replace(".md", "")} `;
+      const description = astJson?.functions[composableName]?.summary || "";
+      const returnType = astJson?.functions[composableName]?.returnType || "";
+      const apiBlock = astJson?.types[returnType]?.signature
+        ? getWrappedCodeBlock(
+            normalizeString(astJson?.types[returnType].signature),
+          )
+        : "";
+
+      code = code
+        .replace("{{DESCRIPTION}}", description)
+        .replace("{{API_CONTENT}}", apiBlock);
+
+      console.log("astJson", astJson);
+
+      return code;
     },
   };
 }

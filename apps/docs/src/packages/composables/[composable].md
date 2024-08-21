@@ -1,0 +1,7 @@
+# {{NAME}}
+
+{{DESCRIPTION}}
+
+## API
+
+{{API_CONTENT}}
