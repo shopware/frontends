@@ -45,17 +45,44 @@ export async function ComposablesBuilder(): Promise<Plugin> {
 
       const description = astJson?.functions[composableName]?.summary || "";
       const returnType = astJson?.functions[composableName]?.returnType || "";
-      const apiBlock = astJson?.types[returnType]?.signature
-        ? getWrappedCodeBlock(
-            normalizeString(astJson?.types[returnType].signature),
-          )
-        : "";
+
+      // Building interfaces block
+      let interfacesBlock = `// packages/composables/src/${composableName}/${composableName}.ts`;
+      for (const key of Object.keys(astJson.functions)) {
+        interfacesBlock = `${interfacesBlock} \n\n ${astJson?.functions[key]?.signature || ""}`;
+      }
+
+      // Building types block
+      let typesBlock = `// packages/composables/src/${composableName}/${composableName}.ts`;
+      for (const key of Object.keys(astJson.types)) {
+        typesBlock = `${typesBlock} \n\n ${astJson?.types[key]?.signature || ""}`;
+      }
 
       code = code
         .replace("{{DESCRIPTION}}", description)
-        .replace("{{API_CONTENT}}", apiBlock);
+        .replace(
+          "{{RETURN_TYPES_CONTENT}}",
+          getWrappedCodeBlock(normalizeString(typesBlock)),
+        )
+        .replace(
+          "{{INTERFACE_CONTENT}}",
+          getWrappedCodeBlock(normalizeString(interfacesBlock)),
+        );
 
-      console.log("astJson", astJson);
+      // Loading additional MD file
+      try {
+        const additionalMd = readFileSync(
+          resolve(
+            `../../packages/composables/src/${composableName}/${composableName}.md`,
+          ),
+          "utf8",
+        );
+        console.log("ddd", additionalMd);
+        code = code.replace("{{ADDITIONAL_README}}", additionalMd);
+      } catch (e) {
+        console.error(e);
+        code = code.replace("{{ADDITIONAL_README}}", "");
+      }
 
       return code;
     },
