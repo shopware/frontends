@@ -10,7 +10,7 @@ import {
   replacer,
   normalizeString,
 } from "./utils";
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync, existsSync } from "node:fs";
 
 export async function ComposablesBuilder(): Promise<Plugin> {
   return {
@@ -77,13 +77,60 @@ export async function ComposablesBuilder(): Promise<Plugin> {
           ),
           "utf8",
         );
-        console.log("ddd", additionalMd);
         code = code.replace("{{ADDITIONAL_README}}", additionalMd);
       } catch (e) {
         console.error(e);
         code = code.replace("{{ADDITIONAL_README}}", "");
       }
 
+      //       // Demo dynamic
+      //       try {
+      //         const demoPath = resolve(
+      //           `../../packages/composables/src/${composableName}/${composableName}.demo.vue`,
+      //         );
+      //         const demoExists = existsSync(demoPath);
+      //         if (demoExists) {
+      //           code = code.replace(
+      //             "{{DEMO_BLOCK}}",
+      //             `<script setup>
+      // import { defineAsyncComponent } from 'vue'
+      // const Demo = defineAsyncComponent(() => import('${demoPath}'))
+      // </script>
+
+      // ## Demo
+      // <DemoBlock>
+      // <CreateContext />
+      // <Demo />
+      // </DemoBlock>`,
+      //           );
+      //         }
+      //       } catch (e) {
+      //         console.error(e);
+      //         code = code.replace("{{DEMO_BLOCK}}", "");
+      //       }
+
+      // Demo static
+      try {
+        const codeBlock = readFileSync(
+          resolve(
+            `../../packages/composables/src/${composableName}/${composableName}.demo.vue`,
+          ),
+          "utf8",
+        );
+
+        code = code.replace(
+          "{{DEMO_BLOCK}}",
+          `
+## Demo
+\`\`\`vue
+${codeBlock}
+\`\`\`
+          `,
+        );
+      } catch (e) {
+        console.error(e);
+        code = code.replace("{{DEMO_BLOCK}}", "");
+      }
       return code;
     },
   };

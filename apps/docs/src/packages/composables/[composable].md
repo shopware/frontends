@@ -4,6 +4,8 @@
 
 {{ADDITIONAL_README}}
 
+{{DEMO_BLOCK}}
+
 ## Types
 
 {{INTERFACE_CONTENT}}
