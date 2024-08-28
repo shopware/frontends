@@ -52,6 +52,6 @@
   "dependencies": {
     "@shopware-pwa/types": "workspace:*",
     "axios": "0.28.0",
-    "query-string": "9.0.0"
+    "query-string": "9.1.0"
   }
 }
