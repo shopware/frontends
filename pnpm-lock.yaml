@@ -528,6 +528,9 @@ importers:
       "@types/node":
         specifier: ^20
         version: 20.16.1
+      js-cookie:
+        specifier: 3.0.5
+        version: 3.0.5
       nuxt:
         specifier: 3.12.4
         version: 3.12.4(@biomejs/biome@1.8.3)(@opentelemetry/api@1.9.0)(@parcel/watcher@2.4.1)(@types/node@20.16.1)(encoding@0.1.13)(eslint@9.9.1(jiti@1.21.6))(ioredis@5.4.1)(magicast@0.3.4)(optionator@0.9.3)(rollup@4.20.0)(terser@5.31.6)(typescript@5.5.4)(vite@5.4.0(@types/node@20.16.1)(terser@5.31.6))(vue-tsc@2.0.29(typescript@5.5.4))
