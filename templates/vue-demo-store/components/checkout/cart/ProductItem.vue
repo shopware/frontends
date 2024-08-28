@@ -91,26 +91,29 @@ const removeCartItem = async () => {
     />
   </div>
 
-  <div class="flex flex-1 flex-col">
+  <div class="flex flex-1 flex-col text-left">
     <div>
       <div
         class="flex flex-col lg:flex-row justify-between text-base font-medium text-secondary-900"
       >
-        <NuxtLink
-          :to="formatLink(`/detail/${cartItem.id}`)"
-          class="flex items-center px-5 py-3 text-base font-normal text-secondary-900 break-all hover:bg-secondary-100"
-          @click="miniCartModal.close"
+        <h3
+          class="text-base cursor-pointer pr-2"
+          data-testid="cart-product-name"
         >
-          <h3 class="text-base cursor-pointer" data-testid="cart-product-name">
+          <NuxtLink
+            :to="formatLink(`/detail/${cartItem.id}`)"
+            class="flex items-left text-base font-normal text-secondary-900 break-words hover:underline"
+            @click="miniCartModal.close"
+          >
             {{ cartItem.label }}
             <span
               v-if="isDigital"
               data-testid="cart-product-digital-label"
-              class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"
+              class="bg-blue-100 text-blue-800 text-xs mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"
               >{{ $t("cart.digital") }}</span
             >
-          </h3>
-        </NuxtLink>
+          </NuxtLink>
+        </h3>
         <SharedPrice
           v-if="itemTotalPrice"
           :value="itemTotalPrice"

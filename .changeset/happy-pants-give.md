@@ -2,4 +2,4 @@
 "vue-demo-store": minor
 ---
 
-I have created a new shared modal component. I have added NuxtLink to navigate to details page.
+LInk back to the product page for line items inside the cart.
