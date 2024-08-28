@@ -15,17 +15,17 @@ export default defineNuxtConfig({
           international: {
             endpoint: "https://demo-frontends.shopware.store/store-api/",
             accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-            locales: [ "en-GB" ],
+            locales: ["en-GB"],
           },
           germany: {
             endpoint: "https://demo-frontends.shopware.store/store-api/",
             accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-            locales: [ "de-DE" ],
+            locales: ["de-DE"],
           },
           poland: {
             endpoint: "https://demo-frontends.shopware.store/store-api/",
             accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
-            locales: [ "pl-PL" ],
+            locales: ["pl-PL"],
           },
         },
       },
@@ -57,4 +57,4 @@ export default defineNuxtConfig({
   },
 
   telemetry: false,
-})
+});

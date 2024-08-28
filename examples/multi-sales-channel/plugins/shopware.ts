@@ -15,14 +15,13 @@ export default defineNuxtPlugin((NuxtApp) => {
   }
 
   const shouldUseSessionContextInServerRender =
-    !process.server ||
-    !!runtimeConfig.public?.shopware?.useUserContextInSSR;
+    !process.server || !!runtimeConfig.public?.shopware?.useUserContextInSSR;
 
   const i18n: Composer = NuxtApp.$i18n as unknown as Composer;
   const locale: string | undefined = i18n?.locale.value;
 
   const salesChannel = computed(() =>
-    Object.values(salesChannels)?.find((s) => s.locales.includes(locale))
+    Object.values(salesChannels)?.find((s) => s.locales.includes(locale)),
   );
 
   const apiClient = createAPIClient({

@@ -30,13 +30,13 @@ Set up your shopware instance with multiple sales channels.
    into your nuxt project's `plugins` folder.
 
 3. Configure the shopware plugin in the `runtimeConfig > public` section of your `nuxt.config.ts`:
-   
+
    ```js
    // ./nuxt.config.ts
    shopware: {
-      useUserContextInSSR: false, 
+      useUserContextInSSR: false,
       devStorefrontUrl: "",
-   
+
       // Configure the sales channel credentials and locales
       salesChannels: {
          international: {

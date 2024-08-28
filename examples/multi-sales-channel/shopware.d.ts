@@ -3,13 +3,13 @@ declare module "#shopware" {
 
   // for default types
   export type operations =
-      import("@shopware/api-client/store-api-types").operations;
+    import("@shopware/api-client/store-api-types").operations;
   // or for locally generated types
   // export type operations = import("./api-types/storeApiTypes").operations;
 
   // for default types
   export type Schemas =
-      import("@shopware/api-client/store-api-types").components["schemas"];
+    import("@shopware/api-client/store-api-types").components["schemas"];
   // or for locally generated types
   // export type Schemas =
   //   import("./api-types/storeApiTypes").components["schemas"];
