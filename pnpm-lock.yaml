@@ -12089,7 +12089,7 @@ snapshots:
   '@manypkg/find-root@1.1.0':
     dependencies:
       '@babel/runtime': 7.24.7
-      '@types/node': 20.16.1
+      '@types/node': 20.16.2
       find-up: 4.1.0
       fs-extra: 8.1.0
 
@@ -14388,7 +14388,7 @@ snapshots:
 
   '@types/sax@1.2.7':
     dependencies:
-      '@types/node': 20.16.1
+      '@types/node': 20.16.2
 
   '@types/scheduler@0.16.8': {}
 
@@ -15190,7 +15190,7 @@ snapshots:
       '@edge-runtime/node-utils': 2.3.0
       '@edge-runtime/primitives': 4.1.0
       '@edge-runtime/vm': 3.2.0
-      '@types/node': 20.16.1
+      '@types/node': 20.16.2
       '@vercel/build-utils': 8.3.7
       '@vercel/error-utils': 2.0.2
       '@vercel/nft': 0.27.3(encoding@0.1.13)
@@ -15204,7 +15204,7 @@ snapshots:
       node-fetch: 2.6.9(encoding@0.1.13)
       path-to-regexp: 6.2.1
       ts-morph: 12.0.0
-      ts-node: 10.9.1(@swc/core@1.7.10)(@types/node@20.16.1)(typescript@4.9.5)
+      ts-node: 10.9.1(@swc/core@1.7.10)(@types/node@20.16.2)(typescript@4.9.5)
       typescript: 4.9.5
       undici: 6.19.5
     transitivePeerDependencies:
@@ -21879,7 +21879,7 @@ snapshots:
 
   sitemap@8.0.0:
     dependencies:
-      '@types/node': 20.16.1
+      '@types/node': 20.16.2
       '@types/sax': 1.2.7
       arg: 5.0.2
       sax: 1.3.0
@@ -22302,14 +22302,14 @@ snapshots:
       '@ts-morph/common': 0.24.0
       code-block-writer: 13.0.1
 
-  ts-node@10.9.1(@swc/core@1.7.10)(@types/node@20.16.1)(typescript@4.9.5):
+  ts-node@10.9.1(@swc/core@1.7.10)(@types/node@20.16.2)(typescript@4.9.5):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.9
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.16.1
+      '@types/node': 20.16.2
       acorn: 8.12.1
       acorn-walk: 8.3.3
       arg: 4.1.3
