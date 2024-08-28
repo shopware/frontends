@@ -40,4 +40,4 @@ Now the CMS module will automatically resolve that file based on the name and yo
 
 ### Additional Example
 
-<PageRef page="overwriting-cms" title="Overwrite CMS blocks in Nuxt 3 APP" sub="Example how to overwrite the product card" />
+<PageRef page="overwriting-cms.html" title="Overwrite CMS blocks in Nuxt 3 APP" sub="Example how to overwrite the product card" />

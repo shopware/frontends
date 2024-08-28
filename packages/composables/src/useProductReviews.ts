@@ -1,7 +1,7 @@
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseProductReviewsReturn = {
   /**
@@ -23,7 +23,11 @@ export type UseProductReviewsReturn = {
    * @param parameters {@link Schemas["Criteria"]}
    * @returns
    */
-  loadProductReviews(parameters?: Schemas["Criteria"]): Promise<void>;
+  loadProductReviews(
+    parameters?: Schemas["Criteria"],
+  ): Promise<
+    operations["readProductReviews post /product/{productId}/reviews"]["response"]
+  >;
 };
 
 /**
@@ -40,7 +44,9 @@ export function useProductReviews(
 
   const loadProductReviews = async (
     parameters: Schemas["Criteria"] = {},
-  ): Promise<void> => {
+  ): Promise<
+    operations["readProductReviews post /product/{productId}/reviews"]["response"]
+  > => {
     const fetchedReviews = await apiClient.invoke(
       "readProductReviews post /product/{productId}/reviews",
       {
@@ -49,6 +55,7 @@ export function useProductReviews(
       },
     );
     productReviews.value = fetchedReviews.data.elements ?? [];
+    return fetchedReviews.data;
   };
 
   const addReview = async (data: {

@@ -22,7 +22,9 @@ type Translations = {
   product: {
     previously: string;
     amount: string;
-    price: string;
+    price: {
+      [key: string]: string;
+    };
     to: string;
     from: string;
     content: string;
@@ -39,7 +41,11 @@ let translations: Translations = {
   product: {
     previously: "Previously",
     amount: "Amount",
-    price: "Price",
+    price: {
+      label: "Price",
+      to: "To",
+      from: "From",
+    },
     to: "To",
     from: "From",
     content: "Content",
@@ -104,7 +110,7 @@ const restockTime = computed(() => product.value?.restockTime);
           }"
           :value="unitPrice"
         />
-        <div class="text-xs flex text-secondary-500" v-if="regulationPrice">
+        <div v-if="regulationPrice" class="text-xs flex text-secondary-500">
           {{ translations.product.previously }}
           <SwSharedPrice class="ml-1" :value="regulationPrice" />
         </div>
@@ -122,7 +128,7 @@ const restockTime = computed(() => product.value?.restockTime);
               <th
                 class="border-b dark:border-secondary-600 font-medium p-4 pr-8 pt-0 pb-3 text-secondary-600 dark:text-secondary-200 text-left"
               >
-                {{ translations.product.price }}
+                {{ translations.product.price.label }}
               </th>
             </tr>
           </thead>

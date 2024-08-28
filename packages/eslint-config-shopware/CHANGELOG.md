@@ -1,5 +1,32 @@
 # eslint-config-shopware
 
+## 1.0.0
+
+### Major Changes
+
+- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - - Migrate config to the new Flat format
+
+  - Export also as ESM module
+
+  example:
+
+  ```ts
+  // eslint.config.js
+  import shopwareConfig from "eslint-config-shopware";
+
+  export default [...shopwareConfig];
+  ```
+
+## 0.0.9
+
+### Patch Changes
+
+- [#478](https://github.com/shopware/frontends/pull/478) [`df96fd0`](https://github.com/shopware/frontends/commit/df96fd09b9bef27d058e3f7ee9b4f18f7035d622) Thanks [@patzick](https://github.com/patzick)! - Dependency changes:
+
+  - Changed dependency _@typescript-eslint/eslint-plugin_ from **^6.11.0** to **^6.13.1**
+  - Changed dependency _@typescript-eslint/parser_ from **^6.11.0** to **^6.13.1**
+  - Changed dependency _typescript_ from **^5.2.2** to **^5.3.2**
+
 ## 0.0.8
 
 ### Patch Changes

@@ -34,7 +34,7 @@ const handleRequestQuote = async () => {
 };
 
 const activeQuote = computed(() => {
-  return quote.value.stateMachineState?.technicalName === "replied";
+  return quote?.value.stateMachineState?.technicalName === "replied";
 });
 const refreshQuote = async () => {
   quote.value = await getQuote(route.params.id as string);
@@ -102,7 +102,7 @@ const refreshQuote = async () => {
               </td>
             </tr>
             <tr
-              v-for="taxRule in quote.price.calculatedTaxes"
+              v-for="taxRule in quote?.price.calculatedTaxes"
               :key="taxRule.tax"
             >
               <td class="py-3 px-4 text-left font-medium text-gray-600">

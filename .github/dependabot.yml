@@ -1,86 +1,83 @@
 ---
 version: 2
 updates:
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: 'daily'
-  - package-ecosystem: 'npm'
-    directory: '/'
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'daily'
-    open-pull-requests-limit: 10
-    versioning-strategy: 'increase'
+      interval: "daily"
+    open-pull-requests-limit: 3
+    versioning-strategy: "increase"
     ignore:
       # used in old client, not upgrading
-      - dependency-name: 'axios'
+      - dependency-name: "axios"
       # not upgrading until we move to new docs
-      - dependency-name: 'vitepress'
+      - dependency-name: "vitepress"
       # not upgrading until we move to new docs
-      - dependency-name: 'vitepress-shopware-docs'
+      - dependency-name: "vitepress-shopware-docs"
       # until https://github.com/nuxt-modules/i18n/issues/2215 is resolved
-      - dependency-name: '@nuxtjs/i18n'
+      - dependency-name: "@nuxtjs/i18n"
+      # Until the upgrade is complete: https://github.com/shopware/frontends/pull/1107
+      - dependency-name: "openapi-typescript"
     groups:
       astro:
         patterns:
-          - '@astrojs/*'
-          - 'astro'
+          - "@astrojs/*"
+          - "astro"
       changelog:
         patterns:
-          - '@changesets/*'
-          - 'changelog-parser'
-          - '*/changelog-parser'
-      api-extractor:
-        patterns:
-          - '@microsoft/*'
-          - 'typedoc'
+          - "@changesets/*"
+          - "changelog-parser"
+          - "*/changelog-parser"
       eslint:
         patterns:
-          - 'eslint'
-          - '@types/eslint'
-          - '@eslint/*'
-          - '@typescript-eslint/*'
-          - 'eslint-*'
-          - 'globals'
+          - "eslint"
+          - "@types/eslint"
+          - "@eslint/*"
+          - "@typescript-eslint/*"
+          - "eslint-*"
+          - "globals"
+      types:
+        update-types:
+          - "minor"
+        patterns:
+          - "@types/node"
+
       maintenance:
         patterns:
-          - '@types/node'
-          - 'dotenv-cli'
-          - 'turbo*'
-          - 'vercel'
-          - 'semver'
-          - 'globby'
-          - 'husky'
-          - 'lint-staged'
-          - 'taze'
-          - 'pnpm'
+          - "dotenv-cli"
+          - "turbo*"
+          - "vercel"
+          - "semver"
+          - "globby"
+          - "husky"
+          - "pnpm"
       tests:
         patterns:
-          - 'vitest'
-          - '@vitest/*'
-          - 'dotenv'
-          - 'happy-dom'
-          - '@faker*'
-          - '@codspeed/*'
-          - '@playwright*'
+          - "vitest"
+          - "@vitest/*"
+          - "dotenv"
+          - "happy-dom"
+          - "@faker*"
+          - "@codspeed/*"
+          - "@playwright*"
       prettier:
         patterns:
-          - 'prettier'
-          - '@types/prettier'
+          - "prettier"
+          - "@types/prettier"
       vue:
         patterns:
-          - 'vue'
-          - 'vue-*'
-          - '@vue/*'
-          - 'nuxt'
-          - 'vite'
-          - '@vueuse/*'
-          - '@vitejs/*'
-          - '@iconify*'
-          - '@nuxt/*'
-          - '@unocss/*'
-          - 'unocss'
-      # others not defined will be grouped
-      grouped-dependencies:
-        patterns:
-          - "*"
+          - "vue"
+          - "vue-*"
+          - "@vue/*"
+          - "nuxt"
+          - "vite"
+          - "@vueuse/*"
+          - "@vitejs/*"
+          - "@iconify*"
+          - "@nuxt/*"
+          - "@unocss/*"
+          - "unocss"

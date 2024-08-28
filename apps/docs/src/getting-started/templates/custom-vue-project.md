@@ -24,13 +24,7 @@ More information about creating a new Vue project can be found [here](https://vu
 First of all, install the required npm dependencies:
 
 ```bash
-pnpm add @shopware-pwa/composables-next @shopware-pwa/api-client
-```
-
-If you are using TypeScript in you application, you may want to have another package that can be installed for dev dependencies:
-
-```bash
-pnpm add -D @shopware-pwa/types
+pnpm add @shopware-pwa/composables-next @shopware/api-client
 ```
 
 Additionally, to keep the current session context even after page reloads, we are going to install a cookie helper to set and get value of [context token](https://shopware.stoplight.io/docs/store-api/ZG9jOjEwODA3NjQx-authentication-and-authorisation) in our plugin:
@@ -42,7 +36,7 @@ pnpm add js-cookie
 For CMS components, you can add a package that contains ready-to-use components.
 You can read more about CMS pages here:
 
-<PageRef page="../cms/content-pages" title="Create content pages" sub="Render a content page using components" />
+<PageRef page="../cms/content-pages.html" title="Create content pages" sub="Render a content page using components" />
 
 ```bash
 pnpm add @shopware-pwa/cms-base
@@ -66,13 +60,13 @@ In order to configure the business logic and API client together with your Vue 3
 This section requires having knowledge about the [concept of Vue 3 plugins](https://vuejs.org/guide/reusability/plugins.html#writing-a-plugin).
 :::
 
-Import necessary methods from `@shopware-pwa/api-client`, `@shopware-pwa/composables-next` and `js-cookie` packages:
+Import necessary methods from `@shopware/api-client`, `@shopware-pwa/composables-next` and `js-cookie` packages:
 
 ```ts
 // ./plugins/vue-shopware-frontends.ts file
 import { ref } from "vue";
 import type { App } from "vue";
-import { createInstance } from "@shopware-pwa/api-client";
+import { createAPIClient } from "@shopware/api-client";
 import { createShopwareContext } from "@shopware-pwa/composables-next";
 import Cookies from "js-cookie";
 
@@ -156,7 +150,6 @@ Another step is to create a Shopware instance that combines API Client and the b
 
 ```ts
 const shopwareContext = createShopwareContext(app, {
-  apiInstance: instance, // pass API Client instance
   enableDevtools: !!options.enableDevtools, // decide if devtools should be enabled
 });
 ```
@@ -164,6 +157,7 @@ const shopwareContext = createShopwareContext(app, {
 And the last step is to provide the shopwareContext:
 
 ```ts
+app.provide("apiClient", apiClient);
 app.provide("shopware", shopwareContext);
 // thanks to this, `shopwareContext` can be injected in a component and other Vue-instance-aware places (like composables).
 app.provide("swSessionContext", ref());
@@ -196,7 +190,7 @@ app.mount("#app");
 // ./plugins/vue-shopware-frontends.ts file
 import { ref } from "vue";
 import type { App } from "vue";
-import { createInstance } from "@shopware-pwa/api-client";
+import { createAPIClient } from "@shopware/api-client";
 import { createShopwareContext } from "@shopware-pwa/composables-next";
 import Cookies from "js-cookie";
 
@@ -218,39 +212,17 @@ export default {
     const contextToken = ref(cookieContextToken);
     const languageId = ref(cookieLanguageId);
 
-    const instance = createInstance({
-      endpoint: options.endpoint,
+    const apiClient = createAPIClient<operations>({
+      baseURL: options.endpoint,
       accessToken: options.accessToken,
-      timeout: options.shopwareApiClient?.timeout || 5000,
       contextToken: contextToken.value,
-      languageId: languageId.value,
-    });
-
-    instance.onConfigChange(({ config }) => {
-      try {
-        Cookies.set("sw-context-token", config.contextToken || "", {
-          expires: 365,
-          sameSite: "Lax",
-          path: "/",
-        });
-        Cookies.set("sw-language-id", config.languageId || "", {
-          expires: 365,
-          sameSite: "Lax",
-          path: "/",
-        });
-
-        contextToken.value = config.contextToken;
-        languageId.value = config.languageId;
-      } catch (e) {
-        // Sometimes cookie is set on server after request is send, it can fail silently
-      }
     });
 
     const shopwareContext = createShopwareContext(app, {
-      apiInstance: instance,
       enableDevtools: !!options.enableDevtools,
     });
 
+    app.provide("apiClient", apiClient);
     app.provide("shopware", shopwareContext);
     app.provide("swSessionContext", ref());
   },
@@ -289,4 +261,4 @@ const instance = createInstance({
 
 After your setup, you can follow our building guides to get started with Shopware Frontends
 
-<PageRef page="../../getting-started/page-elements/navigation" title="Getting Started - Navigation" sub="Let's implement a store navigation" />
+<PageRef page="../../getting-started/page-elements/navigation.html" title="Getting Started - Navigation" sub="Let's implement a store navigation" />

@@ -1,3 +1,0 @@
-# categoryService
-
-<!-- PLACEHOLDER_DESCRIPTION -->

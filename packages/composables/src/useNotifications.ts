@@ -79,12 +79,12 @@ export function useNotifications(): UseNotificationsReturn {
   }
 
   function geterateId() {
-    return new Date().getTime();
+    return +`${new Date().getTime()}${Math.random() * 1000}`;
   }
 
   async function pushNotification(
     message: string,
-    options: NotificationOptions,
+    options: Required<Pick<NotificationOptions, "type">> & NotificationOptions,
   ) {
     const timeout = options.timeout || 2500;
     const persistent = !!options.persistent;
@@ -93,7 +93,7 @@ export function useNotifications(): UseNotificationsReturn {
     const messageId = geterateId();
     _notifications.value.push({
       id: messageId,
-      type: options.type || "info",
+      type: options.type,
       message,
     });
     if (!persistent) {

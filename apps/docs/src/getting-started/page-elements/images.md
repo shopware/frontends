@@ -107,15 +107,14 @@ While a file is uploaded, it's been automatically resized for the current config
 
 ## Helpers
 
-There are few functions that could be used to extract some crucial information about the media in short way. Browse [Helpers > Media](../packages/helpers.html#Media) category to see them all.
+There are few functions that could be used to extract some crucial information about the media in short way. For example [getMainImageUrl](/packages/helpers.html#getmainimageurl) or [getMedia](/packages/helpers.html#getmedia).
 
 Example how to work with Product's main image:
 
 ```ts
-import type { Product } from "@shopware-pwa/types";
 import { getMainImageUrl } from "@shopware-pwa/helpers-next";
 
-const coverUrl = getMainImageUrl(product as Product);
+const coverUrl = getMainImageUrl(product);
 // coverUrl is now an URL to the resource (or undefined)
 ```
 
@@ -125,10 +124,10 @@ Having additional information about resized images (see `thumbnails` array in `M
 
 ```vue{8}
 <script>
-import type { Product, Media } from "@shopware-pwa/types";
-const product: Product = {} // an object omitted
+import type { Schemas } from "#shopware";
+const product: Schemas['Product'] = {} // an object omitted
 // get the cover media image (main image for a product)
-const coverMedia = product.cover?.media as Media
+const coverMedia = product.cover?.media
 // prepare `srcset` string for available thumbnails
 // let the breakpoints be for every width range
 const srcset = coverMedia?.thumbnails?.map((thumb) => `${thumb.url} ${thumb.width}w`).join(", ")
@@ -156,4 +155,4 @@ The `src` attribute points to the main image URL (not resized) as a fallback.
 
 As long as `thumbnails` array is fulfilled, the same strategy can be applied when we work with every `media` object for each entity available in Shopware 6.
 
-<PageRef page="../../best-practices/images" title="Best Practices" sub="Best Practices to work with images" />
+<PageRef page="../../best-practices/images.html" title="Best Practices" sub="Best Practices to work with images" />

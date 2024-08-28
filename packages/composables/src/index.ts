@@ -1,4 +1,4 @@
-import type { CmsBlock, CmsSection, CmsSlot } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 
@@ -33,6 +33,7 @@ export * from "./useContext";
 export * from "./useCountries";
 export * from "./useCustomerOrders";
 export * from "./useCustomerPassword";
+export * from "./useDefaultOrderAssociations";
 export * from "./useInternationalization";
 export * from "./useLandingSearch";
 export * from "./useListing";
@@ -62,7 +63,9 @@ export * from "./useUser";
 export * from "./useWishlist";
 export * from "./useB2bQuoteManagement";
 
-export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
+export function resolveCmsComponent(
+  content: Schemas["CmsSection"] | Schemas["CmsBlock"] | Schemas["CmsSlot"],
+) {
   const componentName = content.type;
   const type =
     content.apiAlias === "cms_block"
@@ -88,6 +91,7 @@ export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
       componentNameToResolve,
       resolvedComponent: undefined,
       resolved: false,
+      isResolved: false,
       error: (e as Error).message,
     };
   }
@@ -97,5 +101,8 @@ export function resolveCmsComponent(content: CmsSection | CmsBlock | CmsSlot) {
 export function getDefaultApiParams(): {
   [composableName: string]: unknown;
 } {
+  console.error(
+    "[@shopware-pwa/composables] `getDefaultApiParams` is deprecated and will be removed in the next major release.",
+  );
   return {};
 }

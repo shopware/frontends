@@ -20,6 +20,8 @@ const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 const contextResponse = await apiClient.invoke("readContext get /context");
 sessionContextData.value = contextResponse.data;
 
+useBroadcastChannelSync();
+
 // If you enable runtimeConfig.shopware.useUserContextInSSR, then you can use this code to share session between server and client.
 // const { data: sessionContextData } = await useAsyncData(
 //   "sessionContext",
@@ -79,7 +81,7 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
     defaultLocale,
   );
 
-  provide("cmsTranslations", messages.value[prefix ?? defaultLocale] ?? {});
+  provide("cmsTranslations", messages.value[prefix || defaultLocale] ?? {});
 
   // Language set on the backend side
   if (localeProperties.value.localeId) {
@@ -107,9 +109,15 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   provide("urlPrefix", prefix);
 }
 
+if (import.meta.client) {
+  // getting the wishlist products should not block SSR
+  if (!(router.currentRoute.value.name as string).includes("wishlist")) {
+    getWishlistProducts(); // initial page loading
+  }
+}
+
 onMounted(() => {
   refreshCart();
-  getWishlistProducts();
 });
 </script>
 

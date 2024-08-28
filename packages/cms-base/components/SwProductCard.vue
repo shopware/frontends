@@ -9,7 +9,7 @@ import {
   getProductFromPrice,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import { toRefs, type Ref, computed, ref } from "vue";
+import { toRefs, computed, ref } from "vue";
 import { defu } from "defu";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import {
@@ -83,18 +83,24 @@ const toggleWishlistProduct = async () => {
   isLoading.value = true;
 
   try {
-    if (!isInWishlist.value) await addToWishlist();
-    else await removeFromWishlist();
-    pushSuccess(
-      `${props.product?.translated?.name} ${isLoading.value ? translations.product.addedToWishlist : translations.product.removedFromTheWishlist}`,
-    );
+    if (!isInWishlist.value) {
+      await addToWishlist();
+      pushSuccess(
+        `${props.product?.translated.name} ${translations.product.addedToWishlist}`,
+      );
+    } else {
+      await removeFromWishlist();
+      pushError(
+        `${props.product?.translated.name} ${translations.product.removedFromTheWishlist}`,
+      );
+    }
   } catch (error) {
     if (error instanceof ApiClientError) {
       const reason = error.details.errors?.[0]?.detail
         ? `${translations.product.reason}: ${error.details.errors?.[0]?.detail}`
         : "";
       return pushError(
-        `${props.product?.translated?.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
+        `${props.product?.translated.name} ${translations.product.cannotAddToWishlist}\n${reason}`,
         {
           timeout: 5000,
         },
@@ -108,15 +114,12 @@ const toggleWishlistProduct = async () => {
 const addToCartProxy = async () => {
   await addToCart();
   pushSuccess(
-    `${props.product?.translated?.name} ${translations.product.addedToCart}`,
+    `${props.product?.translated.name} ${translations.product.addedToCart}`,
   );
 };
 
 const fromPrice = getProductFromPrice(props.product);
 const { getUrlPrefix } = useUrlResolver();
-const ratingAverage: Ref<number> = computed(() =>
-  props.product.ratingAverage ? Math.round(props.product.ratingAverage) : 0,
-);
 
 const imageElement = ref(null);
 const { height } = useElementSize(imageElement);
@@ -129,7 +132,7 @@ function roundUp(num: number) {
 const srcPath = computed(() => {
   return `${getSmallestThumbnailUrl(
     product.value?.cover?.media,
-  )}?&height=${roundUp(height.value)}&fit=crop`;
+  )}?&height=${roundUp(height.value)}&fit=cover`;
 });
 </script>
 
@@ -178,9 +181,9 @@ const srcPath = computed(() => {
       aria-label="Add to wishlist"
       type="button"
       :disabled="isLoading"
-      @click="toggleWishlistProduct"
       class="absolute bg-transparent top-2 right-2 hover:animate-count-infinite hover:animate-heart-beat"
       data-testid="product-box-toggle-wishlist-button"
+      @click="toggleWishlistProduct"
     >
       <client-only>
         <div
@@ -231,13 +234,15 @@ const srcPath = computed(() => {
         <button
           v-if="!fromPrice"
           type="button"
-          @click="addToCartProxy"
           class="w-full justify-center my-8 md-m-0 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform transition duration-400 flex"
           :class="{
             'text-white bg-blue-600 hover:bg-blue-700': !isInCart,
             'text-gray-600 bg-gray-100': isInCart,
+            'opacity-50 cursor-not-allowed': !product.available,
           }"
           data-testid="add-to-cart-button"
+          :disabled="!product.available"
+          @click="addToCartProxy"
         >
           {{ translations.product.addToCart }}
           <div v-if="isInCart" class="flex ml-2">

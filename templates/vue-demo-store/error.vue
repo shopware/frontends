@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import type { NuxtError } from "#app";
 import type { RouteObject } from "@shopware-pwa/composables-next";
 
+defineOptions({
+  name: "ErrorPage",
+});
+
 const props = defineProps<{
-  error: {
+  error: NuxtError<{
     statusCode: number;
     statusMessage: string;
     message: string;
-  };
+  }>;
 }>();
 
 const isMaintenanceMode = computed(() => {
@@ -32,8 +37,10 @@ try {
   };
 
   errMessage =
-    props.error.statusMessage ||
-    errorMessageMap[props.error.statusCode as keyof typeof errorMessageMap];
+    errorMessageMap[props.error.statusCode as keyof typeof errorMessageMap] ||
+    props.error.message;
+
+  console.error("[error.vue]:", props.error?.message);
 
   if (props.error.statusCode === 412) {
     // setting a timeout here to ensure we are the last error message in terminal
@@ -55,12 +62,6 @@ const statusCode = isFormattedError ? props.error.statusCode : "Error";
 const errorMessage = isFormattedError ? errMessage : props.error.message;
 </script>
 
-<script lang="ts">
-export default {
-  name: "ErrorPage",
-};
-</script>
-
 <template>
   <ErrorsMaintainMode v-if="isMaintenanceMode" />
   <div
@@ -75,11 +76,14 @@ export default {
         </h1>
         <p
           v-if="errorMessage"
-          class="text-xl md:text-3xl font-semibold mt-4 mb-8"
+          class="text-xl md:text-3xl font-semibold mt-4 mb-6"
         >
           {{ errorMessage }}
         </p>
         <DevOnly>
+          <div class="text-xs text-gray-500">
+            {{ $t("setup.check_console") }}
+          </div>
           <div class="block m-4">
             <p>{{ $t("setup.problems") }}</p>
             <p>

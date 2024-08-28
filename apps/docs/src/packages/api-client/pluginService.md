@@ -1,3 +1,0 @@
-# pluginService
-
-<!-- PLACEHOLDER_DESCRIPTION -->

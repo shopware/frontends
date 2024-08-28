@@ -6,6 +6,7 @@
         "contentType": "application/json",
       },
     ],
+    "bodyOptional": true,
     "headers": undefined,
     "operationId": "createCustomerAddress",
     "pathParams": undefined,
@@ -42,6 +43,7 @@
         "contentType": "application/json",
       },
     ],
+    "bodyOptional": false,
     "headers": undefined,
     "operationId": "updateCustomerAddress",
     "pathParams": " {

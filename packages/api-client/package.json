@@ -1,7 +1,7 @@
 {
-  "name": "@shopware-pwa/api-client",
-  "version": "0.7.0",
-  "description": "Shopware Store API client",
+  "name": "@shopware/api-client",
+  "version": "1.0.2",
+  "description": "Shopware client for API connection.",
   "author": "Shopware",
   "type": "module",
   "repository": {
@@ -19,17 +19,27 @@
   },
   "license": "MIT",
   "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "api-types",
+    "admin-api-types"
   ],
   "exports": {
     ".": {
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
       "import": {
         "types": "./dist/index.d.mts",
         "default": "./dist/index.mjs"
       }
-    }
+    },
+    "./api-types": "./api-types/storeApiTypes.d.ts",
+    "./store-api-types": "./api-types/storeApiTypes.d.ts",
+    "./admin-api-types": "./api-types/adminApiTypes.d.ts"
   },
   "scripts": {
     "build": "export NODE_ENV=production && unbuild && pnpm build:types",
@@ -37,21 +47,25 @@
     "dev": "export NODE_ENV=development && unbuild --stub",
     "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --segfault-retry=3"
+    "test": "vitest run --typecheck",
+    "test:bench": "vitest bench",
+    "test:watch": "vitest --typecheck",
+    "generate-types": "esno ../api-gen/src/cli.ts generate --apiType=store",
+    "generate-admin-types": "esno ../api-gen/src/cli.ts generate --apiType=admin"
   },
   "devDependencies": {
-    "@faker-js/faker": "8.4.1",
-    "@shopware/api-client": "workspace:*",
-    "@vitest/coverage-v8": "1.6.0",
+    "@codspeed/vitest-plugin": "3.1.1",
+    "@types/prettier": "3.0.0",
+    "@vitest/coverage-v8": "2.0.5",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "14.12.0",
+    "prettier": "3.3.3",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "1.6.0"
+    "vitest": "2.0.5"
   },
   "dependencies": {
-    "@shopware-pwa/types": "workspace:*",
-    "axios": "0.27.2",
-    "query-string": "9.0.0"
+    "defu": "6.1.4",
+    "hookable": "5.5.3",
+    "ofetch": "1.3.4"
   }
 }

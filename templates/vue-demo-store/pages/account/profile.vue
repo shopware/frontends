@@ -1,10 +1,7 @@
-<script lang="ts">
-export default {
-  name: "ProfilePage",
-};
-</script>
-
 <script setup lang="ts">
+defineOptions({
+  name: "ProfilePage",
+});
 definePageMeta({
   layout: "account",
 });

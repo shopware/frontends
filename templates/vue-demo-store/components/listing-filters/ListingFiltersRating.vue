@@ -8,12 +8,7 @@
     }
   "
 >
-import type {
-  EntitiesAggregation,
-  AggregationFilterEntity,
-  PriceAggregation,
-  MaxAggregation,
-} from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { computed, ref } from "vue";
 
 const emits = defineEmits<{
@@ -22,14 +17,7 @@ const emits = defineEmits<{
 
 const props = defineProps<{
   filter: ListingFilter;
-  selectedFilters: {
-    [key: string]:
-      | EntitiesAggregation<AggregationFilterEntity>
-      | PriceAggregation
-      | MaxAggregation
-      | number;
-    rating: number;
-  };
+  selectedFilters: Schemas["ProductListingResult"]["currentFilters"];
 }>();
 const isHoverActive = ref(false);
 const hoveredIndex = ref(0);

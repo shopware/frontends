@@ -268,7 +268,6 @@ You can then iterate the filter objects available in the array. The filter objec
 
 ```vue{15,17}
 <script setup lang="ts">
-import type { ListingFilter } from "@shopware-pwa/types";
 const { getAvailableFilters, getCurrentFilters, setCurrentFilters } = useListing(/** parameters omitted */)
 
 const selectManufacturerAndSearch = (manufacturerId: string) => {
@@ -280,7 +279,7 @@ const selectManufacturerAndSearch = (manufacturerId: string) => {
 
 // element from getAvailableFilters.value
 // i.e: getAvailableFilters.value?.find(({code}) => code === "manufacturer")?.[0]
-const manufacturerFilter: ListingFilter = {
+const manufacturerFilter = {
   apiAlias:"manufacturer_aggregation",
   code:"manufacturer",
   label:"manufacturer",
@@ -439,7 +438,7 @@ In the present case, we could use the product's thumbnail or use the translated 
 ```ts
 // part of <script setup> section
 import {
-  getProductThumbnailUrl,
+  getSmallestThumbnailUrl,
   getProductUrl,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
@@ -447,7 +446,7 @@ import {
 
 ```html
 <img
-  :src="getProductThumbnailUrl(product)"
+  :src="getSmallestThumbnailUrl(product)"
   width="100"
   height="100"
   :alt="product.name"

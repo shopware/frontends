@@ -38,11 +38,11 @@ You can use the `useWishlist` composable to get the wishlist products.
 
 ```vue
 <script>
-import { getProducts } from "@shopware-pwa/api-client";
-import type { ClientApiError, Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 
 // Contains a list of products ids in the wishlist
 const { getWishlistProducts, items } = useWishlist();
+const { apiClient } = useShopwareContext();
 
 // Load products data
 const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
@@ -50,14 +50,13 @@ const loadProductsByItemIds = async (itemIds: string[]): Promise<void> => {
 
   try {
     // Backend API call for product data
-    const result = await getProducts(
-      {
+    const result = await apiClient.invoke("readProduct post /product", {
+      body: {
         ids: itemIds || items.value,
       },
-      apiInstance
-    );
+    });
 
-    if (result) products.value = result.elements;
+    products.value = result.data.elements;
   } catch (error) {
     console.error(error);
   }
@@ -110,7 +109,7 @@ To avoid such a situation, `isInWishlist` property should protect `addToWishlist
 ```vue
 <script setup lang="ts">
 // Mocked product
-const product: Product = {
+const product: Schemas["Product"] = {
   id: "7b5b97bd48454979b14f21c8ef38ce08",
 };
 const { addToWishlist, isInWishlist } = useProductWishlist(product);

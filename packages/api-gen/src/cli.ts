@@ -5,6 +5,7 @@ import { hideBin } from "yargs/helpers";
 import { generate } from "./commands/generate";
 import packageJson from "../package.json";
 import { loadSchema } from "./commands/loadSchema";
+import { validateJson } from "./commands/validateJson";
 
 export interface CommonOptions {
   cwd: string;
@@ -66,6 +67,26 @@ yargs(hideBin(process.argv))
         .help();
     },
     async (args) => loadSchema(args),
+  )
+  .command(
+    "validateJson",
+    "Validate JSON schema with the ruleset",
+    (args) => {
+      return commonOptions(args)
+        .option("apiType", {
+          describe:
+            "Type of the API schema to load. It can be 'store' or 'admin'",
+          default: "store",
+          choices: ["store", "admin"],
+        })
+        .positional("filename", {
+          type: "string",
+          describe:
+            "name of the schema json file. The default (based on apiType parameter) is 'storeApiSchema.json' or 'adminApiSchema.json'",
+        })
+        .help();
+    },
+    async (args) => validateJson(args),
   )
   .showHelpOnFail(false)
   .alias("h", "help")

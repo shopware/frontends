@@ -18,7 +18,7 @@ export type UseProductReturn = {
    * Merges the current product with the new variant data
    * @param variant - {@link Product} object with the new variant data
    */
-  changeVariant(variant: Partial<Schemas["Product"]>): void;
+  changeVariant(variant?: Partial<Schemas["Product"]>): void;
 };
 
 /**
@@ -35,11 +35,16 @@ export function useProduct(
     // TODO link docs with composables context usage
     throw new ContextError("Product");
   }
+
   const _configurator = useContext("configurator", {
     context: product && configurator,
   });
 
-  function changeVariant(variant: Partial<Schemas["Product"]>) {
+  function changeVariant(variant?: Partial<Schemas["Product"]>) {
+    if (!variant) {
+      console.warn("[useProduct][changeVariant]: Provided variant is empty");
+      return;
+    }
     _product.value = Object.assign({}, _product.value, variant);
   }
 

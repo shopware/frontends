@@ -1,23 +1,18 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        "dist/**",
-        ".nuxt/**",
-        ".output/**",
-        ".vercel/**",
-        ".vitepress/dist/**"
-      ]
+      "outputs": ["dist/**", ".output/**", ".vercel/**", ".vitepress/dist/**"]
     },
     "generate": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".nuxt/**", ".output/**", ".vercel/**"]
+      "outputs": ["dist/**", ".output/**", ".vercel/**"]
     },
     "lint": {
       "cache": false,
-      "outputs": []
+      "outputs": [],
+      "passThroughEnv": ["TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
     },
     "generate-types": {
       "cache": false,
@@ -27,14 +22,20 @@
       "dependsOn": ["^build"],
       "outputs": []
     },
+    "test:watch": {
+      "dependsOn": ["^build"],
+      "persistent": true
+    },
     "test:bench": {
       "cache": false,
       "outputs": []
     },
     "dev": {
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
     "test:e2e": {
+      "cache": false,
       "outputs": []
     }
   }

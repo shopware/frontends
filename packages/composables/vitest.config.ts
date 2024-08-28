@@ -6,7 +6,18 @@ export default defineConfig({
     environment: "happy-dom",
     coverage: {
       enabled: true,
-      // "100": true, // TODO: our goal ;)
+      include: ["src"],
+      thresholds: {
+        100: true,
+      },
+      exclude: [
+        "**/devtools/**",
+        "**/types/**",
+        "**/src/*.test.ts",
+        "**/src/*.spec.ts",
+        // After refactoring should be removed - https://github.com/shopware/frontends/issues/1057
+        "**/src/useListing.ts",
+      ],
     },
     alias: {
       "#imports": resolve(__dirname, "./src/index.ts"),

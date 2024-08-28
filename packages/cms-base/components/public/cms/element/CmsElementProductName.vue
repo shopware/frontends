@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementProductName } from "@shopware-pwa/composables-next";
 
-const props = defineProps<{
+defineProps<{
   content: CmsElementProductName;
 }>();
 </script>

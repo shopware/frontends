@@ -33,4 +33,23 @@ describe("useNewsletter", () => {
       },
     );
   });
+
+  it("getNewsletterStatus", async () => {
+    const { vm, injections } = useSetup(useNewsletter);
+    injections.apiClient.invoke.mockResolvedValue({ data: {} });
+
+    await vm.getNewsletterStatus();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("readNewsletterRecipient"),
+    );
+  });
+
+  it("isNewsletterSubscriber", async () => {
+    const { vm } = useSetup(useNewsletter);
+
+    expect(vm.isNewsletterSubscriber).toBe(false);
+    vm.newsletterStatus = "direct";
+    expect(vm.isNewsletterSubscriber).toBe(true);
+  });
 });

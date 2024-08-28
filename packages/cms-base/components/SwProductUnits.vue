@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Product } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
 import SwSharedPrice from "./SwSharedPrice.vue";
 import { computed } from "vue";
@@ -7,7 +7,7 @@ import { defu } from "defu";
 
 const props = withDefaults(
   defineProps<{
-    product: Product;
+    product: Schemas["Product"];
     showContent?: boolean;
   }>(),
   {
@@ -30,7 +30,7 @@ let translations: Translations = {
 translations = defu(useCmsTranslations(), translations) as Translations;
 
 const purchaseUnit = computed(() => props.product?.purchaseUnit);
-const unitName = computed(() => props.product?.unit?.translated?.name);
+const unitName = computed(() => props.product?.unit?.translated.name);
 const referencePrice = computed(
   () => props.product?.calculatedPrice?.referencePrice?.price,
 );

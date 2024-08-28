@@ -23,3 +23,17 @@
 .group .VPSidebarGroup .VPSidebarGroup h2.title-text {
     font-size: 11px;
 }
+
+h1 + p > a {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/**
+*   Fix for anchor position
+*/
+.vt-doc h3 > code + a.header-anchor::before,
+.vt-doc h2 > a.header-anchor::before,
+.vt-doc h3 > a.header-anchor::before {
+   content: "#";
+}

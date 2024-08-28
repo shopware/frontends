@@ -13,7 +13,7 @@ export type UseAddressReturn = {
   /**
    * Loads the addresses that are available under `customerAddresses` property
    */
-  loadCustomerAddresses(): Promise<void>;
+  loadCustomerAddresses(): Promise<Schemas["CustomerAddress"][]>;
   /**
    * Allows to create new address for a current customer
    */
@@ -67,7 +67,7 @@ export function useAddress(): UseAddressReturn {
    */
   async function loadCustomerAddresses(
     parameters: Schemas["Criteria"] = {},
-  ): Promise<void> {
+  ): Promise<Schemas["CustomerAddress"][]> {
     try {
       const result = await apiClient.invoke(
         "listAddress post /account/list-address",
@@ -82,7 +82,9 @@ export function useAddress(): UseAddressReturn {
           _storeCustomerAddresses.value = [];
         }
       }
+      throw error;
     }
+    return _storeCustomerAddresses.value;
   }
 
   /**

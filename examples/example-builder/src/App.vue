@@ -11,7 +11,7 @@ const route = useRoute();
 const packageName = computed(() =>
   !Array.isArray(route.query.packageName)
     ? route.query.packageName?.toString()
-    : route.query.packageName?.[0] || "@shopware-pwa/api-client",
+    : route.query.packageName?.[0] || "@shopware/api-client",
 );
 
 const packageVersion = computed(() =>

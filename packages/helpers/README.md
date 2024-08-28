@@ -36,11 +36,13 @@ export default defineConfig({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 0.5.1
+### Latest changes: 1.0.2
 
 ### Patch Changes
 
-- [#460](https://github.com/shopware/frontends/pull/460) [`729d03a5`](https://github.com/shopware/frontends/commit/729d03a5d5555a67d420cdb0c89a0cb4ce907831) Thanks [@mkucmus](https://github.com/mkucmus)! - Proper visibility and css classes merging
+- [#1191](https://github.com/shopware/frontends/pull/1191) [`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128) Thanks [@mkucmus](https://github.com/mkucmus)! - Prevent from getting an incorrect srcset format when img url is not set.
 
-- Updated dependencies []:
-  - @shopware-pwa/types@0.6.0
+  before when there were no urls for 400w and 800w:
+  `src="image1.jpg 100w, 400w, 800w"`
+
+  now only the entry with an URL defined is returned

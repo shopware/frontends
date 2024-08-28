@@ -62,12 +62,12 @@ const SwMedia3D = computed(() => {
 <template>
   <!-- TODO: using a tag only works with externalLink, need to improve this element to deal with both internalLink & externalLink -->
   <component
+    :is="imageLink.url ? 'a' : 'div'"
     v-if="imageAttrs.src"
     class="cms-element-image relative h-full w-full"
     :class="{
       'flex justify-center items-center': imageGallery,
     }"
-    :is="imageLink.url ? 'a' : 'div'"
     :style="containerStyle"
     v-bind="imageComputedContainerAttrs"
   >

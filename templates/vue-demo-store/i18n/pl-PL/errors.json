@@ -8,7 +8,7 @@
     "shipping-method-changed": "Metoda wysyłki {oldShippingMethodName} nie jest dostępna dla bieżącego koszyka, metoda wysyłki została zmieniona na {newShippingMethodName}.",
     "payment-method-blocked": "Metoda płatności {name} jest zablokowana dla bieżącego koszyka.",
     "payment-method-changed": "Metoda płatności {oldPaymentMethodName} nie jest dostępna dla bieżącego koszyka, metoda płatności została zmieniona na {newPaymentMethodName}.",
-    "promotion-not-found": "Kod kuponu {code} nie istnieje.",
+    "promotion-not-found": "Kod kuponu {promotionCode} nie istnieje.",
     "promotion-not-eligible": "Kod kuponu został zapisany, ale nie został zastosowany do koszyka, ponieważ warunki nie mają zastosowania. Gdy tylko wymagania zostaną spełnione, kod zostanie dodany automatycznie.",
     "promotion-excluded": "Co najmniej jeden rabat został usunięty z koszyka z powodu konfliktu z innymi rabatami. Gdy tylko warunki ponownie zaczną obowiązywać, rabat zostanie dodany automatycznie.",
     "auto-promotion-not-found": "Promocja rabatowa {name} nie jest już ważna!",

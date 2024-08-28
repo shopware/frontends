@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SliderElementConfig } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
-import type { CmsSlot } from "@shopware-pwa/types";
+import type { Schemas } from "#shopware";
 import {
   computed,
   onBeforeUnmount,
@@ -10,7 +10,7 @@ import {
   useSlots,
   watch,
 } from "vue";
-import type { VNodeArrayChildren } from "vue";
+import type { CSSProperties, VNodeArrayChildren } from "vue";
 import { useElementSize, useResizeObserver } from "@vueuse/core";
 
 const props = withDefaults(
@@ -33,7 +33,7 @@ const props = withDefaults(
 
 const { getConfigValue } = useCmsElementConfig({
   config: props.config,
-} as CmsSlot & {
+} as Schemas["CmsSlot"] & {
   config: SliderElementConfig;
 });
 
@@ -64,7 +64,7 @@ const emit = defineEmits<{
 }>();
 const slider = ref(null);
 const imageSlider = ref<HTMLElement>();
-const imageSliderTrackStyle = ref<any>({});
+const imageSliderTrackStyle = ref<CSSProperties>();
 const activeSlideIndex = ref<number>(0);
 const speed = ref<number>(300);
 const imageSliderTrack = ref<HTMLElement>();
@@ -149,7 +149,7 @@ function buildImageSliderTrackStyle(
   moving: boolean = false,
   callback = () => {},
 ) {
-  let styleObj: { [K: string]: string } = {
+  let styleObj: CSSProperties = {
     transform: `translate3d(-${
       (transformIndex + slidesToShow.value) *
       (imageSliderWidth.value / slidesToShow.value)
@@ -250,8 +250,8 @@ defineExpose({
     }"
   >
     <div
-      class="overflow-hidden h-full"
       ref="imageSlider"
+      class="overflow-hidden h-full"
       :style="imageSliderStyle"
     >
       <div
@@ -316,7 +316,7 @@ defineExpose({
       }"
     >
       <div
-        v-for="(dot, i) of childrenRaw"
+        v-for="(_, i) of childrenRaw"
         :key="`dot-${i}`"
         :class="{
           'w-5 h-5 rounded-full cursor-pointer': true,
@@ -324,7 +324,7 @@ defineExpose({
           'bg-gray-500/50': i !== activeSlideIndex,
         }"
         @click="() => goToSlide(i)"
-      />
+      ></div>
     </div>
   </div>
 </template>

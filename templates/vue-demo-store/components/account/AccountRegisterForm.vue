@@ -18,7 +18,7 @@ const loading = ref<boolean>();
 const doubleOptInBox = ref();
 const showDoubleOptInBox = ref(false);
 const { t } = useI18n();
-if (process.client && isLoggedIn.value) {
+if (import.meta.client && isLoggedIn.value) {
   // redirect to account page if user is logged in
   navigateTo({ path: "/account" });
 }

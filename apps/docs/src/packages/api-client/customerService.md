@@ -1,3 +1,0 @@
-# customerService
-
-<!-- PLACEHOLDER_DESCRIPTION -->

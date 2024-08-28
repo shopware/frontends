@@ -153,8 +153,8 @@ function next() {
       <button
         v-if="mediaGallery.length > slidesToShow"
         class="disabled:opacity-10 p-1"
-        @click="previous"
         aria-label="Previous image"
+        @click="previous"
       >
         <div
           class="h-7 w-7"
@@ -166,25 +166,25 @@ function next() {
       </button>
       <span class="sr-only">Previous image</span>
       <div
-        class="overflow-hidden -my-2.5"
         ref="imageThumbs"
+        class="overflow-hidden -my-2.5"
         :style="imageThumbsStyle"
       >
         <div
+          ref="imageThumbsTrack"
           :class="{
             flex: true,
             'flex-col': galleryPosition === 'left',
           }"
-          ref="imageThumbsTrack"
           :style="imageThumbsTrackStyle"
         >
           <div
             v-for="(image, i) in mediaGallery"
+            :key="image.media.url"
             :class="{
               'py-2.5': galleryPosition === 'left',
               'flex-1 px-2.5': galleryPosition === 'underneath',
             }"
-            :key="image.media.url"
           >
             <div
               class="w-20 h-20 overflow-hidden cursor-pointer p-1 border-secondary-200 rounded transition duration-150 ease-in-out"
@@ -218,8 +218,8 @@ function next() {
       <button
         v-if="mediaGallery.length > slidesToShow"
         class="disabled:opacity-10 p-1"
-        @click="next"
         aria-label="Next image"
+        @click="next"
       >
         <span class="sr-only">Next image</span>
         <div
@@ -235,12 +235,12 @@ function next() {
       <SwSlider
         ref="imageSlider"
         :config="props.content.config"
-        @changeSlide="handleChangeSlide"
+        @change-slide="handleChangeSlide"
       >
         <CmsElementImage
           v-for="image of mediaGallery"
           :key="image.media.url"
-          :imageGallery="true"
+          :image-gallery="true"
           :content="{ data: image, config: props.content.config } as any"
         />
       </SwSlider>

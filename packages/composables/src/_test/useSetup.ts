@@ -4,27 +4,20 @@ import { defineComponent, h } from "vue";
 import { defu } from "defu";
 
 type Injections = {
-  shopware: {
-    apiInstance: {
-      config: Record<string, unknown>;
-    };
-  };
+  shopware: unknown;
   apiClient: {
     invoke: ReturnType<typeof vi.fn>;
   };
+  swNotifications?: unknown;
 };
 
 export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {
   const defaultInjections: Injections = {
-    shopware: {
-      apiInstance: {
-        config: {},
-      },
-    },
+    shopware: {},
     apiClient: { invoke: customMocks?.apiClient?.invoke ?? vi.fn() },
   };
 
-  const compoment = defineComponent({
+  const component = defineComponent({
     setup,
     render() {
       return h("div", []);
@@ -36,7 +29,7 @@ export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {
     customMocks || {},
   ) as Injections;
 
-  const wrapper = shallowMount(compoment, {
+  const wrapper = shallowMount(component, {
     global: {
       provide: injections,
     },

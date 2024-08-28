@@ -1,10 +1,7 @@
-<script lang="ts">
-export default {
-  name: "AccountPayments",
-};
-</script>
-
 <script setup lang="ts">
+defineOptions({
+  name: "AccountPayments",
+});
 definePageMeta({
   layout: "account",
 });
@@ -102,7 +99,7 @@ onMounted(async () => {
               :for="paymentMethod.id"
               class="ml-3 block text-sm font-medium text-secondary-700"
             >
-              {{ paymentMethod.translated?.name }}
+              {{ paymentMethod.translated.name }}
             </label>
           </div>
           <button

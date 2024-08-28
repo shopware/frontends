@@ -73,7 +73,7 @@ export type UseListingReturn = {
    * Loads more (next page) elements to the listing
    */
   loadMore(
-    criteria: operations["searchPage post /search"]["body"],
+    criteria?: operations["searchPage post /search"]["body"],
   ): Promise<void>;
   /**
    * Listing that is currently set
@@ -176,6 +176,7 @@ export function useListing(params?: {
   defaultSearchCriteria?: operations["searchPage post /search"]["body"];
 }): UseListingReturn {
   const listingType = params?.listingType || "categoryListing";
+  let categoryId = params?.categoryId || null;
 
   // const { getDefaults } = useDefaults({ defaultsKey: contextName });
   const { apiClient } = useShopwareContext();
@@ -193,21 +194,22 @@ export function useListing(params?: {
       searchCriteria: operations["searchPage post /search"]["body"],
     ) => {
       const { data } = await apiClient.invoke("searchPage post /search", {
+        headers: {
+          "sw-include-seo-urls": true,
+        },
         body: searchCriteria,
       });
       return data;
     };
   } else {
-    const { category } = useCategory();
+    if (!categoryId) {
+      const { category } = useCategory();
+      categoryId = category.value?.id;
+    }
 
     searchMethod = async (
       searchCriteria: operations["readProductListing post /product-listing/{categoryId}"]["body"],
     ) => {
-      if (!category.value?.id) {
-        throw new Error(
-          "[useListing][search] Search category id does not exist.",
-        );
-      }
       const { data } = await apiClient.invoke(
         "readProductListing post /product-listing/{categoryId}",
         {
@@ -215,7 +217,7 @@ export function useListing(params?: {
             "sw-include-seo-urls": true,
           },
           pathParams: {
-            categoryId: category.value.id,
+            categoryId: categoryId as string, // null exception in useCategory,
           },
           body: searchCriteria,
         },
@@ -497,9 +499,9 @@ export function createListingComposable({
     if (_storeAppliedListing.value) {
       _storeAppliedListing.value.currentFilters = {
         ...appliedFilters,
-        manufacturer: appliedFilters.manufacturer?.split("|"),
-        properties: appliedFilters.properties?.split("|"),
-      };
+        manufacturer: appliedFilters.manufacturer?.split("|") || [],
+        properties: appliedFilters.properties?.split("|") || [],
+      } as unknown as Schemas["ProductListingResult"]["currentFilters"];
     }
     return search(appliedFilters);
   };
@@ -516,7 +518,8 @@ export function createListingComposable({
     );
 
     if (_storeAppliedListing.value) {
-      _storeAppliedListing.value.currentFilters = defaultFilters;
+      _storeAppliedListing.value.currentFilters =
+        defaultFilters as unknown as Schemas["ProductListingResult"]["currentFilters"];
     }
     return search({ search: getCurrentFilters.value?.search || "" });
   };

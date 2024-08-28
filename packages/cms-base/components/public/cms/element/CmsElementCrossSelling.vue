@@ -21,6 +21,10 @@ const config = computed<SliderElementConfig>(() => ({
     value: "300px",
     source: "static",
   },
+  minWidth: {
+    value: "300px",
+    source: "static",
+  },
   displayMode: {
     value: "contain",
     source: "static",
@@ -45,7 +49,7 @@ const crossSellCollections = computed(() => {
 
 const { width } = useElementSize(crossSellContainer);
 const slidesToShow = computed(() => {
-  const minWidth = +getConfigValue("elMinWidth").replace(/\D+/g, "");
+  const minWidth = +(config.value.minWidth?.value.replace(/\D+/g, "") || 0);
   return Math.floor(width.value / (minWidth * 1.2));
 });
 
@@ -75,17 +79,17 @@ const toggleTab = (index: number) => {
         v-if="crossSellCollections.length"
         :config="config"
         gap="1.25rem"
-        :slidesToShow="slidesToShow"
-        :slidesToScroll="1"
+        :slides-to-show="slidesToShow"
+        :slides-to-scroll="1"
         :autoplay="false"
       >
         <SwProductCard
           v-for="product of crossSellCollections[currentTabIndex].products"
-          class="w-[300px]"
           :key="product.id"
+          class="w-[300px]"
           :product="product"
-          :layoutType="getConfigValue('boxLayout')"
-          :displayMode="getConfigValue('displayMode')"
+          :layout-type="getConfigValue('boxLayout')"
+          :display-mode="getConfigValue('displayMode')"
         />
       </SwSlider>
     </transition>

@@ -63,15 +63,15 @@ const { formatLink } = useInternationalization(localePath);
         <p>Subtotal</p>
         <SharedPrice :value="totalPrice" data-testid="cart-subtotal" />
       </div>
-      <p class="mt-0.5 text-sm text-secondary-500">
+      <p class="mt-2 text-sm text-secondary-500">
         Shipping and taxes calculated at checkout.
       </p>
       <div class="mt-6">
         <NuxtLink
-          class="flex items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium text-white shadow-sm bg-primary hover:bg-dark"
+          class="flex items-center justify-center rounded-md border border-transparent px-6 py-3 text-base font-medium shadow-sm"
           :class="{
-            'bg-secondary-400': isEmpty,
-            'hover:bg-secondary-400': isEmpty,
+            '!text-[#bcc1c7] bg-[#f9f9f9] cursor-default': isEmpty,
+            'text-white bg-primary hover:bg-dark': !isEmpty,
           }"
           :to="formatLink(isEmpty ? '' : '/checkout')"
           data-testid="cart-checkout-link"

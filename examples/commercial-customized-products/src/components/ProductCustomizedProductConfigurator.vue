@@ -40,7 +40,7 @@ const removeUploadedImage = (optionId: string) => {
     <div class="flex flex-col">
       <div v-for="option in customizedProductOptions" :key="option.id">
         <span class="dark:text-white">{{
-          option.translated?.displayName
+          option.translated.displayName
         }}</span>
         <div
           v-if="['select', 'colorselect', 'imageselect'].includes(option.type)"
