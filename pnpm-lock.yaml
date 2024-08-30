@@ -783,13 +783,13 @@ importers:
     devDependencies:
       '@codspeed/vitest-plugin':
         specifier: 3.1.1
-        version: 3.1.1(vite@5.4.0(@types/node@20.16.2)(terser@5.31.6))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6))
+        version: 3.1.1(vite@5.4.0(@types/node@20.16.2)(terser@5.31.6))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6))
       '@types/prettier':
         specifier: 3.0.0
         version: 3.0.0
       '@vitest/coverage-v8':
         specifier: 2.0.5
-        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6))
+        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6))
       eslint-config-shopware:
         specifier: workspace:*
         version: link:../eslint-config-shopware
@@ -804,7 +804,7 @@ importers:
         version: 2.0.0(typescript@5.5.4)
       vitest:
         specifier: 2.0.5
-        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6)
+        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6)
 
   packages/api-client-old:
     dependencies:
@@ -826,13 +826,13 @@ importers:
         version: link:../api-client
       '@vitest/coverage-v8':
         specifier: 2.0.5
-        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6))
+        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6))
       eslint-config-shopware:
         specifier: workspace:*
         version: link:../eslint-config-shopware
       happy-dom:
-        specifier: 15.3.2
-        version: 15.3.2
+        specifier: 15.7.0
+        version: 15.7.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -841,7 +841,7 @@ importers:
         version: 2.0.0(typescript@5.5.4)
       vitest:
         specifier: 2.0.5
-        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6)
+        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6)
 
   packages/api-gen:
     dependencies:
@@ -872,7 +872,7 @@ importers:
         version: 17.0.32
       '@vitest/coverage-v8':
         specifier: 2.0.5
-        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6))
+        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6))
       eslint-config-shopware:
         specifier: workspace:*
         version: link:../eslint-config-shopware
@@ -890,7 +890,7 @@ importers:
         version: 2.0.0(typescript@5.5.4)
       vitest:
         specifier: 2.0.5
-        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6)
+        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6)
 
   packages/cms-base:
     dependencies:
@@ -945,7 +945,7 @@ importers:
         version: 0.166.0
       '@vitest/coverage-v8':
         specifier: 2.0.5
-        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6))
+        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6))
       eslint-config-shopware:
         specifier: workspace:*
         version: link:../eslint-config-shopware
@@ -966,7 +966,7 @@ importers:
         version: 2.0.0(typescript@5.5.4)
       vitest:
         specifier: 2.0.5
-        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6)
+        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6)
       vue-eslint-parser:
         specifier: 9.4.3
         version: 9.4.3(eslint@9.9.1(jiti@1.21.6))
@@ -1000,7 +1000,7 @@ importers:
         version: 3.13.0(magicast@0.3.5)(rollup@4.20.0)
       '@vitest/coverage-v8':
         specifier: 2.0.5
-        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6))
+        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6))
       '@vue/test-utils':
         specifier: 2.4.6
         version: 2.4.6
@@ -1008,8 +1008,8 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config-shopware
       happy-dom:
-        specifier: 15.3.2
-        version: 15.3.2
+        specifier: 15.7.0
+        version: 15.7.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1021,7 +1021,7 @@ importers:
         version: 2.0.0(typescript@5.5.4)
       vitest:
         specifier: 2.0.5
-        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6)
+        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6)
       vue:
         specifier: 3.4.38
         version: 3.4.38(typescript@5.5.4)
@@ -1046,10 +1046,10 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 2.0.5
-        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6))
+        version: 2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6))
       happy-dom:
-        specifier: 15.3.2
-        version: 15.3.2
+        specifier: 15.7.0
+        version: 15.7.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1058,7 +1058,7 @@ importers:
         version: 2.0.0(typescript@5.5.4)
       vitest:
         specifier: 2.0.5
-        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6)
+        version: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6)
 
   packages/nuxt3-module:
     dependencies:
@@ -6596,8 +6596,8 @@ packages:
   h3@1.12.0:
     resolution: {integrity: sha512-Zi/CcNeWBXDrFNlV0hUBJQR9F7a96RjMeAZweW/ZWkR9fuXrMcvKnSA63f/zZ9l0GgQOZDVHGvXivNN9PWOwhA==}
 
-  happy-dom@15.3.2:
-    resolution: {integrity: sha512-kn8DBfUFETGMurtyQSDvKvMbpjJS+HrMKSAcNK3OL0Tb0t+ziY7MJzbaFJ9SI5eYWmFbl6bEruxNhCZrkphtvA==}
+  happy-dom@15.7.0:
+    resolution: {integrity: sha512-tH48xarc37FLrtpNWuA89xw4IS1dxNrfzI8ehiafkj3kM3JSCMknuigKv2unDPRzd2C9Hv7ZDPkqPiBCvIz2Dg==}
     engines: {node: '>=18.0.0'}
 
   has-bigints@1.0.2:
@@ -11412,11 +11412,11 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@codspeed/vitest-plugin@3.1.1(vite@5.4.0(@types/node@20.16.2)(terser@5.31.6))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6))':
+  '@codspeed/vitest-plugin@3.1.1(vite@5.4.0(@types/node@20.16.2)(terser@5.31.6))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6))':
     dependencies:
       '@codspeed/core': 3.1.1
       vite: 5.4.0(@types/node@20.16.2)(terser@5.31.6)
-      vitest: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6)
+      vitest: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6)
     transitivePeerDependencies:
       - debug
 
@@ -15259,7 +15259,7 @@ snapshots:
       vite: 5.4.0(@types/node@20.16.2)(terser@5.31.6)
       vue: 3.4.38(typescript@5.5.4)
 
-  '@vitest/coverage-v8@2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6))':
+  '@vitest/coverage-v8@2.0.5(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -15273,7 +15273,7 @@ snapshots:
       std-env: 3.7.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6)
+      vitest: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -17952,7 +17952,7 @@ snapshots:
     transitivePeerDependencies:
       - uWebSockets.js
 
-  happy-dom@15.3.2:
+  happy-dom@15.7.0:
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -23304,7 +23304,7 @@ snapshots:
       - typescript
       - universal-cookie
 
-  vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.3.2)(terser@5.31.6):
+  vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.16.2)(happy-dom@15.7.0)(terser@5.31.6):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@vitest/expect': 2.0.5
@@ -23328,7 +23328,7 @@ snapshots:
     optionalDependencies:
       '@edge-runtime/vm': 3.2.0
       '@types/node': 20.16.2
-      happy-dom: 15.3.2
+      happy-dom: 15.7.0
     transitivePeerDependencies:
       - less
       - lightningcss

@@ -44,7 +44,7 @@
     "@shopware/api-client": "workspace:*",
     "@vitest/coverage-v8": "2.0.5",
     "eslint-config-shopware": "workspace:*",
-    "happy-dom": "15.3.2",
+    "happy-dom": "15.7.0",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "2.0.5"
