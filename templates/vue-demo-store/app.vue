@@ -15,10 +15,11 @@ useHead({
   },
 });
 
-const { apiClient } = useShopwareContext();
+//const { apiClient } = useShopwareContext();
 const sessionContextData = ref<Schemas["SalesChannelContext"]>();
-const contextResponse = await apiClient.invoke("readContext get /context");
-sessionContextData.value = contextResponse.data;
+const { $getCurrentSession } = useNuxtApp();
+// const contextResponse = await apiClient.invoke("readContext get /context");
+sessionContextData.value = $getCurrentSession.value
 
 useBroadcastChannelSync();
 
@@ -43,7 +44,7 @@ const localeFromHeader = headers?.["accept-language"]
   .find(Boolean);
 
 usePrice({
-  currencyCode: sessionContextData.value?.currency?.isoCode || "",
+  currencyCode: $getCurrentSession.value.currency?.isoCode || "",
   localeCode: localeFromHeader,
 });
 
@@ -100,8 +101,10 @@ if (languages.value?.elements.length && router.currentRoute.value.name) {
   }
 
   if (languageToChangeId) {
-    await changeLanguage(languageToChangeId);
-    await refreshSessionContext();
+    if (sessionContextData.value.salesChannel.languageId !== languageToChangeId) {
+      await changeLanguage(languageToChangeId);
+      await refreshSessionContext();
+    }
   }
 
   locale.value = prefix ? prefix : defaultLocale;

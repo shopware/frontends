@@ -2,6 +2,12 @@
 defineOptions({
   name: "ShopwareTeamPage",
 });
+definePageMeta({
+  middleware: "auth",
+});
+
+const customer = computed(() => useNuxtApp().$getCurrentSession?.value.customer)
+
 
 const images = ref([
   "https://ca.slack-edge.com/T04UKLWGP-UC04NDP6U-cd3e568af126-512",
@@ -26,6 +32,9 @@ useBreadcrumbs([
 
 <template>
   <LayoutBreadcrumbs />
+  <div>
+    <pre>customer: {{ customer }}</pre>
+  </div>
   <div class="flex justify-center">
     <img
       class="md:w-11/12"

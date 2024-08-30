@@ -5,16 +5,19 @@ import {
   createShopwareContext,
   createError,
 } from "#imports";
-import { ref } from "vue";
+import { ref, computed, ComputedRef } from "vue";
 import Cookies from "js-cookie";
 import { createAPIClient } from "@shopware/api-client";
 import { getCookie } from "h3";
 import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
-import type { ApiClient } from "#shopware";
+import type { ApiClient, operations } from "#shopware";
 
 declare module "#app" {
   interface NuxtApp {
     $shopwareApiClient: ApiClient;
+    $getCurrentSession: ComputedRef<
+      operations["readContext get /context"]["response"]
+    >;
   }
 }
 
@@ -24,7 +27,7 @@ declare module "vue" {
   }
 }
 
-export default defineNuxtPlugin((NuxtApp) => {
+export default defineNuxtPlugin(async (NuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
   const shopwareEndpoint =
     runtimeConfig.public?.shopware?.endpoint ??
@@ -64,6 +67,9 @@ export default defineNuxtPlugin((NuxtApp) => {
     });
   });
 
+  // apiClient.hook("onSuccessResponse", (response) => {
+  // });
+
   apiClient.hook("onResponseError", (response) => {
     // @ts-expect-error TODO: check maintenance mode and fix typongs here
     const error = isMaintenanceMode(response._data?.errors ?? []);
@@ -84,8 +90,32 @@ export default defineNuxtPlugin((NuxtApp) => {
   });
   NuxtApp.vueApp.provide("shopware", shopwareContext);
 
-  // Session Context
+  async function loadCurrentSession() {
+    console.warn(
+      "loadCurrentSession",
+      NuxtApp.ssrContext ? "(server)" : "(client)",
+    );
+    return (await apiClient.invoke("readContext get /context")).data;
+  }
   const sessionContextData = ref();
+
+  if (NuxtApp.ssrContext) {
+    const currentSession = await loadCurrentSession();
+
+    console.warn("setting payload in (server)", contextTokenFromCookie);
+    NuxtApp.ssrContext.payload.data = {
+      sessionContext: currentSession,
+    };
+    sessionContextData.value = currentSession;
+  } else {
+    console.warn(
+      "taking session from server payload (client)",
+      NuxtApp.payload.data.sessionContext,
+    );
+    sessionContextData.value =
+      NuxtApp.payload.data.sessionContext || (await loadCurrentSession());
+  }
+  // Session Context
   NuxtApp.vueApp.provide("swSessionContext", sessionContextData);
   // in case someone tries to use it in nuxt specific code like middleware
   useState("swSessionContext", () => sessionContextData);
@@ -93,6 +123,7 @@ export default defineNuxtPlugin((NuxtApp) => {
   return {
     provide: {
       shopwareApiClient: apiClient as ApiClient,
+      getCurrentSession: computed(() => sessionContextData.value),
     },
   };
 });
