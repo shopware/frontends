@@ -1,6 +1,6 @@
 import { defineConfigWithTheme } from "vitepress";
 import type { Config as ThemeConfig } from "vitepress-shopware-docs";
-import baseConfig from "vitepress-shopware-docs/config";
+import { baseConfig } from "@shopware-docs/vitepress";
 import nav from "./navigation";
 import { SearchPlugin } from "vitepress-plugin-search";
 import { CmsBaseReference } from "./theme/typer/cms-base-plugin";
@@ -8,6 +8,7 @@ import { ReadmeBasedReference } from "./theme/typer/plugin";
 import { ReadmeLoader } from "./theme/typer/readme-loader";
 import { ComposablesBuilder } from "./theme/typer/composables-builder";
 import { readdirSync } from "fs";
+import { resolve } from "path";
 
 const buildComposablesSidebar = () => {
   return readdirSync("../../packages/composables/src/", {
@@ -353,7 +354,7 @@ interface ThemeConfigExtended extends ThemeConfig {
 }
 
 export default defineConfigWithTheme<ThemeConfigExtended>({
-  extends: baseConfig,
+  extends: baseConfig.default,
   lang: "en-US",
   title: "Shopware Frontends",
   description: "Documentation for Shopware developers",
@@ -455,6 +456,15 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       minify: "terser",
       chunkSizeWarningLimit: Infinity,
       ssr: false,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("mermaid")) {
+              return "mermaid";
+            }
+          },
+        },
+      },
     },
     json: {
       stringify: true,
@@ -466,6 +476,31 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       ReadmeLoader(),
       ComposablesBuilder(),
     ],
+    resolve: {
+      alias: {
+        "@node_modules": resolve(process.cwd(), "node_modules"),
+        "../composables/edit-link": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/composables/edit-link.ts",
+        ),
+        "./VPNavBarTitle.vue": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/components/override/VPNavBarTitle.vue",
+        ),
+        "./VPAlgoliaSearchBox.vue": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/components/override/VPAlgoliaSearchBox.vue",
+        ),
+        "../NotFound.vue": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/components/override/NotFound.vue",
+        ),
+        "../SwagRelatedArticles.vue": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/components/SwagRelatedArticles.vue",
+        ),
+      },
+    },
   },
   vue: {
     reactivityTransform: true,

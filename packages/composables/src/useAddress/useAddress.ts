@@ -49,6 +49,16 @@ export type UseAddressReturn = {
 /**
  * Composable to manage customer addresses
  *
+ * With this composable you can:
+ * - Fetch customer addresses
+ * - Return customer addresses
+ * - Create new customer address
+ * - Update existing customer address
+ * - Delete existing customer address
+ * - Set default billing address
+ * - Set default shipping address
+ * - Format error message
+ *
  * @public
  *
  * @category Cart & Checkout

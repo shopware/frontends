@@ -32,6 +32,17 @@ export type ChangePaymentShippingMethodParams = {
 
 /**
  * Composable to manage quotes in the B2BQuote module.
+ *
+ * With this composable you can:
+ * - Get list of quotes
+ * - Get quote details
+ * - Decline quote
+ * - Request change of the quote
+ * - Change shipping method
+ * - Change payment method
+ * - Create order from quote
+ * - Request quote
+ *
  * @returns {UseB2bQuoteManagement}
  */
 export function useB2bQuoteManagement(): UseB2bQuoteManagement {

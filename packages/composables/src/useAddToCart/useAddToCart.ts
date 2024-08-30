@@ -32,6 +32,15 @@ export type UseAddToCartReturn = {
 
 /**
  * Composable to manage adding product to cart
+ *
+ * With this composable you can:
+ * - Add product to cart
+ * - Get product quantity
+ * - Get product stock
+ * - Get product available stock
+ * - Check if product is in cart
+ * - Get product count in cart
+ *
  * @public
  * @category Cart & Checkout
  */
