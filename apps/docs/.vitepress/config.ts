@@ -7,21 +7,10 @@ import { CmsBaseReference } from "./theme/typer/cms-base-plugin";
 import { ReadmeBasedReference } from "./theme/typer/plugin";
 import { ReadmeLoader } from "./theme/typer/readme-loader";
 import { ComposablesBuilder } from "./theme/typer/composables-builder";
-import { readdirSync } from "fs";
 import { resolve } from "path";
+import data from "./data/composables.data";
 
-const buildComposablesSidebar = () => {
-  return readdirSync("../../packages/composables/src/", {
-    withFileTypes: true,
-  })
-    .filter(
-      (element) => element.isDirectory() && element.name.startsWith("use"),
-    )
-    .map((element) => ({
-      text: element.name,
-      link: `/packages/composables/${element.name}`,
-    }));
-};
+const composables = await data.load(null);
 
 export const sidebar = [
   {
@@ -338,7 +327,7 @@ export const sidebar = [
       {
         text: "Composables",
         link: "/packages/composables/",
-        items: buildComposablesSidebar(),
+        items: composables?.composablesList ?? [],
       },
       { text: "CMS Base", link: "/packages/cms-base.html" },
       { text: "Nuxt3 Module", link: "/packages/nuxt3-module.html" },

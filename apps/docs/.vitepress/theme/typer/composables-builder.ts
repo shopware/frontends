@@ -46,6 +46,15 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       const description = astJson?.functions[composableName]?.summary || "";
       const returnType = astJson?.functions[composableName]?.returnType || "";
 
+      // Building meta data
+      // Only category
+      if (astJson?.functions[composableName]?.docs?.category) {
+        code = code.replace(
+          "{{META}}",
+          `<div>Category:</div> <div>${astJson?.functions[composableName]?.docs.category}</div>`,
+        );
+      }
+
       // Building interfaces block
       let interfacesBlock = `// packages/composables/src/${composableName}/${composableName}.ts`;
       for (const key of Object.keys(astJson.functions)) {
