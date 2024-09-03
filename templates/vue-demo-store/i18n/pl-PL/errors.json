@@ -1,6 +1,8 @@
 {
   "errors": {
+    "promotions-on-cart-price-zero-error": "Promocje są wyłączone dla koszyka, ponieważ wartość koszyka wynosi zero",
     "product-stock-reached": "Produkt {name} jest dostępny tylko {quantity} razy",
+    "product-stock-reached-empty": "Nie można dodać takiej ilości",
     "product-out-of-stock": "Produkt {name} nie jest już dostępny",
     "purchase-steps-quantity": "Produkt {name} nie jest dostępny w żądanej ilości. Ilość została zmieniona na {quantity}.",
     "min-order-quantity": "Liczba produktów {name} nie osiągnęła minimalnej ilości zamówienia. Ilość została automatycznie zwiększona do {quantity}.",

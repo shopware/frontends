@@ -14,6 +14,7 @@ const { t } = useI18n();
 const { getErrorsCodes } = useCartNotification();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
+const { resolveCartError } = useCartErrorParamsResolver();
 
 const props = withDefaults(
   defineProps<{
@@ -60,13 +61,17 @@ const toggleWishlistProduct = async () => {
 
 const addToCartProxy = async () => {
   await addToCart();
+  const errors = getErrorsCodes();
 
-  getErrorsCodes()?.forEach((element) => {
-    pushError(t(`errors.${element.messageKey}`, { ...element }));
+  errors?.forEach((element) => {
+    const { messageKey, params } = resolveCartError(element);
+    pushError(t(`errors.${messageKey}`, params as Record<string, unknown>));
   });
-  pushSuccess(
-    t(`cart.messages.addedToCart`, { p: props.product?.translated.name }),
-  );
+
+  if (!errors.length)
+    pushSuccess(
+      t(`cart.messages.addedToCart`, { p: props.product?.translated.name }),
+    );
 };
 
 const fromPrice = getProductFromPrice(props.product);
