@@ -19,15 +19,15 @@ import {
   useUrlResolver,
   useCartNotification,
   useCartErrorParamsResolver,
-  useCmsTranslate,
 } from "#imports";
 import { useElementSize } from "@vueuse/core";
 import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
+import { getCmsTranslate } from "@shopware-pwa/helpers-next";
 
 const { pushSuccess, pushError } = useNotifications();
 const { getErrorsCodes } = useCartNotification();
-const { cmsT } = useCmsTranslate();
+const { resolveCartError } = useCartErrorParamsResolver();
 
 const props = withDefaults(
   defineProps<{
@@ -127,8 +127,8 @@ const addToCartProxy = async () => {
   await addToCart();
   const errors = getErrorsCodes();
   errors?.forEach((element) => {
-    const { messageKey, params } = useCartErrorParamsResolver(element);
-    pushError(cmsT(translations.errors[messageKey], params));
+    const { messageKey, params } = resolveCartError(element);
+    pushError(getCmsTranslate(translations.errors[messageKey], params));
   });
 
   if (!errors.length)

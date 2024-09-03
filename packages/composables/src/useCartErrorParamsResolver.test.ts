@@ -20,8 +20,8 @@ describe("useCartErrorParamsResolver", () => {
         };
       }),
     } as unknown as ReturnType<typeof useCart>);
-
-    const error = useCartErrorParamsResolver({
+    const { resolveCartError } = useCartErrorParamsResolver();
+    const error = resolveCartError({
       message:
         "The product Greta Glass drink dispenser 5 l with tap and wooden stand is only available 5 times",
       code: 0,
@@ -43,8 +43,8 @@ describe("useCartErrorParamsResolver", () => {
     vi.mocked(useCart).mockReturnValue({
       getItem: vi.fn(() => null),
     } as unknown as ReturnType<typeof useCart>);
-
-    const error = useCartErrorParamsResolver({
+    const { resolveCartError } = useCartErrorParamsResolver();
+    const error = resolveCartError({
       message:
         "The product Greta Glass drink dispenser 5 l with tap and wooden stand is only available 5 times",
       code: 0,
@@ -63,8 +63,8 @@ describe("useCartErrorParamsResolver", () => {
     vi.mocked(useCart).mockReturnValue({
       getItem: vi.fn(() => null),
     } as unknown as ReturnType<typeof useCart>);
-
-    const error = useCartErrorParamsResolver({
+    const { resolveCartError } = useCartErrorParamsResolver();
+    const error = resolveCartError({
       key: "custom-errorc29ad46d64474ef0b72845832f0d879b",
       messageKey: "custom-error",
     });

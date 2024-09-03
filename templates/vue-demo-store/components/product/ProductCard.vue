@@ -14,6 +14,7 @@ const { t } = useI18n();
 const { getErrorsCodes } = useCartNotification();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
+const { resolveCartError } = useCartErrorParamsResolver();
 
 const props = withDefaults(
   defineProps<{
@@ -63,7 +64,7 @@ const addToCartProxy = async () => {
   const errors = getErrorsCodes();
 
   errors?.forEach((element) => {
-    const { messageKey, params } = useCartErrorParamsResolver(element);
+    const { messageKey, params } = resolveCartError(element);
     pushError(t(`errors.${messageKey}`, params as Record<string, unknown>));
   });
 

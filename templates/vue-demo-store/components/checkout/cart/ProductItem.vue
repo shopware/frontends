@@ -6,6 +6,7 @@ import { ApiClientError } from "@shopware/api-client";
 const miniCartModal = useMiniCartModal();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
+const { resolveCartError } = useCartErrorParamsResolver();
 
 const props = withDefaults(
   defineProps<{
@@ -59,7 +60,7 @@ const updateQuantity = async (quantityInput: number | undefined) => {
   }
 
   getErrorsCodes()?.forEach((element) => {
-    const { messageKey, params } = useCartErrorParamsResolver(element);
+    const { messageKey, params } = resolveCartError(element);
     pushError(t(`errors.${messageKey}`, params as Record<string, unknown>));
   });
 
