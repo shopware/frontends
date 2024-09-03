@@ -22,7 +22,12 @@ describe("apiInterceptors", () => {
           headers: new AxiosHeaders(),
         },
       });
-      expect(updateMethod).toHaveBeenCalledWith({ contextToken }, {});
+      expect(updateMethod).toHaveBeenCalledWith(
+        { contextToken },
+        {
+          headers: new AxiosHeaders(),
+        },
+      );
     });
 
     it("should get contextToken from response, not header, if there is one", () => {
@@ -42,7 +47,9 @@ describe("apiInterceptors", () => {
         {
           contextToken: "044a190a54ab4f06803909c3ee8063ef",
         },
-        {},
+        {
+          headers: new AxiosHeaders(),
+        },
       );
     });
   });
