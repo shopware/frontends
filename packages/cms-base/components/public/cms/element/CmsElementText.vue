@@ -125,6 +125,16 @@ const CmsTextRender = () => {
           children: RawChildren[],
           createElement: typeof h,
         ) {
+          try {
+            console.warn(
+              "getOptionsFromNode",
+              resolveUrl,
+              getOptionsFromNode(node, resolveUrl),
+            );
+          } catch (error) {
+            console.error("getOptionsFromNode error", error);
+          }
+
           return createElement(
             "img",
             getOptionsFromNode(node, resolveUrl)?.attrs,
