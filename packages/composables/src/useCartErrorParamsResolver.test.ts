@@ -1,6 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { useCartErrorParamsResolver } from "./useCartErrorParamsResolver";
 import { useCart } from "./useCart";
+import { ref } from "vue";
 
 vi.mock("./useCart.ts");
 
@@ -11,14 +12,15 @@ describe("useCartErrorParamsResolver", () => {
 
   it("should return resolved product-stock-reached error", () => {
     vi.mocked(useCart).mockReturnValue({
-      getItem: vi.fn(() => {
-        return {
+      cartItems: ref([
+        {
+          id: "c29ad46d64474ef0b72845832f0d879b",
           label: "Greta Glass drink dispenser 5 l with tap and wooden stand",
           quantityInformation: {
             maxPurchase: 5,
           },
-        };
-      }),
+        },
+      ]),
     } as unknown as ReturnType<typeof useCart>);
     const { resolveCartError } = useCartErrorParamsResolver();
     const error = resolveCartError({
@@ -41,7 +43,7 @@ describe("useCartErrorParamsResolver", () => {
 
   it("should return resolved product-stock-reached-empty error if there is no product data", () => {
     vi.mocked(useCart).mockReturnValue({
-      getItem: vi.fn(() => null),
+      cartItems: ref([]),
     } as unknown as ReturnType<typeof useCart>);
     const { resolveCartError } = useCartErrorParamsResolver();
     const error = resolveCartError({
@@ -61,7 +63,7 @@ describe("useCartErrorParamsResolver", () => {
 
   it("should return passed params if error is not supported", () => {
     vi.mocked(useCart).mockReturnValue({
-      getItem: vi.fn(() => null),
+      cartItems: ref([]),
     } as unknown as ReturnType<typeof useCart>);
     const { resolveCartError } = useCartErrorParamsResolver();
     const error = resolveCartError({
