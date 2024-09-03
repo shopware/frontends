@@ -39,6 +39,6 @@
     "@types/node": "20.14.10",
     "nuxt": "3.13.0",
     "typescript": "5.5.4",
-    "vue-tsc": "2.0.29"
+    "vue-tsc": "2.1.4"
   }
 }
