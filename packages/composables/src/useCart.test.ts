@@ -215,28 +215,4 @@ describe("useCart", () => {
 
     expect(vm.consumeCartErrors()).toEqual(null);
   });
-
-  // it("should return cart item if exists in cart items", async () => {
-  //   const item = {
-  //     type: "product",
-  //     good: true,
-  //     quantity: 1,
-  //     id: "e05e9340aff4484f9009646dfd572df9",
-  //   };
-
-  //   injections.apiClient.invoke.mockResolvedValue({
-  //     data: {
-  //       lineItems: [item],
-  //     },
-  //   });
-
-  //   const { vm } = useSetup(useCart);
-  //   await vm.refreshCart();
-  //   expect(vm.getItem("e05e9340aff4484f9009646dfd572df9")).toEqual(item);
-  // });
-
-  // it("should not return cart item if not exists in cart items", () => {
-  //   const { vm } = useSetup(useCart);
-  //   expect(vm.getItem("01893ed931d571718e8138e7df7d68d1")).toBe(undefined);
-  // });
 });
