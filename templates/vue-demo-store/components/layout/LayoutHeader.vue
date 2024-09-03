@@ -4,7 +4,7 @@ const { count: wishlistCount } = useWishlist();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
-const sidebarController = useModal();
+const miniCartModal = useMiniCartModal();
 </script>
 
 <template>
@@ -66,7 +66,7 @@ const sidebarController = useModal();
               class="group bg-transparent -m-2 p-2 flex items-center relative"
               aria-label="Mini cart"
               data-testid="cart-button"
-              @click="sidebarController.open"
+              @click="miniCartModal.open"
             >
               <!-- Heroicon name: outline/shopping-bag -->
               <div
@@ -83,7 +83,7 @@ const sidebarController = useModal();
               >
             </button>
           </div>
-          <CheckoutSideCart :controller="sidebarController" />
+          <CheckoutSideCart :controller="miniCartModal" />
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ The example shows how to integrate a Vue.js project with the logic provided by C
 
 1. [Setup](https://frontends.shopware.com/getting-started/templates.html) your Vue template
 
-3. Prepare some customized products following the [documentation](https://docs.shopware.com/en/shopware-6-en/extensions/customproducts#add-template)
+2. Prepare some customized products following the [documentation](https://docs.shopware.com/en/shopware-6-en/extensions/customproducts#add-template)
 
 ## Usage
 
@@ -27,22 +27,23 @@ In the example, the product with Custom Product is found and used in the templat
 
 1. Import a component to display extended product options
 
-    ```js 
-    import ProductCustomizedProductConfigurator from "@/components/ProductCustomizedProductConfigurator.vue";
-    ```
+   ```js
+   import ProductCustomizedProductConfigurator from "@/components/ProductCustomizedProductConfigurator.vue";
+   ```
 
 2. Register a product in Shopware context:
 
-    ```js
-    // product found by an api-client or a composable
-    useProduct(product);
-    ```
+   ```js
+   // product found by an api-client or a composable
+   useProduct(product);
+   ```
+
 3. Display the component
 
-    ```html
-    <!-- your Vue template -->
-    <ProductCustomizedProductConfigurator />
-    ```
+   ```html
+   <!-- your Vue template -->
+   <ProductCustomizedProductConfigurator />
+   ```
 
 ### `useProductCustomizedProductConfigurator` API
 
@@ -52,12 +53,11 @@ Available methods and properties provided by the composable function:
 
 `customizedProduct` - the entire `Product` entity
 
-`state` -  state of the selected options
+`state` - state of the selected options
 
 `addToCart` - method for adding product to cart, using customized options in the payload
 
 `handleFileUpload` - helper for media type options, updates the state automatically
-
 
 Investigate more in the [component's source](https://github.com/shopware/frontends/blob/main/examples/commercial-customized-products/src/components/ProductCustomizedProductConfigurator.vue).
 
@@ -71,7 +71,7 @@ or...
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/examples/commercial-customized-products?file=README.md)
 
-
 ## Resources
+
 - [Custom Products](https://docs.shopware.com/en/shopware-6-en/extensions/customproducts) docs
 - [📖 &nbsp;Composable Frontends Documentation](https://frontends.shopware.com)

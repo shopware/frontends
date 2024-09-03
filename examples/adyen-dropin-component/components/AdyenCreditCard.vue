@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Dropin } from "@adyen/adyen-web"
-import '@adyen/adyen-web/styles/adyen.css';
+import { Dropin } from "@adyen/adyen-web";
+import "@adyen/adyen-web/styles/adyen.css";
 
 const emits = defineEmits<{
   // to inform the upper levels of an app that payButton was clicked (that means it was validated by Adyen and we can proceed)

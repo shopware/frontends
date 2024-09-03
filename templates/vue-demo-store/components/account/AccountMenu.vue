@@ -3,6 +3,7 @@ import { onClickOutside } from "@vueuse/core";
 
 const { isLoggedIn, logout, user } = useUser();
 const accountMenu = ref(null);
+const router = useRouter();
 
 const loginModalController = useModal();
 const localePath = useLocalePath();
@@ -17,6 +18,11 @@ async function invokeLogout() {
   } finally {
     isAccountMenuOpen.value = false;
   }
+}
+
+async function invokeResetPassword() {
+  await router.push(formatLink("/account/recover"));
+  loginModalController.close();
 }
 </script>
 <template>
@@ -40,10 +46,9 @@ async function invokeLogout() {
             <div class="flex items-center justify-end">
               <div class="text-sm">
                 <NuxtLink
-                  :to="formatLink(`/account/recover`)"
                   class="font-medium text-indigo-600 hover:text-indigo-500"
+                  @click.stop="invokeResetPassword"
                 >
-                  {{ $t("recoveryPassword.forgotPassword") }}
                 </NuxtLink>
               </div>
             </div>
@@ -124,11 +129,5 @@ async function invokeLogout() {
         </div>
       </ClientOnly>
     </div>
-    <!-- <a
-    href="#"
-    class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-  >
-    Sign up
-  </a> -->
   </div>
 </template>

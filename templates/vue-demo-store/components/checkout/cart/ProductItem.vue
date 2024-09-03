@@ -3,6 +3,10 @@ import type { Schemas } from "#shopware";
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
 import { ApiClientError } from "@shopware/api-client";
 
+const miniCartModal = useMiniCartModal();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+
 const props = withDefaults(
   defineProps<{
     cartItem: Schemas["LineItem"];
@@ -87,19 +91,28 @@ const removeCartItem = async () => {
     />
   </div>
 
-  <div class="flex flex-1 flex-col">
+  <div class="flex flex-1 flex-col text-left">
     <div>
       <div
         class="flex flex-col lg:flex-row justify-between text-base font-medium text-secondary-900"
       >
-        <h3 class="text-base" data-testid="cart-product-name">
-          {{ cartItem.label }}
-          <span
-            v-if="isDigital"
-            data-testid="cart-product-digital-label"
-            class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"
-            >{{ $t("cart.digital") }}</span
+        <h3
+          class="text-base cursor-pointer pr-2"
+          data-testid="cart-product-name"
+        >
+          <NuxtLink
+            :to="formatLink(`/detail/${cartItem.id}`)"
+            class="flex items-left text-base font-normal text-secondary-900 break-words hover:underline"
+            @click="miniCartModal.close"
           >
+            {{ cartItem.label }}
+            <span
+              v-if="isDigital"
+              data-testid="cart-product-digital-label"
+              class="bg-blue-100 text-blue-800 text-xs mr-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300"
+              >{{ $t("cart.digital") }}</span
+            >
+          </NuxtLink>
         </h3>
         <SharedPrice
           v-if="itemTotalPrice"
@@ -126,9 +139,9 @@ const removeCartItem = async () => {
         v-model="quantity"
         type="number"
         :disabled="isLoading"
-        :min="(cartItem as any).quantityInformation?.minPurchase || 1"
-        :max="(cartItem as any).quantityInformation?.maxPurchase || maxQty"
-        :step="(cartItem as any).quantityInformation?.purchaseSteps || 1"
+        :min="cartItem.quantityInformation?.minPurchase || 1"
+        :max="cartItem.quantityInformation?.maxPurchase || maxQty"
+        :step="cartItem.quantityInformation?.purchaseSteps || 1"
         data-testid="cart-product-qty-select"
         name="quantity"
         aria-label="Cart item quantity"
