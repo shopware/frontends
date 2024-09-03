@@ -49,9 +49,11 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       // Building meta data
       // Only category
       if (astJson?.functions[composableName]?.docs?.category) {
+        const conmposableCategory =
+          astJson.functions[composableName].docs.category;
         code = code.replace(
           "{{META}}",
-          `<div>Category:</div> <div>${astJson?.functions[composableName]?.docs.category}</div>`,
+          `<div>Category:</div> <a href="/packages/composables/?category=${conmposableCategory}"><div class="bg-red">${conmposableCategory}</div></a>`,
         );
       }
 
