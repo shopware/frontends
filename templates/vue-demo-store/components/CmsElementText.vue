@@ -126,7 +126,7 @@ const CmsTextRender = () => {
           createElement: typeof h,
         ) {
           try {
-            console.warn(
+            console.error(
               "getOptionsFromNode",
               resolveUrl,
               getOptionsFromNode(node, resolveUrl),
@@ -134,11 +134,11 @@ const CmsTextRender = () => {
           } catch (error) {
             console.error("getOptionsFromNode error", error);
           }
-
-          return createElement(
-            "img",
-            getOptionsFromNode(node, resolveUrl)?.attrs,
-          );
+          return;
+          // return createElement(
+          //   "img",
+          //   getOptionsFromNode(node, resolveUrl)?.attrs,
+          // );
         },
       },
     },
