@@ -59,7 +59,7 @@ const onHandleChange = async () => {
   if (props.allowRedirect && selectedOptionsVariantPath) {
     try {
       router.push(selectedOptionsVariantPath);
-    } catch (error) {
+    } catch {
       console.error("incorrect URL", selectedOptionsVariantPath);
     }
   } else {

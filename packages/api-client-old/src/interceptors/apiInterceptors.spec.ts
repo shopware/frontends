@@ -1,6 +1,7 @@
 import { createResponseInterceptor, errorInterceptor } from ".";
 import { faker } from "@faker-js/faker";
 import { ShopwareApiError } from "@shopware-pwa/types";
+import { AxiosHeaders } from "axios";
 import { describe, expect, it, beforeEach, vi } from "vitest";
 
 describe("apiInterceptors", () => {
@@ -17,7 +18,9 @@ describe("apiInterceptors", () => {
         headers: { "sw-context-token": contextToken },
         status: 200,
         statusText: "OK",
-        config: {},
+        config: {
+          headers: new AxiosHeaders(),
+        },
       });
       expect(updateMethod).toHaveBeenCalledWith({ contextToken }, {});
     });
@@ -31,7 +34,9 @@ describe("apiInterceptors", () => {
         headers: { "sw-context-token": contextToken },
         status: 200,
         statusText: "OK",
-        config: {},
+        config: {
+          headers: new AxiosHeaders(),
+        },
       });
       expect(updateMethod).toHaveBeenCalledWith(
         {
@@ -88,7 +93,7 @@ describe("apiInterceptors", () => {
         } as ShopwareApiError);
         // Fail test if above expression doesn't throw anything.
         expect("didn't throw an error").toEqual("should throw an error");
-      } catch (e) {
+      } catch {
         // expect(e.statusCode).toEqual(404);
         //expect(e.message).toBe("Resource not found")
       }

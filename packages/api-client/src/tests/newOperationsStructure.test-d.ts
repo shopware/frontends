@@ -1,4 +1,4 @@
-import { describe, it, assertType } from "vitest";
+import { describe, it, assertType, expectTypeOf } from "vitest";
 import { createAPIClient } from "../createAPIClient";
 
 type operations = {
@@ -44,6 +44,12 @@ describe("createApiClient type checks", () => {
         notExisting: "notExisting",
       },
     });
+    expectTypeOf(result).toEqualTypeOf<{
+      status: 200;
+      data: {
+        responseId: string;
+      };
+    }>();
   });
 
   it("should not allow empty params when body param is required", async () => {

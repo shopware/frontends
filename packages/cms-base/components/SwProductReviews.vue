@@ -31,7 +31,9 @@ const loadingReviews = ref<boolean>(shouldLoadReviews);
 const { loadProductReviews, productReviews } = useProductReviews(product);
 
 onMounted(async () => {
-  shouldLoadReviews && (await loadProductReviews());
+  if (shouldLoadReviews) {
+    await loadProductReviews();
+  }
   loadingReviews.value = false;
 });
 const reviewsList = computed<Schemas["ProductReview"][]>(
