@@ -62,6 +62,8 @@ export * from "./useUrlResolver";
 export * from "./useUser";
 export * from "./useWishlist";
 export * from "./useB2bQuoteManagement";
+export * from "./useCartNotification";
+export * from "./useCartErrorParamsResolver";
 
 export function resolveCmsComponent(
   content: Schemas["CmsSection"] | Schemas["CmsBlock"] | Schemas["CmsSlot"],

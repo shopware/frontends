@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import { useAddToCart, useNotifications } from "#imports";
+import {
+  useAddToCart,
+  useNotifications,
+  useCartNotification,
+  useCartErrorParamsResolver,
+} from "#imports";
 import { toRefs } from "vue";
 import { defu } from "defu";
 import type { Schemas } from "#shopware";
+import { getCmsTranslate } from "@shopware-pwa/helpers-next";
 
-const { pushSuccess } = useNotifications();
+const { pushSuccess, pushError } = useNotifications();
+const { getErrorsCodes } = useCartNotification();
+const { resolveCartError } = useCartErrorParamsResolver();
 const props = defineProps<{
   product: Schemas["Product"];
 }>();
@@ -16,6 +24,9 @@ type Translations = {
     qty: string;
     addToCart: string;
   };
+  errors: {
+    [key: string]: string;
+  };
 };
 
 let translations: Translations = {
@@ -23,6 +34,10 @@ let translations: Translations = {
     addedToCart: "has been added to cart.",
     qty: "Qty",
     addToCart: "Add to cart",
+  },
+  errors: {
+    "product-stock-reached":
+      "The product {name} is only available {quantity} times",
   },
 };
 
@@ -33,9 +48,16 @@ const { addToCart, quantity } = useAddToCart(product);
 
 const addToCartProxy = async () => {
   await addToCart();
-  pushSuccess(
-    `${props.product?.translated.name} ${translations.product.addedToCart}`,
-  );
+  const errors = getErrorsCodes();
+  errors?.forEach((element) => {
+    const { messageKey, params } = resolveCartError(element);
+    pushError(getCmsTranslate(translations.errors[messageKey], params));
+  });
+
+  if (!errors.length)
+    pushSuccess(
+      `${props.product?.translated.name} ${translations.product.addedToCart}`,
+    );
 };
 </script>
 

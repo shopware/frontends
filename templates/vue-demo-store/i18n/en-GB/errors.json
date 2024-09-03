@@ -1,6 +1,8 @@
 {
   "errors": {
+    "promotions-on-cart-price-zero-error": "Promotions are excluded for cart because the price of the cart is zero",
     "product-stock-reached": "The product {name} is only available {quantity} times",
+    "product-stock-reached-empty": "Cannot add this quantity",
     "product-out-of-stock": "The product {name} is not available any more",
     "purchase-steps-quantity": "The product {name} is not available in this quantity. The quantity was changed to {quantity}",
     "min-order-quantity": "The quantity of product {name} did not meet the minimum order quantity threshold. The quantity has automatically been increased to {quantity}.",

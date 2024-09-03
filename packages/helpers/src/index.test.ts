@@ -16,6 +16,7 @@ describe("helpers - test global API", () => {
         "getCategoryUrl": [Function],
         "getCmsEntityObject": [Function],
         "getCmsLayoutConfiguration": [Function],
+        "getCmsTranslate": [Function],
         "getFormattedPrice": [Function],
         "getLanguageName": [Function],
         "getListingFilters": [Function],

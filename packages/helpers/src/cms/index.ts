@@ -25,6 +25,7 @@ export * from "./getBackgroundImageUrl";
 export * from "./buildUrlPrefix";
 export * from "./layoutClasses";
 export * from "./isMaintenanceMode";
+export * from "./getCmsTranslate";
 
 /**
  * Returns the main page object depending of the type of the CMS page.
