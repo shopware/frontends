@@ -4,6 +4,9 @@ export default defineNuxtConfig({
     "@shopware-pwa/composables-next/nuxt-layer",
     "@shopware-pwa/cms-base",
   ],
+  devtools: {
+    componentInspector: false,
+  },
   runtimeConfig: {
     shopware: {
       /**
