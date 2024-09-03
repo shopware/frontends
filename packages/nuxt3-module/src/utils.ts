@@ -36,7 +36,7 @@ export async function isExists(path: string) {
   try {
     await fs.access(path, FS_CONSTANTS.F_OK);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }

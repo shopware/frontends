@@ -11,9 +11,7 @@ const { getConfigValue } = useCmsElementConfig(props.content);
 // TODO CMS add proper mapping or config type. This Component needs rework.
 type CmsElementVimeoVideoConfigKey = keyof CmsElementVimeoVideo["config"];
 
-const vimeoConfigMapping: {
-  [key in CmsElementVimeoVideoConfigKey]: string;
-} = {
+const vimeoConfigMapping = {
   byLine: "byline",
   color: "color",
   doNotTrack: "dnt",
