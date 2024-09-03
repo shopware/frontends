@@ -44,14 +44,14 @@ try {
 
   if (props.error.statusCode === 412) {
     // setting a timeout here to ensure we are the last error message in terminal
-    setTimeout(() => {
-      console.error(
-        "Looks like your API connection is not working. Check your _nuxt.config.ts_ configuration (shopware.endpoint and shopware.accessToken). 🤞",
-      );
-      console.error(
-        "For more help ➡️  https://frontends.shopware.com/resources/troubleshooting.html",
-      );
-    }, 2.0 * 1000);
+    // setTimeout(() => {
+    //   console.error(
+    //     "Looks like your API connection is not working. Check your _nuxt.config.ts_ configuration (shopware.endpoint and shopware.accessToken). 🤞",
+    //   );
+    //   console.error(
+    //     "For more help ➡️  https://frontends.shopware.com/resources/troubleshooting.html",
+    //   );
+    // }, 2.0 * 1000);
   }
 } catch (e) {
   console.error("Problem with loading error page", e);
