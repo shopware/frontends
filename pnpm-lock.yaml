@@ -87,13 +87,13 @@ importers:
         version: 14.1.0
       vitepress:
         specifier: 1.3.4
-        version: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4)
+        version: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4)
       vitepress-plugin-search:
         specifier: 1.0.4-alpha.22
-        version: 1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4))(vue@3.4.38(typescript@5.5.4))
+        version: 1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4))(vue@3.4.38(typescript@5.5.4))
       vitepress-shopware-docs:
         specifier: 1.3.0-alpha.14
-        version: 1.3.0-alpha.14(@babel/core@7.25.2)(@babel/template@7.25.0)(@docsearch/css@3.6.1)(@docsearch/js@3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.6.0))(@stoplight/mosaic-code-viewer@1.53.4(react-dom@18.2.0(react@17.0.2))(react@17.0.2))(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(algoliasearch@4.20.0)(encoding@0.1.13)(instantsearch.css@8.5.0)(instantsearch.js@4.74.0(algoliasearch@4.20.0))(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vue-instantsearch@4.19.3(@vue/server-renderer@3.4.38(vue@3.4.38(typescript@5.5.4)))(algoliasearch@4.20.0)(vue@3.4.38(typescript@5.5.4)))(vue@3.4.38(typescript@5.5.4))
+        version: 1.3.0-alpha.14(@babel/core@7.25.2)(@babel/template@7.25.0)(@docsearch/css@3.6.1)(@docsearch/js@3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.17.0))(@stoplight/mosaic-code-viewer@1.53.4(react-dom@18.2.0(react@17.0.2))(react@17.0.2))(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(algoliasearch@4.20.0)(encoding@0.1.13)(instantsearch.css@8.5.0)(instantsearch.js@4.74.0(algoliasearch@4.20.0))(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vue-instantsearch@4.19.3(@vue/server-renderer@3.4.38(vue@3.4.38(typescript@5.5.4)))(algoliasearch@4.20.0)(vue@3.4.38(typescript@5.5.4)))(vue@3.4.38(typescript@5.5.4))
       vue:
         specifier: 3.4.38
         version: 3.4.38(typescript@5.5.4)
@@ -103,16 +103,16 @@ importers:
         version: 1.3.0-alpha.14
       "@shopware-docs/storybook":
         specifier: ^1.3.0-alpha.14
-        version: 1.3.0-alpha.14(sym7pr5si7mzefx6bmg6wpx2ii)
+        version: 1.3.0-alpha.14(h435jqbqswizi55cdepch3qd6y)
       "@shopware-docs/typer":
         specifier: ^1.3.0-alpha.14
         version: 1.3.0-alpha.14(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)(typescript@5.5.4)
       "@shopware-docs/vitepress":
         specifier: ^1.3.0-alpha.14
-        version: 1.3.0-alpha.14(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4))
+        version: 1.3.0-alpha.14(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4))
       "@shopware-docs/vitest":
         specifier: ^1.3.0-alpha.14
-        version: 1.3.0-alpha.14(@playwright/test@1.46.1)(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(@vitest/coverage-c8@0.33.0(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.4.41)(rollup@4.20.0)(slugify@1.6.6)(vite-plugin-inspect@0.8.7(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)))(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
+        version: 1.3.0-alpha.14(@playwright/test@1.46.1)(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(@vitest/coverage-c8@0.33.0(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.4.41)(rollup@4.20.0)(slugify@1.6.6)(vite-plugin-inspect@0.8.7(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)))(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
       "@types/markdown-it":
         specifier: 14.1.2
         version: 14.1.2
@@ -173,7 +173,7 @@ importers:
         version: link:../../packages/api-gen
       "@unocss/nuxt":
         specifier: 0.62.3
-        version: 0.62.3(magicast@0.3.5)(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
+        version: 0.62.3(magicast@0.3.5)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
       "@vueuse/nuxt":
         specifier: 11.0.3
         version: 11.0.3(magicast@0.3.5)(nuxt@3.13.0(@biomejs/biome@1.8.3)(@opentelemetry/api@1.9.0)(@parcel/watcher@2.4.1)(@types/node@20.16.3)(encoding@0.1.13)(eslint@9.9.1(jiti@1.21.6))(ioredis@5.4.1)(less@4.2.0)(magicast@0.3.5)(optionator@0.9.3)(rollup@4.20.0)(sass@1.77.8)(terser@5.31.6)(typescript@5.5.4)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vue-tsc@2.0.29(typescript@5.5.4)))(rollup@4.20.0)(vue@3.4.38(typescript@5.5.4))
@@ -1049,8 +1049,8 @@ importers:
         specifier: 9.1.0
         version: 9.1.0(eslint@9.9.1(jiti@1.21.6))
       typescript-eslint:
-        specifier: 7.16.1
-        version: 7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
+        specifier: 8.4.0
+        version: 8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
     devDependencies:
       typescript:
         specifier: 5.5.4
@@ -7891,15 +7891,15 @@ packages:
       typescript:
         optional: true
 
-  "@typescript-eslint/eslint-plugin@7.16.1":
+  "@typescript-eslint/eslint-plugin@8.4.0":
     resolution:
       {
-        integrity: sha512-SxdPak/5bO0EnGktV05+Hq8oatjAYVY3Zh2bye9pGZy6+jwyR3LG3YKkV4YatlsgqXP28BTeVm9pqwJM96vf2A==,
+        integrity: sha512-rg8LGdv7ri3oAlenMACk9e+AR4wUV0yrrG+XKsGKOK0EVgeEDqurkXMPILG2836fW4ibokTB5v4b6Z9+GYQDEw==,
       }
-    engines: { node: ^18.18.0 || >=20.0.0 }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
     peerDependencies:
-      "@typescript-eslint/parser": ^7.0.0
-      eslint: ^8.56.0
+      "@typescript-eslint/parser": ^8.0.0 || ^8.0.0-alpha.0
+      eslint: ^8.57.0 || ^9.0.0
       typescript: "*"
     peerDependenciesMeta:
       typescript:
@@ -7918,14 +7918,14 @@ packages:
       typescript:
         optional: true
 
-  "@typescript-eslint/parser@7.16.1":
+  "@typescript-eslint/parser@8.4.0":
     resolution:
       {
-        integrity: sha512-u+1Qx86jfGQ5i4JjK33/FnawZRpsLxRnKzGE6EABZ40KxVT/vWsiZFEBBHjFOljmmV3MBYOHEKi0Jm9hbAOClA==,
+        integrity: sha512-NHgWmKSgJk5K9N16GIhQ4jSobBoJwrmURaLErad0qlLjrpP5bECYg+wxVTGlGZmJbU03jj/dfnb6V9bw+5icsA==,
       }
-    engines: { node: ^18.18.0 || >=20.0.0 }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
     peerDependencies:
-      eslint: ^8.56.0
+      eslint: ^8.57.0 || ^9.0.0
       typescript: "*"
     peerDependenciesMeta:
       typescript:
@@ -7938,12 +7938,12 @@ packages:
       }
     engines: { node: ^16.0.0 || >=18.0.0 }
 
-  "@typescript-eslint/scope-manager@7.16.1":
+  "@typescript-eslint/scope-manager@8.4.0":
     resolution:
       {
-        integrity: sha512-nYpyv6ALte18gbMz323RM+vpFpTjfNdyakbf3nsLvF43uF9KeNC289SUEW3QLZ1xPtyINJ1dIsZOuWuSRIWygw==,
+        integrity: sha512-n2jFxLeY0JmKfUqy3P70rs6vdoPjHK8P/w+zJcV3fk0b0BwRXC/zxRTEnAsgYT7MwdQDt/ZEbtdzdVC+hcpF0A==,
       }
-    engines: { node: ^18.18.0 || >=20.0.0 }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
 
   "@typescript-eslint/type-utils@6.21.0":
     resolution:
@@ -7958,14 +7958,13 @@ packages:
       typescript:
         optional: true
 
-  "@typescript-eslint/type-utils@7.16.1":
+  "@typescript-eslint/type-utils@8.4.0":
     resolution:
       {
-        integrity: sha512-rbu/H2MWXN4SkjIIyWcmYBjlp55VT+1G3duFOIukTNFxr9PI35pLc2ydwAfejCEitCv4uztA07q0QWanOHC7dA==,
+        integrity: sha512-pu2PAmNrl9KX6TtirVOrbLPLwDmASpZhK/XU7WvoKoCUkdtq9zF7qQ7gna0GBZFN0hci0vHaSusiL2WpsQk37A==,
       }
-    engines: { node: ^18.18.0 || >=20.0.0 }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
     peerDependencies:
-      eslint: ^8.56.0
       typescript: "*"
     peerDependenciesMeta:
       typescript:
@@ -7978,12 +7977,12 @@ packages:
       }
     engines: { node: ^16.0.0 || >=18.0.0 }
 
-  "@typescript-eslint/types@7.16.1":
+  "@typescript-eslint/types@8.4.0":
     resolution:
       {
-        integrity: sha512-AQn9XqCzUXd4bAVEsAXM/Izk11Wx2u4H3BAfQVhSfzfDOm/wAON9nP7J5rpkCxts7E5TELmN845xTUCQrD1xIQ==,
+        integrity: sha512-T1RB3KQdskh9t3v/qv7niK6P8yvn7ja1mS7QK7XfRVL6wtZ8/mFs/FHf4fKvTA0rKnqnYxl/uHFNbnEt0phgbw==,
       }
-    engines: { node: ^18.18.0 || >=20.0.0 }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
 
   "@typescript-eslint/typescript-estree@6.21.0":
     resolution:
@@ -7997,12 +7996,12 @@ packages:
       typescript:
         optional: true
 
-  "@typescript-eslint/typescript-estree@7.16.1":
+  "@typescript-eslint/typescript-estree@8.4.0":
     resolution:
       {
-        integrity: sha512-0vFPk8tMjj6apaAZ1HlwM8w7jbghC8jc1aRNJG5vN8Ym5miyhTQGMqU++kuBFDNKe9NcPeZ6x0zfSzV8xC1UlQ==,
+        integrity: sha512-kJ2OIP4dQw5gdI4uXsaxUZHRwWAGpREJ9Zq6D5L0BweyOrWsL6Sz0YcAZGWhvKnH7fm1J5YFE1JrQL0c9dd53A==,
       }
-    engines: { node: ^18.18.0 || >=20.0.0 }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
     peerDependencies:
       typescript: "*"
     peerDependenciesMeta:
@@ -8018,14 +8017,14 @@ packages:
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
 
-  "@typescript-eslint/utils@7.16.1":
+  "@typescript-eslint/utils@8.4.0":
     resolution:
       {
-        integrity: sha512-WrFM8nzCowV0he0RlkotGDujx78xudsxnGMBHI88l5J8wEhED6yBwaSLP99ygfrzAjsQvcYQ94quDwI0d7E1fA==,
+        integrity: sha512-swULW8n1IKLjRAgciCkTCafyTHHfwVQFt8DovmaF69sKbOxTSFMmIZaSHjqO9i/RV0wIblaawhzvtva8Nmm7lQ==,
       }
-    engines: { node: ^18.18.0 || >=20.0.0 }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
     peerDependencies:
-      eslint: ^8.56.0
+      eslint: ^8.57.0 || ^9.0.0
 
   "@typescript-eslint/visitor-keys@6.21.0":
     resolution:
@@ -8034,12 +8033,12 @@ packages:
       }
     engines: { node: ^16.0.0 || >=18.0.0 }
 
-  "@typescript-eslint/visitor-keys@7.16.1":
+  "@typescript-eslint/visitor-keys@8.4.0":
     resolution:
       {
-        integrity: sha512-Qlzzx4sE4u3FsHTPQAAQFJFNOuqtuY0LFrZHwQ8IHK705XxBiWOFkfKRWu6niB7hwfgnwIpO4jTC75ozW1PHWg==,
+        integrity: sha512-zTQD6WLNTre1hj5wp09nBIDiOc2U5r/qmzo7wxPn4ZgAjHql09EofqhF9WF+fZHzL5aCyaIpPcT2hyxl73kr9A==,
       }
-    engines: { node: ^18.18.0 || >=20.0.0 }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
 
   "@ungap/structured-clone@1.2.0":
     resolution:
@@ -18155,13 +18154,6 @@ packages:
         integrity: sha512-AskayU3QNsXQzSL6v4LTYST7NNfs2HWyHHB+sdORP9chsytAhro5XRfToAMI/LAVYgNbzowVZTMfBRodgbUHKg==,
       }
 
-  search-insights@2.6.0:
-    resolution:
-      {
-        integrity: sha512-vU2/fJ+h/Mkm/DJOe+EaM5cafJv/1rRTZpGJTuFPf/Q5LjzgMDsqPdSaZsAe+GAWHHsfsu+rQSAn6c8IGtBEVw==,
-      }
-    engines: { node: ">=8.16.0" }
-
   section-matter@1.0.0:
     resolution:
       {
@@ -19603,14 +19595,13 @@ packages:
     peerDependencies:
       typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x
 
-  typescript-eslint@7.16.1:
+  typescript-eslint@8.4.0:
     resolution:
       {
-        integrity: sha512-889oE5qELj65q/tGeOSvlreNKhimitFwZqQ0o7PcWC7/lgRkAMknznsCsV8J8mZGTP/Z+cIbX8accf2DE33hrA==,
+        integrity: sha512-67qoc3zQZe3CAkO0ua17+7aCLI0dU+sSQd1eKPGq06QE4rfQjstVXR6woHO5qQvGUa550NfGckT4tzh3b3c8Pw==,
       }
-    engines: { node: ^18.18.0 || >=20.0.0 }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
     peerDependencies:
-      eslint: ^8.56.0
       typescript: "*"
     peerDependenciesMeta:
       typescript:
@@ -21324,19 +21315,19 @@ snapshots:
 
   "@adyen/bento-design-tokens@1.10.0": {}
 
-  "@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.6.0)":
+  "@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.17.0)":
     dependencies:
-      "@algolia/autocomplete-plugin-algolia-insights": 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.6.0)
+      "@algolia/autocomplete-plugin-algolia-insights": 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.17.0)
       "@algolia/autocomplete-shared": 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)
     transitivePeerDependencies:
       - "@algolia/client-search"
       - algoliasearch
       - search-insights
 
-  "@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.6.0)":
+  "@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.17.0)":
     dependencies:
       "@algolia/autocomplete-shared": 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)
-      search-insights: 2.6.0
+      search-insights: 2.17.0
     transitivePeerDependencies:
       - "@algolia/client-search"
       - algoliasearch
@@ -21965,7 +21956,7 @@ snapshots:
   "@babel/plugin-transform-class-static-block@7.24.7(@babel/core@7.25.2)":
     dependencies:
       "@babel/core": 7.25.2
-      "@babel/helper-create-class-features-plugin": 7.24.7(@babel/core@7.25.2)
+      "@babel/helper-create-class-features-plugin": 7.25.4(@babel/core@7.25.2)
       "@babel/helper-plugin-utils": 7.24.8
       "@babel/plugin-syntax-class-static-block": 7.14.5(@babel/core@7.25.2)
     transitivePeerDependencies:
@@ -22155,7 +22146,7 @@ snapshots:
     dependencies:
       "@babel/core": 7.25.2
       "@babel/helper-plugin-utils": 7.24.8
-      "@babel/helper-replace-supers": 7.24.7(@babel/core@7.25.2)
+      "@babel/helper-replace-supers": 7.25.0(@babel/core@7.25.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -22191,7 +22182,7 @@ snapshots:
     dependencies:
       "@babel/core": 7.25.2
       "@babel/helper-annotate-as-pure": 7.24.7
-      "@babel/helper-create-class-features-plugin": 7.24.7(@babel/core@7.25.2)
+      "@babel/helper-create-class-features-plugin": 7.25.4(@babel/core@7.25.2)
       "@babel/helper-plugin-utils": 7.24.8
       "@babel/plugin-syntax-private-property-in-object": 7.14.5(@babel/core@7.25.2)
     transitivePeerDependencies:
@@ -22683,9 +22674,9 @@ snapshots:
 
   "@docsearch/css@3.6.1": {}
 
-  "@docsearch/js@3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.6.0)":
+  "@docsearch/js@3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.17.0)":
     dependencies:
-      "@docsearch/react": 3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.6.0)
+      "@docsearch/react": 3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.17.0)
       preact: 10.22.1
     transitivePeerDependencies:
       - "@algolia/client-search"
@@ -22694,9 +22685,9 @@ snapshots:
       - react-dom
       - search-insights
 
-  "@docsearch/react@3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.6.0)":
+  "@docsearch/react@3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.17.0)":
     dependencies:
-      "@algolia/autocomplete-core": 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.6.0)
+      "@algolia/autocomplete-core": 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)(search-insights@2.17.0)
       "@algolia/autocomplete-preset-algolia": 1.9.3(@algolia/client-search@4.20.0)(algoliasearch@4.20.0)
       "@docsearch/css": 3.6.1
       algoliasearch: 4.20.0
@@ -22704,7 +22695,7 @@ snapshots:
       "@types/react": 17.0.75
       react: 17.0.2
       react-dom: 18.2.0(react@17.0.2)
-      search-insights: 2.6.0
+      search-insights: 2.17.0
     transitivePeerDependencies:
       - "@algolia/client-search"
 
@@ -23095,7 +23086,7 @@ snapshots:
       debug: 4.3.6
       espree: 10.1.0
       globals: 14.0.0
-      ignore: 5.3.2
+      ignore: 5.3.1
       import-fresh: 3.3.0
       js-yaml: 4.1.0
       minimatch: 3.1.2
@@ -23375,7 +23366,7 @@ snapshots:
     dependencies:
       "@types/istanbul-lib-coverage": 2.0.6
       "@types/istanbul-reports": 3.0.4
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       "@types/yargs": 16.0.9
       chalk: 4.1.2
 
@@ -23384,7 +23375,7 @@ snapshots:
       "@jest/schemas": 29.6.3
       "@types/istanbul-lib-coverage": 2.0.6
       "@types/istanbul-reports": 3.0.4
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       "@types/yargs": 17.0.32
       chalk: 4.1.2
 
@@ -25322,7 +25313,7 @@ snapshots:
 
   "@shopware-docs/cli@1.3.0-alpha.14": {}
 
-  "@shopware-docs/storybook@1.3.0-alpha.14(sym7pr5si7mzefx6bmg6wpx2ii)":
+  "@shopware-docs/storybook@1.3.0-alpha.14(h435jqbqswizi55cdepch3qd6y)":
     dependencies:
       "@storybook/addon-essentials": 7.6.20(@types/react-dom@17.0.25)(@types/react@17.0.75)(encoding@0.1.13)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)
       "@storybook/addon-interactions": 7.6.20
@@ -25342,7 +25333,7 @@ snapshots:
       storybook-addon-fetch-mock: 1.0.1(node-fetch@2.7.0(encoding@0.1.13))
       storybook-addon-pseudo-states: 2.2.1(@storybook/components@7.6.20(@types/react-dom@17.0.25)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2))(@storybook/core-events@7.6.20)(@storybook/manager-api@7.6.20(react-dom@18.2.0(react@17.0.2))(react@17.0.2))(@storybook/preview-api@7.6.20)(@storybook/theming@7.6.20(react-dom@18.2.0(react@17.0.2))(react@17.0.2))(react-dom@18.2.0(react@17.0.2))(react@17.0.2)
       unocss: 0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
-      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4)
+      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4)
       vitepress-shopware-docs: link:../..
     transitivePeerDependencies:
       - "@unocss/webpack"
@@ -25371,13 +25362,13 @@ snapshots:
       - terser
       - typescript
 
-  "@shopware-docs/vitepress@1.3.0-alpha.14(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4))":
+  "@shopware-docs/vitepress@1.3.0-alpha.14(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4))":
     dependencies:
       axios: 1.7.4
       prettier: 3.3.3
       sitemap: 8.0.0
       unocss: 0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
-      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4)
+      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4)
       vitepress-shopware-docs: link:../..
     transitivePeerDependencies:
       - "@unocss/webpack"
@@ -25387,7 +25378,7 @@ snapshots:
       - supports-color
       - vite
 
-  "@shopware-docs/vitest@1.3.0-alpha.14(@playwright/test@1.46.1)(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(@vitest/coverage-c8@0.33.0(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.4.41)(rollup@4.20.0)(slugify@1.6.6)(vite-plugin-inspect@0.8.7(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)))(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))":
+  "@shopware-docs/vitest@1.3.0-alpha.14(@playwright/test@1.46.1)(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(@vitest/coverage-c8@0.33.0(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)))(get-port@7.1.0)(playwright-chromium@1.46.1)(postcss@8.4.41)(rollup@4.20.0)(slugify@1.6.6)(vite-plugin-inspect@0.8.7(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)))(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4))(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))":
     dependencies:
       "@playwright/test": 1.46.1
       "@vitest/coverage-c8": 0.33.0(vitest@2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
@@ -25397,7 +25388,7 @@ snapshots:
       slugify: 1.6.6
       unocss: 0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
       vite-plugin-inspect: 0.8.7(@nuxt/kit@3.13.0(magicast@0.3.4)(rollup@4.20.0))(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
-      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4)
+      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4)
       vitepress-shopware-docs: link:../..
       vitest: 2.0.5(@edge-runtime/vm@3.2.0)(@types/node@20.11.17)(happy-dom@15.7.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)
     transitivePeerDependencies:
@@ -25896,7 +25887,7 @@ snapshots:
   "@storybook/addon-measure@7.6.20":
     dependencies:
       "@storybook/global": 5.0.0
-      tiny-invariant: 1.3.1
+      tiny-invariant: 1.3.3
 
   "@storybook/addon-outline@7.6.20":
     dependencies:
@@ -26042,7 +26033,7 @@ snapshots:
       "@storybook/global": 5.0.0
       qs: 6.11.2
       telejson: 7.2.0
-      tiny-invariant: 1.3.1
+      tiny-invariant: 1.3.3
 
   "@storybook/channels@7.6.20":
     dependencies:
@@ -26051,7 +26042,7 @@ snapshots:
       "@storybook/global": 5.0.0
       qs: 6.11.2
       telejson: 7.2.0
-      tiny-invariant: 1.3.1
+      tiny-invariant: 1.3.3
 
   "@storybook/cli@7.6.20(encoding@0.1.13)":
     dependencies:
@@ -26157,7 +26148,7 @@ snapshots:
       "@storybook/node-logger": 7.6.20
       "@storybook/types": 7.6.20
       "@types/find-cache-dir": 3.2.1
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       "@types/node-fetch": 2.6.11
       "@types/pretty-hrtime": 1.0.3
       chalk: 4.1.2
@@ -26206,7 +26197,7 @@ snapshots:
       "@storybook/telemetry": 7.6.20(encoding@0.1.13)
       "@storybook/types": 7.6.20
       "@types/detect-port": 1.3.5
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       "@types/pretty-hrtime": 1.0.3
       "@types/semver": 7.5.8
       better-opn: 3.0.2
@@ -26224,7 +26215,7 @@ snapshots:
       read-pkg-up: 7.0.1
       semver: 7.6.3
       telejson: 7.2.0
-      tiny-invariant: 1.3.1
+      tiny-invariant: 1.3.3
       ts-dedent: 2.2.0
       util: 0.12.5
       util-deprecate: 1.0.2
@@ -26600,19 +26591,19 @@ snapshots:
   "@types/body-parser@1.19.5":
     dependencies:
       "@types/connect": 3.4.38
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
 
   "@types/changelog-parser@2.8.4": {}
 
   "@types/connect@3.4.38":
     dependencies:
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
 
   "@types/cookie@0.6.0": {}
 
   "@types/cross-spawn@6.0.6":
     dependencies:
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
 
   "@types/debug@4.1.12":
     dependencies:
@@ -26644,7 +26635,7 @@ snapshots:
 
   "@types/express-serve-static-core@4.19.0":
     dependencies:
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       "@types/qs": 6.9.15
       "@types/range-parser": 1.2.7
       "@types/send": 0.17.4
@@ -26666,7 +26657,7 @@ snapshots:
 
   "@types/graceful-fs@4.1.9":
     dependencies:
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
 
   "@types/har-format@1.2.10": {}
 
@@ -26748,7 +26739,7 @@ snapshots:
 
   "@types/node-fetch@2.6.11":
     dependencies:
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       form-data: 4.0.0
 
   "@types/node@20.11.17":
@@ -26770,7 +26761,6 @@ snapshots:
   "@types/node@20.16.3":
     dependencies:
       undici-types: 6.19.8
-    optional: true
 
   "@types/normalize-package-data@2.4.4": {}
 
@@ -26813,12 +26803,12 @@ snapshots:
   "@types/send@0.17.4":
     dependencies:
       "@types/mime": 1.3.5
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
 
   "@types/serve-static@1.15.7":
     dependencies:
       "@types/http-errors": 2.0.4
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       "@types/send": 0.17.4
 
   "@types/shimmer@1.0.5": {}
@@ -26878,7 +26868,7 @@ snapshots:
       debug: 4.3.6
       eslint: 9.9.1(jiti@1.21.6)
       graphemer: 1.4.0
-      ignore: 5.3.2
+      ignore: 5.3.1
       natural-compare: 1.4.0
       semver: 7.6.3
       ts-api-utils: 1.3.0(typescript@5.5.4)
@@ -26887,17 +26877,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@typescript-eslint/eslint-plugin@7.16.1(@typescript-eslint/parser@7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4))(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)":
+  "@typescript-eslint/eslint-plugin@8.4.0(@typescript-eslint/parser@8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4))(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)":
     dependencies:
       "@eslint-community/regexpp": 4.11.0
-      "@typescript-eslint/parser": 7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
-      "@typescript-eslint/scope-manager": 7.16.1
-      "@typescript-eslint/type-utils": 7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
-      "@typescript-eslint/utils": 7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
-      "@typescript-eslint/visitor-keys": 7.16.1
+      "@typescript-eslint/parser": 8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
+      "@typescript-eslint/scope-manager": 8.4.0
+      "@typescript-eslint/type-utils": 8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
+      "@typescript-eslint/utils": 8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
+      "@typescript-eslint/visitor-keys": 8.4.0
       eslint: 9.9.1(jiti@1.21.6)
       graphemer: 1.4.0
-      ignore: 5.3.2
+      ignore: 5.3.1
       natural-compare: 1.4.0
       ts-api-utils: 1.3.0(typescript@5.5.4)
     optionalDependencies:
@@ -26918,12 +26908,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@typescript-eslint/parser@7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)":
+  "@typescript-eslint/parser@8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)":
     dependencies:
-      "@typescript-eslint/scope-manager": 7.16.1
-      "@typescript-eslint/types": 7.16.1
-      "@typescript-eslint/typescript-estree": 7.16.1(typescript@5.5.4)
-      "@typescript-eslint/visitor-keys": 7.16.1
+      "@typescript-eslint/scope-manager": 8.4.0
+      "@typescript-eslint/types": 8.4.0
+      "@typescript-eslint/typescript-estree": 8.4.0(typescript@5.5.4)
+      "@typescript-eslint/visitor-keys": 8.4.0
       debug: 4.3.6
       eslint: 9.9.1(jiti@1.21.6)
     optionalDependencies:
@@ -26936,10 +26926,10 @@ snapshots:
       "@typescript-eslint/types": 6.21.0
       "@typescript-eslint/visitor-keys": 6.21.0
 
-  "@typescript-eslint/scope-manager@7.16.1":
+  "@typescript-eslint/scope-manager@8.4.0":
     dependencies:
-      "@typescript-eslint/types": 7.16.1
-      "@typescript-eslint/visitor-keys": 7.16.1
+      "@typescript-eslint/types": 8.4.0
+      "@typescript-eslint/visitor-keys": 8.4.0
 
   "@typescript-eslint/type-utils@6.21.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)":
     dependencies:
@@ -26953,21 +26943,21 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@typescript-eslint/type-utils@7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)":
+  "@typescript-eslint/type-utils@8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)":
     dependencies:
-      "@typescript-eslint/typescript-estree": 7.16.1(typescript@5.5.4)
-      "@typescript-eslint/utils": 7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
+      "@typescript-eslint/typescript-estree": 8.4.0(typescript@5.5.4)
+      "@typescript-eslint/utils": 8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
       debug: 4.3.6
-      eslint: 9.9.1(jiti@1.21.6)
       ts-api-utils: 1.3.0(typescript@5.5.4)
     optionalDependencies:
       typescript: 5.5.4
     transitivePeerDependencies:
+      - eslint
       - supports-color
 
   "@typescript-eslint/types@6.21.0": {}
 
-  "@typescript-eslint/types@7.16.1": {}
+  "@typescript-eslint/types@8.4.0": {}
 
   "@typescript-eslint/typescript-estree@6.21.0(typescript@5.5.4)":
     dependencies:
@@ -26984,12 +26974,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@typescript-eslint/typescript-estree@7.16.1(typescript@5.5.4)":
+  "@typescript-eslint/typescript-estree@8.4.0(typescript@5.5.4)":
     dependencies:
-      "@typescript-eslint/types": 7.16.1
-      "@typescript-eslint/visitor-keys": 7.16.1
+      "@typescript-eslint/types": 8.4.0
+      "@typescript-eslint/visitor-keys": 8.4.0
       debug: 4.3.6
-      globby: 11.1.0
+      fast-glob: 3.3.2
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.6.3
@@ -27013,12 +27003,12 @@ snapshots:
       - supports-color
       - typescript
 
-  "@typescript-eslint/utils@7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)":
+  "@typescript-eslint/utils@8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)":
     dependencies:
       "@eslint-community/eslint-utils": 4.4.0(eslint@9.9.1(jiti@1.21.6))
-      "@typescript-eslint/scope-manager": 7.16.1
-      "@typescript-eslint/types": 7.16.1
-      "@typescript-eslint/typescript-estree": 7.16.1(typescript@5.5.4)
+      "@typescript-eslint/scope-manager": 8.4.0
+      "@typescript-eslint/types": 8.4.0
+      "@typescript-eslint/typescript-estree": 8.4.0(typescript@5.5.4)
       eslint: 9.9.1(jiti@1.21.6)
     transitivePeerDependencies:
       - supports-color
@@ -27029,9 +27019,9 @@ snapshots:
       "@typescript-eslint/types": 6.21.0
       eslint-visitor-keys: 3.4.3
 
-  "@typescript-eslint/visitor-keys@7.16.1":
+  "@typescript-eslint/visitor-keys@8.4.0":
     dependencies:
-      "@typescript-eslint/types": 7.16.1
+      "@typescript-eslint/types": 8.4.0
       eslint-visitor-keys: 3.4.3
 
   "@ungap/structured-clone@1.2.0": {}
@@ -27135,30 +27125,6 @@ snapshots:
       gzip-size: 6.0.0
       sirv: 2.0.4
 
-  "@unocss/nuxt@0.62.3(magicast@0.3.5)(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))":
-    dependencies:
-      "@nuxt/kit": 3.13.0(magicast@0.3.5)(rollup@4.20.0)
-      "@unocss/config": 0.62.3
-      "@unocss/core": 0.62.3
-      "@unocss/preset-attributify": 0.62.3
-      "@unocss/preset-icons": 0.62.3
-      "@unocss/preset-tagify": 0.62.3
-      "@unocss/preset-typography": 0.62.3
-      "@unocss/preset-uno": 0.62.3
-      "@unocss/preset-web-fonts": 0.62.3
-      "@unocss/preset-wind": 0.62.3
-      "@unocss/reset": 0.62.3
-      "@unocss/vite": 0.62.3(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
-      "@unocss/webpack": 0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
-      unocss: 0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
-    transitivePeerDependencies:
-      - magicast
-      - postcss
-      - rollup
-      - supports-color
-      - vite
-      - webpack
-
   "@unocss/nuxt@0.62.3(magicast@0.3.5)(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10))":
     dependencies:
       "@nuxt/kit": 3.13.0(magicast@0.3.5)(rollup@4.20.0)
@@ -27199,6 +27165,30 @@ snapshots:
       "@unocss/vite": 0.62.3(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
       "@unocss/webpack": 0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10))
       unocss: 0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)))(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
+    transitivePeerDependencies:
+      - magicast
+      - postcss
+      - rollup
+      - supports-color
+      - vite
+      - webpack
+
+  "@unocss/nuxt@0.62.3(magicast@0.3.5)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))":
+    dependencies:
+      "@nuxt/kit": 3.13.0(magicast@0.3.5)(rollup@4.20.0)
+      "@unocss/config": 0.62.3
+      "@unocss/core": 0.62.3
+      "@unocss/preset-attributify": 0.62.3
+      "@unocss/preset-icons": 0.62.3
+      "@unocss/preset-tagify": 0.62.3
+      "@unocss/preset-typography": 0.62.3
+      "@unocss/preset-uno": 0.62.3
+      "@unocss/preset-web-fonts": 0.62.3
+      "@unocss/preset-wind": 0.62.3
+      "@unocss/reset": 0.62.3
+      "@unocss/vite": 0.62.3(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
+      "@unocss/webpack": 0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
+      unocss: 0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
     transitivePeerDependencies:
       - magicast
       - postcss
@@ -30089,7 +30079,7 @@ snapshots:
       eslint: 9.9.1(jiti@1.21.6)
       eslint-plugin-es: 4.1.0(eslint@9.9.1(jiti@1.21.6))
       eslint-utils: 3.0.0(eslint@9.9.1(jiti@1.21.6))
-      ignore: 5.3.2
+      ignore: 5.3.1
       is-core-module: 2.13.1
       minimatch: 3.1.2
       resolve: 1.22.8
@@ -30100,7 +30090,7 @@ snapshots:
       eslint: 9.9.1(jiti@1.21.6)
       eslint-plugin-es: 3.0.1(eslint@9.9.1(jiti@1.21.6))
       eslint-utils: 2.1.0
-      ignore: 5.3.2
+      ignore: 5.3.1
       minimatch: 3.1.2
       resolve: 1.22.8
       semver: 7.6.3
@@ -30321,7 +30311,7 @@ snapshots:
       array-flatten: 1.1.1
       body-parser: 1.20.2
       content-disposition: 0.5.4
-      content-type: 1.0.4
+      content-type: 1.0.5
       cookie: 0.6.0
       cookie-signature: 1.0.6
       debug: 4.3.6
@@ -30794,7 +30784,7 @@ snapshots:
       array-union: 2.1.0
       dir-glob: 3.0.1
       fast-glob: 3.3.2
-      ignore: 5.3.2
+      ignore: 5.3.1
       merge2: 1.4.1
       slash: 3.0.0
 
@@ -31594,7 +31584,7 @@ snapshots:
     dependencies:
       "@jest/types": 29.6.3
       "@types/graceful-fs": 4.1.9
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -31609,14 +31599,14 @@ snapshots:
   jest-mock@27.5.1:
     dependencies:
       "@jest/types": 27.5.1
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
 
   jest-regex-util@29.6.3: {}
 
   jest-util@29.7.0:
     dependencies:
       "@jest/types": 29.6.3
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -31624,13 +31614,13 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
   jest-worker@29.7.0:
     dependencies:
-      "@types/node": 20.16.2
+      "@types/node": 20.16.3
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -31692,7 +31682,7 @@ snapshots:
       "@babel/core": 7.25.2
       "@babel/parser": 7.25.4
       "@babel/plugin-transform-class-properties": 7.25.4(@babel/core@7.25.2)
-      "@babel/plugin-transform-modules-commonjs": 7.24.7(@babel/core@7.25.2)
+      "@babel/plugin-transform-modules-commonjs": 7.24.8(@babel/core@7.25.2)
       "@babel/plugin-transform-nullish-coalescing-operator": 7.24.7(@babel/core@7.25.2)
       "@babel/plugin-transform-optional-chaining": 7.24.8(@babel/core@7.25.2)
       "@babel/plugin-transform-private-methods": 7.25.4(@babel/core@7.25.2)
@@ -34911,8 +34901,6 @@ snapshots:
 
   search-insights@2.17.0: {}
 
-  search-insights@2.6.0: {}
-
   section-matter@1.0.0:
     dependencies:
       extend-shallow: 2.0.1
@@ -35770,15 +35758,15 @@ snapshots:
       typescript: 5.5.4
       yaml: 2.4.5
 
-  typescript-eslint@7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4):
+  typescript-eslint@8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4):
     dependencies:
-      "@typescript-eslint/eslint-plugin": 7.16.1(@typescript-eslint/parser@7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4))(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
-      "@typescript-eslint/parser": 7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
-      "@typescript-eslint/utils": 7.16.1(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
-      eslint: 9.9.1(jiti@1.21.6)
+      "@typescript-eslint/eslint-plugin": 8.4.0(@typescript-eslint/parser@8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4))(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
+      "@typescript-eslint/parser": 8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
+      "@typescript-eslint/utils": 8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
     optionalDependencies:
       typescript: 5.5.4
     transitivePeerDependencies:
+      - eslint
       - supports-color
 
   typescript@4.9.5: {}
@@ -36085,7 +36073,7 @@ snapshots:
       - rollup
       - supports-color
 
-  unocss@0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)):
+  unocss@0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)):
     dependencies:
       "@unocss/astro": 0.62.3(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
       "@unocss/cli": 0.62.3(rollup@4.20.0)
@@ -36916,20 +36904,20 @@ snapshots:
     optionalDependencies:
       vite: 5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)
 
-  vitepress-plugin-search@1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4))(vue@3.4.38(typescript@5.5.4)):
+  vitepress-plugin-search@1.0.4-alpha.22(flexsearch@0.7.43)(vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4))(vue@3.4.38(typescript@5.5.4)):
     dependencies:
       "@types/flexsearch": 0.7.3
       "@types/markdown-it": 12.2.3
       flexsearch: 0.7.43
       glob-to-regexp: 0.4.1
       markdown-it: 13.0.2
-      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4)
+      vitepress: 1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4)
       vue: 3.4.38(typescript@5.5.4)
 
-  vitepress-shopware-docs@1.3.0-alpha.14(@babel/core@7.25.2)(@babel/template@7.25.0)(@docsearch/css@3.6.1)(@docsearch/js@3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.6.0))(@stoplight/mosaic-code-viewer@1.53.4(react-dom@18.2.0(react@17.0.2))(react@17.0.2))(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(algoliasearch@4.20.0)(encoding@0.1.13)(instantsearch.css@8.5.0)(instantsearch.js@4.74.0(algoliasearch@4.20.0))(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vue-instantsearch@4.19.3(@vue/server-renderer@3.4.38(vue@3.4.38(typescript@5.5.4)))(algoliasearch@4.20.0)(vue@3.4.38(typescript@5.5.4)))(vue@3.4.38(typescript@5.5.4)):
+  vitepress-shopware-docs@1.3.0-alpha.14(@babel/core@7.25.2)(@babel/template@7.25.0)(@docsearch/css@3.6.1)(@docsearch/js@3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.17.0))(@stoplight/mosaic-code-viewer@1.53.4(react-dom@18.2.0(react@17.0.2))(react@17.0.2))(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.18.20)))(algoliasearch@4.20.0)(encoding@0.1.13)(instantsearch.css@8.5.0)(instantsearch.js@4.74.0(algoliasearch@4.20.0))(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vue-instantsearch@4.19.3(@vue/server-renderer@3.4.38(vue@3.4.38(typescript@5.5.4)))(algoliasearch@4.20.0)(vue@3.4.38(typescript@5.5.4)))(vue@3.4.38(typescript@5.5.4)):
     dependencies:
       "@docsearch/css": 3.6.1
-      "@docsearch/js": 3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.6.0)
+      "@docsearch/js": 3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.17.0)
       "@iconify-json/carbon": 1.1.37
       "@shopware-ag/meteor-icon-kit": 5.3.0
       "@stoplight/elements-dev-portal": 2.4.2(@babel/core@7.25.2)(@babel/template@7.25.0)(@stoplight/mosaic-code-viewer@1.53.4(react-dom@18.2.0(react@17.0.2))(react@17.0.2))(encoding@0.1.13)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)
@@ -36981,10 +36969,10 @@ snapshots:
       - wonka
       - xstate
 
-  vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.6.0)(terser@5.31.6)(typescript@5.5.4):
+  vitepress@1.3.4(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@17.0.75)(axios@1.7.4)(less@4.2.0)(postcss@8.4.41)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(sass@1.77.8)(search-insights@2.17.0)(terser@5.31.6)(typescript@5.5.4):
     dependencies:
       "@docsearch/css": 3.6.1
-      "@docsearch/js": 3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.6.0)
+      "@docsearch/js": 3.6.1(@algolia/client-search@4.20.0)(@types/react@17.0.75)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.17.0)
       "@shikijs/core": 1.14.1
       "@shikijs/transformers": 1.14.1
       "@types/markdown-it": 14.1.2

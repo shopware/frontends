@@ -11,7 +11,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { data } from "../../data/composables.data";
-const urlQuery = new URLSearchParams(window.location.search);
 
 const categoryTreeData = computed(() => {
   const categoryTree: { [key: string]: string[] } = {};

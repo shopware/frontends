@@ -13,7 +13,7 @@
   "dependencies": {
     "eslint": "9.9.1",
     "eslint-config-prettier": "9.1.0",
-    "typescript-eslint": "7.16.1"
+    "typescript-eslint": "8.4.0"
   },
   "devDependencies": {
     "typescript": "5.5.4"
