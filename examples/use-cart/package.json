@@ -16,9 +16,9 @@
     "@types/node": "20.14.10",
     "@unocss/nuxt": "0.62.3",
     "@vueuse/nuxt": "11.0.3",
-    "nuxt": "3.13.0",
+    "nuxt": "3.13.1",
     "typescript": "5.5.4",
-    "vue": "3.4.38",
-    "vue-tsc": "2.0.29"
+    "vue": "3.5.1",
+    "vue-tsc": "2.1.4"
   }
 }
