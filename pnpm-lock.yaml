@@ -173,7 +173,7 @@ importers:
         version: link:../../packages/api-gen
       "@unocss/nuxt":
         specifier: 0.62.3
-        version: 0.62.3(magicast@0.3.5)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
+        version: 0.62.3(magicast@0.3.5)(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
       "@vueuse/nuxt":
         specifier: 11.0.3
         version: 11.0.3(magicast@0.3.5)(nuxt@3.13.0(@biomejs/biome@1.8.3)(@opentelemetry/api@1.9.0)(@parcel/watcher@2.4.1)(@types/node@20.16.3)(encoding@0.1.13)(eslint@9.9.1(jiti@1.21.6))(ioredis@5.4.1)(less@4.2.0)(magicast@0.3.5)(optionator@0.9.3)(rollup@4.20.0)(sass@1.77.8)(terser@5.31.6)(typescript@5.5.4)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(vue-tsc@2.0.29(typescript@5.5.4)))(rollup@4.20.0)(vue@3.4.38(typescript@5.5.4))
@@ -27125,6 +27125,30 @@ snapshots:
       gzip-size: 6.0.0
       sirv: 2.0.4
 
+  "@unocss/nuxt@0.62.3(magicast@0.3.5)(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))":
+    dependencies:
+      "@nuxt/kit": 3.13.0(magicast@0.3.5)(rollup@4.20.0)
+      "@unocss/config": 0.62.3
+      "@unocss/core": 0.62.3
+      "@unocss/preset-attributify": 0.62.3
+      "@unocss/preset-icons": 0.62.3
+      "@unocss/preset-tagify": 0.62.3
+      "@unocss/preset-typography": 0.62.3
+      "@unocss/preset-uno": 0.62.3
+      "@unocss/preset-web-fonts": 0.62.3
+      "@unocss/preset-wind": 0.62.3
+      "@unocss/reset": 0.62.3
+      "@unocss/vite": 0.62.3(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
+      "@unocss/webpack": 0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
+      unocss: 0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
+    transitivePeerDependencies:
+      - magicast
+      - postcss
+      - rollup
+      - supports-color
+      - vite
+      - webpack
+
   "@unocss/nuxt@0.62.3(magicast@0.3.5)(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10))":
     dependencies:
       "@nuxt/kit": 3.13.0(magicast@0.3.5)(rollup@4.20.0)
@@ -27165,30 +27189,6 @@ snapshots:
       "@unocss/vite": 0.62.3(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
       "@unocss/webpack": 0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10))
       unocss: 0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)))(rollup@4.20.0)(vite@5.4.0(@types/node@20.11.17)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
-    transitivePeerDependencies:
-      - magicast
-      - postcss
-      - rollup
-      - supports-color
-      - vite
-      - webpack
-
-  "@unocss/nuxt@0.62.3(magicast@0.3.5)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))":
-    dependencies:
-      "@nuxt/kit": 3.13.0(magicast@0.3.5)(rollup@4.20.0)
-      "@unocss/config": 0.62.3
-      "@unocss/core": 0.62.3
-      "@unocss/preset-attributify": 0.62.3
-      "@unocss/preset-icons": 0.62.3
-      "@unocss/preset-tagify": 0.62.3
-      "@unocss/preset-typography": 0.62.3
-      "@unocss/preset-uno": 0.62.3
-      "@unocss/preset-web-fonts": 0.62.3
-      "@unocss/preset-wind": 0.62.3
-      "@unocss/reset": 0.62.3
-      "@unocss/vite": 0.62.3(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
-      "@unocss/webpack": 0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1))
-      unocss: 0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
     transitivePeerDependencies:
       - magicast
       - postcss
@@ -36073,7 +36073,7 @@ snapshots:
       - rollup
       - supports-color
 
-  unocss@0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)):
+  unocss@0.62.3(@unocss/webpack@0.62.3(rollup@4.20.0)(webpack@5.91.0(@swc/core@1.7.10)(esbuild@0.23.1)))(postcss@8.4.41)(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6)):
     dependencies:
       "@unocss/astro": 0.62.3(rollup@4.20.0)(vite@5.4.0(@types/node@20.16.3)(less@4.2.0)(sass@1.77.8)(terser@5.31.6))
       "@unocss/cli": 0.62.3(rollup@4.20.0)
