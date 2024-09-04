@@ -17,6 +17,7 @@ import { resolveComponent } from "vue";
 export * from "./types";
 export * from "./cms";
 export * from "./createShopwareContext";
+
 export * from "./useAddress/useAddress";
 export * from "./useAddToCart/useAddToCart";
 export * from "./useBreadcrumbs/useBreadcrumbs";
@@ -62,6 +63,8 @@ export * from "./useUrlResolver/useUrlResolver";
 export * from "./useUser/useUser";
 export * from "./useWishlist/useWishlist";
 export * from "./useB2bQuoteManagement/useB2bQuoteManagement";
+export * from "./useCartNotification/useCartNotification";
+export * from "./useCartErrorParamsResolver/useCartErrorParamsResolver";
 
 export function resolveCmsComponent(
   content: Schemas["CmsSection"] | Schemas["CmsBlock"] | Schemas["CmsSlot"],

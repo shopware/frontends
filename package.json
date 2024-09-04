@@ -40,12 +40,12 @@
     "husky": "9.1.5",
     "prettier": "3.3.3",
     "turbo": "2.1.0",
-    "vercel": "37.1.2"
+    "vercel": "37.2.1"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"
   },
-  "packageManager": "pnpm@9.6.0",
+  "packageManager": "pnpm@9.9.0",
   "pnpm": {
     "overrides": {
       "@antfu/utils": "^0.7.10",
@@ -82,7 +82,8 @@
       "ignoreCves": [
         "CVE-2023-26115",
         "CVE-2023-45857",
-        "CVE-2024-31207"
+        "CVE-2024-31207",
+        "CVE-2024-43788"
       ]
     }
   }
