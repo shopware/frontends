@@ -11,6 +11,7 @@ export type useCartNotificationReturn = {
 /**
  * UI composable
  *
+ * @category Cart & Checkout
  * @returns
  */
 export function useCartNotification(): useCartNotificationReturn {

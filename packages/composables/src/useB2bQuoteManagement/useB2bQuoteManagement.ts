@@ -43,6 +43,7 @@ export type ChangePaymentShippingMethodParams = {
  * - Create order from quote
  * - Request quote
  *
+ * @category B2B
  * @returns {UseB2bQuoteManagement}
  */
 export function useB2bQuoteManagement(): UseB2bQuoteManagement {

@@ -100,5 +100,7 @@ function _usePrice(params?: {
     currencyCode: computed(() => currencyCode.value),
   };
 }
-
+/**
+ * @category Product
+ */
 export const usePrice = createSharedComposable(_usePrice);

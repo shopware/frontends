@@ -7,6 +7,7 @@ export type UseDefaultOrderAssociationsReturn = Schemas["Criteria"] & {
 /**
  * Returns default order associations. You can override this composable in your project.
  * @public
+ * @category Order
  */
 export function useDefaultOrderAssociations(): UseDefaultOrderAssociationsReturn {
   const orderAssociations: Schemas["Criteria"] & { checkPromotion?: boolean } =

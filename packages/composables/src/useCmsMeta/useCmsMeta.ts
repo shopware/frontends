@@ -16,6 +16,7 @@ export type UseCmsMetaReturn = {
 
 /**
  * TODO: remove parameter and use reactive state of cmsResponse provided by useCms composable
+ * @category CMS (Shopping Experiences)
  */
 export function useCmsMeta(
   entity: Schemas["Category"] | Schemas["Product"] | Schemas["LandingPage"],

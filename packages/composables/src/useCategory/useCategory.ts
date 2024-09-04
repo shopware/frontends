@@ -14,6 +14,7 @@ export type UseCategoryReturn = {
 /**
  * Composable to get the category from current CMS context
  *
+ * @category Product
  * @public
  */
 export function useCategory(

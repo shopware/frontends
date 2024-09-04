@@ -15,6 +15,11 @@ export type ErrorObjectParam = {
   level?: number;
 };
 
+/**
+ * @category Cart & Checkout
+ *
+ * @returns
+ */
 export function useCartErrorParamsResolver(): UseCartErrorParamsResolver {
   const resolveCartError = (errorObject: ErrorObjectParam) => {
     let params = null;

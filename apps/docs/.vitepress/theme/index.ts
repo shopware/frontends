@@ -3,7 +3,6 @@ import { App } from "vue";
 import { SWAGTheme } from "vitepress-shopware-docs";
 import PageRef from "./components/PageRef.vue";
 import DemoBlock from "./components/DemoBlock.vue";
-import CreateContext from "./components/CreateContext.vue";
 import ComposablesList from "./components/ComposablesList.vue";
 // Ai component
 // import AI from "./components/AI.vue";
@@ -17,7 +16,6 @@ export default Object.assign(
     enhanceApp({ app }: { app: App }) {
       app.component("PageRef", PageRef);
       app.component("DemoBlock", DemoBlock);
-      app.component("CreateContext", CreateContext);
       app.component("ComposablesList", ComposablesList);
       // app.component("AI", AI);
       // app.provide('some-injection-key-if-needed', VALUE)

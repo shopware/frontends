@@ -169,6 +169,7 @@ export type UseListingReturn = {
 
 /**
  * @public
+ * @category Product
  */
 export function useListing(params?: {
   listingType: ListingType;

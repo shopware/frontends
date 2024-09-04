@@ -1,5 +1,5 @@
 <template>
-  <div v-for="(category, index) in categoryTreeData">
+  <div v-for="(category, index) in categoryTreeData" :id="index">
     {{ index }}
     <ul>
       <li v-for="(composable, index) in category">
@@ -12,7 +12,6 @@
 import { computed } from "vue";
 import { data } from "../../data/composables.data";
 const urlQuery = new URLSearchParams(window.location.search);
-const categoryQuery = urlQuery.get("category");
 
 const categoryTreeData = computed(() => {
   const categoryTree: { [key: string]: string[] } = {};
@@ -21,7 +20,6 @@ const categoryTreeData = computed(() => {
     const categories = composable.category.split(",");
 
     categories.forEach((category) => {
-      if (categoryQuery && categoryQuery !== category) return;
       if (!categoryTree[category]) {
         categoryTree[category] = [];
       }

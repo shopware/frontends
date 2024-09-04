@@ -9,6 +9,7 @@ import type { Ref } from "vue";
  * If `replace` is provided, it will replace the existing context with the new value.
  *
  * @public
+ * @category Context & Language
  */
 export function useContext<T>(
   injectionName: string,

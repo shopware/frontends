@@ -28,7 +28,10 @@ export default defineLoader({
         return {
           text: element.name,
           link: `/packages/composables/${element.name}`,
-          category: file?.functions[element.name]?.docs.category ?? "",
+          category:
+            (file?.functions[element.name]?.docs.category ||
+              file?.functions[`${element.name}Function`]?.docs.category) ??
+            "",
         };
       });
 

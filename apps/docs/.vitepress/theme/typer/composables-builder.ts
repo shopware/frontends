@@ -27,6 +27,19 @@ export async function ComposablesBuilder(): Promise<Plugin> {
         return code;
       }
 
+      if (composableName === "index") {
+        code = code.replace(
+          "{{INTRO}}",
+          normalizeString(
+            readFileSync(
+              resolve(`../../packages/composables/README.md`),
+              "utf8",
+            ),
+          ),
+        );
+
+        return code;
+      }
       // Build name
       code = code.replace("{{NAME}}", composableName);
 
@@ -39,7 +52,6 @@ export async function ComposablesBuilder(): Promise<Plugin> {
           ),
         );
       } catch (e) {
-        console.error(e);
         return code;
       }
 
@@ -48,12 +60,14 @@ export async function ComposablesBuilder(): Promise<Plugin> {
 
       // Building meta data
       // Only category
-      if (astJson?.functions[composableName]?.docs?.category) {
-        const conmposableCategory =
-          astJson.functions[composableName].docs.category;
+      const category =
+        astJson?.functions[composableName]?.docs?.category ||
+        astJson?.functions[`${composableName}Function`]?.docs?.category;
+
+      if (category) {
         code = code.replace(
           "{{META}}",
-          `<div>Category:</div> <a href="/packages/composables/?category=${conmposableCategory}"><div class="bg-red">${conmposableCategory}</div></a>`,
+          `<div>Category:</div> <a href="/packages/composables/#${category}"><div class="bg-red">${category}</div></a>`,
         );
       }
 
@@ -90,35 +104,8 @@ export async function ComposablesBuilder(): Promise<Plugin> {
         );
         code = code.replace("{{ADDITIONAL_README}}", additionalMd);
       } catch (e) {
-        console.error(e);
         code = code.replace("{{ADDITIONAL_README}}", "");
       }
-
-      //       // Demo dynamic
-      //       try {
-      //         const demoPath = resolve(
-      //           `../../packages/composables/src/${composableName}/${composableName}.demo.vue`,
-      //         );
-      //         const demoExists = existsSync(demoPath);
-      //         if (demoExists) {
-      //           code = code.replace(
-      //             "{{DEMO_BLOCK}}",
-      //             `<script setup>
-      // import { defineAsyncComponent } from 'vue'
-      // const Demo = defineAsyncComponent(() => import('${demoPath}'))
-      // </script>
-
-      // ## Demo
-      // <DemoBlock>
-      // <CreateContext />
-      // <Demo />
-      // </DemoBlock>`,
-      //           );
-      //         }
-      //       } catch (e) {
-      //         console.error(e);
-      //         code = code.replace("{{DEMO_BLOCK}}", "");
-      //       }
 
       // Demo static
       try {
@@ -139,7 +126,6 @@ ${codeBlock}
           `,
         );
       } catch (e) {
-        console.error(e);
         code = code.replace("{{DEMO_BLOCK}}", "");
       }
       return code;
