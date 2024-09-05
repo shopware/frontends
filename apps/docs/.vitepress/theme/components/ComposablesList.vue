@@ -1,9 +1,20 @@
 <template>
-  <div v-for="(category, index) in categoryTreeData" :id="index">
-    {{ index }}
-    <ul>
-      <li v-for="(composable, index) in category">
-        <a :href="`/packages/composables/${composable}`">{{ composable }}</a>
+  <div
+    v-for="(category, index) in categoryTreeData"
+    :id="`${index}${new Date().getTime()}`"
+  >
+    <p>{{ index }}</p>
+    <ul class="flex flex-wrap gap-3 !p-0 !m-0">
+      <li
+        v-for="(composable, index) in category"
+        :key="`${composable + new Date().getTime()}`"
+        class="list-none !m-0 bg-gray-100 rounded-sm leading-4"
+      >
+        <a
+          :href="`/packages/composables/${composable}`"
+          class="text-sm p-2 !no-underline !text-gray-800"
+          >{{ composable }}</a
+        >
       </li>
     </ul>
   </div>
