@@ -8,7 +8,8 @@ import type { operations as adminOperations } from "@shopware/api-client/admin-a
 import type { operations } from "@shopware/api-client/store-api-types";
 import json5 from "json5";
 
-const config = dotenv.config().parsed || {};
+// read .env file and load it into process.env
+dotenv.config();
 
 const SCHEMA_ENDPOINT = "_info/openapi3.json";
 const STORE_API_ENDPOINT = `/store-api/${SCHEMA_ENDPOINT}`;
@@ -31,7 +32,8 @@ export async function loadSchema(args: {
     ? args.filename
     : `${args.apiType}ApiSchema.json`;
 
-  const requiredEnvVars = ["OPENAPI_JSON_URL"];
+  const OPENAPI_JSON_URL = process.env.OPENAPI_JSON_URL;
+  const requiredEnvVars = [];
   if (isAdminApi) {
     requiredEnvVars.push("SHOPWARE_ADMIN_USERNAME");
     requiredEnvVars.push("SHOPWARE_ADMIN_PASSWORD");
@@ -39,9 +41,11 @@ export async function loadSchema(args: {
     requiredEnvVars.push("OPENAPI_ACCESS_KEY");
   }
 
-  const missingEnvVars = requiredEnvVars.filter((envVar) => !config[envVar]);
+  const missingEnvVars = requiredEnvVars.filter(
+    (envVar) => !process.env[envVar],
+  );
   try {
-    if (missingEnvVars.length) {
+    if (missingEnvVars.length || !OPENAPI_JSON_URL) {
       console.error(
         c.red(
           `Missing ${c.bold(
@@ -52,7 +56,7 @@ export async function loadSchema(args: {
       process.exit(1);
     }
 
-    const configUrl = config.OPENAPI_JSON_URL.replace(
+    const configUrl = OPENAPI_JSON_URL.replace(
       "/api/_info/openapi3.json",
       "",
     ).replace("/atore-api/_info/openapi3.json", "");
@@ -69,8 +73,8 @@ export async function loadSchema(args: {
           grant_type: "password",
           client_id: "administration",
           scopes: "write",
-          username: config.SHOPWARE_ADMIN_USERNAME,
-          password: config.SHOPWARE_ADMIN_PASSWORD,
+          username: process.env.SHOPWARE_ADMIN_USERNAME,
+          password: process.env.SHOPWARE_ADMIN_PASSWORD,
         },
       });
       const result = await adminClient.invoke(
@@ -84,7 +88,7 @@ export async function loadSchema(args: {
     } else {
       const apiClient = createAPIClient<operations>({
         baseURL: `${configUrl}/store-api`,
-        accessToken: config.OPENAPI_ACCESS_KEY,
+        accessToken: process.env.OPENAPI_ACCESS_KEY,
       });
       const result = await apiClient.invoke(
         "api-info get /_info/openapi3.json",
