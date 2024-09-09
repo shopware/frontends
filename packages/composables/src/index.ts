@@ -64,6 +64,8 @@ export * from "./useWishlist";
 export * from "./useB2bQuoteManagement";
 export * from "./useCartNotification";
 export * from "./useCartErrorParamsResolver";
+export * from "./useB2bEmployeeManagement";
+export * from "./useB2bEmployeeManagementRoles";
 
 export function resolveCmsComponent(
   content: Schemas["CmsSection"] | Schemas["CmsBlock"] | Schemas["CmsSlot"],
