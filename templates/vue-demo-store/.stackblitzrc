@@ -1,5 +1,6 @@
 {
   "env": {
     "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": "https://demo-frontends.shopware.store"
-  }
+  },
+  "startCommand": "npx nuxi@latest devtools disable && npm run dev"
 }
