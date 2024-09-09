@@ -3,7 +3,7 @@ import { useCartErrorParamsResolver } from "./useCartErrorParamsResolver";
 import { useCart } from "../useCart/useCart";
 import { ref } from "vue";
 
-vi.mock("./useCart.ts");
+vi.mock("../useCart/useCart.ts");
 
 describe("useCartErrorParamsResolver", () => {
   beforeEach(() => {

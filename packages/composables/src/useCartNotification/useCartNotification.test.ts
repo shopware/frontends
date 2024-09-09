@@ -6,7 +6,7 @@ import { useCart } from "../useCart/useCart";
 const pushErrorSpy = vi.fn();
 const pushSuccessSpy = vi.fn();
 
-vi.mock("./useNotifications.ts", async () => {
+vi.mock("../useNotifications/useNotifications.ts", async () => {
   return {
     useNotifications: () => {
       return {
@@ -17,7 +17,7 @@ vi.mock("./useNotifications.ts", async () => {
   };
 });
 
-vi.mock("./useCart.ts");
+vi.mock("../useCart/useCart.ts");
 
 describe("useCartNotification", () => {
   beforeEach(() => {
