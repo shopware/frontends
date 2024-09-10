@@ -26,16 +26,16 @@
     "defu": "6.1.4",
     "requrl": "3.0.2",
     "sitemap": "8.0.0",
-    "vue": "3.4.38"
+    "vue": "3.5.4"
   },
   "devDependencies": {
-    "@iconify-json/carbon": "1.1.37",
+    "@iconify-json/carbon": "1.2.1",
     "@nuxtjs/i18n": "8.3.1",
     "@shopware/api-gen": "canary",
     "eslint": "9.9.1",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-vue": "9.27.0",
-    "nuxt": "3.13.0",
+    "nuxt": "3.13.1",
     "typescript": "5.5.4",
     "vue-eslint-parser": "9.4.3"
   },
