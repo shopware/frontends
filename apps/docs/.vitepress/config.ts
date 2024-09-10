@@ -1,11 +1,16 @@
 import { defineConfigWithTheme } from "vitepress";
 import type { Config as ThemeConfig } from "vitepress-shopware-docs";
-import baseConfig from "vitepress-shopware-docs/config";
+import { baseConfig } from "@shopware-docs/vitepress";
 import nav from "./navigation";
 import { SearchPlugin } from "vitepress-plugin-search";
 import { CmsBaseReference } from "./theme/typer/cms-base-plugin";
 import { ReadmeBasedReference } from "./theme/typer/plugin";
 import { ReadmeLoader } from "./theme/typer/readme-loader";
+import { ComposablesBuilder } from "./theme/typer/composables-builder";
+import { resolve } from "path";
+import data from "./data/composables.data";
+
+const composables = await data.load(null);
 
 export const sidebar = [
   {
@@ -28,6 +33,7 @@ export const sidebar = [
       {
         text: "Composables",
         link: "/framework/composables.html",
+        collapsed: true,
         items: [
           {
             text: "Context Composables",
@@ -57,6 +63,7 @@ export const sidebar = [
       {
         text: "Setup Templates",
         link: "/getting-started/templates.html",
+        collapsed: true,
         items: [
           {
             text: "Demo Store",
@@ -85,6 +92,7 @@ export const sidebar = [
       {
         text: "CMS",
         link: "/getting-started/cms/",
+        collapsed: true,
         items: [
           {
             text: "Custom Elements",
@@ -119,6 +127,7 @@ export const sidebar = [
       {
         text: "E-Commerce",
         link: "/getting-started/e-commerce/",
+        collapsed: true,
         items: [
           {
             text: "Product Listing",
@@ -147,6 +156,7 @@ export const sidebar = [
       {
         text: "Features",
         link: "/getting-started/features/",
+        collapsed: true,
         items: [
           {
             text: "Sitemap",
@@ -173,6 +183,7 @@ export const sidebar = [
       {
         text: "Page elements",
         link: "/getting-started/page-elements/",
+        collapsed: true,
         items: [
           {
             text: "Breadcrumbs",
@@ -193,6 +204,7 @@ export const sidebar = [
           {
             text: "Examples",
             link: "/getting-started/page-elements/examples/",
+            collapsed: true,
             items: [
               {
                 text: "Cart",
@@ -228,6 +240,7 @@ export const sidebar = [
       {
         text: "Error Handling",
         link: "/packages/api-client.html#error-handling",
+        collapsed: true,
         // TODO: remove this subpages after 2024-08
         items: [
           {
@@ -251,10 +264,12 @@ export const sidebar = [
       {
         text: "Integrations",
         link: "/resources/integrations/",
+        collapsed: true,
         items: [
           {
             text: "CMS",
             link: "/resources/integrations/cms/",
+            collapsed: true,
             items: [
               {
                 text: "Storyblok",
@@ -269,6 +284,7 @@ export const sidebar = [
           {
             text: "Commercial",
             link: "/resources/integrations/commercial/",
+            collapsed: true,
             items: [
               {
                 text: "B2B Quick Order",
@@ -287,6 +303,7 @@ export const sidebar = [
           {
             text: "Payments",
             link: "/resources/integrations/payments/",
+            collapsed: true,
             items: [
               {
                 text: "Amazon Pay",
@@ -312,14 +329,18 @@ export const sidebar = [
   },
   {
     text: "PACKAGE REFERENCE",
-    collapsed: true,
     link: "/packages/",
     items: [
       {
         text: "API Client",
         link: "/packages/api-client.html",
       },
-      { text: "Composables", link: "/packages/composables.html" },
+      {
+        text: "Composables",
+        link: "/packages/composables/",
+        collapsed: true,
+        items: composables?.composablesList ?? [],
+      },
       { text: "CMS Base", link: "/packages/cms-base.html" },
       { text: "Nuxt3 Module", link: "/packages/nuxt3-module.html" },
       { text: "Helpers", link: "/packages/helpers.html" },
@@ -334,7 +355,7 @@ interface ThemeConfigExtended extends ThemeConfig {
 }
 
 export default defineConfigWithTheme<ThemeConfigExtended>({
-  extends: baseConfig,
+  extends: baseConfig.default,
   lang: "en-US",
   title: "Shopware Frontends",
   description: "Documentation for Shopware developers",
@@ -436,6 +457,15 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       minify: "terser",
       chunkSizeWarningLimit: Infinity,
       ssr: false,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("mermaid")) {
+              return "mermaid";
+            }
+          },
+        },
+      },
     },
     json: {
       stringify: true,
@@ -445,7 +475,33 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       ReadmeBasedReference(),
       CmsBaseReference(),
       ReadmeLoader(),
+      ComposablesBuilder(),
     ],
+    resolve: {
+      alias: {
+        "@node_modules": resolve(process.cwd(), "node_modules"),
+        "../composables/edit-link": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/composables/edit-link.ts",
+        ),
+        "./VPNavBarTitle.vue": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/components/override/VPNavBarTitle.vue",
+        ),
+        "./VPAlgoliaSearchBox.vue": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/components/override/VPAlgoliaSearchBox.vue",
+        ),
+        "../NotFound.vue": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/components/override/NotFound.vue",
+        ),
+        "../SwagRelatedArticles.vue": resolve(
+          __dirname,
+          "../node_modules/vitepress-shopware-docs/src/shopware/components/SwagRelatedArticles.vue",
+        ),
+      },
+    },
   },
   vue: {
     reactivityTransform: true,

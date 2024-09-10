@@ -13,10 +13,11 @@ export default defineConfig({
       exclude: [
         "**/devtools/**",
         "**/types/**",
-        "**/src/*.test.ts",
-        "**/src/*.spec.ts",
+        "**/src/**/*.test.ts",
+        "**/src/**/*.spec.ts",
+        "**/src/**/*.demo.vue",
         // After refactoring should be removed - https://github.com/shopware/frontends/issues/1057
-        "**/src/useListing.ts",
+        "**/src/useListing/**",
       ],
     },
     alias: {
