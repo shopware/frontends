@@ -1,22 +1,22 @@
 import { useShopwareContext } from "#imports";
 import type { operations } from "#shopware";
 
-// interface UseB2bEmployeeManagement {
-//   getEmployees: () => Promise<
-//     operations["readEmployees post /employee"]["response"]
-//   >;
-//   createSingleEmployee: (
-//     params: operations["createEmployee post /employee/create"]["body"],
-//   ) => Promise<operations["createEmployee post /employee/create"]["response"]>;
-//   getEmployeeById: (
-//     employeeId: string,
-//   ) => Promise<operations["readEmployee post /employee/{id}"]["response"]>;
-//   reinviteEmployee: (
-//     employeeId: string,
-//   ) => Promise<
-//     operations["reinviteEmployee post /employee/reinvite/{id}"]["response"]
-//   >;
-// }
+interface UseB2bEmployeeManagement {
+  getEmployees: () => Promise<
+    operations["readEmployees post /employee"]["response"]
+  >;
+  createSingleEmployee: (
+    params: operations["createEmployee post /employee/create"]["body"],
+  ) => Promise<operations["createEmployee post /employee/create"]["response"]>;
+  getEmployeeById: (
+    employeeId: string,
+  ) => Promise<operations["readEmployee post /employee/{id}"]["response"]>;
+  reinviteEmployee: (
+    employeeId: string,
+  ) => Promise<
+    operations["reinviteEmployee post /employee/reinvite/{id}"]["response"]
+  >;
+}
 
 /**
  * More info about the feature https://docs.shopware.com/en/shopware-6-en/commercial-features/b2b-components#employee-management
@@ -25,7 +25,7 @@ import type { operations } from "#shopware";
  *
  * @returns
  */
-export function useB2bEmployeeManagement() {
+export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
   const { apiClient } = useShopwareContext();
 
   const getEmployees = () => {
