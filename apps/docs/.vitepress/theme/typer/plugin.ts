@@ -30,6 +30,7 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
 
       if (
         pkg !== "packages" ||
+        packageName === "composables" ||
         !existsSync(resolve(`../../packages/${packageName}/README.md`))
       ) {
         return code;

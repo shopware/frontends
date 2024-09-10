@@ -9,6 +9,7 @@ import {
   prepareGithubPermalink,
   replacer,
   normalizeString,
+  normalizeAnchorText,
 } from "./utils";
 import { readdirSync, readFileSync, existsSync } from "node:fs";
 
@@ -67,32 +68,45 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       if (category) {
         code = code.replace(
           "{{META}}",
-          `<div>Category:</div> <a href="/packages/composables/#${category}"><div class="bg-red">${category}</div></a>`,
+          `<div>Category:</div> <a href="/packages/composables/#${normalizeAnchorText(category)}"><div class="bg-red">${category}</div></a>`,
         );
       }
 
       // Building interfaces block
-      let interfacesBlock = `// packages/composables/src/${composableName}/${composableName}.ts`;
+
+      let interfacesBlock = ``;
       for (const key of Object.keys(astJson.functions)) {
-        interfacesBlock = `${interfacesBlock} \n\n ${astJson?.functions[key]?.signature || ""}`;
+        interfacesBlock += getWrappedCodeBlock(
+          normalizeString(`${astJson?.functions[key]?.signature || ""}`),
+        );
+
+        interfacesBlock += prepareGithubPermalink({
+          label: `source code`,
+          path: `packages/composables/src/${composableName}/${composableName}.ts`,
+          project: "shopware/frontends",
+          line: astJson?.functions[key]?.location?.line + 1,
+        });
       }
 
       // Building types block
-      let typesBlock = `// packages/composables/src/${composableName}/${composableName}.ts`;
+      let typesBlock = ``;
       for (const key of Object.keys(astJson.types)) {
-        typesBlock = `${typesBlock} \n\n ${astJson?.types[key]?.signature || ""}`;
+        typesBlock += getWrappedCodeBlock(
+          normalizeString(`${astJson?.types[key]?.signature || ""}`),
+        );
+
+        typesBlock += prepareGithubPermalink({
+          label: `source code`,
+          path: `packages/composables/src/${composableName}/${composableName}.ts`,
+          project: "shopware/frontends",
+          line: astJson?.types[key]?.location?.line + 1,
+        });
       }
 
       code = code
         .replace("{{DESCRIPTION}}", description)
-        .replace(
-          "{{RETURN_TYPES_CONTENT}}",
-          getWrappedCodeBlock(normalizeString(typesBlock)),
-        )
-        .replace(
-          "{{INTERFACE_CONTENT}}",
-          getWrappedCodeBlock(normalizeString(interfacesBlock)),
-        );
+        .replace("{{RETURN_TYPES_CONTENT}}", typesBlock)
+        .replace("{{INTERFACE_CONTENT}}", interfacesBlock);
 
       // Loading additional MD file
       try {

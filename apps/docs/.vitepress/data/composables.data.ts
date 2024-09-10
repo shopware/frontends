@@ -1,9 +1,7 @@
 import { defineLoader } from "vitepress";
 import { resolve } from "path";
-import { findSync } from "find-in-files";
 import { extract } from "ts-dox";
 import { readdirSync } from "fs";
-
 export interface Data {
   composablesList: { text: string; link: string; category: string }[];
 }

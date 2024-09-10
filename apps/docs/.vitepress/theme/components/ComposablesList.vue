@@ -3,7 +3,14 @@
     v-for="(category, index) in categoryTreeData"
     :id="`${index}${new Date().getTime()}`"
   >
-    <p>{{ index }}</p>
+    <h3 class="!mb-2" :id="normalizeAnchorText(index.toString())" tabindex="-1">
+      {{ index }}
+      <a
+        class="header-anchor !top-0"
+        :href="`#${normalizeAnchorText(index.toString())}`"
+        aria-label='Permalink to "Test"'
+      ></a>
+    </h3>
     <ul class="flex flex-wrap gap-3 !p-0 !m-0">
       <li
         v-for="(composable, index) in category"
@@ -22,6 +29,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { data } from "../../data/composables.data";
+import { normalizeAnchorText } from "../typer/utils";
 
 const categoryTreeData = computed(() => {
   const categoryTree: { [key: string]: string[] } = {};
