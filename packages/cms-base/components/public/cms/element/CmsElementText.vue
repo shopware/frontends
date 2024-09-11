@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementText } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig, useUrlResolver } from "#imports";
-import { computed, getCurrentInstance, h } from "vue";
+import { computed, defineComponent, getCurrentInstance, h } from "vue";
 import { decodeHTML } from "entities";
 import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
 import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";
@@ -25,120 +25,124 @@ const style = computed<CSSProperties>(() => ({
 
 const hasVerticalAlignment = computed(() => !!style.value.alignItems);
 
-const CmsTextRender = () => {
-  const { resolveUrl } = useUrlResolver();
+const CmsTextRender = defineComponent({
+  setup() {
+    const { resolveUrl } = useUrlResolver();
 
-  const config = {
-    textTransformer: (text: string) => decodeHTML(text),
-    extraComponentsMap: {
-      link: {
-        conditions(node: NodeObject) {
-          return (
-            node.type === "tag" &&
-            node.name === "a" &&
-            !node.attrs?.class?.match(/btn\s?/)
-          );
+    const config = {
+      textTransformer: (text: string) => decodeHTML(text),
+      extraComponentsMap: {
+        link: {
+          conditions(node: NodeObject) {
+            return (
+              node.type === "tag" &&
+              node.name === "a" &&
+              !node.attrs?.class?.match(/btn\s?/)
+            );
+          },
+          renderer(
+            node: NodeObject,
+            children: RawChildren[],
+            createElement: typeof h,
+          ) {
+            return createElement(
+              "a",
+              {
+                class:
+                  "underline text-base font-normal text-primary hover:text-secondary-900",
+                ...getOptionsFromNode(node, resolveUrl).attrs,
+              },
+              [...children],
+            );
+          },
         },
-        renderer(
-          node: NodeObject,
-          children: RawChildren[],
-          createElement: typeof h,
-        ) {
-          return createElement(
-            "a",
-            {
-              class:
-                "underline text-base font-normal text-primary hover:text-secondary-900",
-              ...getOptionsFromNode(node, resolveUrl).attrs,
-            },
-            [...children],
-          );
+        button: {
+          conditions(node: NodeObject) {
+            return (
+              node.type === "tag" &&
+              node.name === "a" &&
+              node.attrs?.class?.match(/btn\s?/)
+            );
+          },
+          renderer(
+            node: NodeObject,
+            children: RawChildren[],
+            createElement: typeof h,
+          ) {
+            let _class = "";
+            if (node?.attrs?.class) {
+              const btnClass =
+                "rounded-md inline-block my-2 py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
+
+              _class = node.attrs.class
+                .replace("btn-secondary", `${btnClass} bg-dark text-white`)
+                .replace("btn-primary", `${btnClass} bg-primary text-white`);
+            }
+
+            return createElement(
+              "a",
+              {
+                class: _class,
+                ...getOptionsFromNode(node, resolveUrl).attrs,
+              },
+              [...children],
+            );
+          },
+        },
+        font: {
+          conditions(node: NodeObject) {
+            return node.type === "tag" && node.name === "font";
+          },
+          renderer(
+            node: NodeObject,
+            children: RawChildren[],
+            createElement: typeof h,
+          ) {
+            // convert from <font color="#ce0000">Headline 1</font> to <span style="color:#ce0000">Headline 1</span>
+            let newStyle = null;
+            const styleColor = node?.attrs?.color;
+            if (styleColor) {
+              const currentStyle = node.attrs?.style ?? "";
+              newStyle = `color:${styleColor};${currentStyle}`;
+              delete node.attrs?.color;
+            }
+
+            return createElement(
+              "span",
+              {
+                style: newStyle,
+                ...getOptionsFromNode(node, resolveUrl).attrs,
+              },
+              [...children],
+            );
+          },
+        },
+        img: {
+          conditions(node: NodeObject) {
+            return node.type === "tag" && node.name === "img";
+          },
+          renderer(
+            node: NodeObject,
+            children: RawChildren[],
+            createElement: typeof h,
+          ) {
+            return createElement(
+              "img",
+              getOptionsFromNode(node, resolveUrl)?.attrs,
+            );
+          },
         },
       },
-      button: {
-        conditions(node: NodeObject) {
-          return (
-            node.type === "tag" &&
-            node.name === "a" &&
-            node.attrs?.class?.match(/btn\s?/)
-          );
-        },
-        renderer(
-          node: NodeObject,
-          children: RawChildren[],
-          createElement: typeof h,
-        ) {
-          let _class = "";
-          if (node?.attrs?.class) {
-            const btnClass =
-              "rounded-md inline-block my-2 py-2 px-4 border border-transparent text-sm font-medium focus:outline-none disabled:opacity-75";
+    };
+    const rawHtml =
+      mappedContent.value?.length > 0
+        ? mappedContent.value
+        : "<div class='cms-element-text missing-content-element'></div>";
 
-            _class = node.attrs.class
-              .replace("btn-secondary", `${btnClass} bg-dark text-white`)
-              .replace("btn-primary", `${btnClass} bg-primary text-white`);
-          }
-
-          return createElement(
-            "a",
-            {
-              class: _class,
-              ...getOptionsFromNode(node, resolveUrl).attrs,
-            },
-            [...children],
-          );
-        },
-      },
-      font: {
-        conditions(node: NodeObject) {
-          return node.type === "tag" && node.name === "font";
-        },
-        renderer(
-          node: NodeObject,
-          children: RawChildren[],
-          createElement: typeof h,
-        ) {
-          // convert from <font color="#ce0000">Headline 1</font> to <span style="color:#ce0000">Headline 1</span>
-          let newStyle = null;
-          const styleColor = node?.attrs?.color;
-          if (styleColor) {
-            const currentStyle = node.attrs?.style ?? "";
-            newStyle = `color:${styleColor};${currentStyle}`;
-            delete node.attrs?.color;
-          }
-
-          return createElement(
-            "span",
-            {
-              style: newStyle,
-              ...getOptionsFromNode(node, resolveUrl).attrs,
-            },
-            [...children],
-          );
-        },
-      },
-      img: {
-        conditions(node: NodeObject) {
-          return node.type === "tag" && node.name === "img";
-        },
-        renderer(
-          node: NodeObject,
-          children: RawChildren[],
-          createElement: typeof h,
-        ) {
-          return createElement(
-            "img",
-            getOptionsFromNode(node, resolveUrl)?.attrs,
-          );
-        },
-      },
-    },
-  };
-  const rawHtml =
-    mappedContent.value?.length > 0
-      ? mappedContent.value
-      : "<div class='cms-element-text missing-content-element'></div>";
-  return renderHtml(rawHtml, config, h, context, resolveUrl);
-};
+    return () =>
+      h("div", {}, renderHtml(rawHtml, config, h, context, resolveUrl));
+  },
+});
 </script>
 <template>
   <div
