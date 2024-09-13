@@ -18,7 +18,7 @@
         class="list-none !m-0 bg-gray-100 rounded-sm leading-4"
       >
         <a
-          :href="`/packages/composables/${composable}`"
+          :href="`/packages/composables/${composable}.html`"
           class="text-sm p-2 !no-underline !text-gray-800"
           >{{ composable }}</a
         >
