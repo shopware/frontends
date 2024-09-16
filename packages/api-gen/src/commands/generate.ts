@@ -18,7 +18,8 @@ import {
   loadJsonOverrides,
 } from "../jsonOverrideUtils";
 
-const config = dotenv.config().parsed || {};
+// read .env file and load it into process.env
+dotenv.config();
 
 export async function generate(args: {
   cwd: string;
@@ -92,7 +93,7 @@ export async function generate(args: {
       });
 
       schema = await openapiTS(patchedSchema, {
-        version: +(config.OPENAPI_VERSION || 3),
+        version: +(process.env.OPENAPI_VERSION || 3),
         exportType: true,
         // pathParamsAsTypes: true,
         // rawSchema: false,

@@ -90,5 +90,12 @@ export function prepareGithubPermalink({
   line?: number;
   inlineStyle?: string;
 }) {
-  return `<a style="${inlineStyle ?? "position:relative;top:-25px;font-size:0.8em;margin:0;"}" href="https://github.com/${project ?? "shopware/frontends"}/tree/main/${path.replaceAll("../", "")}#L${line ?? 1}" target="_blank">${label}</a>\n`;
+  return `<a style="${inlineStyle ?? "position:relative;top:-15px;font-size:0.8em;margin:0;"}" href="https://github.com/${project ?? "shopware/frontends"}/tree/main/${path.replaceAll("../", "")}#L${line ?? 1}" target="_blank">${label}</a>\n`;
+}
+
+export function normalizeAnchorText(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^a-zA-Z0-9-]/g, "");
 }

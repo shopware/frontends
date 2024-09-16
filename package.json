@@ -59,6 +59,7 @@
       "lodash": "^4.17.21",
       "lodash.pick@>=3.7.0 <4.17.19": "https://github.com/lodash/lodash/archive/f299b52f39486275a9e6483b60a410e06520c538.tar.gz",
       "micromatch": "^4.0.8",
+      "path-to-regexp": "^8.0.0",
       "postcss": "^8.4.39",
       "semver": "^7.6.2",
       "sharp": "^0.33.4",
@@ -69,7 +70,12 @@
       "vite@5": "^5.3.3",
       "ws": "^8.18.0",
       "yaml@2": "^2.4.5",
-      "zod": "^3.23.8"
+      "zod": "^3.23.8",
+      "body-parser": "^1.20.3",
+      "dset": "^3.1.4",
+      "send": "^0.19.0",
+      "serve-static": "^1.16.1",
+      "express": "^4.20.1"
     },
     "peerDependencyRules": {
       "ignoreMissing": [

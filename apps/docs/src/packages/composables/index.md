@@ -1,0 +1,5 @@
+{{INTRO}}
+
+## Composables list
+
+<ComposablesList />
