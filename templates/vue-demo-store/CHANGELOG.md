@@ -1,5 +1,21 @@
 # vue-demo-store
 
+## 1.2.0
+
+### Minor Changes
+
+- [#977](https://github.com/shopware/frontends/pull/977) [`ad8321f`](https://github.com/shopware/frontends/commit/ad8321fe9444d3a86a32a96ae568cfb6deb9d203) Thanks [@khanSoliheen](https://github.com/khanSoliheen)! - Link back to the product page for line items inside the cart.
+
+- [#1215](https://github.com/shopware/frontends/pull/1215) [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added `promotions-on-cart-price-zero-error` error translation
+  - Added `product-stock-reached-empty` error translation
+  - Fixed add to cart notificationsz
+
+### Patch Changes
+
+- [#1218](https://github.com/shopware/frontends/pull/1218) [`a3de8e0`](https://github.com/shopware/frontends/commit/a3de8e06d702c4f762b8e8cd8a2f1b8e4365a4cf) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Fixed closing modal for resetting password page
+
+- [#1223](https://github.com/shopware/frontends/pull/1223) [`4c92624`](https://github.com/shopware/frontends/commit/4c92624cee2cf24e3b00946fbecbad7e2a47bb69) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Fixed promotion-not-found error message
+
 ## 1.1.1
 
 ### Patch Changes

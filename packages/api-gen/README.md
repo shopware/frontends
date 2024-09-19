@@ -233,13 +233,8 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.0.4
+### Latest changes: 1.0.5
 
 ### Patch Changes
 
-- [#1074](https://github.com/shopware/frontends/pull/1074) [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4) Thanks [@mkucmus](https://github.com/mkucmus)! - Set `translated` property as required in provided schemas
-
-- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Migrate eslint config to flat format
-
-- Updated dependencies [[`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6), [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4)]:
-  - @shopware/api-client@1.0.2
+- [#1269](https://github.com/shopware/frontends/pull/1269) [`999b076`](https://github.com/shopware/frontends/commit/999b076db88bc34614d9d3221b96a04b997009a3) Thanks [@patzick](https://github.com/patzick)! - reading environment variables not only from the .env file but also injected by the system
