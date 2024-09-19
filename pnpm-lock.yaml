@@ -928,8 +928,8 @@ importers:
         specifier: workspace:*
         version: link:../api-client
       '@tresjs/cientos':
-        specifier: 3.9.0
-        version: 3.9.0(@tresjs/core@4.2.10(three@0.166.1)(vue@3.4.38(typescript@5.5.4)))(three@0.166.1)(tweakpane@4.0.3)(vue@3.4.38(typescript@5.5.4))
+        specifier: 4.0.2
+        version: 4.0.2(@tresjs/core@4.2.10(three@0.166.1)(vue@3.4.38(typescript@5.5.4)))(three@0.166.1)(vue@3.4.38(typescript@5.5.4))
       '@tresjs/core':
         specifier: 4.2.10
         version: 4.2.10(three@0.166.1)(vue@3.4.38(typescript@5.5.4))
@@ -4980,12 +4980,11 @@ packages:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
 
-  '@tresjs/cientos@3.9.0':
-    resolution: {integrity: sha512-LAtMveKlecKvWh7TNWdwEs3nQUYMLqz9DZy0YhSZ6OVTfL2vevx2K4sH9744UME8OedUf4fkFFkX4OWQRHaDRQ==}
+  '@tresjs/cientos@4.0.2':
+    resolution: {integrity: sha512-72Y+tHdysx+ZGv81c1kZixnLfc5bgMKKc2kacW6AQ2XSaRfDQ87ZRhQp78kHYgPNgx6SUd9mXGaub15brMGNFQ==}
     peerDependencies:
-      '@tresjs/core': '>=3.2'
+      '@tresjs/core': '>=4.2.1'
       three: '>=0.133'
-      tweakpane: '>=3.0.0'
       vue: '>=3.3'
 
   '@tresjs/core@4.2.10':
@@ -6393,8 +6392,8 @@ packages:
     resolution: {integrity: sha512-xlx1yCK2Oc1APsPXDL2LdlNP6+uu8OCDdhOBSVT279M/S+y75O30C2VuD8T2ogdePBBl7PfPF4504tnLgX3zfw==}
     engines: {node: '>=14.16'}
 
-  camera-controls@2.8.3:
-    resolution: {integrity: sha512-zFjqUR6onLkG+z1A6vAWfzovxZxWVSvp6e5t3lfZgfgPZtX3n74aykNAUaoRbq8Y3tOxadHkDjbfGDOP9hFf2w==}
+  camera-controls@2.9.0:
+    resolution: {integrity: sha512-TpCujnP0vqPppTXXJRYpvIy0xq9Tro6jQf2iYUxlDpPCNxkvE/XGaTuwIxnhINOkVP/ob2CRYXtY3iVYXeMEzA==}
     peerDependencies:
       three: '>=0.126.1'
 
@@ -11651,8 +11650,8 @@ packages:
       react:
         optional: true
 
-  three-stdlib@2.29.11:
-    resolution: {integrity: sha512-vSyUavKCwOJQd2ch9IHhyJVx6eNG3y+z3/LulqHM7OLMy81OqnmIrvc2b4phKr/c1aVjHRNG2X7JOklfrDDcmQ==}
+  three-stdlib@2.33.0:
+    resolution: {integrity: sha512-V/uycBuqQOP/3Z+FBtpMdj2Ds5PyfJ3VDfMzktEmG4niOIzv7q1y5uMSbMcng0+057m1l0N147FQxsodQo9zBg==}
     peerDependencies:
       three: '>=0.128.0'
 
@@ -11883,9 +11882,6 @@ packages:
   turbo@2.1.0:
     resolution: {integrity: sha512-A969/LO/sPHKlapIarY2VVzqQ5JnnW2/1kksZlnMEpsRD6gwOELvVL+ozfMiO7av9RILt3UeN02L17efr6HUCA==}
     hasBin: true
-
-  tweakpane@4.0.3:
-    resolution: {integrity: sha512-BlcWOAe8oe4c+k9pmLBARGdWB6MVZMszayekkixQXTgkxTaYoTUpHpwVEp+3HkoamZkomodpbBf0CkguIHTgLg==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -18116,17 +18112,16 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@tresjs/cientos@3.9.0(@tresjs/core@4.2.10(three@0.166.1)(vue@3.4.38(typescript@5.5.4)))(three@0.166.1)(tweakpane@4.0.3)(vue@3.4.38(typescript@5.5.4))':
+  '@tresjs/cientos@4.0.2(@tresjs/core@4.2.10(three@0.166.1)(vue@3.4.38(typescript@5.5.4)))(three@0.166.1)(vue@3.4.38(typescript@5.5.4))':
     dependencies:
       '@tresjs/core': 4.2.10(three@0.166.1)(vue@3.4.38(typescript@5.5.4))
-      '@vueuse/core': 10.11.1(vue@3.4.38(typescript@5.5.4))
-      camera-controls: 2.8.3(three@0.166.1)
+      '@vueuse/core': 11.0.3(vue@3.4.38(typescript@5.5.4))
+      camera-controls: 2.9.0(three@0.166.1)
       stats-gl: 2.2.8
       stats.js: 0.17.0
       three: 0.166.1
       three-custom-shader-material: 5.4.0(three@0.166.1)
-      three-stdlib: 2.29.11(three@0.166.1)
-      tweakpane: 4.0.3
+      three-stdlib: 2.33.0(three@0.166.1)
       vue: 3.4.38(typescript@5.5.4)
     transitivePeerDependencies:
       - '@react-three/fiber'
@@ -20398,7 +20393,7 @@ snapshots:
 
   camelcase@7.0.1: {}
 
-  camera-controls@2.8.3(three@0.166.1):
+  camera-controls@2.9.0(three@0.166.1):
     dependencies:
       three: 0.166.1
 
@@ -27024,7 +27019,7 @@ snapshots:
       object-hash: 3.0.0
       three: 0.166.1
 
-  three-stdlib@2.29.11(three@0.166.1):
+  three-stdlib@2.33.0(three@0.166.1):
     dependencies:
       '@types/draco3d': 1.4.9
       '@types/offscreencanvas': 2019.7.3
@@ -27220,8 +27215,6 @@ snapshots:
       turbo-linux-arm64: 2.1.0
       turbo-windows-64: 2.1.0
       turbo-windows-arm64: 2.1.0
-
-  tweakpane@4.0.3: {}
 
   type-check@0.4.0:
     dependencies:
