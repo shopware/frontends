@@ -34,7 +34,7 @@ export type AmazonPayModuleOptions = {
 
 declare module "@nuxt/schema" {
   interface NuxtOptions {
-    amazonPay?: AmazonPayModuleOptions;
+    amazonPay: AmazonPayModuleOptions;
   }
 
   interface NuxtConfig {
