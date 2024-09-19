@@ -36,13 +36,8 @@ export default defineConfig({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 1.0.2
+### Latest changes: 1.1.0
 
-### Patch Changes
+### Minor Changes
 
-- [#1191](https://github.com/shopware/frontends/pull/1191) [`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128) Thanks [@mkucmus](https://github.com/mkucmus)! - Prevent from getting an incorrect srcset format when img url is not set.
-
-  before when there were no urls for 400w and 800w:
-  `src="image1.jpg 100w, 400w, 800w"`
-
-  now only the entry with an URL defined is returned
+- [#1215](https://github.com/shopware/frontends/pull/1215) [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `getCmsTranslate` helper to replace text placeholder with param value

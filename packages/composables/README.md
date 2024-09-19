@@ -151,13 +151,13 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.2.0
+### Latest changes: 1.3.0
 
 ### Minor Changes
 
-- [#1194](https://github.com/shopware/frontends/pull/1194) [`aa8f5a4`](https://github.com/shopware/frontends/commit/aa8f5a4d2eabce1d6119e31af8c7479911d7b07b) Thanks [@patzick](https://github.com/patzick)! - New `useDefaultOrderAssociations` composable to be used or overriden separately in user project. This composable just returns default associations object.
+- [#1215](https://github.com/shopware/frontends/pull/1215) [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added `useCartErrorParamsResolver` composable for building error message parameters
 
 ### Patch Changes
 
-- Updated dependencies [[`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128)]:
-  - @shopware-pwa/helpers-next@1.0.2
+- Updated dependencies [[`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665)]:
+  - @shopware-pwa/helpers-next@1.1.0
