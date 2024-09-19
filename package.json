@@ -91,6 +91,9 @@
         "CVE-2024-31207",
         "CVE-2024-43788"
       ]
+    },
+    "patchedDependencies": {
+      "@vueuse/core@11.1.0": "patches/@vueuse__core@11.1.0.patch"
     }
   }
 }

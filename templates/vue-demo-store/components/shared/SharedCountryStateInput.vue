@@ -9,7 +9,7 @@ const emit = defineEmits<{
 const props = withDefaults(
   defineProps<{
     countryId: string | null;
-    stateId: string | null;
+    stateId?: string;
     countryIdValidation?: BaseValidation;
     stateIdValidation?: BaseValidation;
   }>(),
