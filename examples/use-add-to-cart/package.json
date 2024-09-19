@@ -15,10 +15,10 @@
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
     "@types/node": "20.14.10",
-    "@unocss/nuxt": "0.62.3",
-    "nuxt": "3.13.0",
+    "@unocss/nuxt": "0.62.4",
+    "nuxt": "3.13.2",
     "typescript": "5.5.4",
-    "vue": "3.4.38",
-    "vue-tsc": "2.0.29"
+    "vue": "3.5.6",
+    "vue-tsc": "2.1.6"
   }
 }
