@@ -8,6 +8,7 @@ import {
   onMounted,
   ref,
   useSlots,
+  useTemplateRef,
   watch,
 } from "vue";
 import type { CSSProperties, VNodeArrayChildren } from "vue";
@@ -62,12 +63,12 @@ const children = computed<string[]>(() => {
 const emit = defineEmits<{
   (e: "changeSlide", index: number): void;
 }>();
-const slider = ref(null);
-const imageSlider = ref<HTMLElement>();
+const slider = useTemplateRef("slider");
+const imageSlider = useTemplateRef("imageSlider");
 const imageSliderTrackStyle = ref<CSSProperties>();
 const activeSlideIndex = ref<number>(0);
 const speed = ref<number>(300);
-const imageSliderTrack = ref<HTMLElement>();
+const imageSliderTrack = useTemplateRef("imageSliderTrack");
 const autoPlayInterval = ref();
 const isReady = ref<boolean>();
 const isSliding = ref<boolean>();

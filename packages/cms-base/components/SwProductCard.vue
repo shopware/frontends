@@ -9,7 +9,7 @@ import {
   getProductFromPrice,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import { toRefs, computed, ref } from "vue";
+import { toRefs, computed, ref, useTemplateRef } from "vue";
 import { defu } from "defu";
 import SwListingProductPrice from "./SwListingProductPrice.vue";
 import {
@@ -140,7 +140,7 @@ const addToCartProxy = async () => {
 const fromPrice = getProductFromPrice(props.product);
 const { getUrlPrefix } = useUrlResolver();
 
-const imageElement = ref(null);
+const imageElement = useTemplateRef("imageElement");
 const { height } = useElementSize(imageElement);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;

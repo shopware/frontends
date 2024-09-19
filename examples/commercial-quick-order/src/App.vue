@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, useTemplateRef } from "vue";
 import {
   useSessionContext,
   useShopwareContext,
@@ -18,9 +18,9 @@ const { login } = useUser();
 refreshSessionContext();
 
 // reference for file input in DOM
-const csvFile = ref();
+const csvFile = useTemplateRef("csvFile");
 // reference to suggest search results
-const outsideContext = ref();
+const outsideContext = useTemplateRef("outsideContext");
 // indicates whether show notification toast
 const showSuccessToast = ref(false);
 // content of the success message
@@ -145,6 +145,7 @@ const onCsvFileChange = async (event: Event) => {
     onItemClick(item);
   }
 
+  // @ts-expect-error - this should be assigned to other property
   csvFile.value.value = null;
 };
 
@@ -162,7 +163,7 @@ watch(query, (value) => {
 </script>
 <template>
   <div test-id="test-wrapper">
-    {{ csvFile?.file?.files }}
+    {{ csvFile?.files }}
     <div class="w-full mb-2">
       <button
         type="button"

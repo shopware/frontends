@@ -6,7 +6,7 @@ import type {
 import { useCmsElementConfig } from "#imports";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwSlider from "../../../SwSlider.vue";
-import { ref, computed } from "vue";
+import { ref, computed, useTemplateRef } from "vue";
 import { useElementSize } from "@vueuse/core";
 
 const props = defineProps<{
@@ -15,7 +15,7 @@ const props = defineProps<{
 
 const { getConfigValue } = useCmsElementConfig(props.content);
 const currentTabIndex = ref<number>(0);
-const crossSellContainer = ref<HTMLElement>();
+const crossSellContainer = useTemplateRef("crossSellContainer");
 const config = computed<SliderElementConfig>(() => ({
   minHeight: {
     value: "300px",
