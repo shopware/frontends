@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onClickOutside } from "@vueuse/core";
+import { useTemplateRef } from "vue";
 
 const { isLoggedIn, logout, user } = useUser();
-const accountMenu = ref(null);
+const accountMenu = useTemplateRef("accountMenu");
 const router = useRouter();
 
 const loginModalController = useModal();

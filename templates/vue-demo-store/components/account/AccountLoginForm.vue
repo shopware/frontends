@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
+import { useTemplateRef } from "vue";
 
 const emits = defineEmits<{
   (e: "success"): void;
@@ -46,7 +47,7 @@ const invokeLogin = async (): Promise<void> => {
   }
 };
 
-const emailInputElement = ref();
+const emailInputElement = useTemplateRef("emailInputElement");
 useFocus(emailInputElement, { initialValue: true });
 </script>
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, reactive, ref } from "vue";
+import { computed, provide, reactive, ref, useTemplateRef } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import { defu } from "defu";
 import SwProductListingFilter from "./SwProductListingFilter.vue";
@@ -184,7 +184,7 @@ async function invokeCleanFilters() {
 const isDefaultSidebarFilter =
   props.content.type === "sidebar-filter" &&
   props.content.config?.boxLayout?.value === "standard";
-const dropdownElement = ref(null);
+const dropdownElement = useTemplateRef("dropdownElement");
 onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
 </script>
 <template>

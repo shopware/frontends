@@ -4,6 +4,7 @@ import { customValidators } from "@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 import type { Schemas } from "#shopware";
+import { useTemplateRef } from "vue";
 
 const { required, minLength, requiredIf } = customValidators();
 
@@ -64,7 +65,7 @@ const invokeSave = async (): Promise<void> => {
   }
 };
 
-const firstNameInputElement = ref();
+const firstNameInputElement = useTemplateRef("firstNameInputElement");
 useFocus(firstNameInputElement, { initialValue: true });
 
 const rules = computed(() => ({
@@ -109,12 +110,7 @@ const $v = useVuelidate(rules, formData);
     class="mt-5 md:mt-0 md:col-span-2"
   >
     <div class="shadow overflow-hidden sm:rounded-md">
-      <form
-        id="account-address"
-        ref="formElement"
-        name="account-address"
-        method="post"
-      >
+      <form id="account-address" name="account-address" method="post">
         <div class="px-4 py-5 bg-white sm:p-6">
           <h3 class="text-2xl border-b pb-3">
             {{ props.title }}

@@ -4,7 +4,7 @@ import type {
   SliderElementConfig,
 } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, useTemplateRef } from "vue";
 import type { ComputedRef } from "vue";
 import SwProductCard from "../../../SwProductCard.vue";
 import SwSlider from "../../../SwSlider.vue";
@@ -14,7 +14,7 @@ const props = defineProps<{
 }>();
 const { getConfigValue } = useCmsElementConfig(props.content);
 
-const productSlider = ref<HTMLElement>();
+const productSlider = useTemplateRef("productSlider");
 const slidesToShow = ref<number>();
 const products = computed(() => props.content?.data?.products ?? []);
 const config: ComputedRef<SliderElementConfig> = computed(() => ({

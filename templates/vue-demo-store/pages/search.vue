@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Schemas, operations } from "#shopware";
+import { useTemplateRef } from "vue";
 const route = useRoute();
 const router = useRouter();
 
@@ -218,7 +219,7 @@ const changeLimit = async (limit: Event) => {
 };
 
 const isSortMenuOpen = ref(false);
-const dropdownElement = ref(null);
+const dropdownElement = useTemplateRef("dropdownElement");
 onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
 const currentSortingOrder = computed({
   get: (): string => getCurrentSortingOrder.value || "",

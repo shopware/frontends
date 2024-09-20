@@ -6,7 +6,7 @@ import type {
 import { useCmsElementImage, useUrlResolver } from "#imports";
 import { buildUrlPrefix } from "@shopware-pwa/helpers-next";
 import { useElementSize } from "@vueuse/core";
-import { computed, ref, defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent, useTemplateRef } from "vue";
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 import { ClientOnly } from "../../../../helpers/clientOnly";
 
@@ -27,7 +27,7 @@ const {
 } = useCmsElementImage(props.content);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
-const imageElement = ref(null);
+const imageElement = useTemplateRef("imageElement");
 const { width, height } = useElementSize(imageElement);
 
 function roundUp(num: number) {

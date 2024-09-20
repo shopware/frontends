@@ -76,7 +76,7 @@ const addToCartProxy = async () => {
 
 const fromPrice = getProductFromPrice(props.product);
 
-const imageElement = ref(null);
+const imageElement = useTemplateRef("imageElement");
 const { height } = useElementSize(imageElement);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;

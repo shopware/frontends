@@ -3,7 +3,7 @@ import type { CmsElementImageGallery } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
 import { isSpatial } from "../../../../helpers/media/isSpatial";
 import SwSlider from "../../../SwSlider.vue";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -22,11 +22,11 @@ const { getConfigValue } = useCmsElementConfig(props.content);
 const speed = ref<number>(300);
 const currentIndex = ref(0);
 const currentThumb = ref(0);
-const imageSlider = ref();
-const imageThumbsTrack = ref();
+const imageSlider = useTemplateRef("imageSlider");
+const imageThumbsTrack = useTemplateRef("imageThumbsTrack");
 const isLoading = ref(true);
 const imageThumbsTrackStyle = ref({});
-const imageThumbs = ref();
+const imageThumbs = useTemplateRef("imageThumbs");
 const imageThumbsStyle = ref({});
 const mediaGallery = computed(() => props.content.data?.sliderItems ?? []);
 const galleryPosition = computed<string>(
@@ -42,13 +42,14 @@ function initThumbs() {
   if (imageThumbsTrack.value) {
     setTimeout(() => {
       if (galleryPosition.value === "left") {
-        scrollPx.value =
-          imageThumbsTrack.value.clientHeight / mediaGallery.value.length;
+        const clientHeight = imageThumbsTrack.value?.clientHeight ?? 0;
+        scrollPx.value = clientHeight / mediaGallery.value.length;
         imageThumbsStyle.value = {
           height: `${scrollPx.value * +props.slidesToShow}px`,
         };
       } else {
-        scrollPx.value = imageThumbs.value.clientWidth / props.slidesToShow;
+        const clientWidth = imageThumbs.value?.clientWidth ?? 0;
+        scrollPx.value = clientWidth / props.slidesToShow;
         imageThumbsTrackStyle.value = {
           width: `${scrollPx.value * mediaGallery.value.length}px`,
         };
@@ -60,7 +61,7 @@ function initThumbs() {
 
 function changeCover(i: number) {
   if (i === currentIndex.value) return;
-  imageSlider.value.goToSlide(i);
+  imageSlider.value?.goToSlide(i);
 }
 
 function handleChangeSlide(e: number) {
