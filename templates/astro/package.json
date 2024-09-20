@@ -11,7 +11,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "8.3.3",
+    "@astrojs/node": "8.3.4",
     "@astrojs/vue": "4.5.1",
     "@shopware-pwa/composables-next": "canary",
     "@shopware/api-client": "canary",
