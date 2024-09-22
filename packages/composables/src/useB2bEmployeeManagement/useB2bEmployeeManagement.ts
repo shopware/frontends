@@ -28,26 +28,35 @@ interface UseB2bEmployeeManagement {
 export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
   const { apiClient } = useShopwareContext();
 
-  const getEmployees = () => {
-    return apiClient.invoke("readEmployees post /employee");
+  const getEmployees = async () => {
+    const response = await apiClient.invoke("readEmployees post /employee");
+    return response.data;
   };
 
-  const createSingleEmployee = (
+  const createSingleEmployee = async (
     params: operations["createEmployee post /employee/create"]["body"],
   ) => {
-    return apiClient.invoke("createEmployee post /employee/create", {
-      body: {
-        ...params,
+    const response = await apiClient.invoke(
+      "createEmployee post /employee/create",
+      {
+        body: {
+          ...params,
+        },
       },
-    });
+    );
+    return response.data;
   };
 
-  const getEmployeeById = (employeeId: string) => {
-    return apiClient.invoke("readEmployee post /employee/{id}", {
-      pathParams: {
-        id: employeeId,
+  const getEmployeeById = async (employeeId: string) => {
+    const response = await apiClient.invoke(
+      "readEmployee post /employee/{id}",
+      {
+        pathParams: {
+          id: employeeId,
+        },
       },
-    });
+    );
+    return response.data;
   };
 
   /**
@@ -56,13 +65,18 @@ export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
    * @param employeeId
    * @returns
    */
-  const reinviteEmployee = (employeeId: string) => {
-    return apiClient.invoke("reinviteEmployee post /employee/reinvite/{id}", {
-      body: {},
-      pathParams: {
-        id: employeeId,
+  const reinviteEmployee = async (employeeId: string) => {
+    const response = await apiClient.invoke(
+      "reinviteEmployee post /employee/reinvite/{id}",
+      {
+        body: {},
+        pathParams: {
+          id: employeeId,
+        },
       },
-    });
+    );
+
+    return response.data;
   };
 
   return {
