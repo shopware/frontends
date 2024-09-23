@@ -2,7 +2,8 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { resolve, join, dirname } from "node:path";
 import openapiTS from "openapi-typescript";
 import type { OpenAPI3 } from "openapi-typescript";
-import * as dotenv from "dotenv";
+// read .env file and load it into process.env
+import "dotenv/config";
 import c from "picocolors";
 import { format } from "prettier";
 import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
@@ -17,9 +18,6 @@ import {
   loadApiGenConfig,
   loadJsonOverrides,
 } from "../jsonOverrideUtils";
-
-// read .env file and load it into process.env
-dotenv.config();
 
 export async function generate(args: {
   cwd: string;
