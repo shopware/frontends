@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useTemplateRef } from "vue";
+
 const props = defineProps<{
   controller: ReturnType<typeof useModal>;
 }>();
@@ -12,7 +14,7 @@ watch(escape, () => {
   isOpen.value && close();
 });
 
-const modalContentElement = ref();
+const modalContentElement = useTemplateRef("modalContentElement");
 onClickOutside(modalContentElement, () => close());
 </script>
 

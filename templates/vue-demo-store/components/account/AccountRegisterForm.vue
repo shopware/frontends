@@ -2,6 +2,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
+import { useTemplateRef } from "vue";
 
 const { required, minLength, email, requiredIf } = customValidators();
 const props = defineProps<{
@@ -15,7 +16,7 @@ const { pushError } = useNotifications();
 
 const router = useRouter();
 const loading = ref<boolean>();
-const doubleOptInBox = ref();
+const doubleOptInBox = useTemplateRef("doubleOptInBox");
 const showDoubleOptInBox = ref(false);
 const { t } = useI18n();
 if (import.meta.client && isLoggedIn.value) {
@@ -113,7 +114,7 @@ const invokeSubmit = async () => {
         Object.assign(state, JSON.parse(JSON.stringify(initialState)));
         showDoubleOptInBox.value = true;
         await nextTick();
-        doubleOptInBox.value.scrollIntoView();
+        doubleOptInBox.value?.scrollIntoView();
         $v.value.$reset();
       }
     } catch (error) {

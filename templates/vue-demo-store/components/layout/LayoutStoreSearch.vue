@@ -2,6 +2,7 @@
 import { getProductRoute } from "@shopware-pwa/helpers-next";
 
 import { onClickOutside, useFocus, useMagicKeys } from "@vueuse/core";
+import { useTemplateRef } from "vue";
 
 withDefaults(
   defineProps<{
@@ -21,8 +22,8 @@ const { searchTerm, search, getProducts, getTotal, loading } =
 const active = ref(false);
 
 // Reference to the search container
-const searchContainer = ref(null);
-const searchInput = ref();
+const searchContainer = useTemplateRef("searchContainer");
+const searchInput = useTemplateRef("searchInput");
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
 
@@ -58,6 +59,7 @@ if (import.meta.client) {
   });
 }
 
+// @ts-expect-error - wait for vueuse to adapt to templateRefs
 const { enter } = useMagicKeys({ target: searchInput });
 const { push } = useRouter();
 

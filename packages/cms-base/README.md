@@ -81,10 +81,12 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base/CHANGELOG.md)
 
-### Latest changes: 1.0.4
+### Latest changes: 1.0.5
 
 ### Patch Changes
 
-- Updated dependencies [[`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128), [`aa8f5a4`](https://github.com/shopware/frontends/commit/aa8f5a4d2eabce1d6119e31af8c7479911d7b07b)]:
-  - @shopware-pwa/helpers-next@1.0.2
-  - @shopware-pwa/composables-next@1.2.0
+- [#1276](https://github.com/shopware/frontends/pull/1276) [`9e734f0`](https://github.com/shopware/frontends/commit/9e734f09650c8728eaa0e1a7bb78f4cef3eabf89) Thanks [@mkucmus](https://github.com/mkucmus)! - Wrap a child vnodes into one element in CmsElementText component.
+  Thanks to this, the rendered elements are in semantically correct format.
+- Updated dependencies [[`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665), [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665)]:
+  - @shopware-pwa/composables-next@1.3.0
+  - @shopware-pwa/helpers-next@1.1.0

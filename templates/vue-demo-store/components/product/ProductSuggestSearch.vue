@@ -4,6 +4,7 @@ import {
   getSmallestThumbnailUrl,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
+import { useTemplateRef } from "vue";
 
 const props = defineProps<{ product: Schemas["Product"] }>();
 
@@ -11,7 +12,7 @@ const { product } = toRefs(props);
 const { unitPrice, displayFrom } = useProductPrice(product);
 
 const DEFAULT_THUMBNAIL_SIZE = 10;
-const imageElement = ref(null);
+const imageElement = useTemplateRef("imageElement");
 const { width, height } = useElementSize(imageElement);
 
 function roundUp(num: number) {

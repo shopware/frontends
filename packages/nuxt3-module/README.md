@@ -99,10 +99,23 @@ Internally, the module uses [API Client](https://npmjs.com/package/@shopware-pwa
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt3-module/CHANGELOG.md)
 
-### Latest changes: 1.0.4
+### Latest changes: 1.0.5
 
 ### Patch Changes
 
-- Updated dependencies [[`2e4c887`](https://github.com/shopware/frontends/commit/2e4c8872060fb2ebabe5b89d92761994a2ed8128), [`aa8f5a4`](https://github.com/shopware/frontends/commit/aa8f5a4d2eabce1d6119e31af8c7479911d7b07b)]:
-  - @shopware-pwa/helpers-next@1.0.2
-  - @shopware-pwa/composables-next@1.2.0
+- [#1207](https://github.com/shopware/frontends/pull/1207) [`7531874`](https://github.com/shopware/frontends/commit/75318747536b3cad5b83804a730b6680deb3fc8d) Thanks [@mkucmus](https://github.com/mkucmus)! - Improvements within a nuxt module and the plugin:
+
+  - properly loading a `sw-context-token` cookie in SSR
+  - exposing an [API client](https://www.npmjs.com/package/@shopware/api-client) instance provided in a nuxt plugin
+  - adds corresponding types
+
+  ```ts
+  // works also in a route middleware
+  const { $shopwareApiClient } = useNuxtApp();
+
+  await $shopwareApiClient.invoke("readContext get /context");
+  ```
+
+- Updated dependencies [[`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665), [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665)]:
+  - @shopware-pwa/composables-next@1.3.0
+  - @shopware-pwa/helpers-next@1.1.0

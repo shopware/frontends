@@ -11,6 +11,7 @@
   "
 >
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
+import type { Schemas } from "#shopware";
 import { onMounted, reactive, ref, watch } from "vue";
 import { defu } from "defu";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
@@ -21,6 +22,7 @@ const emits = defineEmits<{
 
 const props = defineProps<{
   filter: ListingFilter;
+  selectedFilters: Schemas["ProductListingResult"]["currentFilters"];
 }>();
 
 type Translations = {
@@ -43,8 +45,12 @@ const prices = reactive<{ min: number; max: number }>({
 });
 
 onMounted(() => {
-  prices.min = Math.floor(props.filter?.min || 0);
-  prices.max = Math.floor(props.filter?.max || 0);
+  prices.min = Math.floor(
+    props.selectedFilters.price.min ?? props.filter?.min ?? 0,
+  );
+  prices.max = Math.floor(
+    props.selectedFilters.price.max ?? props.filter?.max ?? 0,
+  );
 });
 
 const isFilterVisible = ref<boolean>(false);

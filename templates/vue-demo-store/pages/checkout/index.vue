@@ -149,7 +149,7 @@ const terms = reactive({
   revocation: false,
 });
 
-const termsBox = ref();
+const termsBox = useTemplateRef("termsBox");
 
 const rules = computed(() => ({
   salutationId: {
@@ -201,7 +201,7 @@ const placeOrder = async () => {
   placeOrderTriggered.value = true;
 
   if (!termsSelected.value) {
-    termsBox.value.scrollIntoView();
+    termsBox.value?.scrollIntoView();
     return;
   }
 

@@ -15,8 +15,6 @@ updates:
       # used in old client, not upgrading
       - dependency-name: "axios"
       # not upgrading until we move to new docs
-      - dependency-name: "vitepress"
-      # not upgrading until we move to new docs
       - dependency-name: "vitepress-shopware-docs"
       # until https://github.com/nuxt-modules/i18n/issues/2215 is resolved
       - dependency-name: "@nuxtjs/i18n"

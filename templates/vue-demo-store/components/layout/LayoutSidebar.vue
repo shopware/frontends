@@ -12,7 +12,7 @@ const props = withDefaults(
 const { controller } = toRefs(props);
 const { isOpen, close } = controller.value;
 
-const sidebarContentElement = ref();
+const sidebarContentElement = useTemplateRef("sidebarContentElement");
 onClickOutside(sidebarContentElement, () => close());
 </script>
 

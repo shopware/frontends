@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { TresCanvas } from "@tresjs/core";
-// @ts-expect-error TODO: fix missing useGLTF import
 import { OrbitControls, useGLTF } from "@tresjs/cientos";
 import { BasicShadowMap, SRGBColorSpace, NoToneMapping } from "three";
 

@@ -1,5 +1,11 @@
 # @shopware-pwa/helpers-next
 
+## 1.1.0
+
+### Minor Changes
+
+- [#1215](https://github.com/shopware/frontends/pull/1215) [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Added `getCmsTranslate` helper to replace text placeholder with param value
+
 ## 1.0.2
 
 ### Patch Changes

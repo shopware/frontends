@@ -35,7 +35,6 @@ const { isOpen, close } = props.controller;
             <div
               class="bg-white rounded-lg text-left overflow-hidden shadow-xl p-8 w-1/2"
               role="dialog"
-              ref="modal"
               aria-modal="true"
               aria-labelledby="modal-headline"
               v-if="isOpen"
