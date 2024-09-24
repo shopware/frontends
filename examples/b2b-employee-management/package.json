@@ -10,14 +10,16 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "^3.13.0",
-    "vue": "latest",
-    "vue-router": "latest"
+    "nuxt": "3.12.4",
+    "vue": "3.5.6",
+    "vue-router": "4.4.5"
   },
   "devDependencies": {
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
-    "@shopware/api-gen": "canary"
+    "@shopware/api-gen": "canary",
+    "@unocss/nuxt": "0.62.4",
+    "unocss": "0.62.4"
   }
 }
