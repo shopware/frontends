@@ -73,20 +73,22 @@ In order to connect it to your own store backend, you need to edit the `nuxt.con
 ```ts
 /* ... */
 export default defineNuxtConfig({
-  /* ... */
-  shopware: {
-    endpoint: "https://your-business.shopware.store",
-    accessToken: "access-token-from-settings",
-  }
   // or
   runtimeConfig: {
+    // shopware: {
+    /**
+     * SSR Shopware Endpoint
+     * More here: https://frontends.shopware.com/getting-started/templates/custom-vue-project.html#shopware-endpoint-on-the-ssr-mode
+     */
+    //   endpoint: ""
+    // },
     public: {
       shopware: {
         endpoint: "https://your-business.shopware.store",
         accessToken: "access-token-from-settings",
-      }
-    }
-  }
+      },
+    },
+  },
 });
 ```
 

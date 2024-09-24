@@ -25,16 +25,18 @@ The blank template is pre-configured to connect to a public Shopware backend, so
 
 In order to connect it to your own store backend, you need to edit the `nuxt.config.ts` file and add a configuration details:
 
-```ts{4-7}
+```ts
 /* ... */
 export default defineNuxtConfig({
-  /* ... */
-  shopware: {
-    endpoint: "https://your-business.shopware.store",
-    accessToken: "access-token-from-settings",
-  },
   // or
   runtimeConfig: {
+    // shopware: {
+    /**
+     * SSR Shopware Endpoint
+     * More here: https://frontends.shopware.com/getting-started/templates/custom-vue-project.html#shopware-endpoint-on-the-ssr-mode
+     */
+    //   endpoint: ""
+    // },
     public: {
       shopware: {
         endpoint: "https://your-business.shopware.store",
