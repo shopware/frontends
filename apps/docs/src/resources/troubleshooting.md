@@ -11,7 +11,7 @@ head:
       content: "https://frontends-og-image.vercel.app/Troubleshooting?fontSize=150px"
 ---
 
-# Troubleshooting
+# 😱 Troubleshooting
 
 Collection of common issues you may run into while working with Shopware Composable Frontends. If you need help or have other questions, feel free to join the [frontends slack channel](https://shopwarecommunity.slack.com/archives/C050L6NCMGQ).
 

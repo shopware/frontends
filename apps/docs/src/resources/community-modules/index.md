@@ -19,6 +19,13 @@ import CommunityModule from '../../components/CommunityModule.vue'
 
 const communityModules = [
     {
+        title: 'store-api-proxy',
+        maintainer: 'KoRoHandelsGmbH',
+        link: 'https://github.com/KoRoHandelsGmbH/store-api-proxy',
+        description: 'This is a thin layer on top of the Shopware store API that is supported by Nitropack and uses Vercel\'s data cache to efficiently cache and transform API responses and reduce limitations.',
+        icon: '🌍'
+    },
+    {
         title: 'Middleware Proxy Module',
         maintainer: 'meeshoogendoorn',
         link: 'https://github.com/meeshoogendoorn/shopware-frontends-proxy',
@@ -42,7 +49,7 @@ const communityModules = [
 ]
 </script>
 
-# Community Modules
+# 🤗 Community Modules
 
 :::warning
 The modules listed here are not officially supported or maintained by Shopware. Please use them at your own risk.
