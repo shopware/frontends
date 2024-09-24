@@ -11,7 +11,7 @@ head:
       content: "https://frontends-og-image.vercel.app/Awesome%20**Links**.png?fontSize=150px"
 ---
 
-# 🚀 Awesome Links
+# 🚀 Links
 
 ::: tip Do we miss some Link? 😶‍🌫️
 Please tell us via [Community Slack](https://shopwarecommunity.slack.com/archives/C050L6NCMGQ), so we can add it.
@@ -21,6 +21,7 @@ Please tell us via [Community Slack](https://shopwarecommunity.slack.com/archive
 
 Sorted by date, newest first
 
+- [How to work with Shopware Frontends: Experience creating POC](https://itdelight.io/how-to-work-with-shopware-frontends-experience-creating-poc/)
 - [Multi-Page or Single-Page Variants Selection](https://www.brocksi.net/blog/variants-selection-multi-page-or-single-page/)
 - [Create a CI/CD Pipeline for Shopware Frontends](https://kiplingi.de/create-a-ci-cd-pipeline-for-shopware-frontends/)
 - [Gross and Net-Switch for B2B and B2C Shops built with Composable Frontends](https://dev.to/shopware/gross-and-net-switch-for-b2b-and-b2c-shops-built-with-composable-frontends-2b24)

@@ -11,7 +11,7 @@ head:
       content: "https://frontends-og-image.vercel.app/Integrations?fontSize=150px"
 ---
 
-# Integrations
+# 🛠️ Integrations
 
 This is your go-to resource for seamlessly incorporating various platforms into Shopware Composable Frontends. Explore the following sub-pages to find detailed instructions on integrating different systems,
 ensuring a harmonious and efficient synergy between your Shopware store and diverse external services.

@@ -32,7 +32,17 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
         "You are using deprecated configuration (shopwareEndpoint or shopwareAccessToken). 'shopware' prefix is not needed anymore. Please update your _nuxt.config.ts_ ",
       );
     }
-
+    if (nuxt.options?.runtimeConfig?.shopware?.endpoint) {
+      logger.info(
+        `You are using SSR Shopware API endpoint: ${nuxt.options.runtimeConfig.shopware.endpoint}`,
+      );
+    }
+    logger.info(
+      `CSR Shopware API endpoint: ${
+        nuxt.options.runtimeConfig.public?.shopware?.endpoint ??
+        nuxt.options.runtimeConfig.public?.shopware?.shopwareEndpoint
+      }`,
+    );
     addPlugin({
       src: resolver.resolve("../plugin.ts"),
     });
