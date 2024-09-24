@@ -28,7 +28,6 @@ In order to connect it to your own store backend, you need to edit the `nuxt.con
 ```ts
 /* ... */
 export default defineNuxtConfig({
-  // or
   runtimeConfig: {
     // shopware: {
     /**
