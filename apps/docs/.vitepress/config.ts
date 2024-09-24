@@ -8,6 +8,7 @@ import { ReadmeBasedReference } from "./theme/typer/plugin";
 import { ReadmeLoader } from "./theme/typer/readme-loader";
 import { ComposablesBuilder } from "./theme/typer/composables-builder";
 import { resolve } from "path";
+import { sidebar } from "./sidebar";
 
 interface ThemeConfigExtended extends ThemeConfig {
   ai: {
