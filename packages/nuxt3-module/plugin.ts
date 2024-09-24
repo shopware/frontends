@@ -26,12 +26,21 @@ declare module "vue" {
 
 export default defineNuxtPlugin((NuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
-  const shopwareEndpoint =
+  const shopwareEndpointCSR =
     runtimeConfig.public?.shopware?.endpoint ??
     runtimeConfig.public?.shopware?.shopwareEndpoint;
+
+  const shopwareEndpointSSR =
+    runtimeConfig.shopware?.endpoint ?? shopwareEndpointCSR;
+
+  const shopwareEndpoint = import.meta.server
+    ? shopwareEndpointSSR
+    : shopwareEndpointCSR;
+
   const shopwareAccessToken =
     runtimeConfig.public?.shopware?.accessToken ??
     runtimeConfig.public?.shopware?.shopwareAccessToken;
+
   if (!shopwareEndpoint || !shopwareAccessToken) {
     throw new Error(
       "Make sure that endpoint and accessToken are settled in the configuration",

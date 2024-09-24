@@ -1,15 +1,13 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
-import * as dotenv from "dotenv";
+// read .env file and load it into process.env
+import "dotenv/config";
 import c from "picocolors";
 import { format } from "prettier";
 import { createAdminAPIClient, createAPIClient } from "@shopware/api-client";
 import type { operations as adminOperations } from "@shopware/api-client/admin-api-types";
 import type { operations } from "@shopware/api-client/store-api-types";
 import json5 from "json5";
-
-// read .env file and load it into process.env
-dotenv.config();
 
 const SCHEMA_ENDPOINT = "_info/openapi3.json";
 const STORE_API_ENDPOINT = `/store-api/${SCHEMA_ENDPOINT}`;
