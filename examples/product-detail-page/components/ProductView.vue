@@ -95,7 +95,7 @@ const unitName = computed(() => product.value?.unit?.name);
           {{ manufacturer }}
         </p>
         <h1
-          class="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 text-gray-800 dark:text-white mt-2"
+          class="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 text-gray-800 mt-2"
         >
           {{ productName }}
         </h1>
