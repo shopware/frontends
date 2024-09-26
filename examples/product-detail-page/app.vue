@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useProductSearch } from "@shopware-pwa/composables-next";
-import ProductView from "@/components/ProductView.vue";
 import type { Schemas } from "#shopware";
 
 const { search } = useProductSearch();
