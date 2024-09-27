@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import { computed, defineProps } from "vue";
 import {
   getSmallestThumbnailUrl,
   getSrcSetForMedia,
 } from "@shopware-pwa/helpers-next";
-import {
-  useAddToCart,
-  useProductPrice,
-  usePrice,
-} from "@shopware-pwa/composables-next";
 import type { components } from "@shopware/api-client/store-api-types";
 const props = defineProps<{
   product: components["schemas"]["Product"];

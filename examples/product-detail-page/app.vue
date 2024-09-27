@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useProductSearch } from "@shopware-pwa/composables-next";
-import ProductView from "@/components/ProductView.vue";
 import type { Schemas } from "#shopware";
 
 const { search } = useProductSearch();
@@ -31,15 +28,3 @@ onMounted(async () => {
     </Transition>
   </div>
 </template>
-<style>
-/* we will explain what these classes do next! */
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 1s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>
