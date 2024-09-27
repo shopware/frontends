@@ -1,4 +1,4 @@
-import { useShopwareContext } from "#imports";
+import { useShopwareContext, useInternationalization } from "#imports";
 import type { operations } from "#shopware";
 
 interface UseB2bEmployeeManagement {
@@ -7,6 +7,7 @@ interface UseB2bEmployeeManagement {
   >;
   createSingleEmployee: (
     params: operations["createEmployee post /employee/create"]["body"],
+    languageId: string,
   ) => Promise<operations["createEmployee post /employee/create"]["response"]>;
   getEmployeeById: (
     employeeId: string,
@@ -16,6 +17,9 @@ interface UseB2bEmployeeManagement {
   ) => Promise<
     operations["reinviteEmployee post /employee/reinvite/{id}"]["response"]
   >;
+  deleteEmployee: (
+    employeeId: string,
+  ) => Promise<operations["deleteEmployee delete /employee/{id}"]["response"]>;
 }
 
 /**
@@ -27,6 +31,7 @@ interface UseB2bEmployeeManagement {
  */
 export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
   const { apiClient } = useShopwareContext();
+  const { getStorefrontUrl } = useInternationalization();
 
   const getEmployees = async () => {
     const response = await apiClient.invoke("readEmployees post /employee");
@@ -35,12 +40,16 @@ export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
 
   const createSingleEmployee = async (
     params: operations["createEmployee post /employee/create"]["body"],
+    languageId: string,
   ) => {
     const response = await apiClient.invoke(
       "createEmployee post /employee/create",
       {
         body: {
           ...params,
+          // @ts-expect-error Waiting for the API to be updated
+          storefrontUrl: getStorefrontUrl(),
+          languageId,
         },
       },
     );
@@ -69,7 +78,22 @@ export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
     const response = await apiClient.invoke(
       "reinviteEmployee post /employee/reinvite/{id}",
       {
-        body: {},
+        body: {
+          storefrontUrl: getStorefrontUrl(),
+        },
+        pathParams: {
+          id: employeeId,
+        },
+      },
+    );
+
+    return response.data;
+  };
+
+  const deleteEmployee = async (employeeId: string) => {
+    const response = await apiClient.invoke(
+      "deleteEmployee delete /employee/{id}",
+      {
         pathParams: {
           id: employeeId,
         },
@@ -84,5 +108,6 @@ export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
     createSingleEmployee,
     getEmployeeById,
     reinviteEmployee,
+    deleteEmployee,
   };
 }

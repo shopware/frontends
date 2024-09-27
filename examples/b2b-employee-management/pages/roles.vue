@@ -3,26 +3,35 @@ const roles = ref([]);
 const { getRoles, deleteRole } = useB2bEmployeeManagementRoles();
 
 onMounted(async () => {
-  const { elements } = await getRoles();
-  roles.value = elements;
+  updateRoles();
 });
 
-const handleCreateRole = () => {};
+const handleDelete = async (id: string) => {
+  await deleteRole(id);
+  updateRoles();
+};
 
-const handleDelete = (id: string) => {
-  deleteRole(id);
+const updateRoles = async () => {
+  const { elements } = await getRoles();
+  roles.value = elements;
 };
 </script>
 <template>
-  <h1>Roles</h1>
-  <button @click="handleCreateRole">Create role</button>
+  <div class="container mx-auto px-4">
+    <h2>Roles</h2>
+    <NuxtLink to="/create-new-role">Create new role</NuxtLink>
 
-  {{ roles }}
-  <ul>
-    <li v-for="role in roles" :key="role.id">
-      <NuxtLink :to="`/edit-role/${role.id}`"> {{ role.name }}</NuxtLink>
-      <button @click="handleDelete(role.id)">Delete</button>
-    </li>
-  </ul>
-  {{ roles }}
+    <ul v-if="roles.length">
+      <li v-for="role in roles" :key="role.id">
+        <NuxtLink :to="`/edit-role/${role.id}`"> {{ role.name }}</NuxtLink>
+        <button @click="handleDelete(role.id)">Delete</button>
+      </li>
+    </ul>
+    <div v-else>
+      <p>
+        No roles found, please
+        <NuxtLink to="/create-new-role">add new role</NuxtLink>
+      </p>
+    </div>
+  </div>
 </template>

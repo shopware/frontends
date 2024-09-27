@@ -21,12 +21,13 @@ describe("useB2bEmployeeManagement", () => {
       firstName: "test",
       lastName: "test2",
       roleId: "32323",
+      languageID: "1232323412",
     };
     injections.apiClient.invoke.mockResolvedValue({
       data: {},
     });
 
-    await vm.createSingleEmployee(MOCKED_PARAMS);
+    await vm.createSingleEmployee(MOCKED_PARAMS, "1232323412");
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("createEmployee"),
       expect.objectContaining({ body: MOCKED_PARAMS }),

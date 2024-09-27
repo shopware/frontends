@@ -9,4 +9,5 @@ export default defineNuxtConfig({
     endpoint: "https://demo-frontends.shopware.store/store-api/",
     devStorefrontUrl: "",
   },
+  ssr: false,
 });
