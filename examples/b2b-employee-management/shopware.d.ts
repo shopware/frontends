@@ -2,10 +2,10 @@ declare module "#shopware" {
   import type { createAPIClient } from "@shopware/api-client";
 
   // for default types
-  export type operations =
-    import("@shopware/api-client/store-api-types").operations;
+  // export type operations =
+  //   import("@shopware/api-client/store-api-types").operations;
   // or for locally generated types
-  // export type operations = import("./api-types/storeApiTypes").operations;
+  export type operations = import("./api-types/storeApiTypes").operations;
 
   // for default types
   export type Schemas =

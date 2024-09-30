@@ -11,7 +11,7 @@ interface UseB2bEmployeeManagement {
   ) => Promise<operations["createEmployee post /employee/create"]["response"]>;
   getEmployeeById: (
     employeeId: string,
-  ) => Promise<operations["readEmployee post /employee/{id}"]["response"]>;
+  ) => Promise<operations["readEmployee get /employee/{id}"]["response"]>;
   reinviteEmployee: (
     employeeId: string,
   ) => Promise<
@@ -57,14 +57,11 @@ export function useB2bEmployeeManagement(): UseB2bEmployeeManagement {
   };
 
   const getEmployeeById = async (employeeId: string) => {
-    const response = await apiClient.invoke(
-      "readEmployee post /employee/{id}",
-      {
-        pathParams: {
-          id: employeeId,
-        },
+    const response = await apiClient.invoke("readEmployee get /employee/{id}", {
+      pathParams: {
+        id: employeeId,
       },
-    );
+    });
     return response.data;
   };
 
