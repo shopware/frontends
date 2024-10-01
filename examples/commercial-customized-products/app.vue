@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useProductSearch, useCart } from "@shopware-pwa/composables-next";
-import ProductBox from "@/components/ProductBox.vue";
-
 const product = ref();
 
 const { search } = useProductSearch();
@@ -10,7 +6,7 @@ const { removeItem, cartItems, count, refreshCart } = useCart();
 
 onMounted(async () => {
   refreshCart();
-  const productResponse = await search("4737080c5b8e492987637eff6afd25e8");
+  const productResponse = await search("01922e76f50b730baa69cb8798afb8f6");
   product.value = productResponse.product;
 });
 </script>

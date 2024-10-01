@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import {
-  useAddToCart,
-  usePrice,
-  useProductPrice,
-  useCart,
-  useProduct,
-} from "@shopware-pwa/composables-next";
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
-
-import ProductCustomizedProductConfigurator from "@/components/ProductCustomizedProductConfigurator.vue";
 
 const props = defineProps(["product"]);
 useProduct(props.product);
-const { addToCart } = useAddToCart(props.product);
+// const { addToCart } = useAddToCart(props.product);
 const { refreshCart } = useCart();
 const { getFormattedPrice } = usePrice();
 const { totalPrice } = useProductPrice(props.product);
+const { addToCart } = useProductCustomizedProductConfigurator();
 
 const proxyAddToCart = async () => {
   await addToCart();

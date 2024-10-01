@@ -154,13 +154,23 @@ export function createAPIClient<
       ...(currentParams.fetchOptions || {}),
     };
 
+    let mergedHeaders = defu(currentParams.headers, defaultHeaders);
+
+    if (
+      mergedHeaders?.["Content-Type"]?.includes("multipart/form-data") &&
+      typeof window !== "undefined"
+    ) {
+      // multipart/form-data must not be set manually when it's used by the browser
+      delete mergedHeaders["Content-Type"];
+    }
+
     const resp = await apiFetch.raw<
       SimpleUnionPick<CURRENT_OPERATION, "response">
     >(requestPathWithParams, {
       ...fetchOptions,
       method,
       body: currentParams.body,
-      headers: defu(defaultHeaders, currentParams.headers) as HeadersInit,
+      headers: mergedHeaders as HeadersInit,
       query: currentParams.query,
     });
 

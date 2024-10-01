@@ -1,11 +1,4 @@
-import { ref, computed } from "vue";
-import type { Ref, ComputedRef } from "vue";
 import type { Schemas } from "#shopware";
-import {
-  useCart,
-  useProduct,
-  useShopwareContext,
-} from "@shopware-pwa/composables-next";
 
 type MediaOption = { media: { filename: string; id: string } };
 
@@ -102,7 +95,7 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     };
 
     await apiClient.invoke(
-      "addCustomizedProductToCart post /checkout/customized-products/add-to-cart",
+      "addCustomizedProductToCart post /customized-products/add-to-cart",
       { body: payload },
     );
     refreshCart();
@@ -112,11 +105,14 @@ export function useProductCustomizedProductConfigurator(): UseProductCustomizedP
     const file = (event.target as EventTarget & { files: FileList }).files[0];
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("optionId", optionId);
+    formData.append("optionId", `"${optionId}"`);
     const addedMediaResponse = await apiClient.invoke(
       "uploadCustomizedProductImage post /customized-products/upload",
       {
-        contentType: "multipart/form-data",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        accept: "application/json",
         body: formData,
       },
     );
