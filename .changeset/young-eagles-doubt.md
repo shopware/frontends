@@ -24,4 +24,4 @@ const addedMediaResponse = await apiClient.invoke(
 );
 ```
 
-When `invoke` method of api-client gets the `headers` parameter containing `multipart/form-data` Content-Type - the header will be ignored and the responsibility will be handed over to the browser - so the `Content-Type=multipart/form-data` header will eventually be send, but including a dynamic _boundary_ params.
+When `invoke` method of api-client gets the `headers` parameter containing `multipart/form-data` Content-Type - the header will be ignored and the responsibility will be handed over to the browser - so the `Content-Type=multipart/form-data` header will eventually be sent, but including a dynamic _boundary_ params added by the browser on the fly.
