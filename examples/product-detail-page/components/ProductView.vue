@@ -1,17 +1,9 @@
 <script setup lang="ts">
-import { computed, defineProps, ref } from "vue";
 import type { Schemas } from "#shopware";
 import {
   getSmallestThumbnailUrl,
   getSrcSetForMedia,
 } from "@shopware-pwa/helpers-next";
-import {
-  useAddToCart,
-  useProductPrice,
-  usePrice,
-  useProductAssociations,
-} from "@shopware-pwa/composables-next";
-import ProductCard from "./ProductCard.vue";
 
 const props = defineProps<{
   product: Schemas["Product"];
@@ -95,7 +87,7 @@ const unitName = computed(() => product.value?.unit?.name);
           {{ manufacturer }}
         </p>
         <h1
-          class="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 text-gray-800 dark:text-white mt-2"
+          class="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 text-gray-800 mt-2"
         >
           {{ productName }}
         </h1>
