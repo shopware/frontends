@@ -7379,13 +7379,6 @@ export type operations = {
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
-  "addCustomizedProductToCart post /checkout/customized-products/add-to-cart": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["AddToCartPayload"];
-    response: never;
-    responseCode: 204;
-  };
   "checkoutGateway get /checkout/gateway": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -7616,10 +7609,18 @@ export type operations = {
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
+  "addCustomizedProductToCart post /customized-products/add-to-cart": {
+    accept?: "application/json";
+    body: components["schemas"]["AddToCartPayload"];
+    response: never;
+    responseCode: 204;
+  };
   "uploadCustomizedProductImage post /customized-products/upload": {
-    contentType: "multipart/form-data";
     accept?: "application/json";
     body: FormData;
+    headers?: {
+      "Content-Type": "multipart/form-data";
+    };
     response: {
       mediaId: string;
       fileName: string;

@@ -61,17 +61,18 @@ export type Schemas = {
 };
 
 export type operations = {
-  "addCustomizedProductToCart post /checkout/customized-products/add-to-cart": {
-    contentType?: "application/json";
+  "addCustomizedProductToCart post /customized-products/add-to-cart": {
     accept?: "application/json";
     body: components["schemas"]["AddToCartPayload"];
     response: never;
     responseCode: 204;
   };
   "uploadCustomizedProductImage post /customized-products/upload": {
-    contentType: "multipart/form-data";
     accept?: "application/json";
     body: FormData;
+    headers?: {
+      "Content-Type": "multipart/form-data";
+    };
     response: {
       mediaId: string;
       fileName: string;
