@@ -7,7 +7,7 @@
  */
 export function getCmsTranslate(
   key: string,
-  params?: { [key: string]: string | number | null } | null,
+  params?: { [key: string]: string | number | null | undefined } | null,
 ) {
   if (!params) return key;
 

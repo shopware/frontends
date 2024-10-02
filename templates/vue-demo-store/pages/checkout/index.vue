@@ -74,6 +74,7 @@ const selectedShippingMethod = computed({
   async set(shippingMethodId: string) {
     isLoading[shippingMethodId] = true;
     await setShippingMethod({ id: shippingMethodId });
+    await refreshShoppingAndPaymentMethods({ skipShipping: true });
     isLoading[shippingMethodId] = false;
   },
 });
@@ -84,6 +85,7 @@ const selectedPaymentMethod = computed({
   async set(paymentMethodId: string) {
     isLoading[paymentMethodId] = true;
     await setPaymentMethod({ id: paymentMethodId });
+    await refreshShoppingAndPaymentMethods({ skipPayment: true });
     isLoading[paymentMethodId] = false;
   },
 });
@@ -95,6 +97,7 @@ const selectedShippingAddress = computed({
   async set(shippingAddressId: string) {
     isLoading[`shipping-${shippingAddressId}`] = true;
     await setActiveShippingAddress({ id: shippingAddressId });
+    await refreshShoppingAndPaymentMethods();
     if (shippingAddressId === selectedBillingAddress.value)
       customShipping.value = false;
     isLoading[`shipping-${shippingAddressId}`] = false;
@@ -108,6 +111,7 @@ const selectedBillingAddress = computed({
   async set(billingAddressId: string) {
     isLoading[`billing-${billingAddressId}`] = true;
     await setActiveBillingAddress({ id: billingAddressId });
+    await refreshShoppingAndPaymentMethods();
     if (billingAddressId === selectedShippingAddress.value)
       customShipping.value = false;
     isLoading[`billing-${billingAddressId}`] = false;
@@ -150,6 +154,7 @@ const terms = reactive({
 });
 
 const termsBox = useTemplateRef("termsBox");
+const shippingMethodBox = useTemplateRef("shippingMethodBox");
 
 const rules = computed(() => ({
   salutationId: {
@@ -204,12 +209,20 @@ const placeOrder = async () => {
     termsBox.value?.scrollIntoView();
     return;
   }
+  if (!beforeCreateOrderValidation()) return;
 
   isLoading["placeOrder"] = true;
-  const order = await createOrder();
-  isLoading["placeOrder"] = false;
-  await push("/checkout/success/" + order.id);
-  refreshCart();
+
+  try {
+    const order = await createOrder();
+    console.log("order", order);
+    isLoading["placeOrder"] = false;
+    await push("/checkout/success/" + order.id);
+    refreshCart();
+  } catch (error) {
+    if (error instanceof ApiClientError)
+      console.log("error", error.details.errors);
+  }
 };
 
 const termsSelected = computed(() => {
@@ -268,6 +281,42 @@ async function invokeLogout() {
 
 const loginModalController = useModal();
 const addAddressModalController = useModal();
+
+const refreshShoppingAndPaymentMethods = (params?: {
+  skipShipping?: boolean;
+  skipPayment?: boolean;
+}) => {
+  const promises = [
+    !params?.skipPayment ? getPaymentMethods({ forceReload: true }) : null,
+    !isVirtualCart.value || !params?.skipShipping
+      ? getShippingMethods({ forceReload: true })
+      : null,
+  ];
+
+  if (!isVirtualCart.value) isLoading["shippingMethods"] = true;
+  isLoading["paymentMethods"] = true;
+  return Promise.any(promises).finally(() => {
+    isLoading["shippingMethods"] = false;
+    isLoading["paymentMethods"] = false;
+  });
+};
+
+const shippingExists = computed(() => {
+  return shippingMethods.value.find(
+    (method) => method.id === selectedShippingMethod.value,
+  );
+});
+
+const beforeCreateOrderValidation = () => {
+  if (!isVirtualCart.value) {
+    if (!selectedShippingMethod.value || shippingExists.value === undefined) {
+      shippingMethodBox.value?.scrollIntoView();
+      return false;
+    }
+  }
+
+  return true;
+};
 </script>
 
 <template>
@@ -602,7 +651,12 @@ const addAddressModalController = useModal();
           </div>
           <fieldset
             v-if="!isVirtualCart"
+            ref="shippingMethodBox"
             class="grid gap-4 shadow px-4 py-5 bg-white sm:p-6 mb-8"
+            :class="{
+              'border-1 border-red border-solid':
+                !shippingExists && placeOrderTriggered,
+            }"
           >
             <legend class="pt-5">
               <h3 class="text-lg font-medium text-secondary-900 m-0">
