@@ -682,6 +682,7 @@ const beforeCreateOrderValidation = () => {
               v-else
               :key="singleShippingMethod.id"
               class="flex items-center w-full"
+              data-testid="checkout-shipping-method"
             >
               <input
                 :id="singleShippingMethod.id"
