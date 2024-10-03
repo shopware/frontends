@@ -1,6 +1,6 @@
 // @ts-nocheck
 import type { Plugin } from "vite";
-import { resolve } from "path";
+import { resolve, dirname } from "path";
 import { findSync } from "find-in-files";
 import { extract } from "ts-dox";
 import {
@@ -12,6 +12,7 @@ import {
   normalizeAnchorText,
 } from "./utils";
 import { readdirSync, readFileSync, existsSync } from "node:fs";
+import { fileURLToPath } from "url";
 
 export async function ComposablesBuilder(): Promise<Plugin> {
   return {
@@ -28,12 +29,15 @@ export async function ComposablesBuilder(): Promise<Plugin> {
         return code;
       }
 
+      // support multiple contexts
+      const projectRootDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../../../../packages/composables/src");
+
       if (composableName === "index") {
         code = code.replace(
           "{{INTRO}}",
           normalizeString(
             readFileSync(
-              resolve(`../../packages/composables/README.md`),
+              resolve(`${projectRootDir}/../README.md`),
               "utf8",
             ),
           ),
@@ -49,7 +53,7 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       try {
         astJson = extract(
           resolve(
-            `../../packages/composables/src/${composableName}/${composableName}.ts`,
+            `${projectRootDir}/${composableName}/${composableName}.ts`,
           ),
         );
       } catch (e) {
@@ -112,7 +116,7 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       try {
         const additionalMd = readFileSync(
           resolve(
-            `../../packages/composables/src/${composableName}/${composableName}.md`,
+            `${projectRootDir}/${composableName}/${composableName}.md`,
           ),
           "utf8",
         );
@@ -125,7 +129,7 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       try {
         const codeBlock = readFileSync(
           resolve(
-            `../../packages/composables/src/${composableName}/${composableName}.demo.vue`,
+            `${projectRootDir}/${composableName}/${composableName}.demo.vue`,
           ),
           "utf8",
         );

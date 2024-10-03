@@ -2,13 +2,10 @@ import { defineConfigWithTheme } from "vitepress";
 import type { Config as ThemeConfig } from "vitepress-shopware-docs";
 import { baseConfig } from "@shopware-docs/vitepress";
 import nav from "./navigation";
-import { SearchPlugin } from "vitepress-plugin-search";
-import { CmsBaseReference } from "./theme/typer/cms-base-plugin";
-import { ReadmeBasedReference } from "./theme/typer/plugin";
-import { ReadmeLoader } from "./theme/typer/readme-loader";
-import { ComposablesBuilder } from "./theme/typer/composables-builder";
 import { resolve } from "path";
 import { sidebar } from "./sidebar";
+import sharedConfig from "./config.hub";
+import { SearchPlugin } from "vitepress-plugin-search";
 
 interface ThemeConfigExtended extends ThemeConfig {
   ai: {
@@ -16,11 +13,15 @@ interface ThemeConfigExtended extends ThemeConfig {
   };
 }
 
-export default defineConfigWithTheme<ThemeConfigExtended>({
+export default defineConfigWithTheme<ThemeConfigExtended>(sharedConfig({
   extends: baseConfig.default,
   title: "Shopware Frontends",
   description: "Documentation for Shopware developers",
   srcDir: "src",
+  srcExclude: [
+    // when symlinked to DevHub
+    "**/_source/**",
+  ],
   ignoreDeadLinks: true, // remove once MR #294 is merged
   head: [
     [
@@ -118,11 +119,15 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
     },
     plugins: [
       SearchPlugin(),
-      ReadmeBasedReference(),
-      CmsBaseReference(),
-      ReadmeLoader(),
-      ComposablesBuilder(),
     ],
+    server: {
+      watch: {
+        ignored: (p) => {
+          // added to next version of baseConfig
+          return p.includes('_source') || p.includes('node_modules');
+        }
+      }
+    },
     resolve: {
       alias: {
         "@node_modules": resolve(process.cwd(), "node_modules"),
@@ -149,4 +154,4 @@ export default defineConfigWithTheme<ThemeConfigExtended>({
       },
     },
   },
-});
+}));

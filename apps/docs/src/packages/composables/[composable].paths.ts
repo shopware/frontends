@@ -1,9 +1,13 @@
 import { readdirSync } from "fs";
-import { resolve } from "path";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 
 export default {
   paths() {
-    return readdirSync(resolve("../../packages/composables/src"), {
+    // support multiple contexts
+    const projectRootDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../../../../packages/composables/src");
+
+    return readdirSync(projectRootDir, {
       withFileTypes: true,
     })
       .filter((element) => {

@@ -1,7 +1,8 @@
 import { defineLoader } from "vitepress";
-import { resolve } from "path";
+import { resolve, dirname } from "path";
 import { extract } from "ts-dox";
 import { readdirSync } from "fs";
+import { fileURLToPath } from "url";
 export interface Data {
   composablesList: { text: string; link: string; category: string }[];
 }
@@ -11,7 +12,11 @@ export { data };
 
 export default defineLoader({
   async load(): Promise<Data> {
-    const composablesList = readdirSync("../../packages/composables/src/", {
+    // support multiple contexts
+    const projectRootDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../../../packages/composables/src");
+    console.log(projectRootDir)
+
+    const composablesList = readdirSync(projectRootDir, {
       withFileTypes: true,
     })
       .filter(
@@ -20,7 +25,7 @@ export default defineLoader({
       .map((element) => {
         const file = extract(
           resolve(
-            `../../packages/composables/src/${element.name}/${element.name}.ts`,
+            `${projectRootDir}/${element.name}/${element.name}.ts`,
           ),
         );
         return {
