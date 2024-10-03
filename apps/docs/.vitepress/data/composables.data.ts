@@ -15,7 +15,6 @@ export default defineLoader({
     const projectRootDir = cwd.endsWith('/apps/docs')
       ? `${cwd}/../..`
       : `${cwd}/src/frontends/_source`;
-    const mountPoint = cwd.endsWith('/apps/docs') ? '' : '/frontends';
 
     const composablesList = readdirSync(`${projectRootDir}/packages/composables/src`, {
       withFileTypes: true,
@@ -31,7 +30,7 @@ export default defineLoader({
         );
         return {
           text: element.name,
-          link: `${mountPoint}/packages/composables/${element.name}`,
+          link: `/packages/composables/${element.name}`,
           category:
             (file?.functions[element.name]?.docs.category ||
               file?.functions[`${element.name}Function`]?.docs.category) ??
