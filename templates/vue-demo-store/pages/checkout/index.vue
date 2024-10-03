@@ -17,7 +17,7 @@ definePageMeta({
 const { push } = useRouter();
 const { getCountries, getStatesForCountry } = useCountries();
 const { getSalutations } = useSalutations();
-const { pushInfo } = useNotifications();
+const { pushInfo, pushError } = useNotifications();
 const { t } = useI18n();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
@@ -215,13 +215,16 @@ const placeOrder = async () => {
 
   try {
     const order = await createOrder();
-    console.log("order", order);
     isLoading["placeOrder"] = false;
     await push("/checkout/success/" + order.id);
     refreshCart();
   } catch (error) {
     if (error instanceof ApiClientError)
-      console.log("error", error.details.errors);
+      error.details.errors.forEach((error: ApiError) => {
+        if (error?.detail) {
+          pushError(error.detail);
+        }
+      });
   }
 };
 
