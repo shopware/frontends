@@ -14,7 +14,6 @@ export default defineLoader({
   async load(): Promise<Data> {
     // support multiple contexts
     const projectRootDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../../../packages/composables/src");
-    console.log(projectRootDir)
 
     const composablesList = readdirSync(projectRootDir, {
       withFileTypes: true,

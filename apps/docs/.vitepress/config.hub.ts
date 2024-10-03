@@ -9,7 +9,10 @@ import { ComposablesBuilder } from "./theme/typer/composables-builder";
  *  - DevHub - /apps/docs/src/ is mounted to /src/frontends/ in DevHub, root-source is available under /src/frontends/_source/
  *  - Frontend (standalone) docs
  */
-export default (original) => {
+export default (original, {
+    projectRootDir,
+    mountPoint,
+}: { projectRootDir: string, mountPoint: string }) => {
     if (!original.vite) {
         original.vite = {};
     }
@@ -21,11 +24,13 @@ export default (original) => {
     // add custom plugins
     // they should work in the context of the DevHub and Frontend docs
     original.vite.plugins.push(...[
-        ReadmeBasedReference(),
+        ReadmeBasedReference({ projectRootDir, relativeDir: 'packages' }),
         CmsBaseReference(),
         ReadmeLoader(),
-        ComposablesBuilder(),
+        ComposablesBuilder({ projectRootDir, mountPoint, relativeDir: 'packages/composables/src' }),
     ]);
+
+    console.log('Extending', projectRootDir, mountPoint)
 
     return original;
 }

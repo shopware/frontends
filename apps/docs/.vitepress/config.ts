@@ -154,4 +154,7 @@ export default defineConfigWithTheme<ThemeConfigExtended>(sharedConfig({
       },
     },
   },
+}, {
+  projectRootDir: `${process.cwd()}/../..`,
+  mountPoint: '',
 }));
