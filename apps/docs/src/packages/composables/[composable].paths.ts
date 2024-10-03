@@ -4,10 +4,12 @@ import { fileURLToPath } from "url";
 
 export default {
   paths() {
-    // support multiple contexts
-    const projectRootDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../../../../packages/composables/src");
+    const cwd = process.cwd();
+    const projectRootDir = cwd.endsWith('/apps/docs')
+      ? `${cwd}/../..`
+      : `${cwd}/src/frontends/_source`;
 
-    return readdirSync(projectRootDir, {
+    return readdirSync(`${projectRootDir}/packages/composables/src`, {
       withFileTypes: true,
     })
       .filter((element) => {
