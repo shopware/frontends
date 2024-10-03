@@ -25,12 +25,12 @@ export default (original, {
     // they should work in the context of the DevHub and Frontend docs
     original.vite.plugins.push(...[
         ReadmeBasedReference({ projectRootDir, relativeDir: 'packages' }),
-        CmsBaseReference(),
+        CmsBaseReference({ projectRootDir, relativeDir: 'packages/cms-base/components/public/cms' }),
         ReadmeLoader(),
         ComposablesBuilder({ projectRootDir, mountPoint, relativeDir: 'packages/composables/src' }),
     ]);
 
-    console.log('Extending', projectRootDir, mountPoint)
+    console.log('Extending', projectRootDir, mountPoint);
 
     return original;
 }
