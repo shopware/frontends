@@ -108,3 +108,27 @@ Modify the Shopware API endpoint to match your local frontend URL.
       }
   }
 ```
+
+## Broadcasting and BFCache Compatibility
+
+### Issue
+
+When Broadcasting is enabled, the BFCache (Back-Forward Cache) functionality is not operational. This incompatibility can lead to suboptimal performance and user experience when navigating back and forth between pages.
+
+### Resolution (vue-demo template)
+
+To leverage the benefits of BFCache, we have decided to disable Broadcasting. By turning off Broadcasting, we ensure that the BFCache can function correctly, providing a smoother and faster navigation experience for users.
+
+```
+...
+runtimeConfig: {
+  broadcasting: true,
+},
+...
+```
+
+### Additional Information
+
+BFCache is a browser optimization that allows pages to be stored in memory, enabling instant loading when users navigate back or forward. While Broadcasting is useful for real-time updates, its current implementation conflicts with BFCache. Disabling Broadcasting allows us to prioritize the performance improvements offered by BFCache.
+
+For more details on BFCache, refer to the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/Performance/Navigation_and_resource_timing#bfcache), [WHATWG](https://github.com/whatwg/html/issues/7253)
