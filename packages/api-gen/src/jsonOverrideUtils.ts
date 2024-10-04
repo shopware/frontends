@@ -71,7 +71,13 @@ export async function loadJsonOverrides({
       const jsonOverridesFile = await readFileSync(pathToResolve, {
         encoding: "utf-8",
       });
-      const content = json5.parse(jsonOverridesFile);
+      const content = json5.parse(jsonOverridesFile, (key, value) => {
+        // unset the $ref: "_DELETE_" in order to avoid schema loading by json5 parser
+        if (key === "$ref" && value === "_DELETE_") {
+          return undefined;
+        }
+        return value;
+      });
       return content;
     }
   } catch (error) {
