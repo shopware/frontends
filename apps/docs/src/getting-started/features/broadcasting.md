@@ -17,6 +17,25 @@ The Broadcast Channel API allows simple communication between browsing contexts 
 
 For Vue app we are recommending to use `useBroadcastChannel` from `VueUse` [package](https://vueuse.org/core/useBroadcastChannel/)
 
+## Enabling Broadcasting in Vue-Demo Template
+
+By default, the broadcasting feature is disabled in the Vue-Demo template. To enable broadcasting, follow these steps:
+
+1. Open the `nuxt.config.ts` file in your project.
+2. Locate the broadcasting configuration setting.
+3. Set the `broadcasting` property to `true` as shown below:
+
+```typescript
+export default defineNuxtConfig({
+  // Other configurations...
+  runtimeConfig: {
+    broadcasting: false,
+  },
+});
+```
+
+For more information, please visit the [troubleshooting page](https://frontends.shopware.com/resources/troubleshooting.html#broadcasting-and-bfcache-compatibility)
+
 ## Synchronizing changes between tabs
 
 In our demo store template we provide example of usage broadcasting for synchronizing changes between tabs.
