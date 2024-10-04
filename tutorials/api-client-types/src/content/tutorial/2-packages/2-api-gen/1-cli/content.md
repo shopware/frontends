@@ -1,0 +1,27 @@
+---
+type: lesson
+title: Installation
+---
+
+# Installation
+
+
+```json add={13-14}
+{
+  "name": "vite-project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0",
+    "@shopware/api-client": "1.0.2",
+    "@shopware/api-gen": "1.0.5"
+  }
+}
+
+```

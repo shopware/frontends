@@ -1,0 +1,4 @@
+---
+type: tutorial
+template: "simple"
+---
