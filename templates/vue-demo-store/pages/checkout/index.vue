@@ -289,18 +289,23 @@ const refreshShoppingAndPaymentMethods = (params?: {
   skipShipping?: boolean;
   skipPayment?: boolean;
 }) => {
+  const loadShipping = !isVirtualCart.value || !params?.skipShipping;
+  const loadPayment = !params?.skipPayment;
+
+  const methodsToLoad = [
+    loadPayment && "paymentMethods",
+    loadShipping && "shippingMethods",
+  ].filter(Boolean) as string[];
+
+  methodsToLoad.forEach((method) => (isLoading[method] = true));
+
   const promises = [
-    !params?.skipPayment ? getPaymentMethods({ forceReload: true }) : null,
-    !isVirtualCart.value || !params?.skipShipping
-      ? getShippingMethods({ forceReload: true })
-      : null,
+    loadPayment ? getPaymentMethods({ forceReload: true }) : null,
+    loadShipping ? getShippingMethods({ forceReload: true }) : null,
   ];
 
-  if (!isVirtualCart.value) isLoading["shippingMethods"] = true;
-  isLoading["paymentMethods"] = true;
   return Promise.any(promises).finally(() => {
-    isLoading["shippingMethods"] = false;
-    isLoading["paymentMethods"] = false;
+    methodsToLoad.forEach((method) => (isLoading[method] = false));
   });
 };
 
