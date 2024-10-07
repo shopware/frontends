@@ -74,7 +74,7 @@ const selectedShippingMethod = computed({
   async set(shippingMethodId: string) {
     isLoading[shippingMethodId] = true;
     await setShippingMethod({ id: shippingMethodId });
-    await refreshShoppingAndPaymentMethods({ skipShipping: true });
+    await refreshPaymentMethod();
     isLoading[shippingMethodId] = false;
   },
 });
@@ -85,7 +85,7 @@ const selectedPaymentMethod = computed({
   async set(paymentMethodId: string) {
     isLoading[paymentMethodId] = true;
     await setPaymentMethod({ id: paymentMethodId });
-    await refreshShoppingAndPaymentMethods({ skipPayment: true });
+    await refreshShippingMethod();
     isLoading[paymentMethodId] = false;
   },
 });
@@ -97,7 +97,11 @@ const selectedShippingAddress = computed({
   async set(shippingAddressId: string) {
     isLoading[`shipping-${shippingAddressId}`] = true;
     await setActiveShippingAddress({ id: shippingAddressId });
-    await refreshShoppingAndPaymentMethods();
+    await Promise.any([
+      !isVirtualCart.value ? refreshShippingMethod() : null,
+      refreshPaymentMethod(),
+    ]);
+
     if (shippingAddressId === selectedBillingAddress.value)
       customShipping.value = false;
     isLoading[`shipping-${shippingAddressId}`] = false;
@@ -111,7 +115,10 @@ const selectedBillingAddress = computed({
   async set(billingAddressId: string) {
     isLoading[`billing-${billingAddressId}`] = true;
     await setActiveBillingAddress({ id: billingAddressId });
-    await refreshShoppingAndPaymentMethods();
+    await Promise.any([
+      !isVirtualCart.value ? refreshShippingMethod() : null,
+      refreshPaymentMethod(),
+    ]);
     if (billingAddressId === selectedShippingAddress.value)
       customShipping.value = false;
     isLoading[`billing-${billingAddressId}`] = false;
@@ -215,7 +222,6 @@ const placeOrder = async () => {
 
   try {
     const order = await createOrder();
-    isLoading["placeOrder"] = false;
     await push("/checkout/success/" + order.id);
     refreshCart();
   } catch (error) {
@@ -225,6 +231,8 @@ const placeOrder = async () => {
           pushError(error.detail);
         }
       });
+  } finally {
+    isLoading["placeOrder"] = false;
   }
 };
 
@@ -285,28 +293,16 @@ async function invokeLogout() {
 const loginModalController = useModal();
 const addAddressModalController = useModal();
 
-const refreshShoppingAndPaymentMethods = (params?: {
-  skipShipping?: boolean;
-  skipPayment?: boolean;
-}) => {
-  const loadShipping = !isVirtualCart.value || !params?.skipShipping;
-  const loadPayment = !params?.skipPayment;
+const refreshShippingMethod = async () => {
+  isLoading["shippingMethods"] = true;
+  await getShippingMethods({ forceReload: true });
+  isLoading["shippingMethods"] = false;
+};
 
-  const methodsToLoad = [
-    loadPayment && "paymentMethods",
-    loadShipping && "shippingMethods",
-  ].filter(Boolean) as string[];
-
-  methodsToLoad.forEach((method) => (isLoading[method] = true));
-
-  const promises = [
-    loadPayment ? getPaymentMethods({ forceReload: true }) : null,
-    loadShipping ? getShippingMethods({ forceReload: true }) : null,
-  ];
-
-  return Promise.any(promises).finally(() => {
-    methodsToLoad.forEach((method) => (isLoading[method] = false));
-  });
+const refreshPaymentMethod = async () => {
+  isLoading["paymentMethods"] = true;
+  await getPaymentMethods({ forceReload: true });
+  isLoading["paymentMethods"] = false;
 };
 
 const shippingExists = computed(() => {
