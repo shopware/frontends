@@ -4,6 +4,7 @@ import json5 from "json5";
 import { validationRules } from "./validation-rules";
 import { ofetch } from "ofetch";
 import { OverridesSchema } from "./patchJsonSchema";
+import parserPrescriber from "./parserPrescriber";
 
 export type ApiGenConfig = {
   rules: Array<keyof typeof validationRules>;
@@ -71,13 +72,7 @@ export async function loadJsonOverrides({
       const jsonOverridesFile = await readFileSync(pathToResolve, {
         encoding: "utf-8",
       });
-      const content = json5.parse(jsonOverridesFile, (key, value) => {
-        // unset the $ref: "_DELETE_" in order to avoid schema loading by json5 parser
-        if (key === "$ref" && value === "_DELETE_") {
-          return undefined;
-        }
-        return value;
-      });
+      const content = json5.parse(jsonOverridesFile, parserPrescriber);
       return content;
     }
   } catch (error) {
