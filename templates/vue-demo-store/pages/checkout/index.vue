@@ -625,8 +625,8 @@ const beforeCreateOrderValidation = () => {
                   </span>
                 </div>
                 <SharedCountryStateInput
-                  v-model:countryId="state.billingAddress.countryId"
-                  v-model:stateId="state.billingAddress.countryStateId"
+                  v-model:country-id="state.billingAddress.countryId"
+                  v-model:state-id="state.billingAddress.countryStateId"
                   :country-id-validation="$v.billingAddress.countryId"
                   :state-id-validation="$v.billingAddress.countryStateId"
                   class="col-span-6"
