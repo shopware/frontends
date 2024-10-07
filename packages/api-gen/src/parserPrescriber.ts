@@ -1,5 +1,5 @@
 /**
- * eviver for json5.parse function
+ * Reviver for json5.parse function
 
  * @param key
  * @param value
