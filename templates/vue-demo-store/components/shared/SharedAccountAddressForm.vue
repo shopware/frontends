@@ -199,8 +199,8 @@ const $v = useVuelidate(rules, formData);
             </div>
 
             <SharedCountryStateInput
-              v-model:countryId="formData.countryId"
-              v-model:stateId="formData.countryStateId"
+              v-model:country-id="formData.countryId"
+              v-model:state-id="formData.countryStateId"
               :country-id-validation="$v.countryId"
               :state-id-validation="$v.countryStateId"
               class="col-span-6 sm:col-span-6"
