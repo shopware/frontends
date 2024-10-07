@@ -18,6 +18,7 @@ dist
 
 # vitepress
 **/.vitepress/cache
+apps/docs/src/_source
 
 # misc
 .DS_Store
