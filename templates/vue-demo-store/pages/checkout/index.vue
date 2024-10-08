@@ -97,7 +97,7 @@ const selectedShippingAddress = computed({
   async set(shippingAddressId: string) {
     isLoading[`shipping-${shippingAddressId}`] = true;
     await setActiveShippingAddress({ id: shippingAddressId });
-    await Promise.any([
+    await Promise.allSettled([
       !isVirtualCart.value ? refreshShippingMethod() : null,
       refreshPaymentMethod(),
     ]);
@@ -115,7 +115,7 @@ const selectedBillingAddress = computed({
   async set(billingAddressId: string) {
     isLoading[`billing-${billingAddressId}`] = true;
     await setActiveBillingAddress({ id: billingAddressId });
-    await Promise.any([
+    await Promise.allSettled([
       !isVirtualCart.value ? refreshShippingMethod() : null,
       refreshPaymentMethod(),
     ]);
@@ -247,14 +247,14 @@ onMounted(async () => {
   isLoading["shippingMethods"] = true;
   isLoading["paymentMethods"] = true;
 
-  Promise.any([
+  await Promise.allSettled([
     loadCustomerAddresses(),
     !isVirtualCart.value ? getShippingMethods() : null,
     getPaymentMethods(),
-  ]).finally(() => {
-    isLoading["shippingMethods"] = false;
-    isLoading["paymentMethods"] = false;
-  });
+  ]);
+
+  isLoading["shippingMethods"] = false;
+  isLoading["paymentMethods"] = false;
 });
 
 const refreshAddresses = async () => {
