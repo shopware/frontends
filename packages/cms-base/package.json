@@ -48,7 +48,7 @@
     "entities": "5.0.0",
     "html-to-ast": "0.0.6",
     "three": "0.166.1",
-    "vue": "3.5.6",
+    "vue": "3.5.11",
     "xss": "1.0.15"
   },
   "devDependencies": {

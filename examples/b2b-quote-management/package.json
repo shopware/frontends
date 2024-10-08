@@ -17,7 +17,7 @@
     "@shopware/api-client": "canary",
     "js-cookie": "3.0.5",
     "primevue": "4.0.2",
-    "vue": "3.5.6",
+    "vue": "3.5.11",
     "vue-router": "4.4.5"
   },
   "devDependencies": {
@@ -25,8 +25,8 @@
     "@types/node": "20.14.10",
     "@vitejs/plugin-vue": "5.1.4",
     "@vueuse/core": "11.1.0",
-    "unocss": "0.62.4",
-    "vite": "5.4.6",
+    "unocss": "0.63.4",
+    "vite": "5.4.8",
     "vue-tsc": "2.1.6"
   }
 }
