@@ -104,7 +104,7 @@ export function useCartItem(
       [],
   );
 
-  const itemStock = computed<number>(
+  const itemStock = computed<number | undefined>(
     () => cartItem.value.deliveryInformation.stock,
   );
 
