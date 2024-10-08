@@ -79,4 +79,45 @@ describe("useCartErrorParamsResolver", () => {
       messageKey: "custom-error",
     });
   });
+
+  it("should return resolved shipping-method-blocked error", () => {
+    vi.mocked(useCart).mockReturnValue({
+      cartItems: ref([]),
+    } as unknown as ReturnType<typeof useCart>);
+    const { resolveCartError } = useCartErrorParamsResolver();
+    const error = resolveCartError({
+      message: "shipping-method-blocked-UPS",
+      code: 0,
+      key: "shipping-method-blocked-UPS",
+      level: 10,
+      messageKey: "shipping-method-blocked",
+    });
+
+    expect(error).toEqual({
+      params: {
+        name: "UPS",
+      },
+      messageKey: "shipping-method-blocked",
+    });
+  });
+
+  it("should return resolved shipping-method-blocked error - no message", () => {
+    vi.mocked(useCart).mockReturnValue({
+      cartItems: ref([]),
+    } as unknown as ReturnType<typeof useCart>);
+    const { resolveCartError } = useCartErrorParamsResolver();
+    const error = resolveCartError({
+      code: 0,
+      key: "shipping-method-blocked-UPS",
+      level: 10,
+      messageKey: "shipping-method-blocked",
+    });
+
+    expect(error).toEqual({
+      params: {
+        name: "",
+      },
+      messageKey: "shipping-method-blocked",
+    });
+  });
 });

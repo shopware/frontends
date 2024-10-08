@@ -2,7 +2,7 @@ import { useCart } from "#imports";
 
 export type UseCartErrorParamsResolver = {
   resolveCartError: (errorObject: ErrorObjectParam) => {
-    params: { [key: string]: string | number | null } | null;
+    params: { [key: string]: string | number | null | undefined } | null;
     messageKey: string;
   };
 };
@@ -48,6 +48,10 @@ export function useCartErrorParamsResolver(): UseCartErrorParamsResolver {
       return cartItems.value.find((item) => item.id === id);
     };
 
+    const buildShippingMethodBlocked = (): string => {
+      return errorObject.message?.replace("shipping-method-blocked-", "") || "";
+    };
+
     switch (errorObject.messageKey) {
       case "product-stock-reached":
         params = buildProductStockReached();
@@ -55,6 +59,11 @@ export function useCartErrorParamsResolver(): UseCartErrorParamsResolver {
           messageKey = "product-stock-reached-empty";
           params = null;
         }
+        break;
+      case "shipping-method-blocked":
+        params = {
+          name: buildShippingMethodBlocked(),
+        };
         break;
       default:
         params = { ...errorObject };
