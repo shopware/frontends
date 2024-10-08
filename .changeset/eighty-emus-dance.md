@@ -1,5 +1,5 @@
 ---
-"@shopware-pwa/api-client": minor
+"@shopware-pwa/api-client": patch
 ---
 
-Updated schema to version `6.6.6.0`
+Updated default schema to version `6.6.6.0`
