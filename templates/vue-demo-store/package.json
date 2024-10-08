@@ -19,17 +19,17 @@
     "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "0.62.4",
+    "@unocss/nuxt": "0.63.4",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/nuxt": "11.1.0",
     "defu": "6.1.4",
     "requrl": "3.0.2",
     "sitemap": "8.0.0",
-    "vue": "3.5.6"
+    "vue": "3.5.11"
   },
   "devDependencies": {
-    "@iconify-json/carbon": "1.2.1",
+    "@iconify-json/carbon": "1.2.2",
     "@nuxtjs/i18n": "8.3.1",
     "@shopware/api-gen": "canary",
     "eslint": "9.12.0",
