@@ -4,6 +4,7 @@ import json5 from "json5";
 import { validationRules } from "./validation-rules";
 import { ofetch } from "ofetch";
 import { OverridesSchema } from "./patchJsonSchema";
+import jsonParser from "./parser/jsonParser";
 
 export type ApiGenConfig = {
   rules: Array<keyof typeof validationRules>;
@@ -64,14 +65,14 @@ export async function loadJsonOverrides({
     if (isURL(pathToResolve)) {
       const response = await ofetch(pathToResolve, {
         responseType: "json",
-        parseResponse: json5.parse,
+        parseResponse: jsonParser,
       });
       return response;
     } else {
       const jsonOverridesFile = await readFileSync(pathToResolve, {
         encoding: "utf-8",
       });
-      const content = json5.parse(jsonOverridesFile);
+      const content = jsonParser(jsonOverridesFile);
       return content;
     }
   } catch (error) {
