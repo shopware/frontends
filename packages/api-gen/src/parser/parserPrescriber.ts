@@ -1,10 +1,7 @@
 /**
  * Reviver for json5.parse function
- * @param key
- * @param value
- * @returns any
  */
-export default function prescribe(key: string, value: any): any {
+export default function prescribe<T>(key: string, value: T): T | undefined {
   // unset the $ref: "_DELETE_" in order to avoid schema loading by json5 parser
   if (key === "$ref" && value === "_DELETE_") {
     return undefined;

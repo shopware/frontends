@@ -4,7 +4,7 @@ import json5 from "json5";
 import { validationRules } from "./validation-rules";
 import { ofetch } from "ofetch";
 import { OverridesSchema } from "./patchJsonSchema";
-import jsonParser from "./jsonParser";
+import jsonParser from "./parser/jsonParser";
 
 export type ApiGenConfig = {
   rules: Array<keyof typeof validationRules>;
