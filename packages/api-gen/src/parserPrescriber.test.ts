@@ -17,8 +17,8 @@ describe("parserPrescriber", () => {
     expect(result).toBe("someOtherValue");
   });
 
-  it('should return the value when key is not "$ref" and value is not "_DELETE_"', () => {
-    const result = parserPrescriber("someKey", "someValue");
-    expect(result).toBe("someValue");
+  it('should return the value when key is not "$ref" and value is "_DELETE_"', () => {
+    const result = parserPrescriber("someKey", "_DELETE_");
+    expect(result).toBe("_DELETE_");
   });
 });
