@@ -3,7 +3,6 @@ import jsonParse from "./jsonParser";
 import json5 from "json5";
 import * as prescribe from "./parserPrescriber";
 
-// this will only affect "foo" outside of the original module
 vi.spyOn(json5, "parse");
 const prescribeSpy = vi.spyOn(prescribe, "default");
 vi.mock("json5", async (importOriginal) => {
