@@ -11,13 +11,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "8.3.3",
+    "@astrojs/node": "8.3.4",
     "@astrojs/vue": "4.5.1",
     "@shopware-pwa/composables-next": "canary",
     "@shopware/api-client": "canary",
     "@vitejs/plugin-vue": "5.1.4",
     "@vitejs/plugin-vue-jsx": "4.0.1",
-    "astro": "4.15.8",
+    "astro": "4.15.11",
     "js-cookie": "3.0.5",
     "sharp": "0.33.4",
     "vue": "3.5.6"

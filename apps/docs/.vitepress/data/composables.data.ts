@@ -1,5 +1,5 @@
 import { defineLoader } from "vitepress";
-import { resolve } from "path";
+import { resolve, dirname } from "path";
 import { extract } from "ts-dox";
 import { readdirSync } from "fs";
 export interface Data {
@@ -11,7 +11,12 @@ export { data };
 
 export default defineLoader({
   async load(): Promise<Data> {
-    const composablesList = readdirSync("../../packages/composables/src/", {
+    const cwd = process.cwd();
+    const projectRootDir = cwd.endsWith('/apps/docs')
+      ? `${cwd}/../..`
+      : `${cwd}/src/frontends/_source`;
+
+    const composablesList = readdirSync(`${projectRootDir}/packages/composables/src`, {
       withFileTypes: true,
     })
       .filter(
@@ -20,7 +25,7 @@ export default defineLoader({
       .map((element) => {
         const file = extract(
           resolve(
-            `../../packages/composables/src/${element.name}/${element.name}.ts`,
+            `${projectRootDir}/packages/composables/src/${element.name}/${element.name}.ts`,
           ),
         );
         return {
