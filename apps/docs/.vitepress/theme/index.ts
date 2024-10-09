@@ -5,14 +5,9 @@ import { SWAGTheme } from "vitepress-shopware-docs";
 // import AI from "./components/AI.vue";
 import "./custom.css";
 
-export default Object.assign(
-  {
-    ...SWAGTheme(),
+export default SWAGTheme({
+  enhanceApp: ({ app }: { app: App }) => {
+    // app.component("AI", AI);
+    // app.provide('some-injection-key-if-needed', VALUE)
   },
-  {
-    enhanceApp({ app }: { app: App }) {
-      // app.component("AI", AI);
-      // app.provide('some-injection-key-if-needed', VALUE)
-    },
-  },
-);
+})
