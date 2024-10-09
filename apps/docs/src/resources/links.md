@@ -21,6 +21,7 @@ Please tell us via [Community Slack](https://shopwarecommunity.slack.com/archive
 
 Sorted by date, newest first
 
+- [Unofficial API aware guidelines for Shopware 6](https://www.brocksi.net/blog/unofficial-api-aware-guidelines-shopware-6/)
 - [How to work with Shopware Frontends: Experience creating POC](https://itdelight.io/how-to-work-with-shopware-frontends-experience-creating-poc/)
 - [Multi-Page or Single-Page Variants Selection](https://www.brocksi.net/blog/variants-selection-multi-page-or-single-page/)
 - [Create a CI/CD Pipeline for Shopware Frontends](https://kiplingi.de/create-a-ci-cd-pipeline-for-shopware-frontends/)
@@ -55,6 +56,7 @@ Sorted by date, newest first
 
 ## Code examples
 
+- [Multi sales channel support Nuxt plugin](https://github.com/shopware/frontends/tree/main/examples/multi-sales-channel)
 - [Multi-Instances Repo Example for Composable Frontends](https://github.com/patzick/frontends-multiinstances-example)
 - Language/Translation Switch [StackBlitz](https://stackblitz.com/github/mkucmus/language-translations?file=app.vue) / [GitHub](https://github.com/mkucmus/language-translations)
 
