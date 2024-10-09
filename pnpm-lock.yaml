@@ -173,8 +173,8 @@ importers:
   examples/adyen-dropin-component:
     devDependencies:
       '@adyen/adyen-web':
-        specifier: 6.0.1
-        version: 6.0.1
+        specifier: 6.3.0
+        version: 6.3.0
       '@shopware-pwa/composables-next':
         specifier: canary
         version: link:../../packages/composables
@@ -1316,8 +1316,8 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
 
-  '@adyen/adyen-web@6.0.1':
-    resolution: {integrity: sha512-48GG6lNWft3y/VH81i/GmCTqJolhTpcu7uv/qJ159BZK/Hkj81tFImyMk2/gRzFoETVgRxZHcT7eCn6/6g4iUg==}
+  '@adyen/adyen-web@6.3.0':
+    resolution: {integrity: sha512-iXT/BIGKnHYxH/bZod8mmAHAsYIzIdylEIaskFgAlmYgj4v3l2zvRv9RgTkWTpp84JM2tPbhQaErHtI6dE8K/A==}
 
   '@adyen/bento-design-tokens@1.10.0':
     resolution: {integrity: sha512-ZaWLGTLLW0bh69mu9ibGMaZ2DXkrB07XU3gc5Mt1fTZgNDAnCsdfJ/Wq7BxW3zYhtQLU69oz0QayZ3RDKTlHEA==}
@@ -13482,7 +13482,7 @@ snapshots:
 
   '@aashutoshrathi/word-wrap@1.2.6': {}
 
-  '@adyen/adyen-web@6.0.1':
+  '@adyen/adyen-web@6.3.0':
     dependencies:
       '@adyen/bento-design-tokens': 1.10.0
       '@types/applepayjs': 14.0.8
@@ -15016,7 +15016,7 @@ snapshots:
   '@docsearch/js@3.6.1(@algolia/client-search@4.20.0)(@types/react@18.3.11)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.17.0)':
     dependencies:
       '@docsearch/react': 3.6.1(@algolia/client-search@4.20.0)(@types/react@18.3.11)(react-dom@18.2.0(react@17.0.2))(react@17.0.2)(search-insights@2.17.0)
-      preact: 10.22.1
+      preact: 10.24.2
     transitivePeerDependencies:
       - '@algolia/client-search'
       - '@types/react'
