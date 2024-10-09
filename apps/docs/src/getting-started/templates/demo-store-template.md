@@ -9,7 +9,7 @@ import stackblitzIcon from '../../.assets/framework-icons/stackblitz.png';
 The demo store template is a reference implementation of an online store UI.
 
 :::info
-The **Demo Store Template** is not suitable for production stores. It is under constant development and does not adhere to any versioning. Please go to [Limitations](#limitations) for more information.
+The **Demo Store Template** is a reference implementation. It is under constant development and is not subject to versioning. Please go to [Limitations](#limitations) for more information.
 :::
 
 ## Setup & run
@@ -22,6 +22,10 @@ Alternatively, set up the vue-demo-store template manually by running the follow
 npx tiged shopware/frontends/templates/vue-demo-store demo-store && cd demo-store
 npm i && npm run dev
 ```
+
+The vue-demo-store template is connected to a Shopware Cloud instance by default. However, you can change the [configuration](#configure) to use your own instance.
+
+We recommend using [devenv](https://developer.shopware.com/docs/guides/installation/devenv.html) and Composable Frontends on your local machine. But if you want to use Docker and Composable Frontends, you should have a look at the [docker-composable-frontends](https://github.com/shopwareLabs/docker-composable-frontends) repository.
 
 ## Directory structure
 
@@ -101,8 +105,7 @@ Some important limitations are
 
 - Frontend settings are not synchronized from the backend - such as
   - Available fields for checkout and registration
-  - Multiple domains
-  - Translations and snippets
-- No support for multiple currencies
+- Not all Plugins or Apps are API aware
+- Not all Commercial features are supported, check the [Commercial Integrations](/resources/integrations/commercial/) page
 
 If you think a specific feature should be part of the demo store template, feel free to create an [issue](https://github.com/shopware/frontends/issues/new) or make a [contribution](https://github.com/shopware/frontends/pulls).

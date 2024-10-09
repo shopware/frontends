@@ -19,6 +19,10 @@ Collection of common issues you may run into while working with Shopware Composa
 
 Currently you should use the default **Storefront SalesChannel type**. This sounds wrong, but if you using the Headless SalesChannel type you will not have nice speaking seo urls at the moment. Because the generation of seo urls will only be executed for SalesChannels with the type Storefront. We working on a more flexible solution with the core team to not have this confusion in the future.
 
+## The access token for the store API is public visible?
+
+In general, the store API should only output content that would also be visible on a standard storefront. Therefore, do not output any sensitive data to the store API. For our vue-demo-store template, we decided to use a public access token, also to have a simple configuration. However, this does not mean that you should do the same in a production environment. To secure your access token, you can use [proxy api requests](#proxy-api-requests) also have a look at our [community modules](/resources/community-modules/) how others are doing this.
+
 ## How to use https for your localhost with Composable Frontends?
 
 ### Option 1: Manual with mkcert
