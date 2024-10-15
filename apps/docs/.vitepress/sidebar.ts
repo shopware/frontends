@@ -242,11 +242,11 @@ export const sidebar = [
         // link: "/best-practices/testing.html",
         items: [
           {
-            text: "E2E testing",
+            text: "E2E Testing",
             link: "/best-practices/testing/e2e-testing.html",
           },
           {
-            text: "A/B testing",
+            text: "A/B Testing",
             link: "/best-practices/testing/ab-testing.html",
           },
         ],
