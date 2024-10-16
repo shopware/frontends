@@ -10145,7 +10145,7 @@
         },
         "type": "object"
       },
-      "AccountNewsletterRecipientResult": {
+      "AccountNewsletterRecipient": {
         "allOf": [
           { "$ref": "#/components/schemas/Struct" },
           { "type": "object", "properties": { "status": { "type": "string" } } }
@@ -11219,7 +11219,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AccountNewsletterRecipientResult"
+                    "$ref": "#/components/schemas/AccountNewsletterRecipient"
                   }
                 }
               }

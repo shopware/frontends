@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useProductCustomizedProductConfigurator } from "@/composables/useProductCustomizedProductConfigurator";
-import { useSessionContext } from "@shopware-pwa/composables-next";
+import { useProductCustomizedProductConfigurator } from "../composables/useProductCustomizedProductConfigurator";
+
 const { customizedProduct, state, handleFileUpload } =
   useProductCustomizedProductConfigurator();
 const { currency } = useSessionContext();

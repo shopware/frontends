@@ -54,6 +54,7 @@ test.describe.only("Create Order", () => {
     await productPage.addToCart();
     await cartPage.openMiniCart();
     await checkoutPage.goToCheckout();
+    await page.waitForSelector("[data-testid='checkout-shipping-method']");
     await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await page.waitForLoadState("domcontentloaded");

@@ -136,8 +136,8 @@ useFocus(firstNameInputElement, { initialValue: true });
               />
             </div>
             <SharedCountryStateInput
-              v-model:countryId="formData.countryId"
-              v-model:stateId="formData.countryStateId"
+              v-model:country-id="formData.countryId"
+              v-model:state-id="formData.countryStateId"
               class="col-span-6 sm:col-span-6"
             />
             <div class="col-span-6">

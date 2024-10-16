@@ -17,6 +17,11 @@ export default defineNuxtConfig({
     //   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     //   devStorefrontUrl: "",
     // },
+
+    /**
+     * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
+     */
+    broadcasting: false,
   },
   shopware: {
     accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
