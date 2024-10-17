@@ -1,5 +1,14 @@
 # @shopware-pwa/api-client
 
+## 1.0.3
+
+### Patch Changes
+
+- [#1339](https://github.com/shopware/frontends/pull/1339) [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Updated default schema to version `6.6.6.0`
+
+- Updated dependencies []:
+  - @shopware-pwa/types@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes

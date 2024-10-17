@@ -1,5 +1,18 @@
 # @shopware-pwa/composables-next
 
+## 1.4.0
+
+### Minor Changes
+
+- [#1325](https://github.com/shopware/frontends/pull/1325) [`fa517bc`](https://github.com/shopware/frontends/commit/fa517bc68e33b97f6cf34205587218314cb4f5f6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Add `shipping-method-blocked` error resolver to `useCartErrorParamsResolver` composable
+
+- [#1339](https://github.com/shopware/frontends/pull/1339) [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Updated `AccountNewsletterRecipientResult` type to `AccountNewsletterRecipient`
+
+### Patch Changes
+
+- Updated dependencies [[`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
+  - @shopware/api-client@1.0.3
+
 ## 1.3.0
 
 ### Minor Changes

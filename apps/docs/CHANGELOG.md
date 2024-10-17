@@ -1,5 +1,15 @@
 # docs
 
+## 1.7.6
+
+### Patch Changes
+
+- [#1357](https://github.com/shopware/frontends/pull/1357) [`16634d3`](https://github.com/shopware/frontends/commit/16634d318040f816d396260d1000113928a467f8) Thanks [@patzick](https://github.com/patzick)! - Added information about A/B testing. Restrucured Best Practices section to split E2E with A/B. Removed old API Client error handling info.
+
+- Updated dependencies [[`fa517bc`](https://github.com/shopware/frontends/commit/fa517bc68e33b97f6cf34205587218314cb4f5f6), [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
+  - @shopware-pwa/composables-next@1.4.0
+  - @shopware/api-client@1.0.3
+
 ## 1.7.5
 
 ### Patch Changes
