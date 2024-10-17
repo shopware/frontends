@@ -1,5 +1,17 @@
 # @shopware-pwa/cms-base
 
+## 1.1.0
+
+### Minor Changes
+
+- [#1298](https://github.com/shopware/frontends/pull/1298) [`201a961`](https://github.com/shopware/frontends/commit/201a9611886f7e0d4381f77e9d2f1d1cb9f90802) Thanks [@patzick](https://github.com/patzick)! - Updated refs to templateRefs from Vue 3.5 for better type support
+
+### Patch Changes
+
+- Updated dependencies [[`fa517bc`](https://github.com/shopware/frontends/commit/fa517bc68e33b97f6cf34205587218314cb4f5f6), [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
+  - @shopware-pwa/composables-next@1.4.0
+  - @shopware/api-client@1.0.3
+
 ## 1.0.5
 
 ### Patch Changes
