@@ -265,7 +265,6 @@
       },
       "AclRole": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -282,7 +281,6 @@
         "type": "object"
       },
       "AdvancedSearchAction": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -299,7 +297,6 @@
         "type": "object"
       },
       "AdvancedSearchActionSearchTerm": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -316,7 +313,6 @@
         "type": "object"
       },
       "AdvancedSearchBoosting": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -333,7 +329,6 @@
         "type": "object"
       },
       "AdvancedSearchConfig": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "hitCount": {
@@ -376,7 +371,6 @@
         "type": "object"
       },
       "AdvancedSearchConfigField": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -393,7 +387,6 @@
         "type": "object"
       },
       "AdvancedSearchEntityStream": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -410,7 +403,6 @@
         "type": "object"
       },
       "AdvancedSearchEntityStreamFilter": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -427,7 +419,6 @@
         "type": "object"
       },
       "AdvancedSearchSynonym": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -445,7 +436,7 @@
       },
       "App": {
         "description": "Added since version: 6.3.1.0",
-        "required": ["createdAt", "label"],
+        "required": ["label"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -464,7 +455,7 @@
       },
       "AppActionButton": {
         "description": "Added since version: 6.3.1.0",
-        "required": ["createdAt", "label"],
+        "required": ["label"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -483,7 +474,7 @@
       },
       "AppAdministrationSnippet": {
         "description": "Added since version: 6.4.15.0",
-        "required": ["value", "appId", "localeId", "createdAt"],
+        "required": ["value", "appId", "localeId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "value": { "type": "string" },
@@ -504,7 +495,7 @@
       },
       "AppCmsBlock": {
         "description": "Added since version: 6.4.2.0",
-        "required": ["createdAt", "label"],
+        "required": ["label"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -523,7 +514,7 @@
       },
       "AppFlowAction": {
         "description": "Added since version: 6.4.10.0",
-        "required": ["createdAt", "label"],
+        "required": ["label"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -542,7 +533,6 @@
       },
       "AppFlowEvent": {
         "description": "Added since version: 6.5.2.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -560,7 +550,6 @@
       },
       "AppPaymentMethod": {
         "description": "Added since version: 6.4.1.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -578,7 +567,7 @@
       },
       "AppScriptCondition": {
         "description": "Added since version: 6.4.10.3",
-        "required": ["createdAt", "name"],
+        "required": ["name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -597,7 +586,6 @@
       },
       "AppShippingMethod": {
         "description": "Added since version: 6.5.7.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -615,7 +603,6 @@
       },
       "AppTemplate": {
         "description": "Added since version: 6.3.1.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -632,7 +619,6 @@
         "type": "object"
       },
       "B2bBusinessPartner": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "customFields": { "type": "object" },
@@ -651,7 +637,6 @@
       },
       "B2bComponentsApprovalRule": {
         "description": "Added since version: 6.6.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "reviewerRoleId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -673,7 +658,7 @@
       },
       "B2bComponentsApprovalRuleAppScriptCondition": {
         "description": "Added since version: 6.6.3.0",
-        "required": ["createdAt", "name"],
+        "required": ["name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -702,8 +687,7 @@
           "salesChannelId",
           "shippingMethodId",
           "paymentMethodId",
-          "languageId",
-          "createdAt"
+          "languageId"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -798,8 +782,7 @@
           "firstName",
           "lastName",
           "street",
-          "city",
-          "createdAt"
+          "city"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -838,7 +821,7 @@
         "type": "object"
       },
       "B2bComponentsRole": {
-        "required": ["id", "name", "createdAt"],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -865,7 +848,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": ["id", "salesChannelId", "customerId", "createdAt"],
+            "required": ["id", "salesChannelId", "customerId"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "name": { "type": "string" },
@@ -991,7 +974,7 @@
       },
       "B2bComponentsShoppingList": {
         "description": "Added since version: 6.6.2.0",
-        "required": ["id", "salesChannelId", "customerId", "createdAt"],
+        "required": ["id", "salesChannelId", "customerId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -1032,7 +1015,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": ["id", "quantity", "createdAt"],
+            "required": ["id", "quantity"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "productId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -1093,7 +1076,7 @@
       },
       "B2bComponentsShoppingListLineItem": {
         "description": "Added since version: 6.6.2.0",
-        "required": ["id", "quantity", "createdAt"],
+        "required": ["id", "quantity"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "productId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -1118,14 +1101,7 @@
         "type": "object"
       },
       "B2bEmployee": {
-        "required": [
-          "id",
-          "languageId",
-          "firstName",
-          "lastName",
-          "email",
-          "createdAt"
-        ],
+        "required": ["id", "languageId", "firstName", "lastName", "email"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "languageId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -1150,7 +1126,7 @@
         "type": "object"
       },
       "B2bOrderEmployee": {
-        "required": ["firstName", "lastName", "createdAt"],
+        "required": ["firstName", "lastName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "firstName": { "type": "string" },
@@ -1169,7 +1145,7 @@
         "type": "object"
       },
       "B2bPermission": {
-        "required": ["id", "name", "group", "createdAt"],
+        "required": ["id", "name", "group"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -1193,14 +1169,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": [
-              "id",
-              "displayNestedProducts",
-              "type",
-              "productAssignmentType",
-              "createdAt",
-              "name"
-            ],
+            "required": ["id", "name"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -1459,10 +1428,6 @@
           "childCount",
           "translated",
           "id",
-          "displayNestedProducts",
-          "type",
-          "productAssignmentType",
-          "createdAt",
           "name"
         ],
         "properties": {
@@ -1557,14 +1522,7 @@
       },
       "CmsBlock": {
         "description": "Added since version: 6.0.0.0",
-        "required": [
-          "apiAlias",
-          "slots",
-          "position",
-          "type",
-          "sectionId",
-          "createdAt"
-        ],
+        "required": ["apiAlias", "slots", "position", "type", "sectionId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "position": { "type": "integer", "format": "int64" },
@@ -1681,7 +1639,7 @@
       },
       "CmsPage": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["apiAlias", "sections", "id", "type", "createdAt"],
+        "required": ["apiAlias", "sections", "id", "type"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -1754,7 +1712,6 @@
         "type": "object"
       },
       "CmsPageActivity": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -1771,7 +1728,6 @@
         "type": "object"
       },
       "CmsPageDraft": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -1795,7 +1751,6 @@
           "position",
           "type",
           "pageId",
-          "createdAt",
           "name"
         ],
         "properties": {
@@ -1879,7 +1834,7 @@
       },
       "CmsSlot": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "type", "slot", "blockId", "createdAt"],
+        "required": ["id", "type", "slot", "blockId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -1915,7 +1870,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": ["id", "isEu", "createdAt", "name", "addressFormat"],
+            "required": ["id", "name", "addressFormat"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "name": { "type": "string" },
@@ -2009,7 +1964,7 @@
       },
       "Country": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "isEu", "createdAt", "name", "addressFormat"],
+        "required": ["id", "name", "addressFormat"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -2072,7 +2027,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": ["id", "countryId", "shortCode", "createdAt", "name"],
+            "required": ["id", "countryId", "shortCode", "name"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "countryId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2099,7 +2054,7 @@
       },
       "CountryState": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "countryId", "shortCode", "createdAt", "name"],
+        "required": ["id", "countryId", "shortCode", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "countryId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2134,7 +2089,6 @@
               "isoCode",
               "itemRounding",
               "totalRounding",
-              "createdAt",
               "shortName",
               "name"
             ],
@@ -2195,7 +2149,6 @@
           "isoCode",
           "itemRounding",
           "totalRounding",
-          "createdAt",
           "shortName",
           "name"
         ],
@@ -2247,7 +2200,6 @@
       },
       "CurrencyCountryRounding": {
         "description": "Added since version: 6.4.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -2265,7 +2217,6 @@
       },
       "CustomEntity": {
         "description": "Added since version: 6.4.9.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -2283,7 +2234,6 @@
       },
       "CustomField": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -2301,7 +2251,6 @@
       },
       "CustomFieldSet": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -2319,7 +2268,6 @@
       },
       "CustomFieldSetRelation": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -2336,7 +2284,7 @@
         "type": "object"
       },
       "CustomPrice": {
-        "required": ["id", "productId", "price", "createdAt"],
+        "required": ["id", "productId", "price"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "productId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2376,9 +2324,7 @@
           "firstName",
           "lastName",
           "email",
-          "accountType",
-          "defaultPaymentMethodId",
-          "createdAt"
+          "defaultPaymentMethodId"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2536,8 +2482,7 @@
           "firstName",
           "lastName",
           "city",
-          "street",
-          "createdAt"
+          "street"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2575,7 +2520,7 @@
       },
       "CustomerGroup": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["translated", "id", "createdAt", "name"],
+        "required": ["translated", "id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -2610,7 +2555,6 @@
       },
       "CustomerRecovery": {
         "description": "Added since version: 6.1.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -2627,7 +2571,7 @@
         "type": "object"
       },
       "CustomerSpecificFeatures": {
-        "required": ["customerId", "features", "createdAt"],
+        "required": ["customerId", "features"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "customerId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2659,7 +2603,7 @@
       },
       "CustomerWishlist": {
         "description": "Added since version: 6.3.4.0",
-        "required": ["id", "customerId", "createdAt"],
+        "required": ["id", "customerId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "customerId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2679,7 +2623,7 @@
       },
       "CustomerWishlistProduct": {
         "description": "Added since version: 6.3.4.0",
-        "required": ["id", "productId", "createdAt"],
+        "required": ["id", "productId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "productId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2699,7 +2643,7 @@
       },
       "DeliveryTime": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "name", "min", "max", "unit", "createdAt"],
+        "required": ["id", "name", "min", "max", "unit"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -2729,8 +2673,7 @@
           "fileType",
           "orderId",
           "config",
-          "deepLinkCode",
-          "createdAt"
+          "deepLinkCode"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2782,7 +2725,7 @@
       },
       "DocumentBaseConfig": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "documentTypeId", "name", "global", "createdAt"],
+        "required": ["id", "documentTypeId", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "documentTypeId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2810,7 +2753,7 @@
       },
       "DocumentBaseConfigSalesChannel": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "documentBaseConfigId", "createdAt"],
+        "required": ["id", "documentBaseConfigId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "documentBaseConfigId": {
@@ -2834,7 +2777,7 @@
       },
       "DocumentType": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "technicalName", "createdAt", "name"],
+        "required": ["id", "technicalName", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -2859,8 +2802,7 @@
           "presentationId",
           "salesChannelDomainId",
           "name",
-          "createdById",
-          "createdAt"
+          "createdById"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2905,12 +2847,27 @@
         "type": "object"
       },
       "DsrAppointmentAttendee": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-          "attendeeSubmittedAt": { "type": "string", "format": "date-time" },
           "joinedAt": { "type": "string", "format": "date-time" },
           "lastActive": { "type": "string", "format": "date-time" },
+          "isBlocked": { "type": "boolean" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "type": "object"
+      },
+      "DsrAppointmentRequest": {
+        "properties": {
+          "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -2925,7 +2882,6 @@
         "type": "object"
       },
       "DsrAppointmentVideoChat": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -2946,7 +2902,7 @@
         "type": "object"
       },
       "DsrAttendeeProductCollection": {
-        "required": ["attendeeId", "productId", "createdAt"],
+        "required": ["attendeeId", "productId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "attendeeId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -2965,7 +2921,6 @@
         "type": "object"
       },
       "DsrInteraction": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -2982,7 +2937,7 @@
         "type": "object"
       },
       "DsrPresentation": {
-        "required": ["id", "createdById", "createdAt", "name"],
+        "required": ["id", "createdById", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3018,7 +2973,7 @@
       },
       "DsrPresentationCmsPage": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "presentationId", "cmsPageId", "createdAt"],
+        "required": ["id", "presentationId", "cmsPageId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "presentationId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3053,7 +3008,6 @@
       },
       "Flow": {
         "description": "Added since version: 6.4.6.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3071,7 +3025,6 @@
       },
       "FlowSequence": {
         "description": "Added since version: 6.4.6.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3089,7 +3042,6 @@
       },
       "FlowTemplate": {
         "description": "Added since version: 6.4.18.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3107,7 +3059,6 @@
       },
       "ImportExportFile": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3125,7 +3076,6 @@
       },
       "ImportExportLog": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3143,7 +3093,6 @@
       },
       "ImportExportProfile": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3162,7 +3111,6 @@
       },
       "Integration": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3183,7 +3131,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": ["id", "createdAt", "name", "url"],
+            "required": ["id", "name", "url"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3277,7 +3225,7 @@
       },
       "LandingPage": {
         "description": "Added since version: 6.4.0.0",
-        "required": ["apiAlias", "id", "createdAt", "name", "url"],
+        "required": ["apiAlias", "id", "name", "url"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3316,7 +3264,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": ["id", "localeId", "name", "createdAt"],
+            "required": ["id", "localeId", "name"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "parentId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3455,7 +3403,7 @@
       },
       "Language": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "localeId", "name", "createdAt"],
+        "required": ["id", "localeId", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "parentId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3488,7 +3436,7 @@
       },
       "Locale": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "code", "createdAt", "name", "territory"],
+        "required": ["id", "code", "name", "territory"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "code": { "type": "string" },
@@ -3511,7 +3459,6 @@
       },
       "LogEntry": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3529,7 +3476,7 @@
       },
       "MailHeaderFooter": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt", "name"],
+        "required": ["name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "systemDefault": { "type": "boolean" },
@@ -3555,7 +3502,7 @@
       },
       "MailTemplate": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt", "subject", "contentHtml", "contentPlain"],
+        "required": ["subject", "contentHtml", "contentPlain"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "systemDefault": { "type": "boolean" },
@@ -3599,7 +3546,7 @@
       },
       "MailTemplateType": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "technicalName", "createdAt", "name"],
+        "required": ["id", "technicalName", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -3624,13 +3571,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": [
-              "id",
-              "productId",
-              "categoryId",
-              "salesChannelId",
-              "createdAt"
-            ],
+            "required": ["id", "productId", "categoryId", "salesChannelId"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "productId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3664,13 +3605,7 @@
       },
       "MainCategory": {
         "description": "Added since version: 6.1.0.0",
-        "required": [
-          "id",
-          "productId",
-          "categoryId",
-          "salesChannelId",
-          "createdAt"
-        ],
+        "required": ["id", "productId", "categoryId", "salesChannelId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "productId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3704,8 +3639,7 @@
           "path",
           "private",
           "url",
-          "id",
-          "createdAt"
+          "id"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3788,7 +3722,7 @@
         "type": "object"
       },
       "MediaAiTag": {
-        "required": ["id", "createdAt"],
+        "required": ["id"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "tags": {
@@ -3812,7 +3746,6 @@
       },
       "MediaDefaultFolder": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3830,7 +3763,6 @@
       },
       "MediaFolder": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3848,7 +3780,6 @@
       },
       "MediaFolderConfiguration": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3878,7 +3809,7 @@
       },
       "MediaThumbnail": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["url", "id", "mediaId", "width", "height", "createdAt"],
+        "required": ["url", "id", "mediaId", "width", "height"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "mediaId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -3905,7 +3836,7 @@
       },
       "MediaThumbnailSize": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "width", "height", "createdAt"],
+        "required": ["id", "width", "height"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "width": { "type": "integer", "format": "int64" },
@@ -3929,7 +3860,6 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": ["createdAt"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "createdAt": {
@@ -3949,7 +3879,6 @@
       },
       "NewsletterRecipient": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3967,7 +3896,6 @@
       },
       "Notification": {
         "description": "Added since version: 6.4.7.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -3985,7 +3913,7 @@
       },
       "NumberRange": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt", "name"],
+        "required": ["name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -4004,7 +3932,6 @@
       },
       "NumberRangeSalesChannel": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -4022,7 +3949,6 @@
       },
       "NumberRangeState": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -4040,7 +3966,7 @@
       },
       "NumberRangeType": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt", "typeName"],
+        "required": ["typeName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -4069,8 +3995,7 @@
           "languageId",
           "salesChannelId",
           "orderDateTime",
-          "currencyFactor",
-          "createdAt"
+          "currencyFactor"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4272,8 +4197,7 @@
           "firstName",
           "lastName",
           "street",
-          "city",
-          "createdAt"
+          "city"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4311,7 +4235,7 @@
       },
       "OrderCustomer": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "email", "firstName", "lastName", "createdAt"],
+        "required": ["id", "email", "firstName", "lastName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4346,10 +4270,8 @@
           "shippingOrderAddressId",
           "shippingMethodId",
           "stateId",
-          "trackingCodes",
           "shippingDateEarliest",
-          "shippingDateLatest",
-          "createdAt"
+          "shippingDateLatest"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4422,7 +4344,7 @@
       },
       "OrderDeliveryPosition": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "orderDeliveryId", "orderLineItemId", "createdAt"],
+        "required": ["id", "orderDeliveryId", "orderLineItemId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4488,10 +4410,8 @@
           "identifier",
           "quantity",
           "label",
-          "position",
           "states",
-          "children",
-          "createdAt"
+          "children"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4678,8 +4598,7 @@
           "orderLineItemId",
           "mediaId",
           "position",
-          "accessGranted",
-          "createdAt"
+          "accessGranted"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4709,7 +4628,6 @@
         "type": "object"
       },
       "OrderProductWarehouse": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -4726,14 +4644,7 @@
         "type": "object"
       },
       "OrderReturn": {
-        "required": [
-          "id",
-          "orderId",
-          "stateId",
-          "returnNumber",
-          "requestedAt",
-          "createdAt"
-        ],
+        "required": ["id", "orderId", "stateId", "returnNumber", "requestedAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4816,8 +4727,7 @@
           "orderLineItemId",
           "reasonId",
           "quantity",
-          "stateId",
-          "createdAt"
+          "stateId"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4856,7 +4766,7 @@
         "type": "object"
       },
       "OrderReturnLineItemReason": {
-        "required": ["id", "reasonKey", "createdAt", "content"],
+        "required": ["id", "reasonKey", "content"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "reasonKey": { "type": "string" },
@@ -4890,14 +4800,7 @@
       },
       "OrderTransaction": {
         "description": "Added since version: 6.0.0.0",
-        "required": [
-          "id",
-          "orderId",
-          "paymentMethodId",
-          "amount",
-          "stateId",
-          "createdAt"
-        ],
+        "required": ["id", "orderId", "paymentMethodId", "amount", "stateId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -4956,13 +4859,7 @@
       },
       "OrderTransactionCapture": {
         "description": "Added since version: 6.4.12.0",
-        "required": [
-          "id",
-          "orderTransactionId",
-          "stateId",
-          "amount",
-          "createdAt"
-        ],
+        "required": ["id", "orderTransactionId", "stateId", "amount"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -5028,7 +4925,7 @@
       },
       "OrderTransactionCaptureRefund": {
         "description": "Added since version: 6.4.12.0",
-        "required": ["id", "captureId", "stateId", "amount", "createdAt"],
+        "required": ["id", "captureId", "stateId", "amount"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -5091,13 +4988,7 @@
       },
       "OrderTransactionCaptureRefundPosition": {
         "description": "Added since version: 6.4.12.0",
-        "required": [
-          "id",
-          "refundId",
-          "orderLineItemId",
-          "amount",
-          "createdAt"
-        ],
+        "required": ["id", "refundId", "orderLineItemId", "amount"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -5156,7 +5047,6 @@
         "type": "object"
       },
       "OrderWarehouseGroup": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -5177,7 +5067,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": ["id", "createdAt", "name"],
+            "required": ["id", "name"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "name": { "type": "string" },
@@ -5267,7 +5157,7 @@
       },
       "PaymentMethod": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "createdAt", "name"],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -5325,7 +5215,7 @@
       },
       "Plugin": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt", "label"],
+        "required": ["label"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -5347,14 +5237,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": [
-              "id",
-              "taxId",
-              "productNumber",
-              "stock",
-              "createdAt",
-              "name"
-            ],
+            "required": ["id", "taxId", "productNumber", "stock", "name"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -6285,7 +6168,6 @@
           "taxId",
           "productNumber",
           "stock",
-          "createdAt",
           "name"
         ],
         "properties": {
@@ -6647,7 +6529,7 @@
       },
       "ProductConfiguratorSetting": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "productId", "optionId", "createdAt"],
+        "required": ["id", "productId", "optionId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -6674,7 +6556,7 @@
       },
       "ProductCrossSelling": {
         "description": "Added since version: 6.1.0.0",
-        "required": ["id", "name", "position", "type", "createdAt"],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -6700,7 +6582,6 @@
       },
       "ProductCrossSellingAssignedProducts": {
         "description": "Added since version: 6.2.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -6718,7 +6599,7 @@
       },
       "ProductDownload": {
         "description": "Added since version: 6.4.19.0",
-        "required": ["id", "productId", "mediaId", "createdAt"],
+        "required": ["id", "productId", "mediaId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -6744,7 +6625,6 @@
       },
       "ProductExport": {
         "description": "Added since version: 6.1.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -6762,7 +6642,7 @@
       },
       "ProductFeatureSet": {
         "description": "Added since version: 6.3.0.0",
-        "required": ["createdAt", "name"],
+        "required": ["name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -6791,7 +6671,7 @@
       },
       "ProductManufacturer": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "createdAt", "name"],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -6817,7 +6697,7 @@
       },
       "ProductMedia": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "productId", "mediaId", "createdAt"],
+        "required": ["id", "productId", "mediaId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -6843,7 +6723,6 @@
       },
       "ProductPrice": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -6868,8 +6747,7 @@
           "salesChannelId",
           "languageId",
           "title",
-          "content",
-          "createdAt"
+          "content"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -6897,7 +6775,7 @@
         "type": "object"
       },
       "ProductReviewSummary": {
-        "required": ["id", "productId", "salesChannelId", "createdAt"],
+        "required": ["id", "productId", "salesChannelId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "productId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -6922,7 +6800,6 @@
       },
       "ProductSearchConfig": {
         "description": "Added since version: 6.3.5.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -6940,7 +6817,6 @@
       },
       "ProductSearchConfigField": {
         "description": "Added since version: 6.3.5.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -6958,7 +6834,6 @@
       },
       "ProductSearchKeyword": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -6976,7 +6851,7 @@
       },
       "ProductSorting": {
         "description": "Added since version: 6.3.2.0",
-        "required": ["key", "priority", "createdAt", "label"],
+        "required": ["key", "priority", "label"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "key": { "type": "string" },
@@ -6998,7 +6873,7 @@
       },
       "ProductStream": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "createdAt", "name"],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -7020,7 +6895,6 @@
       },
       "ProductStreamFilter": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7038,7 +6912,6 @@
       },
       "ProductVisibility": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7055,7 +6928,6 @@
         "type": "object"
       },
       "ProductWarehouse": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7073,7 +6945,7 @@
       },
       "Promotion": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt", "name"],
+        "required": ["name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "customFields": { "type": "object" },
@@ -7093,7 +6965,6 @@
       },
       "PromotionDiscount": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7111,7 +6982,6 @@
       },
       "PromotionDiscountPrices": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7129,7 +6999,6 @@
       },
       "PromotionIndividualCode": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7147,7 +7016,6 @@
       },
       "PromotionSalesChannel": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7165,7 +7033,6 @@
       },
       "PromotionSetgroup": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7183,7 +7050,7 @@
       },
       "PropertyGroup": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "displayType", "sortingType", "createdAt", "name"],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -7214,7 +7081,7 @@
       },
       "PropertyGroupOption": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["group", "option", "id", "groupId", "createdAt", "name"],
+        "required": ["group", "option", "id", "groupId", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "groupId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -7248,8 +7115,7 @@
           "currencyId",
           "languageId",
           "salesChannelId",
-          "customerId",
-          "createdAt"
+          "customerId"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -7372,7 +7238,7 @@
         "type": "object"
       },
       "QuoteComment": {
-        "required": ["id", "comment", "quoteId", "createdAt"],
+        "required": ["id", "comment", "quoteId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -7407,8 +7273,7 @@
           "quoteId",
           "shippingMethodId",
           "shippingDateEarliest",
-          "shippingDateLatest",
-          "createdAt"
+          "shippingDateLatest"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -7465,7 +7330,7 @@
       },
       "QuoteDeliveryPosition": {
         "description": "Added since version: 6.5.3.0",
-        "required": ["id", "quoteDeliveryId", "quoteLineItemId", "createdAt"],
+        "required": ["id", "quoteDeliveryId", "quoteLineItemId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -7529,8 +7394,7 @@
           "fileType",
           "quoteId",
           "config",
-          "deepLinkCode",
-          "createdAt"
+          "deepLinkCode"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -7567,7 +7431,7 @@
         "type": "object"
       },
       "QuoteEmployee": {
-        "required": ["firstName", "lastName", "createdAt"],
+        "required": ["firstName", "lastName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "firstName": { "type": "string" },
@@ -7595,8 +7459,7 @@
           "states",
           "label",
           "quantity",
-          "position",
-          "createdAt"
+          "position"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -7660,7 +7523,7 @@
       },
       "QuoteTransaction": {
         "description": "Added since version: 6.5.3.0",
-        "required": ["id", "quoteId", "paymentMethodId", "amount", "createdAt"],
+        "required": ["id", "quoteId", "paymentMethodId", "amount"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -7710,7 +7573,7 @@
       },
       "Rule": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["name", "createdAt"],
+        "required": ["name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -7767,7 +7630,6 @@
       },
       "RuleCondition": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7784,7 +7646,6 @@
         "type": "object"
       },
       "SaasAppStorefrontConfig": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7801,7 +7662,6 @@
         "type": "object"
       },
       "SaasSbpUserData": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7818,7 +7678,6 @@
         "type": "object"
       },
       "SaasStorefrontDemoToken": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7835,7 +7694,6 @@
         "type": "object"
       },
       "SaasUserLoginToken": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7862,7 +7720,6 @@
           "shippingMethodId",
           "countryId",
           "navigationCategoryId",
-          "createdAt",
           "name",
           "homeEnabled"
         ],
@@ -7943,7 +7800,6 @@
       },
       "SalesChannelAnalytics": {
         "description": "Added since version: 6.2.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -7967,8 +7823,7 @@
           "salesChannelId",
           "languageId",
           "currencyId",
-          "snippetSetId",
-          "createdAt"
+          "snippetSetId"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -7999,7 +7854,7 @@
       },
       "SalesChannelType": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt", "name"],
+        "required": ["name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8021,13 +7876,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": [
-              "id",
-              "salutationKey",
-              "createdAt",
-              "displayName",
-              "letterName"
-            ],
+            "required": ["id", "salutationKey", "displayName", "letterName"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "salutationKey": { "type": "string" },
@@ -8052,13 +7901,7 @@
       },
       "Salutation": {
         "description": "Added since version: 6.0.0.0",
-        "required": [
-          "id",
-          "salutationKey",
-          "createdAt",
-          "displayName",
-          "letterName"
-        ],
+        "required": ["id", "salutationKey", "displayName", "letterName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "salutationKey": { "type": "string" },
@@ -8081,7 +7924,6 @@
       },
       "ScheduledTask": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8099,7 +7941,6 @@
       },
       "Script": {
         "description": "Added since version: 6.4.7.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8126,8 +7967,7 @@
               "foreignKey",
               "routeName",
               "pathInfo",
-              "seoPathInfo",
-              "createdAt"
+              "seoPathInfo"
             ],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -8175,8 +8015,7 @@
           "foreignKey",
           "routeName",
           "pathInfo",
-          "seoPathInfo",
-          "createdAt"
+          "seoPathInfo"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -8216,11 +8055,11 @@
             "readOnly": true
           }
         },
-        "type": "object"
+        "type": "object",
+        "title": "SeoUrlEntity"
       },
       "SeoUrlTemplate": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "salesChannelId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -8244,13 +8083,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": [
-              "id",
-              "deliveryTimeId",
-              "taxType",
-              "createdAt",
-              "name"
-            ],
+            "required": ["id", "deliveryTimeId", "name"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "name": { "type": "string" },
@@ -8455,7 +8288,7 @@
       },
       "ShippingMethod": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "deliveryTimeId", "taxType", "createdAt", "name"],
+        "required": ["id", "deliveryTimeId", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -8496,7 +8329,7 @@
       },
       "ShippingMethodPrice": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "shippingMethodId", "createdAt"],
+        "required": ["id", "shippingMethodId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "shippingMethodId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -8528,7 +8361,7 @@
       },
       "Snippet": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["setId", "translationKey", "value", "createdAt"],
+        "required": ["setId", "translationKey", "value"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "setId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -8550,7 +8383,7 @@
       },
       "SnippetSet": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["name", "iso", "createdAt"],
+        "required": ["name", "iso"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -8574,7 +8407,6 @@
         "type": "object"
       },
       "SpatialRenderConfigSize": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8591,7 +8423,6 @@
         "type": "object"
       },
       "SpatialScene": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8608,7 +8439,6 @@
         "type": "object"
       },
       "SpatialSceneCamera": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8625,7 +8455,6 @@
         "type": "object"
       },
       "SpatialSceneLight": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8642,7 +8471,6 @@
         "type": "object"
       },
       "SpatialSceneObject": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8659,7 +8487,6 @@
         "type": "object"
       },
       "SsoProvider": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8677,7 +8504,6 @@
         "type": "object"
       },
       "SsoProviderCustomer": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8695,7 +8521,7 @@
       },
       "StateMachine": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt", "name"],
+        "required": ["name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8722,7 +8548,6 @@
       },
       "StateMachineHistory": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8746,7 +8571,7 @@
       },
       "StateMachineState": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["technicalName", "createdAt", "name"],
+        "required": ["technicalName", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "technicalName": { "type": "string" },
@@ -8768,7 +8593,6 @@
       },
       "StateMachineTransition": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -8795,15 +8619,12 @@
           "subscriptionIntervalName",
           "dateInterval",
           "cronInterval",
-          "initialExecutionCount",
-          "remainingExecutionCount",
           "billingAddressId",
           "shippingAddressId",
           "shippingMethodId",
           "paymentMethodId",
           "currencyId",
-          "languageId",
-          "createdAt"
+          "languageId"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -8890,8 +8711,7 @@
           "firstName",
           "lastName",
           "street",
-          "city",
-          "createdAt"
+          "city"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -8936,14 +8756,7 @@
         "type": "object"
       },
       "SubscriptionCustomer": {
-        "required": [
-          "id",
-          "salutationId",
-          "email",
-          "firstName",
-          "lastName",
-          "createdAt"
-        ],
+        "required": ["id", "salutationId", "email", "firstName", "lastName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "customerId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -8971,14 +8784,7 @@
         "type": "object"
       },
       "SubscriptionInterval": {
-        "required": [
-          "id",
-          "name",
-          "active",
-          "dateInterval",
-          "cronInterval",
-          "createdAt"
-        ],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -9011,13 +8817,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": [
-              "id",
-              "name",
-              "active",
-              "activeStorefrontLabel",
-              "createdAt"
-            ],
+            "required": ["id", "name"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "name": { "type": "string" },
@@ -9088,13 +8888,7 @@
         ]
       },
       "SubscriptionPlan": {
-        "required": [
-          "id",
-          "name",
-          "active",
-          "activeStorefrontLabel",
-          "createdAt"
-        ],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -9180,7 +8974,7 @@
         "type": "object"
       },
       "SwagCmsExtensionsBlockRule": {
-        "required": ["id", "cmsBlockId", "createdAt"],
+        "required": ["id", "cmsBlockId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "inverted": { "type": "boolean" },
@@ -9206,7 +9000,6 @@
         "type": "object"
       },
       "SwagCmsExtensionsForm": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -9224,7 +9017,6 @@
         "type": "object"
       },
       "SwagCmsExtensionsFormGroup": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -9242,7 +9034,7 @@
         "type": "object"
       },
       "SwagCmsExtensionsFormGroupField": {
-        "required": ["createdAt", "label"],
+        "required": ["label"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -9260,7 +9052,7 @@
         "type": "object"
       },
       "SwagCmsExtensionsQuickview": {
-        "required": ["id", "createdAt"],
+        "required": ["id"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "active": { "type": "boolean" },
@@ -9284,7 +9076,7 @@
         "type": "object"
       },
       "SwagCmsExtensionsScrollNavigation": {
-        "required": ["id", "createdAt"],
+        "required": ["id"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "active": { "type": "boolean" },
@@ -9310,16 +9102,7 @@
         "type": "object"
       },
       "SwagCmsExtensionsScrollNavigationPageSettings": {
-        "required": [
-          "id",
-          "active",
-          "duration",
-          "easing",
-          "bouncy",
-          "easingDegree",
-          "nativeScrolling",
-          "createdAt"
-        ],
+        "required": ["id", "nativeScrolling"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "active": { "type": "boolean" },
@@ -9348,7 +9131,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": ["id", "internalName", "createdAt", "displayName"],
+            "required": ["id", "internalName", "displayName"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -9534,7 +9317,7 @@
         ]
       },
       "SwagCustomizedProductsTemplate": {
-        "required": ["id", "internalName", "createdAt", "displayName"],
+        "required": ["id", "internalName", "displayName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -9589,13 +9372,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": [
-              "id",
-              "hash",
-              "configuration",
-              "templateId",
-              "createdAt"
-            ],
+            "required": ["id", "hash", "configuration", "templateId"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -9687,7 +9464,7 @@
         ]
       },
       "SwagCustomizedProductsTemplateConfiguration": {
-        "required": ["id", "hash", "configuration", "templateId", "createdAt"],
+        "required": ["id", "hash", "configuration", "templateId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -9721,7 +9498,6 @@
         "type": "object"
       },
       "SwagCustomizedProductsTemplateConfigurationShare": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -9738,7 +9514,7 @@
         "type": "object"
       },
       "SwagCustomizedProductsTemplateExclusion": {
-        "required": ["id", "name", "templateId", "createdAt"],
+        "required": ["id", "name", "templateId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -9775,8 +9551,7 @@
           "id",
           "templateExclusionId",
           "templateOptionId",
-          "templateExclusionOperatorId",
-          "createdAt"
+          "templateExclusionOperatorId"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -9827,13 +9602,7 @@
         "type": "object"
       },
       "SwagCustomizedProductsTemplateExclusionOperator": {
-        "required": [
-          "id",
-          "operator",
-          "templateOptionType",
-          "createdAt",
-          "label"
-        ],
+        "required": ["id", "operator", "templateOptionType", "label"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "operator": { "type": "string" },
@@ -9863,13 +9632,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": [
-              "id",
-              "type",
-              "templateId",
-              "createdAt",
-              "displayName"
-            ],
+            "required": ["id", "type", "templateId", "displayName"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "templateVersionId": {
@@ -10065,7 +9828,7 @@
         ]
       },
       "SwagCustomizedProductsTemplateOption": {
-        "required": ["id", "type", "templateId", "createdAt", "displayName"],
+        "required": ["id", "type", "templateId", "displayName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "templateVersionId": {
@@ -10128,7 +9891,7 @@
         "type": "object"
       },
       "SwagCustomizedProductsTemplateOptionPrice": {
-        "required": ["id", "templateOptionId", "createdAt"],
+        "required": ["id", "templateOptionId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -10164,13 +9927,7 @@
         "allOf": [
           { "$ref": "#/components/schemas/resource" },
           {
-            "required": [
-              "id",
-              "templateOptionId",
-              "position",
-              "createdAt",
-              "displayName"
-            ],
+            "required": ["id", "templateOptionId", "position", "displayName"],
             "properties": {
               "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
               "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -10335,13 +10092,7 @@
         ]
       },
       "SwagCustomizedProductsTemplateOptionValue": {
-        "required": [
-          "id",
-          "templateOptionId",
-          "position",
-          "createdAt",
-          "displayName"
-        ],
+        "required": ["id", "templateOptionId", "position", "displayName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -10395,7 +10146,7 @@
         "type": "object"
       },
       "SwagCustomizedProductsTemplateOptionValuePrice": {
-        "required": ["id", "templateOptionValueId", "createdAt"],
+        "required": ["id", "templateOptionValueId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "versionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -10431,7 +10182,7 @@
         "type": "object"
       },
       "SwagDelayAction": {
-        "required": ["id", "createdAt"],
+        "required": ["id"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "orderId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -10477,7 +10228,6 @@
         "type": "object"
       },
       "SwagLanguagePackLanguage": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10494,7 +10244,6 @@
         "type": "object"
       },
       "SwagMigrationConnection": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10511,7 +10260,6 @@
         "type": "object"
       },
       "SwagMigrationData": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10528,7 +10276,6 @@
         "type": "object"
       },
       "SwagMigrationGeneralSetting": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10545,7 +10292,6 @@
         "type": "object"
       },
       "SwagMigrationLogging": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10562,7 +10308,6 @@
         "type": "object"
       },
       "SwagMigrationMapping": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10579,7 +10324,6 @@
         "type": "object"
       },
       "SwagMigrationMediaFile": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10596,7 +10340,6 @@
         "type": "object"
       },
       "SwagMigrationRun": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10613,7 +10356,6 @@
         "type": "object"
       },
       "SwagPaypalPosSalesChannel": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10630,7 +10372,6 @@
         "type": "object"
       },
       "SwagPaypalPosSalesChannelRun": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10647,7 +10388,6 @@
         "type": "object"
       },
       "SwagPaypalPosSalesChannelRunLog": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10664,7 +10404,6 @@
         "type": "object"
       },
       "SwagPaypalTransactionReport": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10681,7 +10420,7 @@
         "type": "object"
       },
       "SwagPaypalVaultTokenMapping": {
-        "required": ["customerId", "paymentMethodId", "tokenId", "createdAt"],
+        "required": ["customerId", "paymentMethodId", "tokenId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "customerId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -10704,7 +10443,7 @@
         "type": "object"
       },
       "SwagSocialShoppingCustomer": {
-        "required": ["id", "createdAt"],
+        "required": ["id"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10721,7 +10460,7 @@
         "type": "object"
       },
       "SwagSocialShoppingOrder": {
-        "required": ["id", "createdAt"],
+        "required": ["id"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10738,7 +10477,6 @@
         "type": "object"
       },
       "SwagSocialShoppingProductError": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10755,7 +10493,6 @@
         "type": "object"
       },
       "SwagSocialShoppingSalesChannel": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10773,12 +10510,7 @@
       },
       "SystemConfig": {
         "description": "Added since version: 6.0.0.0",
-        "required": [
-          "id",
-          "configurationKey",
-          "configurationValue",
-          "createdAt"
-        ],
+        "required": ["id", "configurationKey", "configurationValue"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "configurationKey": { "type": "string" },
@@ -10803,7 +10535,7 @@
       },
       "Tag": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "name", "createdAt"],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "name": { "type": "string" },
@@ -10822,7 +10554,7 @@
       },
       "Tax": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "taxRate", "name", "position", "createdAt"],
+        "required": ["id", "taxRate", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "taxRate": { "type": "number", "format": "float" },
@@ -10848,7 +10580,7 @@
       },
       "TaxProvider": {
         "description": "Added since version: 6.5.0.0",
-        "required": ["id", "priority", "createdAt", "name"],
+        "required": ["id", "priority", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "active": { "type": "boolean" },
@@ -10873,7 +10605,6 @@
       },
       "TaxRule": {
         "description": "Added since version: 6.1.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10891,7 +10622,7 @@
       },
       "TaxRuleType": {
         "description": "Added since version: 6.1.0.0",
-        "required": ["createdAt", "typeName"],
+        "required": ["typeName"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10910,7 +10641,7 @@
       },
       "Theme": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "name", "author", "active", "createdAt"],
+        "required": ["id", "name", "author", "active"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "technicalName": { "type": "string" },
@@ -10945,7 +10676,7 @@
       },
       "Unit": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["id", "createdAt", "shortCode", "name"],
+        "required": ["id", "shortCode", "name"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "shortCode": { "type": "string" },
@@ -10967,7 +10698,6 @@
       },
       "User": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -10985,7 +10715,6 @@
       },
       "UserAccessKey": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -11003,7 +10732,6 @@
       },
       "UserConfig": {
         "description": "Added since version: 6.3.5.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -11021,7 +10749,6 @@
       },
       "UserRecovery": {
         "description": "Added since version: 6.0.0.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -11038,7 +10765,6 @@
         "type": "object"
       },
       "Warehouse": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -11055,7 +10781,6 @@
         "type": "object"
       },
       "WarehouseGroup": {
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -11073,7 +10798,6 @@
       },
       "Webhook": {
         "description": "Added since version: 6.3.1.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -11091,7 +10815,6 @@
       },
       "WebhookEventLog": {
         "description": "Added since version: 6.4.1.0",
-        "required": ["createdAt"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -12786,13 +12509,78 @@
       },
       "AbstractDynamicPageOpenedPayload": {
         "type": "object",
-        "required": ["type"],
+        "required": ["pageId", "type"],
         "properties": {
+          "pageId": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$",
+            "description": "The id of the current dynamic page"
+          },
           "type": {
             "type": "string",
             "description": "The type of the current dynamic page"
           },
-          "opened": { "type": "boolean", "default": true }
+          "opened": { "type": "boolean", "default": true },
+          "position": {
+            "type": "integer",
+            "description": "The position of the dynamic page in the list of dynamic pages"
+          }
+        }
+      },
+      "AppointmentBasicSettingResponse": {
+        "type": "object",
+        "properties": {
+          "apiAlias": {
+            "type": "string",
+            "description": "The API alias of the appointment basic setting"
+          },
+          "mode": {
+            "type": "string",
+            "description": "The mode of the interaction"
+          },
+          "attendeeRestrictionType": {
+            "type": "string",
+            "description": "The type of attendee restriction",
+            "enum": ["open", "customer", "rules"]
+          },
+          "videoAudioSettings": {
+            "type": "string",
+            "description": "The video and audio settings",
+            "enum": ["none", "both", "audio_only"]
+          },
+          "canSendRequestEmail": {
+            "type": "boolean",
+            "description": "Indicates if request emails can be sent",
+            "default": false
+          },
+          "canBookAppointment": {
+            "type": "boolean",
+            "description": "Indicates if appointments can be booked",
+            "default": false
+          },
+          "bookingLink": {
+            "description": "The booking link",
+            "oneOf": [{ "type": "string" }, { "type": "null" }]
+          },
+          "appointmentName": {
+            "type": "string",
+            "description": "The name of the appointment"
+          },
+          "salesChannelName": {
+            "type": "string",
+            "description": "The name of the sales channel"
+          }
+        },
+        "example": {
+          "apiAlias": "appointment_basic_setting",
+          "mode": "self",
+          "attendeeRestrictionType": "open",
+          "videoAudioSettings": "none",
+          "canSendRequestEmail": false,
+          "canBookAppointment": false,
+          "bookingLink": null,
+          "appointmentName": "dsr11",
+          "salesChannelName": "Storefront"
         }
       },
       "AttendeeProductCollectionLastSeenResponse": {
@@ -12943,34 +12731,137 @@
           "stateForMe": {
             "attendeeName": " admin",
             "guideCartPermissionsGranted": false,
-            "attendeeSubmittedAt": null,
             "extensions": []
           },
           "apiAlias": "swag_digital_sales_rooms_content_presentation_state_sales_channel_get_get_client_presentation_state_struct"
         }
       },
+      "CreateAppointmentRequestBody": {
+        "type": "object",
+        "description": "Includes all data you will need to attend to a appointment.",
+        "required": [
+          "salutationId",
+          "firstName",
+          "lastName",
+          "emailAddress",
+          "subject"
+        ],
+        "properties": {
+          "salutationId": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$",
+            "description": "The id of the salutation"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the requester"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the requester"
+          },
+          "emailAddress": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address of the requester"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The company name of the requester"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The phone number of the requester"
+          },
+          "subject": {
+            "type": "string",
+            "description": "The subject of the appointment"
+          },
+          "message": {
+            "type": "string",
+            "description": "The message of the appointment"
+          }
+        },
+        "example": {
+          "id": "2d2c358f1ca04098aacf12873c2eed94",
+          "appointmentId": "3b3c358f1ca04098aacf12873c2eed94",
+          "salutationId": "5m6c358f1ca04098aacf12873c2eed94",
+          "firstName": "John",
+          "lastName": "Doe",
+          "emailAddress": "john@example.com",
+          "companyName": "Example Inc.",
+          "phoneNumber": "+1234567890",
+          "subject": "Appointment subject",
+          "message": "Appointment message",
+          "requestedById": "7b7c358f1ca04098aacf12873c2eed94"
+        }
+      },
       "CreateInteractionRequestBody": {
         "type": "object",
-        "required": ["name"],
+        "required": ["name", "payload"],
         "properties": {
-          "name": { "$ref": "#/components/schemas/InteractionName" },
+          "name": {
+            "type": "string",
+            "description": "the name of the interaction",
+            "enum": [
+              "keep.alive",
+              "product.viewed",
+              "quickview.opened",
+              "quickview.closed",
+              "dynamicPage.opened",
+              "dynamicProductPage.opened",
+              "dynamicPage.closed",
+              "page.viewed",
+              "guide.hovered",
+              "attendee.product.collection.liked",
+              "attendee.product.collection.disliked",
+              "attendee.product.collection.removed",
+              "attendee.leave",
+              "remote.checkout.accepted",
+              "remote.checkout.denied",
+              "broadcastMode.toggled",
+              "viewMode.changed",
+              "screenSharing.toggled"
+            ]
+          },
           "payload": {
-            "type": "object",
             "oneOf": [
-              { "$ref": "#/components/schemas/ProductPayload" },
-              { "$ref": "#/components/schemas/PageViewedPayload" },
               { "$ref": "#/components/schemas/EmptyPayload" },
+              { "$ref": "#/components/schemas/ProductPayload" },
               { "$ref": "#/components/schemas/DynamicPageOpenedPayload" },
               {
                 "$ref": "#/components/schemas/DynamicProductPageOpenedPayload"
               },
-              {
-                "$ref": "#/components/schemas/DynamicProductListingPageOpenedPayload"
-              },
+              { "$ref": "#/components/schemas/DynamicPageClosedPayload" },
+              { "$ref": "#/components/schemas/PageViewedPayload" },
+              { "$ref": "#/components/schemas/GuideHoveredPayload" },
               { "$ref": "#/components/schemas/ToggleBroadcastModePayload" },
-              { "$ref": "#/components/schemas/GuideHoveredPayload" }
+              { "$ref": "#/components/schemas/ViewModeChangedPayload" },
+              { "$ref": "#/components/schemas/ScreenSharingToggledPayload" }
             ],
-            "descripton": "depends on the name of the interaction which payload has to be sent"
+            "discriminator": {
+              "propertyName": "name",
+              "mapping": {
+                "keep.alive": "#/components/schemas/EmptyPayload",
+                "product.viewed": "#/components/schemas/ProductPayload",
+                "quickview.opened": "#/components/schemas/EmptyPayload",
+                "quickview.closed": "#/components/schemas/EmptyPayload",
+                "dynamicPage.opened": "#/components/schemas/DynamicPageOpenedPayload",
+                "dynamicProductPage.opened": "#/components/schemas/DynamicProductPageOpenedPayload",
+                "dynamicPage.closed": "#/components/schemas/DynamicPageClosedPayload",
+                "page.viewed": "#/components/schemas/PageViewedPayload",
+                "guide.hovered": "#/components/schemas/GuideHoveredPayload",
+                "attendee.product.collection.liked": "#/components/schemas/ProductPayload",
+                "attendee.product.collection.disliked": "#/components/schemas/ProductPayload",
+                "attendee.product.collection.removed": "#/components/schemas/ProductPayload",
+                "attendee.leave": "#/components/schemas/EmptyPayload",
+                "remote.checkout.accepted": "#/components/schemas/EmptyPayload",
+                "remote.checkout.denied": "#/components/schemas/EmptyPayload",
+                "broadcastMode.toggled": "#/components/schemas/ToggleBroadcastModePayload",
+                "viewMode.changed": "#/components/schemas/ViewModeChangedPayload",
+                "screenSharing.toggled": "#/components/schemas/ScreenSharingToggledPayload"
+              }
+            }
           },
           "triggeredAt": {
             "type": "string",
@@ -12984,15 +12875,30 @@
           }
         }
       },
+      "DynamicPageClosedPayload": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "oneOf": [
+              { "type": "string", "pattern": "^[a-f0-9]{32}$" },
+              { "type": "null" }
+            ],
+            "pattern": "^[a-f0-9]{32}$",
+            "description": "The id of the page that was closed"
+          },
+          "all": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether all pages were closed"
+          }
+        }
+      },
       "DynamicPageOpenedPayload": {
         "allOf": [
           { "$ref": "#/components/schemas/AbstractDynamicPageOpenedPayload" }
         ]
       },
       "DynamicProductListingPageOpenedPayload": {
-        "allOf": [
-          { "$ref": "#/components/schemas/AbstractDynamicPageOpenedPayload" }
-        ],
         "required": ["page"],
         "properties": {
           "page": {
@@ -13018,7 +12924,7 @@
       "GuideHoveredPayload": {
         "type": "object",
         "properties": {
-          "$hoveredElementId": {
+          "hoveredElementId": {
             "anyOf": [
               {
                 "type": "string",
@@ -13029,30 +12935,6 @@
             ]
           }
         }
-      },
-      "InteractionName": {
-        "type": "string",
-        "description": "the name/type of the interaction",
-        "enum": [
-          "product.viewed",
-          "dynamicPage.opened",
-          "dynamicProductPage.opened",
-          "dynamicPage.closed",
-          "page.viewed",
-          "attendee.product.collection.liked",
-          "attendee.product.collection.disliked",
-          "attendee.product.collection.removed",
-          "remote.checkout.accepted",
-          "remote.checkout.declined",
-          "keep.alive",
-          "quickview.opened",
-          "quickview.closed",
-          "dynamicProductListingPage.opened",
-          "dynamicProductListingPage.loadedMore",
-          "remote.checkout.denied",
-          "guide.hovered",
-          "broadcastMode.toggled"
-        ]
       },
       "JoinAppointmentResponse": {
         "type": "object",
@@ -13139,7 +13021,7 @@
       },
       "PageViewedPayload": {
         "type": "object",
-        "required": ["pageId", "sectionId"],
+        "required": ["pageId", "sectionId", "slideAlias"],
         "properties": {
           "pageId": {
             "type": "string",
@@ -13150,92 +13032,19 @@
             "type": "string",
             "pattern": "^[0-9a-f]{32}$",
             "description": "the id from the section within the page which was viewed"
-          }
-        }
-      },
-      "PresentationCmsPage": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "pattern": "^[0-9a-f]{32}$",
-            "description": "The presentation cms page id"
           },
-          "title": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "description": "The title of presentation cms page"
+          "slideAlias": {
+            "type": "number",
+            "description": "the alias of the slide which was viewed"
           },
-          "presentationId": {
-            "type": "string",
-            "pattern": "^[0-9a-f]{32}$",
-            "description": "The presentation using this presentation cms page"
-          },
-          "dsrPresentationVersionId": {
-            "type": "string",
-            "pattern": "^[0-9a-f]{32}$"
-          },
-          "cmsPageId": {
-            "type": "string",
-            "pattern": "^[0-9a-f]{32}$",
-            "description": "The CMS page id the presentation using"
-          },
-          "cmsPage": { "$ref": "#/components/schemas/CmsPage" },
-          "cmsPageVersionId": {
-            "type": "string",
-            "pattern": "^[0-9a-f]{32}$",
-            "description": "The CMS page version id the presentation using"
-          },
-          "productId": {
-            "anyOf": [
-              { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-              { "type": "null" }
-            ],
-            "description": "The product id is assigned to presentation if it's product detail"
-          },
-          "productStreamId": {
-            "anyOf": [
-              { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-              { "type": "null" }
-            ],
-            "description": "The product stream id is assigned to presentation if it's product listing"
-          },
-          "pickedProductIds": {
-            "anyOf": [
+          "pageNumber": {
+            "oneOf": [
               {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "pattern": "^[0-9a-f]{32}$",
-                  "description": "Product id"
-                }
+                "type": "integer",
+                "description": "the number of the page which was viewed"
               },
               { "type": "null" }
-            ],
-            "description": "The product id is assigned to presentation if it's product listing or instant listing"
-          },
-          "position": {
-            "type": "integer",
-            "description": "The position of slide"
-          },
-          "isInstantListing": {
-            "type": "boolean",
-            "description": "True if this slide is an instant listing"
-          },
-          "createdAt": { "type": "string", "format": "date-time" },
-          "updatedAt": {
-            "anyOf": [
-              { "type": "string", "format": "date-time" },
-              { "type": "null" }
             ]
-          },
-          "customFields": {
-            "anyOf": [{ "type": "object" }, { "type": "null" }]
-          },
-          "translated": {
-            "type": "object",
-            "properties": {
-              "title": { "anyOf": [{ "type": "string" }, { "type": "null" }] }
-            }
           }
         }
       },
@@ -13249,7 +13058,7 @@
                 "type": "object",
                 "properties": {
                   "cmsPageRelation": {
-                    "$ref": "#/components/schemas/PresentationCmsPage"
+                    "$ref": "#/components/schemas/DsrPresentationCmsPage"
                   }
                 }
               }
@@ -14687,6 +14496,20 @@
           "apiAlias": "pwa_page_result"
         }
       },
+      "ProductPageResult": {
+        "type": "object",
+        "properties": {
+          "cmsPage": { "$ref": "#/components/schemas/CmsPage" },
+          "product": { "$ref": "#/components/schemas/Product" },
+          "configurator": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/PropertyGroup" },
+              { "type": "null" }
+            ]
+          },
+          "apiAlias": { "type": "string" }
+        }
+      },
       "ProductPayload": {
         "type": "object",
         "required": ["productId"],
@@ -14695,6 +14518,16 @@
             "type": "string",
             "pattern": "^[0-9a-f]{32}$",
             "description": "the id from the product which is used in the interaction"
+          }
+        }
+      },
+      "ScreenSharingToggledPayload": {
+        "type": "object",
+        "required": ["active"],
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "description": "Whether the screen sharing is active or not"
           }
         }
       },
@@ -14726,6 +14559,14 @@
             ]
           },
           "currentSlideAlias": { "type": "integer", "default": 0 },
+          "currentSlideData": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DynamicProductListingPageOpenedPayload"
+              },
+              { "type": "null" }
+            ]
+          },
           "currentDynamicPage": {
             "$ref": "#/components/schemas/DynamicPageOpenedPayload"
           },
@@ -14789,6 +14630,12 @@
           },
           "allowUserActionsForGuide": { "type": "boolean", "default": false },
           "broadcastMode": { "type": "boolean", "default": false },
+          "viewMode": {
+            "type": "string",
+            "enum": ["onlyYou", "presentation", "videoGrid"],
+            "default": "presentation"
+          },
+          "allowScreenSharing": { "type": "boolean", "default": false },
           "extensions": { "type": "array", "default": [] }
         }
       },
@@ -14814,12 +14661,6 @@
             "anyOf": [{ "type": "string" }, { "type": "null" }]
           },
           "guideCartPermissionsGranted": { "type": "boolean", "default": null },
-          "attendeeSubmittedAt": {
-            "anyOf": [
-              { "type": "string", "format": "date-time" },
-              { "type": "null" }
-            ]
-          },
           "extensions": { "type": "array", "default": [] }
         }
       },
@@ -14835,12 +14676,6 @@
       },
       "UpdateAttendeeRequestBody": {
         "type": "object",
-        "required": [
-          "attendeeName",
-          "videoUserId",
-          "guideCartPermissionsGranted",
-          "attendeeSubmitted"
-        ],
         "properties": {
           "attendeeName": {
             "type": "string",
@@ -14853,10 +14688,17 @@
           "guideCartPermissionsGranted": {
             "type": "boolean",
             "description": "The permission for guide cart actions"
-          },
-          "attendeeSubmitted": {
-            "type": "boolean",
-            "description": "The first time the attendee submit the update form"
+          }
+        }
+      },
+      "ViewModeChangedPayload": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "description": "The view mode of presentation",
+            "enum": ["onlyYou", "presentation", "videoGrid"],
+            "default": "presentation"
           }
         }
       }
@@ -15998,8 +15840,8 @@
     "/breadcrumb/{id}": {
       "get": {
         "tags": ["Experimental", "Breadcrumb"],
-        "summary": "Experimental API, not part of our backwards compatibility promise, thus this API can introduce breaking changes at any time.",
-        "description": "Perform search to get category or product breadcrumb.",
+        "summary": "Fetch a breadcrumb",
+        "description": "Perform search to get category or product breadcrumb. \n\nExperimental API, not part of our backwards compatibility promise, thus this API can introduce breaking changes at any time.",
         "operationId": "readBreadcrumb",
         "parameters": [
           {
@@ -18588,6 +18430,44 @@
         "security": [{ "ApiKey": [] }]
       }
     },
+    "/sitemap/{filePath}": {
+      "get": {
+        "tags": ["Sitemap & Routes"],
+        "summary": "Download sitemap file",
+        "description": "Downloads the sitemap file from the configured sitemap storage.",
+        "operationId": "getSitemapFile",
+        "parameters": [
+          {
+            "name": "filePath",
+            "in": "path",
+            "description": "The path to the sitemap file",
+            "required": true,
+            "schema": { "type": "string", "pattern": ".*\\.(xml|gz)$" }
+          },
+          {
+            "name": "sw-language-id",
+            "in": "header",
+            "description": "Instructs Shopware to return the response in the given language.",
+            "required": false,
+            "schema": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the blob to download.",
+            "content": {
+              "application/xml": {
+                "schema": { "type": "string", "format": "binary" }
+              },
+              "application/gzip": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [] }]
+      }
+    },
     "/employee/create": {
       "post": {
         "tags": ["B2B Employee Management"],
@@ -20448,6 +20328,21 @@
             "schema": { "type": "string" }
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "attendeeName": {
+                    "oneOf": [{ "type": "string" }, { "type": "null" }],
+                    "description": "The name of the attendee"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "",
@@ -20455,6 +20350,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JoinAppointmentResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [] }]
+      }
+    },
+    "/dsr/appointment/{presentationPath}/basic-setting": {
+      "get": {
+        "tags": ["Appointment"],
+        "summary": "Get the appointment's basic settings",
+        "description": "Get all the basic settings of the appointment",
+        "operationId": "dsrReadAppointmentSettings",
+        "parameters": [
+          {
+            "name": "presentationPath",
+            "in": "path",
+            "description": "Presentation path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppointmentBasicSettingResponse"
                 }
               }
             }
@@ -20735,6 +20660,50 @@
         "security": [{ "ApiKey": [], "ContextToken": [] }]
       }
     },
+    "/dsr/appointment/request": {
+      "post": {
+        "tags": ["Appointment"],
+        "summary": "Create appointment request",
+        "description": "Create a appointment request for a specific appointment",
+        "operationId": "createAppointmentRequest",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAppointmentRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "apiAlias": {
+                      "type": "string",
+                      "default": "dsr.appointment.create-appointment-request",
+                      "description": "The api alias of the API"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "description": "The data is used to create the appointment request"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [], "ContextToken": [] }]
+      }
+    },
     "/dsr/appointment/presentation": {
       "get": {
         "tags": ["Presentation"],
@@ -20786,6 +20755,50 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PresentationSlideData"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [], "ContextToken": [] }]
+      }
+    },
+    "/dsr/appointment/presentation/{presentationCmsPageId}/slide/{sectionId}/products": {
+      "post": {
+        "tags": ["Presentation"],
+        "summary": "Fetch all products for specific slide",
+        "description": "Fetches all products for a specific slide",
+        "operationId": "getSlideProducts",
+        "parameters": [
+          {
+            "name": "presentationCmsPageId",
+            "in": "path",
+            "description": "Presentation CMS page id for which the data is requested",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
+          },
+          {
+            "name": "sectionId",
+            "in": "path",
+            "description": "CMS section id for which the data is requested",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Criteria" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductListingResult"
                 }
               }
             }
@@ -20929,6 +20942,60 @@
           }
         },
         "security": [{ "ApiKey": [], "ContextToken": [] }]
+      }
+    },
+    "/dsr/product/{productId}": {
+      "get": {
+        "tags": ["Shop pages"],
+        "summary": "Load product detail page",
+        "description": "Load product detail page with product id",
+        "operationId": "dsrReadProductDetailPage",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProductPageResult" }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [], "ContextToken": [] }]
+      }
+    },
+    "/dsr/shop-pages/{layoutName}": {
+      "get": {
+        "tags": ["Shop pages"],
+        "summary": "Get shop pages",
+        "description": "Get shop pages by layout name",
+        "operationId": "dsrReadShopPage",
+        "parameters": [
+          {
+            "name": "layoutName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CmsPage" }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [] }]
       }
     }
   },
