@@ -1,6 +1,6 @@
 ---
 type: lesson
-title: package.json
+title: Install
 editor: false
 terminal: false
 previews: false
@@ -8,18 +8,15 @@ previews: false
 
 # Installation
 
+:::info 
 The example uses [Vite](https://vite.dev/) as a build tool.
-
+:::
 
 ```bash
 pnpm add -D @shopware/api-client
-
 # or
-
 npm install -D @shopware/api-client
-
 # or
-
 yarn add -D @shopware/api-client
 ```
 
@@ -45,6 +42,6 @@ See the library placed in your `package.json` file:
 
 ```
 
-:::info
+:::tip
 Thanks to **Vite** and its [Automatic dependency discovery](https://vite.dev/guide/dep-pre-bundling.html#automatic-dependency-discovery) there is no difference if _Client_ library lands in `devDependencies` or `dependencies` 💙
 :::

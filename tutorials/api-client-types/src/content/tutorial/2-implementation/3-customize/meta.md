@@ -1,4 +1,4 @@
 ---
 type: chapter
-title: API Client
+title: Customization
 ---

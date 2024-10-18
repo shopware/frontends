@@ -6,21 +6,25 @@ import type { operations } from "@shopware/api-client/store-api-types";
 
 export async function setupExample() {
   const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
+  const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
+
   const apiClient = createAPIClient<operations>({
     baseURL: shopwareEndpoint,
-    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+    accessToken: accessToken,
   });
 
-  const loadContextButton = document?.querySelector("#loadContext");
 
-  if (loadContextButton) {
-    loadContextButton.addEventListener("click", async () => {
-      const contextResult = await apiClient.invoke("readContext get /context");
+  apiClient.invoke("addLineItem post /checkout/cart/line-item", {
+    body: {
+      items: [
+        {
+          id: "SWAG-1",
+          referencedId: "SWAG-1",
+          quantity: 1,
+          type: "product",
+        },
+      ],
+    },
+  });
 
-      const resultContainer = document?.querySelector("#result");
-      if (resultContainer) {
-        resultContainer.innerHTML = JSON.stringify(contextResult.data, null, 2);
-      }
-    });
-  }
 }

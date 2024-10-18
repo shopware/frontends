@@ -1,4 +1,4 @@
 ---
 type: part
-title: About
+title: "Theory"
 ---
