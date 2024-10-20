@@ -1,5 +1,5 @@
 {
-  "name": "Types management for @shopware/api-client",
+  "name": "Working with @shopware/api-client",
   "version": "0.0.1",
   "type": "module",
   "private": true,
@@ -12,19 +12,19 @@
   },
   "dependencies": {
     "@tutorialkit/react": "1.0.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/react": "^3.6.2",
-    "@tutorialkit/astro": "1.0.0",
+    "@astrojs/check": "0.9.4",
+    "@astrojs/react": "3.6.2",
+    "@tutorialkit/astro": "1.1.1",
     "@tutorialkit/theme": "1.0.0",
     "@tutorialkit/types": "1.0.0",
-    "@types/node": "^20.14.6",
-    "@types/react": "^18.3.3",
-    "astro": "^4.16.6",
-    "prettier-plugin-astro": "^0.14.1",
-    "typescript": "^5.4.5"
+    "@types/node": "20.14.6",
+    "@types/react": "18.3.3",
+    "astro": "4.16.6",
+    "prettier-plugin-astro": "0.14.1",
+    "typescript": "5.4.5"
   }
 }
