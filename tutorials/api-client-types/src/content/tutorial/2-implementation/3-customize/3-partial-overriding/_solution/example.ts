@@ -9,4 +9,9 @@ export async function setupExample() {
     baseURL: shopwareEndpoint,
     accessToken: accessToken,
   });
+
+  const product: Schemas["Product"] = {
+    name: "My Artificially Generated Product",
+    isAiGenerated: true,
+  };
 }

@@ -339,7 +339,7 @@ export type Schemas = {
     priority?: number;
   };
   Association: {
-    [key: string]: components["schemas"]["Association"];
+    [key: string]: components["schemas"]["Criteria"];
   };
   AttendeeProductCollectionLastSeenResponse: {
     collection?: {
@@ -700,7 +700,7 @@ export type Schemas = {
     netPrice: number;
     positionPrice: number;
     quantity: number;
-    rawTotal: number;
+    rawTotal?: number;
     referencePrice: components["schemas"]["CartPriceReference"] | null;
     regulationPrice: {
       /** @enum {string} */
@@ -713,8 +713,6 @@ export type Schemas = {
       /** Format: float */
       taxRate?: number;
     }[];
-    /** @enum {string} */
-    taxStatus: "net" | "tax-free";
     totalPrice: number;
     unitPrice: number;
     /** Format: ^[0-9a-f]{32}$ */
@@ -723,31 +721,19 @@ export type Schemas = {
   Cart: {
     /** An affiliate tracking code */
     affiliateCode?: string | null;
-    /** @enum {string} */
-    apiAlias: "cart";
     /** A campaign tracking code */
     campaignCode?: string | null;
     /** A comment that can be added to the cart. */
     customerComment?: string | null;
     deliveries?: components["schemas"]["CartDelivery"][];
     /** A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers. */
-    errors?:
-      | components["schemas"]["CartError"][]
-      | {
-          [key: string]: {
-            code: number;
-            key: string;
-            level: number;
-            message: string;
-            messageKey: string;
-          };
-        };
+    errors?: components["schemas"]["CartError"][];
     /** All items within the cart */
     lineItems?: components["schemas"]["LineItem"][];
     modified?: boolean;
     /** Name of the cart - for example `guest-cart` */
     name?: string;
-    price: components["schemas"]["CalculatedPrice"];
+    price?: components["schemas"]["CalculatedPrice"];
     /** Context token identifying the cart and the user session */
     token?: string;
     /** A list of all payment transactions associated with the current cart. */
@@ -805,16 +791,18 @@ export type Schemas = {
     price?: components["schemas"]["CalculatedPrice"];
   };
   CartError: {
-    key: string;
-    /**
-     * * `0` - notice,
-     * * `10` - warning,
-     * * `20` - error
-     * @enum {number}
-     */
-    level: 0 | 10 | 20;
-    message: string;
-    messageKey: string;
+    items?: {
+      key?: string;
+      /**
+       * * `0` - notice,
+       * * `10` - warning,
+       * * `20` - error
+       * @enum {number}
+       */
+      level?: 0 | 10 | 20;
+      message?: string;
+      messageKey?: string;
+    };
   };
   CartItems: {
     items?: components["schemas"]["LineItem"][];
@@ -867,7 +855,7 @@ export type Schemas = {
     afterCategoryVersionId?: string;
     /** @enum {string} */
     apiAlias: "category";
-    breadcrumb: string[];
+    breadcrumb: readonly string[];
     /** Format: int64 */
     childCount: number;
     children: components["schemas"]["Category"][];
@@ -1273,8 +1261,7 @@ export type Schemas = {
       sizingMode: string;
       type: string;
     };
-    /** @enum {string} */
-    type: "default" | "sidebar";
+    type: string;
     /** Format: date-time */
     updatedAt?: string;
     visibility?: {
@@ -1284,14 +1271,14 @@ export type Schemas = {
     };
   };
   CmsSlot: {
-    /** @enum {string} */
-    apiAlias: "cms_slot";
     block?: components["schemas"]["CmsBlock"];
     blockId: string;
     cmsBlockVersionId?: string;
+    config?: GenericRecord;
     /** Format: date-time */
     createdAt?: string;
     customFields?: GenericRecord;
+    data?: GenericRecord;
     fieldConfig?: GenericRecord;
     id: string;
     locked?: boolean;
@@ -1528,7 +1515,7 @@ export type Schemas = {
   Criteria: {
     aggregations?: components["schemas"]["Aggregations"];
     /** Associations to include. For more information, see [Search Queries > Associations](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#associations) */
-    associations?: components["schemas"]["Association"];
+    associations?: components["schemas"]["Association"][];
     /** Fields which should be returned in the search result. */
     fields?: string[];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
@@ -1554,8 +1541,8 @@ export type Schemas = {
       | components["schemas"]["MultiNotFilter"]
       | components["schemas"]["RangeFilter"]
     )[];
-    /** The query string to search for */
-    query?: string;
+    /** List of queries to restrict the search result. For more information, see [Search Queries > Query](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#query) */
+    query?: components["schemas"]["Query"][];
     /** Sorting in the search result. */
     sort?: components["schemas"]["Sort"][];
     /** Search term */
@@ -1902,7 +1889,6 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  DeliveryInformation: unknown;
   DeliveryTime: {
     /** Format: date-time */
     createdAt?: string;
@@ -2459,14 +2445,14 @@ export type Schemas = {
     cover?: components["schemas"]["ProductMedia"];
     dataContextHash?: string;
     dataTimestamp?: string;
-    deliveryInformation: components["schemas"]["CartDeliveryInformation"];
+    deliveryInformation?: components["schemas"]["CartDeliveryInformation"];
     description?: string;
     good?: boolean;
     id: string;
     label?: string;
     modified?: boolean;
     modifiedByApp?: boolean;
-    payload: components["schemas"]["ProductJsonApi"];
+    payload?: components["schemas"]["ProductJsonApi"];
     price?: {
       /** @enum {string} */
       apiAlias: "calculated_price";
@@ -2495,7 +2481,7 @@ export type Schemas = {
       unitPrice: number;
     };
     priceDefinition?: components["schemas"]["CartPriceQuantity"];
-    quantity: number;
+    quantity?: number;
     quantityInformation?: {
       maxPurchase?: number;
       minPurchase?: number;
@@ -2504,7 +2490,7 @@ export type Schemas = {
     referencedId?: string;
     removable?: boolean;
     stackable?: boolean;
-    states: ("is-physical" | "is-download")[];
+    states?: ("is-physical" | "is-download")[];
     type: components["schemas"]["LineItemType"];
     uniqueIdentifier?: string;
   };
@@ -2516,13 +2502,6 @@ export type Schemas = {
     | "discount"
     | "container"
     | "quantity";
-  ListPrice: {
-    /** @enum {string} */
-    apiAlias: "cart_list_price";
-    discount?: number;
-    percentage?: number;
-    price?: number;
-  };
   Locale: {
     code: string;
     /** Format: date-time */
@@ -2666,12 +2645,7 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     hasFile: boolean;
     id: string;
-    metaData?: {
-      /** Format: int64 */
-      height?: number;
-      /** Format: int64 */
-      width?: number;
-    };
+    metaData?: GenericRecord;
     mimeType?: string;
     path: string;
     private: boolean;
@@ -2892,7 +2866,19 @@ export type Schemas = {
     orderNumber?: string;
     /** Format: float */
     positionPrice?: number;
-    price: components["schemas"]["CalculatedPrice"];
+    price?: {
+      calculatedTaxes?: GenericRecord;
+      /** Format: float */
+      netPrice: number;
+      /** Format: float */
+      positionPrice: number;
+      /** Format: float */
+      rawTotal: number;
+      taxRules?: GenericRecord;
+      taxStatus: string;
+      /** Format: float */
+      totalPrice: number;
+    };
     salesChannelId: string;
     shippingCosts?: {
       calculatedTaxes?: GenericRecord;
@@ -3295,9 +3281,8 @@ export type Schemas = {
     updatedAt?: string;
   };
   OrderRouteResponse: {
-    orders: {
-      elements: components["schemas"]["Order"][];
-    } & components["schemas"]["EntitySearchResult"];
+    orders: components["schemas"]["Order"][] &
+      components["schemas"]["EntitySearchResult"];
     /** The key-value pairs contain the uuid of the order as key and a boolean as value, indicating that the payment method can still be changed. */
     paymentChangeable?: {
       [key: string]: boolean;
@@ -3687,13 +3672,13 @@ export type Schemas = {
     available?: boolean;
     /** Format: int64 */
     availableStock?: number;
-    calculatedCheapestPrice?: {
+    calculatedCheapestPrice?: components["schemas"]["CalculatedPrice"] & {
       /** @enum {string} */
       apiAlias?: "calculated_cheapest_price";
       hasRange?: boolean;
-      listPrice?: components["schemas"]["ListPrice"] | null;
+      listPrice?: components["schemas"]["CartListPrice"] | null;
       quantity?: number;
-      referencePrice?: components["schemas"]["ReferencePrice"] | null;
+      referencePrice?: components["schemas"]["CartPriceReference"] | null;
       regulationPrice?: {
         price: number;
       } | null;
@@ -3784,6 +3769,7 @@ export type Schemas = {
     /** Format: float */
     height?: number;
     id: string;
+    isAiGenerated: boolean;
     isCloseout?: boolean;
     /** Runtime field, cannot be used as part of the criteria. */
     isNew?: boolean;
@@ -4474,15 +4460,6 @@ export type Schemas = {
     weight?: number;
     /** Format: float */
     width?: number;
-  } & {
-    options: {
-      group: string;
-      option: string;
-      translated: {
-        group: string;
-        option: string;
-      };
-    }[];
   };
   ProductKeywordDictionary: {
     id?: string;
@@ -4618,13 +4595,13 @@ export type Schemas = {
     createdAt?: string;
     customFields?: GenericRecord;
     id: string;
-    media: components["schemas"]["Media"];
+    media?: components["schemas"]["Media"];
     mediaId: string;
     /** Format: int64 */
     position?: number;
     productId: string;
     productVersionId?: string;
-    thumbnails?: components["schemas"]["MediaThumbnail"][];
+    thumbnails?: components["schemas"]["MediaThumbnail"];
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
@@ -4651,9 +4628,7 @@ export type Schemas = {
     content: string;
     /** Format: date-time */
     createdAt?: string;
-    customerId?: string;
     customFields?: GenericRecord;
-    externalUser?: string;
     id: string;
     languageId: string;
     /** Format: float */
@@ -4882,7 +4857,7 @@ export type Schemas = {
     lineItems?: components["schemas"]["QuoteLineItem"][];
     orderId?: string;
     orderVersionId?: string;
-    price: {
+    price?: {
       calculatedTaxes?: GenericRecord;
       /** Format: float */
       netPrice: number;
@@ -4923,7 +4898,7 @@ export type Schemas = {
       unitPrice: number;
     };
     stateId: string;
-    stateMachineState: components["schemas"]["StateMachineState"];
+    stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: float */
     subtotalNet?: number;
     taxStatus?: string;
@@ -5161,23 +5136,6 @@ export type Schemas = {
     /** @enum {string} */
     type: "range";
   };
-  ReferencePrice: {
-    /** @enum {string} */
-    apiAlias?: "cart_price_reference";
-    hasRange: boolean;
-    listPrice: components["schemas"]["ListPrice"] | null;
-    price?: number;
-    purchaseUnit?: number;
-    referenceUnit?: number;
-    regulationPrice: {
-      /** @enum {string} */
-      apiAlias?: "cart_regulation_price";
-      price?: number;
-    } | null;
-    unitName: string;
-    /** Format: ^[0-9a-f]{32}$ */
-    variantId?: string | null;
-  };
   Rule: {
     /** Format: date-time */
     createdAt?: string;
@@ -5308,8 +5266,6 @@ export type Schemas = {
     updatedAt?: string;
   };
   SalesChannelContext: {
-    /** @enum {string} */
-    apiAlias: "sales_channel_context";
     /** Core context with general configuration values and state */
     context?: {
       currencyFactor?: number;
@@ -5336,7 +5292,31 @@ export type Schemas = {
       name?: string;
     };
     paymentMethod?: components["schemas"]["PaymentMethod"];
-    salesChannel: components["schemas"]["SalesChannel"];
+    /** Information about the current sales channel */
+    salesChannel?: {
+      accessKey?: string;
+      active?: boolean;
+      analyticsId?: string;
+      countryId?: string;
+      currencyId?: string;
+      customerGroupId?: string;
+      footerCategoryId?: string;
+      hreflangActive?: boolean;
+      hreflangDefaultDomainId?: string;
+      languageId?: string;
+      mailHeaderFooterId?: string;
+      maintenance?: boolean;
+      maintenanceIpWhitelist?: string;
+      name?: string;
+      /** Format: int32 */
+      navigationCategoryDepth?: number;
+      navigationCategoryId?: string;
+      paymentMethodId?: string;
+      serviceCategoryId?: string;
+      shippingMethodId?: string;
+      shortName?: string;
+      typeId?: string;
+    };
     shippingLocation?: {
       address?: components["schemas"]["CustomerAddress"];
       /** @enum {string} */
@@ -7156,7 +7136,7 @@ export type Schemas = {
     updatedAt?: string;
   };
   WishlistLoadRouteResponse: {
-    products: components["schemas"]["ProductListingResult"];
+    products?: components["schemas"]["ProductListingResult"];
     wishlist?: {
       customerId?: string;
       salesChannelId?: string;
@@ -7355,7 +7335,7 @@ export type operations = {
   "createCustomerAddress post /account/address": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: components["schemas"]["CustomerAddressBody"];
+    body: components["schemas"]["CustomerAddress"];
     response: components["schemas"]["CustomerAddress"] &
       components["schemas"]["CustomerAddressRead"];
     responseCode: 200;
@@ -7507,9 +7487,7 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     body?: components["schemas"]["Criteria"];
-    response: {
-      elements: components["schemas"]["CustomerAddress"][];
-    } & components["schemas"]["EntitySearchResult"];
+    response: components["schemas"]["CustomerAddress"][];
     responseCode: 200;
   };
   "loginCustomer post /account/login": {
@@ -7750,7 +7728,7 @@ export type operations = {
       /** Identifier of the shopping list to be fetched */
       id: string;
     };
-    body: {
+    body?: {
       lineItems: {
         [key: string]: {
           /** Product id */
@@ -7858,7 +7836,7 @@ export type operations = {
       /** Identifier of the approval rule to be updated */
       id: string;
     };
-    body: {
+    body?: {
       /** Active status of the approval rule */
       active?: boolean;
       /** ID of the role that can approve the rule */
@@ -7885,7 +7863,7 @@ export type operations = {
   "createApprovalRule post /approval-rule/create": {
     contentType?: "application/json";
     accept?: "application/json";
-    body: {
+    body?: {
       /** Active status of the approval rule */
       active?: boolean;
       /** ID of the role that can approve the rule */
@@ -7983,24 +7961,7 @@ export type operations = {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
     };
-    body: {
-      items: (
-        | {
-            id: string;
-            quantity: number;
-            referencedId?: string;
-            /** @enum {string} */
-            type: "product" | "custom" | "credit" | "discount" | "container";
-          }
-        | {
-            id?: string;
-            quantity?: number;
-            referencedId: string;
-            /** @enum {string} */
-            type: "promotion";
-          }
-      )[];
-    };
+    body: components["schemas"]["CartItems"];
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
@@ -8215,7 +8176,9 @@ export type operations = {
       "sw-language-id"?: string;
     };
     body?: components["schemas"]["Criteria"];
-    response: components["schemas"]["Currency"][];
+    response: {
+      elements?: components["schemas"]["Currency"][];
+    } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
   "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}": {
@@ -8947,8 +8910,6 @@ export type operations = {
     headers?: {
       /** Instructs Shopware to return the response in the given language. */
       "sw-language-id"?: string;
-      /** Instructs Shopware to try and resolve SEO URLs for the given navigation item */
-      "sw-include-seo-urls"?: boolean;
     };
     pathParams: {
       /** Product ID */
@@ -9056,7 +9017,7 @@ export type operations = {
       /** Identifier of the quote to be reinvited */
       id: string;
     };
-    body: {
+    body?: {
       /** Id of the payment method */
       paymentMethodId?: string;
       /** Id of the shipping method */
@@ -9100,7 +9061,6 @@ export type operations = {
       /** Identifier of the quote to be fetched */
       id: string;
     };
-    body?: components["schemas"]["Criteria"];
     response: components["schemas"]["Quote"];
     responseCode: 200;
   };
@@ -9152,6 +9112,7 @@ export type operations = {
   "readRoles get /role": {
     contentType?: "application/json";
     accept?: "application/json";
+    body?: components["schemas"]["Criteria"];
     response: {
       elements?: components["schemas"]["B2bComponentsRole"][];
     } & components["schemas"]["EntitySearchResult"];
