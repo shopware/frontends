@@ -151,6 +151,31 @@ describe("createAPIClient", () => {
     expect(contextChangedMock).toHaveBeenCalledWith("789");
   });
 
+  it("should invoke onContextChanged only once", async () => {
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        setHeader(event, "sw-context-token", "789");
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const contextChangedMock = vi.fn().mockImplementation(() => {});
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+    });
+    client.hook("onContextChanged", contextChangedMock);
+
+    await client.invoke("readContext get /context");
+    expect(contextChangedMock).toHaveBeenCalledOnce();
+    expect(contextChangedMock).toHaveBeenCalledWith("789");
+  });
+
   it("should NOT invoke onContextChanged method when no context header is set in response", async () => {
     const app = createApp().use(
       "/context",
@@ -376,5 +401,53 @@ describe("createAPIClient", () => {
     expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
       `[FetchError: [GET] "${baseURL}context": <no response> The operation was aborted.]`,
     );
+  });
+
+  describe("default header changes", () => {
+    it("should invoke headers changed hook", async () => {
+      const contextChangedMock = vi.fn();
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        contextToken: "456",
+        baseURL: "",
+      });
+
+      client.hook("onDefaultHeaderChanged", contextChangedMock);
+      await client.defaultHeaders.apply({ "sw-language-id": "my-language-id" });
+      expect(client.defaultHeaders["sw-language-id"]).toEqual("my-language-id");
+      expect(contextChangedMock).toHaveBeenCalledWith(
+        "sw-language-id",
+        "my-language-id",
+      );
+    });
+
+    it("context token headers change should invoke onContextChanged hook additionally", async () => {
+      const contextChangedMock = vi.fn();
+      const defaultHeaderChangedMock = vi.fn();
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        contextToken: "456",
+        baseURL: "",
+      });
+
+      client.hook("onDefaultHeaderChanged", defaultHeaderChangedMock);
+      client.hook("onContextChanged", contextChangedMock);
+
+      await client.defaultHeaders.apply({
+        "sw-context-token": "some-new-context-token",
+      });
+
+      expect(client.defaultHeaders["sw-context-token"]).toEqual(
+        "some-new-context-token",
+      );
+
+      expect(defaultHeaderChangedMock).toHaveBeenCalledWith(
+        "sw-context-token",
+        "some-new-context-token",
+      );
+      expect(contextChangedMock).toHaveBeenCalledWith("some-new-context-token");
+    });
   });
 });
