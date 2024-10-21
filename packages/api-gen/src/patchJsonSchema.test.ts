@@ -121,6 +121,70 @@ describe("patchJsonSchema", () => {
       `);
     });
 
+    it("should skip removing property from component if it's not there", async () => {
+      const { patchedSchema } = patchJsonSchema({
+        openApiSchema: json5.parse(`{
+          components: {
+            schemas: {
+              "ProductMedia": {
+                "description": "Added since version: 6.0.0.0",
+                "required": [],
+                "properties": {
+                  "media": { "$ref": "#/components/schemas/Media" },
+                },
+                "type": "object"
+              },
+            },
+          },
+        }`),
+        jsonOverrides: json5.parse(`{
+          components: {
+            "ProductMedia": [
+              {
+                "properties": {
+                  "thumbnails": {
+                    "$ref": "_DELETE_",
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/MediaThumbnail" }
+                  }
+                }
+              },
+              {
+                "required": ["media"]
+              }
+            ],
+          },
+        }`),
+      });
+
+      expect(patchedSchema).toMatchInlineSnapshot(`
+        {
+          "components": {
+            "schemas": {
+              "ProductMedia": {
+                "description": "Added since version: 6.0.0.0",
+                "properties": {
+                  "media": {
+                    "$ref": "#/components/schemas/Media",
+                  },
+                  "thumbnails": {
+                    "items": {
+                      "$ref": "#/components/schemas/MediaThumbnail",
+                    },
+                    "type": "array",
+                  },
+                },
+                "required": [
+                  "media",
+                ],
+                "type": "object",
+              },
+            },
+          },
+        }
+      `);
+    });
+
     it("should add new component if there was none before", async () => {
       const { patchedSchema } = patchJsonSchema({
         openApiSchema: json5.parse(`{

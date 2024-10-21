@@ -4,7 +4,6 @@ import json5 from "json5";
 import { validationRules } from "./validation-rules";
 import { ofetch } from "ofetch";
 import { OverridesSchema } from "./patchJsonSchema";
-import jsonParser from "./parser/jsonParser";
 
 export type ApiGenConfig = {
   rules: Array<keyof typeof validationRules>;
@@ -65,14 +64,14 @@ export async function loadJsonOverrides({
     if (isURL(pathToResolve)) {
       const response = await ofetch(pathToResolve, {
         responseType: "json",
-        parseResponse: jsonParser,
+        parseResponse: json5.parse,
       });
       return response;
     } else {
       const jsonOverridesFile = await readFileSync(pathToResolve, {
         encoding: "utf-8",
       });
-      const content = jsonParser(jsonOverridesFile);
+      const content = json5.parse(jsonOverridesFile);
       return content;
     }
   } catch (error) {
@@ -135,7 +134,7 @@ export function displayPatchingSummary({
   const formatColor = todosToFix.length ? c.yellow : c.green;
   console.log(
     formatColor(
-      `We've found ${c.bold(todosToFix.length)} warning(s) in the schema. Apply patches to fix them in the original schema.`,
+      `We've found ${c.bold(todosToFix.length)} warning(s) in the schema.${todosToFix.length ? " Apply patches to fix them in the original schema." : ""}`,
     ),
   );
 }
