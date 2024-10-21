@@ -18,6 +18,10 @@
       "cache": false,
       "outputs": []
     },
+    "generate-admin-types": {
+      "cache": false,
+      "outputs": []
+    },
     "test": {
       "dependsOn": ["^build"],
       "outputs": []
