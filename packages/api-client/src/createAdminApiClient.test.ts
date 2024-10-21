@@ -383,4 +383,79 @@ describe("createAdminAPIClient", () => {
       `[FetchError: [GET] "${baseURL}order": <no response> This operation was aborted]`,
     );
   });
+
+  describe("onDefaultHeaderChanged hook", () => {
+    it("should invoke hook on default header change", async () => {
+      const defaultHeadersSpy = vi.fn();
+      const client = createAdminAPIClient<operations>({
+        baseURL: "http://localhost:3000",
+      });
+      client.hook("onDefaultHeaderChanged", defaultHeadersSpy);
+      await client.defaultHeaders.apply({ accept: "application/xml" });
+      expect(client.defaultHeaders.accept).toBe("application/xml");
+      expect(defaultHeadersSpy).toBeCalledWith("accept", "application/xml");
+    });
+
+    it("should also invoke onAuthChange if the Authorization header is changed", async () => {
+      const authEndpointSpy = vi.fn().mockImplementation(() => {});
+      const authHeaderSpy = vi.fn().mockImplementation(() => {});
+      const onAuthChangeSpy = vi.fn().mockImplementation(() => {});
+      const defaultHeadersSpy = vi.fn();
+      const app = createApp()
+        .use(
+          "/order",
+          eventHandler(async (event) => {
+            const headers = getHeaders(event);
+            authHeaderSpy(headers.authorization);
+            return {
+              orderResponse: 123,
+            };
+          }),
+        )
+        .use(
+          "/oauth/token",
+          eventHandler(async (event) => {
+            const body = await readBody(event);
+            authEndpointSpy(body);
+            return {
+              access_token: "client-session-access-token",
+              expires_in: 3600,
+            };
+          }),
+        );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAdminAPIClient<operations>({
+        baseURL,
+        credentials: {
+          grant_type: "client_credentials",
+          client_id: "my-client-id",
+          client_secret: "my-client-secret-token",
+        },
+      });
+      client.hook("onAuthChange", onAuthChangeSpy);
+      client.hook("onDefaultHeaderChanged", defaultHeadersSpy);
+      const res = await client.invoke("getOrderList get /order", {});
+      expect(authEndpointSpy).toHaveBeenCalledWith({
+        client_id: "my-client-id",
+        client_secret: "my-client-secret-token",
+        grant_type: "client_credentials",
+      });
+      expect(authHeaderSpy).toHaveBeenCalledWith(
+        "Bearer client-session-access-token",
+      );
+      expect(res.data).toEqual({ orderResponse: 123 });
+
+      expect(onAuthChangeSpy).toBeCalledWith({
+        accessToken: "client-session-access-token",
+        expirationTime: expect.any(Number),
+        refreshToken: "",
+      });
+      expect(defaultHeadersSpy).toBeCalledWith(
+        "Authorization",
+        "Bearer client-session-access-token",
+      );
+    });
+  });
 });

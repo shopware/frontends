@@ -52,6 +52,7 @@ export type AdminApiClientHooks = {
   onAuthChange: (authData: AdminSessionData) => void;
   onResponseError: (response: FetchResponse<ResponseType>) => void;
   onSuccessResponse: (response: FetchResponse<ResponseType>) => void;
+  onDefaultHeaderChanged: <T>(headerName: string, value?: T) => void;
 };
 
 export function createAdminAPIClient<
@@ -70,19 +71,24 @@ export function createAdminAPIClient<
   const isTokenBasedAuth =
     params.credentials?.grant_type === "client_credentials";
 
+  // Create a hookable instance
+  const apiClientHooks = createHooks<AdminApiClientHooks>();
+
   const sessionData: AdminSessionData = {
     accessToken: params.sessionData?.accessToken || "",
     refreshToken: params.sessionData?.refreshToken || "",
     expirationTime: Number(params.sessionData?.expirationTime || 0),
   };
 
-  const defaultHeaders = createHeaders({
-    Authorization: createAuthorizationHeader(sessionData.accessToken),
-    Accept: "application/json",
-  });
-
-  // Create a hookable instance
-  const apiClientHooks = createHooks<AdminApiClientHooks>();
+  const defaultHeaders = createHeaders(
+    {
+      Authorization: createAuthorizationHeader(sessionData.accessToken),
+      Accept: "application/json",
+    },
+    (key, value) => {
+      apiClientHooks.callHook("onDefaultHeaderChanged", key, value);
+    },
+  );
 
   function getSessionData() {
     return { ...sessionData };
