@@ -36,9 +36,12 @@ function merge<T extends { [key in keyof T]: unknown }>(
 
 export type ListingType = "productSearchListing" | "categoryListing";
 
-export type ShortcutFilterParam = {
-  code: keyof Schemas["ProductListingCriteria"];
-  value: string | number | boolean;
+export type ShortcutFilterParam<
+  T extends
+    keyof Schemas["ProductListingCriteria"] = keyof Schemas["ProductListingCriteria"],
+> = {
+  code: T;
+  value: Schemas["ProductListingCriteria"][T];
 };
 
 export type UseListingReturn = {
