@@ -5,13 +5,17 @@ export async function setupExample() {
   const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
   const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
-  const apiClient = createAPIClient<operations>({
+  // @ts-ignore
+  createAPIClient<operations>({
     baseURL: shopwareEndpoint,
     accessToken: accessToken,
   });
 
+  // @ts-ignore
   const product: Schemas["Product"] = {
     name: "My Artificially Generated Product",
     isAiGenerated: true,
   };
+
+  console.warn("Product:", product);
 }

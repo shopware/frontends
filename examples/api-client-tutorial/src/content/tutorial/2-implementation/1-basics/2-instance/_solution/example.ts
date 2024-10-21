@@ -8,7 +8,7 @@ export async function setupExample() {
   const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
   const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
 
-  const apiClient = createAPIClient<operations>({
+  createAPIClient<operations>({
     baseURL: shopwareEndpoint,
     accessToken: accessToken,
   });

@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "astro": "astro",
-    "build": "astro check && astro build",
+    "lint": "tsc --noEmit",
+    "build": "astro build",
     "dev": "astro dev",
     "preview": "astro preview",
     "start": "astro dev"

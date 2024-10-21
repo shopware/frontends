@@ -1,5 +1,5 @@
 import { createAPIClient } from "@shopware/api-client";
-import type { operations, Schemas } from "./api-types/storeApiTypes";
+import type { operations } from "./api-types/storeApiTypes";
 
 export async function setupExample() {
   const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
