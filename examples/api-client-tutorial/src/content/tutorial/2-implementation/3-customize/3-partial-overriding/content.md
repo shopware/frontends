@@ -78,7 +78,7 @@ In the working dir, create a `api-gen.config.json` file
 
 ## Generate types
 
-Having everything set up it's time to generate the types:
+It's time to generate the types, having everything set up:
 
 ```bash
 npx @shopware/api-gen generate --apiType=store

@@ -18,12 +18,3 @@ The **@shopware/api-client** itself can be described as:
 > _Dynamic and fully typed API Client for Shopware 6. Usable in any JavaScript and TypeScript project. You can use types generated from your custom API instance to have autocompletion and type safety._ 
 
 And that means you can install it either for the browser and node.js environment. You don't have to take care of types coming from your custom Shopware 6 instance (backend) because it can be synchronized by using a built-in CLI tool. Thanks to being fully typed, there is a very limited chance to make a mistake, also lacking documentation is not really needed in that case.
-
-## Covered topics:
-- Intro <-- you are here
-- Installation
-- Configuration
-- Syncing types
-- Overriding types
-- Good practices
-- Troubleshooting
