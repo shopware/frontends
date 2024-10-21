@@ -1,5 +1,35 @@
 # @shopware/api-client
 
+## 1.0.3
+
+### Patch Changes
+
+- [#1316](https://github.com/shopware/frontends/pull/1316) [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7) Thanks [@mkucmus](https://github.com/mkucmus)! - Extend Criteria type in exported admin API schema
+
+- [#1323](https://github.com/shopware/frontends/pull/1323) [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f) Thanks [@mkucmus](https://github.com/mkucmus)! - Don't send Content-Type in case of [multipart/form-data](https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html).
+
+  - Ignore `Content-Type` header in browser context when `multipart/form-data` is set.
+  - _boundary_ is set by a browser automatically.
+
+  ```ts
+  // example
+
+  const formData = new FormData();
+  formData.append("file", file);
+  const addedMediaResponse = await apiClient.invoke(
+    "uploadImage post /images/upload",
+    {
+      headers: {
+        "Content-Type": "multipart/form-data", // <-- set this one
+      },
+      accept: "application/json",
+      body: formData,
+    },
+  );
+  ```
+
+  When `invoke` method of api-client gets the `headers` parameter containing `multipart/form-data` Content-Type - the header will be ignored and the responsibility will be handed over to the browser - so the `Content-Type=multipart/form-data` header will eventually be sent, but including a dynamic _boundary_ params added by the browser on the fly.
+
 ## 1.0.2
 
 ### Patch Changes
