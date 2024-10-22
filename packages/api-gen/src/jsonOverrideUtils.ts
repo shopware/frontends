@@ -134,7 +134,7 @@ export function displayPatchingSummary({
   const formatColor = todosToFix.length ? c.yellow : c.green;
   console.log(
     formatColor(
-      `We've found ${c.bold(todosToFix.length)} warning(s) in the schema. Apply patches to fix them in the original schema.`,
+      `We've found ${c.bold(todosToFix.length)} warning(s) in the schema.${todosToFix.length ? " Apply patches to fix them in the original schema." : ""}`,
     ),
   );
 }

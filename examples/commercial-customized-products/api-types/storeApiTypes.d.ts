@@ -1,3 +1,4 @@
+type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 type XOR<T, U> = T | U extends object
   ? (Without<T, U> & U) | (Without<U, T> & T)
@@ -18,7 +19,13 @@ export type components = {
   schemas: Schemas;
 };
 export type Schemas = {
-  AccountNewsletterRecipientResult: {
+  AbstractDynamicPageOpenedPayload: {
+    /** @default true */
+    opened?: boolean;
+    /** The type of the current dynamic page */
+    type: string;
+  };
+  AccountNewsletterRecipient: {
     /** @enum {string} */
     apiAlias: "account_newsletter_recipient";
     /** @enum {string} */
@@ -321,9 +328,45 @@ export type Schemas = {
     name?: string;
     priority?: number;
   };
-  ArrayStruct: components["schemas"]["Struct"];
   Association: {
     [key: string]: components["schemas"]["Association"];
+  };
+  AttendeeProductCollectionLastSeenResponse: {
+    collection?: {
+      lastSeen?: string[];
+    };
+  };
+  AttendeeProductCollectionResponse: {
+    collection?:
+      | {
+          liked?: string[];
+        }
+      | {
+          disliked?: string[];
+        };
+  };
+  AttendeeRespondInvitationResponse: {
+    /**
+     * The invitation status that client responded to
+     * @enum {string}
+     */
+    answer?: "accepted" | "maybe" | "declined";
+    appointment?: {
+      /**
+       * Format: date-time
+       * The time the client can access the appointment
+       */
+      accessibleFrom?: string;
+      /**
+       * Format: date-time
+       * The time the appointment will be closed, the client can not access
+       */
+      accessibleTo?: string;
+      /** The appointment id */
+      id?: string;
+      /** The appointment status */
+      status?: ("started" | "ended") | null;
+    };
   };
   B2bBusinessPartner: {
     /** Format: date-time */
@@ -341,6 +384,13 @@ export type Schemas = {
     id?: string;
     reviewerRole?: components["schemas"]["B2bComponentsRole"];
     reviewerRoleId?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  B2bComponentsApprovalRuleAppScriptCondition: {
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -448,7 +498,7 @@ export type Schemas = {
     id: string;
     lineItems?: components["schemas"]["B2bComponentsShoppingListLineItem"][];
     name?: string;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     salesChannelId: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -464,7 +514,7 @@ export type Schemas = {
     employeeId?: string;
     id: string;
     name?: string;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     relationships?: {
       customer?: {
         data?: {
@@ -521,7 +571,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id: string;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     product?: components["schemas"]["Product"];
     productId?: string;
     productVersionId?: string;
@@ -534,7 +584,7 @@ export type Schemas = {
     /** Format: date-time */
     createdAt: string;
     id: string;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     productId?: string;
     productVersionId?: string;
     /** Format: int64 */
@@ -593,6 +643,38 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  Breadcrumb: {
+    /** @enum {string} */
+    apiAlias: "breadcrumb";
+    categoryId: string;
+    name: string;
+    path: string;
+    seoUrls?: components["schemas"]["SeoUrl"][];
+    translated: {
+      categoryId: string;
+      customFields?: GenericRecord;
+      description?: string;
+      externalLink?: string;
+      internalLink?: string;
+      keywords?: string;
+      linkNewTab?: boolean;
+      /** @enum {string} */
+      linkType?: "external" | "category" | "product" | "landing_page";
+      metaDescription?: string;
+      metaTitle?: string;
+      name: string;
+      path: string;
+      slotConfig?: GenericRecord;
+      type: string;
+    };
+    /** @enum {string} */
+    type: "page" | "link" | "folder";
+  };
+  BreadcrumbCollection: {
+    /** @enum {string} */
+    apiAlias: "breadcrumb_collection";
+    breadcrumbs: components["schemas"]["Breadcrumb"][];
+  };
   CalculatedPrice: {
     /** @enum {string} */
     apiAlias: "calculated_price";
@@ -604,19 +686,19 @@ export type Schemas = {
       taxRate: number;
     }[];
     hasRange: boolean;
-    listPrice: components["schemas"]["ListPrice"] | null;
+    listPrice: components["schemas"]["CartListPrice"] | null;
     netPrice: number;
     positionPrice: number;
     quantity: number;
     rawTotal: number;
-    referencePrice: components["schemas"]["ReferencePrice"] | null;
+    referencePrice: components["schemas"]["CartPriceReference"] | null;
     regulationPrice: {
       /** @enum {string} */
       apiAlias?: "cart_regulation_price";
       price?: number;
     } | null;
     /** Currently active tax rules and/or rates */
-    taxRules?: {
+    taxRules: {
       name?: string;
       /** Format: float */
       taxRate?: number;
@@ -682,6 +764,25 @@ export type Schemas = {
     shippingCosts?: components["schemas"]["CalculatedPrice"];
     shippingMethod?: components["schemas"]["ShippingMethod"];
   };
+  CartDeliveryInformation: {
+    /** @enum {string} */
+    apiAlias: "cart_delivery_information";
+    deliveryTime?: {
+      /** @enum {string} */
+      apiAlias?: "cart_delivery_time";
+      max?: number;
+      min?: number;
+      name?: string;
+      unit?: string;
+    };
+    freeDelivery?: boolean;
+    height?: number;
+    length?: number;
+    restockTime?: number;
+    stock?: number;
+    weight?: number;
+    width?: number;
+  };
   CartDeliveryPosition: {
     deliveryDate?: {
       /** Format: date-time */
@@ -707,6 +808,48 @@ export type Schemas = {
   };
   CartItems: {
     items?: components["schemas"]["LineItem"][];
+  };
+  CartListPrice: {
+    /** @enum {string} */
+    apiAlias: "cart_list_price";
+    discount?: number;
+    percentage?: number;
+    price?: number;
+  };
+  CartPriceQuantity: {
+    /** @enum {string} */
+    apiAlias: "cart_price_quantity";
+    isCalculated?: boolean;
+    listPrice?: components["schemas"]["CartListPrice"];
+    price?: number;
+    quantity?: number;
+    regulationPrice?: {
+      /** Format: float */
+      price?: number;
+    };
+    taxRules?: {
+      name?: string;
+      /** Format: float */
+      taxRate?: number;
+    }[];
+    type?: string;
+  };
+  CartPriceReference: {
+    /** @enum {string} */
+    apiAlias: "cart_price_reference";
+    hasRange: boolean;
+    listPrice: components["schemas"]["CartListPrice"] | null;
+    price?: number;
+    purchaseUnit?: number;
+    referenceUnit?: number;
+    regulationPrice: {
+      /** @enum {string} */
+      apiAlias?: "cart_regulation_price";
+      price?: number;
+    } | null;
+    unitName: string;
+    /** Format: ^[0-9a-f]{32}$ */
+    variantId?: string | null;
   };
   Category: {
     active?: boolean;
@@ -941,6 +1084,11 @@ export type Schemas = {
      */
     visibleChildCount?: number;
   };
+  ClientPresentationStateResponse: {
+    stateForAll?: components["schemas"]["StateForAll"];
+    stateForClients?: components["schemas"]["StateForClients"];
+    stateForMe?: components["schemas"]["StateForMe"];
+  };
   CmsBlock: {
     /** @enum {string} */
     apiAlias: "cms_block";
@@ -1099,12 +1247,22 @@ export type Schemas = {
     };
     id?: string;
     mobileBehavior?: string;
-    name?: string;
     page?: components["schemas"]["CmsPage"];
     pageId: string;
     /** Format: int64 */
     position: number;
     sizingMode?: string;
+    translated: {
+      backgroundColor: string;
+      backgroundMediaId: string;
+      backgroundMediaMode: string;
+      cmsPageVersionId: string;
+      cssClass: string;
+      mobileBehavior: string;
+      pageId: string;
+      sizingMode: string;
+      type: string;
+    };
     /** @enum {string} */
     type: "default" | "sidebar";
     /** Format: date-time */
@@ -1125,7 +1283,7 @@ export type Schemas = {
     createdAt: string;
     customFields?: GenericRecord;
     fieldConfig?: GenericRecord;
-    id?: string;
+    id: string;
     locked?: boolean;
     slot: string;
     translated: {
@@ -1166,6 +1324,7 @@ export type Schemas = {
     displayStateInRegistration?: boolean;
     forceStateInRegistration?: boolean;
     id: string;
+    isEu: boolean;
     iso?: string;
     iso3?: string;
     name: string;
@@ -1213,6 +1372,7 @@ export type Schemas = {
     displayStateInRegistration?: boolean;
     forceStateInRegistration?: boolean;
     id: string;
+    isEu: boolean;
     iso?: string;
     iso3?: string;
     name: string;
@@ -1287,6 +1447,20 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
+  };
+  CreateInteractionRequestBody: {
+    /**
+     * The time in seconds how long the interaction should be stored in the database
+     * @default -1
+     */
+    lifeTimeInSeconds?: number;
+    name: components["schemas"]["InteractionName"];
+    payload?: GenericRecord;
+    /**
+     * The time when the interaction was triggered
+     * @default now
+     */
+    triggeredAt?: string;
   };
   Criteria: {
     aggregations?: components["schemas"]["Aggregations"];
@@ -1474,7 +1648,7 @@ export type Schemas = {
     addresses?: components["schemas"]["CustomerAddress"][];
     affiliateCode?: string;
     /** @enum {string} */
-    apiAlias?: "customer";
+    apiAlias: "customer";
     birthday?: string;
     campaignCode?: string;
     company?: string;
@@ -1636,6 +1810,7 @@ export type Schemas = {
     createdAt: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
+    features: GenericRecord;
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -1664,25 +1839,7 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  DeliveryInformation: {
-    /** @enum {string} */
-    apiAlias?: "cart_delivery_information";
-    deliveryTime?: {
-      /** @enum {string} */
-      apiAlias?: "cart_delivery_time";
-      max?: number;
-      min?: number;
-      name?: string;
-      unit?: string;
-    };
-    freeDelivery?: boolean;
-    height?: number;
-    length?: number;
-    restockTime?: number;
-    stock: number;
-    weight?: number;
-    width?: number;
-  };
+  DeliveryInformation: unknown;
   DeliveryTime: {
     /** Format: date-time */
     createdAt: string;
@@ -1769,7 +1926,163 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  EntitySearchResult: components["schemas"]["ArrayStruct"] & {
+  DsrAppointment: {
+    /** Format: date-time */
+    accessibleFrom?: string;
+    /** Format: date-time */
+    accessibleTo?: string;
+    active?: boolean;
+    attendeeRuleIds?: GenericRecord;
+    /** Format: date-time */
+    createdAt: string;
+    createdById: string;
+    customFields?: GenericRecord;
+    default?: boolean;
+    dsrPresentationVersionId?: string;
+    /** Format: date-time */
+    endedAt?: string;
+    guideUserId?: string;
+    id?: string;
+    isPreview?: boolean;
+    name: string;
+    presentationId: string;
+    salesChannelDomainId: string;
+    /** Format: date-time */
+    startedAt?: string;
+    translated: {
+      accessibleFrom: string;
+      accessibleTo: string;
+      createdById: string;
+      dsrPresentationVersionId: string;
+      endedAt: string;
+      guideUserId: string;
+      name: string;
+      presentationId: string;
+      salesChannelDomainId: string;
+      startedAt: string;
+      updatedById: string;
+      videoAudioSettings: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedById?: string;
+    videoAudioSettings?: string;
+    videoChat?: components["schemas"]["DsrAppointmentVideoChat"];
+  };
+  DsrAppointmentAttendee: {
+    /** Format: date-time */
+    attendeeSubmittedAt?: string;
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    /** Format: date-time */
+    joinedAt?: string;
+    /** Format: date-time */
+    lastActive?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrAppointmentVideoChat: {
+    /** Format: date-time */
+    createdAt: string;
+    customFields?: GenericRecord;
+    id?: string;
+    name?: string;
+    startAsBroadcast?: boolean;
+    /** Format: date-time */
+    updatedAt?: string;
+    url?: string;
+  };
+  DsrAttendeeProductCollection: {
+    attendeeId: string;
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    productId: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrInteraction: {
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrPresentation: {
+    active?: boolean;
+    appointments?: components["schemas"]["DsrAppointment"][];
+    cmsPages?: components["schemas"]["DsrPresentationCmsPage"][];
+    /** Format: date-time */
+    createdAt: string;
+    createdById: string;
+    customFields?: GenericRecord;
+    id: string;
+    name: string;
+    parent?: components["schemas"]["DsrPresentation"];
+    parentId?: string;
+    parentVersionId?: string;
+    translated: {
+      createdById: string;
+      name: string;
+      parentId: string;
+      parentVersionId: string;
+      updatedById: string;
+      versionId: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedById?: string;
+    versionId?: string;
+  };
+  DsrPresentationCmsPage: {
+    cmsPage?: components["schemas"]["CmsPage"];
+    cmsPageId: string;
+    cmsPageVersionId?: string;
+    /** Format: date-time */
+    createdAt: string;
+    customFields?: GenericRecord;
+    dsrPresentationVersionId?: string;
+    id: string;
+    isInstantListing?: boolean;
+    pickedProductIds?: GenericRecord;
+    /** Format: int64 */
+    position?: number;
+    presentationId: string;
+    productId?: string;
+    productStreamId?: string;
+    productVersionId?: string;
+    title?: string;
+    translated: {
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      dsrPresentationVersionId: string;
+      presentationId: string;
+      productId: string;
+      productStreamId: string;
+      productVersionId: string;
+      title: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DynamicPageOpenedPayload: components["schemas"]["AbstractDynamicPageOpenedPayload"];
+  DynamicProductListingPageOpenedPayload: WithRequired<
+    {
+      /** Current page position in the pagination */
+      page: number;
+    } & components["schemas"]["AbstractDynamicPageOpenedPayload"],
+    "page"
+  >;
+  DynamicProductPageOpenedPayload: WithRequired<
+    {
+      /** the id from the product which is shown on the dynamic page */
+      productId: string;
+    } & components["schemas"]["AbstractDynamicPageOpenedPayload"],
+    "productId"
+  >;
+  EmptyPayload: Record<string, never>;
+  EntitySearchResult: {
     /** Contains aggregated data. A simple example is the determination of the average price from a product search query. */
     aggregations?: GenericRecord[];
     entity?: string;
@@ -1819,6 +2132,9 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  GuideHoveredPayload: {
+    $hoveredElementId?: string | null;
+  };
   ImportExportFile: {
     /** Format: date-time */
     createdAt: string;
@@ -1849,6 +2165,56 @@ export type Schemas = {
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
+  };
+  InteractionName:
+    | "product.viewed"
+    | "dynamicPage.opened"
+    | "dynamicProductPage.opened"
+    | "dynamicPage.closed"
+    | "page.viewed"
+    | "attendee.product.collection.liked"
+    | "attendee.product.collection.disliked"
+    | "attendee.product.collection.removed"
+    | "remote.checkout.accepted"
+    | "remote.checkout.declined"
+    | "keep.alive"
+    | "quickview.opened"
+    | "quickview.closed"
+    | "dynamicProductListingPage.opened"
+    | "dynamicProductListingPage.loadedMore"
+    | "remote.checkout.denied"
+    | "guide.hovered"
+    | "broadcastMode.toggled";
+  JoinAppointmentResponse: {
+    /** The name of the appointment */
+    appointmentName?: string;
+    /** The created Id for the attendee */
+    attendeeId?: string;
+    /** The appointment id */
+    id?: string;
+    /** To see if it's a preview appointment */
+    isPreview?: boolean;
+    /** The JWT mercure token to subscribe for updates */
+    JWTMercurePublisherToken?: string | null;
+    /** The JWT mercure token to publish updates */
+    JWTMercureSubscriberToken?: string | null;
+    /** The mercure hub url to connect for subscribing and updating */
+    mercureHubPublicUrl?: string | null;
+    /** The topic to which the attendee/guide can send updates */
+    mercurePublisherTopic?: string | null;
+    /** The topics to which the attendee/guide can subscribe for */
+    mercureSubscriberTopics?: string[];
+    /** The new context token will be used in the header (sw-context-token) for calling the other routes */
+    newContextToken?: string;
+    /**
+     * The type of the appointment
+     * @enum {string}
+     */
+    presentationGuideMode?: "self" | "guided";
+    /** The id of the current sales channel */
+    salesChannelId?: string;
+    /** The name of the current sales channel */
+    salesChannelName?: string;
   };
   LandingPage: {
     active?: boolean;
@@ -2037,7 +2403,7 @@ export type Schemas = {
     cover?: components["schemas"]["ProductMedia"];
     dataContextHash?: string;
     dataTimestamp?: string;
-    deliveryInformation: components["schemas"]["DeliveryInformation"];
+    deliveryInformation: components["schemas"]["CartDeliveryInformation"];
     description?: string;
     good?: boolean;
     id: string;
@@ -2055,9 +2421,9 @@ export type Schemas = {
         tax: number;
         taxRate: number;
       }[];
-      listPrice?: components["schemas"]["ListPrice"] | null;
+      listPrice?: components["schemas"]["CartListPrice"] | null;
       quantity: number;
-      referencePrice?: components["schemas"]["ReferencePrice"] | null;
+      referencePrice?: components["schemas"]["CartPriceReference"] | null;
       regulationPrice?: {
         /** @enum {string} */
         apiAlias?: "cart_regulation_price";
@@ -2072,7 +2438,7 @@ export type Schemas = {
       totalPrice: number;
       unitPrice: number;
     };
-    priceDefinition?: components["schemas"]["PriceDefinition"];
+    priceDefinition?: components["schemas"]["CartPriceQuantity"];
     quantity: number;
     quantityInformation?: {
       maxPurchase?: number;
@@ -2642,7 +3008,7 @@ export type Schemas = {
   };
   OrderLineItem: {
     /** @enum {string} */
-    apiAlias?: "order_line_item";
+    apiAlias: "order_line_item";
     children: components["schemas"]["OrderLineItem"][];
     cover?: components["schemas"]["Media"];
     coverId?: string;
@@ -2719,9 +3085,10 @@ export type Schemas = {
     };
     /** Format: int64 */
     position: number;
-    priceDefinition?: components["schemas"]["PriceDefinition"];
+    priceDefinition?: components["schemas"]["CartPriceQuantity"];
     productId?: string;
     productVersionId?: string;
+    promotionId?: string;
     /** Format: int64 */
     quantity: number;
     referencedId?: string;
@@ -2741,6 +3108,7 @@ export type Schemas = {
       parentVersionId: string;
       productId: string;
       productVersionId: string;
+      promotionId: string;
       referencedId: string;
       type: string;
       versionId: string;
@@ -2924,6 +3292,7 @@ export type Schemas = {
     stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: date-time */
     updatedAt?: string;
+    validationData?: GenericRecord;
     versionId?: string;
   };
   OrderTransactionCapture: {
@@ -3053,6 +3422,12 @@ export type Schemas = {
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
+  };
+  PageViewedPayload: {
+    /** the id from the page which was viewed */
+    pageId: string;
+    /** the id from the section within the page which was viewed */
+    sectionId: string;
   };
   PaymentMethod: {
     active?: boolean;
@@ -3184,23 +3559,102 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
-  PriceDefinition: {
-    /** @enum {string} */
-    apiAlias?: "cart_price_quantity";
-    isCalculated?: boolean;
-    listPrice?: components["schemas"]["ListPrice"];
-    price?: number;
-    quantity?: number;
-    regulationPrice?: {
-      /** Format: float */
-      price?: number;
+  PresentationCmsPage: {
+    cmsPage?: components["schemas"]["CmsPage"];
+    /** The CMS page id the presentation using */
+    cmsPageId?: string;
+    /** The CMS page version id the presentation using */
+    cmsPageVersionId?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    customFields?: GenericRecord | null;
+    dsrPresentationVersionId?: string;
+    /** The presentation cms page id */
+    id?: string;
+    /** True if this slide is an instant listing */
+    isInstantListing?: boolean;
+    /** The product id is assigned to presentation if it's product listing or instant listing */
+    pickedProductIds?: string[] | null;
+    /** The position of slide */
+    position?: number;
+    /** The presentation using this presentation cms page */
+    presentationId?: string;
+    /** The product id is assigned to presentation if it's product detail */
+    productId?: string | null;
+    /** The product stream id is assigned to presentation if it's product listing */
+    productStreamId?: string | null;
+    /** The title of presentation cms page */
+    title?: string | null;
+    translated?: {
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      dsrPresentationVersionId: string;
+      presentationId: string;
+      title?: string | null;
     };
-    taxRules?: {
-      name?: string;
-      /** Format: float */
-      taxRate?: number;
+    updatedAt?: string | null;
+  };
+  PresentationSlideData: OneOf<
+    [
+      {
+        configurator?: components["schemas"]["PropertyGroup"][];
+        product?: components["schemas"]["Product"];
+      },
+      {
+        category?: components["schemas"]["Category"];
+      },
+      null,
+    ]
+  >;
+  PresentationStructure: {
+    cmsPageResults?: {
+      cmsPage?: components["schemas"]["CmsPage"];
+      /** The presentation id */
+      resourceIdentifier?: string;
+      /**
+       * The type of presentation page
+       * @default frontend.presentation.page
+       */
+      resourceType?: string;
     }[];
-    type?: string;
+    navigation?: {
+      /** The CMS page id */
+      cmsPageId?: string;
+      /** The presentation CMS page id */
+      groupId?: string;
+      /** The slide name */
+      groupName?: string;
+      /** The slide position */
+      index?: number;
+      /** If the slide is an instant listing */
+      isInstantListing?: boolean;
+      /** @default [] */
+      notes?: components["schemas"]["CmsSlot"][];
+      /** The number of picked products of the instant listing */
+      pickedProductsCount?: number;
+      /** The section id */
+      sectionId?: string;
+      /** The section name */
+      sectionName?: string | null;
+    }[];
+  };
+  Price: {
+    currencyId: string;
+    gross: number;
+    linked?: boolean;
+    listPrice?: {
+      currencyId?: string;
+      gross: number;
+      linked?: boolean;
+      net: number;
+    };
+    net: number;
+    regulationPrice?: {
+      currencyId?: string;
+      gross: number;
+      linked?: boolean;
+      net: number;
+    };
   };
   Product: {
     active?: boolean;
@@ -3257,6 +3711,21 @@ export type Schemas = {
     downloads?: components["schemas"]["ProductDownload"][];
     ean?: string;
     extensions?: {
+      attendeeProductCollections?: {
+        data?: {
+          /** @example 0a7b3b2f4b81f36910a74f22826f35df */
+          id?: string;
+          /** @example dsr_attendee_product_collection */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
+           */
+          related?: string;
+        };
+      };
       reviewSummaries?: {
         data?: {
           /** @example c9c718522e64ffa5effb26cef94f4849 */
@@ -3502,6 +3971,21 @@ export type Schemas = {
     displayGroup?: string;
     ean?: string;
     extensions?: {
+      attendeeProductCollections?: {
+        data?: {
+          /** @example 0a7b3b2f4b81f36910a74f22826f35df */
+          id?: string;
+          /** @example dsr_attendee_product_collection */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
+           */
+          related?: string;
+        };
+      };
       reviewSummaries?: {
         data?: {
           /** @example c9c718522e64ffa5effb26cef94f4849 */
@@ -4122,6 +4606,10 @@ export type Schemas = {
     updatedAt?: string;
     versionId?: string;
   };
+  ProductPayload: {
+    /** the id from the product which is used in the interaction */
+    productId: string;
+  };
   ProductPrice: {
     /** Format: date-time */
     createdAt: string;
@@ -4577,9 +5065,9 @@ export type Schemas = {
     position: number;
     priceDefinition?: GenericRecord;
     productId?: string;
-    productPrice?: GenericRecord;
+    productPrice?: components["schemas"]["Price"][];
     productVersionId?: string;
-    purchasePrice?: GenericRecord;
+    purchasePrice?: components["schemas"]["Price"][];
     /** Format: int64 */
     quantity: number;
     quoteId: string;
@@ -5245,7 +5733,7 @@ export type Schemas = {
     calculationRuleId?: string;
     /** Format: date-time */
     createdAt: string;
-    currencyPrice?: GenericRecord;
+    currencyPrice?: components["schemas"]["Price"][];
     customFields?: GenericRecord;
     id: string;
     /** Format: float */
@@ -5263,7 +5751,7 @@ export type Schemas = {
     type: "contains" | "equalsAny" | "prefix" | "suffix";
     value: string;
   };
-  Sitemap: components["schemas"]["ArrayStruct"] & {
+  Sitemap: {
     /** Format: date-time */
     created: string;
     filename: string;
@@ -5297,6 +5785,41 @@ export type Schemas = {
     order: "ASC" | "DESC";
     type?: string;
   };
+  SpatialRenderConfigSize: {
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialScene: {
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialSceneCamera: {
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialSceneLight: {
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialSceneObject: {
+    /** Format: date-time */
+    createdAt: string;
+    id?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
   SsoProvider: {
     /** Format: date-time */
     createdAt: string;
@@ -5311,6 +5834,58 @@ export type Schemas = {
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
+  };
+  StateForAll: {
+    accessibleFrom?: string | null;
+    accessibleTo?: string | null;
+    /** @default false */
+    allowUserActionsForGuide?: boolean;
+    /** @enum {string} */
+    appointmentMode?: "guided" | "self";
+    attendeeRestrictionType?: ("open" | "customer" | "rules") | null;
+    /** @default false */
+    broadcastMode?: boolean;
+    currentDynamicPage?: components["schemas"]["DynamicPageOpenedPayload"];
+    currentGuideProductId?: string | null;
+    currentPageId?: string | null;
+    currentSectionId?: string | null;
+    /** @default 0 */
+    currentSlideAlias?: number;
+    /** @default false */
+    ended?: boolean;
+    endedAt?: string | null;
+    /** @default [] */
+    extensions?: unknown[];
+    lastActiveGuideSection?: string | null;
+    productDetailDefaultPageId?: string | null;
+    productListingDefaultPageId?: string | null;
+    quickviewPageId?: string | null;
+    /** @default false */
+    running?: boolean;
+    /** @default false */
+    started?: boolean;
+    startedAt?: string | null;
+    /**
+     * @default none
+     * @enum {string}
+     */
+    videoAudioSettings?: "both" | "none" | "audio-only";
+    /** @default */
+    videoRoomUrl?: string;
+  };
+  StateForClients: {
+    /** @default [] */
+    extensions?: unknown[];
+    hoveredElementId?: string | null;
+    videoClientToken?: string | null;
+  };
+  StateForMe: {
+    attendeeName?: string | null;
+    attendeeSubmittedAt?: string | null;
+    /** @default [] */
+    extensions?: unknown[];
+    /** @default null */
+    guideCartPermissionsGranted?: boolean;
   };
   StateMachine: {
     /** Format: date-time */
@@ -5350,10 +5925,6 @@ export type Schemas = {
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
-  };
-  Struct: {
-    /** Alias which can be used to restrict response fields. For more information see [includes](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#includes-apialias). */
-    apiAlias?: string;
   };
   SubAggregations: {
     aggregation?:
@@ -5482,7 +6053,7 @@ export type Schemas = {
     description?: string;
     /** Format: float */
     discountPercentage?: number;
-    discountPrice?: GenericRecord;
+    discountPrice?: components["schemas"]["Price"][];
     id: string;
     label?: string;
     /** Format: int64 */
@@ -5514,7 +6085,7 @@ export type Schemas = {
     description?: string;
     /** Format: float */
     discountPercentage?: number;
-    discountPrice?: GenericRecord;
+    discountPrice?: components["schemas"]["Price"][];
     id: string;
     label?: string;
     /** Format: int64 */
@@ -5900,7 +6471,7 @@ export type Schemas = {
     placeholder?: string;
     /** Format: int64 */
     position?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionPrice"][];
     relativeSurcharge?: boolean;
     required?: boolean;
@@ -5941,7 +6512,7 @@ export type Schemas = {
     placeholder?: string;
     /** Format: int64 */
     position?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     relationships?: {
       prices?: {
         data?: {
@@ -6045,7 +6616,7 @@ export type Schemas = {
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     rule?: components["schemas"]["Rule"];
     ruleId?: string;
     templateOption?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
@@ -6068,7 +6639,7 @@ export type Schemas = {
     percentageSurcharge?: number;
     /** Format: int64 */
     position: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionValuePrice"][];
     relativeSurcharge?: boolean;
     tax?: components["schemas"]["Tax"];
@@ -6103,7 +6674,7 @@ export type Schemas = {
     percentageSurcharge?: number;
     /** Format: int64 */
     position: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     relationships?: {
       prices?: {
         data?: {
@@ -6189,7 +6760,7 @@ export type Schemas = {
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     rule?: components["schemas"]["Rule"];
     ruleId?: string;
     templateOptionValue?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"];
@@ -6461,6 +7032,10 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  ToggleBroadcastModePayload: {
+    /** Status if the mode is toggled to active or inactive */
+    active: boolean;
+  };
   TotalCountMode: "none" | "exact" | "next-pages";
   Unit: {
     /** Format: date-time */
@@ -6475,6 +7050,16 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
+  };
+  UpdateAttendeeRequestBody: {
+    /** Name of the attendee */
+    attendeeName: string;
+    /** The first time the attendee submit the update form */
+    attendeeSubmitted: boolean;
+    /** The permission for guide cart actions */
+    guideCartPermissionsGranted: boolean;
+    /** Id of the attendee in the video chat tool */
+    videoUserId: string;
   };
   User: {
     /** Format: date-time */
@@ -6718,6 +7303,17 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "getRoutes get /_info/routes": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      endpoints: {
+        methods: string[];
+        path: string;
+      }[];
+    };
+    responseCode: 200;
+  };
   "createCustomerAddress post /account/address": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -6860,7 +7456,13 @@ export type operations = {
       /** Parameter from the link in the confirmation mail sent in Step 1 */
       hash: string;
     };
-    response: components["schemas"]["ArrayStruct"];
+    response: {
+      /** @enum {string} */
+      apiAlias?: "array_struct";
+      data?: {
+        isExpired: boolean;
+      }[];
+    };
     responseCode: 200;
   };
   "listAddress post /account/list-address": {
@@ -6887,6 +7489,23 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "imitateCustomerLogin post /account/login/imitate-customer": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** ID of the customer */
+      customerId: string;
+      /** Generated customer impersonation token */
+      token: string;
+      /** ID of the user who generated the token */
+      userId: string;
+    };
+    response: {
+      /** Define the URL which browser will be redirected to */
+      redirectUrl?: string;
+    };
+    responseCode: 200;
+  };
   "logoutCustomer post /account/logout": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -6900,7 +7519,7 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     body?: components["schemas"]["Criteria"];
-    response: components["schemas"]["AccountNewsletterRecipientResult"];
+    response: components["schemas"]["AccountNewsletterRecipient"];
     responseCode: 200;
   };
   "sendRecoveryMail post /account/recovery-password": {
@@ -7255,6 +7874,22 @@ export type operations = {
     response: components["schemas"]["ApprovalRule"];
     responseCode: 200;
   };
+  "readBreadcrumb get /breadcrumb/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Type: category or product (optional - default: product) */
+      type?: "product" | "category";
+      /** UUID for referrer category only used for product breadcrumb */
+      referrerCategoryId?: string;
+    };
+    pathParams: {
+      /** UUID for product or category */
+      id: string;
+    };
+    response: components["schemas"]["BreadcrumbCollection"];
+    responseCode: 200;
+  };
   "readCategoryList post /category": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -7379,13 +8014,6 @@ export type operations = {
     response: components["schemas"]["Cart"];
     responseCode: 200;
   };
-  "addCustomizedProductToCart post /checkout/customized-products/add-to-cart": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: components["schemas"]["AddToCartPayload"];
-    response: never;
-    responseCode: 204;
-  };
   "checkoutGateway get /checkout/gateway": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -7473,7 +8101,7 @@ export type operations = {
       lastName?: string;
       /**
        * Identifier of the navigation page. Can be used to override the configuration.
-       * Take a look at the settings of a category containing a concact form in the administration.
+       * Take a look at the settings of a category containing a concat form in the administration.
        */
       navigationId?: string;
       /** Phone. This field may be required depending on the system settings. */
@@ -7616,10 +8244,18 @@ export type operations = {
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
   };
+  "addCustomizedProductToCart post /customized-products/add-to-cart": {
+    accept?: "application/json";
+    body: components["schemas"]["AddToCartPayload"];
+    response: never;
+    responseCode: 204;
+  };
   "uploadCustomizedProductImage post /customized-products/upload": {
-    contentType: "multipart/form-data";
     accept?: "application/json";
     body: FormData;
+    headers?: {
+      "Content-Type": "multipart/form-data";
+    };
     response: {
       mediaId: string;
       fileName: string;
@@ -7639,6 +8275,181 @@ export type operations = {
     };
     body?: components["schemas"]["Criteria"];
     response: components["schemas"]["Document"];
+    responseCode: 200;
+  };
+  "attendeeRespondInvitation patch /dsr/appointment/{appointmentId}/attendee/respond-invitation": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** The appointment id you respond to */
+      appointmentId: string;
+    };
+    body: {
+      /**
+       * The status you respond to
+       * @enum {string}
+       */
+      invitationStatus?: "accepted" | "maybe" | "declined";
+      /** The token will be attached to the invitation response link in the invitation mail */
+      token: string;
+    };
+    response: components["schemas"]["AttendeeRespondInvitationResponse"];
+    responseCode: 200;
+  };
+  "getCalendarFile post /dsr/appointment/{appointmentId}/download-ics": {
+    contentType?: "application/json";
+    accept: "text/calendar";
+    pathParams: {
+      /** The appointment id you want to get the calendar file */
+      appointmentId: string;
+    };
+    body: {
+      /** The token will be attached to the invitation response link in the invitation mail */
+      token: string;
+    };
+    response: unknown;
+    responseCode: 200;
+  };
+  "joinAppointmentAsClient post /dsr/appointment/{presentationPath}/join-as-client": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Presentation path */
+      presentationPath: string;
+    };
+    response: components["schemas"]["JoinAppointmentResponse"];
+    responseCode: 200;
+  };
+  "updateAttendee patch /dsr/appointment/attendee": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["UpdateAttendeeRequestBody"];
+    response: {
+      /**
+       * The api alias of the API
+       * @default dsr.appointment.update-attendee
+       */
+      apiAlias?: string;
+      /** The data is used to update the attendee information */
+      data?: unknown;
+    };
+    responseCode: 200;
+  };
+  "getAttendeeProductCollection get /dsr/appointment/collection/{alias}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** The alias of collection you want to get */
+      alias: "liked" | "disliked";
+    };
+    response: components["schemas"]["AttendeeProductCollectionResponse"];
+    responseCode: 200;
+  };
+  "attendeeProductCollectionAddProduct post /dsr/appointment/collection/{alias}/{productId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** The alias of collection you want to add */
+      alias: "liked" | "disliked";
+      /** The product id you want to add */
+      productId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "attendeeProductCollectionRemoveProduct delete /dsr/appointment/collection/{alias}/{productId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** The alias of collection you want to remove */
+      alias: "liked" | "disliked";
+      /** The product id you want to remove */
+      productId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "getLastSeenProducts get /dsr/appointment/collection/last-seen": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: components["schemas"]["AttendeeProductCollectionLastSeenResponse"];
+    responseCode: 200;
+  };
+  "getPresentationStructure get /dsr/appointment/presentation": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: components["schemas"]["PresentationStructure"];
+    responseCode: 200;
+  };
+  "getSlideData get /dsr/appointment/presentation/{presentationCmsPageId}/slide/{sectionId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Presentation CMS page id for which the data is requested */
+      presentationCmsPageId: string;
+      /** CMS section id for which the data is requested */
+      sectionId: string;
+    };
+    response: components["schemas"]["PresentationSlideData"];
+    responseCode: 200;
+  };
+  "getClientPresentationState get /dsr/appointment/presentation/state": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: components["schemas"]["ClientPresentationStateResponse"];
+    responseCode: 200;
+  };
+  "addInteraction post /dsr/interaction": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["CreateInteractionRequestBody"];
+    response: never;
+    responseCode: 200;
+  };
+  "dsrProductListing post /dsr/product-listing": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body?: components["schemas"]["Criteria"] & {
+      /**
+       * Load interaction (like & dislike) to product of attendee. It will be added into product extensions named interaction
+       * @default false
+       */
+      interaction?: boolean;
+      /**
+       * Load all product ids, you can access it from `extensions.allIds` of the response
+       * @default false
+       */
+      loadAllIds?: boolean;
+      /**
+       * load all variants following the main products
+       * @default false
+       */
+      loadVariants?: boolean;
+      /**
+       * Use id sorting instead of other sorting fields
+       * @default false
+       */
+      useIdSorting?: boolean;
+    };
+    response: {
+      elements?: components["schemas"]["Product"][];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "resolveQuickviewPage get /dsr/quickview/{productId}/{cmsPageLayoutId}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** The product id */
+      productId: string;
+      /** The cms page id using as product quick view */
+      cmsPageLayoutId: string;
+    };
+    response: {
+      cmsPage?: components["schemas"]["CmsPage"];
+      configurator?: components["schemas"]["PropertyGroup"][];
+      product?: components["schemas"]["Product"];
+    };
     responseCode: 200;
   };
   "readEmployees post /employee": {
@@ -8230,6 +9041,18 @@ export type operations = {
     };
     body?: components["schemas"]["Criteria"];
     response: components["schemas"]["Quote"];
+    responseCode: 200;
+  };
+  "downloadQuoteDocument post /quote/document/download/{documentId}/{deepLinkCode}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the quote document to be reinvited */
+      documentId: string;
+      /** Deep link code of the quote document */
+      deepLinkCode: string;
+    };
+    response: never;
     responseCode: 200;
   };
   "createOrderFromQuote post /quote/order/{id}": {

@@ -1,26 +1,32 @@
-# Blank playground
+# Product detail page example
 
-This example should help get you started developing [Shopware Frontends](https://github.com/shopware/frontends).
+![Shopware Frontends](./public/shopware-frontends-logo.png)
 
-## Customization
+This repository shows an example of application built using Shopware Frontends Framework on Nuxt 3.
 
-- edit [./src/App.vue](./src/App.vue) in order to change the current example
-- edit [./src/main.js](./src/main.js) in order to adjust Shopware Frontends plugin
+## What's inside
 
-## Project Setup
+- Nuxt 3 application
+- Required libraries installed (api-client, composables, nuxt3-module)
+- Minimum configuration of Nuxt 3 module
 
-```sh
-npm install
-```
+## Requirements
 
-### Compile and Hot-Reload for Development
+Go to [Documentation > Requirements](https://frontends.shopware.com/framework/requirements.html) to see the details.
 
-```sh
-npm run dev
-```
+## Set up your Shopware 6 instance
 
-### Compile and Minify for Production
+In order to have a different API connected to the app, rename `.env.dist` file to `.env` and change the API access information. Then rerun the application.
 
-```sh
-npm run build
-```
+## Customize
+
+Now, you are free to use the `@shopware-pwa/composables-next` package in the application. You can start from [app.vue](./app.vue).
+
+## Install & Run
+
+1. `pnpm i` to install deps
+2. `pnpm dev` to run the project in dev mode
+
+## Try it online
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-blank)

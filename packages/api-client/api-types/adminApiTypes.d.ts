@@ -661,6 +661,108 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  AggregationEntity: {
+    /** The entity definition e.g "product_manufacturer". */
+    definition: string;
+    /** The field you want to aggregate over. */
+    field: string;
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "entity";
+  };
+  AggregationFilter: {
+    filter: components["schemas"]["Filters"][];
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "filter";
+  };
+  AggregationHistogram: {
+    /** The field you want to aggregate over. */
+    field: string;
+    /** The format of the histogram */
+    format?: string;
+    /** The interval of the histogram */
+    interval?: number;
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /** The timezone of the histogram */
+    timeZone?: string;
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "histogram";
+  };
+  AggregationMetrics: {
+    field: string;
+    name: string;
+    /** @enum {string} */
+    type: "avg" | "count" | "max" | "min" | "stats" | "sum";
+  };
+  AggregationRange: {
+    /** The field you want to aggregate over. */
+    field: string;
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /** The ranges of the aggregation */
+    ranges: (
+      | {
+          /** The lower bound of the range */
+          from: number;
+          /** The upper bound of the range */
+          to: number;
+        }
+      | {
+          /** The lower bound of the range */
+          from: string;
+        }
+      | {
+          /** The upper bound of the range */
+          to: string;
+        }
+    )[];
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "range";
+  };
+  AggregationTerms: {
+    /** The field you want to aggregate over. */
+    field: string;
+    /** The number of terms to return */
+    limit?: number;
+    /** Give your aggregation an identifier, so you can find it easier */
+    name: string;
+    /** Sorting the aggregation result. */
+    sort?: components["schemas"]["Sort"][];
+    /**
+     * The type of aggregation
+     * @enum {string}
+     */
+    type: "terms";
+  };
+  Aggregations: (
+    | components["schemas"]["AggregationMetrics"]
+    | (components["schemas"]["AggregationEntity"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationFilter"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationTerms"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationHistogram"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationRange"] &
+        components["schemas"]["SubAggregations"])
+  )[];
   App: {
     aclRole?: components["schemas"]["AclRole"];
     aclRoleId: string;
@@ -717,21 +819,21 @@ export type Schemas = {
     /** Format: int64 */
     templateLoadPriority?: number;
     templates?: components["schemas"]["AppTemplate"][];
-    translated?: {
-      aclRoleId?: string;
-      author?: string;
-      baseAppUrl?: string;
-      copyright?: string;
-      description?: string;
-      icon?: string;
-      integrationId?: string;
-      label?: string;
-      license?: string;
-      name?: string;
-      path?: string;
-      privacy?: string;
-      privacyPolicyExtensions?: string;
-      version?: string;
+    translated: {
+      aclRoleId: string;
+      author: string;
+      baseAppUrl: string;
+      copyright: string;
+      description: string;
+      icon: string;
+      integrationId: string;
+      label: string;
+      license: string;
+      name: string;
+      path: string;
+      privacy: string;
+      privacyPolicyExtensions: string;
+      version: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -747,13 +849,13 @@ export type Schemas = {
     entity: string;
     id: string;
     label: string;
-    translated?: {
-      action?: string;
-      appId?: string;
-      entity?: string;
-      label?: string;
-      url?: string;
-      view?: string;
+    translated: {
+      action: string;
+      appId: string;
+      entity: string;
+      label: string;
+      url: string;
+      view: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -785,13 +887,13 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      action?: string;
-      appId?: string;
-      entity?: string;
-      label?: string;
-      url?: string;
-      view?: string;
+    translated: {
+      action: string;
+      appId: string;
+      entity: string;
+      label: string;
+      url: string;
+      view: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -829,12 +931,12 @@ export type Schemas = {
     name: string;
     styles: string;
     template: string;
-    translated?: {
-      appId?: string;
-      label?: string;
-      name?: string;
-      styles?: string;
-      template?: string;
+    translated: {
+      appId: string;
+      label: string;
+      name: string;
+      styles: string;
+      template: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -866,12 +968,12 @@ export type Schemas = {
     };
     styles: string;
     template: string;
-    translated?: {
-      appId?: string;
-      label?: string;
-      name?: string;
-      styles?: string;
-      template?: string;
+    translated: {
+      appId: string;
+      label: string;
+      name: string;
+      styles: string;
+      template: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -898,17 +1000,17 @@ export type Schemas = {
     parameters?: GenericRecord;
     requirements?: string[];
     swIcon?: string;
-    translated?: {
-      appId?: string;
-      badge?: string;
-      description?: string;
-      headline?: string;
-      icon?: string;
-      iconRaw?: string;
-      label?: string;
-      name?: string;
-      swIcon?: string;
-      url?: string;
+    translated: {
+      appId: string;
+      badge: string;
+      description: string;
+      headline: string;
+      icon: string;
+      iconRaw: string;
+      label: string;
+      name: string;
+      swIcon: string;
+      url: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -966,17 +1068,17 @@ export type Schemas = {
     };
     requirements?: string[];
     swIcon?: string;
-    translated?: {
-      appId?: string;
-      badge?: string;
-      description?: string;
-      headline?: string;
-      icon?: string;
-      iconRaw?: string;
-      label?: string;
-      name?: string;
-      swIcon?: string;
-      url?: string;
+    translated: {
+      appId: string;
+      badge: string;
+      description: string;
+      headline: string;
+      icon: string;
+      iconRaw: string;
+      label: string;
+      name: string;
+      swIcon: string;
+      url: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -1265,21 +1367,21 @@ export type Schemas = {
     };
     /** Format: int64 */
     templateLoadPriority?: number;
-    translated?: {
-      aclRoleId?: string;
-      author?: string;
-      baseAppUrl?: string;
-      copyright?: string;
-      description?: string;
-      icon?: string;
-      integrationId?: string;
-      label?: string;
-      license?: string;
-      name?: string;
-      path?: string;
-      privacy?: string;
-      privacyPolicyExtensions?: string;
-      version?: string;
+    translated: {
+      aclRoleId: string;
+      author: string;
+      baseAppUrl: string;
+      copyright: string;
+      description: string;
+      icon: string;
+      integrationId: string;
+      label: string;
+      license: string;
+      name: string;
+      path: string;
+      privacy: string;
+      privacyPolicyExtensions: string;
+      version: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -1384,12 +1486,12 @@ export type Schemas = {
     name: string;
     ruleConditions?: components["schemas"]["RuleCondition"][];
     script?: string;
-    translated?: {
-      appId?: string;
-      group?: string;
-      identifier?: string;
-      name?: string;
-      script?: string;
+    translated: {
+      appId: string;
+      group: string;
+      identifier: string;
+      name: string;
+      script: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -1437,12 +1539,12 @@ export type Schemas = {
       };
     };
     script?: string;
-    translated?: {
-      appId?: string;
-      group?: string;
-      identifier?: string;
-      name?: string;
-      script?: string;
+    translated: {
+      appId: string;
+      group: string;
+      identifier: string;
+      name: string;
+      script: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -1560,6 +1662,9 @@ export type Schemas = {
     template: string;
     /** Format: date-time */
     updatedAt?: string;
+  };
+  Association: {
+    [key: string]: components["schemas"]["Criteria"];
   };
   B2bBusinessPartner: {
     /** Format: date-time */
@@ -2659,28 +2764,28 @@ export type Schemas = {
     serviceSalesChannels?: components["schemas"]["SalesChannel"][];
     slotConfig?: GenericRecord;
     tags?: components["schemas"]["Tag"][];
-    translated?: {
-      afterCategoryId?: string;
-      afterCategoryVersionId?: string;
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      customEntityTypeId?: string;
-      description?: string;
-      externalLink?: string;
-      internalLink?: string;
-      keywords?: string;
-      linkType?: string;
-      mediaId?: string;
-      metaDescription?: string;
-      metaTitle?: string;
-      name?: string;
-      parentId?: string;
-      parentVersionId?: string;
-      path?: string;
-      productAssignmentType?: string;
-      productStreamId?: string;
-      type?: string;
-      versionId?: string;
+    translated: {
+      afterCategoryId: string;
+      afterCategoryVersionId: string;
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      customEntityTypeId: string;
+      description: string;
+      externalLink: string;
+      internalLink: string;
+      keywords: string;
+      linkType: string;
+      mediaId: string;
+      metaDescription: string;
+      metaTitle: string;
+      name: string;
+      parentId: string;
+      parentVersionId: string;
+      path: string;
+      productAssignmentType: string;
+      productStreamId: string;
+      type: string;
+      versionId: string;
     };
     type: string;
     /** Format: date-time */
@@ -2945,28 +3050,28 @@ export type Schemas = {
       };
     };
     slotConfig?: GenericRecord;
-    translated?: {
-      afterCategoryId?: string;
-      afterCategoryVersionId?: string;
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      customEntityTypeId?: string;
-      description?: string;
-      externalLink?: string;
-      internalLink?: string;
-      keywords?: string;
-      linkType?: string;
-      mediaId?: string;
-      metaDescription?: string;
-      metaTitle?: string;
-      name?: string;
-      parentId?: string;
-      parentVersionId?: string;
-      path?: string;
-      productAssignmentType?: string;
-      productStreamId?: string;
-      type?: string;
-      versionId?: string;
+    translated: {
+      afterCategoryId: string;
+      afterCategoryVersionId: string;
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      customEntityTypeId: string;
+      description: string;
+      externalLink: string;
+      internalLink: string;
+      keywords: string;
+      linkType: string;
+      mediaId: string;
+      metaDescription: string;
+      metaTitle: string;
+      name: string;
+      parentId: string;
+      parentVersionId: string;
+      path: string;
+      productAssignmentType: string;
+      productStreamId: string;
+      type: string;
+      versionId: string;
     };
     type: string;
     /** Format: date-time */
@@ -3227,13 +3332,13 @@ export type Schemas = {
     previewMediaId?: string;
     products?: components["schemas"]["Product"][];
     sections?: components["schemas"]["CmsSection"][];
-    translated?: {
-      cssClass?: string;
-      entity?: string;
-      name?: string;
-      previewMediaId?: string;
-      type?: string;
-      versionId?: string;
+    translated: {
+      cssClass: string;
+      entity: string;
+      name: string;
+      previewMediaId: string;
+      type: string;
+      versionId: string;
     };
     type: string;
     /** Format: date-time */
@@ -3536,13 +3641,13 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      cssClass?: string;
-      entity?: string;
-      name?: string;
-      previewMediaId?: string;
-      type?: string;
-      versionId?: string;
+    translated: {
+      cssClass: string;
+      entity: string;
+      name: string;
+      previewMediaId: string;
+      type: string;
+      versionId: string;
     };
     type: string;
     /** Format: date-time */
@@ -3717,12 +3822,12 @@ export type Schemas = {
     id: string;
     locked?: boolean;
     slot: string;
-    translated?: {
-      blockId?: string;
-      cmsBlockVersionId?: string;
-      slot?: string;
-      type?: string;
-      versionId?: string;
+    translated: {
+      blockId: string;
+      cmsBlockVersionId: string;
+      slot: string;
+      type: string;
+      versionId: string;
     };
     type: string;
     /** Format: date-time */
@@ -3775,12 +3880,12 @@ export type Schemas = {
       };
     };
     slot: string;
-    translated?: {
-      blockId?: string;
-      cmsBlockVersionId?: string;
-      slot?: string;
-      type?: string;
-      versionId?: string;
+    translated: {
+      blockId: string;
+      cmsBlockVersionId: string;
+      slot: string;
+      type: string;
+      versionId: string;
     };
     type: string;
     /** Format: date-time */
@@ -3844,13 +3949,13 @@ export type Schemas = {
     shippingAvailable?: boolean;
     states?: components["schemas"]["CountryState"][];
     taxRules?: components["schemas"]["TaxRule"][];
-    translated?: {
-      advancedPostalCodePattern?: string;
-      defaultPostalCodePattern?: string;
-      iso?: string;
-      iso3?: string;
-      name?: string;
-      vatIdPattern?: string;
+    translated: {
+      advancedPostalCodePattern: string;
+      defaultPostalCodePattern: string;
+      iso: string;
+      iso3: string;
+      name: string;
+      vatIdPattern: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -4014,13 +4119,13 @@ export type Schemas = {
       };
     };
     shippingAvailable?: boolean;
-    translated?: {
-      advancedPostalCodePattern?: string;
-      defaultPostalCodePattern?: string;
-      iso?: string;
-      iso3?: string;
-      name?: string;
-      vatIdPattern?: string;
+    translated: {
+      advancedPostalCodePattern: string;
+      defaultPostalCodePattern: string;
+      iso: string;
+      iso3: string;
+      name: string;
+      vatIdPattern: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -4058,10 +4163,10 @@ export type Schemas = {
     /** Format: int64 */
     position?: number;
     shortCode: string;
-    translated?: {
-      countryId?: string;
-      name?: string;
-      shortCode?: string;
+    translated: {
+      countryId: string;
+      name: string;
+      shortCode: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -4141,46 +4246,54 @@ export type Schemas = {
       };
     };
     shortCode: string;
-    translated?: {
-      countryId?: string;
-      name?: string;
-      shortCode?: string;
+    translated: {
+      countryId: string;
+      name: string;
+      shortCode: string;
     };
     /** Format: date-time */
     updatedAt?: string;
   };
   Criteria: {
     /** Used to perform aggregations on the search result. For more information, see [Search Queries > Aggregations](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#aggregations) */
-    aggregations?: {
-      /** The field you want to aggregate over. */
-      field: string;
-      /** Give your aggregation an identifier, so you can find it easier */
-      name: string;
-      /** The type of aggregation */
-      type: string;
-    }[];
+    aggregations?: components["schemas"]["Aggregations"];
     /** Used to fetch associations which are not fetched by default. */
-    associations?: GenericRecord;
+    associations?: components["schemas"]["Association"];
     /** Fields which should be returned in the search result. */
     fields?: string[];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
-    filter?: {
+    filter?: ({
       field: string;
       type: string;
       value: string;
-    }[];
+    } & (
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
+    ))[];
     /** Perform groupings over certain fields */
     grouping?: string[];
+    /** List of ids to search for */
+    ids?: string[];
+    includes?: components["schemas"]["Include"];
     /** Number of items per result page */
     limit?: number;
     /** Search result page */
     page?: number;
     /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
-    "post-filter"?: {
+    "post-filter"?: ({
       field: string;
       type: string;
       value: string;
-    }[];
+    } & (
+      | components["schemas"]["SimpleFilter"]
+      | components["schemas"]["EqualsFilter"]
+      | components["schemas"]["MultiNotFilter"]
+      | components["schemas"]["RangeFilter"]
+    ))[];
+    /** The query string to search for */
+    query?: string;
     /** Sorting in the search result. */
     sort?: {
       field: string;
@@ -4279,11 +4392,11 @@ export type Schemas = {
       interval: number;
       roundForNet: boolean;
     };
-    translated?: {
-      isoCode?: string;
-      name?: string;
-      shortName?: string;
-      symbol?: string;
+    translated: {
+      isoCode: string;
+      name: string;
+      shortName: string;
+      symbol: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -4553,11 +4666,11 @@ export type Schemas = {
       interval: number;
       roundForNet: boolean;
     };
-    translated?: {
-      isoCode?: string;
-      name?: string;
-      shortName?: string;
-      symbol?: string;
+    translated: {
+      isoCode: string;
+      name: string;
+      shortName: string;
+      symbol: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -5349,11 +5462,11 @@ export type Schemas = {
     registrationSeoMetaDescription?: string;
     registrationTitle?: string;
     salesChannels?: components["schemas"]["SalesChannel"][];
-    translated?: {
-      name?: string;
-      registrationIntroduction?: string;
-      registrationSeoMetaDescription?: string;
-      registrationTitle?: string;
+    translated: {
+      name: string;
+      registrationIntroduction: string;
+      registrationSeoMetaDescription: string;
+      registrationTitle: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -5434,11 +5547,11 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      name?: string;
-      registrationIntroduction?: string;
-      registrationSeoMetaDescription?: string;
-      registrationTitle?: string;
+    translated: {
+      name: string;
+      registrationIntroduction: string;
+      registrationSeoMetaDescription: string;
+      registrationTitle: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -6206,9 +6319,9 @@ export type Schemas = {
     name: string;
     products?: components["schemas"]["Product"][];
     shippingMethods?: components["schemas"]["ShippingMethod"][];
-    translated?: {
-      name?: string;
-      unit?: string;
+    translated: {
+      name: string;
+      unit: string;
     };
     unit: string;
     /** Format: date-time */
@@ -6256,9 +6369,9 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      name?: string;
-      unit?: string;
+    translated: {
+      name: string;
+      unit: string;
     };
     unit: string;
     /** Format: date-time */
@@ -6563,9 +6676,9 @@ export type Schemas = {
     id: string;
     name: string;
     technicalName: string;
-    translated?: {
-      name?: string;
-      technicalName?: string;
+    translated: {
+      name: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -6641,13 +6754,25 @@ export type Schemas = {
       };
     };
     technicalName: string;
-    translated?: {
-      name?: string;
-      technicalName?: string;
+    translated: {
+      name: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
   };
+  EqualsFilter: {
+    field: string;
+    /** @enum {string} */
+    type: "equals";
+    value: string | number | boolean | null;
+  };
+  Filters: (
+    | components["schemas"]["SimpleFilter"]
+    | components["schemas"]["EqualsFilter"]
+    | components["schemas"]["MultiNotFilter"]
+    | components["schemas"]["RangeFilter"]
+  )[];
   Flow: {
     active?: boolean;
     appFlowEvent?: components["schemas"]["AppFlowEvent"];
@@ -7130,14 +7255,14 @@ export type Schemas = {
     name?: string;
     sourceEntity: string;
     systemDefault?: boolean;
-    translated?: {
-      delimiter?: string;
-      enclosure?: string;
-      fileType?: string;
-      label?: string;
-      name?: string;
-      sourceEntity?: string;
-      type?: string;
+    translated: {
+      delimiter: string;
+      enclosure: string;
+      fileType: string;
+      label: string;
+      name: string;
+      sourceEntity: string;
+      type: string;
     };
     type?: string;
     updateBy?: GenericRecord;
@@ -7174,19 +7299,22 @@ export type Schemas = {
     };
     sourceEntity: string;
     systemDefault?: boolean;
-    translated?: {
-      delimiter?: string;
-      enclosure?: string;
-      fileType?: string;
-      label?: string;
-      name?: string;
-      sourceEntity?: string;
-      type?: string;
+    translated: {
+      delimiter: string;
+      enclosure: string;
+      fileType: string;
+      label: string;
+      name: string;
+      sourceEntity: string;
+      type: string;
     };
     type?: string;
     updateBy?: GenericRecord;
     /** Format: date-time */
     updatedAt?: string;
+  };
+  Include: {
+    [key: string]: string[];
   };
   Integration: {
     accessKey: string;
@@ -7329,15 +7457,15 @@ export type Schemas = {
     seoUrls?: components["schemas"]["SeoUrl"][];
     slotConfig?: GenericRecord;
     tags?: components["schemas"]["Tag"][];
-    translated?: {
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      keywords?: string;
-      metaDescription?: string;
-      metaTitle?: string;
-      name?: string;
-      url?: string;
-      versionId?: string;
+    translated: {
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      keywords: string;
+      metaDescription: string;
+      metaTitle: string;
+      name: string;
+      url: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -7436,15 +7564,15 @@ export type Schemas = {
       };
     };
     slotConfig?: GenericRecord;
-    translated?: {
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      keywords?: string;
-      metaDescription?: string;
-      metaTitle?: string;
-      name?: string;
-      url?: string;
-      versionId?: string;
+    translated: {
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      keywords: string;
+      metaDescription: string;
+      metaTitle: string;
+      name: string;
+      url: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -7850,10 +7978,10 @@ export type Schemas = {
     languages?: components["schemas"]["Language"][];
     name: string;
     territory: string;
-    translated?: {
-      code?: string;
-      name?: string;
-      territory?: string;
+    translated: {
+      code: string;
+      name: string;
+      territory: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -7899,10 +8027,10 @@ export type Schemas = {
       };
     };
     territory: string;
-    translated?: {
-      code?: string;
-      name?: string;
-      territory?: string;
+    translated: {
+      code: string;
+      name: string;
+      territory: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -7945,13 +8073,13 @@ export type Schemas = {
     name: string;
     salesChannels?: components["schemas"]["SalesChannel"][];
     systemDefault?: boolean;
-    translated?: {
-      description?: string;
-      footerHtml?: string;
-      footerPlain?: string;
-      headerHtml?: string;
-      headerPlain?: string;
-      name?: string;
+    translated: {
+      description: string;
+      footerHtml: string;
+      footerPlain: string;
+      headerHtml: string;
+      headerPlain: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -7984,13 +8112,13 @@ export type Schemas = {
       };
     };
     systemDefault?: boolean;
-    translated?: {
-      description?: string;
-      footerHtml?: string;
-      footerPlain?: string;
-      headerHtml?: string;
-      headerPlain?: string;
-      name?: string;
+    translated: {
+      description: string;
+      footerHtml: string;
+      footerPlain: string;
+      headerHtml: string;
+      headerPlain: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -8026,13 +8154,13 @@ export type Schemas = {
     senderName?: string;
     subject: string;
     systemDefault?: boolean;
-    translated?: {
-      contentHtml?: string;
-      contentPlain?: string;
-      description?: string;
-      mailTemplateTypeId?: string;
-      senderName?: string;
-      subject?: string;
+    translated: {
+      contentHtml: string;
+      contentPlain: string;
+      description: string;
+      mailTemplateTypeId: string;
+      senderName: string;
+      subject: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -8098,13 +8226,13 @@ export type Schemas = {
     senderName?: string;
     subject: string;
     systemDefault?: boolean;
-    translated?: {
-      contentHtml?: string;
-      contentPlain?: string;
-      description?: string;
-      mailTemplateTypeId?: string;
-      senderName?: string;
-      subject?: string;
+    translated: {
+      contentHtml: string;
+      contentPlain: string;
+      description: string;
+      mailTemplateTypeId: string;
+      senderName: string;
+      subject: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -8129,9 +8257,9 @@ export type Schemas = {
     name: string;
     technicalName: string;
     templateData?: GenericRecord;
-    translated?: {
-      name?: string;
-      technicalName?: string;
+    translated: {
+      name: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -8162,9 +8290,9 @@ export type Schemas = {
     };
     technicalName: string;
     templateData?: GenericRecord;
-    translated?: {
-      name?: string;
-      technicalName?: string;
+    translated: {
+      name: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -8392,17 +8520,17 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     thumbnails?: components["schemas"]["MediaThumbnail"][];
     title?: string;
-    translated?: {
-      alt?: string;
-      fileExtension?: string;
-      fileName?: string;
-      mediaFolderId?: string;
-      mimeType?: string;
-      path?: string;
-      title?: string;
-      uploadedAt?: string;
-      url?: string;
-      userId?: string;
+    translated: {
+      alt: string;
+      fileExtension: string;
+      fileName: string;
+      mediaFolderId: string;
+      mimeType: string;
+      path: string;
+      title: string;
+      uploadedAt: string;
+      url: string;
+      userId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -8421,8 +8549,8 @@ export type Schemas = {
     mediaId: string;
     needsAnalysis?: boolean;
     tags?: GenericRecord[];
-    translated?: {
-      mediaId?: string;
+    translated: {
+      mediaId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -8451,8 +8579,8 @@ export type Schemas = {
       };
     };
     tags?: GenericRecord[];
-    translated?: {
-      mediaId?: string;
+    translated: {
+      mediaId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -9150,17 +9278,17 @@ export type Schemas = {
       };
     };
     title?: string;
-    translated?: {
-      alt?: string;
-      fileExtension?: string;
-      fileName?: string;
-      mediaFolderId?: string;
-      mimeType?: string;
-      path?: string;
-      title?: string;
-      uploadedAt?: string;
-      url?: string;
-      userId?: string;
+    translated: {
+      alt: string;
+      fileExtension: string;
+      fileName: string;
+      mediaFolderId: string;
+      mimeType: string;
+      path: string;
+      title: string;
+      uploadedAt: string;
+      url: string;
+      userId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -9268,6 +9396,13 @@ export type Schemas = {
     updatedAt?: string;
     /** Format: int64 */
     width: number;
+  };
+  MultiNotFilter: {
+    /** @enum {string} */
+    operator: "AND" | "and" | "OR" | "or";
+    queries: components["schemas"]["Filters"];
+    /** @enum {string} */
+    type: "multi" | "not";
   };
   NewsletterRecipient: {
     city?: string;
@@ -9459,11 +9594,11 @@ export type Schemas = {
     /** Format: int64 */
     start: number;
     state?: components["schemas"]["NumberRangeState"];
-    translated?: {
-      description?: string;
-      name?: string;
-      pattern?: string;
-      typeId?: string;
+    translated: {
+      description: string;
+      name: string;
+      pattern: string;
+      typeId: string;
     };
     type?: components["schemas"]["NumberRangeType"];
     typeId: string;
@@ -9528,11 +9663,11 @@ export type Schemas = {
     };
     /** Format: int64 */
     start: number;
-    translated?: {
-      description?: string;
-      name?: string;
-      pattern?: string;
-      typeId?: string;
+    translated: {
+      description: string;
+      name: string;
+      pattern: string;
+      typeId: string;
     };
     typeId: string;
     /** Format: date-time */
@@ -9655,9 +9790,9 @@ export type Schemas = {
     numberRanges?: components["schemas"]["NumberRange"][];
     numberRangeSalesChannels?: components["schemas"]["NumberRangeSalesChannel"][];
     technicalName?: string;
-    translated?: {
-      technicalName?: string;
-      typeName?: string;
+    translated: {
+      technicalName: string;
+      typeName: string;
     };
     typeName: string;
     /** Format: date-time */
@@ -9702,9 +9837,9 @@ export type Schemas = {
       };
     };
     technicalName?: string;
-    translated?: {
-      technicalName?: string;
-      typeName?: string;
+    translated: {
+      technicalName: string;
+      typeName: string;
     };
     typeName: string;
     /** Format: date-time */
@@ -11719,9 +11854,9 @@ export type Schemas = {
     id: string;
     lineItems?: components["schemas"]["OrderReturnLineItem"][];
     reasonKey: string;
-    translated?: {
-      content?: string;
-      reasonKey?: string;
+    translated: {
+      content: string;
+      reasonKey: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -11749,9 +11884,9 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      content?: string;
-      reasonKey?: string;
+    translated: {
+      content: string;
+      reasonKey: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -12419,17 +12554,17 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     synchronous?: boolean;
     technicalName?: string;
-    translated?: {
-      availabilityRuleId?: string;
-      description?: string;
-      distinguishableName?: string;
-      formattedHandlerIdentifier?: string;
-      handlerIdentifier?: string;
-      mediaId?: string;
-      name?: string;
-      pluginId?: string;
-      shortName?: string;
-      technicalName?: string;
+    translated: {
+      availabilityRuleId: string;
+      description: string;
+      distinguishableName: string;
+      formattedHandlerIdentifier: string;
+      handlerIdentifier: string;
+      mediaId: string;
+      name: string;
+      pluginId: string;
+      shortName: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -12649,17 +12784,17 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     synchronous?: boolean;
     technicalName?: string;
-    translated?: {
-      availabilityRuleId?: string;
-      description?: string;
-      distinguishableName?: string;
-      formattedHandlerIdentifier?: string;
-      handlerIdentifier?: string;
-      mediaId?: string;
-      name?: string;
-      pluginId?: string;
-      shortName?: string;
-      technicalName?: string;
+    translated: {
+      availabilityRuleId: string;
+      description: string;
+      distinguishableName: string;
+      formattedHandlerIdentifier: string;
+      handlerIdentifier: string;
+      mediaId: string;
+      name: string;
+      pluginId: string;
+      shortName: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -12688,23 +12823,23 @@ export type Schemas = {
     path?: string;
     paymentMethods?: components["schemas"]["PaymentMethod"][];
     supportLink?: string;
-    translated?: {
-      author?: string;
-      baseClass?: string;
-      composerName?: string;
-      copyright?: string;
-      description?: string;
-      icon?: string;
-      installedAt?: string;
-      label?: string;
-      license?: string;
-      manufacturerLink?: string;
-      name?: string;
-      path?: string;
-      supportLink?: string;
-      upgradedAt?: string;
-      upgradeVersion?: string;
-      version?: string;
+    translated: {
+      author: string;
+      baseClass: string;
+      composerName: string;
+      copyright: string;
+      description: string;
+      icon: string;
+      installedAt: string;
+      label: string;
+      license: string;
+      manufacturerLink: string;
+      name: string;
+      path: string;
+      supportLink: string;
+      upgradedAt: string;
+      upgradeVersion: string;
+      version: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -12753,23 +12888,23 @@ export type Schemas = {
       };
     };
     supportLink?: string;
-    translated?: {
-      author?: string;
-      baseClass?: string;
-      composerName?: string;
-      copyright?: string;
-      description?: string;
-      icon?: string;
-      installedAt?: string;
-      label?: string;
-      license?: string;
-      manufacturerLink?: string;
-      name?: string;
-      path?: string;
-      supportLink?: string;
-      upgradedAt?: string;
-      upgradeVersion?: string;
-      version?: string;
+    translated: {
+      author: string;
+      baseClass: string;
+      composerName: string;
+      copyright: string;
+      description: string;
+      icon: string;
+      installedAt: string;
+      label: string;
+      license: string;
+      manufacturerLink: string;
+      name: string;
+      path: string;
+      supportLink: string;
+      upgradedAt: string;
+      upgradeVersion: string;
+      version: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -13079,34 +13214,34 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     tax?: components["schemas"]["Tax"];
     taxId: string;
-    translated?: {
-      canonicalProductId?: string;
-      canonicalProductVersionId?: string;
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      coverId?: string;
-      deliveryTimeId?: string;
-      description?: string;
-      displayGroup?: string;
-      ean?: string;
-      featureSetId?: string;
-      keywords?: string;
-      manufacturerId?: string;
-      manufacturerNumber?: string;
-      metaDescription?: string;
-      metaTitle?: string;
-      name?: string;
-      packUnit?: string;
-      packUnitPlural?: string;
-      parentId?: string;
-      parentVersionId?: string;
-      productManufacturerVersionId?: string;
-      productMediaVersionId?: string;
-      productNumber?: string;
-      releaseDate?: string;
-      taxId?: string;
-      unitId?: string;
-      versionId?: string;
+    translated: {
+      canonicalProductId: string;
+      canonicalProductVersionId: string;
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      coverId: string;
+      deliveryTimeId: string;
+      description: string;
+      displayGroup: string;
+      ean: string;
+      featureSetId: string;
+      keywords: string;
+      manufacturerId: string;
+      manufacturerNumber: string;
+      metaDescription: string;
+      metaTitle: string;
+      name: string;
+      packUnit: string;
+      packUnitPlural: string;
+      parentId: string;
+      parentVersionId: string;
+      productManufacturerVersionId: string;
+      productMediaVersionId: string;
+      productNumber: string;
+      releaseDate: string;
+      taxId: string;
+      unitId: string;
+      versionId: string;
     };
     unit?: components["schemas"]["Unit"];
     unitId?: string;
@@ -13241,14 +13376,14 @@ export type Schemas = {
     productVersionId?: string;
     sortBy?: string;
     sortDirection?: string;
-    translated?: {
-      name?: string;
-      productId?: string;
-      productStreamId?: string;
-      productVersionId?: string;
-      sortBy?: string;
-      sortDirection?: string;
-      type?: string;
+    translated: {
+      name: string;
+      productId: string;
+      productStreamId: string;
+      productVersionId: string;
+      sortBy: string;
+      sortDirection: string;
+      type: string;
     };
     type: string;
     /** Format: date-time */
@@ -13374,14 +13509,14 @@ export type Schemas = {
     };
     sortBy?: string;
     sortDirection?: string;
-    translated?: {
-      name?: string;
-      productId?: string;
-      productStreamId?: string;
-      productVersionId?: string;
-      sortBy?: string;
-      sortDirection?: string;
-      type?: string;
+    translated: {
+      name: string;
+      productId: string;
+      productStreamId: string;
+      productVersionId: string;
+      sortBy: string;
+      sortDirection: string;
+      type: string;
     };
     type: string;
     /** Format: date-time */
@@ -13601,9 +13736,9 @@ export type Schemas = {
     id: string;
     name: string;
     products?: components["schemas"]["Product"][];
-    translated?: {
-      description?: string;
-      name?: string;
+    translated: {
+      description: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -13632,9 +13767,9 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      description?: string;
-      name?: string;
+    translated: {
+      description: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -14365,34 +14500,34 @@ export type Schemas = {
     streamIds?: readonly string[];
     tagIds?: readonly string[];
     taxId: string;
-    translated?: {
-      canonicalProductId?: string;
-      canonicalProductVersionId?: string;
-      cmsPageId?: string;
-      cmsPageVersionId?: string;
-      coverId?: string;
-      deliveryTimeId?: string;
-      description?: string;
-      displayGroup?: string;
-      ean?: string;
-      featureSetId?: string;
-      keywords?: string;
-      manufacturerId?: string;
-      manufacturerNumber?: string;
-      metaDescription?: string;
-      metaTitle?: string;
-      name?: string;
-      packUnit?: string;
-      packUnitPlural?: string;
-      parentId?: string;
-      parentVersionId?: string;
-      productManufacturerVersionId?: string;
-      productMediaVersionId?: string;
-      productNumber?: string;
-      releaseDate?: string;
-      taxId?: string;
-      unitId?: string;
-      versionId?: string;
+    translated: {
+      canonicalProductId: string;
+      canonicalProductVersionId: string;
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      coverId: string;
+      deliveryTimeId: string;
+      description: string;
+      displayGroup: string;
+      ean: string;
+      featureSetId: string;
+      keywords: string;
+      manufacturerId: string;
+      manufacturerNumber: string;
+      metaDescription: string;
+      metaTitle: string;
+      name: string;
+      packUnit: string;
+      packUnitPlural: string;
+      parentId: string;
+      parentVersionId: string;
+      productManufacturerVersionId: string;
+      productMediaVersionId: string;
+      productNumber: string;
+      releaseDate: string;
+      taxId: string;
+      unitId: string;
+      versionId: string;
     };
     unitId?: string;
     /** Format: date-time */
@@ -14450,12 +14585,12 @@ export type Schemas = {
     mediaId?: string;
     name: string;
     products?: components["schemas"]["Product"][];
-    translated?: {
-      description?: string;
-      link?: string;
-      mediaId?: string;
-      name?: string;
-      versionId?: string;
+    translated: {
+      description: string;
+      link: string;
+      mediaId: string;
+      name: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -14505,12 +14640,12 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      description?: string;
-      link?: string;
-      mediaId?: string;
-      name?: string;
-      versionId?: string;
+    translated: {
+      description: string;
+      link: string;
+      mediaId: string;
+      name: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -14796,11 +14931,11 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     summary?: string;
-    translated?: {
-      productId?: string;
-      productVersionId?: string;
-      salesChannelId?: string;
-      summary?: string;
+    translated: {
+      productId: string;
+      productVersionId: string;
+      salesChannelId: string;
+      summary: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -14846,11 +14981,11 @@ export type Schemas = {
     };
     salesChannelId: string;
     summary?: string;
-    translated?: {
-      productId?: string;
-      productVersionId?: string;
-      salesChannelId?: string;
-      summary?: string;
+    translated: {
+      productId: string;
+      productVersionId: string;
+      salesChannelId: string;
+      summary: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -15049,9 +15184,9 @@ export type Schemas = {
     locked?: boolean;
     /** Format: int64 */
     priority: number;
-    translated?: {
-      key?: string;
-      label?: string;
+    translated: {
+      key: string;
+      label: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -15067,9 +15202,9 @@ export type Schemas = {
     locked?: boolean;
     /** Format: int64 */
     priority: number;
-    translated?: {
-      key?: string;
-      label?: string;
+    translated: {
+      key: string;
+      label: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -15119,9 +15254,9 @@ export type Schemas = {
     name: string;
     productCrossSellings?: components["schemas"]["ProductCrossSelling"][];
     productExports?: components["schemas"]["ProductExport"][];
-    translated?: {
-      description?: string;
-      name?: string;
+    translated: {
+      description: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -15313,9 +15448,9 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      description?: string;
-      name?: string;
+    translated: {
+      description: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -15508,12 +15643,12 @@ export type Schemas = {
     priority: number;
     salesChannels?: components["schemas"]["PromotionSalesChannel"][];
     setgroups?: components["schemas"]["PromotionSetgroup"][];
-    translated?: {
-      code?: string;
-      individualCodePattern?: string;
-      name?: string;
-      validFrom?: string;
-      validUntil?: string;
+    translated: {
+      code: string;
+      individualCodePattern: string;
+      name: string;
+      validFrom: string;
+      validUntil: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -15897,12 +16032,12 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      code?: string;
-      individualCodePattern?: string;
-      name?: string;
-      validFrom?: string;
-      validUntil?: string;
+    translated: {
+      code: string;
+      individualCodePattern: string;
+      name: string;
+      validFrom: string;
+      validUntil: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -16069,11 +16204,11 @@ export type Schemas = {
     /** Format: int64 */
     position?: number;
     sortingType: string;
-    translated?: {
-      description?: string;
-      displayType?: string;
-      name?: string;
-      sortingType?: string;
+    translated: {
+      description: string;
+      displayType: string;
+      name: string;
+      sortingType: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -16108,11 +16243,11 @@ export type Schemas = {
       };
     };
     sortingType: string;
-    translated?: {
-      description?: string;
-      displayType?: string;
-      name?: string;
-      sortingType?: string;
+    translated: {
+      description: string;
+      displayType: string;
+      name: string;
+      sortingType: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -16134,11 +16269,11 @@ export type Schemas = {
     productConfiguratorSettings?: components["schemas"]["ProductConfiguratorSetting"][];
     productOptions?: components["schemas"]["Product"][];
     productProperties?: components["schemas"]["Product"][];
-    translated?: {
-      colorHexCode?: string;
-      groupId?: string;
-      mediaId?: string;
-      name?: string;
+    translated: {
+      colorHexCode: string;
+      groupId: string;
+      mediaId: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -16231,11 +16366,11 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      colorHexCode?: string;
-      groupId?: string;
-      mediaId?: string;
-      name?: string;
+    translated: {
+      colorHexCode: string;
+      groupId: string;
+      mediaId: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -17490,6 +17625,17 @@ export type Schemas = {
     updatedAt?: string;
     versionId?: string;
   };
+  RangeFilter: {
+    field: string;
+    parameters: {
+      gt?: number;
+      gte?: number;
+      lt?: number;
+      lte?: number;
+    };
+    /** @enum {string} */
+    type: "range";
+  };
   Rule: {
     areas?: readonly GenericRecord[];
     cartPromotions?: components["schemas"]["Promotion"][];
@@ -18508,33 +18654,33 @@ export type Schemas = {
     shortName?: string;
     systemConfigs?: components["schemas"]["SystemConfig"][];
     taxCalculationType?: string;
-    translated?: {
-      accessKey?: string;
-      analyticsId?: string;
-      countryId?: string;
-      currencyId?: string;
-      customerGroupId?: string;
-      footerCategoryId?: string;
-      footerCategoryVersionId?: string;
-      homeCmsPageId?: string;
-      homeCmsPageVersionId?: string;
-      homeKeywords?: string;
-      homeMetaDescription?: string;
-      homeMetaTitle?: string;
-      homeName?: string;
-      hreflangDefaultDomainId?: string;
-      languageId?: string;
-      mailHeaderFooterId?: string;
-      name?: string;
-      navigationCategoryId?: string;
-      navigationCategoryVersionId?: string;
-      paymentMethodId?: string;
-      serviceCategoryId?: string;
-      serviceCategoryVersionId?: string;
-      shippingMethodId?: string;
-      shortName?: string;
-      taxCalculationType?: string;
-      typeId?: string;
+    translated: {
+      accessKey: string;
+      analyticsId: string;
+      countryId: string;
+      currencyId: string;
+      customerGroupId: string;
+      footerCategoryId: string;
+      footerCategoryVersionId: string;
+      homeCmsPageId: string;
+      homeCmsPageVersionId: string;
+      homeKeywords: string;
+      homeMetaDescription: string;
+      homeMetaTitle: string;
+      homeName: string;
+      hreflangDefaultDomainId: string;
+      languageId: string;
+      mailHeaderFooterId: string;
+      name: string;
+      navigationCategoryId: string;
+      navigationCategoryVersionId: string;
+      paymentMethodId: string;
+      serviceCategoryId: string;
+      serviceCategoryVersionId: string;
+      shippingMethodId: string;
+      shortName: string;
+      taxCalculationType: string;
+      typeId: string;
     };
     type?: components["schemas"]["SalesChannelType"];
     typeId: string;
@@ -19475,33 +19621,33 @@ export type Schemas = {
     shippingMethodId: string;
     shortName?: string;
     taxCalculationType?: string;
-    translated?: {
-      accessKey?: string;
-      analyticsId?: string;
-      countryId?: string;
-      currencyId?: string;
-      customerGroupId?: string;
-      footerCategoryId?: string;
-      footerCategoryVersionId?: string;
-      homeCmsPageId?: string;
-      homeCmsPageVersionId?: string;
-      homeKeywords?: string;
-      homeMetaDescription?: string;
-      homeMetaTitle?: string;
-      homeName?: string;
-      hreflangDefaultDomainId?: string;
-      languageId?: string;
-      mailHeaderFooterId?: string;
-      name?: string;
-      navigationCategoryId?: string;
-      navigationCategoryVersionId?: string;
-      paymentMethodId?: string;
-      serviceCategoryId?: string;
-      serviceCategoryVersionId?: string;
-      shippingMethodId?: string;
-      shortName?: string;
-      taxCalculationType?: string;
-      typeId?: string;
+    translated: {
+      accessKey: string;
+      analyticsId: string;
+      countryId: string;
+      currencyId: string;
+      customerGroupId: string;
+      footerCategoryId: string;
+      footerCategoryVersionId: string;
+      homeCmsPageId: string;
+      homeCmsPageVersionId: string;
+      homeKeywords: string;
+      homeMetaDescription: string;
+      homeMetaTitle: string;
+      homeName: string;
+      hreflangDefaultDomainId: string;
+      languageId: string;
+      mailHeaderFooterId: string;
+      name: string;
+      navigationCategoryId: string;
+      navigationCategoryVersionId: string;
+      paymentMethodId: string;
+      serviceCategoryId: string;
+      serviceCategoryVersionId: string;
+      shippingMethodId: string;
+      shortName: string;
+      taxCalculationType: string;
+      typeId: string;
     };
     typeId: string;
     /** Format: date-time */
@@ -19541,13 +19687,13 @@ export type Schemas = {
     name: string;
     salesChannels?: components["schemas"]["SalesChannel"][];
     screenshotUrls?: string[];
-    translated?: {
-      coverUrl?: string;
-      description?: string;
-      descriptionLong?: string;
-      iconName?: string;
-      manufacturer?: string;
-      name?: string;
+    translated: {
+      coverUrl: string;
+      description: string;
+      descriptionLong: string;
+      iconName: string;
+      manufacturer: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -19581,13 +19727,13 @@ export type Schemas = {
       };
     };
     screenshotUrls?: string[];
-    translated?: {
-      coverUrl?: string;
-      description?: string;
-      descriptionLong?: string;
-      iconName?: string;
-      manufacturer?: string;
-      name?: string;
+    translated: {
+      coverUrl: string;
+      description: string;
+      descriptionLong: string;
+      iconName: string;
+      manufacturer: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -19637,10 +19783,10 @@ export type Schemas = {
     orderAddresses?: components["schemas"]["OrderAddress"][];
     orderCustomers?: components["schemas"]["OrderCustomer"][];
     salutationKey: string;
-    translated?: {
-      displayName?: string;
-      letterName?: string;
-      salutationKey?: string;
+    translated: {
+      displayName: string;
+      letterName: string;
+      salutationKey: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -19762,10 +19908,10 @@ export type Schemas = {
       };
     };
     salutationKey: string;
-    translated?: {
-      displayName?: string;
-      letterName?: string;
-      salutationKey?: string;
+    translated: {
+      displayName: string;
+      letterName: string;
+      salutationKey: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -20027,16 +20173,16 @@ export type Schemas = {
     taxType: string;
     technicalName?: string;
     trackingUrl?: string;
-    translated?: {
-      availabilityRuleId?: string;
-      deliveryTimeId?: string;
-      description?: string;
-      mediaId?: string;
-      name?: string;
-      taxId?: string;
-      taxType?: string;
-      technicalName?: string;
-      trackingUrl?: string;
+    translated: {
+      availabilityRuleId: string;
+      deliveryTimeId: string;
+      description: string;
+      mediaId: string;
+      name: string;
+      taxId: string;
+      taxType: string;
+      technicalName: string;
+      trackingUrl: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -20242,16 +20388,16 @@ export type Schemas = {
     taxType: string;
     technicalName?: string;
     trackingUrl?: string;
-    translated?: {
-      availabilityRuleId?: string;
-      deliveryTimeId?: string;
-      description?: string;
-      mediaId?: string;
-      name?: string;
-      taxId?: string;
-      taxType?: string;
-      technicalName?: string;
-      trackingUrl?: string;
+    translated: {
+      availabilityRuleId: string;
+      deliveryTimeId: string;
+      description: string;
+      mediaId: string;
+      name: string;
+      taxId: string;
+      taxType: string;
+      technicalName: string;
+      trackingUrl: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -20348,6 +20494,12 @@ export type Schemas = {
     shippingMethodId: string;
     tag?: components["schemas"]["Tag"];
     tagId: string;
+  };
+  SimpleFilter: {
+    field: string;
+    /** @enum {string} */
+    type: "contains" | "equalsAny" | "prefix" | "suffix";
+    value: string;
   };
   Snippet: {
     author: string;
@@ -20446,6 +20598,13 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
+  };
+  Sort: {
+    field: string;
+    naturalSorting?: boolean;
+    /** @enum {string} */
+    order: "ASC" | "DESC";
+    type?: string;
   };
   SsoProvider: {
     active: boolean;
@@ -20570,10 +20729,10 @@ export type Schemas = {
     states?: components["schemas"]["StateMachineState"][];
     technicalName: string;
     transitions?: components["schemas"]["StateMachineTransition"][];
-    translated?: {
-      initialStateId?: string;
-      name?: string;
-      technicalName?: string;
+    translated: {
+      initialStateId: string;
+      name: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -20729,10 +20888,10 @@ export type Schemas = {
       };
     };
     technicalName: string;
-    translated?: {
-      initialStateId?: string;
-      name?: string;
-      technicalName?: string;
+    translated: {
+      initialStateId: string;
+      name: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -20847,10 +21006,10 @@ export type Schemas = {
     technicalName: string;
     toStateMachineHistoryEntries?: components["schemas"]["StateMachineHistory"][];
     toStateMachineTransitions?: components["schemas"]["StateMachineTransition"][];
-    translated?: {
-      name?: string;
-      stateMachineId?: string;
-      technicalName?: string;
+    translated: {
+      name: string;
+      stateMachineId: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -21107,10 +21266,10 @@ export type Schemas = {
     };
     stateMachineId: string;
     technicalName: string;
-    translated?: {
-      name?: string;
-      stateMachineId?: string;
-      technicalName?: string;
+    translated: {
+      name: string;
+      stateMachineId: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -21188,6 +21347,15 @@ export type Schemas = {
     toStateId: string;
     /** Format: date-time */
     updatedAt?: string;
+  };
+  SubAggregations: {
+    aggregation?:
+      | components["schemas"]["AggregationMetrics"]
+      | components["schemas"]["AggregationEntity"]
+      | components["schemas"]["AggregationFilter"]
+      | components["schemas"]["AggregationTerms"]
+      | components["schemas"]["AggregationHistogram"]
+      | components["schemas"]["AggregationRange"];
   };
   Subscription: {
     addresses?: components["schemas"]["SubscriptionAddress"][];
@@ -21495,11 +21663,11 @@ export type Schemas = {
     name: string;
     subscriptionPlans?: components["schemas"]["SubscriptionPlan"][];
     subscriptions?: components["schemas"]["Subscription"][];
-    translated?: {
-      availabilityRuleId?: string;
-      cronInterval?: string;
-      dateInterval?: string;
-      name?: string;
+    translated: {
+      availabilityRuleId: string;
+      cronInterval: string;
+      dateInterval: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -21560,11 +21728,11 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      availabilityRuleId?: string;
-      cronInterval?: string;
-      dateInterval?: string;
-      name?: string;
+    translated: {
+      availabilityRuleId: string;
+      cronInterval: string;
+      dateInterval: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -21845,11 +22013,11 @@ export type Schemas = {
     products?: components["schemas"]["Product"][];
     subscriptionIntervals?: components["schemas"]["SubscriptionInterval"][];
     subscriptions?: components["schemas"]["Subscription"][];
-    translated?: {
-      availabilityRuleId?: string;
-      description?: string;
-      label?: string;
-      name?: string;
+    translated: {
+      availabilityRuleId: string;
+      description: string;
+      label: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -21937,11 +22105,11 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      availabilityRuleId?: string;
-      description?: string;
-      label?: string;
-      name?: string;
+    translated: {
+      availabilityRuleId: string;
+      description: string;
+      label: string;
+      name: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22032,13 +22200,13 @@ export type Schemas = {
     successMessage?: string;
     technicalName: string;
     title?: string;
-    translated?: {
-      cmsSlotId?: string;
-      cmsSlotVersionId?: string;
-      mailTemplateId?: string;
-      successMessage?: string;
-      technicalName?: string;
-      title?: string;
+    translated: {
+      cmsSlotId: string;
+      cmsSlotVersionId: string;
+      mailTemplateId: string;
+      successMessage: string;
+      technicalName: string;
+      title: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22054,10 +22222,10 @@ export type Schemas = {
     position: number;
     technicalName: string;
     title?: string;
-    translated?: {
-      formId?: string;
-      technicalName?: string;
-      title?: string;
+    translated: {
+      formId: string;
+      technicalName: string;
+      title: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22076,13 +22244,13 @@ export type Schemas = {
     position: number;
     required: boolean;
     technicalName: string;
-    translated?: {
-      errorMessage?: string;
-      groupId?: string;
-      label?: string;
-      placeholder?: string;
-      technicalName?: string;
-      type?: string;
+    translated: {
+      errorMessage: string;
+      groupId: string;
+      label: string;
+      placeholder: string;
+      technicalName: string;
+      type: string;
     };
     type: string;
     /** Format: date-time */
@@ -22120,13 +22288,13 @@ export type Schemas = {
     };
     required: boolean;
     technicalName: string;
-    translated?: {
-      errorMessage?: string;
-      groupId?: string;
-      label?: string;
-      placeholder?: string;
-      technicalName?: string;
-      type?: string;
+    translated: {
+      errorMessage: string;
+      groupId: string;
+      label: string;
+      placeholder: string;
+      technicalName: string;
+      type: string;
     };
     type: string;
     /** Format: date-time */
@@ -22175,10 +22343,10 @@ export type Schemas = {
     };
     technicalName: string;
     title?: string;
-    translated?: {
-      formId?: string;
-      technicalName?: string;
-      title?: string;
+    translated: {
+      formId: string;
+      technicalName: string;
+      title: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22242,13 +22410,13 @@ export type Schemas = {
     successMessage?: string;
     technicalName: string;
     title?: string;
-    translated?: {
-      cmsSlotId?: string;
-      cmsSlotVersionId?: string;
-      mailTemplateId?: string;
-      successMessage?: string;
-      technicalName?: string;
-      title?: string;
+    translated: {
+      cmsSlotId: string;
+      cmsSlotVersionId: string;
+      mailTemplateId: string;
+      successMessage: string;
+      technicalName: string;
+      title: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22300,10 +22468,10 @@ export type Schemas = {
     createdAt: string;
     displayName?: string;
     id: string;
-    translated?: {
-      cmsSectionId?: string;
-      cmsSectionVersionId?: string;
-      displayName?: string;
+    translated: {
+      cmsSectionId: string;
+      cmsSectionVersionId: string;
+      displayName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22333,10 +22501,10 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      cmsSectionId?: string;
-      cmsSectionVersionId?: string;
-      displayName?: string;
+    translated: {
+      cmsSectionId: string;
+      cmsSectionVersionId: string;
+      displayName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22412,13 +22580,13 @@ export type Schemas = {
     parentVersionId?: string;
     products?: components["schemas"]["Product"][];
     stepByStep?: boolean;
-    translated?: {
-      description?: string;
-      displayName?: string;
-      internalName?: string;
-      mediaId?: string;
-      parentVersionId?: string;
-      versionId?: string;
+    translated: {
+      description: string;
+      displayName: string;
+      internalName: string;
+      mediaId: string;
+      parentVersionId: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22691,10 +22859,10 @@ export type Schemas = {
     operator: string;
     templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
     templateOptionType: string;
-    translated?: {
-      label?: string;
-      operator?: string;
-      templateOptionType?: string;
+    translated: {
+      label: string;
+      operator: string;
+      templateOptionType: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22723,10 +22891,10 @@ export type Schemas = {
       };
     };
     templateOptionType: string;
-    translated?: {
-      label?: string;
-      operator?: string;
-      templateOptionType?: string;
+    translated: {
+      label: string;
+      operator: string;
+      templateOptionType: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22822,13 +22990,13 @@ export type Schemas = {
       };
     };
     stepByStep?: boolean;
-    translated?: {
-      description?: string;
-      displayName?: string;
-      internalName?: string;
-      mediaId?: string;
-      parentVersionId?: string;
-      versionId?: string;
+    translated: {
+      description: string;
+      displayName: string;
+      internalName: string;
+      mediaId: string;
+      parentVersionId: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -22859,16 +23027,16 @@ export type Schemas = {
     templateExclusionConditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
     templateId: string;
     templateVersionId?: string;
-    translated?: {
-      description?: string;
-      displayName?: string;
-      itemNumber?: string;
-      placeholder?: string;
-      taxId?: string;
-      templateId?: string;
-      templateVersionId?: string;
-      type?: string;
-      versionId?: string;
+    translated: {
+      description: string;
+      displayName: string;
+      itemNumber: string;
+      placeholder: string;
+      taxId: string;
+      templateId: string;
+      templateVersionId: string;
+      type: string;
+      versionId: string;
     };
     type: string;
     typeProperties?: GenericRecord;
@@ -22975,16 +23143,16 @@ export type Schemas = {
     taxId?: string;
     templateId: string;
     templateVersionId?: string;
-    translated?: {
-      description?: string;
-      displayName?: string;
-      itemNumber?: string;
-      placeholder?: string;
-      taxId?: string;
-      templateId?: string;
-      templateVersionId?: string;
-      type?: string;
-      versionId?: string;
+    translated: {
+      description: string;
+      displayName: string;
+      itemNumber: string;
+      placeholder: string;
+      taxId: string;
+      templateId: string;
+      templateVersionId: string;
+      type: string;
+      versionId: string;
     };
     type: string;
     typeProperties?: GenericRecord;
@@ -23076,13 +23244,13 @@ export type Schemas = {
     templateOption?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
     templateOptionId: string;
     templateOptionVersionId?: string;
-    translated?: {
-      displayName?: string;
-      itemNumber?: string;
-      taxId?: string;
-      templateOptionId?: string;
-      templateOptionVersionId?: string;
-      versionId?: string;
+    translated: {
+      displayName: string;
+      itemNumber: string;
+      taxId: string;
+      templateOptionId: string;
+      templateOptionVersionId: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -23169,13 +23337,13 @@ export type Schemas = {
     taxId?: string;
     templateOptionId: string;
     templateOptionVersionId?: string;
-    translated?: {
-      displayName?: string;
-      itemNumber?: string;
-      taxId?: string;
-      templateOptionId?: string;
-      templateOptionVersionId?: string;
-      versionId?: string;
+    translated: {
+      displayName: string;
+      itemNumber: string;
+      taxId: string;
+      templateOptionId: string;
+      templateOptionVersionId: string;
+      versionId: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -24857,12 +25025,12 @@ export type Schemas = {
     /** Format: int64 */
     priority: number;
     processUrl?: string;
-    translated?: {
-      appId?: string;
-      availabilityRuleId?: string;
-      identifier?: string;
-      name?: string;
-      processUrl?: string;
+    translated: {
+      appId: string;
+      availabilityRuleId: string;
+      identifier: string;
+      name: string;
+      processUrl: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -24912,12 +25080,12 @@ export type Schemas = {
         };
       };
     };
-    translated?: {
-      appId?: string;
-      availabilityRuleId?: string;
-      identifier?: string;
-      name?: string;
-      processUrl?: string;
+    translated: {
+      appId: string;
+      availabilityRuleId: string;
+      identifier: string;
+      name: string;
+      processUrl: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -25020,9 +25188,9 @@ export type Schemas = {
     position: number;
     rules?: components["schemas"]["TaxRule"][];
     technicalName: string;
-    translated?: {
-      technicalName?: string;
-      typeName?: string;
+    translated: {
+      technicalName: string;
+      typeName: string;
     };
     typeName: string;
     /** Format: date-time */
@@ -25052,9 +25220,9 @@ export type Schemas = {
       };
     };
     technicalName: string;
-    translated?: {
-      technicalName?: string;
-      typeName?: string;
+    translated: {
+      technicalName: string;
+      typeName: string;
     };
     typeName: string;
     /** Format: date-time */
@@ -25081,13 +25249,13 @@ export type Schemas = {
     salesChannels?: components["schemas"]["SalesChannel"][];
     technicalName?: string;
     themeJson?: GenericRecord;
-    translated?: {
-      author?: string;
-      description?: string;
-      name?: string;
-      parentThemeId?: string;
-      previewMediaId?: string;
-      technicalName?: string;
+    translated: {
+      author: string;
+      description: string;
+      name: string;
+      parentThemeId: string;
+      previewMediaId: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -25178,13 +25346,13 @@ export type Schemas = {
     };
     technicalName?: string;
     themeJson?: GenericRecord;
-    translated?: {
-      author?: string;
-      description?: string;
-      name?: string;
-      parentThemeId?: string;
-      previewMediaId?: string;
-      technicalName?: string;
+    translated: {
+      author: string;
+      description: string;
+      name: string;
+      parentThemeId: string;
+      previewMediaId: string;
+      technicalName: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -25211,9 +25379,9 @@ export type Schemas = {
     name: string;
     products?: components["schemas"]["Product"][];
     shortCode: string;
-    translated?: {
-      name?: string;
-      shortCode?: string;
+    translated: {
+      name: string;
+      shortCode: string;
     };
     /** Format: date-time */
     updatedAt?: string;
@@ -25242,9 +25410,9 @@ export type Schemas = {
       };
     };
     shortCode: string;
-    translated?: {
-      name?: string;
-      shortCode?: string;
+    translated: {
+      name: string;
+      shortCode: string;
     };
     /** Format: date-time */
     updatedAt?: string;

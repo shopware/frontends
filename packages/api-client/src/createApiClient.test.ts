@@ -256,6 +256,40 @@ describe("createAPIClient", () => {
     );
   });
 
+  it("should remove multipart/form-data headers in case of browser", async () => {
+    // @vitest-environment jsdom
+
+    const contentTypeSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/core/upload",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        contentTypeSpy(requestHeaders);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+    });
+
+    await client.invoke("fileUpload post /core/upload" as any, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    expect(contentTypeSpy).toHaveBeenCalledWith(
+      expect.not.objectContaining({
+        "content-type": "multipart/form-data",
+      }),
+    );
+  });
+
   it("should trigger success callback", async () => {
     const app = createApp().use(
       "/context",
@@ -340,7 +374,7 @@ describe("createAPIClient", () => {
     controller.abort();
 
     expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[FetchError: [GET] "${baseURL}context": <no response> This operation was aborted]`,
+      `[FetchError: [GET] "${baseURL}context": <no response> The operation was aborted.]`,
     );
   });
 });

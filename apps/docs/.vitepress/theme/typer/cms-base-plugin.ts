@@ -11,7 +11,13 @@ import {
 } from "./utils";
 import { readdirSync, readFileSync } from "node:fs";
 
-export async function CmsBaseReference(): Promise<Plugin> {
+export async function CmsBaseReference({
+  projectRootDir,
+  relativeDir,
+}: {
+  projectRootDir: string;
+  relativeDir: string;
+}): Promise<Plugin> {
   return {
     name: "cms-base-reference-md-transform",
     enforce: "pre",
@@ -26,13 +32,10 @@ export async function CmsBaseReference(): Promise<Plugin> {
 
       let API = "\n\n## Available components\n\n";
 
-      const files = readdirSync(
-        resolve("../../packages/cms-base/components/public/cms"),
-        {
-          withFileTypes: true,
-          recursive: true,
-        },
-      );
+      const files = readdirSync(resolve(`${projectRootDir}/${relativeDir}`), {
+        withFileTypes: true,
+        recursive: true,
+      });
       for (const component of files) {
         if (component.isDirectory() || !component.name.endsWith(".vue"))
           continue;

@@ -18,7 +18,13 @@ const packagesMap = {
   // "api-client": "api-client-next",
 };
 
-export async function ReadmeBasedReference(): Promise<Plugin> {
+export async function ReadmeBasedReference({
+  projectRootDir,
+  relativeDir,
+}: {
+  projectRootDir: string;
+  relativeDir: string;
+}): Promise<Plugin> {
   return {
     name: "packages-reference-md-transform",
     enforce: "pre",
@@ -31,7 +37,9 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
       if (
         pkg !== "packages" ||
         packageName === "composables" ||
-        !existsSync(resolve(`../../packages/${packageName}/README.md`))
+        !existsSync(
+          resolve(`${projectRootDir}/${relativeDir}/${packageName}/README.md`),
+        )
       ) {
         return code;
       }
@@ -40,7 +48,9 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
         code,
         normalizeString(
           readFileSync(
-            resolve(`../../packages/${packageName}/README.md`),
+            resolve(
+              `${projectRootDir}/${relativeDir}/${packageName}/README.md`,
+            ),
             "utf8",
           ),
         ),
@@ -49,11 +59,11 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
       );
 
       const indexAstJson = extract(
-        resolve(`../../packages/${packageName}/src/index.ts`),
+        resolve(`${projectRootDir}/${relativeDir}/${packageName}/src/index.ts`),
       );
 
       let exportedList: string[] = await expCollector(
-        resolve(`../../packages/${packageName}/src/index.ts`),
+        resolve(`${projectRootDir}/${relativeDir}/${packageName}/src/index.ts`),
       );
 
       if (!exportedList.length) {
@@ -68,14 +78,14 @@ export async function ReadmeBasedReference(): Promise<Plugin> {
           try {
             astJson = extract(
               resolve(
-                `../../packages/${packageName}/src/${exportedOne.replace("Function", "")}.ts`,
+                `${projectRootDir}/${relativeDir}/${packageName}/src/${exportedOne.replace("Function", "")}.ts`,
               ),
             );
           } catch (error) {
             try {
               const definitionFound = await findSync(
                 `function\ ${exportedOne}`,
-                resolve(`../../packages/${packageName}/src`),
+                resolve(`${projectRootDir}/${relativeDir}/${packageName}/src`),
                 ".ts$",
               );
               if (Object.keys(definitionFound)?.length) {

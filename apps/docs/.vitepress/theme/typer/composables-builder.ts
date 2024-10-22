@@ -1,6 +1,6 @@
 // @ts-nocheck
 import type { Plugin } from "vite";
-import { resolve } from "path";
+import { resolve, dirname } from "path";
 import { findSync } from "find-in-files";
 import { extract } from "ts-dox";
 import {
@@ -12,8 +12,17 @@ import {
   normalizeAnchorText,
 } from "./utils";
 import { readdirSync, readFileSync, existsSync } from "node:fs";
+import { fileURLToPath } from "url";
 
-export async function ComposablesBuilder(): Promise<Plugin> {
+export async function ComposablesBuilder({
+  projectRootDir,
+  relativeDir,
+  mountPoint,
+}: {
+  projectRootDir: string;
+  relativeDir: string;
+  mountPoint: string;
+}): Promise<Plugin> {
   return {
     name: "composables-builder",
     enforce: "pre",
@@ -33,7 +42,7 @@ export async function ComposablesBuilder(): Promise<Plugin> {
           "{{INTRO}}",
           normalizeString(
             readFileSync(
-              resolve(`../../packages/composables/README.md`),
+              resolve(`${projectRootDir}/${relativeDir}/../README.md`),
               "utf8",
             ),
           ),
@@ -49,10 +58,11 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       try {
         astJson = extract(
           resolve(
-            `../../packages/composables/src/${composableName}/${composableName}.ts`,
+            `${projectRootDir}/${relativeDir}/${composableName}/${composableName}.ts`,
           ),
         );
       } catch (e) {
+        console.error(e);
         return code;
       }
 
@@ -68,7 +78,7 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       if (category) {
         code = code.replace(
           "{{META}}",
-          `<div>Category:</div> <a href="/packages/composables/#${normalizeAnchorText(category)}"><div class="bg-red">${category}</div></a>`,
+          `<div>Category:</div> <a href="${mountPoint}/packages/composables/#${normalizeAnchorText(category)}"><div class="bg-red">${category}</div></a>`,
         );
       }
 
@@ -82,7 +92,7 @@ export async function ComposablesBuilder(): Promise<Plugin> {
 
         interfacesBlock += prepareGithubPermalink({
           label: `source code`,
-          path: `packages/composables/src/${composableName}/${composableName}.ts`,
+          path: `${relativeDir}/${composableName}/${composableName}.ts`,
           project: "shopware/frontends",
           line: astJson?.functions[key]?.location?.line + 1,
         });
@@ -97,7 +107,7 @@ export async function ComposablesBuilder(): Promise<Plugin> {
 
         typesBlock += prepareGithubPermalink({
           label: `source code`,
-          path: `packages/composables/src/${composableName}/${composableName}.ts`,
+          path: `${relativeDir}/${composableName}/${composableName}.ts`,
           project: "shopware/frontends",
           line: astJson?.types[key]?.location?.line + 1,
         });
@@ -112,7 +122,7 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       try {
         const additionalMd = readFileSync(
           resolve(
-            `../../packages/composables/src/${composableName}/${composableName}.md`,
+            `${projectRootDir}/${relativeDir}/${composableName}/${composableName}.md`,
           ),
           "utf8",
         );
@@ -125,7 +135,7 @@ export async function ComposablesBuilder(): Promise<Plugin> {
       try {
         const codeBlock = readFileSync(
           resolve(
-            `../../packages/composables/src/${composableName}/${composableName}.demo.vue`,
+            `${projectRootDir}/${relativeDir}/${composableName}/${composableName}.demo.vue`,
           ),
           "utf8",
         );

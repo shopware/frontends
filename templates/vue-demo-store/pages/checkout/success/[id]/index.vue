@@ -135,7 +135,7 @@ const formatDate = (date: Date | string) =>
                 {{ !isExpand ? "View" : "Hide" }}
               </div>
             </div>
-            <template v-if="order?.id">
+            <template v-if="order?.id && isExpand">
               <transition>
                 <AccountOrderDetails v-show="isExpand" :order-id="order.id" />
               </transition>

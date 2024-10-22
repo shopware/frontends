@@ -26,21 +26,25 @@
     "versionReadme": "pnpx ts-node scripts/addChangelogBodyToReadmeFile.ts",
     "prepare": "husky",
     "generate-types": "turbo run generate-types",
-    "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts"
+    "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts",
+    "docs:env": "[ -d \"../developer-portal\" ] && ../developer-portal/docs-cli.cjs pull || (git clone git@github.com:shopware/developer-portal.git ../developer-portal && pnpm i -C ../developer-portal)",
+    "docs:link": "../developer-portal/docs-cli.cjs link --src apps/docs/src --dst frontends --symlink --keep",
+    "docs:preview": "../developer-portal/docs-cli.cjs preview",
+    "docs:cli": "../developer-portal/docs-cli.cjs"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@changesets/changelog-github": "0.5.0",
-    "@changesets/cli": "2.27.7",
+    "@changesets/cli": "2.27.9",
     "@types/changelog-parser": "2.8.4",
     "changelog-parser": "3.0.1",
     "dotenv-cli": "7.4.2",
-    "esno": "4.7.0",
+    "esno": "4.8.0",
     "globby": "14.0.2",
-    "husky": "9.1.5",
+    "husky": "9.1.6",
     "prettier": "3.3.3",
-    "turbo": "2.1.0",
-    "vercel": "37.2.1"
+    "turbo": "2.2.2",
+    "vercel": "37.11.0"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"
@@ -54,6 +58,7 @@
       "axios": "^1.7.4",
       "braces": "^3.0.3",
       "debug": "^4.3.5",
+      "cookie": "^0.7.0",
       "fast-loops": "^1.1.4",
       "follow-redirects": "^1.15.6",
       "lodash": "^4.17.21",
@@ -61,6 +66,8 @@
       "micromatch": "^4.0.8",
       "path-to-regexp": "^8.0.0",
       "postcss": "^8.4.39",
+      "rollup@3": "^3.29.5",
+      "rollup": "^4.22.4",
       "semver": "^7.6.2",
       "sharp": "^0.33.4",
       "socks": "^2.8.3",

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getPrefix } from "./i18n/src/helpers/prefix";
 import type { Schemas } from "#shopware";
-
+const config = useRuntimeConfig();
 /**
  * Init breadcrumbs context
  */
@@ -20,7 +20,9 @@ const sessionContextData = ref<Schemas["SalesChannelContext"]>();
 const contextResponse = await apiClient.invoke("readContext get /context");
 sessionContextData.value = contextResponse.data;
 
-useBroadcastChannelSync();
+if (config.broadcasting) {
+  useBroadcastChannelSync();
+}
 
 // If you enable runtimeConfig.shopware.useUserContextInSSR, then you can use this code to share session between server and client.
 // const { data: sessionContextData } = await useAsyncData(
