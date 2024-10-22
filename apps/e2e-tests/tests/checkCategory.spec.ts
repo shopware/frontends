@@ -39,8 +39,9 @@ test.describe.only("Check category page", () => {
   test("Check sorting", async ({ page }) => {
     await homePage.openCategoryPage();
     await categoryPage.selectSortingPriceAsc();
-    await expect(page.getByTestId("loading")).toHaveCount(0);
+    await page.waitForLoadState();
     await expect(page).toHaveURL(new RegExp(".*order=price-asc.*"));
+    await expect(page.getByTestId("loading")).toHaveCount(0);
     expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
       0,
     );
