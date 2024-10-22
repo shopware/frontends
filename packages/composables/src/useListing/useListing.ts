@@ -36,6 +36,14 @@ function merge<T extends { [key in keyof T]: unknown }>(
 
 export type ListingType = "productSearchListing" | "categoryListing";
 
+export type ShortcutFilterParam<
+  T extends
+    keyof Schemas["ProductListingCriteria"] = keyof Schemas["ProductListingCriteria"],
+> = {
+  code: T;
+  value: Schemas["ProductListingCriteria"][T];
+};
+
 export type UseListingReturn = {
   /**
    * Listing that is currently set
@@ -146,7 +154,7 @@ export type UseListingReturn = {
    * @param filters
    * @returns
    */
-  setCurrentFilters(filters: { code: string; value: unknown }): Promise<void>;
+  setCurrentFilters(filters: ShortcutFilterParam[]): Promise<void>;
   /**
    * Indicates if the listing is being fetched
    */
@@ -490,20 +498,33 @@ export function createListingComposable({
       ?.currentFilters as Schemas["ProductListingResult"]["currentFilters"];
   });
 
-  const setCurrentFilters = (filter: { code: string; value: unknown }) => {
-    const appliedFilters: operations["searchPage post /search"]["body"] =
-      Object.assign({}, getCurrentFilters.value, filter, {
+  // this function sets the current filters as shortcut filters @see https://shopware.stoplight.io/docs/store-api/b56ebe18277c6-searching-for-products#product-listing-criteria
+  // the downside is that this does not filter the aggregations, so the aggregations are not reduced by the filter (!)
+  const setCurrentFilters = (filters: ShortcutFilterParam[]) => {
+    const newFilters = {};
+    for (const filter of filters) {
+      Object.assign(newFilters, { [filter.code]: filter.value });
+    }
+
+    const appliedFilters = Object.assign(
+      {},
+      getCurrentFilters.value,
+      {
         query: getCurrentFilters.value?.search,
         manufacturer: getCurrentFilters.value?.manufacturer?.join("|"),
         properties: getCurrentFilters.value?.properties?.join("|"),
-      });
+      },
+      { ...newFilters },
+    );
+
     if (_storeAppliedListing.value) {
       _storeAppliedListing.value.currentFilters = {
         ...appliedFilters,
-        manufacturer: appliedFilters.manufacturer?.split("|") || [],
-        properties: appliedFilters.properties?.split("|") || [],
-      } as unknown as Schemas["ProductListingResult"]["currentFilters"];
+        manufacturer: appliedFilters.manufacturer?.split("|"),
+        properties: appliedFilters.properties?.split("|"),
+      };
     }
+
     return search(appliedFilters);
   };
 
