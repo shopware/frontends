@@ -1,0 +1,12 @@
+{
+  "components": {
+    "Product": {
+      "properties": {
+        "isAiGenerated": {
+          "type": "boolean"
+        }
+      },
+      "required": ["isAiGenerated"]
+    }
+  }
+}
