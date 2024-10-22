@@ -7,12 +7,12 @@ openInStackBlitz: false
 autoReload: false
 terminal: false
 editor: false
-
 ---
 
 # Setup
 
 The library we are going to install was created to:
+
 - get the OpenAPI Schema definitions for the given instance
 - generate TypeScript as an input for `@shopware/api-client`
 
@@ -35,6 +35,7 @@ pnpx @shopware/api-gen <COMMAND>
 npx @shopware/api-gen <COMMAND>
 #...
 ```
+
 :::
 
 ## Configure

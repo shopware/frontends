@@ -6,8 +6,6 @@ previews: false
 openInStackBlitz: false
 autoReload: false
 terminal: false
-
-
 ---
 
 # How to add a new definition
@@ -23,7 +21,7 @@ Place the mentioned empty file inside `./api-types` dir.
 Put the following content:
 
 ```ts
-#api-types/storeApiTypes.overrides.ts
+#api - types / storeApiTypes.overrides.ts;
 import type { components as mainComponents } from "./storeApiTypes";
 
 export type components = mainComponents & {
@@ -31,11 +29,11 @@ export type components = mainComponents & {
 };
 
 export type Schemas = {
-// here go the entities definitions available, that can be used in operations but also imported and used standalone
+  // here go the entities definitions available, that can be used in operations but also imported and used standalone
 };
 
 export type operations = {
-// here go the endpoints and its definitions that can refer to the Schemas but it's not a requirement
+  // here go the endpoints and its definitions that can refer to the Schemas but it's not a requirement
 };
 ```
 
@@ -46,15 +44,15 @@ This step is optional, you can skip it if there is nothing to add that will be r
 To achieve it add a new key inside `Schemas` exported type:
 
 ```ts add={3-9}
-#api-types/storeApiTypes.overrides.ts
+#api - types / storeApiTypes.overrides.ts;
 export type Schemas = {
   AiAnswer: {
-    content: string
-  },
+    content: string;
+  };
   AiPrompt: {
-    role: "system" | "user" | "assistant",
-    content: string
-  } 
+    role: "system" | "user" | "assistant";
+    content: string;
+  };
 };
 ```
 
@@ -63,16 +61,16 @@ export type Schemas = {
 Add an operation with a unique key and endpoint like `sendAskAi post /ai-assistant/prompt`, then define basic configuration of the request:
 
 ```ts add={3-9}
-#api-types/storeApiTypes.overrides.ts
+#api - types / storeApiTypes.overrides.ts;
 export type operations = {
   "sendAskAi post /ai-assistant/prompt": {
-      contentType?: "application/json";
-      accept?: "application/json";
-      body: components["schemas"]['AiPrompt']
-      response: components["schemas"]["AiAnswer"];
-      responseCode: 200;
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: components["schemas"]["AiPrompt"];
+    response: components["schemas"]["AiAnswer"];
+    responseCode: 200;
   };
-}
+};
 ```
 
 ## Re-compile the types
@@ -87,9 +85,8 @@ Now, you can take advantage of a new entity and operation available:
 
 ![Screenshot showing autocompletion for invoke method](./hint.png)
 
-
 ```ts add={14-22,24}
-# example.ts 
+# example.ts
 import { createAPIClient } from "@shopware/api-client";
 import type { operations } from "./api-types/storeApiTypes";
 

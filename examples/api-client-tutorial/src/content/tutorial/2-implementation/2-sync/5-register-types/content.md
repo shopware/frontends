@@ -31,7 +31,6 @@ export async function setupExample() {
     accessToken: accessToken,
   });
 }
-
 ```
 
 ## The current state
@@ -39,29 +38,31 @@ export async function setupExample() {
 Great! you did it!
 
 Since now, you are able to:
+
 - See and use the types of entities present on your backend (see `./api-types/storeApiTypes.d.ts` from previous lesson):
+
 ```ts
 import type { Schemas } from "./api-types/storeApiTypes";
 
-const product: Schemas['Product'] = {
-  name: 'My Product',
+const product: Schemas["Product"] = {
+  name: "My Product",
   // ...
-}
+};
 ```
 
 - Make a call to the endpoints defined as operations in your backend (via `invoke` method of _Client_ instance):
 
 ```ts
 apiClient.invoke("addLineItem post /checkout/cart/line-item", {
-    body: {
-      items: [
-        {
-          id: "SWAG-1",
-          referencedId: "SWAG-1",
-          quantity: 1,
-          type: "product",
-        },
-      ],
-    },
+  body: {
+    items: [
+      {
+        id: "SWAG-1",
+        referencedId: "SWAG-1",
+        quantity: 1,
+        type: "product",
+      },
+    ],
+  },
 });
 ```

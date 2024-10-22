@@ -7,7 +7,7 @@ import type { operations } from "@shopware/api-client/store-api-types";
 export async function setupExample() {
   const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
   const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
-  
+
   const apiClient = createAPIClient<operations>({
     baseURL: shopwareEndpoint,
     accessToken: accessToken,

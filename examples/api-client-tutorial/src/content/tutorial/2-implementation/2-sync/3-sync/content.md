@@ -9,7 +9,7 @@ focus: "/.env"
 
 # Synchronization
 
-Now, once the OpenAPI Schema is fetched 
+Now, once the OpenAPI Schema is fetched
 
 ## Prepare space for your types
 
@@ -23,7 +23,7 @@ Run `loadSchema --apiType=store`:
 npx @shopware/api-gen loadSchema --apiType=store
 ```
 
-After that, you should see `storeApiSchema.json` file landed in `./api-types/storeApiSchema.json` 
+After that, you should see `storeApiSchema.json` file landed in `./api-types/storeApiSchema.json`
 
 **See the tutorial's editor and click `Solve`**
 

@@ -13,7 +13,6 @@ export async function setupExample() {
     accessToken: accessToken,
   });
 
-
   apiClient.invoke("addLineItem post /checkout/cart/line-item", {
     body: {
       items: [
@@ -26,5 +25,4 @@ export async function setupExample() {
       ],
     },
   });
-
 }

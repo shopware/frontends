@@ -19,7 +19,6 @@ Run `generate --apiType=store`:
 npx @shopware/api-gen generate --apiType=store
 ```
 
-After that, you should see `storeApiTypes.d.ts` file landed in `./api-types/storeApiTypes.d.ts` 
+After that, you should see `storeApiTypes.d.ts` file landed in `./api-types/storeApiTypes.d.ts`
 
 **See the tutorial's editor and click `Solve`**
-

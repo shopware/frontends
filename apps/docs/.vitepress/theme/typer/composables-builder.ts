@@ -14,7 +14,15 @@ import {
 import { readdirSync, readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "url";
 
-export async function ComposablesBuilder({ projectRootDir, relativeDir, mountPoint }: { projectRootDir: string, relativeDir: string, mountPoint: string }): Promise<Plugin> {
+export async function ComposablesBuilder({
+  projectRootDir,
+  relativeDir,
+  mountPoint,
+}: {
+  projectRootDir: string;
+  relativeDir: string;
+  mountPoint: string;
+}): Promise<Plugin> {
   return {
     name: "composables-builder",
     enforce: "pre",
@@ -54,7 +62,7 @@ export async function ComposablesBuilder({ projectRootDir, relativeDir, mountPoi
           ),
         );
       } catch (e) {
-        console.error(e)
+        console.error(e);
         return code;
       }
 

@@ -2,8 +2,6 @@
 type: lesson
 title: Call the API
 focus: /example.ts
-
-
 ---
 
 # Call the Store API endpoint
@@ -17,7 +15,7 @@ The example below shows how to call the API by using `invoke` method of `apiClie
 export async function setupExample() {
   const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
   const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
-  
+
   const apiClient = createAPIClient<operations>({
     baseURL: shopwareEndpoint,
     accessToken: accessToken,
@@ -40,12 +38,11 @@ export async function setupExample() {
 
 See also the `index.html` file in the editor for this lesson to see the structure of DOM.
 
-
 ## Make use of `apiClient.invoke` method
 
 Now we can use `invoke` method to execute the API request according to the operations described in the `operations` type. This time it's `readContext get /context` which can be found in exported types of `"@shopware/api-client/store-api-types"` lib path.
 
-:::tip 
+:::tip
 Click `Solve` button on the top right of the editor for this lesson to see the live example. In order to revert the changes use `Reset` button.
 :::
 
@@ -54,7 +51,7 @@ Click `Solve` button on the top right of the editor for this lesson to see the l
 export async function setupExample() {
   const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
   const accessToken = "SWSCBHFSNTVMAWNZDNFKSHLAYW";
-  
+
   const apiClient = createAPIClient<operations>({
     baseURL: shopwareEndpoint,
     accessToken: accessToken,

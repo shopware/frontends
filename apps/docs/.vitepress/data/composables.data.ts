@@ -12,13 +12,16 @@ export { data };
 export default defineLoader({
   async load(): Promise<Data> {
     const cwd = process.cwd();
-    const projectRootDir = cwd.endsWith('/apps/docs')
+    const projectRootDir = cwd.endsWith("/apps/docs")
       ? `${cwd}/../..`
       : `${cwd}/src/frontends/_source`;
 
-    const composablesList = readdirSync(`${projectRootDir}/packages/composables/src`, {
-      withFileTypes: true,
-    })
+    const composablesList = readdirSync(
+      `${projectRootDir}/packages/composables/src`,
+      {
+        withFileTypes: true,
+      },
+    )
       .filter(
         (element) => element.isDirectory() && element.name.startsWith("use"),
       )

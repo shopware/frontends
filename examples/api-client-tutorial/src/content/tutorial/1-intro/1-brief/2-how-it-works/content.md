@@ -6,8 +6,6 @@ terminal: false
 previews: false
 ---
 
-
-
 # This is how it works
 
 API _Client_ was created to enable developers to connect and making requests to Shopware 6 API Client more comfortable and with minimum setup.
@@ -22,11 +20,9 @@ The _Client_ itself is built upon [ofetch](https://github.com/unjs/ofetch), than
 
 Factory method to get a _Client_ instance to work with `store-api` endpoints of **Store API** scope. [Read more](https://shopware.stoplight.io/docs/store-api/38777d33d92dc-quick-start-guide) about Store API concept.
 
-
 #### `createAdminAPIClient`
 
 Factory method to get a _Client_ instance to work with `api` endpoints of **Admin API scope**. [Read more](https://shopware.stoplight.io/docs/admin-api/twpxvnspkg3yu-quick-start-guide) about Admin API concept.
-
 
 ---
 

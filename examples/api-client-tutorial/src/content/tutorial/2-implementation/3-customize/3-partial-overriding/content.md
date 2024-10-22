@@ -6,8 +6,6 @@ previews: false
 openInStackBlitz: false
 autoReload: false
 terminal: false
-
-
 ---
 
 # How to alter only a specific part
@@ -16,7 +14,7 @@ This lesson covers a case when you have to alter an existing schema or operation
 
 ## What is the case?
 
-Let's say your `Product` entity has an extra field: `isAiGenerated` in `boolean` type. 
+Let's say your `Product` entity has an extra field: `isAiGenerated` in `boolean` type.
 
 Unfortunately the backend part isn't updated in terms of this field (at least the OpenAPI Schema isn't), and although the _Client_ receives the property, TypeScript raises an annoying error of not existing field we cannot access.
 
@@ -24,10 +22,10 @@ Unfortunately the backend part isn't updated in terms of this field (at least th
 
 ## Create `storeApiTypes.overrides.json`
 
-Put `storeApiTypes.overrides.json` file in `api-types` folder. 
+Put `storeApiTypes.overrides.json` file in `api-types` folder.
 
 :::info
-The `storeApiTypes.overrides.json` file **MUST** present data in [OpenAPI](https://swagger.io/docs/specification/v3_0/components/) format. 
+The `storeApiTypes.overrides.json` file **MUST** present data in [OpenAPI](https://swagger.io/docs/specification/v3_0/components/) format.
 
 Content of the file is merged with the basic one (that comes from your Shopware 6 instance) during the work of `npx @shopware/api-gen generate` command.
 :::

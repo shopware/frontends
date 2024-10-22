@@ -1,6 +1,6 @@
 # Tutorial for `api-client` and `api-gen`
 
-This space was created as a supplement for [README.md](https://frontends.shopware.com/packages/api-client.html) of [@shopware/api-client](https://www.npmjs.com/package/@shopware/api-client) package. 
+This space was created as a supplement for [README.md](https://frontends.shopware.com/packages/api-client.html) of [@shopware/api-client](https://www.npmjs.com/package/@shopware/api-client) package.
 
 The tutorial explains basic concepts on how to install, use and customize the _API Client_ for the projects needs.
 
@@ -17,7 +17,6 @@ Run:
 ```bash
 pnpm dev
 ```
-
 
 ## Open in StackBlitz
 
