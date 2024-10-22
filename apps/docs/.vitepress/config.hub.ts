@@ -9,28 +9,40 @@ import { ComposablesBuilder } from "./theme/typer/composables-builder";
  *  - DevHub - /apps/docs/src/ is mounted to /src/frontends/ in DevHub, root-source is available under /src/frontends/_source/
  *  - Frontend (standalone) docs
  */
-export default (original, {
+export default (
+  original,
+  {
     projectRootDir,
     mountPoint,
-}: { projectRootDir: string, mountPoint: string }) => {
-    if (!original.vite) {
-        original.vite = {};
-    }
+  }: { projectRootDir: string; mountPoint: string },
+) => {
+  if (!original.vite) {
+    original.vite = {};
+  }
 
-    if (!original.vite.plugins) {
-        original.vite.plugins = [];
-    }
+  if (!original.vite.plugins) {
+    original.vite.plugins = [];
+  }
 
-    // add custom plugins
-    // they should work in the context of the DevHub and Frontend docs
-    original.vite.plugins.push(...[
-        ReadmeBasedReference({ projectRootDir, relativeDir: 'packages' }),
-        CmsBaseReference({ projectRootDir, relativeDir: 'packages/cms-base/components/public/cms' }),
-        ReadmeLoader(),
-        ComposablesBuilder({ projectRootDir, mountPoint, relativeDir: 'packages/composables/src' }),
-    ]);
+  // add custom plugins
+  // they should work in the context of the DevHub and Frontend docs
+  original.vite.plugins.push(
+    ...[
+      ReadmeBasedReference({ projectRootDir, relativeDir: "packages" }),
+      CmsBaseReference({
+        projectRootDir,
+        relativeDir: "packages/cms-base/components/public/cms",
+      }),
+      ReadmeLoader(),
+      ComposablesBuilder({
+        projectRootDir,
+        mountPoint,
+        relativeDir: "packages/composables/src",
+      }),
+    ],
+  );
 
-    console.log('Extending', projectRootDir, mountPoint);
+  console.log("Extending", projectRootDir, mountPoint);
 
-    return original;
-}
+  return original;
+};
