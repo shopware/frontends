@@ -8,7 +8,7 @@ previews: false
 
 # Installation
 
-:::info 
+:::info
 The example uses [Vite](https://vite.dev/) as a build tool.
 :::
 
@@ -22,7 +22,6 @@ yarn add -D @shopware/api-client
 
 See the library placed in your `package.json` file:
 
-
 ```json add={13}
 {
   "name": "vite-project",
@@ -35,11 +34,10 @@ See the library placed in your `package.json` file:
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^5.2.0",
-    "@shopware/api-client": "1.0.2"
+    "vite": "5.4.8",
+    "@shopware/api-client": "canary"
   }
 }
-
 ```
 
 :::tip
