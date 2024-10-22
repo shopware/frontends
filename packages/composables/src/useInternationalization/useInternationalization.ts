@@ -133,7 +133,6 @@ export function useInternationalization(
 
     if (typeof link === "string") {
       if (urlIsAbsolute(link)) return link;
-      if (!link.startsWith("/")) return pathResolver(`/${link}`);
       return pathResolver(link);
     }
 

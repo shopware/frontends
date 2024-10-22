@@ -81,7 +81,14 @@ export function useBreadcrumbs(
   const buildDynamicBreadcrumbs = async (categoryId: string) => {
     try {
       const breadcrumbs = await getCategoryBreadcrumbs(categoryId);
-      _breadcrumbs.value = breadcrumbs.breadcrumbs;
+
+      _breadcrumbs.value = breadcrumbs.breadcrumbs.map((breadcrumb) => {
+        // Adjust path to be compatible with the router
+        return {
+          ...breadcrumb,
+          path: `/${breadcrumb.path}`,
+        };
+      });
     } catch (error) {
       console.error("Error while fetching breadcrumbs", error);
     }
