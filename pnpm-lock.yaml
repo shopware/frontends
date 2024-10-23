@@ -78,11 +78,11 @@ importers:
         specifier: 3.3.3
         version: 3.3.3
       turbo:
-        specifier: 2.2.2
-        version: 2.2.2
+        specifier: 2.2.3
+        version: 2.2.3
       vercel:
-        specifier: 37.11.0
-        version: 37.11.0(@swc/core@1.7.10)(encoding@0.1.13)
+        specifier: 37.12.1
+        version: 37.12.1(@swc/core@1.7.10)(encoding@0.1.13)
 
   apps/docs:
     dependencies:
@@ -6346,8 +6346,8 @@ packages:
   '@vercel/hydrogen@1.0.9':
     resolution: {integrity: sha512-IPAVaALuGAzt2apvTtBs5tB+8zZRzn/yG3AGp8dFyCsw/v5YOuk0Q5s8Z3fayLvJbFpjrKtqRNDZzVJBBU3MrQ==}
 
-  '@vercel/next@4.3.16':
-    resolution: {integrity: sha512-kSi4jYYW+szLaoNwsb3dzBOujuUSE1v8vvZ3gEjVXZLWWchEYzZHKGRmecBQjGe/7mqoMNJIrrDLVYS8oTMTQA==}
+  '@vercel/next@4.3.17':
+    resolution: {integrity: sha512-dMyAa4XMYMyzlemk1wH4Eo1eVkWfMDEokLqrIo2+haPUCesfQVovXSJOvHSulS7h7s6nBnEQvALhlGgFi1ig9g==}
 
   '@vercel/nft@0.26.5':
     resolution: {integrity: sha512-NHxohEqad6Ra/r4lGknO52uc/GrWILXAMs1BB4401GTqww0fw1bAqzpG1XHuDO+dprg4GvsD9ZLLSsdo78p9hQ==}
@@ -8977,7 +8977,6 @@ packages:
     resolution: {integrity: sha512-Auw9a4AxqWpa9GUfj370BMPzzyncfBABW8Mab7BGWBYDj4Isgq+cDKtx0i6u9jcX9pQDnswsaaOTgTmA5pEjuQ==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
-    deprecated: '"Please update to latest v2.3 or v2.2"'
 
   fsevents@2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
@@ -13164,38 +13163,38 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  turbo-darwin-64@2.2.2:
-    resolution: {integrity: sha512-J+Vn13M3QxKKoWF1D5IzXk6OuDPWuJhrUbKwSAA5TII9WcHw07ySR8ALgjm3qQRxmKrKJvffvMt+crg4dx/9Ng==}
+  turbo-darwin-64@2.2.3:
+    resolution: {integrity: sha512-Rcm10CuMKQGcdIBS3R/9PMeuYnv6beYIHqfZFeKWVYEWH69sauj4INs83zKMTUiZJ3/hWGZ4jet9AOwhsssLyg==}
     cpu: [x64]
     os: [darwin]
 
-  turbo-darwin-arm64@2.2.2:
-    resolution: {integrity: sha512-nNF9J2U+QH4lKq8h0wsh6cNlrJTwdVbXkQvhxj1mvzOYfTYru/u5kZaVUyj9U2kbPJmHKDB3ivFuOvtDLxfzjA==}
+  turbo-darwin-arm64@2.2.3:
+    resolution: {integrity: sha512-+EIMHkuLFqUdJYsA3roj66t9+9IciCajgj+DVek+QezEdOJKcRxlvDOS2BUaeN8kEzVSsNiAGnoysFWYw4K0HA==}
     cpu: [arm64]
     os: [darwin]
 
-  turbo-linux-64@2.2.2:
-    resolution: {integrity: sha512-M+5BBpCIvX34n0nEeKRmZweuWOvPNBOpEHUZvEvB1F6Avq5J/aJqRIoa0WswRTgxsZ4iaomdQxyUZQZhEpAAUQ==}
+  turbo-linux-64@2.2.3:
+    resolution: {integrity: sha512-UBhJCYnqtaeOBQLmLo8BAisWbc9v9daL9G8upLR+XGj6vuN/Nz6qUAhverN4Pyej1g4Nt1BhROnj6GLOPYyqxQ==}
     cpu: [x64]
     os: [linux]
 
-  turbo-linux-arm64@2.2.2:
-    resolution: {integrity: sha512-yAgl+aJQym5m8aIo14w9+g7C70Kgd3C6Y7upgjYNQwfi1OojnKxyDbMtB5JhVEb+7A1ovjWrUCyG+zqeUdgcQw==}
+  turbo-linux-arm64@2.2.3:
+    resolution: {integrity: sha512-hJYT9dN06XCQ3jBka/EWvvAETnHRs3xuO/rb5bESmDfG+d9yQjeTMlhRXKrr4eyIMt6cLDt1LBfyi+6CQ+VAwQ==}
     cpu: [arm64]
     os: [linux]
 
-  turbo-windows-64@2.2.2:
-    resolution: {integrity: sha512-dUU7XCKLVY6OPVduu5U8j7UtlcaVbMu6ELc8/nztIyMMOwtREWU/wXhardPLXKZpe+xA8Pv96vDVWDLSvpF4IQ==}
+  turbo-windows-64@2.2.3:
+    resolution: {integrity: sha512-NPrjacrZypMBF31b4HE4ROg4P3nhMBPHKS5WTpMwf7wydZ8uvdEHpESVNMOtqhlp857zbnKYgP+yJF30H3N2dQ==}
     cpu: [x64]
     os: [win32]
 
-  turbo-windows-arm64@2.2.2:
-    resolution: {integrity: sha512-zpA2/NlNdsthqBQncdmIL8gSZtFmQJ/bDSXph/ecA0YJaORmr0EKBXtTOqEDJp1ztY6uG/GRI5LxwYc639Xxew==}
+  turbo-windows-arm64@2.2.3:
+    resolution: {integrity: sha512-fnNrYBCqn6zgKPKLHu4sOkihBI/+0oYFr075duRxqUZ+1aLWTAGfHZLgjVeLh3zR37CVzuerGIPWAEkNhkWEIw==}
     cpu: [arm64]
     os: [win32]
 
-  turbo@2.2.2:
-    resolution: {integrity: sha512-0vm9WpykJtg7+NwO22+VK1jn8KdkXpHqXa8TX6WWefaCe3BQiBT94T0Ay44z3df/Re6l66pMWNzzZCGk+JZe+A==}
+  turbo@2.2.3:
+    resolution: {integrity: sha512-5lDvSqIxCYJ/BAd6rQGK/AzFRhBkbu4JHVMLmGh/hCb7U3CqSnr5Tjwfy9vc+/5wG2DJ6wttgAaA7MoCgvBKZQ==}
     hasBin: true
 
   type-check@0.4.0:
@@ -13354,8 +13353,8 @@ packages:
     resolution: {integrity: sha512-JfjKqIauur3Q6biAtHJ564e3bWa8VvT+7cSiOJHFbX4Erv6CLGDpg8z+Fmg/1OI/47RA+GI2QZaF48SSaLvyBA==}
     engines: {node: '>=18.17'}
 
-  undici@6.19.8:
-    resolution: {integrity: sha512-U8uCCl2x9TK3WANvmBavymRzxbfFYG+tAu+fgx3zxQy3qdagQqBLwJVrdyO1TBfUXvfKveMKJZhpvUYoOjM+4g==}
+  undici@6.20.1:
+    resolution: {integrity: sha512-AjQF1QsmqfJys+LXfGTNum+qw4S88CojRInG/6t31W/1fk6G59s92bnAvGz5Cmur+kQv2SURXEvvudLmbrE8QA==}
     engines: {node: '>=18.17'}
 
   unenv@1.10.0:
@@ -13728,8 +13727,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vercel@37.11.0:
-    resolution: {integrity: sha512-LCTKg4zxfHFBYULLcIEEi9CxFnywd0y0cUd23wdajqBKSBcEqrR2z77v0uU1G5dzlvqmL7dpAHXYu55jNU1GeA==}
+  vercel@37.12.1:
+    resolution: {integrity: sha512-KjiAU1sVEtaRI/2XwjM1XQdo2Ja4xyeMtVvPXt4+dab0Bpl+p2P9sW19eQr65iM1/XUyZ/kd8Oupv3Xe9E4UXA==}
     engines: {node: '>= 16'}
     hasBin: true
 
@@ -17125,7 +17124,7 @@ snapshots:
   '@manypkg/find-root@1.1.0':
     dependencies:
       '@babel/runtime': 7.25.7
-      '@types/node': 20.16.11
+      '@types/node': 20.16.15
       find-up: 4.1.0
       fs-extra: 8.1.0
 
@@ -19789,7 +19788,7 @@ snapshots:
 
   '@stoplight/types@14.1.0':
     dependencies:
-      '@types/json-schema': 7.0.15
+      '@types/json-schema': 7.0.11
       utility-types: 3.10.0
 
   '@stoplight/types@14.1.1':
@@ -20891,7 +20890,7 @@ snapshots:
 
   '@types/http-proxy@1.17.14':
     dependencies:
-      '@types/node': 20.16.11
+      '@types/node': 20.16.15
 
   '@types/istanbul-lib-coverage@2.0.6': {}
 
@@ -21069,7 +21068,7 @@ snapshots:
 
   '@types/type-is@1.6.3':
     dependencies:
-      '@types/node': 20.16.11
+      '@types/node': 20.11.17
 
   '@types/unist@2.0.11': {}
 
@@ -21986,7 +21985,7 @@ snapshots:
       '@vercel/static-config': 3.0.0
       ts-morph: 12.0.0
 
-  '@vercel/next@4.3.16(encoding@0.1.13)':
+  '@vercel/next@4.3.17(encoding@0.1.13)':
     dependencies:
       '@vercel/nft': 0.27.3(encoding@0.1.13)
     transitivePeerDependencies:
@@ -22034,7 +22033,7 @@ snapshots:
       '@edge-runtime/node-utils': 2.3.0
       '@edge-runtime/primitives': 4.1.0
       '@edge-runtime/vm': 3.2.0
-      '@types/node': 20.16.11
+      '@types/node': 20.16.15
       '@vercel/build-utils': 8.4.11
       '@vercel/error-utils': 2.0.2
       '@vercel/nft': 0.27.3(encoding@0.1.13)
@@ -22048,9 +22047,9 @@ snapshots:
       node-fetch: 2.6.9(encoding@0.1.13)
       path-to-regexp: 8.2.0
       ts-morph: 12.0.0
-      ts-node: 10.9.1(@swc/core@1.7.10)(@types/node@20.16.11)(typescript@4.9.5)
+      ts-node: 10.9.1(@swc/core@1.7.10)(@types/node@20.16.15)(typescript@4.9.5)
       typescript: 4.9.5
-      undici: 6.19.8
+      undici: 6.20.1
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -22863,6 +22862,10 @@ snapshots:
   acorn-import-assertions@1.9.0(acorn@8.13.0):
     dependencies:
       acorn: 8.13.0
+
+  acorn-import-attributes@1.9.5(acorn@8.12.1):
+    dependencies:
+      acorn: 8.12.1
 
   acorn-import-attributes@1.9.5(acorn@8.13.0):
     dependencies:
@@ -26192,8 +26195,8 @@ snapshots:
 
   import-in-the-middle@1.8.1:
     dependencies:
-      acorn: 8.13.0
-      acorn-import-attributes: 1.9.5(acorn@8.13.0)
+      acorn: 8.12.1
+      acorn-import-attributes: 1.9.5(acorn@8.12.1)
       cjs-module-lexer: 1.4.1
       module-details-from-path: 1.0.3
 
@@ -29402,7 +29405,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 20.16.11
+      '@types/node': 20.16.15
       long: 5.2.3
 
   protocols@2.0.1: {}
@@ -30704,7 +30707,7 @@ snapshots:
       css-tree: 2.3.1
       css-what: 6.1.0
       csso: 5.0.5
-      picocolors: 1.0.1
+      picocolors: 1.1.1
 
   symbol-tree@3.2.4: {}
 
@@ -30808,7 +30811,7 @@ snapshots:
   terser@5.33.0:
     dependencies:
       '@jridgewell/source-map': 0.3.6
-      acorn: 8.13.0
+      acorn: 8.12.1
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -30985,14 +30988,14 @@ snapshots:
       '@ts-morph/common': 0.24.0
       code-block-writer: 13.0.1
 
-  ts-node@10.9.1(@swc/core@1.7.10)(@types/node@20.16.11)(typescript@4.9.5):
+  ts-node@10.9.1(@swc/core@1.7.10)(@types/node@20.16.15)(typescript@4.9.5):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.16.11
+      '@types/node': 20.16.15
       acorn: 8.13.0
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -31048,32 +31051,32 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  turbo-darwin-64@2.2.2:
+  turbo-darwin-64@2.2.3:
     optional: true
 
-  turbo-darwin-arm64@2.2.2:
+  turbo-darwin-arm64@2.2.3:
     optional: true
 
-  turbo-linux-64@2.2.2:
+  turbo-linux-64@2.2.3:
     optional: true
 
-  turbo-linux-arm64@2.2.2:
+  turbo-linux-arm64@2.2.3:
     optional: true
 
-  turbo-windows-64@2.2.2:
+  turbo-windows-64@2.2.3:
     optional: true
 
-  turbo-windows-arm64@2.2.2:
+  turbo-windows-arm64@2.2.3:
     optional: true
 
-  turbo@2.2.2:
+  turbo@2.2.3:
     optionalDependencies:
-      turbo-darwin-64: 2.2.2
-      turbo-darwin-arm64: 2.2.2
-      turbo-linux-64: 2.2.2
-      turbo-linux-arm64: 2.2.2
-      turbo-windows-64: 2.2.2
-      turbo-windows-arm64: 2.2.2
+      turbo-darwin-64: 2.2.3
+      turbo-darwin-arm64: 2.2.3
+      turbo-linux-64: 2.2.3
+      turbo-linux-arm64: 2.2.3
+      turbo-windows-64: 2.2.3
+      turbo-windows-arm64: 2.2.3
 
   type-check@0.4.0:
     dependencies:
@@ -31253,7 +31256,7 @@ snapshots:
 
   undici@6.19.2: {}
 
-  undici@6.19.8: {}
+  undici@6.20.1: {}
 
   unenv@1.10.0:
     dependencies:
@@ -31861,13 +31864,13 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vercel@37.11.0(@swc/core@1.7.10)(encoding@0.1.13):
+  vercel@37.12.1(@swc/core@1.7.10)(encoding@0.1.13):
     dependencies:
       '@vercel/build-utils': 8.4.11
       '@vercel/fun': 1.1.0(encoding@0.1.13)
       '@vercel/go': 3.2.0
       '@vercel/hydrogen': 1.0.9
-      '@vercel/next': 4.3.16(encoding@0.1.13)
+      '@vercel/next': 4.3.17(encoding@0.1.13)
       '@vercel/node': 3.2.23(@swc/core@1.7.10)(encoding@0.1.13)
       '@vercel/python': 4.3.1
       '@vercel/redwood': 2.1.8(encoding@0.1.13)
