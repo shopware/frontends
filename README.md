@@ -6,7 +6,7 @@
 
 <p align="center">
 <a href="https://frontends-demo.vercel.app/" target="_blank">🚀 Demo</a> | <a href="https://frontends.shopware.com/" target="_blank">📚 Docu</a> | <a href="https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store" target="_blank"><img style="position:relative; top:3px;" src="https://d33wubrfki0l68.cloudfront.net/9a3dab7d5789ca17d6b0b9af993d40a26be9e5b6/a0243/img/theme/docs-logo.svg" alt="Try out on StackBlitz" width="16"> Try it out</a> | 
-<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-demo-store" target="_blank"><svg data-testid="geist-icon" height="16" stroke-linejoin="round" viewBox="0 0 16 16" width="16" style="color: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 1L16 15H0L8 1Z" fill="currentColor"></path></svg> Deploy on Vercel</a>
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-demo-store" target="_blank"><img src="./.readme/vercel.svg" alt="Join our Slack Channel" width="20" height="16"/> Deploy on Vercel</a>
  | <a href="https://github.com/shopware/frontends/discussions">💬 Discuss</a> | <a href="https://shopwarecommunity.slack.com/archives/C050L6NCMGQ" target="_blank"><img src="./.readme/slack.svg" alt="Join our Slack Channel" width="20" height="16"/>Channel</a>
 </p>
 
