@@ -10,7 +10,7 @@ You can use types generated from your custom API instance to have autocompletion
 
 To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package/@shopware/api-gen) CLI.
 
-To take a deep dive into the topic visit the [🧑‍🎓 API Client Tutorial](https://stackblitz.com/github/shopware/frontends/tree/main/examples/api-client-tutorial) first.
+To take a deep dive into the topic visit the [🧑‍🎓 API Client Tutorial](https://api-client-tutorial-composable-frontends.pages.dev) first.
 
 ## Setup
 
@@ -255,7 +255,7 @@ try {
 
 ## Links
 
-- [🧑‍🎓 Tutorial](https://stackblitz.com/github/shopware/frontends/tree/main/examples/api-client-tutorial)
+- [🧑‍🎓 Tutorial](https://api-client-tutorial-composable-frontends.pages.dev)
 
 - [📘 Documentation](https://frontends.shopware.com)
 
