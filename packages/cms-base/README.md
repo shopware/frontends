@@ -73,7 +73,7 @@ No additional packages needed to be installed.
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community](https://shopwarecommunity.slack.com) (`#shopware-frontends` & `#shopware-pwa` channel)
+- [👥 Community](https://shopwarecommunity.slack.com) (`#composable-frontends` & `#shopware-pwa` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
