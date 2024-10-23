@@ -5,6 +5,8 @@ Generate TypeScript schemas from Shopware OpenAPI specification.
 
 After generating schemas, you can use them in fully typed [API Client](https://www.npmjs.com/package/@shopware/api-client).
 
+To take a deep dive into the topic visit the [🧑‍🎓 API Client Tutorial](https://stackblitz.com/github/shopware/frontends/tree/main/examples/api-client-tutorial) first.
+
 ## Usage
 
 <!-- automd:pm-install name="@shopware/api-gen" dev -->
@@ -226,6 +228,14 @@ Prepare your config file named **api-gen.config.json**:
   //"patches": "./api-types/storeApiTypes.overrides.json" // -> path to your overrides file, default is fetched from api-client repository
 }
 ```
+
+## Links
+
+- [🧑‍🎓 Tutorial](https://stackblitz.com/github/shopware/frontends/tree/main/examples/api-client-tutorial)
+
+- [📘 Documentation](https://frontends.shopware.com)
+
+- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#composable-frontends` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
