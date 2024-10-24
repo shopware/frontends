@@ -1,5 +1,12 @@
 # @shopware-pwa/types
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [[`0643174`](https://github.com/shopware/frontends/commit/06431743162c088d46cf1e6305332bd51542eec4), [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
+  - @shopware/api-client@1.1.0
+
 ## 1.0.2
 
 ### Patch Changes
