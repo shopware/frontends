@@ -7,6 +7,7 @@ on:
         Lighthouse CI,
         Stackblitz templates,
         Audit check,
+        Accessibiliy Check,
       ]
     types: [completed]
     branches: [main, prod]
