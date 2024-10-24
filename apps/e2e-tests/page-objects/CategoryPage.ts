@@ -40,23 +40,28 @@ export class CategoryPage {
     await this.selectedColourFiltersCategory.click();
     const colourCheckboxes = await this.colourCheckboxes.all();
     const countColourCheckboxes = (await this.colourCheckboxes.all()).length;
+
     const randomCheckboxSelctor = Math.floor(
       Math.random() * countColourCheckboxes,
     );
     const randomCheckbox = colourCheckboxes[randomCheckboxSelctor];
     await randomCheckbox.check();
+    await this.page.waitForLoadState();
   }
 
   async selectLimitOneProductPerPage() {
     await this.limitSelect.selectOption({ value: "1" });
+    await this.page.waitForLoadState();
   }
 
   async goToSecondPage() {
     await this.page.getByRole("button", { name: /2/i }).click();
+    await this.page.waitForLoadState();
   }
 
   async selectSortingPriceAsc() {
     await this.page.getByRole("button", { name: "Sort" }).click();
     await this.page.getByRole("menuitem", { name: "Price ascending" }).click();
+    await this.page.waitForLoadState();
   }
 }
