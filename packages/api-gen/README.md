@@ -243,8 +243,21 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.0.5
+### Latest changes: 1.0.6
 
 ### Patch Changes
 
-- [#1269](https://github.com/shopware/frontends/pull/1269) [`999b076`](https://github.com/shopware/frontends/commit/999b076db88bc34614d9d3221b96a04b997009a3) Thanks [@patzick](https://github.com/patzick)! - reading environment variables not only from the .env file but also injected by the system
+- [#1364](https://github.com/shopware/frontends/pull/1364) [`221af3c`](https://github.com/shopware/frontends/commit/221af3c5f56253239f9e7f2a45d71a0220c26cde) Thanks [@patzick](https://github.com/patzick)! - Fix patching schema when there is an oveerite with the `_DELETE` key, and the value was not present in the original schema. In that case there is nothing to delete and value should be omitted.
+
+- [#1304](https://github.com/shopware/frontends/pull/1304) [`183eee9`](https://github.com/shopware/frontends/commit/183eee90e855269251f32145711c9b284b0f2aa4) Thanks [@mkucmus](https://github.com/mkucmus)! - Fix import [pitfall](https://github.com/dotenv-org/examples/blob/master/usage/dotenv-es6-import-pitfall/invalid.mjs).
+
+- [#1330](https://github.com/shopware/frontends/pull/1330) [`2fdb986`](https://github.com/shopware/frontends/commit/2fdb9861a2ed2b89e28bec170c3a080d470d6210) Thanks [@mkucmus](https://github.com/mkucmus)! - Avoid schema loading when internal value `_DELETE_` is used for `$ref` key.
+
+  **parse** function of `json5` library tries to load a `$ref` by loading a file under the reference value, and that's why
+
+  > _ENOENT: no such file or directory, open '{cwd}/\_DELETE_'\_
+
+  error was being thrown when there was no `_DELETE_` schema available locally (in the same json schema).
+
+- Updated dependencies [[`0643174`](https://github.com/shopware/frontends/commit/06431743162c088d46cf1e6305332bd51542eec4), [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
+  - @shopware/api-client@1.1.0
