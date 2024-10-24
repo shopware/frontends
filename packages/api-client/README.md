@@ -253,6 +253,18 @@ try {
 }
 ```
 
+### Hooks
+
+Api client provides hooks to listen to events like context change, authentication change or default headers change. Example:
+
+```typescript
+apiClient.hook("onDefaultHeaderChanged", (key, value) => {
+  // here we can detect that the default header has changed, either by the user or by the headers incoming from the API
+});
+```
+
+calling `apiClient.hook` will autocomplete the list of available hooks.
+
 ## Links
 
 - [🧑‍🎓 Tutorial](https://api-client-tutorial-composable-frontends.pages.dev)
