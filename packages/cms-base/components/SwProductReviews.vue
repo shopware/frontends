@@ -65,6 +65,7 @@ const formatDate = (date: string) =>
   <div v-else-if="reviewsList.length">
     <div v-for="review in reviews" :key="review.id">
       <div
+        v-if="review.createdAt"
         class="cms-block-product-description-reviews__reviews-time mt-3 text-gray-600 text-sm"
       >
         <span>{{ formatDate(review.createdAt) }}</span>
