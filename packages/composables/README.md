@@ -143,7 +143,7 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#shopware-frontends` & `#shopware-pwa` channel)
+- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#composable-frontends` & `#shopware-pwa` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
