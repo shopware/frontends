@@ -118,6 +118,15 @@ if (import.meta.client) {
   }
 }
 
+const miniCartModal = useMiniCartModal();
+const route = useRoute();
+watch(
+  () => route.path,
+  () => {
+    miniCartModal.close();
+  },
+);
+
 onMounted(() => {
   refreshCart();
 });
