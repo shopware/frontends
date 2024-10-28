@@ -39,7 +39,9 @@ const getDocumentDate = (documentDate: Date | string) =>
         }}</span>
         ({{
           getDocumentDate(
-            document.updatedAt ? document.updatedAt : document.createdAt,
+            document.updatedAt
+              ? document.updatedAt
+              : (document.createdAt ?? ""),
           )
         }})
       </li>

@@ -18,30 +18,36 @@ export type components = {
   schemas: Schemas;
 };
 export type Schemas = {
+  AbstractDynamicPageOpenedPayload: {
+    /** @default true */
+    opened?: boolean;
+    /** The type of the current dynamic page */
+    type: string;
+  };
   AclRole: {
     app?: components["schemas"]["App"];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     deletedAt?: string;
     description?: string;
     id: string;
     integrations?: components["schemas"]["Integration"][];
     name: string;
-    privileges: GenericRecord[];
+    privileges?: GenericRecord[];
     /** Format: date-time */
     updatedAt?: string;
     users?: components["schemas"]["User"][];
   };
   AclRoleJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     deletedAt?: string;
     description?: string;
     id: string;
     name: string;
-    privileges: GenericRecord[];
+    privileges?: GenericRecord[];
     relationships?: {
       app?: {
         data?: {
@@ -96,7 +102,7 @@ export type Schemas = {
     aclRole?: components["schemas"]["AclRole"];
     aclRoleId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id?: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -108,7 +114,7 @@ export type Schemas = {
     config?: components["schemas"]["AdvancedSearchConfig"];
     configId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     name: string;
     searchTerms?: components["schemas"]["AdvancedSearchActionSearchTerm"][];
@@ -125,7 +131,7 @@ export type Schemas = {
     active?: boolean;
     configId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     name: string;
     relationships?: {
@@ -173,7 +179,7 @@ export type Schemas = {
     action?: components["schemas"]["AdvancedSearchAction"];
     actionId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
@@ -184,7 +190,7 @@ export type Schemas = {
   AdvancedSearchActionSearchTermJsonApi: components["schemas"]["resource"] & {
     actionId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     relationships?: {
       action?: {
@@ -230,7 +236,7 @@ export type Schemas = {
     config?: components["schemas"]["AdvancedSearchConfig"];
     configId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entityStream?: components["schemas"]["AdvancedSearchEntityStream"];
     entityStreamId?: string;
     id: string;
@@ -250,7 +256,7 @@ export type Schemas = {
     boost: number;
     configId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entityStreamId?: string;
     id: string;
     name: string;
@@ -310,11 +316,11 @@ export type Schemas = {
     validTo?: string;
   };
   AdvancedSearchConfig: {
-    andLogic: boolean;
+    andLogic?: boolean;
     boostings?: components["schemas"]["AdvancedSearchBoosting"][];
     /** Format: date-time */
-    createdAt: string;
-    esEnabled: boolean;
+    createdAt?: string;
+    esEnabled?: boolean;
     fields?: components["schemas"]["AdvancedSearchConfigField"][];
     hitCount?: {
       category?: {
@@ -338,7 +344,7 @@ export type Schemas = {
     };
     id: string;
     /** Format: int64 */
-    minSearchLength: number;
+    minSearchLength?: number;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
@@ -348,29 +354,29 @@ export type Schemas = {
     config?: components["schemas"]["AdvancedSearchConfig"];
     configId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customField?: components["schemas"]["CustomField"];
     customFieldId?: string;
     entity: string;
     field: string;
     id: string;
     /** Format: int64 */
-    ranking: number;
-    searchable: boolean;
-    tokenize: boolean;
+    ranking?: number;
+    searchable?: boolean;
+    tokenize?: boolean;
     /** Format: date-time */
     updatedAt?: string;
   };
   AdvancedSearchConfigFieldJsonApi: components["schemas"]["resource"] & {
     configId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFieldId?: string;
     entity: string;
     field: string;
     id: string;
     /** Format: int64 */
-    ranking: number;
+    ranking?: number;
     relationships?: {
       config?: {
         data?: {
@@ -403,16 +409,16 @@ export type Schemas = {
         };
       };
     };
-    searchable: boolean;
-    tokenize: boolean;
+    searchable?: boolean;
+    tokenize?: boolean;
     /** Format: date-time */
     updatedAt?: string;
   };
   AdvancedSearchConfigJsonApi: components["schemas"]["resource"] & {
-    andLogic: boolean;
+    andLogic?: boolean;
     /** Format: date-time */
-    createdAt: string;
-    esEnabled: boolean;
+    createdAt?: string;
+    esEnabled?: boolean;
     hitCount?: {
       category?: {
         /** Format: int64 */
@@ -435,7 +441,7 @@ export type Schemas = {
     };
     id: string;
     /** Format: int64 */
-    minSearchLength: number;
+    minSearchLength?: number;
     relationships?: {
       boostings?: {
         data?: {
@@ -491,7 +497,7 @@ export type Schemas = {
     apiFilter?: GenericRecord;
     boosting?: components["schemas"]["AdvancedSearchBoosting"];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     filters?: components["schemas"]["AdvancedSearchEntityStreamFilter"][];
     id: string;
     invalid?: boolean;
@@ -501,7 +507,7 @@ export type Schemas = {
   };
   AdvancedSearchEntityStreamFilter: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entityStream?: components["schemas"]["AdvancedSearchEntityStream"];
     entityStreamId: string;
     field?: string;
@@ -520,7 +526,7 @@ export type Schemas = {
   };
   AdvancedSearchEntityStreamFilterJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entityStreamId: string;
     field?: string;
     id: string;
@@ -584,7 +590,7 @@ export type Schemas = {
   AdvancedSearchEntityStreamJsonApi: components["schemas"]["resource"] & {
     apiFilter?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     invalid?: boolean;
     relationships?: {
@@ -625,7 +631,7 @@ export type Schemas = {
   };
   AdvancedSearchSynonym: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     language?: components["schemas"]["Language"];
     languageId?: string;
@@ -636,7 +642,7 @@ export type Schemas = {
   };
   AdvancedSearchSynonymJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     languageId?: string;
     left: string[];
@@ -767,18 +773,19 @@ export type Schemas = {
     aclRole?: components["schemas"]["AclRole"];
     aclRoleId: string;
     actionButtons?: components["schemas"]["AppActionButton"][];
-    active: boolean;
-    allowDisable: boolean;
+    active?: boolean;
+    allowDisable?: boolean;
     allowedHosts?: string[];
     appShippingMethods?: components["schemas"]["AppShippingMethod"][];
     author?: string;
     baseAppUrl?: string;
+    checkoutGatewayUrl?: string;
     cmsBlocks?: components["schemas"]["AppCmsBlock"][];
-    configurable: boolean;
+    configurable?: boolean;
     cookies?: GenericRecord[];
     copyright?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     customFieldSets?: components["schemas"]["CustomFieldSet"][];
     description?: string;
@@ -815,6 +822,9 @@ export type Schemas = {
     paymentMethods?: components["schemas"]["AppPaymentMethod"][];
     privacy?: string;
     privacyPolicyExtensions?: string;
+    selfManaged?: boolean;
+    sourceConfig?: GenericRecord;
+    sourceType?: string;
     taxProviders?: components["schemas"]["TaxProvider"][];
     /** Format: int64 */
     templateLoadPriority?: number;
@@ -823,6 +833,7 @@ export type Schemas = {
       aclRoleId: string;
       author: string;
       baseAppUrl: string;
+      checkoutGatewayUrl: string;
       copyright: string;
       description: string;
       icon: string;
@@ -833,6 +844,7 @@ export type Schemas = {
       path: string;
       privacy: string;
       privacyPolicyExtensions: string;
+      sourceType: string;
       version: string;
     };
     /** Format: date-time */
@@ -845,7 +857,7 @@ export type Schemas = {
     app?: components["schemas"]["App"];
     appId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entity: string;
     id: string;
     label: string;
@@ -866,7 +878,7 @@ export type Schemas = {
     action: string;
     appId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entity: string;
     id: string;
     label: string;
@@ -903,7 +915,7 @@ export type Schemas = {
   AppAdministrationSnippet: {
     appId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     localeId: string;
     /** Format: date-time */
@@ -913,7 +925,7 @@ export type Schemas = {
   AppAdministrationSnippetJsonApi: components["schemas"]["resource"] & {
     appId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     localeId: string;
     /** Format: date-time */
@@ -925,7 +937,7 @@ export type Schemas = {
     appId: string;
     block: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     label: string;
     name: string;
@@ -945,7 +957,7 @@ export type Schemas = {
     appId: string;
     block: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     label: string;
     name: string;
@@ -984,7 +996,7 @@ export type Schemas = {
     badge?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     delayable?: boolean;
     description?: string;
@@ -1021,7 +1033,7 @@ export type Schemas = {
     badge?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     delayable?: boolean;
     description?: string;
@@ -1089,7 +1101,7 @@ export type Schemas = {
     appId: string;
     aware: string[];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     flows?: components["schemas"]["Flow"][];
     id: string;
@@ -1101,7 +1113,7 @@ export type Schemas = {
     appId: string;
     aware: string[];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -1142,16 +1154,17 @@ export type Schemas = {
   };
   AppJsonApi: components["schemas"]["resource"] & {
     aclRoleId: string;
-    active: boolean;
-    allowDisable: boolean;
+    active?: boolean;
+    allowDisable?: boolean;
     allowedHosts?: string[];
     author?: string;
     baseAppUrl?: string;
-    configurable: boolean;
+    checkoutGatewayUrl?: string;
+    configurable?: boolean;
     cookies?: GenericRecord[];
     copyright?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -1365,12 +1378,16 @@ export type Schemas = {
         };
       };
     };
+    selfManaged?: boolean;
+    sourceConfig?: GenericRecord;
+    sourceType?: string;
     /** Format: int64 */
     templateLoadPriority?: number;
     translated: {
       aclRoleId: string;
       author: string;
       baseAppUrl: string;
+      checkoutGatewayUrl: string;
       copyright: string;
       description: string;
       icon: string;
@@ -1381,6 +1398,7 @@ export type Schemas = {
       path: string;
       privacy: string;
       privacyPolicyExtensions: string;
+      sourceType: string;
       version: string;
     };
     /** Format: date-time */
@@ -1393,7 +1411,7 @@ export type Schemas = {
     appName: string;
     captureUrl?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     finalizeUrl?: string;
     id: string;
     identifier: string;
@@ -1413,7 +1431,7 @@ export type Schemas = {
     appName: string;
     captureUrl?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     finalizeUrl?: string;
     id: string;
     identifier: string;
@@ -1479,7 +1497,7 @@ export type Schemas = {
     appId: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     group?: string;
     id: string;
     identifier: string;
@@ -1501,7 +1519,7 @@ export type Schemas = {
     appId: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     group?: string;
     id: string;
     identifier: string;
@@ -1554,7 +1572,7 @@ export type Schemas = {
     appId?: string;
     appName: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     identifier: string;
     originalMedia?: components["schemas"]["Media"];
@@ -1568,7 +1586,7 @@ export type Schemas = {
     appId?: string;
     appName: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     identifier: string;
     originalMediaId?: string;
@@ -1628,7 +1646,7 @@ export type Schemas = {
     app?: components["schemas"]["App"];
     appId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     path: string;
     template: string;
@@ -1639,7 +1657,7 @@ export type Schemas = {
     active: boolean;
     appId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     path: string;
     relationships?: {
@@ -1666,9 +1684,17 @@ export type Schemas = {
   Association: {
     [key: string]: components["schemas"]["Criteria"];
   };
+  AttendeeInsights: {
+    /** Sum of the cart net in base currency */
+    cartSum?: number;
+    /** Id of the attendee */
+    id?: string;
+    /** Sum of all quantities in the cart which were added during the appointment */
+    productCount?: number;
+  };
   B2bBusinessPartner: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     customFields?: GenericRecord;
@@ -1680,7 +1706,7 @@ export type Schemas = {
   };
   B2bBusinessPartnerJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId?: string;
     customFields?: GenericRecord;
     defaultRoleId?: string;
@@ -1728,7 +1754,7 @@ export type Schemas = {
     businessPartnerCustomerId?: string;
     conditions: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -1739,13 +1765,73 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  B2bComponentsApprovalRuleAppScriptCondition: {
+    active: boolean;
+    app?: components["schemas"]["App"];
+    appId: string;
+    config?: GenericRecord;
+    /** Format: date-time */
+    createdAt?: string;
+    group?: string;
+    id: string;
+    identifier: string;
+    name: string;
+    script?: string;
+    translated: {
+      appId: string;
+      group: string;
+      identifier: string;
+      name: string;
+      script: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  B2bComponentsApprovalRuleAppScriptConditionJsonApi: components["schemas"]["resource"] & {
+    active: boolean;
+    appId: string;
+    config?: GenericRecord;
+    /** Format: date-time */
+    createdAt?: string;
+    group?: string;
+    id: string;
+    identifier: string;
+    name: string;
+    relationships?: {
+      app?: {
+        data?: {
+          /** @example d2a57dc1d883fd21fb9951699df71cc7 */
+          id?: string;
+          /** @example app */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-approval-rule-app-script-condition/031e11005a97d52a5c7950ff98b5f2bb/app
+           */
+          related?: string;
+        };
+      };
+    };
+    script?: string;
+    translated: {
+      appId: string;
+      group: string;
+      identifier: string;
+      name: string;
+      script: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+  };
   B2bComponentsApprovalRuleJsonApi: components["schemas"]["resource"] & {
     active: boolean;
     affectedRoleId?: string;
     businessPartnerCustomerId?: string;
     conditions: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -1818,7 +1904,7 @@ export type Schemas = {
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     customer?: components["schemas"]["Customer"];
@@ -1842,6 +1928,9 @@ export type Schemas = {
     /** Format: int64 */
     lineItemCount: number;
     number: string;
+    order?: components["schemas"]["Order"];
+    orderId?: string;
+    orderVersionId?: string;
     /** Format: float */
     originalPrice?: number;
     paymentMethod?: components["schemas"]["PaymentMethod"];
@@ -1887,7 +1976,7 @@ export type Schemas = {
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -1913,7 +2002,7 @@ export type Schemas = {
     countryId: string;
     countryStateId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -2003,7 +2092,7 @@ export type Schemas = {
     cartPayload: string;
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyId: string;
     customerId: string;
     customFields?: GenericRecord;
@@ -2022,6 +2111,8 @@ export type Schemas = {
     /** Format: int64 */
     lineItemCount: number;
     number: string;
+    orderId?: string;
+    orderVersionId?: string;
     /** Format: float */
     originalPrice?: number;
     paymentMethodId: string;
@@ -2175,6 +2266,21 @@ export type Schemas = {
           related?: string;
         };
       };
+      order?: {
+        data?: {
+          /** @example 70a17ffa722a3985b86d30b034ad06d7 */
+          id?: string;
+          /** @example order */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /b2b-components-pending-order/e87c4279c6f83e4de2543a63bf59b373/order
+           */
+          related?: string;
+        };
+      };
       paymentMethod?: {
         data?: {
           /** @example 68ec1eeea9f1b7744e231b5bd0d97df0 */
@@ -2254,7 +2360,7 @@ export type Schemas = {
     businessPartnerCustomer?: components["schemas"]["Customer"];
     businessPartnerCustomerId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     employees?: components["schemas"]["B2bEmployee"][];
     id: string;
@@ -2266,7 +2372,7 @@ export type Schemas = {
   B2bComponentsRoleJsonApi: components["schemas"]["resource"] & {
     businessPartnerCustomerId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -2309,7 +2415,7 @@ export type Schemas = {
   B2bComponentsShoppingList: {
     active?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     customer?: components["schemas"]["Customer"];
@@ -2320,7 +2426,7 @@ export type Schemas = {
     id: string;
     lineItems?: components["schemas"]["B2bComponentsShoppingListLineItem"][];
     name?: string;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
@@ -2331,14 +2437,14 @@ export type Schemas = {
   B2bComponentsShoppingListJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdById?: string;
     customerId: string;
     customFields?: GenericRecord;
     employeeId?: string;
     id: string;
     name?: string;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     relationships?: {
       createdBy?: {
         data?: {
@@ -2438,10 +2544,10 @@ export type Schemas = {
   };
   B2bComponentsShoppingListLineItem: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     product?: components["schemas"]["Product"];
     productId?: string;
     productVersionId?: string;
@@ -2454,10 +2560,10 @@ export type Schemas = {
   };
   B2bComponentsShoppingListLineItemJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     productId?: string;
     productVersionId?: string;
     /** Format: int64 */
@@ -2503,7 +2609,7 @@ export type Schemas = {
     businessPartnerCustomer?: components["schemas"]["Customer"];
     businessPartnerCustomerId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     extensions?: {
@@ -2539,7 +2645,7 @@ export type Schemas = {
     active?: boolean;
     businessPartnerCustomerId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     extensions?: {
@@ -2618,7 +2724,7 @@ export type Schemas = {
   };
   B2bOrderEmployee: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId: string;
     firstName: string;
@@ -2633,7 +2739,7 @@ export type Schemas = {
   };
   B2bOrderEmployeeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     employeeId: string;
     firstName: string;
     id: string;
@@ -2678,7 +2784,7 @@ export type Schemas = {
   };
   B2bPermission: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     dependencies?: string[];
     group: string;
     id: string;
@@ -2688,13 +2794,177 @@ export type Schemas = {
   };
   B2bPermissionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     dependencies?: string[];
     group: string;
     id: string;
     name: string;
     /** Format: date-time */
     updatedAt?: string;
+  };
+  CalculatedPrice: {
+    /** @enum {string} */
+    apiAlias: "calculated_price";
+    calculatedTaxes: {
+      /** @enum {string} */
+      apiAlias: "cart_tax_calculated";
+      price: number;
+      tax: number;
+      taxRate: number;
+    }[];
+    hasRange: boolean;
+    listPrice: components["schemas"]["CartListPrice"] | null;
+    netPrice: number;
+    positionPrice: number;
+    quantity: number;
+    rawTotal?: number;
+    referencePrice: components["schemas"]["CartPriceReference"] | null;
+    regulationPrice: {
+      /** @enum {string} */
+      apiAlias?: "cart_regulation_price";
+      price?: number;
+    } | null;
+    /** Currently active tax rules and/or rates */
+    taxRules: {
+      name?: string;
+      /** Format: float */
+      taxRate?: number;
+    }[];
+    totalPrice: number;
+    unitPrice: number;
+    /** Format: ^[0-9a-f]{32}$ */
+    variantId?: string | null;
+  };
+  Cart: {
+    /** An affiliate tracking code */
+    affiliateCode?: string | null;
+    /** A campaign tracking code */
+    campaignCode?: string | null;
+    /** A comment that can be added to the cart. */
+    customerComment?: string | null;
+    deliveries?: components["schemas"]["CartDelivery"][];
+    /** A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers. */
+    errors?: components["schemas"]["CartError"][];
+    /** All items within the cart */
+    lineItems?: components["schemas"]["LineItem"][];
+    modified?: boolean;
+    /** Name of the cart - for example `guest-cart` */
+    name?: string;
+    price?: components["schemas"]["CalculatedPrice"];
+    /** Context token identifying the cart and the user session */
+    token?: string;
+    /** A list of all payment transactions associated with the current cart. */
+    transactions?: {
+      amount?: components["schemas"]["CalculatedPrice"];
+      paymentMethodId?: string;
+    }[];
+  };
+  CartDelivery: {
+    deliveryDate?: {
+      /** Format: date-time */
+      earliest?: string;
+      /** Format: date-time */
+      latest?: string;
+    };
+    location?: {
+      address?: components["schemas"]["CustomerAddress"];
+      /** @enum {string} */
+      apiAlias?: "cart_delivery_shipping_location";
+      country?: components["schemas"]["Country"];
+      state?: components["schemas"]["CountryState"];
+    };
+    positions?: components["schemas"]["CartDeliveryPosition"][];
+    shippingCosts?: components["schemas"]["CalculatedPrice"];
+    shippingMethod?: components["schemas"]["ShippingMethod"];
+  };
+  CartDeliveryInformation: {
+    /** @enum {string} */
+    apiAlias: "cart_delivery_information";
+    deliveryTime?: {
+      /** @enum {string} */
+      apiAlias?: "cart_delivery_time";
+      max?: number;
+      min?: number;
+      name?: string;
+      unit?: string;
+    };
+    freeDelivery?: boolean;
+    height?: number;
+    length?: number;
+    restockTime?: number;
+    stock?: number;
+    weight?: number;
+    width?: number;
+  };
+  CartDeliveryPosition: {
+    deliveryDate?: {
+      /** Format: date-time */
+      earliest?: string;
+      /** Format: date-time */
+      latest?: string;
+    };
+    identifier?: string;
+    lineItem?: components["schemas"]["LineItem"];
+    price?: components["schemas"]["CalculatedPrice"];
+  };
+  CartError: {
+    items?: {
+      key?: string;
+      /**
+       * * `0` - notice,
+       * * `10` - warning,
+       * * `20` - error
+       * @enum {number}
+       */
+      level?: 0 | 10 | 20;
+      message?: string;
+      messageKey?: string;
+    };
+  };
+  CartItems: {
+    items?: components["schemas"]["LineItem"][];
+  };
+  CartListPrice: {
+    /** @enum {string} */
+    apiAlias: "cart_list_price";
+    discount?: number;
+    percentage?: number;
+    price?: number;
+  };
+  CartPriceQuantity: {
+    /** @enum {string} */
+    apiAlias: "cart_price_quantity";
+    isCalculated?: boolean;
+    listPrice?: components["schemas"]["CartListPrice"];
+    price?: number;
+    quantity?: number;
+    regulationPrice?: {
+      /** Format: float */
+      price?: number;
+    };
+    taxRules?: {
+      name?: string;
+      /** Format: float */
+      taxRate?: number;
+    }[];
+    type?: string;
+  };
+  CartPriceReference: {
+    /** @enum {string} */
+    apiAlias: "cart_price_reference";
+    hasRange: boolean;
+    listPrice: components["schemas"]["CartListPrice"] | null;
+    price?: number;
+    purchaseUnit?: number;
+    referenceUnit?: number;
+    regulationPrice: {
+      /** @enum {string} */
+      apiAlias?: "cart_regulation_price";
+      price?: number;
+    } | null;
+    unitName: string;
+    /** Format: ^[0-9a-f]{32}$ */
+    variantId?: string | null;
   };
   Category: {
     active?: boolean;
@@ -2712,11 +2982,11 @@ export type Schemas = {
     cmsPageIdSwitched?: boolean;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customEntityTypeId?: string;
     customFields?: GenericRecord;
     description?: string;
-    displayNestedProducts: boolean;
+    displayNestedProducts?: boolean;
     extensions?: {
       search?: GenericRecord;
       swagDynamicAccessRules?: {
@@ -2756,7 +3026,7 @@ export type Schemas = {
     parentId?: string;
     parentVersionId?: string;
     path?: string;
-    productAssignmentType: string;
+    productAssignmentType?: string;
     products?: components["schemas"]["Product"][];
     productStream?: components["schemas"]["ProductStream"];
     productStreamId?: string;
@@ -2787,7 +3057,7 @@ export type Schemas = {
       type: string;
       versionId: string;
     };
-    type: string;
+    type?: string;
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
@@ -2812,11 +3082,11 @@ export type Schemas = {
     cmsPageIdSwitched?: boolean;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customEntityTypeId?: string;
     customFields?: GenericRecord;
     description?: string;
-    displayNestedProducts: boolean;
+    displayNestedProducts?: boolean;
     extensions?: {
       search?: GenericRecord;
       swagDynamicAccessRules?: {
@@ -2850,7 +3120,7 @@ export type Schemas = {
     parentId?: string;
     parentVersionId?: string;
     path?: string;
-    productAssignmentType: string;
+    productAssignmentType?: string;
     productStreamId?: string;
     relationships?: {
       children?: {
@@ -3073,7 +3343,7 @@ export type Schemas = {
       type: string;
       versionId: string;
     };
-    type: string;
+    type?: string;
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
@@ -3099,7 +3369,7 @@ export type Schemas = {
     backgroundMediaMode?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     extensions?: {
@@ -3163,7 +3433,7 @@ export type Schemas = {
     backgroundMediaMode?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     extensions?: {
@@ -3272,7 +3542,7 @@ export type Schemas = {
       backgroundColor?: string;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     entity?: string;
@@ -3288,6 +3558,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /cms-page/64bf107168bcd03626208c1764ce6890/activities
+           */
+          related?: string;
+        };
+      };
+      createdBy?: {
+        data?: {
+          /** @example 34998857f537140306898d54d4b970dc */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /cms-page/64bf107168bcd03626208c1764ce6890/createdBy
            */
           related?: string;
         };
@@ -3349,7 +3634,7 @@ export type Schemas = {
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     details?: GenericRecord;
     draftVersion?: string;
     id: string;
@@ -3366,7 +3651,7 @@ export type Schemas = {
   CmsPageActivityJsonApi: components["schemas"]["resource"] & {
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     details?: GenericRecord;
     draftVersion?: string;
     id: string;
@@ -3415,7 +3700,7 @@ export type Schemas = {
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     deepLinkCode: string;
     draftVersion: string;
     id: string;
@@ -3431,7 +3716,7 @@ export type Schemas = {
   CmsPageDraftJsonApi: components["schemas"]["resource"] & {
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     deepLinkCode: string;
     draftVersion: string;
     id: string;
@@ -3494,7 +3779,7 @@ export type Schemas = {
       backgroundColor?: string;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     entity?: string;
@@ -3510,6 +3795,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /cms-page/64bf107168bcd03626208c1764ce6890/activities
+           */
+          related?: string;
+        };
+      };
+      createdBy?: {
+        data?: {
+          /** @example 34998857f537140306898d54d4b970dc */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /cms-page/64bf107168bcd03626208c1764ce6890/createdBy
            */
           related?: string;
         };
@@ -3662,7 +3962,7 @@ export type Schemas = {
     blocks?: components["schemas"]["CmsBlock"][];
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     extensions?: {
@@ -3685,12 +3985,23 @@ export type Schemas = {
     id: string;
     locked?: boolean;
     mobileBehavior?: string;
-    name?: string;
     page?: components["schemas"]["CmsPage"];
     pageId: string;
     /** Format: int64 */
     position: number;
     sizingMode?: string;
+    translated: {
+      backgroundColor: string;
+      backgroundMediaId: string;
+      backgroundMediaMode: string;
+      cmsPageVersionId: string;
+      cssClass: string;
+      mobileBehavior: string;
+      pageId: string;
+      sizingMode: string;
+      type: string;
+      versionId: string;
+    };
     type: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -3707,7 +4018,7 @@ export type Schemas = {
     backgroundMediaMode?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     extensions?: {
@@ -3730,7 +4041,6 @@ export type Schemas = {
     id: string;
     locked?: boolean;
     mobileBehavior?: string;
-    name?: string;
     pageId: string;
     /** Format: int64 */
     position: number;
@@ -3782,6 +4092,18 @@ export type Schemas = {
       };
     };
     sizingMode?: string;
+    translated: {
+      backgroundColor: string;
+      backgroundMediaId: string;
+      backgroundMediaMode: string;
+      cmsPageVersionId: string;
+      cssClass: string;
+      mobileBehavior: string;
+      pageId: string;
+      sizingMode: string;
+      type: string;
+      versionId: string;
+    };
     type: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -3798,7 +4120,7 @@ export type Schemas = {
     cmsBlockVersionId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     data?: GenericRecord;
     extensions?: {
@@ -3839,7 +4161,7 @@ export type Schemas = {
     cmsBlockVersionId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     data?: GenericRecord;
     extensions?: {
@@ -3906,7 +4228,7 @@ export type Schemas = {
       enabled: boolean;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyCountryRoundings?: components["schemas"]["CurrencyCountryRounding"][];
     customerAddresses?: components["schemas"]["CustomerAddress"][];
     customerTax?: {
@@ -3937,6 +4259,7 @@ export type Schemas = {
     };
     forceStateInRegistration?: boolean;
     id: string;
+    isEu?: boolean;
     iso?: string;
     iso3?: string;
     name: string;
@@ -3976,7 +4299,7 @@ export type Schemas = {
       enabled: boolean;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerTax?: {
       /** Format: float */
       amount: number;
@@ -4005,6 +4328,7 @@ export type Schemas = {
     };
     forceStateInRegistration?: boolean;
     id: string;
+    isEu?: boolean;
     iso?: string;
     iso3?: string;
     name: string;
@@ -4137,7 +4461,7 @@ export type Schemas = {
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerAddresses?: components["schemas"]["CustomerAddress"][];
     customFields?: GenericRecord;
     extensions?: {
@@ -4175,7 +4499,7 @@ export type Schemas = {
     active?: boolean;
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       subscriptionCustomerAddresses?: {
@@ -4310,7 +4634,7 @@ export type Schemas = {
   Currency: {
     countryRoundings?: components["schemas"]["CurrencyCountryRounding"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       quotes?: {
@@ -4405,7 +4729,7 @@ export type Schemas = {
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     id: string;
@@ -4429,7 +4753,7 @@ export type Schemas = {
   CurrencyCountryRoundingJsonApi: components["schemas"]["resource"] & {
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyId: string;
     id: string;
     itemRounding: {
@@ -4483,7 +4807,7 @@ export type Schemas = {
   };
   CurrencyJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       quotes?: {
@@ -4680,7 +5004,7 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     cmsAware?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFieldsAware?: boolean;
     /** Format: date-time */
     deletedAt?: string;
@@ -4700,7 +5024,7 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     cmsAware?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFieldsAware?: boolean;
     /** Format: date-time */
     deletedAt?: string;
@@ -4721,7 +5045,7 @@ export type Schemas = {
     allowCustomerWrite?: boolean;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFieldSet?: components["schemas"]["CustomFieldSet"];
     customFieldSetId?: string;
     id: string;
@@ -4737,7 +5061,7 @@ export type Schemas = {
     allowCustomerWrite?: boolean;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFieldSetId?: string;
     id: string;
     name: string;
@@ -4783,7 +5107,7 @@ export type Schemas = {
     appId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: components["schemas"]["CustomField"][];
     global?: boolean;
     id: string;
@@ -4800,7 +5124,7 @@ export type Schemas = {
     appId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     global?: boolean;
     id: string;
     name: string;
@@ -4873,7 +5197,7 @@ export type Schemas = {
   };
   CustomFieldSetRelation: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFieldSet?: components["schemas"]["CustomFieldSet"];
     customFieldSetId: string;
     entityName: string;
@@ -4883,7 +5207,7 @@ export type Schemas = {
   };
   CustomFieldSetRelationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFieldSetId: string;
     entityName: string;
     id: string;
@@ -4909,7 +5233,7 @@ export type Schemas = {
   };
   CustomPrice: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerGroup?: components["schemas"]["CustomerGroup"];
     customerGroupId?: string;
@@ -4924,7 +5248,7 @@ export type Schemas = {
   };
   CustomPriceJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerGroupId?: string;
     customerId?: string;
     id: string;
@@ -5048,7 +5372,7 @@ export type Schemas = {
     }[];
   };
   Customer: {
-    accountType: string;
+    accountType?: string;
     active?: boolean;
     addresses?: components["schemas"]["CustomerAddress"][];
     affiliateCode?: string;
@@ -5060,7 +5384,7 @@ export type Schemas = {
     campaignCode?: string;
     company?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     customerNumber: string;
@@ -5078,6 +5402,21 @@ export type Schemas = {
     doubleOptInRegistration?: boolean;
     email: string;
     extensions?: {
+      attendee?: {
+        data?: {
+          /** @example b7ce8294183a0f2a6092b6cb2f17b9b5 */
+          id?: string;
+          /** @example dsr_appointment_attendee */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/attendee
+           */
+          related?: string;
+        };
+      };
       b2bBusinessPartner?: {
         data?: {
           /** @example c1736d678c9ca2f952db2f7894193bf3 */
@@ -5328,7 +5667,7 @@ export type Schemas = {
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     customFields?: GenericRecord;
@@ -5353,7 +5692,7 @@ export type Schemas = {
     countryId: string;
     countryStateId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId: string;
     customFields?: GenericRecord;
     department?: string;
@@ -5432,7 +5771,7 @@ export type Schemas = {
   };
   CustomerGroup: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customers?: components["schemas"]["Customer"][];
     customFields?: GenericRecord;
     displayGross?: boolean;
@@ -5473,7 +5812,7 @@ export type Schemas = {
   };
   CustomerGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     displayGross?: boolean;
     extensions?: {
@@ -5558,7 +5897,7 @@ export type Schemas = {
   };
   CustomerGroupRegistrationSalesChannels: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerGroup?: components["schemas"]["CustomerGroup"];
     customerGroupId: string;
     id?: string;
@@ -5566,7 +5905,7 @@ export type Schemas = {
     salesChannelId: string;
   };
   CustomerJsonApi: components["schemas"]["resource"] & {
-    accountType: string;
+    accountType?: string;
     active?: boolean;
     affiliateCode?: string;
     /** Format: int64 */
@@ -5576,7 +5915,7 @@ export type Schemas = {
     campaignCode?: string;
     company?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdById?: string;
     customerNumber: string;
     customFields?: GenericRecord;
@@ -5590,6 +5929,21 @@ export type Schemas = {
     doubleOptInRegistration?: boolean;
     email: string;
     extensions?: {
+      attendee?: {
+        data?: {
+          /** @example b7ce8294183a0f2a6092b6cb2f17b9b5 */
+          id?: string;
+          /** @example dsr_appointment_attendee */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /customer/ce26601dac0dea138b7295f02b7620a7/attendee
+           */
+          related?: string;
+        };
+      };
       b2bBusinessPartner?: {
         data?: {
           /** @example c1736d678c9ca2f952db2f7894193bf3 */
@@ -6106,7 +6460,7 @@ export type Schemas = {
   };
   CustomerRecovery: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     hash: string;
@@ -6116,7 +6470,7 @@ export type Schemas = {
   };
   CustomerRecoveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId: string;
     hash: string;
     id: string;
@@ -6142,7 +6496,7 @@ export type Schemas = {
   };
   CustomerSpecificFeatures: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     features: GenericRecord;
@@ -6152,7 +6506,7 @@ export type Schemas = {
   };
   CustomerSpecificFeaturesJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId: string;
     features: GenericRecord;
     id: string;
@@ -6185,7 +6539,7 @@ export type Schemas = {
   };
   CustomerWishlist: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     customFields?: GenericRecord;
@@ -6198,7 +6552,7 @@ export type Schemas = {
   };
   CustomerWishlistJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId: string;
     customFields?: GenericRecord;
     id: string;
@@ -6255,7 +6609,7 @@ export type Schemas = {
   };
   CustomerWishlistProduct: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -6267,7 +6621,7 @@ export type Schemas = {
   };
   CustomerWishlistProductJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -6309,7 +6663,7 @@ export type Schemas = {
   };
   DeliveryTime: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     /** Format: int64 */
@@ -6329,7 +6683,7 @@ export type Schemas = {
   };
   DeliveryTimeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     /** Format: int64 */
@@ -6380,7 +6734,7 @@ export type Schemas = {
   Document: {
     config: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     deepLinkCode: string;
     dependentDocuments?: components["schemas"]["Document"][];
@@ -6404,14 +6758,14 @@ export type Schemas = {
   DocumentBaseConfig: {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     documentNumber?: string;
     documentType?: components["schemas"]["DocumentType"];
     documentTypeId: string;
     filenamePrefix?: string;
     filenameSuffix?: string;
-    global: boolean;
+    global?: boolean;
     id: string;
     logo?: components["schemas"]["Media"];
     logoId?: string;
@@ -6423,13 +6777,13 @@ export type Schemas = {
   DocumentBaseConfigJsonApi: components["schemas"]["resource"] & {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     documentNumber?: string;
     documentTypeId: string;
     filenamePrefix?: string;
     filenameSuffix?: string;
-    global: boolean;
+    global?: boolean;
     id: string;
     logoId?: string;
     name: string;
@@ -6485,7 +6839,7 @@ export type Schemas = {
   };
   DocumentBaseConfigSalesChannel: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     documentBaseConfig?: components["schemas"]["DocumentBaseConfig"];
     documentBaseConfigId: string;
     documentType?: components["schemas"]["DocumentType"];
@@ -6498,7 +6852,7 @@ export type Schemas = {
   };
   DocumentBaseConfigSalesChannelJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     documentBaseConfigId: string;
     documentTypeId?: string;
     id: string;
@@ -6556,7 +6910,7 @@ export type Schemas = {
   DocumentJsonApi: components["schemas"]["resource"] & {
     config: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     deepLinkCode: string;
     documentMediaFileId?: string;
@@ -6651,7 +7005,7 @@ export type Schemas = {
   };
   DocumentType: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     documentBaseConfigs?: components["schemas"]["DocumentBaseConfig"][];
     documentBaseConfigSalesChannels?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
@@ -6685,7 +7039,7 @@ export type Schemas = {
   };
   DocumentTypeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       quoteDocuments?: {
@@ -6761,6 +7115,863 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  DsrAppointment: {
+    /** Format: date-time */
+    accessibleFrom?: string;
+    /** Format: date-time */
+    accessibleTo?: string;
+    active?: boolean;
+    attendeeRestrictionType?: string;
+    attendeeRuleIds?: GenericRecord;
+    attendees?: components["schemas"]["DsrAppointmentAttendee"][];
+    bookingLink?: string;
+    canBookNewAppointment?: boolean;
+    canSendRequestEmail?: boolean;
+    /** Format: date-time */
+    createdAt?: string;
+    createdBy?: components["schemas"]["User"];
+    createdById: string;
+    customFields?: GenericRecord;
+    default?: boolean;
+    dsrPresentationVersionId?: string;
+    /** Format: date-time */
+    endedAt?: string;
+    guideUser?: components["schemas"]["User"];
+    guideUserId?: string;
+    id: string;
+    isPreview?: boolean;
+    message?: string;
+    mode?: string;
+    name: string;
+    presentation?: components["schemas"]["DsrPresentation"];
+    presentationId: string;
+    presentationPath: string;
+    salesChannelDomain?: components["schemas"]["SalesChannelDomain"];
+    salesChannelDomainId: string;
+    /** Format: date-time */
+    startedAt?: string;
+    translated: {
+      accessibleFrom: string;
+      accessibleTo: string;
+      attendeeRestrictionType: string;
+      bookingLink: string;
+      createdById: string;
+      dsrPresentationVersionId: string;
+      endedAt: string;
+      guideUserId: string;
+      message: string;
+      mode: string;
+      name: string;
+      presentationId: string;
+      presentationPath: string;
+      salesChannelDomainId: string;
+      startedAt: string;
+      updatedById: string;
+      videoAudioSettings: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedBy?: components["schemas"]["User"];
+    updatedById?: string;
+    videoAudioSettings?: string;
+    videoChat?: components["schemas"]["DsrAppointmentVideoChat"];
+  };
+  DsrAppointmentAttendee: {
+    appointment?: components["schemas"]["DsrAppointment"];
+    appointmentId: string;
+    attendeeEmail?: string;
+    attendeeName?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    customer?: components["schemas"]["Customer"];
+    customerId?: string;
+    guideCartPermissionsGranted?: boolean;
+    id: string;
+    interactions?: components["schemas"]["DsrInteraction"][];
+    invitationStatus?: string;
+    isBlocked?: boolean;
+    /** Format: date-time */
+    joinedAt?: string;
+    /** Format: date-time */
+    lastActive?: string;
+    productCollections?: components["schemas"]["DsrAttendeeProductCollection"][];
+    type: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    user?: components["schemas"]["User"];
+    userId?: string;
+    videoUserId?: string;
+  };
+  DsrAppointmentAttendeeJsonApi: components["schemas"]["resource"] & {
+    appointmentId: string;
+    attendeeEmail?: string;
+    attendeeName?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    customerId?: string;
+    guideCartPermissionsGranted?: boolean;
+    id: string;
+    invitationStatus?: string;
+    isBlocked?: boolean;
+    /** Format: date-time */
+    joinedAt?: string;
+    /** Format: date-time */
+    lastActive?: string;
+    relationships?: {
+      appointment?: {
+        data?: {
+          /** @example b1caa385c37f1fec467494c8fde4f49b */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-attendee/6013089be5c669cea75294147f34dbc0/appointment
+           */
+          related?: string;
+        };
+      };
+      customer?: {
+        data?: {
+          /** @example 91ec1f9324753048c0096d036a694f86 */
+          id?: string;
+          /** @example customer */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-attendee/6013089be5c669cea75294147f34dbc0/customer
+           */
+          related?: string;
+        };
+      };
+      interactions?: {
+        data?: {
+          /** @example 85aa9c704a544e104741012bf72b6572 */
+          id?: string;
+          /** @example dsr_interaction */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-attendee/6013089be5c669cea75294147f34dbc0/interactions
+           */
+          related?: string;
+        };
+      };
+      productCollections?: {
+        data?: {
+          /** @example 3fa1ecbee1fa3d24671a2e81d9b71d17 */
+          id?: string;
+          /** @example dsr_attendee_product_collection */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-attendee/6013089be5c669cea75294147f34dbc0/productCollections
+           */
+          related?: string;
+        };
+      };
+      user?: {
+        data?: {
+          /** @example ee11cbb19052e40b07aac0ca060c23ee */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-attendee/6013089be5c669cea75294147f34dbc0/user
+           */
+          related?: string;
+        };
+      };
+    };
+    type: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    userId?: string;
+    videoUserId?: string;
+  };
+  DsrAppointmentJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    accessibleFrom?: string;
+    /** Format: date-time */
+    accessibleTo?: string;
+    active?: boolean;
+    attendeeRestrictionType?: string;
+    attendeeRuleIds?: GenericRecord;
+    bookingLink?: string;
+    canBookNewAppointment?: boolean;
+    canSendRequestEmail?: boolean;
+    /** Format: date-time */
+    createdAt?: string;
+    createdById: string;
+    customFields?: GenericRecord;
+    default?: boolean;
+    dsrPresentationVersionId?: string;
+    /** Format: date-time */
+    endedAt?: string;
+    guideUserId?: string;
+    id: string;
+    isPreview?: boolean;
+    message?: string;
+    mode?: string;
+    name: string;
+    presentationId: string;
+    presentationPath: string;
+    relationships?: {
+      attendees?: {
+        data?: {
+          /** @example 4d77992a742c290d1e37290f3986fd4e */
+          id?: string;
+          /** @example dsr_appointment_attendee */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment/d4b6eb231829bcaaa3d1e4689cded46e/attendees
+           */
+          related?: string;
+        };
+      };
+      createdBy?: {
+        data?: {
+          /** @example 34998857f537140306898d54d4b970dc */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment/d4b6eb231829bcaaa3d1e4689cded46e/createdBy
+           */
+          related?: string;
+        };
+      };
+      guideUser?: {
+        data?: {
+          /** @example 7d58fd6cf68b2c4c00b51069f10a25eb */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment/d4b6eb231829bcaaa3d1e4689cded46e/guideUser
+           */
+          related?: string;
+        };
+      };
+      presentation?: {
+        data?: {
+          /** @example 2486923a98e77fd0740381d01acd1782 */
+          id?: string;
+          /** @example dsr_presentation */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment/d4b6eb231829bcaaa3d1e4689cded46e/presentation
+           */
+          related?: string;
+        };
+      };
+      salesChannelDomain?: {
+        data?: {
+          /** @example 29c8b34b04e94e35e95e8346954b7fb4 */
+          id?: string;
+          /** @example sales_channel_domain */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment/d4b6eb231829bcaaa3d1e4689cded46e/salesChannelDomain
+           */
+          related?: string;
+        };
+      };
+      updatedBy?: {
+        data?: {
+          /** @example 7ced3d0067ad61702af7db8ae260aa76 */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment/d4b6eb231829bcaaa3d1e4689cded46e/updatedBy
+           */
+          related?: string;
+        };
+      };
+      videoChat?: {
+        data?: {
+          /** @example b23b1765cc6500512065f5a39a713b75 */
+          id?: string;
+          /** @example dsr_appointment_video_chat */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment/d4b6eb231829bcaaa3d1e4689cded46e/videoChat
+           */
+          related?: string;
+        };
+      };
+    };
+    salesChannelDomainId: string;
+    /** Format: date-time */
+    startedAt?: string;
+    translated: {
+      accessibleFrom: string;
+      accessibleTo: string;
+      attendeeRestrictionType: string;
+      bookingLink: string;
+      createdById: string;
+      dsrPresentationVersionId: string;
+      endedAt: string;
+      guideUserId: string;
+      message: string;
+      mode: string;
+      name: string;
+      presentationId: string;
+      presentationPath: string;
+      salesChannelDomainId: string;
+      startedAt: string;
+      updatedById: string;
+      videoAudioSettings: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedById?: string;
+    videoAudioSettings?: string;
+  };
+  DsrAppointmentRequest: {
+    appointment?: components["schemas"]["DsrAppointment"];
+    appointmentId: string;
+    companyName?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    emailAddress: string;
+    firstName: string;
+    handledById?: string;
+    handler?: components["schemas"]["User"];
+    id: string;
+    lastName: string;
+    message?: string;
+    phoneNumber?: string;
+    requestedById: string;
+    requester?: components["schemas"]["DsrAppointmentAttendee"];
+    salutation?: components["schemas"]["Salutation"];
+    salutationId: string;
+    subject: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrAppointmentRequestJsonApi: components["schemas"]["resource"] & {
+    appointmentId: string;
+    companyName?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    emailAddress: string;
+    firstName: string;
+    handledById?: string;
+    id: string;
+    lastName: string;
+    message?: string;
+    phoneNumber?: string;
+    relationships?: {
+      appointment?: {
+        data?: {
+          /** @example b1caa385c37f1fec467494c8fde4f49b */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-request/3c71739b4a19fe331ce2b32a35e8ef4d/appointment
+           */
+          related?: string;
+        };
+      };
+      handler?: {
+        data?: {
+          /** @example c1cbfe271a40788a00e8bf8574d94d4b */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-request/3c71739b4a19fe331ce2b32a35e8ef4d/handler
+           */
+          related?: string;
+        };
+      };
+      requester?: {
+        data?: {
+          /** @example 0bc2b09c07005b410cae62912ae70206 */
+          id?: string;
+          /** @example dsr_appointment_attendee */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-request/3c71739b4a19fe331ce2b32a35e8ef4d/requester
+           */
+          related?: string;
+        };
+      };
+      salutation?: {
+        data?: {
+          /** @example 7a6efb02514153b5aa9a8f40c6f8bcc3 */
+          id?: string;
+          /** @example salutation */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-request/3c71739b4a19fe331ce2b32a35e8ef4d/salutation
+           */
+          related?: string;
+        };
+      };
+    };
+    requestedById: string;
+    salutationId: string;
+    subject: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrAppointmentVideoChat: {
+    appointment?: components["schemas"]["DsrAppointment"];
+    appointmentId: string;
+    /** Format: date-time */
+    createdAt?: string;
+    customFields?: GenericRecord;
+    id: string;
+    name?: string;
+    ownerToken?: string;
+    startAsBroadcast?: boolean;
+    /** Format: date-time */
+    updatedAt?: string;
+    url?: string;
+    userToken?: string;
+  };
+  DsrAppointmentVideoChatJsonApi: components["schemas"]["resource"] & {
+    appointmentId: string;
+    /** Format: date-time */
+    createdAt?: string;
+    customFields?: GenericRecord;
+    id: string;
+    name?: string;
+    ownerToken?: string;
+    relationships?: {
+      appointment?: {
+        data?: {
+          /** @example b1caa385c37f1fec467494c8fde4f49b */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-appointment-video-chat/21851f23492d55e9e0c82d97fd789730/appointment
+           */
+          related?: string;
+        };
+      };
+    };
+    startAsBroadcast?: boolean;
+    /** Format: date-time */
+    updatedAt?: string;
+    url?: string;
+    userToken?: string;
+  };
+  DsrAttendeeProductCollection: {
+    alias: string;
+    attendee?: components["schemas"]["DsrAppointmentAttendee"];
+    attendeeId: string;
+    /** Format: date-time */
+    createdAt?: string;
+    id: string;
+    product?: components["schemas"]["Product"];
+    productId: string;
+    productVersionId?: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrAttendeeProductCollectionJsonApi: components["schemas"]["resource"] & {
+    alias: string;
+    attendeeId: string;
+    /** Format: date-time */
+    createdAt?: string;
+    id: string;
+    productId: string;
+    productVersionId?: string;
+    relationships?: {
+      attendee?: {
+        data?: {
+          /** @example b7ce8294183a0f2a6092b6cb2f17b9b5 */
+          id?: string;
+          /** @example dsr_appointment_attendee */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-attendee-product-collection/a8b5d04acd1993d5f7b24baee1b1fc33/attendee
+           */
+          related?: string;
+        };
+      };
+      product?: {
+        data?: {
+          /** @example f5bf48aa40cad7891eb709fcf1fde128 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-attendee-product-collection/a8b5d04acd1993d5f7b24baee1b1fc33/product
+           */
+          related?: string;
+        };
+      };
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrInteraction: {
+    attendee?: components["schemas"]["DsrAppointmentAttendee"];
+    attendeeId: string;
+    /** Format: date-time */
+    createdAt?: string;
+    /** Format: date-time */
+    expiresAt?: string;
+    id: string;
+    name: string;
+    payload?: GenericRecord;
+    /** Format: date-time */
+    triggeredAt: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrInteractionJsonApi: components["schemas"]["resource"] & {
+    attendeeId: string;
+    /** Format: date-time */
+    createdAt?: string;
+    /** Format: date-time */
+    expiresAt?: string;
+    id: string;
+    name: string;
+    payload?: GenericRecord;
+    relationships?: {
+      attendee?: {
+        data?: {
+          /** @example b7ce8294183a0f2a6092b6cb2f17b9b5 */
+          id?: string;
+          /** @example dsr_appointment_attendee */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-interaction/3d3949b2e83fa3ca98a32f354273a62a/attendee
+           */
+          related?: string;
+        };
+      };
+    };
+    /** Format: date-time */
+    triggeredAt: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrPresentation: {
+    active?: boolean;
+    appointments?: components["schemas"]["DsrAppointment"][];
+    cmsPages?: components["schemas"]["DsrPresentationCmsPage"][];
+    /** Format: date-time */
+    createdAt?: string;
+    createdBy?: components["schemas"]["User"];
+    createdById: string;
+    customFields?: GenericRecord;
+    id: string;
+    name: string;
+    parent?: components["schemas"]["DsrPresentation"];
+    parentId?: string;
+    parentVersionId?: string;
+    translated: {
+      createdById: string;
+      name: string;
+      parentId: string;
+      parentVersionId: string;
+      updatedById: string;
+      versionId: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedBy?: components["schemas"]["User"];
+    updatedById?: string;
+    versionId?: string;
+  };
+  DsrPresentationCmsPage: {
+    cmsPage?: components["schemas"]["CmsPage"];
+    cmsPageId: string;
+    cmsPageVersionId?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    customFields?: GenericRecord;
+    dsrPresentationVersionId?: string;
+    id: string;
+    isInstantListing?: boolean;
+    pickedProductIds?: GenericRecord;
+    /** Format: int64 */
+    position?: number;
+    presentation?: components["schemas"]["DsrPresentation"];
+    presentationId: string;
+    product?: components["schemas"]["Product"];
+    productId?: string;
+    productStream?: components["schemas"]["ProductStream"];
+    productStreamId?: string;
+    productVersionId?: string;
+    slotConfig?: GenericRecord;
+    title?: string;
+    translated: {
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      dsrPresentationVersionId: string;
+      presentationId: string;
+      productId: string;
+      productStreamId: string;
+      productVersionId: string;
+      title: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrPresentationCmsPageJsonApi: components["schemas"]["resource"] & {
+    cmsPageId: string;
+    cmsPageVersionId?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    customFields?: GenericRecord;
+    dsrPresentationVersionId?: string;
+    id: string;
+    isInstantListing?: boolean;
+    pickedProductIds?: GenericRecord;
+    /** Format: int64 */
+    position?: number;
+    presentationId: string;
+    productId?: string;
+    productStreamId?: string;
+    productVersionId?: string;
+    relationships?: {
+      cmsPage?: {
+        data?: {
+          /** @example 7b1460918b1abb93311108f3dc021c9b */
+          id?: string;
+          /** @example cms_page */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-presentation-cms-page/e8696be98208356b4da4a941d92738fe/cmsPage
+           */
+          related?: string;
+        };
+      };
+      presentation?: {
+        data?: {
+          /** @example 2486923a98e77fd0740381d01acd1782 */
+          id?: string;
+          /** @example dsr_presentation */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-presentation-cms-page/e8696be98208356b4da4a941d92738fe/presentation
+           */
+          related?: string;
+        };
+      };
+      product?: {
+        data?: {
+          /** @example f5bf48aa40cad7891eb709fcf1fde128 */
+          id?: string;
+          /** @example product */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-presentation-cms-page/e8696be98208356b4da4a941d92738fe/product
+           */
+          related?: string;
+        };
+      };
+      productStream?: {
+        data?: {
+          /** @example 49561f6faa0badfce831a183d2ec7c2f */
+          id?: string;
+          /** @example product_stream */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-presentation-cms-page/e8696be98208356b4da4a941d92738fe/productStream
+           */
+          related?: string;
+        };
+      };
+    };
+    slotConfig?: GenericRecord;
+    title?: string;
+    translated: {
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      dsrPresentationVersionId: string;
+      presentationId: string;
+      productId: string;
+      productStreamId: string;
+      productVersionId: string;
+      title: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  DsrPresentationJsonApi: components["schemas"]["resource"] & {
+    active?: boolean;
+    /** Format: date-time */
+    createdAt?: string;
+    createdById: string;
+    customFields?: GenericRecord;
+    id: string;
+    name: string;
+    parentId?: string;
+    parentVersionId?: string;
+    relationships?: {
+      appointments?: {
+        data?: {
+          /** @example 2417b53255206bdce189add39d85fca1 */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-presentation/f770a896b93bc3b86dbb8be6f107a869/appointments
+           */
+          related?: string;
+        };
+      };
+      cmsPages?: {
+        data?: {
+          /** @example e676148cc6ffb82b89b3903ecaed2d16 */
+          id?: string;
+          /** @example dsr_presentation_cms_page */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-presentation/f770a896b93bc3b86dbb8be6f107a869/cmsPages
+           */
+          related?: string;
+        };
+      };
+      createdBy?: {
+        data?: {
+          /** @example 34998857f537140306898d54d4b970dc */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-presentation/f770a896b93bc3b86dbb8be6f107a869/createdBy
+           */
+          related?: string;
+        };
+      };
+      parent?: {
+        data?: {
+          /** @example d0e45878043844ffc41aac437e86b602 */
+          id?: string;
+          /** @example dsr_presentation */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-presentation/f770a896b93bc3b86dbb8be6f107a869/parent
+           */
+          related?: string;
+        };
+      };
+      updatedBy?: {
+        data?: {
+          /** @example 7ced3d0067ad61702af7db8ae260aa76 */
+          id?: string;
+          /** @example user */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /dsr-presentation/f770a896b93bc3b86dbb8be6f107a869/updatedBy
+           */
+          related?: string;
+        };
+      };
+    };
+    translated: {
+      createdById: string;
+      name: string;
+      parentId: string;
+      parentVersionId: string;
+      updatedById: string;
+      versionId: string;
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+    updatedById?: string;
+    versionId?: string;
+  };
+  DynamicPageOpenedPayload: components["schemas"]["AbstractDynamicPageOpenedPayload"];
+  DynamicProductListingPageOpenedPayload: {
+    /** Current page position in the pagination */
+    page: number;
+  };
   EqualsFilter: {
     field: string;
     /** @enum {string} */
@@ -6778,7 +7989,7 @@ export type Schemas = {
     appFlowEvent?: components["schemas"]["AppFlowEvent"];
     appFlowEventId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     eventName: string;
@@ -6812,7 +8023,7 @@ export type Schemas = {
     active?: boolean;
     appFlowEventId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     eventName: string;
@@ -6880,7 +8091,7 @@ export type Schemas = {
     children?: components["schemas"]["FlowSequence"][];
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     displayGroup?: number;
@@ -6934,7 +8145,7 @@ export type Schemas = {
     appFlowActionId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     displayGroup?: number;
@@ -7060,7 +8271,7 @@ export type Schemas = {
   FlowTemplate: {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     name: string;
     /** Format: date-time */
@@ -7069,16 +8280,56 @@ export type Schemas = {
   FlowTemplateJsonApi: components["schemas"]["resource"] & {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     name: string;
     /** Format: date-time */
     updatedAt?: string;
   };
+  GetAttendeeInsightsResponse: {
+    attendees?: components["schemas"]["AttendeeInsights"][];
+    currencyId?: string;
+    currencySymbol?: string;
+  };
+  GetCartInsightsResponse: {
+    /** Sum of all products from all attenddees which were added to the cart during the appointment */
+    cartSum?: number;
+    /** The id from the shown currency */
+    currencyId?: string;
+    /** The currency symbol from the shown currency */
+    currencySymbol?: string;
+    /** Sum of all product quantities from all attendees which were added to the cart during the appointment */
+    productCount?: number;
+    topProducts?: {
+      byQuantity: {
+        /** The id from the product */
+        productId: string;
+        /** The quantity in carts of this product */
+        value: number;
+      }[];
+      byRevenue: {
+        /** The id from the product */
+        productId: string;
+        /** The net revenue in the shown currency in carts of this product */
+        value: number;
+      }[];
+    };
+  };
+  GetListBodyRequest: {
+    /** Max amount of resources to be returned in a page */
+    limit?: number;
+    /** The page to be returned */
+    page?: number;
+  };
+  GuidePresentationStateResponse: {
+    stateForAll?: components["schemas"]["StateForAll"];
+    stateForClients?: components["schemas"]["StateForGuides"];
+    stateForMe?: components["schemas"]["StateForMe"];
+  };
   ImportExportFile: {
     accessToken?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     expireDate: string;
     id: string;
@@ -7093,7 +8344,7 @@ export type Schemas = {
   ImportExportFileJsonApi: components["schemas"]["resource"] & {
     accessToken?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     expireDate: string;
     id: string;
@@ -7125,7 +8376,7 @@ export type Schemas = {
     activity: string;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     failedImportLog?: components["schemas"]["ImportExportLog"];
     file?: components["schemas"]["ImportExportFile"];
     fileId?: string;
@@ -7149,7 +8400,7 @@ export type Schemas = {
     activity: string;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     fileId?: string;
     id: string;
     invalidRecordsLogId?: string;
@@ -7244,7 +8495,7 @@ export type Schemas = {
   ImportExportProfile: {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     delimiter: string;
     enclosure: string;
     fileType: string;
@@ -7255,6 +8506,7 @@ export type Schemas = {
     name?: string;
     sourceEntity: string;
     systemDefault?: boolean;
+    technicalName?: string;
     translated: {
       delimiter: string;
       enclosure: string;
@@ -7262,6 +8514,7 @@ export type Schemas = {
       label: string;
       name: string;
       sourceEntity: string;
+      technicalName: string;
       type: string;
     };
     type?: string;
@@ -7272,7 +8525,7 @@ export type Schemas = {
   ImportExportProfileJsonApi: components["schemas"]["resource"] & {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     delimiter: string;
     enclosure: string;
     fileType: string;
@@ -7299,6 +8552,7 @@ export type Schemas = {
     };
     sourceEntity: string;
     systemDefault?: boolean;
+    technicalName?: string;
     translated: {
       delimiter: string;
       enclosure: string;
@@ -7306,6 +8560,7 @@ export type Schemas = {
       label: string;
       name: string;
       sourceEntity: string;
+      technicalName: string;
       type: string;
     };
     type?: string;
@@ -7322,7 +8577,7 @@ export type Schemas = {
     admin?: boolean;
     app?: components["schemas"]["App"];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Format: date-time */
     deletedAt?: string;
@@ -7355,7 +8610,7 @@ export type Schemas = {
     accessKey: string;
     admin?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Format: date-time */
     deletedAt?: string;
@@ -7423,13 +8678,44 @@ export type Schemas = {
     integrationId: string;
     role?: components["schemas"]["AclRole"];
   };
+  JoinAppointmentResponse: {
+    /** The name of the appointment */
+    appointmentName?: string;
+    /** The created Id for the attendee */
+    attendeeId?: string;
+    /** The appointment id */
+    id?: string;
+    /** To see if it's a preview appointment */
+    isPreview?: boolean;
+    /** The JWT mercure token to subscribe for updates */
+    JWTMercurePublisherToken?: string | null;
+    /** The JWT mercure token to publish updates */
+    JWTMercureSubscriberToken?: string | null;
+    /** The mercure hub url to connect for subscribing and updating */
+    mercureHubPublicUrl?: string | null;
+    /** The topic to which the attendee/guide can send updates */
+    mercurePublisherTopic?: string | null;
+    /** The topics to which the attendee/guide can subscribe for */
+    mercureSubscriberTopics?: string[];
+    /** The new context token */
+    newContextToken?: string;
+    /**
+     * The type of the appointment
+     * @enum {string}
+     */
+    presentationGuideMode?: "self" | "guided";
+    /** The id of the current sales channel */
+    salesChannelId?: string;
+    /** The name of the current sales channel */
+    salesChannelName?: string;
+  };
   LandingPage: {
     active?: boolean;
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       swagDynamicAccessRules?: {
@@ -7477,7 +8763,7 @@ export type Schemas = {
     cmsPageId?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       swagDynamicAccessRules?: {
@@ -7598,7 +8884,7 @@ export type Schemas = {
   Language: {
     children?: components["schemas"]["Language"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customers?: components["schemas"]["Customer"][];
     customFields?: GenericRecord;
     extensions?: {
@@ -7613,6 +8899,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /language/4994a8ffeba4ac3140beb89e8d41f174/mediaAiTagTranslation
+           */
+          related?: string;
+        };
+      };
+      presentationTranslation?: {
+        data?: {
+          /** @example e22d79f2b1909484a375a5dc228ef751 */
+          id?: string;
+          /** @example dsr_presentation_translation */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /language/4994a8ffeba4ac3140beb89e8d41f174/presentationTranslation
            */
           related?: string;
         };
@@ -7685,7 +8986,7 @@ export type Schemas = {
   };
   LanguageJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       mediaAiTagTranslation?: {
@@ -7699,6 +9000,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /language/4994a8ffeba4ac3140beb89e8d41f174/mediaAiTagTranslation
+           */
+          related?: string;
+        };
+      };
+      presentationTranslation?: {
+        data?: {
+          /** @example e22d79f2b1909484a375a5dc228ef751 */
+          id?: string;
+          /** @example dsr_presentation_translation */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /language/4994a8ffeba4ac3140beb89e8d41f174/presentationTranslation
            */
           related?: string;
         };
@@ -7969,10 +9285,72 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  LineItem: {
+    children?: components["schemas"]["LineItem"][];
+    cover?: components["schemas"]["ProductMedia"];
+    dataContextHash?: string;
+    dataTimestamp?: string;
+    deliveryInformation?: components["schemas"]["CartDeliveryInformation"];
+    description?: string;
+    good?: boolean;
+    id: string;
+    label?: string;
+    modified?: boolean;
+    modifiedByApp?: boolean;
+    payload?: components["schemas"]["ProductJsonApi"];
+    price?: {
+      /** @enum {string} */
+      apiAlias: "calculated_price";
+      calculatedTaxes?: {
+        /** @enum {string} */
+        apiAlias: "cart_tax_calculated";
+        price: number;
+        tax: number;
+        taxRate: number;
+      }[];
+      listPrice?: components["schemas"]["CartListPrice"] | null;
+      quantity: number;
+      referencePrice?: components["schemas"]["CartPriceReference"] | null;
+      regulationPrice?: {
+        /** @enum {string} */
+        apiAlias?: "cart_regulation_price";
+        price?: number;
+      } | null;
+      /** Currently active tax rules and/or rates */
+      taxRules?: {
+        name?: string;
+        /** Format: float */
+        taxRate?: number;
+      }[];
+      totalPrice: number;
+      unitPrice: number;
+    };
+    priceDefinition?: components["schemas"]["CartPriceQuantity"];
+    quantity?: number;
+    quantityInformation?: {
+      maxPurchase?: number;
+      minPurchase?: number;
+      purchaseSteps?: number;
+    };
+    referencedId?: string;
+    removable?: boolean;
+    stackable?: boolean;
+    states?: ("is-physical" | "is-download")[];
+    type: components["schemas"]["LineItemType"];
+    uniqueIdentifier?: string;
+  };
+  LineItemType:
+    | "product"
+    | "credit"
+    | "custom"
+    | "promotion"
+    | "discount"
+    | "container"
+    | "quantity";
   Locale: {
     code: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     languages?: components["schemas"]["Language"][];
@@ -7990,7 +9368,7 @@ export type Schemas = {
   LocaleJsonApi: components["schemas"]["resource"] & {
     code: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -8039,7 +9417,7 @@ export type Schemas = {
     channel?: string;
     context?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     extra?: GenericRecord;
     id: string;
     /** Format: int64 */
@@ -8052,7 +9430,7 @@ export type Schemas = {
     channel?: string;
     context?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     extra?: GenericRecord;
     id: string;
     /** Format: int64 */
@@ -8063,7 +9441,7 @@ export type Schemas = {
   };
   MailHeaderFooter: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     footerHtml?: string;
     footerPlain?: string;
@@ -8086,7 +9464,7 @@ export type Schemas = {
   };
   MailHeaderFooterJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     footerHtml?: string;
     footerPlain?: string;
@@ -8127,7 +9505,7 @@ export type Schemas = {
     contentHtml: string;
     contentPlain: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -8169,7 +9547,7 @@ export type Schemas = {
     contentHtml: string;
     contentPlain: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -8250,7 +9628,7 @@ export type Schemas = {
   MailTemplateType: {
     availableEntities?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mailTemplates?: components["schemas"]["MailTemplate"][];
@@ -8267,7 +9645,7 @@ export type Schemas = {
   MailTemplateTypeJsonApi: components["schemas"]["resource"] & {
     availableEntities?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -8302,7 +9680,7 @@ export type Schemas = {
     categoryId: string;
     categoryVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -8316,7 +9694,7 @@ export type Schemas = {
     categoryId: string;
     categoryVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -8382,7 +9760,7 @@ export type Schemas = {
     cmsSections?: components["schemas"]["CmsSection"][];
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     documentBaseConfigs?: components["schemas"]["DocumentBaseConfig"][];
     documents?: components["schemas"]["Document"][];
@@ -8428,6 +9806,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /media/3b563524fdb17b4a86590470d40bef74/quoteDocuments
+           */
+          related?: string;
+        };
+      };
+      spatialObjects?: {
+        data?: {
+          /** @example ad6bd8458100c1c7b8a7d1478a4ba188 */
+          id?: string;
+          /** @example spatial_scene_object */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /media/3b563524fdb17b4a86590470d40bef74/spatialObjects
            */
           related?: string;
         };
@@ -8543,7 +9936,7 @@ export type Schemas = {
   };
   MediaAiTag: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     media?: components["schemas"]["Media"];
     mediaId: string;
@@ -8557,7 +9950,7 @@ export type Schemas = {
   };
   MediaAiTagJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     mediaId: string;
     needsAnalysis?: boolean;
@@ -8587,7 +9980,7 @@ export type Schemas = {
   };
   MediaDefaultFolder: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     entity: string;
     folder?: components["schemas"]["MediaFolder"];
@@ -8597,7 +9990,7 @@ export type Schemas = {
   };
   MediaDefaultFolderJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     entity: string;
     id: string;
@@ -8628,7 +10021,7 @@ export type Schemas = {
     configuration?: components["schemas"]["MediaFolderConfiguration"];
     configurationId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     defaultFolder?: components["schemas"]["MediaDefaultFolder"];
     defaultFolderId?: string;
@@ -8644,7 +10037,7 @@ export type Schemas = {
   };
   MediaFolderConfiguration: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createThumbnails?: boolean;
     customFields?: GenericRecord;
     id: string;
@@ -8660,7 +10053,7 @@ export type Schemas = {
   };
   MediaFolderConfigurationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createThumbnails?: boolean;
     customFields?: GenericRecord;
     id: string;
@@ -8716,7 +10109,7 @@ export type Schemas = {
     childCount?: number;
     configurationId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     defaultFolderId?: string;
     id: string;
@@ -8808,7 +10201,7 @@ export type Schemas = {
     alt?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       cmsPageDrafts?: {
@@ -8852,6 +10245,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /media/3b563524fdb17b4a86590470d40bef74/quoteDocuments
+           */
+          related?: string;
+        };
+      };
+      spatialObjects?: {
+        data?: {
+          /** @example ad6bd8458100c1c7b8a7d1478a4ba188 */
+          id?: string;
+          /** @example spatial_scene_object */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /media/3b563524fdb17b4a86590470d40bef74/spatialObjects
            */
           related?: string;
         };
@@ -9307,24 +10715,24 @@ export type Schemas = {
   };
   MediaThumbnail: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     height: number;
-    id: string;
+    id?: string;
     media?: components["schemas"]["Media"];
     mediaId: string;
     path?: string;
     /** Format: date-time */
     updatedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
-    url?: string;
+    url: string;
     /** Format: int64 */
     width: number;
   };
   MediaThumbnailJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     height: number;
@@ -9357,7 +10765,7 @@ export type Schemas = {
   };
   MediaThumbnailSize: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     height: number;
@@ -9370,7 +10778,7 @@ export type Schemas = {
   };
   MediaThumbnailSizeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     height: number;
@@ -9409,7 +10817,7 @@ export type Schemas = {
     /** Format: date-time */
     confirmedAt?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     firstName?: string;
@@ -9435,7 +10843,7 @@ export type Schemas = {
     /** Format: date-time */
     confirmedAt?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     firstName?: string;
@@ -9524,7 +10932,7 @@ export type Schemas = {
   Notification: {
     adminOnly?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdByIntegration?: components["schemas"]["Integration"];
     createdByIntegrationId?: string;
     createdByUser?: components["schemas"]["User"];
@@ -9539,7 +10947,7 @@ export type Schemas = {
   NotificationJsonApi: components["schemas"]["resource"] & {
     adminOnly?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdByIntegrationId?: string;
     createdByUserId?: string;
     id: string;
@@ -9583,7 +10991,7 @@ export type Schemas = {
   };
   NumberRange: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     global: boolean;
@@ -9607,7 +11015,7 @@ export type Schemas = {
   };
   NumberRangeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     global: boolean;
@@ -9675,7 +11083,7 @@ export type Schemas = {
   };
   NumberRangeSalesChannel: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     numberRange?: components["schemas"]["NumberRange"];
     numberRangeId: string;
@@ -9688,7 +11096,7 @@ export type Schemas = {
   };
   NumberRangeSalesChannelJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     numberRangeId: string;
     numberRangeTypeId?: string;
@@ -9745,7 +11153,7 @@ export type Schemas = {
   };
   NumberRangeState: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     lastValue: number;
@@ -9756,7 +11164,7 @@ export type Schemas = {
   };
   NumberRangeStateJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     lastValue: number;
@@ -9783,7 +11191,7 @@ export type Schemas = {
   };
   NumberRangeType: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     global: boolean;
     id: string;
@@ -9800,7 +11208,7 @@ export type Schemas = {
   };
   NumberRangeTypeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     global: boolean;
     id: string;
@@ -9905,7 +11313,7 @@ export type Schemas = {
     billingAddressVersionId?: string;
     campaignCode?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     currency?: components["schemas"]["Currency"];
@@ -9918,6 +11326,21 @@ export type Schemas = {
     deliveries?: components["schemas"]["OrderDelivery"][];
     documents?: components["schemas"]["Document"][];
     extensions?: {
+      b2bPendingOrder?: {
+        data?: {
+          /** @example c7e0572188e2dec59215e8872024567e */
+          id?: string;
+          /** @example b2b_components_pending_order */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/b2bPendingOrder
+           */
+          related?: string;
+        };
+      };
       delayActions?: {
         data?: {
           /** @example edfed55799054673006c4b5a643489ac */
@@ -10112,7 +11535,7 @@ export type Schemas = {
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -10141,7 +11564,7 @@ export type Schemas = {
     countryId: string;
     countryStateId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -10239,7 +11662,7 @@ export type Schemas = {
   OrderCustomer: {
     company?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     customerNumber?: string;
@@ -10263,7 +11686,7 @@ export type Schemas = {
   OrderCustomerJsonApi: components["schemas"]["resource"] & {
     company?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId?: string;
     customerNumber?: string;
     customFields?: GenericRecord;
@@ -10330,7 +11753,7 @@ export type Schemas = {
   };
   OrderDelivery: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     order?: components["schemas"]["Order"];
@@ -10371,14 +11794,14 @@ export type Schemas = {
     shippingOrderAddressVersionId?: string;
     stateId: string;
     stateMachineState?: components["schemas"]["StateMachineState"];
-    trackingCodes: string[];
+    trackingCodes?: string[];
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
   };
   OrderDeliveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     orderId: string;
@@ -10491,14 +11914,14 @@ export type Schemas = {
     shippingOrderAddressId: string;
     shippingOrderAddressVersionId?: string;
     stateId: string;
-    trackingCodes: string[];
+    trackingCodes?: string[];
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
   };
   OrderDeliveryPosition: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     orderDelivery?: components["schemas"]["OrderDelivery"];
@@ -10542,7 +11965,7 @@ export type Schemas = {
   };
   OrderDeliveryPositionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     orderDeliveryId: string;
@@ -10626,7 +12049,7 @@ export type Schemas = {
     billingAddressVersionId?: string;
     campaignCode?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdById?: string;
     /** Format: float */
     currencyFactor: number;
@@ -10635,6 +12058,21 @@ export type Schemas = {
     customFields?: GenericRecord;
     deepLinkCode?: string;
     extensions?: {
+      b2bPendingOrder?: {
+        data?: {
+          /** @example c7e0572188e2dec59215e8872024567e */
+          id?: string;
+          /** @example b2b_components_pending_order */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /order/a240fa27925a635b08dc28c9e4f9216d/b2bPendingOrder
+           */
+          related?: string;
+        };
+      };
       delayActions?: {
         data?: {
           /** @example edfed55799054673006c4b5a643489ac */
@@ -11028,7 +12466,7 @@ export type Schemas = {
     cover?: components["schemas"]["Media"];
     coverId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     downloads?: components["schemas"]["OrderLineItemDownload"][];
@@ -11078,7 +12516,7 @@ export type Schemas = {
     parentVersionId?: string;
     payload?: GenericRecord;
     /** Format: int64 */
-    position: number;
+    position?: number;
     price: {
       calculatedTaxes?: GenericRecord;
       listPrice?: {
@@ -11126,7 +12564,7 @@ export type Schemas = {
   OrderLineItemDownload: {
     accessGranted: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     media?: components["schemas"]["Media"];
@@ -11143,7 +12581,7 @@ export type Schemas = {
   OrderLineItemDownloadJsonApi: components["schemas"]["resource"] & {
     accessGranted: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mediaId: string;
@@ -11190,7 +12628,7 @@ export type Schemas = {
   OrderLineItemJsonApi: components["schemas"]["resource"] & {
     coverId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -11235,7 +12673,7 @@ export type Schemas = {
     parentVersionId?: string;
     payload?: GenericRecord;
     /** Format: int64 */
-    position: number;
+    position?: number;
     price: {
       calculatedTaxes?: GenericRecord;
       listPrice?: {
@@ -11417,7 +12855,7 @@ export type Schemas = {
   };
   OrderProductWarehouse: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     order?: components["schemas"]["Order"];
     orderId: string;
@@ -11435,7 +12873,7 @@ export type Schemas = {
   };
   OrderProductWarehouseJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     orderId: string;
     orderVersionId?: string;
@@ -11501,7 +12939,7 @@ export type Schemas = {
     /** Format: float */
     amountTotal?: number;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     id: string;
@@ -11563,7 +13001,7 @@ export type Schemas = {
     /** Format: float */
     amountTotal?: number;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdById?: string;
     id: string;
     internalComment?: string;
@@ -11693,7 +13131,7 @@ export type Schemas = {
   };
   OrderReturnLineItem: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     internalComment?: string;
@@ -11742,7 +13180,7 @@ export type Schemas = {
   };
   OrderReturnLineItemJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     internalComment?: string;
@@ -11850,7 +13288,7 @@ export type Schemas = {
   OrderReturnLineItemReason: {
     content: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     lineItems?: components["schemas"]["OrderReturnLineItem"][];
     reasonKey: string;
@@ -11864,7 +13302,7 @@ export type Schemas = {
   OrderReturnLineItemReasonJsonApi: components["schemas"]["resource"] & {
     content: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     reasonKey: string;
     relationships?: {
@@ -11925,7 +13363,7 @@ export type Schemas = {
     };
     captures?: components["schemas"]["OrderTransactionCapture"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     order?: components["schemas"]["Order"];
@@ -11937,6 +13375,7 @@ export type Schemas = {
     stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: date-time */
     updatedAt?: string;
+    validationData?: GenericRecord;
     versionId?: string;
   };
   OrderTransactionCapture: {
@@ -11964,7 +13403,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -12003,7 +13442,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -12088,7 +13527,7 @@ export type Schemas = {
     captureId: string;
     captureVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -12128,7 +13567,7 @@ export type Schemas = {
     captureId: string;
     captureVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -12210,7 +13649,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -12252,7 +13691,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -12324,7 +13763,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     orderId: string;
@@ -12395,11 +13834,12 @@ export type Schemas = {
     stateId: string;
     /** Format: date-time */
     updatedAt?: string;
+    validationData?: GenericRecord;
     versionId?: string;
   };
   OrderWarehouseGroup: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     order?: components["schemas"]["Order"];
     orderId: string;
@@ -12412,7 +13852,7 @@ export type Schemas = {
   };
   OrderWarehouseGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     orderId: string;
     orderVersionId?: string;
@@ -12462,7 +13902,7 @@ export type Schemas = {
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customers?: components["schemas"]["Customer"][];
     customFields?: GenericRecord;
     description?: string;
@@ -12576,7 +14016,7 @@ export type Schemas = {
     asynchronous?: boolean;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     distinguishableName?: string;
@@ -12807,7 +14247,7 @@ export type Schemas = {
     composerName?: string;
     copyright?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     /** Runtime field, cannot be used as part of the criteria. */
@@ -12856,7 +14296,7 @@ export type Schemas = {
     composerName?: string;
     copyright?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     /** Runtime field, cannot be used as part of the criteria. */
@@ -12913,6 +14353,59 @@ export type Schemas = {
     upgradeVersion?: string;
     version: string;
   };
+  PresentationCmsPage: {
+    cmsPage?: components["schemas"]["CmsPage"];
+    /** The CMS page id the presentation using */
+    cmsPageId?: string;
+    /** The CMS page version id the presentation using */
+    cmsPageVersionId?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    customFields?: GenericRecord | null;
+    dsrPresentationVersionId?: string;
+    /** The presentation cms page id */
+    id?: string;
+    /** True if this slide is an instant listing */
+    isInstantListing?: boolean;
+    /** The product id is assigned to presentation if it's product listing or instant listing */
+    pickedProductIds?: string[] | null;
+    /** The position of slide */
+    position?: number;
+    /** The presentation using this presentation cms page */
+    presentationId?: string;
+    /** The product id is assigned to presentation if it's product detail */
+    productId?: string | null;
+    /** The product stream id is assigned to presentation if it's product listing */
+    productStreamId?: string | null;
+    /** The title of presentation cms page */
+    title?: string | null;
+    translated?: {
+      cmsPageId: string;
+      cmsPageVersionId: string;
+      dsrPresentationVersionId: string;
+      presentationId: string;
+      title?: string | null;
+    };
+    updatedAt?: string | null;
+  };
+  Price: {
+    currencyId: string;
+    gross: number;
+    linked?: boolean;
+    listPrice?: {
+      currencyId?: string;
+      gross: number;
+      linked?: boolean;
+      net: number;
+    };
+    net: number;
+    regulationPrice?: {
+      currencyId?: string;
+      gross: number;
+      linked?: boolean;
+      net: number;
+    };
+  };
   Product: {
     active?: boolean;
     /** Format: int64 */
@@ -12937,7 +14430,7 @@ export type Schemas = {
     cover?: components["schemas"]["ProductMedia"];
     coverId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     crossSellingAssignedProducts?: components["schemas"]["ProductCrossSellingAssignedProducts"][];
     crossSellings?: components["schemas"]["ProductCrossSelling"][];
     customFields?: GenericRecord;
@@ -12951,6 +14444,21 @@ export type Schemas = {
     downloads?: components["schemas"]["ProductDownload"][];
     ean?: string;
     extensions?: {
+      attendeeProductCollections?: {
+        data?: {
+          /** @example 0a7b3b2f4b81f36910a74f22826f35df */
+          id?: string;
+          /** @example dsr_attendee_product_collection */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
+           */
+          related?: string;
+        };
+      };
       customPrice?: {
         data?: {
           /** @example 35ed8bfa9c73171a7b417f13ab07d57a */
@@ -13007,6 +14515,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /product/deb10517653c255364175796ace3553f/paypalPosSync
+           */
+          related?: string;
+        };
+      };
+      presentationCmsPages?: {
+        data?: {
+          /** @example 30c725082807b69914fddd7e82d0d741 */
+          id?: string;
+          /** @example dsr_presentation_cms_page */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/presentationCmsPages
            */
           related?: string;
         };
@@ -13178,7 +14701,7 @@ export type Schemas = {
     parent?: components["schemas"]["Product"];
     parentId?: string;
     parentVersionId?: string;
-    price: GenericRecord;
+    price: components["schemas"]["Price"][];
     prices?: components["schemas"]["ProductPrice"][];
     productManufacturerVersionId?: string;
     productMediaVersionId?: string;
@@ -13186,7 +14709,7 @@ export type Schemas = {
     productReviews?: components["schemas"]["ProductReview"][];
     properties?: components["schemas"]["PropertyGroupOption"][];
     propertyIds?: readonly string[];
-    purchasePrices?: GenericRecord;
+    purchasePrices?: components["schemas"]["Price"][];
     /** Format: int64 */
     purchaseSteps?: number;
     /** Format: float */
@@ -13278,7 +14801,7 @@ export type Schemas = {
   };
   ProductConfiguratorSetting: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     media?: components["schemas"]["Media"];
@@ -13297,7 +14820,7 @@ export type Schemas = {
   };
   ProductConfiguratorSettingJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mediaId?: string;
@@ -13362,13 +14885,13 @@ export type Schemas = {
     active?: boolean;
     assignedProducts?: components["schemas"]["ProductCrossSellingAssignedProducts"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     limit?: number;
     name: string;
     /** Format: int64 */
-    position: number;
+    position?: number;
     product?: components["schemas"]["Product"];
     productId: string;
     productStream?: components["schemas"]["ProductStream"];
@@ -13385,13 +14908,13 @@ export type Schemas = {
       sortDirection: string;
       type: string;
     };
-    type: string;
+    type?: string;
     /** Format: date-time */
     updatedAt?: string;
   };
   ProductCrossSellingAssignedProducts: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     crossSelling?: components["schemas"]["ProductCrossSelling"];
     crossSellingId: string;
     id: string;
@@ -13405,7 +14928,7 @@ export type Schemas = {
   };
   ProductCrossSellingAssignedProductsJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     crossSellingId: string;
     id: string;
     /** Format: int64 */
@@ -13450,13 +14973,13 @@ export type Schemas = {
   ProductCrossSellingJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     limit?: number;
     name: string;
     /** Format: int64 */
-    position: number;
+    position?: number;
     productId: string;
     productStreamId?: string;
     productVersionId?: string;
@@ -13518,7 +15041,7 @@ export type Schemas = {
       sortDirection: string;
       type: string;
     };
-    type: string;
+    type?: string;
     /** Format: date-time */
     updatedAt?: string;
   };
@@ -13532,7 +15055,7 @@ export type Schemas = {
   };
   ProductDownload: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     media?: components["schemas"]["Media"];
@@ -13548,7 +15071,7 @@ export type Schemas = {
   };
   ProductDownloadJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mediaId: string;
@@ -13596,7 +15119,7 @@ export type Schemas = {
     accessKey: string;
     bodyTemplate?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     encoding: string;
@@ -13628,7 +15151,7 @@ export type Schemas = {
     accessKey: string;
     bodyTemplate?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyId: string;
     encoding: string;
     fileFormat: string;
@@ -13730,7 +15253,7 @@ export type Schemas = {
   };
   ProductFeatureSet: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     features?: GenericRecord;
     id: string;
@@ -13745,7 +15268,7 @@ export type Schemas = {
   };
   ProductFeatureSetJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     features?: GenericRecord;
     id: string;
@@ -13791,7 +15314,7 @@ export type Schemas = {
     cmsPageVersionId?: string;
     coverId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     customFieldSetSelectionActive?: boolean;
     customSearchKeywords?: GenericRecord[];
@@ -13800,6 +15323,21 @@ export type Schemas = {
     displayGroup?: string;
     ean?: string;
     extensions?: {
+      attendeeProductCollections?: {
+        data?: {
+          /** @example 0a7b3b2f4b81f36910a74f22826f35df */
+          id?: string;
+          /** @example dsr_attendee_product_collection */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/attendeeProductCollections
+           */
+          related?: string;
+        };
+      };
       customPrice?: {
         data?: {
           /** @example 35ed8bfa9c73171a7b417f13ab07d57a */
@@ -13856,6 +15394,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /product/deb10517653c255364175796ace3553f/paypalPosSync
+           */
+          related?: string;
+        };
+      };
+      presentationCmsPages?: {
+        data?: {
+          /** @example 30c725082807b69914fddd7e82d0d741 */
+          id?: string;
+          /** @example dsr_presentation_cms_page */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product/deb10517653c255364175796ace3553f/presentationCmsPages
            */
           related?: string;
         };
@@ -14020,12 +15573,12 @@ export type Schemas = {
     packUnitPlural?: string;
     parentId?: string;
     parentVersionId?: string;
-    price: GenericRecord;
+    price: components["schemas"]["Price"][];
     productManufacturerVersionId?: string;
     productMediaVersionId?: string;
     productNumber: string;
     propertyIds?: readonly string[];
-    purchasePrices?: GenericRecord;
+    purchasePrices?: components["schemas"]["Price"][];
     /** Format: int64 */
     purchaseSteps?: number;
     /** Format: float */
@@ -14573,7 +16126,7 @@ export type Schemas = {
   };
   ProductManufacturer: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -14598,7 +16151,7 @@ export type Schemas = {
   };
   ProductManufacturerJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -14654,7 +16207,7 @@ export type Schemas = {
   ProductMedia: {
     coverProducts?: components["schemas"]["Product"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     media?: components["schemas"]["Media"];
@@ -14664,13 +16217,14 @@ export type Schemas = {
     product?: components["schemas"]["Product"];
     productId: string;
     productVersionId?: string;
+    thumbnails?: components["schemas"]["MediaThumbnail"];
     /** Format: date-time */
     updatedAt?: string;
     versionId?: string;
   };
   ProductMediaJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mediaId: string;
@@ -14739,10 +16293,10 @@ export type Schemas = {
   };
   ProductPrice: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
-    price: GenericRecord;
+    price: components["schemas"]["Price"][];
     product?: components["schemas"]["Product"];
     productId: string;
     productVersionId?: string;
@@ -14758,10 +16312,10 @@ export type Schemas = {
   };
   ProductPriceJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
-    price: GenericRecord;
+    price: components["schemas"]["Price"][];
     productId: string;
     productVersionId?: string;
     /** Format: int64 */
@@ -14817,7 +16371,7 @@ export type Schemas = {
     comment?: string;
     content: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     customFields?: GenericRecord;
@@ -14842,7 +16396,7 @@ export type Schemas = {
     comment?: string;
     content: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId?: string;
     customFields?: GenericRecord;
     externalEmail?: string;
@@ -14923,7 +16477,7 @@ export type Schemas = {
   };
   ProductReviewSummary: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -14943,7 +16497,7 @@ export type Schemas = {
   };
   ProductReviewSummaryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -14992,43 +16546,43 @@ export type Schemas = {
     visible?: boolean;
   };
   ProductSearchConfig: {
-    andLogic: boolean;
+    andLogic?: boolean;
     configFields?: components["schemas"]["ProductSearchConfigField"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     excludedTerms?: string[];
     id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     /** Format: int64 */
-    minSearchLength: number;
+    minSearchLength?: number;
     /** Format: date-time */
     updatedAt?: string;
   };
   ProductSearchConfigField: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customField?: components["schemas"]["CustomField"];
     customFieldId?: string;
     field: string;
     id: string;
     /** Format: int64 */
-    ranking: number;
-    searchable: boolean;
+    ranking?: number;
+    searchable?: boolean;
     searchConfig?: components["schemas"]["ProductSearchConfig"];
     searchConfigId: string;
-    tokenize: boolean;
+    tokenize?: boolean;
     /** Format: date-time */
     updatedAt?: string;
   };
   ProductSearchConfigFieldJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFieldId?: string;
     field: string;
     id: string;
     /** Format: int64 */
-    ranking: number;
+    ranking?: number;
     relationships?: {
       customField?: {
         data?: {
@@ -15061,21 +16615,21 @@ export type Schemas = {
         };
       };
     };
-    searchable: boolean;
+    searchable?: boolean;
     searchConfigId: string;
-    tokenize: boolean;
+    tokenize?: boolean;
     /** Format: date-time */
     updatedAt?: string;
   };
   ProductSearchConfigJsonApi: components["schemas"]["resource"] & {
-    andLogic: boolean;
+    andLogic?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     excludedTerms?: string[];
     id: string;
     languageId: string;
     /** Format: int64 */
-    minSearchLength: number;
+    minSearchLength?: number;
     relationships?: {
       configFields?: {
         data?: {
@@ -15113,7 +16667,7 @@ export type Schemas = {
   };
   ProductSearchKeyword: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     keyword: string;
     language?: components["schemas"]["Language"];
@@ -15129,7 +16683,7 @@ export type Schemas = {
   };
   ProductSearchKeywordJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     keyword: string;
     languageId: string;
@@ -15176,7 +16730,7 @@ export type Schemas = {
   ProductSorting: {
     active: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     fields: GenericRecord;
     id: string;
     key: string;
@@ -15194,7 +16748,7 @@ export type Schemas = {
   ProductSortingJsonApi: components["schemas"]["resource"] & {
     active: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     fields: GenericRecord;
     id: string;
     key: string;
@@ -15213,7 +16767,7 @@ export type Schemas = {
     apiFilter?: GenericRecord;
     categories?: components["schemas"]["Category"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -15228,6 +16782,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/paypalPosSalesChannels
+           */
+          related?: string;
+        };
+      };
+      presentationCmsPages?: {
+        data?: {
+          /** @example 30c725082807b69914fddd7e82d0d741 */
+          id?: string;
+          /** @example dsr_presentation_cms_page */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/presentationCmsPages
            */
           related?: string;
         };
@@ -15263,7 +16832,7 @@ export type Schemas = {
   };
   ProductStreamFilter: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     field?: string;
     id: string;
@@ -15283,7 +16852,7 @@ export type Schemas = {
   };
   ProductStreamFilterJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     field?: string;
     id: string;
@@ -15348,7 +16917,7 @@ export type Schemas = {
   ProductStreamJsonApi: components["schemas"]["resource"] & {
     apiFilter?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -15363,6 +16932,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/paypalPosSalesChannels
+           */
+          related?: string;
+        };
+      };
+      presentationCmsPages?: {
+        data?: {
+          /** @example 30c725082807b69914fddd7e82d0d741 */
+          id?: string;
+          /** @example dsr_presentation_cms_page */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /product-stream/8f4cdc10a7afbd7f3948c6f8cd5c4801/presentationCmsPages
            */
           related?: string;
         };
@@ -15473,7 +17057,7 @@ export type Schemas = {
   };
   ProductVisibility: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -15487,7 +17071,7 @@ export type Schemas = {
   };
   ProductVisibilityJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -15531,7 +17115,7 @@ export type Schemas = {
   };
   ProductWarehouse: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -15553,7 +17137,7 @@ export type Schemas = {
   };
   ProductWarehouseJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -15596,16 +17180,16 @@ export type Schemas = {
     warehouseId: string;
   };
   Promotion: {
-    active: boolean;
+    active?: boolean;
     cartRules?: components["schemas"]["Rule"][];
     code?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerRestriction?: boolean;
     customFields?: GenericRecord;
     discounts?: components["schemas"]["PromotionDiscount"][];
     exclusionIds?: string[];
-    exclusive: boolean;
+    exclusive?: boolean;
     extensions?: {
       quoteLineItems?: {
         data?: {
@@ -15638,9 +17222,9 @@ export type Schemas = {
     ordersPerCustomerCount?: GenericRecord;
     personaCustomers?: components["schemas"]["Customer"][];
     personaRules?: components["schemas"]["Rule"][];
-    preventCombination: boolean;
+    preventCombination?: boolean;
     /** Format: int64 */
-    priority: number;
+    priority?: number;
     salesChannels?: components["schemas"]["PromotionSalesChannel"][];
     setgroups?: components["schemas"]["PromotionSetgroup"][];
     translated: {
@@ -15652,9 +17236,9 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
-    useCodes: boolean;
-    useIndividualCodes: boolean;
-    useSetGroups: boolean;
+    useCodes?: boolean;
+    useIndividualCodes?: boolean;
+    useSetGroups?: boolean;
     /** Format: date-time */
     validFrom?: string;
     /** Format: date-time */
@@ -15671,7 +17255,7 @@ export type Schemas = {
     applierKey?: string;
     considerAdvancedRules: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     discountRules?: components["schemas"]["Rule"][];
     id: string;
     /** Format: float */
@@ -15693,7 +17277,7 @@ export type Schemas = {
     applierKey?: string;
     considerAdvancedRules: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: float */
     maxValue?: number;
@@ -15757,7 +17341,7 @@ export type Schemas = {
   };
   PromotionDiscountPrices: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     discountId: string;
@@ -15770,7 +17354,7 @@ export type Schemas = {
   };
   PromotionDiscountPricesJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyId: string;
     discountId: string;
     id: string;
@@ -15821,7 +17405,7 @@ export type Schemas = {
   PromotionIndividualCode: {
     code: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     payload?: GenericRecord;
     promotion?: components["schemas"]["Promotion"];
@@ -15832,7 +17416,7 @@ export type Schemas = {
   PromotionIndividualCodeJsonApi: components["schemas"]["resource"] & {
     code: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     payload?: GenericRecord;
     promotionId: string;
@@ -15857,14 +17441,14 @@ export type Schemas = {
     updatedAt?: string;
   };
   PromotionJsonApi: components["schemas"]["resource"] & {
-    active: boolean;
+    active?: boolean;
     code?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerRestriction?: boolean;
     customFields?: GenericRecord;
     exclusionIds?: string[];
-    exclusive: boolean;
+    exclusive?: boolean;
     extensions?: {
       quoteLineItems?: {
         data?: {
@@ -15892,9 +17476,9 @@ export type Schemas = {
     /** Format: int64 */
     orderCount?: number;
     ordersPerCustomerCount?: GenericRecord;
-    preventCombination: boolean;
+    preventCombination?: boolean;
     /** Format: int64 */
-    priority: number;
+    priority?: number;
     relationships?: {
       cartRules?: {
         data?: {
@@ -16041,9 +17625,9 @@ export type Schemas = {
     };
     /** Format: date-time */
     updatedAt?: string;
-    useCodes: boolean;
-    useIndividualCodes: boolean;
-    useSetGroups: boolean;
+    useCodes?: boolean;
+    useIndividualCodes?: boolean;
+    useSetGroups?: boolean;
     /** Format: date-time */
     validFrom?: string;
     /** Format: date-time */
@@ -16072,7 +17656,7 @@ export type Schemas = {
   };
   PromotionSalesChannel: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     priority: number;
@@ -16085,7 +17669,7 @@ export type Schemas = {
   };
   PromotionSalesChannelJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     priority: number;
@@ -16128,7 +17712,7 @@ export type Schemas = {
   };
   PromotionSetgroup: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     packagerKey: string;
     promotion?: components["schemas"]["Promotion"];
@@ -16142,7 +17726,7 @@ export type Schemas = {
   };
   PromotionSetgroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     packagerKey: string;
     promotionId: string;
@@ -16193,17 +17777,17 @@ export type Schemas = {
   };
   PropertyGroup: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
-    displayType: string;
+    displayType?: string;
     filterable?: boolean;
     id: string;
     name: string;
     options?: components["schemas"]["PropertyGroupOption"][];
     /** Format: int64 */
     position?: number;
-    sortingType: string;
+    sortingType?: string;
     translated: {
       description: string;
       displayType: string;
@@ -16216,10 +17800,10 @@ export type Schemas = {
   };
   PropertyGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
-    displayType: string;
+    displayType?: string;
     filterable?: boolean;
     id: string;
     name: string;
@@ -16242,7 +17826,7 @@ export type Schemas = {
         };
       };
     };
-    sortingType: string;
+    sortingType?: string;
     translated: {
       description: string;
       displayType: string;
@@ -16256,7 +17840,7 @@ export type Schemas = {
   PropertyGroupOption: {
     colorHexCode?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     group?: components["schemas"]["PropertyGroup"];
     groupId: string;
@@ -16281,7 +17865,7 @@ export type Schemas = {
   PropertyGroupOptionJsonApi: components["schemas"]["resource"] & {
     colorHexCode?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     groupId: string;
     id: string;
@@ -16384,7 +17968,7 @@ export type Schemas = {
     autoIncrement?: number;
     comments?: components["schemas"]["QuoteComment"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     currency?: components["schemas"]["Currency"];
@@ -16483,7 +18067,7 @@ export type Schemas = {
   QuoteComment: {
     comment: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     customer?: components["schemas"]["Customer"];
@@ -16503,7 +18087,7 @@ export type Schemas = {
   QuoteCommentJsonApi: components["schemas"]["resource"] & {
     comment: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdById?: string;
     customerId?: string;
     id: string;
@@ -16580,7 +18164,7 @@ export type Schemas = {
   };
   QuoteDelivery: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     positions?: components["schemas"]["QuoteDeliveryPosition"][];
@@ -16622,7 +18206,7 @@ export type Schemas = {
   };
   QuoteDeliveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     quoteId: string;
@@ -16708,7 +18292,7 @@ export type Schemas = {
   };
   QuoteDeliveryPosition: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     price?: {
@@ -16752,7 +18336,7 @@ export type Schemas = {
   };
   QuoteDeliveryPositionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     price?: {
@@ -16828,7 +18412,7 @@ export type Schemas = {
     active?: boolean;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     deepLinkCode: string;
     documentMediaFile?: components["schemas"]["Media"];
@@ -16851,7 +18435,7 @@ export type Schemas = {
     active?: boolean;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     deepLinkCode: string;
     documentMediaFileId?: string;
@@ -16916,7 +18500,7 @@ export type Schemas = {
   };
   QuoteEmployee: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId: string;
     firstName: string;
@@ -16931,7 +18515,7 @@ export type Schemas = {
   };
   QuoteEmployeeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     employeeId: string;
     firstName: string;
     id: string;
@@ -16982,7 +18566,7 @@ export type Schemas = {
     /** Format: int64 */
     autoIncrement?: number;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdById?: string;
     currencyId: string;
     customerId: string;
@@ -17296,7 +18880,7 @@ export type Schemas = {
     cover?: components["schemas"]["Media"];
     coverId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     discount?: {
@@ -17340,11 +18924,11 @@ export type Schemas = {
     priceDefinition?: GenericRecord;
     product?: components["schemas"]["Product"];
     productId?: string;
-    productPrice?: GenericRecord;
+    productPrice?: components["schemas"]["Price"][];
     productVersionId?: string;
     promotion?: components["schemas"]["Promotion"];
     promotionId?: string;
-    purchasePrice?: GenericRecord;
+    purchasePrice?: components["schemas"]["Price"][];
     /** Format: int64 */
     quantity: number;
     quote?: components["schemas"]["Quote"];
@@ -17366,7 +18950,7 @@ export type Schemas = {
   QuoteLineItemJsonApi: components["schemas"]["resource"] & {
     coverId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     discount?: {
@@ -17408,10 +18992,10 @@ export type Schemas = {
     };
     priceDefinition?: GenericRecord;
     productId?: string;
-    productPrice?: GenericRecord;
+    productPrice?: components["schemas"]["Price"][];
     productVersionId?: string;
     promotionId?: string;
-    purchasePrice?: GenericRecord;
+    purchasePrice?: components["schemas"]["Price"][];
     /** Format: int64 */
     quantity: number;
     quoteId: string;
@@ -17546,7 +19130,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     paymentMethod?: components["schemas"]["PaymentMethod"];
@@ -17583,7 +19167,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     paymentMethodId: string;
@@ -17641,7 +19225,7 @@ export type Schemas = {
     cartPromotions?: components["schemas"]["Promotion"][];
     conditions?: components["schemas"]["RuleCondition"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -17806,7 +19390,7 @@ export type Schemas = {
     appScriptCondition?: components["schemas"]["AppScriptCondition"];
     children?: components["schemas"]["RuleCondition"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     parent?: components["schemas"]["RuleCondition"];
@@ -17823,7 +19407,7 @@ export type Schemas = {
   };
   RuleConditionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     parentId?: string;
@@ -17901,7 +19485,7 @@ export type Schemas = {
   RuleJsonApi: components["schemas"]["resource"] & {
     areas?: readonly GenericRecord[];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -18275,9 +19859,8 @@ export type Schemas = {
     appVersion: string;
     assetPaths?: string[];
     author?: string;
-    basePath: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     isTheme?: boolean;
     name?: string;
@@ -18297,9 +19880,8 @@ export type Schemas = {
     appVersion: string;
     assetPaths?: string[];
     author?: string;
-    basePath: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     isTheme?: boolean;
     name?: string;
@@ -18333,12 +19915,12 @@ export type Schemas = {
   };
   SaasSbpUserData: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: date-time */
     lastSbpStatusChange?: string;
     sbpAccessToken?: GenericRecord;
-    sbpStatus: string;
+    sbpStatus?: string;
     /** Format: int64 */
     sbpUserId: number;
     /** Format: date-time */
@@ -18348,7 +19930,7 @@ export type Schemas = {
   };
   SaasSbpUserDataJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: date-time */
     lastSbpStatusChange?: string;
@@ -18370,7 +19952,7 @@ export type Schemas = {
       };
     };
     sbpAccessToken?: GenericRecord;
-    sbpStatus: string;
+    sbpStatus?: string;
     /** Format: int64 */
     sbpUserId: number;
     /** Format: date-time */
@@ -18379,7 +19961,7 @@ export type Schemas = {
   };
   SaasStorefrontDemoToken: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     expiresAt: string;
     id: string;
@@ -18391,7 +19973,7 @@ export type Schemas = {
   };
   SaasStorefrontDemoTokenJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     expiresAt: string;
     id: string;
@@ -18419,7 +20001,7 @@ export type Schemas = {
   };
   SaasUserLoginToken: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     expiresAt: string;
     id: string;
@@ -18431,7 +20013,7 @@ export type Schemas = {
   };
   SaasUserLoginTokenJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     expiresAt: string;
     id: string;
@@ -18468,7 +20050,7 @@ export type Schemas = {
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencies?: components["schemas"]["Currency"][];
     currency?: components["schemas"]["Currency"];
     currencyId: string;
@@ -18692,7 +20274,7 @@ export type Schemas = {
     active?: boolean;
     anonymizeIp?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     trackingId?: string;
@@ -18704,7 +20286,7 @@ export type Schemas = {
     active?: boolean;
     anonymizeIp?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     relationships?: {
       salesChannel?: {
@@ -18744,11 +20326,26 @@ export type Schemas = {
   };
   SalesChannelDomain: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     customFields?: GenericRecord;
     extensions?: {
+      dsrAppointmentGuideSalesChannelDomain?: {
+        data?: {
+          /** @example d68bf355eb36d46d6fa55a4db7696181 */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel-domain/e8e8de5eb87653b51534931bb0714095/dsrAppointmentGuideSalesChannelDomain
+           */
+          related?: string;
+        };
+      };
       socialShoppingSalesChannels?: {
         data?: {
           /** @example e581067f817be66449a3f4350dc327af */
@@ -18781,10 +20378,25 @@ export type Schemas = {
   };
   SalesChannelDomainJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyId: string;
     customFields?: GenericRecord;
     extensions?: {
+      dsrAppointmentGuideSalesChannelDomain?: {
+        data?: {
+          /** @example d68bf355eb36d46d6fa55a4db7696181 */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /sales-channel-domain/e8e8de5eb87653b51534931bb0714095/dsrAppointmentGuideSalesChannelDomain
+           */
+          related?: string;
+        };
+      };
       socialShoppingSalesChannels?: {
         data?: {
           /** @example e581067f817be66449a3f4350dc327af */
@@ -18909,7 +20521,7 @@ export type Schemas = {
     configuration?: GenericRecord;
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyId: string;
     customerGroupId: string;
     customFields?: GenericRecord;
@@ -19677,7 +21289,7 @@ export type Schemas = {
   SalesChannelType: {
     coverUrl?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     descriptionLong?: string;
@@ -19701,7 +21313,7 @@ export type Schemas = {
   SalesChannelTypeJsonApi: components["schemas"]["resource"] & {
     coverUrl?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     descriptionLong?: string;
@@ -19740,7 +21352,7 @@ export type Schemas = {
   };
   Salutation: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerAddresses?: components["schemas"]["CustomerAddress"][];
     customers?: components["schemas"]["Customer"][];
     customFields?: GenericRecord;
@@ -19793,7 +21405,7 @@ export type Schemas = {
   };
   SalutationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     displayName: string;
     extensions?: {
@@ -19918,7 +21530,7 @@ export type Schemas = {
   };
   ScheduledTask: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: int64 */
     defaultRunInterval: number;
     id: string;
@@ -19926,7 +21538,7 @@ export type Schemas = {
     lastExecutionTime?: string;
     name: string;
     /** Format: date-time */
-    nextExecutionTime: string;
+    nextExecutionTime?: string;
     /** Format: int64 */
     runInterval: number;
     scheduledTaskClass: string;
@@ -19936,7 +21548,7 @@ export type Schemas = {
   };
   ScheduledTaskJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: int64 */
     defaultRunInterval: number;
     id: string;
@@ -19944,7 +21556,7 @@ export type Schemas = {
     lastExecutionTime?: string;
     name: string;
     /** Format: date-time */
-    nextExecutionTime: string;
+    nextExecutionTime?: string;
     /** Format: int64 */
     runInterval: number;
     scheduledTaskClass: string;
@@ -19957,7 +21569,7 @@ export type Schemas = {
     app?: components["schemas"]["App"];
     appId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     hook: string;
     id: string;
     name: string;
@@ -19969,7 +21581,7 @@ export type Schemas = {
     active: boolean;
     appId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     hook: string;
     id: string;
     name: string;
@@ -19996,7 +21608,7 @@ export type Schemas = {
   };
   SeoUrl: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Runtime field, cannot be used as part of the criteria. */
     error?: string;
@@ -20019,7 +21631,7 @@ export type Schemas = {
   };
   SeoUrlJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     /** Runtime field, cannot be used as part of the criteria. */
     error?: string;
@@ -20072,7 +21684,7 @@ export type Schemas = {
   };
   SeoUrlTemplate: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     entityName: string;
     id: string;
@@ -20086,7 +21698,7 @@ export type Schemas = {
   };
   SeoUrlTemplateJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     entityName: string;
     id: string;
@@ -20120,7 +21732,7 @@ export type Schemas = {
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     deliveryTime?: components["schemas"]["DeliveryTime"];
     deliveryTimeId: string;
@@ -20170,7 +21782,7 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     tax?: components["schemas"]["Tax"];
     taxId?: string;
-    taxType: string;
+    taxType?: string;
     technicalName?: string;
     trackingUrl?: string;
     translated: {
@@ -20191,7 +21803,7 @@ export type Schemas = {
     active?: boolean;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     deliveryTimeId: string;
     description?: string;
@@ -20385,7 +21997,7 @@ export type Schemas = {
       };
     };
     taxId?: string;
-    taxType: string;
+    taxType?: string;
     technicalName?: string;
     trackingUrl?: string;
     translated: {
@@ -20408,8 +22020,8 @@ export type Schemas = {
     calculationRule?: components["schemas"]["Rule"];
     calculationRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
-    currencyPrice?: GenericRecord;
+    createdAt?: string;
+    currencyPrice?: components["schemas"]["Price"][];
     customFields?: GenericRecord;
     id: string;
     /** Format: float */
@@ -20428,8 +22040,8 @@ export type Schemas = {
     calculation?: number;
     calculationRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
-    currencyPrice?: GenericRecord;
+    createdAt?: string;
+    currencyPrice?: components["schemas"]["Price"][];
     customFields?: GenericRecord;
     id: string;
     /** Format: float */
@@ -20504,7 +22116,7 @@ export type Schemas = {
   Snippet: {
     author: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     set?: components["schemas"]["SnippetSet"];
@@ -20517,7 +22129,7 @@ export type Schemas = {
   SnippetJsonApi: components["schemas"]["resource"] & {
     author: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     relationships?: {
@@ -20546,7 +22158,7 @@ export type Schemas = {
   SnippetSet: {
     baseFile: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     iso: string;
@@ -20559,7 +22171,7 @@ export type Schemas = {
   SnippetSetJsonApi: components["schemas"]["resource"] & {
     baseFile: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     iso: string;
@@ -20606,11 +22218,265 @@ export type Schemas = {
     order: "ASC" | "DESC";
     type?: string;
   };
+  SpatialRenderConfigSize: {
+    /** Format: date-time */
+    createdAt?: string;
+    /** Format: int64 */
+    height: number;
+    id: string;
+    name: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    /** Format: int64 */
+    width: number;
+  };
+  SpatialRenderConfigSizeJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    createdAt?: string;
+    /** Format: int64 */
+    height: number;
+    id: string;
+    name: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    /** Format: int64 */
+    width: number;
+  };
+  SpatialScene: {
+    backgroundColor?: string;
+    backgroundEnabled?: boolean;
+    cameras?: components["schemas"]["SpatialSceneCamera"][];
+    /** Format: date-time */
+    createdAt?: string;
+    description?: string;
+    floorColor?: string;
+    floorEnabled?: boolean;
+    id: string;
+    lights?: components["schemas"]["SpatialSceneLight"][];
+    name: string;
+    objects?: components["schemas"]["SpatialSceneObject"][];
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialSceneCamera: {
+    /** Format: date-time */
+    createdAt?: string;
+    id: string;
+    name: string;
+    position?: GenericRecord;
+    scene?: components["schemas"]["SpatialScene"];
+    sceneId: string;
+    target?: GenericRecord;
+    type: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialSceneCameraJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    createdAt?: string;
+    id: string;
+    name: string;
+    position?: GenericRecord;
+    relationships?: {
+      scene?: {
+        data?: {
+          /** @example 1e7f604b86415ade94e15fef8627609b */
+          id?: string;
+          /** @example spatial_scene */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /spatial-scene-camera/d7d65fbdb516f0fc0e32feb511de5c33/scene
+           */
+          related?: string;
+        };
+      };
+    };
+    sceneId: string;
+    target?: GenericRecord;
+    type: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialSceneJsonApi: components["schemas"]["resource"] & {
+    backgroundColor?: string;
+    backgroundEnabled?: boolean;
+    /** Format: date-time */
+    createdAt?: string;
+    description?: string;
+    floorColor?: string;
+    floorEnabled?: boolean;
+    id: string;
+    name: string;
+    relationships?: {
+      cameras?: {
+        data?: {
+          /** @example 036651ad64ffb926ca7a2759af327a8a */
+          id?: string;
+          /** @example spatial_scene_camera */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /spatial-scene/fbe2b606c76b0075eced631365324623/cameras
+           */
+          related?: string;
+        };
+      };
+      lights?: {
+        data?: {
+          /** @example 278e59671a1a559c4bc61d226cd217cd */
+          id?: string;
+          /** @example spatial_scene_light */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /spatial-scene/fbe2b606c76b0075eced631365324623/lights
+           */
+          related?: string;
+        };
+      };
+      objects?: {
+        data?: {
+          /** @example 5891da2d64975cae48d175d1e001f5da */
+          id?: string;
+          /** @example spatial_scene_object */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /spatial-scene/fbe2b606c76b0075eced631365324623/objects
+           */
+          related?: string;
+        };
+      };
+    };
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialSceneLight: {
+    color?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    enabled?: boolean;
+    id: string;
+    /** Format: float */
+    intensity?: number;
+    name: string;
+    position?: GenericRecord;
+    rotation?: GenericRecord;
+    scene?: components["schemas"]["SpatialScene"];
+    sceneId: string;
+    type: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialSceneLightJsonApi: components["schemas"]["resource"] & {
+    color?: string;
+    /** Format: date-time */
+    createdAt?: string;
+    enabled?: boolean;
+    id: string;
+    /** Format: float */
+    intensity?: number;
+    name: string;
+    position?: GenericRecord;
+    relationships?: {
+      scene?: {
+        data?: {
+          /** @example 1e7f604b86415ade94e15fef8627609b */
+          id?: string;
+          /** @example spatial_scene */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /spatial-scene-light/fb2a55d47b419c2709f04f235c4eb7fe/scene
+           */
+          related?: string;
+        };
+      };
+    };
+    rotation?: GenericRecord;
+    sceneId: string;
+    type: string;
+    /** Format: date-time */
+    updatedAt?: string;
+  };
+  SpatialSceneObject: {
+    /** Format: date-time */
+    createdAt?: string;
+    id: string;
+    media?: components["schemas"]["Media"];
+    mediaId: string;
+    name: string;
+    position?: GenericRecord;
+    rotation?: GenericRecord;
+    scale?: GenericRecord;
+    scene?: components["schemas"]["SpatialScene"];
+    sceneId: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    visible?: boolean;
+  };
+  SpatialSceneObjectJsonApi: components["schemas"]["resource"] & {
+    /** Format: date-time */
+    createdAt?: string;
+    id: string;
+    mediaId: string;
+    name: string;
+    position?: GenericRecord;
+    relationships?: {
+      media?: {
+        data?: {
+          /** @example 62933a2951ef01f4eafd9bdf4d3cd2f0 */
+          id?: string;
+          /** @example media */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /spatial-scene-object/c632bfed18543c7114e7a93456a28d9c/media
+           */
+          related?: string;
+        };
+      };
+      scene?: {
+        data?: {
+          /** @example 1e7f604b86415ade94e15fef8627609b */
+          id?: string;
+          /** @example spatial_scene */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /spatial-scene-object/c632bfed18543c7114e7a93456a28d9c/scene
+           */
+          related?: string;
+        };
+      };
+    };
+    rotation?: GenericRecord;
+    scale?: GenericRecord;
+    sceneId: string;
+    /** Format: date-time */
+    updatedAt?: string;
+    visible?: boolean;
+  };
   SsoProvider: {
     active: boolean;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     media?: components["schemas"]["Media"];
     mediaId?: string;
@@ -20622,7 +22488,7 @@ export type Schemas = {
   };
   SsoProviderCustomer: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     id: string;
@@ -20634,7 +22500,7 @@ export type Schemas = {
   };
   SsoProviderCustomerJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId: string;
     id: string;
     relationships?: {
@@ -20678,7 +22544,7 @@ export type Schemas = {
     active: boolean;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     mediaId?: string;
     name: string;
@@ -20718,9 +22584,79 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
   };
+  StateForAll: {
+    accessibleFrom?: string | null;
+    accessibleTo?: string | null;
+    /** @default false */
+    allowScreenSharing?: boolean;
+    /** @default false */
+    allowUserActionsForGuide?: boolean;
+    /** @enum {string} */
+    appointmentMode?: "guided" | "self";
+    attendeeRestrictionType?: ("open" | "customer" | "rules") | null;
+    /** @default false */
+    broadcastMode?: boolean;
+    currentDynamicPage?: components["schemas"]["DynamicPageOpenedPayload"];
+    currentGuideProductId?: string | null;
+    currentPageId?: string | null;
+    currentSectionId?: string | null;
+    /** @default 0 */
+    currentSlideAlias?: number;
+    currentSlideData?:
+      | components["schemas"]["DynamicProductListingPageOpenedPayload"]
+      | null;
+    /** @default false */
+    ended?: boolean;
+    endedAt?: string | null;
+    /** @default [] */
+    extensions?: unknown[];
+    lastActiveGuideSection?: string | null;
+    productDetailDefaultPageId?: string | null;
+    productListingDefaultPageId?: string | null;
+    quickviewPageId?: string | null;
+    /** @default false */
+    running?: boolean;
+    /** @default false */
+    started?: boolean;
+    startedAt?: string | null;
+    /**
+     * @default none
+     * @enum {string}
+     */
+    videoAudioSettings?: "both" | "none" | "audio-only";
+    /** @default */
+    videoRoomUrl?: string;
+    /**
+     * @default presentation
+     * @enum {string}
+     */
+    viewMode?: "onlyYou" | "presentation" | "videoGrid";
+  };
+  StateForGuides: {
+    /** @default [] */
+    clients?: string[];
+    /** @default [] */
+    extensions?: unknown[];
+    /** @default [] */
+    guides?: string[];
+    /** @default [] */
+    inactiveClients?: string[];
+    /** @default [] */
+    quickViewState?: string[];
+    videoGuideToken?: string | null;
+  };
+  StateForMe: {
+    attendeeId?: string | null;
+    attendeeName?: string | null;
+    /** @default [] */
+    extensions?: unknown[];
+    /** @default false */
+    guideCartPermissionGranted?: boolean;
+    videoUserId?: string | null;
+  };
   StateMachine: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     historyEntries?: components["schemas"]["StateMachineHistory"][];
     id: string;
@@ -20739,7 +22675,7 @@ export type Schemas = {
   };
   StateMachineHistory: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entityName: string;
     fromStateId: string;
     fromStateMachineState?: components["schemas"]["StateMachineState"];
@@ -20758,7 +22694,7 @@ export type Schemas = {
   };
   StateMachineHistoryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entityName: string;
     fromStateId: string;
     id: string;
@@ -20835,7 +22771,7 @@ export type Schemas = {
   };
   StateMachineJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     initialStateId?: string;
@@ -20898,7 +22834,7 @@ export type Schemas = {
   };
   StateMachineState: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       orderLineItems?: {
@@ -21016,7 +22952,7 @@ export type Schemas = {
   };
   StateMachineStateJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       orderLineItems?: {
@@ -21277,7 +23213,7 @@ export type Schemas = {
   StateMachineTransition: {
     actionName: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     fromStateId: string;
     fromStateMachineState?: components["schemas"]["StateMachineState"];
@@ -21292,7 +23228,7 @@ export type Schemas = {
   StateMachineTransitionJsonApi: components["schemas"]["resource"] & {
     actionName: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     fromStateId: string;
     id: string;
@@ -21365,7 +23301,7 @@ export type Schemas = {
     billingAddressId: string;
     convertedOrder: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     cronInterval: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
@@ -21373,7 +23309,7 @@ export type Schemas = {
     dateInterval: string;
     id: string;
     /** Format: int64 */
-    initialExecutionCount: number;
+    initialExecutionCount?: number;
     itemRounding: {
       /** Format: int64 */
       decimals: number;
@@ -21389,7 +23325,7 @@ export type Schemas = {
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
     /** Format: int64 */
-    remainingExecutionCount: number;
+    remainingExecutionCount?: number;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     shippingAddress?: components["schemas"]["SubscriptionAddress"];
@@ -21428,7 +23364,7 @@ export type Schemas = {
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -21455,7 +23391,7 @@ export type Schemas = {
     countryId: string;
     countryStateId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -21566,7 +23502,7 @@ export type Schemas = {
   SubscriptionCustomer: {
     company?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     customerNumber?: string;
@@ -21588,7 +23524,7 @@ export type Schemas = {
   SubscriptionCustomerJsonApi: components["schemas"]["resource"] & {
     company?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId?: string;
     customerNumber?: string;
     customFields?: GenericRecord;
@@ -21652,13 +23588,13 @@ export type Schemas = {
     vatIds?: string[];
   };
   SubscriptionInterval: {
-    active: boolean;
+    active?: boolean;
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
-    cronInterval: string;
-    dateInterval: string;
+    createdAt?: string;
+    cronInterval?: string;
+    dateInterval?: string;
     id: string;
     name: string;
     subscriptionPlans?: components["schemas"]["SubscriptionPlan"][];
@@ -21673,12 +23609,12 @@ export type Schemas = {
     updatedAt?: string;
   };
   SubscriptionIntervalJsonApi: components["schemas"]["resource"] & {
-    active: boolean;
+    active?: boolean;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
-    cronInterval: string;
-    dateInterval: string;
+    createdAt?: string;
+    cronInterval?: string;
+    dateInterval?: string;
     id: string;
     name: string;
     relationships?: {
@@ -21743,14 +23679,14 @@ export type Schemas = {
     billingAddressId: string;
     convertedOrder: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     cronInterval: string;
     currencyId: string;
     customFields?: GenericRecord;
     dateInterval: string;
     id: string;
     /** Format: int64 */
-    initialExecutionCount: number;
+    initialExecutionCount?: number;
     itemRounding: {
       /** Format: int64 */
       decimals: number;
@@ -21975,7 +23911,7 @@ export type Schemas = {
       };
     };
     /** Format: int64 */
-    remainingExecutionCount: number;
+    remainingExecutionCount?: number;
     salesChannelId: string;
     shippingAddressId: string;
     shippingMethodId: string;
@@ -21996,12 +23932,12 @@ export type Schemas = {
     updatedAt?: string;
   };
   SubscriptionPlan: {
-    active: boolean;
-    activeStorefrontLabel: boolean;
+    active?: boolean;
+    activeStorefrontLabel?: boolean;
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     /** Format: float */
     discountPercentage?: number;
@@ -22030,11 +23966,11 @@ export type Schemas = {
     subscriptionPlanId: string;
   };
   SubscriptionPlanJsonApi: components["schemas"]["resource"] & {
-    active: boolean;
-    activeStorefrontLabel: boolean;
+    active?: boolean;
+    activeStorefrontLabel?: boolean;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     /** Format: float */
     discountPercentage?: number;
@@ -22134,7 +24070,7 @@ export type Schemas = {
     cmsBlockId: string;
     cmsBlockVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     inverted?: boolean;
     /** Format: date-time */
@@ -22146,7 +24082,7 @@ export type Schemas = {
     cmsBlockId: string;
     cmsBlockVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     inverted?: boolean;
     relationships?: {
@@ -22190,10 +24126,10 @@ export type Schemas = {
     cmsSlotId?: string;
     cmsSlotVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     groups?: components["schemas"]["SwagCmsExtensionsFormGroup"][];
     id: string;
-    isTemplate: boolean;
+    isTemplate?: boolean;
     mailTemplate?: components["schemas"]["MailTemplate"];
     mailTemplateId: string;
     receivers?: GenericRecord;
@@ -22213,7 +24149,7 @@ export type Schemas = {
   };
   SwagCmsExtensionsFormGroup: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     fields?: components["schemas"]["SwagCmsExtensionsFormGroupField"][];
     form?: components["schemas"]["SwagCmsExtensionsForm"];
     formId?: string;
@@ -22233,7 +24169,7 @@ export type Schemas = {
   SwagCmsExtensionsFormGroupField: {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     errorMessage?: string;
     group?: components["schemas"]["SwagCmsExtensionsFormGroup"];
     groupId?: string;
@@ -22242,7 +24178,7 @@ export type Schemas = {
     placeholder?: string;
     /** Format: int64 */
     position: number;
-    required: boolean;
+    required?: boolean;
     technicalName: string;
     translated: {
       errorMessage: string;
@@ -22261,7 +24197,7 @@ export type Schemas = {
   SwagCmsExtensionsFormGroupFieldJsonApi: components["schemas"]["resource"] & {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     errorMessage?: string;
     groupId?: string;
     id: string;
@@ -22286,7 +24222,7 @@ export type Schemas = {
         };
       };
     };
-    required: boolean;
+    required?: boolean;
     technicalName: string;
     translated: {
       errorMessage: string;
@@ -22304,7 +24240,7 @@ export type Schemas = {
   };
   SwagCmsExtensionsFormGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     formId?: string;
     id: string;
     /** Format: int64 */
@@ -22355,9 +24291,9 @@ export type Schemas = {
     cmsSlotId?: string;
     cmsSlotVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
-    isTemplate: boolean;
+    isTemplate?: boolean;
     mailTemplateId: string;
     receivers?: GenericRecord;
     relationships?: {
@@ -22427,7 +24363,7 @@ export type Schemas = {
     cmsBlockId?: string;
     cmsBlockVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -22437,7 +24373,7 @@ export type Schemas = {
     cmsBlockId?: string;
     cmsBlockVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     relationships?: {
       cmsBlock?: {
@@ -22465,7 +24401,7 @@ export type Schemas = {
     cmsSectionId?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     displayName?: string;
     id: string;
     translated: {
@@ -22481,7 +24417,7 @@ export type Schemas = {
     cmsSectionId?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     displayName?: string;
     id: string;
     relationships?: {
@@ -22510,35 +24446,35 @@ export type Schemas = {
     updatedAt?: string;
   };
   SwagCmsExtensionsScrollNavigationPageSettings: {
-    active: boolean;
-    bouncy: boolean;
+    active?: boolean;
+    bouncy?: boolean;
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: int64 */
-    duration: number;
-    easing: string;
+    duration?: number;
+    easing?: string;
     /** Format: int64 */
-    easingDegree: number;
+    easingDegree?: number;
     id: string;
     nativeScrolling: boolean;
     /** Format: date-time */
     updatedAt?: string;
   };
   SwagCmsExtensionsScrollNavigationPageSettingsJsonApi: components["schemas"]["resource"] & {
-    active: boolean;
-    bouncy: boolean;
+    active?: boolean;
+    bouncy?: boolean;
     cmsPageId?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: int64 */
-    duration: number;
-    easing: string;
+    duration?: number;
+    easing?: string;
     /** Format: int64 */
-    easingDegree: number;
+    easingDegree?: number;
     id: string;
     nativeScrolling: boolean;
     relationships?: {
@@ -22566,7 +24502,7 @@ export type Schemas = {
     configurations?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"][];
     confirmInput?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     decisionTree?: GenericRecord;
     description?: string;
     displayName: string;
@@ -22595,7 +24531,7 @@ export type Schemas = {
   SwagCustomizedProductsTemplateConfiguration: {
     configuration: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     hash: string;
     id: string;
     template?: components["schemas"]["SwagCustomizedProductsTemplate"];
@@ -22609,7 +24545,7 @@ export type Schemas = {
   SwagCustomizedProductsTemplateConfigurationJsonApi: components["schemas"]["resource"] & {
     configuration: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     hash: string;
     id: string;
     relationships?: {
@@ -22652,9 +24588,9 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateConfigurationShare: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
-    oneTime: boolean;
+    oneTime?: boolean;
     templateConfiguration?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"];
     templateConfigurationId: string;
     templateConfigurationVersionId?: string;
@@ -22664,9 +24600,9 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateConfigurationShareJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
-    oneTime: boolean;
+    oneTime?: boolean;
     relationships?: {
       templateConfiguration?: {
         data?: {
@@ -22693,7 +24629,7 @@ export type Schemas = {
   SwagCustomizedProductsTemplateExclusion: {
     conditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     name: string;
     template?: components["schemas"]["SwagCustomizedProductsTemplate"];
@@ -22705,7 +24641,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateExclusionCondition: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     templateExclusion?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"];
     templateExclusionId: string;
@@ -22722,7 +24658,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateExclusionConditionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     relationships?: {
       templateExclusion?: {
@@ -22797,7 +24733,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateExclusionConditionValues: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id?: string;
     swagCustomizedProductsTemplateExclusionConditionVersionId?: string;
     swagCustomizedProductsTemplateOptionValueVersionId?: string;
@@ -22810,7 +24746,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateExclusionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     name: string;
     relationships?: {
@@ -22853,7 +24789,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateExclusionOperator: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     label: string;
     operator: string;
@@ -22869,7 +24805,7 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateExclusionOperatorJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     label: string;
     operator: string;
@@ -22903,7 +24839,7 @@ export type Schemas = {
     active?: boolean;
     confirmInput?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     decisionTree?: GenericRecord;
     description?: string;
     displayName: string;
@@ -23006,7 +24942,7 @@ export type Schemas = {
     advancedSurcharge?: boolean;
     calculatedPrice?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     displayName: string;
     id: string;
@@ -23017,7 +24953,7 @@ export type Schemas = {
     placeholder?: string;
     /** Format: int64 */
     position?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionPrice"][];
     relativeSurcharge?: boolean;
     required?: boolean;
@@ -23049,7 +24985,7 @@ export type Schemas = {
     advancedSurcharge?: boolean;
     calculatedPrice?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     displayName: string;
     id: string;
@@ -23060,7 +24996,7 @@ export type Schemas = {
     placeholder?: string;
     /** Format: int64 */
     position?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     relationships?: {
       prices?: {
         data?: {
@@ -23162,11 +25098,11 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateOptionPrice: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     rule?: components["schemas"]["Rule"];
     ruleId?: string;
     templateOption?: components["schemas"]["SwagCustomizedProductsTemplateOption"];
@@ -23178,11 +25114,11 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateOptionPriceJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     relationships?: {
       rule?: {
         data?: {
@@ -23225,7 +25161,7 @@ export type Schemas = {
   SwagCustomizedProductsTemplateOptionValue: {
     advancedSurcharge?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     default?: boolean;
     displayName: string;
     id: string;
@@ -23235,7 +25171,7 @@ export type Schemas = {
     percentageSurcharge?: number;
     /** Format: int64 */
     position: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     prices?: components["schemas"]["SwagCustomizedProductsTemplateOptionValuePrice"][];
     relativeSurcharge?: boolean;
     tax?: components["schemas"]["Tax"];
@@ -23260,7 +25196,7 @@ export type Schemas = {
   SwagCustomizedProductsTemplateOptionValueJsonApi: components["schemas"]["resource"] & {
     advancedSurcharge?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     default?: boolean;
     displayName: string;
     id: string;
@@ -23270,7 +25206,7 @@ export type Schemas = {
     percentageSurcharge?: number;
     /** Format: int64 */
     position: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     relationships?: {
       prices?: {
         data?: {
@@ -23352,11 +25288,11 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateOptionValuePrice: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     rule?: components["schemas"]["Rule"];
     ruleId?: string;
     templateOptionValue?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"];
@@ -23368,11 +25304,11 @@ export type Schemas = {
   };
   SwagCustomizedProductsTemplateOptionValuePriceJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
-    price?: GenericRecord;
+    price?: components["schemas"]["Price"][];
     relationships?: {
       rule?: {
         data?: {
@@ -23414,7 +25350,7 @@ export type Schemas = {
   };
   SwagDelayAction: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     delaySequenceId?: string;
@@ -23435,7 +25371,7 @@ export type Schemas = {
   };
   SwagDelayActionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId?: string;
     delaySequenceId?: string;
     eventName?: string;
@@ -23539,7 +25475,7 @@ export type Schemas = {
   SwagLanguagePackLanguage: {
     administrationActive?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
@@ -23550,7 +25486,7 @@ export type Schemas = {
   SwagLanguagePackLanguageJsonApi: components["schemas"]["resource"] & {
     administrationActive?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     languageId: string;
     relationships?: {
@@ -23576,7 +25512,7 @@ export type Schemas = {
   };
   SwagMigrationConnection: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     credentialFields?: GenericRecord;
     gatewayName: string;
     id: string;
@@ -23591,7 +25527,7 @@ export type Schemas = {
   };
   SwagMigrationConnectionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     credentialFields?: GenericRecord;
     gatewayName: string;
     id: string;
@@ -23654,7 +25590,7 @@ export type Schemas = {
     converted?: GenericRecord;
     convertFailure?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entity: string;
     id: string;
     mappingUuid?: string;
@@ -23673,7 +25609,7 @@ export type Schemas = {
     converted?: GenericRecord;
     convertFailure?: boolean;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entity: string;
     id: string;
     mappingUuid?: string;
@@ -23704,7 +25640,7 @@ export type Schemas = {
   };
   SwagMigrationGeneralSetting: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     isReset?: boolean;
     selectedConnection?: components["schemas"]["SwagMigrationConnection"];
@@ -23714,7 +25650,7 @@ export type Schemas = {
   };
   SwagMigrationGeneralSettingJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     isReset?: boolean;
     relationships?: {
@@ -23739,9 +25675,11 @@ export type Schemas = {
     updatedAt?: string;
   };
   SwagMigrationLogging: {
+    /** Format: int64 */
+    autoIncrement?: number;
     code: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description: string;
     descriptionSnippet: string;
     entity?: string;
@@ -23757,9 +25695,11 @@ export type Schemas = {
     updatedAt?: string;
   };
   SwagMigrationLoggingJsonApi: components["schemas"]["resource"] & {
+    /** Format: int64 */
+    autoIncrement?: number;
     code: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description: string;
     descriptionSnippet: string;
     entity?: string;
@@ -23796,7 +25736,7 @@ export type Schemas = {
     connection?: components["schemas"]["SwagMigrationConnection"];
     connectionId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entity: string;
     entityUuid?: string;
     entityValue?: string;
@@ -23810,7 +25750,7 @@ export type Schemas = {
     checksum?: string;
     connectionId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entity: string;
     entityUuid?: string;
     entityValue?: string;
@@ -23838,7 +25778,7 @@ export type Schemas = {
   };
   SwagMigrationMediaFile: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entity: string;
     fileName: string;
     /** Format: int64 */
@@ -23856,7 +25796,7 @@ export type Schemas = {
   };
   SwagMigrationMediaFileJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     entity: string;
     fileName: string;
     /** Format: int64 */
@@ -23889,32 +25829,51 @@ export type Schemas = {
     written?: boolean;
   };
   SwagMigrationRun: {
-    accessToken?: string;
     connection?: components["schemas"]["SwagMigrationConnection"];
     connectionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     data?: components["schemas"]["SwagMigrationData"][];
     environmentInformation?: GenericRecord;
     id: string;
     logs?: components["schemas"]["SwagMigrationLogging"][];
     mediaFiles?: components["schemas"]["SwagMigrationMediaFile"][];
-    premapping?: GenericRecord;
-    progress?: GenericRecord;
-    status: string;
+    progress?: {
+      currentEntity: string;
+      /** Format: int64 */
+      currentEntityProgress: number;
+      dataSets?: GenericRecord[];
+      /** Format: int64 */
+      exceptionCount: number;
+      isAborted: boolean;
+      /** Format: int64 */
+      progress: number;
+      /** Format: int64 */
+      total: number;
+    };
+    step: string;
     /** Format: date-time */
     updatedAt?: string;
-    userId?: string;
   };
   SwagMigrationRunJsonApi: components["schemas"]["resource"] & {
-    accessToken?: string;
     connectionId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     environmentInformation?: GenericRecord;
     id: string;
-    premapping?: GenericRecord;
-    progress?: GenericRecord;
+    progress?: {
+      currentEntity: string;
+      /** Format: int64 */
+      currentEntityProgress: number;
+      dataSets?: GenericRecord[];
+      /** Format: int64 */
+      exceptionCount: number;
+      isAborted: boolean;
+      /** Format: int64 */
+      progress: number;
+      /** Format: int64 */
+      total: number;
+    };
     relationships?: {
       connection?: {
         data?: {
@@ -23977,15 +25936,14 @@ export type Schemas = {
         };
       };
     };
-    status: string;
+    step: string;
     /** Format: date-time */
     updatedAt?: string;
-    userId?: string;
   };
   SwagPaypalPosSalesChannel: {
     apiKey: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     mediaDomain?: string;
     productStream?: components["schemas"]["ProductStream"];
@@ -24013,7 +25971,7 @@ export type Schemas = {
   SwagPaypalPosSalesChannelJsonApi: components["schemas"]["resource"] & {
     apiKey: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     mediaDomain?: string;
     productStreamId?: string;
@@ -24059,7 +26017,7 @@ export type Schemas = {
   };
   SwagPaypalPosSalesChannelMedia: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id?: string;
     lookupKey?: string;
     media?: components["schemas"]["Media"];
@@ -24070,7 +26028,7 @@ export type Schemas = {
   SwagPaypalPosSalesChannelProduct: {
     checksum: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id?: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -24081,17 +26039,17 @@ export type Schemas = {
   };
   SwagPaypalPosSalesChannelRun: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     finishedAt?: string;
     id: string;
     logs?: components["schemas"]["SwagPaypalPosSalesChannelRunLog"][];
     /** Format: int64 */
-    messageCount: number;
+    messageCount?: number;
     salesChannelId: string;
-    status: string;
+    status?: string;
     /** Format: int64 */
-    stepIndex: number;
+    stepIndex?: number;
     steps: GenericRecord;
     task: string;
     /** Format: date-time */
@@ -24099,12 +26057,12 @@ export type Schemas = {
   };
   SwagPaypalPosSalesChannelRunJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: date-time */
     finishedAt?: string;
     id: string;
     /** Format: int64 */
-    messageCount: number;
+    messageCount?: number;
     relationships?: {
       logs?: {
         data?: {
@@ -24123,9 +26081,9 @@ export type Schemas = {
       };
     };
     salesChannelId: string;
-    status: string;
+    status?: string;
     /** Format: int64 */
-    stepIndex: number;
+    stepIndex?: number;
     steps: GenericRecord;
     task: string;
     /** Format: date-time */
@@ -24133,7 +26091,7 @@ export type Schemas = {
   };
   SwagPaypalPosSalesChannelRunLog: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     level: number;
@@ -24147,7 +26105,7 @@ export type Schemas = {
   };
   SwagPaypalPosSalesChannelRunLogJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     level: number;
@@ -24177,7 +26135,7 @@ export type Schemas = {
   };
   SwagPaypalTransactionReport: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyIso: string;
     id?: string;
     orderTransaction?: components["schemas"]["OrderTransaction"];
@@ -24190,7 +26148,7 @@ export type Schemas = {
   };
   SwagPaypalTransactionReportJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyIso: string;
     id?: string;
     orderTransactionId: string;
@@ -24219,7 +26177,7 @@ export type Schemas = {
   };
   SwagPaypalVaultToken: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     id: string;
@@ -24232,7 +26190,7 @@ export type Schemas = {
   };
   SwagPaypalVaultTokenJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId: string;
     id: string;
     identifier: string;
@@ -24289,7 +26247,7 @@ export type Schemas = {
   };
   SwagPaypalVaultTokenMapping: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     id?: string;
@@ -24302,7 +26260,7 @@ export type Schemas = {
   };
   SwagPaypalVaultTokenMappingJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId: string;
     id?: string;
     paymentMethodId: string;
@@ -24366,7 +26324,7 @@ export type Schemas = {
   };
   SwagSocialShoppingCustomer: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     id: string;
@@ -24377,7 +26335,7 @@ export type Schemas = {
   };
   SwagSocialShoppingCustomerJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customerId: string;
     id: string;
     referralCode: string;
@@ -24418,7 +26376,7 @@ export type Schemas = {
   };
   SwagSocialShoppingOrder: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     order?: components["schemas"]["Order"];
     orderId: string;
@@ -24431,7 +26389,7 @@ export type Schemas = {
   };
   SwagSocialShoppingOrderJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     orderId: string;
     orderVersionId?: string;
@@ -24474,7 +26432,7 @@ export type Schemas = {
   };
   SwagSocialShoppingProductError: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     errors: GenericRecord;
     id: string;
     product?: components["schemas"]["Product"];
@@ -24487,7 +26445,7 @@ export type Schemas = {
   };
   SwagSocialShoppingProductErrorJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     errors: GenericRecord;
     id: string;
     productId: string;
@@ -24531,7 +26489,7 @@ export type Schemas = {
   SwagSocialShoppingSalesChannel: {
     configuration?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId?: string;
     id: string;
@@ -24551,7 +26509,7 @@ export type Schemas = {
   SwagSocialShoppingSalesChannelJsonApi: components["schemas"]["resource"] & {
     configuration?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     currencyId?: string;
     id: string;
     isValidating?: boolean;
@@ -24632,7 +26590,7 @@ export type Schemas = {
       _value?: GenericRecord;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId?: string;
@@ -24645,7 +26603,7 @@ export type Schemas = {
       _value?: GenericRecord;
     };
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     relationships?: {
       salesChannel?: {
@@ -24671,7 +26629,7 @@ export type Schemas = {
   Tag: {
     categories?: components["schemas"]["Category"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customers?: components["schemas"]["Customer"][];
     extensions?: {
       subscriptions?: {
@@ -24704,7 +26662,7 @@ export type Schemas = {
   };
   TagJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     extensions?: {
       subscriptions?: {
         data?: {
@@ -24866,7 +26824,7 @@ export type Schemas = {
   };
   Tax: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       customizedProductsOptions?: {
@@ -24906,7 +26864,7 @@ export type Schemas = {
      * Format: int64
      * Added since version: 6.4.0.0.
      */
-    position: number;
+    position?: number;
     products?: components["schemas"]["Product"][];
     rules?: components["schemas"]["TaxRule"][];
     shippingMethods?: components["schemas"]["ShippingMethod"][];
@@ -24917,7 +26875,7 @@ export type Schemas = {
   };
   TaxJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       customizedProductsOptions?: {
@@ -24957,7 +26915,7 @@ export type Schemas = {
      * Format: int64
      * Added since version: 6.4.0.0.
      */
-    position: number;
+    position?: number;
     relationships?: {
       products?: {
         data?: {
@@ -25017,7 +26975,7 @@ export type Schemas = {
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     identifier: string;
@@ -25040,7 +26998,7 @@ export type Schemas = {
     appId?: string;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     identifier: string;
@@ -25096,7 +27054,7 @@ export type Schemas = {
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     data?: {
       fromZipCode?: string;
       states?: GenericRecord[];
@@ -25118,7 +27076,7 @@ export type Schemas = {
     activeFrom?: string;
     countryId: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     data?: {
       fromZipCode?: string;
       states?: GenericRecord[];
@@ -25182,7 +27140,7 @@ export type Schemas = {
   };
   TaxRuleType: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     position: number;
@@ -25198,7 +27156,7 @@ export type Schemas = {
   };
   TaxRuleTypeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     /** Format: int64 */
     position: number;
@@ -25234,7 +27192,7 @@ export type Schemas = {
     baseConfig?: GenericRecord;
     configValues?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     dependentThemes?: components["schemas"]["Theme"][];
     description?: string;
@@ -25273,7 +27231,7 @@ export type Schemas = {
     baseConfig?: GenericRecord;
     configValues?: GenericRecord;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     helpTexts?: GenericRecord;
@@ -25373,7 +27331,7 @@ export type Schemas = {
   };
   Unit: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -25388,7 +27346,7 @@ export type Schemas = {
   };
   UnitJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -25426,7 +27384,7 @@ export type Schemas = {
     avatarMedia?: components["schemas"]["Media"];
     configs?: components["schemas"]["UserConfig"][];
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     createdCustomers?: components["schemas"]["Customer"][];
     createdOrders?: components["schemas"]["Order"][];
     customFields?: GenericRecord;
@@ -25462,6 +27420,36 @@ export type Schemas = {
           related?: string;
         };
       };
+      createdAppointments?: {
+        data?: {
+          /** @example 888e350c3c9a465bc4d7c8a80840b2aa */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdAppointments
+           */
+          related?: string;
+        };
+      };
+      createdLayouts?: {
+        data?: {
+          /** @example 22b76a69d00feab60733ea096895a432 */
+          id?: string;
+          /** @example cms_page */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdLayouts
+           */
+          related?: string;
+        };
+      };
       createdNotifications?: {
         data?: {
           /** @example 04f88ea12127fe03b65beffbc2c96954 */
@@ -25473,6 +27461,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdNotifications
+           */
+          related?: string;
+        };
+      };
+      createdPresentations?: {
+        data?: {
+          /** @example d1e11035d87216918d95e78a7ac396da */
+          id?: string;
+          /** @example dsr_presentation */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdPresentations
            */
           related?: string;
         };
@@ -25503,6 +27506,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/demoToken
+           */
+          related?: string;
+        };
+      };
+      dsrAppointmentGuideUser?: {
+        data?: {
+          /** @example e8e8e4db862bed157007764e46f5aecb */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/dsrAppointmentGuideUser
            */
           related?: string;
         };
@@ -25612,6 +27630,36 @@ export type Schemas = {
           related?: string;
         };
       };
+      updatedAppointments?: {
+        data?: {
+          /** @example b64277a1e650794e2c57924c07825014 */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedAppointments
+           */
+          related?: string;
+        };
+      };
+      updatedPresentations?: {
+        data?: {
+          /** @example 49fb9c4fad69d4a3da998a936016c88d */
+          id?: string;
+          /** @example dsr_presentation */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedPresentations
+           */
+          related?: string;
+        };
+      };
     };
     firstName: string;
     id: string;
@@ -25624,7 +27672,7 @@ export type Schemas = {
     media?: components["schemas"]["Media"][];
     recoveryUser?: components["schemas"]["UserRecovery"];
     stateMachineHistoryEntries?: components["schemas"]["StateMachineHistory"][];
-    timeZone: string;
+    timeZone?: string;
     title?: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -25635,7 +27683,7 @@ export type Schemas = {
   UserAccessKey: {
     accessKey: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     /** Format: date-time */
@@ -25649,7 +27697,7 @@ export type Schemas = {
   UserAccessKeyJsonApi: components["schemas"]["resource"] & {
     accessKey: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     /** Format: date-time */
@@ -25678,7 +27726,7 @@ export type Schemas = {
   };
   UserConfig: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     key: string;
     /** Format: date-time */
@@ -25689,7 +27737,7 @@ export type Schemas = {
   };
   UserConfigJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     id: string;
     key: string;
     relationships?: {
@@ -25719,7 +27767,7 @@ export type Schemas = {
     admin?: boolean;
     avatarId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     extensions?: {
@@ -25753,6 +27801,36 @@ export type Schemas = {
           related?: string;
         };
       };
+      createdAppointments?: {
+        data?: {
+          /** @example 888e350c3c9a465bc4d7c8a80840b2aa */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdAppointments
+           */
+          related?: string;
+        };
+      };
+      createdLayouts?: {
+        data?: {
+          /** @example 22b76a69d00feab60733ea096895a432 */
+          id?: string;
+          /** @example cms_page */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdLayouts
+           */
+          related?: string;
+        };
+      };
       createdNotifications?: {
         data?: {
           /** @example 04f88ea12127fe03b65beffbc2c96954 */
@@ -25764,6 +27842,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdNotifications
+           */
+          related?: string;
+        };
+      };
+      createdPresentations?: {
+        data?: {
+          /** @example d1e11035d87216918d95e78a7ac396da */
+          id?: string;
+          /** @example dsr_presentation */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/createdPresentations
            */
           related?: string;
         };
@@ -25794,6 +27887,21 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/demoToken
+           */
+          related?: string;
+        };
+      };
+      dsrAppointmentGuideUser?: {
+        data?: {
+          /** @example e8e8e4db862bed157007764e46f5aecb */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/dsrAppointmentGuideUser
            */
           related?: string;
         };
@@ -25899,6 +28007,36 @@ export type Schemas = {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/sbpUserData
+           */
+          related?: string;
+        };
+      };
+      updatedAppointments?: {
+        data?: {
+          /** @example b64277a1e650794e2c57924c07825014 */
+          id?: string;
+          /** @example dsr_appointment */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedAppointments
+           */
+          related?: string;
+        };
+      };
+      updatedPresentations?: {
+        data?: {
+          /** @example 49fb9c4fad69d4a3da998a936016c88d */
+          id?: string;
+          /** @example dsr_presentation */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /user/8f9bfe9d1345237cb3b2b205864da075/updatedPresentations
            */
           related?: string;
         };
@@ -26107,7 +28245,7 @@ export type Schemas = {
         };
       };
     };
-    timeZone: string;
+    timeZone?: string;
     title?: string;
     /** Format: date-time */
     updatedAt?: string;
@@ -26115,7 +28253,7 @@ export type Schemas = {
   };
   UserRecovery: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     hash: string;
     id: string;
     /** Format: date-time */
@@ -26125,7 +28263,7 @@ export type Schemas = {
   };
   UserRecoveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     hash: string;
     id: string;
     relationships?: {
@@ -26149,9 +28287,21 @@ export type Schemas = {
     updatedAt?: string;
     userId: string;
   };
+  VideoChatCreateStruct: {
+    /** Token for the room owner (guide) to connect to the daily room */
+    ownerToken?: string;
+    /** Name of the video room in daily */
+    roomName?: string;
+    /** Url of the video room in daily */
+    roomUrl?: string;
+    /** @default false */
+    startAsBroadcast?: boolean;
+    /** Token for the end users to connect to the daily room */
+    userToken?: string;
+  };
   Warehouse: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     groups?: components["schemas"]["WarehouseGroup"][];
     id: string;
@@ -26163,7 +28313,7 @@ export type Schemas = {
   };
   WarehouseGroup: {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -26178,7 +28328,7 @@ export type Schemas = {
   };
   WarehouseGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -26246,7 +28396,7 @@ export type Schemas = {
   };
   WarehouseJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -26305,9 +28455,9 @@ export type Schemas = {
     app?: components["schemas"]["App"];
     appId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: int64 */
-    errorCount: number;
+    errorCount?: number;
     eventName: string;
     id: string;
     name: string;
@@ -26320,7 +28470,7 @@ export type Schemas = {
     appName?: string;
     appVersion?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     deliveryStatus: string;
     eventName: string;
@@ -26361,7 +28511,7 @@ export type Schemas = {
     appName?: string;
     appVersion?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     customFields?: GenericRecord;
     deliveryStatus: string;
     eventName: string;
@@ -26402,9 +28552,9 @@ export type Schemas = {
     active?: boolean;
     appId?: string;
     /** Format: date-time */
-    createdAt: string;
+    createdAt?: string;
     /** Format: int64 */
-    errorCount: number;
+    errorCount?: number;
     eventName: string;
     id: string;
     name: string;
@@ -26429,6 +28579,21 @@ export type Schemas = {
     /** Format: date-time */
     updatedAt?: string;
     url: string;
+  };
+  WidgetProductListing: {
+    /**
+     * List of extensions
+     * @default []
+     */
+    extensions?: unknown[];
+    /** The number of products per page */
+    limit?: number;
+    /** The current page */
+    page?: number;
+    /** List of last seen products */
+    products?: components["schemas"]["Product"][];
+    /** The total number of products */
+    total?: number;
   };
   attributes: {
     [key: string]: unknown;
@@ -26473,7 +28638,7 @@ export type Schemas = {
     links?: components["schemas"]["links"];
     meta?: components["schemas"]["meta"];
   };
-  flowBulderActionsResponse: {
+  flowBuilderActionsResponse: {
     /** Extensions data of event */
     extensions?: string[];
     /** Name of the flow action */
@@ -26711,6 +28876,218 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "endAppointment post /_action/dsr/appointment/{appointmentId}/end": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: never;
+    responseCode: 200;
+  };
+  "addInstantListing post /_action/dsr/appointment/{appointmentId}/instant-listing": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    body: {
+      /** Id of the current cms page */
+      currentPageGroupId?: string;
+      /** The name of the instant listing page */
+      pageName?: string | null;
+      /** Ids of the products which should be added to the instant listing */
+      productIds: string[];
+    };
+    response: {
+      /** The current index of the instant listing which is created by this request */
+      index?: number;
+    };
+    responseCode: 201;
+  };
+  "updateInstantListing patch /_action/dsr/appointment/{appointmentId}/instant-listing": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    body: {
+      /** Ids of the products which should be added to the instant listing */
+      addProductIds: string[];
+      /** Id of the current cms page */
+      currentPageGroupId: string;
+      /** The name of the instant listing page */
+      pageName?: string | null;
+      /** Ids of the products which should be removed to the instant listing */
+      removeProductIds: string[];
+    };
+    response: {
+      /** The id of the instant listing page */
+      id?: string;
+      /** Ids of the products which are picked for the instant listing */
+      pickedProductIds?: string[];
+      /** The title of the instant listing */
+      title?: string;
+    };
+    responseCode: 200;
+  };
+  "joinAppointmentAsGuide post /_action/dsr/appointment/{appointmentId}/join-as-guide": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: components["schemas"]["JoinAppointmentResponse"];
+    responseCode: 200;
+  };
+  "getGuidePresentationState get /_action/dsr/appointment/{appointmentId}/presentation/state": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: components["schemas"]["GuidePresentationStateResponse"];
+    responseCode: 200;
+  };
+  "startAppointment post /_action/dsr/appointment/{appointmentId}/start": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "createVideoRoom post /_action/dsr/appointment/{appointmentId}/video-room": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: components["schemas"]["VideoChatCreateStruct"];
+    responseCode: 200;
+  };
+  "deleteVideoRoom delete /_action/dsr/appointment/{appointmentId}/video-room": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: unknown;
+    responseCode: 200;
+  };
+  "getAttendeeInsights get /_action/dsr/appointment/{appointmentId}/widgets/attendee-insights": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: components["schemas"]["GetAttendeeInsightsResponse"];
+    responseCode: 200;
+  };
+  "getCartInsights get /_action/dsr/appointment/{appointmentId}/widgets/cart-insights": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: components["schemas"]["GetCartInsightsResponse"];
+    responseCode: 200;
+  };
+  "getCartStatistics get /_action/dsr/appointment/{appointmentId}/widgets/cart-statistics": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: components["schemas"]["Cart"];
+    responseCode: 200;
+  };
+  "getLastSeenProductsInsights get /_action/dsr/appointment/{appointmentId}/widgets/last-seen": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    body?: {
+      /** The attendee id for which the last seen products should be returned */
+      attendeeId?: string;
+      /**
+       * The limit of the products which should be returned
+       * @default 10
+       */
+      limit?: number;
+      /**
+       * The page of the products which should be returned
+       * @default 1
+       */
+      page?: number;
+    };
+    response: components["schemas"]["WidgetProductListing"];
+    responseCode: 200;
+  };
+  "getWishlistInsights get /_action/dsr/appointment/{appointmentId}/widgets/wishlist": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Appointment id */
+      appointmentId: string;
+    };
+    response: components["schemas"]["WidgetProductListing"];
+    responseCode: 200;
+  };
+  "getLastSeenProductIds post /_action/dsr/appointment/attendee/{attendeeId}/last-seen-product-ids": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Attendee id */
+      attendeeId: string;
+    };
+    response: {
+      collection?: {
+        lastSeen?: string[];
+      };
+    };
+    responseCode: 200;
+  };
+  "removeAttendee post /_action/dsr/appointment/attendee/{attendeeId}/remove": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Attendee id */
+      attendeeId: string;
+    };
+    response: {
+      /** The id of the removed attendee */
+      attendeeId?: string;
+      message?: string;
+    };
+    responseCode: 200;
+  };
+  "getAttendeeToken get /_action/dsr/appointment/attendee/{attendeeId}/sw-context-token": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Attendee id */
+      attendeeId: string;
+    };
+    response: {
+      "attendee-sw-context-token"?: string;
+    };
+    responseCode: 200;
+  };
   "index post /_action/index": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -27226,7 +29603,7 @@ export type operations = {
        *     * `upsert`: The Sync API does not differ between create and update operations,
        *     but always performs an upsert operation. During an upsert, the system checks whether the entity already exists in the
        *     system and updates it if an identifier has been passed, otherwise a new entity is created with this identifier.
-       *     * `delete`: Deletes entites with the provided identifiers
+       *     * `delete`: Deletes entities with the provided identifiers
        * @enum {string}
        */
       action: "upsert" | "delete";
@@ -27242,11 +29619,11 @@ export type operations = {
       payload: GenericRecord[];
     }[];
     response: {
-      /** Object with information about updated entites */
+      /** Object with information about updated entities */
       data?: GenericRecord;
-      /** Object with information about deleted entites */
+      /** Object with information about deleted entities */
       deleted?: GenericRecord;
-      /** Object with information about not found entites */
+      /** Object with information about not found entities */
       notFound?: GenericRecord;
     };
     responseCode: 200;
@@ -27297,7 +29674,7 @@ export type operations = {
   "flow-actions get /_info/flow-actions.json": {
     contentType?: "application/json";
     accept?: "application/json";
-    response: components["schemas"]["flowBulderActionsResponse"];
+    response: components["schemas"]["flowBuilderActionsResponse"];
     responseCode: 200;
   };
   "healthCheck get /_info/health-check": {
@@ -27372,6 +29749,37 @@ export type operations = {
     };
     responseCode: 200;
   };
+  "getRoutes get /_info/routes": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      endpoints: {
+        methods: string[];
+        path: string;
+      }[];
+    };
+    responseCode: 200;
+  };
+  "systemHealthCheck get /_info/system-health-check": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Include detailed information in the response */
+      verbose?: boolean;
+    };
+    response: {
+      checks?: {
+        extra?: {
+          [key: string]: unknown;
+        }[];
+        healthy?: boolean;
+        message?: string;
+        name?: string;
+        status?: string;
+      }[];
+    };
+    responseCode: 200;
+  };
   "infoShopwareVersion get /_info/version": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -27392,6 +29800,21 @@ export type operations = {
       customerId?: string;
     };
     response: components["schemas"]["Quote"];
+    responseCode: 200;
+  };
+  "generateImitateCustomerToken post /_proxy/generate-imitate-customer-token": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** ID of the customer */
+      customerId: string;
+      /** ID of the sales channel */
+      salesChannelId: string;
+    };
+    response: {
+      /** The generated customer impersonation token */
+      token?: string;
+    };
     responseCode: 200;
   };
   "getAclRoleList get /acl-role":
@@ -31877,6 +34300,224 @@ export type operations = {
         };
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["B2bComponentsApprovalRule"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsApprovalRuleAppScriptConditionList get /b2b-components-approval-rule-app-script-condition":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /b2b-components-approval-rule-app-script-condition?limit=25 */
+            first?: unknown;
+            /** @example /b2b-components-approval-rule-app-script-condition?limit=25&page=11 */
+            last?: unknown;
+            /** @example /b2b-components-approval-rule-app-script-condition?limit=25&page=4 */
+            next?: unknown;
+            /** @example /b2b-components-approval-rule-app-script-condition?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createB2bComponentsApprovalRuleAppScriptCondition post /b2b-components-approval-rule-app-script-condition":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        response: {
+          data: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        };
+        responseCode: 200;
+      };
+  "getB2bComponentsApprovalRuleAppScriptCondition get /b2b-components-approval-rule-app-script-condition/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the b2b_components_approval_rule_app_script_condition */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the b2b_components_approval_rule_app_script_condition */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        };
+        responseCode: 200;
+      };
+  "deleteB2bComponentsApprovalRuleAppScriptCondition delete /b2b-components-approval-rule-app-script-condition/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the b2b_components_approval_rule_app_script_condition */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateB2bComponentsApprovalRuleAppScriptCondition patch /b2b-components-approval-rule-app-script-condition/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_approval_rule_app_script_condition */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        response: {
+          data: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_approval_rule_app_script_condition */
+          id: string;
+        };
+        body: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_approval_rule_app_script_condition */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the b2b_components_approval_rule_app_script_condition */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"];
         };
         responseCode: 200;
       };
@@ -39839,6 +42480,1750 @@ export type operations = {
         };
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Document"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAppointmentList get /dsr-appointment":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["DsrAppointment"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["DsrAppointment"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /dsr-appointment?limit=25 */
+            first?: unknown;
+            /** @example /dsr-appointment?limit=25&page=11 */
+            last?: unknown;
+            /** @example /dsr-appointment?limit=25&page=4 */
+            next?: unknown;
+            /** @example /dsr-appointment?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createDsrAppointment post /dsr-appointment":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAppointment"];
+        response: {
+          data: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAppointment"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointment"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointment"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAppointmentAttendeeList get /dsr-appointment-attendee":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["DsrAppointmentAttendee"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["DsrAppointmentAttendee"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /dsr-appointment-attendee?limit=25 */
+            first?: unknown;
+            /** @example /dsr-appointment-attendee?limit=25&page=11 */
+            last?: unknown;
+            /** @example /dsr-appointment-attendee?limit=25&page=4 */
+            next?: unknown;
+            /** @example /dsr-appointment-attendee?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createDsrAppointmentAttendee post /dsr-appointment-attendee":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAppointmentAttendee"];
+        response: {
+          data: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAppointmentAttendee"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentAttendee"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentAttendee"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAppointmentAttendee get /dsr-appointment-attendee/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the dsr_appointment_attendee */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the dsr_appointment_attendee */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      };
+  "deleteDsrAppointmentAttendee delete /dsr-appointment-attendee/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the dsr_appointment_attendee */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateDsrAppointmentAttendee patch /dsr-appointment-attendee/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_attendee */
+          id: string;
+        };
+        body: components["schemas"]["DsrAppointmentAttendee"];
+        response: {
+          data: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_attendee */
+          id: string;
+        };
+        body: components["schemas"]["DsrAppointmentAttendee"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_attendee */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentAttendee"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_attendee */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentAttendee"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentAttendee"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAppointmentRequestList get /dsr-appointment-request":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["DsrAppointmentRequest"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["DsrAppointmentRequest"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /dsr-appointment-request?limit=25 */
+            first?: unknown;
+            /** @example /dsr-appointment-request?limit=25&page=11 */
+            last?: unknown;
+            /** @example /dsr-appointment-request?limit=25&page=4 */
+            next?: unknown;
+            /** @example /dsr-appointment-request?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createDsrAppointmentRequest post /dsr-appointment-request":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAppointmentRequest"];
+        response: {
+          data: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAppointmentRequest"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentRequest"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentRequest"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAppointmentRequest get /dsr-appointment-request/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the dsr_appointment_request */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the dsr_appointment_request */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      };
+  "deleteDsrAppointmentRequest delete /dsr-appointment-request/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the dsr_appointment_request */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateDsrAppointmentRequest patch /dsr-appointment-request/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_request */
+          id: string;
+        };
+        body: components["schemas"]["DsrAppointmentRequest"];
+        response: {
+          data: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_request */
+          id: string;
+        };
+        body: components["schemas"]["DsrAppointmentRequest"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_request */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentRequest"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_request */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentRequest"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentRequest"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAppointmentVideoChatList get /dsr-appointment-video-chat":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["DsrAppointmentVideoChat"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["DsrAppointmentVideoChat"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /dsr-appointment-video-chat?limit=25 */
+            first?: unknown;
+            /** @example /dsr-appointment-video-chat?limit=25&page=11 */
+            last?: unknown;
+            /** @example /dsr-appointment-video-chat?limit=25&page=4 */
+            next?: unknown;
+            /** @example /dsr-appointment-video-chat?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createDsrAppointmentVideoChat post /dsr-appointment-video-chat":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAppointmentVideoChat"];
+        response: {
+          data: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAppointmentVideoChat"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentVideoChat"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentVideoChat"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAppointmentVideoChat get /dsr-appointment-video-chat/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the dsr_appointment_video_chat */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the dsr_appointment_video_chat */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      };
+  "deleteDsrAppointmentVideoChat delete /dsr-appointment-video-chat/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the dsr_appointment_video_chat */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateDsrAppointmentVideoChat patch /dsr-appointment-video-chat/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_video_chat */
+          id: string;
+        };
+        body: components["schemas"]["DsrAppointmentVideoChat"];
+        response: {
+          data: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_video_chat */
+          id: string;
+        };
+        body: components["schemas"]["DsrAppointmentVideoChat"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_video_chat */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentVideoChat"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment_video_chat */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointmentVideoChat"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentVideoChat"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAppointment get /dsr-appointment/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the dsr_appointment */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the dsr_appointment */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      };
+  "deleteDsrAppointment delete /dsr-appointment/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the dsr_appointment */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateDsrAppointment patch /dsr-appointment/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment */
+          id: string;
+        };
+        body: components["schemas"]["DsrAppointment"];
+        response: {
+          data: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment */
+          id: string;
+        };
+        body: components["schemas"]["DsrAppointment"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointment"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_appointment */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAppointment"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointment"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAttendeeProductCollectionList get /dsr-attendee-product-collection":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["DsrAttendeeProductCollection"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["DsrAttendeeProductCollection"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /dsr-attendee-product-collection?limit=25 */
+            first?: unknown;
+            /** @example /dsr-attendee-product-collection?limit=25&page=11 */
+            last?: unknown;
+            /** @example /dsr-attendee-product-collection?limit=25&page=4 */
+            next?: unknown;
+            /** @example /dsr-attendee-product-collection?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createDsrAttendeeProductCollection post /dsr-attendee-product-collection":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAttendeeProductCollection"];
+        response: {
+          data: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrAttendeeProductCollection"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAttendeeProductCollection"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrAttendeeProductCollection"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      };
+  "getDsrAttendeeProductCollection get /dsr-attendee-product-collection/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the dsr_attendee_product_collection */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the dsr_attendee_product_collection */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      };
+  "deleteDsrAttendeeProductCollection delete /dsr-attendee-product-collection/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the dsr_attendee_product_collection */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateDsrAttendeeProductCollection patch /dsr-attendee-product-collection/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_attendee_product_collection */
+          id: string;
+        };
+        body: components["schemas"]["DsrAttendeeProductCollection"];
+        response: {
+          data: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_attendee_product_collection */
+          id: string;
+        };
+        body: components["schemas"]["DsrAttendeeProductCollection"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_attendee_product_collection */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAttendeeProductCollection"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_attendee_product_collection */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrAttendeeProductCollection"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAttendeeProductCollection"];
+        };
+        responseCode: 200;
+      };
+  "getDsrInteractionList get /dsr-interaction":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["DsrInteraction"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["DsrInteraction"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /dsr-interaction?limit=25 */
+            first?: unknown;
+            /** @example /dsr-interaction?limit=25&page=11 */
+            last?: unknown;
+            /** @example /dsr-interaction?limit=25&page=4 */
+            next?: unknown;
+            /** @example /dsr-interaction?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createDsrInteraction post /dsr-interaction":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrInteraction"];
+        response: {
+          data: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrInteraction"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrInteraction"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrInteraction"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      };
+  "getDsrInteraction get /dsr-interaction/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the dsr_interaction */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the dsr_interaction */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      };
+  "deleteDsrInteraction delete /dsr-interaction/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the dsr_interaction */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateDsrInteraction patch /dsr-interaction/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_interaction */
+          id: string;
+        };
+        body: components["schemas"]["DsrInteraction"];
+        response: {
+          data: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_interaction */
+          id: string;
+        };
+        body: components["schemas"]["DsrInteraction"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_interaction */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrInteraction"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_interaction */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrInteraction"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrInteraction"];
+        };
+        responseCode: 200;
+      };
+  "getDsrPresentationList get /dsr-presentation":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["DsrPresentation"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["DsrPresentation"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /dsr-presentation?limit=25 */
+            first?: unknown;
+            /** @example /dsr-presentation?limit=25&page=11 */
+            last?: unknown;
+            /** @example /dsr-presentation?limit=25&page=4 */
+            next?: unknown;
+            /** @example /dsr-presentation?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createDsrPresentation post /dsr-presentation":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrPresentation"];
+        response: {
+          data: components["schemas"]["DsrPresentation"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrPresentation"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentation"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrPresentation"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrPresentation"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrPresentation"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentation"];
+        };
+        responseCode: 200;
+      };
+  "getDsrPresentationCmsPageList get /dsr-presentation-cms-page":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["DsrPresentationCmsPage"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["DsrPresentationCmsPage"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /dsr-presentation-cms-page?limit=25 */
+            first?: unknown;
+            /** @example /dsr-presentation-cms-page?limit=25&page=11 */
+            last?: unknown;
+            /** @example /dsr-presentation-cms-page?limit=25&page=4 */
+            next?: unknown;
+            /** @example /dsr-presentation-cms-page?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createDsrPresentationCmsPage post /dsr-presentation-cms-page":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrPresentationCmsPage"];
+        response: {
+          data: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["DsrPresentationCmsPage"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrPresentationCmsPage"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["DsrPresentationCmsPage"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      };
+  "getDsrPresentationCmsPage get /dsr-presentation-cms-page/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the dsr_presentation_cms_page */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the dsr_presentation_cms_page */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      };
+  "deleteDsrPresentationCmsPage delete /dsr-presentation-cms-page/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the dsr_presentation_cms_page */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateDsrPresentationCmsPage patch /dsr-presentation-cms-page/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_presentation_cms_page */
+          id: string;
+        };
+        body: components["schemas"]["DsrPresentationCmsPage"];
+        response: {
+          data: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_presentation_cms_page */
+          id: string;
+        };
+        body: components["schemas"]["DsrPresentationCmsPage"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_presentation_cms_page */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrPresentationCmsPage"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_presentation_cms_page */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrPresentationCmsPage"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentationCmsPage"];
+        };
+        responseCode: 200;
+      };
+  "getDsrPresentation get /dsr-presentation/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the dsr_presentation */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["DsrPresentation"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the dsr_presentation */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentation"];
+        };
+        responseCode: 200;
+      };
+  "deleteDsrPresentation delete /dsr-presentation/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the dsr_presentation */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateDsrPresentation patch /dsr-presentation/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_presentation */
+          id: string;
+        };
+        body: components["schemas"]["DsrPresentation"];
+        response: {
+          data: components["schemas"]["DsrPresentation"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_presentation */
+          id: string;
+        };
+        body: components["schemas"]["DsrPresentation"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentation"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_presentation */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrPresentation"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["DsrPresentation"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the dsr_presentation */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["DsrPresentation"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentation"];
         };
         responseCode: 200;
       };
@@ -61608,6 +65993,45 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "searchB2bComponentsApprovalRuleAppScriptCondition post /search/b2b-components-approval-rule-app-script-condition":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["B2bComponentsApprovalRuleAppScriptCondition"][];
+        };
+        responseCode: 200;
+      };
   "searchB2bComponentsPendingOrder post /search/b2b-components-pending-order":
     | {
         contentType?: "application/json";
@@ -63009,6 +67433,318 @@ export type operations = {
         body: components["schemas"]["Criteria"];
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["DocumentType"][];
+        };
+        responseCode: 200;
+      };
+  "searchDsrAppointment post /search/dsr-appointment":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAppointment"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointment"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAppointment"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointment"][];
+        };
+        responseCode: 200;
+      };
+  "searchDsrAppointmentAttendee post /search/dsr-appointment-attendee":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAppointmentAttendee"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentAttendee"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAppointmentAttendee"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentAttendee"][];
+        };
+        responseCode: 200;
+      };
+  "searchDsrAppointmentRequest post /search/dsr-appointment-request":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAppointmentRequest"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentRequest"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAppointmentRequest"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentRequest"][];
+        };
+        responseCode: 200;
+      };
+  "searchDsrAppointmentVideoChat post /search/dsr-appointment-video-chat":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAppointmentVideoChat"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentVideoChat"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAppointmentVideoChat"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAppointmentVideoChat"][];
+        };
+        responseCode: 200;
+      };
+  "searchDsrAttendeeProductCollection post /search/dsr-attendee-product-collection":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAttendeeProductCollection"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAttendeeProductCollection"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrAttendeeProductCollection"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrAttendeeProductCollection"][];
+        };
+        responseCode: 200;
+      };
+  "searchDsrInteraction post /search/dsr-interaction":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrInteraction"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrInteraction"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrInteraction"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrInteraction"][];
+        };
+        responseCode: 200;
+      };
+  "searchDsrPresentation post /search/dsr-presentation":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrPresentation"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentation"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrPresentation"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentation"][];
+        };
+        responseCode: 200;
+      };
+  "searchDsrPresentationCmsPage post /search/dsr-presentation-cms-page":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrPresentationCmsPage"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentationCmsPage"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["DsrPresentationCmsPage"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["DsrPresentationCmsPage"][];
         };
         responseCode: 200;
       };
@@ -66990,6 +71726,201 @@ export type operations = {
         };
         responseCode: 200;
       };
+  "searchSpatialRenderConfigSize post /search/spatial-render-config-size":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialRenderConfigSize"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialRenderConfigSize"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialRenderConfigSize"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialRenderConfigSize"][];
+        };
+        responseCode: 200;
+      };
+  "searchSpatialScene post /search/spatial-scene":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialScene"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialScene"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialScene"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialScene"][];
+        };
+        responseCode: 200;
+      };
+  "searchSpatialSceneCamera post /search/spatial-scene-camera":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialSceneCamera"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneCamera"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialSceneCamera"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneCamera"][];
+        };
+        responseCode: 200;
+      };
+  "searchSpatialSceneLight post /search/spatial-scene-light":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialSceneLight"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneLight"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialSceneLight"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneLight"][];
+        };
+        responseCode: 200;
+      };
+  "searchSpatialSceneObject post /search/spatial-scene-object":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialSceneObject"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneObject"][];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        body: components["schemas"]["Criteria"];
+        response: {
+          data?: components["schemas"]["SpatialSceneObject"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        body: components["schemas"]["Criteria"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneObject"][];
+        };
+        responseCode: 200;
+      };
   "searchSsoProvider post /search/sso-provider":
     | {
         contentType?: "application/json";
@@ -70752,6 +75683,1096 @@ export type operations = {
         };
         response: components["schemas"]["success"] & {
           data?: components["schemas"]["Snippet"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialRenderConfigSizeList get /spatial-render-config-size":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["SpatialRenderConfigSize"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["SpatialRenderConfigSize"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /spatial-render-config-size?limit=25 */
+            first?: unknown;
+            /** @example /spatial-render-config-size?limit=25&page=11 */
+            last?: unknown;
+            /** @example /spatial-render-config-size?limit=25&page=4 */
+            next?: unknown;
+            /** @example /spatial-render-config-size?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createSpatialRenderConfigSize post /spatial-render-config-size":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialRenderConfigSize"];
+        response: {
+          data: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialRenderConfigSize"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialRenderConfigSize"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialRenderConfigSize"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialRenderConfigSize get /spatial-render-config-size/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the spatial_render_config_size */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the spatial_render_config_size */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      };
+  "deleteSpatialRenderConfigSize delete /spatial-render-config-size/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the spatial_render_config_size */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateSpatialRenderConfigSize patch /spatial-render-config-size/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_render_config_size */
+          id: string;
+        };
+        body: components["schemas"]["SpatialRenderConfigSize"];
+        response: {
+          data: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_render_config_size */
+          id: string;
+        };
+        body: components["schemas"]["SpatialRenderConfigSize"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_render_config_size */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialRenderConfigSize"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_render_config_size */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialRenderConfigSize"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialRenderConfigSize"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialSceneList get /spatial-scene":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["SpatialScene"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["SpatialScene"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /spatial-scene?limit=25 */
+            first?: unknown;
+            /** @example /spatial-scene?limit=25&page=11 */
+            last?: unknown;
+            /** @example /spatial-scene?limit=25&page=4 */
+            next?: unknown;
+            /** @example /spatial-scene?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createSpatialScene post /spatial-scene":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialScene"];
+        response: {
+          data: components["schemas"]["SpatialScene"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialScene"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialScene"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialScene"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialScene"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialScene"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialScene"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialSceneCameraList get /spatial-scene-camera":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["SpatialSceneCamera"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["SpatialSceneCamera"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /spatial-scene-camera?limit=25 */
+            first?: unknown;
+            /** @example /spatial-scene-camera?limit=25&page=11 */
+            last?: unknown;
+            /** @example /spatial-scene-camera?limit=25&page=4 */
+            next?: unknown;
+            /** @example /spatial-scene-camera?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createSpatialSceneCamera post /spatial-scene-camera":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialSceneCamera"];
+        response: {
+          data: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialSceneCamera"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneCamera"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneCamera"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialSceneCamera get /spatial-scene-camera/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the spatial_scene_camera */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the spatial_scene_camera */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      };
+  "deleteSpatialSceneCamera delete /spatial-scene-camera/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the spatial_scene_camera */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateSpatialSceneCamera patch /spatial-scene-camera/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_camera */
+          id: string;
+        };
+        body: components["schemas"]["SpatialSceneCamera"];
+        response: {
+          data: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_camera */
+          id: string;
+        };
+        body: components["schemas"]["SpatialSceneCamera"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_camera */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneCamera"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_camera */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneCamera"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneCamera"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialSceneLightList get /spatial-scene-light":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["SpatialSceneLight"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["SpatialSceneLight"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /spatial-scene-light?limit=25 */
+            first?: unknown;
+            /** @example /spatial-scene-light?limit=25&page=11 */
+            last?: unknown;
+            /** @example /spatial-scene-light?limit=25&page=4 */
+            next?: unknown;
+            /** @example /spatial-scene-light?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createSpatialSceneLight post /spatial-scene-light":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialSceneLight"];
+        response: {
+          data: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialSceneLight"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneLight"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneLight"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialSceneLight get /spatial-scene-light/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the spatial_scene_light */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the spatial_scene_light */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      };
+  "deleteSpatialSceneLight delete /spatial-scene-light/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the spatial_scene_light */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateSpatialSceneLight patch /spatial-scene-light/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_light */
+          id: string;
+        };
+        body: components["schemas"]["SpatialSceneLight"];
+        response: {
+          data: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_light */
+          id: string;
+        };
+        body: components["schemas"]["SpatialSceneLight"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_light */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneLight"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_light */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneLight"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneLight"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialSceneObjectList get /spatial-scene-object":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: {
+          data?: components["schemas"]["SpatialSceneObject"][];
+          total?: number;
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Max amount of resources to be returned in a page */
+          limit?: number;
+          /** The page to be returned */
+          page?: number;
+          /** Encoded SwagQL in JSON */
+          query?: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["data"] &
+            components["schemas"]["SpatialSceneObject"][];
+          links?: components["schemas"]["pagination"] & {
+            /** @example /spatial-scene-object?limit=25 */
+            first?: unknown;
+            /** @example /spatial-scene-object?limit=25&page=11 */
+            last?: unknown;
+            /** @example /spatial-scene-object?limit=25&page=4 */
+            next?: unknown;
+            /** @example /spatial-scene-object?limit=25&page=2 */
+            prev?: unknown;
+          };
+        };
+        responseCode: 200;
+      };
+  "createSpatialSceneObject post /spatial-scene-object":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialSceneObject"];
+        response: {
+          data: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: components["schemas"]["SpatialSceneObject"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneObject"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: "basic" | "detail";
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneObject"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialSceneObject get /spatial-scene-object/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the spatial_scene_object */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the spatial_scene_object */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      };
+  "deleteSpatialSceneObject delete /spatial-scene-object/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the spatial_scene_object */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateSpatialSceneObject patch /spatial-scene-object/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_object */
+          id: string;
+        };
+        body: components["schemas"]["SpatialSceneObject"];
+        response: {
+          data: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_object */
+          id: string;
+        };
+        body: components["schemas"]["SpatialSceneObject"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_object */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneObject"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene_object */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialSceneObject"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialSceneObject"];
+        };
+        responseCode: 200;
+      };
+  "getSpatialScene get /spatial-scene/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        pathParams: {
+          /** Identifier for the spatial_scene */
+          id: string;
+        };
+        response: {
+          data: components["schemas"]["SpatialScene"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        pathParams: {
+          /** Identifier for the spatial_scene */
+          id: string;
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialScene"];
+        };
+        responseCode: 200;
+      };
+  "deleteSpatialScene delete /spatial-scene/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    query?: {
+      /** Data format for response. Empty if none is provided. */
+      _response?: string;
+    };
+    pathParams: {
+      /** Identifier for the spatial_scene */
+      id: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateSpatialScene patch /spatial-scene/{id}":
+    | {
+        contentType?: "application/json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene */
+          id: string;
+        };
+        body: components["schemas"]["SpatialScene"];
+        response: {
+          data: components["schemas"]["SpatialScene"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType?: "application/json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene */
+          id: string;
+        };
+        body: components["schemas"]["SpatialScene"];
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialScene"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept?: "application/json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialScene"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: {
+          data: components["schemas"]["SpatialScene"];
+        };
+        responseCode: 200;
+      }
+    | {
+        contentType: "application/vnd.api+json";
+        accept: "application/vnd.api+json";
+        query?: {
+          /** Data format for response. Empty if none is provided. */
+          _response?: string;
+        };
+        pathParams: {
+          /** Identifier for the spatial_scene */
+          id: string;
+        };
+        body: {
+          data?: components["schemas"]["SpatialScene"];
+          included?: components["schemas"]["resource"][];
+        };
+        response: components["schemas"]["success"] & {
+          data?: components["schemas"]["SpatialScene"];
         };
         responseCode: 200;
       };
