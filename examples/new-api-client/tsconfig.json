@@ -23,11 +23,12 @@
 
     /* Shopware config */
     "paths": {
+      "#imports": ["./imports.d.ts"],
       "#shopware": ["./shopware.d.ts"],
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"]
     },
     "rootDir": "."
   },
-  "include": ["src/**/*", "./shopware.d.ts"]
+  "include": ["src/**/*", "./shopware.d.ts", "./imports.d.ts"]
 }
