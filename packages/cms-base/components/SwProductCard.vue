@@ -169,7 +169,7 @@ const srcPath = computed(() => {
       <div class="absolute top-5 -left-1 z-10">
         <span
           v-if="product.markAsTopseller"
-          class="bg-[#FFBD5D] px-2.5 py-1.5 color-white text-xl"
+          class="bg-[#FFBD5D] px-2.5 py-1.5 color-black text-xl"
           >{{ translations.product.badges.topseller }}</span
         >
       </div>
