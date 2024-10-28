@@ -55,7 +55,7 @@
       "@antfu/utils": "^0.7.10",
       "@babel/traverse": "^7.24.8",
       "@sentry/browser": "^7.119.1",
-      "@types/node": "^20",
+      "@types/node": "^20.17.0",
       "axios": "^1.7.4",
       "braces": "^3.0.3",
       "debug": "^4.3.5",
