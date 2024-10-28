@@ -14,11 +14,11 @@
     "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
-    "@types/node": "20.14.10",
-    "@unocss/nuxt": "0.63.4",
+    "@types/node": "20.17.0",
+    "@unocss/nuxt": "0.63.6",
     "nuxt": "3.13.2",
-    "typescript": "5.5.4",
-    "vue": "3.5.11",
+    "typescript": "5.6.3",
+    "vue": "3.5.12",
     "vue-tsc": "2.1.6"
   }
 }

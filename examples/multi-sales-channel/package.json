@@ -15,11 +15,11 @@
     "@shopware-pwa/composables-next": "canary",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
-    "@types/node": "20.14.10",
+    "@types/node": "20.17.0",
     "js-cookie": "3.0.5",
     "nuxt": "3.13.2",
-    "typescript": "5.5.4",
-    "vue": "3.5.11",
+    "typescript": "5.6.3",
+    "vue": "3.5.12",
     "vue-tsc": "2.1.6"
   },
   "engines": {

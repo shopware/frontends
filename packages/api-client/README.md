@@ -10,6 +10,8 @@ You can use types generated from your custom API instance to have autocompletion
 
 To generate your own types use [@shopware/api-gen](https://www.npmjs.com/package/@shopware/api-gen) CLI.
 
+To take a deep dive into the topic visit the [🧑‍🎓 API Client Tutorial](https://api-client-tutorial-composable-frontends.pages.dev) first.
+
 ## Setup
 
 Install npm package:
@@ -251,11 +253,25 @@ try {
 }
 ```
 
+### Hooks
+
+Api client provides hooks to listen to events like context change, authentication change or default headers change. Example:
+
+```typescript
+apiClient.hook("onDefaultHeaderChanged", (key, value) => {
+  // here we can detect that the default header has changed, either by the user or by the headers incoming from the API
+});
+```
+
+calling `apiClient.hook` will autocomplete the list of available hooks.
+
 ## Links
+
+- [🧑‍🎓 Tutorial](https://api-client-tutorial-composable-frontends.pages.dev)
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#shopware-frontends` channel)
+- [👥 Community Slack](https://shopwarecommunity.slack.com) (`#composable-frontends` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 

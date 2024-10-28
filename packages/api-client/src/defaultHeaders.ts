@@ -38,7 +38,10 @@ export type ClientHeadersProxy = ClientHeaders & {
   readonly apply: (headers: ClientHeaders) => void;
 };
 
-export function createHeaders(init: ClientHeaders): ClientHeadersProxy {
+export function createHeaders(
+  init: ClientHeaders,
+  hookCallback?: (key: string, value?: string) => void,
+): ClientHeadersProxy {
   const _headers: ClientHeaders = {
     "Content-Type": "application/json",
   };
@@ -54,7 +57,12 @@ export function createHeaders(init: ClientHeaders): ClientHeadersProxy {
       if (prop === "apply") {
         throw new Error("Cannot override apply method");
       }
+      hookCallback?.(prop, value);
       return Reflect.set(target, prop, value);
+    },
+    deleteProperty: (target: ClientHeaders, prop: string) => {
+      hookCallback?.(prop);
+      return Reflect.deleteProperty(target, prop);
     },
   };
 
