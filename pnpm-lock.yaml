@@ -42,6 +42,9 @@ patchedDependencies:
   "@vueuse/core@11.1.0":
     hash: rtnblm55jutyponlgwgfoiesem
     path: patches/@vueuse__core@11.1.0.patch
+  automd:
+    hash: c3ksiahsbkzwejj5owudg6zwym
+    path: patches/automd.patch
 
 importers:
   .:
@@ -58,6 +61,9 @@ importers:
       "@types/changelog-parser":
         specifier: 2.8.4
         version: 2.8.4
+      automd:
+        specifier: ^0.3.7
+        version: 0.3.7(patch_hash=c3ksiahsbkzwejj5owudg6zwym)(magicast@0.3.5)
       changelog-parser:
         specifier: 3.0.1
         version: 3.0.1
@@ -10672,6 +10678,13 @@ packages:
         integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==,
       }
 
+  automd@0.3.7:
+    resolution:
+      {
+        integrity: sha512-h+w7Z1xQSdIuGmgDKVVvCl6fwj7V9b7BqUs6LlelvTcrwkLzqJnxpzcK0HoiesPb0xsf1yTfngeoDgYs2NN2Tw==,
+      }
+    hasBin: true
+
   autoprefixer@10.4.20:
     resolution:
       {
@@ -12359,6 +12372,13 @@ packages:
         integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==,
       }
 
+  didyoumean2@6.0.1:
+    resolution:
+      {
+        integrity: sha512-PSy0zQwMg5O+LjT5Mz7vnKC8I7DfWLPF6M7oepqW7WP5mn2CY3hz46xZOa1GJY+KVfyXhdmz6+tdgXwrHlZc5g==,
+      }
+    engines: { node: ^16.14.0 || >=18.12.0 }
+
   diff@4.0.2:
     resolution:
       {
@@ -13578,6 +13598,13 @@ packages:
       {
         integrity: sha512-GR6f0hD7XXyNJa25Tb9BuIdN0tdr+0BMi6/CJPH3wJO1JjNG3n/VsSw38AwRdKZABm8lGbPfakLRkYzx2V9row==,
       }
+
+  fastest-levenshtein@1.0.16:
+    resolution:
+      {
+        integrity: sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==,
+      }
+    engines: { node: ">= 4.9.1" }
 
   fastest-stable-stringify@2.0.2:
     resolution:
@@ -16266,6 +16293,12 @@ packages:
         integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==,
       }
 
+  lodash.deburr@4.1.0:
+    resolution:
+      {
+        integrity: sha512-m/M1U1f3ddMCs6Hq2tAsYThTBDaAKFDX3dwDo97GEYzamXi9SqUpjWi/Rrj/gf3X2n8ktwgZrlP1z6E3v/IExQ==,
+      }
+
   lodash.defaults@4.2.0:
     resolution:
       {
@@ -16554,6 +16587,12 @@ packages:
         integrity: sha512-mxybbo3pPNuA+ZuCUhm5bwNkXrJTbsk5VWbR5wiwz/GC6LIiegBGn2w3O08UG/jdbYLinw51fSQ5xNU1U3MgBw==,
       }
 
+  md4w@0.2.6:
+    resolution:
+      {
+        integrity: sha512-CBLQ2PxVe9WA+/nndZCx/Y+1C3DtmtSeubmXTPhMIgsXtq9gVGleikREko5FYnV6Dz4cHDWm0Ea+YMLpIjP4Kw==,
+      }
+
   mdast-util-definitions@4.0.0:
     resolution:
       {
@@ -16750,6 +16789,12 @@ packages:
     resolution:
       {
         integrity: sha512-0H44vDimn51F0YwvxSJSm0eCDOJTRlmN0R1yBh4HLj9wiV1Dn0QoXGbvFAWj2hSItVTlCmBF1hqKlIyUBVFLPg==,
+      }
+
+  mdbox@0.1.0:
+    resolution:
+      {
+        integrity: sha512-eQA+6vf5XM4LqdfLsfPMxqUBSU8AMzSCSFbojWLXSDL2jZeO+xgHhxTggrG2jfGPAyyIWIukj6SuoFBd9a7XZw==,
       }
 
   mdn-data@2.0.14:
@@ -31602,6 +31647,29 @@ snapshots:
 
   asynckit@0.4.0: {}
 
+  automd@0.3.7(patch_hash=c3ksiahsbkzwejj5owudg6zwym)(magicast@0.3.5):
+    dependencies:
+      "@parcel/watcher": 2.4.1
+      c12: 1.11.2(magicast@0.3.5)
+      citty: 0.1.6
+      consola: 3.2.3
+      defu: 6.1.4
+      destr: 2.0.3
+      didyoumean2: 6.0.1
+      globby: 14.0.2
+      magic-string: 0.30.12
+      mdbox: 0.1.0
+      mlly: 1.7.1
+      ofetch: 1.4.1
+      pathe: 1.1.2
+      perfect-debounce: 1.0.0
+      pkg-types: 1.2.0
+      scule: 1.3.0
+      untyped: 1.4.2
+    transitivePeerDependencies:
+      - magicast
+      - supports-color
+
   autoprefixer@10.4.20(postcss@8.4.47):
     dependencies:
       browserslist: 4.24.0
@@ -32563,6 +32631,12 @@ snapshots:
   devlop@1.1.0:
     dependencies:
       dequal: 2.0.3
+
+  didyoumean2@6.0.1:
+    dependencies:
+      "@babel/runtime": 7.25.7
+      fastest-levenshtein: 1.0.16
+      lodash.deburr: 4.1.0
 
   diff@4.0.2: {}
 
@@ -33552,6 +33626,8 @@ snapshots:
   fast-shallow-equal@1.0.0: {}
 
   fast-uri@3.0.2: {}
+
+  fastest-levenshtein@1.0.16: {}
 
   fastest-stable-stringify@2.0.2: {}
 
@@ -35249,6 +35325,8 @@ snapshots:
 
   lodash.debounce@4.0.8: {}
 
+  lodash.deburr@4.1.0: {}
+
   lodash.defaults@4.2.0: {}
 
   lodash.get@4.4.2: {}
@@ -35404,6 +35482,8 @@ snapshots:
     dependencies:
       "@babel/runtime": 7.25.7
       remove-accents: 0.4.2
+
+  md4w@0.2.6: {}
 
   mdast-util-definitions@4.0.0:
     dependencies:
@@ -35674,6 +35754,10 @@ snapshots:
   mdast-util-to-string@4.0.0:
     dependencies:
       "@types/mdast": 4.0.3
+
+  mdbox@0.1.0:
+    dependencies:
+      md4w: 0.2.6
 
   mdn-data@2.0.14: {}
 

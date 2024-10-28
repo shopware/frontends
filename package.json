@@ -27,6 +27,7 @@
     "prepare": "husky",
     "generate-types": "turbo run generate-types",
     "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts",
+    "generateAutomd": "esno ./scripts/generateAutomd.ts --update",
     "docs:env": "[ -d \"../developer-portal\" ] && ../developer-portal/docs-cli.cjs pull || (git clone git@github.com:shopware/developer-portal.git ../developer-portal && pnpm i -C ../developer-portal)",
     "docs:link": "../developer-portal/docs-cli.cjs link --src apps/docs/src --dst frontends --symlink --keep",
     "docs:preview": "../developer-portal/docs-cli.cjs preview",
@@ -37,6 +38,7 @@
     "@changesets/changelog-github": "0.5.0",
     "@changesets/cli": "2.27.9",
     "@types/changelog-parser": "2.8.4",
+    "automd": "^0.3.7",
     "changelog-parser": "3.0.1",
     "dotenv-cli": "7.4.2",
     "esno": "4.8.0",
@@ -101,7 +103,8 @@
       ]
     },
     "patchedDependencies": {
-      "@vueuse/core@11.1.0": "patches/@vueuse__core@11.1.0.patch"
+      "@vueuse/core@11.1.0": "patches/@vueuse__core@11.1.0.patch",
+      "automd": "patches/automd.patch"
     }
   }
 }
