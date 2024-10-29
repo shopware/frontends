@@ -2,6 +2,7 @@
   "name": "vue-demo-store",
   "version": "1.2.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "nuxt prepare && nuxt dev",
     "build": "nuxt prepare && nuxt build",
