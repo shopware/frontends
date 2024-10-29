@@ -23,7 +23,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,vue}\"",
     "version": "changeset version",
     "postversion": "pnpm run versionReadme",
-    "versionReadme": "pnpx ts-node scripts/addChangelogBodyToReadmeFile.ts",
+    "versionReadme": "esno scripts/addChangelogBodyToReadmeFile.ts",
     "prepare": "husky",
     "generate-types": "turbo run generate-types",
     "generateDependencyChangelog": "esno ./scripts/generateDependencyChangelog.ts",
