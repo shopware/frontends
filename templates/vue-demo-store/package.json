@@ -30,7 +30,7 @@
     "vue": "3.5.12"
   },
   "devDependencies": {
-    "@iconify-json/carbon": "1.2.3",
+    "@iconify-json/carbon": "1.2.4",
     "@nuxtjs/i18n": "8.3.1",
     "@shopware/api-gen": "canary",
     "eslint": "9.13.0",
