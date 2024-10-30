@@ -104,7 +104,7 @@ npm i js-cookie
 
 Let's get back to the step where the `api-client` was initialized:
 
-<!-- automd:file src="../../examples/b2b-quote-management/src/apiClient.ts" code -->
+<!-- automd:file src="examples/b2b-quote-management/src/apiClient.ts" code -->
 
 ```ts [apiClient.ts]
 import { createAPIClient } from "@shopware/api-client";

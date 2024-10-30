@@ -5,7 +5,7 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/cms-base?label=cms-base%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acms-base)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-Nuxt [module](https://nuxt.com/docs/guide/going-further/modules) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html) using unocss/Tailwind.css syntax.
+Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html) using atomic css syntax (UnoCss / Tailwind).
 
 It is useful for projects that want to use the CMS components but design their own layout.
 
@@ -19,27 +19,56 @@ It is useful for projects that want to use the CMS components but design their o
 
 Install npm package:
 
-```bash
-# Using pnpm
-pnpm add -D @shopware-pwa/cms-base
+<!-- automd:pm-install name="@shopware-pwa/cms-base" dev -->
 
-# Using yarn
-yarn add --dev @shopware-pwa/cms-base
+```sh
+# ✨ Auto-detect
+npx nypm install -D @shopware-pwa/cms-base
 
-# Using npm
-npm i @shopware-pwa/cms-base --save-dev
+# npm
+npm install -D @shopware-pwa/cms-base
+
+# yarn
+yarn add -D @shopware-pwa/cms-base
+
+# pnpm
+pnpm install -D @shopware-pwa/cms-base
+
+# bun
+bun install -D @shopware-pwa/cms-base
 ```
 
-Then, register the module by editing `nuxt.config.js` or (`.ts`) file:
+<!-- /automd -->
 
-```js
-/* nuxt.config.ts */
+Then, register the Nuxt layer in `nuxt.config.ts` file:
 
+<!-- automd:file src="templates/vue-blank/nuxt.config.ts" code -->
+
+```ts [nuxt.config.ts]
+// https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  /* ... */
-+ modules: [/* ... */, "@shopware-pwa/cms-base"],
+  extends: [
+    "@shopware-pwa/composables-next/nuxt-layer",
+    "@shopware-pwa/cms-base",
+  ],
+  shopware: {
+    endpoint: "https://demo-frontends.shopware.store/store-api/",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  },
+  modules: ["@shopware-pwa/nuxt3-module"],
+  /**
+   * Commented because of the StackBlitz error
+   * Issue: https://github.com/shopware/frontends/issues/88
+   */
+  typescript: {
+    // typeCheck: true,
+    strict: true,
+  },
+  telemetry: false,
 });
 ```
+
+<!-- /automd -->
 
 ### ⚠️ `<RouterLink/>` components used
 

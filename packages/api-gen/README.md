@@ -43,7 +43,7 @@ If your instance contains inacurate or outdated OpenAPI specification, you can o
 
 Example of overrides file:
 
-<!-- automd:file src="./tests/snapshots-override/simpleOverride.example.ts" code -->
+<!-- automd:file src="packages/api-gen/tests/snapshots-override/simpleOverride.example.ts" code -->
 
 ```ts [simpleOverride.example.ts]
 import { components as mainComponents } from "./storeApiTypes";
