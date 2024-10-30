@@ -12,6 +12,14 @@ export function useModal() {
     isOpen.value = false;
   };
 
+  const route = useRoute();
+  watch(
+    () => route.path,
+    () => {
+      close();
+    },
+  );
+
   return {
     isOpen: computed(() => isOpen.value),
     open,
