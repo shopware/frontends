@@ -12,8 +12,6 @@ updates:
     open-pull-requests-limit: 3
     versioning-strategy: "increase"
     ignore:
-      # used in old client, not upgrading
-      - dependency-name: "axios"
       # not upgrading until we move to new docs
       - dependency-name: "vitepress-shopware-docs"
       # until https://github.com/nuxt-modules/i18n/issues/2215 is resolved
