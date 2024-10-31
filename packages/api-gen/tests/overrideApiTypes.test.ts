@@ -29,6 +29,9 @@ describe("transformOpenApiTypes", async () => {
         operationsMap,
         existingTypes,
         componentsMap: componentsMap,
+        options: {
+          version: "0.0.0",
+        },
       });
 
       const sourceFile = await project.getSourceFile("_tmp.ts");

@@ -18,8 +18,6 @@ updates:
       - dependency-name: "vitepress-shopware-docs"
       # until https://github.com/nuxt-modules/i18n/issues/2215 is resolved
       - dependency-name: "@nuxtjs/i18n"
-      # Until the upgrade is complete: https://github.com/shopware/frontends/pull/1107
-      - dependency-name: "openapi-typescript"
     groups:
       astro:
         patterns:

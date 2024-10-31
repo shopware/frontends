@@ -59,6 +59,183 @@ describe("patchJsonSchema", () => {
     `);
     });
 
+    it("should properly merge errors array", async () => {
+      const { patchedSchema } = patchJsonSchema({
+        openApiSchema: json5.parse(`{
+        components: {
+          schemas: {
+           "CartError": {
+              "type": "object",
+              "description": "A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers.",
+              "properties": {
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": { "type": "string" },
+                    "level": {
+                      "type": "number",
+                      "enum": [0, 10, 20],
+                      "description": "desc"
+                    },
+                    "message": { "type": "string" },
+                    "messageKey": { "type": "string" }
+                  }
+                }
+              }
+            },
+            "Cart": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Name of the cart - for example \`guest-cart\`",
+                  "type": "string"
+                },
+                "errors": {
+                  "type": "array",
+                  "description": "A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers.",
+                  "items": { "$ref": "#/components/schemas/CartError" }
+                },
+              },
+            },
+          },
+        },
+      }`),
+        jsonOverrides: json5.parse(`{
+        components: {
+          "Cart": [
+            {
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "items": "_DELETE_",
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/CartError" }
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "level": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "messageKey": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["code", "key", "level", "message", "messageKey"]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+        },
+      }`),
+      });
+
+      expect(patchedSchema).toMatchInlineSnapshot(`
+        {
+          "components": {
+            "schemas": {
+              "Cart": {
+                "properties": {
+                  "errors": {
+                    "anyOf": [
+                      {
+                        "items": {
+                          "$ref": "#/components/schemas/CartError",
+                        },
+                        "type": "array",
+                      },
+                      {
+                        "additionalProperties": {
+                          "properties": {
+                            "code": {
+                              "type": "number",
+                            },
+                            "key": {
+                              "type": "string",
+                            },
+                            "level": {
+                              "type": "number",
+                            },
+                            "message": {
+                              "type": "string",
+                            },
+                            "messageKey": {
+                              "type": "string",
+                            },
+                          },
+                          "required": [
+                            "code",
+                            "key",
+                            "level",
+                            "message",
+                            "messageKey",
+                          ],
+                          "type": "object",
+                        },
+                        "type": "object",
+                      },
+                    ],
+                    "description": "A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers.",
+                    "type": "object",
+                  },
+                  "name": {
+                    "description": "Name of the cart - for example \`guest-cart\`",
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+              "CartError": {
+                "description": "A list of all cart errors, such as insufficient stocks, invalid addresses or vouchers.",
+                "properties": {
+                  "items": {
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                      },
+                      "level": {
+                        "description": "desc",
+                        "enum": [
+                          0,
+                          10,
+                          20,
+                        ],
+                        "type": "number",
+                      },
+                      "message": {
+                        "type": "string",
+                      },
+                      "messageKey": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+        }
+      `);
+    });
+
     it("should remove property from existing component", async () => {
       const { patchedSchema } = patchJsonSchema({
         openApiSchema: json5.parse(`{
