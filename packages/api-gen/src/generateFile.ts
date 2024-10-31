@@ -242,12 +242,12 @@ export async function prepareFileContent({
               // })
               writer.write(";").newLine();
             } else {
-              // console.error(
-              //   "No requests for method",
-              //   routePath,
-              //   // "method",
-              //   // method,
-              // );
+              console.error(
+                "No requests for method",
+                routePath,
+                // "method",
+                // method,
+              );
             }
           }
         }

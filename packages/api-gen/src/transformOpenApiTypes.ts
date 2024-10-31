@@ -58,6 +58,11 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
               const operationId =
                 operationReferenceCode?.match(/operations\["(.+)"\]/)?.[1];
 
+              if (operationId === undefined) {
+                // if operationId does not exist, we omit the operation
+                return;
+              }
+
               const operationKey = `${operationId} ${restMethodName} ${currentPath}`;
 
               const operationGenerationMap: MethodDefinition = {
