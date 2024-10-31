@@ -1,19 +1,19 @@
-type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-type XOR<T, U> = T | U extends object
-  ? (Without<T, U> & U) | (Without<U, T> & T)
-  : T | U;
-type OneOf<T extends unknown[]> = T extends [infer Only]
-  ? Only
-  : T extends [infer A, infer B, ...infer Rest]
-    ? OneOf<[XOR<A, B>, ...Rest]>
-    : never;
+/**
+ * This file is auto-generated. Do not make direct changes to the file.
+ * Instead override it in your shopware.d.ts file.
+ *
+ * Shopware API version: 6.6.6.0
+ *
+ */
 type GenericRecord =
   | never
   | null
   | string
   | string[]
   | number
-  | { [key: string]: GenericRecord };
+  | {
+      [key: string]: GenericRecord;
+    };
 export type components = {
   schemas: Schemas;
 };
@@ -27,7 +27,7 @@ export type Schemas = {
   AclRole: {
     app?: components["schemas"]["App"];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
     deletedAt?: string;
     description?: string;
@@ -36,12 +36,12 @@ export type Schemas = {
     name: string;
     privileges?: GenericRecord[];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     users?: components["schemas"]["User"][];
   };
   AclRoleJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
     deletedAt?: string;
     description?: string;
@@ -96,16 +96,16 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AclUserRole: {
     aclRole?: components["schemas"]["AclRole"];
     aclRoleId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
     userId: string;
   };
@@ -114,14 +114,14 @@ export type Schemas = {
     config?: components["schemas"]["AdvancedSearchConfig"];
     configId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     name: string;
     searchTerms?: components["schemas"]["AdvancedSearchActionSearchTerm"][];
     type: string;
     typeConfig?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: date-time */
     validFrom?: string;
     /** Format: date-time */
@@ -131,7 +131,7 @@ export type Schemas = {
     active?: boolean;
     configId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     name: string;
     relationships?: {
@@ -169,7 +169,7 @@ export type Schemas = {
     type: string;
     typeConfig?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: date-time */
     validFrom?: string;
     /** Format: date-time */
@@ -179,18 +179,18 @@ export type Schemas = {
     action?: components["schemas"]["AdvancedSearchAction"];
     actionId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     term: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AdvancedSearchActionSearchTermJsonApi: components["schemas"]["resource"] & {
     actionId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     relationships?: {
       action?: {
@@ -227,7 +227,7 @@ export type Schemas = {
     salesChannelId: string;
     term: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AdvancedSearchBoosting: {
     active?: boolean;
@@ -236,7 +236,7 @@ export type Schemas = {
     config?: components["schemas"]["AdvancedSearchConfig"];
     configId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entityStream?: components["schemas"]["AdvancedSearchEntityStream"];
     entityStreamId?: string;
     id: string;
@@ -244,7 +244,7 @@ export type Schemas = {
     productStream?: components["schemas"]["ProductStream"];
     productStreamId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: date-time */
     validFrom?: string;
     /** Format: date-time */
@@ -256,7 +256,7 @@ export type Schemas = {
     boost: number;
     configId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entityStreamId?: string;
     id: string;
     name: string;
@@ -309,7 +309,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: date-time */
     validFrom?: string;
     /** Format: date-time */
@@ -319,7 +319,7 @@ export type Schemas = {
     andLogic?: boolean;
     boostings?: components["schemas"]["AdvancedSearchBoosting"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     esEnabled?: boolean;
     fields?: components["schemas"]["AdvancedSearchConfigField"][];
     hitCount?: {
@@ -348,13 +348,13 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AdvancedSearchConfigField: {
     config?: components["schemas"]["AdvancedSearchConfig"];
     configId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customField?: components["schemas"]["CustomField"];
     customFieldId?: string;
     entity: string;
@@ -365,12 +365,12 @@ export type Schemas = {
     searchable?: boolean;
     tokenize?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AdvancedSearchConfigFieldJsonApi: components["schemas"]["resource"] & {
     configId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFieldId?: string;
     entity: string;
     field: string;
@@ -412,12 +412,12 @@ export type Schemas = {
     searchable?: boolean;
     tokenize?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AdvancedSearchConfigJsonApi: components["schemas"]["resource"] & {
     andLogic?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     esEnabled?: boolean;
     hitCount?: {
       category?: {
@@ -491,23 +491,23 @@ export type Schemas = {
     };
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AdvancedSearchEntityStream: {
-    apiFilter?: GenericRecord;
+    readonly apiFilter?: GenericRecord;
     boosting?: components["schemas"]["AdvancedSearchBoosting"];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     filters?: components["schemas"]["AdvancedSearchEntityStreamFilter"][];
     id: string;
-    invalid?: boolean;
+    readonly invalid?: boolean;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AdvancedSearchEntityStreamFilter: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entityStream?: components["schemas"]["AdvancedSearchEntityStream"];
     entityStreamId: string;
     field?: string;
@@ -521,12 +521,12 @@ export type Schemas = {
     queries?: components["schemas"]["AdvancedSearchEntityStreamFilter"][];
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value?: string;
   };
   AdvancedSearchEntityStreamFilterJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entityStreamId: string;
     field?: string;
     id: string;
@@ -584,15 +584,15 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value?: string;
   };
   AdvancedSearchEntityStreamJsonApi: components["schemas"]["resource"] & {
-    apiFilter?: GenericRecord;
+    readonly apiFilter?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
-    invalid?: boolean;
+    readonly invalid?: boolean;
     relationships?: {
       boosting?: {
         data?: {
@@ -627,22 +627,22 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AdvancedSearchSynonym: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     language?: components["schemas"]["Language"];
     languageId?: string;
     left: string[];
     right?: string[];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AdvancedSearchSynonymJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     languageId?: string;
     left: string[];
@@ -665,7 +665,7 @@ export type Schemas = {
     };
     right?: string[];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AggregationEntity: {
     /** The entity definition e.g "product_manufacturer". */
@@ -785,7 +785,7 @@ export type Schemas = {
     cookies?: GenericRecord[];
     copyright?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     customFieldSets?: components["schemas"]["CustomFieldSet"][];
     description?: string;
@@ -809,7 +809,7 @@ export type Schemas = {
     flowActions?: components["schemas"]["AppFlowAction"][];
     flowEvents?: components["schemas"]["AppFlowEvent"][];
     /** Runtime field, cannot be used as part of the criteria. */
-    icon?: string;
+    readonly icon?: string;
     id: string;
     integration?: components["schemas"]["Integration"];
     integrationId: string;
@@ -848,7 +848,7 @@ export type Schemas = {
       version: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     version: string;
     webhooks?: components["schemas"]["Webhook"][];
   };
@@ -857,7 +857,7 @@ export type Schemas = {
     app?: components["schemas"]["App"];
     appId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entity: string;
     id: string;
     label: string;
@@ -870,7 +870,7 @@ export type Schemas = {
       view: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
     view: string;
   };
@@ -878,7 +878,7 @@ export type Schemas = {
     action: string;
     appId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entity: string;
     id: string;
     label: string;
@@ -908,28 +908,28 @@ export type Schemas = {
       view: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
     view: string;
   };
   AppAdministrationSnippet: {
     appId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     localeId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value: string;
   };
   AppAdministrationSnippetJsonApi: components["schemas"]["resource"] & {
     appId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     localeId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value: string;
   };
   AppCmsBlock: {
@@ -937,7 +937,7 @@ export type Schemas = {
     appId: string;
     block: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     label: string;
     name: string;
@@ -951,13 +951,13 @@ export type Schemas = {
       template: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AppCmsBlockJsonApi: components["schemas"]["resource"] & {
     appId: string;
     block: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     label: string;
     name: string;
@@ -988,7 +988,7 @@ export type Schemas = {
       template: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AppFlowAction: {
     app?: components["schemas"]["App"];
@@ -996,7 +996,7 @@ export type Schemas = {
     badge?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     delayable?: boolean;
     description?: string;
@@ -1004,7 +1004,7 @@ export type Schemas = {
     headers?: GenericRecord;
     headline?: string;
     /** Runtime field, cannot be used as part of the criteria. */
-    icon?: string;
+    readonly icon?: string;
     iconRaw?: string;
     id: string;
     label: string;
@@ -1025,7 +1025,7 @@ export type Schemas = {
       url: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
   };
   AppFlowActionJsonApi: components["schemas"]["resource"] & {
@@ -1033,14 +1033,14 @@ export type Schemas = {
     badge?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     delayable?: boolean;
     description?: string;
     headers?: GenericRecord;
     headline?: string;
     /** Runtime field, cannot be used as part of the criteria. */
-    icon?: string;
+    readonly icon?: string;
     iconRaw?: string;
     id: string;
     label: string;
@@ -1093,7 +1093,7 @@ export type Schemas = {
       url: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
   };
   AppFlowEvent: {
@@ -1101,19 +1101,19 @@ export type Schemas = {
     appId: string;
     aware: string[];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     flows?: components["schemas"]["Flow"][];
     id: string;
     name: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AppFlowEventJsonApi: components["schemas"]["resource"] & {
     appId: string;
     aware: string[];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -1150,7 +1150,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AppJsonApi: components["schemas"]["resource"] & {
     aclRoleId: string;
@@ -1164,7 +1164,7 @@ export type Schemas = {
     cookies?: GenericRecord[];
     copyright?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -1185,7 +1185,7 @@ export type Schemas = {
       };
     };
     /** Runtime field, cannot be used as part of the criteria. */
-    icon?: string;
+    readonly icon?: string;
     id: string;
     integrationId: string;
     label: string;
@@ -1402,7 +1402,7 @@ export type Schemas = {
       version: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     version: string;
   };
   AppPaymentMethod: {
@@ -1411,7 +1411,7 @@ export type Schemas = {
     appName: string;
     captureUrl?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     finalizeUrl?: string;
     id: string;
     identifier: string;
@@ -1423,7 +1423,7 @@ export type Schemas = {
     recurringUrl?: string;
     refundUrl?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     validateUrl?: string;
   };
   AppPaymentMethodJsonApi: components["schemas"]["resource"] & {
@@ -1431,7 +1431,7 @@ export type Schemas = {
     appName: string;
     captureUrl?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     finalizeUrl?: string;
     id: string;
     identifier: string;
@@ -1488,7 +1488,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     validateUrl?: string;
   };
   AppScriptCondition: {
@@ -1497,7 +1497,7 @@ export type Schemas = {
     appId: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     group?: string;
     id: string;
     identifier: string;
@@ -1512,14 +1512,14 @@ export type Schemas = {
       script: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AppScriptConditionJsonApi: components["schemas"]["resource"] & {
     active: boolean;
     appId: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     group?: string;
     id: string;
     identifier: string;
@@ -1565,14 +1565,14 @@ export type Schemas = {
       script: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AppShippingMethod: {
     app?: components["schemas"]["App"];
     appId?: string;
     appName: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     identifier: string;
     originalMedia?: components["schemas"]["Media"];
@@ -1580,13 +1580,13 @@ export type Schemas = {
     shippingMethod?: components["schemas"]["ShippingMethod"];
     shippingMethodId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AppShippingMethodJsonApi: components["schemas"]["resource"] & {
     appId?: string;
     appName: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     identifier: string;
     originalMediaId?: string;
@@ -1639,25 +1639,25 @@ export type Schemas = {
     };
     shippingMethodId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AppTemplate: {
     active: boolean;
     app?: components["schemas"]["App"];
     appId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     path: string;
     template: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   AppTemplateJsonApi: components["schemas"]["resource"] & {
     active: boolean;
     appId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     path: string;
     relationships?: {
@@ -1679,7 +1679,7 @@ export type Schemas = {
     };
     template: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Association: {
     [key: string]: components["schemas"]["Criteria"];
@@ -1694,7 +1694,7 @@ export type Schemas = {
   };
   B2bBusinessPartner: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     customFields?: GenericRecord;
@@ -1702,11 +1702,11 @@ export type Schemas = {
     defaultRoleId?: string;
     id: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bBusinessPartnerJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId?: string;
     customFields?: GenericRecord;
     defaultRoleId?: string;
@@ -1744,7 +1744,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsApprovalRule: {
     active: boolean;
@@ -1754,7 +1754,7 @@ export type Schemas = {
     businessPartnerCustomerId?: string;
     conditions: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -1763,7 +1763,7 @@ export type Schemas = {
     reviewerRole?: components["schemas"]["B2bComponentsRole"];
     reviewerRoleId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsApprovalRuleAppScriptCondition: {
     active: boolean;
@@ -1771,7 +1771,7 @@ export type Schemas = {
     appId: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     group?: string;
     id: string;
     identifier: string;
@@ -1785,14 +1785,14 @@ export type Schemas = {
       script: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsApprovalRuleAppScriptConditionJsonApi: components["schemas"]["resource"] & {
     active: boolean;
     appId: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     group?: string;
     id: string;
     identifier: string;
@@ -1823,7 +1823,7 @@ export type Schemas = {
       script: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsApprovalRuleJsonApi: components["schemas"]["resource"] & {
     active: boolean;
@@ -1831,7 +1831,7 @@ export type Schemas = {
     businessPartnerCustomerId?: string;
     conditions: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -1886,25 +1886,25 @@ export type Schemas = {
     };
     reviewerRoleId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsPendingOrder: {
     addresses?: components["schemas"]["B2bComponentsPendingOrderAddress"][];
     /** Format: float */
-    amountNet?: number;
+    readonly amountNet?: number;
     /** Format: float */
-    amountTotal?: number;
+    readonly amountTotal?: number;
     approvalRule?: components["schemas"]["B2bComponentsApprovalRule"];
     approvalRuleId?: string;
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     billingAddress?: components["schemas"]["B2bComponentsPendingOrderAddress"];
     billingAddressId: string;
     cartPayload: string;
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     customer?: components["schemas"]["Customer"];
@@ -1955,7 +1955,7 @@ export type Schemas = {
     shippingMethodId: string;
     stateId: string;
     stateMachineState?: components["schemas"]["StateMachineState"];
-    taxStatus?: string;
+    readonly taxStatus?: string;
     totalRounding: {
       /** Format: int64 */
       decimals: number;
@@ -1964,7 +1964,7 @@ export type Schemas = {
       roundForNet: boolean;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsPendingOrderAddress: {
     additionalAddressLine1?: string;
@@ -1976,7 +1976,7 @@ export type Schemas = {
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -1990,7 +1990,7 @@ export type Schemas = {
     street: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatId?: string;
     zipcode?: string;
   };
@@ -2002,7 +2002,7 @@ export type Schemas = {
     countryId: string;
     countryStateId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -2076,23 +2076,23 @@ export type Schemas = {
     street: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatId?: string;
     zipcode?: string;
   };
   B2bComponentsPendingOrderJsonApi: components["schemas"]["resource"] & {
     /** Format: float */
-    amountNet?: number;
+    readonly amountNet?: number;
     /** Format: float */
-    amountTotal?: number;
+    readonly amountTotal?: number;
     approvalRuleId?: string;
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     billingAddressId: string;
     cartPayload: string;
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyId: string;
     customerId: string;
     customFields?: GenericRecord;
@@ -2345,7 +2345,7 @@ export type Schemas = {
     salesChannelId: string;
     shippingMethodId: string;
     stateId: string;
-    taxStatus?: string;
+    readonly taxStatus?: string;
     totalRounding: {
       /** Format: int64 */
       decimals: number;
@@ -2354,25 +2354,25 @@ export type Schemas = {
       roundForNet: boolean;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsRole: {
     businessPartnerCustomer?: components["schemas"]["Customer"];
     businessPartnerCustomerId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     employees?: components["schemas"]["B2bEmployee"][];
     id: string;
     name: string;
     permissions?: GenericRecord[];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsRoleJsonApi: components["schemas"]["resource"] & {
     businessPartnerCustomerId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -2410,12 +2410,12 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsShoppingList: {
     active?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     customer?: components["schemas"]["Customer"];
@@ -2430,14 +2430,14 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
     updatedById?: string;
   };
   B2bComponentsShoppingListJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdById?: string;
     customerId: string;
     customFields?: GenericRecord;
@@ -2539,12 +2539,12 @@ export type Schemas = {
     };
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedById?: string;
   };
   B2bComponentsShoppingListLineItem: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     price?: components["schemas"]["Price"][];
@@ -2556,11 +2556,11 @@ export type Schemas = {
     shoppingList?: components["schemas"]["B2bComponentsShoppingList"];
     shoppingListId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bComponentsShoppingListLineItemJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     price?: components["schemas"]["Price"][];
@@ -2602,14 +2602,14 @@ export type Schemas = {
     };
     shoppingListId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bEmployee: {
     active?: boolean;
     businessPartnerCustomer?: components["schemas"]["Customer"];
     businessPartnerCustomerId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     extensions?: {
@@ -2639,13 +2639,13 @@ export type Schemas = {
     role?: components["schemas"]["B2bComponentsRole"];
     roleId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bEmployeeJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     businessPartnerCustomerId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     extensions?: {
@@ -2720,11 +2720,11 @@ export type Schemas = {
     };
     roleId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bOrderEmployee: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId: string;
     firstName: string;
@@ -2734,12 +2734,12 @@ export type Schemas = {
     orderId: string;
     orderVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   B2bOrderEmployeeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     employeeId: string;
     firstName: string;
     id: string;
@@ -2779,28 +2779,28 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   B2bPermission: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     dependencies?: string[];
     group: string;
     id: string;
     name: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   B2bPermissionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     dependencies?: string[];
     group: string;
     id: string;
     name: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CalculatedPrice: {
     /** @enum {string} */
@@ -2912,8 +2912,8 @@ export type Schemas = {
       key?: string;
       /**
        * * `0` - notice,
-       * * `10` - warning,
-       * * `20` - error
+       *     * `10` - warning,
+       *     * `20` - error
        * @enum {number}
        */
       level?: 0 | 10 | 20;
@@ -2971,10 +2971,10 @@ export type Schemas = {
     afterCategoryId?: string;
     afterCategoryVersionId?: string;
     /** Format: int64 */
-    autoIncrement?: number;
-    breadcrumb?: readonly GenericRecord[];
+    readonly autoIncrement?: number;
+    readonly breadcrumb?: GenericRecord[];
     /** Format: int64 */
-    childCount?: number;
+    readonly childCount?: number;
     children?: components["schemas"]["Category"][];
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
@@ -2982,7 +2982,7 @@ export type Schemas = {
     cmsPageIdSwitched?: boolean;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customEntityTypeId?: string;
     customFields?: GenericRecord;
     description?: string;
@@ -3011,7 +3011,7 @@ export type Schemas = {
     internalLink?: string;
     keywords?: string;
     /** Format: int64 */
-    level?: number;
+    readonly level?: number;
     linkNewTab?: boolean;
     linkType?: string;
     mainCategories?: components["schemas"]["MainCategory"][];
@@ -3025,7 +3025,7 @@ export type Schemas = {
     parent?: components["schemas"]["Category"];
     parentId?: string;
     parentVersionId?: string;
-    path?: string;
+    readonly path?: string;
     productAssignmentType?: string;
     products?: components["schemas"]["Product"][];
     productStream?: components["schemas"]["ProductStream"];
@@ -3059,7 +3059,7 @@ export type Schemas = {
     };
     type?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     visible?: boolean;
     /**
@@ -3073,16 +3073,16 @@ export type Schemas = {
     afterCategoryId?: string;
     afterCategoryVersionId?: string;
     /** Format: int64 */
-    autoIncrement?: number;
-    breadcrumb?: readonly GenericRecord[];
+    readonly autoIncrement?: number;
+    readonly breadcrumb?: GenericRecord[];
     /** Format: int64 */
-    childCount?: number;
+    readonly childCount?: number;
     cmsPageId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     cmsPageIdSwitched?: boolean;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customEntityTypeId?: string;
     customFields?: GenericRecord;
     description?: string;
@@ -3110,7 +3110,7 @@ export type Schemas = {
     internalLink?: string;
     keywords?: string;
     /** Format: int64 */
-    level?: number;
+    readonly level?: number;
     linkNewTab?: boolean;
     linkType?: string;
     mediaId?: string;
@@ -3119,7 +3119,7 @@ export type Schemas = {
     name: string;
     parentId?: string;
     parentVersionId?: string;
-    path?: string;
+    readonly path?: string;
     productAssignmentType?: string;
     productStreamId?: string;
     relationships?: {
@@ -3345,7 +3345,7 @@ export type Schemas = {
     };
     type?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     visible?: boolean;
     /**
@@ -3369,7 +3369,7 @@ export type Schemas = {
     backgroundMediaMode?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     extensions?: {
@@ -3419,7 +3419,7 @@ export type Schemas = {
     slots?: components["schemas"]["CmsSlot"][];
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     visibility?: {
       desktop?: boolean;
@@ -3433,7 +3433,7 @@ export type Schemas = {
     backgroundMediaMode?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     extensions?: {
@@ -3528,7 +3528,7 @@ export type Schemas = {
     sectionPosition?: string;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     visibility?: {
       desktop?: boolean;
@@ -3542,7 +3542,7 @@ export type Schemas = {
       backgroundColor?: string;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     entity?: string;
@@ -3627,39 +3627,39 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   CmsPageActivity: {
     cmsPage?: components["schemas"]["CmsPage"];
-    cmsPageVersionId?: string;
+    readonly cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
-    details?: GenericRecord;
-    draftVersion?: string;
+    readonly createdAt?: string;
+    readonly details?: GenericRecord;
+    readonly draftVersion?: string;
     id: string;
-    isDiscarded?: boolean;
-    isMerged?: boolean;
-    isReleasedAsNew?: boolean;
-    name?: string;
-    pageId: string;
+    readonly isDiscarded?: boolean;
+    readonly isMerged?: boolean;
+    readonly isReleasedAsNew?: boolean;
+    readonly name?: string;
+    readonly pageId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
-    userId?: string;
+    readonly userId?: string;
   };
   CmsPageActivityJsonApi: components["schemas"]["resource"] & {
-    cmsPageVersionId?: string;
+    readonly cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
-    details?: GenericRecord;
-    draftVersion?: string;
+    readonly createdAt?: string;
+    readonly details?: GenericRecord;
+    readonly draftVersion?: string;
     id: string;
-    isDiscarded?: boolean;
-    isMerged?: boolean;
-    isReleasedAsNew?: boolean;
-    name?: string;
-    pageId: string;
+    readonly isDiscarded?: boolean;
+    readonly isMerged?: boolean;
+    readonly isReleasedAsNew?: boolean;
+    readonly name?: string;
+    readonly pageId: string;
     relationships?: {
       cmsPage?: {
         data?: {
@@ -3693,37 +3693,37 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
-    userId?: string;
+    readonly updatedAt?: string;
+    readonly userId?: string;
   };
   CmsPageDraft: {
     cmsPage?: components["schemas"]["CmsPage"];
-    cmsPageVersionId?: string;
+    readonly cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
-    deepLinkCode: string;
-    draftVersion: string;
+    readonly createdAt?: string;
+    readonly deepLinkCode: string;
+    readonly draftVersion: string;
     id: string;
     name: string;
-    ownerId?: string;
-    pageId: string;
+    readonly ownerId?: string;
+    readonly pageId: string;
     previewMedia?: components["schemas"]["Media"];
-    previewMediaId?: string;
+    readonly previewMediaId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
   };
   CmsPageDraftJsonApi: components["schemas"]["resource"] & {
-    cmsPageVersionId?: string;
+    readonly cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
-    deepLinkCode: string;
-    draftVersion: string;
+    readonly createdAt?: string;
+    readonly deepLinkCode: string;
+    readonly draftVersion: string;
     id: string;
     name: string;
-    ownerId?: string;
-    pageId: string;
-    previewMediaId?: string;
+    readonly ownerId?: string;
+    readonly pageId: string;
+    readonly previewMediaId?: string;
     relationships?: {
       cmsPage?: {
         data?: {
@@ -3772,14 +3772,14 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CmsPageJsonApi: components["schemas"]["resource"] & {
     config?: {
       backgroundColor?: string;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     entity?: string;
@@ -3951,7 +3951,7 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   CmsSection: {
@@ -3962,7 +3962,7 @@ export type Schemas = {
     blocks?: components["schemas"]["CmsBlock"][];
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     extensions?: {
@@ -4004,7 +4004,7 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     visibility?: {
       desktop?: boolean;
@@ -4018,7 +4018,7 @@ export type Schemas = {
     backgroundMediaMode?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cssClass?: string;
     customFields?: GenericRecord;
     extensions?: {
@@ -4106,7 +4106,7 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     visibility?: {
       desktop?: boolean;
@@ -4120,9 +4120,9 @@ export type Schemas = {
     cmsBlockVersionId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
-    data?: GenericRecord;
+    readonly data?: GenericRecord;
     extensions?: {
       swagCmsExtensionsForm?: {
         data?: {
@@ -4153,7 +4153,7 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   CmsSlotJsonApi: components["schemas"]["resource"] & {
@@ -4161,9 +4161,9 @@ export type Schemas = {
     cmsBlockVersionId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
-    data?: GenericRecord;
+    readonly data?: GenericRecord;
     extensions?: {
       swagCmsExtensionsForm?: {
         data?: {
@@ -4211,7 +4211,7 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   Country: {
@@ -4228,7 +4228,7 @@ export type Schemas = {
       enabled: boolean;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyCountryRoundings?: components["schemas"]["CurrencyCountryRounding"][];
     customerAddresses?: components["schemas"]["CustomerAddress"][];
     customerTax?: {
@@ -4281,7 +4281,7 @@ export type Schemas = {
       vatIdPattern: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatIdPattern?: string;
     vatIdRequired?: boolean;
   };
@@ -4299,7 +4299,7 @@ export type Schemas = {
       enabled: boolean;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerTax?: {
       /** Format: float */
       amount: number;
@@ -4452,7 +4452,7 @@ export type Schemas = {
       vatIdPattern: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatIdPattern?: string;
     vatIdRequired?: boolean;
   };
@@ -4461,7 +4461,7 @@ export type Schemas = {
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerAddresses?: components["schemas"]["CustomerAddress"][];
     customFields?: GenericRecord;
     extensions?: {
@@ -4493,13 +4493,13 @@ export type Schemas = {
       shortCode: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CountryStateJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       subscriptionCustomerAddresses?: {
@@ -4576,7 +4576,7 @@ export type Schemas = {
       shortCode: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Criteria: {
     /** Used to perform aggregations on the search result. For more information, see [Search Queries > Aggregations](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#aggregations) */
@@ -4586,16 +4586,17 @@ export type Schemas = {
     /** Fields which should be returned in the search result. */
     fields?: string[];
     /** List of filters to restrict the search result. For more information, see [Search Queries > Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#filter) */
-    filter?: ({
-      field: string;
-      type: string;
-      value: string;
-    } & (
+    filter?: (
+      | {
+          field: string;
+          type: string;
+          value: string;
+        }
       | components["schemas"]["SimpleFilter"]
       | components["schemas"]["EqualsFilter"]
       | components["schemas"]["MultiNotFilter"]
       | components["schemas"]["RangeFilter"]
-    ))[];
+    )[];
     /** Perform groupings over certain fields */
     grouping?: string[];
     /** List of ids to search for */
@@ -4606,16 +4607,17 @@ export type Schemas = {
     /** Search result page */
     page?: number;
     /** Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter) */
-    "post-filter"?: ({
-      field: string;
-      type: string;
-      value: string;
-    } & (
+    "post-filter"?: (
+      | {
+          field: string;
+          type: string;
+          value: string;
+        }
       | components["schemas"]["SimpleFilter"]
       | components["schemas"]["EqualsFilter"]
       | components["schemas"]["MultiNotFilter"]
       | components["schemas"]["RangeFilter"]
-    ))[];
+    )[];
     /** The query string to search for */
     query?: string;
     /** Sorting in the search result. */
@@ -4634,7 +4636,7 @@ export type Schemas = {
   Currency: {
     countryRoundings?: components["schemas"]["CurrencyCountryRounding"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       quotes?: {
@@ -4723,13 +4725,13 @@ export type Schemas = {
       symbol: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CurrencyCountryRounding: {
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     id: string;
@@ -4748,12 +4750,12 @@ export type Schemas = {
       roundForNet: boolean;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CurrencyCountryRoundingJsonApi: components["schemas"]["resource"] & {
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyId: string;
     id: string;
     itemRounding: {
@@ -4803,11 +4805,11 @@ export type Schemas = {
       roundForNet: boolean;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CurrencyJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       quotes?: {
@@ -4997,14 +4999,14 @@ export type Schemas = {
       symbol: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomEntity: {
     appId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     cmsAware?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFieldsAware?: boolean;
     /** Format: date-time */
     deletedAt?: string;
@@ -5017,14 +5019,14 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     storeApiAware?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomEntityJsonApi: components["schemas"]["resource"] & {
     appId?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     cmsAware?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFieldsAware?: boolean;
     /** Format: date-time */
     deletedAt?: string;
@@ -5037,7 +5039,7 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     storeApiAware?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomField: {
     active?: boolean;
@@ -5045,7 +5047,7 @@ export type Schemas = {
     allowCustomerWrite?: boolean;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFieldSet?: components["schemas"]["CustomFieldSet"];
     customFieldSetId?: string;
     id: string;
@@ -5053,7 +5055,7 @@ export type Schemas = {
     productSearchConfigFields?: components["schemas"]["ProductSearchConfigField"][];
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomFieldJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
@@ -5061,7 +5063,7 @@ export type Schemas = {
     allowCustomerWrite?: boolean;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFieldSetId?: string;
     id: string;
     name: string;
@@ -5099,7 +5101,7 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomFieldSet: {
     active?: boolean;
@@ -5107,7 +5109,7 @@ export type Schemas = {
     appId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: components["schemas"]["CustomField"][];
     global?: boolean;
     id: string;
@@ -5117,14 +5119,14 @@ export type Schemas = {
     products?: components["schemas"]["Product"][];
     relations?: components["schemas"]["CustomFieldSetRelation"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomFieldSetJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     appId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     global?: boolean;
     id: string;
     name: string;
@@ -5193,21 +5195,21 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomFieldSetRelation: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFieldSet?: components["schemas"]["CustomFieldSet"];
     customFieldSetId: string;
     entityName: string;
     id: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomFieldSetRelationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFieldSetId: string;
     entityName: string;
     id: string;
@@ -5229,11 +5231,11 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomPrice: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerGroup?: components["schemas"]["CustomerGroup"];
     customerGroupId?: string;
@@ -5244,11 +5246,11 @@ export type Schemas = {
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomPriceJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerGroupId?: string;
     customerId?: string;
     id: string;
@@ -5303,7 +5305,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomPricingDeleteOperation: {
     /**
@@ -5311,11 +5313,9 @@ export type Schemas = {
      * @enum {string}
      */
     action: "delete";
-    /**
-     * Contains a list of changesets for an entity. If the action type is `delete`,
-     *     a list of identifiers can be provided.
-     */
-    payload: string[][];
+    /** Contains a list of changesets for an entity. If the action type is `delete`,
+     *         a list of identifiers can be provided. */
+    payload: (string[] | string[] | string[])[];
   };
   CustomPricingPrice: {
     price: {
@@ -5356,10 +5356,8 @@ export type Schemas = {
      * @enum {string}
      */
     action: "upsert";
-    /**
-     * Contains a list of changesets for an entity. If the action type is `delete`,
-     *     a list of identifiers can be provided.
-     */
+    /** Contains a list of changesets for an entity. If the action type is `delete`,
+     *         a list of identifiers can be provided. */
     payload: {
       /** This parameter should be specified, or 'customerId', not both */
       customerGroupId?: string;
@@ -5377,14 +5375,14 @@ export type Schemas = {
     addresses?: components["schemas"]["CustomerAddress"][];
     affiliateCode?: string;
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     birthday?: string;
     boundSalesChannel?: components["schemas"]["SalesChannel"];
     boundSalesChannelId?: string;
     campaignCode?: string;
     company?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     customerNumber: string;
@@ -5627,14 +5625,14 @@ export type Schemas = {
     lastLogin?: string;
     lastName: string;
     /** Format: date-time */
-    lastOrderDate?: string;
+    readonly lastOrderDate?: string;
     lastPaymentMethod?: components["schemas"]["PaymentMethod"];
     lastPaymentMethodId?: string;
     /** Format: int64 */
-    orderCount?: number;
+    readonly orderCount?: number;
     orderCustomers?: components["schemas"]["OrderCustomer"][];
     /** Format: float */
-    orderTotalAmount?: number;
+    readonly orderTotalAmount?: number;
     productReviews?: components["schemas"]["ProductReview"][];
     promotions?: components["schemas"]["Promotion"][];
     recoveryCustomer?: components["schemas"]["CustomerRecovery"];
@@ -5642,16 +5640,16 @@ export type Schemas = {
     requestedGroup?: components["schemas"]["CustomerGroup"];
     requestedGroupId?: string;
     /** Format: int64 */
-    reviewCount?: number;
+    readonly reviewCount?: number;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     salutation?: components["schemas"]["Salutation"];
     salutationId?: string;
-    tagIds?: readonly string[];
+    readonly tagIds?: string[];
     tags?: components["schemas"]["Tag"][];
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
     updatedById?: string;
     vatIds?: string[];
@@ -5667,7 +5665,7 @@ export type Schemas = {
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     customFields?: GenericRecord;
@@ -5681,7 +5679,7 @@ export type Schemas = {
     street: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     zipcode?: string;
   };
   CustomerAddressJsonApi: components["schemas"]["resource"] & {
@@ -5692,7 +5690,7 @@ export type Schemas = {
     countryId: string;
     countryStateId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId: string;
     customFields?: GenericRecord;
     department?: string;
@@ -5766,12 +5764,12 @@ export type Schemas = {
     street: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     zipcode?: string;
   };
   CustomerGroup: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customers?: components["schemas"]["Customer"][];
     customFields?: GenericRecord;
     displayGross?: boolean;
@@ -5808,11 +5806,11 @@ export type Schemas = {
       registrationTitle: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomerGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     displayGross?: boolean;
     extensions?: {
@@ -5893,11 +5891,11 @@ export type Schemas = {
       registrationTitle: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomerGroupRegistrationSalesChannels: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerGroup?: components["schemas"]["CustomerGroup"];
     customerGroupId: string;
     id?: string;
@@ -5909,13 +5907,13 @@ export type Schemas = {
     active?: boolean;
     affiliateCode?: string;
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     birthday?: string;
     boundSalesChannelId?: string;
     campaignCode?: string;
     company?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdById?: string;
     customerNumber: string;
     customFields?: GenericRecord;
@@ -6152,12 +6150,12 @@ export type Schemas = {
     lastLogin?: string;
     lastName: string;
     /** Format: date-time */
-    lastOrderDate?: string;
+    readonly lastOrderDate?: string;
     lastPaymentMethodId?: string;
     /** Format: int64 */
-    orderCount?: number;
+    readonly orderCount?: number;
     /** Format: float */
-    orderTotalAmount?: number;
+    readonly orderTotalAmount?: number;
     relationships?: {
       addresses?: {
         data?: {
@@ -6448,29 +6446,29 @@ export type Schemas = {
     remoteAddress?: string;
     requestedGroupId?: string;
     /** Format: int64 */
-    reviewCount?: number;
+    readonly reviewCount?: number;
     salesChannelId: string;
     salutationId?: string;
-    tagIds?: readonly string[];
+    readonly tagIds?: string[];
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedById?: string;
     vatIds?: string[];
   };
   CustomerRecovery: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     hash: string;
     id: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomerRecoveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId: string;
     hash: string;
     id: string;
@@ -6492,21 +6490,21 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomerSpecificFeatures: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     features: GenericRecord;
     id: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomerSpecificFeaturesJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId: string;
     features: GenericRecord;
     id: string;
@@ -6528,7 +6526,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomerTag: {
     customer?: components["schemas"]["Customer"];
@@ -6539,7 +6537,7 @@ export type Schemas = {
   };
   CustomerWishlist: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     customFields?: GenericRecord;
@@ -6548,11 +6546,11 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomerWishlistJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId: string;
     customFields?: GenericRecord;
     id: string;
@@ -6605,23 +6603,23 @@ export type Schemas = {
     };
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   CustomerWishlistProduct: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     wishlist?: components["schemas"]["CustomerWishlist"];
     wishlistId: string;
   };
   CustomerWishlistProductJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -6658,12 +6656,12 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     wishlistId: string;
   };
   DeliveryTime: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     /** Format: int64 */
@@ -6679,11 +6677,11 @@ export type Schemas = {
     };
     unit: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DeliveryTimeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     /** Format: int64 */
@@ -6729,12 +6727,12 @@ export type Schemas = {
     };
     unit: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Document: {
     config: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     deepLinkCode: string;
     dependentDocuments?: components["schemas"]["Document"][];
@@ -6753,12 +6751,12 @@ export type Schemas = {
     sent?: boolean;
     static?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DocumentBaseConfig: {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     documentNumber?: string;
     documentType?: components["schemas"]["DocumentType"];
@@ -6772,12 +6770,12 @@ export type Schemas = {
     name: string;
     salesChannels?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DocumentBaseConfigJsonApi: components["schemas"]["resource"] & {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     documentNumber?: string;
     documentTypeId: string;
@@ -6835,11 +6833,11 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DocumentBaseConfigSalesChannel: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     documentBaseConfig?: components["schemas"]["DocumentBaseConfig"];
     documentBaseConfigId: string;
     documentType?: components["schemas"]["DocumentType"];
@@ -6848,11 +6846,11 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DocumentBaseConfigSalesChannelJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     documentBaseConfigId: string;
     documentTypeId?: string;
     id: string;
@@ -6905,12 +6903,12 @@ export type Schemas = {
     };
     salesChannelId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DocumentJsonApi: components["schemas"]["resource"] & {
     config: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     deepLinkCode: string;
     documentMediaFileId?: string;
@@ -7001,11 +6999,11 @@ export type Schemas = {
     sent?: boolean;
     static?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DocumentType: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     documentBaseConfigs?: components["schemas"]["DocumentBaseConfig"][];
     documentBaseConfigSalesChannels?: components["schemas"]["DocumentBaseConfigSalesChannel"][];
@@ -7035,11 +7033,11 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DocumentTypeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       quoteDocuments?: {
@@ -7113,7 +7111,7 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DsrAppointment: {
     /** Format: date-time */
@@ -7128,7 +7126,7 @@ export type Schemas = {
     canBookNewAppointment?: boolean;
     canSendRequestEmail?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById: string;
     customFields?: GenericRecord;
@@ -7170,7 +7168,7 @@ export type Schemas = {
       videoAudioSettings: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
     updatedById?: string;
     videoAudioSettings?: string;
@@ -7182,7 +7180,7 @@ export type Schemas = {
     attendeeEmail?: string;
     attendeeName?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     guideCartPermissionsGranted?: boolean;
@@ -7197,7 +7195,7 @@ export type Schemas = {
     productCollections?: components["schemas"]["DsrAttendeeProductCollection"][];
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
     userId?: string;
     videoUserId?: string;
@@ -7207,7 +7205,7 @@ export type Schemas = {
     attendeeEmail?: string;
     attendeeName?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId?: string;
     guideCartPermissionsGranted?: boolean;
     id: string;
@@ -7296,7 +7294,7 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     userId?: string;
     videoUserId?: string;
   };
@@ -7312,7 +7310,7 @@ export type Schemas = {
     canBookNewAppointment?: boolean;
     canSendRequestEmail?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdById: string;
     customFields?: GenericRecord;
     default?: boolean;
@@ -7457,7 +7455,7 @@ export type Schemas = {
       videoAudioSettings: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedById?: string;
     videoAudioSettings?: string;
   };
@@ -7466,7 +7464,7 @@ export type Schemas = {
     appointmentId: string;
     companyName?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     emailAddress: string;
     firstName: string;
     handledById?: string;
@@ -7481,13 +7479,13 @@ export type Schemas = {
     salutationId: string;
     subject: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DsrAppointmentRequestJsonApi: components["schemas"]["resource"] & {
     appointmentId: string;
     companyName?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     emailAddress: string;
     firstName: string;
     handledById?: string;
@@ -7561,27 +7559,27 @@ export type Schemas = {
     salutationId: string;
     subject: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DsrAppointmentVideoChat: {
     appointment?: components["schemas"]["DsrAppointment"];
     appointmentId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name?: string;
     ownerToken?: string;
     startAsBroadcast?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url?: string;
     userToken?: string;
   };
   DsrAppointmentVideoChatJsonApi: components["schemas"]["resource"] & {
     appointmentId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name?: string;
@@ -7605,7 +7603,7 @@ export type Schemas = {
     };
     startAsBroadcast?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url?: string;
     userToken?: string;
   };
@@ -7614,19 +7612,19 @@ export type Schemas = {
     attendee?: components["schemas"]["DsrAppointmentAttendee"];
     attendeeId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DsrAttendeeProductCollectionJsonApi: components["schemas"]["resource"] & {
     alias: string;
     attendeeId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -7663,13 +7661,13 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DsrInteraction: {
     attendee?: components["schemas"]["DsrAppointmentAttendee"];
     attendeeId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
     expiresAt?: string;
     id: string;
@@ -7678,12 +7676,12 @@ export type Schemas = {
     /** Format: date-time */
     triggeredAt: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DsrInteractionJsonApi: components["schemas"]["resource"] & {
     attendeeId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
     expiresAt?: string;
     id: string;
@@ -7709,14 +7707,14 @@ export type Schemas = {
     /** Format: date-time */
     triggeredAt: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DsrPresentation: {
     active?: boolean;
     appointments?: components["schemas"]["DsrAppointment"][];
     cmsPages?: components["schemas"]["DsrPresentationCmsPage"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById: string;
     customFields?: GenericRecord;
@@ -7734,7 +7732,7 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
     updatedById?: string;
     versionId?: string;
@@ -7744,7 +7742,7 @@ export type Schemas = {
     cmsPageId: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     dsrPresentationVersionId?: string;
     id: string;
@@ -7772,13 +7770,13 @@ export type Schemas = {
       title: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DsrPresentationCmsPageJsonApi: components["schemas"]["resource"] & {
     cmsPageId: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     dsrPresentationVersionId?: string;
     id: string;
@@ -7865,12 +7863,12 @@ export type Schemas = {
       title: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   DsrPresentationJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdById: string;
     customFields?: GenericRecord;
     id: string;
@@ -7963,7 +7961,7 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedById?: string;
     versionId?: string;
   };
@@ -7989,7 +7987,7 @@ export type Schemas = {
     appFlowEvent?: components["schemas"]["AppFlowEvent"];
     appFlowEventId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     eventName: string;
@@ -8011,19 +8009,19 @@ export type Schemas = {
       };
     };
     id: string;
-    invalid?: boolean;
+    readonly invalid?: boolean;
     name: string;
     /** Format: int64 */
     priority?: number;
     sequences?: components["schemas"]["FlowSequence"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   FlowJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     appFlowEventId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     eventName: string;
@@ -8045,7 +8043,7 @@ export type Schemas = {
       };
     };
     id: string;
-    invalid?: boolean;
+    readonly invalid?: boolean;
     name: string;
     /** Format: int64 */
     priority?: number;
@@ -8082,7 +8080,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   FlowSequence: {
     actionName?: string;
@@ -8091,7 +8089,7 @@ export type Schemas = {
     children?: components["schemas"]["FlowSequence"][];
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     displayGroup?: number;
@@ -8138,14 +8136,14 @@ export type Schemas = {
     ruleId?: string;
     trueCase?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   FlowSequenceJsonApi: components["schemas"]["resource"] & {
     actionName?: string;
     appFlowActionId?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     displayGroup?: number;
@@ -8266,25 +8264,25 @@ export type Schemas = {
     ruleId?: string;
     trueCase?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   FlowTemplate: {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     name: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   FlowTemplateJsonApi: components["schemas"]["resource"] & {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     name: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   GetAttendeeInsightsResponse: {
     attendees?: components["schemas"]["AttendeeInsights"][];
@@ -8329,7 +8327,7 @@ export type Schemas = {
   ImportExportFile: {
     accessToken?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
     expireDate: string;
     id: string;
@@ -8339,12 +8337,12 @@ export type Schemas = {
     /** Format: int64 */
     size?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ImportExportFileJsonApi: components["schemas"]["resource"] & {
     accessToken?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
     expireDate: string;
     id: string;
@@ -8370,13 +8368,13 @@ export type Schemas = {
     /** Format: int64 */
     size?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ImportExportLog: {
     activity: string;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     failedImportLog?: components["schemas"]["ImportExportLog"];
     file?: components["schemas"]["ImportExportFile"];
     fileId?: string;
@@ -8391,7 +8389,7 @@ export type Schemas = {
     result?: GenericRecord;
     state: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
     userId?: string;
     username?: string;
@@ -8400,7 +8398,7 @@ export type Schemas = {
     activity: string;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     fileId?: string;
     id: string;
     invalidRecordsLogId?: string;
@@ -8488,14 +8486,14 @@ export type Schemas = {
     result?: GenericRecord;
     state: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     userId?: string;
     username?: string;
   };
   ImportExportProfile: {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     delimiter: string;
     enclosure: string;
     fileType: string;
@@ -8520,12 +8518,12 @@ export type Schemas = {
     type?: string;
     updateBy?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ImportExportProfileJsonApi: components["schemas"]["resource"] & {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     delimiter: string;
     enclosure: string;
     fileType: string;
@@ -8566,7 +8564,7 @@ export type Schemas = {
     type?: string;
     updateBy?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Include: {
     [key: string]: string[];
@@ -8577,7 +8575,7 @@ export type Schemas = {
     admin?: boolean;
     app?: components["schemas"]["App"];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Format: date-time */
     deletedAt?: string;
@@ -8604,13 +8602,13 @@ export type Schemas = {
     lastUsageAt?: string;
     secretAccessKey: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   IntegrationJsonApi: components["schemas"]["resource"] & {
     accessKey: string;
     admin?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Format: date-time */
     deletedAt?: string;
@@ -8669,7 +8667,7 @@ export type Schemas = {
     };
     secretAccessKey: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   IntegrationRole: {
     aclRoleId: string;
@@ -8715,7 +8713,7 @@ export type Schemas = {
     cmsPageId?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       swagDynamicAccessRules?: {
@@ -8754,7 +8752,7 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
     versionId?: string;
   };
@@ -8763,7 +8761,7 @@ export type Schemas = {
     cmsPageId?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       swagDynamicAccessRules?: {
@@ -8861,7 +8859,7 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
     versionId?: string;
   };
@@ -8884,7 +8882,7 @@ export type Schemas = {
   Language: {
     children?: components["schemas"]["Language"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customers?: components["schemas"]["Customer"][];
     customFields?: GenericRecord;
     extensions?: {
@@ -8982,11 +8980,11 @@ export type Schemas = {
     translationCode?: components["schemas"]["Locale"];
     translationCodeId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   LanguageJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       mediaAiTagTranslation?: {
@@ -9283,7 +9281,7 @@ export type Schemas = {
     };
     translationCodeId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   LineItem: {
     children?: components["schemas"]["LineItem"][];
@@ -9350,7 +9348,7 @@ export type Schemas = {
   Locale: {
     code: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     languages?: components["schemas"]["Language"][];
@@ -9362,13 +9360,13 @@ export type Schemas = {
       territory: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     users?: components["schemas"]["User"][];
   };
   LocaleJsonApi: components["schemas"]["resource"] & {
     code: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -9411,37 +9409,37 @@ export type Schemas = {
       territory: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   LogEntry: {
     channel?: string;
     context?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     extra?: GenericRecord;
     id: string;
     /** Format: int64 */
     level?: number;
     message?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   LogEntryJsonApi: components["schemas"]["resource"] & {
     channel?: string;
     context?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     extra?: GenericRecord;
     id: string;
     /** Format: int64 */
     level?: number;
     message?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MailHeaderFooter: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     footerHtml?: string;
     footerPlain?: string;
@@ -9460,11 +9458,11 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MailHeaderFooterJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     footerHtml?: string;
     footerPlain?: string;
@@ -9499,13 +9497,13 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MailTemplate: {
     contentHtml: string;
     contentPlain: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -9541,13 +9539,13 @@ export type Schemas = {
       subject: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MailTemplateJsonApi: components["schemas"]["resource"] & {
     contentHtml: string;
     contentPlain: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -9613,7 +9611,7 @@ export type Schemas = {
       subject: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MailTemplateMedia: {
     id: string;
@@ -9628,7 +9626,7 @@ export type Schemas = {
   MailTemplateType: {
     availableEntities?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mailTemplates?: components["schemas"]["MailTemplate"][];
@@ -9640,12 +9638,12 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MailTemplateTypeJsonApi: components["schemas"]["resource"] & {
     availableEntities?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -9673,14 +9671,14 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MainCategory: {
     category?: components["schemas"]["Category"];
     categoryId: string;
     categoryVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -9688,13 +9686,13 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MainCategoryJsonApi: components["schemas"]["resource"] & {
     categoryId: string;
     categoryVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -9747,7 +9745,7 @@ export type Schemas = {
     };
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Media: {
     alt?: string;
@@ -9760,7 +9758,7 @@ export type Schemas = {
     cmsSections?: components["schemas"]["CmsSection"][];
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     documentBaseConfigs?: components["schemas"]["DocumentBaseConfig"][];
     documents?: components["schemas"]["Document"][];
@@ -9886,19 +9884,19 @@ export type Schemas = {
         };
       };
     };
-    fileExtension?: string;
-    fileName?: string;
+    readonly fileExtension?: string;
+    readonly fileName?: string;
     /** Format: int64 */
-    fileSize?: number;
+    readonly fileSize?: number;
     /** Runtime field, cannot be used as part of the criteria. */
     hasFile?: boolean;
     id: string;
     mailTemplateMedia?: components["schemas"]["MailTemplateMedia"][];
     mediaFolder?: components["schemas"]["MediaFolder"];
     mediaFolderId?: string;
-    mediaType?: GenericRecord;
-    metaData?: GenericRecord;
-    mimeType?: string;
+    readonly mediaType?: GenericRecord;
+    readonly metaData?: GenericRecord;
+    readonly mimeType?: string;
     orderLineItemDownloads?: components["schemas"]["OrderLineItemDownload"][];
     orderLineItems?: components["schemas"]["OrderLineItem"][];
     path?: string;
@@ -9926,9 +9924,9 @@ export type Schemas = {
       userId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: date-time */
-    uploadedAt?: string;
+    readonly uploadedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     url?: string;
     user?: components["schemas"]["User"];
@@ -9936,24 +9934,24 @@ export type Schemas = {
   };
   MediaAiTag: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     media?: components["schemas"]["Media"];
     mediaId: string;
-    needsAnalysis?: boolean;
+    readonly needsAnalysis?: boolean;
     tags?: GenericRecord[];
     translated: {
       mediaId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MediaAiTagJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     mediaId: string;
-    needsAnalysis?: boolean;
+    readonly needsAnalysis?: boolean;
     relationships?: {
       media?: {
         data?: {
@@ -9976,21 +9974,21 @@ export type Schemas = {
       mediaId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MediaDefaultFolder: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     entity: string;
     folder?: components["schemas"]["MediaFolder"];
     id: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MediaDefaultFolderJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     entity: string;
     id: string;
@@ -10012,16 +10010,16 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MediaFolder: {
     /** Format: int64 */
-    childCount?: number;
+    readonly childCount?: number;
     children?: components["schemas"]["MediaFolder"][];
     configuration?: components["schemas"]["MediaFolderConfiguration"];
     configurationId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     defaultFolder?: components["schemas"]["MediaDefaultFolder"];
     defaultFolderId?: string;
@@ -10030,14 +10028,14 @@ export type Schemas = {
     name: string;
     parent?: components["schemas"]["MediaFolder"];
     parentId?: string;
-    path?: string;
+    readonly path?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     useParentConfiguration?: boolean;
   };
   MediaFolderConfiguration: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createThumbnails?: boolean;
     customFields?: GenericRecord;
     id: string;
@@ -10049,11 +10047,11 @@ export type Schemas = {
     /** Format: int64 */
     thumbnailQuality?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MediaFolderConfigurationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createThumbnails?: boolean;
     customFields?: GenericRecord;
     id: string;
@@ -10095,7 +10093,7 @@ export type Schemas = {
     /** Format: int64 */
     thumbnailQuality?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   MediaFolderConfigurationMediaThumbnailSize: {
     id?: string;
@@ -10106,16 +10104,16 @@ export type Schemas = {
   };
   MediaFolderJsonApi: components["schemas"]["resource"] & {
     /** Format: int64 */
-    childCount?: number;
+    readonly childCount?: number;
     configurationId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     defaultFolderId?: string;
     id: string;
     name: string;
     parentId?: string;
-    path?: string;
+    readonly path?: string;
     relationships?: {
       children?: {
         data?: {
@@ -10194,14 +10192,14 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     useParentConfiguration?: boolean;
   };
   MediaJsonApi: components["schemas"]["resource"] & {
     alt?: string;
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       cmsPageDrafts?: {
@@ -10325,17 +10323,17 @@ export type Schemas = {
         };
       };
     };
-    fileExtension?: string;
-    fileName?: string;
+    readonly fileExtension?: string;
+    readonly fileName?: string;
     /** Format: int64 */
-    fileSize?: number;
+    readonly fileSize?: number;
     /** Runtime field, cannot be used as part of the criteria. */
     hasFile?: boolean;
     id: string;
     mediaFolderId?: string;
-    mediaType?: GenericRecord;
-    metaData?: GenericRecord;
-    mimeType?: string;
+    readonly mediaType?: GenericRecord;
+    readonly metaData?: GenericRecord;
+    readonly mimeType?: string;
     path?: string;
     private?: boolean;
     relationships?: {
@@ -10699,9 +10697,9 @@ export type Schemas = {
       userId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: date-time */
-    uploadedAt?: string;
+    readonly uploadedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     url?: string;
     userId?: string;
@@ -10715,27 +10713,27 @@ export type Schemas = {
   };
   MediaThumbnail: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
-    height: number;
+    readonly height: number;
     id?: string;
     media?: components["schemas"]["Media"];
     mediaId: string;
     path?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     url: string;
     /** Format: int64 */
-    width: number;
+    readonly width: number;
   };
   MediaThumbnailJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
-    height: number;
+    readonly height: number;
     id: string;
     mediaId: string;
     path?: string;
@@ -10757,28 +10755,28 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     url?: string;
     /** Format: int64 */
-    width: number;
+    readonly width: number;
   };
   MediaThumbnailSize: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     height: number;
     id: string;
     mediaFolderConfigurations?: components["schemas"]["MediaFolderConfiguration"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: int64 */
     width: number;
   };
   MediaThumbnailSizeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Format: int64 */
     height: number;
@@ -10801,7 +10799,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: int64 */
     width: number;
   };
@@ -10817,7 +10815,7 @@ export type Schemas = {
     /** Format: date-time */
     confirmedAt?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     firstName?: string;
@@ -10835,7 +10833,7 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     zipCode?: string;
   };
   NewsletterRecipientJsonApi: components["schemas"]["resource"] & {
@@ -10843,7 +10841,7 @@ export type Schemas = {
     /** Format: date-time */
     confirmedAt?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     firstName?: string;
@@ -10919,7 +10917,7 @@ export type Schemas = {
     street?: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     zipCode?: string;
   };
   NewsletterRecipientTag: {
@@ -10932,7 +10930,7 @@ export type Schemas = {
   Notification: {
     adminOnly?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdByIntegration?: components["schemas"]["Integration"];
     createdByIntegrationId?: string;
     createdByUser?: components["schemas"]["User"];
@@ -10942,12 +10940,12 @@ export type Schemas = {
     requiredPrivileges?: GenericRecord[];
     status: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   NotificationJsonApi: components["schemas"]["resource"] & {
     adminOnly?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdByIntegrationId?: string;
     createdByUserId?: string;
     id: string;
@@ -10987,11 +10985,11 @@ export type Schemas = {
     requiredPrivileges?: GenericRecord[];
     status: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   NumberRange: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     global: boolean;
@@ -11011,11 +11009,11 @@ export type Schemas = {
     type?: components["schemas"]["NumberRangeType"];
     typeId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   NumberRangeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     global: boolean;
@@ -11079,11 +11077,11 @@ export type Schemas = {
     };
     typeId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   NumberRangeSalesChannel: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     numberRange?: components["schemas"]["NumberRange"];
     numberRangeId: string;
@@ -11092,11 +11090,11 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   NumberRangeSalesChannelJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     numberRangeId: string;
     numberRangeTypeId?: string;
@@ -11149,22 +11147,22 @@ export type Schemas = {
     };
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   NumberRangeState: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     lastValue: number;
     numberRange?: components["schemas"]["NumberRange"];
     numberRangeId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   NumberRangeStateJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     lastValue: number;
@@ -11187,11 +11185,11 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   NumberRangeType: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     global: boolean;
     id: string;
@@ -11204,11 +11202,11 @@ export type Schemas = {
     };
     typeName: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   NumberRangeTypeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     global: boolean;
     id: string;
@@ -11251,46 +11249,67 @@ export type Schemas = {
     };
     typeName: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
-  OAuthClientCredentialsGrant: {
+  OAuthClientCredentialsGrant: Omit<
+    components["schemas"]["OAuthGrant"],
+    "grant_type"
+  > & {
+    /** OAuth client id. */
+    client_id: string;
+    /** Password of the client that should be authenticated. */
+    client_secret: string;
+  } & {
+    /**
+     * discriminator enum property added by openapi-typescript
+     * @enum {string}
+     */
     grant_type: "client_credentials";
-  } & Omit<components["schemas"]["OAuthGrant"], "grant_type"> & {
-      /** OAuth client id. */
-      client_id: string;
-      /** Password of the client that should be authenticated. */
-      client_secret: string;
-    };
+  };
   OAuthGrant: {
     /** OAuth grant type that should be requested. See [OAuth 2.0 grant](https://oauth2.thephpleague.com/authorization-server/which-grant/) for more information. */
     grant_type: string;
   };
-  OAuthPasswordGrant: {
+  OAuthPasswordGrant: Omit<
+    components["schemas"]["OAuthGrant"],
+    "grant_type"
+  > & {
+    /**
+     * OAuth client id.
+     * @enum {string}
+     */
+    client_id: "administration";
+    /** Password of the user that should be authenticated. */
+    password: string;
+    scopes: components["schemas"]["OAuthScopes"];
+    /** Username of the user that should be authenticated. */
+    username: string;
+  } & {
+    /**
+     * discriminator enum property added by openapi-typescript
+     * @enum {string}
+     */
     grant_type: "password";
-  } & Omit<components["schemas"]["OAuthGrant"], "grant_type"> & {
-      /**
-       * OAuth client id.
-       * @enum {string}
-       */
-      client_id: "administration";
-      /** Password of the user that should be authenticated. */
-      password: string;
-      scopes: components["schemas"]["OAuthScopes"];
-      /** Username of the user that should be authenticated. */
-      username: string;
-    };
-  OAuthRefreshTokenGrant: {
+  };
+  OAuthRefreshTokenGrant: Omit<
+    components["schemas"]["OAuthGrant"],
+    "grant_type"
+  > & {
+    /**
+     * OAuth client id.
+     * @enum {string}
+     */
+    client_id: "administration";
+    /** The refresh token that should be used to refresh the access token. */
+    refresh_token: string;
+    scopes: components["schemas"]["OAuthScopes"];
+  } & {
+    /**
+     * discriminator enum property added by openapi-typescript
+     * @enum {string}
+     */
     grant_type: "refresh_token";
-  } & Omit<components["schemas"]["OAuthGrant"], "grant_type"> & {
-      /**
-       * OAuth client id.
-       * @enum {string}
-       */
-      client_id: "administration";
-      /** The refresh token that should be used to refresh the access token. */
-      refresh_token: string;
-      scopes: components["schemas"]["OAuthScopes"];
-    };
+  };
   OAuthScopes:
     | "write"
     | "user-verified"
@@ -11303,17 +11322,17 @@ export type Schemas = {
     addresses?: components["schemas"]["OrderAddress"][];
     affiliateCode?: string;
     /** Format: float */
-    amountNet?: number;
+    readonly amountNet?: number;
     /** Format: float */
-    amountTotal?: number;
+    readonly amountTotal?: number;
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     billingAddress?: components["schemas"]["OrderAddress"];
     billingAddressId: string;
     billingAddressVersionId?: string;
     campaignCode?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     currency?: components["schemas"]["Currency"];
@@ -11459,12 +11478,12 @@ export type Schemas = {
     languageId: string;
     lineItems?: components["schemas"]["OrderLineItem"][];
     orderCustomer?: components["schemas"]["OrderCustomer"];
-    orderDate?: string;
+    readonly orderDate?: string;
     /** Format: date-time */
     orderDateTime: string;
     orderNumber?: string;
     /** Format: float */
-    positionPrice?: number;
+    readonly positionPrice?: number;
     price?: {
       calculatedTaxes?: GenericRecord;
       /** Format: float */
@@ -11505,12 +11524,12 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: float */
-    shippingTotal?: number;
+    readonly shippingTotal?: number;
     source?: string;
     stateId: string;
     stateMachineState?: components["schemas"]["StateMachineState"];
     tags?: components["schemas"]["Tag"][];
-    taxStatus?: string;
+    readonly taxStatus?: string;
     totalRounding: {
       /** Format: int64 */
       decimals: number;
@@ -11520,7 +11539,7 @@ export type Schemas = {
     };
     transactions?: components["schemas"]["OrderTransaction"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
     updatedById?: string;
     versionId?: string;
@@ -11535,7 +11554,7 @@ export type Schemas = {
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -11551,7 +11570,7 @@ export type Schemas = {
     street: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatId?: string;
     versionId?: string;
     zipcode?: string;
@@ -11564,7 +11583,7 @@ export type Schemas = {
     countryId: string;
     countryStateId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -11654,7 +11673,7 @@ export type Schemas = {
     street: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatId?: string;
     versionId?: string;
     zipcode?: string;
@@ -11662,7 +11681,7 @@ export type Schemas = {
   OrderCustomer: {
     company?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     customerNumber?: string;
@@ -11679,14 +11698,14 @@ export type Schemas = {
     salutationId?: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatIds?: string[];
     versionId?: string;
   };
   OrderCustomerJsonApi: components["schemas"]["resource"] & {
     company?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId?: string;
     customerNumber?: string;
     customFields?: GenericRecord;
@@ -11747,13 +11766,13 @@ export type Schemas = {
     salutationId?: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatIds?: string[];
     versionId?: string;
   };
   OrderDelivery: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     order?: components["schemas"]["Order"];
@@ -11796,12 +11815,12 @@ export type Schemas = {
     stateMachineState?: components["schemas"]["StateMachineState"];
     trackingCodes?: string[];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderDeliveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     orderId: string;
@@ -11916,12 +11935,12 @@ export type Schemas = {
     stateId: string;
     trackingCodes?: string[];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderDeliveryPosition: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     orderDelivery?: components["schemas"]["OrderDelivery"];
@@ -11960,12 +11979,12 @@ export type Schemas = {
     /** Format: float */
     unitPrice?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderDeliveryPositionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     orderDeliveryId: string;
@@ -12034,22 +12053,22 @@ export type Schemas = {
     /** Format: float */
     unitPrice?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderJsonApi: components["schemas"]["resource"] & {
     affiliateCode?: string;
     /** Format: float */
-    amountNet?: number;
+    readonly amountNet?: number;
     /** Format: float */
-    amountTotal?: number;
+    readonly amountTotal?: number;
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     billingAddressId: string;
     billingAddressVersionId?: string;
     campaignCode?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdById?: string;
     /** Format: float */
     currencyFactor: number;
@@ -12188,12 +12207,12 @@ export type Schemas = {
       roundForNet: boolean;
     };
     languageId: string;
-    orderDate?: string;
+    readonly orderDate?: string;
     /** Format: date-time */
     orderDateTime: string;
     orderNumber?: string;
     /** Format: float */
-    positionPrice?: number;
+    readonly positionPrice?: number;
     price?: {
       calculatedTaxes?: GenericRecord;
       /** Format: float */
@@ -12445,10 +12464,10 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: float */
-    shippingTotal?: number;
+    readonly shippingTotal?: number;
     source?: string;
     stateId: string;
-    taxStatus?: string;
+    readonly taxStatus?: string;
     totalRounding: {
       /** Format: int64 */
       decimals: number;
@@ -12457,7 +12476,7 @@ export type Schemas = {
       roundForNet: boolean;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedById?: string;
     versionId?: string;
   };
@@ -12466,7 +12485,7 @@ export type Schemas = {
     cover?: components["schemas"]["Media"];
     coverId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     downloads?: components["schemas"]["OrderLineItemDownload"][];
@@ -12558,13 +12577,13 @@ export type Schemas = {
     /** Format: float */
     unitPrice?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderLineItemDownload: {
     accessGranted: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     media?: components["schemas"]["Media"];
@@ -12575,13 +12594,13 @@ export type Schemas = {
     /** Format: int64 */
     position: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderLineItemDownloadJsonApi: components["schemas"]["resource"] & {
     accessGranted: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mediaId: string;
@@ -12622,13 +12641,13 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderLineItemJsonApi: components["schemas"]["resource"] & {
     coverId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -12850,12 +12869,12 @@ export type Schemas = {
     /** Format: float */
     unitPrice?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderProductWarehouse: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     order?: components["schemas"]["Order"];
     orderId: string;
@@ -12866,14 +12885,14 @@ export type Schemas = {
     /** Format: int64 */
     quantity?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     warehouseId: string;
     warehouses?: components["schemas"]["Warehouse"][];
   };
   OrderProductWarehouseJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     orderId: string;
     orderVersionId?: string;
@@ -12929,7 +12948,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     warehouseId: string;
   };
@@ -12939,7 +12958,7 @@ export type Schemas = {
     /** Format: float */
     amountTotal?: number;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     id: string;
@@ -12990,7 +13009,7 @@ export type Schemas = {
     state?: components["schemas"]["StateMachineState"];
     stateId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
     updatedById?: string;
     versionId?: string;
@@ -13001,7 +13020,7 @@ export type Schemas = {
     /** Format: float */
     amountTotal?: number;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdById?: string;
     id: string;
     internalComment?: string;
@@ -13125,13 +13144,13 @@ export type Schemas = {
     };
     stateId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedById?: string;
     versionId?: string;
   };
   OrderReturnLineItem: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     internalComment?: string;
@@ -13175,12 +13194,12 @@ export type Schemas = {
     state?: components["schemas"]["StateMachineState"];
     stateId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderReturnLineItemJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     internalComment?: string;
@@ -13282,13 +13301,13 @@ export type Schemas = {
     restockQuantity?: number;
     stateId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderReturnLineItemReason: {
     content: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     lineItems?: components["schemas"]["OrderReturnLineItem"][];
     reasonKey: string;
@@ -13297,12 +13316,12 @@ export type Schemas = {
       reasonKey: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   OrderReturnLineItemReasonJsonApi: components["schemas"]["resource"] & {
     content: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     reasonKey: string;
     relationships?: {
@@ -13327,7 +13346,7 @@ export type Schemas = {
       reasonKey: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   OrderTag: {
     id?: string;
@@ -13363,7 +13382,7 @@ export type Schemas = {
     };
     captures?: components["schemas"]["OrderTransactionCapture"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     order?: components["schemas"]["Order"];
@@ -13374,7 +13393,7 @@ export type Schemas = {
     stateId: string;
     stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     validationData?: GenericRecord;
     versionId?: string;
   };
@@ -13403,7 +13422,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -13414,7 +13433,7 @@ export type Schemas = {
     stateMachineState?: components["schemas"]["StateMachineState"];
     transaction?: components["schemas"]["OrderTransaction"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderTransactionCaptureJsonApi: components["schemas"]["resource"] & {
@@ -13442,7 +13461,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -13497,7 +13516,7 @@ export type Schemas = {
     };
     stateId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderTransactionCaptureRefund: {
@@ -13527,7 +13546,7 @@ export type Schemas = {
     captureId: string;
     captureVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -13537,7 +13556,7 @@ export type Schemas = {
     stateMachineState?: components["schemas"]["StateMachineState"];
     transactionCapture?: components["schemas"]["OrderTransactionCapture"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderTransactionCaptureRefundJsonApi: components["schemas"]["resource"] & {
@@ -13567,7 +13586,7 @@ export type Schemas = {
     captureId: string;
     captureVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -13621,7 +13640,7 @@ export type Schemas = {
     };
     stateId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderTransactionCaptureRefundPosition: {
@@ -13649,7 +13668,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -13663,7 +13682,7 @@ export type Schemas = {
     refundId: string;
     refundVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderTransactionCaptureRefundPositionJsonApi: components["schemas"]["resource"] & {
@@ -13691,7 +13710,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     externalReference?: string;
     id: string;
@@ -13735,7 +13754,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   OrderTransactionJsonApi: components["schemas"]["resource"] & {
@@ -13763,7 +13782,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     orderId: string;
@@ -13833,26 +13852,26 @@ export type Schemas = {
     };
     stateId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     validationData?: GenericRecord;
     versionId?: string;
   };
   OrderWarehouseGroup: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     order?: components["schemas"]["Order"];
     orderId: string;
     orderVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     warehouseGroup?: components["schemas"]["WarehouseGroup"];
     warehouseGroupId: string;
   };
   OrderWarehouseGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     orderId: string;
     orderVersionId?: string;
@@ -13889,7 +13908,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
     warehouseGroupId: string;
   };
@@ -13898,15 +13917,15 @@ export type Schemas = {
     afterOrderEnabled?: boolean;
     appPaymentMethod?: components["schemas"]["AppPaymentMethod"];
     /** Runtime field, cannot be used as part of the criteria. */
-    asynchronous?: boolean;
+    readonly asynchronous?: boolean;
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customers?: components["schemas"]["Customer"][];
     customFields?: GenericRecord;
     description?: string;
-    distinguishableName?: string;
+    readonly distinguishableName?: string;
     extensions?: {
       paypalVaultTokenMappings?: {
         data?: {
@@ -13970,7 +13989,7 @@ export type Schemas = {
       };
     };
     /** Runtime field, cannot be used as part of the criteria. */
-    formattedHandlerIdentifier?: string;
+    readonly formattedHandlerIdentifier?: string;
     handlerIdentifier?: string;
     id: string;
     media?: components["schemas"]["Media"];
@@ -13982,17 +14001,17 @@ export type Schemas = {
     /** Format: int64 */
     position?: number;
     /** Runtime field, cannot be used as part of the criteria. */
-    prepared?: boolean;
+    readonly prepared?: boolean;
     /** Runtime field, cannot be used as part of the criteria. */
-    recurring?: boolean;
+    readonly recurring?: boolean;
     /** Runtime field, cannot be used as part of the criteria. */
-    refundable?: boolean;
+    readonly refundable?: boolean;
     salesChannelDefaultAssignments?: components["schemas"]["SalesChannel"][];
     salesChannels?: components["schemas"]["SalesChannel"][];
     /** Runtime field, cannot be used as part of the criteria. */
     shortName?: string;
     /** Runtime field, cannot be used as part of the criteria. */
-    synchronous?: boolean;
+    readonly synchronous?: boolean;
     technicalName?: string;
     translated: {
       availabilityRuleId: string;
@@ -14007,19 +14026,19 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   PaymentMethodJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     afterOrderEnabled?: boolean;
     /** Runtime field, cannot be used as part of the criteria. */
-    asynchronous?: boolean;
+    readonly asynchronous?: boolean;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
-    distinguishableName?: string;
+    readonly distinguishableName?: string;
     extensions?: {
       paypalVaultTokenMappings?: {
         data?: {
@@ -14083,7 +14102,7 @@ export type Schemas = {
       };
     };
     /** Runtime field, cannot be used as part of the criteria. */
-    formattedHandlerIdentifier?: string;
+    readonly formattedHandlerIdentifier?: string;
     handlerIdentifier?: string;
     id: string;
     mediaId?: string;
@@ -14092,11 +14111,11 @@ export type Schemas = {
     /** Format: int64 */
     position?: number;
     /** Runtime field, cannot be used as part of the criteria. */
-    prepared?: boolean;
+    readonly prepared?: boolean;
     /** Runtime field, cannot be used as part of the criteria. */
-    recurring?: boolean;
+    readonly recurring?: boolean;
     /** Runtime field, cannot be used as part of the criteria. */
-    refundable?: boolean;
+    readonly refundable?: boolean;
     relationships?: {
       appPaymentMethod?: {
         data?: {
@@ -14222,7 +14241,7 @@ export type Schemas = {
     /** Runtime field, cannot be used as part of the criteria. */
     shortName?: string;
     /** Runtime field, cannot be used as part of the criteria. */
-    synchronous?: boolean;
+    readonly synchronous?: boolean;
     technicalName?: string;
     translated: {
       availabilityRuleId: string;
@@ -14237,7 +14256,7 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Plugin: {
     active?: boolean;
@@ -14247,11 +14266,11 @@ export type Schemas = {
     composerName?: string;
     copyright?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     /** Runtime field, cannot be used as part of the criteria. */
-    icon?: string;
+    readonly icon?: string;
     id: string;
     /** Format: date-time */
     installedAt?: string;
@@ -14282,7 +14301,7 @@ export type Schemas = {
       version: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: date-time */
     upgradedAt?: string;
     upgradeVersion?: string;
@@ -14296,11 +14315,11 @@ export type Schemas = {
     composerName?: string;
     copyright?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     /** Runtime field, cannot be used as part of the criteria. */
-    icon?: string;
+    readonly icon?: string;
     id: string;
     /** Format: date-time */
     installedAt?: string;
@@ -14347,7 +14366,7 @@ export type Schemas = {
       version: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: date-time */
     upgradedAt?: string;
     upgradeVersion?: string;
@@ -14379,7 +14398,7 @@ export type Schemas = {
     productStreamId?: string | null;
     /** The title of presentation cms page */
     title?: string | null;
-    translated?: {
+    translated: {
       cmsPageId: string;
       cmsPageVersionId: string;
       dsrPresentationVersionId: string;
@@ -14409,19 +14428,19 @@ export type Schemas = {
   Product: {
     active?: boolean;
     /** Format: int64 */
-    autoIncrement?: number;
-    available?: boolean;
+    readonly autoIncrement?: number;
+    readonly available?: boolean;
     /** Format: int64 */
-    availableStock?: number;
+    readonly availableStock?: number;
     canonicalProduct?: components["schemas"]["Product"];
     canonicalProductId?: string;
     canonicalProductVersionId?: string;
     categories?: components["schemas"]["Category"][];
     categoriesRo?: components["schemas"]["Category"][];
-    categoryIds?: readonly string[];
-    categoryTree?: readonly string[];
+    readonly categoryIds?: string[];
+    readonly categoryTree?: string[];
     /** Format: int64 */
-    childCount?: number;
+    readonly childCount?: number;
     children?: components["schemas"]["Product"][];
     cmsPage?: components["schemas"]["CmsPage"];
     cmsPageId?: string;
@@ -14430,7 +14449,7 @@ export type Schemas = {
     cover?: components["schemas"]["ProductMedia"];
     coverId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     crossSellingAssignedProducts?: components["schemas"]["ProductCrossSellingAssignedProducts"][];
     crossSellings?: components["schemas"]["ProductCrossSelling"][];
     customFields?: GenericRecord;
@@ -14440,7 +14459,7 @@ export type Schemas = {
     deliveryTime?: components["schemas"]["DeliveryTime"];
     deliveryTimeId?: string;
     description?: string;
-    displayGroup?: string;
+    readonly displayGroup?: string;
     downloads?: components["schemas"]["ProductDownload"][];
     ean?: string;
     extensions?: {
@@ -14693,7 +14712,7 @@ export type Schemas = {
     /** Format: int64 */
     minPurchase?: number;
     name: string;
-    optionIds?: readonly string[];
+    readonly optionIds?: string[];
     options?: components["schemas"]["PropertyGroupOption"][];
     orderLineItems?: components["schemas"]["OrderLineItem"][];
     packUnit?: string;
@@ -14708,14 +14727,14 @@ export type Schemas = {
     productNumber: string;
     productReviews?: components["schemas"]["ProductReview"][];
     properties?: components["schemas"]["PropertyGroupOption"][];
-    propertyIds?: readonly string[];
+    readonly propertyIds?: string[];
     purchasePrices?: components["schemas"]["Price"][];
     /** Format: int64 */
     purchaseSteps?: number;
     /** Format: float */
     purchaseUnit?: number;
     /** Format: float */
-    ratingAverage?: number;
+    readonly ratingAverage?: number;
     /** Format: float */
     referenceUnit?: number;
     /** Format: date-time */
@@ -14723,17 +14742,17 @@ export type Schemas = {
     /** Format: int64 */
     restockTime?: number;
     /** Format: int64 */
-    sales?: number;
+    readonly sales?: number;
     searchKeywords?: components["schemas"]["ProductSearchKeyword"][];
     seoUrls?: components["schemas"]["SeoUrl"][];
     shippingFree?: boolean;
     slotConfig?: GenericRecord;
-    states?: readonly string[];
+    readonly states?: string[];
     /** Format: int64 */
     stock: number;
-    streamIds?: readonly string[];
+    readonly streamIds?: string[];
     streams?: components["schemas"]["ProductStream"][];
-    tagIds?: readonly string[];
+    readonly tagIds?: string[];
     tags?: components["schemas"]["Tag"][];
     tax?: components["schemas"]["Tax"];
     taxId: string;
@@ -14769,7 +14788,7 @@ export type Schemas = {
     unit?: components["schemas"]["Unit"];
     unitId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     variantListingConfig?: GenericRecord;
     variantRestrictions?: GenericRecord;
     variation?: string[];
@@ -14801,7 +14820,7 @@ export type Schemas = {
   };
   ProductConfiguratorSetting: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     media?: components["schemas"]["Media"];
@@ -14815,12 +14834,12 @@ export type Schemas = {
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductConfiguratorSettingJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mediaId?: string;
@@ -14878,14 +14897,14 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductCrossSelling: {
     active?: boolean;
     assignedProducts?: components["schemas"]["ProductCrossSellingAssignedProducts"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     limit?: number;
@@ -14910,11 +14929,11 @@ export type Schemas = {
     };
     type?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductCrossSellingAssignedProducts: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     crossSelling?: components["schemas"]["ProductCrossSelling"];
     crossSellingId: string;
     id: string;
@@ -14924,11 +14943,11 @@ export type Schemas = {
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductCrossSellingAssignedProductsJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     crossSellingId: string;
     id: string;
     /** Format: int64 */
@@ -14968,12 +14987,12 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductCrossSellingJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     limit?: number;
@@ -15043,7 +15062,7 @@ export type Schemas = {
     };
     type?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductCustomFieldSet: {
     customFieldSet?: components["schemas"]["CustomFieldSet"];
@@ -15055,7 +15074,7 @@ export type Schemas = {
   };
   ProductDownload: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     media?: components["schemas"]["Media"];
@@ -15066,12 +15085,12 @@ export type Schemas = {
     productId: string;
     productVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductDownloadJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mediaId: string;
@@ -15112,14 +15131,14 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductExport: {
     accessKey: string;
     bodyTemplate?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     encoding: string;
@@ -15145,13 +15164,13 @@ export type Schemas = {
     storefrontSalesChannel?: components["schemas"]["SalesChannel"];
     storefrontSalesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductExportJsonApi: components["schemas"]["resource"] & {
     accessKey: string;
     bodyTemplate?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyId: string;
     encoding: string;
     fileFormat: string;
@@ -15249,11 +15268,11 @@ export type Schemas = {
     salesChannelId: string;
     storefrontSalesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductFeatureSet: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     features?: GenericRecord;
     id: string;
@@ -15264,11 +15283,11 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductFeatureSetJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     features?: GenericRecord;
     id: string;
@@ -15295,32 +15314,32 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     /** Format: int64 */
-    autoIncrement?: number;
-    available?: boolean;
+    readonly autoIncrement?: number;
+    readonly available?: boolean;
     /** Format: int64 */
-    availableStock?: number;
+    readonly availableStock?: number;
     canonicalProductId?: string;
     canonicalProductVersionId?: string;
-    categoryIds?: readonly string[];
-    categoryTree?: readonly string[];
+    readonly categoryIds?: string[];
+    readonly categoryTree?: string[];
     /** Format: int64 */
-    childCount?: number;
+    readonly childCount?: number;
     cmsPageId?: string;
     cmsPageVersionId?: string;
     coverId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     customFieldSetSelectionActive?: boolean;
     customSearchKeywords?: GenericRecord[];
     deliveryTimeId?: string;
     description?: string;
-    displayGroup?: string;
+    readonly displayGroup?: string;
     ean?: string;
     extensions?: {
       attendeeProductCollections?: {
@@ -15568,7 +15587,7 @@ export type Schemas = {
     /** Format: int64 */
     minPurchase?: number;
     name: string;
-    optionIds?: readonly string[];
+    readonly optionIds?: string[];
     packUnit?: string;
     packUnitPlural?: string;
     parentId?: string;
@@ -15577,14 +15596,14 @@ export type Schemas = {
     productManufacturerVersionId?: string;
     productMediaVersionId?: string;
     productNumber: string;
-    propertyIds?: readonly string[];
+    readonly propertyIds?: string[];
     purchasePrices?: components["schemas"]["Price"][];
     /** Format: int64 */
     purchaseSteps?: number;
     /** Format: float */
     purchaseUnit?: number;
     /** Format: float */
-    ratingAverage?: number;
+    readonly ratingAverage?: number;
     /** Format: float */
     referenceUnit?: number;
     relationships?: {
@@ -16044,14 +16063,14 @@ export type Schemas = {
     /** Format: int64 */
     restockTime?: number;
     /** Format: int64 */
-    sales?: number;
+    readonly sales?: number;
     shippingFree?: boolean;
     slotConfig?: GenericRecord;
-    states?: readonly string[];
+    readonly states?: string[];
     /** Format: int64 */
     stock: number;
-    streamIds?: readonly string[];
-    tagIds?: readonly string[];
+    readonly streamIds?: string[];
+    readonly tagIds?: string[];
     taxId: string;
     translated: {
       canonicalProductId: string;
@@ -16084,7 +16103,7 @@ export type Schemas = {
     };
     unitId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     variantListingConfig?: GenericRecord;
     variantRestrictions?: GenericRecord;
     variation?: string[];
@@ -16126,7 +16145,7 @@ export type Schemas = {
   };
   ProductManufacturer: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -16146,12 +16165,12 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductManufacturerJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -16201,13 +16220,13 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductMedia: {
     coverProducts?: components["schemas"]["Product"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     media?: components["schemas"]["Media"];
@@ -16219,12 +16238,12 @@ export type Schemas = {
     productVersionId?: string;
     thumbnails?: components["schemas"]["MediaThumbnail"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductMediaJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     mediaId: string;
@@ -16280,7 +16299,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductOption: {
@@ -16293,7 +16312,7 @@ export type Schemas = {
   };
   ProductPrice: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     price: components["schemas"]["Price"][];
@@ -16307,12 +16326,12 @@ export type Schemas = {
     rule?: components["schemas"]["Rule"];
     ruleId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductPriceJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     price: components["schemas"]["Price"][];
@@ -16356,7 +16375,7 @@ export type Schemas = {
     };
     ruleId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductProperty: {
@@ -16371,7 +16390,7 @@ export type Schemas = {
     comment?: string;
     content: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     customFields?: GenericRecord;
@@ -16390,13 +16409,13 @@ export type Schemas = {
     status?: boolean;
     title: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductReviewJsonApi: components["schemas"]["resource"] & {
     comment?: string;
     content: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId?: string;
     customFields?: GenericRecord;
     externalEmail?: string;
@@ -16473,11 +16492,11 @@ export type Schemas = {
     status?: boolean;
     title: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductReviewSummary: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -16492,12 +16511,12 @@ export type Schemas = {
       summary: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     visible?: boolean;
   };
   ProductReviewSummaryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -16542,14 +16561,14 @@ export type Schemas = {
       summary: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     visible?: boolean;
   };
   ProductSearchConfig: {
     andLogic?: boolean;
     configFields?: components["schemas"]["ProductSearchConfigField"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     excludedTerms?: string[];
     id: string;
     language?: components["schemas"]["Language"];
@@ -16557,11 +16576,11 @@ export type Schemas = {
     /** Format: int64 */
     minSearchLength?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductSearchConfigField: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customField?: components["schemas"]["CustomField"];
     customFieldId?: string;
     field: string;
@@ -16573,11 +16592,11 @@ export type Schemas = {
     searchConfigId: string;
     tokenize?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductSearchConfigFieldJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFieldId?: string;
     field: string;
     id: string;
@@ -16619,12 +16638,12 @@ export type Schemas = {
     searchConfigId: string;
     tokenize?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductSearchConfigJsonApi: components["schemas"]["resource"] & {
     andLogic?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     excludedTerms?: string[];
     id: string;
     languageId: string;
@@ -16663,11 +16682,11 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductSearchKeyword: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     keyword: string;
     language?: components["schemas"]["Language"];
@@ -16678,12 +16697,12 @@ export type Schemas = {
     /** Format: float */
     ranking: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductSearchKeywordJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     keyword: string;
     languageId: string;
@@ -16724,13 +16743,13 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   ProductSorting: {
     active: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     fields: GenericRecord;
     id: string;
     key: string;
@@ -16743,12 +16762,12 @@ export type Schemas = {
       label: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductSortingJsonApi: components["schemas"]["resource"] & {
     active: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     fields: GenericRecord;
     id: string;
     key: string;
@@ -16761,13 +16780,13 @@ export type Schemas = {
       label: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductStream: {
-    apiFilter?: GenericRecord;
+    readonly apiFilter?: GenericRecord;
     categories?: components["schemas"]["Category"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -16819,7 +16838,7 @@ export type Schemas = {
     };
     filters?: components["schemas"]["ProductStreamFilter"][];
     id: string;
-    invalid?: boolean;
+    readonly invalid?: boolean;
     name: string;
     productCrossSellings?: components["schemas"]["ProductCrossSelling"][];
     productExports?: components["schemas"]["ProductExport"][];
@@ -16828,11 +16847,11 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductStreamFilter: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     field?: string;
     id: string;
@@ -16847,12 +16866,12 @@ export type Schemas = {
     queries?: components["schemas"]["ProductStreamFilter"][];
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value?: string;
   };
   ProductStreamFilterJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     field?: string;
     id: string;
@@ -16911,13 +16930,13 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value?: string;
   };
   ProductStreamJsonApi: components["schemas"]["resource"] & {
-    apiFilter?: GenericRecord;
+    readonly apiFilter?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -16968,7 +16987,7 @@ export type Schemas = {
       };
     };
     id: string;
-    invalid?: boolean;
+    readonly invalid?: boolean;
     name: string;
     relationships?: {
       categories?: {
@@ -17037,7 +17056,7 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ProductStreamMapping: {
     id?: string;
@@ -17057,7 +17076,7 @@ export type Schemas = {
   };
   ProductVisibility: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -17065,13 +17084,13 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: int64 */
     visibility: number;
   };
   ProductVisibilityJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -17109,13 +17128,13 @@ export type Schemas = {
     };
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: int64 */
     visibility: number;
   };
   ProductWarehouse: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     product?: components["schemas"]["Product"];
     productId: string;
@@ -17123,7 +17142,7 @@ export type Schemas = {
     /** Format: int64 */
     stock: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     warehouse?: components["schemas"]["Warehouse"];
     warehouseId: string;
   };
@@ -17137,7 +17156,7 @@ export type Schemas = {
   };
   ProductWarehouseJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     productId: string;
     productVersionId?: string;
@@ -17176,7 +17195,7 @@ export type Schemas = {
     /** Format: int64 */
     stock: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     warehouseId: string;
   };
   Promotion: {
@@ -17184,7 +17203,7 @@ export type Schemas = {
     cartRules?: components["schemas"]["Rule"][];
     code?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerRestriction?: boolean;
     customFields?: GenericRecord;
     discounts?: components["schemas"]["PromotionDiscount"][];
@@ -17216,10 +17235,10 @@ export type Schemas = {
     maxRedemptionsPerCustomer?: number;
     name: string;
     /** Format: int64 */
-    orderCount?: number;
+    readonly orderCount?: number;
     orderLineItems?: components["schemas"]["OrderLineItem"][];
     orderRules?: components["schemas"]["Rule"][];
-    ordersPerCustomerCount?: GenericRecord;
+    readonly ordersPerCustomerCount?: GenericRecord;
     personaCustomers?: components["schemas"]["Customer"][];
     personaRules?: components["schemas"]["Rule"][];
     preventCombination?: boolean;
@@ -17235,7 +17254,7 @@ export type Schemas = {
       validUntil: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     useCodes?: boolean;
     useIndividualCodes?: boolean;
     useSetGroups?: boolean;
@@ -17255,7 +17274,7 @@ export type Schemas = {
     applierKey?: string;
     considerAdvancedRules: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     discountRules?: components["schemas"]["Rule"][];
     id: string;
     /** Format: float */
@@ -17268,7 +17287,7 @@ export type Schemas = {
     sorterKey?: string;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     usageKey?: string;
     /** Format: float */
     value: number;
@@ -17277,7 +17296,7 @@ export type Schemas = {
     applierKey?: string;
     considerAdvancedRules: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: float */
     maxValue?: number;
@@ -17334,14 +17353,14 @@ export type Schemas = {
     sorterKey?: string;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     usageKey?: string;
     /** Format: float */
     value: number;
   };
   PromotionDiscountPrices: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     discountId: string;
@@ -17350,11 +17369,11 @@ export type Schemas = {
     price: number;
     promotionDiscount?: components["schemas"]["PromotionDiscount"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   PromotionDiscountPricesJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyId: string;
     discountId: string;
     id: string;
@@ -17393,7 +17412,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   PromotionDiscountRule: {
     discount?: components["schemas"]["PromotionDiscount"];
@@ -17405,18 +17424,18 @@ export type Schemas = {
   PromotionIndividualCode: {
     code: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     payload?: GenericRecord;
     promotion?: components["schemas"]["Promotion"];
     promotionId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   PromotionIndividualCodeJsonApi: components["schemas"]["resource"] & {
     code: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     payload?: GenericRecord;
     promotionId: string;
@@ -17438,13 +17457,13 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   PromotionJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     code?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerRestriction?: boolean;
     customFields?: GenericRecord;
     exclusionIds?: string[];
@@ -17474,8 +17493,8 @@ export type Schemas = {
     maxRedemptionsPerCustomer?: number;
     name: string;
     /** Format: int64 */
-    orderCount?: number;
-    ordersPerCustomerCount?: GenericRecord;
+    readonly orderCount?: number;
+    readonly ordersPerCustomerCount?: GenericRecord;
     preventCombination?: boolean;
     /** Format: int64 */
     priority?: number;
@@ -17624,7 +17643,7 @@ export type Schemas = {
       validUntil: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     useCodes?: boolean;
     useIndividualCodes?: boolean;
     useSetGroups?: boolean;
@@ -17656,7 +17675,7 @@ export type Schemas = {
   };
   PromotionSalesChannel: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     priority: number;
@@ -17665,11 +17684,11 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   PromotionSalesChannelJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     priority: number;
@@ -17708,11 +17727,11 @@ export type Schemas = {
     };
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   PromotionSetgroup: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     packagerKey: string;
     promotion?: components["schemas"]["Promotion"];
@@ -17720,13 +17739,13 @@ export type Schemas = {
     setGroupRules?: components["schemas"]["Rule"][];
     sorterKey: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: float */
     value: number;
   };
   PromotionSetgroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     packagerKey: string;
     promotionId: string;
@@ -17764,7 +17783,7 @@ export type Schemas = {
     };
     sorterKey: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: float */
     value: number;
   };
@@ -17777,7 +17796,7 @@ export type Schemas = {
   };
   PropertyGroup: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     displayType?: string;
@@ -17795,12 +17814,12 @@ export type Schemas = {
       sortingType: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     visibleOnProductDetailPage?: boolean;
   };
   PropertyGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     displayType?: string;
@@ -17834,13 +17853,13 @@ export type Schemas = {
       sortingType: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     visibleOnProductDetailPage?: boolean;
   };
   PropertyGroupOption: {
     colorHexCode?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     group?: components["schemas"]["PropertyGroup"];
     groupId: string;
@@ -17860,12 +17879,12 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   PropertyGroupOptionJsonApi: components["schemas"]["resource"] & {
     colorHexCode?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     groupId: string;
     id: string;
@@ -17957,18 +17976,18 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Quote: {
     /** Format: float */
-    amountNet?: number;
+    readonly amountNet?: number;
     /** Format: float */
-    amountTotal?: number;
+    readonly amountTotal?: number;
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     comments?: components["schemas"]["QuoteComment"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     currency?: components["schemas"]["Currency"];
@@ -18045,7 +18064,7 @@ export type Schemas = {
     stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: float */
     subtotalNet?: number;
-    taxStatus?: string;
+    readonly taxStatus?: string;
     /** Format: float */
     totalDiscount?: number;
     totalRounding: {
@@ -18057,7 +18076,7 @@ export type Schemas = {
     };
     transactions?: components["schemas"]["QuoteTransaction"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedBy?: components["schemas"]["User"];
     updatedById?: string;
     user?: components["schemas"]["User"];
@@ -18067,7 +18086,7 @@ export type Schemas = {
   QuoteComment: {
     comment: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdBy?: components["schemas"]["User"];
     createdById?: string;
     customer?: components["schemas"]["Customer"];
@@ -18081,13 +18100,13 @@ export type Schemas = {
     stateId?: string;
     stateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteCommentJsonApi: components["schemas"]["resource"] & {
     comment: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdById?: string;
     customerId?: string;
     id: string;
@@ -18159,12 +18178,12 @@ export type Schemas = {
     seenAt?: string;
     stateId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteDelivery: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     positions?: components["schemas"]["QuoteDeliveryPosition"][];
@@ -18201,12 +18220,12 @@ export type Schemas = {
     shippingMethod?: components["schemas"]["ShippingMethod"];
     shippingMethodId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteDeliveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     quoteId: string;
@@ -18287,12 +18306,12 @@ export type Schemas = {
     shippingDateLatest: string;
     shippingMethodId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteDeliveryPosition: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     price?: {
@@ -18331,12 +18350,12 @@ export type Schemas = {
     /** Format: float */
     unitPrice?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteDeliveryPositionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     price?: {
@@ -18405,14 +18424,14 @@ export type Schemas = {
     /** Format: float */
     unitPrice?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteDocument: {
     active?: boolean;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     deepLinkCode: string;
     documentMediaFile?: components["schemas"]["Media"];
@@ -18428,14 +18447,14 @@ export type Schemas = {
     sent?: boolean;
     static?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteDocumentJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     deepLinkCode: string;
     documentMediaFileId?: string;
@@ -18495,12 +18514,12 @@ export type Schemas = {
     sent?: boolean;
     static?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteEmployee: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     employee?: components["schemas"]["B2bEmployee"];
     employeeId: string;
     firstName: string;
@@ -18510,12 +18529,12 @@ export type Schemas = {
     quoteId: string;
     quoteVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteEmployeeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     employeeId: string;
     firstName: string;
     id: string;
@@ -18555,18 +18574,18 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteJsonApi: components["schemas"]["resource"] & {
     /** Format: float */
-    amountNet?: number;
+    readonly amountNet?: number;
     /** Format: float */
-    amountTotal?: number;
+    readonly amountTotal?: number;
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdById?: string;
     currencyId: string;
     customerId: string;
@@ -18859,7 +18878,7 @@ export type Schemas = {
     stateId: string;
     /** Format: float */
     subtotalNet?: number;
-    taxStatus?: string;
+    readonly taxStatus?: string;
     /** Format: float */
     totalDiscount?: number;
     totalRounding: {
@@ -18870,7 +18889,7 @@ export type Schemas = {
       roundForNet: boolean;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedById?: string;
     userId?: string;
     versionId?: string;
@@ -18880,7 +18899,7 @@ export type Schemas = {
     cover?: components["schemas"]["Media"];
     coverId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     discount?: {
@@ -18927,7 +18946,7 @@ export type Schemas = {
     productPrice?: components["schemas"]["Price"][];
     productVersionId?: string;
     promotion?: components["schemas"]["Promotion"];
-    promotionId?: string;
+    readonly promotionId?: string;
     purchasePrice?: components["schemas"]["Price"][];
     /** Format: int64 */
     quantity: number;
@@ -18944,13 +18963,13 @@ export type Schemas = {
     /** Format: float */
     unitPrice?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteLineItemJsonApi: components["schemas"]["resource"] & {
     coverId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     discount?: {
@@ -18994,7 +19013,7 @@ export type Schemas = {
     productId?: string;
     productPrice?: components["schemas"]["Price"][];
     productVersionId?: string;
-    promotionId?: string;
+    readonly promotionId?: string;
     purchasePrice?: components["schemas"]["Price"][];
     /** Format: int64 */
     quantity: number;
@@ -19102,7 +19121,7 @@ export type Schemas = {
     /** Format: float */
     unitPrice?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteTransaction: {
@@ -19130,7 +19149,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     paymentMethod?: components["schemas"]["PaymentMethod"];
@@ -19139,7 +19158,7 @@ export type Schemas = {
     quoteId: string;
     quoteVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   QuoteTransactionJsonApi: components["schemas"]["resource"] & {
@@ -19167,7 +19186,7 @@ export type Schemas = {
       unitPrice: number;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     paymentMethodId: string;
@@ -19206,7 +19225,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   RangeFilter: {
@@ -19221,11 +19240,11 @@ export type Schemas = {
     type: "range";
   };
   Rule: {
-    areas?: readonly GenericRecord[];
+    readonly areas?: GenericRecord[];
     cartPromotions?: components["schemas"]["Promotion"][];
     conditions?: components["schemas"]["RuleCondition"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -19367,7 +19386,7 @@ export type Schemas = {
     };
     flowSequences?: components["schemas"]["FlowSequence"][];
     id: string;
-    invalid?: boolean;
+    readonly invalid?: boolean;
     moduleTypes?: GenericRecord;
     name: string;
     orderPromotions?: components["schemas"]["Promotion"][];
@@ -19384,13 +19403,13 @@ export type Schemas = {
     tags?: components["schemas"]["Tag"][];
     taxProviders?: components["schemas"]["TaxProvider"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   RuleCondition: {
     appScriptCondition?: components["schemas"]["AppScriptCondition"];
     children?: components["schemas"]["RuleCondition"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     parent?: components["schemas"]["RuleCondition"];
@@ -19402,12 +19421,12 @@ export type Schemas = {
     scriptId?: string;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value?: GenericRecord;
   };
   RuleConditionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     parentId?: string;
@@ -19479,13 +19498,13 @@ export type Schemas = {
     scriptId?: string;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value?: GenericRecord;
   };
   RuleJsonApi: components["schemas"]["resource"] & {
-    areas?: readonly GenericRecord[];
+    readonly areas?: GenericRecord[];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
@@ -19626,7 +19645,7 @@ export type Schemas = {
       };
     };
     id: string;
-    invalid?: boolean;
+    readonly invalid?: boolean;
     moduleTypes?: GenericRecord;
     name: string;
     /** Format: int64 */
@@ -19844,7 +19863,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   RuleTag: {
     id?: string;
@@ -19860,7 +19879,7 @@ export type Schemas = {
     assetPaths?: string[];
     author?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     isTheme?: boolean;
     name?: string;
@@ -19872,7 +19891,7 @@ export type Schemas = {
     themeConfig?: GenericRecord;
     themeJson?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     viewInheritance?: string[];
   };
   SaasAppStorefrontConfigJsonApi: components["schemas"]["resource"] & {
@@ -19881,7 +19900,7 @@ export type Schemas = {
     assetPaths?: string[];
     author?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     isTheme?: boolean;
     name?: string;
@@ -19910,30 +19929,30 @@ export type Schemas = {
     themeConfig?: GenericRecord;
     themeJson?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     viewInheritance?: string[];
   };
   SaasSbpUserData: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: date-time */
-    lastSbpStatusChange?: string;
-    sbpAccessToken?: GenericRecord;
-    sbpStatus?: string;
+    readonly lastSbpStatusChange?: string;
+    readonly sbpAccessToken?: GenericRecord;
+    readonly sbpStatus?: string;
     /** Format: int64 */
-    sbpUserId: number;
+    readonly sbpUserId: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
-    userId: string;
+    readonly userId: string;
   };
   SaasSbpUserDataJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: date-time */
-    lastSbpStatusChange?: string;
+    readonly lastSbpStatusChange?: string;
     relationships?: {
       user?: {
         data?: {
@@ -19951,31 +19970,31 @@ export type Schemas = {
         };
       };
     };
-    sbpAccessToken?: GenericRecord;
-    sbpStatus?: string;
+    readonly sbpAccessToken?: GenericRecord;
+    readonly sbpStatus?: string;
     /** Format: int64 */
-    sbpUserId: number;
+    readonly sbpUserId: number;
     /** Format: date-time */
-    updatedAt?: string;
-    userId: string;
+    readonly updatedAt?: string;
+    readonly userId: string;
   };
   SaasStorefrontDemoToken: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
-    expiresAt: string;
+    readonly expiresAt: string;
     id: string;
-    token: string;
+    readonly token: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
     userId: string;
   };
   SaasStorefrontDemoTokenJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
-    expiresAt: string;
+    readonly expiresAt: string;
     id: string;
     relationships?: {
       user?: {
@@ -19994,28 +20013,28 @@ export type Schemas = {
         };
       };
     };
-    token: string;
+    readonly token: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     userId: string;
   };
   SaasUserLoginToken: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
-    expiresAt: string;
+    readonly expiresAt: string;
     id: string;
-    token: string;
+    readonly token: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
     userId: string;
   };
   SaasUserLoginTokenJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
-    expiresAt: string;
+    readonly expiresAt: string;
     id: string;
     relationships?: {
       user?: {
@@ -20034,9 +20053,9 @@ export type Schemas = {
         };
       };
     };
-    token: string;
+    readonly token: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     userId: string;
   };
   SalesChannel: {
@@ -20050,7 +20069,7 @@ export type Schemas = {
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencies?: components["schemas"]["Currency"][];
     currency?: components["schemas"]["Currency"];
     currencyId: string;
@@ -20219,7 +20238,7 @@ export type Schemas = {
     orders?: components["schemas"]["Order"][];
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
-    paymentMethodIds?: readonly string[];
+    readonly paymentMethodIds?: string[];
     paymentMethods?: components["schemas"]["PaymentMethod"][];
     productExports?: components["schemas"]["ProductExport"][];
     productReviews?: components["schemas"]["ProductReview"][];
@@ -20267,26 +20286,26 @@ export type Schemas = {
     type?: components["schemas"]["SalesChannelType"];
     typeId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     wishlists?: components["schemas"]["CustomerWishlist"][];
   };
   SalesChannelAnalytics: {
     active?: boolean;
     anonymizeIp?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     trackingId?: string;
     trackOrders?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SalesChannelAnalyticsJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     anonymizeIp?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     relationships?: {
       salesChannel?: {
@@ -20308,7 +20327,7 @@ export type Schemas = {
     trackingId?: string;
     trackOrders?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SalesChannelCountry: {
     country?: components["schemas"]["Country"];
@@ -20326,7 +20345,7 @@ export type Schemas = {
   };
   SalesChannelDomain: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
     customFields?: GenericRecord;
@@ -20373,12 +20392,12 @@ export type Schemas = {
     snippetSet?: components["schemas"]["SnippetSet"];
     snippetSetId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
   };
   SalesChannelDomainJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyId: string;
     customFields?: GenericRecord;
     extensions?: {
@@ -20511,7 +20530,7 @@ export type Schemas = {
     salesChannelId: string;
     snippetSetId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
   };
   SalesChannelJsonApi: components["schemas"]["resource"] & {
@@ -20521,7 +20540,7 @@ export type Schemas = {
     configuration?: GenericRecord;
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyId: string;
     customerGroupId: string;
     customFields?: GenericRecord;
@@ -20670,7 +20689,7 @@ export type Schemas = {
     navigationCategoryId: string;
     navigationCategoryVersionId?: string;
     paymentMethodId: string;
-    paymentMethodIds?: readonly string[];
+    readonly paymentMethodIds?: string[];
     relationships?: {
       analytics?: {
         data?: {
@@ -21263,7 +21282,7 @@ export type Schemas = {
     };
     typeId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SalesChannelLanguage: {
     id?: string;
@@ -21289,7 +21308,7 @@ export type Schemas = {
   SalesChannelType: {
     coverUrl?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     descriptionLong?: string;
@@ -21308,12 +21327,12 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SalesChannelTypeJsonApi: components["schemas"]["resource"] & {
     coverUrl?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     descriptionLong?: string;
@@ -21348,11 +21367,11 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Salutation: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerAddresses?: components["schemas"]["CustomerAddress"][];
     customers?: components["schemas"]["Customer"][];
     customFields?: GenericRecord;
@@ -21401,11 +21420,11 @@ export type Schemas = {
       salutationKey: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SalutationJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     displayName: string;
     extensions?: {
@@ -21526,11 +21545,11 @@ export type Schemas = {
       salutationKey: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ScheduledTask: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: int64 */
     defaultRunInterval: number;
     id: string;
@@ -21544,11 +21563,11 @@ export type Schemas = {
     scheduledTaskClass: string;
     status: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ScheduledTaskJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: int64 */
     defaultRunInterval: number;
     id: string;
@@ -21562,26 +21581,26 @@ export type Schemas = {
     scheduledTaskClass: string;
     status: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Script: {
     active: boolean;
     app?: components["schemas"]["App"];
     appId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     hook: string;
     id: string;
     name: string;
     script: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ScriptJsonApi: components["schemas"]["resource"] & {
     active: boolean;
     appId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     hook: string;
     id: string;
     name: string;
@@ -21604,11 +21623,11 @@ export type Schemas = {
     };
     script: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SeoUrl: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Runtime field, cannot be used as part of the criteria. */
     error?: string;
@@ -21625,13 +21644,13 @@ export type Schemas = {
     salesChannelId?: string;
     seoPathInfo: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     url?: string;
   };
   SeoUrlJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     /** Runtime field, cannot be used as part of the criteria. */
     error?: string;
@@ -21678,13 +21697,13 @@ export type Schemas = {
     salesChannelId?: string;
     seoPathInfo: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Runtime field, cannot be used as part of the criteria. */
     url?: string;
   };
   SeoUrlTemplate: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     entityName: string;
     id: string;
@@ -21694,11 +21713,11 @@ export type Schemas = {
     salesChannelId?: string;
     template?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SeoUrlTemplateJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     entityName: string;
     id: string;
@@ -21724,7 +21743,7 @@ export type Schemas = {
     salesChannelId?: string;
     template?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ShippingMethod: {
     active?: boolean;
@@ -21732,7 +21751,7 @@ export type Schemas = {
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     deliveryTime?: components["schemas"]["DeliveryTime"];
     deliveryTimeId: string;
@@ -21797,13 +21816,13 @@ export type Schemas = {
       trackingUrl: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ShippingMethodJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     deliveryTimeId: string;
     description?: string;
@@ -22012,7 +22031,7 @@ export type Schemas = {
       trackingUrl: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ShippingMethodPrice: {
     /** Format: int64 */
@@ -22020,7 +22039,7 @@ export type Schemas = {
     calculationRule?: components["schemas"]["Rule"];
     calculationRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyPrice?: components["schemas"]["Price"][];
     customFields?: GenericRecord;
     id: string;
@@ -22033,14 +22052,14 @@ export type Schemas = {
     shippingMethod?: components["schemas"]["ShippingMethod"];
     shippingMethodId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ShippingMethodPriceJsonApi: components["schemas"]["resource"] & {
     /** Format: int64 */
     calculation?: number;
     calculationRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyPrice?: components["schemas"]["Price"][];
     customFields?: GenericRecord;
     id: string;
@@ -22098,7 +22117,7 @@ export type Schemas = {
     ruleId?: string;
     shippingMethodId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ShippingMethodTag: {
     id?: string;
@@ -22116,20 +22135,20 @@ export type Schemas = {
   Snippet: {
     author: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     set?: components["schemas"]["SnippetSet"];
     setId: string;
     translationKey: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value: string;
   };
   SnippetJsonApi: components["schemas"]["resource"] & {
     author: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     relationships?: {
@@ -22152,13 +22171,13 @@ export type Schemas = {
     setId: string;
     translationKey: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value: string;
   };
   SnippetSet: {
     baseFile: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     iso: string;
@@ -22166,12 +22185,12 @@ export type Schemas = {
     salesChannelDomains?: components["schemas"]["SalesChannelDomain"][];
     snippets?: components["schemas"]["Snippet"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SnippetSetJsonApi: components["schemas"]["resource"] & {
     baseFile: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     iso: string;
@@ -22209,7 +22228,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Sort: {
     field: string;
@@ -22220,25 +22239,25 @@ export type Schemas = {
   };
   SpatialRenderConfigSize: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: int64 */
     height: number;
     id: string;
     name: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: int64 */
     width: number;
   };
   SpatialRenderConfigSizeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: int64 */
     height: number;
     id: string;
     name: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: int64 */
     width: number;
   };
@@ -22247,7 +22266,7 @@ export type Schemas = {
     backgroundEnabled?: boolean;
     cameras?: components["schemas"]["SpatialSceneCamera"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     floorColor?: string;
     floorEnabled?: boolean;
@@ -22256,11 +22275,11 @@ export type Schemas = {
     name: string;
     objects?: components["schemas"]["SpatialSceneObject"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SpatialSceneCamera: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     name: string;
     position?: GenericRecord;
@@ -22269,11 +22288,11 @@ export type Schemas = {
     target?: GenericRecord;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SpatialSceneCameraJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     name: string;
     position?: GenericRecord;
@@ -22298,13 +22317,13 @@ export type Schemas = {
     target?: GenericRecord;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SpatialSceneJsonApi: components["schemas"]["resource"] & {
     backgroundColor?: string;
     backgroundEnabled?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     floorColor?: string;
     floorEnabled?: boolean;
@@ -22358,12 +22377,12 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SpatialSceneLight: {
     color?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     enabled?: boolean;
     id: string;
     /** Format: float */
@@ -22375,12 +22394,12 @@ export type Schemas = {
     sceneId: string;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SpatialSceneLightJsonApi: components["schemas"]["resource"] & {
     color?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     enabled?: boolean;
     id: string;
     /** Format: float */
@@ -22408,11 +22427,11 @@ export type Schemas = {
     sceneId: string;
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SpatialSceneObject: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     media?: components["schemas"]["Media"];
     mediaId: string;
@@ -22423,12 +22442,12 @@ export type Schemas = {
     scene?: components["schemas"]["SpatialScene"];
     sceneId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     visible?: boolean;
   };
   SpatialSceneObjectJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     mediaId: string;
     name: string;
@@ -22469,14 +22488,14 @@ export type Schemas = {
     scale?: GenericRecord;
     sceneId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     visible?: boolean;
   };
   SsoProvider: {
     active: boolean;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     media?: components["schemas"]["Media"];
     mediaId?: string;
@@ -22484,11 +22503,11 @@ export type Schemas = {
     ssoProviderCustomers?: components["schemas"]["SsoProviderCustomer"][];
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SsoProviderCustomer: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     id: string;
@@ -22496,11 +22515,11 @@ export type Schemas = {
     ssoProviderId: string;
     subject: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SsoProviderCustomerJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId: string;
     id: string;
     relationships?: {
@@ -22538,13 +22557,13 @@ export type Schemas = {
     ssoProviderId: string;
     subject: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SsoProviderJsonApi: components["schemas"]["resource"] & {
     active: boolean;
     config: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     mediaId?: string;
     name: string;
@@ -22582,7 +22601,7 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   StateForAll: {
     accessibleFrom?: string | null;
@@ -22624,7 +22643,7 @@ export type Schemas = {
      * @enum {string}
      */
     videoAudioSettings?: "both" | "none" | "audio-only";
-    /** @default */
+    /** @default  */
     videoRoomUrl?: string;
     /**
      * @default presentation
@@ -22656,7 +22675,7 @@ export type Schemas = {
   };
   StateMachine: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     historyEntries?: components["schemas"]["StateMachineHistory"][];
     id: string;
@@ -22671,11 +22690,11 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   StateMachineHistory: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entityName: string;
     fromStateId: string;
     fromStateMachineState?: components["schemas"]["StateMachineState"];
@@ -22688,13 +22707,13 @@ export type Schemas = {
     toStateMachineState?: components["schemas"]["StateMachineState"];
     transitionActionName?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
     userId?: string;
   };
   StateMachineHistoryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entityName: string;
     fromStateId: string;
     id: string;
@@ -22766,12 +22785,12 @@ export type Schemas = {
     toStateId: string;
     transitionActionName?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     userId?: string;
   };
   StateMachineJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     initialStateId?: string;
@@ -22830,11 +22849,11 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   StateMachineState: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       orderLineItems?: {
@@ -22948,11 +22967,11 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   StateMachineStateJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       orderLineItems?: {
@@ -23208,12 +23227,12 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   StateMachineTransition: {
     actionName: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     fromStateId: string;
     fromStateMachineState?: components["schemas"]["StateMachineState"];
@@ -23223,12 +23242,12 @@ export type Schemas = {
     toStateId: string;
     toStateMachineState?: components["schemas"]["StateMachineState"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   StateMachineTransitionJsonApi: components["schemas"]["resource"] & {
     actionName: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     fromStateId: string;
     id: string;
@@ -23282,7 +23301,7 @@ export type Schemas = {
     stateMachineId: string;
     toStateId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SubAggregations: {
     aggregation?:
@@ -23296,12 +23315,12 @@ export type Schemas = {
   Subscription: {
     addresses?: components["schemas"]["SubscriptionAddress"][];
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     billingAddress?: components["schemas"]["SubscriptionAddress"];
     billingAddressId: string;
     convertedOrder: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cronInterval: string;
     currency?: components["schemas"]["Currency"];
     currencyId: string;
@@ -23351,7 +23370,7 @@ export type Schemas = {
       roundForNet: boolean;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SubscriptionAddress: {
     additionalAddressLine1?: string;
@@ -23364,7 +23383,7 @@ export type Schemas = {
     countryState?: components["schemas"]["CountryState"];
     countryStateId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -23379,7 +23398,7 @@ export type Schemas = {
     subscriptionId: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatId?: string;
     zipcode?: string;
   };
@@ -23391,7 +23410,7 @@ export type Schemas = {
     countryId: string;
     countryStateId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     department?: string;
     firstName: string;
@@ -23495,14 +23514,14 @@ export type Schemas = {
     subscriptionId: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatId?: string;
     zipcode?: string;
   };
   SubscriptionCustomer: {
     company?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     customerNumber?: string;
@@ -23518,13 +23537,13 @@ export type Schemas = {
     subscriptionId: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatIds?: string[];
   };
   SubscriptionCustomerJsonApi: components["schemas"]["resource"] & {
     company?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId?: string;
     customerNumber?: string;
     customFields?: GenericRecord;
@@ -23584,7 +23603,7 @@ export type Schemas = {
     subscriptionId: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     vatIds?: string[];
   };
   SubscriptionInterval: {
@@ -23592,7 +23611,7 @@ export type Schemas = {
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cronInterval?: string;
     dateInterval?: string;
     id: string;
@@ -23606,13 +23625,13 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SubscriptionIntervalJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cronInterval?: string;
     dateInterval?: string;
     id: string;
@@ -23671,15 +23690,15 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SubscriptionJsonApi: components["schemas"]["resource"] & {
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     billingAddressId: string;
     convertedOrder: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     cronInterval: string;
     currencyId: string;
     customFields?: GenericRecord;
@@ -23929,7 +23948,7 @@ export type Schemas = {
       roundForNet: boolean;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SubscriptionPlan: {
     active?: boolean;
@@ -23937,7 +23956,7 @@ export type Schemas = {
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     /** Format: float */
     discountPercentage?: number;
@@ -23956,7 +23975,7 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SubscriptionPlanIntervalMapping: {
     id?: string;
@@ -23970,7 +23989,7 @@ export type Schemas = {
     activeStorefrontLabel?: boolean;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     /** Format: float */
     discountPercentage?: number;
@@ -24048,7 +24067,7 @@ export type Schemas = {
       name: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SubscriptionPlanProductMapping: {
     id?: string;
@@ -24070,11 +24089,11 @@ export type Schemas = {
     cmsBlockId: string;
     cmsBlockVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     inverted?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     visibilityRule?: components["schemas"]["Rule"];
     visibilityRuleId?: string;
   };
@@ -24082,7 +24101,7 @@ export type Schemas = {
     cmsBlockId: string;
     cmsBlockVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     inverted?: boolean;
     relationships?: {
@@ -24118,7 +24137,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     visibilityRuleId?: string;
   };
   SwagCmsExtensionsForm: {
@@ -24126,7 +24145,7 @@ export type Schemas = {
     cmsSlotId?: string;
     cmsSlotVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     groups?: components["schemas"]["SwagCmsExtensionsFormGroup"][];
     id: string;
     isTemplate?: boolean;
@@ -24145,11 +24164,11 @@ export type Schemas = {
       title: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCmsExtensionsFormGroup: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     fields?: components["schemas"]["SwagCmsExtensionsFormGroupField"][];
     form?: components["schemas"]["SwagCmsExtensionsForm"];
     formId?: string;
@@ -24164,12 +24183,12 @@ export type Schemas = {
       title: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCmsExtensionsFormGroupField: {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     errorMessage?: string;
     group?: components["schemas"]["SwagCmsExtensionsFormGroup"];
     groupId?: string;
@@ -24190,14 +24209,14 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: int64 */
     width: number;
   };
   SwagCmsExtensionsFormGroupFieldJsonApi: components["schemas"]["resource"] & {
     config?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     errorMessage?: string;
     groupId?: string;
     id: string;
@@ -24234,13 +24253,13 @@ export type Schemas = {
     };
     type: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     /** Format: int64 */
     width: number;
   };
   SwagCmsExtensionsFormGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     formId?: string;
     id: string;
     /** Format: int64 */
@@ -24285,13 +24304,13 @@ export type Schemas = {
       title: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCmsExtensionsFormJsonApi: components["schemas"]["resource"] & {
     cmsSlotId?: string;
     cmsSlotVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     isTemplate?: boolean;
     mailTemplateId: string;
@@ -24355,7 +24374,7 @@ export type Schemas = {
       title: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCmsExtensionsQuickview: {
     active?: boolean;
@@ -24363,17 +24382,17 @@ export type Schemas = {
     cmsBlockId?: string;
     cmsBlockVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCmsExtensionsQuickviewJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     cmsBlockId?: string;
     cmsBlockVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     relationships?: {
       cmsBlock?: {
@@ -24393,7 +24412,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCmsExtensionsScrollNavigation: {
     active?: boolean;
@@ -24401,7 +24420,7 @@ export type Schemas = {
     cmsSectionId?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     displayName?: string;
     id: string;
     translated: {
@@ -24410,14 +24429,14 @@ export type Schemas = {
       displayName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCmsExtensionsScrollNavigationJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     cmsSectionId?: string;
     cmsSectionVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     displayName?: string;
     id: string;
     relationships?: {
@@ -24443,7 +24462,7 @@ export type Schemas = {
       displayName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCmsExtensionsScrollNavigationPageSettings: {
     active?: boolean;
@@ -24452,7 +24471,7 @@ export type Schemas = {
     cmsPageId?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: int64 */
     duration?: number;
     easing?: string;
@@ -24461,7 +24480,7 @@ export type Schemas = {
     id: string;
     nativeScrolling: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCmsExtensionsScrollNavigationPageSettingsJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
@@ -24469,7 +24488,7 @@ export type Schemas = {
     cmsPageId?: string;
     cmsPageVersionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: int64 */
     duration?: number;
     easing?: string;
@@ -24495,15 +24514,15 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCustomizedProductsTemplate: {
     active?: boolean;
     configurations?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"][];
     confirmInput?: boolean;
     /** Format: date-time */
-    createdAt?: string;
-    decisionTree?: GenericRecord;
+    readonly createdAt?: string;
+    readonly decisionTree?: GenericRecord;
     description?: string;
     displayName: string;
     exclusions?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"][];
@@ -24525,13 +24544,13 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateConfiguration: {
     configuration: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     hash: string;
     id: string;
     template?: components["schemas"]["SwagCustomizedProductsTemplate"];
@@ -24539,13 +24558,13 @@ export type Schemas = {
     templateId: string;
     templateVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateConfigurationJsonApi: components["schemas"]["resource"] & {
     configuration: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     hash: string;
     id: string;
     relationships?: {
@@ -24583,24 +24602,24 @@ export type Schemas = {
     templateId: string;
     templateVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateConfigurationShare: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     oneTime?: boolean;
     templateConfiguration?: components["schemas"]["SwagCustomizedProductsTemplateConfiguration"];
     templateConfigurationId: string;
     templateConfigurationVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateConfigurationShareJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     oneTime?: boolean;
     relationships?: {
@@ -24623,25 +24642,25 @@ export type Schemas = {
     templateConfigurationId: string;
     templateConfigurationVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateExclusion: {
     conditions?: components["schemas"]["SwagCustomizedProductsTemplateExclusionCondition"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     name: string;
     template?: components["schemas"]["SwagCustomizedProductsTemplate"];
     templateId: string;
     templateVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateExclusionCondition: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     templateExclusion?: components["schemas"]["SwagCustomizedProductsTemplateExclusion"];
     templateExclusionId: string;
@@ -24653,12 +24672,12 @@ export type Schemas = {
     templateOptionValues?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"][];
     templateOptionVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateExclusionConditionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     relationships?: {
       templateExclusion?: {
@@ -24728,12 +24747,12 @@ export type Schemas = {
     templateOptionId: string;
     templateOptionVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateExclusionConditionValues: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id?: string;
     swagCustomizedProductsTemplateExclusionConditionVersionId?: string;
     swagCustomizedProductsTemplateOptionValueVersionId?: string;
@@ -24742,11 +24761,11 @@ export type Schemas = {
     templateOptionValue?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"];
     templateOptionValueId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCustomizedProductsTemplateExclusionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     name: string;
     relationships?: {
@@ -24784,12 +24803,12 @@ export type Schemas = {
     templateId: string;
     templateVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateExclusionOperator: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     label: string;
     operator: string;
@@ -24801,11 +24820,11 @@ export type Schemas = {
       templateOptionType: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCustomizedProductsTemplateExclusionOperatorJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     label: string;
     operator: string;
@@ -24833,14 +24852,14 @@ export type Schemas = {
       templateOptionType: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagCustomizedProductsTemplateJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     confirmInput?: boolean;
     /** Format: date-time */
-    createdAt?: string;
-    decisionTree?: GenericRecord;
+    readonly createdAt?: string;
+    readonly decisionTree?: GenericRecord;
     description?: string;
     displayName: string;
     id: string;
@@ -24935,14 +24954,14 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateOption: {
     advancedSurcharge?: boolean;
     calculatedPrice?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     displayName: string;
     id: string;
@@ -24977,7 +24996,7 @@ export type Schemas = {
     type: string;
     typeProperties?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     values?: components["schemas"]["SwagCustomizedProductsTemplateOptionValue"][];
     versionId?: string;
   };
@@ -24985,7 +25004,7 @@ export type Schemas = {
     advancedSurcharge?: boolean;
     calculatedPrice?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     displayName: string;
     id: string;
@@ -25093,12 +25112,12 @@ export type Schemas = {
     type: string;
     typeProperties?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateOptionPrice: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
@@ -25109,12 +25128,12 @@ export type Schemas = {
     templateOptionId: string;
     templateOptionVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateOptionPriceJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
@@ -25155,13 +25174,13 @@ export type Schemas = {
     templateOptionId: string;
     templateOptionVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateOptionValue: {
     advancedSurcharge?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     default?: boolean;
     displayName: string;
     id: string;
@@ -25189,14 +25208,14 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value?: GenericRecord;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateOptionValueJsonApi: components["schemas"]["resource"] & {
     advancedSurcharge?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     default?: boolean;
     displayName: string;
     id: string;
@@ -25282,13 +25301,13 @@ export type Schemas = {
       versionId: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     value?: GenericRecord;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateOptionValuePrice: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
@@ -25299,12 +25318,12 @@ export type Schemas = {
     templateOptionValueId: string;
     templateOptionValueVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagCustomizedProductsTemplateOptionValuePriceJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: float */
     percentageSurcharge?: number;
@@ -25345,12 +25364,12 @@ export type Schemas = {
     templateOptionValueId: string;
     templateOptionValueVersionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagDelayAction: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId?: string;
     delaySequenceId?: string;
@@ -25367,11 +25386,11 @@ export type Schemas = {
     sequence?: components["schemas"]["FlowSequence"];
     stored: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagDelayActionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId?: string;
     delaySequenceId?: string;
     eventName?: string;
@@ -25446,7 +25465,7 @@ export type Schemas = {
     };
     stored: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagDynamicAccessCategoryRule: {
     category?: components["schemas"]["Category"];
@@ -25475,18 +25494,18 @@ export type Schemas = {
   SwagLanguagePackLanguage: {
     administrationActive?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     language?: components["schemas"]["Language"];
     languageId: string;
     salesChannelActive?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagLanguagePackLanguageJsonApi: components["schemas"]["resource"] & {
     administrationActive?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     languageId: string;
     relationships?: {
@@ -25508,12 +25527,12 @@ export type Schemas = {
     };
     salesChannelActive?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationConnection: {
     /** Format: date-time */
-    createdAt?: string;
-    credentialFields?: GenericRecord;
+    readonly createdAt?: string;
+    readonly credentialFields?: GenericRecord;
     gatewayName: string;
     id: string;
     mappings?: components["schemas"]["SwagMigrationMapping"][];
@@ -25523,12 +25542,12 @@ export type Schemas = {
     runs?: components["schemas"]["SwagMigrationRun"][];
     settings?: components["schemas"]["SwagMigrationGeneralSetting"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationConnectionJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
-    credentialFields?: GenericRecord;
+    readonly createdAt?: string;
+    readonly credentialFields?: GenericRecord;
     gatewayName: string;
     id: string;
     name: string;
@@ -25582,15 +25601,15 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationData: {
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     converted?: GenericRecord;
     convertFailure?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entity: string;
     id: string;
     mappingUuid?: string;
@@ -25599,17 +25618,17 @@ export type Schemas = {
     runId: string;
     unmapped?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     writeFailure?: boolean;
     written?: boolean;
   };
   SwagMigrationDataJsonApi: components["schemas"]["resource"] & {
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     converted?: GenericRecord;
     convertFailure?: boolean;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entity: string;
     id: string;
     mappingUuid?: string;
@@ -25634,23 +25653,23 @@ export type Schemas = {
     runId: string;
     unmapped?: GenericRecord;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     writeFailure?: boolean;
     written?: boolean;
   };
   SwagMigrationGeneralSetting: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     isReset?: boolean;
     selectedConnection?: components["schemas"]["SwagMigrationConnection"];
     selectedConnectionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationGeneralSettingJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     isReset?: boolean;
     relationships?: {
@@ -25672,14 +25691,14 @@ export type Schemas = {
     };
     selectedConnectionId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationLogging: {
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     code: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description: string;
     descriptionSnippet: string;
     entity?: string;
@@ -25692,14 +25711,14 @@ export type Schemas = {
     title: string;
     titleSnippet: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationLoggingJsonApi: components["schemas"]["resource"] & {
     /** Format: int64 */
-    autoIncrement?: number;
+    readonly autoIncrement?: number;
     code: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description: string;
     descriptionSnippet: string;
     entity?: string;
@@ -25728,7 +25747,7 @@ export type Schemas = {
     title: string;
     titleSnippet: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationMapping: {
     additionalData?: GenericRecord;
@@ -25736,21 +25755,21 @@ export type Schemas = {
     connection?: components["schemas"]["SwagMigrationConnection"];
     connectionId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entity: string;
     entityUuid?: string;
     entityValue?: string;
     id: string;
     oldIdentifier?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationMappingJsonApi: components["schemas"]["resource"] & {
     additionalData?: GenericRecord;
     checksum?: string;
     connectionId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entity: string;
     entityUuid?: string;
     entityValue?: string;
@@ -25774,11 +25793,11 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationMediaFile: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entity: string;
     fileName: string;
     /** Format: int64 */
@@ -25790,13 +25809,13 @@ export type Schemas = {
     run?: components["schemas"]["SwagMigrationRun"];
     runId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     uri: string;
     written?: boolean;
   };
   SwagMigrationMediaFileJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     entity: string;
     fileName: string;
     /** Format: int64 */
@@ -25824,7 +25843,7 @@ export type Schemas = {
     };
     runId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     uri: string;
     written?: boolean;
   };
@@ -25832,7 +25851,7 @@ export type Schemas = {
     connection?: components["schemas"]["SwagMigrationConnection"];
     connectionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     data?: components["schemas"]["SwagMigrationData"][];
     environmentInformation?: GenericRecord;
     id: string;
@@ -25853,12 +25872,12 @@ export type Schemas = {
     };
     step: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagMigrationRunJsonApi: components["schemas"]["resource"] & {
     connectionId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     environmentInformation?: GenericRecord;
     id: string;
     progress?: {
@@ -25938,12 +25957,12 @@ export type Schemas = {
     };
     step: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalPosSalesChannel: {
     apiKey: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     mediaDomain?: string;
     productStream?: components["schemas"]["ProductStream"];
@@ -25954,7 +25973,7 @@ export type Schemas = {
     salesChannelId: string;
     syncPrices?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     webhookSigningKey?: string;
   };
   SwagPaypalPosSalesChannelInventory: {
@@ -25966,12 +25985,12 @@ export type Schemas = {
     /** Format: int64 */
     stock: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalPosSalesChannelJsonApi: components["schemas"]["resource"] & {
     apiKey: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     mediaDomain?: string;
     productStreamId?: string;
@@ -26012,12 +26031,12 @@ export type Schemas = {
     salesChannelId: string;
     syncPrices?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     webhookSigningKey?: string;
   };
   SwagPaypalPosSalesChannelMedia: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id?: string;
     lookupKey?: string;
     media?: components["schemas"]["Media"];
@@ -26028,18 +26047,18 @@ export type Schemas = {
   SwagPaypalPosSalesChannelProduct: {
     checksum: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id?: string;
     product?: components["schemas"]["Product"];
     productId: string;
     productVersionId?: string;
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalPosSalesChannelRun: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
     finishedAt?: string;
     id: string;
@@ -26053,11 +26072,11 @@ export type Schemas = {
     steps: GenericRecord;
     task: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalPosSalesChannelRunJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: date-time */
     finishedAt?: string;
     id: string;
@@ -26087,11 +26106,11 @@ export type Schemas = {
     steps: GenericRecord;
     task: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalPosSalesChannelRunLog: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     level: number;
@@ -26101,11 +26120,11 @@ export type Schemas = {
     productVersionId?: string;
     runId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalPosSalesChannelRunLogJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     level: number;
@@ -26131,11 +26150,11 @@ export type Schemas = {
     };
     runId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalTransactionReport: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyIso: string;
     id?: string;
     orderTransaction?: components["schemas"]["OrderTransaction"];
@@ -26144,11 +26163,11 @@ export type Schemas = {
     /** Format: float */
     totalPrice: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalTransactionReportJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyIso: string;
     id?: string;
     orderTransactionId: string;
@@ -26173,11 +26192,11 @@ export type Schemas = {
     /** Format: float */
     totalPrice: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalVaultToken: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     id: string;
@@ -26186,11 +26205,11 @@ export type Schemas = {
     paymentMethod?: components["schemas"]["PaymentMethod"];
     paymentMethodId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalVaultTokenJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId: string;
     id: string;
     identifier: string;
@@ -26243,11 +26262,11 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalVaultTokenMapping: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     id?: string;
@@ -26256,11 +26275,11 @@ export type Schemas = {
     token?: components["schemas"]["SwagPaypalVaultToken"];
     tokenId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagPaypalVaultTokenMappingJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId: string;
     id?: string;
     paymentMethodId: string;
@@ -26313,7 +26332,7 @@ export type Schemas = {
     };
     tokenId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagSequenceWebhookEventLog: {
     flowSequence?: components["schemas"]["FlowSequence"];
@@ -26324,18 +26343,18 @@ export type Schemas = {
   };
   SwagSocialShoppingCustomer: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customer?: components["schemas"]["Customer"];
     customerId: string;
     id: string;
     referralCode: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagSocialShoppingCustomerJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customerId: string;
     id: string;
     referralCode: string;
@@ -26372,11 +26391,11 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagSocialShoppingOrder: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     order?: components["schemas"]["Order"];
     orderId: string;
@@ -26384,12 +26403,12 @@ export type Schemas = {
     referralCode: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagSocialShoppingOrderJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     orderId: string;
     orderVersionId?: string;
@@ -26427,12 +26446,12 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     versionId?: string;
   };
   SwagSocialShoppingProductError: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     errors: GenericRecord;
     id: string;
     product?: components["schemas"]["Product"];
@@ -26441,11 +26460,11 @@ export type Schemas = {
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagSocialShoppingProductErrorJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     errors: GenericRecord;
     id: string;
     productId: string;
@@ -26484,12 +26503,12 @@ export type Schemas = {
     };
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagSocialShoppingSalesChannel: {
     configuration?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currency?: components["schemas"]["Currency"];
     currencyId?: string;
     id: string;
@@ -26504,12 +26523,12 @@ export type Schemas = {
     salesChannelDomainId: string;
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SwagSocialShoppingSalesChannelJsonApi: components["schemas"]["resource"] & {
     configuration?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     currencyId?: string;
     id: string;
     isValidating?: boolean;
@@ -26582,7 +26601,7 @@ export type Schemas = {
     salesChannelDomainId: string;
     salesChannelId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SystemConfig: {
     configurationKey: string;
@@ -26590,12 +26609,12 @@ export type Schemas = {
       _value?: GenericRecord;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     salesChannel?: components["schemas"]["SalesChannel"];
     salesChannelId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   SystemConfigJsonApi: components["schemas"]["resource"] & {
     configurationKey: string;
@@ -26603,7 +26622,7 @@ export type Schemas = {
       _value?: GenericRecord;
     };
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     relationships?: {
       salesChannel?: {
@@ -26624,12 +26643,12 @@ export type Schemas = {
     };
     salesChannelId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Tag: {
     categories?: components["schemas"]["Category"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customers?: components["schemas"]["Customer"][];
     extensions?: {
       subscriptions?: {
@@ -26658,11 +26677,11 @@ export type Schemas = {
     rules?: components["schemas"]["Rule"][];
     shippingMethods?: components["schemas"]["ShippingMethod"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   TagJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     extensions?: {
       subscriptions?: {
         data?: {
@@ -26820,11 +26839,11 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Tax: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       customizedProductsOptions?: {
@@ -26871,11 +26890,11 @@ export type Schemas = {
     /** Format: float */
     taxRate: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   TaxJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     extensions?: {
       customizedProductsOptions?: {
@@ -26966,7 +26985,7 @@ export type Schemas = {
     /** Format: float */
     taxRate: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   TaxProvider: {
     active?: boolean;
@@ -26975,7 +26994,7 @@ export type Schemas = {
     availabilityRule?: components["schemas"]["Rule"];
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     identifier: string;
@@ -26991,14 +27010,14 @@ export type Schemas = {
       processUrl: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   TaxProviderJsonApi: components["schemas"]["resource"] & {
     active?: boolean;
     appId?: string;
     availabilityRuleId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     identifier: string;
@@ -27046,7 +27065,7 @@ export type Schemas = {
       processUrl: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   TaxRule: {
     /** Format: date-time */
@@ -27054,7 +27073,7 @@ export type Schemas = {
     country?: components["schemas"]["Country"];
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     data?: {
       fromZipCode?: string;
       states?: GenericRecord[];
@@ -27069,14 +27088,14 @@ export type Schemas = {
     taxRuleTypeId: string;
     type?: components["schemas"]["TaxRuleType"];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   TaxRuleJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
     activeFrom?: string;
     countryId: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     data?: {
       fromZipCode?: string;
       states?: GenericRecord[];
@@ -27136,27 +27155,27 @@ export type Schemas = {
     taxRate: number;
     taxRuleTypeId: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   TaxRuleType: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     position: number;
     rules?: components["schemas"]["TaxRule"][];
-    technicalName: string;
+    readonly technicalName: string;
     translated: {
       technicalName: string;
       typeName: string;
     };
     typeName: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   TaxRuleTypeJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     /** Format: int64 */
     position: number;
@@ -27177,14 +27196,14 @@ export type Schemas = {
         };
       };
     };
-    technicalName: string;
+    readonly technicalName: string;
     translated: {
       technicalName: string;
       typeName: string;
     };
     typeName: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Theme: {
     active: boolean;
@@ -27192,7 +27211,7 @@ export type Schemas = {
     baseConfig?: GenericRecord;
     configValues?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     dependentThemes?: components["schemas"]["Theme"][];
     description?: string;
@@ -27216,7 +27235,7 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ThemeChild: {
     childId: string;
@@ -27231,7 +27250,7 @@ export type Schemas = {
     baseConfig?: GenericRecord;
     configValues?: GenericRecord;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     description?: string;
     helpTexts?: GenericRecord;
@@ -27313,7 +27332,7 @@ export type Schemas = {
       technicalName: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   ThemeMedia: {
     id?: string;
@@ -27331,7 +27350,7 @@ export type Schemas = {
   };
   Unit: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -27342,11 +27361,11 @@ export type Schemas = {
       shortCode: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   UnitJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     name: string;
@@ -27373,7 +27392,7 @@ export type Schemas = {
       shortCode: string;
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   User: {
     accessKeys?: components["schemas"]["UserAccessKey"][];
@@ -27384,7 +27403,7 @@ export type Schemas = {
     avatarMedia?: components["schemas"]["Media"];
     configs?: components["schemas"]["UserConfig"][];
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     createdCustomers?: components["schemas"]["Customer"][];
     createdOrders?: components["schemas"]["Order"][];
     customFields?: GenericRecord;
@@ -27495,14 +27514,14 @@ export type Schemas = {
           related?: string;
         };
       };
-      demoToken?: {
-        readonly data?: {
+      readonly demoToken?: {
+        data?: {
           /** @example 69de4ff786578920993323df63a4439a */
           id?: string;
           /** @example saas_storefront_demo_token */
           type?: string;
         }[];
-        readonly links?: {
+        links?: {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/demoToken
@@ -27525,14 +27544,14 @@ export type Schemas = {
           related?: string;
         };
       };
-      loginToken?: {
-        readonly data?: {
+      readonly loginToken?: {
+        data?: {
           /** @example 4750140e5c1fe2a486703813ab519180 */
           id?: string;
           /** @example saas_user_login_token */
           type?: string;
         }[];
-        readonly links?: {
+        links?: {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/loginToken
@@ -27615,14 +27634,14 @@ export type Schemas = {
           related?: string;
         };
       };
-      sbpUserData?: {
-        readonly data?: {
+      readonly sbpUserData?: {
+        data?: {
           /** @example 7afee5a98234c94ed28df8d4f2f78b96 */
           id?: string;
           /** @example saas_sbp_user_data */
           type?: string;
         };
-        readonly links?: {
+        links?: {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/sbpUserData
@@ -27675,7 +27694,7 @@ export type Schemas = {
     timeZone?: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     updatedCustomers?: components["schemas"]["Customer"][];
     updatedOrders?: components["schemas"]["Order"][];
     username: string;
@@ -27683,21 +27702,21 @@ export type Schemas = {
   UserAccessKey: {
     accessKey: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     /** Format: date-time */
     lastUsageAt?: string;
     secretAccessKey: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
     userId: string;
   };
   UserAccessKeyJsonApi: components["schemas"]["resource"] & {
     accessKey: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     id: string;
     /** Format: date-time */
@@ -27721,23 +27740,23 @@ export type Schemas = {
     };
     secretAccessKey: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     userId: string;
   };
   UserConfig: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     key: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
     userId: string;
     value?: GenericRecord;
   };
   UserConfigJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     id: string;
     key: string;
     relationships?: {
@@ -27758,7 +27777,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     userId: string;
     value?: GenericRecord;
   };
@@ -27767,7 +27786,7 @@ export type Schemas = {
     admin?: boolean;
     avatarId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     email: string;
     extensions?: {
@@ -27876,14 +27895,14 @@ export type Schemas = {
           related?: string;
         };
       };
-      demoToken?: {
-        readonly data?: {
+      readonly demoToken?: {
+        data?: {
           /** @example 69de4ff786578920993323df63a4439a */
           id?: string;
           /** @example saas_storefront_demo_token */
           type?: string;
         }[];
-        readonly links?: {
+        links?: {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/demoToken
@@ -27906,14 +27925,14 @@ export type Schemas = {
           related?: string;
         };
       };
-      loginToken?: {
-        readonly data?: {
+      readonly loginToken?: {
+        data?: {
           /** @example 4750140e5c1fe2a486703813ab519180 */
           id?: string;
           /** @example saas_user_login_token */
           type?: string;
         }[];
-        readonly links?: {
+        links?: {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/loginToken
@@ -27996,14 +28015,14 @@ export type Schemas = {
           related?: string;
         };
       };
-      sbpUserData?: {
-        readonly data?: {
+      readonly sbpUserData?: {
+        data?: {
           /** @example 7afee5a98234c94ed28df8d4f2f78b96 */
           id?: string;
           /** @example saas_sbp_user_data */
           type?: string;
         };
-        readonly links?: {
+        links?: {
           /**
            * Format: uri-reference
            * @example /user/8f9bfe9d1345237cb3b2b205864da075/sbpUserData
@@ -28248,22 +28267,22 @@ export type Schemas = {
     timeZone?: string;
     title?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     username: string;
   };
   UserRecovery: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     hash: string;
     id: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     user?: components["schemas"]["User"];
     userId: string;
   };
   UserRecoveryJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     hash: string;
     id: string;
     relationships?: {
@@ -28284,7 +28303,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     userId: string;
   };
   VideoChatCreateStruct: {
@@ -28301,7 +28320,7 @@ export type Schemas = {
   };
   Warehouse: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     groups?: components["schemas"]["WarehouseGroup"][];
     id: string;
@@ -28309,11 +28328,11 @@ export type Schemas = {
     orderProducts?: components["schemas"]["OrderProductWarehouse"][];
     productWarehouses?: components["schemas"]["ProductWarehouse"][];
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   WarehouseGroup: {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -28323,12 +28342,12 @@ export type Schemas = {
     rule?: components["schemas"]["Rule"];
     ruleId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     warehouses?: components["schemas"]["Warehouse"][];
   };
   WarehouseGroupJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -28383,7 +28402,7 @@ export type Schemas = {
     };
     ruleId?: string;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   WarehouseGroupWarehouse: {
     id?: string;
@@ -28396,7 +28415,7 @@ export type Schemas = {
   };
   WarehouseJsonApi: components["schemas"]["resource"] & {
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     description?: string;
     id: string;
     name: string;
@@ -28448,29 +28467,29 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
   };
   Webhook: {
     active?: boolean;
     app?: components["schemas"]["App"];
     appId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: int64 */
-    errorCount?: number;
+    readonly errorCount?: number;
     eventName: string;
     id: string;
     name: string;
     onlyLiveVersion?: boolean;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
   };
   WebhookEventLog: {
     appName?: string;
     appVersion?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     deliveryStatus: string;
     eventName: string;
@@ -28503,7 +28522,7 @@ export type Schemas = {
     /** Format: int64 */
     timestamp?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
     webhookName: string;
   };
@@ -28511,7 +28530,7 @@ export type Schemas = {
     appName?: string;
     appVersion?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     customFields?: GenericRecord;
     deliveryStatus: string;
     eventName: string;
@@ -28544,7 +28563,7 @@ export type Schemas = {
     /** Format: int64 */
     timestamp?: number;
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
     webhookName: string;
   };
@@ -28552,9 +28571,9 @@ export type Schemas = {
     active?: boolean;
     appId?: string;
     /** Format: date-time */
-    createdAt?: string;
+    readonly createdAt?: string;
     /** Format: int64 */
-    errorCount?: number;
+    readonly errorCount?: number;
     eventName: string;
     id: string;
     name: string;
@@ -28577,7 +28596,7 @@ export type Schemas = {
       };
     };
     /** Format: date-time */
-    updatedAt?: string;
+    readonly updatedAt?: string;
     url: string;
   };
   WidgetProductListing: {
@@ -28679,19 +28698,16 @@ export type Schemas = {
     meta?: components["schemas"]["meta"];
     version?: string;
   };
-  link: OneOf<
-    [
-      string,
-      {
+  link:
+    | string
+    | {
         /**
          * Format: uri-reference
          * A string containing the link's URL.
          */
         href: string;
         meta?: components["schemas"]["meta"];
-      },
-    ]
-  >;
+      };
   linkage: {
     id: string;
     meta?: components["schemas"]["meta"];
@@ -28728,11 +28744,22 @@ export type Schemas = {
   relationshipLinks: {
     related?: components["schemas"]["link"];
     self?: GenericRecord[] & components["schemas"]["link"];
+  } & {
     [key: string]: unknown;
   };
   relationshipToMany: components["schemas"]["linkage"][];
-  relationshipToOne: components["schemas"]["linkage"];
-  relationships: unknown;
+  relationshipToOne: unknown & components["schemas"]["linkage"];
+  relationships:
+    | unknown
+    | unknown
+    | unknown
+    | {
+        /** Member, whose value represents "resource linkage". */
+        data?:
+          | components["schemas"]["relationshipToOne"]
+          | components["schemas"]["relationshipToMany"];
+        links?: components["schemas"]["relationshipLinks"];
+      };
   resource: {
     attributes?: components["schemas"]["attributes"];
     id: string;
@@ -28820,10 +28847,10 @@ export type operations = {
       download?: boolean;
     };
     pathParams: {
-      /** Identifier of the document to be downloaded. */
-      documentId: string;
       /** A unique hash code which was generated when the document was created. */
       deepLinkCode: string;
+      /** Identifier of the document to be downloaded. */
+      documentId: string;
     };
     response: Blob;
     responseCode: 200;
@@ -28833,10 +28860,10 @@ export type operations = {
         contentType?: "application/json";
         accept?: "application/json";
         query: {
-          /** Name of the uploaded file. */
-          fileName: string;
           /** Extension of the uploaded file. For example `pdf` */
           extension: string;
+          /** Name of the uploaded file. */
+          fileName: string;
         };
         pathParams: {
           /** Identifier of the document the new file should be added to. */
@@ -28858,10 +28885,10 @@ export type operations = {
         contentType: "application/octet-stream";
         accept?: "application/json";
         query: {
-          /** Name of the uploaded file. */
-          fileName: string;
           /** Extension of the uploaded file. For example `pdf` */
           extension: string;
+          /** Name of the uploaded file. */
+          fileName: string;
         };
         pathParams: {
           /** Identifier of the document the new file should be added to. */
@@ -29158,12 +29185,12 @@ export type operations = {
         /**
          * An associative array that is handed over to the templating engine and can be used as variables in the mail content.
          * @example {
-         *   "order": {
-         *     "orderNumber": 5000,
-         *     "customerName": "Example Customer"
-         *   },
-         *   "messageOfTheDay": "An apple a day keeps the doctor away!"
-         * }
+         *       "order": {
+         *         "orderNumber": 5000,
+         *         "customerName": "Example Customer"
+         *       },
+         *       "messageOfTheDay": "An apple a day keeps the doctor away!"
+         *     }
          */
         templateData?: {
           [key: string]: unknown;
@@ -29195,9 +29222,9 @@ export type operations = {
       /**
        * A list of recipients with name and mail address.
        * @example {
-       *   "test1@example.com": "Test user 1",
-       *   "test2@example.com": "Test user 2"
-       * }
+       *       "test1@example.com": "Test user 1",
+       *       "test2@example.com": "Test user 2"
+       *     }
        */
       recipients: {
         [key: string]: string;
@@ -29205,9 +29232,9 @@ export type operations = {
       /**
        * A list of recipients with name and mail address to be set in BCC.
        * @example {
-       *   "test1@example.com": "Test user 1",
-       *   "test2@example.com": "Test user 2"
-       * }
+       *       "test1@example.com": "Test user 1",
+       *       "test2@example.com": "Test user 2"
+       *     }
        */
       recipientsBcc?: {
         [key: string]: string;
@@ -29215,9 +29242,9 @@ export type operations = {
       /**
        * A list of recipients with name and mail address to be set in CC.
        * @example {
-       *   "test1@example.com": "Test user 1",
-       *   "test2@example.com": "Test user 2"
-       * }
+       *       "test1@example.com": "Test user 1",
+       *       "test2@example.com": "Test user 2"
+       *     }
        */
       recipientsCc?: {
         [key: string]: string;
@@ -29225,9 +29252,9 @@ export type operations = {
       /**
        * A list of mail addresses with name and mail address to be set in reply to.
        * @example {
-       *   "test1@example.com": "Test user 1",
-       *   "test2@example.com": "Test user 2"
-       * }
+       *       "test1@example.com": "Test user 1",
+       *       "test2@example.com": "Test user 2"
+       *     }
        */
       replyTo?: {
         [key: string]: string;
@@ -29235,9 +29262,9 @@ export type operations = {
       /**
        * A list of mail addresses with name and mail address to be set in return path.
        * @example {
-       *   "test1@example.com": "Test user 1",
-       *   "test2@example.com": "Test user 2"
-       * }
+       *       "test1@example.com": "Test user 1",
+       *       "test2@example.com": "Test user 2"
+       *     }
        */
       returnPath?: {
         [key: string]: string;
@@ -29274,10 +29301,10 @@ export type operations = {
         contentType?: "application/json";
         accept?: "application/json";
         query: {
-          /** Name of the uploaded file. If not provided the media identifier will be used as name */
-          fileName?: string;
           /** Extension of the uploaded file. For example `png` */
           extension: string;
+          /** Name of the uploaded file. If not provided the media identifier will be used as name */
+          fileName?: string;
         };
         pathParams: {
           /** Identifier of the media entity. */
@@ -29294,10 +29321,10 @@ export type operations = {
         contentType: "application/octet-stream";
         accept?: "application/json";
         query: {
-          /** Name of the uploaded file. If not provided the media identifier will be used as name */
-          fileName?: string;
           /** Extension of the uploaded file. For example `png` */
           extension: string;
+          /** Name of the uploaded file. If not provided the media identifier will be used as name */
+          fileName?: string;
         };
         pathParams: {
           /** Identifier of the media entity. */
@@ -29311,10 +29338,8 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     body: {
-      /**
-       * The name of the transport in the messenger that should be processed.
-       * See the [Symfony Messenger documentation](https://symfony.com/doc/current/messenger.html) for more information
-       */
+      /** The name of the transport in the messenger that should be processed.
+       *     See the [Symfony Messenger documentation](https://symfony.com/doc/current/messenger.html) for more information */
       receiver: string;
     };
     response: {
@@ -29331,10 +29356,10 @@ export type operations = {
       preview?: boolean;
     };
     pathParams: {
-      /** `technicalName` of the document type (e.g. `document_invoice`). Available types can be fetched with the `/api/document-type endpoint`. */
-      type: string;
       /** Sales channel for the number range. Number ranges can be defined per sales channel, so you can pass a sales channel ID here. */
       saleschannel: string;
+      /** `technicalName` of the document type (e.g. `document_invoice`). Available types can be fetched with the `/api/document-type endpoint`. */
+      type: string;
     };
     response: {
       /** The generated (or previewed) document number. */
@@ -29348,11 +29373,9 @@ export type operations = {
     pathParams: {
       /** Identifier of the order delivery. */
       orderDeliveryId: string;
-      /**
-       * The `action_name` of the `state_machine_transition`. For example `process` if the order state should change from open to in progress.
+      /** The `action_name` of the `state_machine_transition`. For example `process` if the order state should change from open to in progress.
        *
-       * Note: If you choose a transition which is not possible, you will get an error that lists possible transition for the actual state.
-       */
+       *     Note: If you choose a transition which is not possible, you will get an error that lists possible transition for the actual state. */
       transition: string;
     };
     body?: {
@@ -29387,11 +29410,9 @@ export type operations = {
     pathParams: {
       /** Identifier of the order transaction. */
       orderTransactionId: string;
-      /**
-       * The `action_name` of the `state_machine_transition`. For example `process` if the order state should change from open to in progress.
+      /** The `action_name` of the `state_machine_transition`. For example `process` if the order state should change from open to in progress.
        *
-       * Note: If you choose a transition that is not available, you will get an error that lists possible transitions for the current state.
-       */
+       *     Note: If you choose a transition that is not available, you will get an error that lists possible transitions for the current state. */
       transition: string;
     };
     body?: {
@@ -29437,11 +29458,9 @@ export type operations = {
     pathParams: {
       /** Identifier of the order. */
       orderId: string;
-      /**
-       * The `action_name` of the `state_machine_transition`. For example `process` if the order state should change from open to in progress.
+      /** The `action_name` of the `state_machine_transition`. For example `process` if the order state should change from open to in progress.
        *
-       * Note: If you choose a transition that is not available, you will get an error that lists possible transitions for the current state.
-       */
+       *     Note: If you choose a transition that is not available, you will get an error that lists possible transitions for the current state. */
       transition: string;
     };
     body?: {
@@ -29546,10 +29565,10 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     pathParams: {
-      /** Identifier of the quote to be fetched */
-      quoteId: string;
       /** Identifier of the product to be fetched */
       productId: string;
+      /** Identifier of the quote to be fetched */
+      quoteId: string;
     };
     body?: {
       quantity?: number;
@@ -29591,19 +29610,17 @@ export type operations = {
     headers?: {
       /** To continue upcoming actions on errors, set the `fail-on-error` header to `false`. */
       "fail-on-error"?: boolean;
-      /**
-       * Controls the indexing behavior.
-       *     - `disable-indexing`: Data indexing is completely disabled
-       */
+      /** Controls the indexing behavior.
+       *         - `disable-indexing`: Data indexing is completely disabled */
       "indexing-behavior"?: "use-queue-indexing" | "disable-indexing";
     };
     body: {
       /**
        * The action indicates what should happen with the provided payload.
-       *     * `upsert`: The Sync API does not differ between create and update operations,
-       *     but always performs an upsert operation. During an upsert, the system checks whether the entity already exists in the
-       *     system and updates it if an identifier has been passed, otherwise a new entity is created with this identifier.
-       *     * `delete`: Deletes entities with the provided identifiers
+       *         * `upsert`: The Sync API does not differ between create and update operations,
+       *         but always performs an upsert operation. During an upsert, the system checks whether the entity already exists in the
+       *         system and updates it if an identifier has been passed, otherwise a new entity is created with this identifier.
+       *         * `delete`: Deletes entities with the provided identifiers
        * @enum {string}
        */
       action: "upsert" | "delete";
@@ -29612,10 +29629,8 @@ export type operations = {
        * @example product
        */
       entity: string;
-      /**
-       * Contains a list of changesets for an entity. If the action type is `delete`,
-       *     a list of identifiers can be provided.
-       */
+      /** Contains a list of changesets for an entity. If the action type is `delete`,
+       *         a list of identifiers can be provided. */
       payload: GenericRecord[];
     }[];
     response: {

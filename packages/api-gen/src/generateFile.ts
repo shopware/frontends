@@ -37,12 +37,14 @@ export async function generateFile(
   operationsMap: OverridesMap | GenerationMap,
   existingTypes: string[][],
   schemasMap: Record<string, string>,
+  options: { version: string },
 ) {
   const project = await prepareFileContent({
     filepath,
     operationsMap,
     existingTypes,
     componentsMap: schemasMap,
+    options,
   });
 
   await project.save();
@@ -53,11 +55,13 @@ export async function prepareFileContent({
   operationsMap,
   existingTypes,
   componentsMap,
+  options,
 }: {
   filepath: string;
   operationsMap: OverridesMap | GenerationMap;
   existingTypes: string[][];
   componentsMap: Record<string, string>;
+  options: { version: string };
 }) {
   const project = new Project({});
 
@@ -238,12 +242,12 @@ export async function prepareFileContent({
               // })
               writer.write(";").newLine();
             } else {
-              console.error(
-                "No requests for method",
-                routePath,
-                // "method",
-                // method,
-              );
+              // console.error(
+              //   "No requests for method",
+              //   routePath,
+              //   // "method",
+              //   // method,
+              // );
             }
           }
         }
@@ -256,8 +260,18 @@ export async function prepareFileContent({
   //   indentSize: 2,
   //   placeOpenBraceOnNewLineForFunctions: true,
   // });
+  let x = `
+/**
+* This file is auto-generated. Do not make direct changes to the file.
+* Instead override it in your shopware.d.ts file.
+*
+* Shopware API version: ${options.version}
+*
+*/
+  `;
 
-  const x = sourceFile.getFullText();
+  x += sourceFile.getFullText();
+
   const formatted = await format(x, {
     parser: "typescript",
   });
