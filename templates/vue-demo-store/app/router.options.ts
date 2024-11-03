@@ -2,7 +2,20 @@ import type { RouterOptions } from "@nuxt/schema";
 
 export default <RouterOptions>{
   scrollBehavior(to, from, savedPosition) {
+    if (to.path === from.path) {
+      return;
+    }
     /**
+     * IMPORTANT:
+     *
+     * This solutions is related to the default SEO URL pattern structure:
+     * {{ product.translated.name }}/{{ product.productNumber }}
+     *
+     * For more information please visit:
+     * https://docs.shopware.com/en/shopware-6-en/settings/seo
+     *
+     * ----------------------------------------------
+     *
      * Do not scroll to top when switching between product variants
      *
      * Assumptions:

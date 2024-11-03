@@ -22,6 +22,8 @@ const {
   setInitialListing,
 } = useProductSearchListing();
 const { t } = useI18n();
+const productListElement = useTemplateRef("productListElement");
+
 useBreadcrumbs([
   {
     name: t("breadcrumbs.search"),
@@ -201,6 +203,7 @@ const changePage = async (page: number) => {
     page,
     route.query as unknown as operations["searchPage post /search"]["body"],
   );
+  productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 const changeLimit = async (limit: Event) => {
   const select = limit.target as HTMLSelectElement;
@@ -216,6 +219,7 @@ const changeLimit = async (limit: Event) => {
     1,
     route.query as unknown as operations["searchPage post /search"]["body"],
   );
+  productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 
 const isSortMenuOpen = ref(false);
@@ -452,6 +456,7 @@ onMounted(() => {
         </div>
         <div
           v-if="!loading"
+          ref="productListElement"
           class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8"
         >
           <ProductCard
