@@ -1,5 +1,36 @@
 # vue-demo-store
 
+## 1.3.0
+
+### Minor Changes
+
+- [#1329](https://github.com/shopware/frontends/pull/1329) [`68db4ba`](https://github.com/shopware/frontends/commit/68db4bad6d6283929386ea593c44c03c3d312c82) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Disable broadcasting for the vue-demo template
+
+- [#1298](https://github.com/shopware/frontends/pull/1298) [`201a961`](https://github.com/shopware/frontends/commit/201a9611886f7e0d4381f77e9d2f1d1cb9f90802) Thanks [@patzick](https://github.com/patzick)! - Updated refs to templateRefs from Vue 3.5 for better type support
+
+- [#1325](https://github.com/shopware/frontends/pull/1325) [`fa517bc`](https://github.com/shopware/frontends/commit/fa517bc68e33b97f6cf34205587218314cb4f5f6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added `refreshPaymentMethod` to refresh payment methods
+  - Added `refreshShippingMethod` to refresh shipping methods
+  - Added check of shipping method selection on the checkout process
+
+### Patch Changes
+
+- [#1365](https://github.com/shopware/frontends/pull/1365) [`6abe9ab`](https://github.com/shopware/frontends/commit/6abe9abb64b9d2fe94d565393b1c08ec68b58162) Thanks [@patzick](https://github.com/patzick)! - Updated default API schema definitions to 6.6.6.0
+
+- [#1395](https://github.com/shopware/frontends/pull/1395) [`e18a4db`](https://github.com/shopware/frontends/commit/e18a4dba8eb9fc3e8dd8deca9edaa87ee6683268) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fixed tag text contrast (accessible issue)
+
+- [#1395](https://github.com/shopware/frontends/pull/1395) [`e18a4db`](https://github.com/shopware/frontends/commit/e18a4dba8eb9fc3e8dd8deca9edaa87ee6683268) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fixed autocomplete attribute value for inputs
+
+  - first-name -> given-name
+  - last-name -> family-name
+  - password -> current-password
+  - Street -> street-address
+  - zipcode -> postal-code
+  - city -> address-level2
+
+- [#1396](https://github.com/shopware/frontends/pull/1396) [`94a2339`](https://github.com/shopware/frontends/commit/94a2339af69441657535f55b15b5f4c7eaebf8b5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Close minicart after route update
+
+- [#1317](https://github.com/shopware/frontends/pull/1317) [`c18d995`](https://github.com/shopware/frontends/commit/c18d995ef210244b25353f45e3c732c546ed365e) Thanks [@khanSoliheen](https://github.com/khanSoliheen)! - Added v-if condition to show and hide AccountOrderDetails
+
 ## 1.2.0
 
 ### Minor Changes
