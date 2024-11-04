@@ -279,10 +279,42 @@ calling `apiClient.hook` will autocomplete the list of available hooks.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.0.2
+### Latest changes: 1.1.0
+
+### Minor Changes
+
+- [#1371](https://github.com/shopware/frontends/pull/1371) [`0643174`](https://github.com/shopware/frontends/commit/06431743162c088d46cf1e6305332bd51542eec4) Thanks [@patzick](https://github.com/patzick)! - New `onDefaultHeaderChanged` hook in store and admin client. This allows to track the default headers changes. Additionally manual change of the default header will also invoke this hook.
 
 ### Patch Changes
 
-- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Migrate eslint config to flat format
+- [#1365](https://github.com/shopware/frontends/pull/1365) [`6abe9ab`](https://github.com/shopware/frontends/commit/6abe9abb64b9d2fe94d565393b1c08ec68b58162) Thanks [@patzick](https://github.com/patzick)! - Updated default API schema definitions to 6.6.6.0
 
-- [#1074](https://github.com/shopware/frontends/pull/1074) [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4) Thanks [@mkucmus](https://github.com/mkucmus)! - Update default schemas' `translated` properties as required
+- [#1339](https://github.com/shopware/frontends/pull/1339) [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Updated default schema to version `6.6.6.0`
+
+- [#1405](https://github.com/shopware/frontends/pull/1405) [`f9fb243`](https://github.com/shopware/frontends/commit/f9fb243d56d05a66ca4efd277c137e2ae8967f7b) Thanks [@patzick](https://github.com/patzick)! - updated default API schema definitions
+
+- [#1316](https://github.com/shopware/frontends/pull/1316) [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7) Thanks [@mkucmus](https://github.com/mkucmus)! - Extend Criteria type in exported admin API schema
+
+- [#1323](https://github.com/shopware/frontends/pull/1323) [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f) Thanks [@mkucmus](https://github.com/mkucmus)! - Don't send Content-Type in case of [multipart/form-data](https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html).
+
+  - Ignore `Content-Type` header in browser context when `multipart/form-data` is set.
+  - _boundary_ is set by a browser automatically.
+
+  ```ts
+  // example
+
+  const formData = new FormData();
+  formData.append("file", file);
+  const addedMediaResponse = await apiClient.invoke(
+    "uploadImage post /images/upload",
+    {
+      headers: {
+        "Content-Type": "multipart/form-data", // <-- set this one
+      },
+      accept: "application/json",
+      body: formData,
+    },
+  );
+  ```
+
+  When `invoke` method of api-client gets the `headers` parameter containing `multipart/form-data` Content-Type - the header will be ignored and the responsibility will be handed over to the browser - so the `Content-Type=multipart/form-data` header will eventually be sent, but including a dynamic _boundary_ params added by the browser on the fly.
