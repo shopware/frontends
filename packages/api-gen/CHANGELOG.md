@@ -1,5 +1,11 @@
 # @shopware/api-gen
 
+## 1.1.1
+
+### Patch Changes
+
+- [`b550cef`](https://github.com/shopware/frontends/commit/b550ceffac00f23a533d4f3913d2a801d3892c69) Thanks [@patzick](https://github.com/patzick)! - Fix process failing on errors to give more time for adoption.
+
 ## 1.1.0
 
 ### Minor Changes
