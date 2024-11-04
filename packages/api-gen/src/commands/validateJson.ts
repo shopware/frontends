@@ -203,7 +203,12 @@ export async function validateJson(args: {
     console.error(
       c.red(`Validation failed with ${c.bold(errors.length)} errors.`),
     );
-    process.exit(1);
+    // process.exit(1);
+    console.warn(
+      c.yellow(
+        "Errors found! This command will start failing in the future. Fix the errors from summary. Bypassing process fail for now.",
+      ),
+    );
   } else {
     console.log(c.green("✔️ Validation passed successfully."));
   }
