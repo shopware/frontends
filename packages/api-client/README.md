@@ -33,6 +33,9 @@ pnpm install @shopware/api-client
 
 # bun
 bun install @shopware/api-client
+
+# deno
+deno install @shopware/api-client
 ```
 
 <!-- /automd -->

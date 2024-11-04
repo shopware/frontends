@@ -26,6 +26,9 @@ pnpm install -D @shopware/api-gen
 
 # bun
 bun install -D @shopware/api-gen
+
+# deno
+deno install --dev @shopware/api-gen
 ```
 
 <!-- /automd -->
