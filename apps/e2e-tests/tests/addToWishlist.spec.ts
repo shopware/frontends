@@ -3,8 +3,7 @@ import { HomePage } from "../page-objects/HomePage";
 import { ProductPage } from "../page-objects/ProductPage";
 import { WishlistPage } from "../page-objects/WishlistPage";
 
-test.describe.parallel
-  .only("Add product to wishlist / Remove from wishlist", () => {
+test.describe.parallel("Add product to wishlist / Remove from wishlist", () => {
   let homePage: HomePage;
   let productPage: ProductPage;
   let wishlistPage: WishlistPage;

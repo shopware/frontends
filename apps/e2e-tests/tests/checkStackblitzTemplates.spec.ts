@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
+import sdk from "@stackblitz/sdk";
 
 const directoryPath = path.join(__dirname, "../../../templates/");
 
@@ -8,7 +9,7 @@ fs.readdirSync(directoryPath).forEach((template) => {
   test(`Open ${template}`, async ({ page }) => {
     test.setTimeout(200000);
     const templateName = `shopware/frontends/tree/main/templates/${template}`;
-    await page.goto("file://" + __dirname + "/pages/blank.html", {
+    await page.goto(`file://${__dirname}/pages/blank.html`, {
       waitUntil: "domcontentloaded",
       timeout: 0,
     });
@@ -16,7 +17,7 @@ fs.readdirSync(directoryPath).forEach((template) => {
       // page.waitForLoadState('networkidle'),
       page.waitForLoadState("load"),
       page.evaluate((templateName) => {
-        window.StackBlitzSDK.openGithubProject(templateName, {
+        sdk.openGithubProject(templateName, {
           clickToLoad: false,
           newWindow: false,
           origin: "https://stackblitz.com",
@@ -25,14 +26,14 @@ fs.readdirSync(directoryPath).forEach((template) => {
     ]);
     await page.waitForRequest(
       "https://demo-frontends.shopware.store/store-api/context",
-    ),
-      await expect(page).toHaveURL(
-        `https://stackblitz.com/github/shopware/frontends/tree/main/templates/${template}?file=README.md`,
-      );
+    );
+    await expect(page).toHaveURL(
+      `https://stackblitz.com/github/shopware/frontends/tree/main/templates/${template}?file=README.md`,
+    );
 
-    const consoleLogs = [];
+    const consoleLogs: string[] = [];
     page.on("console", (msg) => {
-      if (msg.type() == "error") {
+      if (msg.type() === "error") {
         console.log(msg.text());
         consoleLogs.push(msg.text());
       }

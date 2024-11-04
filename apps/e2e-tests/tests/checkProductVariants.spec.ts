@@ -3,7 +3,7 @@ import { HomePage } from "../page-objects/HomePage";
 import { ProductPage } from "../page-objects/ProductPage";
 import { CartPage } from "../page-objects/CartPage";
 
-test.describe.parallel.only("Check product variants", () => {
+test.describe.parallel("Check product variants", () => {
   let homePage: HomePage;
   let productPage: ProductPage;
   let cartPage: CartPage;

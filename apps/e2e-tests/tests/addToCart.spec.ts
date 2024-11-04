@@ -5,7 +5,7 @@ import { CartPage } from "../page-objects/CartPage";
 import { WishlistPage } from "../page-objects/WishlistPage";
 
 test.setTimeout(50000);
-test.describe.parallel.only("Add product to cart / Remove from cart", () => {
+test.describe.parallel("Add product to cart / Remove from cart", () => {
   let homePage: HomePage;
   let productPage: ProductPage;
   let cartPage: CartPage;
