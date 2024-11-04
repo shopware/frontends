@@ -1,5 +1,8 @@
 # shopware/frontends - types
 
+> [!WARNING]  
+> Deprecated. This package is deprecated. Use The new [API client](https://www.npmjs.com/package/@shopware/api-client) package instead. Combined with the [@shopware/api-gen](https://www.npmjs.com/package/@shopware/api-gen) package, it provides a more flexible and powerful way to reach the API types.
+
 Welcome to `@shopware-pwa/types` package.
 
 For getting started documentation visit [https://frontends.shopware.com/](https://frontends.shopware.com/)
