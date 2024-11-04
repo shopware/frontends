@@ -412,6 +412,16 @@
       }
     ],
     "Quote": [{ "required": ["price"] }, { "required": ["stateMachineState"] }],
+    "SwagPaypalVaultToken": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        }
+      }
+    },
     "StateMachineState": [
       {
         "required": ["translated"]

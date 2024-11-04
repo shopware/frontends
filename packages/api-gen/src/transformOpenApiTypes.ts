@@ -4,6 +4,7 @@ import {
   getDeepProperty,
   getDeepPropertyCode,
   getTypePropertyNames,
+  isNeverType,
   isOptional,
 } from "./utils";
 import {
@@ -56,6 +57,11 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
               });
               const operationId =
                 operationReferenceCode?.match(/operations\["(.+)"\]/)?.[1];
+
+              if (operationId === undefined) {
+                // if operationId does not exist, we omit the operation
+                return;
+              }
 
               const operationKey = `${operationId} ${restMethodName} ${currentPath}`;
 
@@ -185,7 +191,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                     node,
                     typeChecker,
                   });
-                  if (queryParam) {
+                  if (queryParam && !isNeverType(queryParam)) {
                     const allQueryParams = queryParam.getProperties(); //(queryParam);
                     const areAllQueryParamsOptional = allQueryParams.every(
                       (param) => isOptional(param),
@@ -201,12 +207,20 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                     })!;
                   }
 
-                  operationGenerationMap.pathParams = getDeepPropertyCode({
+                  const pathParamProperty = getDeepProperty({
                     type: operationQueryParams,
                     names: ["path"],
                     node,
                     typeChecker,
-                  })!;
+                  });
+                  if (!isNeverType(pathParamProperty)) {
+                    operationGenerationMap.pathParams = getDeepPropertyCode({
+                      type: operationQueryParams,
+                      names: ["path"],
+                      node,
+                      typeChecker,
+                    })!;
+                  }
 
                   const headersParam = getDeepProperty({
                     type: operationQueryParams,
@@ -214,7 +228,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                     node,
                     typeChecker,
                   });
-                  if (headersParam) {
+                  if (headersParam && !isNeverType(headersParam)) {
                     const allHeaders = headersParam.getProperties();
                     const areAllHeadersOptional = allHeaders.every((param) =>
                       isOptional(param),

@@ -214,7 +214,7 @@ const invokeSubmit = async () => {
             v-model="state.firstName"
             name="first-name"
             type="text"
-            autocomplete="first-name"
+            autocomplete="given-name"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.firstName.$error
@@ -238,7 +238,7 @@ const invokeSubmit = async () => {
             v-model="state.lastName"
             name="last-name"
             type="text"
-            autocomplete="last-name"
+            autocomplete="family-name"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.lastName.$error

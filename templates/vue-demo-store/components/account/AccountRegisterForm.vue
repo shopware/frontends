@@ -212,7 +212,7 @@ useBreadcrumbs([
             v-model="state.firstName"
             name="first-name"
             type="text"
-            autocomplete="first-name"
+            autocomplete="given-name"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.firstName.$error
@@ -238,7 +238,7 @@ useBreadcrumbs([
             v-model="state.lastName"
             name="last-name"
             type="text"
-            autocomplete="last-name"
+            autocomplete="family-name"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.lastName.$error
@@ -290,7 +290,7 @@ useBreadcrumbs([
             v-model="state.password"
             name="password"
             type="password"
-            autocomplete="password"
+            autocomplete="current-password"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.password.$error
@@ -361,11 +361,11 @@ useBreadcrumbs([
         <div class="col-span-12 md:col-span-4">
           <label for="street">{{ $t("form.streetAddress") }} *</label>
           <input
-            id="Street"
+            id="street"
             v-model="state.billingAddress.street"
-            name="Street"
+            name="street"
             type="text"
-            autocomplete="Street"
+            autocomplete="street-address"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.billingAddress.street.$error
@@ -391,7 +391,7 @@ useBreadcrumbs([
             v-model="state.billingAddress.zipcode"
             name="zipcode"
             type="text"
-            autocomplete="zipcode"
+            autocomplete="postal-code"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.billingAddress.zipcode.$error
@@ -417,7 +417,7 @@ useBreadcrumbs([
             v-model="state.billingAddress.city"
             name="city"
             type="text"
-            autocomplete="city"
+            autocomplete="address-level2"
             class="appearance-none relative block w-full px-3 py-2 border placeholder-secondary-500 text-secondary-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:z-10 sm:text-sm"
             :class="[
               $v.billingAddress.city.$error
