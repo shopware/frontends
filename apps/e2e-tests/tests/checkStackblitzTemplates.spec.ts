@@ -1,7 +1,17 @@
 import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
-import sdk from "@stackblitz/sdk";
+
+declare global {
+  interface Window {
+    StackBlitzSDK: {
+      openGithubProject: (
+        templateName: string,
+        options: { clickToLoad: boolean; newWindow: boolean; origin: string },
+      ) => void;
+    };
+  }
+}
 
 const directoryPath = path.join(__dirname, "../../../templates/");
 
@@ -17,7 +27,7 @@ fs.readdirSync(directoryPath).forEach((template) => {
       // page.waitForLoadState('networkidle'),
       page.waitForLoadState("load"),
       page.evaluate((templateName) => {
-        sdk.openGithubProject(templateName, {
+        window.StackBlitzSDK.openGithubProject(templateName, {
           clickToLoad: false,
           newWindow: false,
           origin: "https://stackblitz.com",
