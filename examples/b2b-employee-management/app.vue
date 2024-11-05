@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import "~/assets/css/styles.css";
 const { isLoggedIn } = useUser();
 
 const { refreshSessionContext } = useSessionContext();
