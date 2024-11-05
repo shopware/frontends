@@ -46,7 +46,7 @@
     "husky": "9.1.6",
     "prettier": "3.3.3",
     "turbo": "2.2.3",
-    "vercel": "37.12.1"
+    "vercel": "37.14.0"
   },
   "engines": {
     "node": "^18.17.x || ^20.x"
