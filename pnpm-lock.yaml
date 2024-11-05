@@ -161,6 +161,9 @@ importers:
 
   apps/e2e-tests:
     dependencies:
+      "@faker-js/faker":
+        specifier: 9.0.3
+        version: 9.0.3
       "@stackblitz/sdk":
         specifier: 1.11.0
         version: 1.11.0
@@ -4316,6 +4319,13 @@ packages:
         integrity: sha512-R11tGE6yIFwqpaIqcfkcg7AICXzFg14+5h5v0TfF/9+RMDL6jhzCy/pxHVOfbALGdtVYdt6JdR21tuxEgl34dw==,
       }
     deprecated: Please update to a newer version.
+
+  "@faker-js/faker@9.0.3":
+    resolution:
+      {
+        integrity: sha512-lWrrK4QNlFSU+13PL9jMbMKLJYXDFu3tQfayBsMXX7KL/GiQeqfB1CzHkqD5UHBUtPAuPo6XwGbMFNdVMZObRA==,
+      }
+    engines: { node: ">=18.0.0", npm: ">=9.0.0" }
 
   "@fal-works/esbuild-plugin-global-externals@2.1.2":
     resolution:
@@ -24466,6 +24476,8 @@ snapshots:
       "@expressive-code/core": 0.35.6
 
   "@faker-js/faker@5.5.3": {}
+
+  "@faker-js/faker@9.0.3": {}
 
   "@fal-works/esbuild-plugin-global-externals@2.1.2": {}
 
