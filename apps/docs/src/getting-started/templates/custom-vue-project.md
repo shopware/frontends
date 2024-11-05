@@ -38,9 +38,29 @@ You can read more about CMS pages here:
 
 <PageRef page="../cms/content-pages.html" title="Create content pages" sub="Render a content page using components" />
 
-```bash
-pnpm add @shopware-pwa/cms-base
+<!-- automd:pm-install name="@shopware-pwa/cms-base" dev -->
+
+```sh
+# ✨ Auto-detect
+npx nypm install -D @shopware-pwa/cms-base
+
+# npm
+npm install -D @shopware-pwa/cms-base
+
+# yarn
+yarn add -D @shopware-pwa/cms-base
+
+# pnpm
+pnpm install -D @shopware-pwa/cms-base
+
+# bun
+bun install -D @shopware-pwa/cms-base
+
+# deno
+deno install --dev @shopware-pwa/cms-base
 ```
+
+<!-- /automd -->
 
 ## Configure API client
 

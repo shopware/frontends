@@ -17,7 +17,7 @@ Go to [Documentation > Requirements](https://frontends.shopware.com/framework/re
 
 In order to have a different API connected to the app, change two lines of code in [./src/entrypoints/\_shopware.ts](./src/entrypoints/_shopware.ts):
 
-<!-- automd:file src="./src/entrypoints/_shopware.ts" code -->
+<!-- automd:file src="templates/astro/src/entrypoints/_shopware.ts" code -->
 
 ```ts [_shopware.ts]
 import type { App } from "vue";

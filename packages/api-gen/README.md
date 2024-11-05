@@ -26,6 +26,9 @@ pnpm install -D @shopware/api-gen
 
 # bun
 bun install -D @shopware/api-gen
+
+# deno
+deno install --dev @shopware/api-gen
 ```
 
 <!-- /automd -->
@@ -43,7 +46,7 @@ If your instance contains inacurate or outdated OpenAPI specification, you can o
 
 Example of overrides file:
 
-<!-- automd:file src="./tests/snapshots-override/simpleOverride.example.ts" code -->
+<!-- automd:file src="packages/api-gen/tests/snapshots-override/simpleOverride.example.ts" code -->
 
 ```ts [simpleOverride.example.ts]
 import { components as mainComponents } from "./storeApiTypes";
@@ -243,8 +246,8 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.0.5
+### Latest changes: 1.1.1
 
 ### Patch Changes
 
-- [#1269](https://github.com/shopware/frontends/pull/1269) [`999b076`](https://github.com/shopware/frontends/commit/999b076db88bc34614d9d3221b96a04b997009a3) Thanks [@patzick](https://github.com/patzick)! - reading environment variables not only from the .env file but also injected by the system
+- [`b550cef`](https://github.com/shopware/frontends/commit/b550ceffac00f23a533d4f3913d2a801d3892c69) Thanks [@patzick](https://github.com/patzick)! - Fix process failing on errors to give more time for adoption.

@@ -1,5 +1,14 @@
 {
   "components": {
+    "DynamicProductListingPageOpenedPayload": {
+      "required": ["page"],
+      "properties": {
+        "page": {
+          "type": "integer",
+          "description": "Current page position in the pagination"
+        }
+      }
+    },
     "Include": {
       "type": "object",
       "additionalProperties": {

@@ -1,7 +1,11 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { resolve, join, dirname } from "node:path";
-import openapiTS from "openapi-typescript";
-import type { OpenAPI3 } from "openapi-typescript";
+import ts from "typescript";
+import openapiTS, {
+  astToString,
+  transformSchemaObjectWithComposition,
+} from "openapi-typescript";
+import type { OpenAPI3, SchemaObject } from "openapi-typescript";
 // read .env file and load it into process.env
 import "dotenv/config";
 import c from "picocolors";
@@ -54,6 +58,7 @@ export async function generate(args: {
 
     let schema: string = "";
     let processedSchemaAst: TransformedElements;
+    let apiVersion: string = "unknown";
 
     if (fileExist) {
       // Apply patches
@@ -61,7 +66,7 @@ export async function generate(args: {
         encoding: "utf-8",
       });
       const schemaForPatching = json5.parse(schemaFile) as OpenAPI3;
-      const version = schemaForPatching?.info?.version;
+      apiVersion = schemaForPatching?.info?.version;
 
       const configJSON = await loadApiGenConfig({
         silent: true, // we allow to not have the config file in this command
@@ -90,30 +95,38 @@ export async function generate(args: {
         alreadyApliedPatches,
       });
 
-      schema = await openapiTS(patchedSchema, {
+      if (args.debug) {
+        // save patched schema to json file with additoinal name "debug-patched"
+        const patchedSchemaFilename = inputFilename.replace(
+          ".json",
+          ".debug-patched.json",
+        );
+        const patchedSchemaPath = join(
+          args.cwd,
+          "api-types",
+          patchedSchemaFilename,
+        );
+        writeFileSync(patchedSchemaPath, json5.stringify(patchedSchema), {
+          encoding: "utf-8",
+        });
+      }
+
+      const astSchema = await openapiTS(patchedSchema, {
         version: +(process.env.OPENAPI_VERSION || 3),
         exportType: true,
         // pathParamsAsTypes: true,
         // rawSchema: false,
         additionalProperties: false,
         alphabetize: true,
-        supportArrayLength: true,
-        commentHeader: `/**
- * This file is auto-generated. Do not make direct changes to the file.
- * Instead override it in your shopware.d.ts file.
- *
- * Shopware API version: ${version}
- *
- */
-`,
+        defaultNonNullable: false,
+        arrayLength: true,
         /**
          * GenericRecord is used for types like associations
          */
         inject: `
             type GenericRecord = never | null | string | string[] | number | { [key: string]: GenericRecord };
             `,
-
-        transform(schemaObject) {
+        transform(schemaObject, metadata) {
           /**
            * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
            */
@@ -139,7 +152,6 @@ export async function generate(args: {
                 );
               },
             );
-
             const stringProperties = stringFields
               .filter((fieldKey) => !notAllowedKeys.includes(fieldKey))
               .reduce(
@@ -154,11 +166,11 @@ export async function generate(args: {
             if (Object.keys(stringProperties).length === 0) {
               delete schemaObject.properties.translated;
             } else {
-              schemaObject.required?.push("translated");
-
+              schemaObject.required ??= [];
+              schemaObject.required.push("translated");
               schemaObject.properties.translated = extendedDefu(
                 {
-                  additionalProperties: "_DELETE_",
+                  additionalProperties: false,
                 },
                 schemaObject.properties.translated,
                 {
@@ -166,54 +178,27 @@ export async function generate(args: {
                   properties: stringProperties,
                   required: stringFields,
                 },
-              );
+              ) as SchemaObject;
             }
-          }
-          /**
-           * Blob type is used for binary data
-           */
-          if (schemaObject.format === "binary") {
-            return "Blob";
+            return transformSchemaObjectWithComposition(schemaObject, {
+              ...metadata,
+              ctx: {
+                ...metadata.ctx,
+                transform: runTransformations,
+              },
+            });
           }
 
-          /**
-           * We're changing "object" declarations into "GenericRecord" to allow recursive types like `associations`
-           */
-          if (
-            // for object types
-            (schemaObject as { type: string }).type === "object" &&
-            // without properties, items, anyOf, allOf
-            !(schemaObject as { properties?: object }).properties &&
-            !(schemaObject as { items?: [] }).items &&
-            !(schemaObject as { anyOf?: [] }).anyOf &&
-            !(schemaObject as { allOf?: [] }).allOf &&
-            !(schemaObject as { additionalProperties?: object })
-              .additionalProperties
-          ) {
-            return "GenericRecord";
-          }
-          // transform(schemaObject) {
-          // if ("format" in schemaObject && schemaObject.format === "date-time") {
-          //   return "Date";
-          // }
+          // run standard transform
+          return runTransformations(schemaObject);
         },
       });
 
-      schema += `\n
-    /**
-     * @deprecated this field is not needed anymore
-     */
-    export type operationPaths = string;`;
+      schema = astToString(astSchema);
 
       // clean up
       // remove `@description ` tags
       schema = schema.replace(/@description /g, "");
-
-      // fix 'any' type problem
-      schema = schema.replace(
-        "type OneOf<T extends any[]",
-        "type OneOf<T extends unknown[]",
-      );
 
       if (args.debug) {
         writeFileSync(fullOutputFilePath, schema, {
@@ -289,6 +274,9 @@ export async function generate(args: {
         processedSchemaAst,
         overridesSchema,
         args.apiType,
+        {
+          version: apiVersion,
+        },
       );
     } else {
       throw new Error("Schema is not a string");
@@ -309,5 +297,35 @@ export async function generate(args: {
       error,
     );
     process.exit(1);
+  }
+}
+
+function runTransformations(schemaObject: SchemaObject) {
+  /**
+   * Blob type is used for binary data
+   */
+  if (schemaObject.format === "binary") {
+    return ts.factory.createTypeReferenceNode(
+      ts.factory.createIdentifier("Blob"),
+    );
+  }
+
+  /**
+   * We're changing "object" declarations into "GenericRecord" to allow recursive types like `associations`
+   */
+  if (
+    // for object types
+    schemaObject.type === "object" &&
+    // without properties, items, anyOf, allOf
+    !(schemaObject as { properties?: object }).properties &&
+    !(schemaObject as { items?: [] }).items &&
+    !(schemaObject as { anyOf?: [] }).anyOf &&
+    !(schemaObject as { allOf?: [] }).allOf &&
+    !(schemaObject as { additionalProperties?: object }).additionalProperties &&
+    !(schemaObject as { $ref?: [] }).$ref
+  ) {
+    return ts.factory.createTypeReferenceNode(
+      ts.factory.createIdentifier("GenericRecord"),
+    );
   }
 }
