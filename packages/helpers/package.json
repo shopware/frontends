@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "2.1.4",
-    "happy-dom": "15.7.4",
+    "happy-dom": "15.10.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "2.1.4"
