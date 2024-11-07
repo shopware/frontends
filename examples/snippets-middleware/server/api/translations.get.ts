@@ -17,9 +17,9 @@ export default defineEventHandler(async (handler) => {
   if (!localeParam) {
     return sendError(handler, {
       statusCode: 400,
-      statusMessage: `Wrong input parameter`,
+      statusMessage: "Wrong input parameter",
       fatal: true,
-      message: `Locale is not provided`,
+      message: "Locale is not provided",
       name: "LocaleNotProvided",
     });
   }
@@ -47,7 +47,9 @@ export default defineEventHandler(async (handler) => {
     // },
   });
 
-  let snippetSetResponse;
+  let snippetSetResponse:
+    | operations["searchSnippetSet post /search/snippet-set"]["response"]
+    | undefined = undefined;
 
   try {
     // fetch snippetSetId for the given locale to use it in the next request

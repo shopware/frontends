@@ -24,6 +24,11 @@ export const extendedDefu = createDefu((obj, key, value) => {
     return true;
   }
 
+  // if there is no key in object, add it
+  if (obj[key] === undefined) {
+    obj[key] = extendedDefu(value, value);
+  }
+
   // Feature to delete key from object
   if (value === "_DELETE_") {
     delete obj[key];
@@ -43,6 +48,10 @@ export function patchJsonSchema({
   const outdatedPatches: string[][] = [];
   let appliedPatches: number = 0;
   const todosToFix: string[][] = [];
+  const schemaPaths: Array<{
+    path: string;
+    method: string;
+  }> = [];
 
   Object.entries(openApiSchema.components?.schemas || {}).forEach((schema) => {
     if (jsonOverrides?.components?.[schema[0]]) {
@@ -100,6 +109,10 @@ export function patchJsonSchema({
     const pathName = pathObject[0];
     Object.entries(pathObject[1]).forEach((singlePath) => {
       const httpMethod = singlePath[0];
+      schemaPaths.push({
+        path: pathName,
+        method: httpMethod.toUpperCase(),
+      });
 
       if (jsonOverrides?.paths?.[pathName]?.[httpMethod]) {
         const overridePatches = jsonOverrides?.paths[pathName][httpMethod];
@@ -159,5 +172,6 @@ export function patchJsonSchema({
     todosToFix,
     appliedPatches,
     outdatedPatches,
+    schemaPaths,
   };
 }

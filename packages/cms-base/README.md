@@ -5,7 +5,7 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/cms-base?label=cms-base%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acms-base)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-Nuxt [module](https://nuxt.com/docs/guide/going-further/modules) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html) using unocss/Tailwind.css syntax.
+Nuxt [layer](https://nuxt.com/docs/getting-started/layers) that provides an implementation of all CMS components in Shopware [based on utility-classes](https://frontends.shopware.com/framework/styling.html) using atomic css syntax (UnoCss / Tailwind).
 
 It is useful for projects that want to use the CMS components but design their own layout.
 
@@ -19,27 +19,56 @@ It is useful for projects that want to use the CMS components but design their o
 
 Install npm package:
 
-```bash
-# Using pnpm
-pnpm add -D @shopware-pwa/cms-base
+<!-- automd:pm-install name="@shopware-pwa/cms-base" dev -->
 
-# Using yarn
-yarn add --dev @shopware-pwa/cms-base
+```sh
+# ✨ Auto-detect
+npx nypm install -D @shopware-pwa/cms-base
 
-# Using npm
-npm i @shopware-pwa/cms-base --save-dev
+# npm
+npm install -D @shopware-pwa/cms-base
+
+# yarn
+yarn add -D @shopware-pwa/cms-base
+
+# pnpm
+pnpm install -D @shopware-pwa/cms-base
+
+# bun
+bun install -D @shopware-pwa/cms-base
 ```
 
-Then, register the module by editing `nuxt.config.js` or (`.ts`) file:
+<!-- /automd -->
 
-```js
-/* nuxt.config.ts */
+Then, register the Nuxt layer in `nuxt.config.ts` file:
 
+<!-- automd:file src="templates/vue-blank/nuxt.config.ts" code -->
+
+```ts [nuxt.config.ts]
+// https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  /* ... */
-+ modules: [/* ... */, "@shopware-pwa/cms-base"],
+  extends: [
+    "@shopware-pwa/composables-next/nuxt-layer",
+    "@shopware-pwa/cms-base",
+  ],
+  shopware: {
+    endpoint: "https://demo-frontends.shopware.store/store-api/",
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  },
+  modules: ["@shopware-pwa/nuxt3-module"],
+  /**
+   * Commented because of the StackBlitz error
+   * Issue: https://github.com/shopware/frontends/issues/88
+   */
+  typescript: {
+    // typeCheck: true,
+    strict: true,
+  },
+  telemetry: false,
 });
 ```
+
+<!-- /automd -->
 
 ### ⚠️ `<RouterLink/>` components used
 
@@ -73,7 +102,7 @@ No additional packages needed to be installed.
 
 - [📘 Documentation](https://frontends.shopware.com)
 
-- [👥 Community](https://shopwarecommunity.slack.com) (`#shopware-frontends` & `#shopware-pwa` channel)
+- [👥 Community](https://shopwarecommunity.slack.com) (`#composable-frontends` & `#shopware-pwa` channel)
 
 <!-- AUTO GENERATED CHANGELOG -->
 
@@ -81,12 +110,14 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base/CHANGELOG.md)
 
-### Latest changes: 1.0.5
+### Latest changes: 1.1.0
+
+### Minor Changes
+
+- [#1298](https://github.com/shopware/frontends/pull/1298) [`201a961`](https://github.com/shopware/frontends/commit/201a9611886f7e0d4381f77e9d2f1d1cb9f90802) Thanks [@patzick](https://github.com/patzick)! - Updated refs to templateRefs from Vue 3.5 for better type support
 
 ### Patch Changes
 
-- [#1276](https://github.com/shopware/frontends/pull/1276) [`9e734f0`](https://github.com/shopware/frontends/commit/9e734f09650c8728eaa0e1a7bb78f4cef3eabf89) Thanks [@mkucmus](https://github.com/mkucmus)! - Wrap a child vnodes into one element in CmsElementText component.
-  Thanks to this, the rendered elements are in semantically correct format.
-- Updated dependencies [[`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665), [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665)]:
-  - @shopware-pwa/composables-next@1.3.0
-  - @shopware-pwa/helpers-next@1.1.0
+- Updated dependencies [[`6abe9ab`](https://github.com/shopware/frontends/commit/6abe9abb64b9d2fe94d565393b1c08ec68b58162), [`fa517bc`](https://github.com/shopware/frontends/commit/fa517bc68e33b97f6cf34205587218314cb4f5f6), [`0643174`](https://github.com/shopware/frontends/commit/06431743162c088d46cf1e6305332bd51542eec4), [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44), [`f9fb243`](https://github.com/shopware/frontends/commit/f9fb243d56d05a66ca4efd277c137e2ae8967f7b), [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`75df238`](https://github.com/shopware/frontends/commit/75df238da11635418554329f1ca01f3a256fe0a0), [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
+  - @shopware/api-client@1.1.0
+  - @shopware-pwa/composables-next@1.4.0

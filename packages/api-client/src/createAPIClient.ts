@@ -57,6 +57,7 @@ export type ApiClientHooks = {
   onContextChanged: (newContextToken: string) => void;
   onResponseError: (response: FetchResponse<ResponseType>) => void;
   onSuccessResponse: <T>(response: FetchResponse<T>) => void;
+  onDefaultHeaderChanged: <T>(headerName: string, value?: T) => void;
 };
 
 export function createAPIClient<
@@ -68,15 +69,23 @@ export function createAPIClient<
   contextToken?: string;
   defaultHeaders?: ClientHeaders;
 }) {
-  const defaultHeaders = createHeaders({
-    "sw-access-key": params.accessToken,
-    Accept: "application/json",
-    "sw-context-token": params.contextToken,
-    ...params.defaultHeaders,
-  });
-
   // Create a hookable instance
   const apiClientHooks = createHooks<ApiClientHooks>();
+
+  const defaultHeaders = createHeaders(
+    {
+      "sw-access-key": params.accessToken,
+      accept: "application/json",
+      "sw-context-token": params.contextToken,
+      ...params.defaultHeaders,
+    },
+    (key, value) => {
+      apiClientHooks.callHook("onDefaultHeaderChanged", key, value);
+      if (key === "sw-context-token") {
+        apiClientHooks.callHook("onContextChanged", value!);
+      }
+    },
+  );
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
@@ -93,7 +102,6 @@ export function createAPIClient<
           "sw-context-token",
         ) as string;
         defaultHeaders["sw-context-token"] = newContextToken;
-        apiClientHooks.callHook("onContextChanged", newContextToken);
       }
     },
     async onResponseError({ response }) {

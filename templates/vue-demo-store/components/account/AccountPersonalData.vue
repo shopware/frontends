@@ -269,7 +269,7 @@ onBeforeMount(async () => {
             v-model="state.password"
             name="password"
             type="password"
-            autocomplete="password"
+            autocomplete="current-password"
             required
             class="appearance-none rounded-md shadow-sm relative block w-full px-3 py-2 border border-secondary-300 text-secondary-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
             placeholder="••••••••"

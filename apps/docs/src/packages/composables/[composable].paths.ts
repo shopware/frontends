@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 export default {
   paths() {
     const cwd = process.cwd();
-    const projectRootDir = cwd.endsWith('/apps/docs')
+    const projectRootDir = cwd.endsWith("/apps/docs")
       ? `${cwd}/../..`
       : `${cwd}/src/frontends/_source`;
 

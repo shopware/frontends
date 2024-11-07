@@ -1,7 +1,7 @@
 {
   "name": "@shopware-pwa/types",
-  "version": "1.0.2",
-  "description": "Showare Store API Types",
+  "version": "1.0.3",
+  "description": "[DEPRECATED] Showare Store API Types",
   "author": "Shopware",
   "repository": {
     "type": "git",

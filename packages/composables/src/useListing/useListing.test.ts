@@ -79,17 +79,16 @@ describe("useListing", () => {
     );
 
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    vm.setCurrentFilters({ code: "test", value: "test" });
+    vm.setCurrentFilters([{ code: "shipping-free", value: true }]);
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readProductListing"),
       expect.objectContaining({
         body: {
-          code: "test",
           manufacturer: undefined,
           properties: undefined,
           query: undefined,
-          value: "test",
+          "shipping-free": true,
         },
         headers: {
           "sw-include-seo-urls": true,

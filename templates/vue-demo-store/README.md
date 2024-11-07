@@ -4,7 +4,13 @@
 
 This repository is an example demo application built with Shopware Frontends Framework and Nuxt 3.
 
+**Interactive preview:**
+
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/templates/vue-demo-store)
+
+**Deploy with Vercel:**
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshopware%2Ffrontends%2Ftree%2Fmain%2Ftemplates%2Fvue-demo-store)
 
 ## What's inside
 
@@ -63,33 +69,12 @@ pnpm start
 # or yarn start
 ```
 
-### Running the application with Docker
+### Running Composable Frontends with Docker
 
-The [Dockerfile](https://github.com/shopware/frontends/blob/main/templates/vue-demo-store/Dockerfile) file in this template performs the following:
+Have a look at the [docker-composable-frontends repository](https://github.com/shopwareLabs/docker-composable-frontends).
 
-1. `ARG NODE_VERSION=18-alpine`: Sets a default value for the `NODE_VERSION` argument, which is used in the Docker build process.
-2. `FROM node:${NODE_VERSION}`: Tells Docker to use the Node.js image specified by `NODE_VERSION` as the base image for the build.
-3. `ENV NODE_ENV production`: Sets the `NODE_ENV` environment variable to production within the Docker container.
-4. `RUN mkdir /app`: Creates a directory named `/app` in the root of the Docker container's file system.
-5. `COPY --chown=node:node ./ /app`: Copies all files from the current directory (where the Dockerfile is located) into the `/app` directory inside the container. The `--chown=node:node` option sets the ownership of the copied files to the node user and group.
-6. `WORKDIR /app`: Sets the working directory for any `RUN`, `CMD`, `ENTRYPOINT`, `COPY`, and `ADD` instructions that follow in the Dockerfile to `/app`.
-7. `USER node`: Switches the user context to `node`.
-8. `EXPOSE 3000`: Informs Docker that the container listens on port `3000` at runtime.
-9. `CMD npm run start`: Specifies the command to run when the container starts.
-
-Prepare the Docker image:
-
-```bash
-# run in a main template directory
-docker build -t vue-demo-store .
-```
-
-Run a container from the image:
-
-```bash
-# the application is exposed on the 3000 port and mapped to 3000 port on host
-docker run -p3000:3000 vue-demo-store
-```
+> [!NOTE]
+> We recommend using a local Shopware 6 development instance ([devenv](https://developer.shopware.com/docs/guides/installation/devenv.html#devenv)) and then [configuring](https://frontends.shopware.com/getting-started/templates/demo-store-template.html#configure) Composable Frontends to use your local instance.
 
 ### Nitro presets
 
