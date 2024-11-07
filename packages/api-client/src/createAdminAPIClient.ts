@@ -218,13 +218,16 @@ export function createAdminAPIClient<
       string,
     ];
 
+    const currentParams =
+      params[0] || ({} as InvokeParameters<CURRENT_OPERATION>);
+
     const requestPathWithParams = createPathWithParams(
       requestPath,
-      params[0]?.pathParams,
+      currentParams.pathParams,
     );
 
     const fetchOptions: FetchOptions<"json"> = {
-      ...(params[0]?.fetchOptions || {}),
+      ...(currentParams.fetchOptions || {}),
     };
 
     const resp = await apiFetch.raw<
@@ -232,9 +235,9 @@ export function createAdminAPIClient<
     >(requestPathWithParams, {
       ...fetchOptions,
       method,
-      body: params[0]?.body,
-      headers: defu(params[0]?.headers, defaultHeaders) as HeadersInit,
-      query: params[0]?.query,
+      body: currentParams.body,
+      headers: defu(currentParams.headers, defaultHeaders) as HeadersInit,
+      query: currentParams.query,
     });
 
     return {

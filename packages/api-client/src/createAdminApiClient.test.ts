@@ -11,7 +11,7 @@ import {
 } from "h3";
 import type { App } from "h3";
 import { createAdminAPIClient } from ".";
-import type { operations } from "../api-types/adminApiTypes";
+import type { components, operations } from "../api-types/adminApiTypes";
 
 describe("createAdminAPIClient", () => {
   const listeners: Listener[] = [];
@@ -374,10 +374,12 @@ describe("createAdminAPIClient", () => {
       "sw-language-id": "1",
     });
 
-    await client.invoke("createOrder post /order" as any, {
+    await client.invoke("createOrder post /order", {
+      // @ts-expect-error this endpoint does not contain headers definition
       headers: {
         "sw-language-id": "2",
       },
+      body: {} as components["schemas"]["Order"],
     });
 
     expect(seoUrlheadersSpy).toHaveBeenCalledWith(
