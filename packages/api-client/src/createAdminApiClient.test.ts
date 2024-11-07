@@ -78,6 +78,68 @@ describe("createAdminAPIClient", () => {
     });
   });
 
+  it("should invoke /oauth/token request to refresh access token when it has expired", async () => {
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
+    const authHeaderSpy = vi.fn().mockImplementation(() => {});
+    const onAuthChangeSpy = vi.fn().mockImplementation(() => {});
+    const defaultHeadersSpy = vi.fn();
+    const app = createApp()
+      .use(
+        "/order",
+        eventHandler(async (event) => {
+          const headers = getHeaders(event);
+          authHeaderSpy(headers.authorization);
+          return {
+            orderResponse: 123,
+          };
+        }),
+      )
+      .use(
+        "/oauth/token",
+        eventHandler(async (event) => {
+          const body = await readBody(event);
+          authEndpointSpy(body);
+          return {
+            access_token: "client-session-access-token",
+            expires_in: 3600,
+          };
+        }),
+      );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations>({
+      baseURL,
+      sessionData: {
+        accessToken: "old-acees-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: 0,
+      },
+    });
+    client.hook("onAuthChange", onAuthChangeSpy);
+    client.hook("onDefaultHeaderChanged", defaultHeadersSpy);
+    const res = await client.invoke("getOrderList get /order", {});
+    expect(authEndpointSpy).toHaveBeenCalledWith({
+      client_id: "administration",
+      grant_type: "refresh_token",
+      refresh_token: "my-refresh-token",
+    });
+    expect(authHeaderSpy).toHaveBeenCalledWith(
+      "Bearer client-session-access-token",
+    );
+    expect(res.data).toEqual({ orderResponse: 123 });
+
+    expect(onAuthChangeSpy).toBeCalledWith({
+      accessToken: "client-session-access-token",
+      expirationTime: expect.any(Number),
+      refreshToken: "",
+    });
+    expect(defaultHeadersSpy).toBeCalledWith(
+      "Authorization",
+      "Bearer client-session-access-token",
+    );
+  });
+
   it("should not invoke /oauth/token request before request if there's an active session", async () => {
     const authEndpointSpy = vi.fn().mockImplementation(() => {});
     const authHeaderSpy = vi.fn().mockImplementation(() => {});
@@ -421,7 +483,7 @@ describe("createAdminAPIClient", () => {
     controller.abort();
 
     expect(request).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[FetchError: [GET] "${baseURL}order": <no response> This operation was aborted]`,
+      `[FetchError: [GET] "${baseURL}order": <no response> The operation was aborted.]`,
     );
   });
 
