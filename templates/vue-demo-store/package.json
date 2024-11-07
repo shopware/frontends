@@ -33,7 +33,7 @@
     "@iconify-json/carbon": "1.2.4",
     "@nuxtjs/i18n": "8.3.1",
     "@shopware/api-gen": "canary",
-    "eslint": "9.13.0",
+    "eslint": "9.14.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-vue": "9.30.0",
     "nuxt": "3.13.2",
