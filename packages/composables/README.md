@@ -151,51 +151,9 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.4.0
-
-### Minor Changes
-
-- [#1325](https://github.com/shopware/frontends/pull/1325) [`fa517bc`](https://github.com/shopware/frontends/commit/fa517bc68e33b97f6cf34205587218314cb4f5f6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Add `shipping-method-blocked` error resolver to `useCartErrorParamsResolver` composable
-
-- [#1338](https://github.com/shopware/frontends/pull/1338) [`75df238`](https://github.com/shopware/frontends/commit/75df238da11635418554329f1ca01f3a256fe0a0) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - # Fix setCurrentFilters
-
-  Body **before** when you use setCurrentFilters:
-
-  ```
-  {
-    "limit":10,
-    "search":"",
-    "p":"1",
-    "navigationId":"018db20234207be8948e3a4b46501435",
-    "manufacturer":"",
-    "price": {"min":0,"max":0},
-    "rating": null,
-    "shipping-free":false,
-    "properties":"",
-    "code":"manufacturer",  // 👈 Not like this
-    "value":"018d35f5b5757076adea38044bb96937" // 👈 Not like this
-  }
-  ```
-
-  Body **after** the code changes with fixed setCurrentFilters:
-
-  ```
-  {
-    "limit":10,
-    "search":"",
-    "p":"1",
-    "navigationId":"018db20234207be8948e3a4b46501435",
-    "manufacturer":"018d35f5b5757076adea38044bb96937",  // 👈 where the filter value should go
-    "price": {"min":0,"max":0},
-    "rating": null,
-    "shipping-free":false,
-    "properties":"",
-  }
-  ```
-
-- [#1339](https://github.com/shopware/frontends/pull/1339) [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Updated `AccountNewsletterRecipientResult` type to `AccountNewsletterRecipient`
+### Latest changes: 1.4.1
 
 ### Patch Changes
 
-- Updated dependencies [[`6abe9ab`](https://github.com/shopware/frontends/commit/6abe9abb64b9d2fe94d565393b1c08ec68b58162), [`0643174`](https://github.com/shopware/frontends/commit/06431743162c088d46cf1e6305332bd51542eec4), [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44), [`f9fb243`](https://github.com/shopware/frontends/commit/f9fb243d56d05a66ca4efd277c137e2ae8967f7b), [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
-  - @shopware/api-client@1.1.0
+- Updated dependencies [[`8df7651`](https://github.com/shopware/frontends/commit/8df76511c8afca78c79fe3f009ed32d207913f86)]:
+  - @shopware/api-client@1.1.1

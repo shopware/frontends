@@ -1,5 +1,11 @@
 # @shopware/api-client
 
+## 1.1.1
+
+### Patch Changes
+
+- [#1425](https://github.com/shopware/frontends/pull/1425) [`8df7651`](https://github.com/shopware/frontends/commit/8df76511c8afca78c79fe3f009ed32d207913f86) Thanks [@quando1910](https://github.com/quando1910)! - - fix: override header value when invoke adminApiClient and storeAPiClient
+
 ## 1.1.0
 
 ### Minor Changes
