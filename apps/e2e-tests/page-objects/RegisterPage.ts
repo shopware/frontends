@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { faker } from "@faker-js/faker";
 
 export class RegisterForm {
@@ -73,8 +73,8 @@ export class RegisterForm {
 
   async createUser() {
     await this.salutation.selectOption({ label: "Mr." });
-    await this.firstName.type("e2e " + faker.person.firstName());
-    await this.lastName.type("e2e " + faker.person.lastName());
+    await this.firstName.type(`e2e ${faker.person.firstName()}`);
+    await this.lastName.type(`e2e ${faker.person.lastName()}`);
     await this.emailAdrdress.type(faker.internet.exampleEmail());
     await this.password.type(faker.internet.password());
     await this.street.type(faker.location.street());

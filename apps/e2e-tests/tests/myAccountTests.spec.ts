@@ -3,7 +3,7 @@ import { HomePage } from "../page-objects/HomePage";
 import { MyAccountPage } from "../page-objects/MyAccountPage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 
-test.describe.parallel.only("My account functionalities tests", () => {
+test.describe.parallel("My account functionalities tests", () => {
   let homePage: HomePage;
   let myAccountPage: MyAccountPage;
   let registrationPage: RegisterForm;
