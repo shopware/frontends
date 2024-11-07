@@ -3,7 +3,7 @@ import { HomePage } from "../page-objects/HomePage";
 import { RegisterForm } from "../page-objects/RegisterPage";
 import { faker } from "@faker-js/faker";
 
-test.describe.only("Registration new user", () => {
+test.describe("Registration new user", () => {
   let homePage: HomePage;
   let registrationPage: RegisterForm;
 
@@ -19,8 +19,8 @@ test.describe.only("Registration new user", () => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCustomerData(
-      "e2e " + faker.person.firstName(),
-      "e2e " + faker.person.lastName(),
+      `e2e ${faker.person.firstName()}`,
+      `e2e ${faker.person.lastName()}`,
       faker.internet.exampleEmail(),
       faker.internet.password(),
     );
@@ -38,12 +38,12 @@ test.describe.only("Registration new user", () => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCompanyData(
-      "e2e " + faker.company.name(),
+      `e2e ${faker.company.name()}`,
       "DE123456789",
     );
     await registrationPage.fillCustomerData(
-      "e2e " + faker.person.firstName(),
-      "e2e " + faker.person.lastName(),
+      `e2e ${faker.person.firstName()}`,
+      `e2e ${faker.person.lastName()}`,
       faker.internet.exampleEmail(),
       faker.internet.password(),
     );

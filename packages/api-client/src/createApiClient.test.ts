@@ -281,6 +281,39 @@ describe("createAPIClient", () => {
     );
   });
 
+  it("should apply headers from the request when overriding default one", async () => {
+    const seoUrlheadersSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/checkout/cart",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        seoUrlheadersSpy(requestHeaders);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient<operations>({
+      accessToken: "123",
+      contextToken: "456",
+      baseURL,
+    });
+
+    client.defaultHeaders.apply({ "sw-language-id": "my-language-id" });
+    await client.invoke("readCart get /checkout/cart", {
+      headers: {
+        "sw-language-id": "my-changed-language-id",
+      },
+    });
+
+    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "sw-language-id": "my-changed-language-id",
+      }),
+    );
+  });
+
   it("should remove multipart/form-data headers in case of browser", async () => {
     // @vitest-environment jsdom
 
@@ -302,7 +335,8 @@ describe("createAPIClient", () => {
       baseURL,
     });
 
-    await client.invoke("fileUpload post /core/upload" as any, {
+    // @ts-expect-error this endpoint does not exist
+    await client.invoke("fileUpload post /core/upload", {
       headers: {
         "Content-Type": "multipart/form-data",
       },

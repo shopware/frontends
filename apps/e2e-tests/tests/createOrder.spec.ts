@@ -5,16 +5,15 @@ import { CheckoutPage } from "../page-objects/CheckoutPage";
 import { ProductPage } from "../page-objects/ProductPage";
 import { CartPage } from "../page-objects/CartPage";
 import { LoginForm } from "../page-objects/LoginPage";
-import find from "find-up";
-export const findEnv = () => find.sync(process.env.ENV_FILE || ".env");
 import { faker } from "@faker-js/faker";
+import { findEnv } from "../utils/helpers";
 
 require("dotenv").config({ path: findEnv() });
 const userEmail = process.env.USER_EMAIL || "test@shopware.com";
 const password = process.env.PASSWORD || "shopware123";
 test.setTimeout(50000);
 
-test.describe.only("Create Order", () => {
+test.describe("Create Order", () => {
   let homePage: HomePage;
   let registrationPage: RegisterForm;
   let checkoutPage: CheckoutPage;
@@ -39,8 +38,8 @@ test.describe.only("Create Order", () => {
     await homePage.openRegistrationPage();
     await page.waitForLoadState("networkidle");
     await registrationPage.fillCustomerData(
-      "e2e " + faker.person.firstName(),
-      "e2e " + faker.person.lastName(),
+      `e2e ${faker.person.firstName()}`,
+      `e2e ${faker.person.lastName()}`,
       faker.internet.exampleEmail(),
       faker.internet.password(),
     );
@@ -82,8 +81,8 @@ test.describe.only("Create Order", () => {
     await checkoutPage.goToCheckout();
     await checkoutPage.checkNotCreateAccount();
     await checkoutPage.fillGuestUserData(
-      "e2e " + faker.person.firstName(),
-      "e2e " + faker.person.lastName(),
+      `e2e ${faker.person.firstName()}`,
+      `e2e ${faker.person.lastName()}`,
       faker.internet.exampleEmail(),
       faker.location.street(),
       faker.location.zipCode(),

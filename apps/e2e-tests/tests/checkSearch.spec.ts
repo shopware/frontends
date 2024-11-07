@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { SearchResultPage } from "../page-objects/SearchResultPage";
 
-test.describe.only("Check search page", () => {
+test.describe("Check search page", () => {
   let homePage: HomePage;
   let resultPage: SearchResultPage;
 
@@ -18,7 +18,7 @@ test.describe.only("Check search page", () => {
     await homePage.typeSearchPhrase("sal");
     await resultPage.selectRandomManufacturerCheckbox();
 
-    await expect(page).toHaveURL(new RegExp(".*manufacturer.*"));
+    await expect(page).toHaveURL(/.*manufacturer.*/);
     await expect(page.getByTestId("loading")).toHaveCount(0);
     expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
       0,
@@ -29,7 +29,7 @@ test.describe.only("Check search page", () => {
     await homePage.typeSearchPhrase("sal");
     await resultPage.selectRandomSelectionCheckbox();
 
-    await expect(page).toHaveURL(new RegExp(".*properties.*"));
+    await expect(page).toHaveURL(/.*properties.*/);
     await expect(page.getByTestId("loading")).toHaveCount(0);
     expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
       0,
@@ -39,7 +39,7 @@ test.describe.only("Check search page", () => {
   test("Check sorting", async ({ page }) => {
     await homePage.typeSearchPhrase("sal");
     await resultPage.selectSortingPriceAsc();
-    await expect(page).toHaveURL(new RegExp(".*order=price-asc.*"));
+    await expect(page).toHaveURL(/.*order=price-asc.*/);
     await expect(page.getByTestId("loading")).toHaveCount(0);
     expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
       0,
@@ -49,11 +49,11 @@ test.describe.only("Check search page", () => {
   test("Check limit and pagination", async ({ page }) => {
     await homePage.typeSearchPhrase("sal");
     await resultPage.selectLimitOneProductPerPage();
-    await expect(page).toHaveURL(new RegExp(".*limit.*"));
-    await expect(page).toHaveURL(new RegExp(".*p=1.*"));
+    await expect(page).toHaveURL(/.*limit.*/);
+    await expect(page).toHaveURL(/.*p=1.*/);
     await expect(page.getByTestId("loading")).toHaveCount(0);
     await resultPage.goToSecondPage();
-    await expect(page).toHaveURL(new RegExp(".*p=2.*"));
+    await expect(page).toHaveURL(/.*p=2.*/);
     await expect(page.getByTestId("loading")).toHaveCount(0);
 
     expect(await page.getByTestId("product-box-img").count()).toBeGreaterThan(
