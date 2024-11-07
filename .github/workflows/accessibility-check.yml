@@ -37,4 +37,4 @@ jobs:
       - name: Run tests
         run: |
           cd apps/e2e-tests
-          npx playwright test accessibilityCheck.spec.ts --project=chromium
+          npx playwright test --grep @accessibility --project=chromium
