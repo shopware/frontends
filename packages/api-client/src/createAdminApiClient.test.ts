@@ -348,6 +348,45 @@ describe("createAdminAPIClient", () => {
     );
   });
 
+  it("should override the default headers by passing the headers when invoke", async () => {
+    const seoUrlheadersSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/order",
+      eventHandler(async (event) => {
+        const headers = getHeaders(event);
+        seoUrlheadersSpy(headers);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer my-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: Date.now() + 1000 * 60,
+      },
+    });
+
+    client.defaultHeaders.apply({
+      "sw-language-id": "1",
+    });
+
+    await client.invoke("createOrder post /order" as any, {
+      headers: {
+        "sw-language-id": "2",
+      },
+    });
+
+    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "sw-language-id": "2",
+      }),
+    );
+  });
+
   it("should allow to abort request", async () => {
     const app = createApp().use(
       "/order",
