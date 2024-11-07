@@ -11,7 +11,7 @@ import {
 } from "h3";
 import type { App } from "h3";
 import { createAdminAPIClient } from ".";
-import type { operations } from "../api-types/adminApiTypes";
+import type { components, operations } from "../api-types/adminApiTypes";
 
 describe("createAdminAPIClient", () => {
   const listeners: Listener[] = [];
@@ -344,6 +344,47 @@ describe("createAdminAPIClient", () => {
     expect(seoUrlheadersSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         accept: "application/xml",
+      }),
+    );
+  });
+
+  it("should override the default headers by passing the headers when invoke", async () => {
+    const seoUrlheadersSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/order",
+      eventHandler(async (event) => {
+        const headers = getHeaders(event);
+        seoUrlheadersSpy(headers);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer my-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: Date.now() + 1000 * 60,
+      },
+    });
+
+    client.defaultHeaders.apply({
+      "sw-language-id": "1",
+    });
+
+    await client.invoke("createOrder post /order", {
+      // @ts-expect-error this endpoint does not contain headers definition
+      headers: {
+        "sw-language-id": "2",
+      },
+      body: {} as components["schemas"]["Order"],
+    });
+
+    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "sw-language-id": "2",
       }),
     );
   });
