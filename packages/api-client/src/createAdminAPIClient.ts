@@ -229,7 +229,7 @@ export function createAdminAPIClient<
       ...fetchOptions,
       method,
       body: params[0]?.body,
-      headers: defu(defaultHeaders, params[0]?.headers) as HeadersInit,
+      headers: defu(params[0]?.headers, defaultHeaders) as HeadersInit,
       query: params[0]?.query,
     });
 
