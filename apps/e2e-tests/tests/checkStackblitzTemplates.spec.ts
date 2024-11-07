@@ -16,7 +16,7 @@ declare global {
 const directoryPath = path.join(__dirname, "../../../templates/");
 
 fs.readdirSync(directoryPath).forEach((template) => {
-  test(`Open ${template}`, async ({ page }) => {
+  test(`Open, { tag: "@stackblitz" },  ${template}`, async ({ page }) => {
     test.setTimeout(200000);
     const templateName = `shopware/frontends/tree/main/templates/${template}`;
     await page.goto(`file://${__dirname}/pages/blank.html`, {
