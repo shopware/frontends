@@ -111,7 +111,7 @@ describe("createAdminAPIClient", () => {
     const client = createAdminAPIClient<operations>({
       baseURL,
       sessionData: {
-        accessToken: "Bearer old-acees-token",
+        accessToken: "Bearer old-access-token",
         refreshToken: "my-refresh-token",
         expirationTime: 0,
       },
