@@ -2,4 +2,4 @@
 "@shopware/api-client": patch
 ---
 
-- fix: set the correct access token in headers if it has expired
+set authentication header instead of appending, when session has expired and is being refreshed
