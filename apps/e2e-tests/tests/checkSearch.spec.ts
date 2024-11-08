@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 import { SearchResultPage } from "../page-objects/SearchResultPage";
 
-test.describe("Check search page", () => {
+test.describe("Check search page", { tag: "@vue-demo-store" }, () => {
   let homePage: HomePage;
   let resultPage: SearchResultPage;
 
