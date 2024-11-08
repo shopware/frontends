@@ -95,7 +95,7 @@ export function displayPatchingSummary({
   alreadyApliedPatches: number;
   errors?: string[];
 }) {
-  if (todosToFix.length) {
+  if (!errors?.length && todosToFix.length) {
     console.log(c.yellow("Warnings to fix in the schema:"));
     todosToFix.forEach((todo) => {
       console.log(`${c.yellow("WARNING")}: ${todo[0]}`);

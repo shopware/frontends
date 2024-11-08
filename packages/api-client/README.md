@@ -279,10 +279,8 @@ calling `apiClient.hook` will autocomplete the list of available hooks.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.0.2
+### Latest changes: 1.1.2
 
 ### Patch Changes
 
-- [#1089](https://github.com/shopware/frontends/pull/1089) [`db7c93f`](https://github.com/shopware/frontends/commit/db7c93ff8cbb581221c11a492e77068af8faa8d6) Thanks [@mkucmus](https://github.com/mkucmus)! - Migrate eslint config to flat format
-
-- [#1074](https://github.com/shopware/frontends/pull/1074) [`b688163`](https://github.com/shopware/frontends/commit/b68816391ee8ed1ac94a6462a2a016d708f259b4) Thanks [@mkucmus](https://github.com/mkucmus)! - Update default schemas' `translated` properties as required
+- [#1434](https://github.com/shopware/frontends/pull/1434) [`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381) Thanks [@quando1910](https://github.com/quando1910)! - set authentication header instead of appending, when session has expired and is being refreshed

@@ -25,8 +25,8 @@ export const extendedDefu = createDefu((obj, key, value) => {
   }
 
   // if there is no key in object, add it
-  if (!obj[key]) {
-    obj[key] = value;
+  if (obj[key] === undefined) {
+    obj[key] = extendedDefu(value, value);
   }
 
   // Feature to delete key from object

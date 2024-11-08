@@ -104,7 +104,7 @@ npm i js-cookie
 
 Let's get back to the step where the `api-client` was initialized:
 
-<!-- automd:file src="../../examples/b2b-quote-management/src/apiClient.ts" code -->
+<!-- automd:file src="examples/b2b-quote-management/src/apiClient.ts" code -->
 
 ```ts [apiClient.ts]
 import { createAPIClient } from "@shopware/api-client";
@@ -151,13 +151,9 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.3.0
-
-### Minor Changes
-
-- [#1215](https://github.com/shopware/frontends/pull/1215) [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Added `useCartErrorParamsResolver` composable for building error message parameters
+### Latest changes: 1.4.2
 
 ### Patch Changes
 
-- Updated dependencies [[`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665)]:
-  - @shopware-pwa/helpers-next@1.1.0
+- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
+  - @shopware/api-client@1.1.2

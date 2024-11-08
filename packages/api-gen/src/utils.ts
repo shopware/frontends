@@ -85,3 +85,8 @@ export function isOptional(symbol: ts.Symbol): boolean {
 
   return false; // Property is required
 }
+
+export function isNeverType(symbol?: ts.Type): boolean {
+  if (!symbol) return false;
+  return symbol.flags === ts.TypeFlags.Never;
+}

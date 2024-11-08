@@ -1,6 +1,6 @@
 {
   "name": "@shopware-pwa/nuxt3-module",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "description": "Nuxt 3 module for Shopware Frontends",
   "author": "Shopware",
   "repository": {
@@ -53,7 +53,7 @@
     "eslint-config-shopware": "workspace:*",
     "nuxt": "3.13.2",
     "tsconfig": "workspace:*",
-    "typescript": "5.5.4",
+    "typescript": "5.6.3",
     "unbuild": "2.0.0"
   }
 }

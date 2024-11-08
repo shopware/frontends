@@ -43,7 +43,7 @@ If your instance contains inacurate or outdated OpenAPI specification, you can o
 
 Example of overrides file:
 
-<!-- automd:file src="./tests/snapshots-override/simpleOverride.example.ts" code -->
+<!-- automd:file src="packages/api-gen/tests/snapshots-override/simpleOverride.example.ts" code -->
 
 ```ts [simpleOverride.example.ts]
 import { components as mainComponents } from "./storeApiTypes";
@@ -243,8 +243,9 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.0.5
+### Latest changes: 1.1.3
 
 ### Patch Changes
 
-- [#1269](https://github.com/shopware/frontends/pull/1269) [`999b076`](https://github.com/shopware/frontends/commit/999b076db88bc34614d9d3221b96a04b997009a3) Thanks [@patzick](https://github.com/patzick)! - reading environment variables not only from the .env file but also injected by the system
+- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
+  - @shopware/api-client@1.1.2

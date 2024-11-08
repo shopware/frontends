@@ -11,7 +11,7 @@ import {
 } from "h3";
 import type { App } from "h3";
 import { createAdminAPIClient } from ".";
-import type { operations } from "../api-types/adminApiTypes";
+import type { components, operations } from "../api-types/adminApiTypes";
 
 describe("createAdminAPIClient", () => {
   const listeners: Listener[] = [];
@@ -76,6 +76,68 @@ describe("createAdminAPIClient", () => {
       grant_type: "refresh_token",
       refresh_token: "my-refresh-token",
     });
+  });
+
+  it("should invoke /oauth/token request to refresh access token when it has expired", async () => {
+    const authEndpointSpy = vi.fn().mockImplementation(() => {});
+    const authHeaderSpy = vi.fn().mockImplementation(() => {});
+    const onAuthChangeSpy = vi.fn().mockImplementation(() => {});
+    const defaultHeadersSpy = vi.fn();
+    const app = createApp()
+      .use(
+        "/order",
+        eventHandler(async (event) => {
+          const headers = getHeaders(event);
+          authHeaderSpy(headers.authorization);
+          return {
+            orderResponse: 123,
+          };
+        }),
+      )
+      .use(
+        "/oauth/token",
+        eventHandler(async (event) => {
+          const body = await readBody(event);
+          authEndpointSpy(body);
+          return {
+            access_token: "client-session-access-token",
+            expires_in: 3600,
+          };
+        }),
+      );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer old-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: 0,
+      },
+    });
+    client.hook("onAuthChange", onAuthChangeSpy);
+    client.hook("onDefaultHeaderChanged", defaultHeadersSpy);
+    const res = await client.invoke("getOrderList get /order", {});
+    expect(authEndpointSpy).toHaveBeenCalledWith({
+      client_id: "administration",
+      grant_type: "refresh_token",
+      refresh_token: "my-refresh-token",
+    });
+    expect(authHeaderSpy).toHaveBeenCalledWith(
+      "Bearer client-session-access-token",
+    );
+    expect(res.data).toEqual({ orderResponse: 123 });
+
+    expect(onAuthChangeSpy).toBeCalledWith({
+      accessToken: "client-session-access-token",
+      expirationTime: expect.any(Number),
+      refreshToken: "",
+    });
+    expect(defaultHeadersSpy).toBeCalledWith(
+      "Authorization",
+      "Bearer client-session-access-token",
+    );
   });
 
   it("should not invoke /oauth/token request before request if there's an active session", async () => {
@@ -344,6 +406,47 @@ describe("createAdminAPIClient", () => {
     expect(seoUrlheadersSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         accept: "application/xml",
+      }),
+    );
+  });
+
+  it("should override the default headers by passing the headers when invoke", async () => {
+    const seoUrlheadersSpy = vi.fn().mockImplementation(() => {});
+    const app = createApp().use(
+      "/order",
+      eventHandler(async (event) => {
+        const headers = getHeaders(event);
+        seoUrlheadersSpy(headers);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAdminAPIClient<operations>({
+      baseURL,
+      sessionData: {
+        accessToken: "Bearer my-access-token",
+        refreshToken: "my-refresh-token",
+        expirationTime: Date.now() + 1000 * 60,
+      },
+    });
+
+    client.defaultHeaders.apply({
+      "sw-language-id": "1",
+    });
+
+    await client.invoke("createOrder post /order", {
+      // @ts-expect-error this endpoint does not contain headers definition
+      headers: {
+        "sw-language-id": "2",
+      },
+      body: {} as components["schemas"]["Order"],
+    });
+
+    expect(seoUrlheadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "sw-language-id": "2",
       }),
     );
   });

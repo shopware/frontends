@@ -86,7 +86,7 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 ## 📦 Advanced packaging
 
-Internally, the module uses [API Client](https://npmjs.com/package/@shopware-pwa/api-client) and [Composables](https://npmjs.com/package/@shopware-pwa/composables-next) packages, configured together to make everything working well. If you need to check how it's working on a different version of one of them, install a package locally in your project (to be installed and available in project's `package.json` file), then the Nuxt module will use yours. Keep in mind that the different configuration may lead to unexpected behavior.
+Internally, the module uses [API Client](https://npmjs.com/package/@shopware/api-client) and [Composables](https://npmjs.com/package/@shopware-pwa/composables-next) packages, configured together to make everything working well. If you need to check how it's working on a different version of one of them, install a package locally in your project (to be installed and available in project's `package.json` file), then the Nuxt module will use yours. Keep in mind that the different configuration may lead to unexpected behavior.
 
 ## Links
 
@@ -99,23 +99,10 @@ Internally, the module uses [API Client](https://npmjs.com/package/@shopware-pwa
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt3-module/CHANGELOG.md)
 
-### Latest changes: 1.0.5
+### Latest changes: 1.0.8
 
 ### Patch Changes
 
-- [#1207](https://github.com/shopware/frontends/pull/1207) [`7531874`](https://github.com/shopware/frontends/commit/75318747536b3cad5b83804a730b6680deb3fc8d) Thanks [@mkucmus](https://github.com/mkucmus)! - Improvements within a nuxt module and the plugin:
-
-  - properly loading a `sw-context-token` cookie in SSR
-  - exposing an [API client](https://www.npmjs.com/package/@shopware/api-client) instance provided in a nuxt plugin
-  - adds corresponding types
-
-  ```ts
-  // works also in a route middleware
-  const { $shopwareApiClient } = useNuxtApp();
-
-  await $shopwareApiClient.invoke("readContext get /context");
-  ```
-
-- Updated dependencies [[`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665), [`6ee2f90`](https://github.com/shopware/frontends/commit/6ee2f90ca3b21730fa05e1120072ac4dd45aa665)]:
-  - @shopware-pwa/composables-next@1.3.0
-  - @shopware-pwa/helpers-next@1.1.0
+- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
+  - @shopware/api-client@1.1.2
+  - @shopware-pwa/composables-next@1.4.2

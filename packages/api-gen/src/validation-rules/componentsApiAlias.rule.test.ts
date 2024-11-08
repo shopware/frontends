@@ -202,6 +202,7 @@ describe("componentsApiAlias.rule", async () => {
 
   it("should display diff wihout additional message when names are proper", async () => {
     const componentName = "CmsBlockResult";
+    // @ts-expect-error - pris is not a valid enum type value
     const body = {
       type: "object",
       required: ["apiAlias"],
