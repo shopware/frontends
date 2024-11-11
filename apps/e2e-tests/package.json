@@ -13,6 +13,7 @@
     "@playwright/test": "1.48.2"
   },
   "dependencies": {
+    "@axe-core/playwright": "^4.10.0",
     "@faker-js/faker": "9.0.3",
     "@stackblitz/sdk": "1.11.0",
     "dotenv": "16.4.5",
