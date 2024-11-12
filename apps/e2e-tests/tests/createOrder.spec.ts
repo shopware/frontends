@@ -13,7 +13,7 @@ const userEmail = process.env.USER_EMAIL || "test@shopware.com";
 const password = process.env.PASSWORD || "shopware123";
 test.setTimeout(50000);
 
-test.describe("Create Order", () => {
+test.describe("Create Order", { tag: "@vue-demo-store" }, () => {
   let homePage: HomePage;
   let registrationPage: RegisterForm;
   let checkoutPage: CheckoutPage;

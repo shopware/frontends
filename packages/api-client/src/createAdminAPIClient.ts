@@ -160,7 +160,7 @@ export function createAdminAPIClient<
 
             updateSessionData(context.response._data);
             // pass enhanced (Authorization) headers to the next request
-            options.headers.append(
+            options.headers.set(
               "Authorization",
               createAuthorizationHeader(sessionData.accessToken),
             );
