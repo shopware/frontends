@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 // names of the directories that should not be tested in StackBlitz context in case of more complex setup
 // in that case an example should be tested manually
@@ -20,9 +20,9 @@ const directoryPath = path.join(__dirname, "../../../examples/");
 fs.readdirSync(directoryPath)
   .filter((file) => !IGNORE_CHECK_EXAMPLES.includes(file))
   .forEach((file) => {
-    test(`Verify ${file}`, async ({ page }) => {
+    test(`Verify, { tag: "stackblitz" }, ${file}`, async ({ page }) => {
       const exampleName = `shopware/frontends/tree/main/examples/${file}`;
-      await page.goto("file://" + __dirname + "/pages/blank.html", {
+      await page.goto(`file://${__dirname}/pages/blank.html`, {
         waitUntil: "domcontentloaded",
         timeout: 0,
       });

@@ -22,7 +22,7 @@
     "test:e2e": "turbo run test:e2e",
     "format": "prettier --write \"**/*.{ts,tsx,md,vue}\"",
     "version": "changeset version",
-    "postversion": "pnpm run versionReadme",
+    "postversion": "pnpm i && pnpm run versionReadme",
     "versionReadme": "esno scripts/addChangelogBodyToReadmeFile.ts",
     "prepare": "husky",
     "generate-types": "turbo run generate-types",

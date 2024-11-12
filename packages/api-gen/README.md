@@ -26,9 +26,6 @@ pnpm install -D @shopware/api-gen
 
 # bun
 bun install -D @shopware/api-gen
-
-# deno
-deno install --dev @shopware/api-gen
 ```
 
 <!-- /automd -->
@@ -246,8 +243,9 @@ Prepare your config file named **api-gen.config.json**:
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.1.1
+### Latest changes: 1.1.3
 
 ### Patch Changes
 
-- [`b550cef`](https://github.com/shopware/frontends/commit/b550ceffac00f23a533d4f3913d2a801d3892c69) Thanks [@patzick](https://github.com/patzick)! - Fix process failing on errors to give more time for adoption.
+- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
+  - @shopware/api-client@1.1.2

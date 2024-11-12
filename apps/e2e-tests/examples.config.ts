@@ -1,7 +1,6 @@
 import type { PlaywrightTestConfig } from "@playwright/test";
 import { devices } from "@playwright/test";
-import find from "find-up";
-export const findEnv = () => find.sync(process.env.ENV_FILE || ".env");
+import { findEnv } from "./utils/helpers";
 
 /**
  * Read environment variables from file.

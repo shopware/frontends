@@ -15,11 +15,9 @@ Documentation specific for this package: [types](https://frontends.shopware.com/
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/types/CHANGELOG.md)
 
-### Latest changes: 1.0.3
+### Latest changes: 1.0.5
 
 ### Patch Changes
 
-- [#1413](https://github.com/shopware/frontends/pull/1413) [`17a7bfa`](https://github.com/shopware/frontends/commit/17a7bfaf432725d3596aa42d7d72a000a6a94f99) Thanks [@patzick](https://github.com/patzick)! - Deprecating the package, switch to the new [API client](https://www.npmjs.com/package/@shopware/api-client) package.
-
-- Updated dependencies [[`6abe9ab`](https://github.com/shopware/frontends/commit/6abe9abb64b9d2fe94d565393b1c08ec68b58162), [`0643174`](https://github.com/shopware/frontends/commit/06431743162c088d46cf1e6305332bd51542eec4), [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44), [`f9fb243`](https://github.com/shopware/frontends/commit/f9fb243d56d05a66ca4efd277c137e2ae8967f7b), [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
-  - @shopware/api-client@1.1.0
+- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
+  - @shopware/api-client@1.1.2
