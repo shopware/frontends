@@ -1,7 +1,7 @@
 import { test, expect, request } from "@playwright/test";
 import { HomePage } from "../page-objects/HomePage";
 
-test.describe("Check for seo-url requests", () => {
+test.describe("Check for seo-url requests", { tag: "@vue-demo-store" }, () => {
   let homePage: HomePage;
 
   // Before Hook

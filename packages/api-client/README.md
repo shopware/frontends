@@ -279,8 +279,8 @@ calling `apiClient.hook` will autocomplete the list of available hooks.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.1.1
+### Latest changes: 1.1.2
 
 ### Patch Changes
 
-- [#1425](https://github.com/shopware/frontends/pull/1425) [`8df7651`](https://github.com/shopware/frontends/commit/8df76511c8afca78c79fe3f009ed32d207913f86) Thanks [@quando1910](https://github.com/quando1910)! - - fix: override header value when invoke adminApiClient and storeAPiClient
+- [#1434](https://github.com/shopware/frontends/pull/1434) [`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381) Thanks [@quando1910](https://github.com/quando1910)! - set authentication header instead of appending, when session has expired and is being refreshed

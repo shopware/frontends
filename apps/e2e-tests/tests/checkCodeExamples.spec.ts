@@ -20,7 +20,7 @@ const directoryPath = path.join(__dirname, "../../../examples/");
 fs.readdirSync(directoryPath)
   .filter((file) => !IGNORE_CHECK_EXAMPLES.includes(file))
   .forEach((file) => {
-    test(`Verify ${file}`, async ({ page }) => {
+    test(`Verify, { tag: "stackblitz" }, ${file}`, async ({ page }) => {
       const exampleName = `shopware/frontends/tree/main/examples/${file}`;
       await page.goto(`file://${__dirname}/pages/blank.html`, {
         waitUntil: "domcontentloaded",
