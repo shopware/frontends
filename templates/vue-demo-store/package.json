@@ -20,7 +20,7 @@
     "@shopware-pwa/helpers-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
-    "@unocss/nuxt": "0.63.6",
+    "@unocss/nuxt": "0.64.0",
     "@vuelidate/core": "2.0.3",
     "@vuelidate/validators": "2.0.4",
     "@vueuse/nuxt": "11.2.0",
@@ -36,7 +36,7 @@
     "eslint": "9.14.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-vue": "9.30.0",
-    "nuxt": "3.13.2",
+    "nuxt": "3.14.159",
     "typescript": "5.6.3",
     "vue-eslint-parser": "9.4.3"
   },
