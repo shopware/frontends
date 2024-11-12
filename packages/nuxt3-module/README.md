@@ -88,6 +88,30 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Internally, the module uses [API Client](https://npmjs.com/package/@shopware/api-client) and [Composables](https://npmjs.com/package/@shopware-pwa/composables-next) packages, configured together to make everything working well. If you need to check how it's working on a different version of one of them, install a package locally in your project (to be installed and available in project's `package.json` file), then the Nuxt module will use yours. Keep in mind that the different configuration may lead to unexpected behavior.
 
+## API Default Headers
+
+You can use Nuxt config to set the default API call headers.
+More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-started/configuration).
+
+```json
+{
+  "runtimeConfig": {
+    "public": {
+      "apiClientConfig": {
+        "headers": {
+          "global-heder-example": "global-header-example-value"
+        }
+      }
+    },
+    "apiClientConfig": {
+      "headers": {
+        "ssr-heder-example": "ssr-header-example-value"
+      }
+    }
+  }
+}
+```
+
 ## Links
 
 - [📘 Documentation](https://frontends.shopware.com)
