@@ -127,6 +127,9 @@ export async function generate(args: {
             type GenericRecord = never | null | string | string[] | number | { [key: string]: GenericRecord };
             `,
         transform(schemaObject, metadata) {
+          if (!schemaObject) {
+            throw new Error("Schema object is empty at " + metadata.path);
+          }
           /**
            * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
            */

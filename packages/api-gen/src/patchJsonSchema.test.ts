@@ -454,4 +454,138 @@ describe("patchJsonSchema", () => {
       expect(outdatedPatches.length).toBe(0);
     });
   });
+
+  it("should ignore _DELETE_ from overrides if additional", async () => {
+    const { patchedSchema } = patchJsonSchema({
+      openApiSchema: json5.parse(`{
+        "components": {
+          "schemas": {}
+        }
+      }`),
+      jsonOverrides: json5.parse(`{
+        "components": {
+          "CartError": [
+            {
+              "required": ["key", "level", "message", "messageKey"],
+              "properties": {
+                "items": "_DELETE_",
+                "key": { "type": "string" },
+                "level": {
+                  "type": "number",
+                  "enum": [0, 10, 20],
+                },
+                "message": { "type": "string" },
+                "messageKey": { "type": "string" }
+              }
+            }
+          ],
+        }
+      }`),
+    });
+
+    expect(patchedSchema).toMatchInlineSnapshot(`
+      {
+        "components": {
+          "schemas": {
+            "CartError": {
+              "properties": {
+                "key": {
+                  "type": "string",
+                },
+                "level": {
+                  "enum": [
+                    0,
+                    10,
+                    20,
+                  ],
+                  "type": "number",
+                },
+                "message": {
+                  "type": "string",
+                },
+                "messageKey": {
+                  "type": "string",
+                },
+              },
+              "required": [
+                "key",
+                "level",
+                "message",
+                "messageKey",
+              ],
+            },
+          },
+        },
+      }
+    `);
+  });
+
+  it("should ignore _DELETE_ from overrides when patch", async () => {
+    const { patchedSchema } = patchJsonSchema({
+      openApiSchema: json5.parse(`{
+        "components": {
+          "schemas": {}
+        }
+      }`),
+      jsonOverrides: json5.parse(`{
+        "components": {
+          "CartError": [
+            {
+              "required": ["key", "level", "message", "messageKey"],
+              "properties": {
+                "key": { "type": "string" },
+                "level": {
+                  "type": "number",
+                  "enum": [0, 10, 20],
+                },
+                "message": { "type": "string" },
+                "messageKey": { "type": "string" }
+              }
+            },
+            {
+              "properties": {
+                "items": "_DELETE_"
+              }
+            }
+          ],
+        }
+      }`),
+    });
+
+    expect(patchedSchema).toMatchInlineSnapshot(`
+      {
+        "components": {
+          "schemas": {
+            "CartError": {
+              "properties": {
+                "key": {
+                  "type": "string",
+                },
+                "level": {
+                  "enum": [
+                    0,
+                    10,
+                    20,
+                  ],
+                  "type": "number",
+                },
+                "message": {
+                  "type": "string",
+                },
+                "messageKey": {
+                  "type": "string",
+                },
+              },
+              "required": [
+                "key",
+                "level",
+                "message",
+                "messageKey",
+              ],
+            },
+          },
+        },
+      }
+    `);
+  });
 });
