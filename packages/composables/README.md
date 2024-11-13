@@ -53,14 +53,28 @@ app.provide("apiClient", apiClient);
 Now, we can create a Vue 3 plugin to install a Shopware context in an app:
 
 ```js
-// app variable in type of App
+import { createShopwareContext } from "@shopware-pwa/composables-next";
 
+// app variable in type of App
 const shopwareContext = createShopwareContext(app, {
   devStorefrontUrl: "https://your-sales-channel-configured-domain.com",
 });
 // register a plugin in a Vue instance
 app.use(shopwareContext);
 ```
+
+Exclude `@shopware-pwa/composables-next` package from [pre-building](https://vite.dev/guide/dep-pre-bundling.html#customizing-the-behavior) process:
+
+```ts
+// vite.config.js or .ts
+...
+optimizeDeps: {
+  exclude: ["@shopware-pwa/composables-next"],
+},
+...
+```
+
+---
 
 > The example does not provide the session handling and that means you need to do few additional steps if you need to keep your session after the page reload (see the chapter below with 🍪)
 
