@@ -93,6 +93,8 @@ Internally, the module uses [API Client](https://npmjs.com/package/@shopware/api
 You can use Nuxt config to set the default API call headers.
 More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-started/configuration).
 
+> **_NOTE:_** By default, the values in `runtimeConfig` are only available on the server-side. However, keys within `runtimeConfig.public` are also accessible on the client-side. [MORE](https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens)
+
 ```json
 {
   "runtimeConfig": {
