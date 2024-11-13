@@ -16,8 +16,25 @@ export default defineNuxtConfig({
     //   endpoint: "https://demo-frontends.shopware.store/store-api/",
     //   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
     //   devStorefrontUrl: "",
+    /**
+     * Example for API Client configuration.
+     */
+    //   apiClientConfig: {
+    //     headers: {
+    //       "global-heder-example": "global-header-example-value",
+    //     },
+    //   },
     // },
+    /**
+     * Example for API Client configuration
+     *
+     */
 
+    // apiClientConfig: {
+    //   headers: {
+    //     "ssr-heder-example": "ssr-header-example-value",
+    //   },
+    // },
     /**
      * More about this feature you can find here: https://frontends.shopware.com/getting-started/features/broadcasting.html
      */
