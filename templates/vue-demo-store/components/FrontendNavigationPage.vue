@@ -10,27 +10,37 @@ const props = defineProps<{
 
 const { search } = useCategorySearch();
 const route = useRoute();
+const { buildDynamicBreadcrumbs, pushBreadcrumb, getCategoryBreadcrumbs } =
+  useBreadcrumbs();
 
-const { data: categoryResponse, error } = await useAsyncData(
+const { data, error } = await useAsyncData(
   "cmsNavigation" + props.navigationId,
   async () => {
-    const category = await search(props.navigationId, {
-      withCmsAssociations: true,
-      query: {
-        ...route.query,
-      },
-    });
-    return category;
+    const [category, breadcrumbs] = await Promise.all([
+      search(props.navigationId, {
+        withCmsAssociations: true,
+        query: {
+          ...route.query,
+        },
+      }),
+      getCategoryBreadcrumbs(props.navigationId).catch(() => {
+        console.error("Error while fetching breadcrumbs");
+      }),
+    ]);
+
+    return { category, breadcrumbs };
   },
 );
+const categoryResponse = ref(data.value?.category);
+
+if (data.value?.breadcrumbs) {
+  buildDynamicBreadcrumbs(data.value.breadcrumbs);
+}
 
 if (!categoryResponse.value) {
   console.error("[FrontendNavigationPage.vue]", error.value?.message);
   throw error.value;
 }
-
-const { buildDynamicBreadcrumbs } = useBreadcrumbs();
-buildDynamicBreadcrumbs(props.navigationId);
 
 const { category } = useCategory(categoryResponse as Ref<Schemas["Category"]>);
 useCmsHead(category, { mainShopTitle: "Shopware Frontends Demo Store" });

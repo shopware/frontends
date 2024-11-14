@@ -37,9 +37,17 @@ export type UseBreadcrumbsReturn = {
   /**
    * Build breadcrumbs dynamically for a category by fetching them from the API
    *
-   * @param {string} categoryId
+   * @param {operations["readBreadcrumb get /breadcrumb/{id}"]["response"]} breadcrumbs
    */
-  buildDynamicBreadcrumbs(categoryId: string): Promise<void>;
+  buildDynamicBreadcrumbs(
+    breadcrumbs: operations["readBreadcrumb get /breadcrumb/{id}"]["response"],
+  ): Promise<void>;
+  /**
+   * Add a breadcrumb to the breadcrumbs list
+   *
+   * @param {Breadcrumb} breadcrumb
+   */
+  pushBreadcrumb(breadcrumb: Breadcrumb): void;
 };
 
 /**
@@ -78,20 +86,21 @@ export function useBreadcrumbs(
     return response.data;
   };
 
-  const buildDynamicBreadcrumbs = async (categoryId: string) => {
-    try {
-      const breadcrumbs = await getCategoryBreadcrumbs(categoryId);
+  const pushBreadcrumb = (breadcrumb: Breadcrumb) => {
+    if (_breadcrumbs.value) _breadcrumbs.value.push(breadcrumb);
+    else _breadcrumbs.value = [breadcrumb];
+  };
 
-      _breadcrumbs.value = breadcrumbs.breadcrumbs.map((breadcrumb) => {
-        // Adjust path to be compatible with the router
-        return {
-          ...breadcrumb,
-          path: `/${breadcrumb.path}`,
-        };
-      });
-    } catch (error) {
-      console.error("Error while fetching breadcrumbs", error);
-    }
+  const buildDynamicBreadcrumbs = async (
+    breadcrumbs: operations["readBreadcrumb get /breadcrumb/{id}"]["response"],
+  ) => {
+    _breadcrumbs.value = breadcrumbs.breadcrumbs.map((breadcrumb) => {
+      // Adjust path to be compatible with the router
+      return {
+        ...breadcrumb,
+        path: `/${breadcrumb.path}`,
+      };
+    });
   };
 
   return {
@@ -99,5 +108,6 @@ export function useBreadcrumbs(
     breadcrumbs: computed(() => _breadcrumbs.value),
     getCategoryBreadcrumbs,
     buildDynamicBreadcrumbs,
+    pushBreadcrumb,
   };
 }

@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { useBreadcrumbs } from "./useBreadcrumbs";
 import { useSetup } from "../_test";
+import type { operations } from "#shopware";
 
 describe("useBreadcrumbs", () => {
   const consoleErrorSpy = vi.spyOn(console, "error");
@@ -69,16 +70,32 @@ describe("useBreadcrumbs", () => {
         ],
       },
     });
-    await vm.buildDynamicBreadcrumbs("123");
+    await vm.buildDynamicBreadcrumbs({
+      breadcrumbs: [{ path: "test" }],
+    } as unknown as operations["readBreadcrumb get /breadcrumb/{id}"]["response"]);
 
     expect(vm.breadcrumbs[0].path).toBe("/test");
   });
 
-  it("should log error when buildDynamicBreadcrumbs fails", async () => {
-    const { vm, injections } = useSetup(() => useBreadcrumbs());
-    injections.apiClient.invoke.mockRejectedValue(new Error("test"));
-    await vm.buildDynamicBreadcrumbs("123");
-
-    expect(consoleErrorSpy).toBeCalled();
+  it("should push breadcrumb", async () => {
+    const { vm } = useSetup(() => useBreadcrumbs());
+    vm.pushBreadcrumb({
+      name: "Test",
+      path: "/",
+    });
+    expect(vm.breadcrumbs.length).toBe(1);
+    vm.pushBreadcrumb({
+      name: "Test",
+      path: "/",
+    });
+    expect(vm.breadcrumbs.length).toBe(2);
   });
+
+  // it("should log error when buildDynamicBreadcrumbs fails", async () => {
+  //   const { vm, injections } = useSetup(() => useBreadcrumbs());
+  //   injections.apiClient.invoke.mockRejectedValue(new Error("test"));
+  //   await vm.buildDynamicBreadcrumbs("123");
+
+  //   expect(consoleErrorSpy).toBeCalled();
+  // });
 });

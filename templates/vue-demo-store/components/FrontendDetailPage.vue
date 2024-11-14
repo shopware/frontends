@@ -1,21 +1,37 @@
 <script setup lang="ts">
-import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
+import { getProductName } from "@shopware-pwa/helpers-next";
 
 const props = defineProps<{
   navigationId: string;
 }>();
 
 const { search } = useProductSearch();
+const { buildDynamicBreadcrumbs, pushBreadcrumb, getCategoryBreadcrumbs } =
+  useBreadcrumbs();
 
-const { data: productResponse, error } = await useAsyncData(
+const { data, error } = await useAsyncData(
   "cmsProduct" + props.navigationId,
   async () => {
-    const productResponse = await search(props.navigationId, {
-      withCmsAssociations: true,
-    });
-    return productResponse;
+    const [productResponse, breadcrumbs] = await Promise.all([
+      search(props.navigationId, {
+        withCmsAssociations: true,
+        associations: {
+          seoUrls: {},
+        },
+      }),
+      getCategoryBreadcrumbs(props.navigationId).catch(() => {
+        console.error("Error while fetching breadcrumbs");
+      }),
+    ]);
+
+    return { productResponse, breadcrumbs };
   },
 );
+const productResponse = ref(data.value?.productResponse);
+
+if (data.value?.breadcrumbs) {
+  buildDynamicBreadcrumbs(data.value.breadcrumbs);
+}
 
 if (!productResponse.value) {
   console.error("[FrontendDetailPage.vue]", error.value?.message);
@@ -24,13 +40,10 @@ if (!productResponse.value) {
 
 useProductJsonLD(productResponse.value.product);
 
-const breadcrumbs = getCategoryBreadcrumbs(
-  productResponse.value.product.seoCategory,
-  {
-    startIndex: 2,
-  },
-);
-useBreadcrumbs(breadcrumbs);
+pushBreadcrumb({
+  name: getProductName({ product: productResponse.value.product }) ?? "",
+  path: `/${productResponse.value.product.seoUrls?.[0]?.seoPathInfo}`,
+});
 
 const { product } = useProduct(
   productResponse.value.product,
