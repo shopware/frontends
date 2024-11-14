@@ -10805,7 +10805,7 @@ export type Schemas = {
   };
   MultiNotFilter: {
     /** @enum {string} */
-    operator: "AND" | "and" | "OR" | "or";
+    operator: "AND" | "OR" | "and" | "or";
     queries: components["schemas"]["Filters"];
     /** @enum {string} */
     type: "multi" | "not";

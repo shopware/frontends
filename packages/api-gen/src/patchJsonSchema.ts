@@ -20,7 +20,7 @@ export const extendedDefu = createDefu((obj, key, value) => {
   if (Array.isArray(obj[key]) && Array.isArray(value)) {
     // concat arrays but skip duplicates
     // @ts-expect-error - we know that obj[key] is an array as we're inside this if statement
-    obj[key] = [...new Set([...obj[key], ...value])];
+    obj[key] = [...new Set([...obj[key], ...value])].sort();
     return true;
   }
 
@@ -99,7 +99,10 @@ export function patchJsonSchema({
     if (!openApiSchema.components?.schemas?.[schema[0]]) {
       const patches = Array.isArray(schema[1]) ? schema[1] : [schema[1]];
       patches.forEach((patch: JSON) => {
-        patchedSchema.components.schemas[schema[0]] = patch;
+        patchedSchema.components.schemas[schema[0]] = extendedDefu(
+          patch,
+          patchedSchema.components.schemas[schema[0]],
+        );
         appliedPatches++;
       });
     }

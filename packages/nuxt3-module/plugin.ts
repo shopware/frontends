@@ -11,6 +11,7 @@ import { createAPIClient } from "@shopware/api-client";
 import { getCookie } from "h3";
 import { isMaintenanceMode } from "@shopware-pwa/helpers-next";
 import type { ApiClient } from "#shopware";
+import { defu } from "defu";
 
 declare module "#app" {
   interface NuxtApp {
@@ -62,6 +63,10 @@ export default defineNuxtPlugin((NuxtApp) => {
     contextToken: shouldUseSessionContextInServerRender
       ? contextTokenFromCookie
       : "",
+    defaultHeaders: defu(
+      runtimeConfig.apiClientConfig?.headers,
+      runtimeConfig.public?.apiClientConfig?.headers,
+    ),
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {
@@ -85,7 +90,6 @@ export default defineNuxtPlugin((NuxtApp) => {
   });
 
   NuxtApp.vueApp.provide("apiClient", apiClient);
-
   // Shopware context
   const shopwareContext = createShopwareContext(NuxtApp.vueApp, {
     enableDevtools: true,
