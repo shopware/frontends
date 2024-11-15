@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/prettier": "3.0.0",
-    "@types/yargs": "17.0.32",
+    "@types/yargs": "17.0.33",
     "@vitest/coverage-v8": "2.1.4",
     "eslint-config-shopware": "workspace:*",
     "json5": "2.2.3",
