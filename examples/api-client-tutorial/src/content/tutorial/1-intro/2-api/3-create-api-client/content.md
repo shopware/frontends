@@ -45,6 +45,7 @@ The fields in the provided object as an argument can be described as:
 | **accessToken**    | optional - The unique key ID that refers to the specific sales channel (for more info visit a [Store API docs](https://shopware.stoplight.io/docs/store-api/)) | `SWSCBHFSNTVMAWNZDNFKSHLAYW`                      |
 | **contextToken**   | optional - The unique key in UUID format that points the corresponding session in the backend                                                                  |                                                   |
 | **defaultHeaders** | optional - Standard dictionary object that keeps possible HTTP Headers that will be used for further requests                                                  | `{"Content-Type":"application/json"}`             |
+| **timeout**        | optional - Sets a default timeout (in milliseconds) for each request made through the client. If not provided, no timeout will be applied by default.          | `5000` (5 seconds)                                |
 
 ## Example of creating the API _Client_ instance
 
@@ -57,5 +58,7 @@ export const apiClient = createAPIClient<operations>({
   baseURL: "https://demo-frontends.shopware.store/store-api",
   accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
   contextToken: Cookies.get("sw-context-token"),
+  timeout: 5000,
 });
 ```
+
