@@ -46,7 +46,9 @@
       "paymentMethod": "Zahlungsmethode",
       "repeatOrder": "Bestellung wiederholen",
       "order": "Bestellung",
-      "orders": "Bestellungen"
+      "orders": "Bestellungen",
+      "backToList": "Zurück zur Liste",
+      "authOrderButton": "Weiter"
     },
     "personalData": {
       "infoBox": "Bearbeiten Sie Ihre Daten unten, damit Ihr Konto immer auf dem neuesten Stand ist.",
@@ -64,7 +66,9 @@
       "paymentSetSuccessfully": "Standardzahlungsmethode erfolgreich festgelegt",
       "signUpSuccess": "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Registrierung abzuschließen.",
       "paymentMethodChanged": "Zahlungsmethode geändert",
-      "productsAdded": "Produkte hinzugefügt"
+      "productsAdded": "Produkte hinzugefügt",
+      "orderSuccessNoOrder": "Die Bestellung existiert nicht",
+      "orderWrongData": "Die angegebenen Daten konnten keiner Bestellung zugeordnet werden."
     }
   }
 }

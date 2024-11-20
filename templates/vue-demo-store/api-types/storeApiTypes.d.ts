@@ -9553,4 +9553,17 @@ export type operations = {
     response: components["schemas"]["SuccessResponse"];
     responseCode: 204;
   };
+  "getOrderSuccess post /order/{deepCode}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      deepCode: string;
+    };
+    body?: {
+      email?: string;
+      zipcode?: string;
+    };
+    response: components["schemas"]["Order"];
+    responseCode: 204;
+  };
 };
