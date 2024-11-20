@@ -55,9 +55,6 @@ pnpm install -D @shopware-pwa/cms-base
 
 # bun
 bun install -D @shopware-pwa/cms-base
-
-# deno
-deno install --dev @shopware-pwa/cms-base
 ```
 
 <!-- /automd -->

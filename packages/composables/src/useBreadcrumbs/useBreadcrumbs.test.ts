@@ -90,12 +90,4 @@ describe("useBreadcrumbs", () => {
     });
     expect(vm.breadcrumbs.length).toBe(2);
   });
-
-  // it("should log error when buildDynamicBreadcrumbs fails", async () => {
-  //   const { vm, injections } = useSetup(() => useBreadcrumbs());
-  //   injections.apiClient.invoke.mockRejectedValue(new Error("test"));
-  //   await vm.buildDynamicBreadcrumbs("123");
-
-  //   expect(consoleErrorSpy).toBeCalled();
-  // });
 });
