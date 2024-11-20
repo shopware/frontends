@@ -38,20 +38,20 @@ export type RequestParameters<CURRENT_OPERATION> = SimpleUnionOmit<
 >;
 export type InvokeParameters<CURRENT_OPERATION> =
   RequestParameters<CURRENT_OPERATION> & {
-    fetchOptions?: Pick<
-      FetchOptions<"json">,
-      | "cache"
-      | "duplex"
-      | "keepalive"
-      | "priority"
-      | "redirect"
-      | "retry"
-      | "retryDelay"
-      | "retryStatusCodes"
-      | "signal"
-      | "timeout"
-    >;
-  };
+  fetchOptions?: Pick<
+    FetchOptions<"json">,
+    | "cache"
+    | "duplex"
+    | "keepalive"
+    | "priority"
+    | "redirect"
+    | "retry"
+    | "retryDelay"
+    | "retryStatusCodes"
+    | "signal"
+    | "timeout"
+  >;
+};
 
 export type ApiClientHooks = {
   onContextChanged: (newContextToken: string) => void;
@@ -68,6 +68,7 @@ export function createAPIClient<
   accessToken?: string;
   contextToken?: string;
   defaultHeaders?: ClientHeaders;
+  timeout?: number;
 }) {
   // Create a hookable instance
   const apiClientHooks = createHooks<ApiClientHooks>();
@@ -89,6 +90,7 @@ export function createAPIClient<
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
+    timeout: params.timeout,
     // async onRequest({ request, options }) {},
     // async onRequestError({ request, options, error }) {},
     async onResponse(context) {
@@ -96,7 +98,7 @@ export function createAPIClient<
       if (
         context.response.headers.has("sw-context-token") &&
         defaultHeaders["sw-context-token"] !==
-          context.response.headers.get("sw-context-token")
+        context.response.headers.get("sw-context-token")
       ) {
         const newContextToken = context.response.headers.get(
           "sw-context-token",
@@ -130,17 +132,17 @@ export function createAPIClient<
       "response" | "responseCode"
     > extends
       | {
-          body: unknown;
-        }
+      body: unknown;
+    }
       | {
-          query: unknown;
-        }
+      query: unknown;
+    }
       | {
-          header: unknown;
-        }
+      header: unknown;
+    }
       | {
-          pathParams: unknown;
-        }
+      pathParams: unknown;
+    }
       ? [InvokeParameters<CURRENT_OPERATION>]
       : [InvokeParameters<CURRENT_OPERATION>?]
   ): Promise<RequestReturnType<CURRENT_OPERATION>> {
