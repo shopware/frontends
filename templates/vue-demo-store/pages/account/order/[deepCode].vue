@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { ApiClientError, type ApiError } from "@shopware/api-client";
 const { apiClient } = useShopwareContext();
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
+
 const route = useRoute();
 const errorNotFound = ref(false);
 const showOrderAuthForm = ref(false);
@@ -56,33 +59,50 @@ const authOrder = async () => {
 </script>
 <template>
   <div class="container mx-auto my-8">
-    <div v-if="isLoggedIn">{{ $t("account.order.backToList") }}</div>
+    <div v-if="isLoggedIn">
+      <NuxtLink
+        :to="formatLink('/account/order')"
+        class="flex items-center text-base font-normal text-secondary-900 break-words hover:underline gap-1.5 mb-5"
+      >
+        <div class="i-carbon-arrow-left h-5 w-5 ml-1"></div>
+        {{ $t("account.order.backToList") }}
+      </NuxtLink>
+    </div>
     <div v-if="errorNotFound">
       <div class="text-center text-xl m-20">
         {{ $t("account.messages.orderSuccessNoOrder") }}
       </div>
     </div>
     <div v-if="showOrderAuthForm && !order">
+      <h2 class="text-2xl font-bold">
+        {{ $t("account.order.authOrderTitle") }}
+      </h2>
+      <p class="mb-3">{{ $t("account.order.authOrderText") }}</p>
       <form class="flex flex-col gap-3">
-        <input
-          v-model="orderAuthState.email"
-          type="email"
-          placeholder="Email"
-          class="w-full p-2 border border-gray-300 rounded-md"
-        />
-        <input
-          v-model="orderAuthState.postalCode"
-          type="text"
-          placeholder="Postal Code"
-          class="w-full p-2 border border-gray-300 rounded-md"
-        />
-        <button
-          type="submit"
-          class="w-full p-2 bg-blue-500 text-white rounded-md"
-          @click.prevent="authOrder"
-        >
-          {{ $t("account.order.authOrderButton") }}
-        </button>
+        <div class="flex flex-row gap-5">
+          <input
+            v-model="orderAuthState.email"
+            type="email"
+            placeholder="Email"
+            class="w-6/10 p-2 border border-gray-300 rounded-md"
+          />
+          <input
+            v-model="orderAuthState.postalCode"
+            type="text"
+            placeholder="Postal Code"
+            class="w-4/10 p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="p-2 bg-blue-500 text-white rounded-md"
+            @click.prevent="authOrder"
+          >
+            {{ $t("account.order.authOrderButton") }}
+          </button>
+        </div>
       </form>
     </div>
     <div v-if="order">

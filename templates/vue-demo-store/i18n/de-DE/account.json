@@ -48,7 +48,9 @@
       "order": "Bestellung",
       "orders": "Bestellungen",
       "backToList": "Zurück zur Liste",
-      "authOrderButton": "Weiter"
+      "authOrderButton": "Weiter",
+      "authOrderText": "Um Ihre Bestellung anzusehen, geben Sie bitte Ihre E-Mail-Adresse und die Postleitzahl Ihrer Rechnungsadresse ein.",
+      "authOrderTitle": "Authentifizierung"
     },
     "personalData": {
       "infoBox": "Bearbeiten Sie Ihre Daten unten, damit Ihr Konto immer auf dem neuesten Stand ist.",

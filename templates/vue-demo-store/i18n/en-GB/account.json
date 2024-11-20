@@ -50,7 +50,9 @@
       "order": "Order",
       "orders": "Orders",
       "backToList": "Back to list",
-      "authOrderButton": "Continue"
+      "authOrderButton": "Continue",
+      "authOrderText": "To view your order, please enter your mail address and the postal code given with your billing address.",
+      "authOrderTitle": "Authentication"
     },
     "personalData": {
       "infoBox": "Feel free to edit any of your details below so your account is always up to date",

@@ -48,7 +48,9 @@
       "order": "zamówienie",
       "orders": "Zamówienia",
       "backToList": "Powrót do listy",
-      "authOrderButton": "Kontynuuj"
+      "authOrderButton": "Kontynuuj",
+      "authOrderText": "Aby zobaczyć swoje zamówienie, wprowadź swój adres e-mail i kod pocztowy podany przy adresie rozliczeniowym.",
+      "authOrderTitle": "Autoryzacja"
     },
     "personalData": {
       "infoBox": "Edytuj swoje dane poniżej, aby twoje konto zawsze było aktualne",
