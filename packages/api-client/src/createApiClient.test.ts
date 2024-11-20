@@ -200,6 +200,130 @@ describe("createAPIClient", () => {
     expect(contextChangedMock).not.toHaveBeenCalled();
   });
 
+  it("should invoke onRequest hook once", async () => {
+    const app = createApp().use(
+      "/context",
+      eventHandler(async () => {
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const onRequestMock = vi.fn();
+
+    const client = createAPIClient({
+      baseURL,
+      accessToken: "123",
+      contextToken: "456",
+    });
+
+    client.hook("onRequest", onRequestMock);
+
+    await client.invoke("readContext get /context");
+
+    expect(onRequestMock).toHaveBeenCalledOnce();
+  });
+
+  it("should allow onRequest hook to modify request options", async () => {
+    const requestHeadersSpy = vi.fn();
+
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        requestHeadersSpy(requestHeaders);
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient({ baseURL });
+
+    client.hook("onRequest", (_request, options) => {
+      const existingHeaders = new Headers(options.headers);
+      existingHeaders.set("x-custom-header", "modified-header");
+      options.headers = existingHeaders;
+    });
+
+    await client.invoke("readContext get /context");
+
+    expect(requestHeadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "x-custom-header": "modified-header",
+      }),
+    );
+  });
+
+  it("should invoke all onRequest hooks independently", async () => {
+    const requestHeadersSpy = vi.fn();
+
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        requestHeadersSpy(requestHeaders); // Capture request headers
+        return {};
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient({ baseURL });
+
+    client.hook("onRequest", (_request, options) => {
+      const existingHeaders = new Headers(options.headers);
+      existingHeaders.set("x-hook1", "value1");
+      options.headers = existingHeaders;
+    });
+
+    client.hook("onRequest", (_request, options) => {
+      const existingHeaders = new Headers(options.headers);
+      existingHeaders.set("x-hook2", "value2");
+      options.headers = existingHeaders;
+    });
+
+    await client.invoke("readContext get /context");
+
+    expect(requestHeadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "x-hook1": "value1",
+        "x-hook2": "value2",
+      }),
+    );
+  });
+
+  it("should not interfere with normal request execution", async () => {
+    const requestHeadersSpy = vi.fn();
+
+    const app = createApp().use(
+      "/context",
+      eventHandler(async (event) => {
+        const requestHeaders = getHeaders(event);
+        requestHeadersSpy(requestHeaders);
+        return { success: true };
+      }),
+    );
+
+    const baseURL = await createPortAndGetUrl(app);
+
+    const client = createAPIClient({ baseURL });
+
+    client.hook("onRequest", () => {
+      // Perform a no-op
+    });
+
+    const response = await client.invoke("readContext get /context");
+
+    expect(response.data).toEqual({ success: true });
+    expect(requestHeadersSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        accept: "application/json",
+      }),
+    );
+  });
+
   it("should throw error when there is a problem with request", async () => {
     const app = createApp().use(
       "/checkout/cart",
