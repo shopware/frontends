@@ -3,4 +3,4 @@
 "@shopware/api-client": minor
 ---
 
-Added default timeout option for createAPIClient
+Added standard timeout option for createAPIClient
