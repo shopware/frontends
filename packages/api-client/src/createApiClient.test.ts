@@ -242,9 +242,7 @@ describe("createAPIClient", () => {
     const client = createAPIClient({ baseURL });
 
     client.hook("onRequest", (_request, options) => {
-      const existingHeaders = new Headers(options.headers);
-      existingHeaders.set("x-custom-header", "modified-header");
-      options.headers = existingHeaders;
+      options.headers.append("x-custom-header", "modified-header");
     });
 
     await client.invoke("readContext get /context");
@@ -273,15 +271,11 @@ describe("createAPIClient", () => {
     const client = createAPIClient({ baseURL });
 
     client.hook("onRequest", (_request, options) => {
-      const existingHeaders = new Headers(options.headers);
-      existingHeaders.set("x-hook1", "value1");
-      options.headers = existingHeaders;
+      options.headers.append("x-hook1", "value1");
     });
 
     client.hook("onRequest", (_request, options) => {
-      const existingHeaders = new Headers(options.headers);
-      existingHeaders.set("x-hook2", "value2");
-      options.headers = existingHeaders;
+      options.headers.append("x-hook2", "value2");
     });
 
     await client.invoke("readContext get /context");
