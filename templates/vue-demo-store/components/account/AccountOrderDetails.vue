@@ -12,21 +12,28 @@ const isLoading = ref(false);
 const { getErrorsCodes } = useCartNotification();
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
+
 const {
-  loadOrderDetails,
   order,
   hasDocuments,
   documents,
   paymentMethod,
-  paymentChangeable,
+  // paymentChangeable,
   getPaymentMethods,
   changePaymentMethod,
   statusTechnicalName,
-} = await useOrderDetails(props.orderId);
+  asyncSetData,
+} = await useOrder();
+
+const { loadOrderDetails } = useOrderDataProvider();
+
 const { addProducts, count } = useCart();
 const addingProducts = ref(false);
-onMounted(() => {
-  loadOrderDetails();
+onMounted(async () => {
+  const order = await loadOrderDetails({
+    keyValue: props.orderId,
+  });
+  if (order) asyncSetData(order);
 });
 
 const lineItems = computed<Array<Schemas["OrderLineItem"]>>(
@@ -50,6 +57,7 @@ const selectedPaymentMethod = computed({
     }
   },
 });
+
 const paymentMethods = await getPaymentMethods();
 
 const handleReorder = async () => {
@@ -95,7 +103,7 @@ const handleReorder = async () => {
 </script>
 
 <template>
-  <div
+  <!-- <div
     v-if="paymentChangeable && statusTechnicalName === 'open'"
     class="px-2 py-4"
   >
@@ -139,7 +147,7 @@ const handleReorder = async () => {
         </label>
       </li>
     </ul>
-  </div>
+  </div> -->
   <div v-if="lineItems.length" class="px-2 py-4">
     <div
       class="hidden sm:grid grid-cols-5 gap-y-10 gap-x-6 pb-4 text-secondary-400"

@@ -9,14 +9,14 @@ const props = defineProps<{
   lineItem: Schemas["OrderLineItem"];
 }>();
 
-const { getMediaFile } = useOrderDetails(props.lineItem.orderId);
+const { getMediaFile } = useOrderDataProvider();
 
 const isDigital = computed(
   () => !!props.lineItem.states?.includes("is-download"),
 );
 
 const getMediaFileHandler = async (mediaId: string, fileName: string) => {
-  const response = await getMediaFile(mediaId);
+  const response = await getMediaFile(props.lineItem.id, mediaId);
   downloadFile(response, fileName);
 };
 </script>
