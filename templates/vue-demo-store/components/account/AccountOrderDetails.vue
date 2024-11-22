@@ -19,17 +19,19 @@ const {
   documents,
   paymentMethod,
   // paymentChangeable,
-  getPaymentMethods,
   changePaymentMethod,
   statusTechnicalName,
   asyncSetData,
 } = await useOrder();
+
+const { paymentMethods, getPaymentMethods } = useCheckout();
 
 const { loadOrderDetails } = useOrderDataProvider();
 
 const { addProducts, count } = useCart();
 const addingProducts = ref(false);
 onMounted(async () => {
+  getPaymentMethods();
   const order = await loadOrderDetails({
     keyValue: props.orderId,
   });
@@ -57,8 +59,6 @@ const selectedPaymentMethod = computed({
     }
   },
 });
-
-const paymentMethods = await getPaymentMethods();
 
 const handleReorder = async () => {
   if (!order.value?.lineItems) {

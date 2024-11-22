@@ -90,10 +90,6 @@ export type UseOrderReturn = {
    * Get order documents
    */
   documents: ComputedRef<Schemas["Document"][]>;
-  /**
-   * Fetches all available payment methods
-   */
-  getPaymentMethods(): Promise<Schemas["PaymentMethod"][]>;
 
   //   paymentChangeable: ComputedRef<boolean>;
   asyncSetData(order: Schemas["Order"]): void;
@@ -201,16 +197,6 @@ export function useOrder(order?: Schemas["Order"]): UseOrderReturn {
   const hasDocuments = computed(() => !!_sharedOrder.value?.documents.length);
   const documents = computed(() => _sharedOrder.value?.documents || []);
 
-  const getPaymentMethods = async () => {
-    const response = await apiClient.invoke(
-      "readPaymentMethod post /payment-method",
-      {
-        body: { onlyAvailable: true },
-      },
-    );
-    return response.data.elements || [];
-  };
-
   const updateOrder = async () => {
     const order = await loadOrderDetails({
       keyValue: orderId.value,
@@ -239,7 +225,6 @@ export function useOrder(order?: Schemas["Order"]): UseOrderReturn {
     handlePayment,
     cancel,
     changePaymentMethod,
-    getPaymentMethods,
     asyncSetData,
   };
 }

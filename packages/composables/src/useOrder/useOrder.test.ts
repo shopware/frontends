@@ -84,23 +84,6 @@ describe("useOrder", () => {
     );
   });
 
-  it("getPaymentMethods", async () => {
-    const { vm, injections } = useSetup(() =>
-      useOrder(Order.orders.elements[0] as unknown as Schemas["Order"]),
-    );
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    await vm.getPaymentMethods();
-
-    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readPaymentMethod"),
-      expect.objectContaining({
-        body: {
-          onlyAvailable: true,
-        },
-      }),
-    );
-  });
-
   it("should set order data", async () => {
     const { vm } = useSetup(() => useOrder());
     vm.asyncSetData(Order.orders.elements[0] as unknown as Schemas["Order"]);
