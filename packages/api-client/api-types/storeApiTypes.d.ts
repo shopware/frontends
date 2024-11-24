@@ -7541,6 +7541,11 @@ export type operations = {
     contentType?: "application/json";
     accept?: "application/json";
     body: {
+      /**
+       * Customer account type.
+       * @enum {string}
+       */
+      accountType?: "private" | "business";
       /** Birthday day */
       birthdayDay?: number;
       /** Birthday month */
@@ -7557,6 +7562,8 @@ export type operations = {
       salutationId: string;
       /** (Academic) title of the customer */
       title?: string;
+      /** VAT IDs of the customer's company. Only valid when `accountType` is `business`. */
+      vatIds?: string[];
     };
     response: components["schemas"]["SuccessResponse"];
     responseCode: 200;
