@@ -55,7 +55,7 @@ export async function loadSchema(args: {
     const configUrl = OPENAPI_JSON_URL.replace(
       "/api/_info/openapi3.json",
       "",
-    ).replace("/atore-api/_info/openapi3.json", "");
+    ).replace("/store-api/_info/openapi3.json", "");
 
     const downloadUrl =
       configUrl + (isAdminApi ? ADMIN_API_ENDPOINT : STORE_API_ENDPOINT);
