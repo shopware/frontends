@@ -10,7 +10,7 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "devDependencies": {
-    "@adyen/adyen-web": "6.3.0",
+    "@adyen/adyen-web": "6.5.1",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
