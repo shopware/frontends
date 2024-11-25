@@ -54,14 +54,14 @@
   "devDependencies": {
     "@nuxt/schema": "3.13.2",
     "@types/three": "0.166.0",
-    "@vitest/coverage-v8": "2.1.4",
+    "@vitest/coverage-v8": "2.1.5",
     "eslint-config-shopware": "workspace:*",
     "eslint-plugin-vue": "9.30.0",
     "nuxt": "3.13.2",
     "tsconfig": "workspace:*",
     "typescript": "5.6.3",
     "unbuild": "2.0.0",
-    "vitest": "2.1.4",
+    "vitest": "2.1.5",
     "vue-eslint-parser": "9.4.3",
     "vue-router": "4.4.5",
     "vue-tsc": "2.1.10"
