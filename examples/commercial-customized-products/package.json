@@ -14,10 +14,10 @@
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
     "@types/node": "20.17.0",
-    "@vueuse/nuxt": "11.2.0",
-    "nuxt": "3.13.2",
+    "@vueuse/nuxt": "11.3.0",
+    "nuxt": "3.14.1592",
     "typescript": "5.6.3",
-    "vue": "3.5.12",
+    "vue": "3.5.13",
     "vue-tsc": "2.1.10"
   },
   "engines": {
