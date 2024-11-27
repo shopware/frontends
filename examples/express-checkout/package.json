@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@types/node": "20.17.0",
+    "@types/node": "22.10.0",
     "@vitejs/plugin-vue": "5.2.1",
     "vite": "6.0.0",
     "vue-tsc": "2.1.10"
