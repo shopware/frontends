@@ -180,8 +180,12 @@ export function useUser(): UseUserReturn {
         storefrontUrl: getStorefrontUrl(),
       },
     });
-    _user.value = data;
-    if (_user.value?.active) await refreshSessionContext();
+    // Set data when uses is active and not double opt in
+    if (_user.value?.active && !_user.value?.doubleOptInRegistration) {
+      _user.value = data;
+      await refreshSessionContext();
+    }
+
     return data;
   }
 

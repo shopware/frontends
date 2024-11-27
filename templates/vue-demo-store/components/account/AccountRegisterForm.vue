@@ -109,14 +109,13 @@ const invokeSubmit = async () => {
     try {
       loading.value = true;
       const response = await register(state);
-      if (response && response.active) router.push("/");
-      else if (response && !response.active) {
+      if (response && response.doubleOptInRegistration) {
         Object.assign(state, JSON.parse(JSON.stringify(initialState)));
         showDoubleOptInBox.value = true;
         await nextTick();
         doubleOptInBox.value?.scrollIntoView();
         $v.value.$reset();
-      }
+      } else if (response && response.active) router.push("/");
     } catch (error) {
       if (error instanceof ApiClientError) {
         const errors = resolveApiErrors(error.details.errors);
