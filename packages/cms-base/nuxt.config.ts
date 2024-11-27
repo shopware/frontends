@@ -1,5 +1,5 @@
 import { defineNuxtConfig } from "nuxt/config";
-
+import type { NuxtConfig } from "@nuxt/schema";
 export default defineNuxtConfig({
   components: [
     {
@@ -12,4 +12,4 @@ export default defineNuxtConfig({
     transpile: ["@shopware-pwa/cms-base"],
   },
   telemetry: false,
-});
+}) as NuxtConfig;
