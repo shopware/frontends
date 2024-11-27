@@ -98,6 +98,31 @@ describe("useUser", () => {
     expect(vm.isLoggedIn).toBe(true);
   });
 
+  it("register function with double opt-in option", async () => {
+    const { vm, injections } = useSetup(() => useUser());
+    injections.apiClient.invoke.mockResolvedValue({
+      data: {
+        active: true,
+        doubleOptInRegistration: true,
+        id: "test123",
+        guest: false,
+      },
+    });
+
+    await vm.register(REGISTRATION_DATA);
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      expect.stringContaining("register"),
+      expect.objectContaining({
+        body: {
+          ...REGISTRATION_DATA,
+          storefrontUrl: "http://localhost:3000", // This is the default value from the useInternationalization
+        },
+      }),
+    );
+    expect(vm.isLoggedIn).toBe(false);
+  });
+
   it("logout", async () => {
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({ data: {} });
