@@ -41,6 +41,6 @@
     "vue-eslint-parser": "9.4.3"
   },
   "engines": {
-    "node": "^18.17.x || ^20.x"
+    "node": "^18.17.x || ^20.x || ^22.x"
   }
 }
