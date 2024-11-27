@@ -142,7 +142,7 @@ const handleReorder = async () => {
   </div>
   <div v-if="lineItems.length" class="px-2 py-4">
     <div
-      class="hidden sm:grid grid-cols-5 gap-y-10 gap-x-6 pb-4 text-secondary-400"
+      class="hidden sm:grid grid-cols-5 gap-y-10 gap-x-6 pb-4 text-secondary-600"
     >
       <div class="col-span-2">{{ $t("account.order.product") }}</div>
       <div>{{ $t("account.order.quantity") }}</div>
