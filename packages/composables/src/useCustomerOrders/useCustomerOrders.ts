@@ -52,7 +52,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
   const currentParams = ref<Schemas["Criteria"]>({});
 
   const loadOrders = async (
-    parameters: Schemas["Criteria"] & { checkPromotions?: true } = {},
+    parameters: operations['readOrder post /order']['body'] = {},
   ): Promise<void> => {
     const params = {
       ...parameters,
