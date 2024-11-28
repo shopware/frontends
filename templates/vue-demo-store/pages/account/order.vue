@@ -85,7 +85,7 @@ await useAsyncData("getOrders", () => {
   return loadOrders({
     limit: limit.value,
     page: route.query.p ? Number(route.query.p) : defaultPage,
-    checkPromotions: true, // determines whether "paymentChangeable" list is available in the response
+    checkPromotion: true, // determines whether "paymentChangeable" list is available in the response
     associations: {
       stateMachineState: {},
     },
