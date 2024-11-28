@@ -18,7 +18,7 @@ export type UseCustomerOrdersReturn = {
    * Fetches the orders list and assigns the result to the `orders` property
    */
   loadOrders(
-    parameters?: Schemas["Criteria"] & { checkPromotions?: boolean },
+    parameters?: operations['readOrder post /order']['body'],
   ): Promise<void>;
   /**
    * Current page number
