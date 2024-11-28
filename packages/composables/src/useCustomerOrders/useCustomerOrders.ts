@@ -17,7 +17,9 @@ export type UseCustomerOrdersReturn = {
   /**
    * Fetches the orders list and assigns the result to the `orders` property
    */
-  loadOrders(parameters?: Schemas["Criteria"]): Promise<void>;
+  loadOrders(
+    parameters?: Schemas["Criteria"] & { checkPromotions?: boolean },
+  ): Promise<void>;
   /**
    * Current page number
    */
@@ -50,7 +52,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
   const currentParams = ref<Schemas["Criteria"]>({});
 
   const loadOrders = async (
-    parameters: Schemas["Criteria"] = {},
+    parameters: Schemas["Criteria"] & { checkPromotions?: true } = {},
   ): Promise<void> => {
     const params = {
       ...parameters,
