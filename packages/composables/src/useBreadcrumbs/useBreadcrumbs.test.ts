@@ -37,28 +37,6 @@ describe("useBreadcrumbs", () => {
     expect(vm.breadcrumbs.length).toBe(0);
   });
 
-  it("should invoke getCategoryBreadcrumbs", async () => {
-    const { vm, injections } = useSetup(() =>
-      useBreadcrumbs([
-        {
-          name: "Test",
-          path: "/",
-        },
-      ]),
-    );
-    injections.apiClient.invoke.mockResolvedValue({ data: {} });
-    vm.getCategoryBreadcrumbs("123");
-
-    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readBreadcrumb"),
-      expect.objectContaining({
-        pathParams: {
-          id: "123",
-        },
-      }),
-    );
-  });
-
   it("should invoke buildDynamicBreadcrumbs", async () => {
     const { vm, injections } = useSetup(() => useBreadcrumbs());
     injections.apiClient.invoke.mockResolvedValue({

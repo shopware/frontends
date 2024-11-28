@@ -10,8 +10,8 @@ const props = defineProps<{
 
 const { search } = useCategorySearch();
 const route = useRoute();
-const { buildDynamicBreadcrumbs, pushBreadcrumb, getCategoryBreadcrumbs } =
-  useBreadcrumbs();
+const { buildDynamicBreadcrumbs } = useBreadcrumbs();
+const { apiClient } = useShopwareContext();
 
 const { data, error } = await useAsyncData(
   "cmsNavigation" + props.navigationId,
@@ -23,9 +23,15 @@ const { data, error } = await useAsyncData(
           ...route.query,
         },
       }),
-      getCategoryBreadcrumbs(props.navigationId).catch(() => {
-        console.error("Error while fetching breadcrumbs");
-      }),
+      apiClient
+        .invoke("readBreadcrumb get /breadcrumb/{id}", {
+          pathParams: {
+            id: props.navigationId,
+          },
+        })
+        .catch(() => {
+          console.error("Error while fetching breadcrumbs");
+        }),
     ]);
 
     return { category, breadcrumbs };
@@ -34,7 +40,7 @@ const { data, error } = await useAsyncData(
 const categoryResponse = ref(data.value?.category);
 
 if (data.value?.breadcrumbs) {
-  buildDynamicBreadcrumbs(data.value.breadcrumbs);
+  buildDynamicBreadcrumbs(data.value.breadcrumbs.data);
 }
 
 if (!categoryResponse.value) {

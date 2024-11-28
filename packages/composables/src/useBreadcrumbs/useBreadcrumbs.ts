@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import { useContext, useShopwareContext } from "#imports";
+import { useContext } from "#imports";
 import type { operations, Schemas } from "#shopware";
 
 /**
@@ -25,15 +25,6 @@ export type UseBreadcrumbsReturn = {
    * List of breadcrumbs
    */
   breadcrumbs: ComputedRef<Breadcrumb[]>;
-  /**
-   * Get category breadcrumbs from the API
-   *
-   * @param {string} categoryId
-   * @returns
-   */
-  getCategoryBreadcrumbs: (
-    categoryId: string,
-  ) => Promise<operations["readBreadcrumb get /breadcrumb/{id}"]["response"]>;
   /**
    * Build breadcrumbs dynamically for a category by fetching them from the API
    *
@@ -60,8 +51,6 @@ export type UseBreadcrumbsReturn = {
 export function useBreadcrumbs(
   newBreadcrumbs?: Breadcrumb[],
 ): UseBreadcrumbsReturn {
-  const { apiClient } = useShopwareContext();
-
   // Store for breadcrumbs
   const _breadcrumbs = useContext<Breadcrumb[]>("swBreadcrumb", {
     replace: newBreadcrumbs,
@@ -72,18 +61,6 @@ export function useBreadcrumbs(
    */
   const clearBreadcrumbs = () => {
     _breadcrumbs.value = [];
-  };
-
-  const getCategoryBreadcrumbs = async (categoryId: string) => {
-    const response = await apiClient.invoke(
-      "readBreadcrumb get /breadcrumb/{id}",
-      {
-        pathParams: {
-          id: categoryId,
-        },
-      },
-    );
-    return response.data;
   };
 
   const pushBreadcrumb = (breadcrumb: Breadcrumb) => {
@@ -106,7 +83,6 @@ export function useBreadcrumbs(
   return {
     clearBreadcrumbs,
     breadcrumbs: computed(() => _breadcrumbs.value),
-    getCategoryBreadcrumbs,
     buildDynamicBreadcrumbs,
     pushBreadcrumb,
   };
