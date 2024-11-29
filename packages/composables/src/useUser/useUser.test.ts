@@ -98,7 +98,7 @@ describe("useUser", () => {
     expect(vm.isLoggedIn).toBe(true);
   });
 
-  it("register function with double opt-in option", async () => {
+  it("register function with double opt-in option should not automatically log user in", async () => {
     const { vm, injections } = useSetup(() => useUser());
     injections.apiClient.invoke.mockResolvedValue({
       data: {

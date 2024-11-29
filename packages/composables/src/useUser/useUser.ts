@@ -183,9 +183,8 @@ export function useUser(): UseUserReturn {
     // Update the user data in the context if the user is active and not using double opt-in registration set in the Shopware Admin
     if (data.active && !data.doubleOptInRegistration) {
       _user.value = data;
-      await refreshSessionContext();
     }
-
+    await refreshSessionContext();
     return data;
   }
 

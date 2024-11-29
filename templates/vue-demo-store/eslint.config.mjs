@@ -42,4 +42,9 @@ export default [
       "vue/component-tags-order": "off",
     },
   },
+  {
+    name: "turn-off-deprecated-rules-for-pages-and-layouts",
+    files: ["layouts/*.vue", "pages/**/*.vue"],
+    rules: { "vue/multi-word-component-names": "off" },
+  },
 ];

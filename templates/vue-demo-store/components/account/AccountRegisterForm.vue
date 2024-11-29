@@ -144,7 +144,8 @@ useBreadcrumbs([
       {{ $t("account.messages.signUpSuccess") }}
     </div>
     <form
-      class="w-full relative"
+      v-if="!showDoubleOptInBox"
+      class="w-full relative mt-10"
       data-testid="registration-form"
       @submit.prevent="invokeSubmit"
     >
