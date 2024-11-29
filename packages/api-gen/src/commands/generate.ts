@@ -12,7 +12,7 @@ import c from "picocolors";
 import { format } from "prettier";
 import { processAstSchemaAndOverrides } from "../processAstSchemaAndOverrides";
 import { ofetch } from "ofetch";
-import { TransformedElements } from "../generateFile";
+import type { TransformedElements } from "../generateFile";
 import { transformSchemaTypes } from "../transformSchemaTypes";
 import { transformOpenApiTypes } from "../transformOpenApiTypes";
 import { extendedDefu, patchJsonSchema } from "../patchJsonSchema";
@@ -56,9 +56,9 @@ export async function generate(args: {
       process.exit(1);
     }
 
-    let schema: string = "";
+    let schema = "";
     let processedSchemaAst: TransformedElements;
-    let apiVersion: string = "unknown";
+    let apiVersion = "unknown";
 
     if (fileExist) {
       // Apply patches
@@ -128,7 +128,7 @@ export async function generate(args: {
             `,
         transform(schemaObject, metadata) {
           if (!schemaObject) {
-            throw new Error("Schema object is empty at " + metadata.path);
+            throw new Error(`Schema object is empty at ${metadata.path}`);
           }
           /**
            * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
@@ -167,7 +167,9 @@ export async function generate(args: {
                 {} as Record<string, { type: "string" }>,
               );
             if (Object.keys(stringProperties).length === 0) {
-              delete schemaObject.properties.translated;
+              const { translated: _, ...propertiesWithoutTranslated } =
+                schemaObject.properties;
+              schemaObject.properties = propertiesWithoutTranslated;
             } else {
               schemaObject.required ??= [];
               schemaObject.required.push("translated");
