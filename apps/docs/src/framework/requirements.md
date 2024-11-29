@@ -43,7 +43,8 @@ Shopware Frontends requires a Node.js runtime environment.
 
 Supported versions:
 
-- **v20.x** LTS
+- **v22.x** LTS
+- **v20.x** - maintenance
 - **v18.x** - maintenance
 
 :::tip
