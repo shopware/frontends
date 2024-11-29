@@ -3,7 +3,7 @@
  */
 import { defineNuxtModule } from "@nuxt/kit";
 import type { NuxtModule } from "@nuxt/schema";
-import { resolve } from "path";
+import { resolve } from "node:path";
 
 const nuxtModule: NuxtModule = defineNuxtModule({
   meta: {
