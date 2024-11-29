@@ -99,7 +99,7 @@ const handleReorder = async () => {
     v-if="paymentChangeable && statusTechnicalName === 'open'"
     class="px-2 py-4"
   >
-    <h3 class="mb-5 text-secondary-400 text-base">
+    <h3 class="mb-5 text-secondary-600 text-base">
       {{ $t("account.order.paymentMethod") }}
     </h3>
     <ul class="pl-2">
