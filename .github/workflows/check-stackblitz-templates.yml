@@ -1,45 +1,40 @@
 name: Stackblitz templates
 
-
 run-name: Playwright stackblitz templates 🚀
 on:
- workflow_dispatch:
- schedule:
-   - cron: "59 23 * * *"
+  workflow_dispatch:
+  schedule:
+    - cron: "59 23 * * *"
 jobs:
- run-stackblitz-templates-tests:
-   runs-on: macos-14
-   env:
+  run-stackblitz-templates-tests:
+    runs-on: macos-14
+    env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-   steps:
-     - name: Check out code
-       uses: actions/checkout@v4
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-     - name: Install Node.js
-       uses: actions/setup-node@v4
-       with:
-         node-version: 20
+      - run: corepack enable
+      - run: pnpm --version
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+          cache-dependency-path: "**/pnpm-lock.yaml"
+      - name: install
+        run: pnpm install --no-frozen-lockfile --prefer-offline
 
+      - name: Install dependencies with Playwright
+        run: |
+          pnpm playwright install --with-deps
 
-     - run: corepack enable
-     - run: pnpm --version
-     - uses: actions/setup-node@v4
-       with:
-         node-version: 20
-         cache: "pnpm"
-         cache-dependency-path: "**/pnpm-lock.yaml"
-     - name: install
-       run: pnpm install --no-frozen-lockfile --prefer-offline
-
-
-     - name: Install dependencies with Playwright
-       run: |
-         pnpm playwright install --with-deps
-
-
-     - name: Run tests
-       run: |
-        cd apps/e2e-tests
-        npx playwright test -c examples.config.ts checkStackblitzTemplates.spec.ts
+      - name: Run tests
+        run: |
+          cd apps/e2e-tests
+          npx playwright test -c examples.config.ts checkStackblitzTemplates.spec.ts

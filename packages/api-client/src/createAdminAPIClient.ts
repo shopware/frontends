@@ -64,7 +64,7 @@ export function createAdminAPIClient<
    * If you pass `credentials` object, it will be used to authenticate the client whenever session expires.
    * You don't need to manually invoke `/token` endpoint first.
    */
-  credentials?: OPERATIONS["token"]["body"];
+  credentials?: OPERATIONS["token post /oauth/token"]["body"];
   sessionData?: AdminSessionData;
   defaultHeaders?: ClientHeaders;
 }) {
