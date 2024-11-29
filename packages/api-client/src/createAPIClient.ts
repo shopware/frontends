@@ -1,4 +1,10 @@
-import { type FetchResponse, ofetch, FetchOptions } from "ofetch";
+import {
+  type FetchResponse,
+  ofetch,
+  type FetchOptions,
+  type FetchContext,
+  type ResponseType,
+} from "ofetch";
 import type { operations } from "../api-types/storeApiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
@@ -38,20 +44,25 @@ export type RequestParameters<CURRENT_OPERATION> = SimpleUnionOmit<
 >;
 export type InvokeParameters<CURRENT_OPERATION> =
   RequestParameters<CURRENT_OPERATION> & {
-  fetchOptions?: Pick<
-    FetchOptions<"json">,
-    | "cache"
-    | "duplex"
-    | "keepalive"
-    | "priority"
-    | "redirect"
-    | "retry"
-    | "retryDelay"
-    | "retryStatusCodes"
-    | "signal"
-    | "timeout"
-  >;
-};
+    fetchOptions?: Pick<
+      FetchOptions<"json">,
+      | "cache"
+      | "duplex"
+      | "keepalive"
+      | "priority"
+      | "redirect"
+      | "retry"
+      | "retryDelay"
+      | "retryStatusCodes"
+      | "signal"
+      | "timeout"
+    >;
+  };
+
+export type GlobalFetchOptions = Pick<
+  FetchOptions<"json">,
+  "retry" | "retryDelay" | "retryStatusCodes" | "timeout"
+>;
 
 export type ApiClientHooks = {
   onContextChanged: (newContextToken: string) => void;
@@ -68,7 +79,7 @@ export function createAPIClient<
   accessToken?: string;
   contextToken?: string;
   defaultHeaders?: ClientHeaders;
-  timeout?: number;
+  fetchOptions?: GlobalFetchOptions;
 }) {
   // Create a hookable instance
   const apiClientHooks = createHooks<ApiClientHooks>();
@@ -89,8 +100,12 @@ export function createAPIClient<
   );
 
   const apiFetch = ofetch.create({
+    ...params.fetchOptions,
     baseURL: params.baseURL,
-    timeout: params.timeout,
+    retryDelay: params.fetchOptions?.retryDelay as
+      | number
+      | ((context: FetchContext<any, ResponseType>) => number)
+      | undefined,
     // async onRequest({ request, options }) {},
     // async onRequestError({ request, options, error }) {},
     async onResponse(context) {
@@ -98,7 +113,7 @@ export function createAPIClient<
       if (
         context.response.headers.has("sw-context-token") &&
         defaultHeaders["sw-context-token"] !==
-        context.response.headers.get("sw-context-token")
+          context.response.headers.get("sw-context-token")
       ) {
         const newContextToken = context.response.headers.get(
           "sw-context-token",
@@ -132,17 +147,17 @@ export function createAPIClient<
       "response" | "responseCode"
     > extends
       | {
-      body: unknown;
-    }
+          body: unknown;
+        }
       | {
-      query: unknown;
-    }
+          query: unknown;
+        }
       | {
-      header: unknown;
-    }
+          header: unknown;
+        }
       | {
-      pathParams: unknown;
-    }
+          pathParams: unknown;
+        }
       ? [InvokeParameters<CURRENT_OPERATION>]
       : [InvokeParameters<CURRENT_OPERATION>?]
   ): Promise<RequestReturnType<CURRENT_OPERATION>> {

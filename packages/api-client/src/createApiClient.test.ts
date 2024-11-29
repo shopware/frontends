@@ -437,7 +437,7 @@ describe("createAPIClient", () => {
     );
   });
 
-  describe("timeout handling", () => {
+  describe("fetchOptions", () => {
     it("should enforce the timeout for API requests when a timeout is provided", async () => {
       const app = createApp().use(
         "/slow-endpoint",
@@ -451,7 +451,9 @@ describe("createAPIClient", () => {
 
       const client = createAPIClient<operations>({
         accessToken: "123",
-        timeout: 50,
+        fetchOptions: {
+          timeout: 50,
+        },
         baseURL,
       });
 
@@ -501,7 +503,9 @@ describe("createAPIClient", () => {
 
       const client = createAPIClient<operations>({
         accessToken: "123",
-        timeout: 100,
+        fetchOptions: {
+          timeout: 100,
+        },
         baseURL,
       });
 
@@ -527,7 +531,9 @@ describe("createAPIClient", () => {
 
       const client = createAPIClient<operations>({
         accessToken: "123",
-        timeout: 100,
+        fetchOptions: {
+          timeout: 100,
+        },
         baseURL,
       });
 
@@ -558,7 +564,9 @@ describe("createAPIClient", () => {
 
       const client = createAPIClient<operations>({
         accessToken: "123",
-        timeout: 200,
+        fetchOptions: {
+          timeout: 200,
+        },
         baseURL,
       });
 
