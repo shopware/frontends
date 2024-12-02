@@ -11,7 +11,7 @@ describe("transformOpenApiTypes", async () => {
     .filter((name) => name.endsWith(".example.ts"))
     .map((filename) => filename.replace(".example.ts", ""));
 
-  inputFileNames.forEach((exampleName) => {
+  for (const exampleName of inputFileNames) {
     it(`transform should match snapshot for file: ${exampleName}`, async () => {
       const exampleFileContent = readFileSync(
         join(
@@ -42,5 +42,5 @@ describe("transformOpenApiTypes", async () => {
         `./snapshots-transformOpenApiTypes/${exampleName}.result.ts`,
       );
     });
-  });
+  }
 });
