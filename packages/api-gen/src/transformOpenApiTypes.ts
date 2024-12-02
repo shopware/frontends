@@ -60,7 +60,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
 
               if (!operationId) {
                 // if operationId does not exist or is undefined, we omit the operation
-                return;
+                continue;
               }
 
               const operationKey = `${operationId} ${restMethodName} ${currentPath}`;
