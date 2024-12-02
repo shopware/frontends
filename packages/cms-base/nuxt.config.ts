@@ -7,6 +7,12 @@ export default defineNuxtConfig({
       pathPrefix: false,
       // global: true,
     },
+    {
+      path: "./components/",
+      pattern: "Sw*",
+      extensions: [".vue"],
+      global: false,
+    },
   ],
   build: {
     transpile: ["@shopware-pwa/cms-base"],

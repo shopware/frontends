@@ -11,7 +11,6 @@ import {
 } from "@shopware-pwa/helpers-next";
 import { toRefs, computed, ref, useTemplateRef } from "vue";
 import { defu } from "defu";
-import SwListingProductPrice from "./SwListingProductPrice.vue";
 import {
   useAddToCart,
   useNotifications,

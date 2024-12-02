@@ -2,7 +2,6 @@
 import { computed, provide, reactive, ref, useTemplateRef } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 import { defu } from "defu";
-import SwProductListingFilter from "./SwProductListingFilter.vue";
 import type {
   CmsElementProductListing,
   CmsElementSidebarFilter,
