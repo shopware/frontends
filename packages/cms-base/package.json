@@ -54,12 +54,12 @@
   "devDependencies": {
     "@nuxt/schema": "3.14.1592",
     "@types/three": "0.166.0",
-    "@vitest/coverage-v8": "2.1.6",
+    "@vitest/coverage-v8": "2.1.8",
     "nuxt": "3.14.1592",
     "tsconfig": "workspace:*",
     "typescript": "5.6.3",
     "unbuild": "2.0.0",
-    "vitest": "2.1.6",
+    "vitest": "2.1.8",
     "vue-router": "4.5.0",
     "vue-tsc": "2.1.10"
   }
