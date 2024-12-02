@@ -29,8 +29,8 @@
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "eslint": "eslint --fix --max-warnings=0",
-    "lint": "pnpm run eslint && pnpm run typecheck",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write . && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -54,15 +54,12 @@
   "devDependencies": {
     "@nuxt/schema": "3.14.1592",
     "@types/three": "0.166.0",
-    "@vitest/coverage-v8": "2.1.4",
-    "eslint-config-shopware": "workspace:*",
-    "eslint-plugin-vue": "9.30.0",
+    "@vitest/coverage-v8": "2.1.6",
     "nuxt": "3.14.1592",
     "tsconfig": "workspace:*",
     "typescript": "5.6.3",
     "unbuild": "2.0.0",
-    "vitest": "2.1.4",
-    "vue-eslint-parser": "9.4.3",
+    "vitest": "2.1.6",
     "vue-router": "4.5.0",
     "vue-tsc": "2.1.10"
   }

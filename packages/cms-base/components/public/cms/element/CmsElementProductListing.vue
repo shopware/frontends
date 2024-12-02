@@ -117,9 +117,7 @@ const compareRouteQueryWithInitialListing = async () => {
   const isChangePageNeeded =
     (route.query.limit && limit.value !== limitListing) ||
     (route.query.p && Number(route.query.p) !== pageListing) ||
-    (route.query.order && route.query.order !== orderListing)
-      ? true
-      : false;
+    (route.query.order && route.query.order !== orderListing);
 
   if (isChangePageNeeded) {
     const limitQuery = route.query.limit

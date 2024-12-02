@@ -1,6 +1,6 @@
 import {
-  GenerationMap,
-  TransformedElements,
+  type GenerationMap,
+  type TransformedElements,
   generateFile,
 } from "./generateFile";
 import { createVirtualFiles } from "./virtualFileCreator";

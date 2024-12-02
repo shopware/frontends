@@ -17,11 +17,11 @@ const config = computed(() => ({
     : "",
   showControls: getConfigValue("showControls") ? "controls=0&" : "",
   start:
-    parseInt(getConfigValue("start")) !== 0
+    Number.parseInt(getConfigValue("start")) !== 0
       ? `start=${getConfigValue("start")}&`
       : "",
   end:
-    parseInt(getConfigValue("end")) !== 0
+    Number.parseInt(getConfigValue("end")) !== 0
       ? `end=${getConfigValue("end")}&`
       : "",
   disableKeyboard: "disablekb=1",

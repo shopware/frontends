@@ -31,7 +31,8 @@
     "build": "unbuild",
     "cli": "esno ./src/cli.ts",
     "dev": "export NODE_ENV=development && unbuild --stub",
-    "lint": "eslint src/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write . && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --typecheck",
     "test:bench": "vitest bench",
@@ -40,13 +41,12 @@
   "devDependencies": {
     "@types/prettier": "3.0.0",
     "@types/yargs": "17.0.33",
-    "@vitest/coverage-v8": "2.1.4",
-    "eslint-config-shopware": "workspace:*",
+    "@vitest/coverage-v8": "2.1.6",
     "json5": "2.2.3",
     "picocolors": "1.0.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.1.4"
+    "vitest": "2.1.6"
   },
   "dependencies": {
     "@shopware/api-client": "workspace:*",
