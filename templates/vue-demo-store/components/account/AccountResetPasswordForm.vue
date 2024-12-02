@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
+import { useVuelidate } from "@vuelidate/core";
 
 const { required, minLength, sameAs } = customValidators();
 const { apiClient } = useShopwareContext();
@@ -38,18 +38,17 @@ const invokeReset = async (): Promise<void> => {
 
     if (!isFormCorrect) {
       return;
-    } else {
-      await apiClient.invoke(
-        "recoveryPassword post /account/recovery-password-confirm",
-        {
-          body: {
-            hash: hashQuery,
-            newPassword: state.password.newPasswordConfirm,
-            newPasswordConfirm: state.password.newPasswordConfirm,
-          },
-        },
-      );
     }
+    await apiClient.invoke(
+      "recoveryPassword post /account/recovery-password-confirm",
+      {
+        body: {
+          hash: hashQuery,
+          newPassword: state.password.newPasswordConfirm,
+          newPasswordConfirm: state.password.newPasswordConfirm,
+        },
+      },
+    );
   } catch (err) {
     if (err instanceof ApiClientError) {
       state.error = err.details.errors?.[0]?.detail;

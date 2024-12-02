@@ -7,17 +7,17 @@ const { t } = useI18n();
 
 const addPromotionCodeHandler = async (code: string) => {
   await addPromotionCode(code);
-  getErrorsCodes()?.forEach((element) => {
+  for (const element of getErrorsCodes() ?? []) {
     pushError(t(`errors.${element.messageKey}`, { ...element }));
-  });
+  }
   promoCode.value = "";
 };
 
 const removeItemHandler = (appliedPromotionCode: Schemas["LineItem"]) => {
   removeItem(appliedPromotionCode);
-  getErrorsCodes()?.forEach((element) => {
+  for (const element of getErrorsCodes() ?? []) {
     pushError(t(`errors.${element.messageKey}`, { ...element }));
-  });
+  }
 };
 
 const showPromotionCodes = computed(

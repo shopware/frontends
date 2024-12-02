@@ -8,7 +8,7 @@ const props = defineProps<{
 const { search } = useProductSearch();
 
 const { data: productResponse, error } = await useAsyncData(
-  "cmsProduct" + props.navigationId,
+  `cmsProduct${props.navigationId}`,
   async () => {
     const productResponse = await search(props.navigationId, {
       withCmsAssociations: true,

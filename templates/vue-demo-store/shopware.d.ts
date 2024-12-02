@@ -11,6 +11,7 @@ declare module "#shopware" {
   // export type Schemas =
   //   import("@shopware/api-client/store-api-types").components["schemas"];
   // or for locally generated types
+  // biome-ignore format: ignore
   export type Schemas =
     import("./api-types/storeApiTypes").components["schemas"];
 

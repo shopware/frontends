@@ -9,7 +9,7 @@ const props = defineProps<{
 const { search } = useLandingSearch();
 
 const { data: landingResponse, error } = await useAsyncData(
-  "cmsLanding" + props.navigationId,
+  `cmsLanding${props.navigationId}`,
   async () => {
     const landingPage = await search(props.navigationId, {
       withCmsAssociations: true,

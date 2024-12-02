@@ -21,9 +21,7 @@
       ".output",
       "temp",
       ".nuxt",
-      ".vercel",
-      "apiSchema*.json",
-      "apiTypes*.d.ts"
+      ".vercel"
     ]
   }
 }
