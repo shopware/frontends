@@ -1,4 +1,4 @@
-import { OpenAPI3, PathItemObject } from "openapi-typescript";
+import type { OpenAPI3, PathItemObject } from "openapi-typescript";
 import { createDefu } from "defu";
 import c from "picocolors";
 import { equals } from "@vitest/expect";
@@ -20,13 +20,13 @@ export const extendedDefu = createDefu((obj, key, value) => {
   if (Array.isArray(obj[key]) && Array.isArray(value)) {
     // concat arrays but skip duplicates
     // @ts-expect-error - we know that obj[key] is an array as we're inside this if statement
-    obj[key] = [...new Set([...obj[key], ...value])];
+    obj[key] = [...new Set([...obj[key], ...value])].sort();
     return true;
   }
 
   // if there is no key in object, add it
-  if (!obj[key]) {
-    obj[key] = value;
+  if (obj[key] === undefined) {
+    obj[key] = extendedDefu(value, value);
   }
 
   // Feature to delete key from object
@@ -44,35 +44,37 @@ export function patchJsonSchema({
   jsonOverrides?: OverridesSchema;
 }) {
   const patchedSchema = json5.parse(json5.stringify(openApiSchema));
-  let alreadyApliedPatches: number = 0;
+  let alreadyApliedPatches = 0;
   const outdatedPatches: string[][] = [];
-  let appliedPatches: number = 0;
+  let appliedPatches = 0;
   const todosToFix: string[][] = [];
   const schemaPaths: Array<{
     path: string;
     method: string;
   }> = [];
 
-  Object.entries(openApiSchema.components?.schemas || {}).forEach((schema) => {
-    if (jsonOverrides?.components?.[schema[0]]) {
-      const overridePatches = jsonOverrides?.components[schema[0]];
+  for (const [schemaName, schema] of Object.entries(
+    openApiSchema.components?.schemas || {},
+  )) {
+    if (jsonOverrides?.components?.[schemaName]) {
+      const overridePatches = jsonOverrides?.components[schemaName];
       const patches = Array.isArray(overridePatches)
         ? overridePatches
         : [overridePatches];
-      patches.forEach((patch: JSON) => {
-        const mergedPatch = extendedDefu(patch, schema[1]);
+      for (const patch of patches) {
+        const mergedPatch = extendedDefu(patch, schema);
 
-        patchedSchema.components.schemas[schema[0]] = extendedDefu(
+        patchedSchema.components.schemas[schemaName] = extendedDefu(
           patch,
-          patchedSchema.components.schemas[schema[0]],
+          patchedSchema.components.schemas[schemaName],
         );
         appliedPatches++;
-        const matchResult = equals(mergedPatch, schema[1]);
+        const matchResult = equals(mergedPatch, schema);
 
         if (matchResult) {
           outdatedPatches.push([
             `${c.gray(
-              `\n${c.bold("Info")}: Patch for ${c.bold(schema[0])} is already applied in schema. You can remove it from overrides.`,
+              `\n${c.bold("Info")}: Patch for ${c.bold(schemaName)} is already applied in schema. You can remove it from overrides.`,
             )}`,
             c.red(json5.stringify(patch)),
           ]);
@@ -80,35 +82,40 @@ export function patchJsonSchema({
         } else {
           todosToFix.push([
             `Patch for ${c.cyan(
-              c.bold(schema[0]),
+              c.bold(schemaName),
             )} is missing in schema. \nPatch:\n${c.cyan(
               json5.stringify(patch),
             )}`,
-            diff(mergedPatch, schema[1], {
+            diff(mergedPatch, schema, {
               aColor: c.green,
               bColor: c.red,
             }) || "",
           ]);
         }
-      });
+      }
     }
-  });
+  }
 
   // finds not existing components and add them, mostly for backwards compatibility
-  Object.entries(jsonOverrides?.components || {}).forEach((schema) => {
-    if (!openApiSchema.components?.schemas?.[schema[0]]) {
-      const patches = Array.isArray(schema[1]) ? schema[1] : [schema[1]];
-      patches.forEach((patch: JSON) => {
-        patchedSchema.components.schemas[schema[0]] = patch;
+  for (const [schemaName, schema] of Object.entries(
+    jsonOverrides?.components || {},
+  )) {
+    if (!openApiSchema.components?.schemas?.[schemaName]) {
+      const patches = Array.isArray(schema) ? schema : [schema];
+      for (const patch of patches) {
+        patchedSchema.components.schemas[schemaName] = extendedDefu(
+          patch,
+          patchedSchema.components.schemas[schemaName],
+        );
         appliedPatches++;
-      });
+      }
     }
-  });
+  }
 
-  Object.entries(openApiSchema?.paths || {}).forEach((pathObject) => {
-    const pathName = pathObject[0];
-    Object.entries(pathObject[1]).forEach((singlePath) => {
-      const httpMethod = singlePath[0];
+  for (const [pathName, pathObject] of Object.entries(
+    openApiSchema?.paths || {},
+  )) {
+    for (const [httpMethod, singlePath] of Object.entries(pathObject)) {
       schemaPaths.push({
         path: pathName,
         method: httpMethod.toUpperCase(),
@@ -120,7 +127,7 @@ export function patchJsonSchema({
         const patches = Array.isArray(overridePatches)
           ? overridePatches
           : [overridePatches];
-        patches.forEach((patch: JSON) => {
+        for (const patch of patches) {
           const mergedPatch = extendedDefu(
             patch,
             singlePath[1] as PathItemObject,
@@ -156,7 +163,7 @@ export function patchJsonSchema({
               "\n\n",
             ]);
           }
-        });
+        }
       }
 
       // require requestBody by default, optional only when explicitly set to false
@@ -164,8 +171,8 @@ export function patchJsonSchema({
       if (requestBody) {
         requestBody.required = requestBody.required !== false;
       }
-    });
-  });
+    }
+  }
   return {
     patchedSchema,
     alreadyApliedPatches,

@@ -52,6 +52,7 @@ export type AdminApiClientHooks = {
   onAuthChange: (authData: AdminSessionData) => void;
   onResponseError: (response: FetchResponse<ResponseType>) => void;
   onSuccessResponse: (response: FetchResponse<ResponseType>) => void;
+  onDefaultHeaderChanged: <T>(headerName: string, value?: T) => void;
 };
 
 export function createAdminAPIClient<
@@ -63,12 +64,15 @@ export function createAdminAPIClient<
    * If you pass `credentials` object, it will be used to authenticate the client whenever session expires.
    * You don't need to manually invoke `/token` endpoint first.
    */
-  credentials?: OPERATIONS["token"]["body"];
+  credentials?: OPERATIONS["token post /oauth/token"]["body"];
   sessionData?: AdminSessionData;
   defaultHeaders?: ClientHeaders;
 }) {
   const isTokenBasedAuth =
     params.credentials?.grant_type === "client_credentials";
+
+  // Create a hookable instance
+  const apiClientHooks = createHooks<AdminApiClientHooks>();
 
   const sessionData: AdminSessionData = {
     accessToken: params.sessionData?.accessToken || "",
@@ -76,13 +80,15 @@ export function createAdminAPIClient<
     expirationTime: Number(params.sessionData?.expirationTime || 0),
   };
 
-  const defaultHeaders = createHeaders({
-    Authorization: createAuthorizationHeader(sessionData.accessToken),
-    Accept: "application/json",
-  });
-
-  // Create a hookable instance
-  const apiClientHooks = createHooks<AdminApiClientHooks>();
+  const defaultHeaders = createHeaders(
+    {
+      Authorization: createAuthorizationHeader(sessionData.accessToken),
+      Accept: "application/json",
+    },
+    (key, value) => {
+      apiClientHooks.callHook("onDefaultHeaderChanged", key, value);
+    },
+  );
 
   function getSessionData() {
     return { ...sessionData };
@@ -154,7 +160,7 @@ export function createAdminAPIClient<
 
             updateSessionData(context.response._data);
             // pass enhanced (Authorization) headers to the next request
-            options.headers.append(
+            options.headers.set(
               "Authorization",
               createAuthorizationHeader(sessionData.accessToken),
             );
@@ -212,13 +218,16 @@ export function createAdminAPIClient<
       string,
     ];
 
+    const currentParams =
+      params[0] || ({} as InvokeParameters<CURRENT_OPERATION>);
+
     const requestPathWithParams = createPathWithParams(
       requestPath,
-      params[0]?.pathParams,
+      currentParams.pathParams,
     );
 
     const fetchOptions: FetchOptions<"json"> = {
-      ...(params[0]?.fetchOptions || {}),
+      ...(currentParams.fetchOptions || {}),
     };
 
     const resp = await apiFetch.raw<
@@ -226,9 +235,9 @@ export function createAdminAPIClient<
     >(requestPathWithParams, {
       ...fetchOptions,
       method,
-      body: params[0]?.body,
-      headers: defu(defaultHeaders, params[0]?.headers) as HeadersInit,
-      query: params[0]?.query,
+      body: currentParams.body,
+      headers: defu(currentParams.headers, defaultHeaders) as HeadersInit,
+      query: currentParams.query,
     });
 
     return {

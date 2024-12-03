@@ -4,10 +4,8 @@ import { join } from "node:path";
 import "dotenv/config";
 import c from "picocolors";
 import { format } from "prettier";
-import { createAdminAPIClient, createAPIClient } from "@shopware/api-client";
-import type { operations as adminOperations } from "@shopware/api-client/admin-api-types";
-import type { operations } from "@shopware/api-client/store-api-types";
 import json5 from "json5";
+import { getAdminApiClient, getStoreApiClient } from "../apiClient";
 
 const SCHEMA_ENDPOINT = "_info/openapi3.json";
 const STORE_API_ENDPOINT = `/store-api/${SCHEMA_ENDPOINT}`;
@@ -57,24 +55,15 @@ export async function loadSchema(args: {
     const configUrl = OPENAPI_JSON_URL.replace(
       "/api/_info/openapi3.json",
       "",
-    ).replace("/atore-api/_info/openapi3.json", "");
+    ).replace("/store-api/_info/openapi3.json", "");
 
     const downloadUrl =
       configUrl + (isAdminApi ? ADMIN_API_ENDPOINT : STORE_API_ENDPOINT);
 
-    let apiJSON;
+    let apiJSON: Record<string, unknown>;
 
     if (isAdminApi) {
-      const adminClient = createAdminAPIClient<adminOperations>({
-        baseURL: `${configUrl}/api`,
-        credentials: {
-          grant_type: "password",
-          client_id: "administration",
-          scopes: "write",
-          username: process.env.SHOPWARE_ADMIN_USERNAME,
-          password: process.env.SHOPWARE_ADMIN_PASSWORD,
-        },
-      });
+      const adminClient = getAdminApiClient();
       const result = await adminClient.invoke(
         "api-info get /_info/openapi3.json",
         {
@@ -84,10 +73,7 @@ export async function loadSchema(args: {
       );
       apiJSON = result.data;
     } else {
-      const apiClient = createAPIClient<operations>({
-        baseURL: `${configUrl}/store-api`,
-        accessToken: process.env.OPENAPI_ACCESS_KEY,
-      });
+      const apiClient = getStoreApiClient();
       const result = await apiClient.invoke(
         "api-info get /_info/openapi3.json",
         {

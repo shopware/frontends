@@ -1,6 +1,6 @@
 import {
-  GenerationMap,
-  TransformedElements,
+  type GenerationMap,
+  type TransformedElements,
   generateFile,
 } from "./generateFile";
 import { createVirtualFiles } from "./virtualFileCreator";
@@ -13,6 +13,7 @@ export async function processAstSchemaAndOverrides(
   [opMap, opComponents, opExistingTypes]: TransformedElements,
   overridingSchema: string,
   type: "store" | "admin",
+  options: { version: string },
 ) {
   const {
     sourceFiles: [sourceFile, overridesSourceFile],
@@ -45,5 +46,11 @@ export async function processAstSchemaAndOverrides(
   const existingTypes = opExistingTypes;
 
   const filePath = join("api-types", `${type}ApiTypes.d.ts`);
-  generateFile(filePath, operationsMap, existingTypes, componentsMap);
+  await generateFile(
+    filePath,
+    operationsMap,
+    existingTypes,
+    componentsMap,
+    options,
+  );
 }

@@ -1,9 +1,9 @@
 import c from "picocolors";
 import { readFileSync, existsSync } from "node:fs";
 import json5 from "json5";
-import { validationRules } from "./validation-rules";
+import type { validationRules } from "./validation-rules";
 import { ofetch } from "ofetch";
-import { OverridesSchema } from "./patchJsonSchema";
+import type { OverridesSchema } from "./patchJsonSchema";
 
 export type ApiGenConfig = {
   rules: Array<keyof typeof validationRules>;
@@ -67,13 +67,13 @@ export async function loadJsonOverrides({
         parseResponse: json5.parse,
       });
       return response;
-    } else {
-      const jsonOverridesFile = await readFileSync(pathToResolve, {
-        encoding: "utf-8",
-      });
-      const content = json5.parse(jsonOverridesFile);
-      return content;
     }
+
+    const jsonOverridesFile = await readFileSync(pathToResolve, {
+      encoding: "utf-8",
+    });
+    const content = json5.parse(jsonOverridesFile);
+    return content;
   } catch (error) {
     console.warn(
       c.yellow(
@@ -95,19 +95,19 @@ export function displayPatchingSummary({
   alreadyApliedPatches: number;
   errors?: string[];
 }) {
-  if (todosToFix.length) {
+  if (!errors?.length && todosToFix.length) {
     console.log(c.yellow("Warnings to fix in the schema:"));
-    todosToFix.forEach((todo) => {
+    for (const todo of todosToFix) {
       console.log(`${c.yellow("WARNING")}: ${todo[0]}`);
       console.log("Diff:\n", todo[1], "\n\n");
-    });
+    }
   }
 
   if (errors?.length) {
     console.log(c.red("Errors found:"));
-    errors.forEach((error) => {
+    for (const error of errors) {
       console.log(`\n<==== ${c.red("ERROR")}:\n${error}\n====>\n\n`);
-    });
+    }
   }
 
   if (outdatedPatches.length) {
@@ -117,10 +117,10 @@ export function displayPatchingSummary({
         "No action needed. Patches are already applied. You can remove them from the overrides file to clean it up.",
       ),
     );
-    outdatedPatches.forEach((todo) => {
+    for (const todo of outdatedPatches) {
       console.log(`${todo[0]}`);
       console.log("Patch to remove:\n", todo[1], "\n\n");
-    });
+    }
   }
 
   console.log("\n\n===== Summary =====");

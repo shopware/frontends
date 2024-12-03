@@ -18,7 +18,13 @@ const packagesMap = {
   // "api-client": "api-client-next",
 };
 
-export async function ReadmeBasedReference({ projectRootDir, relativeDir }: { projectRootDir: string, relativeDir: string }): Promise<Plugin> {
+export async function ReadmeBasedReference({
+  projectRootDir,
+  relativeDir,
+}: {
+  projectRootDir: string;
+  relativeDir: string;
+}): Promise<Plugin> {
   return {
     name: "packages-reference-md-transform",
     enforce: "pre",
@@ -31,7 +37,9 @@ export async function ReadmeBasedReference({ projectRootDir, relativeDir }: { pr
       if (
         pkg !== "packages" ||
         packageName === "composables" ||
-        !existsSync(resolve(`${projectRootDir}/${relativeDir}/${packageName}/README.md`))
+        !existsSync(
+          resolve(`${projectRootDir}/${relativeDir}/${packageName}/README.md`),
+        )
       ) {
         return code;
       }
@@ -40,7 +48,9 @@ export async function ReadmeBasedReference({ projectRootDir, relativeDir }: { pr
         code,
         normalizeString(
           readFileSync(
-            resolve(`${projectRootDir}/${relativeDir}/${packageName}/README.md`),
+            resolve(
+              `${projectRootDir}/${relativeDir}/${packageName}/README.md`,
+            ),
             "utf8",
           ),
         ),

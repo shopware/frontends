@@ -51,7 +51,7 @@ const {
 } = useCategoryListing();
 
 const sidebarSelectedFilters: UnwrapNestedRefs<{
-  [key: string]: any;
+  [key: string]: Set<string> | string | number | boolean | undefined;
 }> = reactive<{
   manufacturer: Set<string>;
   properties: Set<string>;
@@ -73,7 +73,7 @@ const showResetFiltersButton = computed<boolean>(() => {
     selectedOptionIds.value.length !== 0 ||
     sidebarSelectedFilters["max-price"] ||
     sidebarSelectedFilters["min-price"] ||
-    sidebarSelectedFilters["rating"] ||
+    sidebarSelectedFilters.rating ||
     sidebarSelectedFilters["shipping-free"]
   ) {
     return true;
@@ -84,34 +84,36 @@ const showResetFiltersButton = computed<boolean>(() => {
 
 const searchCriteriaForRequest: ComputedRef<Schemas["ProductListingCriteria"]> =
   computed(() => ({
-    // turn Set to array and then into string with | separator
-    manufacturer: [...(sidebarSelectedFilters.manufacturer as string[])]?.join(
+    manufacturer: [
+      ...(sidebarSelectedFilters.manufacturer as Set<string>),
+    ]?.join("|"),
+    properties: [...(sidebarSelectedFilters.properties as Set<string>)]?.join(
       "|",
     ),
-    // turn Set to array and then into string with | separator
-    properties: [...(sidebarSelectedFilters.properties as string[])]?.join("|"),
     "min-price": sidebarSelectedFilters["min-price"] as number,
     "max-price": sidebarSelectedFilters["max-price"] as number,
     order: getCurrentSortingOrder.value as string,
     "shipping-free": sidebarSelectedFilters["shipping-free"] as boolean,
-    rating: sidebarSelectedFilters["rating"] as number,
+    rating: sidebarSelectedFilters.rating as number,
     search: "",
     limit: route.query.limit ? Number(route.query.limit) : 15,
   }));
 
 for (const param in route.query) {
-  if (sidebarSelectedFilters.hasOwnProperty(param)) {
+  if (Object.prototype.hasOwnProperty.call(sidebarSelectedFilters, param)) {
     if (
       sidebarSelectedFilters[param] &&
       typeof sidebarSelectedFilters[param] === "object"
     ) {
-      (route.query[param] as unknown as string)
-        .split("|")
-        .forEach((element) => {
-          sidebarSelectedFilters[param].add(element);
-        });
+      const elements = (route.query[param] as unknown as string).split("|");
+      for (const element of elements) {
+        sidebarSelectedFilters[param].add(element);
+      }
     } else {
-      sidebarSelectedFilters[param] = route.query[param];
+      const queryValue = route.query[param];
+      if (queryValue !== null && !Array.isArray(queryValue)) {
+        sidebarSelectedFilters[param] = queryValue;
+      }
     }
   }
 }
@@ -121,15 +123,17 @@ const onOptionSelectToggle = async ({
   value,
 }: {
   code: string;
-  value: string;
+  value: string | number | boolean;
 }) => {
   if (!["properties", "manufacturer"].includes(code)) {
     sidebarSelectedFilters[code] = value;
   } else {
-    if (sidebarSelectedFilters[code]?.has(value)) {
-      sidebarSelectedFilters[code]?.delete(value);
+    const filterSet = sidebarSelectedFilters[code] as Set<string>;
+    const stringValue = String(value);
+    if (filterSet?.has(stringValue)) {
+      filterSet.delete(stringValue);
     } else {
-      sidebarSelectedFilters[code]?.add(value);
+      filterSet?.add(stringValue);
     }
   }
 
@@ -139,18 +143,18 @@ const onOptionSelectToggle = async ({
 const executeSearch = async () => {
   await search(searchCriteriaForRequest.value);
   const query = filtersToQuery(searchCriteriaForRequest.value);
-  delete query.limit; // this will remove limit from the url query but still use it in the search
+  const { limit: _, ...queryWithoutLimit } = query; // remove limit from query
   await router.push({
-    query: query as LocationQueryRaw,
+    query: queryWithoutLimit as LocationQueryRaw,
   });
 };
 
 const clearFilters = () => {
-  sidebarSelectedFilters.manufacturer.clear();
-  sidebarSelectedFilters.properties.clear();
+  (sidebarSelectedFilters.manufacturer as Set<string>).clear();
+  (sidebarSelectedFilters.properties as Set<string>).clear();
   sidebarSelectedFilters["min-price"] = undefined;
   sidebarSelectedFilters["max-price"] = undefined;
-  sidebarSelectedFilters["rating"] = undefined;
+  sidebarSelectedFilters.rating = undefined;
   sidebarSelectedFilters["shipping-free"] = undefined;
 };
 
@@ -172,8 +176,8 @@ const currentSortingOrder = computed({
 });
 
 const selectedOptionIds = computed(() => [
-  ...sidebarSelectedFilters.properties,
-  ...sidebarSelectedFilters.manufacturer,
+  ...(sidebarSelectedFilters.properties as Set<string>),
+  ...(sidebarSelectedFilters.manufacturer as Set<string>),
 ]);
 provide("selectedOptionIds", selectedOptionIds);
 
@@ -185,7 +189,14 @@ const isDefaultSidebarFilter =
   props.content.type === "sidebar-filter" &&
   props.content.config?.boxLayout?.value === "standard";
 const dropdownElement = useTemplateRef("dropdownElement");
-onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
+onClickOutside(dropdownElement, () => {
+  isSortMenuOpen.value = false;
+});
+
+const handleSortingClick = (key: string) => {
+  currentSortingOrder.value = key;
+  isSortMenuOpen.value = false;
+};
 </script>
 <template>
   <div class="bg-white">
@@ -232,10 +243,7 @@ onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
                   <button
                     v-for="sorting in getSortingOrders"
                     :key="sorting.key"
-                    @click="
-                      currentSortingOrder = sorting.key;
-                      isSortMenuOpen = false;
-                    "
+                    @click="handleSortingClick(sorting.key)"
                     :class="[
                       sorting.key === getCurrentSortingOrder
                         ? 'font-medium text-gray-900'

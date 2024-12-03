@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import componentsApiAliasRule from "./componentsApiAlias.rule";
-import { ObjectSubtype } from "openapi-typescript";
+import type { ObjectSubtype } from "openapi-typescript";
 
 function _uncolorize(str: string | null) {
+  // biome-ignore lint: noControlCharactersInRegex used to decolorize output
   return str?.replace(/\u001b[^m]*?m/g, "");
 }
 
@@ -202,6 +203,7 @@ describe("componentsApiAlias.rule", async () => {
 
   it("should display diff wihout additional message when names are proper", async () => {
     const componentName = "CmsBlockResult";
+    // @ts-expect-error - pris is not a valid enum type value
     const body = {
       type: "object",
       required: ["apiAlias"],

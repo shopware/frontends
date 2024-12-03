@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { createHeaders } from "./defaultHeaders";
 
 describe("createHeaders", () => {
@@ -26,5 +26,12 @@ describe("createHeaders", () => {
     const headers = createHeaders({ "Content-Type": "text/plain" });
     headers.apply({ "Content-Type": "" });
     expect(headers).toEqual({});
+  });
+
+  it("should invoke hook on header change", async () => {
+    const hook = vi.fn();
+    const headers = createHeaders({ "Content-Type": "text/plain" }, hook);
+    await headers.apply({ "Content-Type": "" });
+    expect(hook).toBeCalledWith("Content-Type");
   });
 });

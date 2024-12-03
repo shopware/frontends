@@ -10,14 +10,14 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "devDependencies": {
-    "@adyen/adyen-web": "6.3.0",
+    "@adyen/adyen-web": "6.5.1",
     "@shopware-pwa/composables-next": "canary",
     "@shopware-pwa/nuxt3-module": "canary",
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
-    "@unocss/nuxt": "0.63.4",
-    "@vueuse/nuxt": "11.1.0",
-    "nuxt": "3.13.2",
-    "vue-tsc": "2.1.6"
+    "@unocss/nuxt": "0.64.1",
+    "@vueuse/nuxt": "11.3.0",
+    "nuxt": "3.14.1592",
+    "vue-tsc": "2.1.10"
   }
 }

@@ -4,9 +4,10 @@ import {
   getDeepProperty,
   getDeepPropertyCode,
   getTypePropertyNames,
+  isNeverType,
   isOptional,
 } from "./utils";
-import {
+import type {
   GenerationMap,
   MethodDefinition,
   TransformedElements,
@@ -19,11 +20,11 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
     sourceFiles: [sourceFile],
   } = createVirtualFiles([{ name: "_openApi.d.ts", content: schema }]);
 
-  let operationsMap: GenerationMap = {};
+  const operationsMap: GenerationMap = {};
   // let overridesMap: OverridesMap = {};
-  let componentsMap: Record<string, string> = {};
+  const componentsMap: Record<string, string> = {};
 
-  let existingTypes: string[][] = [];
+  const existingTypes: string[][] = [];
 
   function traverseThroughFileNodes(node: ts.Node) {
     if (node.kind === ts.SyntaxKind.TypeAliasDeclaration) {
@@ -47,7 +48,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
           if (getUpdateContextPath) {
             const restMethodNames = getTypePropertyNames(getUpdateContextPath);
 
-            restMethodNames.forEach((restMethodName) => {
+            for (const restMethodName of restMethodNames) {
               const operationReferenceCode = getDeepPropertyCode({
                 type: getUpdateContextPath,
                 names: [restMethodName],
@@ -57,6 +58,11 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
               const operationId =
                 operationReferenceCode?.match(/operations\["(.+)"\]/)?.[1];
 
+              if (!operationId) {
+                // if operationId does not exist or is undefined, we omit the operation
+                continue;
+              }
+
               const operationKey = `${operationId} ${restMethodName} ${currentPath}`;
 
               const operationGenerationMap: MethodDefinition = {
@@ -65,7 +71,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                 pathParams: undefined,
                 responses: [],
                 headers: undefined,
-                operationId: operationId!,
+                operationId,
               };
 
               const operation = getDeepProperty({
@@ -94,25 +100,20 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                     operationRequestBodyContent,
                   );
 
-                  contentTypes.forEach((contentType) => {
+                  for (const contentType of contentTypes) {
                     const code = getDeepPropertyCode({
-                      // const code = getDeepPropertyCode({
                       type: operationRequestBodyContent,
                       names: [contentType],
                       node,
                       typeChecker,
                     });
-
-                    operationGenerationMap.body.push({
-                      contentType,
-                      // code: typeChecker.typeToString(
-                      //   code,
-                      //   undefined,
-                      //   ts.TypeFormatFlags.NoTruncation,
-                      // ),
-                      code: code!,
-                    });
-                  });
+                    if (code) {
+                      operationGenerationMap.body.push({
+                        contentType,
+                        code,
+                      });
+                    }
+                  }
                 }
 
                 const operationResponses = getDeepProperty({
@@ -125,7 +126,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                   const responseCodes =
                     getTypePropertyNames(operationResponses);
 
-                  responseCodes.forEach((responseCode) => {
+                  for (const responseCode of responseCodes) {
                     if (responseCode.toString().startsWith("2")) {
                       const contents = getDeepProperty({
                         type: operationResponses,
@@ -140,35 +141,30 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                         if (!contentNames.length) {
                           // on response there is no content
                           operationGenerationMap.responses.push({
-                            responseCode: parseInt(responseCode),
+                            responseCode: Number.parseInt(responseCode),
                             contentType: "application/json", // TODO: use default content type
                             code: "never",
                           });
                         } else {
-                          contentNames.forEach((contentType) => {
+                          for (const contentType of contentNames) {
                             const code = getDeepPropertyCode({
-                              // const code = getDeepProperty({
                               type: contents,
                               names: [contentType],
                               node,
                               typeChecker,
                             });
-
-                            operationGenerationMap.responses.push({
-                              responseCode: parseInt(responseCode),
-                              contentType,
-                              // code: typeChecker.typeToString(
-                              //   code,
-                              //   undefined,
-                              //   ts.TypeFormatFlags.NoTruncation,
-                              // ),
-                              code: code!,
-                            });
-                          });
+                            if (code) {
+                              operationGenerationMap.responses.push({
+                                responseCode: Number.parseInt(responseCode),
+                                contentType,
+                                code,
+                              });
+                            }
+                          }
                         }
                       }
                     }
-                  });
+                  }
                 }
 
                 // query parameters
@@ -185,7 +181,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                     node,
                     typeChecker,
                   });
-                  if (queryParam) {
+                  if (queryParam && !isNeverType(queryParam)) {
                     const allQueryParams = queryParam.getProperties(); //(queryParam);
                     const areAllQueryParamsOptional = allQueryParams.every(
                       (param) => isOptional(param),
@@ -193,20 +189,34 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                     operationGenerationMap.queryOptional =
                       areAllQueryParamsOptional;
 
-                    operationGenerationMap.query = getDeepPropertyCode({
+                    const queryCode = getDeepPropertyCode({
                       type: operationQueryParams,
                       names: ["query"],
                       node,
                       typeChecker,
-                    })!;
+                    });
+                    if (queryCode) {
+                      operationGenerationMap.query = queryCode;
+                    }
                   }
 
-                  operationGenerationMap.pathParams = getDeepPropertyCode({
+                  const pathParamProperty = getDeepProperty({
                     type: operationQueryParams,
                     names: ["path"],
                     node,
                     typeChecker,
-                  })!;
+                  });
+                  if (!isNeverType(pathParamProperty)) {
+                    const pathCode = getDeepPropertyCode({
+                      type: operationQueryParams,
+                      names: ["path"],
+                      node,
+                      typeChecker,
+                    });
+                    if (pathCode) {
+                      operationGenerationMap.pathParams = pathCode;
+                    }
+                  }
 
                   const headersParam = getDeepProperty({
                     type: operationQueryParams,
@@ -214,7 +224,7 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                     node,
                     typeChecker,
                   });
-                  if (headersParam) {
+                  if (headersParam && !isNeverType(headersParam)) {
                     const allHeaders = headersParam.getProperties();
                     const areAllHeadersOptional = allHeaders.every((param) =>
                       isOptional(param),
@@ -222,19 +232,22 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
                     operationGenerationMap.headersOptional =
                       areAllHeadersOptional;
 
-                    operationGenerationMap.headers = getDeepPropertyCode({
+                    const headersCode = getDeepPropertyCode({
                       type: operationQueryParams,
                       names: ["header"],
                       node,
                       typeChecker,
-                    })!;
+                    });
+                    if (headersCode) {
+                      operationGenerationMap.headers = headersCode;
+                    }
                   }
                 }
               }
 
               // TODO create code from operationGenerationMap
               operationsMap[operationKey] = operationGenerationMap;
-            });
+            }
           }
         }
       }
@@ -250,14 +263,17 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
         if (allSchemas) {
           const schemaNames = getTypePropertyNames(allSchemas);
 
-          schemaNames.forEach((schemaName) => {
-            componentsMap[schemaName] = getDeepPropertyCode({
+          for (const schemaName of schemaNames) {
+            const schemaCode = getDeepPropertyCode({
               type: allSchemas,
               names: [schemaName],
               node,
               typeChecker,
-            })!;
-          });
+            });
+            if (schemaCode) {
+              componentsMap[schemaName] = schemaCode;
+            }
+          }
         }
       }
 
@@ -278,7 +294,9 @@ export function transformOpenApiTypes(schema: string): TransformedElements {
     node.forEachChild((child) => traverseThroughFileNodes(child));
   }
 
-  traverseThroughFileNodes(sourceFile!);
+  if (sourceFile) {
+    traverseThroughFileNodes(sourceFile);
+  }
 
   return [operationsMap, componentsMap, existingTypes];
 }

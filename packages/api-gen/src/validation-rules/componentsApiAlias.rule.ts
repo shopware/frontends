@@ -13,7 +13,7 @@ export default (componentName: string, body: ObjectSubtype) => {
     enum: [snakeCase(componentName)],
   };
 
-  const bodyValue = body.properties?.apiAlias as ObjectSubtype;
+  const bodyValue = body?.properties?.apiAlias as ObjectSubtype;
 
   // skip if apiAlias is not defined
   if (!bodyValue) {
