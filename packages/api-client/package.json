@@ -51,7 +51,7 @@
     "@vitest/coverage-v8": "2.1.6",
     "eslint-config-shopware": "workspace:*",
     "jsdom": "^25.0.1",
-    "prettier": "3.3.3",
+    "prettier": "3.4.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "2.1.6"
