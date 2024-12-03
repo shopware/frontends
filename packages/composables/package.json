@@ -8,11 +8,7 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/composables.html",
-  "keywords": [
-    "shopware",
-    "vue",
-    "composables"
-  ],
+  "keywords": ["shopware", "vue", "composables"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
-  getTranslatedProperty,
   getCategoryRoute,
+  getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 
 const { navigationElements } = useNavigation({ type: "footer-navigation" });

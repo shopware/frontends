@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
+import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
 
 const { required, minLength, email, requiredIf } = customValidators();
@@ -109,7 +109,7 @@ const invokeSubmit = async () => {
     try {
       loading.value = true;
       const response = await register(state);
-      if (response && response.active) router.push("/");
+      if (response?.active) router.push("/");
       else if (response && !response.active) {
         Object.assign(state, JSON.parse(JSON.stringify(initialState)));
         showDoubleOptInBox.value = true;
@@ -120,7 +120,9 @@ const invokeSubmit = async () => {
     } catch (error) {
       if (error instanceof ApiClientError) {
         const errors = resolveApiErrors(error.details.errors);
-        errors.forEach((error) => pushError(error));
+        for (const error of errors) {
+          pushError(error);
+        }
       }
     } finally {
       loading.value = false;

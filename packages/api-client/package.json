@@ -9,11 +9,7 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/api-client.html",
-  "keywords": [
-    "shopware",
-    "api",
-    "client"
-  ],
+  "keywords": ["shopware", "api", "client"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -21,11 +17,7 @@
   "module": "./dist/index.mjs",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "api-types",
-    "admin-api-types"
-  ],
+  "files": ["dist", "api-types", "admin-api-types"],
   "exports": {
     ".": {
       "require": {

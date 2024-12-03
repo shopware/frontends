@@ -8,24 +8,14 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/getting-started/content-pages.html",
-  "keywords": [
-    "Shopware",
-    "Vue",
-    "CMS"
-  ],
+  "keywords": ["Shopware", "Vue", "CMS"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
   "license": "MIT",
   "type": "module",
   "main": "./nuxt.config.ts",
-  "files": [
-    "dist",
-    "components",
-    "helpers",
-    "index.cjs",
-    "nuxt.config.ts"
-  ],
+  "files": ["dist", "components", "helpers", "index.cjs", "nuxt.config.ts"],
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",

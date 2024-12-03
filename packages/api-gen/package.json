@@ -9,20 +9,12 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/api-client.html",
-  "keywords": [
-    "shopware",
-    "api",
-    "client",
-    "cli"
-  ],
+  "keywords": ["shopware", "api", "client", "cli"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
   "license": "MIT",
-  "files": [
-    "bin",
-    "dist"
-  ],
+  "files": ["bin", "dist"],
   "bin": {
     "api-gen": "bin/api-gen.mjs",
     "shopware-api-gen": "bin/api-gen.mjs"
