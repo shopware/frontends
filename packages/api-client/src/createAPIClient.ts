@@ -100,8 +100,8 @@ export function createAPIClient<
   );
 
   const apiFetch = ofetch.create({
-    ...params.fetchOptions,
     baseURL: params.baseURL,
+    ...params.fetchOptions,
     retryDelay: params.fetchOptions?.retryDelay as
       | number
       | ((context: FetchContext<any, ResponseType>) => number)
