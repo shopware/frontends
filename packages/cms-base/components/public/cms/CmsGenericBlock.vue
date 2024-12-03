@@ -21,7 +21,7 @@ const DynamicRender = () => {
 
   if (resolvedComponent) {
     if (!isResolved)
-      return h("div", {}, "Problem resolving component: " + componentName);
+      return h("div", {}, `Problem resolving component: ${componentName}`);
 
     const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(
       props.content,
@@ -53,7 +53,7 @@ const DynamicRender = () => {
       }),
     );
   }
-  console.error("Component not resolved: " + componentNameToResolve);
+  console.error(`Component not resolve: ${componentNameToResolve}`);
   return h("div", {}, "");
 };
 </script>

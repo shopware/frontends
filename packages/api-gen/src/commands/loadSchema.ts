@@ -60,7 +60,7 @@ export async function loadSchema(args: {
     const downloadUrl =
       configUrl + (isAdminApi ? ADMIN_API_ENDPOINT : STORE_API_ENDPOINT);
 
-    let apiJSON;
+    let apiJSON: Record<string, unknown>;
 
     if (isAdminApi) {
       const adminClient = getAdminApiClient();

@@ -14,7 +14,7 @@ import { getOptionsFromNode } from "./getOptionsFromNode";
  * @param {*} context vue functional component context
  */
 export function renderer(ast, config, createElement, context, resolveUrl) {
-  function _render(h, node, parent, key, index) {
+  function _render(h, node) {
     if (Array.isArray(node)) {
       const nodes = [];
       // node is an array
@@ -22,7 +22,9 @@ export function renderer(ast, config, createElement, context, resolveUrl) {
         nodes.push(_render.call(this, h, subnode, node, null, index, h));
       });
       return nodes;
-    } else if (isNode(node)) {
+    }
+
+    if (isNode(node)) {
       // node is either a node with children or a node or a text node
       if (node.type === "text") {
         return config.textTransformer(node.content); // return text
