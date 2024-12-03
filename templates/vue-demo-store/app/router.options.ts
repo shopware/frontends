@@ -1,6 +1,6 @@
 import type { RouterOptions } from "@nuxt/schema";
 
-export default <RouterOptions>{
+export default (<RouterOptions>{
   scrollBehavior(to, from, savedPosition) {
     if (to.path === from.path) {
       return;
@@ -38,4 +38,4 @@ export default <RouterOptions>{
       behavior: "smooth",
     };
   },
-};
+});

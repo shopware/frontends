@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { transform, TransformResult } from "automd";
+import { type TransformResult, transform } from "automd";
 
 /**
  * This script will search for all markdown files in the project and check if they contain "automd:" term.

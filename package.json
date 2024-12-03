@@ -2,12 +2,7 @@
   "name": "shopware-frontends",
   "version": "0.0.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "templates/*",
-    "examples/*"
-  ],
+  "workspaces": ["apps/*", "packages/*", "templates/*", "examples/*"],
   "scripts": {
     "bump": "changeset version",
     "postinstall": "pnpm run build --filter='./packages/*'",
@@ -35,7 +30,7 @@
     "docs:cli": "../developer-portal/docs-cli.cjs"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "1.8.3",
     "@changesets/changelog-github": "0.5.0",
     "@changesets/cli": "2.27.9",
     "@types/changelog-parser": "2.8.4",
@@ -91,11 +86,7 @@
       "express": "^4.20.1"
     },
     "peerDependencyRules": {
-      "ignoreMissing": [
-        "webpack",
-        "vite",
-        "react-dom"
-      ]
+      "ignoreMissing": ["webpack", "vite", "react-dom"]
     },
     "auditConfig": {
       "ignoreCves": [

@@ -32,7 +32,7 @@
     "vue": "3.5.13"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "1.8.3",
     "@iconify-json/carbon": "1.2.4",
     "@nuxtjs/i18n": "8.3.1",
     "@shopware/api-gen": "canary",
