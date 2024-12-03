@@ -15,7 +15,6 @@ const FormComponent = computed(() => {
       return defineAsyncComponent(
         () => import("../../../SwNewsletterForm.vue"),
       );
-    case "contact":
     default:
       return defineAsyncComponent(() => import("../../../SwContactForm.vue"));
   }

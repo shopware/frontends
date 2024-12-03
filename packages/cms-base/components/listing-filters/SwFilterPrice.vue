@@ -16,9 +16,10 @@ import { onMounted, reactive, ref, watch } from "vue";
 import { defu } from "defu";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 
-const emits = defineEmits<{
-  (e: "select-value", value: { code: string; value: unknown }): void;
-}>();
+const emits =
+  defineEmits<
+    (e: "select-value", value: { code: string; value: unknown }) => void
+  >();
 
 const props = defineProps<{
   filter: ListingFilter;
@@ -59,7 +60,9 @@ const toggle = () => {
 };
 
 const dropdownElement = ref(null);
-onClickOutside(dropdownElement, () => (isFilterVisible.value = false));
+onClickOutside(dropdownElement, () => {
+  isFilterVisible.value = false;
+});
 
 function onMinPriceChange(newPrice: number, oldPrice: number) {
   if (newPrice === oldPrice || oldPrice === 0) return;

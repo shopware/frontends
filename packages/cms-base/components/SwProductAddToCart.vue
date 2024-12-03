@@ -49,10 +49,10 @@ const { addToCart, quantity } = useAddToCart(product);
 const addToCartProxy = async () => {
   await addToCart();
   const errors = getErrorsCodes();
-  errors?.forEach((element) => {
+  for (const element of errors) {
     const { messageKey, params } = resolveCartError(element);
     pushError(getCmsTranslate(translations.errors[messageKey], params));
-  });
+  }
 
   if (!errors.length)
     pushSuccess(
