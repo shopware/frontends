@@ -7,7 +7,7 @@
       "name": "MIT",
       "url": "https://github.com/shopware/shopware/blob/trunk/LICENSE"
     },
-    "version": "6.6.6.0"
+    "version": "6.6.8.0"
   },
   "servers": [{ "url": "https://demo-frontends.shopware.store/store-api" }],
   "components": {
@@ -1861,6 +1861,40 @@
             "readOnly": true
           },
           "translated": { "type": "object" },
+          "extensions": {
+            "properties": {
+              "swagCmsExtensionsForm": {
+                "properties": {
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string",
+                        "format": "uri-reference",
+                        "example": "/cms-slot/ac5ca6960137c6b8a97c90c11b71d4bb/swagCmsExtensionsForm"
+                      }
+                    }
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "swag_cms_extensions_form"
+                      },
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{32}$",
+                        "example": "0654ad514da002e9d77fa24ee33acd95"
+                      }
+                    }
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
           "block": { "$ref": "#/components/schemas/CmsBlock" }
         },
         "type": "object"
@@ -3521,6 +3555,42 @@
             "readOnly": true
           },
           "translated": { "type": "object" },
+          "extensions": {
+            "properties": {
+              "swagCmsExtensionsForms": {
+                "properties": {
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string",
+                        "format": "uri-reference",
+                        "example": "/mail-template/901aa1bf1715ad482f037eaa8b9cdc3a/swagCmsExtensionsForms"
+                      }
+                    }
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "swag_cms_extensions_form"
+                        },
+                        "id": {
+                          "type": "string",
+                          "example": "a08561237fe1e2a012502c820a08405d"
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
           "mailTemplateType": {
             "$ref": "#/components/schemas/MailTemplateType"
           },
@@ -7621,6 +7691,37 @@
                   }
                 },
                 "type": "object"
+              },
+              "swagCmsExtensionsBlockRules": {
+                "properties": {
+                  "links": {
+                    "type": "object",
+                    "properties": {
+                      "related": {
+                        "type": "string",
+                        "format": "uri-reference",
+                        "example": "/rule/ab7a485ebe75b6dd7243ad719f23c7de/swagCmsExtensionsBlockRules"
+                      }
+                    }
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "swag_cms_extensions_block_rule"
+                        },
+                        "id": {
+                          "type": "string",
+                          "example": "ce0b9f43f8947576ee10c93d4d69a4c4"
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": "object"
               }
             },
             "type": "object"
@@ -8454,6 +8555,22 @@
         },
         "type": "object"
       },
+      "SpatialSceneGroup": {
+        "properties": {
+          "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "type": "object"
+      },
       "SpatialSceneLight": {
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
@@ -8470,7 +8587,39 @@
         },
         "type": "object"
       },
+      "SpatialSceneMaterial": {
+        "properties": {
+          "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "type": "object"
+      },
       "SpatialSceneObject": {
+        "properties": {
+          "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "type": "object"
+      },
+      "SpatialScenePrimitive": {
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
@@ -9000,8 +9149,17 @@
         "type": "object"
       },
       "SwagCmsExtensionsForm": {
+        "required": ["id", "technicalName", "mailTemplateId"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "cmsSlotId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "cmsSlotVersionId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "isTemplate": { "type": "boolean" },
+          "technicalName": { "type": "string" },
+          "title": { "type": "string" },
+          "successMessage": { "type": "string" },
+          "receivers": { "type": "object" },
+          "mailTemplateId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -9012,13 +9170,26 @@
             "format": "date-time",
             "readOnly": true
           },
-          "translated": { "type": "object" }
+          "translated": { "type": "object" },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SwagCmsExtensionsFormGroup"
+            }
+          },
+          "cmsSlot": { "$ref": "#/components/schemas/CmsSlot" },
+          "mailTemplate": { "$ref": "#/components/schemas/MailTemplate" }
         },
         "type": "object"
       },
       "SwagCmsExtensionsFormGroup": {
+        "required": ["id", "technicalName", "position"],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "formId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "title": { "type": "string" },
+          "technicalName": { "type": "string" },
+          "position": { "type": "integer", "format": "int64" },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -9029,14 +9200,38 @@
             "format": "date-time",
             "readOnly": true
           },
-          "translated": { "type": "object" }
+          "translated": { "type": "object" },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SwagCmsExtensionsFormGroupField"
+            }
+          },
+          "form": { "$ref": "#/components/schemas/SwagCmsExtensionsForm" }
         },
         "type": "object"
       },
       "SwagCmsExtensionsFormGroupField": {
-        "required": ["label"],
+        "required": [
+          "id",
+          "position",
+          "width",
+          "type",
+          "technicalName",
+          "label"
+        ],
         "properties": {
           "id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "groupId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+          "position": { "type": "integer", "format": "int64" },
+          "width": { "type": "integer", "format": "int64" },
+          "type": { "type": "string" },
+          "technicalName": { "type": "string" },
+          "required": { "type": "boolean" },
+          "label": { "type": "string" },
+          "placeholder": { "type": "string" },
+          "errorMessage": { "type": "string" },
+          "config": { "type": "object" },
           "createdAt": {
             "type": "string",
             "format": "date-time",
@@ -9047,7 +9242,8 @@
             "format": "date-time",
             "readOnly": true
           },
-          "translated": { "type": "object" }
+          "translated": { "type": "object" },
+          "group": { "$ref": "#/components/schemas/SwagCmsExtensionsFormGroup" }
         },
         "type": "object"
       },
@@ -11421,11 +11617,7 @@
             "description": "List of queries to restrict the search result. For more information, see [Search Queries > Query](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#query)",
             "items": { "$ref": "#/components/schemas/Query" }
           },
-          "associations": {
-            "type": "array",
-            "description": "Associations to include. For more information, see [Search Queries > Associations](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#associations)",
-            "items": { "$ref": "#/components/schemas/Association" }
-          },
+          "associations": { "$ref": "#/components/schemas/Associations" },
           "post-filter": {
             "type": "array",
             "description": "Filters that applied without affecting aggregations. For more information, see [Search Queries > Post Filter](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#post-filter)",
@@ -11443,7 +11635,10 @@
             "description": "Sorting in the search result.",
             "items": { "$ref": "#/components/schemas/Sort" }
           },
-          "aggregations": { "$ref": "#/components/schemas/Aggregations" },
+          "aggregations": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Aggregation" }
+          },
           "fields": {
             "type": "array",
             "description": "Fields which should be returned in the search result.",
@@ -11455,62 +11650,59 @@
             "items": { "type": "string", "description": "Name of a field" }
           },
           "total-count-mode": { "$ref": "#/components/schemas/TotalCountMode" },
-          "includes": { "$ref": "#/components/schemas/Include" }
+          "includes": { "$ref": "#/components/schemas/Includes" }
         }
       },
-      "Association": {
+      "Associations": {
         "type": "object",
         "additionalProperties": { "$ref": "#/components/schemas/Criteria" }
       },
-      "Include": {
+      "Includes": {
         "type": "object",
         "additionalProperties": {
           "type": "array",
           "items": { "type": "string" }
         }
       },
-      "Aggregations": {
-        "type": "array",
-        "items": {
-          "anyOf": [
-            { "$ref": "#/components/schemas/AggregationMetrics" },
-            {
-              "title": "AggregationEntity",
-              "allOf": [
-                { "$ref": "#/components/schemas/AggregationEntity" },
-                { "$ref": "#/components/schemas/SubAggregations" }
-              ]
-            },
-            {
-              "title": "AggregationFilter",
-              "allOf": [
-                { "$ref": "#/components/schemas/AggregationFilter" },
-                { "$ref": "#/components/schemas/SubAggregations" }
-              ]
-            },
-            {
-              "title": "AggregationTerms",
-              "allOf": [
-                { "$ref": "#/components/schemas/AggregationTerms" },
-                { "$ref": "#/components/schemas/SubAggregations" }
-              ]
-            },
-            {
-              "title": "AggregationHistogram",
-              "allOf": [
-                { "$ref": "#/components/schemas/AggregationHistogram" },
-                { "$ref": "#/components/schemas/SubAggregations" }
-              ]
-            },
-            {
-              "title": "AggregationRange",
-              "allOf": [
-                { "$ref": "#/components/schemas/AggregationRange" },
-                { "$ref": "#/components/schemas/SubAggregations" }
-              ]
-            }
-          ]
-        }
+      "Aggregation": {
+        "anyOf": [
+          { "$ref": "#/components/schemas/AggregationMetrics" },
+          {
+            "title": "AggregationEntity",
+            "allOf": [
+              { "$ref": "#/components/schemas/AggregationEntity" },
+              { "$ref": "#/components/schemas/SubAggregations" }
+            ]
+          },
+          {
+            "title": "AggregationFilter",
+            "allOf": [
+              { "$ref": "#/components/schemas/AggregationFilter" },
+              { "$ref": "#/components/schemas/SubAggregations" }
+            ]
+          },
+          {
+            "title": "AggregationTerms",
+            "allOf": [
+              { "$ref": "#/components/schemas/AggregationTerms" },
+              { "$ref": "#/components/schemas/SubAggregations" }
+            ]
+          },
+          {
+            "title": "AggregationHistogram",
+            "allOf": [
+              { "$ref": "#/components/schemas/AggregationHistogram" },
+              { "$ref": "#/components/schemas/SubAggregations" }
+            ]
+          },
+          {
+            "title": "AggregationRange",
+            "allOf": [
+              { "$ref": "#/components/schemas/AggregationRange" },
+              { "$ref": "#/components/schemas/SubAggregations" }
+            ]
+          }
+        ]
       },
       "SubAggregations": {
         "type": "object",
@@ -11601,7 +11793,10 @@
         "type": "object",
         "properties": {
           "type": { "type": "string", "enum": ["multi", "not"] },
-          "operator": { "type": "string", "enum": ["AND", "and", "OR", "or"] },
+          "operator": {
+            "type": "string",
+            "enum": ["and", "or", "nor", "nand"]
+          },
           "queries": { "$ref": "#/components/schemas/Filters" }
         },
         "required": ["type", "operator", "queries"]
@@ -18707,6 +18902,116 @@
         "security": [{ "ApiKey": [] }]
       }
     },
+    "/permission": {
+      "get": {
+        "tags": ["B2B Employee Management"],
+        "summary": "Fetch all available permissions",
+        "description": "This route is used to fetch all available permissions",
+        "operationId": "readPermissions",
+        "responses": {
+          "200": {
+            "description": "Permission collection",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "properties": {
+                        "elements": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "permissionName": { "type": "string" },
+                              "permissionDependencies": {
+                                "type": "array",
+                                "items": { "type": "string" }
+                              },
+                              "permissionGroupName": { "type": "string" }
+                            }
+                          }
+                        }
+                      },
+                      "type": "object"
+                    },
+                    { "$ref": "#/components/schemas/EntitySearchResult" }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [] }]
+      },
+      "post": {
+        "tags": ["B2B Employee Management"],
+        "summary": "Add a new permission",
+        "description": "This route is used to add a new permissions",
+        "operationId": "addPermission",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "Name of the new permission",
+                    "type": "string"
+                  },
+                  "group": {
+                    "description": "Group of the new permission",
+                    "type": "string"
+                  },
+                  "dependencies": {
+                    "description": "Optional dependencies for the new permission",
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Permission collection",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "properties": {
+                        "elements": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "permissionName": { "type": "string" },
+                              "permissionDependencies": {
+                                "type": "array",
+                                "items": { "type": "string" }
+                              },
+                              "permissionGroupName": { "type": "string" }
+                            }
+                          }
+                        }
+                      },
+                      "type": "object"
+                    },
+                    { "$ref": "#/components/schemas/EntitySearchResult" }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "ApiKey": [] }]
+      }
+    },
     "/role/create": {
       "post": {
         "tags": ["B2B Employee Management"],
@@ -18935,49 +19240,6 @@
           }
         ],
         "responses": { "204": { "description": "No content response" } },
-        "security": [{ "ApiKey": [] }]
-      }
-    },
-    "/role/permissions": {
-      "get": {
-        "tags": ["B2B Employee Management"],
-        "summary": "Fetch a available permissions",
-        "description": "This route is used to fetch all available permissions",
-        "operationId": "readPermissions",
-        "responses": {
-          "200": {
-            "description": "Permission collection",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "allOf": [
-                    {
-                      "properties": {
-                        "elements": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "permissionName": { "type": "string" },
-                              "permissionDependencies": {
-                                "type": "array",
-                                "items": { "type": "string" }
-                              },
-                              "permissionGroupName": { "type": "string" }
-                            }
-                          }
-                        }
-                      },
-                      "type": "object"
-                    },
-                    { "$ref": "#/components/schemas/EntitySearchResult" }
-                  ]
-                }
-              }
-            }
-          }
-        },
         "security": [{ "ApiKey": [] }]
       }
     },
@@ -19880,7 +20142,7 @@
         "security": [{ "ApiKey": [] }]
       }
     },
-    "/account/shopping-list": {
+    "/shopping-list": {
       "post": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Create new shopping list",
@@ -19952,7 +20214,7 @@
         "security": [{ "ApiKey": [] }]
       }
     },
-    "/account/shopping-lists": {
+    "/shopping-lists": {
       "post": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Load shopping lists",
@@ -19994,7 +20256,7 @@
         "security": [{ "ApiKey": [] }]
       }
     },
-    "/account/shopping-list/{id}": {
+    "/shopping-list/{id}": {
       "post": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Load one shopping list",
@@ -20024,7 +20286,7 @@
         "security": [{ "ApiKey": [] }]
       }
     },
-    "/account/shopping-list/{id}/change-name": {
+    "/shopping-list/{id}/change-name": {
       "patch": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Update shopping list name",
@@ -20060,7 +20322,7 @@
         "security": [{ "ApiKey": [] }]
       }
     },
-    "/account/shopping-list/{id}/duplicate": {
+    "/shopping-list/{id}/duplicate": {
       "post": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Duplicate new shopping list",
@@ -20113,7 +20375,7 @@
         "security": [{ "ApiKey": [] }]
       }
     },
-    "/account/shopping-list/{id}/summary": {
+    "/shopping-list/{id}/summary": {
       "get": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Price summary for shopping list",
@@ -20169,7 +20431,7 @@
         "security": [{ "ApiKey": [] }]
       }
     },
-    "/account/shopping-list/line-item/{id}/add": {
+    "/shopping-list/{id}/add": {
       "post": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Add more product to shopping list",
@@ -20219,7 +20481,7 @@
         "security": [{ "ApiKey": [] }]
       }
     },
-    "/account/shopping-list/line-item/remove": {
+    "/shopping-list/line-item/remove": {
       "delete": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Delete shopping list line items",
@@ -20248,7 +20510,7 @@
         "security": [{ "ApiKey": [] }]
       }
     },
-    "/account/shopping-list/line-item/{id}/change-quantity": {
+    "/shopping-list/line-item/{id}/change-quantity": {
       "patch": {
         "tags": ["B2B Shopping Lists"],
         "summary": "Update shopping list line item quantity",

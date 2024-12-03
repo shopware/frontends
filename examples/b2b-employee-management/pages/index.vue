@@ -29,9 +29,9 @@ const { isLoggedIn } = useUser();
       >
         B2B Employee Management requires the user to be logged in.
       </div>
-      <LoginForm />
+      <LoginForm class="mt-10" />
     </div>
-    <div class="flex justify-center gap-6">
+    <div v-else class="flex justify-center gap-6">
       <div
         class="relative flex flex-col my-6 bg-white shadow-lg border border-slate-300 rounded-lg w-96 p-6 transition-transform transform hover:scale-105"
       >

@@ -164,6 +164,18 @@ export type Schemas = {
       type: string;
     };
   };
+  Aggregation:
+    | components["schemas"]["AggregationMetrics"]
+    | (components["schemas"]["AggregationEntity"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationFilter"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationTerms"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationHistogram"] &
+        components["schemas"]["SubAggregations"])
+    | (components["schemas"]["AggregationRange"] &
+        components["schemas"]["SubAggregations"]);
   AggregationEntity: {
     /** The entity definition e.g "product_manufacturer". */
     definition: string;
@@ -253,19 +265,6 @@ export type Schemas = {
      */
     type: "terms";
   };
-  Aggregations: (
-    | components["schemas"]["AggregationMetrics"]
-    | (components["schemas"]["AggregationEntity"] &
-        components["schemas"]["SubAggregations"])
-    | (components["schemas"]["AggregationFilter"] &
-        components["schemas"]["SubAggregations"])
-    | (components["schemas"]["AggregationTerms"] &
-        components["schemas"]["SubAggregations"])
-    | (components["schemas"]["AggregationHistogram"] &
-        components["schemas"]["SubAggregations"])
-    | (components["schemas"]["AggregationRange"] &
-        components["schemas"]["SubAggregations"])
-  )[];
   App: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -386,6 +385,9 @@ export type Schemas = {
   };
   Association: {
     [key: string]: components["schemas"]["Association"];
+  };
+  Associations: {
+    [key: string]: components["schemas"]["Criteria"];
   };
   AttendeeProductCollectionLastSeenResponse: {
     collection?: {
@@ -1339,6 +1341,23 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
+    extensions?: {
+      swagCmsExtensionsForm?: {
+        data?: {
+          /** @example 0654ad514da002e9d77fa24ee33acd95 */
+          id?: string;
+          /** @example swag_cms_extensions_form */
+          type?: string;
+        };
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /cms-slot/ac5ca6960137c6b8a97c90c11b71d4bb/swagCmsExtensionsForm
+           */
+          related?: string;
+        };
+      };
+    };
     fieldConfig?: GenericRecord;
     id: string;
     locked?: boolean;
@@ -1573,8 +1592,7 @@ export type Schemas = {
     triggeredAt?: string;
   };
   Criteria: {
-    aggregations?: components["schemas"]["Aggregations"];
-    /** Associations to include. For more information, see [Search Queries > Associations](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#associations) */
+    aggregations?: components["schemas"]["Aggregation"][];
     associations?: components["schemas"]["Association"];
     /** Fields which should be returned in the search result. */
     fields?: string[];
@@ -1589,7 +1607,7 @@ export type Schemas = {
     grouping?: string[];
     /** List of ids to search for */
     ids?: string[];
-    includes?: components["schemas"]["Include"];
+    includes?: components["schemas"]["Includes"];
     /** Number of items per result page */
     limit?: number;
     /** Search result page */
@@ -2309,7 +2327,7 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
-  Include: {
+  Includes: {
     [key: string]: string[];
   };
   Integration: {
@@ -2652,6 +2670,23 @@ export type Schemas = {
     /** Format: date-time */
     readonly createdAt?: string;
     customFields?: GenericRecord;
+    extensions?: {
+      swagCmsExtensionsForms?: {
+        data?: {
+          /** @example a08561237fe1e2a012502c820a08405d */
+          id?: string;
+          /** @example swag_cms_extensions_form */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /mail-template/901aa1bf1715ad482f037eaa8b9cdc3a/swagCmsExtensionsForms
+           */
+          related?: string;
+        };
+      };
+    };
     id?: string;
     mailTemplateType?: components["schemas"]["MailTemplateType"];
     media?: components["schemas"]["MailTemplateMedia"][];
@@ -2839,7 +2874,7 @@ export type Schemas = {
   };
   MultiNotFilter: {
     /** @enum {string} */
-    operator: "AND" | "and" | "OR" | "or";
+    operator: "and" | "or" | "nor" | "nand";
     queries: components["schemas"]["Filters"];
     /** @enum {string} */
     type: "multi" | "not";
@@ -5281,6 +5316,21 @@ export type Schemas = {
     customFields?: GenericRecord;
     description?: string;
     extensions?: {
+      swagCmsExtensionsBlockRules?: {
+        data?: {
+          /** @example ce0b9f43f8947576ee10c93d4d69a4c4 */
+          id?: string;
+          /** @example swag_cms_extensions_block_rule */
+          type?: string;
+        }[];
+        links?: {
+          /**
+           * Format: uri-reference
+           * @example /rule/ab7a485ebe75b6dd7243ad719f23c7de/swagCmsExtensionsBlockRules
+           */
+          related?: string;
+        };
+      };
       warehouseGroup?: {
         data?: {
           /** @example 1768e3071b62161d415e0c24332055ed */
@@ -5972,6 +6022,13 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  SpatialSceneGroup: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
   SpatialSceneLight: {
     /** Format: date-time */
     readonly createdAt?: string;
@@ -5979,7 +6036,21 @@ export type Schemas = {
     /** Format: date-time */
     readonly updatedAt?: string;
   };
+  SpatialSceneMaterial: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
   SpatialSceneObject: {
+    /** Format: date-time */
+    readonly createdAt?: string;
+    id?: string;
+    /** Format: date-time */
+    readonly updatedAt?: string;
+  };
+  SpatialScenePrimitive: {
     /** Format: date-time */
     readonly createdAt?: string;
     id?: string;
@@ -6336,25 +6407,77 @@ export type Schemas = {
     visibilityRuleId?: string;
   };
   SwagCmsExtensionsForm: {
+    cmsSlot?: components["schemas"]["CmsSlot"];
+    cmsSlotId?: string;
+    cmsSlotVersionId?: string;
     /** Format: date-time */
     readonly createdAt?: string;
-    id?: string;
+    groups?: components["schemas"]["SwagCmsExtensionsFormGroup"][];
+    id: string;
+    isTemplate?: boolean;
+    mailTemplate?: components["schemas"]["MailTemplate"];
+    mailTemplateId: string;
+    receivers?: GenericRecord;
+    successMessage?: string;
+    technicalName: string;
+    title?: string;
+    translated: {
+      cmsSlotId: string;
+      cmsSlotVersionId: string;
+      mailTemplateId: string;
+      successMessage: string;
+      technicalName: string;
+      title: string;
+    };
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   SwagCmsExtensionsFormGroup: {
     /** Format: date-time */
     readonly createdAt?: string;
-    id?: string;
+    fields?: components["schemas"]["SwagCmsExtensionsFormGroupField"][];
+    form?: components["schemas"]["SwagCmsExtensionsForm"];
+    formId?: string;
+    id: string;
+    /** Format: int64 */
+    position: number;
+    technicalName: string;
+    title?: string;
+    translated: {
+      formId: string;
+      technicalName: string;
+      title: string;
+    };
     /** Format: date-time */
     readonly updatedAt?: string;
   };
   SwagCmsExtensionsFormGroupField: {
+    config?: GenericRecord;
     /** Format: date-time */
     readonly createdAt?: string;
-    id?: string;
+    errorMessage?: string;
+    group?: components["schemas"]["SwagCmsExtensionsFormGroup"];
+    groupId?: string;
+    id: string;
+    label: string;
+    placeholder?: string;
+    /** Format: int64 */
+    position: number;
+    required?: boolean;
+    technicalName: string;
+    translated: {
+      errorMessage: string;
+      groupId: string;
+      label: string;
+      placeholder: string;
+      technicalName: string;
+      type: string;
+    };
+    type: string;
     /** Format: date-time */
     readonly updatedAt?: string;
+    /** Format: int64 */
+    width: number;
   };
   SwagCmsExtensionsQuickview: {
     active?: boolean;
@@ -7824,158 +7947,6 @@ export type operations = {
     response: never;
     responseCode: 200;
   };
-  "createShoppingList post /account/shopping-list": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      lineItems?: {
-        [key: string]: {
-          /** Product id */
-          id: string;
-          /** Quantity of the product */
-          quantity: number;
-        };
-      };
-      /** Shopping list name */
-      name: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "removeShoppingLists delete /account/shopping-list": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** Shopping list ids */
-      ids: string[];
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "readShoppingList post /account/shopping-list/{id}": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the shopping list to be fetched */
-      id: string;
-    };
-    response: components["schemas"]["B2bComponentsShoppingList"];
-    responseCode: 200;
-  };
-  "updateShoppingList patch /account/shopping-list/{id}/change-name": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the shopping list to be fetched */
-      id: string;
-    };
-    body: {
-      /** Shopping list name */
-      name: string;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "duplicateShoppingList post /account/shopping-list/{id}/duplicate": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the shopping list to be fetched */
-      id: string;
-    };
-    body: {
-      /** Shopping list name */
-      name: string;
-    };
-    response: {
-      /** The generated id of the duplicated shopping list */
-      id?: string;
-    };
-    responseCode: 200;
-  };
-  "summaryShoppingList get /account/shopping-list/{id}/summary": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the shopping list to be fetched */
-      id: string;
-    };
-    response: {
-      price?: {
-        /**
-         * Format: float
-         * Net price of the cart
-         */
-        netPrice?: number;
-        /**
-         * Format: float
-         * Price for all line items in the cart
-         */
-        positionPrice?: number;
-        /** Tax calculation for the cart. One of `gross`, `net` or `tax-free` */
-        taxStatus?: string;
-        /**
-         * Format: float
-         * Total price of the cart, including shipping costs, discounts and taxes
-         */
-        totalPrice?: number;
-      };
-    };
-    responseCode: 200;
-  };
-  "addLineItems post /account/shopping-list/line-item/{id}/add": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the shopping list to be fetched */
-      id: string;
-    };
-    body: {
-      lineItems: {
-        [key: string]: {
-          /** Product id */
-          id: string;
-          /** Quantity of the product */
-          quantity: number;
-        };
-      };
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "updateLineItems patch /account/shopping-list/line-item/{id}/change-quantity": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    pathParams: {
-      /** Identifier of the shopping list line item to be fetched */
-      id: string;
-    };
-    body: {
-      /** new line item quantity */
-      quantity: number;
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "removeLineItems delete /account/shopping-list/line-item/remove": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body: {
-      /** Line items ids */
-      ids: string[];
-    };
-    response: never;
-    responseCode: 204;
-  };
-  "readShoppingLists post /account/shopping-lists": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    body?: components["schemas"]["Criteria"];
-    response: {
-      elements?: components["schemas"]["B2bComponentsShoppingList"][];
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
-  };
   "readAdyenPaymentStatus post /adyen/payment-status": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -9098,6 +9069,38 @@ export type operations = {
     response: components["schemas"]["PendingOrder"];
     responseCode: 200;
   };
+  "readPermissions get /permission": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    response: {
+      elements?: {
+        permissionDependencies?: string[];
+        permissionGroupName?: string;
+        permissionName?: string;
+      }[];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
+  "addPermission post /permission": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Optional dependencies for the new permission */
+      dependencies?: string[];
+      /** Group of the new permission */
+      group?: string;
+      /** Name of the new permission */
+      name?: string;
+    };
+    response: {
+      elements?: {
+        permissionDependencies?: string[];
+        permissionGroupName?: string;
+        permissionName?: string;
+      }[];
+    } & components["schemas"]["EntitySearchResult"];
+    responseCode: 200;
+  };
   "readProduct post /product": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -9445,18 +9448,6 @@ export type operations = {
     response: never;
     responseCode: 204;
   };
-  "readPermissions get /role/permissions": {
-    contentType?: "application/json";
-    accept?: "application/json";
-    response: {
-      elements?: {
-        permissionDependencies?: string[];
-        permissionGroupName?: string;
-        permissionName?: string;
-      }[];
-    } & components["schemas"]["EntitySearchResult"];
-    responseCode: 200;
-  };
   "readSalutation post /salutation": {
     contentType?: "application/json";
     accept?: "application/json";
@@ -9603,6 +9594,158 @@ export type operations = {
       /** Total amount */
       total?: number;
     };
+    responseCode: 200;
+  };
+  "createShoppingList post /shopping-list": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      lineItems?: {
+        [key: string]: {
+          /** Product id */
+          id: string;
+          /** Quantity of the product */
+          quantity: number;
+        };
+      };
+      /** Shopping list name */
+      name: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "removeShoppingLists delete /shopping-list": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Shopping list ids */
+      ids: string[];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readShoppingList post /shopping-list/{id}": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    response: components["schemas"]["B2bComponentsShoppingList"];
+    responseCode: 200;
+  };
+  "addLineItems post /shopping-list/{id}/add": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    body?: {
+      lineItems: {
+        [key: string]: {
+          /** Product id */
+          id: string;
+          /** Quantity of the product */
+          quantity: number;
+        };
+      };
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "updateShoppingList patch /shopping-list/{id}/change-name": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    body: {
+      /** Shopping list name */
+      name: string;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "duplicateShoppingList post /shopping-list/{id}/duplicate": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    body: {
+      /** Shopping list name */
+      name: string;
+    };
+    response: {
+      /** The generated id of the duplicated shopping list */
+      id?: string;
+    };
+    responseCode: 200;
+  };
+  "summaryShoppingList get /shopping-list/{id}/summary": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list to be fetched */
+      id: string;
+    };
+    response: {
+      price?: {
+        /**
+         * Format: float
+         * Net price of the cart
+         */
+        netPrice?: number;
+        /**
+         * Format: float
+         * Price for all line items in the cart
+         */
+        positionPrice?: number;
+        /** Tax calculation for the cart. One of `gross`, `net` or `tax-free` */
+        taxStatus?: string;
+        /**
+         * Format: float
+         * Total price of the cart, including shipping costs, discounts and taxes
+         */
+        totalPrice?: number;
+      };
+    };
+    responseCode: 200;
+  };
+  "updateLineItems patch /shopping-list/line-item/{id}/change-quantity": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    pathParams: {
+      /** Identifier of the shopping list line item to be fetched */
+      id: string;
+    };
+    body: {
+      /** new line item quantity */
+      quantity: number;
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "removeLineItems delete /shopping-list/line-item/remove": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body: {
+      /** Line items ids */
+      ids: string[];
+    };
+    response: never;
+    responseCode: 204;
+  };
+  "readShoppingLists post /shopping-lists": {
+    contentType?: "application/json";
+    accept?: "application/json";
+    body?: components["schemas"]["Criteria"];
+    response: {
+      elements?: components["schemas"]["B2bComponentsShoppingList"][];
+    } & components["schemas"]["EntitySearchResult"];
     responseCode: 200;
   };
   "addShoppingListsToCart post /shopping-lists/add-to-cart": {

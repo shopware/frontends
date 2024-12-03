@@ -10,7 +10,7 @@ interface UseB2bEmployeeManagementRoles {
     roleId: string,
   ) => Promise<operations["readRole get /role/{id}"]["response"]>;
   getPermissions: () => Promise<
-    operations["readPermissions get /role/permissions"]["response"]
+    operations["readPermissions get /permission"]["response"]
   >;
   updateRole: (
     roleId: string,
@@ -66,9 +66,7 @@ export function useB2bEmployeeManagementRoles(): UseB2bEmployeeManagementRoles {
   };
 
   const getPermissions = async () => {
-    const response = await apiClient.invoke(
-      "readPermissions get /role/permissions",
-    );
+    const response = await apiClient.invoke("readPermissions get /permission");
     return response.data;
   };
 

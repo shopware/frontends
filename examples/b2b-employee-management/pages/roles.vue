@@ -44,16 +44,18 @@ const updateRoles = async () => {
           </td>
 
           <td class="py-2 px-4 border-b border-gray-200">
-            <NuxtLink
-              :to="`/edit-role/${role.id}`"
-              class="text-blue-500 hover:text-blue-700"
-              >Edit</NuxtLink
-            >
-            <Button
-              @click="handleDelete(role.id)"
-              class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-              >Delete</Button
-            >
+            <div class="flex justify-end">
+              <NuxtLink
+                :to="`/edit-role/${role.id}`"
+                class="text-blue-500 hover:text-blue-700"
+                >Edit</NuxtLink
+              >
+              <Button
+                @click="handleDelete(role.id)"
+                class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                >Delete</Button
+              >
+            </div>
           </td>
         </tr>
       </tbody>
