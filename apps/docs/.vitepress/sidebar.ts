@@ -116,6 +116,10 @@ export const sidebar = [
             text: "Multiple CMS",
             link: "/getting-started/cms/multiple-cms.html",
           },
+          {
+            text: "Fetching Media",
+            link: "/getting-started/cms/fetching-media.html",
+          },
         ],
       },
       {
