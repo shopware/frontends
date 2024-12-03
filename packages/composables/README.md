@@ -53,14 +53,28 @@ app.provide("apiClient", apiClient);
 Now, we can create a Vue 3 plugin to install a Shopware context in an app:
 
 ```js
-// app variable in type of App
+import { createShopwareContext } from "@shopware-pwa/composables-next";
 
+// app variable in type of App
 const shopwareContext = createShopwareContext(app, {
   devStorefrontUrl: "https://your-sales-channel-configured-domain.com",
 });
 // register a plugin in a Vue instance
 app.use(shopwareContext);
 ```
+
+Exclude `@shopware-pwa/composables-next` package from [pre-building](https://vite.dev/guide/dep-pre-bundling.html#customizing-the-behavior) process:
+
+```ts
+// vite.config.js or .ts
+...
+optimizeDeps: {
+  exclude: ["@shopware-pwa/composables-next"],
+},
+...
+```
+
+---
 
 > The example does not provide the session handling and that means you need to do few additional steps if you need to keep your session after the page reload (see the chapter below with 🍪)
 
@@ -151,51 +165,9 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.4.0
-
-### Minor Changes
-
-- [#1325](https://github.com/shopware/frontends/pull/1325) [`fa517bc`](https://github.com/shopware/frontends/commit/fa517bc68e33b97f6cf34205587218314cb4f5f6) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Add `shipping-method-blocked` error resolver to `useCartErrorParamsResolver` composable
-
-- [#1338](https://github.com/shopware/frontends/pull/1338) [`75df238`](https://github.com/shopware/frontends/commit/75df238da11635418554329f1ca01f3a256fe0a0) Thanks [@BrocksiNet](https://github.com/BrocksiNet)! - # Fix setCurrentFilters
-
-  Body **before** when you use setCurrentFilters:
-
-  ```
-  {
-    "limit":10,
-    "search":"",
-    "p":"1",
-    "navigationId":"018db20234207be8948e3a4b46501435",
-    "manufacturer":"",
-    "price": {"min":0,"max":0},
-    "rating": null,
-    "shipping-free":false,
-    "properties":"",
-    "code":"manufacturer",  // 👈 Not like this
-    "value":"018d35f5b5757076adea38044bb96937" // 👈 Not like this
-  }
-  ```
-
-  Body **after** the code changes with fixed setCurrentFilters:
-
-  ```
-  {
-    "limit":10,
-    "search":"",
-    "p":"1",
-    "navigationId":"018db20234207be8948e3a4b46501435",
-    "manufacturer":"018d35f5b5757076adea38044bb96937",  // 👈 where the filter value should go
-    "price": {"min":0,"max":0},
-    "rating": null,
-    "shipping-free":false,
-    "properties":"",
-  }
-  ```
-
-- [#1339](https://github.com/shopware/frontends/pull/1339) [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - - Updated `AccountNewsletterRecipientResult` type to `AccountNewsletterRecipient`
+### Latest changes: 1.4.2
 
 ### Patch Changes
 
-- Updated dependencies [[`6abe9ab`](https://github.com/shopware/frontends/commit/6abe9abb64b9d2fe94d565393b1c08ec68b58162), [`0643174`](https://github.com/shopware/frontends/commit/06431743162c088d46cf1e6305332bd51542eec4), [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44), [`f9fb243`](https://github.com/shopware/frontends/commit/f9fb243d56d05a66ca4efd277c137e2ae8967f7b), [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
-  - @shopware/api-client@1.1.0
+- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
+  - @shopware/api-client@1.1.2

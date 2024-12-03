@@ -64,7 +64,7 @@ export function createAdminAPIClient<
    * If you pass `credentials` object, it will be used to authenticate the client whenever session expires.
    * You don't need to manually invoke `/token` endpoint first.
    */
-  credentials?: OPERATIONS["token"]["body"];
+  credentials?: OPERATIONS["token post /oauth/token"]["body"];
   sessionData?: AdminSessionData;
   defaultHeaders?: ClientHeaders;
 }) {
@@ -160,7 +160,7 @@ export function createAdminAPIClient<
 
             updateSessionData(context.response._data);
             // pass enhanced (Authorization) headers to the next request
-            options.headers.append(
+            options.headers.set(
               "Authorization",
               createAuthorizationHeader(sessionData.accessToken),
             );
@@ -218,13 +218,16 @@ export function createAdminAPIClient<
       string,
     ];
 
+    const currentParams =
+      params[0] || ({} as InvokeParameters<CURRENT_OPERATION>);
+
     const requestPathWithParams = createPathWithParams(
       requestPath,
-      params[0]?.pathParams,
+      currentParams.pathParams,
     );
 
     const fetchOptions: FetchOptions<"json"> = {
-      ...(params[0]?.fetchOptions || {}),
+      ...(currentParams.fetchOptions || {}),
     };
 
     const resp = await apiFetch.raw<
@@ -232,9 +235,9 @@ export function createAdminAPIClient<
     >(requestPathWithParams, {
       ...fetchOptions,
       method,
-      body: params[0]?.body,
-      headers: defu(defaultHeaders, params[0]?.headers) as HeadersInit,
-      query: params[0]?.query,
+      body: currentParams.body,
+      headers: defu(currentParams.headers, defaultHeaders) as HeadersInit,
+      query: currentParams.query,
     });
 
     return {

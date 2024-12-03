@@ -6,6 +6,9 @@ import vue from "@vitejs/plugin-vue";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  optimizeDeps: {
+    exclude: ["@shopware-pwa/composables-next"],
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

@@ -88,6 +88,32 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Internally, the module uses [API Client](https://npmjs.com/package/@shopware/api-client) and [Composables](https://npmjs.com/package/@shopware-pwa/composables-next) packages, configured together to make everything working well. If you need to check how it's working on a different version of one of them, install a package locally in your project (to be installed and available in project's `package.json` file), then the Nuxt module will use yours. Keep in mind that the different configuration may lead to unexpected behavior.
 
+## API Default Headers
+
+You can use Nuxt config to set the default API call headers.
+More about Nuxt configuration can be found [HERE](https://nuxt.com/docs/getting-started/configuration).
+
+> **_NOTE:_** By default, the values in `runtimeConfig` are only available on the server-side. However, keys within `runtimeConfig.public` are also accessible on the client-side. [MORE](https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens)
+
+```json
+{
+  "runtimeConfig": {
+    "public": {
+      "apiClientConfig": {
+        "headers": {
+          "global-heder-example": "global-header-example-value"
+        }
+      }
+    },
+    "apiClientConfig": {
+      "headers": {
+        "ssr-heder-example": "ssr-header-example-value"
+      }
+    }
+  }
+}
+```
+
 ## Links
 
 - [📘 Documentation](https://frontends.shopware.com)
@@ -99,10 +125,10 @@ Internally, the module uses [API Client](https://npmjs.com/package/@shopware/api
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt3-module/CHANGELOG.md)
 
-### Latest changes: 1.0.6
+### Latest changes: 1.0.8
 
 ### Patch Changes
 
-- Updated dependencies [[`6abe9ab`](https://github.com/shopware/frontends/commit/6abe9abb64b9d2fe94d565393b1c08ec68b58162), [`fa517bc`](https://github.com/shopware/frontends/commit/fa517bc68e33b97f6cf34205587218314cb4f5f6), [`0643174`](https://github.com/shopware/frontends/commit/06431743162c088d46cf1e6305332bd51542eec4), [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44), [`f9fb243`](https://github.com/shopware/frontends/commit/f9fb243d56d05a66ca4efd277c137e2ae8967f7b), [`15bebee`](https://github.com/shopware/frontends/commit/15bebee0daefacc078ac99fea8725b95fdbc1cc7), [`75df238`](https://github.com/shopware/frontends/commit/75df238da11635418554329f1ca01f3a256fe0a0), [`266bb32`](https://github.com/shopware/frontends/commit/266bb32e119d7e1b3df7e082fb0fe4b0a475af44), [`ebb10eb`](https://github.com/shopware/frontends/commit/ebb10eba629b3ec2c5a4a50fa12ef0b134601d6f)]:
-  - @shopware/api-client@1.1.0
-  - @shopware-pwa/composables-next@1.4.0
+- Updated dependencies [[`938c4cf`](https://github.com/shopware/frontends/commit/938c4cfe6438f0e11a34f69bc7a183f10ba7f381)]:
+  - @shopware/api-client@1.1.2
+  - @shopware-pwa/composables-next@1.4.2

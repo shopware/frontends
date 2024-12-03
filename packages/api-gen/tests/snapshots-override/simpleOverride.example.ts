@@ -1,4 +1,4 @@
-import { components as mainComponents } from "./storeApiTypes";
+import type { components as mainComponents } from "./storeApiTypes";
 
 export type components = mainComponents & {
   schemas: Schemas;

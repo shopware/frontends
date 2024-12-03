@@ -1,7 +1,7 @@
 import { ref, computed } from "vue";
 import type { Ref, ComputedRef } from "vue";
 import { useShopwareContext } from "#imports";
-import type { Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 export type UseCustomerOrdersReturn = {
   /**
@@ -17,7 +17,9 @@ export type UseCustomerOrdersReturn = {
   /**
    * Fetches the orders list and assigns the result to the `orders` property
    */
-  loadOrders(parameters?: Schemas["Criteria"]): Promise<void>;
+  loadOrders(
+    parameters?: operations["readOrder post /order"]["body"],
+  ): Promise<void>;
   /**
    * Current page number
    */
@@ -50,7 +52,7 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
   const currentParams = ref<Schemas["Criteria"]>({});
 
   const loadOrders = async (
-    parameters: Schemas["Criteria"] = {},
+    parameters: operations["readOrder post /order"]["body"] = {},
   ): Promise<void> => {
     const params = {
       ...parameters,

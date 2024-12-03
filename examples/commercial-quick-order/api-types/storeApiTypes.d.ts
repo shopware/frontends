@@ -692,7 +692,7 @@ export type Schemas = {
       keywords?: string;
       linkNewTab?: boolean;
       /** @enum {string} */
-      linkType?: "external" | "category" | "product" | "landing_page";
+      linkType?: "category" | "external" | "landing_page" | "product";
       metaDescription?: string;
       metaTitle?: string;
       name: string;

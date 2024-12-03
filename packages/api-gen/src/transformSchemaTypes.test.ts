@@ -4,9 +4,9 @@ import { join } from "node:path";
 import { transformSchemaTypes } from "./transformSchemaTypes";
 
 describe("transformSchemaTypes", async () => {
-  it(`transform should match snapshot for file`, async () => {
+  it("transform should match snapshot for file", async () => {
     const exampleFileContent = readFileSync(
-      join(__dirname, `../tests/snapshots-override/simpleOverride.example.ts`),
+      join(__dirname, "../tests/snapshots-override/simpleOverride.example.ts"),
       "utf-8",
     );
 

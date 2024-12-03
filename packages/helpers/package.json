@@ -42,10 +42,10 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "2.1.4",
-    "happy-dom": "15.7.4",
+    "@vitest/coverage-v8": "2.1.6",
+    "happy-dom": "15.11.6",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.1.4"
+    "vitest": "2.1.6"
   }
 }

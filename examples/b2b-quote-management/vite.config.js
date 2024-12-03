@@ -6,6 +6,9 @@ import UnoCSS from "unocss/vite";
 
 export default defineConfig({
   plugins: [vue(), UnoCSS()],
+  optimizeDeps: {
+    exclude: ["@shopware-pwa/composables-next"],
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

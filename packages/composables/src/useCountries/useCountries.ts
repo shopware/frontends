@@ -20,8 +20,8 @@ export type UseCountriesReturn = {
 export function useCountries(): UseCountriesReturn {
   const { apiClient } = useShopwareContext();
 
-  const _sharedCountried = inject("swCountries", ref());
-  provide("swCountries", _sharedCountried);
+  const _sharedCountries = inject("swCountries", ref());
+  provide("swCountries", _sharedCountries);
 
   async function fetchCountries() {
     const result = await apiClient.invoke("readCountry post /country", {
@@ -31,16 +31,16 @@ export function useCountries(): UseCountriesReturn {
         },
       },
     });
-    _sharedCountried.value = result.data.elements;
+    _sharedCountries.value = result.data.elements;
     return result.data;
   }
 
   const getCountries = computed(() => {
-    return _sharedCountried.value ?? [];
+    return _sharedCountries.value ?? [];
   });
 
   const mountedCallback = async () => {
-    if (!_sharedCountried.value) {
+    if (!_sharedCountries.value) {
       await fetchCountries();
     }
   };
