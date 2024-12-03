@@ -39,13 +39,13 @@ import type { operations } from "@shopware/api-client/store-api-types";
 
 The fields in the provided object as an argument can be described as:
 
-| field              | description                                                                                                                                                    | example                                           |
-| ------------------ |----------------------------------------------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------- |
-| **baseURL**        | optional - Used to point an URL of `store-api` where the Shopware 6 instance is available over the network.                                                    | `https://demo-frontends.shopware.store/store-api` |
-| **accessToken**    | optional - The unique key ID that refers to the specific sales channel (for more info visit a [Store API docs](https://shopware.stoplight.io/docs/store-api/)) | `SWSCBHFSNTVMAWNZDNFKSHLAYW`                      |
-| **contextToken**   | optional - The unique key in UUID format that points the corresponding session in the backend                                                                  |                                                   |
-| **defaultHeaders** | optional - Standard dictionary object that keeps possible HTTP Headers that will be used for further requests                                                  | `{"Content-Type":"application/json"}`             |
-| **timeout**        | optional - Sets a standard timeout (in milliseconds) for each request made through the client. If not provided, no timeout will be applied by default.         | `5000` (5 seconds)                                |
+| field              | description                                                                                                                                                    | example                                                                  |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **baseURL**        | optional - Used to point an URL of `store-api` where the Shopware 6 instance is available over the network.                                                    | `https://demo-frontends.shopware.store/store-api`                        |
+| **accessToken**    | optional - The unique key ID that refers to the specific sales channel (for more info visit a [Store API docs](https://shopware.stoplight.io/docs/store-api/)) | `SWSCBHFSNTVMAWNZDNFKSHLAYW`                                             |
+| **contextToken**   | optional - The unique key in UUID format that points the corresponding session in the backend                                                                  |                                                                          |
+| **defaultHeaders** | optional - Standard dictionary object that keeps possible HTTP Headers that will be used for further requests                                                  | `{"Content-Type":"application/json"}`                                    |
+| **fetchOptions**   | optional - Set standard timeout or retry options for each request made through the client.                                                                     | `{ timeout: 5000, retry: 2, retryDelay: 2000, retryStatusCodes: [500] }` |
 
 ## Example of creating the API _Client_ instance
 
@@ -61,4 +61,3 @@ export const apiClient = createAPIClient<operations>({
   timeout: 5000,
 });
 ```
-
