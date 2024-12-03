@@ -46,7 +46,7 @@ Example of overrides file:
 <!-- automd:file src="packages/api-gen/tests/snapshots-override/simpleOverride.example.ts" code -->
 
 ```ts [simpleOverride.example.ts]
-import { components as mainComponents } from "./storeApiTypes";
+import type { components as mainComponents } from "./storeApiTypes";
 
 export type components = mainComponents & {
   schemas: Schemas;

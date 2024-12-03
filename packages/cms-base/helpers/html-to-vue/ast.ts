@@ -3,7 +3,7 @@
  * Based on the https://github.com/HCESrl/html-to-vue
  */
 import { parse } from "html-to-ast";
-import { NodeObject } from "./getOptionsFromNode";
+import type { NodeObject } from "./getOptionsFromNode";
 
 /**
  * Visit each node in the AST - with callback (adapted from https://lihautan.com/manipulating-ast-with-javascript/)

@@ -4,5 +4,5 @@ export function isSpatial<
     url?: string;
   },
 >(media: T) {
-  return media.fileExtension === "glb" || !!media?.url?.endsWith(".glb");
+  return media.fileExtension === "glb" || !!media.url?.endsWith(".glb");
 }

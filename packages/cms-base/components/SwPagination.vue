@@ -23,9 +23,7 @@ let translations: Translations = {
 
 translations = defu(useCmsTranslations(), translations) as Translations;
 
-defineEmits<{
-  (e: "changePage", page: number): void;
-}>();
+defineEmits<(e: "changePage", page: number) => void>();
 </script>
 <template>
   <nav
