@@ -9,7 +9,8 @@
     "build": "astro build",
     "dev": "astro dev",
     "preview": "astro preview",
-    "start": "astro dev"
+    "start": "astro dev",
+    "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
     "@tutorialkit/react": "1.0.0",
