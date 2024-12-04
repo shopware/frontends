@@ -2,7 +2,6 @@ import {
   type FetchResponse,
   ofetch,
   type FetchOptions,
-  type FetchContext,
   type ResponseType,
 } from "ofetch";
 import type { operations } from "../api-types/adminApiTypes";
@@ -131,10 +130,6 @@ export function createAdminAPIClient<
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
     ...params.fetchOptions,
-    retryDelay: params.fetchOptions?.retryDelay as
-      | number
-      | ((context: FetchContext<any, ResponseType>) => number)
-      | undefined,
     async onRequest({ request, options }) {
       const isExpired = sessionData.expirationTime <= Date.now();
       if (isExpired && !request.toString().includes("/oauth/token")) {

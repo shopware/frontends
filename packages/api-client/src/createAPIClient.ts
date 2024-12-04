@@ -2,7 +2,6 @@ import {
   type FetchResponse,
   ofetch,
   type FetchOptions,
-  type FetchContext,
   type ResponseType,
 } from "ofetch";
 import type { operations } from "../api-types/storeApiTypes";
@@ -60,7 +59,7 @@ export type InvokeParameters<CURRENT_OPERATION> =
   };
 
 export type GlobalFetchOptions = Pick<
-  FetchOptions<"json">,
+  FetchOptions<ResponseType>,
   "retry" | "retryDelay" | "retryStatusCodes" | "timeout"
 >;
 
@@ -102,10 +101,6 @@ export function createAPIClient<
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
     ...params.fetchOptions,
-    retryDelay: params.fetchOptions?.retryDelay as
-      | number
-      | ((context: FetchContext<any, ResponseType>) => number)
-      | undefined,
     // async onRequest({ request, options }) {},
     // async onRequestError({ request, options, error }) {},
     async onResponse(context) {
