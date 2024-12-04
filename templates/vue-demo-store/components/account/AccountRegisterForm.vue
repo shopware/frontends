@@ -109,14 +109,13 @@ const invokeSubmit = async () => {
     try {
       loading.value = true;
       const response = await register(state);
-      if (response?.active) router.push("/");
-      else if (response && !response.active) {
+      if (response?.doubleOptInRegistration) {
         Object.assign(state, JSON.parse(JSON.stringify(initialState)));
         showDoubleOptInBox.value = true;
         await nextTick();
         doubleOptInBox.value?.scrollIntoView();
         $v.value.$reset();
-      }
+      } else if (response?.active) router.push("/");
     } catch (error) {
       if (error instanceof ApiClientError) {
         const errors = resolveApiErrors(error.details.errors);
@@ -147,7 +146,8 @@ useBreadcrumbs([
       {{ $t("account.messages.signUpSuccess") }}
     </div>
     <form
-      class="w-full relative"
+      v-if="!showDoubleOptInBox"
+      class="w-full relative mt-10"
       data-testid="registration-form"
       @submit.prevent="invokeSubmit"
     >

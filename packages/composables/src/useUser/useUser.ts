@@ -180,8 +180,11 @@ export function useUser(): UseUserReturn {
         storefrontUrl: getStorefrontUrl(),
       },
     });
-    _user.value = data;
-    if (_user.value?.active) await refreshSessionContext();
+    // Update the user data in the context if the user is active and not using double opt-in registration set in the Shopware Admin
+    if (data.active && !data.doubleOptInRegistration) {
+      _user.value = data;
+    }
+    await refreshSessionContext();
     return data;
   }
 

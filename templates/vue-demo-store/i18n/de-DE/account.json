@@ -64,7 +64,8 @@
       "paymentSetSuccessfully": "Standardzahlungsmethode erfolgreich festgelegt",
       "signUpSuccess": "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Bestätigungs-E-Mail. Klicken Sie auf den Link darin, um die Registrierung abzuschließen.",
       "paymentMethodChanged": "Zahlungsmethode geändert",
-      "productsAdded": "Produkte hinzugefügt"
+      "productsAdded": "Produkte hinzugefügt",
+      "verifying": "Konto bestätigen"
     }
   }
 }
