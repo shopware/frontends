@@ -15017,11 +15017,6 @@
               "schema": {
                 "required": ["salutationId", "firstName", "lastName"],
                 "properties": {
-                  "accountType": {
-                    "description": "Customer account type.",
-                    "type": "string",
-                    "enum": ["private", "business"]
-                  },
                   "salutationId": {
                     "description": "Id of the salutation for the customer account. Fetch options using `salutation` endpoint.",
                     "type": "string"
@@ -15041,13 +15036,6 @@
                   "company": {
                     "description": "Company of the customer. Only required when `accountType` is `business`.",
                     "type": "string"
-                  },
-                  "vatIds": {
-                    "description": "VAT IDs of the customer's company. Only valid when `accountType` is `business`.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
                   },
                   "birthdayDay": {
                     "description": "Birthday day",

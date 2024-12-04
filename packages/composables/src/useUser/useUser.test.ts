@@ -2,6 +2,7 @@ import { useUser } from "./useUser";
 import { describe, expect, it, vi } from "vitest";
 import { useSetup } from "../_test";
 import { ref } from "vue";
+import type { operations } from "@shopware/api-client/api-types";
 
 const refreshCartSpy = vi.fn();
 vi.mock("../useCart/useCart.ts", async () => {
@@ -26,7 +27,10 @@ vi.mock("../useSessionContext/useSessionContext.ts", async () => {
   };
 });
 
-const REGISTRATION_DATA = {
+const REGISTRATION_DATA: Omit<
+  operations["register post /account/register"]["body"],
+  "storefrontUrl"
+> = {
   acceptedDataProtection: true,
   accountType: "private",
   salutationId: "d5e543063dd642b48ef94b02d68e5785",
@@ -40,6 +44,10 @@ const REGISTRATION_DATA = {
     city: "sadasdas",
     countryId: "2de9ecc24e7b43d283302abba082b7ce",
     countryStateId: "",
+    customerId: "",
+    id: "",
+    firstName: "test",
+    lastName: "test",
   },
 };
 
