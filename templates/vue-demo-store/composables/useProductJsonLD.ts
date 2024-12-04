@@ -1,15 +1,14 @@
-import type { Schemas } from "#shopware";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
 import { defu } from "defu";
+import type { Schemas } from "#shopware";
 
-interface UseProductJsonLD {}
 type JsonLDObject = { [key: string]: JsonLDValue };
 type JsonLDValue = string | number | JsonLDObject | JsonLDValue[];
 
 export function useProductJsonLD(
   product: Schemas["Product"],
   additionalData: JsonLDObject = {},
-): UseProductJsonLD {
+): Record<string, never> {
   const { currencyCode } = usePrice();
 
   const JsonLd = {

@@ -49,6 +49,7 @@ The fields in the provided object as an argument can be described as:
 | **credentials**    | optional - an object containing secrets enable to use a few options of authentication                          | `{ grant_type: "client_credentials", client_id: "someClientId", client_secret: "someVerySecretKey" } ` |
 | **sessionData**    | optional - handful in case of OAuth, when the authorization mechanism is taken care by some other tool         | `{ accessToken: "some-token", refreshToken: "some-refresh-token", expirationTime: 1728412483 }`        |
 | **defaultHeaders** | optional - Standard dictionary object that keeps available HTTP Headers that will be used for further requests | `{"Content-Type":"application/json"}`                                                                  |
+| **fetchOptions**   | optional - Set standard timeout or retry options for each request made through the client.                     | `{ timeout: 5000, retry: 2, retryDelay: 2000, retryStatusCodes: [500] }`                               |
 
 ## Example of creating the Admin API _Client_ instance
 

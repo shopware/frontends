@@ -4,7 +4,7 @@
 
 import { generateAST, rectifyAST } from "./ast";
 import { renderer } from "./renderer";
-import { h, type ComponentInternalInstance } from "vue";
+import type { h, ComponentInternalInstance } from "vue";
 
 type DefaultConfig = {
   container: {

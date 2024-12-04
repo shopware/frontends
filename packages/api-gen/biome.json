@@ -1,0 +1,15 @@
+{
+  "extends": ["../../biome.json"],
+  "overrides": [
+    {
+      "include": ["tests/**"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noBannedTypes": "off"
+          }
+        }
+      }
+    }
+  ]
+}

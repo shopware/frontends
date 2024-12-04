@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
-import SwCategoryNavigationLink from "./SwCategoryNavigationLink.vue";
 
 const props = withDefaults(
   defineProps<{

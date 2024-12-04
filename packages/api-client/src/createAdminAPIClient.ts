@@ -1,5 +1,9 @@
-import { ofetch } from "ofetch";
-import type { FetchOptions, FetchResponse } from "ofetch";
+import {
+  type FetchResponse,
+  ofetch,
+  type FetchOptions,
+  type ResponseType,
+} from "ofetch";
 import type { operations } from "../api-types/adminApiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
@@ -7,6 +11,7 @@ import { createHooks } from "hookable";
 import defu from "defu";
 import { createPathWithParams } from "./transformPathToQuery";
 import type { InvokeParameters } from "./createAPIClient";
+import { GlobalFetchOptions } from "./createAPIClient";
 
 type SimpleUnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
@@ -64,9 +69,10 @@ export function createAdminAPIClient<
    * If you pass `credentials` object, it will be used to authenticate the client whenever session expires.
    * You don't need to manually invoke `/token` endpoint first.
    */
-  credentials?: OPERATIONS["token"]["body"];
+  credentials?: OPERATIONS["token post /oauth/token"]["body"];
   sessionData?: AdminSessionData;
   defaultHeaders?: ClientHeaders;
+  fetchOptions?: GlobalFetchOptions;
 }) {
   const isTokenBasedAuth =
     params.credentials?.grant_type === "client_credentials";
@@ -123,6 +129,7 @@ export function createAdminAPIClient<
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
+    ...params.fetchOptions,
     async onRequest({ request, options }) {
       const isExpired = sessionData.expirationTime <= Date.now();
       if (isExpired && !request.toString().includes("/oauth/token")) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Schemas, operations } from "#shopware";
 import { useTemplateRef } from "vue";
+import type { Schemas, operations } from "#shopware";
 const route = useRoute();
 const router = useRouter();
 
@@ -22,6 +22,8 @@ const {
   setInitialListing,
 } = useProductSearchListing();
 const { t } = useI18n();
+const productListElement = useTemplateRef("productListElement");
+
 useBreadcrumbs([
   {
     name: t("breadcrumbs.search"),
@@ -93,11 +95,11 @@ const createFiltersFromRoute = () => {
 };
 
 const createPriceFilter = (filters: Schemas["Criteria"]["filter"]) => {
-  const minPrice = !isNaN(Number(route.query["min-price"]))
+  const minPrice = !Number.isNaN(Number(route.query["min-price"]))
     ? (route.query["min-price"] as string)
     : undefined;
 
-  const maxPrice = !isNaN(Number(route.query["max-price"]))
+  const maxPrice = !Number.isNaN(Number(route.query["max-price"]))
     ? (route.query["max-price"] as string)
     : undefined;
 
@@ -182,7 +184,7 @@ const loadProducts = async (cacheKey: string) => {
 
   return productSearch;
 };
-let productSearch = await loadProducts(cacheKey.value);
+const productSearch = await loadProducts(cacheKey.value);
 
 watch(cacheKey, () => {
   setInitialListing(productSearch.value as Schemas["ProductListingResult"]);
@@ -201,6 +203,7 @@ const changePage = async (page: number) => {
     page,
     route.query as unknown as operations["searchPage post /search"]["body"],
   );
+  productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 const changeLimit = async (limit: Event) => {
   const select = limit.target as HTMLSelectElement;
@@ -216,11 +219,14 @@ const changeLimit = async (limit: Event) => {
     1,
     route.query as unknown as operations["searchPage post /search"]["body"],
   );
+  productListElement.value?.scrollIntoView({ behavior: "smooth" });
 };
 
 const isSortMenuOpen = ref(false);
 const dropdownElement = useTemplateRef("dropdownElement");
-onClickOutside(dropdownElement, () => (isSortMenuOpen.value = false));
+onClickOutside(dropdownElement, () => {
+  isSortMenuOpen.value = false;
+});
 const currentSortingOrder = computed({
   get: (): string => getCurrentSortingOrder.value || "",
   set: async (order: string): Promise<void> => {
@@ -264,59 +270,59 @@ const addCountToFilter = (
   filter: FilterAndAggregations,
   aggregation: FilterAndAggregations,
 ) => {
-  filter.options.forEach((option) => {
+  for (const option of filter.options) {
     if (aggregation.buckets) {
       const bucket = aggregation.buckets.find((bucket) =>
         bucket.key.includes(option.id),
       );
       if (bucket) {
         option.count = bucket.count + (option.count ?? 0);
-        if (bucket.parent_childs && bucket.parent_childs.buckets) {
+        if (bucket.parent_childs?.buckets) {
           option.count = calculateCountByParentChildsBucket(bucket);
         }
       }
     }
-  });
+  }
 };
 
 const addCountToFilterEntities = (
   filter: FilterAndAggregations,
   aggregation: FilterAndAggregations,
 ) => {
-  filter.entities.forEach((entity) => {
+  for (const entity of filter.entities) {
     if (aggregation.buckets) {
       const bucket = aggregation.buckets.find(
         (bucket) => bucket.key === entity.id,
       );
       if (bucket) {
         entity.count = bucket.count + (entity.count ?? 0);
-        if (bucket.parent_childs && bucket.parent_childs.buckets) {
+        if (bucket.parent_childs?.buckets) {
           entity.count = calculateCountByParentChildsBucket(bucket);
         }
       }
     }
-  });
+  }
 };
 
 const calculateCountByParentChildsBucket = (bucket: AggregationBucket) => {
   let count = 0;
-  if (bucket.parent_childs && bucket.parent_childs.buckets) {
-    bucket.parent_childs.buckets.forEach((child) => {
+  if (bucket.parent_childs?.buckets) {
+    for (const child of bucket.parent_childs.buckets) {
       if (child.key === "") {
         count = count + child.count;
       } else {
         count = count + 1;
       }
-    });
+    }
   }
   return count;
 };
 
 const addCountsToFilter = () => {
   if (getInitialFilters.value) {
-    getInitialFilters.value.forEach((initialFilter) => {
+    for (const initialFilter of getInitialFilters.value) {
       const filter = initialFilter as unknown as FilterAndAggregations;
-      if (productSearch.value && productSearch.value.aggregations) {
+      if (productSearch.value?.aggregations) {
         for (const value of Object.entries(productSearch.value.aggregations)) {
           const aggregation = value[1] as unknown as FilterAndAggregations;
           if (filter.name === "manufacturer") {
@@ -334,7 +340,7 @@ const addCountsToFilter = () => {
           }
         }
       }
-    });
+    }
   }
 };
 
@@ -452,6 +458,7 @@ onMounted(() => {
         </div>
         <div
           v-if="!loading"
+          ref="productListElement"
           class="flex justify-center flex-wrap p-4 md:p-6 lg:p-8"
         >
           <ProductCard

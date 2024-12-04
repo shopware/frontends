@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import { getSmallestThumbnailUrl } from "@shopware-pwa/helpers-next";
 import { ApiClientError } from "@shopware/api-client";
+import type { Schemas } from "#shopware";
 
 const miniCartModal = useMiniCartModal();
 const localePath = useLocalePath();
@@ -55,14 +55,16 @@ const updateQuantity = async (quantityInput: number | undefined) => {
   } catch (error) {
     if (error instanceof ApiClientError) {
       const errors = resolveApiErrors(error.details.errors);
-      errors.forEach((error) => pushError(error));
+      for (const error of errors) {
+        pushError(error);
+      }
     }
   }
 
-  getErrorsCodes()?.forEach((element) => {
+  for (const element of getErrorsCodes() ?? []) {
     const { messageKey, params } = resolveCartError(element);
     pushError(t(`errors.${messageKey}`, params as Record<string, unknown>));
-  });
+  }
 
   isLoading.value = false;
 };

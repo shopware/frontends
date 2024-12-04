@@ -1,4 +1,9 @@
-import { type FetchResponse, ofetch, FetchOptions } from "ofetch";
+import {
+  type FetchResponse,
+  ofetch,
+  type FetchOptions,
+  type ResponseType,
+} from "ofetch";
 import type { operations } from "../api-types/storeApiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
@@ -53,6 +58,11 @@ export type InvokeParameters<CURRENT_OPERATION> =
     >;
   };
 
+export type GlobalFetchOptions = Pick<
+  FetchOptions<ResponseType>,
+  "retry" | "retryDelay" | "retryStatusCodes" | "timeout"
+>;
+
 export type ApiClientHooks = {
   onContextChanged: (newContextToken: string) => void;
   onResponseError: (response: FetchResponse<ResponseType>) => void;
@@ -68,6 +78,7 @@ export function createAPIClient<
   accessToken?: string;
   contextToken?: string;
   defaultHeaders?: ClientHeaders;
+  fetchOptions?: GlobalFetchOptions;
 }) {
   // Create a hookable instance
   const apiClientHooks = createHooks<ApiClientHooks>();
@@ -89,6 +100,7 @@ export function createAPIClient<
 
   const apiFetch = ofetch.create({
     baseURL: params.baseURL,
+    ...params.fetchOptions,
     // async onRequest({ request, options }) {},
     // async onRequestError({ request, options, error }) {},
     async onResponse(context) {

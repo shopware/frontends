@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ApiClientError } from "@shopware/api-client";
 
-const emits = defineEmits<{
-  (e: "success"): void;
-}>();
+const emits = defineEmits<(e: "success") => void>();
 
 const { resetPassword } = useCustomerPassword();
 const isSuccess = ref(false);
@@ -12,7 +10,7 @@ const config = useRuntimeConfig();
 
 const formData = ref({
   email: "",
-  storefrontUrl: config.public.shopware.devStorefrontUrl!,
+  storefrontUrl: config.public.shopware.devStorefrontUrl ?? "",
 });
 
 const errors = ref([]);

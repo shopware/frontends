@@ -185,6 +185,7 @@ export function useOrderDetails(
         },
       ],
       associations: mergedAssociations.associations,
+      checkPromotion: true,
     } as Schemas["Criteria"];
 
     const orderDetailsResponse = await apiClient.invoke(

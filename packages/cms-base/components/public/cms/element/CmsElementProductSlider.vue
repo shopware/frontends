@@ -6,8 +6,6 @@ import type {
 import { useCmsElementConfig } from "#imports";
 import { ref, computed, onMounted, useTemplateRef } from "vue";
 import type { ComputedRef } from "vue";
-import SwProductCard from "../../../SwProductCard.vue";
-import SwSlider from "../../../SwSlider.vue";
 
 const props = defineProps<{
   content: CmsElementProductSlider;

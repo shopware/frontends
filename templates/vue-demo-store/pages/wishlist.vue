@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import defu from "defu";
 import { useRoute, useRouter } from "vue-router";
+import type { Schemas } from "#shopware";
 
 const defaultLimit = 15;
 const defaultPage = 1;

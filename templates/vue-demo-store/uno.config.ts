@@ -1,3 +1,5 @@
+import { helpersCssClasses } from "@shopware-pwa/helpers-next";
+import transformerDirectives from "@unocss/transformer-directives";
 import {
   defineConfig,
   presetAttributify,
@@ -5,8 +7,6 @@ import {
   presetTypography,
   presetUno,
 } from "unocss";
-import transformerDirectives from "@unocss/transformer-directives";
-import { helpersCssClasses } from "@shopware-pwa/helpers-next";
 
 export default defineConfig({
   theme: {

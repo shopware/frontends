@@ -1,6 +1,6 @@
 import { createAdminAPIClient, createAPIClient } from "@shopware/api-client";
-import { operations } from "@shopware/api-client/api-types";
-import { operations as adminOperations } from "@shopware/api-client/admin-api-types";
+import type { operations } from "@shopware/api-client/api-types";
+import type { operations as adminOperations } from "@shopware/api-client/admin-api-types";
 
 let adminApiClient: ReturnType<typeof createAdminAPIClient<adminOperations>>;
 let storeApiClient: ReturnType<typeof createAPIClient<operations>>;
@@ -13,8 +13,8 @@ export function getAdminApiClient() {
         grant_type: "password",
         client_id: "administration",
         scopes: "write",
-        username: process.env.SHOPWARE_ADMIN_USERNAME,
-        password: process.env.SHOPWARE_ADMIN_PASSWORD,
+        username: process.env.SHOPWARE_ADMIN_USERNAME || "",
+        password: process.env.SHOPWARE_ADMIN_PASSWORD || "",
       },
     });
   }

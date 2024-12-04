@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {
   getCategoryRoute,
-  getTranslatedProperty,
   getSmallestThumbnailUrl,
+  getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
 type NavigationElement = Schemas["Category"] & {

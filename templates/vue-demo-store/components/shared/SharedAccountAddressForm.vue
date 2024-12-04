@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useVuelidate } from "@vuelidate/core";
 import { customValidators } from "@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
-import type { Schemas } from "#shopware";
+import { useVuelidate } from "@vuelidate/core";
 import { useTemplateRef } from "vue";
+import type { Schemas } from "#shopware";
 
 const { required, minLength, requiredIf } = customValidators();
 
@@ -58,9 +58,9 @@ const invokeSave = async (): Promise<void> => {
     }
   } catch (errors) {
     if (errors instanceof ApiClientError) {
-      errors.details.errors.forEach((element: ApiError) => {
+      for (const element of errors.details.errors) {
         pushError(errorMessageBuilder(element) || t("messages.error"));
-      });
+      }
     }
   }
 };
