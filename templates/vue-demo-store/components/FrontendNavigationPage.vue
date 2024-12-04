@@ -16,7 +16,7 @@ const { apiClient } = useShopwareContext();
 const { data, error } = await useAsyncData(
   `cmsNavigation${props.navigationId}`,
   async () => {
-    const [category, breadcrumbs] = await Promise.all([
+    const responses = await Promise.allSettled([
       search(props.navigationId, {
         withCmsAssociations: true,
         query: {
@@ -34,7 +34,17 @@ const { data, error } = await useAsyncData(
         }),
     ]);
 
-    return { category, breadcrumbs };
+    for (const response of responses) {
+      if (response.status === "rejected") {
+        console.error("[FrontendNavigationPage.vue]", response.reason.message);
+      }
+    }
+
+    return {
+      category: responses[0].status === "fulfilled" ? responses[0].value : null,
+      breadcrumbs:
+        responses[1].status === "fulfilled" ? responses[1].value : null,
+    };
   },
 );
 const categoryResponse = ref(data.value?.category);

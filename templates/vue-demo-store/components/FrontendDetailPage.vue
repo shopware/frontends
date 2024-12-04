@@ -12,25 +12,32 @@ const { apiClient } = useShopwareContext();
 const { data, error } = await useAsyncData(
   `cmsProduct${props.navigationId}`,
   async () => {
-    const [productResponse, breadcrumbs] = await Promise.all([
+    const responses = await Promise.allSettled([
       search(props.navigationId, {
         withCmsAssociations: true,
         associations: {
           seoUrls: {},
         },
       }),
-      apiClient
-        .invoke("readBreadcrumb get /breadcrumb/{id}", {
-          pathParams: {
-            id: props.navigationId,
-          },
-        })
-        .catch(() => {
-          console.error("Error while fetching breadcrumbs");
-        }),
+      apiClient.invoke("readBreadcrumb get /breadcrumb/{id}", {
+        pathParams: {
+          id: props.navigationId,
+        },
+      }),
     ]);
 
-    return { productResponse, breadcrumbs };
+    for (const response of responses) {
+      if (response.status === "rejected") {
+        console.error("[FrontendDetailPage.vue]", response.reason.message);
+      }
+    }
+
+    return {
+      productResponse:
+        responses[0].status === "fulfilled" ? responses[0].value : null,
+      breadcrumbs:
+        responses[1].status === "fulfilled" ? responses[1].value : null,
+    };
   },
 );
 const productResponse = ref(data.value?.productResponse);
