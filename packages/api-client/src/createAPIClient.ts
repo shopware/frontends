@@ -1,4 +1,11 @@
-import { type FetchResponse, ofetch, FetchOptions } from "ofetch";
+import {
+  type FetchResponse,
+  type FetchRequest,
+  ofetch,
+  type FetchOptions,
+  type ResolvedFetchOptions,
+  type ResponseType,
+} from "ofetch";
 import type { operations } from "../api-types/storeApiTypes";
 import { ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
@@ -58,6 +65,10 @@ export type ApiClientHooks = {
   onResponseError: (response: FetchResponse<ResponseType>) => void;
   onSuccessResponse: <T>(response: FetchResponse<T>) => void;
   onDefaultHeaderChanged: <T>(headerName: string, value?: T) => void;
+  onRequest: (
+    request: FetchRequest,
+    options: ResolvedFetchOptions<ResponseType>,
+  ) => void;
 };
 
 export function createAPIClient<
@@ -107,6 +118,9 @@ export function createAPIClient<
     async onResponseError({ response }) {
       apiClientHooks.callHook("onResponseError", response);
       errorInterceptor(response);
+    },
+    async onRequest({ request, options }) {
+      await apiClientHooks.callHook("onRequest", request, options);
     },
   });
   /**
