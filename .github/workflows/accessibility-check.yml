@@ -28,7 +28,7 @@ jobs:
           cache: "pnpm"
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: install
-        run: pnpm install --no-frozen-lockfile --prefer-offline
+        run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Install dependencies with Playwright
         run: |
