@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import {
   getSmallestThumbnailUrl,
   getTranslatedProperty,
 } from "@shopware-pwa/helpers-next";
 import { useTemplateRef } from "vue";
+import type { Schemas } from "#shopware";
 
 const props = defineProps<{ product: Schemas["Product"] }>();
 

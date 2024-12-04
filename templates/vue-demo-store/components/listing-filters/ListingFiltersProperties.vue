@@ -11,17 +11,18 @@
     }
   "
 >
-import { inject, ref } from "vue";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
+import { inject, ref } from "vue";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
   filter: ListingFilter;
 }>();
 
-const emits = defineEmits<{
-  (e: "select-value", value: { code: string; value: unknown }): void;
-}>();
+const emits =
+  defineEmits<
+    (e: "select-value", value: { code: string; value: unknown }) => void
+  >();
 const selectedOptionIds = inject<string[]>("selectedOptionIds");
 const isFilterVisible = ref<boolean>(false);
 const toggle = () => {

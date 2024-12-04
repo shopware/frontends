@@ -6,7 +6,7 @@ const props = defineProps<{
 const { apiClient } = useShopwareContext();
 
 const { data: registrationResponse } = await useAsyncData(
-  "cmsNavigation" + props.navigationId,
+  `cmsNavigation${props.navigationId}`,
   async () => {
     const response = await apiClient.invoke(
       "getCustomerGroupRegistrationInfo get /customer-group-registration/config/{customerGroupId}",
