@@ -176,7 +176,7 @@ export function useUser(): UseUserReturn {
   ): Promise<Schemas["Customer"]> {
     const { data } = await apiClient.invoke("register post /account/register", {
       body: {
-        ...params,
+        ...(params as operations["register post /account/register"]["body"]),
         storefrontUrl: getStorefrontUrl(),
       },
     });
