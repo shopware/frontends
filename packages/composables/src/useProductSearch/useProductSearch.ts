@@ -6,6 +6,7 @@ import { defu } from "defu";
 type UseProductSearchReturnOptions = {
   withCmsAssociations?: boolean;
   criteria?: Partial<Schemas["Criteria"]>;
+  associations?: Partial<Schemas["Association"]>;
 };
 
 export type UseProductSearchReturn = {
@@ -36,6 +37,7 @@ export function useProductSearch(): UseProductSearchReturn {
     const associations = defu(
       options?.withCmsAssociations ? cmsAssociations : {},
       options?.criteria,
+      { associations: options?.associations ?? {} },
     );
     const result = await apiClient.invoke(
       "readProductDetail post /product/{productId}",

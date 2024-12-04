@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { CmsElementProductListing } from "@shopware-pwa/composables-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import SwProductCard from "../../../SwProductCard.vue";
-import SwPagination from "../../../SwPagination.vue";
 import { useCategoryListing } from "#imports";
 import { computed, ref, watch, useTemplateRef } from "vue";
 import { defu } from "defu";
@@ -119,9 +117,7 @@ const compareRouteQueryWithInitialListing = async () => {
   const isChangePageNeeded =
     (route.query.limit && limit.value !== limitListing) ||
     (route.query.p && Number(route.query.p) !== pageListing) ||
-    (route.query.order && route.query.order !== orderListing)
-      ? true
-      : false;
+    (route.query.order && route.query.order !== orderListing);
 
   if (isChangePageNeeded) {
     const limitQuery = route.query.limit

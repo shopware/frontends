@@ -561,4 +561,167 @@ describe("createAdminAPIClient", () => {
       );
     });
   });
+
+  describe("fetchOptions", () => {
+    it("should enforce the timeout for API requests when a timeout is provided", async () => {
+      const app = createApp().use(
+        "/order",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          return { message: "This should never be returned" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: {
+          accessToken: "Bearer my-access-token",
+          refreshToken: "my-refresh-token",
+          expirationTime: Date.now() + 1000 * 60,
+        },
+        fetchOptions: {
+          timeout: 50,
+        },
+        baseURL,
+      });
+
+      await expect(
+        client.invoke("getOrderList get /order", {}),
+      ).rejects.toThrowErrorMatchingInlineSnapshot(
+        `[FetchError: [GET] "${baseURL}order": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
+      );
+    });
+
+    it("should complete request if timeout is not provided and endpoint resolves", async () => {
+      const app = createApp().use(
+        "/fast-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: {
+          accessToken: "Bearer my-access-token",
+          refreshToken: "my-refresh-token",
+          expirationTime: Date.now() + 1000 * 60,
+        },
+        baseURL,
+      });
+
+      // @ts-expect-error this endpoint does not exist
+      const response = await client.invoke("testNoTimeout get /fast-endpoint");
+
+      expect(response).toEqual({
+        data: { message: "Request succeeded" },
+        status: 200,
+      });
+    });
+
+    it("should complete request if timeout is larger than the time it took to resolve the request", async () => {
+      const app = createApp().use(
+        "/fast-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: {
+          accessToken: "Bearer my-access-token",
+          refreshToken: "my-refresh-token",
+          expirationTime: Date.now() + 1000 * 60,
+        },
+        fetchOptions: {
+          timeout: 100,
+        },
+        baseURL,
+      });
+
+      // @ts-expect-error this endpoint does not exist
+      const response = await client.invoke("testTimeout get /fast-endpoint");
+
+      expect(response).toEqual({
+        data: { message: "Request succeeded" },
+        status: 200,
+      });
+    });
+
+    it("should use per-request timeout instead of client default timeout", async () => {
+      const app = createApp().use(
+        "/override-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: {
+          accessToken: "Bearer my-access-token",
+          refreshToken: "my-refresh-token",
+          expirationTime: Date.now() + 1000 * 60,
+        },
+        fetchOptions: {
+          timeout: 100,
+        },
+        baseURL,
+      });
+
+      const response = await client.invoke(
+        // @ts-expect-error this endpoint does not exist
+        "testOverrideTimeout get /override-endpoint",
+        {
+          fetchOptions: { timeout: 200 },
+        },
+      );
+
+      expect(response).toEqual({
+        data: { message: "Request succeeded" },
+        status: 200,
+      });
+    });
+
+    it("should fail when per-request timeout is smaller than endpoint response time", async () => {
+      const app = createApp().use(
+        "/override-endpoint",
+        eventHandler(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+          return { message: "Request succeeded" };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAdminAPIClient<operations>({
+        sessionData: {
+          accessToken: "Bearer my-access-token",
+          refreshToken: "my-refresh-token",
+          expirationTime: Date.now() + 1000 * 60,
+        },
+        fetchOptions: {
+          timeout: 200,
+        },
+        baseURL,
+      });
+
+      await expect(
+        // @ts-expect-error this endpoint does not exist
+        client.invoke("testOverrideTimeout get /override-endpoint", {
+          fetchOptions: { timeout: 100 },
+        }),
+      ).rejects.toThrowErrorMatchingInlineSnapshot(
+        `[FetchError: [GET] "${baseURL}override-endpoint": <no response> [TimeoutError]: The operation was aborted due to timeout]`,
+      );
+    });
+  });
 });

@@ -11,7 +11,6 @@ import {
 } from "@shopware-pwa/helpers-next";
 import { toRefs, computed, ref, useTemplateRef } from "vue";
 import { defu } from "defu";
-import SwListingProductPrice from "./SwListingProductPrice.vue";
 import {
   useAddToCart,
   useNotifications,
@@ -126,10 +125,10 @@ const toggleWishlistProduct = async () => {
 const addToCartProxy = async () => {
   await addToCart();
   const errors = getErrorsCodes();
-  errors?.forEach((element) => {
+  for (const element of errors) {
     const { messageKey, params } = resolveCartError(element);
     pushError(getCmsTranslate(translations.errors[messageKey], params));
-  });
+  }
 
   if (!errors.length)
     pushSuccess(

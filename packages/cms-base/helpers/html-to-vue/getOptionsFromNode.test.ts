@@ -9,7 +9,7 @@ describe("getOptionsFromNode", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     consoleErrorSpy.mockImplementation(() => {});
-    urlResolverMock.mockImplementation((url) => "resolved-url" + url);
+    urlResolverMock.mockImplementation((url) => `resolved-url${url}`);
   });
 
   it("should return empty object if node is undefined", () => {
@@ -118,7 +118,7 @@ describe("getOptionsFromNode", () => {
 
     const options = getOptionsFromNode(
       node as unknown as NodeObject,
-      undefined as any,
+      undefined as unknown as (url: string) => string,
     );
 
     expect(options).toEqual({

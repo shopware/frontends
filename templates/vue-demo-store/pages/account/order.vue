@@ -33,7 +33,7 @@ type Translations = {
     };
   };
 };
-let translations: Translations = {
+const translations: Translations = {
   account: {
     noOrders: "No orders found 😔",
     perPage: "Per Page:",
@@ -68,7 +68,9 @@ const changeLimit = async (ev: Event) => {
       limit: select.value,
     },
   });
-  changeCurrentPage(+route.query.p!);
+  if (route.query.p) {
+    changeCurrentPage(+route.query.p);
+  }
 };
 
 const changePage = async (page: number) => {
@@ -85,6 +87,7 @@ await useAsyncData("getOrders", () => {
   return loadOrders({
     limit: limit.value,
     page: route.query.p ? Number(route.query.p) : defaultPage,
+    checkPromotion: true, // determines whether "paymentChangeable" list is available in the response
     associations: {
       stateMachineState: {},
     },

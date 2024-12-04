@@ -9,11 +9,7 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/packages/api-client.html",
-  "keywords": [
-    "shopware",
-    "api",
-    "client"
-  ],
+  "keywords": ["shopware", "api", "client"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -21,11 +17,7 @@
   "module": "./dist/index.mjs",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "api-types",
-    "admin-api-types"
-  ],
+  "files": ["dist", "api-types", "admin-api-types"],
   "exports": {
     ".": {
       "require": {
@@ -56,13 +48,13 @@
   "devDependencies": {
     "@codspeed/vitest-plugin": "3.1.1",
     "@types/prettier": "3.0.0",
-    "@vitest/coverage-v8": "2.1.4",
+    "@vitest/coverage-v8": "2.1.6",
     "eslint-config-shopware": "workspace:*",
     "jsdom": "^25.0.1",
-    "prettier": "3.3.3",
+    "prettier": "3.4.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.1.4"
+    "vitest": "2.1.6"
   },
   "dependencies": {
     "defu": "6.1.4",

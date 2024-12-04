@@ -101,10 +101,11 @@ const CmsTextRender = defineComponent({
             // convert from <font color="#ce0000">Headline 1</font> to <span style="color:#ce0000">Headline 1</span>
             let newStyle = null;
             const styleColor = node?.attrs?.color;
-            if (styleColor) {
+            if (styleColor && node.attrs) {
               const currentStyle = node.attrs?.style ?? "";
               newStyle = `color:${styleColor};${currentStyle}`;
-              delete node.attrs?.color;
+              const { color: _, ...attrsWithoutColor } = node.attrs;
+              node.attrs = attrsWithoutColor;
             }
 
             return createElement(

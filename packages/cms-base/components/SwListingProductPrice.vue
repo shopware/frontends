@@ -4,7 +4,6 @@ import {
   useCmsTranslations,
 } from "@shopware-pwa/composables-next";
 import type { Schemas } from "#shopware";
-import SwSharedPrice from "./SwSharedPrice.vue";
 import { toRefs } from "vue";
 import { defu } from "defu";
 

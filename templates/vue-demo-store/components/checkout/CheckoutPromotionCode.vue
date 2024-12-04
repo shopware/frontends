@@ -7,17 +7,17 @@ const { t } = useI18n();
 
 const addPromotionCodeHandler = async (code: string) => {
   await addPromotionCode(code);
-  getErrorsCodes()?.forEach((element) => {
+  for (const element of getErrorsCodes() ?? []) {
     pushError(t(`errors.${element.messageKey}`, { ...element }));
-  });
+  }
   promoCode.value = "";
 };
 
 const removeItemHandler = (appliedPromotionCode: Schemas["LineItem"]) => {
   removeItem(appliedPromotionCode);
-  getErrorsCodes()?.forEach((element) => {
+  for (const element of getErrorsCodes() ?? []) {
     pushError(t(`errors.${element.messageKey}`, { ...element }));
-  });
+  }
 };
 
 const showPromotionCodes = computed(
@@ -39,7 +39,7 @@ const promoCode = ref("");
           class="border rounded-md py-2 px-4 border-solid border-1 border-cyan-600 w-full"
         />
         <button
-          class="text-white bg-primary-500 hover:bg-primary-600 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md"
+          class="text-white bg-primary-600 hover:bg-primary-600 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md"
           @click="addPromotionCodeHandler(promoCode)"
         >
           Add

@@ -2,7 +2,6 @@
 import type { CmsElementImageGallery } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
 import { isSpatial } from "../../../../helpers/media/isSpatial";
-import SwSlider from "../../../SwSlider.vue";
 import { computed, onMounted, ref, useTemplateRef } from "vue";
 
 const props = withDefaults(
@@ -77,10 +76,10 @@ function handleChangeSlide(e: number) {
 }
 
 function move(type: "next" | "previous", specificIndex?: number | string) {
-  let step;
+  let step: number;
   const index =
     typeof specificIndex !== "number"
-      ? parseInt(specificIndex as string)
+      ? Number.parseInt(specificIndex as string)
       : specificIndex;
   if (index >= 0) {
     if (type === "next") {

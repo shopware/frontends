@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { customValidators } from "@/i18n/utils/i18n-validators";
 import { ApiClientError } from "@shopware/api-client";
 import { useVuelidate } from "@vuelidate/core";
-import { customValidators } from "@/i18n/utils/i18n-validators";
 
 type State = {
   rating: number | null;
@@ -43,9 +43,7 @@ const { required, minLength } = customValidators();
 
 const $v = useVuelidate(rules, state);
 
-const emits = defineEmits<{
-  (e: "success"): void;
-}>();
+const emits = defineEmits<(e: "success") => void>();
 
 const invokeSend = async () => {
   $v.value.$touch();
@@ -75,7 +73,9 @@ const invokeSend = async () => {
   } catch (error) {
     if (error instanceof ApiClientError) {
       const errors = resolveApiErrors(error.details.errors);
-      errors.forEach((error) => pushError(error));
+      for (const error of errors) {
+        pushError(error);
+      }
     }
   } finally {
     isLoading.value = false;

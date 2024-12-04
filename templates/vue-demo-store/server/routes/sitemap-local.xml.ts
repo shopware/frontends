@@ -1,7 +1,7 @@
-import { SitemapStream, streamToPromise } from "sitemap";
-import { Readable } from "stream";
-import sitemapObject from "../sitemap";
+import { Readable } from "node:stream";
 import getURL from "requrl";
+import { SitemapStream, streamToPromise } from "sitemap";
+import sitemapObject from "../sitemap";
 
 export default defineEventHandler(async (event) => {
   const stream = new SitemapStream({ hostname: getURL(event.node.req) });

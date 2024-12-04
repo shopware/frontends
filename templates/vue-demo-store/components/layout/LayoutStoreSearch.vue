@@ -11,9 +11,7 @@ withDefaults(
   { displayTotal: 10 },
 );
 
-defineEmits<{
-  (e: "link-clicked"): void;
-}>();
+defineEmits<(e: "link-clicked") => void>();
 
 const { searchTerm, search, getProducts, getTotal, loading } =
   useProductSearchSuggest();
@@ -71,7 +69,7 @@ watch(enter, (value) => {
   sideMenuModal.close();
 
   active.value = false;
-  push("/search?search=" + typingQuery.value);
+  push(`/search?search=${typingQuery.value}`);
 });
 </script>
 
