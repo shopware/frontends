@@ -40,6 +40,7 @@
     "CHECKOUT__UNKNOWN_PAYMENT_METHOD": "Wybrana metoda płatności nie istnieje.",
     "VIOLATION::TOO_SHORT_ERROR": "{field} jest za krótkie.",
     "CHECKOUT__ORDER_ORDER_ALREADY_PAID": "Zamówienie o numerze {orderNumber} zostało już opłacone i nie może zostać zrealizowane.",
-    "CHECKOUT__ORDER_ORDER_NOT_FOUND": "Nie udało się znaleźć tego zamówienia."
+    "CHECKOUT__ORDER_ORDER_NOT_FOUND": "Nie udało się znaleźć tego zamówienia.",
+    "CHECKOUT__CUSTOMER_IS_ALREADY_CONFIRMED": "Adres e-mail został już potwierdzony lub URL jest nieprawidłowy."
   }
 }
