@@ -36,7 +36,7 @@ onMounted(async () => {
 });
 
 const goToUrl = (url: string | null) => {
-  if (typeof window !== undefined && url) {
+  if (typeof window !== "undefined" && url) {
     window.location.href = url;
   }
 };
@@ -59,7 +59,9 @@ watchDebounced(
 
 const isExpand = ref(false);
 
-const toggleView = () => (isExpand.value = !isExpand.value);
+const toggleView = () => {
+  isExpand.value = !isExpand.value;
+};
 
 const formatDate = (date: Date | string) =>
   new Date(date).toLocaleDateString(

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { BoxLayout, DisplayMode } from "@shopware-pwa/composables-next";
 import {
+  getProductFromPrice,
   getProductName,
   getProductRoute,
-  getProductFromPrice,
   getSmallestThumbnailUrl,
 } from "@shopware-pwa/helpers-next";
-import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
+import type { Schemas } from "#shopware";
 
 const { pushSuccess, pushError } = useNotifications();
 const { t } = useI18n();
@@ -38,7 +38,7 @@ const toggleWishlistProduct = async () => {
     try {
       await addToWishlist();
       return pushSuccess(
-        t(`product.messages.addedToWishlist`, {
+        t("product.messages.addedToWishlist", {
           p: props.product?.translated.name,
         }),
       );
@@ -63,14 +63,14 @@ const addToCartProxy = async () => {
   await addToCart();
   const errors = getErrorsCodes();
 
-  errors?.forEach((element) => {
+  for (const element of errors ?? []) {
     const { messageKey, params } = resolveCartError(element);
     pushError(t(`errors.${messageKey}`, params as Record<string, unknown>));
-  });
+  }
 
   if (!errors.length)
     pushSuccess(
-      t(`cart.messages.addedToCart`, { p: props.product?.translated.name }),
+      t("cart.messages.addedToCart", { p: props.product?.translated.name }),
     );
 };
 

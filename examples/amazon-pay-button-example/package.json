@@ -15,9 +15,7 @@
   },
   "main": "./dist/module.cjs",
   "types": "./dist/types.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "prepack": "pnpm run prepare && nuxt-module-build build",
     "dev:playground": "pnpm run prepare && nuxi dev playground",

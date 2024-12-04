@@ -8,11 +8,7 @@
     "url": "git+https://github.com/shopware/frontends.git"
   },
   "homepage": "https://frontends.shopware.com/framework/internal-structure.html#nuxt3-module",
-  "keywords": [
-    "Nuxt",
-    "Shopware",
-    "Vue"
-  ],
+  "keywords": ["Nuxt", "Shopware", "Vue"],
   "bugs": {
     "url": "https://github.com/shopware/frontends/issues"
   },
@@ -27,12 +23,7 @@
       "require": "./index.cjs"
     }
   },
-  "files": [
-    "dist",
-    "plugin.ts",
-    "shopware.d.ts",
-    "index.cjs"
-  ],
+  "files": ["dist", "plugin.ts", "shopware.d.ts", "index.cjs"],
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",

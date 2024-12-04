@@ -10,7 +10,7 @@ const { buildDynamicBreadcrumbs, pushBreadcrumb } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
 
 const { data, error } = await useAsyncData(
-  "cmsProduct" + props.navigationId,
+  `cmsProduct${props.navigationId}`,
   async () => {
     const [productResponse, breadcrumbs] = await Promise.all([
       search(props.navigationId, {

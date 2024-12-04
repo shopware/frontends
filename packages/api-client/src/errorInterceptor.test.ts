@@ -81,8 +81,9 @@ describe("errorInterceptor", () => {
       errors: Array<ApiError>;
     }>;
 
-    await expect(() => errorInterceptor(resp))
-      .toThrowErrorMatchingInlineSnapshot(`
+    await expect(() =>
+      errorInterceptor(resp),
+    ).toThrowErrorMatchingInlineSnapshot(`
         [ApiClientError: Failed request
          - [Unknown error] API did not return errors, but request failed. Please check the network tab.]
       `);

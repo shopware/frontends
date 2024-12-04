@@ -6,7 +6,6 @@ import {
   getProductName,
 } from "@shopware-pwa/helpers-next";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import SwProductReviews from "../../../SwProductReviews.vue";
 import { computed, ref } from "vue";
 import { defu } from "defu";
 import { useProduct } from "#imports";

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useLandingSearch } from "#imports";
 import { getCmsBreadcrumbs } from "@shopware-pwa/helpers-next";
+import { useLandingSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -10,7 +10,7 @@ const props = defineProps<{
 const { search } = useLandingSearch();
 
 const { data: landingResponse, error } = await useAsyncData(
-  "cmsLanding" + props.navigationId,
+  `cmsLanding${props.navigationId}`,
   async () => {
     const landingPage = await search(props.navigationId, {
       withCmsAssociations: true,

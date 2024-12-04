@@ -12,9 +12,7 @@ const { defaultBillingAddressId, defaultShippingAddressId } = useUser();
 const { refreshSessionContext } = useSessionContext();
 const { t } = useI18n();
 
-const emits = defineEmits<{
-  (e: "success"): void;
-}>();
+const emits = defineEmits<(e: "success") => void>();
 
 const props = withDefaults(
   defineProps<{

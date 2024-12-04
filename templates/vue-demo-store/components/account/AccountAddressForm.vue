@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Schemas } from "#shopware";
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 import { useTemplateRef } from "vue";
+import type { Schemas } from "#shopware";
 
 const {
   createCustomerAddress,
@@ -53,9 +53,9 @@ const invokeSave = async (): Promise<void> => {
     emits("success");
   } catch (e) {
     if (e instanceof ApiClientError) {
-      e.details.errors.forEach((element: ApiError) => {
+      for (const element of e.details.errors) {
         pushError(errorMessageBuilder(element) || t("messages.error"));
-      });
+      }
     }
   }
 };

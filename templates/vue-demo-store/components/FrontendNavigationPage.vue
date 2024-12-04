@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useCategorySearch } from "#imports";
-import type { Ref } from "vue";
 import { useCmsHead } from "@/composables/useCmsHead";
+import type { Ref } from "vue";
+import { useCategorySearch } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -14,7 +14,7 @@ const { buildDynamicBreadcrumbs } = useBreadcrumbs();
 const { apiClient } = useShopwareContext();
 
 const { data, error } = await useAsyncData(
-  "cmsNavigation" + props.navigationId,
+  `cmsNavigation${props.navigationId}`,
   async () => {
     const [category, breadcrumbs] = await Promise.all([
       search(props.navigationId, {
