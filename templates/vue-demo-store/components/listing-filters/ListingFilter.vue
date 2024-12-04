@@ -5,12 +5,13 @@ import ListingFiltersProperties from "./ListingFiltersProperties.vue";
 import ListingFiltersRating from "./ListingFiltersRating.vue";
 import ListingFiltersShippingFree from "./ListingFiltersShippingFree.vue";
 
-const emit = defineEmits<{
-  (
-    e: "selectFilterValue",
-    { code, value }: { code: string; value: string },
-  ): void;
-}>();
+const emit =
+  defineEmits<
+    (
+      e: "selectFilterValue",
+      { code, value }: { code: string; value: string },
+    ) => void
+  >();
 
 const props = defineProps<{
   filter: ListingFilter;

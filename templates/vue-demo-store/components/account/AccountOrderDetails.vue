@@ -78,9 +78,9 @@ const handleReorder = async () => {
     const itemsBefore = count.value;
     await addProducts(items);
 
-    getErrorsCodes()?.forEach((element) => {
+    for (const element of getErrorsCodes() ?? []) {
       pushError(t(`errors.${element.messageKey}`, { ...element }));
-    });
+    }
 
     if (itemsBefore < count.value) {
       pushSuccess(t("account.messages.productsAdded"));

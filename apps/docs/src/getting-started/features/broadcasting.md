@@ -88,7 +88,9 @@ export const useBroadcastChannelSync = createSharedComposable(() => {
     Schemas["SalesChannelContext"]
   >("shopware-session-data");
   watch([sessionData], () => {
-    setContext(sessionData.value!);
+    if (sessionData.value) {
+      setContext(sessionData.value);
+    }
   });
 
   // Listen for API responses and update the shared state

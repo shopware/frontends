@@ -11,7 +11,9 @@ const props = defineProps<{
 
 const isExpand = ref(false);
 const { t } = useI18n();
-const toggleView = () => (isExpand.value = !isExpand.value);
+const toggleView = () => {
+  isExpand.value = !isExpand.value;
+};
 const { currency } = useSessionContext();
 
 const orderDate = computed(() =>

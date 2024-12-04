@@ -7,7 +7,9 @@
     "dev": "nuxt prepare && nuxt dev",
     "build": "nuxt prepare && nuxt build",
     "start": "nuxt start",
-    "lint": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
+    "lintold": "eslint './**/*.{js,ts,vue}' --max-warnings=0 && pnpm run typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write . && pnpm run typecheck",
     "typecheck": "nuxt prepare && nuxi typecheck",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -30,15 +32,12 @@
     "vue": "3.5.13"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@iconify-json/carbon": "1.2.4",
-    "@nuxtjs/i18n": "8.3.1",
+    "@nuxtjs/i18n": "8.5.6",
     "@shopware/api-gen": "canary",
-    "eslint": "9.14.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-vue": "9.30.0",
     "nuxt": "3.14.1592",
-    "typescript": "5.6.3",
-    "vue-eslint-parser": "9.4.3"
+    "typescript": "5.6.3"
   },
   "engines": {
     "node": "^18.17.x || ^20.x || ^22.x"

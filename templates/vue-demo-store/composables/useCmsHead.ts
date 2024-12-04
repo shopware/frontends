@@ -6,7 +6,7 @@ import {
 } from "@shopware-pwa/helpers-next";
 import type { Schemas } from "#shopware";
 
-export type UseCmsHeadReturn = void;
+export type UseCmsHeadReturn = ReturnType<typeof useCmsHead>;
 
 type CmsPageEntity =
   | Schemas["Category"]
@@ -22,7 +22,7 @@ export function useCmsHead(
   options?: {
     mainShopTitle?: string;
   },
-): UseCmsHeadReturn {
+): void {
   const unrefEntity = unref(entity) as CmsPageEntity;
   // get title and meta tags available in the Shopware instance
   const { title: metaTitle, meta } = useCmsMeta(unrefEntity);
