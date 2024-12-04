@@ -43,12 +43,12 @@ onMounted(async () => {
 </script>
 <template>
   <div class="flex justify-center items-center my-20">
-    <div v-if="!alreadyConfirmedError" class="flex flex-col">
-      <img class="h-30" src="~/assets/spinner.svg" alt="Maintenance" />
+    <div v-if="!alreadyConfirmedError" class="flex flex-row items-center">
       <p class="text-15">{{ $t("account.messages.verifying") }}</p>
+      <div class="ml-10 size-15 i-carbon-circle-dash animate-spin animate-count-infinite animate-duration-2000" />
     </div>
     <div v-else class="text-red flex items-center gap-5">
-      <img class="w-20 h-20" src="~/assets/error.svg" alt="Error" />
+      <div class="w-10 h-10 i-carbon-error" />
       <p class="text-xl">
         {{ $t("errors.CHECKOUT__CUSTOMER_IS_ALREADY_CONFIRMED") }}
       </p>
