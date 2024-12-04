@@ -31,11 +31,11 @@ onMounted(async () => {
       ) {
         alreadyConfirmedError.value = true;
       } else {
-        error.details.errors.forEach((error: ApiError) => {
-          if (error?.detail) {
-            pushError(error.detail);
+        for (const singleError of error.details.errors) {
+          if (singleError?.detail) {
+            pushError(singleError.detail);
           }
-        });
+        }
       }
     }
   }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { pascalCase } from "scule";
 import { resolveComponent } from "vue";
 import type { Ref } from "vue";
-import { pascalCase } from "scule";
 import { useNavigationContext, useNavigationSearch } from "#imports";
 import type { Schemas } from "#shopware";
 
@@ -18,7 +18,7 @@ const { locale } = useI18n();
 const routePath = route.path.replace(`${locale.value}`, "").replace("//", "/");
 
 const { data: seoResult } = await useAsyncData(
-  "cmsResponse" + routePath,
+  `cmsResponse${routePath}`,
   async () => {
     // For client links if the history state contains seo url information we can omit the api call
     if (import.meta.client) {
@@ -61,7 +61,7 @@ function render() {
   const cmsPageView = routeName && resolveComponent(componentNameToResolve);
   if (cmsPageView) {
     if (cmsPageView === componentNameToResolve)
-      return h("div", {}, "Problem resolving component: " + componentName);
+      return h("div", {}, `Problem resolving component: ${componentName}`);
     return h("div", h(cmsPageView, { navigationId: foreignKey.value }));
   }
   return h("div", {}, "Loading...");

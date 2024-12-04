@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 import { useCmsTranslations } from "@shopware-pwa/composables-next";
-import SwSharedPrice from "./SwSharedPrice.vue";
 import { computed } from "vue";
 import { defu } from "defu";
 

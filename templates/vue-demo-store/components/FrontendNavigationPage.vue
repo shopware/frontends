@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useCategorySearch } from "#imports";
-import type { Ref } from "vue";
-import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
 import { useCmsHead } from "@/composables/useCmsHead";
+import { getCategoryBreadcrumbs } from "@shopware-pwa/helpers-next";
+import type { Ref } from "vue";
+import { useCategorySearch } from "#imports";
 import type { Schemas } from "#shopware";
 
 const props = defineProps<{
@@ -13,7 +13,7 @@ const { search } = useCategorySearch();
 const route = useRoute();
 
 const { data: categoryResponse, error } = await useAsyncData(
-  "cmsNavigation" + props.navigationId,
+  `cmsNavigation${props.navigationId}`,
   async () => {
     const category = await search(props.navigationId, {
       withCmsAssociations: true,

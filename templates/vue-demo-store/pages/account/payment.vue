@@ -6,9 +6,7 @@ definePageMeta({
   layout: "account",
 });
 
-const emits = defineEmits<{
-  (e: "success"): void;
-}>();
+const emits = defineEmits<(e: "success") => void>();
 
 const {
   paymentMethods,

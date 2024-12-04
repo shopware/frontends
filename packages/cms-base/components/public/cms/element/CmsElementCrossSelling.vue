@@ -4,8 +4,6 @@ import type {
   SliderElementConfig,
 } from "@shopware-pwa/composables-next";
 import { useCmsElementConfig } from "#imports";
-import SwProductCard from "../../../SwProductCard.vue";
-import SwSlider from "../../../SwSlider.vue";
 import { ref, computed, useTemplateRef } from "vue";
 import { useElementSize } from "@vueuse/core";
 

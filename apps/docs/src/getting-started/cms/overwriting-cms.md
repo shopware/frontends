@@ -11,10 +11,10 @@ head:
       content: "https://frontends-og-image.vercel.app/Overwrite%20CMS.png"
 ---
 
-# Overwrite CMS blocks in Nuxt 3 APP
+# Overwrite CMS blocks in Nuxt 3 APP (Nuxt Layer way)
 
 To override CMS blocks in the Nuxt 3 app, create a `.vue` file with the cms block name in the components directory.
-Because of auto importing, CMS component import will be overwritten by the new file path.
+Because of auto importing, CMS component import will be overwritten by the new file with the same name.
 
 More about auto imports can be found [here](https://nuxt.com/docs/guide/concepts/auto-imports)
 
@@ -27,7 +27,8 @@ If we want to create our own product listing **component** in **demo-store** the
 `templates/vue-demo-store/components/cms/block/CmsBlockProductListing.vue`
 
 :::tip HINT 💡
-You can only override components that start with Cms. For example, you cannot override SwProductCard (this is an internal component). If you want to have your own SwProductCard, you need to overwrite the Cms component that is using the SwProductCard and then replace it with your e.g. CustomProductCard.
+
+❗**Internal components are not a part of public API. Once overwritten you need to track the changes on your own.**
 :::
 
 ### Resolving folder structure
@@ -41,6 +42,10 @@ You can repeat folder structure in name like:
 `/components/cms/CmsName.vue`
 
 These are the same components resolving as **CmsName**. 💡
+
+### Internal components
+
+As example: some components use `SwSharedPrice.vue` to show prices with corresponding currency for products in many places like product card, product details page and so on. In order to change the way how the price is displayed consistently - create a one component with a name `SwSharedPrice.vue` and that's it. The new component will be used everywhere where is "imported" (autoimported actually).
 
 ### Generic CMS components
 

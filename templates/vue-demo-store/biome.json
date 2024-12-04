@@ -19,12 +19,9 @@
       "coverage",
       ".turbo",
       ".output",
-      ".astro",
       "temp",
       ".nuxt",
-      ".vercel",
-      "*apiSchema*.json",
-      "*apiTypes*.d.ts"
+      ".vercel"
     ]
   }
 }
