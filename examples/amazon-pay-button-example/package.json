@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@amazonpay/amazon-pay-api-sdk-nodejs": "2.3.1",
-    "@nuxt/devtools": "1.6.1",
+    "@nuxt/devtools": "1.6.3",
     "@nuxt/module-builder": "0.8.4",
     "@nuxt/schema": "3.14.1592",
     "@shopware-pwa/composables-next": "canary",
