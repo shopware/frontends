@@ -1,13 +1,13 @@
-import { ref, computed } from "vue";
-import type { Ref, ComputedRef } from "vue";
+import { syncRefs } from "@vueuse/core";
+import { computed, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import {
-  useShopwareContext,
   useCart,
+  useContext,
   useInternationalization,
   useSessionContext,
-  useContext,
+  useShopwareContext,
 } from "#imports";
-import { syncRefs } from "@vueuse/core";
 import type { Schemas, operations } from "#shopware";
 
 export type UseUserReturn = {

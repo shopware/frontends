@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { useCmsSection } from "./useCmsSection";
+import type { Schemas } from "#shopware";
 import { useSetup } from "../_test";
 import CmsPage from "../mocks/CmsPage";
-import type { Schemas } from "#shopware";
+import { useCmsSection } from "./useCmsSection";
 
 describe("useCmsSection", () => {
   it("search", async () => {

@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { resolveCmsComponent, getDefaultApiParams } from "./index";
-import CmsPage from "./mocks/CmsPage";
-import type { Schemas } from "#shopware";
 import * as vue from "vue";
+import type { Schemas } from "#shopware";
+import { getDefaultApiParams, resolveCmsComponent } from "./index";
+import CmsPage from "./mocks/CmsPage";
 
 vi.mock("vue");
 describe("resolveCmsComponent", () => {

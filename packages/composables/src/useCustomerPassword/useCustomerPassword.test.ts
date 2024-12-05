@@ -1,8 +1,8 @@
-import { describe, expect, it, vi } from "vitest";
-import { useCustomerPassword } from "./useCustomerPassword";
-import { useSetup } from "../_test";
 import { ApiClientError } from "@shopware/api-client";
 import type { FetchResponse } from "ofetch";
+import { describe, expect, it, vi } from "vitest";
+import { useSetup } from "../_test";
+import { useCustomerPassword } from "./useCustomerPassword";
 
 describe("useCustomerPassword", () => {
   it("reset password", async () => {

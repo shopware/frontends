@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { useWishlist } from "./useWishlist";
-import { useSyncWishlist } from "../useSyncWishlist/useSyncWishlist";
-import { useUser } from "../useUser/useUser";
-import { useSetup } from "../_test";
 import { computed, ref } from "vue";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
+import { useSyncWishlist } from "../useSyncWishlist/useSyncWishlist";
+import { useUser } from "../useUser/useUser";
+import { useWishlist } from "./useWishlist";
 
 const getMockedUser = (isLoggedIn: boolean, isGuestSession: boolean) =>
   ({

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { useOrderPayment } from "./useOrderPayment";
-import { useSetup } from "../_test";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import type { Schemas } from "#shopware";
+import { useSetup } from "../_test";
 import Order from "../mocks/Order";
+import { useOrderPayment } from "./useOrderPayment";
 
 describe("useOrderPayment", () => {
   it("should handle the order payment", async () => {

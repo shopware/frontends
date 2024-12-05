@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { useCmsElementImage } from "./useCmsElementImage";
 import type { CmsElementImage, CmsElementManufacturerLogo } from "../types";
+import { useCmsElementImage } from "./useCmsElementImage";
 
 describe("useCmsElementImage", () => {
   describe("computed", () => {

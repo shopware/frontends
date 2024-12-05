@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { useLandingSearch } from "./useLandingSearch";
-import LandingPageMock from "../mocks/LandingPage";
 import { useSetup } from "../_test";
 import { cmsAssociations } from "../cms/cmsAssociations";
+import LandingPageMock from "../mocks/LandingPage";
+import { useLandingSearch } from "./useLandingSearch";
 
 describe("useLandingSearch", () => {
   it("mergeWishlistProducts", async () => {

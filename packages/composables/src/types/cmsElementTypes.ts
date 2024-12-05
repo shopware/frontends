@@ -1,5 +1,5 @@
-import type { Schemas } from "#shopware";
 import type { CSSProperties } from "vue";
+import type { Schemas } from "#shopware";
 
 export type SourceType = "static" | "mapped";
 

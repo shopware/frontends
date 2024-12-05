@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { useContext } from "#imports";
-import type { operations, Schemas } from "#shopware";
+import type { Schemas, operations } from "#shopware";
 
 /**
  * @internal

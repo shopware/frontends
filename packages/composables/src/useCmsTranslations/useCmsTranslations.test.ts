@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { useCmsTranslations } from "./useCmsTranslations";
 import { useSetup } from "../_test";
+import { useCmsTranslations } from "./useCmsTranslations";
 
 describe("useCmsTranslations", () => {
   it("injection", async () => {

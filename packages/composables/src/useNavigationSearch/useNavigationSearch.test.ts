@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { useNavigationSearch } from "./useNavigationSearch";
+import { ref } from "vue";
 import { useSetup } from "../_test";
 import { useSessionContext } from "../useSessionContext/useSessionContext";
-import { ref } from "vue";
+import { useNavigationSearch } from "./useNavigationSearch";
 
 vi.mock("../useSessionContext/useSessionContext.ts");
 const sessionContext = ref();
