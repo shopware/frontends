@@ -25,7 +25,7 @@
   },
   "files": ["index.d.ts", "index.mjs", "**/*.d.ts"],
   "scripts": {
-    "lint": "eslint shopware-6-client/**/*.ts* --fix --max-warnings=0 && pnpm run typecheck",
+    "lint": "eslint shopware-6-client/**/*.ts* --fix --max-warnings=0",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
