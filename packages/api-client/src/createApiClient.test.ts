@@ -1,17 +1,17 @@
-import { afterAll, describe, expect, it, vi } from "vitest";
-import { listen } from "listhen";
-import type { Listener } from "listhen";
 import {
   createApp,
   createError,
   eventHandler,
-  toNodeListener,
-  setHeader,
   getHeaders,
+  setHeader,
+  toNodeListener,
 } from "h3";
 import type { App } from "h3";
-import { createAPIClient } from "./createAPIClient";
+import { listen } from "listhen";
+import type { Listener } from "listhen";
+import { afterAll, describe, expect, it, vi } from "vitest";
 import type { operations } from "../api-types/storeApiTypes";
+import { createAPIClient } from "./createAPIClient";
 
 describe("createAPIClient", () => {
   const listeners: Listener[] = [];
@@ -396,7 +396,7 @@ describe("createAPIClient", () => {
     await expect(
       client.invoke("readContext get /context"),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `[ApiClientError: Failed request]`,
+      "[ApiClientError: Failed request]",
     );
 
     expect(errorCallback).toHaveBeenCalled();

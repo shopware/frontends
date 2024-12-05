@@ -875,9 +875,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: 2.1.6
         version: 2.1.6(vitest@2.1.6(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@15.11.6)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.36.0))
-      eslint-config-shopware:
-        specifier: workspace:*
-        version: link:../eslint-config-shopware
       jsdom:
         specifier: ^25.0.1
         version: 25.0.1

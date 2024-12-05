@@ -20,7 +20,7 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "biome lint .",
-    "lint:fix": "biome lint --write . && pnpm run typecheck",
+    "lint:fix": "biome lint . --write --fix --unsafe && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
