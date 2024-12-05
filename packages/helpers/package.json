@@ -29,13 +29,14 @@
     "build": "unbuild && pnpm build:types",
     "build:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --outDir ./temp --skipLibCheck",
     "dev": "unbuild --stub",
-    "lint": "biome lint . && pnpm run typecheck",
-    "lint:fix": "biome lint --apply . && pnpm run typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write && pnpm run typecheck",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@vitest/coverage-v8": "2.1.6",
     "happy-dom": "15.11.6",
     "tsconfig": "workspace:*",

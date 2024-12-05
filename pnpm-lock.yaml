@@ -1092,6 +1092,9 @@ importers:
 
   packages/helpers:
     devDependencies:
+      '@biomejs/biome':
+        specifier: 1.8.3
+        version: 1.8.3
       '@vitest/coverage-v8':
         specifier: 2.1.6
         version: 2.1.6(vitest@2.1.6(@edge-runtime/vm@3.2.0)(@types/node@22.10.0)(happy-dom@15.11.6)(jsdom@25.0.1)(less@4.2.0)(sass@1.77.8)(terser@5.36.0))

@@ -1,5 +1,5 @@
-import { getCmsTranslate } from "./getCmsTranslate";
 import { describe, expect, it } from "vitest";
+import { getCmsTranslate } from "./getCmsTranslate";
 
 describe("useCmsTranslate", () => {
   it("should replace placeholder with param value", async () => {
