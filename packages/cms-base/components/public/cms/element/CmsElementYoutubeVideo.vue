@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CmsElementYoutubeVideo } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig } from "#imports";
 import { computed } from "vue";
+import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{
   content: CmsElementYoutubeVideo;

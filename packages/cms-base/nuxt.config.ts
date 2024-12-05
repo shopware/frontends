@@ -1,5 +1,5 @@
-import { defineNuxtConfig } from "nuxt/config";
 import type { NuxtConfig } from "@nuxt/schema";
+import { defineNuxtConfig } from "nuxt/config";
 export default defineNuxtConfig({
   components: [
     {

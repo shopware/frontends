@@ -3,9 +3,9 @@ import type {
   CmsElementCrossSelling,
   SliderElementConfig,
 } from "@shopware-pwa/composables-next";
-import { useCmsElementConfig } from "#imports";
-import { ref, computed, useTemplateRef } from "vue";
 import { useElementSize } from "@vueuse/core";
+import { computed, ref, useTemplateRef } from "vue";
+import { useCmsElementConfig } from "#imports";
 
 const props = defineProps<{
   content: CmsElementCrossSelling;

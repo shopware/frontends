@@ -2,8 +2,8 @@
 import { useCmsSection } from "@shopware-pwa/composables-next";
 import type { CmsSectionSidebar } from "@shopware-pwa/composables-next";
 import { getTranslatedProperty } from "@shopware-pwa/helpers-next";
-import { useCategory } from "#imports";
 import { computed } from "vue";
+import { useCategory } from "#imports";
 
 const props = defineProps<{
   content: CmsSectionSidebar;

@@ -47,6 +47,7 @@
     "generate-admin-types": "esno ../api-gen/src/cli.ts generate --apiType=admin"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@codspeed/vitest-plugin": "3.1.1",
     "@types/prettier": "3.0.0",
     "@vitest/coverage-v8": "2.1.6",
