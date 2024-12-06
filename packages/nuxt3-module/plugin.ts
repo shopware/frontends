@@ -3,7 +3,7 @@ import {
   useRuntimeConfig,
   useState,
   createShopwareContext,
-  createError,
+  showError,
 } from "#imports";
 import { ref } from "vue";
 import Cookies from "js-cookie";
@@ -82,7 +82,7 @@ export default defineNuxtPlugin((NuxtApp) => {
     // @ts-expect-error TODO: check maintenance mode and fix typongs here
     const error = isMaintenanceMode(response._data?.errors ?? []);
     if (error) {
-      throw createError({
+      throw showError({
         statusCode: 503,
         statusMessage: "MAINTENANCE_MODE",
       });
