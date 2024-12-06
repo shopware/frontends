@@ -34,12 +34,12 @@
     "@biomejs/biome": "1.8.3",
     "@types/prettier": "3.0.0",
     "@types/yargs": "17.0.33",
-    "@vitest/coverage-v8": "2.1.6",
+    "@vitest/coverage-v8": "2.1.8",
     "json5": "2.2.3",
     "picocolors": "1.0.1",
     "tsconfig": "workspace:*",
     "unbuild": "2.0.0",
-    "vitest": "2.1.6"
+    "vitest": "2.1.8"
   },
   "dependencies": {
     "@shopware/api-client": "workspace:*",
